@@ -609,22 +609,6 @@
             return !1;
         }
         var global = __webpack_require__("./node_modules/zalgo-promise/src/global.js");
-        var _createClass = function() {
-            function defineProperties(target, props) {
-                for (var i = 0; i < props.length; i++) {
-                    var descriptor = props[i];
-                    descriptor.enumerable = descriptor.enumerable || !1;
-                    descriptor.configurable = !0;
-                    "value" in descriptor && (descriptor.writable = !0);
-                    Object.defineProperty(target, descriptor.key, descriptor);
-                }
-            }
-            return function(Constructor, protoProps, staticProps) {
-                protoProps && defineProperties(Constructor.prototype, protoProps);
-                staticProps && defineProperties(Constructor, staticProps);
-                return Constructor;
-            };
-        }();
         var promise_ZalgoPromise = function() {
             function ZalgoPromise(handler) {
                 var _this = this;
@@ -657,263 +641,222 @@
                     resolved ? this.resolve(_result) : rejected && this.reject(_error);
                 }
             }
-            _createClass(ZalgoPromise, [ {
-                key: "resolve",
-                value: function(result) {
-                    if (this.resolved || this.rejected) return this;
-                    if (utils_isPromise(result)) throw new Error("Can not resolve promise with another promise");
-                    this.resolved = !0;
-                    this.value = result;
-                    this.dispatch();
-                    return this;
+            ZalgoPromise.prototype.resolve = function(result) {
+                if (this.resolved || this.rejected) return this;
+                if (utils_isPromise(result)) throw new Error("Can not resolve promise with another promise");
+                this.resolved = !0;
+                this.value = result;
+                this.dispatch();
+                return this;
+            };
+            ZalgoPromise.prototype.reject = function(error) {
+                var _this2 = this;
+                if (this.resolved || this.rejected) return this;
+                if (utils_isPromise(error)) throw new Error("Can not reject promise with another promise");
+                if (!error) {
+                    var _err = error && "function" == typeof error.toString ? error.toString() : Object.prototype.toString.call(error);
+                    error = new Error("Expected reject to be called with Error, got " + _err);
                 }
-            }, {
-                key: "reject",
-                value: function(error) {
-                    var _this2 = this;
-                    if (this.resolved || this.rejected) return this;
-                    if (utils_isPromise(error)) throw new Error("Can not reject promise with another promise");
-                    if (!error) {
-                        var _err = error && "function" == typeof error.toString ? error.toString() : Object.prototype.toString.call(error);
-                        error = new Error("Expected reject to be called with Error, got " + _err);
-                    }
-                    this.rejected = !0;
-                    this.error = error;
-                    this.errorHandled || setTimeout(function() {
-                        _this2.errorHandled || function(err) {
-                            if (-1 === Object(global.a)().dispatchedErrors.indexOf(err)) {
-                                Object(global.a)().dispatchedErrors.push(err);
-                                setTimeout(function() {
-                                    throw err;
-                                }, 1);
-                                for (var j = 0; j < Object(global.a)().possiblyUnhandledPromiseHandlers.length; j++) Object(global.a)().possiblyUnhandledPromiseHandlers[j](err);
+                this.rejected = !0;
+                this.error = error;
+                this.errorHandled || setTimeout(function() {
+                    _this2.errorHandled || function(err) {
+                        if (-1 === Object(global.a)().dispatchedErrors.indexOf(err)) {
+                            Object(global.a)().dispatchedErrors.push(err);
+                            setTimeout(function() {
+                                throw err;
+                            }, 1);
+                            for (var j = 0; j < Object(global.a)().possiblyUnhandledPromiseHandlers.length; j++) Object(global.a)().possiblyUnhandledPromiseHandlers[j](err);
+                        }
+                    }(error);
+                }, 1);
+                this.dispatch();
+                return this;
+            };
+            ZalgoPromise.prototype.asyncReject = function(error) {
+                this.errorHandled = !0;
+                this.reject(error);
+            };
+            ZalgoPromise.prototype.dispatch = function() {
+                var _this3 = this, dispatching = this.dispatching, resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
+                if (!dispatching && (resolved || rejected)) {
+                    this.dispatching = !0;
+                    Object(global.a)().activeCount += 1;
+                    for (var _loop = function(i) {
+                        var _handlers$i = handlers[i], onSuccess = _handlers$i.onSuccess, onError = _handlers$i.onError, promise = _handlers$i.promise, result = void 0;
+                        if (resolved) try {
+                            result = onSuccess ? onSuccess(_this3.value) : _this3.value;
+                        } catch (err) {
+                            promise.reject(err);
+                            return "continue";
+                        } else if (rejected) {
+                            if (!onError) {
+                                promise.reject(_this3.error);
+                                return "continue";
                             }
-                        }(error);
-                    }, 1);
-                    this.dispatch();
-                    return this;
-                }
-            }, {
-                key: "asyncReject",
-                value: function(error) {
-                    this.errorHandled = !0;
-                    this.reject(error);
-                }
-            }, {
-                key: "dispatch",
-                value: function() {
-                    var _this3 = this, dispatching = this.dispatching, resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
-                    if (!dispatching && (resolved || rejected)) {
-                        this.dispatching = !0;
-                        Object(global.a)().activeCount += 1;
-                        for (var _loop = function(i) {
-                            var _handlers$i = handlers[i], onSuccess = _handlers$i.onSuccess, onError = _handlers$i.onError, promise = _handlers$i.promise, result = void 0;
-                            if (resolved) try {
-                                result = onSuccess ? onSuccess(_this3.value) : _this3.value;
+                            try {
+                                result = onError(_this3.error);
                             } catch (err) {
                                 promise.reject(err);
                                 return "continue";
-                            } else if (rejected) {
-                                if (!onError) {
-                                    promise.reject(_this3.error);
-                                    return "continue";
-                                }
-                                try {
-                                    result = onError(_this3.error);
-                                } catch (err) {
-                                    promise.reject(err);
-                                    return "continue";
-                                }
                             }
-                            if (result instanceof ZalgoPromise && (result.resolved || result.rejected)) {
-                                result.resolved ? promise.resolve(result.value) : promise.reject(result.error);
-                                result.errorHandled = !0;
-                            } else utils_isPromise(result) ? result instanceof ZalgoPromise && (result.resolved || result.rejected) ? result.resolved ? promise.resolve(result.value) : promise.reject(result.error) : result.then(function(res) {
-                                promise.resolve(res);
-                            }, function(err) {
-                                promise.reject(err);
-                            }) : promise.resolve(result);
-                        }, i = 0; i < handlers.length; i++) _loop(i);
-                        handlers.length = 0;
-                        this.dispatching = !1;
-                        Object(global.a)().activeCount -= 1;
-                        0 === Object(global.a)().activeCount && ZalgoPromise.flushQueue();
-                    }
+                        }
+                        if (result instanceof ZalgoPromise && (result.resolved || result.rejected)) {
+                            result.resolved ? promise.resolve(result.value) : promise.reject(result.error);
+                            result.errorHandled = !0;
+                        } else utils_isPromise(result) ? result instanceof ZalgoPromise && (result.resolved || result.rejected) ? result.resolved ? promise.resolve(result.value) : promise.reject(result.error) : result.then(function(res) {
+                            promise.resolve(res);
+                        }, function(err) {
+                            promise.reject(err);
+                        }) : promise.resolve(result);
+                    }, i = 0; i < handlers.length; i++) _loop(i);
+                    handlers.length = 0;
+                    this.dispatching = !1;
+                    Object(global.a)().activeCount -= 1;
+                    0 === Object(global.a)().activeCount && ZalgoPromise.flushQueue();
                 }
-            }, {
-                key: "then",
-                value: function(onSuccess, onError) {
-                    if (onSuccess && "function" != typeof onSuccess && !onSuccess.call) throw new Error("Promise.then expected a function for success handler");
-                    if (onError && "function" != typeof onError && !onError.call) throw new Error("Promise.then expected a function for error handler");
-                    var promise = new ZalgoPromise();
-                    this.handlers.push({
-                        promise: promise,
-                        onSuccess: onSuccess,
-                        onError: onError
-                    });
-                    this.errorHandled = !0;
-                    this.dispatch();
-                    return promise;
-                }
-            }, {
-                key: "catch",
-                value: function(onError) {
-                    return this.then(void 0, onError);
-                }
-            }, {
-                key: "finally",
-                value: function(handler) {
-                    return this.then(function(result) {
-                        return ZalgoPromise.try(handler).then(function() {
-                            return result;
-                        });
-                    }, function(err) {
-                        return ZalgoPromise.try(handler).then(function() {
-                            throw err;
-                        });
-                    });
-                }
-            }, {
-                key: "timeout",
-                value: function(time, err) {
-                    var _this4 = this;
-                    if (this.resolved || this.rejected) return this;
-                    var timeout = setTimeout(function() {
-                        _this4.resolved || _this4.rejected || _this4.reject(err || new Error("Promise timed out after " + time + "ms"));
-                    }, time);
-                    return this.then(function(result) {
-                        clearTimeout(timeout);
+            };
+            ZalgoPromise.prototype.then = function(onSuccess, onError) {
+                if (onSuccess && "function" != typeof onSuccess && !onSuccess.call) throw new Error("Promise.then expected a function for success handler");
+                if (onError && "function" != typeof onError && !onError.call) throw new Error("Promise.then expected a function for error handler");
+                var promise = new ZalgoPromise();
+                this.handlers.push({
+                    promise: promise,
+                    onSuccess: onSuccess,
+                    onError: onError
+                });
+                this.errorHandled = !0;
+                this.dispatch();
+                return promise;
+            };
+            ZalgoPromise.prototype.catch = function(onError) {
+                return this.then(void 0, onError);
+            };
+            ZalgoPromise.prototype.finally = function(handler) {
+                return this.then(function(result) {
+                    return ZalgoPromise.try(handler).then(function() {
                         return result;
                     });
+                }, function(err) {
+                    return ZalgoPromise.try(handler).then(function() {
+                        throw err;
+                    });
+                });
+            };
+            ZalgoPromise.prototype.timeout = function(time, err) {
+                var _this4 = this;
+                if (this.resolved || this.rejected) return this;
+                var timeout = setTimeout(function() {
+                    _this4.resolved || _this4.rejected || _this4.reject(err || new Error("Promise timed out after " + time + "ms"));
+                }, time);
+                return this.then(function(result) {
+                    clearTimeout(timeout);
+                    return result;
+                });
+            };
+            ZalgoPromise.prototype.toPromise = function() {
+                if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
+                return Promise.resolve(this);
+            };
+            ZalgoPromise.resolve = function(value) {
+                return value instanceof ZalgoPromise ? value : utils_isPromise(value) ? new ZalgoPromise(function(resolve, reject) {
+                    return value.then(resolve, reject);
+                }) : new ZalgoPromise().resolve(value);
+            };
+            ZalgoPromise.reject = function(error) {
+                return new ZalgoPromise().reject(error);
+            };
+            ZalgoPromise.all = function(promises) {
+                var promise = new ZalgoPromise(), count = promises.length, results = [];
+                if (!count) {
+                    promise.resolve(results);
+                    return promise;
                 }
-            }, {
-                key: "toPromise",
-                value: function() {
-                    if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
-                    return Promise.resolve(this);
-                }
-            } ], [ {
-                key: "resolve",
-                value: function(value) {
-                    return value instanceof ZalgoPromise ? value : utils_isPromise(value) ? new ZalgoPromise(function(resolve, reject) {
-                        return value.then(resolve, reject);
-                    }) : new ZalgoPromise().resolve(value);
-                }
-            }, {
-                key: "reject",
-                value: function(error) {
-                    return new ZalgoPromise().reject(error);
-                }
-            }, {
-                key: "all",
-                value: function(promises) {
-                    var promise = new ZalgoPromise(), count = promises.length, results = [];
-                    if (!count) {
-                        promise.resolve(results);
-                        return promise;
-                    }
-                    for (var _loop2 = function(i) {
-                        var prom = promises[i];
-                        if (prom instanceof ZalgoPromise) {
-                            if (prom.resolved) {
-                                results[i] = prom.value;
-                                count -= 1;
-                                return "continue";
-                            }
-                        } else if (!utils_isPromise(prom)) {
-                            results[i] = prom;
+                for (var _loop2 = function(i) {
+                    var prom = promises[i];
+                    if (prom instanceof ZalgoPromise) {
+                        if (prom.resolved) {
+                            results[i] = prom.value;
                             count -= 1;
                             return "continue";
                         }
-                        ZalgoPromise.resolve(prom).then(function(result) {
-                            results[i] = result;
-                            0 === (count -= 1) && promise.resolve(results);
-                        }, function(err) {
-                            promise.reject(err);
-                        });
-                    }, i = 0; i < promises.length; i++) _loop2(i);
-                    0 === count && promise.resolve(results);
-                    return promise;
-                }
-            }, {
-                key: "hash",
-                value: function(promises) {
-                    var result = {};
-                    return ZalgoPromise.all(Object.keys(promises).map(function(key) {
-                        return ZalgoPromise.resolve(promises[key]).then(function(value) {
-                            result[key] = value;
-                        });
-                    })).then(function() {
-                        return result;
-                    });
-                }
-            }, {
-                key: "map",
-                value: function(items, method) {
-                    return ZalgoPromise.all(items.map(method));
-                }
-            }, {
-                key: "onPossiblyUnhandledException",
-                value: function(handler) {
-                    return function(handler) {
-                        Object(global.a)().possiblyUnhandledPromiseHandlers.push(handler);
-                        return {
-                            cancel: function() {
-                                Object(global.a)().possiblyUnhandledPromiseHandlers.splice(Object(global.a)().possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
-                            }
-                        };
-                    }(handler);
-                }
-            }, {
-                key: "try",
-                value: function(method, context, args) {
-                    var result = void 0;
-                    try {
-                        result = method.apply(context, args || []);
-                    } catch (err) {
-                        return ZalgoPromise.reject(err);
+                    } else if (!utils_isPromise(prom)) {
+                        results[i] = prom;
+                        count -= 1;
+                        return "continue";
                     }
-                    return ZalgoPromise.resolve(result);
-                }
-            }, {
-                key: "delay",
-                value: function(_delay) {
-                    return new ZalgoPromise(function(resolve) {
-                        setTimeout(resolve, _delay);
+                    ZalgoPromise.resolve(prom).then(function(result) {
+                        results[i] = result;
+                        0 === (count -= 1) && promise.resolve(results);
+                    }, function(err) {
+                        promise.reject(err);
                     });
-                }
-            }, {
-                key: "isPromise",
-                value: function(value) {
-                    return !!(value && value instanceof ZalgoPromise) || utils_isPromise(value);
-                }
-            }, {
-                key: "flush",
-                value: function() {
-                    var promise = new ZalgoPromise();
-                    Object(global.a)().flushPromises.push(promise);
-                    0 === Object(global.a)().activeCount && ZalgoPromise.flushQueue();
-                    return promise;
-                }
-            }, {
-                key: "flushQueue",
-                value: function() {
-                    var promisesToFlush = Object(global.a)().flushPromises;
-                    Object(global.a)().flushPromises = [];
-                    var _iterator = promisesToFlush, _isArray = Array.isArray(_iterator), _i = 0;
-                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref = _iterator[_i++];
-                        } else {
-                            if ((_i = _iterator.next()).done) break;
-                            _ref = _i.value;
+                }, i = 0; i < promises.length; i++) _loop2(i);
+                0 === count && promise.resolve(results);
+                return promise;
+            };
+            ZalgoPromise.hash = function(promises) {
+                var result = {};
+                return ZalgoPromise.all(Object.keys(promises).map(function(key) {
+                    return ZalgoPromise.resolve(promises[key]).then(function(value) {
+                        result[key] = value;
+                    });
+                })).then(function() {
+                    return result;
+                });
+            };
+            ZalgoPromise.map = function(items, method) {
+                return ZalgoPromise.all(items.map(method));
+            };
+            ZalgoPromise.onPossiblyUnhandledException = function(handler) {
+                return function(handler) {
+                    Object(global.a)().possiblyUnhandledPromiseHandlers.push(handler);
+                    return {
+                        cancel: function() {
+                            Object(global.a)().possiblyUnhandledPromiseHandlers.splice(Object(global.a)().possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
                         }
-                        _ref.resolve();
-                    }
+                    };
+                }(handler);
+            };
+            ZalgoPromise.try = function(method, context, args) {
+                var result = void 0;
+                try {
+                    result = method.apply(context, args || []);
+                } catch (err) {
+                    return ZalgoPromise.reject(err);
                 }
-            } ]);
+                return ZalgoPromise.resolve(result);
+            };
+            ZalgoPromise.delay = function(_delay) {
+                return new ZalgoPromise(function(resolve) {
+                    setTimeout(resolve, _delay);
+                });
+            };
+            ZalgoPromise.isPromise = function(value) {
+                return !!(value && value instanceof ZalgoPromise) || utils_isPromise(value);
+            };
+            ZalgoPromise.flush = function() {
+                var promise = new ZalgoPromise();
+                Object(global.a)().flushPromises.push(promise);
+                0 === Object(global.a)().activeCount && ZalgoPromise.flushQueue();
+                return promise;
+            };
+            ZalgoPromise.flushQueue = function() {
+                var promisesToFlush = Object(global.a)().flushPromises;
+                Object(global.a)().flushPromises = [];
+                var _iterator = promisesToFlush, _isArray = Array.isArray(_iterator), _i = 0;
+                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref = _iterator[_i++];
+                    } else {
+                        if ((_i = _iterator.next()).done) break;
+                        _ref = _i.value;
+                    }
+                    _ref.resolve();
+                }
+            };
             return ZalgoPromise;
         }();
         __webpack_require__.d(__webpack_exports__, "a", function() {
@@ -925,32 +868,22 @@
         Object.defineProperty(__webpack_exports__, "__esModule", {
             value: !0
         });
-        var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _secondaryColors10, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE, base64 = __webpack_require__("./node_modules/Base64/base64.js"), constants = __webpack_require__("./src/constants/index.js");
-        function _defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var _FUNDING_CONFIG, _CARD_CONFIG, BUTTON_CONFIG = (_defineProperty(_BUTTON_CONFIG = {}, constants.r, {
+        var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE, _FUNDING_CONFIG, _CARD_CONFIG, base64 = __webpack_require__("./node_modules/Base64/base64.js"), constants = __webpack_require__("./src/constants/index.js"), BUTTON_CONFIG = ((_BUTTON_CONFIG = {})[constants.r] = {
             colors: [ constants.e.GOLD, constants.e.BLUE, constants.e.SILVER, constants.e.BLACK ],
             sizes: [ constants.l.SMALL, constants.l.MEDIUM, constants.l.LARGE, constants.l.RESPONSIVE ],
             shapes: [ constants.k.PILL, constants.k.RECT ],
             layouts: [ constants.g.HORIZONTAL, constants.g.VERTICAL ],
-            logoColors: (_logoColors = {}, _defineProperty(_logoColors, constants.e.GOLD, constants.i.BLUE), 
-            _defineProperty(_logoColors, constants.e.SILVER, constants.i.BLUE), _defineProperty(_logoColors, constants.e.BLUE, constants.i.WHITE), 
-            _defineProperty(_logoColors, constants.e.BLACK, constants.i.WHITE), _defineProperty(_logoColors, constants.e.BLACK, constants.i.WHITE), 
+            logoColors: (_logoColors = {}, _logoColors[constants.e.GOLD] = constants.i.BLUE, 
+            _logoColors[constants.e.SILVER] = constants.i.BLUE, _logoColors[constants.e.BLUE] = constants.i.WHITE, 
+            _logoColors[constants.e.BLACK] = constants.i.WHITE, _logoColors[constants.e.BLACK] = constants.i.WHITE, 
             _logoColors),
-            tagLineColors: (_tagLineColors = {}, _defineProperty(_tagLineColors, constants.e.GOLD, constants.n.BLUE), 
-            _defineProperty(_tagLineColors, constants.e.SILVER, constants.n.BLUE), _defineProperty(_tagLineColors, constants.e.BLUE, constants.n.BLUE), 
-            _defineProperty(_tagLineColors, constants.e.BLACK, constants.n.BLACK), _defineProperty(_tagLineColors, constants.e.DARKBLUE, constants.n.BLUE), 
+            tagLineColors: (_tagLineColors = {}, _tagLineColors[constants.e.GOLD] = constants.n.BLUE, 
+            _tagLineColors[constants.e.SILVER] = constants.n.BLUE, _tagLineColors[constants.e.BLUE] = constants.n.BLUE, 
+            _tagLineColors[constants.e.BLACK] = constants.n.BLACK, _tagLineColors[constants.e.DARKBLUE] = constants.n.BLUE, 
             _tagLineColors),
-            secondaryColors: (_secondaryColors = {}, _defineProperty(_secondaryColors, constants.e.GOLD, constants.e.BLUE), 
-            _defineProperty(_secondaryColors, constants.e.SILVER, constants.e.BLUE), _defineProperty(_secondaryColors, constants.e.BLUE, constants.e.SILVER), 
-            _defineProperty(_secondaryColors, constants.e.BLACK, constants.e.BLACK), _defineProperty(_secondaryColors, constants.e.DARKBLUE, constants.e.SILVER), 
+            secondaryColors: (_secondaryColors = {}, _secondaryColors[constants.e.GOLD] = constants.e.BLUE, 
+            _secondaryColors[constants.e.SILVER] = constants.e.BLUE, _secondaryColors[constants.e.BLUE] = constants.e.SILVER, 
+            _secondaryColors[constants.e.BLACK] = constants.e.BLACK, _secondaryColors[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors),
             tag: "{ content: safer_tag }",
             dualTag: "{ content: dual_tag|safer_tag }",
@@ -980,25 +913,25 @@
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }), _defineProperty(_BUTTON_CONFIG, constants.f.PAYPAL, {
+        }, _BUTTON_CONFIG[constants.f.PAYPAL] = {
             label: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
             logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
             allowPrimary: !0,
             allowPrimaryVertical: !0,
             allowPrimaryHorizontal: !0
-        }), _defineProperty(_BUTTON_CONFIG, constants.f.CHECKOUT, {
+        }, _BUTTON_CONFIG[constants.f.CHECKOUT] = {
             label: "{ content: checkout }",
             logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
             allowPrimary: !0,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !0
-        }), _defineProperty(_BUTTON_CONFIG, constants.f.PAY, {
+        }, _BUTTON_CONFIG[constants.f.PAY] = {
             label: "{ content: pay }",
             logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
             allowPrimary: !0,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !0
-        }), _defineProperty(_BUTTON_CONFIG, constants.f.BUYNOW, {
+        }, _BUTTON_CONFIG[constants.f.BUYNOW] = {
             label: "{ content: buynow }",
             logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
             defaultBranding: void 0,
@@ -1006,7 +939,7 @@
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !0,
             allowUnbranded: !0
-        }), _defineProperty(_BUTTON_CONFIG, constants.f.INSTALLMENT, {
+        }, _BUTTON_CONFIG[constants.f.INSTALLMENT] = {
             label: function(style) {
                 return "{ content: " + (style.installmentperiod ? "installment_period" : "installment") + " }";
             },
@@ -1016,154 +949,166 @@
             allowPrimaryHorizontal: !0,
             allowSecondaryVertical: !1,
             allowSecondaryHorizontal: !1
-        }), _defineProperty(_BUTTON_CONFIG, constants.f.CREDIT, {
+        }, _BUTTON_CONFIG[constants.f.CREDIT] = {
             label: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " } { logo: " + constants.h.CREDIT + " }",
             logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " } { logo: " + constants.h.CREDIT + " }",
             tag: "{ content: later_tag }",
             colors: [ constants.e.DARKBLUE, constants.e.BLACK ],
-            logoColors: (_logoColors2 = {}, _defineProperty(_logoColors2, constants.e.BLACK, constants.i.WHITE), 
-            _defineProperty(_logoColors2, constants.e.DARKBLUE, constants.i.WHITE), _logoColors2),
-            secondaryColors: (_secondaryColors2 = {}, _defineProperty(_secondaryColors2, constants.e.GOLD, constants.e.DARKBLUE), 
-            _defineProperty(_secondaryColors2, constants.e.BLUE, constants.e.DARKBLUE), _defineProperty(_secondaryColors2, constants.e.SILVER, constants.e.DARKBLUE), 
-            _defineProperty(_secondaryColors2, constants.e.BLACK, constants.e.BLACK), _secondaryColors2),
+            logoColors: (_logoColors2 = {}, _logoColors2[constants.e.BLACK] = constants.i.WHITE, 
+            _logoColors2[constants.e.DARKBLUE] = constants.i.WHITE, _logoColors2),
+            secondaryColors: (_secondaryColors2 = {}, _secondaryColors2[constants.e.GOLD] = constants.e.DARKBLUE, 
+            _secondaryColors2[constants.e.BLUE] = constants.e.DARKBLUE, _secondaryColors2[constants.e.SILVER] = constants.e.DARKBLUE, 
+            _secondaryColors2[constants.e.BLACK] = constants.e.BLACK, _secondaryColors2),
             defaultColor: constants.e.DARKBLUE,
             allowPrimary: !0,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1,
             allowFundingIcons: !1
-        }), _defineProperty(_BUTTON_CONFIG, constants.f.VENMO, {
+        }, _BUTTON_CONFIG[constants.f.VENMO] = {
             label: "{ logo: " + constants.h.VENMO + " }",
             logoLabel: "{ logo: " + constants.h.VENMO + " }",
             defaultColor: constants.e.SILVER,
             colors: [ constants.e.BLUE, constants.e.SILVER, constants.e.BLACK ],
-            logoColors: (_logoColors3 = {}, _defineProperty(_logoColors3, constants.e.BLUE, constants.i.WHITE), 
-            _defineProperty(_logoColors3, constants.e.SILVER, constants.i.BLUE), _defineProperty(_logoColors3, constants.e.BLACK, constants.i.WHITE), 
+            logoColors: (_logoColors3 = {}, _logoColors3[constants.e.BLUE] = constants.i.WHITE, 
+            _logoColors3[constants.e.SILVER] = constants.i.BLUE, _logoColors3[constants.e.BLACK] = constants.i.WHITE, 
             _logoColors3),
-            secondaryColors: (_secondaryColors3 = {}, _defineProperty(_secondaryColors3, constants.e.GOLD, constants.e.BLUE), 
-            _defineProperty(_secondaryColors3, constants.e.BLUE, constants.e.SILVER), _defineProperty(_secondaryColors3, constants.e.SILVER, constants.e.BLUE), 
-            _defineProperty(_secondaryColors3, constants.e.BLACK, constants.e.BLACK), _defineProperty(_secondaryColors3, constants.e.DARKBLUE, constants.e.SILVER), 
+            secondaryColors: (_secondaryColors3 = {}, _secondaryColors3[constants.e.GOLD] = constants.e.BLUE, 
+            _secondaryColors3[constants.e.BLUE] = constants.e.SILVER, _secondaryColors3[constants.e.SILVER] = constants.e.BLUE, 
+            _secondaryColors3[constants.e.BLACK] = constants.e.BLACK, _secondaryColors3[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors3),
             allowPrimary: !0,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !0
-        }), _defineProperty(_BUTTON_CONFIG, constants.f.IDEAL, {
+        }, _BUTTON_CONFIG[constants.f.IDEAL] = {
             label: "{ logo: " + constants.h.IDEAL + " } Online betalen",
             logoLabel: "{ logo: " + constants.h.IDEAL + " } Online betalen",
             defaultColor: constants.e.SILVER,
             colors: [ constants.e.SILVER, constants.e.BLACK ],
-            logoColors: (_logoColors4 = {}, _defineProperty(_logoColors4, constants.e.SILVER, constants.i.BLACK), 
-            _defineProperty(_logoColors4, constants.e.BLACK, constants.i.WHITE), _logoColors4),
-            secondaryColors: (_secondaryColors4 = {}, _defineProperty(_secondaryColors4, constants.e.GOLD, constants.e.SILVER), 
-            _defineProperty(_secondaryColors4, constants.e.BLUE, constants.e.SILVER), _defineProperty(_secondaryColors4, constants.e.SILVER, constants.e.SILVER), 
-            _defineProperty(_secondaryColors4, constants.e.BLACK, constants.e.BLACK), _defineProperty(_secondaryColors4, constants.e.DARKBLUE, constants.e.SILVER), 
+            logoColors: (_logoColors4 = {}, _logoColors4[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors4[constants.e.BLACK] = constants.i.WHITE, _logoColors4),
+            secondaryColors: (_secondaryColors4 = {}, _secondaryColors4[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors4[constants.e.BLUE] = constants.e.SILVER, _secondaryColors4[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors4[constants.e.BLACK] = constants.e.BLACK, _secondaryColors4[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors4),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }), _defineProperty(_BUTTON_CONFIG, constants.f.ELV, {
+        }, _BUTTON_CONFIG[constants.f.ELV] = {
             label: "{ logo: " + constants.h.ELV + " }",
             logoLabel: "{ logo: " + constants.h.ELV + " }",
             defaultColor: constants.e.SILVER,
             colors: [ constants.e.SILVER, constants.e.BLACK ],
-            logoColors: (_logoColors5 = {}, _defineProperty(_logoColors5, constants.e.SILVER, constants.i.BLACK), 
-            _defineProperty(_logoColors5, constants.e.BLACK, constants.i.WHITE), _logoColors5),
-            secondaryColors: (_secondaryColors5 = {}, _defineProperty(_secondaryColors5, constants.e.GOLD, constants.e.SILVER), 
-            _defineProperty(_secondaryColors5, constants.e.BLUE, constants.e.SILVER), _defineProperty(_secondaryColors5, constants.e.SILVER, constants.e.SILVER), 
-            _defineProperty(_secondaryColors5, constants.e.BLACK, constants.e.BLACK), _defineProperty(_secondaryColors5, constants.e.DARKBLUE, constants.e.SILVER), 
+            logoColors: (_logoColors5 = {}, _logoColors5[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors5[constants.e.BLACK] = constants.i.WHITE, _logoColors5),
+            secondaryColors: (_secondaryColors5 = {}, _secondaryColors5[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors5[constants.e.BLUE] = constants.e.SILVER, _secondaryColors5[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors5[constants.e.BLACK] = constants.e.BLACK, _secondaryColors5[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors5),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }), _defineProperty(_BUTTON_CONFIG, constants.f.BANCONTACT, {
+        }, _BUTTON_CONFIG[constants.f.BANCONTACT] = {
             label: "{ logo: " + constants.h.BANCONTACT + " }",
             logoLabel: "{ logo: " + constants.h.BANCONTACT + " }",
             defaultColor: constants.e.SILVER,
             colors: [ constants.e.SILVER, constants.e.BLACK ],
-            logoColors: (_logoColors6 = {}, _defineProperty(_logoColors6, constants.e.SILVER, constants.i.BLACK), 
-            _defineProperty(_logoColors6, constants.e.BLACK, constants.i.WHITE), _logoColors6),
-            secondaryColors: (_secondaryColors6 = {}, _defineProperty(_secondaryColors6, constants.e.GOLD, constants.e.SILVER), 
-            _defineProperty(_secondaryColors6, constants.e.BLUE, constants.e.SILVER), _defineProperty(_secondaryColors6, constants.e.SILVER, constants.e.SILVER), 
-            _defineProperty(_secondaryColors6, constants.e.BLACK, constants.e.BLACK), _defineProperty(_secondaryColors6, constants.e.DARKBLUE, constants.e.SILVER), 
+            logoColors: (_logoColors6 = {}, _logoColors6[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors6[constants.e.BLACK] = constants.i.WHITE, _logoColors6),
+            secondaryColors: (_secondaryColors6 = {}, _secondaryColors6[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors6[constants.e.BLUE] = constants.e.SILVER, _secondaryColors6[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors6[constants.e.BLACK] = constants.e.BLACK, _secondaryColors6[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors6),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }), _defineProperty(_BUTTON_CONFIG, constants.f.GIROPAY, {
+        }, _BUTTON_CONFIG[constants.f.GIROPAY] = {
             label: "{ logo: " + constants.h.GIROPAY + " }",
             logoLabel: "{ logo: " + constants.h.GIROPAY + " }",
             defaultColor: constants.e.SILVER,
             colors: [ constants.e.SILVER, constants.e.BLACK ],
-            logoColors: (_logoColors7 = {}, _defineProperty(_logoColors7, constants.e.SILVER, constants.i.BLACK), 
-            _defineProperty(_logoColors7, constants.e.BLACK, constants.i.WHITE), _logoColors7),
-            secondaryColors: (_secondaryColors7 = {}, _defineProperty(_secondaryColors7, constants.e.GOLD, constants.e.SILVER), 
-            _defineProperty(_secondaryColors7, constants.e.BLUE, constants.e.SILVER), _defineProperty(_secondaryColors7, constants.e.SILVER, constants.e.SILVER), 
-            _defineProperty(_secondaryColors7, constants.e.BLACK, constants.e.BLACK), _defineProperty(_secondaryColors7, constants.e.DARKBLUE, constants.e.SILVER), 
+            logoColors: (_logoColors7 = {}, _logoColors7[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors7[constants.e.BLACK] = constants.i.WHITE, _logoColors7),
+            secondaryColors: (_secondaryColors7 = {}, _secondaryColors7[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors7[constants.e.BLUE] = constants.e.SILVER, _secondaryColors7[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors7[constants.e.BLACK] = constants.e.BLACK, _secondaryColors7[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors7),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }), _defineProperty(_BUTTON_CONFIG, constants.f.EPS, {
-            label: "{ logo: " + constants.h.EPS + " }",
-            logoLabel: "{ logo: " + constants.h.EPS + " }",
+        }, _BUTTON_CONFIG[constants.f.SOFORT] = {
+            label: "{ logo: " + constants.h.SOFORT + " }",
+            logoLabel: "{ logo: " + constants.h.SOFORT + " }",
             defaultColor: constants.e.SILVER,
             colors: [ constants.e.SILVER, constants.e.BLACK ],
-            logoColors: (_logoColors8 = {}, _defineProperty(_logoColors8, constants.e.SILVER, constants.i.BLACK), 
-            _defineProperty(_logoColors8, constants.e.BLACK, constants.i.WHITE), _logoColors8),
-            secondaryColors: (_secondaryColors8 = {}, _defineProperty(_secondaryColors8, constants.e.GOLD, constants.e.SILVER), 
-            _defineProperty(_secondaryColors8, constants.e.BLUE, constants.e.SILVER), _defineProperty(_secondaryColors8, constants.e.SILVER, constants.e.SILVER), 
-            _defineProperty(_secondaryColors8, constants.e.BLACK, constants.e.BLACK), _defineProperty(_secondaryColors8, constants.e.DARKBLUE, constants.e.SILVER), 
+            logoColors: (_logoColors8 = {}, _logoColors8[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors8[constants.e.BLACK] = constants.i.WHITE, _logoColors8),
+            secondaryColors: (_secondaryColors8 = {}, _secondaryColors8[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors8[constants.e.BLUE] = constants.e.SILVER, _secondaryColors8[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors8[constants.e.BLACK] = constants.e.BLACK, _secondaryColors8[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors8),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }), _defineProperty(_BUTTON_CONFIG, constants.f.MYBANK, {
-            label: "{ logo: " + constants.h.MYBANK + " }",
-            logoLabel: "{ logo: " + constants.h.MYBANK + " }",
+        }, _BUTTON_CONFIG[constants.f.EPS] = {
+            label: "{ logo: " + constants.h.EPS + " }",
+            logoLabel: "{ logo: " + constants.h.EPS + " }",
             defaultColor: constants.e.SILVER,
             colors: [ constants.e.SILVER, constants.e.BLACK ],
-            logoColors: (_logoColors9 = {}, _defineProperty(_logoColors9, constants.e.SILVER, constants.i.BLACK), 
-            _defineProperty(_logoColors9, constants.e.BLACK, constants.i.WHITE), _logoColors9),
-            secondaryColors: (_secondaryColors9 = {}, _defineProperty(_secondaryColors9, constants.e.GOLD, constants.e.SILVER), 
-            _defineProperty(_secondaryColors9, constants.e.BLUE, constants.e.SILVER), _defineProperty(_secondaryColors9, constants.e.SILVER, constants.e.SILVER), 
-            _defineProperty(_secondaryColors9, constants.e.BLACK, constants.e.BLACK), _defineProperty(_secondaryColors9, constants.e.DARKBLUE, constants.e.SILVER), 
+            logoColors: (_logoColors9 = {}, _logoColors9[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors9[constants.e.BLACK] = constants.i.WHITE, _logoColors9),
+            secondaryColors: (_secondaryColors9 = {}, _secondaryColors9[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors9[constants.e.BLUE] = constants.e.SILVER, _secondaryColors9[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors9[constants.e.BLACK] = constants.e.BLACK, _secondaryColors9[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors9),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }), _defineProperty(_BUTTON_CONFIG, constants.f.CARD, {
-            label: "{ cards }",
-            logoLabel: "{ cards }",
+        }, _BUTTON_CONFIG[constants.f.MYBANK] = {
+            label: "{ logo: " + constants.h.MYBANK + " }",
+            logoLabel: "{ logo: " + constants.h.MYBANK + " }",
             defaultColor: constants.e.SILVER,
-            colors: [ constants.e.TRANSPARENT ],
-            logoColors: _defineProperty({}, constants.e.TRANSPARENT, constants.i.BLACK),
-            secondaryColors: (_secondaryColors10 = {}, _defineProperty(_secondaryColors10, constants.e.GOLD, constants.e.TRANSPARENT), 
-            _defineProperty(_secondaryColors10, constants.e.BLUE, constants.e.TRANSPARENT), 
-            _defineProperty(_secondaryColors10, constants.e.SILVER, constants.e.TRANSPARENT), 
-            _defineProperty(_secondaryColors10, constants.e.BLACK, constants.e.TRANSPARENT), 
-            _defineProperty(_secondaryColors10, constants.e.DARKBLUE, constants.e.TRANSPARENT), 
+            colors: [ constants.e.SILVER, constants.e.BLACK ],
+            logoColors: (_logoColors10 = {}, _logoColors10[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors10[constants.e.BLACK] = constants.i.WHITE, _logoColors10),
+            secondaryColors: (_secondaryColors10 = {}, _secondaryColors10[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors10[constants.e.BLUE] = constants.e.SILVER, _secondaryColors10[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors10[constants.e.BLACK] = constants.e.BLACK, _secondaryColors10[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors10),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }), _BUTTON_CONFIG), FUNDING_TO_DEFAULT_LABEL = (_defineProperty(_FUNDING_TO_DEFAULT_L = {}, constants.t.PAYPAL, constants.f.PAYPAL), 
-        _defineProperty(_FUNDING_TO_DEFAULT_L, constants.t.VENMO, constants.f.VENMO), _defineProperty(_FUNDING_TO_DEFAULT_L, constants.t.CARD, constants.f.CARD), 
-        _defineProperty(_FUNDING_TO_DEFAULT_L, constants.t.CREDIT, constants.f.CREDIT), 
-        _defineProperty(_FUNDING_TO_DEFAULT_L, constants.t.IDEAL, constants.f.IDEAL), _defineProperty(_FUNDING_TO_DEFAULT_L, constants.t.ELV, constants.f.ELV), 
-        _defineProperty(_FUNDING_TO_DEFAULT_L, constants.t.BANCONTACT, constants.f.BANCONTACT), 
-        _defineProperty(_FUNDING_TO_DEFAULT_L, constants.t.GIROPAY, constants.f.GIROPAY), 
-        _defineProperty(_FUNDING_TO_DEFAULT_L, constants.t.EPS, constants.f.EPS), _defineProperty(_FUNDING_TO_DEFAULT_L, constants.t.MYBANK, constants.f.MYBANK), 
-        _FUNDING_TO_DEFAULT_L), LABEL_TO_FUNDING = (_defineProperty(_LABEL_TO_FUNDING = {}, constants.f.PAYPAL, constants.t.PAYPAL), 
-        _defineProperty(_LABEL_TO_FUNDING, constants.f.CHECKOUT, constants.t.PAYPAL), _defineProperty(_LABEL_TO_FUNDING, constants.f.PAY, constants.t.PAYPAL), 
-        _defineProperty(_LABEL_TO_FUNDING, constants.f.BUYNOW, constants.t.PAYPAL), _defineProperty(_LABEL_TO_FUNDING, constants.f.INSTALLMENT, constants.t.PAYPAL), 
-        _defineProperty(_LABEL_TO_FUNDING, constants.f.CARD, constants.t.CARD), _defineProperty(_LABEL_TO_FUNDING, constants.f.CREDIT, constants.t.CREDIT), 
-        _defineProperty(_LABEL_TO_FUNDING, constants.f.VENMO, constants.t.VENMO), _defineProperty(_LABEL_TO_FUNDING, constants.f.IDEAL, constants.t.IDEAL), 
-        _defineProperty(_LABEL_TO_FUNDING, constants.f.BANCONTACT, constants.t.BANCONTACT), 
-        _defineProperty(_LABEL_TO_FUNDING, constants.f.GIROPAY, constants.t.GIROPAY), _defineProperty(_LABEL_TO_FUNDING, constants.f.GIROPAY, constants.t.EPS), 
-        _defineProperty(_LABEL_TO_FUNDING, constants.f.MYBANK, constants.t.MYBANK), _LABEL_TO_FUNDING), BUTTON_RELATIVE_STYLE = {
+        }, _BUTTON_CONFIG[constants.f.CARD] = {
+            label: "{ cards }",
+            logoLabel: "{ cards }",
+            defaultColor: constants.e.SILVER,
+            colors: [ constants.e.TRANSPARENT ],
+            logoColors: (_logoColors11 = {}, _logoColors11[constants.e.TRANSPARENT] = constants.i.BLACK, 
+            _logoColors11),
+            secondaryColors: (_secondaryColors11 = {}, _secondaryColors11[constants.e.GOLD] = constants.e.TRANSPARENT, 
+            _secondaryColors11[constants.e.BLUE] = constants.e.TRANSPARENT, _secondaryColors11[constants.e.SILVER] = constants.e.TRANSPARENT, 
+            _secondaryColors11[constants.e.BLACK] = constants.e.TRANSPARENT, _secondaryColors11[constants.e.DARKBLUE] = constants.e.TRANSPARENT, 
+            _secondaryColors11),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG), FUNDING_TO_DEFAULT_LABEL = ((_FUNDING_TO_DEFAULT_L = {})[constants.t.PAYPAL] = constants.f.PAYPAL, 
+        _FUNDING_TO_DEFAULT_L[constants.t.VENMO] = constants.f.VENMO, _FUNDING_TO_DEFAULT_L[constants.t.CARD] = constants.f.CARD, 
+        _FUNDING_TO_DEFAULT_L[constants.t.CREDIT] = constants.f.CREDIT, _FUNDING_TO_DEFAULT_L[constants.t.IDEAL] = constants.f.IDEAL, 
+        _FUNDING_TO_DEFAULT_L[constants.t.ELV] = constants.f.ELV, _FUNDING_TO_DEFAULT_L[constants.t.BANCONTACT] = constants.f.BANCONTACT, 
+        _FUNDING_TO_DEFAULT_L[constants.t.GIROPAY] = constants.f.GIROPAY, _FUNDING_TO_DEFAULT_L[constants.t.SOFORT] = constants.f.SOFORT, 
+        _FUNDING_TO_DEFAULT_L[constants.t.EPS] = constants.f.EPS, _FUNDING_TO_DEFAULT_L[constants.t.MYBANK] = constants.f.MYBANK, 
+        _FUNDING_TO_DEFAULT_L), LABEL_TO_FUNDING = ((_LABEL_TO_FUNDING = {})[constants.f.PAYPAL] = constants.t.PAYPAL, 
+        _LABEL_TO_FUNDING[constants.f.CHECKOUT] = constants.t.PAYPAL, _LABEL_TO_FUNDING[constants.f.PAY] = constants.t.PAYPAL, 
+        _LABEL_TO_FUNDING[constants.f.BUYNOW] = constants.t.PAYPAL, _LABEL_TO_FUNDING[constants.f.INSTALLMENT] = constants.t.PAYPAL, 
+        _LABEL_TO_FUNDING[constants.f.CARD] = constants.t.CARD, _LABEL_TO_FUNDING[constants.f.CREDIT] = constants.t.CREDIT, 
+        _LABEL_TO_FUNDING[constants.f.VENMO] = constants.t.VENMO, _LABEL_TO_FUNDING[constants.f.IDEAL] = constants.t.IDEAL, 
+        _LABEL_TO_FUNDING[constants.f.BANCONTACT] = constants.t.BANCONTACT, _LABEL_TO_FUNDING[constants.f.GIROPAY] = constants.t.GIROPAY, 
+        _LABEL_TO_FUNDING[constants.f.GIROPAY] = constants.t.EPS, _LABEL_TO_FUNDING[constants.f.SOFORT] = constants.t.SOFORT, 
+        _LABEL_TO_FUNDING[constants.f.MYBANK] = constants.t.MYBANK, _LABEL_TO_FUNDING), BUTTON_RELATIVE_STYLE = {
             FUNDINGICONS: 100,
             TAGLINE: 50,
             VERTICAL_MARGIN: 30
-        }, BUTTON_STYLE = (_defineProperty(_BUTTON_STYLE = {}, constants.l.TINY, {
+        }, BUTTON_STYLE = ((_BUTTON_STYLE = {})[constants.l.TINY] = {
             defaultWidth: 75,
             defaultHeight: 25,
             minWidth: 75,
@@ -1172,7 +1117,7 @@
             maxHeight: 30,
             allowFunding: !0,
             allowTagline: !1
-        }), _defineProperty(_BUTTON_STYLE, constants.l.SMALL, {
+        }, _BUTTON_STYLE[constants.l.SMALL] = {
             defaultWidth: 150,
             defaultHeight: 25,
             minWidth: 150,
@@ -1181,7 +1126,7 @@
             maxHeight: 55,
             allowFunding: !0,
             allowTagline: !0
-        }), _defineProperty(_BUTTON_STYLE, constants.l.MEDIUM, {
+        }, _BUTTON_STYLE[constants.l.MEDIUM] = {
             defaultWidth: 250,
             defaultHeight: 35,
             minWidth: 200,
@@ -1190,7 +1135,7 @@
             maxHeight: 55,
             allowFunding: !0,
             allowTagline: !0
-        }), _defineProperty(_BUTTON_STYLE, constants.l.LARGE, {
+        }, _BUTTON_STYLE[constants.l.LARGE] = {
             defaultWidth: 350,
             defaultHeight: 45,
             minWidth: 300,
@@ -1199,7 +1144,7 @@
             maxHeight: 55,
             allowFunding: !0,
             allowTagline: !0
-        }), _defineProperty(_BUTTON_STYLE, constants.l.HUGE, {
+        }, _BUTTON_STYLE[constants.l.HUGE] = {
             defaultWidth: 500,
             defaultHeight: 55,
             minWidth: 500,
@@ -1208,7 +1153,7 @@
             maxHeight: 55,
             allowFunding: !0,
             allowTagline: !0
-        }), _BUTTON_STYLE);
+        }, _BUTTON_STYLE);
         function getButtonConfig(label, key, def) {
             return function(conf, category, key, def) {
                 var categoryConfig = conf[category];
@@ -1218,16 +1163,7 @@
                 throw new Error("No value found for " + category + ":" + key);
             }(BUTTON_CONFIG, label, key, def);
         }
-        function config__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var FUNDING_PRIORITY = [ constants.t.PAYPAL, constants.t.VENMO, constants.t.CREDIT, constants.t.IDEAL, constants.t.ELV, constants.t.BANCONTACT, constants.t.GIROPAY, constants.t.EPS, constants.t.MYBANK, constants.t.CARD ], FUNDING_CONFIG = (config__defineProperty(_FUNDING_CONFIG = {}, constants.r, {
+        var FUNDING_PRIORITY = [ constants.t.PAYPAL, constants.t.VENMO, constants.t.CREDIT, constants.t.IDEAL, constants.t.ELV, constants.t.BANCONTACT, constants.t.GIROPAY, constants.t.SOFORT, constants.t.EPS, constants.t.MYBANK, constants.t.CARD ], FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[constants.r] = {
             enabled: !0,
             allowOptIn: !0,
             allowOptOut: !0,
@@ -1235,66 +1171,71 @@
             allowHorizontal: !0,
             allowVertical: !0,
             requireCommitAsTrue: !1
-        }), config__defineProperty(_FUNDING_CONFIG, constants.t.PAYPAL, {
+        }, _FUNDING_CONFIG[constants.t.PAYPAL] = {
             default: !0,
             allowOptIn: !1,
             allowOptOut: !1,
             allowHorizontal: !0,
             allowVertical: !0
-        }), config__defineProperty(_FUNDING_CONFIG, constants.t.CARD, {
+        }, _FUNDING_CONFIG[constants.t.CARD] = {
             default: !0,
             allowHorizontal: !1,
             allowVertical: !0
-        }), config__defineProperty(_FUNDING_CONFIG, constants.t.VENMO, {
+        }, _FUNDING_CONFIG[constants.t.VENMO] = {
             allowOptOut: !1,
             allowedCountries: [ constants.q.US ],
             allowHorizontal: !0,
             allowVertical: !0
-        }), config__defineProperty(_FUNDING_CONFIG, constants.t.CREDIT, {
+        }, _FUNDING_CONFIG[constants.t.CREDIT] = {
             allowedCountries: [ constants.q.US, constants.q.GB, constants.q.DE ],
             defaultVerticalCountries: [ constants.q.US ],
             platforms: [ constants.w.MOBILE ],
             allowHorizontal: !0,
             allowVertical: !0
-        }), config__defineProperty(_FUNDING_CONFIG, constants.t.IDEAL, {
+        }, _FUNDING_CONFIG[constants.t.IDEAL] = {
             allowedCountries: [ constants.q.NL ],
             allowHorizontal: !0,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }), config__defineProperty(_FUNDING_CONFIG, constants.t.ELV, {
+        }, _FUNDING_CONFIG[constants.t.ELV] = {
             allowedCountries: [ constants.q.DE, constants.q.AT ],
             defaultVerticalCountries: [ constants.q.DE, constants.q.AT ],
             allowHorizontal: !0,
             allowVertical: !0
-        }), config__defineProperty(_FUNDING_CONFIG, constants.t.BANCONTACT, {
+        }, _FUNDING_CONFIG[constants.t.BANCONTACT] = {
             allowedCountries: [ constants.q.BE ],
             allowHorizontal: !0,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }), config__defineProperty(_FUNDING_CONFIG, constants.t.GIROPAY, {
+        }, _FUNDING_CONFIG[constants.t.GIROPAY] = {
             allowedCountries: [ constants.q.DE ],
             allowHorizontal: !0,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }), config__defineProperty(_FUNDING_CONFIG, constants.t.EPS, {
+        }, _FUNDING_CONFIG[constants.t.SOFORT] = {
+            allowedCountries: [ constants.q.DE ],
+            allowHorizontal: !0,
+            allowVertical: !0,
+            requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG[constants.t.EPS] = {
             allowedCountries: [ constants.q.AT ],
             allowHorizontal: !0,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }), config__defineProperty(_FUNDING_CONFIG, constants.t.MYBANK, {
+        }, _FUNDING_CONFIG[constants.t.MYBANK] = {
             allowedCountries: [ constants.q.IT ],
             allowHorizontal: !0,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }), _FUNDING_CONFIG), CARD_CONFIG = (config__defineProperty(_CARD_CONFIG = {}, constants.r, {
+        }, _FUNDING_CONFIG), CARD_CONFIG = ((_CARD_CONFIG = {})[constants.r] = {
             priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX ]
-        }), config__defineProperty(_CARD_CONFIG, constants.q.US, {
+        }, _CARD_CONFIG[constants.q.US] = {
             priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX, constants.o.DISCOVER ]
-        }), config__defineProperty(_CARD_CONFIG, constants.q.BR, {
+        }, _CARD_CONFIG[constants.q.BR] = {
             priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX, constants.o.HIPER, constants.o.ELO ]
-        }), config__defineProperty(_CARD_CONFIG, constants.q.JP, {
+        }, _CARD_CONFIG[constants.q.JP] = {
             priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX, constants.o.JCB ]
-        }), _CARD_CONFIG);
+        }, _CARD_CONFIG);
         function config_getConfig(conf, category, key, def) {
             var categoryConfig = conf[category];
             if (categoryConfig && categoryConfig.hasOwnProperty(key)) return categoryConfig[key];
@@ -1351,37 +1292,13 @@
                 return -1 === funding.disallowed.indexOf(card);
             });
         }
-        var util = __webpack_require__("./src/lib/util.js"), _slicedToArray = function() {
-            return function(arr, i) {
-                if (Array.isArray(arr)) return arr;
-                if (Symbol.iterator in Object(arr)) return function(arr, i) {
-                    var _arr = [], _n = !0, _d = !1, _e = void 0;
-                    try {
-                        for (var _s, _i = arr[Symbol.iterator](); !(_n = (_s = _i.next()).done); _n = !0) {
-                            _arr.push(_s.value);
-                            if (i && _arr.length === i) break;
-                        }
-                    } catch (err) {
-                        _d = !0;
-                        _e = err;
-                    } finally {
-                        try {
-                            !_n && _i.return && _i.return();
-                        } finally {
-                            if (_d) throw _e;
-                        }
-                    }
-                    return _arr;
-                }(arr, i);
-                throw new TypeError("Invalid attempt to destructure non-iterable instance");
-            };
-        }();
+        var util = __webpack_require__("./src/lib/util.js");
         var normalizeProps = Object(util.b)(function(props) {
             var defs = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit;
             locale = locale ? function(locale) {
-                var _locale$split = locale.split("_"), _locale$split2 = _slicedToArray(_locale$split, 2), lang = _locale$split2[0];
+                var _locale$split = locale.split("_"), lang = _locale$split[0];
                 return {
-                    country: _locale$split2[1],
+                    country: _locale$split[1],
                     lang: lang
                 };
             }(locale) : defs.locale || getButtonConfig("DEFAULT", "defaultLocale");
@@ -1465,22 +1382,7 @@
                 }),
                 installmentperiod: installmentperiod
             };
-        }), _createClass = function() {
-            function defineProperties(target, props) {
-                for (var i = 0; i < props.length; i++) {
-                    var descriptor = props[i];
-                    descriptor.enumerable = descriptor.enumerable || !1;
-                    descriptor.configurable = !0;
-                    "value" in descriptor && (descriptor.writable = !0);
-                    Object.defineProperty(target, descriptor.key, descriptor);
-                }
-            }
-            return function(Constructor, protoProps, staticProps) {
-                protoProps && defineProperties(Constructor.prototype, protoProps);
-                staticProps && defineProperties(Constructor, staticProps);
-                return Constructor;
-            };
-        }();
+        });
         function _classCallCheck(instance, Constructor) {
             if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
         }
@@ -1494,45 +1396,38 @@
                 this.props = props;
                 this.children = children;
             }
-            _createClass(JsxHTMLNode, [ {
-                key: "toString",
-                value: function() {
-                    return "<" + this.name + (this.props ? " " : "") + (this.props ? this.propsToString() : "") + ">" + this.childrenToString() + "</" + this.name + ">";
-                }
-            }, {
-                key: "propsToString",
-                value: function() {
-                    var props = this.props;
-                    return props ? Object.keys(props).filter(function(key) {
-                        return "innerHTML" !== key && props && !1 !== props[key];
-                    }).map(function(key) {
-                        return props && !0 === props[key] ? "" + htmlEncode(key) : props ? htmlEncode(key) + '="' + htmlEncode(props[key]) + '"' : "";
-                    }).join(" ") : "";
-                }
-            }, {
-                key: "childrenToString",
-                value: function() {
-                    if (this.props && this.props.innerHTML) return this.props.innerHTML;
-                    if (!this.children) return "";
-                    var result = "";
-                    !function iterate(children) {
-                        var _iterator = children, _isArray = Array.isArray(_iterator), _i = 0;
-                        for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                            var _ref;
-                            if (_isArray) {
-                                if (_i >= _iterator.length) break;
-                                _ref = _iterator[_i++];
-                            } else {
-                                if ((_i = _iterator.next()).done) break;
-                                _ref = _i.value;
-                            }
-                            var child = _ref;
-                            null !== child && void 0 !== child && (Array.isArray(child) ? iterate(child) : result += child instanceof JsxHTMLNode ? child.toString() : htmlEncode(child));
+            JsxHTMLNode.prototype.toString = function() {
+                return "<" + this.name + (this.props ? " " : "") + (this.props ? this.propsToString() : "") + ">" + this.childrenToString() + "</" + this.name + ">";
+            };
+            JsxHTMLNode.prototype.propsToString = function() {
+                var props = this.props;
+                return props ? Object.keys(props).filter(function(key) {
+                    return "innerHTML" !== key && props && !1 !== props[key];
+                }).map(function(key) {
+                    return props && !0 === props[key] ? "" + htmlEncode(key) : props ? htmlEncode(key) + '="' + htmlEncode(props[key]) + '"' : "";
+                }).join(" ") : "";
+            };
+            JsxHTMLNode.prototype.childrenToString = function() {
+                if (this.props && this.props.innerHTML) return this.props.innerHTML;
+                if (!this.children) return "";
+                var result = "";
+                !function iterate(children) {
+                    var _iterator = children, _isArray = Array.isArray(_iterator), _i = 0;
+                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                        var _ref;
+                        if (_isArray) {
+                            if (_i >= _iterator.length) break;
+                            _ref = _iterator[_i++];
+                        } else {
+                            if ((_i = _iterator.next()).done) break;
+                            _ref = _i.value;
                         }
-                    }(this.children);
-                    return result;
-                }
-            } ]);
+                        var child = _ref;
+                        null !== child && void 0 !== child && (Array.isArray(child) ? iterate(child) : result += child instanceof JsxHTMLNode ? child.toString() : htmlEncode(child));
+                    }
+                }(this.children);
+                return result;
+            };
             return JsxHTMLNode;
         }(), JsxHTMLNodeContainer = function(_JsxHTMLNode) {
             !function(subClass, superClass) {
@@ -1546,95 +1441,46 @@
                     }
                 });
                 superClass && (Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass);
-            }(JsxHTMLNodeContainer, JsxHTMLNode);
+            }(JsxHTMLNodeContainer, _JsxHTMLNode);
             function JsxHTMLNodeContainer(children) {
                 _classCallCheck(this, JsxHTMLNodeContainer);
                 return function(self, call) {
                     if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
                     return !call || "object" != typeof call && "function" != typeof call ? self : call;
-                }(this, (JsxHTMLNodeContainer.__proto__ || Object.getPrototypeOf(JsxHTMLNodeContainer)).call(this, "", {}, children));
+                }(this, _JsxHTMLNode.call(this, "", {}, children));
             }
-            _createClass(JsxHTMLNodeContainer, [ {
-                key: "toString",
-                value: function() {
-                    return this.childrenToString();
-                }
-            } ]);
+            JsxHTMLNodeContainer.prototype.toString = function() {
+                return this.childrenToString();
+            };
             return JsxHTMLNodeContainer;
-        }();
+        }(JsxHTMLNode);
         function jsxToHTML(name, props) {
             for (var _len = arguments.length, children = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) children[_key - 2] = arguments[_key];
             return new JsxHTMLNode(name, props, children);
         }
-        var _BUTTON_LOGO$PP, _BUTTON_LOGO$PAYPAL, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$ELV, _BUTTON_LOGO$BANCONTA, _BUTTON_LOGO$GIROPAY, _BUTTON_LOGO$EPS, _BUTTON_LOGO$MYBANK, _fundingLogos, pp_white = __webpack_require__("./src/resources/fundingLogos/pp_white.svg"), pp_white_default = __webpack_require__.n(pp_white), pp_blue = __webpack_require__("./src/resources/fundingLogos/pp_blue.svg"), pp_blue_default = __webpack_require__.n(pp_blue), pp_black = __webpack_require__("./src/resources/fundingLogos/pp_black.svg"), pp_black_default = __webpack_require__.n(pp_black), paypal_white = __webpack_require__("./src/resources/fundingLogos/paypal_white.svg"), paypal_white_default = __webpack_require__.n(paypal_white), paypal_blue = __webpack_require__("./src/resources/fundingLogos/paypal_blue.svg"), paypal_blue_default = __webpack_require__.n(paypal_blue), paypal_black = __webpack_require__("./src/resources/fundingLogos/paypal_black.svg"), paypal_black_default = __webpack_require__.n(paypal_black), credit_white = __webpack_require__("./src/resources/fundingLogos/credit_white.svg"), credit_white_default = __webpack_require__.n(credit_white), venmo_white = __webpack_require__("./src/resources/fundingLogos/venmo_white.svg"), venmo_white_default = __webpack_require__.n(venmo_white), venmo_blue = __webpack_require__("./src/resources/fundingLogos/venmo_blue.svg"), venmo_blue_default = __webpack_require__.n(venmo_blue), ideal = __webpack_require__("./src/resources/fundingLogos/ideal.svg"), ideal_default = __webpack_require__.n(ideal), elv = __webpack_require__("./src/resources/fundingLogos/elv.svg"), elv_default = __webpack_require__.n(elv), elv_white = __webpack_require__("./src/resources/fundingLogos/elv_white.svg"), elv_white_default = __webpack_require__.n(elv_white), bancontact = __webpack_require__("./src/resources/fundingLogos/bancontact.svg"), bancontact_default = __webpack_require__.n(bancontact), bancontact_white = __webpack_require__("./src/resources/fundingLogos/bancontact_white.svg"), bancontact_white_default = __webpack_require__.n(bancontact_white), giropay = __webpack_require__("./src/resources/fundingLogos/giropay.svg"), giropay_default = __webpack_require__.n(giropay), giropay_white = __webpack_require__("./src/resources/fundingLogos/giropay_white.svg"), giropay_white_default = __webpack_require__.n(giropay_white), eps = __webpack_require__("./src/resources/fundingLogos/eps.svg"), eps_default = __webpack_require__.n(eps), eps_white = __webpack_require__("./src/resources/fundingLogos/eps_white.svg"), eps_white_default = __webpack_require__.n(eps_white), mybank = __webpack_require__("./src/resources/fundingLogos/mybank.svg"), mybank_default = __webpack_require__.n(mybank), mybank_white = __webpack_require__("./src/resources/fundingLogos/mybank_white.svg"), mybank_white_default = __webpack_require__.n(mybank_white);
-        function fundingLogos__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var _cardLogos, fundingLogos = (fundingLogos__defineProperty(_fundingLogos = {}, constants.h.PP, (fundingLogos__defineProperty(_BUTTON_LOGO$PP = {}, constants.i.WHITE, pp_white_default.a), 
-        fundingLogos__defineProperty(_BUTTON_LOGO$PP, constants.i.BLUE, pp_blue_default.a), 
-        fundingLogos__defineProperty(_BUTTON_LOGO$PP, constants.i.BLACK, pp_black_default.a), 
-        _BUTTON_LOGO$PP)), fundingLogos__defineProperty(_fundingLogos, constants.h.PAYPAL, (fundingLogos__defineProperty(_BUTTON_LOGO$PAYPAL = {}, constants.i.WHITE, paypal_white_default.a), 
-        fundingLogos__defineProperty(_BUTTON_LOGO$PAYPAL, constants.i.BLUE, paypal_blue_default.a), 
-        fundingLogos__defineProperty(_BUTTON_LOGO$PAYPAL, constants.i.BLACK, paypal_black_default.a), 
-        _BUTTON_LOGO$PAYPAL)), fundingLogos__defineProperty(_fundingLogos, constants.h.CREDIT, fundingLogos__defineProperty({}, constants.i.WHITE, credit_white_default.a)), 
-        fundingLogos__defineProperty(_fundingLogos, constants.h.VENMO, (fundingLogos__defineProperty(_BUTTON_LOGO$VENMO = {}, constants.i.WHITE, venmo_white_default.a), 
-        fundingLogos__defineProperty(_BUTTON_LOGO$VENMO, constants.i.BLUE, venmo_blue_default.a), 
-        _BUTTON_LOGO$VENMO)), fundingLogos__defineProperty(_fundingLogos, constants.h.IDEAL, fundingLogos__defineProperty({}, constants.i.ANY, ideal_default.a)), 
-        fundingLogos__defineProperty(_fundingLogos, constants.h.ELV, (fundingLogos__defineProperty(_BUTTON_LOGO$ELV = {}, constants.i.ANY, elv_default.a), 
-        fundingLogos__defineProperty(_BUTTON_LOGO$ELV, constants.i.WHITE, elv_white_default.a), 
-        _BUTTON_LOGO$ELV)), fundingLogos__defineProperty(_fundingLogos, constants.h.BANCONTACT, (fundingLogos__defineProperty(_BUTTON_LOGO$BANCONTA = {}, constants.i.ANY, bancontact_default.a), 
-        fundingLogos__defineProperty(_BUTTON_LOGO$BANCONTA, constants.i.WHITE, bancontact_white_default.a), 
-        _BUTTON_LOGO$BANCONTA)), fundingLogos__defineProperty(_fundingLogos, constants.h.GIROPAY, (fundingLogos__defineProperty(_BUTTON_LOGO$GIROPAY = {}, constants.i.ANY, giropay_default.a), 
-        fundingLogos__defineProperty(_BUTTON_LOGO$GIROPAY, constants.i.WHITE, giropay_white_default.a), 
-        _BUTTON_LOGO$GIROPAY)), fundingLogos__defineProperty(_fundingLogos, constants.h.EPS, (fundingLogos__defineProperty(_BUTTON_LOGO$EPS = {}, constants.i.ANY, eps_default.a), 
-        fundingLogos__defineProperty(_BUTTON_LOGO$EPS, constants.i.WHITE, eps_white_default.a), 
-        _BUTTON_LOGO$EPS)), fundingLogos__defineProperty(_fundingLogos, constants.h.MYBANK, (fundingLogos__defineProperty(_BUTTON_LOGO$MYBANK = {}, constants.i.ANY, mybank_default.a), 
-        fundingLogos__defineProperty(_BUTTON_LOGO$MYBANK, constants.i.WHITE, mybank_white_default.a), 
-        _BUTTON_LOGO$MYBANK)), _fundingLogos), visa = __webpack_require__("./src/resources/cardLogos/visa.svg"), visa_default = __webpack_require__.n(visa), amex = __webpack_require__("./src/resources/cardLogos/amex.svg"), amex_default = __webpack_require__.n(amex), mastercard = __webpack_require__("./src/resources/cardLogos/mastercard.svg"), mastercard_default = __webpack_require__.n(mastercard), discover = __webpack_require__("./src/resources/cardLogos/discover.svg"), discover_default = __webpack_require__.n(discover), hiper = __webpack_require__("./src/resources/cardLogos/hiper.svg"), hiper_default = __webpack_require__.n(hiper), elo = __webpack_require__("./src/resources/cardLogos/elo.svg"), elo_default = __webpack_require__.n(elo), jcb = __webpack_require__("./src/resources/cardLogos/jcb.svg"), jcb_default = __webpack_require__.n(jcb);
-        function cardLogos__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var cardLogos = (cardLogos__defineProperty(_cardLogos = {}, constants.o.VISA, visa_default.a), 
-        cardLogos__defineProperty(_cardLogos, constants.o.AMEX, amex_default.a), cardLogos__defineProperty(_cardLogos, constants.o.MASTERCARD, mastercard_default.a), 
-        cardLogos__defineProperty(_cardLogos, constants.o.DISCOVER, discover_default.a), 
-        cardLogos__defineProperty(_cardLogos, constants.o.HIPER, hiper_default.a), cardLogos__defineProperty(_cardLogos, constants.o.ELO, elo_default.a), 
-        cardLogos__defineProperty(_cardLogos, constants.o.JCB, jcb_default.a), _cardLogos), config = __webpack_require__("./src/config/index.js"), validate__slicedToArray = function() {
-            return function(arr, i) {
-                if (Array.isArray(arr)) return arr;
-                if (Symbol.iterator in Object(arr)) return function(arr, i) {
-                    var _arr = [], _n = !0, _d = !1, _e = void 0;
-                    try {
-                        for (var _s, _i = arr[Symbol.iterator](); !(_n = (_s = _i.next()).done); _n = !0) {
-                            _arr.push(_s.value);
-                            if (i && _arr.length === i) break;
-                        }
-                    } catch (err) {
-                        _d = !0;
-                        _e = err;
-                    } finally {
-                        try {
-                            !_n && _i.return && _i.return();
-                        } finally {
-                            if (_d) throw _e;
-                        }
-                    }
-                    return _arr;
-                }(arr, i);
-                throw new TypeError("Invalid attempt to destructure non-iterable instance");
-            };
-        }();
+        var _BUTTON_LOGO$PP, _BUTTON_LOGO$PAYPAL, _BUTTON_LOGO$CREDIT, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$IDEAL, _BUTTON_LOGO$ELV, _BUTTON_LOGO$BANCONTA, _BUTTON_LOGO$GIROPAY, _BUTTON_LOGO$SOFORT, _BUTTON_LOGO$EPS, _BUTTON_LOGO$MYBANK, _fundingLogos, _cardLogos, pp_white = __webpack_require__("./src/resources/fundingLogos/pp_white.svg"), pp_white_default = __webpack_require__.n(pp_white), pp_blue = __webpack_require__("./src/resources/fundingLogos/pp_blue.svg"), pp_blue_default = __webpack_require__.n(pp_blue), pp_black = __webpack_require__("./src/resources/fundingLogos/pp_black.svg"), pp_black_default = __webpack_require__.n(pp_black), paypal_white = __webpack_require__("./src/resources/fundingLogos/paypal_white.svg"), paypal_white_default = __webpack_require__.n(paypal_white), paypal_blue = __webpack_require__("./src/resources/fundingLogos/paypal_blue.svg"), paypal_blue_default = __webpack_require__.n(paypal_blue), paypal_black = __webpack_require__("./src/resources/fundingLogos/paypal_black.svg"), paypal_black_default = __webpack_require__.n(paypal_black), credit_white = __webpack_require__("./src/resources/fundingLogos/credit_white.svg"), credit_white_default = __webpack_require__.n(credit_white), venmo_white = __webpack_require__("./src/resources/fundingLogos/venmo_white.svg"), venmo_white_default = __webpack_require__.n(venmo_white), venmo_blue = __webpack_require__("./src/resources/fundingLogos/venmo_blue.svg"), venmo_blue_default = __webpack_require__.n(venmo_blue), ideal = __webpack_require__("./src/resources/fundingLogos/ideal.svg"), ideal_default = __webpack_require__.n(ideal), elv = __webpack_require__("./src/resources/fundingLogos/elv.svg"), elv_default = __webpack_require__.n(elv), elv_white = __webpack_require__("./src/resources/fundingLogos/elv_white.svg"), elv_white_default = __webpack_require__.n(elv_white), bancontact = __webpack_require__("./src/resources/fundingLogos/bancontact.svg"), bancontact_default = __webpack_require__.n(bancontact), bancontact_white = __webpack_require__("./src/resources/fundingLogos/bancontact_white.svg"), bancontact_white_default = __webpack_require__.n(bancontact_white), giropay = __webpack_require__("./src/resources/fundingLogos/giropay.svg"), giropay_default = __webpack_require__.n(giropay), giropay_white = __webpack_require__("./src/resources/fundingLogos/giropay_white.svg"), giropay_white_default = __webpack_require__.n(giropay_white), eps = __webpack_require__("./src/resources/fundingLogos/eps.svg"), eps_default = __webpack_require__.n(eps), eps_white = __webpack_require__("./src/resources/fundingLogos/eps_white.svg"), eps_white_default = __webpack_require__.n(eps_white), mybank = __webpack_require__("./src/resources/fundingLogos/mybank.svg"), mybank_default = __webpack_require__.n(mybank), mybank_white = __webpack_require__("./src/resources/fundingLogos/mybank_white.svg"), mybank_white_default = __webpack_require__.n(mybank_white), sofort = __webpack_require__("./src/resources/fundingLogos/sofort.svg"), sofort_default = __webpack_require__.n(sofort), sofort_white = __webpack_require__("./src/resources/fundingLogos/sofort_white.svg"), sofort_white_default = __webpack_require__.n(sofort_white), fundingLogos = ((_fundingLogos = {})[constants.h.PP] = ((_BUTTON_LOGO$PP = {})[constants.i.WHITE] = pp_white_default.a, 
+        _BUTTON_LOGO$PP[constants.i.BLUE] = pp_blue_default.a, _BUTTON_LOGO$PP[constants.i.BLACK] = pp_black_default.a, 
+        _BUTTON_LOGO$PP), _fundingLogos[constants.h.PAYPAL] = ((_BUTTON_LOGO$PAYPAL = {})[constants.i.WHITE] = paypal_white_default.a, 
+        _BUTTON_LOGO$PAYPAL[constants.i.BLUE] = paypal_blue_default.a, _BUTTON_LOGO$PAYPAL[constants.i.BLACK] = paypal_black_default.a, 
+        _BUTTON_LOGO$PAYPAL), _fundingLogos[constants.h.CREDIT] = ((_BUTTON_LOGO$CREDIT = {})[constants.i.WHITE] = credit_white_default.a, 
+        _BUTTON_LOGO$CREDIT), _fundingLogos[constants.h.VENMO] = ((_BUTTON_LOGO$VENMO = {})[constants.i.WHITE] = venmo_white_default.a, 
+        _BUTTON_LOGO$VENMO[constants.i.BLUE] = venmo_blue_default.a, _BUTTON_LOGO$VENMO), 
+        _fundingLogos[constants.h.IDEAL] = ((_BUTTON_LOGO$IDEAL = {})[constants.i.ANY] = ideal_default.a, 
+        _BUTTON_LOGO$IDEAL), _fundingLogos[constants.h.ELV] = ((_BUTTON_LOGO$ELV = {})[constants.i.ANY] = elv_default.a, 
+        _BUTTON_LOGO$ELV[constants.i.WHITE] = elv_white_default.a, _BUTTON_LOGO$ELV), _fundingLogos[constants.h.BANCONTACT] = ((_BUTTON_LOGO$BANCONTA = {})[constants.i.ANY] = bancontact_default.a, 
+        _BUTTON_LOGO$BANCONTA[constants.i.WHITE] = bancontact_white_default.a, _BUTTON_LOGO$BANCONTA), 
+        _fundingLogos[constants.h.GIROPAY] = ((_BUTTON_LOGO$GIROPAY = {})[constants.i.ANY] = giropay_default.a, 
+        _BUTTON_LOGO$GIROPAY[constants.i.WHITE] = giropay_white_default.a, _BUTTON_LOGO$GIROPAY), 
+        _fundingLogos[constants.h.SOFORT] = ((_BUTTON_LOGO$SOFORT = {})[constants.i.ANY] = sofort_default.a, 
+        _BUTTON_LOGO$SOFORT[constants.i.WHITE] = sofort_white_default.a, _BUTTON_LOGO$SOFORT), 
+        _fundingLogos[constants.h.EPS] = ((_BUTTON_LOGO$EPS = {})[constants.i.ANY] = eps_default.a, 
+        _BUTTON_LOGO$EPS[constants.i.WHITE] = eps_white_default.a, _BUTTON_LOGO$EPS), _fundingLogos[constants.h.MYBANK] = ((_BUTTON_LOGO$MYBANK = {})[constants.i.ANY] = mybank_default.a, 
+        _BUTTON_LOGO$MYBANK[constants.i.WHITE] = mybank_white_default.a, _BUTTON_LOGO$MYBANK), 
+        _fundingLogos), visa = __webpack_require__("./src/resources/cardLogos/visa.svg"), visa_default = __webpack_require__.n(visa), amex = __webpack_require__("./src/resources/cardLogos/amex.svg"), amex_default = __webpack_require__.n(amex), mastercard = __webpack_require__("./src/resources/cardLogos/mastercard.svg"), mastercard_default = __webpack_require__.n(mastercard), discover = __webpack_require__("./src/resources/cardLogos/discover.svg"), discover_default = __webpack_require__.n(discover), hiper = __webpack_require__("./src/resources/cardLogos/hiper.svg"), hiper_default = __webpack_require__.n(hiper), elo = __webpack_require__("./src/resources/cardLogos/elo.svg"), elo_default = __webpack_require__.n(elo), jcb = __webpack_require__("./src/resources/cardLogos/jcb.svg"), jcb_default = __webpack_require__.n(jcb), cardLogos = ((_cardLogos = {})[constants.o.VISA] = visa_default.a, 
+        _cardLogos[constants.o.AMEX] = amex_default.a, _cardLogos[constants.o.MASTERCARD] = mastercard_default.a, 
+        _cardLogos[constants.o.DISCOVER] = discover_default.a, _cardLogos[constants.o.HIPER] = hiper_default.a, 
+        _cardLogos[constants.o.ELO] = elo_default.a, _cardLogos[constants.o.JCB] = jcb_default.a, 
+        _cardLogos), config = __webpack_require__("./src/config/index.js");
         function validateButtonStyle() {
             var style = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, props = arguments[1];
             if (!style) throw new Error("Expected props.style to be set");
@@ -1683,7 +1529,7 @@
             !function(locale) {
                 if (!locale) throw new Error("Expected props.locale to be set");
                 if (!locale.match(/^[a-z]{2}[_][A-Z][A-Z0-9]$/)) throw new Error("Expected props.locale to be valid, got " + locale);
-                var _locale$split = locale.split("_"), _locale$split2 = validate__slicedToArray(_locale$split, 2), lang = _locale$split2[0], country = _locale$split2[1];
+                var _locale$split = locale.split("_"), lang = _locale$split[0], country = _locale$split[1];
                 if (!config.a.locales[country] || -1 === config.a.locales[country].indexOf(lang)) throw new Error("Expected props.locale to be valid");
             }(locale);
             validateButtonStyle(style, props);
@@ -1813,7 +1659,7 @@
         }
         var template_content = __webpack_require__("./src/button/template/content.json"), content_default = __webpack_require__.n(template_content), componentContent = "string" == typeof content_default.a ? JSON.parse(content_default.a) : content_default.a;
         __webpack_exports__.componentTemplate = function(_ref13) {
-            var props = _ref13.props;
+            var _ref14, props = _ref13.props;
             if (props && props.style) {
                 var style = props.style;
                 "generic" === style.label && (style.label = "paypal");
@@ -1852,8 +1698,8 @@
                         cards: cards,
                         dynamicContent: dynamicContent
                     });
-                    return jsxToHTML("div", _extends({}, (componentTemplate__defineProperty(_ref10 = {}, constants.c.FUNDING_SOURCE, source), 
-                    componentTemplate__defineProperty(_ref10, constants.c.BUTTON, !0), _ref10), {
+                    return jsxToHTML("div", _extends({}, ((_ref10 = {})[constants.c.FUNDING_SOURCE] = source, 
+                    _ref10[constants.c.BUTTON] = !0, _ref10), {
                         class: CLASS.BUTTON + " " + CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
                             layout: layout,
                             shape: shape,
@@ -1938,7 +1784,8 @@
                 })) + ")();"
             }));
             var script;
-            return jsxToHTML("div", _extends({}, componentTemplate__defineProperty({}, constants.c.VERSION, "4.0.203"), {
+            return jsxToHTML("div", _extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.204", 
+            _ref14), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -1955,15 +1802,6 @@
             }
             return target;
         };
-        function componentTemplate__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
         function getCommonButtonClasses(_ref) {
             var layout = _ref.layout, shape = _ref.shape, branding = _ref.branding, multiple = _ref.multiple, env = _ref.env;
             return [ CLASS.LAYOUT + "-" + layout, CLASS.SHAPE + "-" + shape, CLASS.BRANDING + "-" + (branding ? constants.d.BRANDED : constants.d.UNBRANDED), CLASS.NUMBER + "-" + (multiple ? constants.j.MULTIPLE : constants.j.SINGLE), CLASS.ENV + "-" + env ].join(" ");
@@ -1972,9 +1810,9 @@
             var cards = _ref4.cards, button = _ref4.button;
             return cards.map(function(name) {
                 var _ref5, logo = cardLogos[name];
-                return jsxToHTML("img", _extends({}, (componentTemplate__defineProperty(_ref5 = {}, constants.c.BUTTON, button || !1), 
-                componentTemplate__defineProperty(_ref5, constants.c.FUNDING_SOURCE, "" + constants.t.CARD), 
-                componentTemplate__defineProperty(_ref5, constants.c.CARD, "" + name), _ref5), {
+                return jsxToHTML("img", _extends({}, ((_ref5 = {})[constants.c.BUTTON] = button || !1, 
+                _ref5[constants.c.FUNDING_SOURCE] = "" + constants.t.CARD, _ref5[constants.c.CARD] = "" + name, 
+                _ref5), {
                     class: CLASS.CARD + " " + CLASS.CARD + "-" + name + " " + (button ? CLASS.BUTTON : ""),
                     src: "data:image/svg+xml;base64," + Object(base64.btoa)(logo),
                     alt: name
@@ -2065,20 +1903,10 @@
     },
     "./src/config/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js");
-        function _defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var config = {
+        var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.203",
+            version: "4.0.204",
             cors: !0,
             env: constants.s.PRODUCTION,
             state: "checkoutjs",
@@ -2190,6 +2018,15 @@
                 },
                 "searshomeapplianceshowroom.com": {
                     disable_venmo: !0
+                },
+                "barkshop.com": {
+                    disable_venmo: !0
+                },
+                "vividseats.com": {
+                    disable_venmo: !0
+                },
+                "getcargo.today": {
+                    disable_venmo: !0
                 }
             },
             creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
@@ -2223,89 +2060,81 @@
             },
             get paypalUrls() {
                 var _ref;
-                return _defineProperty(_ref = {}, constants.s.LOCAL, "http://localhost.paypal.com:" + config.ports.default), 
-                _defineProperty(_ref, constants.s.STAGE, "https://www." + config.stageUrl), _defineProperty(_ref, constants.s.SANDBOX, "https://www.sandbox.paypal.com"), 
-                _defineProperty(_ref, constants.s.PRODUCTION, "https://www.paypal.com"), _defineProperty(_ref, constants.s.TEST, window.location.protocol + "//" + window.location.host), 
-                _defineProperty(_ref, constants.s.DEMO, window.location.protocol + "//localhost.paypal.com:" + window.location.port), 
+                return (_ref = {})[constants.s.LOCAL] = "http://localhost.paypal.com:" + config.ports.default, 
+                _ref[constants.s.STAGE] = "https://www." + config.stageUrl, _ref[constants.s.SANDBOX] = "https://www.sandbox.paypal.com", 
+                _ref[constants.s.PRODUCTION] = "https://www.paypal.com", _ref[constants.s.TEST] = window.location.protocol + "//" + window.location.host, 
+                _ref[constants.s.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
                 _ref;
             },
             get paypalDomains() {
                 var _ref2;
-                return _defineProperty(_ref2 = {}, constants.s.LOCAL, "http://localhost.paypal.com:" + config.ports.default), 
-                _defineProperty(_ref2, constants.s.STAGE, "https://www." + config.stageUrl), _defineProperty(_ref2, constants.s.SANDBOX, "https://www.sandbox.paypal.com"), 
-                _defineProperty(_ref2, constants.s.PRODUCTION, "https://www.paypal.com"), _defineProperty(_ref2, constants.s.TEST, "mock://www.paypal.com"), 
-                _defineProperty(_ref2, constants.s.DEMO, window.location.protocol + "//localhost.paypal.com:" + window.location.port), 
+                return (_ref2 = {})[constants.s.LOCAL] = "http://localhost.paypal.com:" + config.ports.default, 
+                _ref2[constants.s.STAGE] = "https://www." + config.stageUrl, _ref2[constants.s.SANDBOX] = "https://www.sandbox.paypal.com", 
+                _ref2[constants.s.PRODUCTION] = "https://www.paypal.com", _ref2[constants.s.TEST] = "mock://www.paypal.com", 
+                _ref2[constants.s.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
                 _ref2;
             },
             get wwwApiUrls() {
                 var _ref3;
-                return _defineProperty(_ref3 = {}, constants.s.LOCAL, "https://www." + config.stageUrl), 
-                _defineProperty(_ref3, constants.s.STAGE, "https://www." + config.stageUrl), _defineProperty(_ref3, constants.s.SANDBOX, "https://www.sandbox.paypal.com"), 
-                _defineProperty(_ref3, constants.s.PRODUCTION, "https://www.paypal.com"), _defineProperty(_ref3, constants.s.TEST, window.location.protocol + "//" + window.location.host), 
+                return (_ref3 = {})[constants.s.LOCAL] = "https://www." + config.stageUrl, _ref3[constants.s.STAGE] = "https://www." + config.stageUrl, 
+                _ref3[constants.s.SANDBOX] = "https://www.sandbox.paypal.com", _ref3[constants.s.PRODUCTION] = "https://www.paypal.com", 
+                _ref3[constants.s.TEST] = window.location.protocol + "//" + window.location.host, 
                 _ref3;
             },
             get corsApiUrls() {
                 var _ref4;
-                return _defineProperty(_ref4 = {}, constants.s.LOCAL, "https://" + config.apiStageUrl + ":12326"), 
-                _defineProperty(_ref4, constants.s.STAGE, "https://" + config.apiStageUrl + ":12326"), 
-                _defineProperty(_ref4, constants.s.SANDBOX, "https://cors.api.sandbox.paypal.com"), 
-                _defineProperty(_ref4, constants.s.PRODUCTION, "https://cors.api.paypal.com"), _defineProperty(_ref4, constants.s.TEST, window.location.protocol + "//" + window.location.host), 
+                return (_ref4 = {})[constants.s.LOCAL] = "https://" + config.apiStageUrl + ":12326", 
+                _ref4[constants.s.STAGE] = "https://" + config.apiStageUrl + ":12326", _ref4[constants.s.SANDBOX] = "https://cors.api.sandbox.paypal.com", 
+                _ref4[constants.s.PRODUCTION] = "https://cors.api.paypal.com", _ref4[constants.s.TEST] = window.location.protocol + "//" + window.location.host, 
                 _ref4;
             },
             get apiUrls() {
                 var _ref5, domain = window.location.protocol + "//" + window.location.host, corsApiUrls = config.corsApiUrls, wwwApiUrls = config.wwwApiUrls;
-                return _defineProperty(_ref5 = {}, constants.s.LOCAL, domain === wwwApiUrls.local ? wwwApiUrls.local : corsApiUrls.local), 
-                _defineProperty(_ref5, constants.s.STAGE, domain === wwwApiUrls.stage ? wwwApiUrls.stage : corsApiUrls.stage), 
-                _defineProperty(_ref5, constants.s.SANDBOX, domain === wwwApiUrls.sandbox ? wwwApiUrls.sandbox : corsApiUrls.sandbox), 
-                _defineProperty(_ref5, constants.s.PRODUCTION, domain === wwwApiUrls.production ? wwwApiUrls.production : corsApiUrls.production), 
-                _defineProperty(_ref5, constants.s.TEST, domain === wwwApiUrls.test ? wwwApiUrls.test : corsApiUrls.test), 
+                return (_ref5 = {})[constants.s.LOCAL] = domain === wwwApiUrls.local ? wwwApiUrls.local : corsApiUrls.local, 
+                _ref5[constants.s.STAGE] = domain === wwwApiUrls.stage ? wwwApiUrls.stage : corsApiUrls.stage, 
+                _ref5[constants.s.SANDBOX] = domain === wwwApiUrls.sandbox ? wwwApiUrls.sandbox : corsApiUrls.sandbox, 
+                _ref5[constants.s.PRODUCTION] = domain === wwwApiUrls.production ? wwwApiUrls.production : corsApiUrls.production, 
+                _ref5[constants.s.TEST] = domain === wwwApiUrls.test ? wwwApiUrls.test : corsApiUrls.test, 
                 _ref5;
             },
-            checkoutUris: (_checkoutUris = {}, _defineProperty(_checkoutUris, constants.s.LOCAL, "/webapps/hermes?ul=0"), 
-            _defineProperty(_checkoutUris, constants.s.STAGE, "/webapps/hermes"), _defineProperty(_checkoutUris, constants.s.SANDBOX, "/checkoutnow"), 
-            _defineProperty(_checkoutUris, constants.s.PRODUCTION, "/checkoutnow"), _defineProperty(_checkoutUris, constants.s.TEST, "/base/test/windows/checkout/index.htm?checkouturl=true"), 
-            _defineProperty(_checkoutUris, constants.s.DEMO, "/demo/dev/checkout.htm"), _checkoutUris),
-            altpayUris: (_altpayUris = {}, _defineProperty(_altpayUris, constants.s.LOCAL, "/latinumcheckout"), 
-            _defineProperty(_altpayUris, constants.s.STAGE, "/latinumcheckout"), _defineProperty(_altpayUris, constants.s.SANDBOX, "/latinumcheckout"), 
-            _defineProperty(_altpayUris, constants.s.PRODUCTION, "/latinumcheckout"), _defineProperty(_altpayUris, constants.s.TEST, "/base/test/windows/checkout/index.htm?checkouturl=true"), 
-            _defineProperty(_altpayUris, constants.s.DEMO, "/demo/dev/checkout.htm"), _altpayUris),
-            guestUris: (_guestUris = {}, _defineProperty(_guestUris, constants.s.LOCAL, "/webapps/xoonboarding"), 
-            _defineProperty(_guestUris, constants.s.STAGE, "/webapps/xoonboarding"), _defineProperty(_guestUris, constants.s.SANDBOX, "/webapps/xoonboarding"), 
-            _defineProperty(_guestUris, constants.s.PRODUCTION, "/webapps/xoonboarding"), _defineProperty(_guestUris, constants.s.TEST, "/base/test/windows/checkout/index.htm?guesturl=true"), 
-            _defineProperty(_guestUris, constants.s.DEMO, "/demo/dev/guest.htm"), _guestUris),
-            billingUris: (_billingUris = {}, _defineProperty(_billingUris, constants.s.LOCAL, "/webapps/hermes/agreements?ul=0"), 
-            _defineProperty(_billingUris, constants.s.STAGE, "/webapps/hermes/agreements"), 
-            _defineProperty(_billingUris, constants.s.SANDBOX, "/agreements/approve"), _defineProperty(_billingUris, constants.s.PRODUCTION, "/agreements/approve"), 
-            _defineProperty(_billingUris, constants.s.TEST, "/base/test/windows/checkout/index.htm?billingurl=true"), 
-            _defineProperty(_billingUris, constants.s.DEMO, "/demo/dev/checkout.htm"), _billingUris),
-            buttonUris: (_buttonUris = {}, _defineProperty(_buttonUris, constants.s.LOCAL, "/webapps/hermes/button"), 
-            _defineProperty(_buttonUris, constants.s.STAGE, "/webapps/hermes/button"), _defineProperty(_buttonUris, constants.s.SANDBOX, "/webapps/hermes/button"), 
-            _defineProperty(_buttonUris, constants.s.PRODUCTION, "/webapps/hermes/button"), 
-            _defineProperty(_buttonUris, constants.s.TEST, "/base/test/windows/button/index.htm"), 
-            _defineProperty(_buttonUris, constants.s.DEMO, "/demo/dev/button.htm"), _buttonUris),
-            inlinedCardFieldUris: (_inlinedCardFieldUris = {}, _defineProperty(_inlinedCardFieldUris, constants.s.LOCAL, "/webapps/hermes/card-fields"), 
-            _defineProperty(_inlinedCardFieldUris, constants.s.STAGE, "/webapps/hermes/card-fields"), 
-            _defineProperty(_inlinedCardFieldUris, constants.s.SANDBOX, "/webapps/hermes/card-fields"), 
-            _defineProperty(_inlinedCardFieldUris, constants.s.PRODUCTION, "/webapps/hermes/card-fields"), 
-            _defineProperty(_inlinedCardFieldUris, constants.s.TEST, "/base/test/windows/card-fields/index.htm"), 
-            _defineProperty(_inlinedCardFieldUris, constants.s.DEMO, "/demo/dev/card.htm"), 
-            _inlinedCardFieldUris),
-            postBridgeUris: (_postBridgeUris = {}, _defineProperty(_postBridgeUris, constants.s.LOCAL, "/webapps/hermes/component-meta"), 
-            _defineProperty(_postBridgeUris, constants.s.STAGE, "/webapps/hermes/component-meta"), 
-            _defineProperty(_postBridgeUris, constants.s.SANDBOX, "/webapps/hermes/component-meta"), 
-            _defineProperty(_postBridgeUris, constants.s.PRODUCTION, "/webapps/hermes/component-meta"), 
-            _defineProperty(_postBridgeUris, constants.s.TEST, "/base/test/windows/component-meta/index.htm"), 
-            _defineProperty(_postBridgeUris, constants.s.DEMO, "/demo/dev/bridge.htm"), _postBridgeUris),
-            legacyCheckoutUris: (_legacyCheckoutUris = {}, _defineProperty(_legacyCheckoutUris, constants.s.LOCAL, "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true"), 
-            _defineProperty(_legacyCheckoutUris, constants.s.STAGE, "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true"), 
-            _defineProperty(_legacyCheckoutUris, constants.s.SANDBOX, "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true"), 
-            _defineProperty(_legacyCheckoutUris, constants.s.PRODUCTION, "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true"), 
-            _defineProperty(_legacyCheckoutUris, constants.s.TEST, "#fallback"), _legacyCheckoutUris),
-            buttonJSUrls: (_buttonJSUrls = {}, _defineProperty(_buttonJSUrls, constants.s.LOCAL, "https://www.paypalobjects.com/api/button.js"), 
-            _defineProperty(_buttonJSUrls, constants.s.STAGE, "https://www.paypalobjects.com/api/button.js"), 
-            _defineProperty(_buttonJSUrls, constants.s.SANDBOX, "https://www.paypalobjects.com/api/button.js"), 
-            _defineProperty(_buttonJSUrls, constants.s.PRODUCTION, "https://www.paypalobjects.com/api/button.js"), 
-            _defineProperty(_buttonJSUrls, constants.s.TEST, "/base/test/lib/button.js"), _defineProperty(_buttonJSUrls, constants.s.DEMO, "https://www.paypalobjects.com/api/button.js"), 
+            checkoutUris: (_checkoutUris = {}, _checkoutUris[constants.s.LOCAL] = "/webapps/hermes?ul=0", 
+            _checkoutUris[constants.s.STAGE] = "/webapps/hermes", _checkoutUris[constants.s.SANDBOX] = "/checkoutnow", 
+            _checkoutUris[constants.s.PRODUCTION] = "/checkoutnow", _checkoutUris[constants.s.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
+            _checkoutUris[constants.s.DEMO] = "/demo/dev/checkout.htm", _checkoutUris),
+            altpayUris: (_altpayUris = {}, _altpayUris[constants.s.LOCAL] = "/latinumcheckout", 
+            _altpayUris[constants.s.STAGE] = "/latinumcheckout", _altpayUris[constants.s.SANDBOX] = "/latinumcheckout", 
+            _altpayUris[constants.s.PRODUCTION] = "/latinumcheckout", _altpayUris[constants.s.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
+            _altpayUris[constants.s.DEMO] = "/demo/dev/checkout.htm", _altpayUris),
+            guestUris: (_guestUris = {}, _guestUris[constants.s.LOCAL] = "/webapps/xoonboarding", 
+            _guestUris[constants.s.STAGE] = "/webapps/xoonboarding", _guestUris[constants.s.SANDBOX] = "/webapps/xoonboarding", 
+            _guestUris[constants.s.PRODUCTION] = "/webapps/xoonboarding", _guestUris[constants.s.TEST] = "/base/test/windows/checkout/index.htm?guesturl=true", 
+            _guestUris[constants.s.DEMO] = "/demo/dev/guest.htm", _guestUris),
+            billingUris: (_billingUris = {}, _billingUris[constants.s.LOCAL] = "/webapps/hermes/agreements?ul=0", 
+            _billingUris[constants.s.STAGE] = "/webapps/hermes/agreements", _billingUris[constants.s.SANDBOX] = "/agreements/approve", 
+            _billingUris[constants.s.PRODUCTION] = "/agreements/approve", _billingUris[constants.s.TEST] = "/base/test/windows/checkout/index.htm?billingurl=true", 
+            _billingUris[constants.s.DEMO] = "/demo/dev/checkout.htm", _billingUris),
+            buttonUris: (_buttonUris = {}, _buttonUris[constants.s.LOCAL] = "/webapps/hermes/button", 
+            _buttonUris[constants.s.STAGE] = "/webapps/hermes/button", _buttonUris[constants.s.SANDBOX] = "/webapps/hermes/button", 
+            _buttonUris[constants.s.PRODUCTION] = "/webapps/hermes/button", _buttonUris[constants.s.TEST] = "/base/test/windows/button/index.htm", 
+            _buttonUris[constants.s.DEMO] = "/demo/dev/button.htm", _buttonUris),
+            inlinedCardFieldUris: (_inlinedCardFieldUris = {}, _inlinedCardFieldUris[constants.s.LOCAL] = "/webapps/hermes/card-fields", 
+            _inlinedCardFieldUris[constants.s.STAGE] = "/webapps/hermes/card-fields", _inlinedCardFieldUris[constants.s.SANDBOX] = "/webapps/hermes/card-fields", 
+            _inlinedCardFieldUris[constants.s.PRODUCTION] = "/webapps/hermes/card-fields", _inlinedCardFieldUris[constants.s.TEST] = "/base/test/windows/card-fields/index.htm", 
+            _inlinedCardFieldUris[constants.s.DEMO] = "/demo/dev/card.htm", _inlinedCardFieldUris),
+            postBridgeUris: (_postBridgeUris = {}, _postBridgeUris[constants.s.LOCAL] = "/webapps/hermes/component-meta", 
+            _postBridgeUris[constants.s.STAGE] = "/webapps/hermes/component-meta", _postBridgeUris[constants.s.SANDBOX] = "/webapps/hermes/component-meta", 
+            _postBridgeUris[constants.s.PRODUCTION] = "/webapps/hermes/component-meta", _postBridgeUris[constants.s.TEST] = "/base/test/windows/component-meta/index.htm", 
+            _postBridgeUris[constants.s.DEMO] = "/demo/dev/bridge.htm", _postBridgeUris),
+            legacyCheckoutUris: (_legacyCheckoutUris = {}, _legacyCheckoutUris[constants.s.LOCAL] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
+            _legacyCheckoutUris[constants.s.STAGE] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
+            _legacyCheckoutUris[constants.s.SANDBOX] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
+            _legacyCheckoutUris[constants.s.PRODUCTION] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
+            _legacyCheckoutUris[constants.s.TEST] = "#fallback", _legacyCheckoutUris),
+            buttonJSUrls: (_buttonJSUrls = {}, _buttonJSUrls[constants.s.LOCAL] = "https://www.paypalobjects.com/api/button.js", 
+            _buttonJSUrls[constants.s.STAGE] = "https://www.paypalobjects.com/api/button.js", 
+            _buttonJSUrls[constants.s.SANDBOX] = "https://www.paypalobjects.com/api/button.js", 
+            _buttonJSUrls[constants.s.PRODUCTION] = "https://www.paypalobjects.com/api/button.js", 
+            _buttonJSUrls[constants.s.TEST] = "/base/test/lib/button.js", _buttonJSUrls[constants.s.DEMO] = "https://www.paypalobjects.com/api/button.js", 
             _buttonJSUrls),
             get buttonJSUrl() {
                 return config.buttonJSUrls[config.env];
@@ -2325,147 +2154,123 @@
             trackingApiUri: "/v1/risk/transaction-contexts",
             get checkoutUrls() {
                 var _ref6, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref6 = {}, constants.s.LOCAL, "" + paypalUrls.local + config.checkoutUris.local.replace(":" + config.ports.default, ":" + config.ports.checkout)), 
-                _defineProperty(_ref6, constants.s.STAGE, "" + paypalUrls.stage + config.checkoutUris.stage), 
-                _defineProperty(_ref6, constants.s.SANDBOX, "" + paypalUrls.sandbox + config.checkoutUris.sandbox), 
-                _defineProperty(_ref6, constants.s.PRODUCTION, "" + paypalUrls.production + config.checkoutUris.production), 
-                _defineProperty(_ref6, constants.s.TEST, "" + paypalUrls.test + config.checkoutUris.test), 
-                _defineProperty(_ref6, constants.s.DEMO, "" + paypalUrls.test + config.checkoutUris.demo), 
+                return (_ref6 = {})[constants.s.LOCAL] = "" + paypalUrls.local + config.checkoutUris.local.replace(":" + config.ports.default, ":" + config.ports.checkout), 
+                _ref6[constants.s.STAGE] = "" + paypalUrls.stage + config.checkoutUris.stage, _ref6[constants.s.SANDBOX] = "" + paypalUrls.sandbox + config.checkoutUris.sandbox, 
+                _ref6[constants.s.PRODUCTION] = "" + paypalUrls.production + config.checkoutUris.production, 
+                _ref6[constants.s.TEST] = "" + paypalUrls.test + config.checkoutUris.test, _ref6[constants.s.DEMO] = "" + paypalUrls.test + config.checkoutUris.demo, 
                 _ref6;
             },
             get guestUrls() {
                 var _ref7, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref7 = {}, constants.s.LOCAL, "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.guest) + config.guestUris.local), 
-                _defineProperty(_ref7, constants.s.STAGE, "" + paypalUrls.stage + config.guestUris.stage), 
-                _defineProperty(_ref7, constants.s.SANDBOX, "" + paypalUrls.sandbox + config.guestUris.sandbox), 
-                _defineProperty(_ref7, constants.s.PRODUCTION, "" + paypalUrls.production + config.guestUris.production), 
-                _defineProperty(_ref7, constants.s.TEST, "" + paypalUrls.test + config.guestUris.test), 
-                _defineProperty(_ref7, constants.s.DEMO, "" + paypalUrls.test + config.guestUris.demo), 
+                return (_ref7 = {})[constants.s.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.guest) + config.guestUris.local, 
+                _ref7[constants.s.STAGE] = "" + paypalUrls.stage + config.guestUris.stage, _ref7[constants.s.SANDBOX] = "" + paypalUrls.sandbox + config.guestUris.sandbox, 
+                _ref7[constants.s.PRODUCTION] = "" + paypalUrls.production + config.guestUris.production, 
+                _ref7[constants.s.TEST] = "" + paypalUrls.test + config.guestUris.test, _ref7[constants.s.DEMO] = "" + paypalUrls.test + config.guestUris.demo, 
                 _ref7;
             },
             get altpayUrls() {
                 var _ref8, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref8 = {}, constants.s.LOCAL, "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.altpay) + config.altpayUris.local), 
-                _defineProperty(_ref8, constants.s.STAGE, "" + paypalUrls.stage + config.altpayUris.stage), 
-                _defineProperty(_ref8, constants.s.SANDBOX, "" + paypalUrls.sandbox + config.altpayUris.sandbox), 
-                _defineProperty(_ref8, constants.s.PRODUCTION, "" + paypalUrls.production + config.altpayUris.production), 
-                _defineProperty(_ref8, constants.s.TEST, "" + paypalUrls.test + config.altpayUris.test), 
-                _defineProperty(_ref8, constants.s.DEMO, "" + paypalUrls.test + config.altpayUris.demo), 
+                return (_ref8 = {})[constants.s.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.altpay) + config.altpayUris.local, 
+                _ref8[constants.s.STAGE] = "" + paypalUrls.stage + config.altpayUris.stage, _ref8[constants.s.SANDBOX] = "" + paypalUrls.sandbox + config.altpayUris.sandbox, 
+                _ref8[constants.s.PRODUCTION] = "" + paypalUrls.production + config.altpayUris.production, 
+                _ref8[constants.s.TEST] = "" + paypalUrls.test + config.altpayUris.test, _ref8[constants.s.DEMO] = "" + paypalUrls.test + config.altpayUris.demo, 
                 _ref8;
             },
             get billingUrls() {
                 var _ref9, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref9 = {}, constants.s.LOCAL, "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.checkout) + config.billingUris.local), 
-                _defineProperty(_ref9, constants.s.STAGE, "" + paypalUrls.stage + config.billingUris.stage), 
-                _defineProperty(_ref9, constants.s.SANDBOX, "" + paypalUrls.sandbox + config.billingUris.sandbox), 
-                _defineProperty(_ref9, constants.s.PRODUCTION, "" + paypalUrls.production + config.billingUris.production), 
-                _defineProperty(_ref9, constants.s.TEST, "" + paypalUrls.test + config.billingUris.test), 
-                _defineProperty(_ref9, constants.s.DEMO, "" + paypalUrls.test + config.billingUris.demo), 
+                return (_ref9 = {})[constants.s.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.checkout) + config.billingUris.local, 
+                _ref9[constants.s.STAGE] = "" + paypalUrls.stage + config.billingUris.stage, _ref9[constants.s.SANDBOX] = "" + paypalUrls.sandbox + config.billingUris.sandbox, 
+                _ref9[constants.s.PRODUCTION] = "" + paypalUrls.production + config.billingUris.production, 
+                _ref9[constants.s.TEST] = "" + paypalUrls.test + config.billingUris.test, _ref9[constants.s.DEMO] = "" + paypalUrls.test + config.billingUris.demo, 
                 _ref9;
             },
             get buttonUrls() {
                 var _ref10, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref10 = {}, constants.s.LOCAL, "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.buttonUris.local), 
-                _defineProperty(_ref10, constants.s.STAGE, "" + paypalUrls.stage + config.buttonUris.stage), 
-                _defineProperty(_ref10, constants.s.SANDBOX, "" + paypalUrls.sandbox + config.buttonUris.sandbox), 
-                _defineProperty(_ref10, constants.s.PRODUCTION, "" + paypalUrls.production + config.buttonUris.production), 
-                _defineProperty(_ref10, constants.s.TEST, "" + paypalUrls.test + config.buttonUris.test), 
-                _defineProperty(_ref10, constants.s.DEMO, "" + paypalUrls.demo + config.buttonUris.demo), 
+                return (_ref10 = {})[constants.s.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.buttonUris.local, 
+                _ref10[constants.s.STAGE] = "" + paypalUrls.stage + config.buttonUris.stage, _ref10[constants.s.SANDBOX] = "" + paypalUrls.sandbox + config.buttonUris.sandbox, 
+                _ref10[constants.s.PRODUCTION] = "" + paypalUrls.production + config.buttonUris.production, 
+                _ref10[constants.s.TEST] = "" + paypalUrls.test + config.buttonUris.test, _ref10[constants.s.DEMO] = "" + paypalUrls.demo + config.buttonUris.demo, 
                 _ref10;
             },
             get inlinedCardFieldUrls() {
                 var _ref11, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref11 = {}, constants.s.LOCAL, "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.inlinedCardFieldUris.local), 
-                _defineProperty(_ref11, constants.s.STAGE, "" + paypalUrls.stage + config.inlinedCardFieldUris.stage), 
-                _defineProperty(_ref11, constants.s.SANDBOX, "" + paypalUrls.sandbox + config.inlinedCardFieldUris.sandbox), 
-                _defineProperty(_ref11, constants.s.PRODUCTION, "" + paypalUrls.production + config.inlinedCardFieldUris.production), 
-                _defineProperty(_ref11, constants.s.TEST, "" + paypalUrls.test + config.inlinedCardFieldUris.test), 
-                _defineProperty(_ref11, constants.s.DEMO, "" + paypalUrls.demo + config.inlinedCardFieldUris.demo), 
+                return (_ref11 = {})[constants.s.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.inlinedCardFieldUris.local, 
+                _ref11[constants.s.STAGE] = "" + paypalUrls.stage + config.inlinedCardFieldUris.stage, 
+                _ref11[constants.s.SANDBOX] = "" + paypalUrls.sandbox + config.inlinedCardFieldUris.sandbox, 
+                _ref11[constants.s.PRODUCTION] = "" + paypalUrls.production + config.inlinedCardFieldUris.production, 
+                _ref11[constants.s.TEST] = "" + paypalUrls.test + config.inlinedCardFieldUris.test, 
+                _ref11[constants.s.DEMO] = "" + paypalUrls.demo + config.inlinedCardFieldUris.demo, 
                 _ref11;
             },
             get loginUrls() {
                 var _ref12, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref12 = {}, constants.s.LOCAL, "" + paypalUrls.stage + config.loginUri), 
-                _defineProperty(_ref12, constants.s.STAGE, "" + paypalUrls.stage + config.loginUri), 
-                _defineProperty(_ref12, constants.s.SANDBOX, "" + paypalUrls.sandbox + config.loginUri), 
-                _defineProperty(_ref12, constants.s.PRODUCTION, "" + paypalUrls.production + config.loginUri), 
-                _defineProperty(_ref12, constants.s.TEST, "" + paypalUrls.test + config.loginUri), 
+                return (_ref12 = {})[constants.s.LOCAL] = "" + paypalUrls.stage + config.loginUri, 
+                _ref12[constants.s.STAGE] = "" + paypalUrls.stage + config.loginUri, _ref12[constants.s.SANDBOX] = "" + paypalUrls.sandbox + config.loginUri, 
+                _ref12[constants.s.PRODUCTION] = "" + paypalUrls.production + config.loginUri, _ref12[constants.s.TEST] = "" + paypalUrls.test + config.loginUri, 
                 _ref12;
             },
             get paymentsStandardUrls() {
                 var _ref13, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref13 = {}, constants.s.LOCAL, "" + paypalUrls.local + config.paymentStandardUri), 
-                _defineProperty(_ref13, constants.s.STAGE, "" + paypalUrls.stage + config.paymentStandardUri), 
-                _defineProperty(_ref13, constants.s.SANDBOX, "" + paypalUrls.sandbox + config.paymentStandardUri), 
-                _defineProperty(_ref13, constants.s.PRODUCTION, "" + paypalUrls.production + config.paymentStandardUri), 
-                _defineProperty(_ref13, constants.s.TEST, "" + paypalUrls.test + config.paymentStandardUri), 
-                _ref13;
+                return (_ref13 = {})[constants.s.LOCAL] = "" + paypalUrls.local + config.paymentStandardUri, 
+                _ref13[constants.s.STAGE] = "" + paypalUrls.stage + config.paymentStandardUri, _ref13[constants.s.SANDBOX] = "" + paypalUrls.sandbox + config.paymentStandardUri, 
+                _ref13[constants.s.PRODUCTION] = "" + paypalUrls.production + config.paymentStandardUri, 
+                _ref13[constants.s.TEST] = "" + paypalUrls.test + config.paymentStandardUri, _ref13;
             },
             get metaFrameUrls() {
                 var _ref14, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref14 = {}, constants.s.LOCAL, "" + paypalUrls.local + config.postBridgeUri + "&env=local"), 
-                _defineProperty(_ref14, constants.s.STAGE, "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=" + config.stage), 
-                _defineProperty(_ref14, constants.s.SANDBOX, "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox"), 
-                _defineProperty(_ref14, constants.s.PRODUCTION, "" + paypalUrls.production + config.postBridgeUri + "&env=production"), 
-                _defineProperty(_ref14, constants.s.TEST, "" + paypalUrls.test + config.postBridgeUri + "&env=test"), 
-                _defineProperty(_ref14, constants.s.DEMO, "" + paypalUrls.demo + config.postBridgeUri + "&env=demo"), 
+                return (_ref14 = {})[constants.s.LOCAL] = "" + paypalUrls.local + config.postBridgeUri + "&env=local", 
+                _ref14[constants.s.STAGE] = "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=" + config.stage, 
+                _ref14[constants.s.SANDBOX] = "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox", 
+                _ref14[constants.s.PRODUCTION] = "" + paypalUrls.production + config.postBridgeUri + "&env=production", 
+                _ref14[constants.s.TEST] = "" + paypalUrls.test + config.postBridgeUri + "&env=test", 
+                _ref14[constants.s.DEMO] = "" + paypalUrls.demo + config.postBridgeUri + "&env=demo", 
                 _ref14;
             },
             get legacyCheckoutUrls() {
                 var _ref15, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref15 = {}, constants.s.LOCAL, "" + paypalUrls.stage + config.legacyCheckoutUris.local), 
-                _defineProperty(_ref15, constants.s.STAGE, "" + paypalUrls.stage + config.legacyCheckoutUris.stage), 
-                _defineProperty(_ref15, constants.s.SANDBOX, "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox), 
-                _defineProperty(_ref15, constants.s.PRODUCTION, "" + paypalUrls.production + config.legacyCheckoutUris.production), 
-                _defineProperty(_ref15, constants.s.TEST, "" + paypalUrls.test + config.legacyCheckoutUris.test), 
+                return (_ref15 = {})[constants.s.LOCAL] = "" + paypalUrls.stage + config.legacyCheckoutUris.local, 
+                _ref15[constants.s.STAGE] = "" + paypalUrls.stage + config.legacyCheckoutUris.stage, 
+                _ref15[constants.s.SANDBOX] = "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox, 
+                _ref15[constants.s.PRODUCTION] = "" + paypalUrls.production + config.legacyCheckoutUris.production, 
+                _ref15[constants.s.TEST] = "" + paypalUrls.test + config.legacyCheckoutUris.test, 
                 _ref15;
             },
             get authApiUrls() {
                 var _ref16, apiUrls = config.apiUrls, authApiUri = config.authApiUri;
-                return _defineProperty(_ref16 = {}, constants.s.LOCAL, "" + apiUrls.local + authApiUri), 
-                _defineProperty(_ref16, constants.s.STAGE, "" + apiUrls.stage + authApiUri), _defineProperty(_ref16, constants.s.SANDBOX, "" + apiUrls.sandbox + authApiUri), 
-                _defineProperty(_ref16, constants.s.PRODUCTION, "" + apiUrls.production + authApiUri), 
-                _defineProperty(_ref16, constants.s.TEST, "" + apiUrls.test + authApiUri), _ref16;
+                return (_ref16 = {})[constants.s.LOCAL] = "" + apiUrls.local + authApiUri, _ref16[constants.s.STAGE] = "" + apiUrls.stage + authApiUri, 
+                _ref16[constants.s.SANDBOX] = "" + apiUrls.sandbox + authApiUri, _ref16[constants.s.PRODUCTION] = "" + apiUrls.production + authApiUri, 
+                _ref16[constants.s.TEST] = "" + apiUrls.test + authApiUri, _ref16;
             },
             get paymentApiUrls() {
                 var _ref17, apiUrls = config.apiUrls, paymentApiUri = config.paymentApiUri;
-                return _defineProperty(_ref17 = {}, constants.s.LOCAL, "" + apiUrls.local + paymentApiUri), 
-                _defineProperty(_ref17, constants.s.STAGE, "" + apiUrls.stage + paymentApiUri), 
-                _defineProperty(_ref17, constants.s.SANDBOX, "" + apiUrls.sandbox + paymentApiUri), 
-                _defineProperty(_ref17, constants.s.PRODUCTION, "" + apiUrls.production + paymentApiUri), 
-                _defineProperty(_ref17, constants.s.TEST, "" + apiUrls.test + paymentApiUri), _ref17;
+                return (_ref17 = {})[constants.s.LOCAL] = "" + apiUrls.local + paymentApiUri, _ref17[constants.s.STAGE] = "" + apiUrls.stage + paymentApiUri, 
+                _ref17[constants.s.SANDBOX] = "" + apiUrls.sandbox + paymentApiUri, _ref17[constants.s.PRODUCTION] = "" + apiUrls.production + paymentApiUri, 
+                _ref17[constants.s.TEST] = "" + apiUrls.test + paymentApiUri, _ref17;
             },
             get orderApiUrls() {
                 var _ref18, apiUrls = config.apiUrls, orderApiUri = config.orderApiUri;
-                return _defineProperty(_ref18 = {}, constants.s.LOCAL, "" + apiUrls.local + orderApiUri), 
-                _defineProperty(_ref18, constants.s.STAGE, "" + apiUrls.stage + orderApiUri), _defineProperty(_ref18, constants.s.SANDBOX, "" + apiUrls.sandbox + orderApiUri), 
-                _defineProperty(_ref18, constants.s.PRODUCTION, "" + apiUrls.production + orderApiUri), 
-                _defineProperty(_ref18, constants.s.TEST, "" + apiUrls.test + orderApiUri), _ref18;
+                return (_ref18 = {})[constants.s.LOCAL] = "" + apiUrls.local + orderApiUri, _ref18[constants.s.STAGE] = "" + apiUrls.stage + orderApiUri, 
+                _ref18[constants.s.SANDBOX] = "" + apiUrls.sandbox + orderApiUri, _ref18[constants.s.PRODUCTION] = "" + apiUrls.production + orderApiUri, 
+                _ref18[constants.s.TEST] = "" + apiUrls.test + orderApiUri, _ref18;
             },
             get billingApiUrls() {
                 var _ref19, apiUrls = config.apiUrls, billingApiUri = config.billingApiUri;
-                return _defineProperty(_ref19 = {}, constants.s.LOCAL, "" + apiUrls.local + billingApiUri), 
-                _defineProperty(_ref19, constants.s.STAGE, "" + apiUrls.stage + billingApiUri), 
-                _defineProperty(_ref19, constants.s.SANDBOX, "" + apiUrls.sandbox + billingApiUri), 
-                _defineProperty(_ref19, constants.s.PRODUCTION, "" + apiUrls.production + billingApiUri), 
-                _defineProperty(_ref19, constants.s.TEST, "" + apiUrls.test + billingApiUri), _ref19;
+                return (_ref19 = {})[constants.s.LOCAL] = "" + apiUrls.local + billingApiUri, _ref19[constants.s.STAGE] = "" + apiUrls.stage + billingApiUri, 
+                _ref19[constants.s.SANDBOX] = "" + apiUrls.sandbox + billingApiUri, _ref19[constants.s.PRODUCTION] = "" + apiUrls.production + billingApiUri, 
+                _ref19[constants.s.TEST] = "" + apiUrls.test + billingApiUri, _ref19;
             },
             get experienceApiUrls() {
                 var _ref20, apiUrls = config.apiUrls, experienceApiUri = config.experienceApiUri;
-                return _defineProperty(_ref20 = {}, constants.s.LOCAL, "" + apiUrls.local + experienceApiUri), 
-                _defineProperty(_ref20, constants.s.STAGE, "" + apiUrls.stage + experienceApiUri), 
-                _defineProperty(_ref20, constants.s.SANDBOX, "" + apiUrls.sandbox + experienceApiUri), 
-                _defineProperty(_ref20, constants.s.PRODUCTION, "" + apiUrls.production + experienceApiUri), 
-                _defineProperty(_ref20, constants.s.TEST, "" + apiUrls.test + experienceApiUri), 
+                return (_ref20 = {})[constants.s.LOCAL] = "" + apiUrls.local + experienceApiUri, 
+                _ref20[constants.s.STAGE] = "" + apiUrls.stage + experienceApiUri, _ref20[constants.s.SANDBOX] = "" + apiUrls.sandbox + experienceApiUri, 
+                _ref20[constants.s.PRODUCTION] = "" + apiUrls.production + experienceApiUri, _ref20[constants.s.TEST] = "" + apiUrls.test + experienceApiUri, 
                 _ref20;
             },
             get trackingApiUrls() {
                 var _ref21, apiUrls = config.apiUrls, trackingApiUri = config.trackingApiUri;
-                return _defineProperty(_ref21 = {}, constants.s.LOCAL, "" + apiUrls.local + trackingApiUri), 
-                _defineProperty(_ref21, constants.s.STAGE, "" + apiUrls.stage + trackingApiUri), 
-                _defineProperty(_ref21, constants.s.SANDBOX, "" + apiUrls.sandbox + trackingApiUri), 
-                _defineProperty(_ref21, constants.s.PRODUCTION, "" + apiUrls.production + trackingApiUri), 
-                _defineProperty(_ref21, constants.s.TEST, "" + apiUrls.test + trackingApiUri), _ref21;
+                return (_ref21 = {})[constants.s.LOCAL] = "" + apiUrls.local + trackingApiUri, _ref21[constants.s.STAGE] = "" + apiUrls.stage + trackingApiUri, 
+                _ref21[constants.s.SANDBOX] = "" + apiUrls.sandbox + trackingApiUri, _ref21[constants.s.PRODUCTION] = "" + apiUrls.production + trackingApiUri, 
+                _ref21[constants.s.TEST] = "" + apiUrls.test + trackingApiUri, _ref21;
             },
             _paypalUrl: "",
             get paypalUrl() {
@@ -2530,161 +2335,160 @@
                 country: constants.q.US,
                 lang: constants.v.EN
             },
-            locales: (_locales = {}, _defineProperty(_locales, constants.q.AD, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.AE, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH, constants.v.AR ]), 
-            _defineProperty(_locales, constants.q.AG, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.AI, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.AL, [ constants.v.EN ]), _defineProperty(_locales, constants.q.AM, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.AN, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.AO, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.AR, [ constants.v.ES, constants.v.EN ]), _defineProperty(_locales, constants.q.AT, [ constants.v.DE, constants.v.EN ]), 
-            _defineProperty(_locales, constants.q.AU, [ constants.v.EN ]), _defineProperty(_locales, constants.q.AW, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.AZ, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.BA, [ constants.v.EN ]), _defineProperty(_locales, constants.q.BB, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.BE, [ constants.v.EN, constants.v.NL, constants.v.FR ]), 
-            _defineProperty(_locales, constants.q.BF, [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.BG, [ constants.v.EN ]), _defineProperty(_locales, constants.q.BH, [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.BI, [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.BJ, [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.BM, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.BN, [ constants.v.EN ]), _defineProperty(_locales, constants.q.BO, [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.BR, [ constants.v.PT, constants.v.EN ]), _defineProperty(_locales, constants.q.BS, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.BT, [ constants.v.EN ]), _defineProperty(_locales, constants.q.BW, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.BY, [ constants.v.EN ]), _defineProperty(_locales, constants.q.BZ, [ constants.v.EN, constants.v.ES, constants.v.FR, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.C2, [ constants.v.ZH, constants.v.EN ]), _defineProperty(_locales, constants.q.CA, [ constants.v.EN, constants.v.FR ]), 
-            _defineProperty(_locales, constants.q.CD, [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.CG, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.CH, [ constants.v.DE, constants.v.FR, constants.v.EN ]), 
-            _defineProperty(_locales, constants.q.CI, [ constants.v.FR, constants.v.EN ]), _defineProperty(_locales, constants.q.CK, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.CL, [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.CM, [ constants.v.FR, constants.v.EN ]), _defineProperty(_locales, constants.q.CN, [ constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.CO, [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.CR, [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.CV, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.CY, [ constants.v.EN ]), _defineProperty(_locales, constants.q.CZ, [ constants.v.CS, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.DE, [ constants.v.DE, constants.v.EN ]), _defineProperty(_locales, constants.q.DJ, [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.DK, [ constants.v.DA, constants.v.EN ]), _defineProperty(_locales, constants.q.DM, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.DO, [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.DZ, [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.EC, [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.EE, [ constants.v.EN, constants.v.RU, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.EG, [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.ER, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.ES, [ constants.v.ES, constants.v.EN ]), _defineProperty(_locales, constants.q.ET, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.FI, [ constants.v.FI, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.FJ, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.FK, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.FM, [ constants.v.EN ]), _defineProperty(_locales, constants.q.FO, [ constants.v.DA, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.FR, [ constants.v.FR, constants.v.EN ]), _defineProperty(_locales, constants.q.GA, [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.GB, [ constants.v.EN ]), _defineProperty(_locales, constants.q.GD, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.GE, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.GF, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.GI, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.GL, [ constants.v.DA, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.GM, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.GN, [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.GP, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.GR, [ constants.v.EL, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.GT, [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.GW, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.GY, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.HK, [ constants.v.EN, constants.v.ZH ]), _defineProperty(_locales, constants.q.HN, [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.HR, [ constants.v.EN ]), _defineProperty(_locales, constants.q.HU, [ constants.v.HU, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.ID, [ constants.v.ID, constants.v.EN ]), _defineProperty(_locales, constants.q.IE, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.IL, [ constants.v.HE, constants.v.EN ]), _defineProperty(_locales, constants.q.IN, [ constants.v.EN ]), 
-            _defineProperty(_locales, constants.q.IS, [ constants.v.EN ]), _defineProperty(_locales, constants.q.IT, [ constants.v.IT, constants.v.EN ]), 
-            _defineProperty(_locales, constants.q.JM, [ constants.v.EN, constants.v.ES, constants.v.FR, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.JO, [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.JP, [ constants.v.JA, constants.v.EN ]), _defineProperty(_locales, constants.q.KE, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.KG, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.KH, [ constants.v.EN ]), _defineProperty(_locales, constants.q.KI, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.KM, [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.KN, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.KR, [ constants.v.KO, constants.v.EN ]), _defineProperty(_locales, constants.q.KW, [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.KY, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.KZ, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.LA, [ constants.v.EN ]), _defineProperty(_locales, constants.q.LC, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.LI, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.LK, [ constants.v.EN ]), _defineProperty(_locales, constants.q.LS, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.LT, [ constants.v.EN, constants.v.RU, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.LU, [ constants.v.EN, constants.v.DE, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.LV, [ constants.v.EN, constants.v.RU, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.MA, [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.MC, [ constants.v.FR, constants.v.EN ]), _defineProperty(_locales, constants.q.MD, [ constants.v.EN ]), 
-            _defineProperty(_locales, constants.q.ME, [ constants.v.EN ]), _defineProperty(_locales, constants.q.MG, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.MH, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.MK, [ constants.v.EN ]), _defineProperty(_locales, constants.q.ML, [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.MN, [ constants.v.EN ]), _defineProperty(_locales, constants.q.MQ, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.MR, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.MS, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.MT, [ constants.v.EN ]), _defineProperty(_locales, constants.q.MU, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.MV, [ constants.v.EN ]), _defineProperty(_locales, constants.q.MW, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.MX, [ constants.v.ES, constants.v.EN ]), _defineProperty(_locales, constants.q.MY, [ constants.v.EN ]), 
-            _defineProperty(_locales, constants.q.MZ, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.NA, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.NC, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.NE, [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.NF, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.NG, [ constants.v.EN ]), _defineProperty(_locales, constants.q.NI, [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.NL, [ constants.v.NL, constants.v.EN ]), _defineProperty(_locales, constants.q.NO, [ constants.v.NO, constants.v.EN ]), 
-            _defineProperty(_locales, constants.q.NP, [ constants.v.EN ]), _defineProperty(_locales, constants.q.NR, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.NU, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.NZ, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.OM, [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.PA, [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.PE, [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.PF, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.PG, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.PH, [ constants.v.EN ]), _defineProperty(_locales, constants.q.PL, [ constants.v.PL, constants.v.EN ]), 
-            _defineProperty(_locales, constants.q.PM, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.PN, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.PT, [ constants.v.PT, constants.v.EN ]), _defineProperty(_locales, constants.q.PW, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.PY, [ constants.v.ES, constants.v.EN ]), _defineProperty(_locales, constants.q.QA, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH, constants.v.AR ]), 
-            _defineProperty(_locales, constants.q.RE, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.RO, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.RS, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.RU, [ constants.v.RU, constants.v.EN ]), _defineProperty(_locales, constants.q.RW, [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.SA, [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.SB, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.SC, [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.SE, [ constants.v.SV, constants.v.EN ]), _defineProperty(_locales, constants.q.SG, [ constants.v.EN ]), 
-            _defineProperty(_locales, constants.q.SH, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.SI, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.SJ, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.SK, [ constants.v.SK, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.SL, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.SM, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.SN, [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.SO, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.SR, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.ST, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.SV, [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.SZ, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.TC, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.TD, [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.TG, [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.TH, [ constants.v.TH, constants.v.EN ]), _defineProperty(_locales, constants.q.TJ, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.TM, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.TN, [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.TO, [ constants.v.EN ]), _defineProperty(_locales, constants.q.TR, [ constants.v.TR, constants.v.EN ]), 
-            _defineProperty(_locales, constants.q.TT, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.TV, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.TW, [ constants.v.ZH, constants.v.EN ]), _defineProperty(_locales, constants.q.TZ, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.UA, [ constants.v.EN, constants.v.RU, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.UG, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.US, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.UY, [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.VA, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.VC, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.VE, [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.VG, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.VN, [ constants.v.EN ]), _defineProperty(_locales, constants.q.VU, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.WF, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.WS, [ constants.v.EN ]), _defineProperty(_locales, constants.q.YE, [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.YT, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.ZA, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.ZM, [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ]), 
-            _defineProperty(_locales, constants.q.ZW, [ constants.v.EN ]), _locales)
+            locales: (_locales = {}, _locales[constants.q.AD] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.AE] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH, constants.v.AR ], 
+            _locales[constants.q.AG] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.AI] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.AL] = [ constants.v.EN ], _locales[constants.q.AM] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.AN] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.AO] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.AR] = [ constants.v.ES, constants.v.EN ], _locales[constants.q.AT] = [ constants.v.DE, constants.v.EN ], 
+            _locales[constants.q.AU] = [ constants.v.EN ], _locales[constants.q.AW] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.AZ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.BA] = [ constants.v.EN ], _locales[constants.q.BB] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.BE] = [ constants.v.EN, constants.v.NL, constants.v.FR ], _locales[constants.q.BF] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.BG] = [ constants.v.EN ], _locales[constants.q.BH] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.BI] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.BJ] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.BM] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.BN] = [ constants.v.EN ], _locales[constants.q.BO] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
+            _locales[constants.q.BR] = [ constants.v.PT, constants.v.EN ], _locales[constants.q.BS] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.BT] = [ constants.v.EN ], _locales[constants.q.BW] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.BY] = [ constants.v.EN ], _locales[constants.q.BZ] = [ constants.v.EN, constants.v.ES, constants.v.FR, constants.v.ZH ], 
+            _locales[constants.q.C2] = [ constants.v.ZH, constants.v.EN ], _locales[constants.q.CA] = [ constants.v.EN, constants.v.FR ], 
+            _locales[constants.q.CD] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.CG] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.CH] = [ constants.v.DE, constants.v.FR, constants.v.EN ], _locales[constants.q.CI] = [ constants.v.FR, constants.v.EN ], 
+            _locales[constants.q.CK] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.CL] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
+            _locales[constants.q.CM] = [ constants.v.FR, constants.v.EN ], _locales[constants.q.CN] = [ constants.v.ZH ], 
+            _locales[constants.q.CO] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
+            _locales[constants.q.CR] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
+            _locales[constants.q.CV] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.CY] = [ constants.v.EN ], _locales[constants.q.CZ] = [ constants.v.CS, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.DE] = [ constants.v.DE, constants.v.EN ], _locales[constants.q.DJ] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.DK] = [ constants.v.DA, constants.v.EN ], _locales[constants.q.DM] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.DO] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
+            _locales[constants.q.DZ] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.EC] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
+            _locales[constants.q.EE] = [ constants.v.EN, constants.v.RU, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.EG] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.ER] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.ES] = [ constants.v.ES, constants.v.EN ], _locales[constants.q.ET] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.FI] = [ constants.v.FI, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.FJ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.FK] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.FM] = [ constants.v.EN ], _locales[constants.q.FO] = [ constants.v.DA, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.FR] = [ constants.v.FR, constants.v.EN ], _locales[constants.q.GA] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.GB] = [ constants.v.EN ], _locales[constants.q.GD] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.GE] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.GF] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.GI] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.GL] = [ constants.v.DA, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.GM] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.GN] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.GP] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.GR] = [ constants.v.EL, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.GT] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
+            _locales[constants.q.GW] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.GY] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.HK] = [ constants.v.EN, constants.v.ZH ], _locales[constants.q.HN] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
+            _locales[constants.q.HR] = [ constants.v.EN ], _locales[constants.q.HU] = [ constants.v.HU, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.ID] = [ constants.v.ID, constants.v.EN ], _locales[constants.q.IE] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.IL] = [ constants.v.HE, constants.v.EN ], _locales[constants.q.IN] = [ constants.v.EN ], 
+            _locales[constants.q.IS] = [ constants.v.EN ], _locales[constants.q.IT] = [ constants.v.IT, constants.v.EN ], 
+            _locales[constants.q.JM] = [ constants.v.EN, constants.v.ES, constants.v.FR, constants.v.ZH ], 
+            _locales[constants.q.JO] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.JP] = [ constants.v.JA, constants.v.EN ], _locales[constants.q.KE] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.KG] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.KH] = [ constants.v.EN ], _locales[constants.q.KI] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.KM] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.KN] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.KR] = [ constants.v.KO, constants.v.EN ], _locales[constants.q.KW] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.KY] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.KZ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.LA] = [ constants.v.EN ], _locales[constants.q.LC] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.LI] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.LK] = [ constants.v.EN ], _locales[constants.q.LS] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.LT] = [ constants.v.EN, constants.v.RU, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.LU] = [ constants.v.EN, constants.v.DE, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.LV] = [ constants.v.EN, constants.v.RU, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.MA] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.MC] = [ constants.v.FR, constants.v.EN ], _locales[constants.q.MD] = [ constants.v.EN ], 
+            _locales[constants.q.ME] = [ constants.v.EN ], _locales[constants.q.MG] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.MH] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.MK] = [ constants.v.EN ], _locales[constants.q.ML] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.MN] = [ constants.v.EN ], _locales[constants.q.MQ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.MR] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.MS] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.MT] = [ constants.v.EN ], _locales[constants.q.MU] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.MV] = [ constants.v.EN ], _locales[constants.q.MW] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.MX] = [ constants.v.ES, constants.v.EN ], _locales[constants.q.MY] = [ constants.v.EN ], 
+            _locales[constants.q.MZ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.NA] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.NC] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.NE] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.NF] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.NG] = [ constants.v.EN ], _locales[constants.q.NI] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
+            _locales[constants.q.NL] = [ constants.v.NL, constants.v.EN ], _locales[constants.q.NO] = [ constants.v.NO, constants.v.EN ], 
+            _locales[constants.q.NP] = [ constants.v.EN ], _locales[constants.q.NR] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.NU] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.NZ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.OM] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.PA] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
+            _locales[constants.q.PE] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
+            _locales[constants.q.PF] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.PG] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.PH] = [ constants.v.EN ], _locales[constants.q.PL] = [ constants.v.PL, constants.v.EN ], 
+            _locales[constants.q.PM] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.PN] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.PT] = [ constants.v.PT, constants.v.EN ], _locales[constants.q.PW] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.PY] = [ constants.v.ES, constants.v.EN ], _locales[constants.q.QA] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH, constants.v.AR ], 
+            _locales[constants.q.RE] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.RO] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.RS] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.RU] = [ constants.v.RU, constants.v.EN ], _locales[constants.q.RW] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.SA] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.SB] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.SC] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.SE] = [ constants.v.SV, constants.v.EN ], _locales[constants.q.SG] = [ constants.v.EN ], 
+            _locales[constants.q.SH] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.SI] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.SJ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.SK] = [ constants.v.SK, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.SL] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.SM] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.SN] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.SO] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.SR] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.ST] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.SV] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
+            _locales[constants.q.SZ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.TC] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.TD] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.TG] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.TH] = [ constants.v.TH, constants.v.EN ], _locales[constants.q.TJ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.TM] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.TN] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.TO] = [ constants.v.EN ], _locales[constants.q.TR] = [ constants.v.TR, constants.v.EN ], 
+            _locales[constants.q.TT] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.TV] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.TW] = [ constants.v.ZH, constants.v.EN ], _locales[constants.q.TZ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.UA] = [ constants.v.EN, constants.v.RU, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.UG] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.US] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.UY] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
+            _locales[constants.q.VA] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.VC] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.VE] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
+            _locales[constants.q.VG] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.VN] = [ constants.v.EN ], _locales[constants.q.VU] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.WF] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.WS] = [ constants.v.EN ], _locales[constants.q.YE] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.YT] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.ZA] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.ZM] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
+            _locales[constants.q.ZW] = [ constants.v.EN ], _locales)
         };
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return config;
@@ -2692,7 +2496,7 @@
     },
     "./src/constants/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var _CONTEXT_TYPE, BUTTON_STYLE_OPTIONS = {
+        var _CONTEXT_TYPE, _LANG_TO_DEFAULT_COUN, BUTTON_STYLE_OPTIONS = {
             LABEL: "label",
             SIZE: "size",
             SHAPE: "shape",
@@ -2717,6 +2521,7 @@
             ELV: "elv",
             BANCONTACT: "bancontact",
             GIROPAY: "giropay",
+            SOFORT: "sofort",
             EPS: "eps",
             MYBANK: "mybank"
         }, BUTTON_COLOR = {
@@ -2762,6 +2567,7 @@
             ELV: "elv",
             BANCONTACT: "bancontact",
             GIROPAY: "giropay",
+            SOFORT: "sofort",
             EPS: "eps",
             MYBANK: "mybank"
         }, CHECKOUT_OVERLAY_COLOR = {
@@ -2776,6 +2582,7 @@
             ELV: "elv",
             BANCONTACT: "bancontact",
             GIROPAY: "giropay",
+            SOFORT: "sofort",
             EPS: "eps",
             MYBANK: "mybank"
         }, CARD = {
@@ -2835,17 +2642,7 @@
         }, PLATFORM = {
             DESKTOP: "desktop",
             MOBILE: "mobile"
-        };
-        function _defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var _LANG_TO_DEFAULT_COUN, FPTI = {
+        }, FPTI = {
             KEY: {
                 FEED: "feed_name",
                 STATE: "state_name",
@@ -2883,8 +2680,8 @@
             },
             CONTEXT_TYPE: (_CONTEXT_TYPE = {
                 BUTTON_SESSION_ID: "button_session_id"
-            }, _defineProperty(_CONTEXT_TYPE, PAYMENT_TYPE.PAY_ID, "Pay-ID"), _defineProperty(_CONTEXT_TYPE, PAYMENT_TYPE.EC_TOKEN, "EC-Token"), 
-            _defineProperty(_CONTEXT_TYPE, PAYMENT_TYPE.BA_TOKEN, "EC-Token"), _CONTEXT_TYPE),
+            }, _CONTEXT_TYPE[PAYMENT_TYPE.PAY_ID] = "Pay-ID", _CONTEXT_TYPE[PAYMENT_TYPE.EC_TOKEN] = "EC-Token", 
+            _CONTEXT_TYPE[PAYMENT_TYPE.BA_TOKEN] = "EC-Token", _CONTEXT_TYPE),
             FEED: {
                 CHECKOUTJS: "checkoutjs"
             },
@@ -2912,17 +2709,7 @@
                 PPTM_LOADED: "process_pptm_loaded",
                 PXP: "process_pxp_check"
             }
-        };
-        function country__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var COUNTRY = {
+        }, COUNTRY = {
             AD: "AD",
             AE: "AE",
             AG: "AG",
@@ -3153,19 +2940,19 @@
             TH: "th",
             TR: "tr",
             ZH: "zh"
-        }, LANG_TO_DEFAULT_COUNTRY = (country__defineProperty(_LANG_TO_DEFAULT_COUN = {}, LANG.AR, COUNTRY.SA), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.CS, COUNTRY.CZ), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.DA, COUNTRY.DK), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.DE, COUNTRY.DE), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.EL, COUNTRY.GR), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.EN, COUNTRY.US), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.ES, COUNTRY.ES), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.FI, COUNTRY.FI), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.FR, COUNTRY.FR), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.HE, COUNTRY.IL), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.HU, COUNTRY.HU), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.ID, COUNTRY.ID), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.IT, COUNTRY.IT), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.JA, COUNTRY.JP), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.KO, COUNTRY.KR), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.NL, COUNTRY.NL), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.NO, COUNTRY.NO), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.PL, COUNTRY.PL), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.PT, COUNTRY.PT), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.RU, COUNTRY.RU), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.SK, COUNTRY.SK), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.SV, COUNTRY.SE), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.TH, COUNTRY.TH), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.TR, COUNTRY.TR), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.ZH, COUNTRY.CN), 
+        }, LANG_TO_DEFAULT_COUNTRY = ((_LANG_TO_DEFAULT_COUN = {})[LANG.AR] = COUNTRY.SA, 
+        _LANG_TO_DEFAULT_COUN[LANG.CS] = COUNTRY.CZ, _LANG_TO_DEFAULT_COUN[LANG.DA] = COUNTRY.DK, 
+        _LANG_TO_DEFAULT_COUN[LANG.DE] = COUNTRY.DE, _LANG_TO_DEFAULT_COUN[LANG.EL] = COUNTRY.GR, 
+        _LANG_TO_DEFAULT_COUN[LANG.EN] = COUNTRY.US, _LANG_TO_DEFAULT_COUN[LANG.ES] = COUNTRY.ES, 
+        _LANG_TO_DEFAULT_COUN[LANG.FI] = COUNTRY.FI, _LANG_TO_DEFAULT_COUN[LANG.FR] = COUNTRY.FR, 
+        _LANG_TO_DEFAULT_COUN[LANG.HE] = COUNTRY.IL, _LANG_TO_DEFAULT_COUN[LANG.HU] = COUNTRY.HU, 
+        _LANG_TO_DEFAULT_COUN[LANG.ID] = COUNTRY.ID, _LANG_TO_DEFAULT_COUN[LANG.IT] = COUNTRY.IT, 
+        _LANG_TO_DEFAULT_COUN[LANG.JA] = COUNTRY.JP, _LANG_TO_DEFAULT_COUN[LANG.KO] = COUNTRY.KR, 
+        _LANG_TO_DEFAULT_COUN[LANG.NL] = COUNTRY.NL, _LANG_TO_DEFAULT_COUN[LANG.NO] = COUNTRY.NO, 
+        _LANG_TO_DEFAULT_COUN[LANG.PL] = COUNTRY.PL, _LANG_TO_DEFAULT_COUN[LANG.PT] = COUNTRY.PT, 
+        _LANG_TO_DEFAULT_COUN[LANG.RU] = COUNTRY.RU, _LANG_TO_DEFAULT_COUN[LANG.SK] = COUNTRY.SK, 
+        _LANG_TO_DEFAULT_COUN[LANG.SV] = COUNTRY.SE, _LANG_TO_DEFAULT_COUN[LANG.TH] = COUNTRY.TH, 
+        _LANG_TO_DEFAULT_COUN[LANG.TR] = COUNTRY.TR, _LANG_TO_DEFAULT_COUN[LANG.ZH] = COUNTRY.CN, 
         _LANG_TO_DEFAULT_COUN), ALLOWED_INSTALLMENT_COUNTRIES = [ COUNTRY.BR, COUNTRY.MX ], ALLOWED_INSTALLMENT_PERIOD = {
             BR: [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
             MX: [ 3, 6, 9, 12 ]
@@ -3400,6 +3187,12 @@
     },
     "./src/resources/fundingLogos/pp_white.svg": function(module, exports) {
         module.exports = '<svg width="24" height="32" viewBox="0 0 24 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <path fill="#ffffff" opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 6.378 28.938 C 6.285 29.238 6.659 29.638 6.94 29.638 L 11.153 29.638 C 11.621 29.638 11.995 29.238 12.089 28.739 L 12.182 28.539 L 12.931 23.341 L 13.025 23.041 C 13.119 22.441 13.493 22.141 13.961 22.141 L 14.616 22.141 C 18.642 22.141 21.731 20.342 22.668 15.443 C 23.042 13.344 22.855 11.545 21.825 10.345 C 21.451 10.046 21.076 9.646 20.702 9.446 L 20.702 9.446"></path>\n    <path fill="#ffffff" opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 7.876 18.642 C 8.063 18.043 8.438 17.643 9.093 17.643 L 11.433 17.643 C 16.021 17.643 19.578 15.643 20.608 9.946 C 20.608 9.746 20.608 9.546 20.702 9.446"></path>\n    <path fill="#ffffff" d="M 9.28 9.446 C 9.28 9.146 9.468 8.846 9.842 8.646 C 9.936 8.646 10.123 8.546 10.216 8.546 L 16.489 8.546 C 17.238 8.546 17.893 8.646 18.548 8.746 C 18.736 8.746 18.829 8.746 19.11 8.846 C 19.204 8.946 19.391 8.946 19.578 9.046 C 19.672 9.046 19.672 9.046 19.859 9.146 C 20.14 9.246 20.421 9.346 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.648 C 18.361 3.248 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 3.048 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 9.28 9.446 Z"></path>\n    <g transform="matrix(0.497737, 0, 0, 0.52612, 1.10144, 0.638654)" opacity="0.2">\n        <path fill="#231f20" d="M39.3 16.7c0.9 0.5 1.7 1.1 2.3 1.8 1 1.1 1.6 2.5 1.9 4.1 0.3-3.2-0.2-5.8-1.9-7.8-0.6-0.7-1.3-1.2-2.1-1.7C39.5 14.2 39.5 15.4 39.3 16.7z"></path>\n        <path fill="#231f20" d="M0.4 45.2L6.7 5.6C6.8 4.5 7.8 3.7 8.9 3.7h16c5.5 0 9.8 1.2 12.2 3.9 1.2 1.4 1.9 3 2.2 4.8 0.4-3.6-0.2-6.1-2.2-8.4C34.7 1.2 30.4 0 24.9 0H8.9c-1.1 0-2.1 0.8-2.3 1.9L0 44.1C0 44.5 0.1 44.9 0.4 45.2z"></path>\n        <path fill="#231f20" d="M10.7 49.4l-0.1 0.6c-0.1 0.4 0.1 0.8 0.4 1.1l0.3-1.7H10.7z"></path>\n    </g>\n</svg>\n';
+    },
+    "./src/resources/fundingLogos/sofort.svg": function(module, exports) {
+        module.exports = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="100" height="32" viewBox="0 0 100 32" version="1.1">\n  <g transform="matrix(0.12382426,0,0,0.09880762,10.00356,-24.608421)">\n    <path fill="#ee7f00" d="m 186.20187,287.23124 c -11.04188,0 -21.74936,2.53772 -31.80665,7.27344 -14.36174,6.80251 -27.39036,18.14583 -38.02539,33.19921 -6.90828,9.7725 -12.82318,21.10027 -17.453117,33.76953 -8.73096,23.91455 -8.63328,43.31253 0.29297,56.09571 5.061197,7.22563 15.582517,15.8584 36.974607,15.88281 h 0.082 c 38.96795,0 68.05641,-25.54199 86.47851,-75.91797 4.8659,-13.32835 11.28625,-38.20367 -0.44726,-54.99023 -7.0873,-10.1468 -19.21149,-15.29623 -36.0957,-15.3125 z m 235.12695,0 c -11.03374,0 -21.74968,2.53772 -31.79883,7.27344 -14.36989,6.80251 -27.38841,18.14583 -38.02344,33.19921 -6.91642,9.7725 -12.82514,21.10027 -17.45507,33.76953 -8.73911,23.91455 -8.63361,43.31253 0.30078,56.09571 5.05305,7.22563 15.56624,15.8584 36.97461,15.88281 h 0.0664 c 38.97609,0 68.07269,-25.54199 86.47852,-75.91797 4.88217,-13.32835 11.28592,-38.20367 -0.43946,-54.99023 -7.09543,-10.1468 -19.2193,-15.29623 -36.10351,-15.3125 z m -360.273437,2.02539 c -12.82386,0 -25.28139,-10e-4 -36.44531,5.66211 -11.15579,5.66334 -21.0100901,16.99838 -28.5937501,39.66797 -1.64366,4.87405 -2.51304,9.07338 -2.62695,12.71875 -0.11388,3.6535 0.52101,6.76142 1.90429,9.46289 1.70876,3.29547 4.47537996,6.39584 7.9336,9.00781 3.46635,2.6201 7.6070101,4.74464 12.0742201,6.10352 0.17087,0.0488 2.51533,0.71559 5.36328,1.52929 2.83166,0.8137 6.14285,1.78915 8.24218,2.42383 1.22868,0.3743 2.57828,0.86305 3.79883,1.60352 1.22868,0.72419 2.3279,1.70004 3.01953,3.05078 0.45568,0.89506 0.7002,1.88002 0.72461,2.92968 0.0325,1.05781 -0.14751,2.19808 -0.5625,3.40235 -1.04152,3.07577 -2.62018,5.06103 -5.63086,6.27344 -2.99441,1.2124 -7.41232,1.60156 -14.11718,1.65039 h -83.69727 l -13.23047,36.34765 H 8.7995229 c 8.4299001,0 23.8411001,10e-4 38.6503901,-6.29687 14.80928,-6.28988 29.01803,-18.86166 35.03125,-44.0293 2.26208,-9.45516 1.5617,-17.16093 -2.14062,-23.21484 -3.7186,-6.04577 -10.43974,-10.43885 -20.22852,-13.2461 0,0 -2.18816,-0.63649 -4.76758,-1.37695 -2.56315,-0.74046 -5.5334,-1.58599 -7.04687,-2.02539 -2.50619,-0.71605 -4.43505,-2.16462 -5.57422,-4.01172 -1.13104,-1.83895 -1.4729,-4.07678 -0.83008,-6.36328 0.67536,-2.37599 2.30305,-4.27198 4.64649,-5.58203 2.35972,-1.30193 5.45164,-2.01758 9.06445,-2.01758 h 52.076167 c 0.36616,-0.5289 0.70025,-1.10587 1.06641,-1.63477 9.51211,-13.45855 21.02637,-24.34571 33.63867,-32.03515 z m 234.068357,0 c -23.17409,0 -40.4252,11.72452 -48.57031,33.66992 l -39.36719,108.16406 h 43.12695 l 20.22852,-55.59961 38.11328,0.0254 10.8457,-29.78125 -37.99023,-0.0254 6.11914,-17.24218 c 1.26936,-3.09205 4.32023,-5.54883 8.7793,-5.54883 2.48177,0 30.46379,0.008 44.93945,0.0156 0.37431,-0.53703 0.70806,-1.11368 1.07422,-1.64258 9.51211,-13.45855 22.9795,-24.34571 35.5918,-32.03515 h -82.89063 z m 200.07227,0.0781 -51.64649,141.84375 h 43.86719 l 18.77148,-49.92773 c 0.91948,2.05865 11.99414,49.92773 11.99414,49.92773 h 46.1211 c 0,0 -8.38882,-35.17566 -14.55664,-49.38281 -1.5867,-3.6535 -3.23988,-7.74621 -5.45313,-11.17187 13.02729,-4.8415 31.90499,-15.23255 39.72461,-36.29102 4.80081,-12.94591 4.52535,-23.41082 -0.8125,-31.08398 -6.4689,-9.31684 -19.6345,-13.88965 -40.26172,-13.91407 z m 89.97656,0.002 c 2.77471,2.19698 5.16659,4.70219 7.16015,7.5664 5.10188,7.35583 7.05422,16.09667 5.89063,26.11328 h 26.12109 l -39.36718,108.19727 h 39.33398 l 39.39063,-108.19727 h 50.53906 l 12.26172,-33.67968 z m -61.07422,29.2832 h 7.24219 c 13.23883,0.009 18.17683,3.88144 13.69336,15.96484 -4.20682,11.34294 -11.77401,18.34961 -26.16016,18.34961 h -0.0566 l -7.44531,-0.008 12.72656,-34.30664 z m -348.24609,0.70312 h 0.008 c 13.47481,0.0163 16.55966,7.82841 4.72851,40.19727 h -0.002 c -12.15664,33.27207 -20.97632,41.64453 -34.25586,41.64453 h -0.0254 c -12.93777,-0.008 -17.47695,-8.19503 -5.36914,-41.3125 9.04018,-24.72011 20.74955,-40.5293 34.91602,-40.5293 z m 235.12695,0 h 0.0156 c 13.46668,0.0163 16.55804,7.82841 4.71875,40.19727 -12.1485,33.27207 -20.97664,41.64453 -34.24804,41.64453 h -0.0312 c -12.94592,-0.008 -17.46296,-8.19503 -5.36328,-41.3125 9.03203,-24.72011 20.74987,-40.5293 34.9082,-40.5293 z" />\n    <path fill="#383a41" \n       d="m -38.137977,446.12186 c -2.75844,0 -4.8257,0.50371 -6.20898,1.48828 -1.37515,1.00899 -2.53105,2.79168 -3.4668,5.3711 -0.9032,2.47364 -1.0406,4.18958 -0.41406,5.16601 0.62655,0.98458 2.32587,1.47266 5.125,1.47266 2.79097,0 4.87517,-0.50404 6.24219,-1.5293 1.36701,-1.01712 2.51411,-2.79134 3.43359,-5.33008 0.91134,-2.50618 1.06568,-4.23092 0.44726,-5.19921 -0.60213,-0.96017 -2.32654,-1.43946 -5.1582,-1.43946 z m 23.7832,0 c -2.79912,0 -4.87354,0.50371 -6.23242,1.48828 -1.36701,1.00899 -2.51347,2.79168 -3.44922,5.3711 -0.89506,2.47364 -1.04157,4.18958 -0.43945,5.16601 0.61028,0.98458 2.30244,1.47266 5.10156,1.47266 2.79098,0 4.8742,-0.50404 6.26563,-1.5293 1.38329,-1.01712 2.53723,-2.79134 3.4648399,-5.33008 0.91134,-2.50618 1.05038,-4.23092 0.42383,-5.19921 -0.63469,-0.96017 -2.3437899,-1.43946 -5.1347699,-1.43946 z m 443.980467,18.45117 c -3.23851,0 -6.44312,0.41613 -9.63281,1.2461 -3.1897,0.83811 -6.15269,2.09885 -8.88672,3.7832 -2.74216,1.69249 -5.19007,3.80827 -7.3789,6.36328 -2.18072,2.56315 -3.88264,5.53364 -5.11133,8.90235 -1.07408,2.94558 -1.55302,5.45893 -1.44727,7.5664 0.0976,2.09934 0.56814,3.93087 1.40625,5.46875 0.82996,1.54603 1.93703,2.86408 3.32031,3.97071 1.37516,1.10662 2.83972,2.09842 4.41016,2.96093 1.57044,0.87066 3.10013,1.70941 4.60547,2.48243 1.48906,0.78114 2.77586,1.61079 3.8418,2.50585 1.08221,0.88693 1.8373,1.9038 2.29297,3.04297 0.45567,1.14732 0.39217,2.51453 -0.18555,4.10938 -0.50449,1.37515 -1.21334,2.62905 -2.13281,3.75195 -0.91948,1.13104 -2.00179,2.07529 -3.23047,2.83203 -1.24495,0.76488 -2.62032,1.35845 -4.15821,1.77344 -1.52975,0.41499 -3.16493,0.62695 -4.90625,0.62695 -2.65265,0 -4.87392,-0.30216 -6.66406,-0.90429 -1.79012,-0.594 -3.28662,-1.26019 -4.47461,-1.98438 -1.17986,-0.72419 -2.13224,-1.38419 -2.83203,-1.98633 -0.71605,-0.594 -1.32722,-0.89453 -1.83984,-0.89453 -0.35803,0 -0.70676,0.0974 -1.05664,0.30078 -0.34177,0.19529 -0.68397,0.52806 -1.01758,1 -0.33361,0.47195 -0.6755,1.0906 -1.02539,1.85547 -0.34989,0.75674 -0.73996,1.70946 -1.13867,2.82422 -0.61028,1.67622 -0.97761,2.95291 -1.09961,3.83984 -0.13019,0.88693 -0.0315,1.57103 0.26953,2.04297 0.2848,0.47195 0.87054,1.01636 1.71679,1.63477 0.83811,0.61027 1.96014,1.20417 3.35157,1.76562 1.39142,0.56145 3.05949,1.0427 4.99609,1.44141 1.94474,0.39871 4.13345,0.59375 6.56641,0.59375 3.5884,0 7.13782,-0.47245 10.63672,-1.4082 3.4989,-0.94389 6.7696,-2.35116 9.80468,-4.22266 3.04323,-1.86336 5.75195,-4.19112 8.15235,-6.99023 2.39227,-2.79098 4.26449,-6.03792 5.61523,-9.74024 1.02526,-2.83166 1.48888,-5.28803 1.375,-7.37109 -0.11392,-2.08307 -0.59483,-3.90547 -1.44922,-5.44336 -0.85437,-1.54603 -1.98455,-2.86375 -3.40039,-3.97852 -1.4077,-1.09849 -2.90613,-2.09223 -4.47656,-2.96289 -1.5623,-0.87065 -3.11478,-1.6915 -4.64453,-2.47265 -1.52975,-0.78115 -2.84844,-1.62089 -3.95508,-2.50782 -1.11476,-0.88693 -1.88874,-1.90379 -2.32812,-3.04297 -0.43127,-1.13917 -0.36648,-2.49824 0.20312,-4.06054 0.38244,-1.04967 0.9376,-2.04212 1.66992,-2.99414 0.71605,-0.94389 1.58608,-1.74879 2.61133,-2.41602 1.02526,-0.66723 2.18051,-1.19569 3.48242,-1.57812 1.30191,-0.38244 2.73458,-0.57032 4.29688,-0.57032 1.99355,0 3.74336,0.23607 5.23242,0.73243 1.48906,0.48821 2.75698,1.02449 3.80664,1.63476 1.04968,0.594 1.92,1.14753 2.60352,1.66016 0.69163,0.51263 1.23833,0.75781 1.6289,0.75781 0.40685,0 0.75687,-0.10647 1.07422,-0.32617 0.31734,-0.2197 0.62666,-0.56126 0.92774,-1.0332 0.29292,-0.47195 0.59249,-1.07464 0.91796,-1.79883 0.31734,-0.71606 0.67616,-1.61049 1.0586,-2.66016 0.34176,-0.94389 0.60972,-1.74064 0.79687,-2.36719 0.20343,-0.64282 0.3255,-1.16509 0.39063,-1.58007 0.057,-0.41499 0.0735,-0.75557 0.041,-1.00782 -0.0407,-0.25224 -0.1706,-0.56971 -0.39843,-0.92773 -0.22784,-0.35803 -0.80677,-0.8142 -1.73438,-1.35938 -0.93575,-0.54517 -2.04216,-1.03326 -3.33594,-1.47265 -1.28565,-0.43126 -2.72448,-0.77315 -4.29492,-1.02539 -1.58671,-0.26039 -3.20724,-0.38282 -4.86719,-0.38282 z m 225.99414,0.0469 c -5.54941,0 -10.88672,0.85374 -16.02929,2.5625 -5.14256,1.70876 -9.88631,4.15699 -14.25586,7.37109 -4.35328,3.21411 -8.25077,7.11192 -11.66016,11.70118 -3.40939,4.59738 -6.1601,9.77385 -8.26758,15.54296 -2.02611,5.58196 -3.03489,10.58619 -2.99414,14.98828 0.0163,4.41024 1.01751,8.1534 2.97852,11.2129 1.96915,3.06763 4.88103,5.40222 8.74609,7.02148 3.84879,1.61112 8.5922,2.41602 14.21485,2.41602 1.92846,0 3.8746,-0.0886 5.84375,-0.26758 1.96913,-0.18715 3.95339,-0.45643 5.95507,-0.81446 2.00984,-0.36616 3.96412,-0.79791 5.89258,-1.31054 1.92847,-0.51263 3.56333,-0.99095 4.91406,-1.46289 1.35074,-0.48008 2.36729,-1.12381 3.05079,-1.9375 0.66723,-0.8137 1.21294,-1.76512 1.60351,-2.85547 l 10.20313,-28.02344 c 0.26038,-0.73233 0.40757,-1.37605 0.42383,-1.9375 0.0244,-0.56145 -0.0563,-1.04074 -0.25977,-1.43945 -0.20343,-0.39871 -0.48866,-0.7012 -0.87109,-0.89649 -0.38244,-0.20342 -0.86369,-0.30859 -1.44141,-0.30859 h -23.7832 c -0.32548,0 -0.65109,0.10517 -0.97657,0.30859 -0.32547,0.19529 -0.65043,0.50462 -0.99218,0.92774 -0.32548,0.41498 -0.66801,0.96037 -1.00977,1.66015 -0.34175,0.68351 -0.70024,1.53789 -1.06641,2.54688 -0.71605,1.96914 -1.04168,3.35232 -0.97656,4.16601 0.0732,0.82184 0.43108,1.22852 1.08203,1.22852 h 13.33789 l -5.94922,16.32422 c -1.60298,0.72419 -3.25477,1.2686 -4.94726,1.63476 -1.68436,0.35803 -3.33484,0.54493 -4.92969,0.54493 -3.27105,0 -6.06377,-0.52846 -8.38281,-1.57813 -2.31904,-1.05781 -4.06689,-2.61257 -5.23047,-4.6875 -1.17172,-2.05865 -1.73398,-4.62995 -1.69336,-7.68945 0.0488,-3.06764 0.80488,-6.62292 2.26953,-10.64258 1.33448,-3.66977 3.08394,-7.01406 5.24024,-10.04102 2.14816,-3.02695 4.59768,-5.62267 7.33984,-7.78711 2.75029,-2.15629 5.72079,-3.82404 8.90234,-5.0039 3.1897,-1.17172 6.48514,-1.76563 9.89454,-1.76563 3.18968,0 5.87397,0.32561 8.05468,0.97657 2.16443,0.65095 3.98815,1.36631 5.46094,2.12304 1.45651,0.76488 2.59647,1.47209 3.41016,2.12305 0.8137,0.65096 1.45547,0.97656 1.93554,0.97656 0.31735,0 0.63449,-0.0886 0.93555,-0.26758 0.30921,-0.18715 0.61951,-0.50559 0.95313,-0.95312 0.32548,-0.45567 0.66704,-1.0652 1.0332,-1.83008 0.3743,-0.75674 0.74842,-1.66094 1.13086,-2.71875 0.6591,-1.81454 1.05019,-3.17981 1.16406,-4.10742 0.13019,-0.91948 0.0315,-1.63581 -0.26953,-2.14844 -0.3092,-0.51263 -0.9513,-1.10718 -1.92773,-1.79883 -0.98457,-0.6835 -2.3111,-1.33373 -3.9629,-1.92773 -1.64366,-0.60214 -3.64645,-1.1065 -5.99804,-1.52148 -2.35158,-0.42313 -5.05248,-0.63477 -8.09571,-0.63477 z m -444.88867,0.86914 c -1.85523,0 -3.311,0.0488 -4.37695,0.14648 -1.06594,0.0895 -1.89591,0.33371 -2.49805,0.73243 -0.60212,0.39871 -1.0163,0.96819 -1.24414,1.71679 -0.23597,0.74047 -0.42352,1.76612 -0.57812,3.07617 l -6.36328,61.4336 c -0.10573,0.87879 -0.0814,1.57071 0.0488,2.09961 0.13833,0.52076 0.51994,0.91865 1.14649,1.19531 0.62655,0.26852 1.54703,0.45542 2.76758,0.54492 1.22053,0.0895 2.88113,0.13086 4.98047,0.13086 2.00168,0 3.62028,-0.0414 4.86523,-0.13086 1.24496,-0.0895 2.28591,-0.28324 3.09961,-0.57617 0.80556,-0.28479 1.47336,-0.6918 1.99414,-1.2207 0.51262,-0.52077 1.01763,-1.20486 1.50586,-2.04297 l 26.9082,-44.62305 h 0.10547 l -4.9707,44.62305 c -0.13834,0.87879 -0.13834,1.57071 0,2.09961 0.13019,0.52076 0.51212,0.91865 1.13867,1.19531 0.62654,0.26852 1.54509,0.45542 2.76562,0.54492 1.22055,0.0895 2.86486,0.13086 4.93164,0.13086 1.84711,0 3.39242,-0.0414 4.6211,-0.13086 1.22869,-0.0895 2.27842,-0.2764 3.13281,-0.54492 0.86251,-0.27666 1.58699,-0.67455 2.14844,-1.19531 0.57772,-0.5289 1.13907,-1.22082 1.66797,-2.09961 l 38.46484,-61.27149 c 0.8137,-1.34259 1.39067,-2.40862 1.73242,-3.18164 0.33357,-0.78928 0.37335,-1.37472 0.1211,-1.77343 -0.26038,-0.39871 -0.80382,-0.64291 -1.65821,-0.73243 -0.86251,-0.0976 -2.09102,-0.14648 -3.67773,-0.14648 -1.70876,0 -3.05286,0.0488 -4.0293,0.14648 -0.97644,0.0895 -1.76537,0.25231 -2.35937,0.48829 -0.58587,0.23597 -1.05734,0.56157 -1.38281,0.97656 -0.33362,0.42312 -0.66704,0.91837 -0.98438,1.49609 l -31.92188,53.76953 h -0.10546 l 6.20898,-53.55664 c 0.11388,-0.71605 0.12856,-1.30279 0.0391,-1.74218 -0.0977,-0.42313 -0.38124,-0.76403 -0.86132,-1 -0.48008,-0.23598 -1.21369,-0.39161 -2.22266,-0.46485 -1.01713,-0.0732 -2.38369,-0.11328 -4.125,-0.11328 -1.63553,0 -2.96172,0.0488 -3.9707,0.14648 -1.01713,0.0895 -1.84741,0.25231 -2.49024,0.48829 -0.65096,0.23597 -1.17192,0.56874 -1.5625,1 -0.39871,0.43939 -0.78879,1.01017 -1.1875,1.68554 l -32.32812,53.55664 h -0.0566 l 7.27539,-53.93164 c 0.14646,-0.69164 0.1934,-1.22108 0.14453,-1.60351 -0.0407,-0.38244 -0.27546,-0.67386 -0.71485,-0.86914 -0.4394,-0.20343 -1.13881,-0.32585 -2.11523,-0.38282 -0.98458,-0.0569 -2.32053,-0.0898 -4.0293,-0.0898 z m 169.82813,0.004 c -1.38329,0 -2.5483,0.0563 -3.49219,0.16211 -0.94389,0.11391 -1.73283,0.26043 -2.35938,0.43945 -0.62653,0.17901 -1.11332,0.41605 -1.45507,0.70898 -0.34175,0.29293 -0.57847,0.61854 -0.7168,0.97657 l -24.19922,66.50195 c -0.13019,0.36616 -0.13832,0.6934 0,0.98633 0.12205,0.28479 0.42227,0.5202 0.90235,0.69922 0.48822,0.18715 1.16384,0.33367 2.05078,0.43945 0.87878,0.10578 2.01742,0.16211 3.39257,0.16211 1.41583,0 2.59681,-0.0563 3.54883,-0.16211 0.94389,-0.10578 1.72404,-0.2523 2.32617,-0.43945 0.61842,-0.17902 1.09151,-0.41443 1.44141,-0.69922 0.33361,-0.29293 0.56903,-0.62017 0.69922,-0.98633 l 24.20703,-66.50195 c 0.13894,-0.35803 0.138,-0.68364 0.008,-0.97657 -0.1302,-0.29293 -0.43788,-0.52997 -0.91797,-0.70898 -0.47193,-0.17901 -1.14725,-0.32554 -2.00976,-0.43945 -0.87066,-0.10578 -2.01809,-0.16211 -3.42578,-0.16211 z m -435.378907,0.002 c -1.41584,0 -2.59485,0.0583 -3.54687,0.16406 -0.94389,0.11392 -1.73479,0.26044 -2.36133,0.43945 -0.62655,0.17902 -1.10648,0.41411 -1.42383,0.70704 -0.32548,0.28479 -0.55308,0.6104 -0.69141,0.97656 l -15.58203,42.83203 c -1.63552,4.49974 -2.4245,8.42296 -2.35937,11.77539 0.0732,3.36057 0.90223,6.15849 2.52148,8.4043 1.61113,2.25394 3.97925,3.93048 7.0957,5.03711 3.10833,1.10662 6.88404,1.66015 11.31055,1.66015 4.71945,0 9.11284,-0.61897 13.18945,-1.84765 4.07663,-1.23682 7.77974,-3.02505 11.09961,-5.38477 3.32803,-2.35158 6.24968,-5.24067 8.75586,-8.6582 2.51433,-3.40939 4.55652,-7.26716 6.12696,-11.58789 l 15.3710899,-42.23047 c 0.13825,-0.36616 0.13731,-0.69177 0.0234,-0.97656 -0.10578,-0.29294 -0.39883,-0.52802 -0.87891,-0.70704 -0.48009,-0.17901 -1.1378,-0.32554 -1.99219,-0.43945 -0.84623,-0.10578 -1.9624099,-0.16406 -3.3456999,-0.16406 -1.37515,0 -2.54537,0.0583 -3.51367,0.16406 -0.96016,0.11392 -1.74292,0.26044 -2.36133,0.43945 -0.61026,0.17902 -1.07296,0.41411 -1.39844,0.70704 -0.32548,0.28479 -0.54525,0.6104 -0.68359,0.97656 l -15.42773,42.39453 c -0.89507,2.4655 -2.04315,4.6705 -3.41016,6.61523 -1.38329,1.94474 -2.92958,3.57049 -4.64648,4.88868 -1.71691,1.32632 -3.58685,2.32756 -5.6211,3.02734 -2.01796,0.6835 -4.1585,1.0332 -6.4043,1.0332 -2.2214,0 -4.10208,-0.33244 -5.65625,-1.00781 -1.54602,-0.67537 -2.71788,-1.67693 -3.52343,-3.01953 -0.79743,-1.3426 -1.17028,-3.0351 -1.11328,-5.09375 0.057,-2.04238 0.5942,-4.46651 1.61132,-7.26563 l 15.13477,-41.57226 c 0.13019,-0.36616 0.13019,-0.69177 0,-0.97656 -0.13019,-0.29294 -0.43204,-0.52802 -0.91211,-0.70704 -0.48009,-0.17901 -1.15505,-0.32554 -2.01758,-0.43945 -0.87065,-0.10578 -1.99399,-0.16406 -3.36914,-0.16406 z m 527.986327,0.002 c -1.41583,0 -2.59485,0.0563 -3.54688,0.16211 -0.94388,0.10578 -1.73282,0.25263 -2.35937,0.43164 -0.62655,0.18715 -1.10812,0.42419 -1.43359,0.70899 -0.32549,0.29293 -0.54527,0.61821 -0.6836,0.98437 l -15.58203,42.82422 c -1.63554,4.49974 -2.42481,8.43077 -2.35156,11.7832 0.057,3.36057 0.89473,6.1585 2.50586,8.4043 1.61925,2.25394 3.98087,3.93048 7.10547,5.03711 3.10831,1.10663 6.88208,1.66016 11.30859,1.66016 4.7113,0 9.10664,-0.61898 13.19141,-1.84766 4.07661,-1.23682 7.76963,-3.027 11.09765,-5.38672 3.32801,-2.35972 6.24154,-5.23872 8.75586,-8.65625 2.51433,-3.40939 4.54838,-7.2753 6.12696,-11.58789 l 15.37109,-42.23047 c 0.13825,-0.36616 0.13731,-0.69144 0.0234,-0.98437 -0.11393,-0.2848 -0.39687,-0.52184 -0.87696,-0.70899 -0.48007,-0.17901 -1.13976,-0.32586 -1.99414,-0.43164 -0.84625,-0.10577 -1.9686,-0.16211 -3.34375,-0.16211 -1.37515,0 -2.54732,0.0563 -3.51562,0.16211 -0.96016,0.10578 -1.74097,0.25263 -2.35938,0.43164 -0.61027,0.18715 -1.08305,0.42419 -1.40039,0.70899 -0.32547,0.29293 -0.54527,0.61821 -0.68359,0.98437 l -15.42774,42.39258 c -0.9032,2.4655 -2.04314,4.6705 -3.41015,6.61523 -1.38329,1.94474 -2.92763,3.5643 -4.64453,4.89063 -1.7169,1.32632 -3.58881,2.32789 -5.62305,3.01953 -2.02611,0.69164 -4.17445,1.04102 -6.41211,1.04102 -2.21325,0 -4.09233,-0.34058 -5.64648,-1.00782 -1.54603,-0.67536 -2.72569,-1.67693 -3.53125,-3.01953 -0.79743,-1.3426 -1.17255,-3.04323 -1.10743,-5.09375 0.0488,-2.04238 0.59422,-4.46651 1.61133,-7.26562 l 15.12695,-41.57227 c 0.13834,-0.36616 0.13021,-0.69144 0,-0.98437 -0.12205,-0.2848 -0.43234,-0.52184 -0.90429,-0.70899 -0.48008,-0.17901 -1.15507,-0.32586 -2.01758,-0.43164 -0.87066,-0.10577 -1.99399,-0.16211 -3.36914,-0.16211 z m 122.36719,0.10547 c -1.31005,0 -2.3927,0.0492 -3.27149,0.13867 -0.86252,0.0895 -1.58568,0.2432 -2.17969,0.46289 -0.58586,0.2197 -1.04202,0.47302 -1.35937,0.75782 -0.32547,0.29293 -0.55341,0.61821 -0.68359,0.98437 l -12.03516,33.03516 c -0.9032,2.50618 -1.82922,5.13447 -2.78125,7.88476 -0.95203,2.75844 -1.83897,5.41049 -2.64453,7.94922 h -0.0586 c -0.13018,-1.45652 -0.25881,-2.90318 -0.42968,-4.35156 -0.16274,-1.45652 -0.32685,-2.93021 -0.50586,-4.43555 -0.17901,-1.51347 -0.38936,-3.01028 -0.61719,-4.51562 -0.23597,-1.51348 -0.46357,-3.04317 -0.69141,-4.60547 l -4.3457,-25.73828 c -0.17087,-1.41584 -0.41573,-2.60234 -0.7168,-3.5625 -0.30921,-0.96016 -0.73249,-1.70873 -1.26953,-2.25391 -0.55331,-0.54518 -1.25303,-0.94567 -2.10742,-1.18164 -0.85437,-0.23598 -1.97641,-0.34961 -3.35156,-0.34961 h -7.67383 c -1.44839,0 -2.83056,0.4311 -4.14062,1.27734 -1.31005,0.85439 -2.27028,2.13304 -2.88868,3.8418 l -23.03711,63.28906 c -0.13825,0.35803 -0.16278,0.69145 -0.0977,0.98438 0.0895,0.28479 0.32622,0.52932 0.7168,0.72461 0.40685,0.20342 1.0014,0.35874 1.79882,0.47265 0.79743,0.10578 1.82244,0.16211 3.0918,0.16211 1.30191,0 2.39237,-0.0563 3.2793,-0.16211 0.87065,-0.11391 1.58698,-0.26923 2.14843,-0.47265 0.56145,-0.19529 0.99126,-0.43982 1.3086,-0.72461 0.29292,-0.29293 0.51433,-0.62635 0.64453,-0.98438 l 13.41797,-36.84375 c 1.00085,-2.75843 1.94411,-5.43588 2.80664,-8.02343 0.87879,-2.5957 1.71592,-5.20054 2.52148,-7.8125 h 0.10547 c 0.0488,2.14002 0.19599,4.34697 0.42383,6.61718 0.2197,2.26208 0.48799,4.37689 0.78906,6.3379 l 5.54102,32.92187 c 0.25225,1.81454 0.529,3.29637 0.83008,4.43555 0.31733,1.13917 0.74063,2.04956 1.26953,2.71679 0.54517,0.67537 1.22082,1.14034 2.05078,1.39258 0.83811,0.26039 1.8885,0.38086 3.16601,0.38086 h 6.08594 c 0.69164,0 1.40765,-0.0974 2.15625,-0.30078 0.74046,-0.19529 1.44084,-0.51991 2.0918,-0.95117 0.64281,-0.4394 1.2289,-0.98413 1.75781,-1.62696 0.5289,-0.65909 0.94308,-1.40017 1.24414,-2.23828 l 23.04297,-63.28906 c 0.13025,-0.36616 0.16341,-0.69144 0.082,-0.98437 -0.0732,-0.2848 -0.30148,-0.53812 -0.67578,-0.75782 -0.3743,-0.21969 -0.96006,-0.37337 -1.76562,-0.46289 -0.79743,-0.0895 -1.8143,-0.13867 -3.04297,-0.13867 z m -508.093747,0.21875 c -1.20428,0 -2.33575,0.35068 -3.41797,1.0586 -1.07408,0.71605 -1.89461,1.86218 -2.48047,3.45703 l -22.34375,61.38476 c -0.57769,1.60299 -0.58684,2.75107 -0.0254,3.45899 0.56145,0.70791 1.44092,1.0664 2.62891,1.0664 h 35.37109 c 0.33361,0 0.66769,-0.10712 1.01758,-0.31054 0.33362,-0.19529 0.68396,-0.50397 1.01757,-0.94336 0.34989,-0.4394 0.683,-1.00888 1.041017,-1.7168 0.34175,-0.70792 0.70741,-1.58705 1.08984,-2.63672 0.38244,-1.04967 0.65107,-1.93694 0.83008,-2.63672 0.16269,-0.70791 0.23532,-1.28521 0.21094,-1.72461 -0.0163,-0.43126 -0.1387,-0.74774 -0.33398,-0.95117 -0.19529,-0.18715 -0.46358,-0.29297 -0.78907,-0.29297 H 75.903033 l 7.22461,-19.86328 h 21.279287 c 0.32548,0 0.65825,-0.0882 1,-0.27539 0.33362,-0.17901 0.66833,-0.4815 1.00196,-0.89648 0.33361,-0.41499 0.6742,-0.96656 1.00781,-1.65821 0.34989,-0.69164 0.70741,-1.56361 1.08984,-2.61328 0.3743,-1.01712 0.64391,-1.87997 0.80664,-2.58789 0.17093,-0.69978 0.23563,-1.26047 0.20313,-1.68359 -0.0244,-0.41499 -0.13837,-0.73245 -0.3418,-0.92774 -0.20342,-0.19529 -0.45545,-0.30078 -0.78906,-0.30078 H 87.115923 l 6.24805,-17.19336 H 118.5085 c 0.33362,0 0.6589,-0.0974 0.98437,-0.30078 0.32549,-0.20342 0.65825,-0.51373 1,-0.95312 0.34175,-0.43126 0.67549,-1.00888 1.02539,-1.7168 0.34989,-0.69978 0.70773,-1.56263 1.08203,-2.58789 0.39872,-1.08222 0.67482,-1.97731 0.84571,-2.69336 0.1627,-0.69978 0.24476,-1.28457 0.22851,-1.74024 -0.0244,-0.44753 -0.12112,-0.76434 -0.3164,-0.94336 -0.17902,-0.179 -0.44015,-0.27734 -0.76563,-0.27734 H 87.440143 Z m 59.052727,0 c -1.19614,0 -2.33413,0.35068 -3.4082,1.0586 -1.07409,0.71605 -1.9047,1.86218 -2.48242,3.45703 l -23.27149,63.94921 c -0.13012,0.36617 -0.14708,0.69177 -0.0332,0.97657 0.11392,0.29293 0.40631,0.52802 0.89453,0.70703 0.47194,0.17901 1.15604,0.33368 2.04297,0.43945 0.87879,0.10578 2.00929,0.16211 3.39258,0.16211 1.4077,0 2.59712,-0.0563 3.54101,-0.16211 0.95203,-0.10578 1.73185,-0.26044 2.33399,-0.43945 0.61026,-0.17901 1.08989,-0.4141 1.43164,-0.70703 0.33361,-0.2848 0.57879,-0.6104 0.70898,-0.97657 l 9.76367,-26.83593 h 4.46875 c 1.51348,0 2.77293,0.23476 3.76563,0.71484 0.98457,0.47194 1.75919,1.16418 2.3125,2.0918 0.55331,0.92761 0.93427,2.0757 1.16211,3.45898 0.22784,1.37515 0.39155,2.95238 0.51367,4.73438 l 0.58594,15.7207 c -0.0163,0.4394 0.0313,0.81417 0.1289,1.11523 0.11392,0.30921 0.392,0.57034 0.84766,0.76563 0.44754,0.20342 1.1134,0.33301 1.99219,0.40625 0.88692,0.0732 2.08353,0.11328 3.61328,0.11328 1.81455,0 3.26381,-0.04 4.33789,-0.11328 1.08222,-0.0732 1.91902,-0.19599 2.5293,-0.375 0.61841,-0.18715 1.04299,-0.41507 1.28711,-0.68359 0.2441,-0.26852 0.43947,-0.60911 0.58593,-1.00782 0.1302,-0.35802 0.21871,-0.86336 0.26758,-1.49804 0.0488,-0.63469 0.0563,-1.64243 0.0156,-3.01758 l -0.88672,-13.875 c -0.0814,-1.66808 -0.24417,-3.16391 -0.48828,-4.49024 -0.23598,-1.31818 -0.58601,-2.50762 -1.02539,-3.54101 -0.4394,-1.0334 -0.98316,-1.91058 -1.6504,-2.63477 -0.65908,-0.73232 -1.41612,-1.34316 -2.29492,-1.84765 2.43295,-0.69165 4.70275,-1.60366 6.81836,-2.72657 2.1156,-1.1229 4.02723,-2.44876 5.74414,-3.97851 1.7169,-1.52161 3.22316,-3.24667 4.53321,-5.19141 1.30191,-1.9366 2.38356,-4.08559 3.24609,-6.44531 1.01712,-2.79912 1.49778,-5.27111 1.45703,-7.43555 -0.0569,-2.15629 -0.5851,-4.02103 -1.58594,-5.59961 -1.00085,-1.57857 -2.45858,-2.85559 -4.3789,-3.83203 -1.90405,-0.98457 -4.19924,-1.67551 -6.89258,-2.07422 -0.93575,-0.10578 -1.9842,-0.19629 -3.16406,-0.26953 -1.17173,-0.0732 -2.67831,-0.11328 -4.52539,-0.11328 h -18.23438 z m 171.94336,0 c -1.19614,0 -2.33607,0.35068 -3.41016,1.0586 -1.07407,0.71605 -1.90469,1.86218 -2.48242,3.45703 l -22.34375,61.38476 c -0.57778,1.60299 -0.59433,2.75107 -0.041,3.45899 0.56958,0.70791 1.4484,1.0664 2.64453,1.0664 h 35.37109 c 0.33361,0 0.66802,-0.10712 1.00977,-0.31054 0.3499,-0.19529 0.68396,-0.50397 1.01758,-0.94336 0.35802,-0.4394 0.69926,-1.00888 1.04101,-1.7168 0.34989,-0.70792 0.71522,-1.58705 1.09766,-2.63672 h 0.002 c 0.38244,-1.04967 0.65725,-1.93694 0.82813,-2.63672 0.15455,-0.70791 0.23757,-1.28521 0.20507,-1.72461 -0.0163,-0.43126 -0.13056,-0.74774 -0.33398,-0.95117 -0.19529,-0.18715 -0.46358,-0.29297 -0.78906,-0.29297 h -25.35547 l 7.22656,-19.86328 h 21.27734 c 0.33362,0 0.65825,-0.0882 1,-0.27539 0.34175,-0.17901 0.67615,-0.4815 1.00977,-0.89648 0.33361,-0.41499 0.66802,-0.96656 1.00977,-1.65821 0.34175,-0.69164 0.7074,-1.56361 1.08984,-2.61328 0.36616,-1.01712 0.63414,-1.87997 0.79687,-2.58789 0.17094,-0.69978 0.24344,-1.26047 0.21094,-1.68359 -0.0244,-0.41499 -0.14455,-0.73245 -0.33984,-0.92774 -0.20343,-0.19529 -0.46553,-0.30078 -0.79102,-0.30078 h -21.27734 l 6.25781,-17.19336 h 25.13477 c 0.32548,0 0.65857,-0.0974 0.99218,-0.30078 0.31735,-0.20342 0.65858,-0.51373 0.99219,-0.95312 0.34175,-0.43126 0.69177,-1.00888 1.02539,-1.7168 0.35803,-0.69978 0.7175,-1.56263 1.0918,-2.58789 0.39871,-1.08222 0.667,-1.97731 0.83789,-2.69336 0.17082,-0.69978 0.24281,-1.28457 0.22656,-1.74024 -0.0163,-0.44753 -0.12144,-0.76434 -0.30859,-0.94336 -0.18715,-0.179 -0.43983,-0.27734 -0.77344,-0.27734 H 318.4363 Z m -298.533197,0.004 c -1.19614,0 -2.33608,0.35067 -3.41016,1.05859 -1.07407,0.70792 -1.89656,1.85405 -2.48242,3.45703 l -22.3437501,61.38477 c -0.57768,1.59484 -0.59465,2.74325 -0.0332,3.45117 0.56145,0.70792 1.44058,1.06641 2.63671,1.06641 H 12.994833 c 2.82354,0 5.45996,-0.1716 7.88477,-0.52149 2.43295,-0.34175 4.79131,-0.87932 7.08594,-1.60351 2.29462,-0.72419 4.49246,-1.65054 6.59179,-2.77344 2.09934,-1.1229 4.02824,-2.46537 5.81836,-4.01953 1.782,-1.5623 3.38431,-3.37038 4.81641,-5.39649 1.43211,-2.03424 2.60429,-4.29459 3.51562,-6.80078 0.87066,-2.39227 1.29391,-4.55819 1.26954,-6.47851 -0.0326,-1.92033 -0.4083,-3.59524 -1.14063,-5.02735 -0.73232,-1.4321 -1.77394,-2.60428 -3.13281,-3.51562 -1.35886,-0.90321 -2.96086,-1.54627 -4.82422,-1.9043 1.76571,-0.57772 3.43379,-1.34322 4.99609,-2.28711 1.56229,-0.94389 2.97804,-2.03304 4.26368,-3.26172 1.27751,-1.23682 2.408,-2.60403 3.39257,-4.10937 0.98457,-1.50534 1.78166,-3.10765 2.40821,-4.81641 1.11476,-3.04323 1.53024,-5.69755 1.26172,-7.94336 -0.26852,-2.25394 -1.16426,-4.11737 -2.67774,-5.58203 -1.51347,-1.47279 -3.63708,-2.57073 -6.37109,-3.29492 -2.72589,-0.72419 -6.24796,-1.08203 -10.56055,-1.08203 z m 5.89844,10.71679 h 7.23437 c 2.21325,0 3.90607,0.20286 5.08594,0.60157 1.17986,0.39871 2.06583,0.96819 2.66797,1.71679 0.60213,0.74047 0.91117,1.67593 0.93554,2.79883 0.0244,1.13104 -0.21198,2.39276 -0.72461,3.8086 -0.46381,1.2775 -1.10622,2.47378 -1.91992,3.62109 -0.82184,1.13918 -1.78888,2.13976 -2.91992,2.99414 -1.1229,0.85438 -2.39308,1.52155 -3.80078,2.00977 -1.41583,0.48821 -3.14967,0.74023 -5.22461,0.74023 h -7.99024 z m 126.777337,0.21485 h 6.41992 c 1.63553,0 2.89822,0.0661 3.78516,0.17187 0.88692,0.10578 1.65144,0.251 2.31054,0.42188 2.15629,0.66723 3.47338,1.78178 3.94532,3.38476 0.47195,1.59485 0.27756,3.55597 -0.56055,5.875 -0.56145,1.52162 -1.30937,2.90609 -2.26953,4.13477 -0.95203,1.23682 -2.1089,2.30252 -3.44336,3.18945 -1.3426,0.88693 -2.85569,1.57005 -4.56445,2.06641 -1.70063,0.48822 -3.56342,0.73242 -5.59766,0.73242 h -7.29102 z M 15.336633,505.28232 h 8.48828 c 2.61197,0 4.64471,0.23508 6.10938,0.70703 1.45651,0.47194 2.56421,1.13911 3.30469,2.00977 0.72418,0.87065 1.12987,1.95264 1.20312,3.23828 0.0814,1.28564 -0.17748,2.74337 -0.77148,4.3789 -0.56959,1.57044 -1.35073,2.95361 -2.35157,4.16602 -1.01712,1.21241 -2.16521,2.22927 -3.45898,3.04297 -1.29379,0.82183 -2.70137,1.43234 -4.21485,1.85547 -1.51347,0.42312 -3.26262,0.61718 -5.24804,0.61718 H 8.0553829 Z" />\n  </g>\n</svg>\n';
+    },
+    "./src/resources/fundingLogos/sofort_white.svg": function(module, exports) {
+        module.exports = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="100" height="32" viewBox="0 0 100 32" version="1.1">\n  <g transform="matrix(0.12382426,0,0,0.09880762,10.00356,-24.608421)">\n    <path fill="#ffffff" d="m 186.20187,287.23124 c -11.04188,0 -21.74936,2.53772 -31.80665,7.27344 -14.36174,6.80251 -27.39036,18.14583 -38.02539,33.19921 -6.90828,9.7725 -12.82318,21.10027 -17.453117,33.76953 -8.73096,23.91455 -8.63328,43.31253 0.29297,56.09571 5.061197,7.22563 15.582517,15.8584 36.974607,15.88281 h 0.082 c 38.96795,0 68.05641,-25.54199 86.47851,-75.91797 4.8659,-13.32835 11.28625,-38.20367 -0.44726,-54.99023 -7.0873,-10.1468 -19.21149,-15.29623 -36.0957,-15.3125 z m 235.12695,0 c -11.03374,0 -21.74968,2.53772 -31.79883,7.27344 -14.36989,6.80251 -27.38841,18.14583 -38.02344,33.19921 -6.91642,9.7725 -12.82514,21.10027 -17.45507,33.76953 -8.73911,23.91455 -8.63361,43.31253 0.30078,56.09571 5.05305,7.22563 15.56624,15.8584 36.97461,15.88281 h 0.0664 c 38.97609,0 68.07269,-25.54199 86.47852,-75.91797 4.88217,-13.32835 11.28592,-38.20367 -0.43946,-54.99023 -7.09543,-10.1468 -19.2193,-15.29623 -36.10351,-15.3125 z m -360.273437,2.02539 c -12.82386,0 -25.28139,-10e-4 -36.44531,5.66211 -11.15579,5.66334 -21.0100901,16.99838 -28.5937501,39.66797 -1.64366,4.87405 -2.51304,9.07338 -2.62695,12.71875 -0.11388,3.6535 0.52101,6.76142 1.90429,9.46289 1.70876,3.29547 4.47537996,6.39584 7.9336,9.00781 3.46635,2.6201 7.6070101,4.74464 12.0742201,6.10352 0.17087,0.0488 2.51533,0.71559 5.36328,1.52929 2.83166,0.8137 6.14285,1.78915 8.24218,2.42383 1.22868,0.3743 2.57828,0.86305 3.79883,1.60352 1.22868,0.72419 2.3279,1.70004 3.01953,3.05078 0.45568,0.89506 0.7002,1.88002 0.72461,2.92968 0.0325,1.05781 -0.14751,2.19808 -0.5625,3.40235 -1.04152,3.07577 -2.62018,5.06103 -5.63086,6.27344 -2.99441,1.2124 -7.41232,1.60156 -14.11718,1.65039 h -83.69727 l -13.23047,36.34765 H 8.7995229 c 8.4299001,0 23.8411001,10e-4 38.6503901,-6.29687 14.80928,-6.28988 29.01803,-18.86166 35.03125,-44.0293 2.26208,-9.45516 1.5617,-17.16093 -2.14062,-23.21484 -3.7186,-6.04577 -10.43974,-10.43885 -20.22852,-13.2461 0,0 -2.18816,-0.63649 -4.76758,-1.37695 -2.56315,-0.74046 -5.5334,-1.58599 -7.04687,-2.02539 -2.50619,-0.71605 -4.43505,-2.16462 -5.57422,-4.01172 -1.13104,-1.83895 -1.4729,-4.07678 -0.83008,-6.36328 0.67536,-2.37599 2.30305,-4.27198 4.64649,-5.58203 2.35972,-1.30193 5.45164,-2.01758 9.06445,-2.01758 h 52.076167 c 0.36616,-0.5289 0.70025,-1.10587 1.06641,-1.63477 9.51211,-13.45855 21.02637,-24.34571 33.63867,-32.03515 z m 234.068357,0 c -23.17409,0 -40.4252,11.72452 -48.57031,33.66992 l -39.36719,108.16406 h 43.12695 l 20.22852,-55.59961 38.11328,0.0254 10.8457,-29.78125 -37.99023,-0.0254 6.11914,-17.24218 c 1.26936,-3.09205 4.32023,-5.54883 8.7793,-5.54883 2.48177,0 30.46379,0.008 44.93945,0.0156 0.37431,-0.53703 0.70806,-1.11368 1.07422,-1.64258 9.51211,-13.45855 22.9795,-24.34571 35.5918,-32.03515 h -82.89063 z m 200.07227,0.0781 -51.64649,141.84375 h 43.86719 l 18.77148,-49.92773 c 0.91948,2.05865 11.99414,49.92773 11.99414,49.92773 h 46.1211 c 0,0 -8.38882,-35.17566 -14.55664,-49.38281 -1.5867,-3.6535 -3.23988,-7.74621 -5.45313,-11.17187 13.02729,-4.8415 31.90499,-15.23255 39.72461,-36.29102 4.80081,-12.94591 4.52535,-23.41082 -0.8125,-31.08398 -6.4689,-9.31684 -19.6345,-13.88965 -40.26172,-13.91407 z m 89.97656,0.002 c 2.77471,2.19698 5.16659,4.70219 7.16015,7.5664 5.10188,7.35583 7.05422,16.09667 5.89063,26.11328 h 26.12109 l -39.36718,108.19727 h 39.33398 l 39.39063,-108.19727 h 50.53906 l 12.26172,-33.67968 z m -61.07422,29.2832 h 7.24219 c 13.23883,0.009 18.17683,3.88144 13.69336,15.96484 -4.20682,11.34294 -11.77401,18.34961 -26.16016,18.34961 h -0.0566 l -7.44531,-0.008 12.72656,-34.30664 z m -348.24609,0.70312 h 0.008 c 13.47481,0.0163 16.55966,7.82841 4.72851,40.19727 h -0.002 c -12.15664,33.27207 -20.97632,41.64453 -34.25586,41.64453 h -0.0254 c -12.93777,-0.008 -17.47695,-8.19503 -5.36914,-41.3125 9.04018,-24.72011 20.74955,-40.5293 34.91602,-40.5293 z m 235.12695,0 h 0.0156 c 13.46668,0.0163 16.55804,7.82841 4.71875,40.19727 -12.1485,33.27207 -20.97664,41.64453 -34.24804,41.64453 h -0.0312 c -12.94592,-0.008 -17.46296,-8.19503 -5.36328,-41.3125 9.03203,-24.72011 20.74987,-40.5293 34.9082,-40.5293 z" />\n    <path fill="#ffffff" \n       d="m -38.137977,446.12186 c -2.75844,0 -4.8257,0.50371 -6.20898,1.48828 -1.37515,1.00899 -2.53105,2.79168 -3.4668,5.3711 -0.9032,2.47364 -1.0406,4.18958 -0.41406,5.16601 0.62655,0.98458 2.32587,1.47266 5.125,1.47266 2.79097,0 4.87517,-0.50404 6.24219,-1.5293 1.36701,-1.01712 2.51411,-2.79134 3.43359,-5.33008 0.91134,-2.50618 1.06568,-4.23092 0.44726,-5.19921 -0.60213,-0.96017 -2.32654,-1.43946 -5.1582,-1.43946 z m 23.7832,0 c -2.79912,0 -4.87354,0.50371 -6.23242,1.48828 -1.36701,1.00899 -2.51347,2.79168 -3.44922,5.3711 -0.89506,2.47364 -1.04157,4.18958 -0.43945,5.16601 0.61028,0.98458 2.30244,1.47266 5.10156,1.47266 2.79098,0 4.8742,-0.50404 6.26563,-1.5293 1.38329,-1.01712 2.53723,-2.79134 3.4648399,-5.33008 0.91134,-2.50618 1.05038,-4.23092 0.42383,-5.19921 -0.63469,-0.96017 -2.3437899,-1.43946 -5.1347699,-1.43946 z m 443.980467,18.45117 c -3.23851,0 -6.44312,0.41613 -9.63281,1.2461 -3.1897,0.83811 -6.15269,2.09885 -8.88672,3.7832 -2.74216,1.69249 -5.19007,3.80827 -7.3789,6.36328 -2.18072,2.56315 -3.88264,5.53364 -5.11133,8.90235 -1.07408,2.94558 -1.55302,5.45893 -1.44727,7.5664 0.0976,2.09934 0.56814,3.93087 1.40625,5.46875 0.82996,1.54603 1.93703,2.86408 3.32031,3.97071 1.37516,1.10662 2.83972,2.09842 4.41016,2.96093 1.57044,0.87066 3.10013,1.70941 4.60547,2.48243 1.48906,0.78114 2.77586,1.61079 3.8418,2.50585 1.08221,0.88693 1.8373,1.9038 2.29297,3.04297 0.45567,1.14732 0.39217,2.51453 -0.18555,4.10938 -0.50449,1.37515 -1.21334,2.62905 -2.13281,3.75195 -0.91948,1.13104 -2.00179,2.07529 -3.23047,2.83203 -1.24495,0.76488 -2.62032,1.35845 -4.15821,1.77344 -1.52975,0.41499 -3.16493,0.62695 -4.90625,0.62695 -2.65265,0 -4.87392,-0.30216 -6.66406,-0.90429 -1.79012,-0.594 -3.28662,-1.26019 -4.47461,-1.98438 -1.17986,-0.72419 -2.13224,-1.38419 -2.83203,-1.98633 -0.71605,-0.594 -1.32722,-0.89453 -1.83984,-0.89453 -0.35803,0 -0.70676,0.0974 -1.05664,0.30078 -0.34177,0.19529 -0.68397,0.52806 -1.01758,1 -0.33361,0.47195 -0.6755,1.0906 -1.02539,1.85547 -0.34989,0.75674 -0.73996,1.70946 -1.13867,2.82422 -0.61028,1.67622 -0.97761,2.95291 -1.09961,3.83984 -0.13019,0.88693 -0.0315,1.57103 0.26953,2.04297 0.2848,0.47195 0.87054,1.01636 1.71679,1.63477 0.83811,0.61027 1.96014,1.20417 3.35157,1.76562 1.39142,0.56145 3.05949,1.0427 4.99609,1.44141 1.94474,0.39871 4.13345,0.59375 6.56641,0.59375 3.5884,0 7.13782,-0.47245 10.63672,-1.4082 3.4989,-0.94389 6.7696,-2.35116 9.80468,-4.22266 3.04323,-1.86336 5.75195,-4.19112 8.15235,-6.99023 2.39227,-2.79098 4.26449,-6.03792 5.61523,-9.74024 1.02526,-2.83166 1.48888,-5.28803 1.375,-7.37109 -0.11392,-2.08307 -0.59483,-3.90547 -1.44922,-5.44336 -0.85437,-1.54603 -1.98455,-2.86375 -3.40039,-3.97852 -1.4077,-1.09849 -2.90613,-2.09223 -4.47656,-2.96289 -1.5623,-0.87065 -3.11478,-1.6915 -4.64453,-2.47265 -1.52975,-0.78115 -2.84844,-1.62089 -3.95508,-2.50782 -1.11476,-0.88693 -1.88874,-1.90379 -2.32812,-3.04297 -0.43127,-1.13917 -0.36648,-2.49824 0.20312,-4.06054 0.38244,-1.04967 0.9376,-2.04212 1.66992,-2.99414 0.71605,-0.94389 1.58608,-1.74879 2.61133,-2.41602 1.02526,-0.66723 2.18051,-1.19569 3.48242,-1.57812 1.30191,-0.38244 2.73458,-0.57032 4.29688,-0.57032 1.99355,0 3.74336,0.23607 5.23242,0.73243 1.48906,0.48821 2.75698,1.02449 3.80664,1.63476 1.04968,0.594 1.92,1.14753 2.60352,1.66016 0.69163,0.51263 1.23833,0.75781 1.6289,0.75781 0.40685,0 0.75687,-0.10647 1.07422,-0.32617 0.31734,-0.2197 0.62666,-0.56126 0.92774,-1.0332 0.29292,-0.47195 0.59249,-1.07464 0.91796,-1.79883 0.31734,-0.71606 0.67616,-1.61049 1.0586,-2.66016 0.34176,-0.94389 0.60972,-1.74064 0.79687,-2.36719 0.20343,-0.64282 0.3255,-1.16509 0.39063,-1.58007 0.057,-0.41499 0.0735,-0.75557 0.041,-1.00782 -0.0407,-0.25224 -0.1706,-0.56971 -0.39843,-0.92773 -0.22784,-0.35803 -0.80677,-0.8142 -1.73438,-1.35938 -0.93575,-0.54517 -2.04216,-1.03326 -3.33594,-1.47265 -1.28565,-0.43126 -2.72448,-0.77315 -4.29492,-1.02539 -1.58671,-0.26039 -3.20724,-0.38282 -4.86719,-0.38282 z m 225.99414,0.0469 c -5.54941,0 -10.88672,0.85374 -16.02929,2.5625 -5.14256,1.70876 -9.88631,4.15699 -14.25586,7.37109 -4.35328,3.21411 -8.25077,7.11192 -11.66016,11.70118 -3.40939,4.59738 -6.1601,9.77385 -8.26758,15.54296 -2.02611,5.58196 -3.03489,10.58619 -2.99414,14.98828 0.0163,4.41024 1.01751,8.1534 2.97852,11.2129 1.96915,3.06763 4.88103,5.40222 8.74609,7.02148 3.84879,1.61112 8.5922,2.41602 14.21485,2.41602 1.92846,0 3.8746,-0.0886 5.84375,-0.26758 1.96913,-0.18715 3.95339,-0.45643 5.95507,-0.81446 2.00984,-0.36616 3.96412,-0.79791 5.89258,-1.31054 1.92847,-0.51263 3.56333,-0.99095 4.91406,-1.46289 1.35074,-0.48008 2.36729,-1.12381 3.05079,-1.9375 0.66723,-0.8137 1.21294,-1.76512 1.60351,-2.85547 l 10.20313,-28.02344 c 0.26038,-0.73233 0.40757,-1.37605 0.42383,-1.9375 0.0244,-0.56145 -0.0563,-1.04074 -0.25977,-1.43945 -0.20343,-0.39871 -0.48866,-0.7012 -0.87109,-0.89649 -0.38244,-0.20342 -0.86369,-0.30859 -1.44141,-0.30859 h -23.7832 c -0.32548,0 -0.65109,0.10517 -0.97657,0.30859 -0.32547,0.19529 -0.65043,0.50462 -0.99218,0.92774 -0.32548,0.41498 -0.66801,0.96037 -1.00977,1.66015 -0.34175,0.68351 -0.70024,1.53789 -1.06641,2.54688 -0.71605,1.96914 -1.04168,3.35232 -0.97656,4.16601 0.0732,0.82184 0.43108,1.22852 1.08203,1.22852 h 13.33789 l -5.94922,16.32422 c -1.60298,0.72419 -3.25477,1.2686 -4.94726,1.63476 -1.68436,0.35803 -3.33484,0.54493 -4.92969,0.54493 -3.27105,0 -6.06377,-0.52846 -8.38281,-1.57813 -2.31904,-1.05781 -4.06689,-2.61257 -5.23047,-4.6875 -1.17172,-2.05865 -1.73398,-4.62995 -1.69336,-7.68945 0.0488,-3.06764 0.80488,-6.62292 2.26953,-10.64258 1.33448,-3.66977 3.08394,-7.01406 5.24024,-10.04102 2.14816,-3.02695 4.59768,-5.62267 7.33984,-7.78711 2.75029,-2.15629 5.72079,-3.82404 8.90234,-5.0039 3.1897,-1.17172 6.48514,-1.76563 9.89454,-1.76563 3.18968,0 5.87397,0.32561 8.05468,0.97657 2.16443,0.65095 3.98815,1.36631 5.46094,2.12304 1.45651,0.76488 2.59647,1.47209 3.41016,2.12305 0.8137,0.65096 1.45547,0.97656 1.93554,0.97656 0.31735,0 0.63449,-0.0886 0.93555,-0.26758 0.30921,-0.18715 0.61951,-0.50559 0.95313,-0.95312 0.32548,-0.45567 0.66704,-1.0652 1.0332,-1.83008 0.3743,-0.75674 0.74842,-1.66094 1.13086,-2.71875 0.6591,-1.81454 1.05019,-3.17981 1.16406,-4.10742 0.13019,-0.91948 0.0315,-1.63581 -0.26953,-2.14844 -0.3092,-0.51263 -0.9513,-1.10718 -1.92773,-1.79883 -0.98457,-0.6835 -2.3111,-1.33373 -3.9629,-1.92773 -1.64366,-0.60214 -3.64645,-1.1065 -5.99804,-1.52148 -2.35158,-0.42313 -5.05248,-0.63477 -8.09571,-0.63477 z m -444.88867,0.86914 c -1.85523,0 -3.311,0.0488 -4.37695,0.14648 -1.06594,0.0895 -1.89591,0.33371 -2.49805,0.73243 -0.60212,0.39871 -1.0163,0.96819 -1.24414,1.71679 -0.23597,0.74047 -0.42352,1.76612 -0.57812,3.07617 l -6.36328,61.4336 c -0.10573,0.87879 -0.0814,1.57071 0.0488,2.09961 0.13833,0.52076 0.51994,0.91865 1.14649,1.19531 0.62655,0.26852 1.54703,0.45542 2.76758,0.54492 1.22053,0.0895 2.88113,0.13086 4.98047,0.13086 2.00168,0 3.62028,-0.0414 4.86523,-0.13086 1.24496,-0.0895 2.28591,-0.28324 3.09961,-0.57617 0.80556,-0.28479 1.47336,-0.6918 1.99414,-1.2207 0.51262,-0.52077 1.01763,-1.20486 1.50586,-2.04297 l 26.9082,-44.62305 h 0.10547 l -4.9707,44.62305 c -0.13834,0.87879 -0.13834,1.57071 0,2.09961 0.13019,0.52076 0.51212,0.91865 1.13867,1.19531 0.62654,0.26852 1.54509,0.45542 2.76562,0.54492 1.22055,0.0895 2.86486,0.13086 4.93164,0.13086 1.84711,0 3.39242,-0.0414 4.6211,-0.13086 1.22869,-0.0895 2.27842,-0.2764 3.13281,-0.54492 0.86251,-0.27666 1.58699,-0.67455 2.14844,-1.19531 0.57772,-0.5289 1.13907,-1.22082 1.66797,-2.09961 l 38.46484,-61.27149 c 0.8137,-1.34259 1.39067,-2.40862 1.73242,-3.18164 0.33357,-0.78928 0.37335,-1.37472 0.1211,-1.77343 -0.26038,-0.39871 -0.80382,-0.64291 -1.65821,-0.73243 -0.86251,-0.0976 -2.09102,-0.14648 -3.67773,-0.14648 -1.70876,0 -3.05286,0.0488 -4.0293,0.14648 -0.97644,0.0895 -1.76537,0.25231 -2.35937,0.48829 -0.58587,0.23597 -1.05734,0.56157 -1.38281,0.97656 -0.33362,0.42312 -0.66704,0.91837 -0.98438,1.49609 l -31.92188,53.76953 h -0.10546 l 6.20898,-53.55664 c 0.11388,-0.71605 0.12856,-1.30279 0.0391,-1.74218 -0.0977,-0.42313 -0.38124,-0.76403 -0.86132,-1 -0.48008,-0.23598 -1.21369,-0.39161 -2.22266,-0.46485 -1.01713,-0.0732 -2.38369,-0.11328 -4.125,-0.11328 -1.63553,0 -2.96172,0.0488 -3.9707,0.14648 -1.01713,0.0895 -1.84741,0.25231 -2.49024,0.48829 -0.65096,0.23597 -1.17192,0.56874 -1.5625,1 -0.39871,0.43939 -0.78879,1.01017 -1.1875,1.68554 l -32.32812,53.55664 h -0.0566 l 7.27539,-53.93164 c 0.14646,-0.69164 0.1934,-1.22108 0.14453,-1.60351 -0.0407,-0.38244 -0.27546,-0.67386 -0.71485,-0.86914 -0.4394,-0.20343 -1.13881,-0.32585 -2.11523,-0.38282 -0.98458,-0.0569 -2.32053,-0.0898 -4.0293,-0.0898 z m 169.82813,0.004 c -1.38329,0 -2.5483,0.0563 -3.49219,0.16211 -0.94389,0.11391 -1.73283,0.26043 -2.35938,0.43945 -0.62653,0.17901 -1.11332,0.41605 -1.45507,0.70898 -0.34175,0.29293 -0.57847,0.61854 -0.7168,0.97657 l -24.19922,66.50195 c -0.13019,0.36616 -0.13832,0.6934 0,0.98633 0.12205,0.28479 0.42227,0.5202 0.90235,0.69922 0.48822,0.18715 1.16384,0.33367 2.05078,0.43945 0.87878,0.10578 2.01742,0.16211 3.39257,0.16211 1.41583,0 2.59681,-0.0563 3.54883,-0.16211 0.94389,-0.10578 1.72404,-0.2523 2.32617,-0.43945 0.61842,-0.17902 1.09151,-0.41443 1.44141,-0.69922 0.33361,-0.29293 0.56903,-0.62017 0.69922,-0.98633 l 24.20703,-66.50195 c 0.13894,-0.35803 0.138,-0.68364 0.008,-0.97657 -0.1302,-0.29293 -0.43788,-0.52997 -0.91797,-0.70898 -0.47193,-0.17901 -1.14725,-0.32554 -2.00976,-0.43945 -0.87066,-0.10578 -2.01809,-0.16211 -3.42578,-0.16211 z m -435.378907,0.002 c -1.41584,0 -2.59485,0.0583 -3.54687,0.16406 -0.94389,0.11392 -1.73479,0.26044 -2.36133,0.43945 -0.62655,0.17902 -1.10648,0.41411 -1.42383,0.70704 -0.32548,0.28479 -0.55308,0.6104 -0.69141,0.97656 l -15.58203,42.83203 c -1.63552,4.49974 -2.4245,8.42296 -2.35937,11.77539 0.0732,3.36057 0.90223,6.15849 2.52148,8.4043 1.61113,2.25394 3.97925,3.93048 7.0957,5.03711 3.10833,1.10662 6.88404,1.66015 11.31055,1.66015 4.71945,0 9.11284,-0.61897 13.18945,-1.84765 4.07663,-1.23682 7.77974,-3.02505 11.09961,-5.38477 3.32803,-2.35158 6.24968,-5.24067 8.75586,-8.6582 2.51433,-3.40939 4.55652,-7.26716 6.12696,-11.58789 l 15.3710899,-42.23047 c 0.13825,-0.36616 0.13731,-0.69177 0.0234,-0.97656 -0.10578,-0.29294 -0.39883,-0.52802 -0.87891,-0.70704 -0.48009,-0.17901 -1.1378,-0.32554 -1.99219,-0.43945 -0.84623,-0.10578 -1.9624099,-0.16406 -3.3456999,-0.16406 -1.37515,0 -2.54537,0.0583 -3.51367,0.16406 -0.96016,0.11392 -1.74292,0.26044 -2.36133,0.43945 -0.61026,0.17902 -1.07296,0.41411 -1.39844,0.70704 -0.32548,0.28479 -0.54525,0.6104 -0.68359,0.97656 l -15.42773,42.39453 c -0.89507,2.4655 -2.04315,4.6705 -3.41016,6.61523 -1.38329,1.94474 -2.92958,3.57049 -4.64648,4.88868 -1.71691,1.32632 -3.58685,2.32756 -5.6211,3.02734 -2.01796,0.6835 -4.1585,1.0332 -6.4043,1.0332 -2.2214,0 -4.10208,-0.33244 -5.65625,-1.00781 -1.54602,-0.67537 -2.71788,-1.67693 -3.52343,-3.01953 -0.79743,-1.3426 -1.17028,-3.0351 -1.11328,-5.09375 0.057,-2.04238 0.5942,-4.46651 1.61132,-7.26563 l 15.13477,-41.57226 c 0.13019,-0.36616 0.13019,-0.69177 0,-0.97656 -0.13019,-0.29294 -0.43204,-0.52802 -0.91211,-0.70704 -0.48009,-0.17901 -1.15505,-0.32554 -2.01758,-0.43945 -0.87065,-0.10578 -1.99399,-0.16406 -3.36914,-0.16406 z m 527.986327,0.002 c -1.41583,0 -2.59485,0.0563 -3.54688,0.16211 -0.94388,0.10578 -1.73282,0.25263 -2.35937,0.43164 -0.62655,0.18715 -1.10812,0.42419 -1.43359,0.70899 -0.32549,0.29293 -0.54527,0.61821 -0.6836,0.98437 l -15.58203,42.82422 c -1.63554,4.49974 -2.42481,8.43077 -2.35156,11.7832 0.057,3.36057 0.89473,6.1585 2.50586,8.4043 1.61925,2.25394 3.98087,3.93048 7.10547,5.03711 3.10831,1.10663 6.88208,1.66016 11.30859,1.66016 4.7113,0 9.10664,-0.61898 13.19141,-1.84766 4.07661,-1.23682 7.76963,-3.027 11.09765,-5.38672 3.32801,-2.35972 6.24154,-5.23872 8.75586,-8.65625 2.51433,-3.40939 4.54838,-7.2753 6.12696,-11.58789 l 15.37109,-42.23047 c 0.13825,-0.36616 0.13731,-0.69144 0.0234,-0.98437 -0.11393,-0.2848 -0.39687,-0.52184 -0.87696,-0.70899 -0.48007,-0.17901 -1.13976,-0.32586 -1.99414,-0.43164 -0.84625,-0.10577 -1.9686,-0.16211 -3.34375,-0.16211 -1.37515,0 -2.54732,0.0563 -3.51562,0.16211 -0.96016,0.10578 -1.74097,0.25263 -2.35938,0.43164 -0.61027,0.18715 -1.08305,0.42419 -1.40039,0.70899 -0.32547,0.29293 -0.54527,0.61821 -0.68359,0.98437 l -15.42774,42.39258 c -0.9032,2.4655 -2.04314,4.6705 -3.41015,6.61523 -1.38329,1.94474 -2.92763,3.5643 -4.64453,4.89063 -1.7169,1.32632 -3.58881,2.32789 -5.62305,3.01953 -2.02611,0.69164 -4.17445,1.04102 -6.41211,1.04102 -2.21325,0 -4.09233,-0.34058 -5.64648,-1.00782 -1.54603,-0.67536 -2.72569,-1.67693 -3.53125,-3.01953 -0.79743,-1.3426 -1.17255,-3.04323 -1.10743,-5.09375 0.0488,-2.04238 0.59422,-4.46651 1.61133,-7.26562 l 15.12695,-41.57227 c 0.13834,-0.36616 0.13021,-0.69144 0,-0.98437 -0.12205,-0.2848 -0.43234,-0.52184 -0.90429,-0.70899 -0.48008,-0.17901 -1.15507,-0.32586 -2.01758,-0.43164 -0.87066,-0.10577 -1.99399,-0.16211 -3.36914,-0.16211 z m 122.36719,0.10547 c -1.31005,0 -2.3927,0.0492 -3.27149,0.13867 -0.86252,0.0895 -1.58568,0.2432 -2.17969,0.46289 -0.58586,0.2197 -1.04202,0.47302 -1.35937,0.75782 -0.32547,0.29293 -0.55341,0.61821 -0.68359,0.98437 l -12.03516,33.03516 c -0.9032,2.50618 -1.82922,5.13447 -2.78125,7.88476 -0.95203,2.75844 -1.83897,5.41049 -2.64453,7.94922 h -0.0586 c -0.13018,-1.45652 -0.25881,-2.90318 -0.42968,-4.35156 -0.16274,-1.45652 -0.32685,-2.93021 -0.50586,-4.43555 -0.17901,-1.51347 -0.38936,-3.01028 -0.61719,-4.51562 -0.23597,-1.51348 -0.46357,-3.04317 -0.69141,-4.60547 l -4.3457,-25.73828 c -0.17087,-1.41584 -0.41573,-2.60234 -0.7168,-3.5625 -0.30921,-0.96016 -0.73249,-1.70873 -1.26953,-2.25391 -0.55331,-0.54518 -1.25303,-0.94567 -2.10742,-1.18164 -0.85437,-0.23598 -1.97641,-0.34961 -3.35156,-0.34961 h -7.67383 c -1.44839,0 -2.83056,0.4311 -4.14062,1.27734 -1.31005,0.85439 -2.27028,2.13304 -2.88868,3.8418 l -23.03711,63.28906 c -0.13825,0.35803 -0.16278,0.69145 -0.0977,0.98438 0.0895,0.28479 0.32622,0.52932 0.7168,0.72461 0.40685,0.20342 1.0014,0.35874 1.79882,0.47265 0.79743,0.10578 1.82244,0.16211 3.0918,0.16211 1.30191,0 2.39237,-0.0563 3.2793,-0.16211 0.87065,-0.11391 1.58698,-0.26923 2.14843,-0.47265 0.56145,-0.19529 0.99126,-0.43982 1.3086,-0.72461 0.29292,-0.29293 0.51433,-0.62635 0.64453,-0.98438 l 13.41797,-36.84375 c 1.00085,-2.75843 1.94411,-5.43588 2.80664,-8.02343 0.87879,-2.5957 1.71592,-5.20054 2.52148,-7.8125 h 0.10547 c 0.0488,2.14002 0.19599,4.34697 0.42383,6.61718 0.2197,2.26208 0.48799,4.37689 0.78906,6.3379 l 5.54102,32.92187 c 0.25225,1.81454 0.529,3.29637 0.83008,4.43555 0.31733,1.13917 0.74063,2.04956 1.26953,2.71679 0.54517,0.67537 1.22082,1.14034 2.05078,1.39258 0.83811,0.26039 1.8885,0.38086 3.16601,0.38086 h 6.08594 c 0.69164,0 1.40765,-0.0974 2.15625,-0.30078 0.74046,-0.19529 1.44084,-0.51991 2.0918,-0.95117 0.64281,-0.4394 1.2289,-0.98413 1.75781,-1.62696 0.5289,-0.65909 0.94308,-1.40017 1.24414,-2.23828 l 23.04297,-63.28906 c 0.13025,-0.36616 0.16341,-0.69144 0.082,-0.98437 -0.0732,-0.2848 -0.30148,-0.53812 -0.67578,-0.75782 -0.3743,-0.21969 -0.96006,-0.37337 -1.76562,-0.46289 -0.79743,-0.0895 -1.8143,-0.13867 -3.04297,-0.13867 z m -508.093747,0.21875 c -1.20428,0 -2.33575,0.35068 -3.41797,1.0586 -1.07408,0.71605 -1.89461,1.86218 -2.48047,3.45703 l -22.34375,61.38476 c -0.57769,1.60299 -0.58684,2.75107 -0.0254,3.45899 0.56145,0.70791 1.44092,1.0664 2.62891,1.0664 h 35.37109 c 0.33361,0 0.66769,-0.10712 1.01758,-0.31054 0.33362,-0.19529 0.68396,-0.50397 1.01757,-0.94336 0.34989,-0.4394 0.683,-1.00888 1.041017,-1.7168 0.34175,-0.70792 0.70741,-1.58705 1.08984,-2.63672 0.38244,-1.04967 0.65107,-1.93694 0.83008,-2.63672 0.16269,-0.70791 0.23532,-1.28521 0.21094,-1.72461 -0.0163,-0.43126 -0.1387,-0.74774 -0.33398,-0.95117 -0.19529,-0.18715 -0.46358,-0.29297 -0.78907,-0.29297 H 75.903033 l 7.22461,-19.86328 h 21.279287 c 0.32548,0 0.65825,-0.0882 1,-0.27539 0.33362,-0.17901 0.66833,-0.4815 1.00196,-0.89648 0.33361,-0.41499 0.6742,-0.96656 1.00781,-1.65821 0.34989,-0.69164 0.70741,-1.56361 1.08984,-2.61328 0.3743,-1.01712 0.64391,-1.87997 0.80664,-2.58789 0.17093,-0.69978 0.23563,-1.26047 0.20313,-1.68359 -0.0244,-0.41499 -0.13837,-0.73245 -0.3418,-0.92774 -0.20342,-0.19529 -0.45545,-0.30078 -0.78906,-0.30078 H 87.115923 l 6.24805,-17.19336 H 118.5085 c 0.33362,0 0.6589,-0.0974 0.98437,-0.30078 0.32549,-0.20342 0.65825,-0.51373 1,-0.95312 0.34175,-0.43126 0.67549,-1.00888 1.02539,-1.7168 0.34989,-0.69978 0.70773,-1.56263 1.08203,-2.58789 0.39872,-1.08222 0.67482,-1.97731 0.84571,-2.69336 0.1627,-0.69978 0.24476,-1.28457 0.22851,-1.74024 -0.0244,-0.44753 -0.12112,-0.76434 -0.3164,-0.94336 -0.17902,-0.179 -0.44015,-0.27734 -0.76563,-0.27734 H 87.440143 Z m 59.052727,0 c -1.19614,0 -2.33413,0.35068 -3.4082,1.0586 -1.07409,0.71605 -1.9047,1.86218 -2.48242,3.45703 l -23.27149,63.94921 c -0.13012,0.36617 -0.14708,0.69177 -0.0332,0.97657 0.11392,0.29293 0.40631,0.52802 0.89453,0.70703 0.47194,0.17901 1.15604,0.33368 2.04297,0.43945 0.87879,0.10578 2.00929,0.16211 3.39258,0.16211 1.4077,0 2.59712,-0.0563 3.54101,-0.16211 0.95203,-0.10578 1.73185,-0.26044 2.33399,-0.43945 0.61026,-0.17901 1.08989,-0.4141 1.43164,-0.70703 0.33361,-0.2848 0.57879,-0.6104 0.70898,-0.97657 l 9.76367,-26.83593 h 4.46875 c 1.51348,0 2.77293,0.23476 3.76563,0.71484 0.98457,0.47194 1.75919,1.16418 2.3125,2.0918 0.55331,0.92761 0.93427,2.0757 1.16211,3.45898 0.22784,1.37515 0.39155,2.95238 0.51367,4.73438 l 0.58594,15.7207 c -0.0163,0.4394 0.0313,0.81417 0.1289,1.11523 0.11392,0.30921 0.392,0.57034 0.84766,0.76563 0.44754,0.20342 1.1134,0.33301 1.99219,0.40625 0.88692,0.0732 2.08353,0.11328 3.61328,0.11328 1.81455,0 3.26381,-0.04 4.33789,-0.11328 1.08222,-0.0732 1.91902,-0.19599 2.5293,-0.375 0.61841,-0.18715 1.04299,-0.41507 1.28711,-0.68359 0.2441,-0.26852 0.43947,-0.60911 0.58593,-1.00782 0.1302,-0.35802 0.21871,-0.86336 0.26758,-1.49804 0.0488,-0.63469 0.0563,-1.64243 0.0156,-3.01758 l -0.88672,-13.875 c -0.0814,-1.66808 -0.24417,-3.16391 -0.48828,-4.49024 -0.23598,-1.31818 -0.58601,-2.50762 -1.02539,-3.54101 -0.4394,-1.0334 -0.98316,-1.91058 -1.6504,-2.63477 -0.65908,-0.73232 -1.41612,-1.34316 -2.29492,-1.84765 2.43295,-0.69165 4.70275,-1.60366 6.81836,-2.72657 2.1156,-1.1229 4.02723,-2.44876 5.74414,-3.97851 1.7169,-1.52161 3.22316,-3.24667 4.53321,-5.19141 1.30191,-1.9366 2.38356,-4.08559 3.24609,-6.44531 1.01712,-2.79912 1.49778,-5.27111 1.45703,-7.43555 -0.0569,-2.15629 -0.5851,-4.02103 -1.58594,-5.59961 -1.00085,-1.57857 -2.45858,-2.85559 -4.3789,-3.83203 -1.90405,-0.98457 -4.19924,-1.67551 -6.89258,-2.07422 -0.93575,-0.10578 -1.9842,-0.19629 -3.16406,-0.26953 -1.17173,-0.0732 -2.67831,-0.11328 -4.52539,-0.11328 h -18.23438 z m 171.94336,0 c -1.19614,0 -2.33607,0.35068 -3.41016,1.0586 -1.07407,0.71605 -1.90469,1.86218 -2.48242,3.45703 l -22.34375,61.38476 c -0.57778,1.60299 -0.59433,2.75107 -0.041,3.45899 0.56958,0.70791 1.4484,1.0664 2.64453,1.0664 h 35.37109 c 0.33361,0 0.66802,-0.10712 1.00977,-0.31054 0.3499,-0.19529 0.68396,-0.50397 1.01758,-0.94336 0.35802,-0.4394 0.69926,-1.00888 1.04101,-1.7168 0.34989,-0.70792 0.71522,-1.58705 1.09766,-2.63672 h 0.002 c 0.38244,-1.04967 0.65725,-1.93694 0.82813,-2.63672 0.15455,-0.70791 0.23757,-1.28521 0.20507,-1.72461 -0.0163,-0.43126 -0.13056,-0.74774 -0.33398,-0.95117 -0.19529,-0.18715 -0.46358,-0.29297 -0.78906,-0.29297 h -25.35547 l 7.22656,-19.86328 h 21.27734 c 0.33362,0 0.65825,-0.0882 1,-0.27539 0.34175,-0.17901 0.67615,-0.4815 1.00977,-0.89648 0.33361,-0.41499 0.66802,-0.96656 1.00977,-1.65821 0.34175,-0.69164 0.7074,-1.56361 1.08984,-2.61328 0.36616,-1.01712 0.63414,-1.87997 0.79687,-2.58789 0.17094,-0.69978 0.24344,-1.26047 0.21094,-1.68359 -0.0244,-0.41499 -0.14455,-0.73245 -0.33984,-0.92774 -0.20343,-0.19529 -0.46553,-0.30078 -0.79102,-0.30078 h -21.27734 l 6.25781,-17.19336 h 25.13477 c 0.32548,0 0.65857,-0.0974 0.99218,-0.30078 0.31735,-0.20342 0.65858,-0.51373 0.99219,-0.95312 0.34175,-0.43126 0.69177,-1.00888 1.02539,-1.7168 0.35803,-0.69978 0.7175,-1.56263 1.0918,-2.58789 0.39871,-1.08222 0.667,-1.97731 0.83789,-2.69336 0.17082,-0.69978 0.24281,-1.28457 0.22656,-1.74024 -0.0163,-0.44753 -0.12144,-0.76434 -0.30859,-0.94336 -0.18715,-0.179 -0.43983,-0.27734 -0.77344,-0.27734 H 318.4363 Z m -298.533197,0.004 c -1.19614,0 -2.33608,0.35067 -3.41016,1.05859 -1.07407,0.70792 -1.89656,1.85405 -2.48242,3.45703 l -22.3437501,61.38477 c -0.57768,1.59484 -0.59465,2.74325 -0.0332,3.45117 0.56145,0.70792 1.44058,1.06641 2.63671,1.06641 H 12.994833 c 2.82354,0 5.45996,-0.1716 7.88477,-0.52149 2.43295,-0.34175 4.79131,-0.87932 7.08594,-1.60351 2.29462,-0.72419 4.49246,-1.65054 6.59179,-2.77344 2.09934,-1.1229 4.02824,-2.46537 5.81836,-4.01953 1.782,-1.5623 3.38431,-3.37038 4.81641,-5.39649 1.43211,-2.03424 2.60429,-4.29459 3.51562,-6.80078 0.87066,-2.39227 1.29391,-4.55819 1.26954,-6.47851 -0.0326,-1.92033 -0.4083,-3.59524 -1.14063,-5.02735 -0.73232,-1.4321 -1.77394,-2.60428 -3.13281,-3.51562 -1.35886,-0.90321 -2.96086,-1.54627 -4.82422,-1.9043 1.76571,-0.57772 3.43379,-1.34322 4.99609,-2.28711 1.56229,-0.94389 2.97804,-2.03304 4.26368,-3.26172 1.27751,-1.23682 2.408,-2.60403 3.39257,-4.10937 0.98457,-1.50534 1.78166,-3.10765 2.40821,-4.81641 1.11476,-3.04323 1.53024,-5.69755 1.26172,-7.94336 -0.26852,-2.25394 -1.16426,-4.11737 -2.67774,-5.58203 -1.51347,-1.47279 -3.63708,-2.57073 -6.37109,-3.29492 -2.72589,-0.72419 -6.24796,-1.08203 -10.56055,-1.08203 z m 5.89844,10.71679 h 7.23437 c 2.21325,0 3.90607,0.20286 5.08594,0.60157 1.17986,0.39871 2.06583,0.96819 2.66797,1.71679 0.60213,0.74047 0.91117,1.67593 0.93554,2.79883 0.0244,1.13104 -0.21198,2.39276 -0.72461,3.8086 -0.46381,1.2775 -1.10622,2.47378 -1.91992,3.62109 -0.82184,1.13918 -1.78888,2.13976 -2.91992,2.99414 -1.1229,0.85438 -2.39308,1.52155 -3.80078,2.00977 -1.41583,0.48821 -3.14967,0.74023 -5.22461,0.74023 h -7.99024 z m 126.777337,0.21485 h 6.41992 c 1.63553,0 2.89822,0.0661 3.78516,0.17187 0.88692,0.10578 1.65144,0.251 2.31054,0.42188 2.15629,0.66723 3.47338,1.78178 3.94532,3.38476 0.47195,1.59485 0.27756,3.55597 -0.56055,5.875 -0.56145,1.52162 -1.30937,2.90609 -2.26953,4.13477 -0.95203,1.23682 -2.1089,2.30252 -3.44336,3.18945 -1.3426,0.88693 -2.85569,1.57005 -4.56445,2.06641 -1.70063,0.48822 -3.56342,0.73242 -5.59766,0.73242 h -7.29102 z M 15.336633,505.28232 h 8.48828 c 2.61197,0 4.64471,0.23508 6.10938,0.70703 1.45651,0.47194 2.56421,1.13911 3.30469,2.00977 0.72418,0.87065 1.12987,1.95264 1.20312,3.23828 0.0814,1.28564 -0.17748,2.74337 -0.77148,4.3789 -0.56959,1.57044 -1.35073,2.95361 -2.35157,4.16602 -1.01712,1.21241 -2.16521,2.22927 -3.45898,3.04297 -1.29379,0.82183 -2.70137,1.43234 -4.21485,1.85547 -1.51347,0.42312 -3.26262,0.61718 -5.24804,0.61718 H 8.0553829 Z" />\n  </g>\n</svg>\n';
     },
     "./src/resources/fundingLogos/venmo_blue.svg": function(module, exports) {
         module.exports = '<svg width="101" height="32" viewBox="0 0 101 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n        <g id="Blue" fill="#3D93CE">\n            <g id="Logo" transform="translate(0.000000, 6.000000)">\n                <path d="M16.6660484,0.18 C17.3466626,1.3390991 17.6535069,2.53297297 17.6535069,4.04108108 C17.6535069,8.85117117 13.671346,15.0998198 10.439346,19.4875676 L3.05725952,19.4875676 L0.0966314879,1.23315315 L6.56045675,0.60036036 L8.12578201,13.5895495 C9.58835986,11.1326126 11.3932543,7.27153153 11.3932543,4.6390991 C11.3932543,3.1981982 11.1538599,2.21675676 10.7797405,1.40864865 L16.6660484,0.18 Z M24.9071592,11.6938739 C24.9071592,13.8367568 26.062718,14.6774775 27.5946678,14.6774775 C29.2629152,14.6774775 30.860218,14.2571171 32.9363097,13.1691892 L32.154346,18.6445045 C30.6915934,19.3814414 28.4119291,19.8731532 26.1991903,19.8731532 C20.5863512,19.8731532 18.5775346,16.3632432 18.5775346,11.9753153 C18.5775346,6.28810811 21.8451817,0.249369369 28.5819516,0.249369369 C32.2909931,0.249369369 34.3649879,2.39207207 34.3649879,5.37567568 C34.3653374,10.1855856 28.3783789,11.6590991 24.9071592,11.6938739 Z M25.0434567,8.2181982 C26.2329152,8.2181982 29.2274429,7.65711712 29.2274429,5.90216216 C29.2274429,5.05945946 28.6495761,4.6390991 27.9686125,4.6390991 C26.7772318,4.6390991 25.2138287,6.11225225 25.0434567,8.2181982 Z M53.0187093,4.4636036 C53.0187093,5.16558559 52.9154377,6.18378378 52.8126903,6.84918919 L50.8730709,19.4873874 L44.5790934,19.4873874 L46.3483408,7.90216216 C46.381891,7.58792793 46.4849879,6.95531532 46.4849879,6.60432432 C46.4849879,5.76162162 45.9743962,5.55135135 45.3605329,5.55135135 C44.5451938,5.55135135 43.7279325,5.93711712 43.1836159,6.21873874 L41.1768962,19.4875676 L34.8474464,19.4875676 L37.7390519,0.565945946 L43.2171661,0.565945946 L43.2865381,2.07621622 C44.5789187,1.19873874 46.2807163,0.24972973 48.6952803,0.24972973 C51.8942543,0.249369369 53.0187093,1.93495495 53.0187093,4.4636036 Z M71.7037093,2.32072072 C73.5063322,0.988108108 75.2084792,0.249369369 77.5554187,0.249369369 C80.7872439,0.249369369 81.9113495,1.93495495 81.9113495,4.4636036 C81.9113495,5.16558559 81.8084273,6.18378378 81.7056799,6.84918919 L79.7683322,19.4873874 L73.4726073,19.4873874 L75.2755796,7.6572973 C75.3087803,7.34108108 75.3785017,6.95531532 75.3785017,6.71063063 C75.3785017,5.7618018 74.8677353,5.55135135 74.2540467,5.55135135 C73.4722578,5.55135135 72.6908183,5.90234234 72.1106799,6.21873874 L70.1043097,19.4875676 L63.8101574,19.4875676 L65.6131298,7.65747748 C65.6463304,7.34126126 65.713955,6.9554955 65.713955,6.71081081 C65.713955,5.76198198 65.2030138,5.55153153 64.5914221,5.55153153 C63.7743356,5.55153153 62.9588218,5.9372973 62.4145052,6.21891892 L60.4062128,19.4877477 L54.0788599,19.4877477 L56.9701159,0.566126126 L62.3813045,0.566126126 L62.551327,2.14576577 C63.8101574,1.1990991 65.5105571,0.25009009 67.7900467,0.25009009 C69.7637405,0.249369369 71.0559464,1.12702703 71.7037093,2.32072072 Z M83.55059,11.7998198 C83.55059,5.83279279 86.6120433,0.249369369 93.6558322,0.249369369 C98.9633997,0.249369369 100.903543,3.47981982 100.903543,7.93873874 C100.903543,13.8365766 97.8751159,19.9443243 90.6614792,19.9443243 C85.3196626,19.9443243 83.55059,16.3281081 83.55059,11.7998198 Z M94.4374464,7.83279279 C94.4374464,6.28810811 94.0628028,5.23495495 92.9409689,5.23495495 C90.4570329,5.23495495 89.9469654,9.76306306 89.9469654,12.0794595 C89.9469654,13.8367568 90.4238322,14.9243243 91.5453166,14.9243243 C93.8931298,14.9243243 94.4374464,10.149009 94.4374464,7.83279279 Z"></path>\n            </g>\n        </g>\n    </g>\n</svg>\n';

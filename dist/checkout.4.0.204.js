@@ -924,22 +924,6 @@
             } catch (err) {}
             return -1;
         }
-        var _createClass = function() {
-            function defineProperties(target, props) {
-                for (var i = 0; i < props.length; i++) {
-                    var descriptor = props[i];
-                    descriptor.enumerable = descriptor.enumerable || !1;
-                    descriptor.configurable = !0;
-                    "value" in descriptor && (descriptor.writable = !0);
-                    Object.defineProperty(target, descriptor.key, descriptor);
-                }
-            }
-            return function(Constructor, protoProps, staticProps) {
-                protoProps && defineProperties(Constructor.prototype, protoProps);
-                staticProps && defineProperties(Constructor, staticProps);
-                return Constructor;
-            };
-        }();
         var defineProperty = Object.defineProperty, counter = Date.now() % 1e9, weakmap_CrossDomainSafeWeakMap = function() {
             function CrossDomainSafeWeakMap() {
                 !function(instance, Constructor) {
@@ -964,117 +948,104 @@
                 this.keys = [];
                 this.values = [];
             }
-            _createClass(CrossDomainSafeWeakMap, [ {
-                key: "_cleanupClosedWindows",
-                value: function() {
-                    for (var weakmap = this.weakmap, keys = this.keys, i = 0; i < keys.length; i++) {
-                        var value = keys[i];
-                        if (Object(src.isWindow)(value) && Object(src.isWindowClosed)(value)) {
-                            if (weakmap) try {
-                                weakmap.delete(value);
-                            } catch (err) {}
-                            keys.splice(i, 1);
-                            this.values.splice(i, 1);
-                            i -= 1;
-                        }
+            CrossDomainSafeWeakMap.prototype._cleanupClosedWindows = function() {
+                for (var weakmap = this.weakmap, keys = this.keys, i = 0; i < keys.length; i++) {
+                    var value = keys[i];
+                    if (Object(src.isWindow)(value) && Object(src.isWindowClosed)(value)) {
+                        if (weakmap) try {
+                            weakmap.delete(value);
+                        } catch (err) {}
+                        keys.splice(i, 1);
+                        this.values.splice(i, 1);
+                        i -= 1;
                     }
                 }
-            }, {
-                key: "isSafeToReadWrite",
-                value: function(key) {
-                    if (Object(src.isWindow)(key)) return !1;
-                    try {
-                        key && key.self;
-                        key && key[this.name];
-                    } catch (err) {
-                        return !1;
-                    }
-                    return !0;
+            };
+            CrossDomainSafeWeakMap.prototype.isSafeToReadWrite = function(key) {
+                if (Object(src.isWindow)(key)) return !1;
+                try {
+                    key && key.self;
+                    key && key[this.name];
+                } catch (err) {
+                    return !1;
                 }
-            }, {
-                key: "set",
-                value: function(key, value) {
-                    if (!key) throw new Error("WeakMap expected key");
-                    var weakmap = this.weakmap;
-                    if (weakmap) try {
-                        weakmap.set(key, value);
-                    } catch (err) {
-                        delete this.weakmap;
-                    }
-                    if (this.isSafeToReadWrite(key)) {
-                        var name = this.name, entry = key[name];
-                        entry && entry[0] === key ? entry[1] = value : defineProperty(key, name, {
-                            value: [ key, value ],
-                            writable: !0
-                        });
-                    } else {
-                        this._cleanupClosedWindows();
-                        var keys = this.keys, values = this.values, index = safeIndexOf(keys, key);
-                        if (-1 === index) {
-                            keys.push(key);
-                            values.push(value);
-                        } else values[index] = value;
-                    }
+                return !0;
+            };
+            CrossDomainSafeWeakMap.prototype.set = function(key, value) {
+                if (!key) throw new Error("WeakMap expected key");
+                var weakmap = this.weakmap;
+                if (weakmap) try {
+                    weakmap.set(key, value);
+                } catch (err) {
+                    delete this.weakmap;
                 }
-            }, {
-                key: "get",
-                value: function(key) {
-                    if (!key) throw new Error("WeakMap expected key");
-                    var weakmap = this.weakmap;
-                    if (weakmap) try {
-                        if (weakmap.has(key)) return weakmap.get(key);
-                    } catch (err) {
-                        delete this.weakmap;
-                    }
-                    if (!this.isSafeToReadWrite(key)) {
-                        this._cleanupClosedWindows();
-                        var index = safeIndexOf(this.keys, key);
-                        if (-1 === index) return;
-                        return this.values[index];
-                    }
-                    var entry = key[this.name];
-                    if (entry && entry[0] === key) return entry[1];
-                }
-            }, {
-                key: "delete",
-                value: function(key) {
-                    if (!key) throw new Error("WeakMap expected key");
-                    var weakmap = this.weakmap;
-                    if (weakmap) try {
-                        weakmap.delete(key);
-                    } catch (err) {
-                        delete this.weakmap;
-                    }
-                    if (this.isSafeToReadWrite(key)) {
-                        var entry = key[this.name];
-                        entry && entry[0] === key && (entry[0] = entry[1] = void 0);
-                    } else {
-                        this._cleanupClosedWindows();
-                        var keys = this.keys, index = safeIndexOf(keys, key);
-                        if (-1 !== index) {
-                            keys.splice(index, 1);
-                            this.values.splice(index, 1);
-                        }
-                    }
-                }
-            }, {
-                key: "has",
-                value: function(key) {
-                    if (!key) throw new Error("WeakMap expected key");
-                    var weakmap = this.weakmap;
-                    if (weakmap) try {
-                        return weakmap.has(key);
-                    } catch (err) {
-                        delete this.weakmap;
-                    }
-                    if (this.isSafeToReadWrite(key)) {
-                        var entry = key[this.name];
-                        return !(!entry || entry[0] !== key);
-                    }
+                if (this.isSafeToReadWrite(key)) {
+                    var name = this.name, entry = key[name];
+                    entry && entry[0] === key ? entry[1] = value : defineProperty(key, name, {
+                        value: [ key, value ],
+                        writable: !0
+                    });
+                } else {
                     this._cleanupClosedWindows();
-                    return -1 !== safeIndexOf(this.keys, key);
+                    var keys = this.keys, values = this.values, index = safeIndexOf(keys, key);
+                    if (-1 === index) {
+                        keys.push(key);
+                        values.push(value);
+                    } else values[index] = value;
                 }
-            } ]);
+            };
+            CrossDomainSafeWeakMap.prototype.get = function(key) {
+                if (!key) throw new Error("WeakMap expected key");
+                var weakmap = this.weakmap;
+                if (weakmap) try {
+                    if (weakmap.has(key)) return weakmap.get(key);
+                } catch (err) {
+                    delete this.weakmap;
+                }
+                if (!this.isSafeToReadWrite(key)) {
+                    this._cleanupClosedWindows();
+                    var index = safeIndexOf(this.keys, key);
+                    if (-1 === index) return;
+                    return this.values[index];
+                }
+                var entry = key[this.name];
+                if (entry && entry[0] === key) return entry[1];
+            };
+            CrossDomainSafeWeakMap.prototype.delete = function(key) {
+                if (!key) throw new Error("WeakMap expected key");
+                var weakmap = this.weakmap;
+                if (weakmap) try {
+                    weakmap.delete(key);
+                } catch (err) {
+                    delete this.weakmap;
+                }
+                if (this.isSafeToReadWrite(key)) {
+                    var entry = key[this.name];
+                    entry && entry[0] === key && (entry[0] = entry[1] = void 0);
+                } else {
+                    this._cleanupClosedWindows();
+                    var keys = this.keys, index = safeIndexOf(keys, key);
+                    if (-1 !== index) {
+                        keys.splice(index, 1);
+                        this.values.splice(index, 1);
+                    }
+                }
+            };
+            CrossDomainSafeWeakMap.prototype.has = function(key) {
+                if (!key) throw new Error("WeakMap expected key");
+                var weakmap = this.weakmap;
+                if (weakmap) try {
+                    return weakmap.has(key);
+                } catch (err) {
+                    delete this.weakmap;
+                }
+                if (this.isSafeToReadWrite(key)) {
+                    var entry = key[this.name];
+                    return !(!entry || entry[0] !== key);
+                }
+                this._cleanupClosedWindows();
+                return -1 !== safeIndexOf(this.keys, key);
+            };
             return CrossDomainSafeWeakMap;
         }();
         __webpack_require__.d(__webpack_exports__, "a", function() {
@@ -2172,31 +2143,6 @@
                 }
             });
         }
-        var _slicedToArray = function() {
-            return function(arr, i) {
-                if (Array.isArray(arr)) return arr;
-                if (Symbol.iterator in Object(arr)) return function(arr, i) {
-                    var _arr = [], _n = !0, _d = !1, _e = void 0;
-                    try {
-                        for (var _s, _i = arr[Symbol.iterator](); !(_n = (_s = _i.next()).done); _n = !0) {
-                            _arr.push(_s.value);
-                            if (i && _arr.length === i) break;
-                        }
-                    } catch (err) {
-                        _d = !0;
-                        _e = err;
-                    } finally {
-                        try {
-                            !_n && _i.return && _i.return();
-                        } finally {
-                            if (_d) throw _e;
-                        }
-                    }
-                    return _arr;
-                }(arr, i);
-                throw new TypeError("Invalid attempt to destructure non-iterable instance");
-            };
-        }();
         global.a.bridges = global.a.bridges || {};
         global.a.bridgeFrames = global.a.bridgeFrames || {};
         global.a.popupWindowsByWin = global.a.popupWindowsByWin || new cross_domain_safe_weakmap_src.a();
@@ -2280,9 +2226,9 @@
         window.open = function(url, name, options, last) {
             var domain = url;
             if (url && 0 === url.indexOf(conf.b.MOCK_PROTOCOL)) {
-                var _url$split = url.split("|"), _url$split2 = _slicedToArray(_url$split, 2);
-                domain = _url$split2[0];
-                url = _url$split2[1];
+                var _url$split = url.split("|");
+                domain = _url$split[0];
+                url = _url$split[1];
             }
             domain && (domain = Object(cross_domain_utils_src.getDomainFromUrl)(domain));
             var win = windowOpen.call(this, url, name, options, last);
@@ -2485,17 +2431,7 @@
             OPEN_TUNNEL: "postrobot_open_tunnel"
         }, POST_MESSAGE_NAMES_LIST = Object.keys(POST_MESSAGE_NAMES).map(function(key) {
             return POST_MESSAGE_NAMES[key];
-        });
-        function _defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var CONFIG = {
+        }), CONFIG = {
             ALLOW_POSTMESSAGE_POPUP: !("__ALLOW_POSTMESSAGE_POPUP__" in window) || window.__ALLOW_POSTMESSAGE_POPUP__,
             LOG_LEVEL: "info",
             BRIDGE_TIMEOUT: 5e3,
@@ -2503,8 +2439,8 @@
             ACK_TIMEOUT: -1 !== window.navigator.userAgent.match(/MSIE/i) ? 2e3 : 1e3,
             RES_TIMEOUT: -1,
             LOG_TO_PAGE: !1,
-            ALLOWED_POST_MESSAGE_METHODS: (_ALLOWED_POST_MESSAGE = {}, _defineProperty(_ALLOWED_POST_MESSAGE, CONSTANTS.SEND_STRATEGIES.POST_MESSAGE, !0), 
-            _defineProperty(_ALLOWED_POST_MESSAGE, CONSTANTS.SEND_STRATEGIES.BRIDGE, !0), _defineProperty(_ALLOWED_POST_MESSAGE, CONSTANTS.SEND_STRATEGIES.GLOBAL, !0), 
+            ALLOWED_POST_MESSAGE_METHODS: (_ALLOWED_POST_MESSAGE = {}, _ALLOWED_POST_MESSAGE[CONSTANTS.SEND_STRATEGIES.POST_MESSAGE] = !0, 
+            _ALLOWED_POST_MESSAGE[CONSTANTS.SEND_STRATEGIES.BRIDGE] = !0, _ALLOWED_POST_MESSAGE[CONSTANTS.SEND_STRATEGIES.GLOBAL] = !0, 
             _ALLOWED_POST_MESSAGE),
             ALLOW_SAME_ORIGIN: !1
         };
@@ -2632,6 +2568,7 @@
         };
         function sendMessage(win, message, domain) {
             return zalgo_promise_src.a.try(function() {
+                var _jsonStringify;
                 message = function(win, message) {
                     var options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, id = Object(lib.q)(), type = Object(lib.c)(), sourceDomain = Object(src.getDomain)(window);
                     return _extends({}, message, options, {
@@ -2649,15 +2586,8 @@
                 if (win === window && !conf.a.ALLOW_SAME_ORIGIN) throw new Error("Attemping to send message to self");
                 if (Object(src.isWindowClosed)(win)) throw new Error("Window is closed");
                 lib.i.debug("Running send message strategies", message);
-                var messages = [], serializedMessage = Object(lib.g)(function(obj, key, value) {
-                    key in obj ? Object.defineProperty(obj, key, {
-                        value: value,
-                        enumerable: !0,
-                        configurable: !0,
-                        writable: !0
-                    }) : obj[key] = value;
-                    return obj;
-                }({}, conf.b.WINDOW_PROPS.POSTROBOT, message), null, 2);
+                var messages = [], serializedMessage = Object(lib.g)(((_jsonStringify = {})[conf.b.WINDOW_PROPS.POSTROBOT] = message, 
+                _jsonStringify), null, 2);
                 return zalgo_promise_src.a.map(Object.keys(SEND_MESSAGE_STRATEGIES), function(strategyName) {
                     return zalgo_promise_src.a.try(function() {
                         if (!conf.a.ALLOWED_POST_MESSAGE_METHODS[strategyName]) throw new Error("Strategy disallowed: " + strategyName);
@@ -2728,24 +2658,14 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        };
-        function types__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var RECEIVE_MESSAGE_TYPES = (types__defineProperty(_RECEIVE_MESSAGE_TYPE = {}, conf.b.POST_MESSAGE_TYPE.ACK, function(source, origin, message) {
+        }, RECEIVE_MESSAGE_TYPES = ((_RECEIVE_MESSAGE_TYPE = {})[conf.b.POST_MESSAGE_TYPE.ACK] = function(source, origin, message) {
             if (!isResponseListenerErrored(message.hash)) {
                 var options = getResponseListener(message.hash);
                 if (!options) throw new Error("No handler found for post message ack for message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
                 if (!Object(src.matchDomain)(options.domain, origin)) throw new Error("Ack origin " + origin + " does not match domain " + options.domain.toString());
                 options.ack = !0;
             }
-        }), types__defineProperty(_RECEIVE_MESSAGE_TYPE, conf.b.POST_MESSAGE_TYPE.REQUEST, function(source, origin, message) {
+        }, _RECEIVE_MESSAGE_TYPE[conf.b.POST_MESSAGE_TYPE.REQUEST] = function(source, origin, message) {
             var options = getRequestListener({
                 name: message.name,
                 win: source,
@@ -2787,7 +2707,7 @@
                 if (options && options.handleError) return options.handleError(err);
                 lib.i.error(Object(lib.p)(err));
             });
-        }), types__defineProperty(_RECEIVE_MESSAGE_TYPE, conf.b.POST_MESSAGE_TYPE.RESPONSE, function(source, origin, message) {
+        }, _RECEIVE_MESSAGE_TYPE[conf.b.POST_MESSAGE_TYPE.RESPONSE] = function(source, origin, message) {
             if (!isResponseListenerErrored(message.hash)) {
                 var options = getResponseListener(message.hash);
                 if (!options) throw new Error("No handler found for post message response for message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
@@ -2807,7 +2727,7 @@
                     });
                 }
             }
-        }), _RECEIVE_MESSAGE_TYPE), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+        }, _RECEIVE_MESSAGE_TYPE), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
@@ -3907,22 +3827,7 @@
             return BaseComponent;
         });
         var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__lib__ = (__webpack_require__("./node_modules/cross-domain-utils/src/index.js"), 
-        __webpack_require__("./node_modules/xcomponent/src/lib/index.js")), _createClass = function() {
-            function defineProperties(target, props) {
-                for (var i = 0; i < props.length; i++) {
-                    var descriptor = props[i];
-                    descriptor.enumerable = descriptor.enumerable || !1;
-                    descriptor.configurable = !0;
-                    "value" in descriptor && (descriptor.writable = !0);
-                    Object.defineProperty(target, descriptor.key, descriptor);
-                }
-            }
-            return function(Constructor, protoProps, staticProps) {
-                protoProps && defineProperties(Constructor.prototype, protoProps);
-                staticProps && defineProperties(Constructor, staticProps);
-                return Constructor;
-            };
-        }();
+        __webpack_require__("./node_modules/xcomponent/src/lib/index.js"));
         var BaseComponent = function() {
             function BaseComponent() {
                 !function(instance, Constructor) {
@@ -3985,74 +3890,63 @@
                 var obj, tasks, cleaned;
                 this.event = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.s)();
             }
-            _createClass(BaseComponent, [ {
-                key: "addProp",
-                value: function(options, name, def) {
-                    Object(__WEBPACK_IMPORTED_MODULE_3__lib__.g)(options, this, name, def);
-                }
-            }, {
-                key: "on",
-                value: function(eventName, handler) {
-                    return this.event.on(eventName, handler);
-                }
-            }, {
-                key: "listeners",
-                value: function() {
-                    throw new Error("Expected listeners to be implemented");
-                }
-            }, {
-                key: "error",
-                value: function(err) {
-                    throw new Error("Expected error to be implemented - got " + Object(__WEBPACK_IMPORTED_MODULE_3__lib__.X)(err));
-                }
-            }, {
-                key: "listen",
-                value: function(win, domain) {
-                    var _this = this;
-                    if (!win) throw this.component.createError("window to listen to not set");
-                    if (!domain) throw new Error("Must pass domain to listen to");
-                    if (this.listeners) {
-                        var listeners = this.listeners(), _loop = function() {
-                            if (_isArray2) {
-                                if (_i2 >= _iterator2.length) return "break";
-                                _ref2 = _iterator2[_i2++];
-                            } else {
-                                if ((_i2 = _iterator2.next()).done) return "break";
-                                _ref2 = _i2.value;
-                            }
-                            var listenerName = _ref2, name = listenerName.replace(/^xcomponent_/, ""), errorHandler = function(err) {
-                                _this.error(err);
-                            }, listener = Object(__WEBPACK_IMPORTED_MODULE_1_post_robot_src__.on)(listenerName, {
-                                window: win,
-                                domain: domain,
-                                errorHandler: errorHandler
-                            }, function(_ref3) {
-                                var source = _ref3.source, data = _ref3.data;
-                                _this.component.log("listener_" + name);
-                                return listeners[listenerName].call(_this, source, data);
-                            }), errorListener = Object(__WEBPACK_IMPORTED_MODULE_1_post_robot_src__.on)(listenerName, {
-                                window: win,
-                                errorHandler: errorHandler
-                            }, function(_ref4) {
-                                var origin = _ref4.origin;
-                                _this.component.logError("unexpected_listener_" + name, {
-                                    origin: origin,
-                                    domain: domain.toString()
-                                });
-                                _this.error(new Error("Unexpected " + name + " message from domain " + origin + " -- expected message from " + domain.toString()));
-                            });
-                            _this.clean.register(function() {
-                                listener.cancel();
-                                errorListener.cancel();
-                            });
-                        }, _iterator2 = Object.keys(listeners), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                        for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                            var _ref2;
-                            if ("break" === _loop()) break;
+            BaseComponent.prototype.addProp = function(options, name, def) {
+                Object(__WEBPACK_IMPORTED_MODULE_3__lib__.g)(options, this, name, def);
+            };
+            BaseComponent.prototype.on = function(eventName, handler) {
+                return this.event.on(eventName, handler);
+            };
+            BaseComponent.prototype.listeners = function() {
+                throw new Error("Expected listeners to be implemented");
+            };
+            BaseComponent.prototype.error = function(err) {
+                throw new Error("Expected error to be implemented - got " + Object(__WEBPACK_IMPORTED_MODULE_3__lib__.X)(err));
+            };
+            BaseComponent.prototype.listen = function(win, domain) {
+                var _this = this;
+                if (!win) throw this.component.createError("window to listen to not set");
+                if (!domain) throw new Error("Must pass domain to listen to");
+                if (this.listeners) {
+                    var listeners = this.listeners(), _loop = function() {
+                        if (_isArray2) {
+                            if (_i2 >= _iterator2.length) return "break";
+                            _ref2 = _iterator2[_i2++];
+                        } else {
+                            if ((_i2 = _iterator2.next()).done) return "break";
+                            _ref2 = _i2.value;
                         }
+                        var listenerName = _ref2, name = listenerName.replace(/^xcomponent_/, ""), errorHandler = function(err) {
+                            _this.error(err);
+                        }, listener = Object(__WEBPACK_IMPORTED_MODULE_1_post_robot_src__.on)(listenerName, {
+                            window: win,
+                            domain: domain,
+                            errorHandler: errorHandler
+                        }, function(_ref3) {
+                            var source = _ref3.source, data = _ref3.data;
+                            _this.component.log("listener_" + name);
+                            return listeners[listenerName].call(_this, source, data);
+                        }), errorListener = Object(__WEBPACK_IMPORTED_MODULE_1_post_robot_src__.on)(listenerName, {
+                            window: win,
+                            errorHandler: errorHandler
+                        }, function(_ref4) {
+                            var origin = _ref4.origin;
+                            _this.component.logError("unexpected_listener_" + name, {
+                                origin: origin,
+                                domain: domain.toString()
+                            });
+                            _this.error(new Error("Unexpected " + name + " message from domain " + origin + " -- expected message from " + domain.toString()));
+                        });
+                        _this.clean.register(function() {
+                            listener.cancel();
+                            errorListener.cancel();
+                        });
+                    }, _iterator2 = Object.keys(listeners), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                    for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                        var _ref2;
+                        if ("break" === _loop()) break;
                     }
                 }
-            } ]);
+            };
             return BaseComponent;
         }();
     },
@@ -4076,46 +3970,7 @@
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        }, _slicedToArray = function() {
-            return function(arr, i) {
-                if (Array.isArray(arr)) return arr;
-                if (Symbol.iterator in Object(arr)) return function(arr, i) {
-                    var _arr = [], _n = !0, _d = !1, _e = void 0;
-                    try {
-                        for (var _s, _i = arr[Symbol.iterator](); !(_n = (_s = _i.next()).done); _n = !0) {
-                            _arr.push(_s.value);
-                            if (i && _arr.length === i) break;
-                        }
-                    } catch (err) {
-                        _d = !0;
-                        _e = err;
-                    } finally {
-                        try {
-                            !_n && _i.return && _i.return();
-                        } finally {
-                            if (_d) throw _e;
-                        }
-                    }
-                    return _arr;
-                }(arr, i);
-                throw new TypeError("Invalid attempt to destructure non-iterable instance");
-            };
-        }(), _createClass = function() {
-            function defineProperties(target, props) {
-                for (var i = 0; i < props.length; i++) {
-                    var descriptor = props[i];
-                    descriptor.enumerable = descriptor.enumerable || !1;
-                    descriptor.configurable = !0;
-                    "value" in descriptor && (descriptor.writable = !0);
-                    Object.defineProperty(target, descriptor.key, descriptor);
-                }
-            }
-            return function(Constructor, protoProps, staticProps) {
-                protoProps && defineProperties(Constructor.prototype, protoProps);
-                staticProps && defineProperties(Constructor, staticProps);
-                return Constructor;
-            };
-        }();
+        };
         function _possibleConstructorReturn(self, call) {
             if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
             return !call || "object" != typeof call && "function" != typeof call ? self : call;
@@ -4132,12 +3987,12 @@
                     }
                 });
                 superClass && (Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass);
-            }(ChildComponent, base["a"]);
+            }(ChildComponent, _BaseComponent);
             function ChildComponent(component) {
                 !function(instance, Constructor) {
                     if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
                 }(this, ChildComponent);
-                var _this = _possibleConstructorReturn(this, (ChildComponent.__proto__ || Object.getPrototypeOf(ChildComponent)).call(this));
+                var _this = _possibleConstructorReturn(this, _BaseComponent.call(this));
                 _this.component = component;
                 if (!_this.hasValidParentDomain()) {
                     _this.error(new src_error.c("Can not be rendered by domain: " + _this.getParentDomain()));
@@ -4151,7 +4006,7 @@
                     } ], [ "xprops", function() {
                         return _this.props;
                     } ] ], _loop2 = function() {
-                        var _arr2$_i = _slicedToArray(_arr2[_i2], 2), name = _arr2$_i[0], getter = _arr2$_i[1];
+                        var _arr2$_i = _arr2[_i2], name = _arr2$_i[0], getter = _arr2$_i[1];
                         Object.defineProperty(item, name, {
                             configurable: !0,
                             get: function() {
@@ -4180,339 +4035,286 @@
                 });
                 return _this;
             }
-            _createClass(ChildComponent, [ {
-                key: "listenForResize",
-                value: function() {
-                    var _this2 = this;
-                    if (this.component.listenForResize) {
-                        this.sendToParent(constants.POST_MESSAGE.ONRESIZE, {}, {
+            ChildComponent.prototype.listenForResize = function() {
+                var _this2 = this;
+                if (this.component.listenForResize) {
+                    this.sendToParent(constants.POST_MESSAGE.ONRESIZE, {}, {
+                        fireAndForget: !0
+                    });
+                    window.addEventListener("resize", function() {
+                        _this2.sendToParent(constants.POST_MESSAGE.ONRESIZE, {}, {
                             fireAndForget: !0
                         });
-                        window.addEventListener("resize", function() {
-                            _this2.sendToParent(constants.POST_MESSAGE.ONRESIZE, {}, {
-                                fireAndForget: !0
-                            });
-                        });
-                    }
-                }
-            }, {
-                key: "hasValidParentDomain",
-                value: function() {
-                    return Object(src.matchDomain)(this.component.allowedParentDomains, this.getParentDomain());
-                }
-            }, {
-                key: "init",
-                value: function() {
-                    return this.onInit;
-                }
-            }, {
-                key: "getParentDomain",
-                value: function() {
-                    return Object(component_window.d)();
-                }
-            }, {
-                key: "onProps",
-                value: function(handler) {
-                    this.onPropHandlers.push(handler);
-                }
-            }, {
-                key: "getParentComponentWindow",
-                value: function() {
-                    return Object(component_window.c)();
-                }
-            }, {
-                key: "getParentRenderWindow",
-                value: function() {
-                    return Object(component_window.e)();
-                }
-            }, {
-                key: "getInitialProps",
-                value: function() {
-                    var _this3 = this, componentMeta = Object(component_window.b)(), props = componentMeta.props;
-                    if (props.type === constants.INITIAL_PROPS.RAW) props = props.value; else {
-                        if (props.type !== constants.INITIAL_PROPS.UID) throw new Error("Unrecognized props type: " + props.type);
-                        var parentComponentWindow = Object(component_window.c)();
-                        if (!Object(src.isSameDomain)(parentComponentWindow)) {
-                            if ("file:" === window.location.protocol) throw new Error("Can not get props from file:// domain");
-                            throw new Error("Parent component window is on a different domain - expected " + Object(src.getDomain)() + " - can not retrieve props");
-                        }
-                        var global = Object(lib.z)(parentComponentWindow);
-                        if (!global) throw new Error("Can not find global for parent component - can not retrieve props");
-                        props = JSON.parse(global.props[componentMeta.uid]);
-                    }
-                    if (!props) throw new Error("Initial props not found");
-                    return Object(lib.k)(props, function(_ref2) {
-                        var fullKey = _ref2.fullKey, self = _ref2.self, args = _ref2.args;
-                        return _this3.onInit.then(function() {
-                            var func = Object(lib.v)(_this3.props, fullKey);
-                            if ("function" != typeof func) throw new TypeError("Expected " + fullKey + " to be function, got " + (void 0 === func ? "undefined" : _typeof(func)));
-                            return func.apply(self, args);
-                        });
                     });
                 }
-            }, {
-                key: "setProps",
-                value: function(props, origin) {
-                    var required = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
-                    this.props = this.props || {};
-                    var normalizedProps = function(component, props, origin) {
-                        var required = !(arguments.length > 3 && void 0 !== arguments[3]) || arguments[3], result = {}, _iterator = Object.keys(props), _isArray = Array.isArray(_iterator), _i = 0;
-                        for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                            var _ref;
-                            if (_isArray) {
-                                if (_i >= _iterator.length) break;
-                                _ref = _iterator[_i++];
-                            } else {
-                                if ((_i = _iterator.next()).done) break;
-                                _ref = _i.value;
-                            }
-                            var _key = _ref, prop = component.getProp(_key), value = props[_key];
-                            if (!prop || !prop.sameDomain || origin === Object(src.getDomain)(window)) {
-                                result[_key] = normalizeChildProp(component, 0, _key, value);
-                                prop && prop.alias && !result[prop.alias] && (result[prop.alias] = value);
-                            }
-                        }
-                        if (required) {
-                            var _iterator2 = component.getPropNames(), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                            for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                                var _ref2;
-                                if (_isArray2) {
-                                    if (_i2 >= _iterator2.length) break;
-                                    _ref2 = _iterator2[_i2++];
-                                } else {
-                                    if ((_i2 = _iterator2.next()).done) break;
-                                    _ref2 = _i2.value;
-                                }
-                                var key = _ref2;
-                                props.hasOwnProperty(key) || (result[key] = normalizeChildProp(component, 0, key, props[key]));
-                            }
-                        }
-                        return result;
-                    }(this.component, props, origin, required);
-                    Object(lib.t)(this.props, normalizedProps);
-                    this.props.logLevel && Object(lib.S)(this.props.logLevel);
-                    var _iterator = this.onPropHandlers, _isArray = Array.isArray(_iterator), _i3 = 0;
+            };
+            ChildComponent.prototype.hasValidParentDomain = function() {
+                return Object(src.matchDomain)(this.component.allowedParentDomains, this.getParentDomain());
+            };
+            ChildComponent.prototype.init = function() {
+                return this.onInit;
+            };
+            ChildComponent.prototype.getParentDomain = function() {
+                return Object(component_window.d)();
+            };
+            ChildComponent.prototype.onProps = function(handler) {
+                this.onPropHandlers.push(handler);
+            };
+            ChildComponent.prototype.getParentComponentWindow = function() {
+                return Object(component_window.c)();
+            };
+            ChildComponent.prototype.getParentRenderWindow = function() {
+                return Object(component_window.e)();
+            };
+            ChildComponent.prototype.getInitialProps = function() {
+                var _this3 = this, componentMeta = Object(component_window.b)(), props = componentMeta.props;
+                if (props.type === constants.INITIAL_PROPS.RAW) props = props.value; else {
+                    if (props.type !== constants.INITIAL_PROPS.UID) throw new Error("Unrecognized props type: " + props.type);
+                    var parentComponentWindow = Object(component_window.c)();
+                    if (!Object(src.isSameDomain)(parentComponentWindow)) {
+                        if ("file:" === window.location.protocol) throw new Error("Can not get props from file:// domain");
+                        throw new Error("Parent component window is on a different domain - expected " + Object(src.getDomain)() + " - can not retrieve props");
+                    }
+                    var global = Object(lib.z)(parentComponentWindow);
+                    if (!global) throw new Error("Can not find global for parent component - can not retrieve props");
+                    props = JSON.parse(global.props[componentMeta.uid]);
+                }
+                if (!props) throw new Error("Initial props not found");
+                return Object(lib.k)(props, function(_ref2) {
+                    var fullKey = _ref2.fullKey, self = _ref2.self, args = _ref2.args;
+                    return _this3.onInit.then(function() {
+                        var func = Object(lib.v)(_this3.props, fullKey);
+                        if ("function" != typeof func) throw new TypeError("Expected " + fullKey + " to be function, got " + (void 0 === func ? "undefined" : _typeof(func)));
+                        return func.apply(self, args);
+                    });
+                });
+            };
+            ChildComponent.prototype.setProps = function(props, origin) {
+                var required = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
+                this.props = this.props || {};
+                var normalizedProps = function(component, props, origin) {
+                    var required = !(arguments.length > 3 && void 0 !== arguments[3]) || arguments[3], result = {}, _iterator = Object.keys(props), _isArray = Array.isArray(_iterator), _i = 0;
                     for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref3;
+                        var _ref;
                         if (_isArray) {
-                            if (_i3 >= _iterator.length) break;
-                            _ref3 = _iterator[_i3++];
+                            if (_i >= _iterator.length) break;
+                            _ref = _iterator[_i++];
                         } else {
-                            if ((_i3 = _iterator.next()).done) break;
-                            _ref3 = _i3.value;
+                            if ((_i = _iterator.next()).done) break;
+                            _ref = _i.value;
                         }
-                        _ref3.call(this, this.props);
+                        var _key = _ref, prop = component.getProp(_key), value = props[_key];
+                        if (!prop || !prop.sameDomain || origin === Object(src.getDomain)(window)) {
+                            result[_key] = normalizeChildProp(component, 0, _key, value);
+                            prop && prop.alias && !result[prop.alias] && (result[prop.alias] = value);
+                        }
                     }
-                }
-            }, {
-                key: "sendToParent",
-                value: function(name) {
-                    var data = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, parentWindow = Object(component_window.c)();
-                    if (!parentWindow) throw new Error("Can not find parent component window to message");
-                    this.component.log("send_to_parent_" + name);
-                    return Object(post_robot_src.send)(parentWindow, name, data, _extends({
-                        domain: Object(component_window.d)()
-                    }, options));
-                }
-            }, {
-                key: "setWindows",
-                value: function() {
-                    if (window.__activeXComponent__) throw this.component.createError("Can not attach multiple components to the same window");
-                    window.__activeXComponent__ = this;
-                    if (!Object(component_window.c)()) throw this.component.createError("Can not find parent window");
-                    var componentMeta = Object(component_window.b)();
-                    if (componentMeta.tag !== this.component.tag) throw this.component.createError("Parent is " + componentMeta.tag + " - can not attach " + this.component.tag);
-                    this.watchForClose();
-                }
-            }, {
-                key: "watchForClose",
-                value: function() {
-                    var _this4 = this;
-                    window.addEventListener("unload", function() {
-                        return _this4.checkClose();
-                    });
-                }
-            }, {
-                key: "enableAutoResize",
-                value: function() {
-                    var _ref4 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref4$width = _ref4.width, width = void 0 === _ref4$width || _ref4$width, _ref4$height = _ref4.height, height = void 0 === _ref4$height || _ref4$height;
-                    this.autoResize = {
-                        width: width,
-                        height: height
-                    };
-                    this.watchForResize();
-                }
-            }, {
-                key: "getAutoResize",
-                value: function() {
-                    var width = !1, height = !1, autoResize = this.autoResize || this.component.autoResize;
-                    if ("object" === (void 0 === autoResize ? "undefined" : _typeof(autoResize))) {
-                        width = Boolean(autoResize.width);
-                        height = Boolean(autoResize.height);
-                    } else if (autoResize) {
-                        width = !0;
-                        height = !0;
+                    if (required) {
+                        var _iterator2 = component.getPropNames(), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                        for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                            var _ref2;
+                            if (_isArray2) {
+                                if (_i2 >= _iterator2.length) break;
+                                _ref2 = _iterator2[_i2++];
+                            } else {
+                                if ((_i2 = _iterator2.next()).done) break;
+                                _ref2 = _i2.value;
+                            }
+                            var key = _ref2;
+                            props.hasOwnProperty(key) || (result[key] = normalizeChildProp(component, 0, key, props[key]));
+                        }
                     }
-                    return {
-                        width: width,
-                        height: height,
-                        element: autoResize.element ? Object(lib.x)(autoResize.element) : window.navigator.userAgent.match(/MSIE (9|10)\./) ? document.body : document.documentElement
-                    };
+                    return result;
+                }(this.component, props, origin, required);
+                Object(lib.t)(this.props, normalizedProps);
+                this.props.logLevel && Object(lib.S)(this.props.logLevel);
+                var _iterator = this.onPropHandlers, _isArray = Array.isArray(_iterator), _i3 = 0;
+                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref3;
+                    if (_isArray) {
+                        if (_i3 >= _iterator.length) break;
+                        _ref3 = _iterator[_i3++];
+                    } else {
+                        if ((_i3 = _iterator.next()).done) break;
+                        _ref3 = _i3.value;
+                    }
+                    _ref3.call(this, this.props);
                 }
-            }, {
-                key: "watchForResize",
-                value: function() {
-                    var _this5 = this, _getAutoResize = this.getAutoResize(), width = _getAutoResize.width, height = _getAutoResize.height, element = _getAutoResize.element;
-                    if ((width || height) && this.context !== constants.CONTEXT_TYPES.POPUP && !this.watchingForResize) {
-                        this.watchingForResize = !0;
-                        return zalgo_promise_src.a.try(function() {
-                            return lib.n;
-                        }).then(function() {
-                            if (!Object(lib.m)(element, {
+            };
+            ChildComponent.prototype.sendToParent = function(name) {
+                var data = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, parentWindow = Object(component_window.c)();
+                if (!parentWindow) throw new Error("Can not find parent component window to message");
+                this.component.log("send_to_parent_" + name);
+                return Object(post_robot_src.send)(parentWindow, name, data, _extends({
+                    domain: Object(component_window.d)()
+                }, options));
+            };
+            ChildComponent.prototype.setWindows = function() {
+                if (window.__activeXComponent__) throw this.component.createError("Can not attach multiple components to the same window");
+                window.__activeXComponent__ = this;
+                if (!Object(component_window.c)()) throw this.component.createError("Can not find parent window");
+                var componentMeta = Object(component_window.b)();
+                if (componentMeta.tag !== this.component.tag) throw this.component.createError("Parent is " + componentMeta.tag + " - can not attach " + this.component.tag);
+                this.watchForClose();
+            };
+            ChildComponent.prototype.watchForClose = function() {
+                var _this4 = this;
+                window.addEventListener("unload", function() {
+                    return _this4.checkClose();
+                });
+            };
+            ChildComponent.prototype.enableAutoResize = function() {
+                var _ref4 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref4$width = _ref4.width, width = void 0 === _ref4$width || _ref4$width, _ref4$height = _ref4.height, height = void 0 === _ref4$height || _ref4$height;
+                this.autoResize = {
+                    width: width,
+                    height: height
+                };
+                this.watchForResize();
+            };
+            ChildComponent.prototype.getAutoResize = function() {
+                var width = !1, height = !1, autoResize = this.autoResize || this.component.autoResize;
+                if ("object" === (void 0 === autoResize ? "undefined" : _typeof(autoResize))) {
+                    width = Boolean(autoResize.width);
+                    height = Boolean(autoResize.height);
+                } else if (autoResize) {
+                    width = !0;
+                    height = !0;
+                }
+                return {
+                    width: width,
+                    height: height,
+                    element: autoResize.element ? Object(lib.x)(autoResize.element) : window.navigator.userAgent.match(/MSIE (9|10)\./) ? document.body : document.documentElement
+                };
+            };
+            ChildComponent.prototype.watchForResize = function() {
+                var _this5 = this, _getAutoResize = this.getAutoResize(), width = _getAutoResize.width, height = _getAutoResize.height, element = _getAutoResize.element;
+                if ((width || height) && this.context !== constants.CONTEXT_TYPES.POPUP && !this.watchingForResize) {
+                    this.watchingForResize = !0;
+                    return zalgo_promise_src.a.try(function() {
+                        return lib.n;
+                    }).then(function() {
+                        if (!Object(lib.m)(element, {
+                            width: width,
+                            height: height
+                        })) return _this5.resizeToElement(element, {
+                            width: width,
+                            height: height
+                        });
+                    }).then(function() {
+                        return Object(lib.h)(function() {
+                            return Object(lib.K)(element, {
                                 width: width,
                                 height: height
-                            })) return _this5.resizeToElement(element, {
-                                width: width,
-                                height: height
-                            });
-                        }).then(function() {
-                            return Object(lib.h)(function() {
-                                return Object(lib.K)(element, {
+                            }).then(function() {
+                                return _this5.resizeToElement(element, {
                                     width: width,
                                     height: height
-                                }).then(function() {
-                                    return _this5.resizeToElement(element, {
-                                        width: width,
-                                        height: height
-                                    });
                                 });
                             });
                         });
-                    }
+                    });
                 }
-            }, {
-                key: "exports",
-                value: function() {
-                    var self = this;
-                    return {
-                        updateProps: function(props) {
-                            var _this6 = this;
-                            return zalgo_promise_src.a.try(function() {
-                                return self.setProps(props, _this6.origin, !1);
-                            });
-                        },
-                        close: function() {
-                            return zalgo_promise_src.a.try(function() {
-                                return self.destroy();
-                            });
-                        }
-                    };
-                }
-            }, {
-                key: "resize",
-                value: function(width, height) {
-                    var _this7 = this;
-                    return zalgo_promise_src.a.resolve().then(function() {
-                        _this7.component.log("resize", {
-                            width: Object(lib.W)(width),
-                            height: Object(lib.W)(height)
+            };
+            ChildComponent.prototype.exports = function() {
+                var self = this;
+                return {
+                    updateProps: function(props) {
+                        var _this6 = this;
+                        return zalgo_promise_src.a.try(function() {
+                            return self.setProps(props, _this6.origin, !1);
                         });
-                        if (_this7.context !== constants.CONTEXT_TYPES.POPUP) return _this7.sendToParent(constants.POST_MESSAGE.RESIZE, {
+                    },
+                    close: function() {
+                        return zalgo_promise_src.a.try(function() {
+                            return self.destroy();
+                        });
+                    }
+                };
+            };
+            ChildComponent.prototype.resize = function(width, height) {
+                var _this7 = this;
+                return zalgo_promise_src.a.resolve().then(function() {
+                    _this7.component.log("resize", {
+                        width: Object(lib.W)(width),
+                        height: Object(lib.W)(height)
+                    });
+                    if (_this7.context !== constants.CONTEXT_TYPES.POPUP) return _this7.sendToParent(constants.POST_MESSAGE.RESIZE, {
+                        width: width,
+                        height: height
+                    }).then(lib.I);
+                });
+            };
+            ChildComponent.prototype.resizeToElement = function(el, _ref5) {
+                var _this8 = this, width = _ref5.width, height = _ref5.height, history = [];
+                return function resize() {
+                    return zalgo_promise_src.a.try(function() {
+                        var tracker = Object(lib.Z)(el, {
                             width: width,
                             height: height
-                        }).then(lib.I);
-                    });
-                }
-            }, {
-                key: "resizeToElement",
-                value: function(el, _ref5) {
-                    var _this8 = this, width = _ref5.width, height = _ref5.height, history = [];
-                    return function resize() {
-                        return zalgo_promise_src.a.try(function() {
-                            var tracker = Object(lib.Z)(el, {
-                                width: width,
-                                height: height
-                            }), dimensions = tracker.check().dimensions, _iterator2 = history, _isArray2 = Array.isArray(_iterator2), _i4 = 0;
-                            for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                                var _ref6;
-                                if (_isArray2) {
-                                    if (_i4 >= _iterator2.length) break;
-                                    _ref6 = _iterator2[_i4++];
-                                } else {
-                                    if ((_i4 = _iterator2.next()).done) break;
-                                    _ref6 = _i4.value;
-                                }
-                                var size = _ref6, widthMatch = !width || size.width === dimensions.width, heightMatch = !height || size.height === dimensions.height;
-                                if (widthMatch && heightMatch) return;
+                        }), dimensions = tracker.check().dimensions, _iterator2 = history, _isArray2 = Array.isArray(_iterator2), _i4 = 0;
+                        for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                            var _ref6;
+                            if (_isArray2) {
+                                if (_i4 >= _iterator2.length) break;
+                                _ref6 = _iterator2[_i4++];
+                            } else {
+                                if ((_i4 = _iterator2.next()).done) break;
+                                _ref6 = _i4.value;
                             }
-                            history.push({
-                                width: dimensions.width,
-                                height: dimensions.height
-                            });
-                            return _this8.resize(width ? dimensions.width : null, height ? dimensions.height : null).then(function() {
-                                if (tracker.check().changed) return resize();
-                            });
+                            var size = _ref6, widthMatch = !width || size.width === dimensions.width, heightMatch = !height || size.height === dimensions.height;
+                            if (widthMatch && heightMatch) return;
+                        }
+                        history.push({
+                            width: dimensions.width,
+                            height: dimensions.height
                         });
-                    }();
-                }
-            }, {
-                key: "hide",
-                value: function() {
-                    return this.sendToParent(constants.POST_MESSAGE.HIDE).then(lib.I);
-                }
-            }, {
-                key: "show",
-                value: function() {
-                    return this.sendToParent(constants.POST_MESSAGE.SHOW).then(lib.I);
-                }
-            }, {
-                key: "userClose",
-                value: function() {
-                    return this.close(constants.CLOSE_REASONS.USER_CLOSED);
-                }
-            }, {
-                key: "close",
-                value: function() {
-                    var reason = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : constants.CLOSE_REASONS.CHILD_CALL;
-                    this.component.log("close_child");
-                    this.sendToParent(constants.POST_MESSAGE.CLOSE, {
-                        reason: reason
+                        return _this8.resize(width ? dimensions.width : null, height ? dimensions.height : null).then(function() {
+                            if (tracker.check().changed) return resize();
+                        });
                     });
-                }
-            }, {
-                key: "checkClose",
-                value: function() {
-                    this.sendToParent(constants.POST_MESSAGE.CHECK_CLOSE, {}, {
-                        fireAndForget: !0
-                    });
-                }
-            }, {
-                key: "destroy",
-                value: function() {
-                    return Object(client.g)().then(function() {
-                        window.close();
-                    });
-                }
-            }, {
-                key: "focus",
-                value: function() {
-                    this.component.log("focus");
-                    window.focus();
-                }
-            }, {
-                key: "error",
-                value: function(err) {
-                    var stringifiedError = Object(lib.X)(err);
-                    this.component.logError("error", {
-                        error: stringifiedError
-                    });
-                    return this.sendToParent(constants.POST_MESSAGE.ERROR, {
-                        error: stringifiedError
-                    }).then(lib.I);
-                }
-            } ]);
+                }();
+            };
+            ChildComponent.prototype.hide = function() {
+                return this.sendToParent(constants.POST_MESSAGE.HIDE).then(lib.I);
+            };
+            ChildComponent.prototype.show = function() {
+                return this.sendToParent(constants.POST_MESSAGE.SHOW).then(lib.I);
+            };
+            ChildComponent.prototype.userClose = function() {
+                return this.close(constants.CLOSE_REASONS.USER_CLOSED);
+            };
+            ChildComponent.prototype.close = function() {
+                var reason = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : constants.CLOSE_REASONS.CHILD_CALL;
+                this.component.log("close_child");
+                this.sendToParent(constants.POST_MESSAGE.CLOSE, {
+                    reason: reason
+                });
+            };
+            ChildComponent.prototype.checkClose = function() {
+                this.sendToParent(constants.POST_MESSAGE.CHECK_CLOSE, {}, {
+                    fireAndForget: !0
+                });
+            };
+            ChildComponent.prototype.destroy = function() {
+                return Object(client.g)().then(function() {
+                    window.close();
+                });
+            };
+            ChildComponent.prototype.focus = function() {
+                this.component.log("focus");
+                window.focus();
+            };
+            ChildComponent.prototype.error = function(err) {
+                var stringifiedError = Object(lib.X)(err);
+                this.component.logError("error", {
+                    error: stringifiedError
+                });
+                return this.sendToParent(constants.POST_MESSAGE.ERROR, {
+                    error: stringifiedError
+                }).then(lib.I);
+            };
             return ChildComponent;
-        }();
+        }(base.a);
     },
     "./node_modules/xcomponent/src/component/component/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -4544,7 +4346,7 @@
                     }
                 });
                 superClass && (Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass);
-            }(DelegateComponent, base["a"]);
+            }(DelegateComponent, _BaseComponent);
             function DelegateComponent(component, source, options) {
                 !function(instance, Constructor) {
                     if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
@@ -4552,7 +4354,7 @@
                 var _this = function(self, call) {
                     if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
                     return !call || "object" != typeof call && "function" != typeof call ? self : call;
-                }(this, (DelegateComponent.__proto__ || Object.getPrototypeOf(DelegateComponent)).call(this));
+                }(this, _BaseComponent.call(this));
                 _this.component = component;
                 _this.clean.set("source", source);
                 _this.context = options.context;
@@ -4603,42 +4405,36 @@
                 _this.watchForClose();
                 return _this;
             }
-            _createClass(DelegateComponent, [ {
-                key: "watchForClose",
-                value: function() {
-                    var _this2 = this, closeWindowListener = Object(cross_domain_utils_src.onCloseWindow)(this.source, function() {
-                        return _this2.destroy();
-                    }, 3e3);
-                    this.clean.register("destroyCloseWindowListener", closeWindowListener.cancel);
-                }
-            }, {
-                key: "getOverrides",
-                value: function(context) {
-                    var delegateOverrides = drivers.a[context].delegateOverrides, overrides = {}, self = this, _loop = function() {
-                        if (_isArray3) {
-                            if (_i3 >= _iterator3.length) return "break";
-                            _ref3 = _iterator3[_i3++];
-                        } else {
-                            if ((_i3 = _iterator3.next()).done) return "break";
-                            _ref3 = _i3.value;
-                        }
-                        var key = _ref3;
-                        overrides[key] = function() {
-                            return component_parent.a.prototype[key].apply(self, arguments);
-                        };
-                    }, _iterator3 = Object.keys(delegateOverrides), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
-                    for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                        var _ref3;
-                        if ("break" === _loop()) break;
+            DelegateComponent.prototype.watchForClose = function() {
+                var _this2 = this, closeWindowListener = Object(cross_domain_utils_src.onCloseWindow)(this.source, function() {
+                    return _this2.destroy();
+                }, 3e3);
+                this.clean.register("destroyCloseWindowListener", closeWindowListener.cancel);
+            };
+            DelegateComponent.prototype.getOverrides = function(context) {
+                var delegateOverrides = drivers.a[context].delegateOverrides, overrides = {}, self = this, _loop = function() {
+                    if (_isArray3) {
+                        if (_i3 >= _iterator3.length) return "break";
+                        _ref3 = _iterator3[_i3++];
+                    } else {
+                        if ((_i3 = _iterator3.next()).done) return "break";
+                        _ref3 = _i3.value;
                     }
-                    return overrides;
+                    var key = _ref3;
+                    overrides[key] = function() {
+                        return component_parent.a.prototype[key].apply(self, arguments);
+                    };
+                }, _iterator3 = Object.keys(delegateOverrides), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
+                for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                    var _ref3;
+                    if ("break" === _loop()) break;
                 }
-            }, {
-                key: "destroy",
-                value: function() {
-                    return this.clean.all();
-                }
-            }, {
+                return overrides;
+            };
+            DelegateComponent.prototype.destroy = function() {
+                return this.clean.all();
+            };
+            _createClass(DelegateComponent, [ {
                 key: "driver",
                 get: function() {
                     if (!this.context) throw new Error("Context not set");
@@ -4646,7 +4442,7 @@
                 }
             } ]);
             return DelegateComponent;
-        }(), component_window = __webpack_require__("./node_modules/xcomponent/src/component/window.js"), constants = __webpack_require__("./node_modules/xcomponent/src/constants.js"), src_drivers = __webpack_require__("./node_modules/xcomponent/src/drivers/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+        }(base.a), component_window = __webpack_require__("./node_modules/xcomponent/src/component/window.js"), constants = __webpack_require__("./node_modules/xcomponent/src/constants.js"), src_drivers = __webpack_require__("./node_modules/xcomponent/src/drivers/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
@@ -4750,22 +4546,7 @@
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        }, component__createClass = function() {
-            function defineProperties(target, props) {
-                for (var i = 0; i < props.length; i++) {
-                    var descriptor = props[i];
-                    descriptor.enumerable = descriptor.enumerable || !1;
-                    descriptor.configurable = !0;
-                    "value" in descriptor && (descriptor.writable = !0);
-                    Object.defineProperty(target, descriptor.key, descriptor);
-                }
-            }
-            return function(Constructor, protoProps, staticProps) {
-                protoProps && defineProperties(Constructor.prototype, protoProps);
-                staticProps && defineProperties(Constructor, staticProps);
-                return Constructor;
-            };
-        }();
+        };
         var component_drivers = {
             angular: src_drivers.angular,
             angular2: src_drivers.angular2,
@@ -4804,7 +4585,7 @@
                     }
                 });
                 superClass && (Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass);
-            }(Component, base["a"]);
+            }(Component, _BaseComponent);
             function Component(options) {
                 !function(instance, Constructor) {
                     if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
@@ -4812,7 +4593,7 @@
                 var _this = function(self, call) {
                     if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
                     return !call || "object" != typeof call && "function" != typeof call ? self : call;
-                }(this, (Component.__proto__ || Object.getPrototypeOf(Component)).call(this));
+                }(this, _BaseComponent.call(this));
                 validate(options);
                 _this.addProp(options, "tag");
                 _this.addProp(options, "defaultLogLevel", "info");
@@ -4954,312 +4735,247 @@
                 _this.listenDelegate();
                 return _this;
             }
-            component__createClass(Component, [ {
-                key: "getPropNames",
-                value: function() {
-                    var props = Object.keys(this.props), _iterator = Object.keys(this.builtinProps), _isArray = Array.isArray(_iterator), _i = 0;
-                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref = _iterator[_i++];
-                        } else {
-                            if ((_i = _iterator.next()).done) break;
-                            _ref = _i.value;
-                        }
-                        var key = _ref;
-                        -1 === props.indexOf(key) && props.push(key);
+            Component.prototype.getPropNames = function() {
+                var props = Object.keys(this.props), _iterator = Object.keys(this.builtinProps), _isArray = Array.isArray(_iterator), _i = 0;
+                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref = _iterator[_i++];
+                    } else {
+                        if ((_i = _iterator.next()).done) break;
+                        _ref = _i.value;
                     }
-                    return props;
+                    var key = _ref;
+                    -1 === props.indexOf(key) && props.push(key);
                 }
-            }, {
-                key: "getProp",
-                value: function(name) {
-                    return this.props[name] || this.builtinProps[name];
-                }
-            }, {
-                key: "registerDrivers",
-                value: function() {
-                    this.driverCache = {};
-                    var _iterator2 = Object.keys(component_drivers), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                    for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                        var _ref2;
-                        if (_isArray2) {
-                            if (_i2 >= _iterator2.length) break;
-                            _ref2 = _iterator2[_i2++];
-                        } else {
-                            if ((_i2 = _iterator2.next()).done) break;
-                            _ref2 = _i2.value;
-                        }
-                        var driverName = _ref2;
-                        if (0 !== driverName.indexOf("_")) {
-                            var glob = component_drivers[driverName].global();
-                            glob && this.driver(driverName, glob);
-                        }
+                return props;
+            };
+            Component.prototype.getProp = function(name) {
+                return this.props[name] || this.builtinProps[name];
+            };
+            Component.prototype.registerDrivers = function() {
+                this.driverCache = {};
+                var _iterator2 = Object.keys(component_drivers), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    var _ref2;
+                    if (_isArray2) {
+                        if (_i2 >= _iterator2.length) break;
+                        _ref2 = _iterator2[_i2++];
+                    } else {
+                        if ((_i2 = _iterator2.next()).done) break;
+                        _ref2 = _i2.value;
+                    }
+                    var driverName = _ref2;
+                    if (0 !== driverName.indexOf("_")) {
+                        var glob = component_drivers[driverName].global();
+                        glob && this.driver(driverName, glob);
                     }
                 }
-            }, {
-                key: "driver",
-                value: function(name, dep) {
-                    if (!component_drivers[name]) throw new Error("Could not find driver for framework: " + name);
-                    this.driverCache[name] || (this.driverCache[name] = component_drivers[name].register(this, dep));
-                    return this.driverCache[name];
-                }
-            }, {
-                key: "registerChild",
-                value: function() {
-                    var _this2 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        if (_this2.isChild()) return new child.a(_this2);
-                    });
-                }
-            }, {
-                key: "listenDelegate",
-                value: function() {
-                    var _this3 = this;
-                    Object(src.on)(constants.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name, function() {
-                        return !0;
-                    });
-                    Object(src.on)(constants.POST_MESSAGE.DELEGATE + "_" + this.name, function(_ref3) {
-                        var source = _ref3.source, origin = _ref3.origin, data = _ref3.data, domain = _this3.getDomain(null, data.env || _this3.defaultEnv);
-                        if (!domain) throw new Error("Could not determine domain to allow remote render");
-                        if (!Object(cross_domain_utils_src.matchDomain)(domain, origin)) throw new Error("Can not render from " + origin + " - expected " + domain.toString());
-                        var delegate = _this3.delegate(source, data.options);
-                        return {
-                            overrides: delegate.getOverrides(data.context),
-                            destroy: function() {
-                                return delegate.destroy();
-                            }
-                        };
-                    });
-                }
-            }, {
-                key: "canRenderTo",
-                value: function(win) {
-                    return Object(src.send)(win, constants.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name).then(function(_ref4) {
-                        return _ref4.data;
-                    }).catch(function() {
-                        return !1;
-                    });
-                }
-            }, {
-                key: "getValidDomain",
-                value: function(url) {
-                    if (url) {
-                        var domain = Object(cross_domain_utils_src.getDomainFromUrl)(url);
-                        if ("string" == typeof this.domain && domain === this.domain) return domain;
-                        var domains = this.domain;
-                        if (domains && "object" === (void 0 === domains ? "undefined" : component__typeof(domains)) && !(domains instanceof RegExp)) {
-                            var _iterator3 = Object.keys(domains), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
-                            for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                                var _ref5;
-                                if (_isArray3) {
-                                    if (_i3 >= _iterator3.length) break;
-                                    _ref5 = _iterator3[_i3++];
-                                } else {
-                                    if ((_i3 = _iterator3.next()).done) break;
-                                    _ref5 = _i3.value;
-                                }
-                                if ("test" !== _ref5 && domain === domains[_ref5]) return domain;
-                            }
-                        }
-                    }
-                }
-            }, {
-                key: "getDomain",
-                value: function(url, env) {
-                    var domain = this.getForEnv(this.domain, env);
-                    if (domain) return domain;
-                    if (domain = this.getValidDomain(url)) return domain;
-                    var envUrl = this.getForEnv(this.url, env);
-                    return envUrl ? Object(cross_domain_utils_src.getDomainFromUrl)(envUrl) : url ? Object(cross_domain_utils_src.getDomainFromUrl)(url) : void 0;
-                }
-            }, {
-                key: "getBridgeUrl",
-                value: function(env) {
-                    return this.getForEnv(this.bridgeUrl, env);
-                }
-            }, {
-                key: "getForEnv",
-                value: function(item, env) {
-                    if (item) {
-                        if ("string" == typeof item || item instanceof RegExp) return item;
-                        env || (env = this.defaultEnv);
-                        if (env) return env && "object" === (void 0 === item ? "undefined" : component__typeof(item)) && item[env] ? item[env] : void 0;
-                    }
-                }
-            }, {
-                key: "getBridgeDomain",
-                value: function(env) {
-                    var bridgeDomain = this.getForEnv(this.bridgeDomain, env);
-                    if (bridgeDomain) return bridgeDomain;
-                    var bridgeUrl = this.getBridgeUrl(env);
-                    return bridgeUrl ? Object(cross_domain_utils_src.getDomainFromUrl)(bridgeUrl) : void 0;
-                }
-            }, {
-                key: "getUrl",
-                value: function(env, props) {
-                    var url = this.getForEnv(this.url, env);
-                    if (url) return url;
-                    if (this.buildUrl) return this.buildUrl(props);
-                    throw new Error("Unable to get url");
-                }
-            }, {
-                key: "isXComponent",
-                value: function() {
-                    return Object(component_window.g)();
-                }
-            }, {
-                key: "isChild",
-                value: function() {
-                    return Object(component_window.g)() && Object(component_window.b)().tag === this.tag;
-                }
-            }, {
-                key: "createError",
-                value: function(message, tag) {
-                    return new Error("[" + (tag || this.tag) + "] " + message);
-                }
-            }, {
-                key: "init",
-                value: function(props, context, element) {
-                    return new component_parent.a(this, this.getRenderContext(context, element), {
-                        props: props
-                    });
-                }
-            }, {
-                key: "delegate",
-                value: function(source, options) {
-                    return new delegate_DelegateComponent(this, source, options);
-                }
-            }, {
-                key: "validateRenderContext",
-                value: function(context, element) {
-                    if (context && !this.contexts[context]) throw new Error("[" + this.tag + "] Can not render to " + context);
-                    if (!element && context === constants.CONTEXT_TYPES.IFRAME) throw new Error("[" + this.tag + "] Context type " + constants.CONTEXT_TYPES.IFRAME + " requires an element selector");
-                }
-            }, {
-                key: "getDefaultContext",
-                value: function() {
-                    if (this.defaultContext) return this.defaultContext;
-                    if (this.contexts[constants.CONTEXT_TYPES.IFRAME]) return constants.CONTEXT_TYPES.IFRAME;
-                    if (this.contexts[constants.CONTEXT_TYPES.POPUP]) return constants.CONTEXT_TYPES.POPUP;
-                    throw new Error("Can not determine default context");
-                }
-            }, {
-                key: "getRenderContext",
-                value: function(context, element) {
-                    context = context || this.getDefaultContext();
-                    this.validateRenderContext(context, element);
-                    return context;
-                }
-            }, {
-                key: "render",
-                value: function(props, element) {
-                    var _this4 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        return new component_parent.a(_this4, _this4.getRenderContext(null, element), {
-                            props: props
-                        }).render(element);
-                    });
-                }
-            }, {
-                key: "renderIframe",
-                value: function(props, element) {
-                    var _this5 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        return new component_parent.a(_this5, _this5.getRenderContext(constants.CONTEXT_TYPES.IFRAME, element), {
-                            props: props
-                        }).render(element);
-                    });
-                }
-            }, {
-                key: "renderPopup",
-                value: function(props) {
-                    var _this6 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        return new component_parent.a(_this6, _this6.getRenderContext(constants.CONTEXT_TYPES.POPUP), {
-                            props: props
-                        }).render();
-                    });
-                }
-            }, {
-                key: "renderTo",
-                value: function(win, props, element) {
-                    var _this7 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        return new component_parent.a(_this7, _this7.getRenderContext(null, element), {
-                            props: props
-                        }).renderTo(win, element);
-                    });
-                }
-            }, {
-                key: "renderIframeTo",
-                value: function(win, props, element) {
-                    var _this8 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        return new component_parent.a(_this8, _this8.getRenderContext(constants.CONTEXT_TYPES.IFRAME, element), {
-                            props: props
-                        }).renderTo(win, element);
-                    });
-                }
-            }, {
-                key: "renderPopupTo",
-                value: function(win, props) {
-                    var _this9 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        return new component_parent.a(_this9, _this9.getRenderContext(constants.CONTEXT_TYPES.POPUP), {
-                            props: props
-                        }).renderTo(win);
-                    });
-                }
-            }, {
-                key: "prerender",
-                value: function(props, element) {
-                    var instance = new component_parent.a(this, this.getRenderContext(null, element), {
-                        props: props
-                    });
-                    instance.prefetch();
+            };
+            Component.prototype.driver = function(name, dep) {
+                if (!component_drivers[name]) throw new Error("Could not find driver for framework: " + name);
+                this.driverCache[name] || (this.driverCache[name] = component_drivers[name].register(this, dep));
+                return this.driverCache[name];
+            };
+            Component.prototype.registerChild = function() {
+                var _this2 = this;
+                return zalgo_promise_src.a.try(function() {
+                    if (_this2.isChild()) return new child.a(_this2);
+                });
+            };
+            Component.prototype.listenDelegate = function() {
+                var _this3 = this;
+                Object(src.on)(constants.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name, function() {
+                    return !0;
+                });
+                Object(src.on)(constants.POST_MESSAGE.DELEGATE + "_" + this.name, function(_ref3) {
+                    var source = _ref3.source, origin = _ref3.origin, data = _ref3.data, domain = _this3.getDomain(null, data.env || _this3.defaultEnv);
+                    if (!domain) throw new Error("Could not determine domain to allow remote render");
+                    if (!Object(cross_domain_utils_src.matchDomain)(domain, origin)) throw new Error("Can not render from " + origin + " - expected " + domain.toString());
+                    var delegate = _this3.delegate(source, data.options);
                     return {
-                        render: function(innerProps, innerElement) {
-                            innerProps && instance.updateProps(innerProps);
-                            return instance.render(innerElement);
-                        },
-                        renderTo: function(win, innerProps, innerElement) {
-                            innerProps && instance.updateProps(innerProps);
-                            return instance.renderTo(win, innerElement);
-                        },
-                        get html() {
-                            return instance.html;
-                        },
-                        set html(value) {
-                            instance.html = value;
+                        overrides: delegate.getOverrides(data.context),
+                        destroy: function() {
+                            return delegate.destroy();
                         }
                     };
+                });
+            };
+            Component.prototype.canRenderTo = function(win) {
+                return Object(src.send)(win, constants.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name).then(function(_ref4) {
+                    return _ref4.data;
+                }).catch(function() {
+                    return !1;
+                });
+            };
+            Component.prototype.getValidDomain = function(url) {
+                if (url) {
+                    var domain = Object(cross_domain_utils_src.getDomainFromUrl)(url);
+                    if ("string" == typeof this.domain && domain === this.domain) return domain;
+                    var domains = this.domain;
+                    if (domains && "object" === (void 0 === domains ? "undefined" : component__typeof(domains)) && !(domains instanceof RegExp)) {
+                        var _iterator3 = Object.keys(domains), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
+                        for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                            var _ref5;
+                            if (_isArray3) {
+                                if (_i3 >= _iterator3.length) break;
+                                _ref5 = _iterator3[_i3++];
+                            } else {
+                                if ((_i3 = _iterator3.next()).done) break;
+                                _ref5 = _i3.value;
+                            }
+                            if ("test" !== _ref5 && domain === domains[_ref5]) return domain;
+                        }
+                    }
                 }
-            }, {
-                key: "log",
-                value: function(event) {
-                    var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                    Object(lib.C)(this.name, event, payload);
+            };
+            Component.prototype.getDomain = function(url, env) {
+                var domain = this.getForEnv(this.domain, env);
+                if (domain) return domain;
+                if (domain = this.getValidDomain(url)) return domain;
+                var envUrl = this.getForEnv(this.url, env);
+                return envUrl ? Object(cross_domain_utils_src.getDomainFromUrl)(envUrl) : url ? Object(cross_domain_utils_src.getDomainFromUrl)(url) : void 0;
+            };
+            Component.prototype.getBridgeUrl = function(env) {
+                return this.getForEnv(this.bridgeUrl, env);
+            };
+            Component.prototype.getForEnv = function(item, env) {
+                if (item) {
+                    if ("string" == typeof item || item instanceof RegExp) return item;
+                    env || (env = this.defaultEnv);
+                    if (env) return env && "object" === (void 0 === item ? "undefined" : component__typeof(item)) && item[env] ? item[env] : void 0;
                 }
-            }, {
-                key: "logWarning",
-                value: function(event, payload) {
-                    Object(lib._1)(this.name, event, payload);
-                }
-            }, {
-                key: "logError",
-                value: function(event, payload) {
-                    Object(lib.r)(this.name, event, payload);
-                }
-            } ], [ {
-                key: "getByTag",
-                value: function(tag) {
-                    return Component.components[tag];
-                }
-            } ]);
+            };
+            Component.prototype.getBridgeDomain = function(env) {
+                var bridgeDomain = this.getForEnv(this.bridgeDomain, env);
+                if (bridgeDomain) return bridgeDomain;
+                var bridgeUrl = this.getBridgeUrl(env);
+                return bridgeUrl ? Object(cross_domain_utils_src.getDomainFromUrl)(bridgeUrl) : void 0;
+            };
+            Component.prototype.getUrl = function(env, props) {
+                var url = this.getForEnv(this.url, env);
+                if (url) return url;
+                if (this.buildUrl) return this.buildUrl(props);
+                throw new Error("Unable to get url");
+            };
+            Component.prototype.isXComponent = function() {
+                return Object(component_window.g)();
+            };
+            Component.prototype.isChild = function() {
+                return Object(component_window.g)() && Object(component_window.b)().tag === this.tag;
+            };
+            Component.prototype.createError = function(message, tag) {
+                return new Error("[" + (tag || this.tag) + "] " + message);
+            };
+            Component.prototype.init = function(props, context, element) {
+                return new component_parent.a(this, this.getRenderContext(context, element), {
+                    props: props
+                });
+            };
+            Component.prototype.delegate = function(source, options) {
+                return new delegate_DelegateComponent(this, source, options);
+            };
+            Component.prototype.validateRenderContext = function(context, element) {
+                if (context && !this.contexts[context]) throw new Error("[" + this.tag + "] Can not render to " + context);
+                if (!element && context === constants.CONTEXT_TYPES.IFRAME) throw new Error("[" + this.tag + "] Context type " + constants.CONTEXT_TYPES.IFRAME + " requires an element selector");
+            };
+            Component.prototype.getDefaultContext = function() {
+                if (this.defaultContext) return this.defaultContext;
+                if (this.contexts[constants.CONTEXT_TYPES.IFRAME]) return constants.CONTEXT_TYPES.IFRAME;
+                if (this.contexts[constants.CONTEXT_TYPES.POPUP]) return constants.CONTEXT_TYPES.POPUP;
+                throw new Error("Can not determine default context");
+            };
+            Component.prototype.getRenderContext = function(context, element) {
+                context = context || this.getDefaultContext();
+                this.validateRenderContext(context, element);
+                return context;
+            };
+            Component.prototype.render = function(props, element) {
+                var _this4 = this;
+                return zalgo_promise_src.a.try(function() {
+                    return new component_parent.a(_this4, _this4.getRenderContext(null, element), {
+                        props: props
+                    }).render(element);
+                });
+            };
+            Component.prototype.renderIframe = function(props, element) {
+                var _this5 = this;
+                return zalgo_promise_src.a.try(function() {
+                    return new component_parent.a(_this5, _this5.getRenderContext(constants.CONTEXT_TYPES.IFRAME, element), {
+                        props: props
+                    }).render(element);
+                });
+            };
+            Component.prototype.renderPopup = function(props) {
+                var _this6 = this;
+                return zalgo_promise_src.a.try(function() {
+                    return new component_parent.a(_this6, _this6.getRenderContext(constants.CONTEXT_TYPES.POPUP), {
+                        props: props
+                    }).render();
+                });
+            };
+            Component.prototype.renderTo = function(win, props, element) {
+                var _this7 = this;
+                return zalgo_promise_src.a.try(function() {
+                    return new component_parent.a(_this7, _this7.getRenderContext(null, element), {
+                        props: props
+                    }).renderTo(win, element);
+                });
+            };
+            Component.prototype.renderIframeTo = function(win, props, element) {
+                var _this8 = this;
+                return zalgo_promise_src.a.try(function() {
+                    return new component_parent.a(_this8, _this8.getRenderContext(constants.CONTEXT_TYPES.IFRAME, element), {
+                        props: props
+                    }).renderTo(win, element);
+                });
+            };
+            Component.prototype.renderPopupTo = function(win, props) {
+                var _this9 = this;
+                return zalgo_promise_src.a.try(function() {
+                    return new component_parent.a(_this9, _this9.getRenderContext(constants.CONTEXT_TYPES.POPUP), {
+                        props: props
+                    }).renderTo(win);
+                });
+            };
+            Component.prototype.prerender = function(props, element) {
+                var instance = new component_parent.a(this, this.getRenderContext(null, element), {
+                    props: props
+                });
+                instance.prefetch();
+                return {
+                    render: function(innerProps, innerElement) {
+                        innerProps && instance.updateProps(innerProps);
+                        return instance.render(innerElement);
+                    },
+                    renderTo: function(win, innerProps, innerElement) {
+                        innerProps && instance.updateProps(innerProps);
+                        return instance.renderTo(win, innerElement);
+                    },
+                    get html() {
+                        return instance.html;
+                    },
+                    set html(value) {
+                        instance.html = value;
+                    }
+                };
+            };
+            Component.prototype.log = function(event) {
+                var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                Object(lib.C)(this.name, event, payload);
+            };
+            Component.prototype.logWarning = function(event, payload) {
+                Object(lib._1)(this.name, event, payload);
+            };
+            Component.prototype.logError = function(event, payload) {
+                Object(lib.r)(this.name, event, payload);
+            };
+            Component.getByTag = function(tag) {
+                return Component.components[tag];
+            };
             return Component;
-        }()).prototype, "getPropNames", [ lib.G ], Object.getOwnPropertyDescriptor(_class.prototype, "getPropNames"), _class.prototype), 
+        }(base.a)).prototype, "getPropNames", [ lib.G ], Object.getOwnPropertyDescriptor(_class.prototype, "getPropNames"), _class.prototype), 
         _class);
         component_Component.components = {};
     },
@@ -5502,31 +5218,7 @@
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        }, _slicedToArray = function() {
-            return function(arr, i) {
-                if (Array.isArray(arr)) return arr;
-                if (Symbol.iterator in Object(arr)) return function(arr, i) {
-                    var _arr = [], _n = !0, _d = !1, _e = void 0;
-                    try {
-                        for (var _s, _i = arr[Symbol.iterator](); !(_n = (_s = _i.next()).done); _n = !0) {
-                            _arr.push(_s.value);
-                            if (i && _arr.length === i) break;
-                        }
-                    } catch (err) {
-                        _d = !0;
-                        _e = err;
-                    } finally {
-                        try {
-                            !_n && _i.return && _i.return();
-                        } finally {
-                            if (_d) throw _e;
-                        }
-                    }
-                    return _arr;
-                }(arr, i);
-                throw new TypeError("Invalid attempt to destructure non-iterable instance");
-            };
-        }();
+        };
         function normalizeProp(component, instance, props, key, value) {
             var prop = component.getProp(key), resultValue = void 0;
             !(resultValue = prop.value ? prop.value : !prop.def || props.hasOwnProperty(key) && function(value) {
@@ -5575,7 +5267,7 @@
                             return "function" == typeof prop.queryValue ? prop.queryValue(value) : value;
                         });
                     }(prop, 0, value) ]).then(function(_ref3) {
-                        var _ref4 = _slicedToArray(_ref3, 2), queryParam = _ref4[0], queryValue = _ref4[1], result = void 0;
+                        var queryParam = _ref3[0], queryValue = _ref3[1], result = void 0;
                         if ("boolean" == typeof queryValue) result = "1"; else if ("string" == typeof queryValue) result = queryValue.toString(); else {
                             if ("function" == typeof queryValue) return;
                             if ("object" === (void 0 === queryValue ? "undefined" : props__typeof(queryValue)) && null !== queryValue) {
@@ -5583,15 +5275,15 @@
                                     result = Object(lib.o)(queryValue, key);
                                     var _iterator3 = Object.keys(result), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
                                     for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                                        var _ref5;
+                                        var _ref4;
                                         if (_isArray3) {
                                             if (_i3 >= _iterator3.length) break;
-                                            _ref5 = _iterator3[_i3++];
+                                            _ref4 = _iterator3[_i3++];
                                         } else {
                                             if ((_i3 = _iterator3.next()).done) break;
-                                            _ref5 = _i3.value;
+                                            _ref4 = _i3.value;
                                         }
-                                        var dotkey = _ref5;
+                                        var dotkey = _ref4;
                                         params[dotkey] = result[dotkey];
                                     }
                                     return;
@@ -5619,31 +5311,7 @@
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        }, parent__slicedToArray = function() {
-            return function(arr, i) {
-                if (Array.isArray(arr)) return arr;
-                if (Symbol.iterator in Object(arr)) return function(arr, i) {
-                    var _arr = [], _n = !0, _d = !1, _e = void 0;
-                    try {
-                        for (var _s, _i = arr[Symbol.iterator](); !(_n = (_s = _i.next()).done); _n = !0) {
-                            _arr.push(_s.value);
-                            if (i && _arr.length === i) break;
-                        }
-                    } catch (err) {
-                        _d = !0;
-                        _e = err;
-                    } finally {
-                        try {
-                            !_n && _i.return && _i.return();
-                        } finally {
-                            if (_d) throw _e;
-                        }
-                    }
-                    return _arr;
-                }(arr, i);
-                throw new TypeError("Invalid attempt to destructure non-iterable instance");
-            };
-        }(), _createClass = function() {
+        }, _createClass = function() {
             function defineProperties(target, props) {
                 for (var i = 0; i < props.length; i++) {
                     var descriptor = props[i];
@@ -5659,15 +5327,6 @@
                 return Constructor;
             };
         }();
-        function _defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
         function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
             var desc = {};
             Object.keys(descriptor).forEach(function(key) {
@@ -5703,7 +5362,7 @@
                     }
                 });
                 superClass && (Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass);
-            }(ParentComponent, base["a"]);
+            }(ParentComponent, _BaseComponent);
             function ParentComponent(component, context, _ref) {
                 var props = _ref.props;
                 !function(instance, Constructor) {
@@ -5712,7 +5371,7 @@
                 var _this = function(self, call) {
                     if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
                     return !call || "object" != typeof call && "function" != typeof call ? self : call;
-                }(this, (ParentComponent.__proto__ || Object.getPrototypeOf(ParentComponent)).call(this));
+                }(this, _BaseComponent.call(this));
                 _this.component = component;
                 _this.validateParentDomain();
                 _this.context = context;
@@ -5730,907 +5389,806 @@
                 });
                 return _this;
             }
-            _createClass(ParentComponent, [ {
-                key: "render",
-                value: function(element) {
-                    var _this2 = this, loadUrl = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
-                    return this.tryInit(function() {
-                        _this2.component.log("render_" + _this2.context, {
-                            context: _this2.context,
-                            element: element,
-                            loadUrl: Object(lib.W)(loadUrl)
-                        });
-                        var tasks = {};
-                        tasks.onRender = _this2.props.onRender();
-                        tasks.getDomain = _this2.getDomain();
-                        tasks.elementReady = zalgo_promise_src.a.try(function() {
-                            if (element) return _this2.elementReady(element);
-                        });
-                        tasks.openContainer = tasks.elementReady.then(function() {
-                            return _this2.openContainer(element);
-                        });
-                        tasks.showContainer = tasks.openContainer.then(function() {
-                            return _this2.showContainer();
-                        });
-                        tasks.openPrerender = tasks.openContainer.then(function() {
-                            return _this2.openPrerender();
-                        });
-                        tasks.switchPrerender = zalgo_promise_src.a.all([ tasks.openPrerender, _this2.onInit ]).then(function() {
-                            return _this2.switchPrerender();
-                        });
-                        tasks.open = _this2.driver.openOnClick ? _this2.open() : tasks.openContainer.then(function() {
-                            return _this2.open();
-                        });
-                        tasks.listen = zalgo_promise_src.a.all([ tasks.getDomain, tasks.open ]).then(function(_ref2) {
-                            var domain = parent__slicedToArray(_ref2, 1)[0];
-                            _this2.listen(_this2.window, domain);
-                        });
-                        tasks.watchForClose = tasks.open.then(function() {
-                            return _this2.watchForClose();
-                        });
-                        tasks.linkDomain = zalgo_promise_src.a.all([ tasks.getDomain, tasks.open ]).then(function(_ref4) {
-                            var domain = parent__slicedToArray(_ref4, 1)[0];
-                            if (src.bridge && "string" == typeof domain) return src.bridge.linkUrl(_this2.window, domain);
-                        });
-                        if (!_this2.html) {
-                            tasks.createPrerenderTemplate = tasks.openPrerender.then(function() {
-                                return _this2.createPrerenderTemplate();
-                            });
-                            tasks.showComponent = tasks.createPrerenderTemplate.then(function() {
-                                return _this2.showComponent();
-                            });
-                        }
-                        tasks.openBridge = zalgo_promise_src.a.all([ tasks.getDomain, tasks.open ]).then(function(_ref6) {
-                            var domain = parent__slicedToArray(_ref6, 1)[0];
-                            return _this2.openBridge("string" == typeof domain ? domain : null);
-                        });
-                        if (_this2.html) tasks.loadHTML = tasks.open.then(function() {
-                            return _this2.loadHTML();
-                        }); else if (loadUrl) {
-                            tasks.buildUrl = _this2.buildUrl();
-                            tasks.loadUrl = zalgo_promise_src.a.all([ tasks.buildUrl, tasks.open, tasks.linkDomain, tasks.listen, tasks.open, tasks.openBridge, tasks.createPrerenderTemplate ]).then(function(_ref8) {
-                                var url = parent__slicedToArray(_ref8, 1)[0];
-                                return _this2.loadUrl(url);
-                            });
-                            tasks.runTimeout = tasks.loadUrl.then(function() {
-                                return _this2.runTimeout();
-                            });
-                        }
-                        return zalgo_promise_src.a.hash(tasks);
-                    }).then(function() {
-                        return _this2.props.onEnter();
-                    }).then(function() {
-                        return _this2;
+            ParentComponent.prototype.render = function(element) {
+                var _this2 = this, loadUrl = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
+                return this.tryInit(function() {
+                    _this2.component.log("render_" + _this2.context, {
+                        context: _this2.context,
+                        element: element,
+                        loadUrl: Object(lib.W)(loadUrl)
                     });
-                }
-            }, {
-                key: "getOutlet",
-                value: function() {
-                    var outlet = document.createElement("div");
-                    Object(lib.a)(outlet, constants.CLASS_NAMES.OUTLET);
-                    return outlet;
-                }
-            }, {
-                key: "validateParentDomain",
-                value: function() {
-                    var domain = Object(cross_domain_utils_src.getDomain)();
-                    if (!Object(cross_domain_utils_src.matchDomain)(this.component.allowedParentDomains, domain)) throw new src_error.c("Can not be rendered by domain: " + domain);
-                }
-            }, {
-                key: "renderTo",
-                value: function(win, element) {
-                    var _this3 = this;
-                    return this.tryInit(function() {
-                        if (win === window) return _this3.render(element);
-                        if (!Object(cross_domain_utils_src.isSameTopWindow)(window, win)) throw new Error("Can only renderTo an adjacent frame");
-                        if (element && "string" != typeof element) throw new Error("Element passed to renderTo must be a string selector, got " + (void 0 === element ? "undefined" : parent__typeof(element)) + " " + element);
-                        _this3.checkAllowRenderTo(win);
-                        _this3.component.log("render_" + _this3.context + "_to_win", {
-                            element: Object(lib.W)(element),
-                            context: _this3.context
+                    var tasks = {};
+                    tasks.onRender = _this2.props.onRender();
+                    tasks.getDomain = _this2.getDomain();
+                    tasks.elementReady = zalgo_promise_src.a.try(function() {
+                        if (element) return _this2.elementReady(element);
+                    });
+                    tasks.openContainer = tasks.elementReady.then(function() {
+                        return _this2.openContainer(element);
+                    });
+                    tasks.showContainer = tasks.openContainer.then(function() {
+                        return _this2.showContainer();
+                    });
+                    tasks.openPrerender = tasks.openContainer.then(function() {
+                        return _this2.openPrerender();
+                    });
+                    tasks.switchPrerender = zalgo_promise_src.a.all([ tasks.openPrerender, _this2.onInit ]).then(function() {
+                        return _this2.switchPrerender();
+                    });
+                    tasks.open = _this2.driver.openOnClick ? _this2.open() : tasks.openContainer.then(function() {
+                        return _this2.open();
+                    });
+                    tasks.listen = zalgo_promise_src.a.all([ tasks.getDomain, tasks.open ]).then(function(_ref2) {
+                        var domain = _ref2[0];
+                        _this2.listen(_this2.window, domain);
+                    });
+                    tasks.watchForClose = tasks.open.then(function() {
+                        return _this2.watchForClose();
+                    });
+                    tasks.linkDomain = zalgo_promise_src.a.all([ tasks.getDomain, tasks.open ]).then(function(_ref3) {
+                        var domain = _ref3[0];
+                        if (src.bridge && "string" == typeof domain) return src.bridge.linkUrl(_this2.window, domain);
+                    });
+                    if (!_this2.html) {
+                        tasks.createPrerenderTemplate = tasks.openPrerender.then(function() {
+                            return _this2.createPrerenderTemplate();
                         });
-                        _this3.childWindowName = _this3.buildChildWindowName({
-                            renderTo: win
-                        });
-                        _this3.delegate(win);
-                        return _this3.render(element);
-                    });
-                }
-            }, {
-                key: "prefetch",
-                value: function() {
-                    var _this4 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        _this4.html = _this4.buildUrl().then(function(url) {
-                            return Object(lib.N)(url).then(function(html) {
-                                return '\n                        <base href="' + ("" + url.split("/").slice(0, 3).join("/")) + '">\n\n                        ' + html + "\n\n                        <script>\n                            if (window.history && window.history.pushState) {\n                                window.history.pushState({}, '', '" + ("/" + url.split("/").slice(3).join("/")) + "');\n                            }\n                        <\/script>\n                    ";
-                            });
-                        });
-                    });
-                }
-            }, {
-                key: "loadHTML",
-                value: function() {
-                    var _this5 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        if (!_this5.html) throw new Error("Html not prefetched");
-                        return _this5.html.then(function(html) {
-                            return Object(lib._4)(_this5.window, html);
-                        });
-                    });
-                }
-            }, {
-                key: "checkAllowRenderTo",
-                value: function(win) {
-                    if (!win) throw this.component.createError("Must pass window to renderTo");
-                    if (!Object(cross_domain_utils_src.isSameDomain)(win)) {
-                        var origin = Object(cross_domain_utils_src.getDomain)(), domain = this.component.getDomain(null, this.props.env);
-                        if (!domain) throw new Error("Could not determine domain to allow remote render");
-                        if (!Object(cross_domain_utils_src.matchDomain)(domain, origin)) throw new Error("Can not render remotely to " + domain.toString() + " - can only render to " + origin);
-                    }
-                }
-            }, {
-                key: "registerActiveComponent",
-                value: function() {
-                    var _this6 = this;
-                    ParentComponent.activeComponents.push(this);
-                    this.clean.register(function() {
-                        ParentComponent.activeComponents.splice(ParentComponent.activeComponents.indexOf(_this6), 1);
-                    });
-                }
-            }, {
-                key: "getComponentParentRef",
-                value: function() {
-                    var renderToWindow = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window;
-                    if (this.context === constants.CONTEXT_TYPES.POPUP) return {
-                        ref: constants.WINDOW_REFERENCES.OPENER
-                    };
-                    if (renderToWindow === window) return Object(cross_domain_utils_src.isTop)(window) ? {
-                        ref: constants.WINDOW_REFERENCES.TOP
-                    } : {
-                        ref: constants.WINDOW_REFERENCES.PARENT,
-                        distance: Object(cross_domain_utils_src.getDistanceFromTop)(window)
-                    };
-                    var uid = Object(lib._0)();
-                    lib.y.windows[uid] = window;
-                    this.clean.register(function() {
-                        delete lib.y.windows[uid];
-                    });
-                    return {
-                        ref: constants.WINDOW_REFERENCES.GLOBAL,
-                        uid: uid
-                    };
-                }
-            }, {
-                key: "getRenderParentRef",
-                value: function() {
-                    var renderToWindow = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window;
-                    if (renderToWindow === window) return this.getComponentParentRef(renderToWindow);
-                    var uid = Object(lib._0)();
-                    lib.y.windows[uid] = renderToWindow;
-                    this.clean.register(function() {
-                        delete lib.y.windows[uid];
-                    });
-                    return {
-                        ref: constants.WINDOW_REFERENCES.GLOBAL,
-                        uid: uid
-                    };
-                }
-            }, {
-                key: "buildChildWindowName",
-                value: function() {
-                    var _ref10$renderTo = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}).renderTo, renderTo = void 0 === _ref10$renderTo ? window : _ref10$renderTo, sameDomain = Object(cross_domain_utils_src.isSameDomain)(renderTo), uid = Object(lib._0)(), tag = this.component.tag, sProps = Object(lib.R)(this.getPropsForChild()), componentParent = this.getComponentParentRef(renderTo), renderParent = this.getRenderParentRef(renderTo), props = !sameDomain && !this.component.unsafeRenderTo ? {
-                        type: constants.INITIAL_PROPS.UID,
-                        uid: uid
-                    } : {
-                        type: constants.INITIAL_PROPS.RAW,
-                        value: sProps
-                    };
-                    if (props.type === constants.INITIAL_PROPS.UID) {
-                        lib.y.props[uid] = JSON.stringify(sProps);
-                        this.clean.register(function() {
-                            delete lib.y.props[uid];
+                        tasks.showComponent = tasks.createPrerenderTemplate.then(function() {
+                            return _this2.showComponent();
                         });
                     }
-                    return Object(component_window.a)(this.component.name, this.component.version, {
-                        uid: uid,
-                        tag: tag,
-                        componentParent: componentParent,
-                        renderParent: renderParent,
-                        props: props
+                    tasks.openBridge = zalgo_promise_src.a.all([ tasks.getDomain, tasks.open ]).then(function(_ref4) {
+                        var domain = _ref4[0];
+                        return _this2.openBridge("string" == typeof domain ? domain : null);
                     });
-                }
-            }, {
-                key: "sendToParent",
-                value: function(name, data) {
-                    if (!Object(component_window.c)()) throw new Error("Can not find parent component window to message");
-                    this.component.log("send_to_parent_" + name);
-                    return Object(src.send)(Object(component_window.c)(), name, data, {
-                        domain: Object(component_window.d)()
+                    if (_this2.html) tasks.loadHTML = tasks.open.then(function() {
+                        return _this2.loadHTML();
+                    }); else if (loadUrl) {
+                        tasks.buildUrl = _this2.buildUrl();
+                        tasks.loadUrl = zalgo_promise_src.a.all([ tasks.buildUrl, tasks.open, tasks.linkDomain, tasks.listen, tasks.open, tasks.openBridge, tasks.createPrerenderTemplate ]).then(function(_ref5) {
+                            var url = _ref5[0];
+                            return _this2.loadUrl(url);
+                        });
+                        tasks.runTimeout = tasks.loadUrl.then(function() {
+                            return _this2.runTimeout();
+                        });
+                    }
+                    return zalgo_promise_src.a.hash(tasks);
+                }).then(function() {
+                    return _this2.props.onEnter();
+                }).then(function() {
+                    return _this2;
+                });
+            };
+            ParentComponent.prototype.getOutlet = function() {
+                var outlet = document.createElement("div");
+                Object(lib.a)(outlet, constants.CLASS_NAMES.OUTLET);
+                return outlet;
+            };
+            ParentComponent.prototype.validateParentDomain = function() {
+                var domain = Object(cross_domain_utils_src.getDomain)();
+                if (!Object(cross_domain_utils_src.matchDomain)(this.component.allowedParentDomains, domain)) throw new src_error.c("Can not be rendered by domain: " + domain);
+            };
+            ParentComponent.prototype.renderTo = function(win, element) {
+                var _this3 = this;
+                return this.tryInit(function() {
+                    if (win === window) return _this3.render(element);
+                    if (!Object(cross_domain_utils_src.isSameTopWindow)(window, win)) throw new Error("Can only renderTo an adjacent frame");
+                    if (element && "string" != typeof element) throw new Error("Element passed to renderTo must be a string selector, got " + (void 0 === element ? "undefined" : parent__typeof(element)) + " " + element);
+                    _this3.checkAllowRenderTo(win);
+                    _this3.component.log("render_" + _this3.context + "_to_win", {
+                        element: Object(lib.W)(element),
+                        context: _this3.context
                     });
-                }
-            }, {
-                key: "setProps",
-                value: function(props) {
-                    var required = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
-                    !function(component, props) {
-                        var required = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
-                        if ((props = props || {}).env && "object" === _typeof(component.url) && !component.url[props.env]) throw new Error("Invalid env: " + props.env);
-                        var _iterator = component.getPropNames(), _isArray = Array.isArray(_iterator), _i = 0;
-                        for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                            var _ref;
-                            if (_isArray) {
-                                if (_i >= _iterator.length) break;
-                                _ref = _iterator[_i++];
-                            } else {
-                                if ((_i = _iterator.next()).done) break;
-                                _ref = _i.value;
-                            }
-                            var key = _ref, prop = component.getProp(key);
-                            if (prop.alias && props.hasOwnProperty(prop.alias)) {
-                                var value = props[prop.alias];
-                                delete props[prop.alias];
-                                props[key] || (props[key] = value);
-                            }
-                        }
-                        var _iterator2 = Object.keys(props), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                        for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                            var _ref2;
-                            if (_isArray2) {
-                                if (_i2 >= _iterator2.length) break;
-                                _ref2 = _iterator2[_i2++];
-                            } else {
-                                if ((_i2 = _iterator2.next()).done) break;
-                                _ref2 = _i2.value;
-                            }
-                            var _key = _ref2, _prop = component.getProp(_key), _value = props[_key];
-                            _prop && validateProp(_prop, _key, _value, props, required);
-                        }
-                        var _iterator3 = component.getPropNames(), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
-                        for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                            var _ref3;
-                            if (_isArray3) {
-                                if (_i3 >= _iterator3.length) break;
-                                _ref3 = _iterator3[_i3++];
-                            } else {
-                                if ((_i3 = _iterator3.next()).done) break;
-                                _ref3 = _i3.value;
-                            }
-                            var _key2 = _ref3, _prop2 = component.getProp(_key2), _value2 = props[_key2];
-                            _prop2 && !props.hasOwnProperty(_key2) && validateProp(_prop2, _key2, _value2, props, required);
-                        }
-                    }(this.component, props, required);
-                    this.component.validate && this.component.validate(this.component, props);
-                    this.props = this.props || {};
-                    Object(lib.t)(this.props, function(component, instance, props) {
-                        var result = {};
-                        props = props || {};
-                        var _iterator = Object.keys(props), _isArray = Array.isArray(_iterator), _i = 0;
-                        for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                            var _ref;
-                            if (_isArray) {
-                                if (_i >= _iterator.length) break;
-                                _ref = _iterator[_i++];
-                            } else {
-                                if ((_i = _iterator.next()).done) break;
-                                _ref = _i.value;
-                            }
-                            var key = _ref;
-                            -1 !== component.getPropNames().indexOf(key) ? result[key] = normalizeProp(component, instance, props, key, props[key]) : result[key] = props[key];
-                        }
-                        var _iterator2 = component.getPropNames(), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                        for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                            var _ref2;
-                            if (_isArray2) {
-                                if (_i2 >= _iterator2.length) break;
-                                _ref2 = _iterator2[_i2++];
-                            } else {
-                                if ((_i2 = _iterator2.next()).done) break;
-                                _ref2 = _i2.value;
-                            }
-                            var _key = _ref2;
-                            if (!(props.hasOwnProperty(_key) || instance.props && instance.props.hasOwnProperty(_key))) {
-                                var normalizedProp = normalizeProp(component, instance, props, _key, props[_key]);
-                                void 0 !== normalizedProp && (result[_key] = normalizedProp);
-                            }
-                        }
-                        return result;
-                    }(this.component, this, props));
-                }
-            }, {
-                key: "buildUrl",
-                value: function() {
-                    var _this7 = this;
-                    return zalgo_promise_src.a.all([ this.props.url, propsToQuery(_extends({}, this.component.props, this.component.builtinProps), this.props) ]).then(function(_ref11) {
-                        var _ref12 = parent__slicedToArray(_ref11, 2), url = _ref12[0], query = _ref12[1];
-                        return url && !_this7.component.getValidDomain(url) ? url : zalgo_promise_src.a.try(function() {
-                            return url || _this7.component.getUrl(_this7.props.env, _this7.props);
-                        }).then(function(finalUrl) {
-                            query[constants.XCOMPONENT] = "1";
-                            return Object(lib.u)(finalUrl, {
-                                query: query
-                            });
+                    _this3.childWindowName = _this3.buildChildWindowName({
+                        renderTo: win
+                    });
+                    _this3.delegate(win);
+                    return _this3.render(element);
+                });
+            };
+            ParentComponent.prototype.prefetch = function() {
+                var _this4 = this;
+                return zalgo_promise_src.a.try(function() {
+                    _this4.html = _this4.buildUrl().then(function(url) {
+                        return Object(lib.N)(url).then(function(html) {
+                            return '\n                        <base href="' + ("" + url.split("/").slice(0, 3).join("/")) + '">\n\n                        ' + html + "\n\n                        <script>\n                            if (window.history && window.history.pushState) {\n                                window.history.pushState({}, '', '" + ("/" + url.split("/").slice(3).join("/")) + "');\n                            }\n                        <\/script>\n                    ";
                         });
                     });
+                });
+            };
+            ParentComponent.prototype.loadHTML = function() {
+                var _this5 = this;
+                return zalgo_promise_src.a.try(function() {
+                    if (!_this5.html) throw new Error("Html not prefetched");
+                    return _this5.html.then(function(html) {
+                        return Object(lib._4)(_this5.window, html);
+                    });
+                });
+            };
+            ParentComponent.prototype.checkAllowRenderTo = function(win) {
+                if (!win) throw this.component.createError("Must pass window to renderTo");
+                if (!Object(cross_domain_utils_src.isSameDomain)(win)) {
+                    var origin = Object(cross_domain_utils_src.getDomain)(), domain = this.component.getDomain(null, this.props.env);
+                    if (!domain) throw new Error("Could not determine domain to allow remote render");
+                    if (!Object(cross_domain_utils_src.matchDomain)(domain, origin)) throw new Error("Can not render remotely to " + domain.toString() + " - can only render to " + origin);
                 }
-            }, {
-                key: "getDomain",
-                value: function() {
-                    var _this8 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        return _this8.props.url;
-                    }).then(function(url) {
-                        var domain = _this8.component.getDomain(url, _this8.props.env);
-                        return domain || (_this8.component.buildUrl ? zalgo_promise_src.a.try(function() {
-                            return _this8.component.buildUrl(_this8.props);
-                        }).then(function(builtUrl) {
-                            return _this8.component.getDomain(builtUrl, _this8.props.env);
-                        }) : void 0);
-                    }).then(function(domain) {
-                        if (!domain) throw new Error("Could not determine domain");
-                        return domain;
+            };
+            ParentComponent.prototype.registerActiveComponent = function() {
+                var _this6 = this;
+                ParentComponent.activeComponents.push(this);
+                this.clean.register(function() {
+                    ParentComponent.activeComponents.splice(ParentComponent.activeComponents.indexOf(_this6), 1);
+                });
+            };
+            ParentComponent.prototype.getComponentParentRef = function() {
+                var renderToWindow = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window;
+                if (this.context === constants.CONTEXT_TYPES.POPUP) return {
+                    ref: constants.WINDOW_REFERENCES.OPENER
+                };
+                if (renderToWindow === window) return Object(cross_domain_utils_src.isTop)(window) ? {
+                    ref: constants.WINDOW_REFERENCES.TOP
+                } : {
+                    ref: constants.WINDOW_REFERENCES.PARENT,
+                    distance: Object(cross_domain_utils_src.getDistanceFromTop)(window)
+                };
+                var uid = Object(lib._0)();
+                lib.y.windows[uid] = window;
+                this.clean.register(function() {
+                    delete lib.y.windows[uid];
+                });
+                return {
+                    ref: constants.WINDOW_REFERENCES.GLOBAL,
+                    uid: uid
+                };
+            };
+            ParentComponent.prototype.getRenderParentRef = function() {
+                var renderToWindow = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window;
+                if (renderToWindow === window) return this.getComponentParentRef(renderToWindow);
+                var uid = Object(lib._0)();
+                lib.y.windows[uid] = renderToWindow;
+                this.clean.register(function() {
+                    delete lib.y.windows[uid];
+                });
+                return {
+                    ref: constants.WINDOW_REFERENCES.GLOBAL,
+                    uid: uid
+                };
+            };
+            ParentComponent.prototype.buildChildWindowName = function() {
+                var _ref6$renderTo = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}).renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, sameDomain = Object(cross_domain_utils_src.isSameDomain)(renderTo), uid = Object(lib._0)(), tag = this.component.tag, sProps = Object(lib.R)(this.getPropsForChild()), componentParent = this.getComponentParentRef(renderTo), renderParent = this.getRenderParentRef(renderTo), props = !sameDomain && !this.component.unsafeRenderTo ? {
+                    type: constants.INITIAL_PROPS.UID,
+                    uid: uid
+                } : {
+                    type: constants.INITIAL_PROPS.RAW,
+                    value: sProps
+                };
+                if (props.type === constants.INITIAL_PROPS.UID) {
+                    lib.y.props[uid] = JSON.stringify(sProps);
+                    this.clean.register(function() {
+                        delete lib.y.props[uid];
                     });
                 }
-            }, {
-                key: "getPropsForChild",
-                value: function() {
-                    var result = {}, _iterator = Object.keys(this.props), _isArray = Array.isArray(_iterator), _i = 0;
+                return Object(component_window.a)(this.component.name, this.component.version, {
+                    uid: uid,
+                    tag: tag,
+                    componentParent: componentParent,
+                    renderParent: renderParent,
+                    props: props
+                });
+            };
+            ParentComponent.prototype.sendToParent = function(name, data) {
+                if (!Object(component_window.c)()) throw new Error("Can not find parent component window to message");
+                this.component.log("send_to_parent_" + name);
+                return Object(src.send)(Object(component_window.c)(), name, data, {
+                    domain: Object(component_window.d)()
+                });
+            };
+            ParentComponent.prototype.setProps = function(props) {
+                var required = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
+                !function(component, props) {
+                    var required = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
+                    if ((props = props || {}).env && "object" === _typeof(component.url) && !component.url[props.env]) throw new Error("Invalid env: " + props.env);
+                    var _iterator = component.getPropNames(), _isArray = Array.isArray(_iterator), _i = 0;
                     for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref13;
+                        var _ref;
                         if (_isArray) {
                             if (_i >= _iterator.length) break;
-                            _ref13 = _iterator[_i++];
+                            _ref = _iterator[_i++];
                         } else {
                             if ((_i = _iterator.next()).done) break;
-                            _ref13 = _i.value;
+                            _ref = _i.value;
                         }
-                        var key = _ref13, prop = this.component.getProp(key);
-                        prop && !1 === prop.sendToChild || (result[key] = this.props[key]);
+                        var key = _ref, prop = component.getProp(key);
+                        if (prop.alias && props.hasOwnProperty(prop.alias)) {
+                            var value = props[prop.alias];
+                            delete props[prop.alias];
+                            props[key] || (props[key] = value);
+                        }
                     }
-                    return result;
-                }
-            }, {
-                key: "updateProps",
-                value: function(props) {
-                    var _this9 = this;
-                    this.setProps(props, !1);
-                    return this.onInit.then(function() {
-                        if (_this9.childExports) return _this9.childExports.updateProps(_this9.getPropsForChild());
-                        throw new Error("Child exports were not available");
-                    });
-                }
-            }, {
-                key: "openBridge",
-                value: function(domain) {
-                    var _this10 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        if (src.bridge && _this10.driver.needsBridge) {
-                            var needsBridgeParams = {
-                                win: _this10.window
-                            };
-                            domain && (needsBridgeParams.domain = domain);
-                            var needsBridge = src.bridge.needsBridge(needsBridgeParams), bridgeUrl = _this10.component.getBridgeUrl(_this10.props.env);
-                            if (bridgeUrl) {
-                                bridgeUrl = Object(lib.u)(bridgeUrl, {
-                                    query: {
-                                        version: _this10.component.version
-                                    }
-                                });
-                                var bridgeDomain = _this10.component.getBridgeDomain(_this10.props.env);
-                                if (!bridgeDomain) throw new Error("Can not determine domain for bridge");
-                                return needsBridge ? src.bridge.openBridge(bridgeUrl, bridgeDomain).then(function(result) {
-                                    if (result) return result;
-                                }) : void 0;
-                            }
-                            if (needsBridge && domain && !src.bridge.hasBridge(domain, domain)) throw new Error("Bridge url needed to render " + _this10.context);
-                        }
-                    });
-                }
-            }, {
-                key: "open",
-                value: function() {
-                    var _this11 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        _this11.component.log("open_" + _this11.context, {
-                            windowName: _this11.childWindowName
-                        });
-                        return _this11.driver.open.call(_this11);
-                    });
-                }
-            }, {
-                key: "openPrerender",
-                value: function() {
-                    var _this12 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        if (_this12.component.prerenderTemplate) return _this12.driver.openPrerender.call(_this12);
-                    });
-                }
-            }, {
-                key: "switchPrerender",
-                value: function() {
-                    var _this13 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        if (_this13.prerenderWindow && _this13.driver.switchPrerender) return _this13.driver.switchPrerender.call(_this13);
-                    });
-                }
-            }, {
-                key: "elementReady",
-                value: function(element) {
-                    return Object(lib.p)(element).then(lib.I);
-                }
-            }, {
-                key: "delegate",
-                value: function(win) {
-                    var _this14 = this;
-                    this.component.log("delegate_" + this.context);
-                    var props = {
-                        uid: this.props.uid,
-                        dimensions: this.props.dimensions,
-                        onClose: this.props.onClose,
-                        onDisplay: this.props.onDisplay
-                    }, _iterator2 = this.component.getPropNames(), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                    var _iterator2 = Object.keys(props), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
                     for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                        var _ref14;
+                        var _ref2;
                         if (_isArray2) {
                             if (_i2 >= _iterator2.length) break;
-                            _ref14 = _iterator2[_i2++];
+                            _ref2 = _iterator2[_i2++];
                         } else {
                             if ((_i2 = _iterator2.next()).done) break;
-                            _ref14 = _i2.value;
+                            _ref2 = _i2.value;
                         }
-                        var propName = _ref14;
-                        this.component.getProp(propName).allowDelegate && (props[propName] = this.props[propName]);
+                        var _key = _ref2, _prop = component.getProp(_key), _value = props[_key];
+                        _prop && validateProp(_prop, _key, _value, props, required);
                     }
-                    var delegate = Object(src.send)(win, constants.POST_MESSAGE.DELEGATE + "_" + this.component.name, {
-                        context: this.context,
-                        env: this.props.env,
-                        options: {
-                            context: this.context,
-                            childWindowName: this.childWindowName,
-                            props: props,
-                            overrides: {
-                                focus: function() {
-                                    return _this14.focus();
-                                },
-                                userClose: function() {
-                                    return _this14.userClose();
-                                },
-                                getDomain: function() {
-                                    return _this14.getDomain();
-                                },
-                                error: function(err) {
-                                    return _this14.error(err);
-                                },
-                                on: function(eventName, handler) {
-                                    return _this14.on(eventName, handler);
-                                }
-                            }
-                        }
-                    }).then(function(_ref15) {
-                        var data = _ref15.data;
-                        _this14.clean.register(data.destroy);
-                        return data;
-                    }).catch(function(err) {
-                        throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.X)(err));
-                    }), overrides = this.driver.delegateOverrides, _loop = function() {
+                    var _iterator3 = component.getPropNames(), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
+                    for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                        var _ref3;
                         if (_isArray3) {
-                            if (_i3 >= _iterator3.length) return "break";
-                            _ref16 = _iterator3[_i3++];
+                            if (_i3 >= _iterator3.length) break;
+                            _ref3 = _iterator3[_i3++];
                         } else {
-                            if ((_i3 = _iterator3.next()).done) return "break";
-                            _ref16 = _i3.value;
+                            if ((_i3 = _iterator3.next()).done) break;
+                            _ref3 = _i3.value;
                         }
-                        var key = _ref16, val = overrides[key];
-                        if (val === constants.DELEGATE.CALL_ORIGINAL) return "continue";
-                        var original = _this14[key];
-                        _this14[key] = function() {
-                            var _this15 = this, _arguments = arguments;
-                            return delegate.then(function(data) {
-                                var override = data.overrides[key];
-                                if (val === constants.DELEGATE.CALL_DELEGATE) return override.apply(_this15, _arguments);
-                                if ("function" == typeof val) return val(original, override).apply(_this15, _arguments);
-                                throw new Error("Expected delgate to be CALL_ORIGINAL, CALL_DELEGATE, or factory method");
-                            });
-                        };
-                    };
-                    var _iterator3 = Object.keys(overrides), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
-                    _loop2: for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                        var _ref16;
-                        switch (_loop()) {
-                          case "break":
-                            break _loop2;
-
-                          case "continue":
-                            continue;
+                        var _key2 = _ref3, _prop2 = component.getProp(_key2), _value2 = props[_key2];
+                        _prop2 && !props.hasOwnProperty(_key2) && validateProp(_prop2, _key2, _value2, props, required);
+                    }
+                }(this.component, props, required);
+                this.component.validate && this.component.validate(this.component, props);
+                this.props = this.props || {};
+                Object(lib.t)(this.props, function(component, instance, props) {
+                    var result = {};
+                    props = props || {};
+                    var _iterator = Object.keys(props), _isArray = Array.isArray(_iterator), _i = 0;
+                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                        var _ref;
+                        if (_isArray) {
+                            if (_i >= _iterator.length) break;
+                            _ref = _iterator[_i++];
+                        } else {
+                            if ((_i = _iterator.next()).done) break;
+                            _ref = _i.value;
+                        }
+                        var key = _ref;
+                        -1 !== component.getPropNames().indexOf(key) ? result[key] = normalizeProp(component, instance, props, key, props[key]) : result[key] = props[key];
+                    }
+                    var _iterator2 = component.getPropNames(), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                    for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                        var _ref2;
+                        if (_isArray2) {
+                            if (_i2 >= _iterator2.length) break;
+                            _ref2 = _iterator2[_i2++];
+                        } else {
+                            if ((_i2 = _iterator2.next()).done) break;
+                            _ref2 = _i2.value;
+                        }
+                        var _key = _ref2;
+                        if (!(props.hasOwnProperty(_key) || instance.props && instance.props.hasOwnProperty(_key))) {
+                            var normalizedProp = normalizeProp(component, instance, props, _key, props[_key]);
+                            void 0 !== normalizedProp && (result[_key] = normalizedProp);
                         }
                     }
-                }
-            }, {
-                key: "watchForClose",
-                value: function() {
-                    var _this16 = this, closeWindowListener = Object(cross_domain_utils_src.onCloseWindow)(this.window, function() {
-                        _this16.component.log("detect_close_child");
-                        return zalgo_promise_src.a.try(function() {
-                            return _this16.props.onClose(constants.CLOSE_REASONS.CLOSE_DETECTED);
-                        }).finally(function() {
-                            return _this16.destroy();
+                    return result;
+                }(this.component, this, props));
+            };
+            ParentComponent.prototype.buildUrl = function() {
+                var _this7 = this;
+                return zalgo_promise_src.a.all([ this.props.url, propsToQuery(_extends({}, this.component.props, this.component.builtinProps), this.props) ]).then(function(_ref7) {
+                    var url = _ref7[0], query = _ref7[1];
+                    return url && !_this7.component.getValidDomain(url) ? url : zalgo_promise_src.a.try(function() {
+                        return url || _this7.component.getUrl(_this7.props.env, _this7.props);
+                    }).then(function(finalUrl) {
+                        query[constants.XCOMPONENT] = "1";
+                        return Object(lib.u)(finalUrl, {
+                            query: query
                         });
-                    }, 3e3);
-                    this.clean.register("destroyCloseWindowListener", closeWindowListener.cancel);
-                }
-            }, {
-                key: "watchForUnload",
-                value: function() {
-                    var _this17 = this, onunload = Object(lib.L)(function() {
-                        _this17.component.log("navigate_away");
-                        Object(client.g)();
-                        _this17.destroyComponent();
-                    }), unloadWindowListener = Object(lib.b)(window, "unload", onunload);
-                    this.clean.register("destroyUnloadWindowListener", unloadWindowListener.cancel);
-                }
-            }, {
-                key: "loadUrl",
-                value: function(url) {
-                    var _this18 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        _this18.component.log("load_url");
-                        window.location.href.split("#")[0] === url.split("#")[0] && (url = Object(lib.u)(url, {
-                            query: _defineProperty({}, Object(lib._0)(), "1")
-                        }));
-                        return _this18.driver.loadUrl.call(_this18, url);
                     });
-                }
-            }, {
-                key: "hijack",
-                value: function(targetElement) {
-                    targetElement.target = this.childWindowName;
-                }
-            }, {
-                key: "runTimeout",
-                value: function() {
-                    var _this19 = this, timeout = this.props.timeout;
-                    if (timeout) {
-                        var _id = this.timeout = setTimeout(function() {
-                            _this19.component.log("timed_out", {
-                                timeout: timeout.toString()
-                            });
-                            var error = _this19.component.createError("Loading component timed out after " + timeout + " milliseconds");
-                            _this19.onInit.reject(error);
-                            _this19.props.onTimeout(error);
-                        }, timeout);
-                        this.clean.register(function() {
-                            clearTimeout(_id);
-                            delete _this19.timeout;
-                        });
+                });
+            };
+            ParentComponent.prototype.getDomain = function() {
+                var _this8 = this;
+                return zalgo_promise_src.a.try(function() {
+                    return _this8.props.url;
+                }).then(function(url) {
+                    var domain = _this8.component.getDomain(url, _this8.props.env);
+                    return domain || (_this8.component.buildUrl ? zalgo_promise_src.a.try(function() {
+                        return _this8.component.buildUrl(_this8.props);
+                    }).then(function(builtUrl) {
+                        return _this8.component.getDomain(builtUrl, _this8.props.env);
+                    }) : void 0);
+                }).then(function(domain) {
+                    if (!domain) throw new Error("Could not determine domain");
+                    return domain;
+                });
+            };
+            ParentComponent.prototype.getPropsForChild = function() {
+                var result = {}, _iterator = Object.keys(this.props), _isArray = Array.isArray(_iterator), _i = 0;
+                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref8;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref8 = _iterator[_i++];
+                    } else {
+                        if ((_i = _iterator.next()).done) break;
+                        _ref8 = _i.value;
                     }
+                    var key = _ref8, prop = this.component.getProp(key);
+                    prop && !1 === prop.sendToChild || (result[key] = this.props[key]);
                 }
-            }, {
-                key: "listeners",
-                value: function() {
-                    var _ref17;
-                    return _defineProperty(_ref17 = {}, constants.POST_MESSAGE.INIT, function(source, data) {
-                        this.childExports = data.exports;
-                        this.onInit.resolve(this);
-                        this.timeout && clearTimeout(this.timeout);
-                        return {
-                            props: this.getPropsForChild(),
-                            context: this.context
+                return result;
+            };
+            ParentComponent.prototype.updateProps = function(props) {
+                var _this9 = this;
+                this.setProps(props, !1);
+                return this.onInit.then(function() {
+                    if (_this9.childExports) return _this9.childExports.updateProps(_this9.getPropsForChild());
+                    throw new Error("Child exports were not available");
+                });
+            };
+            ParentComponent.prototype.openBridge = function(domain) {
+                var _this10 = this;
+                return zalgo_promise_src.a.try(function() {
+                    if (src.bridge && _this10.driver.needsBridge) {
+                        var needsBridgeParams = {
+                            win: _this10.window
                         };
-                    }), _defineProperty(_ref17, constants.POST_MESSAGE.CLOSE, function(source, data) {
-                        this.close(data.reason);
-                    }), _defineProperty(_ref17, constants.POST_MESSAGE.CHECK_CLOSE, function() {
-                        this.checkClose();
-                    }), _defineProperty(_ref17, constants.POST_MESSAGE.RESIZE, function(source, data) {
-                        var _this20 = this;
-                        return zalgo_promise_src.a.try(function() {
-                            if (_this20.driver.allowResize) return _this20.resize(data.width, data.height);
-                        });
-                    }), _defineProperty(_ref17, constants.POST_MESSAGE.ONRESIZE, function() {
-                        this.event.trigger("resize");
-                    }), _defineProperty(_ref17, constants.POST_MESSAGE.HIDE, function() {
-                        this.hide();
-                    }), _defineProperty(_ref17, constants.POST_MESSAGE.SHOW, function() {
-                        this.show();
-                    }), _defineProperty(_ref17, constants.POST_MESSAGE.ERROR, function(source, data) {
-                        this.error(new Error(data.error));
-                    }), _ref17;
-                }
-            }, {
-                key: "resize",
-                value: function(width, height) {
-                    var _this21 = this, _ref18$waitForTransit = (arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}).waitForTransition, waitForTransition = void 0 === _ref18$waitForTransit || _ref18$waitForTransit;
-                    return zalgo_promise_src.a.try(function() {
-                        _this21.component.log("resize", {
-                            height: Object(lib.W)(height),
-                            width: Object(lib.W)(width)
-                        });
-                        _this21.driver.resize.call(_this21, width, height);
-                        if (waitForTransition && (_this21.element || _this21.iframe)) {
-                            var overflow = void 0;
-                            _this21.element && (overflow = Object(lib.T)(_this21.element, "hidden"));
-                            return Object(lib.q)(_this21.element || _this21.iframe).then(function() {
-                                overflow && overflow.reset();
+                        domain && (needsBridgeParams.domain = domain);
+                        var needsBridge = src.bridge.needsBridge(needsBridgeParams), bridgeUrl = _this10.component.getBridgeUrl(_this10.props.env);
+                        if (bridgeUrl) {
+                            bridgeUrl = Object(lib.u)(bridgeUrl, {
+                                query: {
+                                    version: _this10.component.version
+                                }
                             });
+                            var bridgeDomain = _this10.component.getBridgeDomain(_this10.props.env);
+                            if (!bridgeDomain) throw new Error("Can not determine domain for bridge");
+                            return needsBridge ? src.bridge.openBridge(bridgeUrl, bridgeDomain).then(function(result) {
+                                if (result) return result;
+                            }) : void 0;
                         }
+                        if (needsBridge && domain && !src.bridge.hasBridge(domain, domain)) throw new Error("Bridge url needed to render " + _this10.context);
+                    }
+                });
+            };
+            ParentComponent.prototype.open = function() {
+                var _this11 = this;
+                return zalgo_promise_src.a.try(function() {
+                    _this11.component.log("open_" + _this11.context, {
+                        windowName: _this11.childWindowName
                     });
+                    return _this11.driver.open.call(_this11);
+                });
+            };
+            ParentComponent.prototype.openPrerender = function() {
+                var _this12 = this;
+                return zalgo_promise_src.a.try(function() {
+                    if (_this12.component.prerenderTemplate) return _this12.driver.openPrerender.call(_this12);
+                });
+            };
+            ParentComponent.prototype.switchPrerender = function() {
+                var _this13 = this;
+                return zalgo_promise_src.a.try(function() {
+                    if (_this13.prerenderWindow && _this13.driver.switchPrerender) return _this13.driver.switchPrerender.call(_this13);
+                });
+            };
+            ParentComponent.prototype.elementReady = function(element) {
+                return Object(lib.p)(element).then(lib.I);
+            };
+            ParentComponent.prototype.delegate = function(win) {
+                var _this14 = this;
+                this.component.log("delegate_" + this.context);
+                var props = {
+                    uid: this.props.uid,
+                    dimensions: this.props.dimensions,
+                    onClose: this.props.onClose,
+                    onDisplay: this.props.onDisplay
+                }, _iterator2 = this.component.getPropNames(), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    var _ref9;
+                    if (_isArray2) {
+                        if (_i2 >= _iterator2.length) break;
+                        _ref9 = _iterator2[_i2++];
+                    } else {
+                        if ((_i2 = _iterator2.next()).done) break;
+                        _ref9 = _i2.value;
+                    }
+                    var propName = _ref9;
+                    this.component.getProp(propName).allowDelegate && (props[propName] = this.props[propName]);
                 }
-            }, {
-                key: "hide",
-                value: function() {
-                    this.container && Object(lib.A)(this.container);
-                    return this.driver.hide.call(this);
-                }
-            }, {
-                key: "show",
-                value: function() {
-                    this.container && Object(lib.V)(this.container);
-                    return this.driver.show.call(this);
-                }
-            }, {
-                key: "checkClose",
-                value: function() {
-                    var _this22 = this, closeWindowListener = Object(cross_domain_utils_src.onCloseWindow)(this.window, function() {
-                        _this22.userClose();
-                    }, 50, 500);
-                    this.clean.register(closeWindowListener.cancel);
-                }
-            }, {
-                key: "userClose",
-                value: function() {
-                    return this.close(constants.CLOSE_REASONS.USER_CLOSED);
-                }
-            }, {
-                key: "close",
-                value: function() {
-                    var _this23 = this, reason = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : constants.CLOSE_REASONS.PARENT_CALL;
-                    return zalgo_promise_src.a.try(function() {
-                        _this23.component.log("close", {
-                            reason: reason
-                        });
-                        _this23.event.triggerOnce(constants.EVENTS.CLOSE);
-                        return _this23.props.onClose(reason);
-                    }).then(function() {
-                        return zalgo_promise_src.a.all([ _this23.closeComponent(), _this23.closeContainer() ]);
-                    }).then(function() {
-                        return _this23.destroy();
-                    });
-                }
-            }, {
-                key: "closeContainer",
-                value: function() {
-                    var _this24 = this, reason = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : constants.CLOSE_REASONS.PARENT_CALL;
-                    return zalgo_promise_src.a.try(function() {
-                        _this24.event.triggerOnce(constants.EVENTS.CLOSE);
-                        return _this24.props.onClose(reason);
-                    }).then(function() {
-                        return zalgo_promise_src.a.all([ _this24.closeComponent(reason), _this24.hideContainer() ]);
-                    }).then(function() {
-                        return _this24.destroyContainer();
-                    });
-                }
-            }, {
-                key: "destroyContainer",
-                value: function() {
-                    var _this25 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        _this25.clean.run("destroyContainerEvents");
-                        _this25.clean.run("destroyContainerTemplate");
-                    });
-                }
-            }, {
-                key: "closeComponent",
-                value: function() {
-                    var _this26 = this, reason = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : constants.CLOSE_REASONS.PARENT_CALL, win = this.window;
-                    return zalgo_promise_src.a.try(function() {
-                        return _this26.cancelContainerEvents();
-                    }).then(function() {
-                        _this26.event.triggerOnce(constants.EVENTS.CLOSE);
-                        return _this26.props.onClose(reason);
-                    }).then(function() {
-                        return _this26.hideComponent();
-                    }).then(function() {
-                        return _this26.destroyComponent();
-                    }).then(function() {
-                        _this26.childExports && _this26.context === constants.CONTEXT_TYPES.POPUP && !Object(cross_domain_utils_src.isWindowClosed)(win) && _this26.childExports.close().catch(lib.I);
-                    });
-                }
-            }, {
-                key: "destroyComponent",
-                value: function() {
-                    this.clean.run("destroyUnloadWindowListener");
-                    this.clean.run("destroyCloseWindowListener");
-                    this.clean.run("destroyContainerEvents");
-                    this.clean.run("destroyWindow");
-                }
-            }, {
-                key: "showContainer",
-                value: function() {
-                    var _this27 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        if (_this27.props.onDisplay) return _this27.props.onDisplay();
-                    }).then(function() {
-                        if (_this27.container) return Object(lib.U)(_this27.container, constants.ANIMATION_NAMES.SHOW_CONTAINER, _this27.clean.register);
-                    });
-                }
-            }, {
-                key: "showComponent",
-                value: function() {
-                    var _this28 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        if (_this28.props.onDisplay) return _this28.props.onDisplay();
-                    }).then(function() {
-                        if (_this28.element) return Object(lib.U)(_this28.element, constants.ANIMATION_NAMES.SHOW_COMPONENT, _this28.clean.register);
-                    });
-                }
-            }, {
-                key: "hideContainer",
-                value: function() {
-                    var _this29 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        return _this29.container ? Object(lib.c)(_this29.container, constants.ANIMATION_NAMES.HIDE_CONTAINER, _this29.clean.register) : zalgo_promise_src.a.resolve();
-                    });
-                }
-            }, {
-                key: "hideComponent",
-                value: function() {
-                    var _this30 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        return _this30.element ? Object(lib.c)(_this30.element, constants.ANIMATION_NAMES.HIDE_COMPONENT, _this30.clean.register) : zalgo_promise_src.a.resolve();
-                    });
-                }
-            }, {
-                key: "focus",
-                value: function() {
-                    if (!this.window || Object(cross_domain_utils_src.isWindowClosed)(this.window)) throw new Error("No window to focus");
-                    this.component.log("focus");
-                    this.window.focus();
-                }
-            }, {
-                key: "createPrerenderTemplate",
-                value: function() {
-                    var _this31 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        return _this31.component.prerenderTemplate ? zalgo_promise_src.a.try(function() {
-                            return _this31.prerenderIframe ? Object(lib.e)(_this31.prerenderIframe).then(function() {
-                                return _this31.prerenderWindow;
-                            }) : _this31.prerenderWindow;
-                        }).then(function(win) {
-                            var doc = void 0;
-                            try {
-                                doc = win.document;
-                            } catch (err) {
-                                return;
-                            }
-                            try {
-                                Object(lib._3)(win, _this31.renderTemplate(_this31.component.prerenderTemplate, {
-                                    jsxDom: lib.F.bind(doc),
-                                    document: doc
-                                }));
-                            } catch (err) {}
-                        }) : zalgo_promise_src.a.resolve();
-                    });
-                }
-            }, {
-                key: "renderTemplate",
-                value: function(renderer) {
-                    var _this32 = this, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, _ref19 = this.component.dimensions || {}, _ref19$width = _ref19.width, width = void 0 === _ref19$width ? constants.DEFAULT_DIMENSIONS.WIDTH + "px" : _ref19$width, _ref19$height = _ref19.height, height = void 0 === _ref19$height ? constants.DEFAULT_DIMENSIONS.HEIGHT + "px" : _ref19$height;
-                    return renderer.call(this, _extends({
-                        id: constants.CLASS_NAMES.XCOMPONENT + "-" + this.component.tag + "-" + this.props.uid,
-                        props: renderer.__xdomain__ ? null : this.props,
-                        tag: this.component.tag,
+                var delegate = Object(src.send)(win, constants.POST_MESSAGE.DELEGATE + "_" + this.component.name, {
+                    context: this.context,
+                    env: this.props.env,
+                    options: {
                         context: this.context,
-                        outlet: this.getOutlet(),
-                        CLASS: constants.CLASS_NAMES,
-                        ANIMATION: constants.ANIMATION_NAMES,
-                        CONTEXT: constants.CONTEXT_TYPES,
-                        EVENT: constants.EVENTS,
-                        actions: {
-                            close: function() {
-                                return _this32.userClose();
-                            },
+                        childWindowName: this.childWindowName,
+                        props: props,
+                        overrides: {
                             focus: function() {
-                                return _this32.focus();
+                                return _this14.focus();
+                            },
+                            userClose: function() {
+                                return _this14.userClose();
+                            },
+                            getDomain: function() {
+                                return _this14.getDomain();
+                            },
+                            error: function(err) {
+                                return _this14.error(err);
+                            },
+                            on: function(eventName, handler) {
+                                return _this14.on(eventName, handler);
                             }
+                        }
+                    }
+                }).then(function(_ref10) {
+                    var data = _ref10.data;
+                    _this14.clean.register(data.destroy);
+                    return data;
+                }).catch(function(err) {
+                    throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.X)(err));
+                }), overrides = this.driver.delegateOverrides, _loop = function() {
+                    if (_isArray3) {
+                        if (_i3 >= _iterator3.length) return "break";
+                        _ref11 = _iterator3[_i3++];
+                    } else {
+                        if ((_i3 = _iterator3.next()).done) return "break";
+                        _ref11 = _i3.value;
+                    }
+                    var key = _ref11, val = overrides[key];
+                    if (val === constants.DELEGATE.CALL_ORIGINAL) return "continue";
+                    var original = _this14[key];
+                    _this14[key] = function() {
+                        var _this15 = this, _arguments = arguments;
+                        return delegate.then(function(data) {
+                            var override = data.overrides[key];
+                            if (val === constants.DELEGATE.CALL_DELEGATE) return override.apply(_this15, _arguments);
+                            if ("function" == typeof val) return val(original, override).apply(_this15, _arguments);
+                            throw new Error("Expected delgate to be CALL_ORIGINAL, CALL_DELEGATE, or factory method");
+                        });
+                    };
+                };
+                var _iterator3 = Object.keys(overrides), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
+                _loop2: for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                    var _ref11;
+                    switch (_loop()) {
+                      case "break":
+                        break _loop2;
+
+                      case "continue":
+                        continue;
+                    }
+                }
+            };
+            ParentComponent.prototype.watchForClose = function() {
+                var _this16 = this, closeWindowListener = Object(cross_domain_utils_src.onCloseWindow)(this.window, function() {
+                    _this16.component.log("detect_close_child");
+                    return zalgo_promise_src.a.try(function() {
+                        return _this16.props.onClose(constants.CLOSE_REASONS.CLOSE_DETECTED);
+                    }).finally(function() {
+                        return _this16.destroy();
+                    });
+                }, 3e3);
+                this.clean.register("destroyCloseWindowListener", closeWindowListener.cancel);
+            };
+            ParentComponent.prototype.watchForUnload = function() {
+                var _this17 = this, onunload = Object(lib.L)(function() {
+                    _this17.component.log("navigate_away");
+                    Object(client.g)();
+                    _this17.destroyComponent();
+                }), unloadWindowListener = Object(lib.b)(window, "unload", onunload);
+                this.clean.register("destroyUnloadWindowListener", unloadWindowListener.cancel);
+            };
+            ParentComponent.prototype.loadUrl = function(url) {
+                var _this18 = this;
+                return zalgo_promise_src.a.try(function() {
+                    _this18.component.log("load_url");
+                    if (window.location.href.split("#")[0] === url.split("#")[0]) {
+                        var _query;
+                        url = Object(lib.u)(url, {
+                            query: (_query = {}, _query[Object(lib._0)()] = "1", _query)
+                        });
+                    }
+                    return _this18.driver.loadUrl.call(_this18, url);
+                });
+            };
+            ParentComponent.prototype.hijack = function(targetElement) {
+                targetElement.target = this.childWindowName;
+            };
+            ParentComponent.prototype.runTimeout = function() {
+                var _this19 = this, timeout = this.props.timeout;
+                if (timeout) {
+                    var _id = this.timeout = setTimeout(function() {
+                        _this19.component.log("timed_out", {
+                            timeout: timeout.toString()
+                        });
+                        var error = _this19.component.createError("Loading component timed out after " + timeout + " milliseconds");
+                        _this19.onInit.reject(error);
+                        _this19.props.onTimeout(error);
+                    }, timeout);
+                    this.clean.register(function() {
+                        clearTimeout(_id);
+                        delete _this19.timeout;
+                    });
+                }
+            };
+            ParentComponent.prototype.listeners = function() {
+                var _ref12;
+                return (_ref12 = {})[constants.POST_MESSAGE.INIT] = function(source, data) {
+                    this.childExports = data.exports;
+                    this.onInit.resolve(this);
+                    this.timeout && clearTimeout(this.timeout);
+                    return {
+                        props: this.getPropsForChild(),
+                        context: this.context
+                    };
+                }, _ref12[constants.POST_MESSAGE.CLOSE] = function(source, data) {
+                    this.close(data.reason);
+                }, _ref12[constants.POST_MESSAGE.CHECK_CLOSE] = function() {
+                    this.checkClose();
+                }, _ref12[constants.POST_MESSAGE.RESIZE] = function(source, data) {
+                    var _this20 = this;
+                    return zalgo_promise_src.a.try(function() {
+                        if (_this20.driver.allowResize) return _this20.resize(data.width, data.height);
+                    });
+                }, _ref12[constants.POST_MESSAGE.ONRESIZE] = function() {
+                    this.event.trigger("resize");
+                }, _ref12[constants.POST_MESSAGE.HIDE] = function() {
+                    this.hide();
+                }, _ref12[constants.POST_MESSAGE.SHOW] = function() {
+                    this.show();
+                }, _ref12[constants.POST_MESSAGE.ERROR] = function(source, data) {
+                    this.error(new Error(data.error));
+                }, _ref12;
+            };
+            ParentComponent.prototype.resize = function(width, height) {
+                var _this21 = this, _ref13$waitForTransit = (arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}).waitForTransition, waitForTransition = void 0 === _ref13$waitForTransit || _ref13$waitForTransit;
+                return zalgo_promise_src.a.try(function() {
+                    _this21.component.log("resize", {
+                        height: Object(lib.W)(height),
+                        width: Object(lib.W)(width)
+                    });
+                    _this21.driver.resize.call(_this21, width, height);
+                    if (waitForTransition && (_this21.element || _this21.iframe)) {
+                        var overflow = void 0;
+                        _this21.element && (overflow = Object(lib.T)(_this21.element, "hidden"));
+                        return Object(lib.q)(_this21.element || _this21.iframe).then(function() {
+                            overflow && overflow.reset();
+                        });
+                    }
+                });
+            };
+            ParentComponent.prototype.hide = function() {
+                this.container && Object(lib.A)(this.container);
+                return this.driver.hide.call(this);
+            };
+            ParentComponent.prototype.show = function() {
+                this.container && Object(lib.V)(this.container);
+                return this.driver.show.call(this);
+            };
+            ParentComponent.prototype.checkClose = function() {
+                var _this22 = this, closeWindowListener = Object(cross_domain_utils_src.onCloseWindow)(this.window, function() {
+                    _this22.userClose();
+                }, 50, 500);
+                this.clean.register(closeWindowListener.cancel);
+            };
+            ParentComponent.prototype.userClose = function() {
+                return this.close(constants.CLOSE_REASONS.USER_CLOSED);
+            };
+            ParentComponent.prototype.close = function() {
+                var _this23 = this, reason = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : constants.CLOSE_REASONS.PARENT_CALL;
+                return zalgo_promise_src.a.try(function() {
+                    _this23.component.log("close", {
+                        reason: reason
+                    });
+                    _this23.event.triggerOnce(constants.EVENTS.CLOSE);
+                    return _this23.props.onClose(reason);
+                }).then(function() {
+                    return zalgo_promise_src.a.all([ _this23.closeComponent(), _this23.closeContainer() ]);
+                }).then(function() {
+                    return _this23.destroy();
+                });
+            };
+            ParentComponent.prototype.closeContainer = function() {
+                var _this24 = this, reason = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : constants.CLOSE_REASONS.PARENT_CALL;
+                return zalgo_promise_src.a.try(function() {
+                    _this24.event.triggerOnce(constants.EVENTS.CLOSE);
+                    return _this24.props.onClose(reason);
+                }).then(function() {
+                    return zalgo_promise_src.a.all([ _this24.closeComponent(reason), _this24.hideContainer() ]);
+                }).then(function() {
+                    return _this24.destroyContainer();
+                });
+            };
+            ParentComponent.prototype.destroyContainer = function() {
+                var _this25 = this;
+                return zalgo_promise_src.a.try(function() {
+                    _this25.clean.run("destroyContainerEvents");
+                    _this25.clean.run("destroyContainerTemplate");
+                });
+            };
+            ParentComponent.prototype.closeComponent = function() {
+                var _this26 = this, reason = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : constants.CLOSE_REASONS.PARENT_CALL, win = this.window;
+                return zalgo_promise_src.a.try(function() {
+                    return _this26.cancelContainerEvents();
+                }).then(function() {
+                    _this26.event.triggerOnce(constants.EVENTS.CLOSE);
+                    return _this26.props.onClose(reason);
+                }).then(function() {
+                    return _this26.hideComponent();
+                }).then(function() {
+                    return _this26.destroyComponent();
+                }).then(function() {
+                    _this26.childExports && _this26.context === constants.CONTEXT_TYPES.POPUP && !Object(cross_domain_utils_src.isWindowClosed)(win) && _this26.childExports.close().catch(lib.I);
+                });
+            };
+            ParentComponent.prototype.destroyComponent = function() {
+                this.clean.run("destroyUnloadWindowListener");
+                this.clean.run("destroyCloseWindowListener");
+                this.clean.run("destroyContainerEvents");
+                this.clean.run("destroyWindow");
+            };
+            ParentComponent.prototype.showContainer = function() {
+                var _this27 = this;
+                return zalgo_promise_src.a.try(function() {
+                    if (_this27.props.onDisplay) return _this27.props.onDisplay();
+                }).then(function() {
+                    if (_this27.container) return Object(lib.U)(_this27.container, constants.ANIMATION_NAMES.SHOW_CONTAINER, _this27.clean.register);
+                });
+            };
+            ParentComponent.prototype.showComponent = function() {
+                var _this28 = this;
+                return zalgo_promise_src.a.try(function() {
+                    if (_this28.props.onDisplay) return _this28.props.onDisplay();
+                }).then(function() {
+                    if (_this28.element) return Object(lib.U)(_this28.element, constants.ANIMATION_NAMES.SHOW_COMPONENT, _this28.clean.register);
+                });
+            };
+            ParentComponent.prototype.hideContainer = function() {
+                var _this29 = this;
+                return zalgo_promise_src.a.try(function() {
+                    return _this29.container ? Object(lib.c)(_this29.container, constants.ANIMATION_NAMES.HIDE_CONTAINER, _this29.clean.register) : zalgo_promise_src.a.resolve();
+                });
+            };
+            ParentComponent.prototype.hideComponent = function() {
+                var _this30 = this;
+                return zalgo_promise_src.a.try(function() {
+                    return _this30.element ? Object(lib.c)(_this30.element, constants.ANIMATION_NAMES.HIDE_COMPONENT, _this30.clean.register) : zalgo_promise_src.a.resolve();
+                });
+            };
+            ParentComponent.prototype.focus = function() {
+                if (!this.window || Object(cross_domain_utils_src.isWindowClosed)(this.window)) throw new Error("No window to focus");
+                this.component.log("focus");
+                this.window.focus();
+            };
+            ParentComponent.prototype.createPrerenderTemplate = function() {
+                var _this31 = this;
+                return zalgo_promise_src.a.try(function() {
+                    return _this31.component.prerenderTemplate ? zalgo_promise_src.a.try(function() {
+                        return _this31.prerenderIframe ? Object(lib.e)(_this31.prerenderIframe).then(function() {
+                            return _this31.prerenderWindow;
+                        }) : _this31.prerenderWindow;
+                    }).then(function(win) {
+                        var doc = void 0;
+                        try {
+                            doc = win.document;
+                        } catch (err) {
+                            return;
+                        }
+                        try {
+                            Object(lib._3)(win, _this31.renderTemplate(_this31.component.prerenderTemplate, {
+                                jsxDom: lib.F.bind(doc),
+                                document: doc
+                            }));
+                        } catch (err) {}
+                    }) : zalgo_promise_src.a.resolve();
+                });
+            };
+            ParentComponent.prototype.renderTemplate = function(renderer) {
+                var _this32 = this, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, _ref14 = this.component.dimensions || {}, _ref14$width = _ref14.width, width = void 0 === _ref14$width ? constants.DEFAULT_DIMENSIONS.WIDTH + "px" : _ref14$width, _ref14$height = _ref14.height, height = void 0 === _ref14$height ? constants.DEFAULT_DIMENSIONS.HEIGHT + "px" : _ref14$height;
+                return renderer.call(this, _extends({
+                    id: constants.CLASS_NAMES.XCOMPONENT + "-" + this.component.tag + "-" + this.props.uid,
+                    props: renderer.__xdomain__ ? null : this.props,
+                    tag: this.component.tag,
+                    context: this.context,
+                    outlet: this.getOutlet(),
+                    CLASS: constants.CLASS_NAMES,
+                    ANIMATION: constants.ANIMATION_NAMES,
+                    CONTEXT: constants.CONTEXT_TYPES,
+                    EVENT: constants.EVENTS,
+                    actions: {
+                        close: function() {
+                            return _this32.userClose();
                         },
-                        on: function(eventName, handler) {
-                            return _this32.on(eventName, handler);
-                        },
-                        jsxDom: lib.F,
-                        document: document,
-                        dimensions: {
-                            width: width,
-                            height: height
+                        focus: function() {
+                            return _this32.focus();
                         }
-                    }, options));
-                }
-            }, {
-                key: "openContainer",
-                value: function(element) {
-                    var _this33 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        var el = void 0;
-                        if (!(el = element ? Object(lib.x)(element) : document.body)) throw new Error("Could not find element to open container into");
-                        if (_this33.component.containerTemplate) {
-                            var container = _this33.renderTemplate(_this33.component.containerTemplate, {
-                                container: el
-                            });
-                            _this33.container = container;
-                            Object(lib.A)(_this33.container);
-                            Object(lib.d)(el, _this33.container);
-                            if (_this33.driver.renderedIntoContainerTemplate) {
-                                _this33.element = _this33.getOutlet();
-                                Object(lib.A)(_this33.element);
-                                if (!_this33.element) throw new Error("Could not find element to render component into");
-                                Object(lib.A)(_this33.element);
-                            }
-                            _this33.clean.register("destroyContainerTemplate", function() {
-                                _this33.container && _this33.container.parentNode && _this33.container.parentNode.removeChild(_this33.container);
-                                delete _this33.container;
-                            });
-                        } else if (_this33.driver.renderedIntoContainerTemplate) throw new Error("containerTemplate needed to render " + _this33.context);
-                    });
-                }
-            }, {
-                key: "cancelContainerEvents",
-                value: function() {
-                    this.clean.run("destroyContainerEvents");
-                }
-            }, {
-                key: "destroy",
-                value: function() {
-                    var _this34 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        if (_this34.clean.hasTasks()) {
-                            _this34.component.log("destroy");
-                            Object(client.g)();
-                            return _this34.clean.all();
+                    },
+                    on: function(eventName, handler) {
+                        return _this32.on(eventName, handler);
+                    },
+                    jsxDom: lib.F,
+                    document: document,
+                    dimensions: {
+                        width: width,
+                        height: height
+                    }
+                }, options));
+            };
+            ParentComponent.prototype.openContainer = function(element) {
+                var _this33 = this;
+                return zalgo_promise_src.a.try(function() {
+                    var el = void 0;
+                    if (!(el = element ? Object(lib.x)(element) : document.body)) throw new Error("Could not find element to open container into");
+                    if (_this33.component.containerTemplate) {
+                        var container = _this33.renderTemplate(_this33.component.containerTemplate, {
+                            container: el
+                        });
+                        _this33.container = container;
+                        Object(lib.A)(_this33.container);
+                        Object(lib.d)(el, _this33.container);
+                        if (_this33.driver.renderedIntoContainerTemplate) {
+                            _this33.element = _this33.getOutlet();
+                            Object(lib.A)(_this33.element);
+                            if (!_this33.element) throw new Error("Could not find element to render component into");
+                            Object(lib.A)(_this33.element);
                         }
-                    });
-                }
-            }, {
-                key: "tryInit",
-                value: function(method) {
-                    var _this35 = this;
-                    return zalgo_promise_src.a.try(method).catch(function(err) {
-                        _this35.onInit.reject(err);
-                    }).then(function() {
-                        return _this35.onInit;
-                    });
-                }
-            }, {
-                key: "error",
-                value: function(err) {
-                    var _this36 = this;
-                    return zalgo_promise_src.a.try(function() {
-                        _this36.handledErrors = _this36.handledErrors || [];
-                        if (-1 === _this36.handledErrors.indexOf(err)) {
-                            _this36.handledErrors.push(err);
-                            _this36.onInit.reject(err);
-                            return _this36.destroy();
-                        }
-                    }).then(function() {
-                        if (_this36.props.onError) return _this36.props.onError(err);
-                    }).catch(function(errErr) {
-                        throw new Error("An error was encountered while handling error:\n\n " + Object(lib.X)(err) + "\n\n" + Object(lib.X)(errErr));
-                    }).then(function() {
-                        if (!_this36.props.onError) throw err;
-                    });
-                }
-            }, {
+                        _this33.clean.register("destroyContainerTemplate", function() {
+                            _this33.container && _this33.container.parentNode && _this33.container.parentNode.removeChild(_this33.container);
+                            delete _this33.container;
+                        });
+                    } else if (_this33.driver.renderedIntoContainerTemplate) throw new Error("containerTemplate needed to render " + _this33.context);
+                });
+            };
+            ParentComponent.prototype.cancelContainerEvents = function() {
+                this.clean.run("destroyContainerEvents");
+            };
+            ParentComponent.prototype.destroy = function() {
+                var _this34 = this;
+                return zalgo_promise_src.a.try(function() {
+                    if (_this34.clean.hasTasks()) {
+                        _this34.component.log("destroy");
+                        Object(client.g)();
+                        return _this34.clean.all();
+                    }
+                });
+            };
+            ParentComponent.prototype.tryInit = function(method) {
+                var _this35 = this;
+                return zalgo_promise_src.a.try(method).catch(function(err) {
+                    _this35.onInit.reject(err);
+                }).then(function() {
+                    return _this35.onInit;
+                });
+            };
+            ParentComponent.prototype.error = function(err) {
+                var _this36 = this;
+                return zalgo_promise_src.a.try(function() {
+                    _this36.handledErrors = _this36.handledErrors || [];
+                    if (-1 === _this36.handledErrors.indexOf(err)) {
+                        _this36.handledErrors.push(err);
+                        _this36.onInit.reject(err);
+                        return _this36.destroy();
+                    }
+                }).then(function() {
+                    if (_this36.props.onError) return _this36.props.onError(err);
+                }).catch(function(errErr) {
+                    throw new Error("An error was encountered while handling error:\n\n " + Object(lib.X)(err) + "\n\n" + Object(lib.X)(errErr));
+                }).then(function() {
+                    if (!_this36.props.onError) throw err;
+                });
+            };
+            ParentComponent.destroyAll = function() {
+                for (var results = []; ParentComponent.activeComponents.length; ) results.push(ParentComponent.activeComponents[0].destroy());
+                return zalgo_promise_src.a.all(results).then(lib.I);
+            };
+            _createClass(ParentComponent, [ {
                 key: "driver",
                 get: function() {
                     if (!this.context) throw new Error("Context not set");
                     return drivers.a[this.context];
                 }
-            } ], [ {
-                key: "destroyAll",
-                value: function() {
-                    for (var results = []; ParentComponent.activeComponents.length; ) results.push(ParentComponent.activeComponents[0].destroy());
-                    return zalgo_promise_src.a.all(results).then(lib.I);
-                }
             } ]);
             return ParentComponent;
-        }()).prototype, "getOutlet", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "getOutlet"), _class.prototype), 
+        }(base.a)).prototype, "getOutlet", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "getOutlet"), _class.prototype), 
         _applyDecoratedDescriptor(_class.prototype, "prefetch", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "prefetch"), _class.prototype), 
         _applyDecoratedDescriptor(_class.prototype, "loadHTML", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "loadHTML"), _class.prototype), 
         _applyDecoratedDescriptor(_class.prototype, "buildUrl", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "buildUrl"), _class.prototype), 
@@ -6687,41 +6245,15 @@
                 y: y
             };
         };
-        var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_hi_base32__), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), _slicedToArray = function() {
-            return function(arr, i) {
-                if (Array.isArray(arr)) return arr;
-                if (Symbol.iterator in Object(arr)) return function(arr, i) {
-                    var _arr = [], _n = !0, _d = !1, _e = void 0;
-                    try {
-                        for (var _s, _i = arr[Symbol.iterator](); !(_n = (_s = _i.next()).done); _n = !0) {
-                            _arr.push(_s.value);
-                            if (i && _arr.length === i) break;
-                        }
-                    } catch (err) {
-                        _d = !0;
-                        _e = err;
-                    } finally {
-                        try {
-                            !_n && _i.return && _i.return();
-                        } finally {
-                            if (_d) throw _e;
-                        }
-                    }
-                    return _arr;
-                }(arr, i);
-                throw new TypeError("Invalid attempt to destructure non-iterable instance");
-            };
-        }();
+        var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_hi_base32__), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js");
         function normalize(str) {
             return str.replace(/^[^a-z0-9A-Z]+|[^a-z0-9A-Z]+$/g, "").replace(/[^a-z0-9A-Z]+/g, "_");
         }
         var isXComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
-            if (!window.name) return !1;
-            var _window$name$split = window.name.split("__");
-            return _slicedToArray(_window$name$split, 1)[0] === __WEBPACK_IMPORTED_MODULE_3__constants__.XCOMPONENT;
+            return !!window.name && window.name.split("__")[0] === __WEBPACK_IMPORTED_MODULE_3__constants__.XCOMPONENT;
         }), getComponentMeta = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
             if (!window.name) throw new Error("Can not get component meta without window name");
-            var _window$name$split3 = window.name.split("__"), _window$name$split4 = _slicedToArray(_window$name$split3, 4), xcomp = _window$name$split4[0], name = _window$name$split4[1], version = _window$name$split4[2], encodedOptions = _window$name$split4[3];
+            var _window$name$split2 = window.name.split("__"), xcomp = _window$name$split2[0], name = _window$name$split2[1], version = _window$name$split2[2], encodedOptions = _window$name$split2[3];
             if (xcomp !== __WEBPACK_IMPORTED_MODULE_3__constants__.XCOMPONENT) throw new Error("Window not rendered by xcomponent - got " + xcomp);
             var str, componentMeta = void 0;
             try {
@@ -7034,22 +6566,7 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, _createClass = function() {
-            function defineProperties(target, props) {
-                for (var i = 0; i < props.length; i++) {
-                    var descriptor = props[i];
-                    descriptor.enumerable = descriptor.enumerable || !1;
-                    descriptor.configurable = !0;
-                    "value" in descriptor && (descriptor.writable = !0);
-                    Object.defineProperty(target, descriptor.key, descriptor);
-                }
-            }
-            return function(Constructor, protoProps, staticProps) {
-                protoProps && defineProperties(Constructor.prototype, protoProps);
-                staticProps && defineProperties(Constructor, staticProps);
-                return Constructor;
-            };
-        }();
+        };
         var glimmer = {
             global: function() {},
             register: function(component, GlimmerComponent) {
@@ -7065,7 +6582,7 @@
                             }
                         });
                         superClass && (Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass);
-                    }(_class, GlimmerComponent);
+                    }(_class, _GlimmerComponent);
                     function _class() {
                         !function(instance, Constructor) {
                             if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
@@ -7073,16 +6590,13 @@
                         return function(self, call) {
                             if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
                             return !call || "object" != typeof call && "function" != typeof call ? self : call;
-                        }(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+                        }(this, _GlimmerComponent.apply(this, arguments));
                     }
-                    _createClass(_class, [ {
-                        key: "didInsertElement",
-                        value: function() {
-                            component.render(_extends({}, this.args), this.element);
-                        }
-                    } ]);
+                    _class.prototype.didInsertElement = function() {
+                        component.render(_extends({}, this.args), this.element);
+                    };
                     return _class;
-                }();
+                }(GlimmerComponent);
             }
         };
     },
@@ -7126,22 +6640,7 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return react;
         });
-        var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), _createClass = function() {
-            function defineProperties(target, props) {
-                for (var i = 0; i < props.length; i++) {
-                    var descriptor = props[i];
-                    descriptor.enumerable = descriptor.enumerable || !1;
-                    descriptor.configurable = !0;
-                    "value" in descriptor && (descriptor.writable = !0);
-                    Object.defineProperty(target, descriptor.key, descriptor);
-                }
-            }
-            return function(Constructor, protoProps, staticProps) {
-                protoProps && defineProperties(Constructor.prototype, protoProps);
-                staticProps && defineProperties(Constructor, staticProps);
-                return Constructor;
-            };
-        }();
+        var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js");
         var react = {
             global: function() {
                 if (window.React && window.ReactDOM) return {
@@ -7178,7 +6677,7 @@
                             }
                         });
                         superClass && (Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass);
-                    }(_class, React.Component);
+                    }(_class, _React$Component);
                     function _class() {
                         !function(instance, Constructor) {
                             if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
@@ -7186,31 +6685,24 @@
                         return function(self, call) {
                             if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
                             return !call || "object" != typeof call && "function" != typeof call ? self : call;
-                        }(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+                        }(this, _React$Component.apply(this, arguments));
                     }
-                    _createClass(_class, [ {
-                        key: "render",
-                        value: function() {
-                            return React.createElement("div", null);
-                        }
-                    }, {
-                        key: "componentDidMount",
-                        value: function() {
-                            component.log("instantiate_react_component");
-                            var el = ReactDOM.findDOMNode(this), parent = component.init(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.t)({}, this.props), null, el);
-                            this.setState({
-                                parent: parent
-                            });
-                            parent.render(el);
-                        }
-                    }, {
-                        key: "componentDidUpdate",
-                        value: function() {
-                            this.state && this.state.parent && this.state.parent.updateProps(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.t)({}, this.props));
-                        }
-                    } ]);
+                    _class.prototype.render = function() {
+                        return React.createElement("div", null);
+                    };
+                    _class.prototype.componentDidMount = function() {
+                        component.log("instantiate_react_component");
+                        var el = ReactDOM.findDOMNode(this), parent = component.init(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.t)({}, this.props), null, el);
+                        this.setState({
+                            parent: parent
+                        });
+                        parent.render(el);
+                    };
+                    _class.prototype.componentDidUpdate = function() {
+                        this.state && this.state.parent && this.state.parent.updateProps(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.t)({}, this.props));
+                    };
                     return _class;
-                }();
+                }(React.Component);
                 return component.react;
             }
         };
@@ -7708,31 +7200,7 @@
                 }
             });
         }
-        var _slicedToArray = function() {
-            return function(arr, i) {
-                if (Array.isArray(arr)) return arr;
-                if (Symbol.iterator in Object(arr)) return function(arr, i) {
-                    var _arr = [], _n = !0, _d = !1, _e = void 0;
-                    try {
-                        for (var _s, _i = arr[Symbol.iterator](); !(_n = (_s = _i.next()).done); _n = !0) {
-                            _arr.push(_s.value);
-                            if (i && _arr.length === i) break;
-                        }
-                    } catch (err) {
-                        _d = !0;
-                        _e = err;
-                    } finally {
-                        try {
-                            !_n && _i.return && _i.return();
-                        } finally {
-                            if (_d) throw _e;
-                        }
-                    }
-                    return _arr;
-                }(arr, i);
-                throw new TypeError("Invalid attempt to destructure non-iterable instance");
-            };
-        }(), _extends = Object.assign || function(target) {
+        var _extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
@@ -7948,12 +7416,12 @@
             return props && Object.keys(props).length ? formatQuery(_extends({}, parseQuery(originalQuery), props)) : originalQuery;
         }
         function extendUrl(url) {
-            var originalHash, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, query = options.query || {}, hash = options.hash || {}, originalUrl = void 0, _url$split = url.split("#"), _url$split2 = _slicedToArray(_url$split, 2);
-            originalUrl = _url$split2[0];
-            originalHash = _url$split2[1];
-            var _originalUrl$split = originalUrl.split("?"), _originalUrl$split2 = _slicedToArray(_originalUrl$split, 2);
-            originalUrl = _originalUrl$split2[0];
-            var queryString = extendQuery(_originalUrl$split2[1], query), hashString = extendQuery(originalHash, hash);
+            var originalHash, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, query = options.query || {}, hash = options.hash || {}, originalUrl = void 0, _url$split = url.split("#");
+            originalUrl = _url$split[0];
+            originalHash = _url$split[1];
+            var _originalUrl$split = originalUrl.split("?");
+            originalUrl = _originalUrl$split[0];
+            var queryString = extendQuery(_originalUrl$split[1], query), hashString = extendQuery(originalHash, hash);
             queryString && (originalUrl = originalUrl + "?" + queryString);
             hashString && (originalUrl = originalUrl + "#" + hashString);
             return originalUrl;
@@ -8766,22 +8234,6 @@
             return !1;
         }
         var global = __webpack_require__("./node_modules/zalgo-promise/src/global.js");
-        var _createClass = function() {
-            function defineProperties(target, props) {
-                for (var i = 0; i < props.length; i++) {
-                    var descriptor = props[i];
-                    descriptor.enumerable = descriptor.enumerable || !1;
-                    descriptor.configurable = !0;
-                    "value" in descriptor && (descriptor.writable = !0);
-                    Object.defineProperty(target, descriptor.key, descriptor);
-                }
-            }
-            return function(Constructor, protoProps, staticProps) {
-                protoProps && defineProperties(Constructor.prototype, protoProps);
-                staticProps && defineProperties(Constructor, staticProps);
-                return Constructor;
-            };
-        }();
         var promise_ZalgoPromise = function() {
             function ZalgoPromise(handler) {
                 var _this = this;
@@ -8814,263 +8266,222 @@
                     resolved ? this.resolve(_result) : rejected && this.reject(_error);
                 }
             }
-            _createClass(ZalgoPromise, [ {
-                key: "resolve",
-                value: function(result) {
-                    if (this.resolved || this.rejected) return this;
-                    if (utils_isPromise(result)) throw new Error("Can not resolve promise with another promise");
-                    this.resolved = !0;
-                    this.value = result;
-                    this.dispatch();
-                    return this;
+            ZalgoPromise.prototype.resolve = function(result) {
+                if (this.resolved || this.rejected) return this;
+                if (utils_isPromise(result)) throw new Error("Can not resolve promise with another promise");
+                this.resolved = !0;
+                this.value = result;
+                this.dispatch();
+                return this;
+            };
+            ZalgoPromise.prototype.reject = function(error) {
+                var _this2 = this;
+                if (this.resolved || this.rejected) return this;
+                if (utils_isPromise(error)) throw new Error("Can not reject promise with another promise");
+                if (!error) {
+                    var _err = error && "function" == typeof error.toString ? error.toString() : Object.prototype.toString.call(error);
+                    error = new Error("Expected reject to be called with Error, got " + _err);
                 }
-            }, {
-                key: "reject",
-                value: function(error) {
-                    var _this2 = this;
-                    if (this.resolved || this.rejected) return this;
-                    if (utils_isPromise(error)) throw new Error("Can not reject promise with another promise");
-                    if (!error) {
-                        var _err = error && "function" == typeof error.toString ? error.toString() : Object.prototype.toString.call(error);
-                        error = new Error("Expected reject to be called with Error, got " + _err);
-                    }
-                    this.rejected = !0;
-                    this.error = error;
-                    this.errorHandled || setTimeout(function() {
-                        _this2.errorHandled || function(err) {
-                            if (-1 === Object(global.a)().dispatchedErrors.indexOf(err)) {
-                                Object(global.a)().dispatchedErrors.push(err);
-                                setTimeout(function() {
-                                    throw err;
-                                }, 1);
-                                for (var j = 0; j < Object(global.a)().possiblyUnhandledPromiseHandlers.length; j++) Object(global.a)().possiblyUnhandledPromiseHandlers[j](err);
+                this.rejected = !0;
+                this.error = error;
+                this.errorHandled || setTimeout(function() {
+                    _this2.errorHandled || function(err) {
+                        if (-1 === Object(global.a)().dispatchedErrors.indexOf(err)) {
+                            Object(global.a)().dispatchedErrors.push(err);
+                            setTimeout(function() {
+                                throw err;
+                            }, 1);
+                            for (var j = 0; j < Object(global.a)().possiblyUnhandledPromiseHandlers.length; j++) Object(global.a)().possiblyUnhandledPromiseHandlers[j](err);
+                        }
+                    }(error);
+                }, 1);
+                this.dispatch();
+                return this;
+            };
+            ZalgoPromise.prototype.asyncReject = function(error) {
+                this.errorHandled = !0;
+                this.reject(error);
+            };
+            ZalgoPromise.prototype.dispatch = function() {
+                var _this3 = this, dispatching = this.dispatching, resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
+                if (!dispatching && (resolved || rejected)) {
+                    this.dispatching = !0;
+                    Object(global.a)().activeCount += 1;
+                    for (var _loop = function(i) {
+                        var _handlers$i = handlers[i], onSuccess = _handlers$i.onSuccess, onError = _handlers$i.onError, promise = _handlers$i.promise, result = void 0;
+                        if (resolved) try {
+                            result = onSuccess ? onSuccess(_this3.value) : _this3.value;
+                        } catch (err) {
+                            promise.reject(err);
+                            return "continue";
+                        } else if (rejected) {
+                            if (!onError) {
+                                promise.reject(_this3.error);
+                                return "continue";
                             }
-                        }(error);
-                    }, 1);
-                    this.dispatch();
-                    return this;
-                }
-            }, {
-                key: "asyncReject",
-                value: function(error) {
-                    this.errorHandled = !0;
-                    this.reject(error);
-                }
-            }, {
-                key: "dispatch",
-                value: function() {
-                    var _this3 = this, dispatching = this.dispatching, resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
-                    if (!dispatching && (resolved || rejected)) {
-                        this.dispatching = !0;
-                        Object(global.a)().activeCount += 1;
-                        for (var _loop = function(i) {
-                            var _handlers$i = handlers[i], onSuccess = _handlers$i.onSuccess, onError = _handlers$i.onError, promise = _handlers$i.promise, result = void 0;
-                            if (resolved) try {
-                                result = onSuccess ? onSuccess(_this3.value) : _this3.value;
+                            try {
+                                result = onError(_this3.error);
                             } catch (err) {
                                 promise.reject(err);
                                 return "continue";
-                            } else if (rejected) {
-                                if (!onError) {
-                                    promise.reject(_this3.error);
-                                    return "continue";
-                                }
-                                try {
-                                    result = onError(_this3.error);
-                                } catch (err) {
-                                    promise.reject(err);
-                                    return "continue";
-                                }
                             }
-                            if (result instanceof ZalgoPromise && (result.resolved || result.rejected)) {
-                                result.resolved ? promise.resolve(result.value) : promise.reject(result.error);
-                                result.errorHandled = !0;
-                            } else utils_isPromise(result) ? result instanceof ZalgoPromise && (result.resolved || result.rejected) ? result.resolved ? promise.resolve(result.value) : promise.reject(result.error) : result.then(function(res) {
-                                promise.resolve(res);
-                            }, function(err) {
-                                promise.reject(err);
-                            }) : promise.resolve(result);
-                        }, i = 0; i < handlers.length; i++) _loop(i);
-                        handlers.length = 0;
-                        this.dispatching = !1;
-                        Object(global.a)().activeCount -= 1;
-                        0 === Object(global.a)().activeCount && ZalgoPromise.flushQueue();
-                    }
+                        }
+                        if (result instanceof ZalgoPromise && (result.resolved || result.rejected)) {
+                            result.resolved ? promise.resolve(result.value) : promise.reject(result.error);
+                            result.errorHandled = !0;
+                        } else utils_isPromise(result) ? result instanceof ZalgoPromise && (result.resolved || result.rejected) ? result.resolved ? promise.resolve(result.value) : promise.reject(result.error) : result.then(function(res) {
+                            promise.resolve(res);
+                        }, function(err) {
+                            promise.reject(err);
+                        }) : promise.resolve(result);
+                    }, i = 0; i < handlers.length; i++) _loop(i);
+                    handlers.length = 0;
+                    this.dispatching = !1;
+                    Object(global.a)().activeCount -= 1;
+                    0 === Object(global.a)().activeCount && ZalgoPromise.flushQueue();
                 }
-            }, {
-                key: "then",
-                value: function(onSuccess, onError) {
-                    if (onSuccess && "function" != typeof onSuccess && !onSuccess.call) throw new Error("Promise.then expected a function for success handler");
-                    if (onError && "function" != typeof onError && !onError.call) throw new Error("Promise.then expected a function for error handler");
-                    var promise = new ZalgoPromise();
-                    this.handlers.push({
-                        promise: promise,
-                        onSuccess: onSuccess,
-                        onError: onError
-                    });
-                    this.errorHandled = !0;
-                    this.dispatch();
-                    return promise;
-                }
-            }, {
-                key: "catch",
-                value: function(onError) {
-                    return this.then(void 0, onError);
-                }
-            }, {
-                key: "finally",
-                value: function(handler) {
-                    return this.then(function(result) {
-                        return ZalgoPromise.try(handler).then(function() {
-                            return result;
-                        });
-                    }, function(err) {
-                        return ZalgoPromise.try(handler).then(function() {
-                            throw err;
-                        });
-                    });
-                }
-            }, {
-                key: "timeout",
-                value: function(time, err) {
-                    var _this4 = this;
-                    if (this.resolved || this.rejected) return this;
-                    var timeout = setTimeout(function() {
-                        _this4.resolved || _this4.rejected || _this4.reject(err || new Error("Promise timed out after " + time + "ms"));
-                    }, time);
-                    return this.then(function(result) {
-                        clearTimeout(timeout);
+            };
+            ZalgoPromise.prototype.then = function(onSuccess, onError) {
+                if (onSuccess && "function" != typeof onSuccess && !onSuccess.call) throw new Error("Promise.then expected a function for success handler");
+                if (onError && "function" != typeof onError && !onError.call) throw new Error("Promise.then expected a function for error handler");
+                var promise = new ZalgoPromise();
+                this.handlers.push({
+                    promise: promise,
+                    onSuccess: onSuccess,
+                    onError: onError
+                });
+                this.errorHandled = !0;
+                this.dispatch();
+                return promise;
+            };
+            ZalgoPromise.prototype.catch = function(onError) {
+                return this.then(void 0, onError);
+            };
+            ZalgoPromise.prototype.finally = function(handler) {
+                return this.then(function(result) {
+                    return ZalgoPromise.try(handler).then(function() {
                         return result;
                     });
+                }, function(err) {
+                    return ZalgoPromise.try(handler).then(function() {
+                        throw err;
+                    });
+                });
+            };
+            ZalgoPromise.prototype.timeout = function(time, err) {
+                var _this4 = this;
+                if (this.resolved || this.rejected) return this;
+                var timeout = setTimeout(function() {
+                    _this4.resolved || _this4.rejected || _this4.reject(err || new Error("Promise timed out after " + time + "ms"));
+                }, time);
+                return this.then(function(result) {
+                    clearTimeout(timeout);
+                    return result;
+                });
+            };
+            ZalgoPromise.prototype.toPromise = function() {
+                if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
+                return Promise.resolve(this);
+            };
+            ZalgoPromise.resolve = function(value) {
+                return value instanceof ZalgoPromise ? value : utils_isPromise(value) ? new ZalgoPromise(function(resolve, reject) {
+                    return value.then(resolve, reject);
+                }) : new ZalgoPromise().resolve(value);
+            };
+            ZalgoPromise.reject = function(error) {
+                return new ZalgoPromise().reject(error);
+            };
+            ZalgoPromise.all = function(promises) {
+                var promise = new ZalgoPromise(), count = promises.length, results = [];
+                if (!count) {
+                    promise.resolve(results);
+                    return promise;
                 }
-            }, {
-                key: "toPromise",
-                value: function() {
-                    if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
-                    return Promise.resolve(this);
-                }
-            } ], [ {
-                key: "resolve",
-                value: function(value) {
-                    return value instanceof ZalgoPromise ? value : utils_isPromise(value) ? new ZalgoPromise(function(resolve, reject) {
-                        return value.then(resolve, reject);
-                    }) : new ZalgoPromise().resolve(value);
-                }
-            }, {
-                key: "reject",
-                value: function(error) {
-                    return new ZalgoPromise().reject(error);
-                }
-            }, {
-                key: "all",
-                value: function(promises) {
-                    var promise = new ZalgoPromise(), count = promises.length, results = [];
-                    if (!count) {
-                        promise.resolve(results);
-                        return promise;
-                    }
-                    for (var _loop2 = function(i) {
-                        var prom = promises[i];
-                        if (prom instanceof ZalgoPromise) {
-                            if (prom.resolved) {
-                                results[i] = prom.value;
-                                count -= 1;
-                                return "continue";
-                            }
-                        } else if (!utils_isPromise(prom)) {
-                            results[i] = prom;
+                for (var _loop2 = function(i) {
+                    var prom = promises[i];
+                    if (prom instanceof ZalgoPromise) {
+                        if (prom.resolved) {
+                            results[i] = prom.value;
                             count -= 1;
                             return "continue";
                         }
-                        ZalgoPromise.resolve(prom).then(function(result) {
-                            results[i] = result;
-                            0 === (count -= 1) && promise.resolve(results);
-                        }, function(err) {
-                            promise.reject(err);
-                        });
-                    }, i = 0; i < promises.length; i++) _loop2(i);
-                    0 === count && promise.resolve(results);
-                    return promise;
-                }
-            }, {
-                key: "hash",
-                value: function(promises) {
-                    var result = {};
-                    return ZalgoPromise.all(Object.keys(promises).map(function(key) {
-                        return ZalgoPromise.resolve(promises[key]).then(function(value) {
-                            result[key] = value;
-                        });
-                    })).then(function() {
-                        return result;
-                    });
-                }
-            }, {
-                key: "map",
-                value: function(items, method) {
-                    return ZalgoPromise.all(items.map(method));
-                }
-            }, {
-                key: "onPossiblyUnhandledException",
-                value: function(handler) {
-                    return function(handler) {
-                        Object(global.a)().possiblyUnhandledPromiseHandlers.push(handler);
-                        return {
-                            cancel: function() {
-                                Object(global.a)().possiblyUnhandledPromiseHandlers.splice(Object(global.a)().possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
-                            }
-                        };
-                    }(handler);
-                }
-            }, {
-                key: "try",
-                value: function(method, context, args) {
-                    var result = void 0;
-                    try {
-                        result = method.apply(context, args || []);
-                    } catch (err) {
-                        return ZalgoPromise.reject(err);
+                    } else if (!utils_isPromise(prom)) {
+                        results[i] = prom;
+                        count -= 1;
+                        return "continue";
                     }
-                    return ZalgoPromise.resolve(result);
-                }
-            }, {
-                key: "delay",
-                value: function(_delay) {
-                    return new ZalgoPromise(function(resolve) {
-                        setTimeout(resolve, _delay);
+                    ZalgoPromise.resolve(prom).then(function(result) {
+                        results[i] = result;
+                        0 === (count -= 1) && promise.resolve(results);
+                    }, function(err) {
+                        promise.reject(err);
                     });
-                }
-            }, {
-                key: "isPromise",
-                value: function(value) {
-                    return !!(value && value instanceof ZalgoPromise) || utils_isPromise(value);
-                }
-            }, {
-                key: "flush",
-                value: function() {
-                    var promise = new ZalgoPromise();
-                    Object(global.a)().flushPromises.push(promise);
-                    0 === Object(global.a)().activeCount && ZalgoPromise.flushQueue();
-                    return promise;
-                }
-            }, {
-                key: "flushQueue",
-                value: function() {
-                    var promisesToFlush = Object(global.a)().flushPromises;
-                    Object(global.a)().flushPromises = [];
-                    var _iterator = promisesToFlush, _isArray = Array.isArray(_iterator), _i = 0;
-                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref = _iterator[_i++];
-                        } else {
-                            if ((_i = _iterator.next()).done) break;
-                            _ref = _i.value;
+                }, i = 0; i < promises.length; i++) _loop2(i);
+                0 === count && promise.resolve(results);
+                return promise;
+            };
+            ZalgoPromise.hash = function(promises) {
+                var result = {};
+                return ZalgoPromise.all(Object.keys(promises).map(function(key) {
+                    return ZalgoPromise.resolve(promises[key]).then(function(value) {
+                        result[key] = value;
+                    });
+                })).then(function() {
+                    return result;
+                });
+            };
+            ZalgoPromise.map = function(items, method) {
+                return ZalgoPromise.all(items.map(method));
+            };
+            ZalgoPromise.onPossiblyUnhandledException = function(handler) {
+                return function(handler) {
+                    Object(global.a)().possiblyUnhandledPromiseHandlers.push(handler);
+                    return {
+                        cancel: function() {
+                            Object(global.a)().possiblyUnhandledPromiseHandlers.splice(Object(global.a)().possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
                         }
-                        _ref.resolve();
-                    }
+                    };
+                }(handler);
+            };
+            ZalgoPromise.try = function(method, context, args) {
+                var result = void 0;
+                try {
+                    result = method.apply(context, args || []);
+                } catch (err) {
+                    return ZalgoPromise.reject(err);
                 }
-            } ]);
+                return ZalgoPromise.resolve(result);
+            };
+            ZalgoPromise.delay = function(_delay) {
+                return new ZalgoPromise(function(resolve) {
+                    setTimeout(resolve, _delay);
+                });
+            };
+            ZalgoPromise.isPromise = function(value) {
+                return !!(value && value instanceof ZalgoPromise) || utils_isPromise(value);
+            };
+            ZalgoPromise.flush = function() {
+                var promise = new ZalgoPromise();
+                Object(global.a)().flushPromises.push(promise);
+                0 === Object(global.a)().activeCount && ZalgoPromise.flushQueue();
+                return promise;
+            };
+            ZalgoPromise.flushQueue = function() {
+                var promisesToFlush = Object(global.a)().flushPromises;
+                Object(global.a)().flushPromises = [];
+                var _iterator = promisesToFlush, _isArray = Array.isArray(_iterator), _i = 0;
+                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref = _iterator[_i++];
+                    } else {
+                        if ((_i = _iterator.next()).done) break;
+                        _ref = _i.value;
+                    }
+                    _ref.resolve();
+                }
+            };
             return ZalgoPromise;
         }();
         __webpack_require__.d(__webpack_exports__, "a", function() {
@@ -9164,83 +8575,16 @@
         };
         window.onLegacyFallback = window.watchForLegacyFallback;
         var integrations = __webpack_require__("./src/integrations/index.js"), checkoutComponentStyle = "\n\n    body {\n        width: 100%;\n        height: 100%;\n        overflow: hidden;\n        position: fixed;\n        top: 0;\n        left: 0;\n        margin: 0;\n    }\n\n    .spinner {\n        height: 100%;\n        width: 100%;\n        position: absolute;\n        z-index: 10\n    }\n\n    .spinner .spinWrap {\n        width: 200px;\n        height: 100px;\n        position: absolute;\n        top: 50%;\n        left: 50%;\n        margin-left: -100px;\n        margin-top: -50px\n    }\n\n    .spinner .loader,\n    .spinner .spinnerImage {\n        height: 100px;\n        width: 100px;\n        position: absolute;\n        top: 0;\n        left: 50%;\n        opacity: 1;\n        filter: alpha(opacity=100)\n    }\n\n    .spinner .spinnerImage {\n        margin: 28px 0 0 -25px;\n        background: url(https://www.paypalobjects.com/images/checkout/hermes/icon_ot_spin_lock_skinny.png) no-repeat\n    }\n\n    .spinner .loader {\n        margin: 0 0 0 -55px;\n        background-color: transparent;\n        -webkit-animation: rotation .7s infinite linear;\n        -moz-animation: rotation .7s infinite linear;\n        -o-animation: rotation .7s infinite linear;\n        animation: rotation .7s infinite linear;\n        border-left: 5px solid #cbcbca;\n        border-right: 5px solid #cbcbca;\n        border-bottom: 5px solid #cbcbca;\n        border-top: 5px solid #2380be;\n        border-radius: 100%\n    }\n\n    @-webkit-keyframes rotation {\n        from {\n            -webkit-transform: rotate(0deg)\n        }\n        to {\n            -webkit-transform: rotate(359deg)\n        }\n    }\n    @-moz-keyframes rotation {\n        from {\n            -moz-transform: rotate(0deg)\n        }\n        to {\n            -moz-transform: rotate(359deg)\n        }\n    }\n    @-o-keyframes rotation {\n        from {\n            -o-transform: rotate(0deg)\n        }\n        to {\n            -o-transform: rotate(359deg)\n        }\n    }\n    @keyframes rotation {\n        from {\n            transform: rotate(0deg)\n        }\n        to {\n            transform: rotate(359deg)\n        }\n    }\n";
-        var base64 = __webpack_require__("./node_modules/Base64/base64.js"), resources = __webpack_require__("./src/resources/index.js"), containerContent = __webpack_require__("./src/checkout/template/containerContent.json"), containerContent_default = __webpack_require__.n(containerContent);
-        var _LOGO_COLOR, _slicedToArray = function() {
-            return function(arr, i) {
-                if (Array.isArray(arr)) return arr;
-                if (Symbol.iterator in Object(arr)) return function(arr, i) {
-                    var _arr = [], _n = !0, _d = !1, _e = void 0;
-                    try {
-                        for (var _s, _i = arr[Symbol.iterator](); !(_n = (_s = _i.next()).done); _n = !0) {
-                            _arr.push(_s.value);
-                            if (i && _arr.length === i) break;
-                        }
-                    } catch (err) {
-                        _d = !0;
-                        _e = err;
-                    } finally {
-                        try {
-                            !_n && _i.return && _i.return();
-                        } finally {
-                            if (_d) throw _e;
-                        }
-                    }
-                    return _arr;
-                }(arr, i);
-                throw new TypeError("Invalid attempt to destructure non-iterable instance");
-            };
-        }();
-        function _defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var componentContent = JSON.parse(containerContent_default.a), LOGO_COLOR = (_defineProperty(_LOGO_COLOR = {}, constants.q.BLACK, constants.i.WHITE), 
-        _defineProperty(_LOGO_COLOR, constants.q.WHITE, constants.i.BLACK), _LOGO_COLOR);
-        var component__slicedToArray = function() {
-            return function(arr, i) {
-                if (Array.isArray(arr)) return arr;
-                if (Symbol.iterator in Object(arr)) return function(arr, i) {
-                    var _arr = [], _n = !0, _d = !1, _e = void 0;
-                    try {
-                        for (var _s, _i = arr[Symbol.iterator](); !(_n = (_s = _i.next()).done); _n = !0) {
-                            _arr.push(_s.value);
-                            if (i && _arr.length === i) break;
-                        }
-                    } catch (err) {
-                        _d = !0;
-                        _e = err;
-                    } finally {
-                        try {
-                            !_n && _i.return && _i.return();
-                        } finally {
-                            if (_d) throw _e;
-                        }
-                    }
-                    return _arr;
-                }(arr, i);
-                throw new TypeError("Invalid attempt to destructure non-iterable instance");
-            };
-        }(), _extends = Object.assign || function(target) {
+        var _LOGO_COLOR, base64 = __webpack_require__("./node_modules/Base64/base64.js"), resources = __webpack_require__("./src/resources/index.js"), containerContent = __webpack_require__("./src/checkout/template/containerContent.json"), containerContent_default = __webpack_require__.n(containerContent);
+        var componentContent = JSON.parse(containerContent_default.a), LOGO_COLOR = ((_LOGO_COLOR = {})[constants.q.BLACK] = constants.i.WHITE, 
+        _LOGO_COLOR[constants.q.WHITE] = constants.i.BLACK, _LOGO_COLOR);
+        var _extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
         };
-        function component__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
         var Checkout = Object(xcomponent_src.c)({
             tag: "paypal-checkout",
             name: "ppcheckout",
@@ -9257,7 +8601,9 @@
                 return config.a.env === constants.t.LOCAL;
             },
             get domain() {
-                return _extends({}, config.a.paypalDomains, component__defineProperty({}, constants.t.LOCAL, /^http:\/\/localhost.paypal.com:\d+$/));
+                var _extends2;
+                return _extends({}, config.a.paypalDomains, ((_extends2 = {})[constants.t.LOCAL] = /^http:\/\/localhost.paypal.com:\d+$/, 
+                _extends2));
             },
             get bridgeUrl() {
                 return config.a.metaFrameUrls;
@@ -9288,7 +8634,7 @@
                 })))));
             },
             containerTemplate: function(_ref) {
-                var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION, CONTEXT = _ref.CONTEXT, EVENT = _ref.EVENT, on = _ref.on, tag = _ref.tag, context = _ref.context, actions = _ref.actions, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _props$locale$split = props.locale.split("_"), _props$locale$split2 = _slicedToArray(_props$locale$split, 2), lang = _props$locale$split2[0], country = _props$locale$split2[1], content = componentContent[country][lang];
+                var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION, CONTEXT = _ref.CONTEXT, EVENT = _ref.EVENT, on = _ref.on, tag = _ref.tag, context = _ref.context, actions = _ref.actions, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _props$locale$split = props.locale.split("_"), lang = _props$locale$split[0], country = _props$locale$split[1], content = componentContent[country][lang];
                 function focus(event) {
                     event.preventDefault();
                     event.stopPropagation();
@@ -9580,12 +8926,10 @@
                         return function(data) {
                             var _track;
                             Object(beaver_logger_client.j)("checkout_init");
-                            Object(beaver_logger_client.o)((component__defineProperty(_track = {}, constants.u.KEY.STATE, constants.u.STATE.CHECKOUT), 
-                            component__defineProperty(_track, constants.u.KEY.TRANSITION, constants.u.TRANSITION.CHECKOUT_INIT), 
-                            component__defineProperty(_track, constants.u.KEY.CONTEXT_TYPE, constants.u.CONTEXT_TYPE[constants.A.EC_TOKEN]), 
-                            component__defineProperty(_track, constants.u.KEY.TOKEN, data.paymentToken), component__defineProperty(_track, constants.u.KEY.SELLER_ID, data.merchantID), 
-                            component__defineProperty(_track, constants.u.KEY.CONTEXT_ID, data.paymentToken), 
-                            _track));
+                            Object(beaver_logger_client.o)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
+                            _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CHECKOUT_INIT, _track[constants.u.KEY.CONTEXT_TYPE] = constants.u.CONTEXT_TYPE[constants.A.EC_TOKEN], 
+                            _track[constants.u.KEY.TOKEN] = data.paymentToken, _track[constants.u.KEY.SELLER_ID] = data.merchantID, 
+                            _track[constants.u.KEY.CONTEXT_ID] = data.paymentToken, _track));
                             Object(beaver_logger_client.g)();
                             this.paymentToken = data.paymentToken;
                             this.cancelUrl = data.cancelUrl;
@@ -9681,7 +9025,7 @@
             Checkout.xprops && Checkout.xprops.logLevel && Object(lib.U)(Checkout.xprops.logLevel);
             Checkout.xchild.onProps(function(xprops) {
                 Object(lib.O)(xprops, "onAuthorize", function(_ref) {
-                    var callOriginal = _ref.callOriginal, data = component__slicedToArray(_ref.args, 1)[0];
+                    var callOriginal = _ref.callOriginal, data = _ref.args[0];
                     if (data && !data.intent) {
                         Object(beaver_logger_client.p)("hermes_authorize_no_intent", {
                             paymentID: data.paymentID,
@@ -9707,16 +9051,19 @@
                         var experimentActive = !1, loggedComplete = !1;
                         $event.on("allLoaded", function() {
                             setTimeout(function() {
-                                var payButton = document.querySelector(".buttons.reviewButton"), topPayButton = document.querySelector(".buttons.reviewButton.topReviewButton"), reviewSection = document.querySelector("section.review"), throttle = Object(lib.y)("top_pay_button", 0), hash = window.location.hash, logComplete = function() {
+                                var _throttle$logStart, payButton = document.querySelector(".buttons.reviewButton"), topPayButton = document.querySelector(".buttons.reviewButton.topReviewButton"), reviewSection = document.querySelector("section.review"), throttle = Object(lib.y)("top_pay_button", 0), hash = window.location.hash, logComplete = function() {
                                     if (experimentActive && !loggedComplete && hash && -1 !== hash.indexOf("checkout/review")) {
-                                        throttle.logComplete(component__defineProperty({}, constants.u.KEY.FEED, "hermesnodeweb"));
+                                        var _throttle$logComplete;
+                                        throttle.logComplete(((_throttle$logComplete = {})[constants.u.KEY.FEED] = "hermesnodeweb", 
+                                        _throttle$logComplete));
                                         loggedComplete = !0;
                                     }
                                 };
                                 payButton && payButton.addEventListener("click", logComplete);
                                 if (reviewSection && reviewSection.firstChild && payButton && !topPayButton && !(payButton.getBoundingClientRect().bottom < window.innerHeight)) {
                                     experimentActive = !0;
-                                    throttle.logStart(component__defineProperty({}, constants.u.KEY.FEED, "hermesnodeweb"));
+                                    throttle.logStart(((_throttle$logStart = {})[constants.u.KEY.FEED] = "hermesnodeweb", 
+                                    _throttle$logStart));
                                     if (throttle.isEnabled()) {
                                         (topPayButton = payButton.cloneNode(!0)).className += " topReviewButton";
                                         reviewSection.insertBefore(topPayButton, reviewSection.firstChild);
@@ -9734,15 +9081,15 @@
             });
         }
         Object(lib.O)(Checkout, "init", function(_ref2) {
-            var _ref2$args = component__slicedToArray(_ref2.args, 2), props = _ref2$args[0], _context = _ref2$args[1], original = _ref2.original, context = _ref2.context;
+            var _ref2$args = _ref2.args, props = _ref2$args[0], _context = _ref2$args[1], original = _ref2.original, context = _ref2.context;
             return original.call(context, props, _context, "body");
         });
         Object(lib.O)(Checkout, "render", function(_ref3) {
-            var props = component__slicedToArray(_ref3.args, 1)[0], original = _ref3.original, context = _ref3.context;
+            var props = _ref3.args[0], original = _ref3.original, context = _ref3.context;
             return original.call(context, props, "body");
         });
         Object(lib.O)(Checkout, "renderTo", function(_ref4) {
-            var _ref4$args = component__slicedToArray(_ref4.args, 2), win = _ref4$args[0], props = _ref4$args[1], original = _ref4.original, context = _ref4.context, payment = props.payment();
+            var _ref4$args = _ref4.args, win = _ref4$args[0], props = _ref4$args[1], original = _ref4.original, context = _ref4.context, payment = props.payment();
             props.payment = function() {
                 return payment;
             };
@@ -9763,20 +9110,10 @@
     },
     "./src/config/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js");
-        function _defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var config = {
-            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.203.js",
+        var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
+            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.204.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.203",
+            version: "4.0.204",
             cors: !0,
             env: constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -9888,6 +9225,15 @@
                 },
                 "searshomeapplianceshowroom.com": {
                     disable_venmo: !0
+                },
+                "barkshop.com": {
+                    disable_venmo: !0
+                },
+                "vividseats.com": {
+                    disable_venmo: !0
+                },
+                "getcargo.today": {
+                    disable_venmo: !0
                 }
             },
             creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
@@ -9921,89 +9267,81 @@
             },
             get paypalUrls() {
                 var _ref;
-                return _defineProperty(_ref = {}, constants.t.LOCAL, "http://localhost.paypal.com:" + config.ports.default), 
-                _defineProperty(_ref, constants.t.STAGE, "https://www." + config.stageUrl), _defineProperty(_ref, constants.t.SANDBOX, "https://www.sandbox.paypal.com"), 
-                _defineProperty(_ref, constants.t.PRODUCTION, "https://www.paypal.com"), _defineProperty(_ref, constants.t.TEST, window.location.protocol + "//" + window.location.host), 
-                _defineProperty(_ref, constants.t.DEMO, window.location.protocol + "//localhost.paypal.com:" + window.location.port), 
+                return (_ref = {})[constants.t.LOCAL] = "http://localhost.paypal.com:" + config.ports.default, 
+                _ref[constants.t.STAGE] = "https://www." + config.stageUrl, _ref[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", 
+                _ref[constants.t.PRODUCTION] = "https://www.paypal.com", _ref[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
+                _ref[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
                 _ref;
             },
             get paypalDomains() {
                 var _ref2;
-                return _defineProperty(_ref2 = {}, constants.t.LOCAL, "http://localhost.paypal.com:" + config.ports.default), 
-                _defineProperty(_ref2, constants.t.STAGE, "https://www." + config.stageUrl), _defineProperty(_ref2, constants.t.SANDBOX, "https://www.sandbox.paypal.com"), 
-                _defineProperty(_ref2, constants.t.PRODUCTION, "https://www.paypal.com"), _defineProperty(_ref2, constants.t.TEST, "mock://www.paypal.com"), 
-                _defineProperty(_ref2, constants.t.DEMO, window.location.protocol + "//localhost.paypal.com:" + window.location.port), 
+                return (_ref2 = {})[constants.t.LOCAL] = "http://localhost.paypal.com:" + config.ports.default, 
+                _ref2[constants.t.STAGE] = "https://www." + config.stageUrl, _ref2[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", 
+                _ref2[constants.t.PRODUCTION] = "https://www.paypal.com", _ref2[constants.t.TEST] = "mock://www.paypal.com", 
+                _ref2[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
                 _ref2;
             },
             get wwwApiUrls() {
                 var _ref3;
-                return _defineProperty(_ref3 = {}, constants.t.LOCAL, "https://www." + config.stageUrl), 
-                _defineProperty(_ref3, constants.t.STAGE, "https://www." + config.stageUrl), _defineProperty(_ref3, constants.t.SANDBOX, "https://www.sandbox.paypal.com"), 
-                _defineProperty(_ref3, constants.t.PRODUCTION, "https://www.paypal.com"), _defineProperty(_ref3, constants.t.TEST, window.location.protocol + "//" + window.location.host), 
+                return (_ref3 = {})[constants.t.LOCAL] = "https://www." + config.stageUrl, _ref3[constants.t.STAGE] = "https://www." + config.stageUrl, 
+                _ref3[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref3[constants.t.PRODUCTION] = "https://www.paypal.com", 
+                _ref3[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
                 _ref3;
             },
             get corsApiUrls() {
                 var _ref4;
-                return _defineProperty(_ref4 = {}, constants.t.LOCAL, "https://" + config.apiStageUrl + ":12326"), 
-                _defineProperty(_ref4, constants.t.STAGE, "https://" + config.apiStageUrl + ":12326"), 
-                _defineProperty(_ref4, constants.t.SANDBOX, "https://cors.api.sandbox.paypal.com"), 
-                _defineProperty(_ref4, constants.t.PRODUCTION, "https://cors.api.paypal.com"), _defineProperty(_ref4, constants.t.TEST, window.location.protocol + "//" + window.location.host), 
+                return (_ref4 = {})[constants.t.LOCAL] = "https://" + config.apiStageUrl + ":12326", 
+                _ref4[constants.t.STAGE] = "https://" + config.apiStageUrl + ":12326", _ref4[constants.t.SANDBOX] = "https://cors.api.sandbox.paypal.com", 
+                _ref4[constants.t.PRODUCTION] = "https://cors.api.paypal.com", _ref4[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
                 _ref4;
             },
             get apiUrls() {
                 var _ref5, domain = window.location.protocol + "//" + window.location.host, corsApiUrls = config.corsApiUrls, wwwApiUrls = config.wwwApiUrls;
-                return _defineProperty(_ref5 = {}, constants.t.LOCAL, domain === wwwApiUrls.local ? wwwApiUrls.local : corsApiUrls.local), 
-                _defineProperty(_ref5, constants.t.STAGE, domain === wwwApiUrls.stage ? wwwApiUrls.stage : corsApiUrls.stage), 
-                _defineProperty(_ref5, constants.t.SANDBOX, domain === wwwApiUrls.sandbox ? wwwApiUrls.sandbox : corsApiUrls.sandbox), 
-                _defineProperty(_ref5, constants.t.PRODUCTION, domain === wwwApiUrls.production ? wwwApiUrls.production : corsApiUrls.production), 
-                _defineProperty(_ref5, constants.t.TEST, domain === wwwApiUrls.test ? wwwApiUrls.test : corsApiUrls.test), 
+                return (_ref5 = {})[constants.t.LOCAL] = domain === wwwApiUrls.local ? wwwApiUrls.local : corsApiUrls.local, 
+                _ref5[constants.t.STAGE] = domain === wwwApiUrls.stage ? wwwApiUrls.stage : corsApiUrls.stage, 
+                _ref5[constants.t.SANDBOX] = domain === wwwApiUrls.sandbox ? wwwApiUrls.sandbox : corsApiUrls.sandbox, 
+                _ref5[constants.t.PRODUCTION] = domain === wwwApiUrls.production ? wwwApiUrls.production : corsApiUrls.production, 
+                _ref5[constants.t.TEST] = domain === wwwApiUrls.test ? wwwApiUrls.test : corsApiUrls.test, 
                 _ref5;
             },
-            checkoutUris: (_checkoutUris = {}, _defineProperty(_checkoutUris, constants.t.LOCAL, "/webapps/hermes?ul=0"), 
-            _defineProperty(_checkoutUris, constants.t.STAGE, "/webapps/hermes"), _defineProperty(_checkoutUris, constants.t.SANDBOX, "/checkoutnow"), 
-            _defineProperty(_checkoutUris, constants.t.PRODUCTION, "/checkoutnow"), _defineProperty(_checkoutUris, constants.t.TEST, "/base/test/windows/checkout/index.htm?checkouturl=true"), 
-            _defineProperty(_checkoutUris, constants.t.DEMO, "/demo/dev/checkout.htm"), _checkoutUris),
-            altpayUris: (_altpayUris = {}, _defineProperty(_altpayUris, constants.t.LOCAL, "/latinumcheckout"), 
-            _defineProperty(_altpayUris, constants.t.STAGE, "/latinumcheckout"), _defineProperty(_altpayUris, constants.t.SANDBOX, "/latinumcheckout"), 
-            _defineProperty(_altpayUris, constants.t.PRODUCTION, "/latinumcheckout"), _defineProperty(_altpayUris, constants.t.TEST, "/base/test/windows/checkout/index.htm?checkouturl=true"), 
-            _defineProperty(_altpayUris, constants.t.DEMO, "/demo/dev/checkout.htm"), _altpayUris),
-            guestUris: (_guestUris = {}, _defineProperty(_guestUris, constants.t.LOCAL, "/webapps/xoonboarding"), 
-            _defineProperty(_guestUris, constants.t.STAGE, "/webapps/xoonboarding"), _defineProperty(_guestUris, constants.t.SANDBOX, "/webapps/xoonboarding"), 
-            _defineProperty(_guestUris, constants.t.PRODUCTION, "/webapps/xoonboarding"), _defineProperty(_guestUris, constants.t.TEST, "/base/test/windows/checkout/index.htm?guesturl=true"), 
-            _defineProperty(_guestUris, constants.t.DEMO, "/demo/dev/guest.htm"), _guestUris),
-            billingUris: (_billingUris = {}, _defineProperty(_billingUris, constants.t.LOCAL, "/webapps/hermes/agreements?ul=0"), 
-            _defineProperty(_billingUris, constants.t.STAGE, "/webapps/hermes/agreements"), 
-            _defineProperty(_billingUris, constants.t.SANDBOX, "/agreements/approve"), _defineProperty(_billingUris, constants.t.PRODUCTION, "/agreements/approve"), 
-            _defineProperty(_billingUris, constants.t.TEST, "/base/test/windows/checkout/index.htm?billingurl=true"), 
-            _defineProperty(_billingUris, constants.t.DEMO, "/demo/dev/checkout.htm"), _billingUris),
-            buttonUris: (_buttonUris = {}, _defineProperty(_buttonUris, constants.t.LOCAL, "/webapps/hermes/button"), 
-            _defineProperty(_buttonUris, constants.t.STAGE, "/webapps/hermes/button"), _defineProperty(_buttonUris, constants.t.SANDBOX, "/webapps/hermes/button"), 
-            _defineProperty(_buttonUris, constants.t.PRODUCTION, "/webapps/hermes/button"), 
-            _defineProperty(_buttonUris, constants.t.TEST, "/base/test/windows/button/index.htm"), 
-            _defineProperty(_buttonUris, constants.t.DEMO, "/demo/dev/button.htm"), _buttonUris),
-            inlinedCardFieldUris: (_inlinedCardFieldUris = {}, _defineProperty(_inlinedCardFieldUris, constants.t.LOCAL, "/webapps/hermes/card-fields"), 
-            _defineProperty(_inlinedCardFieldUris, constants.t.STAGE, "/webapps/hermes/card-fields"), 
-            _defineProperty(_inlinedCardFieldUris, constants.t.SANDBOX, "/webapps/hermes/card-fields"), 
-            _defineProperty(_inlinedCardFieldUris, constants.t.PRODUCTION, "/webapps/hermes/card-fields"), 
-            _defineProperty(_inlinedCardFieldUris, constants.t.TEST, "/base/test/windows/card-fields/index.htm"), 
-            _defineProperty(_inlinedCardFieldUris, constants.t.DEMO, "/demo/dev/card.htm"), 
-            _inlinedCardFieldUris),
-            postBridgeUris: (_postBridgeUris = {}, _defineProperty(_postBridgeUris, constants.t.LOCAL, "/webapps/hermes/component-meta"), 
-            _defineProperty(_postBridgeUris, constants.t.STAGE, "/webapps/hermes/component-meta"), 
-            _defineProperty(_postBridgeUris, constants.t.SANDBOX, "/webapps/hermes/component-meta"), 
-            _defineProperty(_postBridgeUris, constants.t.PRODUCTION, "/webapps/hermes/component-meta"), 
-            _defineProperty(_postBridgeUris, constants.t.TEST, "/base/test/windows/component-meta/index.htm"), 
-            _defineProperty(_postBridgeUris, constants.t.DEMO, "/demo/dev/bridge.htm"), _postBridgeUris),
-            legacyCheckoutUris: (_legacyCheckoutUris = {}, _defineProperty(_legacyCheckoutUris, constants.t.LOCAL, "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true"), 
-            _defineProperty(_legacyCheckoutUris, constants.t.STAGE, "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true"), 
-            _defineProperty(_legacyCheckoutUris, constants.t.SANDBOX, "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true"), 
-            _defineProperty(_legacyCheckoutUris, constants.t.PRODUCTION, "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true"), 
-            _defineProperty(_legacyCheckoutUris, constants.t.TEST, "#fallback"), _legacyCheckoutUris),
-            buttonJSUrls: (_buttonJSUrls = {}, _defineProperty(_buttonJSUrls, constants.t.LOCAL, "https://www.paypalobjects.com/api/button.js"), 
-            _defineProperty(_buttonJSUrls, constants.t.STAGE, "https://www.paypalobjects.com/api/button.js"), 
-            _defineProperty(_buttonJSUrls, constants.t.SANDBOX, "https://www.paypalobjects.com/api/button.js"), 
-            _defineProperty(_buttonJSUrls, constants.t.PRODUCTION, "https://www.paypalobjects.com/api/button.js"), 
-            _defineProperty(_buttonJSUrls, constants.t.TEST, "/base/test/lib/button.js"), _defineProperty(_buttonJSUrls, constants.t.DEMO, "https://www.paypalobjects.com/api/button.js"), 
+            checkoutUris: (_checkoutUris = {}, _checkoutUris[constants.t.LOCAL] = "/webapps/hermes?ul=0", 
+            _checkoutUris[constants.t.STAGE] = "/webapps/hermes", _checkoutUris[constants.t.SANDBOX] = "/checkoutnow", 
+            _checkoutUris[constants.t.PRODUCTION] = "/checkoutnow", _checkoutUris[constants.t.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
+            _checkoutUris[constants.t.DEMO] = "/demo/dev/checkout.htm", _checkoutUris),
+            altpayUris: (_altpayUris = {}, _altpayUris[constants.t.LOCAL] = "/latinumcheckout", 
+            _altpayUris[constants.t.STAGE] = "/latinumcheckout", _altpayUris[constants.t.SANDBOX] = "/latinumcheckout", 
+            _altpayUris[constants.t.PRODUCTION] = "/latinumcheckout", _altpayUris[constants.t.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
+            _altpayUris[constants.t.DEMO] = "/demo/dev/checkout.htm", _altpayUris),
+            guestUris: (_guestUris = {}, _guestUris[constants.t.LOCAL] = "/webapps/xoonboarding", 
+            _guestUris[constants.t.STAGE] = "/webapps/xoonboarding", _guestUris[constants.t.SANDBOX] = "/webapps/xoonboarding", 
+            _guestUris[constants.t.PRODUCTION] = "/webapps/xoonboarding", _guestUris[constants.t.TEST] = "/base/test/windows/checkout/index.htm?guesturl=true", 
+            _guestUris[constants.t.DEMO] = "/demo/dev/guest.htm", _guestUris),
+            billingUris: (_billingUris = {}, _billingUris[constants.t.LOCAL] = "/webapps/hermes/agreements?ul=0", 
+            _billingUris[constants.t.STAGE] = "/webapps/hermes/agreements", _billingUris[constants.t.SANDBOX] = "/agreements/approve", 
+            _billingUris[constants.t.PRODUCTION] = "/agreements/approve", _billingUris[constants.t.TEST] = "/base/test/windows/checkout/index.htm?billingurl=true", 
+            _billingUris[constants.t.DEMO] = "/demo/dev/checkout.htm", _billingUris),
+            buttonUris: (_buttonUris = {}, _buttonUris[constants.t.LOCAL] = "/webapps/hermes/button", 
+            _buttonUris[constants.t.STAGE] = "/webapps/hermes/button", _buttonUris[constants.t.SANDBOX] = "/webapps/hermes/button", 
+            _buttonUris[constants.t.PRODUCTION] = "/webapps/hermes/button", _buttonUris[constants.t.TEST] = "/base/test/windows/button/index.htm", 
+            _buttonUris[constants.t.DEMO] = "/demo/dev/button.htm", _buttonUris),
+            inlinedCardFieldUris: (_inlinedCardFieldUris = {}, _inlinedCardFieldUris[constants.t.LOCAL] = "/webapps/hermes/card-fields", 
+            _inlinedCardFieldUris[constants.t.STAGE] = "/webapps/hermes/card-fields", _inlinedCardFieldUris[constants.t.SANDBOX] = "/webapps/hermes/card-fields", 
+            _inlinedCardFieldUris[constants.t.PRODUCTION] = "/webapps/hermes/card-fields", _inlinedCardFieldUris[constants.t.TEST] = "/base/test/windows/card-fields/index.htm", 
+            _inlinedCardFieldUris[constants.t.DEMO] = "/demo/dev/card.htm", _inlinedCardFieldUris),
+            postBridgeUris: (_postBridgeUris = {}, _postBridgeUris[constants.t.LOCAL] = "/webapps/hermes/component-meta", 
+            _postBridgeUris[constants.t.STAGE] = "/webapps/hermes/component-meta", _postBridgeUris[constants.t.SANDBOX] = "/webapps/hermes/component-meta", 
+            _postBridgeUris[constants.t.PRODUCTION] = "/webapps/hermes/component-meta", _postBridgeUris[constants.t.TEST] = "/base/test/windows/component-meta/index.htm", 
+            _postBridgeUris[constants.t.DEMO] = "/demo/dev/bridge.htm", _postBridgeUris),
+            legacyCheckoutUris: (_legacyCheckoutUris = {}, _legacyCheckoutUris[constants.t.LOCAL] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
+            _legacyCheckoutUris[constants.t.STAGE] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
+            _legacyCheckoutUris[constants.t.SANDBOX] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
+            _legacyCheckoutUris[constants.t.PRODUCTION] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
+            _legacyCheckoutUris[constants.t.TEST] = "#fallback", _legacyCheckoutUris),
+            buttonJSUrls: (_buttonJSUrls = {}, _buttonJSUrls[constants.t.LOCAL] = "https://www.paypalobjects.com/api/button.js", 
+            _buttonJSUrls[constants.t.STAGE] = "https://www.paypalobjects.com/api/button.js", 
+            _buttonJSUrls[constants.t.SANDBOX] = "https://www.paypalobjects.com/api/button.js", 
+            _buttonJSUrls[constants.t.PRODUCTION] = "https://www.paypalobjects.com/api/button.js", 
+            _buttonJSUrls[constants.t.TEST] = "/base/test/lib/button.js", _buttonJSUrls[constants.t.DEMO] = "https://www.paypalobjects.com/api/button.js", 
             _buttonJSUrls),
             get buttonJSUrl() {
                 return config.buttonJSUrls[config.env];
@@ -10023,147 +9361,123 @@
             trackingApiUri: "/v1/risk/transaction-contexts",
             get checkoutUrls() {
                 var _ref6, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref6 = {}, constants.t.LOCAL, "" + paypalUrls.local + config.checkoutUris.local.replace(":" + config.ports.default, ":" + config.ports.checkout)), 
-                _defineProperty(_ref6, constants.t.STAGE, "" + paypalUrls.stage + config.checkoutUris.stage), 
-                _defineProperty(_ref6, constants.t.SANDBOX, "" + paypalUrls.sandbox + config.checkoutUris.sandbox), 
-                _defineProperty(_ref6, constants.t.PRODUCTION, "" + paypalUrls.production + config.checkoutUris.production), 
-                _defineProperty(_ref6, constants.t.TEST, "" + paypalUrls.test + config.checkoutUris.test), 
-                _defineProperty(_ref6, constants.t.DEMO, "" + paypalUrls.test + config.checkoutUris.demo), 
+                return (_ref6 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.checkoutUris.local.replace(":" + config.ports.default, ":" + config.ports.checkout), 
+                _ref6[constants.t.STAGE] = "" + paypalUrls.stage + config.checkoutUris.stage, _ref6[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.checkoutUris.sandbox, 
+                _ref6[constants.t.PRODUCTION] = "" + paypalUrls.production + config.checkoutUris.production, 
+                _ref6[constants.t.TEST] = "" + paypalUrls.test + config.checkoutUris.test, _ref6[constants.t.DEMO] = "" + paypalUrls.test + config.checkoutUris.demo, 
                 _ref6;
             },
             get guestUrls() {
                 var _ref7, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref7 = {}, constants.t.LOCAL, "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.guest) + config.guestUris.local), 
-                _defineProperty(_ref7, constants.t.STAGE, "" + paypalUrls.stage + config.guestUris.stage), 
-                _defineProperty(_ref7, constants.t.SANDBOX, "" + paypalUrls.sandbox + config.guestUris.sandbox), 
-                _defineProperty(_ref7, constants.t.PRODUCTION, "" + paypalUrls.production + config.guestUris.production), 
-                _defineProperty(_ref7, constants.t.TEST, "" + paypalUrls.test + config.guestUris.test), 
-                _defineProperty(_ref7, constants.t.DEMO, "" + paypalUrls.test + config.guestUris.demo), 
+                return (_ref7 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.guest) + config.guestUris.local, 
+                _ref7[constants.t.STAGE] = "" + paypalUrls.stage + config.guestUris.stage, _ref7[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.guestUris.sandbox, 
+                _ref7[constants.t.PRODUCTION] = "" + paypalUrls.production + config.guestUris.production, 
+                _ref7[constants.t.TEST] = "" + paypalUrls.test + config.guestUris.test, _ref7[constants.t.DEMO] = "" + paypalUrls.test + config.guestUris.demo, 
                 _ref7;
             },
             get altpayUrls() {
                 var _ref8, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref8 = {}, constants.t.LOCAL, "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.altpay) + config.altpayUris.local), 
-                _defineProperty(_ref8, constants.t.STAGE, "" + paypalUrls.stage + config.altpayUris.stage), 
-                _defineProperty(_ref8, constants.t.SANDBOX, "" + paypalUrls.sandbox + config.altpayUris.sandbox), 
-                _defineProperty(_ref8, constants.t.PRODUCTION, "" + paypalUrls.production + config.altpayUris.production), 
-                _defineProperty(_ref8, constants.t.TEST, "" + paypalUrls.test + config.altpayUris.test), 
-                _defineProperty(_ref8, constants.t.DEMO, "" + paypalUrls.test + config.altpayUris.demo), 
+                return (_ref8 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.altpay) + config.altpayUris.local, 
+                _ref8[constants.t.STAGE] = "" + paypalUrls.stage + config.altpayUris.stage, _ref8[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.altpayUris.sandbox, 
+                _ref8[constants.t.PRODUCTION] = "" + paypalUrls.production + config.altpayUris.production, 
+                _ref8[constants.t.TEST] = "" + paypalUrls.test + config.altpayUris.test, _ref8[constants.t.DEMO] = "" + paypalUrls.test + config.altpayUris.demo, 
                 _ref8;
             },
             get billingUrls() {
                 var _ref9, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref9 = {}, constants.t.LOCAL, "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.checkout) + config.billingUris.local), 
-                _defineProperty(_ref9, constants.t.STAGE, "" + paypalUrls.stage + config.billingUris.stage), 
-                _defineProperty(_ref9, constants.t.SANDBOX, "" + paypalUrls.sandbox + config.billingUris.sandbox), 
-                _defineProperty(_ref9, constants.t.PRODUCTION, "" + paypalUrls.production + config.billingUris.production), 
-                _defineProperty(_ref9, constants.t.TEST, "" + paypalUrls.test + config.billingUris.test), 
-                _defineProperty(_ref9, constants.t.DEMO, "" + paypalUrls.test + config.billingUris.demo), 
+                return (_ref9 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.checkout) + config.billingUris.local, 
+                _ref9[constants.t.STAGE] = "" + paypalUrls.stage + config.billingUris.stage, _ref9[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.billingUris.sandbox, 
+                _ref9[constants.t.PRODUCTION] = "" + paypalUrls.production + config.billingUris.production, 
+                _ref9[constants.t.TEST] = "" + paypalUrls.test + config.billingUris.test, _ref9[constants.t.DEMO] = "" + paypalUrls.test + config.billingUris.demo, 
                 _ref9;
             },
             get buttonUrls() {
                 var _ref10, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref10 = {}, constants.t.LOCAL, "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.buttonUris.local), 
-                _defineProperty(_ref10, constants.t.STAGE, "" + paypalUrls.stage + config.buttonUris.stage), 
-                _defineProperty(_ref10, constants.t.SANDBOX, "" + paypalUrls.sandbox + config.buttonUris.sandbox), 
-                _defineProperty(_ref10, constants.t.PRODUCTION, "" + paypalUrls.production + config.buttonUris.production), 
-                _defineProperty(_ref10, constants.t.TEST, "" + paypalUrls.test + config.buttonUris.test), 
-                _defineProperty(_ref10, constants.t.DEMO, "" + paypalUrls.demo + config.buttonUris.demo), 
+                return (_ref10 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.buttonUris.local, 
+                _ref10[constants.t.STAGE] = "" + paypalUrls.stage + config.buttonUris.stage, _ref10[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.buttonUris.sandbox, 
+                _ref10[constants.t.PRODUCTION] = "" + paypalUrls.production + config.buttonUris.production, 
+                _ref10[constants.t.TEST] = "" + paypalUrls.test + config.buttonUris.test, _ref10[constants.t.DEMO] = "" + paypalUrls.demo + config.buttonUris.demo, 
                 _ref10;
             },
             get inlinedCardFieldUrls() {
                 var _ref11, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref11 = {}, constants.t.LOCAL, "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.inlinedCardFieldUris.local), 
-                _defineProperty(_ref11, constants.t.STAGE, "" + paypalUrls.stage + config.inlinedCardFieldUris.stage), 
-                _defineProperty(_ref11, constants.t.SANDBOX, "" + paypalUrls.sandbox + config.inlinedCardFieldUris.sandbox), 
-                _defineProperty(_ref11, constants.t.PRODUCTION, "" + paypalUrls.production + config.inlinedCardFieldUris.production), 
-                _defineProperty(_ref11, constants.t.TEST, "" + paypalUrls.test + config.inlinedCardFieldUris.test), 
-                _defineProperty(_ref11, constants.t.DEMO, "" + paypalUrls.demo + config.inlinedCardFieldUris.demo), 
+                return (_ref11 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.inlinedCardFieldUris.local, 
+                _ref11[constants.t.STAGE] = "" + paypalUrls.stage + config.inlinedCardFieldUris.stage, 
+                _ref11[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.inlinedCardFieldUris.sandbox, 
+                _ref11[constants.t.PRODUCTION] = "" + paypalUrls.production + config.inlinedCardFieldUris.production, 
+                _ref11[constants.t.TEST] = "" + paypalUrls.test + config.inlinedCardFieldUris.test, 
+                _ref11[constants.t.DEMO] = "" + paypalUrls.demo + config.inlinedCardFieldUris.demo, 
                 _ref11;
             },
             get loginUrls() {
                 var _ref12, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref12 = {}, constants.t.LOCAL, "" + paypalUrls.stage + config.loginUri), 
-                _defineProperty(_ref12, constants.t.STAGE, "" + paypalUrls.stage + config.loginUri), 
-                _defineProperty(_ref12, constants.t.SANDBOX, "" + paypalUrls.sandbox + config.loginUri), 
-                _defineProperty(_ref12, constants.t.PRODUCTION, "" + paypalUrls.production + config.loginUri), 
-                _defineProperty(_ref12, constants.t.TEST, "" + paypalUrls.test + config.loginUri), 
+                return (_ref12 = {})[constants.t.LOCAL] = "" + paypalUrls.stage + config.loginUri, 
+                _ref12[constants.t.STAGE] = "" + paypalUrls.stage + config.loginUri, _ref12[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.loginUri, 
+                _ref12[constants.t.PRODUCTION] = "" + paypalUrls.production + config.loginUri, _ref12[constants.t.TEST] = "" + paypalUrls.test + config.loginUri, 
                 _ref12;
             },
             get paymentsStandardUrls() {
                 var _ref13, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref13 = {}, constants.t.LOCAL, "" + paypalUrls.local + config.paymentStandardUri), 
-                _defineProperty(_ref13, constants.t.STAGE, "" + paypalUrls.stage + config.paymentStandardUri), 
-                _defineProperty(_ref13, constants.t.SANDBOX, "" + paypalUrls.sandbox + config.paymentStandardUri), 
-                _defineProperty(_ref13, constants.t.PRODUCTION, "" + paypalUrls.production + config.paymentStandardUri), 
-                _defineProperty(_ref13, constants.t.TEST, "" + paypalUrls.test + config.paymentStandardUri), 
-                _ref13;
+                return (_ref13 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.paymentStandardUri, 
+                _ref13[constants.t.STAGE] = "" + paypalUrls.stage + config.paymentStandardUri, _ref13[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.paymentStandardUri, 
+                _ref13[constants.t.PRODUCTION] = "" + paypalUrls.production + config.paymentStandardUri, 
+                _ref13[constants.t.TEST] = "" + paypalUrls.test + config.paymentStandardUri, _ref13;
             },
             get metaFrameUrls() {
                 var _ref14, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref14 = {}, constants.t.LOCAL, "" + paypalUrls.local + config.postBridgeUri + "&env=local"), 
-                _defineProperty(_ref14, constants.t.STAGE, "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=" + config.stage), 
-                _defineProperty(_ref14, constants.t.SANDBOX, "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox"), 
-                _defineProperty(_ref14, constants.t.PRODUCTION, "" + paypalUrls.production + config.postBridgeUri + "&env=production"), 
-                _defineProperty(_ref14, constants.t.TEST, "" + paypalUrls.test + config.postBridgeUri + "&env=test"), 
-                _defineProperty(_ref14, constants.t.DEMO, "" + paypalUrls.demo + config.postBridgeUri + "&env=demo"), 
+                return (_ref14 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.postBridgeUri + "&env=local", 
+                _ref14[constants.t.STAGE] = "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=" + config.stage, 
+                _ref14[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox", 
+                _ref14[constants.t.PRODUCTION] = "" + paypalUrls.production + config.postBridgeUri + "&env=production", 
+                _ref14[constants.t.TEST] = "" + paypalUrls.test + config.postBridgeUri + "&env=test", 
+                _ref14[constants.t.DEMO] = "" + paypalUrls.demo + config.postBridgeUri + "&env=demo", 
                 _ref14;
             },
             get legacyCheckoutUrls() {
                 var _ref15, paypalUrls = config.paypalUrls;
-                return _defineProperty(_ref15 = {}, constants.t.LOCAL, "" + paypalUrls.stage + config.legacyCheckoutUris.local), 
-                _defineProperty(_ref15, constants.t.STAGE, "" + paypalUrls.stage + config.legacyCheckoutUris.stage), 
-                _defineProperty(_ref15, constants.t.SANDBOX, "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox), 
-                _defineProperty(_ref15, constants.t.PRODUCTION, "" + paypalUrls.production + config.legacyCheckoutUris.production), 
-                _defineProperty(_ref15, constants.t.TEST, "" + paypalUrls.test + config.legacyCheckoutUris.test), 
+                return (_ref15 = {})[constants.t.LOCAL] = "" + paypalUrls.stage + config.legacyCheckoutUris.local, 
+                _ref15[constants.t.STAGE] = "" + paypalUrls.stage + config.legacyCheckoutUris.stage, 
+                _ref15[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox, 
+                _ref15[constants.t.PRODUCTION] = "" + paypalUrls.production + config.legacyCheckoutUris.production, 
+                _ref15[constants.t.TEST] = "" + paypalUrls.test + config.legacyCheckoutUris.test, 
                 _ref15;
             },
             get authApiUrls() {
                 var _ref16, apiUrls = config.apiUrls, authApiUri = config.authApiUri;
-                return _defineProperty(_ref16 = {}, constants.t.LOCAL, "" + apiUrls.local + authApiUri), 
-                _defineProperty(_ref16, constants.t.STAGE, "" + apiUrls.stage + authApiUri), _defineProperty(_ref16, constants.t.SANDBOX, "" + apiUrls.sandbox + authApiUri), 
-                _defineProperty(_ref16, constants.t.PRODUCTION, "" + apiUrls.production + authApiUri), 
-                _defineProperty(_ref16, constants.t.TEST, "" + apiUrls.test + authApiUri), _ref16;
+                return (_ref16 = {})[constants.t.LOCAL] = "" + apiUrls.local + authApiUri, _ref16[constants.t.STAGE] = "" + apiUrls.stage + authApiUri, 
+                _ref16[constants.t.SANDBOX] = "" + apiUrls.sandbox + authApiUri, _ref16[constants.t.PRODUCTION] = "" + apiUrls.production + authApiUri, 
+                _ref16[constants.t.TEST] = "" + apiUrls.test + authApiUri, _ref16;
             },
             get paymentApiUrls() {
                 var _ref17, apiUrls = config.apiUrls, paymentApiUri = config.paymentApiUri;
-                return _defineProperty(_ref17 = {}, constants.t.LOCAL, "" + apiUrls.local + paymentApiUri), 
-                _defineProperty(_ref17, constants.t.STAGE, "" + apiUrls.stage + paymentApiUri), 
-                _defineProperty(_ref17, constants.t.SANDBOX, "" + apiUrls.sandbox + paymentApiUri), 
-                _defineProperty(_ref17, constants.t.PRODUCTION, "" + apiUrls.production + paymentApiUri), 
-                _defineProperty(_ref17, constants.t.TEST, "" + apiUrls.test + paymentApiUri), _ref17;
+                return (_ref17 = {})[constants.t.LOCAL] = "" + apiUrls.local + paymentApiUri, _ref17[constants.t.STAGE] = "" + apiUrls.stage + paymentApiUri, 
+                _ref17[constants.t.SANDBOX] = "" + apiUrls.sandbox + paymentApiUri, _ref17[constants.t.PRODUCTION] = "" + apiUrls.production + paymentApiUri, 
+                _ref17[constants.t.TEST] = "" + apiUrls.test + paymentApiUri, _ref17;
             },
             get orderApiUrls() {
                 var _ref18, apiUrls = config.apiUrls, orderApiUri = config.orderApiUri;
-                return _defineProperty(_ref18 = {}, constants.t.LOCAL, "" + apiUrls.local + orderApiUri), 
-                _defineProperty(_ref18, constants.t.STAGE, "" + apiUrls.stage + orderApiUri), _defineProperty(_ref18, constants.t.SANDBOX, "" + apiUrls.sandbox + orderApiUri), 
-                _defineProperty(_ref18, constants.t.PRODUCTION, "" + apiUrls.production + orderApiUri), 
-                _defineProperty(_ref18, constants.t.TEST, "" + apiUrls.test + orderApiUri), _ref18;
+                return (_ref18 = {})[constants.t.LOCAL] = "" + apiUrls.local + orderApiUri, _ref18[constants.t.STAGE] = "" + apiUrls.stage + orderApiUri, 
+                _ref18[constants.t.SANDBOX] = "" + apiUrls.sandbox + orderApiUri, _ref18[constants.t.PRODUCTION] = "" + apiUrls.production + orderApiUri, 
+                _ref18[constants.t.TEST] = "" + apiUrls.test + orderApiUri, _ref18;
             },
             get billingApiUrls() {
                 var _ref19, apiUrls = config.apiUrls, billingApiUri = config.billingApiUri;
-                return _defineProperty(_ref19 = {}, constants.t.LOCAL, "" + apiUrls.local + billingApiUri), 
-                _defineProperty(_ref19, constants.t.STAGE, "" + apiUrls.stage + billingApiUri), 
-                _defineProperty(_ref19, constants.t.SANDBOX, "" + apiUrls.sandbox + billingApiUri), 
-                _defineProperty(_ref19, constants.t.PRODUCTION, "" + apiUrls.production + billingApiUri), 
-                _defineProperty(_ref19, constants.t.TEST, "" + apiUrls.test + billingApiUri), _ref19;
+                return (_ref19 = {})[constants.t.LOCAL] = "" + apiUrls.local + billingApiUri, _ref19[constants.t.STAGE] = "" + apiUrls.stage + billingApiUri, 
+                _ref19[constants.t.SANDBOX] = "" + apiUrls.sandbox + billingApiUri, _ref19[constants.t.PRODUCTION] = "" + apiUrls.production + billingApiUri, 
+                _ref19[constants.t.TEST] = "" + apiUrls.test + billingApiUri, _ref19;
             },
             get experienceApiUrls() {
                 var _ref20, apiUrls = config.apiUrls, experienceApiUri = config.experienceApiUri;
-                return _defineProperty(_ref20 = {}, constants.t.LOCAL, "" + apiUrls.local + experienceApiUri), 
-                _defineProperty(_ref20, constants.t.STAGE, "" + apiUrls.stage + experienceApiUri), 
-                _defineProperty(_ref20, constants.t.SANDBOX, "" + apiUrls.sandbox + experienceApiUri), 
-                _defineProperty(_ref20, constants.t.PRODUCTION, "" + apiUrls.production + experienceApiUri), 
-                _defineProperty(_ref20, constants.t.TEST, "" + apiUrls.test + experienceApiUri), 
+                return (_ref20 = {})[constants.t.LOCAL] = "" + apiUrls.local + experienceApiUri, 
+                _ref20[constants.t.STAGE] = "" + apiUrls.stage + experienceApiUri, _ref20[constants.t.SANDBOX] = "" + apiUrls.sandbox + experienceApiUri, 
+                _ref20[constants.t.PRODUCTION] = "" + apiUrls.production + experienceApiUri, _ref20[constants.t.TEST] = "" + apiUrls.test + experienceApiUri, 
                 _ref20;
             },
             get trackingApiUrls() {
                 var _ref21, apiUrls = config.apiUrls, trackingApiUri = config.trackingApiUri;
-                return _defineProperty(_ref21 = {}, constants.t.LOCAL, "" + apiUrls.local + trackingApiUri), 
-                _defineProperty(_ref21, constants.t.STAGE, "" + apiUrls.stage + trackingApiUri), 
-                _defineProperty(_ref21, constants.t.SANDBOX, "" + apiUrls.sandbox + trackingApiUri), 
-                _defineProperty(_ref21, constants.t.PRODUCTION, "" + apiUrls.production + trackingApiUri), 
-                _defineProperty(_ref21, constants.t.TEST, "" + apiUrls.test + trackingApiUri), _ref21;
+                return (_ref21 = {})[constants.t.LOCAL] = "" + apiUrls.local + trackingApiUri, _ref21[constants.t.STAGE] = "" + apiUrls.stage + trackingApiUri, 
+                _ref21[constants.t.SANDBOX] = "" + apiUrls.sandbox + trackingApiUri, _ref21[constants.t.PRODUCTION] = "" + apiUrls.production + trackingApiUri, 
+                _ref21[constants.t.TEST] = "" + apiUrls.test + trackingApiUri, _ref21;
             },
             _paypalUrl: "",
             get paypalUrl() {
@@ -10228,161 +9542,160 @@
                 country: constants.r.US,
                 lang: constants.x.EN
             },
-            locales: (_locales = {}, _defineProperty(_locales, constants.r.AD, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.AE, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH, constants.x.AR ]), 
-            _defineProperty(_locales, constants.r.AG, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.AI, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.AL, [ constants.x.EN ]), _defineProperty(_locales, constants.r.AM, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.AN, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.AO, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.AR, [ constants.x.ES, constants.x.EN ]), _defineProperty(_locales, constants.r.AT, [ constants.x.DE, constants.x.EN ]), 
-            _defineProperty(_locales, constants.r.AU, [ constants.x.EN ]), _defineProperty(_locales, constants.r.AW, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.AZ, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.BA, [ constants.x.EN ]), _defineProperty(_locales, constants.r.BB, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.BE, [ constants.x.EN, constants.x.NL, constants.x.FR ]), 
-            _defineProperty(_locales, constants.r.BF, [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.BG, [ constants.x.EN ]), _defineProperty(_locales, constants.r.BH, [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.BI, [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.BJ, [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.BM, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.BN, [ constants.x.EN ]), _defineProperty(_locales, constants.r.BO, [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.BR, [ constants.x.PT, constants.x.EN ]), _defineProperty(_locales, constants.r.BS, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.BT, [ constants.x.EN ]), _defineProperty(_locales, constants.r.BW, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.BY, [ constants.x.EN ]), _defineProperty(_locales, constants.r.BZ, [ constants.x.EN, constants.x.ES, constants.x.FR, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.C2, [ constants.x.ZH, constants.x.EN ]), _defineProperty(_locales, constants.r.CA, [ constants.x.EN, constants.x.FR ]), 
-            _defineProperty(_locales, constants.r.CD, [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.CG, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.CH, [ constants.x.DE, constants.x.FR, constants.x.EN ]), 
-            _defineProperty(_locales, constants.r.CI, [ constants.x.FR, constants.x.EN ]), _defineProperty(_locales, constants.r.CK, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.CL, [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.CM, [ constants.x.FR, constants.x.EN ]), _defineProperty(_locales, constants.r.CN, [ constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.CO, [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.CR, [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.CV, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.CY, [ constants.x.EN ]), _defineProperty(_locales, constants.r.CZ, [ constants.x.CS, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.DE, [ constants.x.DE, constants.x.EN ]), _defineProperty(_locales, constants.r.DJ, [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.DK, [ constants.x.DA, constants.x.EN ]), _defineProperty(_locales, constants.r.DM, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.DO, [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.DZ, [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.EC, [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.EE, [ constants.x.EN, constants.x.RU, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.EG, [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.ER, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.ES, [ constants.x.ES, constants.x.EN ]), _defineProperty(_locales, constants.r.ET, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.FI, [ constants.x.FI, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.FJ, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.FK, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.FM, [ constants.x.EN ]), _defineProperty(_locales, constants.r.FO, [ constants.x.DA, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.FR, [ constants.x.FR, constants.x.EN ]), _defineProperty(_locales, constants.r.GA, [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.GB, [ constants.x.EN ]), _defineProperty(_locales, constants.r.GD, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.GE, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.GF, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.GI, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.GL, [ constants.x.DA, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.GM, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.GN, [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.GP, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.GR, [ constants.x.EL, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.GT, [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.GW, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.GY, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.HK, [ constants.x.EN, constants.x.ZH ]), _defineProperty(_locales, constants.r.HN, [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.HR, [ constants.x.EN ]), _defineProperty(_locales, constants.r.HU, [ constants.x.HU, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.ID, [ constants.x.ID, constants.x.EN ]), _defineProperty(_locales, constants.r.IE, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.IL, [ constants.x.HE, constants.x.EN ]), _defineProperty(_locales, constants.r.IN, [ constants.x.EN ]), 
-            _defineProperty(_locales, constants.r.IS, [ constants.x.EN ]), _defineProperty(_locales, constants.r.IT, [ constants.x.IT, constants.x.EN ]), 
-            _defineProperty(_locales, constants.r.JM, [ constants.x.EN, constants.x.ES, constants.x.FR, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.JO, [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.JP, [ constants.x.JA, constants.x.EN ]), _defineProperty(_locales, constants.r.KE, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.KG, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.KH, [ constants.x.EN ]), _defineProperty(_locales, constants.r.KI, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.KM, [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.KN, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.KR, [ constants.x.KO, constants.x.EN ]), _defineProperty(_locales, constants.r.KW, [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.KY, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.KZ, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.LA, [ constants.x.EN ]), _defineProperty(_locales, constants.r.LC, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.LI, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.LK, [ constants.x.EN ]), _defineProperty(_locales, constants.r.LS, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.LT, [ constants.x.EN, constants.x.RU, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.LU, [ constants.x.EN, constants.x.DE, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.LV, [ constants.x.EN, constants.x.RU, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.MA, [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.MC, [ constants.x.FR, constants.x.EN ]), _defineProperty(_locales, constants.r.MD, [ constants.x.EN ]), 
-            _defineProperty(_locales, constants.r.ME, [ constants.x.EN ]), _defineProperty(_locales, constants.r.MG, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.MH, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.MK, [ constants.x.EN ]), _defineProperty(_locales, constants.r.ML, [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.MN, [ constants.x.EN ]), _defineProperty(_locales, constants.r.MQ, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.MR, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.MS, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.MT, [ constants.x.EN ]), _defineProperty(_locales, constants.r.MU, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.MV, [ constants.x.EN ]), _defineProperty(_locales, constants.r.MW, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.MX, [ constants.x.ES, constants.x.EN ]), _defineProperty(_locales, constants.r.MY, [ constants.x.EN ]), 
-            _defineProperty(_locales, constants.r.MZ, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.NA, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.NC, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.NE, [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.NF, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.NG, [ constants.x.EN ]), _defineProperty(_locales, constants.r.NI, [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.NL, [ constants.x.NL, constants.x.EN ]), _defineProperty(_locales, constants.r.NO, [ constants.x.NO, constants.x.EN ]), 
-            _defineProperty(_locales, constants.r.NP, [ constants.x.EN ]), _defineProperty(_locales, constants.r.NR, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.NU, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.NZ, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.OM, [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.PA, [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.PE, [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.PF, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.PG, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.PH, [ constants.x.EN ]), _defineProperty(_locales, constants.r.PL, [ constants.x.PL, constants.x.EN ]), 
-            _defineProperty(_locales, constants.r.PM, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.PN, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.PT, [ constants.x.PT, constants.x.EN ]), _defineProperty(_locales, constants.r.PW, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.PY, [ constants.x.ES, constants.x.EN ]), _defineProperty(_locales, constants.r.QA, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH, constants.x.AR ]), 
-            _defineProperty(_locales, constants.r.RE, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.RO, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.RS, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.RU, [ constants.x.RU, constants.x.EN ]), _defineProperty(_locales, constants.r.RW, [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.SA, [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.SB, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.SC, [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.SE, [ constants.x.SV, constants.x.EN ]), _defineProperty(_locales, constants.r.SG, [ constants.x.EN ]), 
-            _defineProperty(_locales, constants.r.SH, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.SI, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.SJ, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.SK, [ constants.x.SK, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.SL, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.SM, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.SN, [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.SO, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.SR, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.ST, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.SV, [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.SZ, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.TC, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.TD, [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.TG, [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.TH, [ constants.x.TH, constants.x.EN ]), _defineProperty(_locales, constants.r.TJ, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.TM, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.TN, [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.TO, [ constants.x.EN ]), _defineProperty(_locales, constants.r.TR, [ constants.x.TR, constants.x.EN ]), 
-            _defineProperty(_locales, constants.r.TT, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.TV, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.TW, [ constants.x.ZH, constants.x.EN ]), _defineProperty(_locales, constants.r.TZ, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.UA, [ constants.x.EN, constants.x.RU, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.UG, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.US, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.UY, [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.VA, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.VC, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.VE, [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.VG, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.VN, [ constants.x.EN ]), _defineProperty(_locales, constants.r.VU, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.WF, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.WS, [ constants.x.EN ]), _defineProperty(_locales, constants.r.YE, [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.YT, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.ZA, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.ZM, [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ]), 
-            _defineProperty(_locales, constants.r.ZW, [ constants.x.EN ]), _locales)
+            locales: (_locales = {}, _locales[constants.r.AD] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.AE] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH, constants.x.AR ], 
+            _locales[constants.r.AG] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.AI] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.AL] = [ constants.x.EN ], _locales[constants.r.AM] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.AN] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.AO] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.AR] = [ constants.x.ES, constants.x.EN ], _locales[constants.r.AT] = [ constants.x.DE, constants.x.EN ], 
+            _locales[constants.r.AU] = [ constants.x.EN ], _locales[constants.r.AW] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.AZ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.BA] = [ constants.x.EN ], _locales[constants.r.BB] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.BE] = [ constants.x.EN, constants.x.NL, constants.x.FR ], _locales[constants.r.BF] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.BG] = [ constants.x.EN ], _locales[constants.r.BH] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.BI] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.BJ] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.BM] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.BN] = [ constants.x.EN ], _locales[constants.r.BO] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.BR] = [ constants.x.PT, constants.x.EN ], _locales[constants.r.BS] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.BT] = [ constants.x.EN ], _locales[constants.r.BW] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.BY] = [ constants.x.EN ], _locales[constants.r.BZ] = [ constants.x.EN, constants.x.ES, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.C2] = [ constants.x.ZH, constants.x.EN ], _locales[constants.r.CA] = [ constants.x.EN, constants.x.FR ], 
+            _locales[constants.r.CD] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.CG] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.CH] = [ constants.x.DE, constants.x.FR, constants.x.EN ], _locales[constants.r.CI] = [ constants.x.FR, constants.x.EN ], 
+            _locales[constants.r.CK] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.CL] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.CM] = [ constants.x.FR, constants.x.EN ], _locales[constants.r.CN] = [ constants.x.ZH ], 
+            _locales[constants.r.CO] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.CR] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.CV] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.CY] = [ constants.x.EN ], _locales[constants.r.CZ] = [ constants.x.CS, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.DE] = [ constants.x.DE, constants.x.EN ], _locales[constants.r.DJ] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.DK] = [ constants.x.DA, constants.x.EN ], _locales[constants.r.DM] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.DO] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.DZ] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.EC] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.EE] = [ constants.x.EN, constants.x.RU, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.EG] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.ER] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.ES] = [ constants.x.ES, constants.x.EN ], _locales[constants.r.ET] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.FI] = [ constants.x.FI, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.FJ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.FK] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.FM] = [ constants.x.EN ], _locales[constants.r.FO] = [ constants.x.DA, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.FR] = [ constants.x.FR, constants.x.EN ], _locales[constants.r.GA] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GB] = [ constants.x.EN ], _locales[constants.r.GD] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GE] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GF] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GI] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GL] = [ constants.x.DA, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GM] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GN] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GP] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GR] = [ constants.x.EL, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GT] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.GW] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GY] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.HK] = [ constants.x.EN, constants.x.ZH ], _locales[constants.r.HN] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.HR] = [ constants.x.EN ], _locales[constants.r.HU] = [ constants.x.HU, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.ID] = [ constants.x.ID, constants.x.EN ], _locales[constants.r.IE] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.IL] = [ constants.x.HE, constants.x.EN ], _locales[constants.r.IN] = [ constants.x.EN ], 
+            _locales[constants.r.IS] = [ constants.x.EN ], _locales[constants.r.IT] = [ constants.x.IT, constants.x.EN ], 
+            _locales[constants.r.JM] = [ constants.x.EN, constants.x.ES, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.JO] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.JP] = [ constants.x.JA, constants.x.EN ], _locales[constants.r.KE] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.KG] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.KH] = [ constants.x.EN ], _locales[constants.r.KI] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.KM] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.KN] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.KR] = [ constants.x.KO, constants.x.EN ], _locales[constants.r.KW] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.KY] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.KZ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.LA] = [ constants.x.EN ], _locales[constants.r.LC] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.LI] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.LK] = [ constants.x.EN ], _locales[constants.r.LS] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.LT] = [ constants.x.EN, constants.x.RU, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.LU] = [ constants.x.EN, constants.x.DE, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.LV] = [ constants.x.EN, constants.x.RU, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MA] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MC] = [ constants.x.FR, constants.x.EN ], _locales[constants.r.MD] = [ constants.x.EN ], 
+            _locales[constants.r.ME] = [ constants.x.EN ], _locales[constants.r.MG] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MH] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MK] = [ constants.x.EN ], _locales[constants.r.ML] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MN] = [ constants.x.EN ], _locales[constants.r.MQ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MR] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MS] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MT] = [ constants.x.EN ], _locales[constants.r.MU] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MV] = [ constants.x.EN ], _locales[constants.r.MW] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MX] = [ constants.x.ES, constants.x.EN ], _locales[constants.r.MY] = [ constants.x.EN ], 
+            _locales[constants.r.MZ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.NA] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.NC] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.NE] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.NF] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.NG] = [ constants.x.EN ], _locales[constants.r.NI] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.NL] = [ constants.x.NL, constants.x.EN ], _locales[constants.r.NO] = [ constants.x.NO, constants.x.EN ], 
+            _locales[constants.r.NP] = [ constants.x.EN ], _locales[constants.r.NR] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.NU] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.NZ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.OM] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.PA] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.PE] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.PF] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.PG] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.PH] = [ constants.x.EN ], _locales[constants.r.PL] = [ constants.x.PL, constants.x.EN ], 
+            _locales[constants.r.PM] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.PN] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.PT] = [ constants.x.PT, constants.x.EN ], _locales[constants.r.PW] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.PY] = [ constants.x.ES, constants.x.EN ], _locales[constants.r.QA] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH, constants.x.AR ], 
+            _locales[constants.r.RE] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.RO] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.RS] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.RU] = [ constants.x.RU, constants.x.EN ], _locales[constants.r.RW] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SA] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SB] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SC] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SE] = [ constants.x.SV, constants.x.EN ], _locales[constants.r.SG] = [ constants.x.EN ], 
+            _locales[constants.r.SH] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SI] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SJ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SK] = [ constants.x.SK, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SL] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SM] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SN] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SO] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SR] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.ST] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SV] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.SZ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.TC] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.TD] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.TG] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.TH] = [ constants.x.TH, constants.x.EN ], _locales[constants.r.TJ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.TM] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.TN] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.TO] = [ constants.x.EN ], _locales[constants.r.TR] = [ constants.x.TR, constants.x.EN ], 
+            _locales[constants.r.TT] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.TV] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.TW] = [ constants.x.ZH, constants.x.EN ], _locales[constants.r.TZ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.UA] = [ constants.x.EN, constants.x.RU, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.UG] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.US] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.UY] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.VA] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.VC] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.VE] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.VG] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.VN] = [ constants.x.EN ], _locales[constants.r.VU] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.WF] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.WS] = [ constants.x.EN ], _locales[constants.r.YE] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.YT] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.ZA] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.ZM] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.ZW] = [ constants.x.EN ], _locales)
         };
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return config;
@@ -10390,7 +9703,7 @@
     },
     "./src/constants/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var _CONTEXT_TYPE, BUTTON_STYLE_OPTIONS = {
+        var _CONTEXT_TYPE, _LANG_TO_DEFAULT_COUN, BUTTON_STYLE_OPTIONS = {
             LABEL: "label",
             SIZE: "size",
             SHAPE: "shape",
@@ -10415,6 +9728,7 @@
             ELV: "elv",
             BANCONTACT: "bancontact",
             GIROPAY: "giropay",
+            SOFORT: "sofort",
             EPS: "eps",
             MYBANK: "mybank"
         }, BUTTON_COLOR = {
@@ -10460,6 +9774,7 @@
             ELV: "elv",
             BANCONTACT: "bancontact",
             GIROPAY: "giropay",
+            SOFORT: "sofort",
             EPS: "eps",
             MYBANK: "mybank"
         }, CHECKOUT_OVERLAY_COLOR = {
@@ -10474,6 +9789,7 @@
             ELV: "elv",
             BANCONTACT: "bancontact",
             GIROPAY: "giropay",
+            SOFORT: "sofort",
             EPS: "eps",
             MYBANK: "mybank"
         }, CARD = {
@@ -10533,17 +9849,7 @@
         }, PLATFORM = {
             DESKTOP: "desktop",
             MOBILE: "mobile"
-        };
-        function _defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var _LANG_TO_DEFAULT_COUN, FPTI = {
+        }, FPTI = {
             KEY: {
                 FEED: "feed_name",
                 STATE: "state_name",
@@ -10581,8 +9887,8 @@
             },
             CONTEXT_TYPE: (_CONTEXT_TYPE = {
                 BUTTON_SESSION_ID: "button_session_id"
-            }, _defineProperty(_CONTEXT_TYPE, PAYMENT_TYPE.PAY_ID, "Pay-ID"), _defineProperty(_CONTEXT_TYPE, PAYMENT_TYPE.EC_TOKEN, "EC-Token"), 
-            _defineProperty(_CONTEXT_TYPE, PAYMENT_TYPE.BA_TOKEN, "EC-Token"), _CONTEXT_TYPE),
+            }, _CONTEXT_TYPE[PAYMENT_TYPE.PAY_ID] = "Pay-ID", _CONTEXT_TYPE[PAYMENT_TYPE.EC_TOKEN] = "EC-Token", 
+            _CONTEXT_TYPE[PAYMENT_TYPE.BA_TOKEN] = "EC-Token", _CONTEXT_TYPE),
             FEED: {
                 CHECKOUTJS: "checkoutjs"
             },
@@ -10610,17 +9916,7 @@
                 PPTM_LOADED: "process_pptm_loaded",
                 PXP: "process_pxp_check"
             }
-        };
-        function country__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var COUNTRY = {
+        }, COUNTRY = {
             AD: "AD",
             AE: "AE",
             AG: "AG",
@@ -10851,19 +10147,19 @@
             TH: "th",
             TR: "tr",
             ZH: "zh"
-        }, LANG_TO_DEFAULT_COUNTRY = (country__defineProperty(_LANG_TO_DEFAULT_COUN = {}, LANG.AR, COUNTRY.SA), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.CS, COUNTRY.CZ), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.DA, COUNTRY.DK), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.DE, COUNTRY.DE), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.EL, COUNTRY.GR), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.EN, COUNTRY.US), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.ES, COUNTRY.ES), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.FI, COUNTRY.FI), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.FR, COUNTRY.FR), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.HE, COUNTRY.IL), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.HU, COUNTRY.HU), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.ID, COUNTRY.ID), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.IT, COUNTRY.IT), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.JA, COUNTRY.JP), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.KO, COUNTRY.KR), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.NL, COUNTRY.NL), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.NO, COUNTRY.NO), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.PL, COUNTRY.PL), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.PT, COUNTRY.PT), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.RU, COUNTRY.RU), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.SK, COUNTRY.SK), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.SV, COUNTRY.SE), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.TH, COUNTRY.TH), 
-        country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.TR, COUNTRY.TR), country__defineProperty(_LANG_TO_DEFAULT_COUN, LANG.ZH, COUNTRY.CN), 
+        }, LANG_TO_DEFAULT_COUNTRY = ((_LANG_TO_DEFAULT_COUN = {})[LANG.AR] = COUNTRY.SA, 
+        _LANG_TO_DEFAULT_COUN[LANG.CS] = COUNTRY.CZ, _LANG_TO_DEFAULT_COUN[LANG.DA] = COUNTRY.DK, 
+        _LANG_TO_DEFAULT_COUN[LANG.DE] = COUNTRY.DE, _LANG_TO_DEFAULT_COUN[LANG.EL] = COUNTRY.GR, 
+        _LANG_TO_DEFAULT_COUN[LANG.EN] = COUNTRY.US, _LANG_TO_DEFAULT_COUN[LANG.ES] = COUNTRY.ES, 
+        _LANG_TO_DEFAULT_COUN[LANG.FI] = COUNTRY.FI, _LANG_TO_DEFAULT_COUN[LANG.FR] = COUNTRY.FR, 
+        _LANG_TO_DEFAULT_COUN[LANG.HE] = COUNTRY.IL, _LANG_TO_DEFAULT_COUN[LANG.HU] = COUNTRY.HU, 
+        _LANG_TO_DEFAULT_COUN[LANG.ID] = COUNTRY.ID, _LANG_TO_DEFAULT_COUN[LANG.IT] = COUNTRY.IT, 
+        _LANG_TO_DEFAULT_COUN[LANG.JA] = COUNTRY.JP, _LANG_TO_DEFAULT_COUN[LANG.KO] = COUNTRY.KR, 
+        _LANG_TO_DEFAULT_COUN[LANG.NL] = COUNTRY.NL, _LANG_TO_DEFAULT_COUN[LANG.NO] = COUNTRY.NO, 
+        _LANG_TO_DEFAULT_COUN[LANG.PL] = COUNTRY.PL, _LANG_TO_DEFAULT_COUN[LANG.PT] = COUNTRY.PT, 
+        _LANG_TO_DEFAULT_COUN[LANG.RU] = COUNTRY.RU, _LANG_TO_DEFAULT_COUN[LANG.SK] = COUNTRY.SK, 
+        _LANG_TO_DEFAULT_COUN[LANG.SV] = COUNTRY.SE, _LANG_TO_DEFAULT_COUN[LANG.TH] = COUNTRY.TH, 
+        _LANG_TO_DEFAULT_COUN[LANG.TR] = COUNTRY.TR, _LANG_TO_DEFAULT_COUN[LANG.ZH] = COUNTRY.CN, 
         _LANG_TO_DEFAULT_COUN), ALLOWED_INSTALLMENT_COUNTRIES = [ COUNTRY.BR, COUNTRY.MX ], ALLOWED_INSTALLMENT_PERIOD = {
             BR: [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
             MX: [ 3, 6, 9, 12 ]
@@ -11124,17 +10420,7 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        };
-        function _defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var proxyRest = {}, createAccessToken = Object(lib.J)(function(env, client) {
+        }, proxyRest = {}, createAccessToken = Object(lib.J)(function(env, client) {
             Object(beaver_logger_client.j)("rest_api_create_access_token");
             var clientID = client[env = env || config.a.env];
             if (!clientID) throw new Error("Client ID not found for env: " + env);
@@ -11189,11 +10475,10 @@
                     var match = res.links[i].href.match(/token=((EC-)?[A-Z0-9]{17})/);
                     match && (paymentToken = match[1]);
                 }
-                Object(beaver_logger_client.o)((_defineProperty(_track = {}, constants.u.KEY.STATE, constants.u.STATE.BUTTON), 
-                _defineProperty(_track, constants.u.KEY.TRANSITION, constants.u.TRANSITION.CREATE_PAYMENT), 
-                _defineProperty(_track, constants.u.KEY.CONTEXT_TYPE, constants.u.CONTEXT_TYPE[constants.A.PAY_ID]), 
-                _defineProperty(_track, constants.u.KEY.PAY_ID, paymentID), _defineProperty(_track, constants.u.KEY.TOKEN, paymentToken), 
-                _defineProperty(_track, constants.u.KEY.CONTEXT_ID, paymentID), _track));
+                Object(beaver_logger_client.o)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
+                _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CREATE_PAYMENT, _track[constants.u.KEY.CONTEXT_TYPE] = constants.u.CONTEXT_TYPE[constants.A.PAY_ID], 
+                _track[constants.u.KEY.PAY_ID] = paymentID, _track[constants.u.KEY.TOKEN] = paymentToken, 
+                _track[constants.u.KEY.CONTEXT_ID] = paymentID, _track));
             }
         }
         function getDefaultReturnUrl() {
@@ -11386,15 +10671,6 @@
             createBillingAgreement: createBillingAgreement,
             createOrder: createOrder
         }).catch(function() {});
-        function experiments__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
         var onAuthorizeListener = Object(lib.g)();
         function log(experiment, treatment, token, state) {
             Object(lib.x)(function(session) {
@@ -11405,11 +10681,10 @@
                     loggedEvents.push(event);
                     var edge = window.navigator && window.navigator.userAgent && window.navigator.userAgent.match(/Edge\/[0-9]{2}/);
                     edge && (event = Object(beaver_logger_client.j)(edge[0].toLowerCase().replace("/", "_") + "_" + event));
-                    Object(beaver_logger_client.o)((experiments__defineProperty(_track = {}, constants.u.KEY.STATE, constants.u.STATE.CHECKOUT), 
-                    experiments__defineProperty(_track, constants.u.KEY.TRANSITION, state), experiments__defineProperty(_track, constants.u.KEY.EXPERIMENT_NAME, experiment), 
-                    experiments__defineProperty(_track, constants.u.KEY.TREATMENT_NAME, treatment), 
-                    experiments__defineProperty(_track, constants.u.KEY.TOKEN, token), experiments__defineProperty(_track, constants.u.KEY.CONTEXT_ID, token), 
-                    experiments__defineProperty(_track, constants.u.KEY.CONTEXT_TYPE, token ? constants.u.CONTEXT_TYPE[constants.A.EC_TOKEN] : constants.u.CONTEXT_TYPE.BUTTON_SESSION_ID), 
+                    Object(beaver_logger_client.o)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
+                    _track[constants.u.KEY.TRANSITION] = state, _track[constants.u.KEY.EXPERIMENT_NAME] = experiment, 
+                    _track[constants.u.KEY.TREATMENT_NAME] = treatment, _track[constants.u.KEY.TOKEN] = token, 
+                    _track[constants.u.KEY.CONTEXT_ID] = token, _track[constants.u.KEY.CONTEXT_TYPE] = token ? constants.u.CONTEXT_TYPE[constants.A.EC_TOKEN] : constants.u.CONTEXT_TYPE.BUTTON_SESSION_ID, 
                     _track));
                     Object(beaver_logger_client.i)();
                 }
@@ -11449,17 +10724,7 @@
                 returnToken && logReturn(returnToken);
             }, 1);
         }
-        var integrations = __webpack_require__("./src/integrations/index.js"), src_lib = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), integrations_checkout = __webpack_require__("./src/integrations/checkout.js");
-        function popupBridge__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var _FUNDING_CONFIG, _CARD_CONFIG, OPTYPE = {
+        var _FUNDING_CONFIG, _CARD_CONFIG, integrations = __webpack_require__("./src/integrations/index.js"), src_lib = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), integrations_checkout = __webpack_require__("./src/integrations/checkout.js"), OPTYPE = {
             PAYMENT: "payment",
             CANCEL: "cancel"
         }, CONTINGENCY = {
@@ -11488,9 +10753,9 @@
                     }).then(function(token) {
                         var _extendUrl;
                         if (!token) throw new Error("Expected props.payment to return a payment id or token");
-                        return Object(lib.i)(Object(integrations_checkout.b)(env, constants.v.PAYPAL, token), (popupBridge__defineProperty(_extendUrl = {}, Object(integrations_checkout.a)(token), token), 
-                        popupBridge__defineProperty(_extendUrl, "useraction", props.commit ? "commit" : ""), 
-                        popupBridge__defineProperty(_extendUrl, "native_xo", "1"), _extendUrl));
+                        return Object(lib.i)(Object(integrations_checkout.b)(env, constants.v.PAYPAL, token), ((_extendUrl = {})[Object(integrations_checkout.a)(token)] = token, 
+                        _extendUrl.useraction = props.commit ? "commit" : "", _extendUrl.native_xo = "1", 
+                        _extendUrl));
                     });
                 }(props);
             }).then(function(url) {
@@ -11553,16 +10818,7 @@
                 }(popupBridge);
             });
         }
-        function config__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var FUNDING_PRIORITY = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.CREDIT, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.MYBANK, constants.v.CARD ], FUNDING_CONFIG = (config__defineProperty(_FUNDING_CONFIG = {}, constants.s, {
+        var FUNDING_PRIORITY = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.CREDIT, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.SOFORT, constants.v.EPS, constants.v.MYBANK, constants.v.CARD ], FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[constants.s] = {
             enabled: !0,
             allowOptIn: !0,
             allowOptOut: !0,
@@ -11570,66 +10826,71 @@
             allowHorizontal: !0,
             allowVertical: !0,
             requireCommitAsTrue: !1
-        }), config__defineProperty(_FUNDING_CONFIG, constants.v.PAYPAL, {
+        }, _FUNDING_CONFIG[constants.v.PAYPAL] = {
             default: !0,
             allowOptIn: !1,
             allowOptOut: !1,
             allowHorizontal: !0,
             allowVertical: !0
-        }), config__defineProperty(_FUNDING_CONFIG, constants.v.CARD, {
+        }, _FUNDING_CONFIG[constants.v.CARD] = {
             default: !0,
             allowHorizontal: !1,
             allowVertical: !0
-        }), config__defineProperty(_FUNDING_CONFIG, constants.v.VENMO, {
+        }, _FUNDING_CONFIG[constants.v.VENMO] = {
             allowOptOut: !1,
             allowedCountries: [ constants.r.US ],
             allowHorizontal: !0,
             allowVertical: !0
-        }), config__defineProperty(_FUNDING_CONFIG, constants.v.CREDIT, {
+        }, _FUNDING_CONFIG[constants.v.CREDIT] = {
             allowedCountries: [ constants.r.US, constants.r.GB, constants.r.DE ],
             defaultVerticalCountries: [ constants.r.US ],
             platforms: [ constants.B.MOBILE ],
             allowHorizontal: !0,
             allowVertical: !0
-        }), config__defineProperty(_FUNDING_CONFIG, constants.v.IDEAL, {
+        }, _FUNDING_CONFIG[constants.v.IDEAL] = {
             allowedCountries: [ constants.r.NL ],
             allowHorizontal: !0,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }), config__defineProperty(_FUNDING_CONFIG, constants.v.ELV, {
+        }, _FUNDING_CONFIG[constants.v.ELV] = {
             allowedCountries: [ constants.r.DE, constants.r.AT ],
             defaultVerticalCountries: [ constants.r.DE, constants.r.AT ],
             allowHorizontal: !0,
             allowVertical: !0
-        }), config__defineProperty(_FUNDING_CONFIG, constants.v.BANCONTACT, {
+        }, _FUNDING_CONFIG[constants.v.BANCONTACT] = {
             allowedCountries: [ constants.r.BE ],
             allowHorizontal: !0,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }), config__defineProperty(_FUNDING_CONFIG, constants.v.GIROPAY, {
+        }, _FUNDING_CONFIG[constants.v.GIROPAY] = {
             allowedCountries: [ constants.r.DE ],
             allowHorizontal: !0,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }), config__defineProperty(_FUNDING_CONFIG, constants.v.EPS, {
+        }, _FUNDING_CONFIG[constants.v.SOFORT] = {
+            allowedCountries: [ constants.r.DE ],
+            allowHorizontal: !0,
+            allowVertical: !0,
+            requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG[constants.v.EPS] = {
             allowedCountries: [ constants.r.AT ],
             allowHorizontal: !0,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }), config__defineProperty(_FUNDING_CONFIG, constants.v.MYBANK, {
+        }, _FUNDING_CONFIG[constants.v.MYBANK] = {
             allowedCountries: [ constants.r.IT ],
             allowHorizontal: !0,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }), _FUNDING_CONFIG), CARD_CONFIG = (config__defineProperty(_CARD_CONFIG = {}, constants.s, {
+        }, _FUNDING_CONFIG), CARD_CONFIG = ((_CARD_CONFIG = {})[constants.s] = {
             priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX ]
-        }), config__defineProperty(_CARD_CONFIG, constants.r.US, {
+        }, _CARD_CONFIG[constants.r.US] = {
             priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX, constants.o.DISCOVER ]
-        }), config__defineProperty(_CARD_CONFIG, constants.r.BR, {
+        }, _CARD_CONFIG[constants.r.BR] = {
             priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX, constants.o.HIPER, constants.o.ELO ]
-        }), config__defineProperty(_CARD_CONFIG, constants.r.JP, {
+        }, _CARD_CONFIG[constants.r.JP] = {
             priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX, constants.o.JCB ]
-        }), _CARD_CONFIG);
+        }, _CARD_CONFIG);
         function getConfig(conf, category, key, def) {
             var categoryConfig = conf[category];
             if (categoryConfig && categoryConfig.hasOwnProperty(key)) return categoryConfig[key];
@@ -11640,7 +10901,7 @@
         function getFundingConfig(source, key, def) {
             return getConfig(FUNDING_CONFIG, source, key, def);
         }
-        var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _secondaryColors10, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE, fundingEligibilityReasons = [];
+        var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE, fundingEligibilityReasons = [];
         function isFundingIneligible(source, _ref) {
             var locale = _ref.locale, funding = _ref.funding, layout = _ref.layout, commit = _ref.commit;
             return getFundingConfig(source, layout === constants.g.VERTICAL ? "allowVertical" : "allowHorizontal") ? -1 !== funding.disallowed.indexOf(source) && getFundingConfig(source, "allowOptOut") ? constants.w.OPT_OUT : -1 !== funding.disallowed.indexOf(source) && source === constants.v.VENMO ? constants.w.OPT_OUT : -1 === getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) ? constants.w.DISALLOWED_COUNTRY : getFundingConfig(source, "requireCommitAsTrue") && !commit ? constants.w.COMMIT_NOT_SET : void 0 : constants.w.SECONDARY_DISALLOWED;
@@ -11727,37 +10988,22 @@
                 }));
             });
         }
-        function button_config__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var BUTTON_CONFIG = (button_config__defineProperty(_BUTTON_CONFIG = {}, constants.s, {
+        var BUTTON_CONFIG = ((_BUTTON_CONFIG = {})[constants.s] = {
             colors: [ constants.e.GOLD, constants.e.BLUE, constants.e.SILVER, constants.e.BLACK ],
             sizes: [ constants.l.SMALL, constants.l.MEDIUM, constants.l.LARGE, constants.l.RESPONSIVE ],
             shapes: [ constants.k.PILL, constants.k.RECT ],
             layouts: [ constants.g.HORIZONTAL, constants.g.VERTICAL ],
-            logoColors: (_logoColors = {}, button_config__defineProperty(_logoColors, constants.e.GOLD, constants.i.BLUE), 
-            button_config__defineProperty(_logoColors, constants.e.SILVER, constants.i.BLUE), 
-            button_config__defineProperty(_logoColors, constants.e.BLUE, constants.i.WHITE), 
-            button_config__defineProperty(_logoColors, constants.e.BLACK, constants.i.WHITE), 
-            button_config__defineProperty(_logoColors, constants.e.BLACK, constants.i.WHITE), 
+            logoColors: (_logoColors = {}, _logoColors[constants.e.GOLD] = constants.i.BLUE, 
+            _logoColors[constants.e.SILVER] = constants.i.BLUE, _logoColors[constants.e.BLUE] = constants.i.WHITE, 
+            _logoColors[constants.e.BLACK] = constants.i.WHITE, _logoColors[constants.e.BLACK] = constants.i.WHITE, 
             _logoColors),
-            tagLineColors: (_tagLineColors = {}, button_config__defineProperty(_tagLineColors, constants.e.GOLD, constants.n.BLUE), 
-            button_config__defineProperty(_tagLineColors, constants.e.SILVER, constants.n.BLUE), 
-            button_config__defineProperty(_tagLineColors, constants.e.BLUE, constants.n.BLUE), 
-            button_config__defineProperty(_tagLineColors, constants.e.BLACK, constants.n.BLACK), 
-            button_config__defineProperty(_tagLineColors, constants.e.DARKBLUE, constants.n.BLUE), 
+            tagLineColors: (_tagLineColors = {}, _tagLineColors[constants.e.GOLD] = constants.n.BLUE, 
+            _tagLineColors[constants.e.SILVER] = constants.n.BLUE, _tagLineColors[constants.e.BLUE] = constants.n.BLUE, 
+            _tagLineColors[constants.e.BLACK] = constants.n.BLACK, _tagLineColors[constants.e.DARKBLUE] = constants.n.BLUE, 
             _tagLineColors),
-            secondaryColors: (_secondaryColors = {}, button_config__defineProperty(_secondaryColors, constants.e.GOLD, constants.e.BLUE), 
-            button_config__defineProperty(_secondaryColors, constants.e.SILVER, constants.e.BLUE), 
-            button_config__defineProperty(_secondaryColors, constants.e.BLUE, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors, constants.e.BLACK, constants.e.BLACK), 
-            button_config__defineProperty(_secondaryColors, constants.e.DARKBLUE, constants.e.SILVER), 
+            secondaryColors: (_secondaryColors = {}, _secondaryColors[constants.e.GOLD] = constants.e.BLUE, 
+            _secondaryColors[constants.e.SILVER] = constants.e.BLUE, _secondaryColors[constants.e.BLUE] = constants.e.SILVER, 
+            _secondaryColors[constants.e.BLACK] = constants.e.BLACK, _secondaryColors[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors),
             tag: "{ content: safer_tag }",
             dualTag: "{ content: dual_tag|safer_tag }",
@@ -11787,25 +11033,25 @@
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }), button_config__defineProperty(_BUTTON_CONFIG, constants.f.PAYPAL, {
+        }, _BUTTON_CONFIG[constants.f.PAYPAL] = {
             label: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
             logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
             allowPrimary: !0,
             allowPrimaryVertical: !0,
             allowPrimaryHorizontal: !0
-        }), button_config__defineProperty(_BUTTON_CONFIG, constants.f.CHECKOUT, {
+        }, _BUTTON_CONFIG[constants.f.CHECKOUT] = {
             label: "{ content: checkout }",
             logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
             allowPrimary: !0,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !0
-        }), button_config__defineProperty(_BUTTON_CONFIG, constants.f.PAY, {
+        }, _BUTTON_CONFIG[constants.f.PAY] = {
             label: "{ content: pay }",
             logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
             allowPrimary: !0,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !0
-        }), button_config__defineProperty(_BUTTON_CONFIG, constants.f.BUYNOW, {
+        }, _BUTTON_CONFIG[constants.f.BUYNOW] = {
             label: "{ content: buynow }",
             logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
             defaultBranding: void 0,
@@ -11813,7 +11059,7 @@
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !0,
             allowUnbranded: !0
-        }), button_config__defineProperty(_BUTTON_CONFIG, constants.f.INSTALLMENT, {
+        }, _BUTTON_CONFIG[constants.f.INSTALLMENT] = {
             label: function(style) {
                 return "{ content: " + (style.installmentperiod ? "installment_period" : "installment") + " }";
             },
@@ -11823,187 +11069,166 @@
             allowPrimaryHorizontal: !0,
             allowSecondaryVertical: !1,
             allowSecondaryHorizontal: !1
-        }), button_config__defineProperty(_BUTTON_CONFIG, constants.f.CREDIT, {
+        }, _BUTTON_CONFIG[constants.f.CREDIT] = {
             label: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " } { logo: " + constants.h.CREDIT + " }",
             logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " } { logo: " + constants.h.CREDIT + " }",
             tag: "{ content: later_tag }",
             colors: [ constants.e.DARKBLUE, constants.e.BLACK ],
-            logoColors: (_logoColors2 = {}, button_config__defineProperty(_logoColors2, constants.e.BLACK, constants.i.WHITE), 
-            button_config__defineProperty(_logoColors2, constants.e.DARKBLUE, constants.i.WHITE), 
-            _logoColors2),
-            secondaryColors: (_secondaryColors2 = {}, button_config__defineProperty(_secondaryColors2, constants.e.GOLD, constants.e.DARKBLUE), 
-            button_config__defineProperty(_secondaryColors2, constants.e.BLUE, constants.e.DARKBLUE), 
-            button_config__defineProperty(_secondaryColors2, constants.e.SILVER, constants.e.DARKBLUE), 
-            button_config__defineProperty(_secondaryColors2, constants.e.BLACK, constants.e.BLACK), 
-            _secondaryColors2),
+            logoColors: (_logoColors2 = {}, _logoColors2[constants.e.BLACK] = constants.i.WHITE, 
+            _logoColors2[constants.e.DARKBLUE] = constants.i.WHITE, _logoColors2),
+            secondaryColors: (_secondaryColors2 = {}, _secondaryColors2[constants.e.GOLD] = constants.e.DARKBLUE, 
+            _secondaryColors2[constants.e.BLUE] = constants.e.DARKBLUE, _secondaryColors2[constants.e.SILVER] = constants.e.DARKBLUE, 
+            _secondaryColors2[constants.e.BLACK] = constants.e.BLACK, _secondaryColors2),
             defaultColor: constants.e.DARKBLUE,
             allowPrimary: !0,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1,
             allowFundingIcons: !1
-        }), button_config__defineProperty(_BUTTON_CONFIG, constants.f.VENMO, {
+        }, _BUTTON_CONFIG[constants.f.VENMO] = {
             label: "{ logo: " + constants.h.VENMO + " }",
             logoLabel: "{ logo: " + constants.h.VENMO + " }",
             defaultColor: constants.e.SILVER,
             colors: [ constants.e.BLUE, constants.e.SILVER, constants.e.BLACK ],
-            logoColors: (_logoColors3 = {}, button_config__defineProperty(_logoColors3, constants.e.BLUE, constants.i.WHITE), 
-            button_config__defineProperty(_logoColors3, constants.e.SILVER, constants.i.BLUE), 
-            button_config__defineProperty(_logoColors3, constants.e.BLACK, constants.i.WHITE), 
+            logoColors: (_logoColors3 = {}, _logoColors3[constants.e.BLUE] = constants.i.WHITE, 
+            _logoColors3[constants.e.SILVER] = constants.i.BLUE, _logoColors3[constants.e.BLACK] = constants.i.WHITE, 
             _logoColors3),
-            secondaryColors: (_secondaryColors3 = {}, button_config__defineProperty(_secondaryColors3, constants.e.GOLD, constants.e.BLUE), 
-            button_config__defineProperty(_secondaryColors3, constants.e.BLUE, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors3, constants.e.SILVER, constants.e.BLUE), 
-            button_config__defineProperty(_secondaryColors3, constants.e.BLACK, constants.e.BLACK), 
-            button_config__defineProperty(_secondaryColors3, constants.e.DARKBLUE, constants.e.SILVER), 
+            secondaryColors: (_secondaryColors3 = {}, _secondaryColors3[constants.e.GOLD] = constants.e.BLUE, 
+            _secondaryColors3[constants.e.BLUE] = constants.e.SILVER, _secondaryColors3[constants.e.SILVER] = constants.e.BLUE, 
+            _secondaryColors3[constants.e.BLACK] = constants.e.BLACK, _secondaryColors3[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors3),
             allowPrimary: !0,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !0
-        }), button_config__defineProperty(_BUTTON_CONFIG, constants.f.IDEAL, {
+        }, _BUTTON_CONFIG[constants.f.IDEAL] = {
             label: "{ logo: " + constants.h.IDEAL + " } Online betalen",
             logoLabel: "{ logo: " + constants.h.IDEAL + " } Online betalen",
             defaultColor: constants.e.SILVER,
             colors: [ constants.e.SILVER, constants.e.BLACK ],
-            logoColors: (_logoColors4 = {}, button_config__defineProperty(_logoColors4, constants.e.SILVER, constants.i.BLACK), 
-            button_config__defineProperty(_logoColors4, constants.e.BLACK, constants.i.WHITE), 
-            _logoColors4),
-            secondaryColors: (_secondaryColors4 = {}, button_config__defineProperty(_secondaryColors4, constants.e.GOLD, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors4, constants.e.BLUE, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors4, constants.e.SILVER, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors4, constants.e.BLACK, constants.e.BLACK), 
-            button_config__defineProperty(_secondaryColors4, constants.e.DARKBLUE, constants.e.SILVER), 
+            logoColors: (_logoColors4 = {}, _logoColors4[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors4[constants.e.BLACK] = constants.i.WHITE, _logoColors4),
+            secondaryColors: (_secondaryColors4 = {}, _secondaryColors4[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors4[constants.e.BLUE] = constants.e.SILVER, _secondaryColors4[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors4[constants.e.BLACK] = constants.e.BLACK, _secondaryColors4[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors4),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }), button_config__defineProperty(_BUTTON_CONFIG, constants.f.ELV, {
+        }, _BUTTON_CONFIG[constants.f.ELV] = {
             label: "{ logo: " + constants.h.ELV + " }",
             logoLabel: "{ logo: " + constants.h.ELV + " }",
             defaultColor: constants.e.SILVER,
             colors: [ constants.e.SILVER, constants.e.BLACK ],
-            logoColors: (_logoColors5 = {}, button_config__defineProperty(_logoColors5, constants.e.SILVER, constants.i.BLACK), 
-            button_config__defineProperty(_logoColors5, constants.e.BLACK, constants.i.WHITE), 
-            _logoColors5),
-            secondaryColors: (_secondaryColors5 = {}, button_config__defineProperty(_secondaryColors5, constants.e.GOLD, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors5, constants.e.BLUE, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors5, constants.e.SILVER, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors5, constants.e.BLACK, constants.e.BLACK), 
-            button_config__defineProperty(_secondaryColors5, constants.e.DARKBLUE, constants.e.SILVER), 
+            logoColors: (_logoColors5 = {}, _logoColors5[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors5[constants.e.BLACK] = constants.i.WHITE, _logoColors5),
+            secondaryColors: (_secondaryColors5 = {}, _secondaryColors5[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors5[constants.e.BLUE] = constants.e.SILVER, _secondaryColors5[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors5[constants.e.BLACK] = constants.e.BLACK, _secondaryColors5[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors5),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }), button_config__defineProperty(_BUTTON_CONFIG, constants.f.BANCONTACT, {
+        }, _BUTTON_CONFIG[constants.f.BANCONTACT] = {
             label: "{ logo: " + constants.h.BANCONTACT + " }",
             logoLabel: "{ logo: " + constants.h.BANCONTACT + " }",
             defaultColor: constants.e.SILVER,
             colors: [ constants.e.SILVER, constants.e.BLACK ],
-            logoColors: (_logoColors6 = {}, button_config__defineProperty(_logoColors6, constants.e.SILVER, constants.i.BLACK), 
-            button_config__defineProperty(_logoColors6, constants.e.BLACK, constants.i.WHITE), 
-            _logoColors6),
-            secondaryColors: (_secondaryColors6 = {}, button_config__defineProperty(_secondaryColors6, constants.e.GOLD, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors6, constants.e.BLUE, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors6, constants.e.SILVER, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors6, constants.e.BLACK, constants.e.BLACK), 
-            button_config__defineProperty(_secondaryColors6, constants.e.DARKBLUE, constants.e.SILVER), 
+            logoColors: (_logoColors6 = {}, _logoColors6[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors6[constants.e.BLACK] = constants.i.WHITE, _logoColors6),
+            secondaryColors: (_secondaryColors6 = {}, _secondaryColors6[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors6[constants.e.BLUE] = constants.e.SILVER, _secondaryColors6[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors6[constants.e.BLACK] = constants.e.BLACK, _secondaryColors6[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors6),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }), button_config__defineProperty(_BUTTON_CONFIG, constants.f.GIROPAY, {
+        }, _BUTTON_CONFIG[constants.f.GIROPAY] = {
             label: "{ logo: " + constants.h.GIROPAY + " }",
             logoLabel: "{ logo: " + constants.h.GIROPAY + " }",
             defaultColor: constants.e.SILVER,
             colors: [ constants.e.SILVER, constants.e.BLACK ],
-            logoColors: (_logoColors7 = {}, button_config__defineProperty(_logoColors7, constants.e.SILVER, constants.i.BLACK), 
-            button_config__defineProperty(_logoColors7, constants.e.BLACK, constants.i.WHITE), 
-            _logoColors7),
-            secondaryColors: (_secondaryColors7 = {}, button_config__defineProperty(_secondaryColors7, constants.e.GOLD, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors7, constants.e.BLUE, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors7, constants.e.SILVER, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors7, constants.e.BLACK, constants.e.BLACK), 
-            button_config__defineProperty(_secondaryColors7, constants.e.DARKBLUE, constants.e.SILVER), 
+            logoColors: (_logoColors7 = {}, _logoColors7[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors7[constants.e.BLACK] = constants.i.WHITE, _logoColors7),
+            secondaryColors: (_secondaryColors7 = {}, _secondaryColors7[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors7[constants.e.BLUE] = constants.e.SILVER, _secondaryColors7[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors7[constants.e.BLACK] = constants.e.BLACK, _secondaryColors7[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors7),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }), button_config__defineProperty(_BUTTON_CONFIG, constants.f.EPS, {
-            label: "{ logo: " + constants.h.EPS + " }",
-            logoLabel: "{ logo: " + constants.h.EPS + " }",
+        }, _BUTTON_CONFIG[constants.f.SOFORT] = {
+            label: "{ logo: " + constants.h.SOFORT + " }",
+            logoLabel: "{ logo: " + constants.h.SOFORT + " }",
             defaultColor: constants.e.SILVER,
             colors: [ constants.e.SILVER, constants.e.BLACK ],
-            logoColors: (_logoColors8 = {}, button_config__defineProperty(_logoColors8, constants.e.SILVER, constants.i.BLACK), 
-            button_config__defineProperty(_logoColors8, constants.e.BLACK, constants.i.WHITE), 
-            _logoColors8),
-            secondaryColors: (_secondaryColors8 = {}, button_config__defineProperty(_secondaryColors8, constants.e.GOLD, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors8, constants.e.BLUE, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors8, constants.e.SILVER, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors8, constants.e.BLACK, constants.e.BLACK), 
-            button_config__defineProperty(_secondaryColors8, constants.e.DARKBLUE, constants.e.SILVER), 
+            logoColors: (_logoColors8 = {}, _logoColors8[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors8[constants.e.BLACK] = constants.i.WHITE, _logoColors8),
+            secondaryColors: (_secondaryColors8 = {}, _secondaryColors8[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors8[constants.e.BLUE] = constants.e.SILVER, _secondaryColors8[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors8[constants.e.BLACK] = constants.e.BLACK, _secondaryColors8[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors8),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }), button_config__defineProperty(_BUTTON_CONFIG, constants.f.MYBANK, {
-            label: "{ logo: " + constants.h.MYBANK + " }",
-            logoLabel: "{ logo: " + constants.h.MYBANK + " }",
+        }, _BUTTON_CONFIG[constants.f.EPS] = {
+            label: "{ logo: " + constants.h.EPS + " }",
+            logoLabel: "{ logo: " + constants.h.EPS + " }",
             defaultColor: constants.e.SILVER,
             colors: [ constants.e.SILVER, constants.e.BLACK ],
-            logoColors: (_logoColors9 = {}, button_config__defineProperty(_logoColors9, constants.e.SILVER, constants.i.BLACK), 
-            button_config__defineProperty(_logoColors9, constants.e.BLACK, constants.i.WHITE), 
-            _logoColors9),
-            secondaryColors: (_secondaryColors9 = {}, button_config__defineProperty(_secondaryColors9, constants.e.GOLD, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors9, constants.e.BLUE, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors9, constants.e.SILVER, constants.e.SILVER), 
-            button_config__defineProperty(_secondaryColors9, constants.e.BLACK, constants.e.BLACK), 
-            button_config__defineProperty(_secondaryColors9, constants.e.DARKBLUE, constants.e.SILVER), 
+            logoColors: (_logoColors9 = {}, _logoColors9[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors9[constants.e.BLACK] = constants.i.WHITE, _logoColors9),
+            secondaryColors: (_secondaryColors9 = {}, _secondaryColors9[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors9[constants.e.BLUE] = constants.e.SILVER, _secondaryColors9[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors9[constants.e.BLACK] = constants.e.BLACK, _secondaryColors9[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors9),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }), button_config__defineProperty(_BUTTON_CONFIG, constants.f.CARD, {
-            label: "{ cards }",
-            logoLabel: "{ cards }",
+        }, _BUTTON_CONFIG[constants.f.MYBANK] = {
+            label: "{ logo: " + constants.h.MYBANK + " }",
+            logoLabel: "{ logo: " + constants.h.MYBANK + " }",
             defaultColor: constants.e.SILVER,
-            colors: [ constants.e.TRANSPARENT ],
-            logoColors: button_config__defineProperty({}, constants.e.TRANSPARENT, constants.i.BLACK),
-            secondaryColors: (_secondaryColors10 = {}, button_config__defineProperty(_secondaryColors10, constants.e.GOLD, constants.e.TRANSPARENT), 
-            button_config__defineProperty(_secondaryColors10, constants.e.BLUE, constants.e.TRANSPARENT), 
-            button_config__defineProperty(_secondaryColors10, constants.e.SILVER, constants.e.TRANSPARENT), 
-            button_config__defineProperty(_secondaryColors10, constants.e.BLACK, constants.e.TRANSPARENT), 
-            button_config__defineProperty(_secondaryColors10, constants.e.DARKBLUE, constants.e.TRANSPARENT), 
+            colors: [ constants.e.SILVER, constants.e.BLACK ],
+            logoColors: (_logoColors10 = {}, _logoColors10[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors10[constants.e.BLACK] = constants.i.WHITE, _logoColors10),
+            secondaryColors: (_secondaryColors10 = {}, _secondaryColors10[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors10[constants.e.BLUE] = constants.e.SILVER, _secondaryColors10[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors10[constants.e.BLACK] = constants.e.BLACK, _secondaryColors10[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors10),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }), _BUTTON_CONFIG), FUNDING_TO_DEFAULT_LABEL = (button_config__defineProperty(_FUNDING_TO_DEFAULT_L = {}, constants.v.PAYPAL, constants.f.PAYPAL), 
-        button_config__defineProperty(_FUNDING_TO_DEFAULT_L, constants.v.VENMO, constants.f.VENMO), 
-        button_config__defineProperty(_FUNDING_TO_DEFAULT_L, constants.v.CARD, constants.f.CARD), 
-        button_config__defineProperty(_FUNDING_TO_DEFAULT_L, constants.v.CREDIT, constants.f.CREDIT), 
-        button_config__defineProperty(_FUNDING_TO_DEFAULT_L, constants.v.IDEAL, constants.f.IDEAL), 
-        button_config__defineProperty(_FUNDING_TO_DEFAULT_L, constants.v.ELV, constants.f.ELV), 
-        button_config__defineProperty(_FUNDING_TO_DEFAULT_L, constants.v.BANCONTACT, constants.f.BANCONTACT), 
-        button_config__defineProperty(_FUNDING_TO_DEFAULT_L, constants.v.GIROPAY, constants.f.GIROPAY), 
-        button_config__defineProperty(_FUNDING_TO_DEFAULT_L, constants.v.EPS, constants.f.EPS), 
-        button_config__defineProperty(_FUNDING_TO_DEFAULT_L, constants.v.MYBANK, constants.f.MYBANK), 
-        _FUNDING_TO_DEFAULT_L), LABEL_TO_FUNDING = (button_config__defineProperty(_LABEL_TO_FUNDING = {}, constants.f.PAYPAL, constants.v.PAYPAL), 
-        button_config__defineProperty(_LABEL_TO_FUNDING, constants.f.CHECKOUT, constants.v.PAYPAL), 
-        button_config__defineProperty(_LABEL_TO_FUNDING, constants.f.PAY, constants.v.PAYPAL), 
-        button_config__defineProperty(_LABEL_TO_FUNDING, constants.f.BUYNOW, constants.v.PAYPAL), 
-        button_config__defineProperty(_LABEL_TO_FUNDING, constants.f.INSTALLMENT, constants.v.PAYPAL), 
-        button_config__defineProperty(_LABEL_TO_FUNDING, constants.f.CARD, constants.v.CARD), 
-        button_config__defineProperty(_LABEL_TO_FUNDING, constants.f.CREDIT, constants.v.CREDIT), 
-        button_config__defineProperty(_LABEL_TO_FUNDING, constants.f.VENMO, constants.v.VENMO), 
-        button_config__defineProperty(_LABEL_TO_FUNDING, constants.f.IDEAL, constants.v.IDEAL), 
-        button_config__defineProperty(_LABEL_TO_FUNDING, constants.f.BANCONTACT, constants.v.BANCONTACT), 
-        button_config__defineProperty(_LABEL_TO_FUNDING, constants.f.GIROPAY, constants.v.GIROPAY), 
-        button_config__defineProperty(_LABEL_TO_FUNDING, constants.f.GIROPAY, constants.v.EPS), 
-        button_config__defineProperty(_LABEL_TO_FUNDING, constants.f.MYBANK, constants.v.MYBANK), 
-        _LABEL_TO_FUNDING), BUTTON_RELATIVE_STYLE = {
+        }, _BUTTON_CONFIG[constants.f.CARD] = {
+            label: "{ cards }",
+            logoLabel: "{ cards }",
+            defaultColor: constants.e.SILVER,
+            colors: [ constants.e.TRANSPARENT ],
+            logoColors: (_logoColors11 = {}, _logoColors11[constants.e.TRANSPARENT] = constants.i.BLACK, 
+            _logoColors11),
+            secondaryColors: (_secondaryColors11 = {}, _secondaryColors11[constants.e.GOLD] = constants.e.TRANSPARENT, 
+            _secondaryColors11[constants.e.BLUE] = constants.e.TRANSPARENT, _secondaryColors11[constants.e.SILVER] = constants.e.TRANSPARENT, 
+            _secondaryColors11[constants.e.BLACK] = constants.e.TRANSPARENT, _secondaryColors11[constants.e.DARKBLUE] = constants.e.TRANSPARENT, 
+            _secondaryColors11),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG), FUNDING_TO_DEFAULT_LABEL = ((_FUNDING_TO_DEFAULT_L = {})[constants.v.PAYPAL] = constants.f.PAYPAL, 
+        _FUNDING_TO_DEFAULT_L[constants.v.VENMO] = constants.f.VENMO, _FUNDING_TO_DEFAULT_L[constants.v.CARD] = constants.f.CARD, 
+        _FUNDING_TO_DEFAULT_L[constants.v.CREDIT] = constants.f.CREDIT, _FUNDING_TO_DEFAULT_L[constants.v.IDEAL] = constants.f.IDEAL, 
+        _FUNDING_TO_DEFAULT_L[constants.v.ELV] = constants.f.ELV, _FUNDING_TO_DEFAULT_L[constants.v.BANCONTACT] = constants.f.BANCONTACT, 
+        _FUNDING_TO_DEFAULT_L[constants.v.GIROPAY] = constants.f.GIROPAY, _FUNDING_TO_DEFAULT_L[constants.v.SOFORT] = constants.f.SOFORT, 
+        _FUNDING_TO_DEFAULT_L[constants.v.EPS] = constants.f.EPS, _FUNDING_TO_DEFAULT_L[constants.v.MYBANK] = constants.f.MYBANK, 
+        _FUNDING_TO_DEFAULT_L), LABEL_TO_FUNDING = ((_LABEL_TO_FUNDING = {})[constants.f.PAYPAL] = constants.v.PAYPAL, 
+        _LABEL_TO_FUNDING[constants.f.CHECKOUT] = constants.v.PAYPAL, _LABEL_TO_FUNDING[constants.f.PAY] = constants.v.PAYPAL, 
+        _LABEL_TO_FUNDING[constants.f.BUYNOW] = constants.v.PAYPAL, _LABEL_TO_FUNDING[constants.f.INSTALLMENT] = constants.v.PAYPAL, 
+        _LABEL_TO_FUNDING[constants.f.CARD] = constants.v.CARD, _LABEL_TO_FUNDING[constants.f.CREDIT] = constants.v.CREDIT, 
+        _LABEL_TO_FUNDING[constants.f.VENMO] = constants.v.VENMO, _LABEL_TO_FUNDING[constants.f.IDEAL] = constants.v.IDEAL, 
+        _LABEL_TO_FUNDING[constants.f.BANCONTACT] = constants.v.BANCONTACT, _LABEL_TO_FUNDING[constants.f.GIROPAY] = constants.v.GIROPAY, 
+        _LABEL_TO_FUNDING[constants.f.GIROPAY] = constants.v.EPS, _LABEL_TO_FUNDING[constants.f.SOFORT] = constants.v.SOFORT, 
+        _LABEL_TO_FUNDING[constants.f.MYBANK] = constants.v.MYBANK, _LABEL_TO_FUNDING), BUTTON_RELATIVE_STYLE = {
             FUNDINGICONS: 100,
             TAGLINE: 50,
             VERTICAL_MARGIN: 30
-        }, BUTTON_STYLE = (button_config__defineProperty(_BUTTON_STYLE = {}, constants.l.TINY, {
+        }, BUTTON_STYLE = ((_BUTTON_STYLE = {})[constants.l.TINY] = {
             defaultWidth: 75,
             defaultHeight: 25,
             minWidth: 75,
@@ -12012,7 +11237,7 @@
             maxHeight: 30,
             allowFunding: !0,
             allowTagline: !1
-        }), button_config__defineProperty(_BUTTON_STYLE, constants.l.SMALL, {
+        }, _BUTTON_STYLE[constants.l.SMALL] = {
             defaultWidth: 150,
             defaultHeight: 25,
             minWidth: 150,
@@ -12021,7 +11246,7 @@
             maxHeight: 55,
             allowFunding: !0,
             allowTagline: !0
-        }), button_config__defineProperty(_BUTTON_STYLE, constants.l.MEDIUM, {
+        }, _BUTTON_STYLE[constants.l.MEDIUM] = {
             defaultWidth: 250,
             defaultHeight: 35,
             minWidth: 200,
@@ -12030,7 +11255,7 @@
             maxHeight: 55,
             allowFunding: !0,
             allowTagline: !0
-        }), button_config__defineProperty(_BUTTON_STYLE, constants.l.LARGE, {
+        }, _BUTTON_STYLE[constants.l.LARGE] = {
             defaultWidth: 350,
             defaultHeight: 45,
             minWidth: 300,
@@ -12039,7 +11264,7 @@
             maxHeight: 55,
             allowFunding: !0,
             allowTagline: !0
-        }), button_config__defineProperty(_BUTTON_STYLE, constants.l.HUGE, {
+        }, _BUTTON_STYLE[constants.l.HUGE] = {
             defaultWidth: 500,
             defaultHeight: 55,
             minWidth: 500,
@@ -12048,7 +11273,7 @@
             maxHeight: 55,
             allowFunding: !0,
             allowTagline: !0
-        }), _BUTTON_STYLE);
+        }, _BUTTON_STYLE);
         function getButtonConfig(label, key, def) {
             return function(conf, category, key, def) {
                 var categoryConfig = conf[category];
@@ -12058,37 +11283,13 @@
                 throw new Error("No value found for " + category + ":" + key);
             }(BUTTON_CONFIG, label, key, def);
         }
-        var util = __webpack_require__("./src/lib/util.js"), _slicedToArray = function() {
-            return function(arr, i) {
-                if (Array.isArray(arr)) return arr;
-                if (Symbol.iterator in Object(arr)) return function(arr, i) {
-                    var _arr = [], _n = !0, _d = !1, _e = void 0;
-                    try {
-                        for (var _s, _i = arr[Symbol.iterator](); !(_n = (_s = _i.next()).done); _n = !0) {
-                            _arr.push(_s.value);
-                            if (i && _arr.length === i) break;
-                        }
-                    } catch (err) {
-                        _d = !0;
-                        _e = err;
-                    } finally {
-                        try {
-                            !_n && _i.return && _i.return();
-                        } finally {
-                            if (_d) throw _e;
-                        }
-                    }
-                    return _arr;
-                }(arr, i);
-                throw new TypeError("Invalid attempt to destructure non-iterable instance");
-            };
-        }();
+        var util = __webpack_require__("./src/lib/util.js");
         var normalizeProps = Object(util.j)(function(props) {
             var defs = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit;
             locale = locale ? function(locale) {
-                var _locale$split = locale.split("_"), _locale$split2 = _slicedToArray(_locale$split, 2), lang = _locale$split2[0];
+                var _locale$split = locale.split("_"), lang = _locale$split[0];
                 return {
-                    country: _locale$split2[1],
+                    country: _locale$split[1],
                     lang: lang
                 };
             }(locale) : defs.locale || getButtonConfig("DEFAULT", "defaultLocale");
@@ -12147,35 +11348,11 @@
                 }),
                 installmentperiod: installmentperiod
             };
-        }), jsx = __webpack_require__("./src/lib/jsx.js"), resources = __webpack_require__("./src/resources/index.js"), validate__slicedToArray = function() {
-            return function(arr, i) {
-                if (Array.isArray(arr)) return arr;
-                if (Symbol.iterator in Object(arr)) return function(arr, i) {
-                    var _arr = [], _n = !0, _d = !1, _e = void 0;
-                    try {
-                        for (var _s, _i = arr[Symbol.iterator](); !(_n = (_s = _i.next()).done); _n = !0) {
-                            _arr.push(_s.value);
-                            if (i && _arr.length === i) break;
-                        }
-                    } catch (err) {
-                        _d = !0;
-                        _e = err;
-                    } finally {
-                        try {
-                            !_n && _i.return && _i.return();
-                        } finally {
-                            if (_d) throw _e;
-                        }
-                    }
-                    return _arr;
-                }(arr, i);
-                throw new TypeError("Invalid attempt to destructure non-iterable instance");
-            };
-        }();
+        }), jsx = __webpack_require__("./src/lib/jsx.js"), resources = __webpack_require__("./src/resources/index.js");
         function validateButtonLocale(locale) {
             if (!locale) throw new Error("Expected props.locale to be set");
             if (!locale.match(/^[a-z]{2}[_][A-Z][A-Z0-9]$/)) throw new Error("Expected props.locale to be valid, got " + locale);
-            var _locale$split = locale.split("_"), _locale$split2 = validate__slicedToArray(_locale$split, 2), lang = _locale$split2[0], country = _locale$split2[1];
+            var _locale$split = locale.split("_"), lang = _locale$split[0], country = _locale$split[1];
             if (!config.a.locales[country] || -1 === config.a.locales[country].indexOf(lang)) throw new Error("Expected props.locale to be valid");
         }
         function validateButtonStyle() {
@@ -12350,15 +11527,6 @@
             }
             return target;
         };
-        function componentTemplate__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
         function getCommonButtonClasses(_ref) {
             var layout = _ref.layout, shape = _ref.shape, branding = _ref.branding, multiple = _ref.multiple, env = _ref.env;
             return [ class_CLASS.LAYOUT + "-" + layout, class_CLASS.SHAPE + "-" + shape, class_CLASS.BRANDING + "-" + (branding ? constants.d.BRANDED : constants.d.UNBRANDED), class_CLASS.NUMBER + "-" + (multiple ? constants.j.MULTIPLE : constants.j.SINGLE), class_CLASS.ENV + "-" + env ].join(" ");
@@ -12378,9 +11546,9 @@
             var cards = _ref4.cards, button = _ref4.button;
             return cards.map(function(name) {
                 var _ref5, logo = resources.a[name];
-                return Object(jsx.b)("img", componentTemplate__extends({}, (componentTemplate__defineProperty(_ref5 = {}, constants.c.BUTTON, button || !1), 
-                componentTemplate__defineProperty(_ref5, constants.c.FUNDING_SOURCE, "" + constants.v.CARD), 
-                componentTemplate__defineProperty(_ref5, constants.c.CARD, "" + name), _ref5), {
+                return Object(jsx.b)("img", componentTemplate__extends({}, ((_ref5 = {})[constants.c.BUTTON] = button || !1, 
+                _ref5[constants.c.FUNDING_SOURCE] = "" + constants.v.CARD, _ref5[constants.c.CARD] = "" + name, 
+                _ref5), {
                     class: class_CLASS.CARD + " " + class_CLASS.CARD + "-" + name + " " + (button ? class_CLASS.BUTTON : ""),
                     src: "data:image/svg+xml;base64," + Object(base64.btoa)(logo),
                     alt: name
@@ -12476,8 +11644,8 @@
                 cards: cards,
                 dynamicContent: dynamicContent
             });
-            return Object(jsx.b)("div", componentTemplate__extends({}, (componentTemplate__defineProperty(_ref10 = {}, constants.c.FUNDING_SOURCE, source), 
-            componentTemplate__defineProperty(_ref10, constants.c.BUTTON, !0), _ref10), {
+            return Object(jsx.b)("div", componentTemplate__extends({}, ((_ref10 = {})[constants.c.FUNDING_SOURCE] = source, 
+            _ref10[constants.c.BUTTON] = !0, _ref10), {
                 class: class_CLASS.BUTTON + " " + class_CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -12498,7 +11666,7 @@
             }), contentText);
         }
         function componentTemplate(_ref13) {
-            var props = _ref13.props;
+            var _ref14, props = _ref13.props;
             if (props && props.style) {
                 var style = props.style;
                 "generic" === style.label && (style.label = "paypal");
@@ -12587,7 +11755,8 @@
                     innerHTML: "(" + script + ")();"
                 });
             }();
-            return Object(jsx.b)("div", componentTemplate__extends({}, componentTemplate__defineProperty({}, constants.c.VERSION, "4.0.203"), {
+            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.204", 
+            _ref14), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -12630,15 +11799,6 @@
                 height: height
             };
         }
-        function child__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
         var component__extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
@@ -12646,15 +11806,6 @@
             }
             return target;
         };
-        function component__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
         var creditThrottle = void 0, component_Button = Object(src.c)({
             tag: "paypal-button",
             name: "ppbutton",
@@ -12880,10 +12031,9 @@
                                     Object(beaver_logger_client.f)("no_token_passed_to_payment");
                                     throw new Error("No value passed to payment");
                                 }
-                                Object(beaver_logger_client.o)((component__defineProperty(_track = {}, constants.u.KEY.STATE, constants.u.STATE.CHECKOUT), 
-                                component__defineProperty(_track, constants.u.KEY.TRANSITION, constants.u.TRANSITION.RECIEVE_PAYMENT), 
-                                component__defineProperty(_track, constants.u.KEY.CONTEXT_TYPE, constants.u.CONTEXT_TYPE[Object(integrations.d)(token)]), 
-                                component__defineProperty(_track, constants.u.KEY.CONTEXT_ID, token), component__defineProperty(_track, constants.u.KEY.BUTTON_SESSION_UID, _this2.props.buttonSessionID), 
+                                Object(beaver_logger_client.o)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
+                                _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.RECIEVE_PAYMENT, _track[constants.u.KEY.CONTEXT_TYPE] = constants.u.CONTEXT_TYPE[Object(integrations.d)(token)], 
+                                _track[constants.u.KEY.CONTEXT_ID] = token, _track[constants.u.KEY.BUTTON_SESSION_UID] = _this2.props.buttonSessionID, 
                                 _track));
                                 Object(beaver_logger_client.g)();
                                 return token;
@@ -13007,13 +12157,15 @@
                         return function() {
                             var _track2, _getBrowser = Object(lib.j)(), _getBrowser$browser = _getBrowser.browser, browser = void 0 === _getBrowser$browser ? "unrecognized" : _getBrowser$browser, _getBrowser$version = _getBrowser.version, version = void 0 === _getBrowser$version ? "unrecognized" : _getBrowser$version;
                             Object(beaver_logger_client.j)("button_render_browser_" + browser + "_" + version);
-                            Object(beaver_logger_client.o)((component__defineProperty(_track2 = {}, constants.u.KEY.STATE, constants.u.STATE.LOAD), 
-                            component__defineProperty(_track2, constants.u.KEY.TRANSITION, constants.u.TRANSITION.BUTTON_RENDER), 
-                            component__defineProperty(_track2, constants.u.KEY.BUTTON_TYPE, constants.u.BUTTON_TYPE.IFRAME), 
-                            component__defineProperty(_track2, constants.u.KEY.BUTTON_SESSION_UID, this.props.buttonSessionID), 
-                            component__defineProperty(_track2, constants.u.KEY.BUTTON_SOURCE, this.props.source), 
+                            Object(beaver_logger_client.o)(((_track2 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
+                            _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_RENDER, _track2[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, 
+                            _track2[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track2[constants.u.KEY.BUTTON_SOURCE] = this.props.source, 
                             _track2));
-                            creditThrottle && creditThrottle.logStart(component__defineProperty({}, constants.u.KEY.BUTTON_SESSION_UID, this.props.buttonSessionID));
+                            if (creditThrottle) {
+                                var _creditThrottle$logSt;
+                                creditThrottle.logStart(((_creditThrottle$logSt = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                _creditThrottle$logSt));
+                            }
                             Object(beaver_logger_client.g)();
                             return original.apply(this, arguments);
                         };
@@ -13030,10 +12182,9 @@
                                 token: data.paymentToken
                             });
                             Object(beaver_logger_client.j)("button_authorize");
-                            Object(beaver_logger_client.o)((component__defineProperty(_track3 = {}, constants.u.KEY.STATE, constants.u.STATE.CHECKOUT), 
-                            component__defineProperty(_track3, constants.u.KEY.TRANSITION, constants.u.TRANSITION.CHECKOUT_AUTHORIZE), 
-                            component__defineProperty(_track3, constants.u.KEY.BUTTON_SESSION_UID, this.props.buttonSessionID), 
-                            _track3));
+                            Object(beaver_logger_client.o)(((_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
+                            _track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CHECKOUT_AUTHORIZE, 
+                            _track3[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track3));
                             Object(lib.C)() || Object(beaver_logger_client.j)("button_authorize_ineligible");
                             Object(lib.d)("authorize");
                             Object(beaver_logger_client.g)();
@@ -13080,7 +12231,11 @@
                             onAuthorizeListener.trigger({
                                 paymentToken: data.paymentToken
                             });
-                            creditThrottle && creditThrottle.logComplete(component__defineProperty({}, constants.u.KEY.BUTTON_SESSION_UID, this.props.buttonSessionID));
+                            if (creditThrottle) {
+                                var _creditThrottle$logCo;
+                                creditThrottle.logComplete(((_creditThrottle$logCo = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                _creditThrottle$logCo));
+                            }
                             return zalgo_promise_src.a.try(function() {
                                 if (_this3.props.braintree) return actions.payment.tokenize().then(function(_ref4) {
                                     var nonce = _ref4.nonce;
@@ -13109,9 +12264,8 @@
                         return function(data, actions) {
                             var _track4;
                             Object(beaver_logger_client.j)("button_cancel");
-                            Object(beaver_logger_client.o)((component__defineProperty(_track4 = {}, constants.u.KEY.STATE, constants.u.STATE.CHECKOUT), 
-                            component__defineProperty(_track4, constants.u.KEY.TRANSITION, constants.u.TRANSITION.CHECKOUT_CANCEL), 
-                            component__defineProperty(_track4, constants.u.KEY.BUTTON_SESSION_UID, this.props.buttonSessionID), 
+                            Object(beaver_logger_client.o)(((_track4 = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
+                            _track4[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CHECKOUT_CANCEL, _track4[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                             _track4));
                             Object(beaver_logger_client.g)();
                             return original.call(this, data, component__extends({}, actions, {
@@ -13130,13 +12284,15 @@
                         return function(data) {
                             var _track5;
                             Object(beaver_logger_client.j)("button_click");
-                            Object(beaver_logger_client.o)((component__defineProperty(_track5 = {}, constants.u.KEY.STATE, constants.u.STATE.BUTTON), 
-                            component__defineProperty(_track5, constants.u.KEY.TRANSITION, constants.u.TRANSITION.BUTTON_CLICK), 
-                            component__defineProperty(_track5, constants.u.KEY.BUTTON_TYPE, constants.u.BUTTON_TYPE.IFRAME), 
-                            component__defineProperty(_track5, constants.u.KEY.BUTTON_SESSION_UID, this.props.buttonSessionID), 
-                            component__defineProperty(_track5, constants.u.KEY.CHOSEN_FUNDING, data && (data.card || data.fundingSource)), 
+                            Object(beaver_logger_client.o)(((_track5 = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
+                            _track5[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_CLICK, _track5[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, 
+                            _track5[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track5[constants.u.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
                             _track5));
-                            creditThrottle && creditThrottle.log("click", component__defineProperty({}, constants.u.KEY.BUTTON_SESSION_UID, this.props.buttonSessionID));
+                            if (creditThrottle) {
+                                var _creditThrottle$log;
+                                creditThrottle.log("click", ((_creditThrottle$log = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                _creditThrottle$log));
+                            }
                             Object(beaver_logger_client.g)();
                             return original.apply(this, arguments);
                         };
@@ -13262,12 +12418,10 @@
                 }).filter(function(source) {
                     return source && source !== constants.v.CARD;
                 }), xprops = ButtonComponent.xprops;
-                Object(beaver_logger_client.o)((child__defineProperty(_track = {}, constants.u.KEY.STATE, constants.u.STATE.BUTTON), 
-                child__defineProperty(_track, constants.u.KEY.TRANSITION, constants.u.TRANSITION.BUTTON_LOAD), 
-                child__defineProperty(_track, constants.u.KEY.BUTTON_TYPE, constants.u.BUTTON_TYPE.IFRAME), 
-                child__defineProperty(_track, constants.u.KEY.FUNDING_LIST, fundingSources.join(":")), 
-                child__defineProperty(_track, constants.u.KEY.FUNDING_COUNT, fundingSources.length), 
-                child__defineProperty(_track, constants.u.KEY.PAGE_LOAD_TIME, pageRenderTime), child__defineProperty(_track, constants.u.KEY.BUTTON_LAYOUT, xprops && xprops.style && xprops.style.layout || constants.g.HORIZONTAL), 
+                Object(beaver_logger_client.o)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
+                _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_LOAD, _track[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, 
+                _track[constants.u.KEY.FUNDING_LIST] = fundingSources.join(":"), _track[constants.u.KEY.FUNDING_COUNT] = fundingSources.length, 
+                _track[constants.u.KEY.PAGE_LOAD_TIME] = pageRenderTime, _track[constants.u.KEY.BUTTON_LAYOUT] = xprops && xprops.style && xprops.style.layout || constants.g.HORIZONTAL, 
                 _track));
                 Object(beaver_logger_client.g)();
             });
@@ -13312,31 +12466,7 @@
                 once: !0,
                 noop: !0
             }
-        }), hacks__slicedToArray = function() {
-            return function(arr, i) {
-                if (Array.isArray(arr)) return arr;
-                if (Symbol.iterator in Object(arr)) return function(arr, i) {
-                    var _arr = [], _n = !0, _d = !1, _e = void 0;
-                    try {
-                        for (var _s, _i = arr[Symbol.iterator](); !(_n = (_s = _i.next()).done); _n = !0) {
-                            _arr.push(_s.value);
-                            if (i && _arr.length === i) break;
-                        }
-                    } catch (err) {
-                        _d = !0;
-                        _e = err;
-                    } finally {
-                        try {
-                            !_n && _i.return && _i.return();
-                        } finally {
-                            if (_d) throw _e;
-                        }
-                    }
-                    return _arr;
-                }(arr, i);
-                throw new TypeError("Invalid attempt to destructure non-iterable instance");
-            };
-        }();
+        });
         Object(lib.E)() && Object(lib.n)("ie_full_page") && (src_checkout.a.renderTo = function(win) {
             Object(beaver_logger_client.j)("force_ie_full_page");
             Object(beaver_logger_client.g)();
@@ -13364,14 +12494,14 @@
                     canRenderTop = result;
                 });
                 Object(lib.O)(src_checkout.a, "renderTo", function(_ref) {
-                    var _ref$args = hacks__slicedToArray(_ref.args, 3), win = _ref$args[0], props = _ref$args[1], el = _ref$args[2], original = _ref.original, context = _ref.context;
+                    var _ref$args = _ref.args, win = _ref$args[0], props = _ref$args[1], el = _ref$args[2], original = _ref.original, context = _ref.context;
                     canRenderTop || (win = Object(cross_domain_utils_src.getParent)(window));
                     return original.call(context, win, props, el);
                 });
             }
         }
         Object(lib.O)(src_checkout.a, "renderTo", function(_ref2) {
-            var callOriginal = _ref2.callOriginal, props = hacks__slicedToArray(_ref2.args, 2)[1];
+            var callOriginal = _ref2.callOriginal, props = _ref2.args[1];
             if (Object(lib.n)("allow_full_page_fallback")) {
                 var handleError = Object(lib.M)(function(err) {
                     try {
@@ -13390,7 +12520,7 @@
         });
         var domain, currentDomainEnv, debounce = !1;
         Object(lib.O)(src_checkout.a, "renderTo", function(_ref3) {
-            var callOriginal = _ref3.callOriginal, props = hacks__slicedToArray(_ref3.args, 2)[1];
+            var callOriginal = _ref3.callOriginal, props = _ref3.args[1];
             if (!debounce) {
                 debounce = !0;
                 for (var _arr = [ "onAuthorize", "onCancel", "onError", "onClose" ], _loop = function() {
@@ -13420,7 +12550,7 @@
             });
         }
         Object(lib.O)(rest.payment, "create", function(_ref5) {
-            var createOriginal = _ref5.original, createContext = _ref5.context, _ref5$args = hacks__slicedToArray(_ref5.args, 4), env = _ref5$args[0], client = _ref5$args[1], options = _ref5$args[2], experience = _ref5$args[3];
+            var createOriginal = _ref5.original, createContext = _ref5.context, _ref5$args = _ref5.args, env = _ref5$args[0], client = _ref5$args[1], options = _ref5$args[2], experience = _ref5$args[3];
             options.payment || (options = {
                 payment: options,
                 experience: experience
@@ -13428,7 +12558,7 @@
             return createOriginal.call(createContext, env, client, options);
         });
         Object(lib.O)(component_Button.props.style, "validate", function(_ref6) {
-            var callOriginal = _ref6.callOriginal, style = hacks__slicedToArray(_ref6.args, 1)[0];
+            var callOriginal = _ref6.callOriginal, style = _ref6.args[0];
             if (!style) return callOriginal();
             style && "creditblue" === style.color && (style.color = constants.e.DARKBLUE);
             style && "generic" === style.label && (style.label = constants.f.PAYPAL);
@@ -13439,7 +12569,7 @@
             return callOriginal();
         });
         Object(lib.O)(component_Button, "render", function(_ref7) {
-            var callOriginal = _ref7.callOriginal, props = hacks__slicedToArray(_ref7.args, 1)[0];
+            var callOriginal = _ref7.callOriginal, props = _ref7.args[0];
             if (props.billingAgreement) {
                 props.payment = props.billingAgreement;
                 delete props.billingAgreement;
@@ -13447,12 +12577,12 @@
             return callOriginal();
         });
         Object(lib.O)(component_Button.props.payment, "decorate", function(_ref8) {
-            var original = _ref8.original, context = _ref8.context, originalPayment = hacks__slicedToArray(_ref8.args, 1)[0];
+            var original = _ref8.original, context = _ref8.context, originalPayment = _ref8.args[0];
             return original.call(context, function(data, actions) {
                 var _this = this;
                 return new zalgo_promise_src.a(function(resolve, reject) {
                     Object(lib.O)(actions.payment, "create", function(_ref9) {
-                        var createOriginal = _ref9.original, createContext = _ref9.context, _ref9$args = hacks__slicedToArray(_ref9.args, 2), options = _ref9$args[0], experience = _ref9$args[1];
+                        var createOriginal = _ref9.original, createContext = _ref9.context, _ref9$args = _ref9.args, options = _ref9$args[0], experience = _ref9$args[1];
                         options.payment || (options = {
                             payment: options,
                             experience: experience
@@ -13484,24 +12614,6 @@
             });
         });
         component_Button.isChild() && (window.Promise || (window.Promise = zalgo_promise_src.a));
-        function pptm__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        function setup__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
         domain = window.location.protocol + "//" + window.location.host, (currentDomainEnv = function(domain) {
             var _iterator = Object.keys(config.a.paypalUrls), _isArray = Array.isArray(_iterator), _i = 0;
             for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
@@ -13523,8 +12635,8 @@
                 stack: Object(lib.V)(err),
                 errtype: {}.toString.call(err)
             });
-            Object(beaver_logger_client.o)((setup__defineProperty(_track = {}, constants.u.KEY.ERROR_CODE, "checkoutjs_error"), 
-            setup__defineProperty(_track, constants.u.KEY.ERROR_DESC, Object(lib.W)(err)), _track));
+            Object(beaver_logger_client.o)(((_track = {})[constants.u.KEY.ERROR_CODE] = "checkoutjs_error", 
+            _track[constants.u.KEY.ERROR_DESC] = Object(lib.W)(err), _track));
             return Object(beaver_logger_client.g)().catch(function(err2) {
                 if (window.console) try {
                     window.console.error ? window.console.error("Error flushing:", Object(lib.V)(err2)) : window.console.log && window.console.log("Error flushing:", Object(lib.V)(err2));
@@ -13544,9 +12656,8 @@
             Object(lib.H)() || function() {
                 var _track;
                 if (window.location.hostname) if (Boolean(Object(lib.o)(constants.C))) Object(beaver_logger_client.j)("pptm_tried_loading_twice"); else {
-                    Object(beaver_logger_client.o)((pptm__defineProperty(_track = {}, constants.u.KEY.STATE, constants.u.STATE.PPTM), 
-                    pptm__defineProperty(_track, constants.u.KEY.TRANSITION, constants.u.TRANSITION.PPTM_LOAD), 
-                    _track));
+                    Object(beaver_logger_client.o)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.PPTM, 
+                    _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PPTM_LOAD, _track));
                     var fullUrl = Object(lib.i)(config.a.pptmUrl, {
                         t: "xo",
                         id: window.location.hostname,
@@ -13557,9 +12668,8 @@
                         id: constants.C
                     }).then(function() {
                         var _track2;
-                        Object(beaver_logger_client.o)((pptm__defineProperty(_track2 = {}, constants.u.KEY.STATE, constants.u.STATE.PPTM), 
-                        pptm__defineProperty(_track2, constants.u.KEY.TRANSITION, constants.u.TRANSITION.PPTM_LOADED), 
-                        _track2));
+                        Object(beaver_logger_client.o)(((_track2 = {})[constants.u.KEY.STATE] = constants.u.STATE.PPTM, 
+                        _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PPTM_LOADED, _track2));
                     }).catch(function(err) {
                         Object(beaver_logger_client.j)("pptm_script_error", {
                             error: Object(lib.V)(err)
@@ -13635,10 +12745,9 @@
                 });
                 Object(beaver_logger_client.e)("current_script_time_" + Math.floor(loadTime / 1e3));
             }
-            Object(beaver_logger_client.o)((setup__defineProperty(setup__track2 = {}, constants.u.KEY.STATE, constants.u.STATE.LOAD), 
-            setup__defineProperty(setup__track2, constants.u.KEY.TRANSITION, constants.u.TRANSITION.SCRIPT_LOAD), 
-            setup__defineProperty(setup__track2, constants.u.KEY.TRANSITION_TIME, loadTime), 
-            setup__track2));
+            Object(beaver_logger_client.o)(((setup__track2 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
+            setup__track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, 
+            setup__track2[constants.u.KEY.TRANSITION_TIME] = loadTime, setup__track2));
         } else {
             var setup__track3;
             Object(beaver_logger_client.e)("no_current_script");
@@ -13646,8 +12755,8 @@
             document.currentScript && Object(beaver_logger_client.e)("current_script_not_recognized", {
                 src: document.currentScript.src
             });
-            Object(beaver_logger_client.o)((setup__defineProperty(setup__track3 = {}, constants.u.KEY.STATE, constants.u.STATE.LOAD), 
-            setup__defineProperty(setup__track3, constants.u.KEY.TRANSITION, constants.u.TRANSITION.SCRIPT_LOAD), 
+            Object(beaver_logger_client.o)(((setup__track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
+            setup__track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
         var interface__extends = Object.assign || function(target) {
@@ -13656,7 +12765,7 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.203", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.204", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         !function(moduleName, exportBuilder) {
@@ -13783,7 +12892,7 @@
         __webpack_exports__.b = function(env, fundingSource, payment) {
             if (getPaymentType(payment) === __WEBPACK_IMPORTED_MODULE_1__constants__.A.BA_TOKEN) return __WEBPACK_IMPORTED_MODULE_0__config__.a.billingUrls[env];
             if (fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.CARD || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.ELV) return __WEBPACK_IMPORTED_MODULE_0__config__.a.guestUrls[env];
-            if (fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.IDEAL || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.BANCONTACT || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.GIROPAY || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.EPS || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.MYBANK) return __WEBPACK_IMPORTED_MODULE_0__config__.a.altpayUrls[env];
+            if (fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.IDEAL || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.BANCONTACT || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.GIROPAY || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.SOFORT || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.EPS || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.MYBANK) return __WEBPACK_IMPORTED_MODULE_0__config__.a.altpayUrls[env];
             return __WEBPACK_IMPORTED_MODULE_0__config__.a.checkoutUrls[env];
         };
         var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/constants/index.js");
@@ -13917,33 +13026,9 @@
         function isLegacyEligible() {
             return !!Object(lib.C)() && (!!Object(lib.X)() && !Object(lib.A)());
         }
-        var _slicedToArray = function() {
-            return function(arr, i) {
-                if (Array.isArray(arr)) return arr;
-                if (Symbol.iterator in Object(arr)) return function(arr, i) {
-                    var _arr = [], _n = !0, _d = !1, _e = void 0;
-                    try {
-                        for (var _s, _i = arr[Symbol.iterator](); !(_n = (_s = _i.next()).done); _n = !0) {
-                            _arr.push(_s.value);
-                            if (i && _arr.length === i) break;
-                        }
-                    } catch (err) {
-                        _d = !0;
-                        _e = err;
-                    } finally {
-                        try {
-                            !_n && _i.return && _i.return();
-                        } finally {
-                            if (_d) throw _e;
-                        }
-                    }
-                    return _arr;
-                }(arr, i);
-                throw new TypeError("Invalid attempt to destructure non-iterable instance");
-            };
-        }(), warn = Object(client.m)(LOG_PREFIX).warn, DEFAULT_COUNTRY = constants.r.US, DEFAULT_LANG = constants.x.EN;
+        var warn = Object(client.m)(LOG_PREFIX).warn, DEFAULT_COUNTRY = constants.r.US, DEFAULT_LANG = constants.x.EN;
         function normalizeLocale(locale) {
-            var _locale$split = locale.split("_"), _locale$split2 = _slicedToArray(_locale$split, 2), lang = _locale$split2[0], country = _locale$split2[1];
+            var _locale$split = locale.split("_"), lang = _locale$split[0], country = _locale$split[1];
             if (!country) if (config.a.locales[lang]) {
                 country = lang;
                 lang = null;
@@ -14081,15 +13166,6 @@
                 return match ? match[1] : (match = token.match(/(EC-[A-Z0-9]{17})/)) ? match[1] : void 0;
             }
         }
-        function _defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
         var options__prefix = Object(client.m)(LOG_PREFIX), options_info = options__prefix.info, options_warn = options__prefix.warn;
         var _extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
@@ -14097,17 +13173,7 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        };
-        function interface__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var interface__prefix = Object(client.m)(LOG_PREFIX), interface_info = interface__prefix.info, interface_debug = interface__prefix.debug, interface_warn = interface__prefix.warn, interface_error = interface__prefix.error, track = interface__prefix.track, interface_checkout = {}, apps = {
+        }, interface__prefix = Object(client.m)(LOG_PREFIX), interface_info = interface__prefix.info, interface_debug = interface__prefix.debug, interface_warn = interface__prefix.warn, interface_error = interface__prefix.error, track = interface__prefix.track, interface_checkout = {}, apps = {
             checkout: interface_checkout,
             Checkout: interface_checkout
         };
@@ -14340,9 +13406,8 @@
         function instrumentButtonRender(type) {
             var _track;
             interface_info("render_" + type + "_button");
-            track((interface__defineProperty(_track = {}, constants.u.KEY.STATE, constants.u.STATE.LOAD), 
-            interface__defineProperty(_track, constants.u.KEY.TRANSITION, constants.u.TRANSITION.BUTTON_RENDER), 
-            interface__defineProperty(_track, constants.u.KEY.BUTTON_TYPE, type), _track));
+            track(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_RENDER, 
+            _track[constants.u.KEY.BUTTON_TYPE] = type, _track));
             Object(client.g)();
         }
         var setupCalled = !1;
@@ -14416,11 +13481,11 @@
                             });
                             Object(lib.p)(button.container || button.button).forEach(function(element) {
                                 var _buttons$push;
-                                buttons.push((_defineProperty(_buttons$push = {}, button.container ? "container" : "button", element), 
-                                _defineProperty(_buttons$push, "click", button.click || options.click), _defineProperty(_buttons$push, "condition", button.condition || options.condition), 
-                                _defineProperty(_buttons$push, "type", button.type || options.type), _defineProperty(_buttons$push, "locale", button.locale || options.locale), 
-                                _defineProperty(_buttons$push, "color", button.color || options.color), _defineProperty(_buttons$push, "shape", button.shape || options.shape), 
-                                _defineProperty(_buttons$push, "size", button.size || options.size), _buttons$push));
+                                buttons.push(((_buttons$push = {})[button.container ? "container" : "button"] = element, 
+                                _buttons$push.click = button.click || options.click, _buttons$push.condition = button.condition || options.condition, 
+                                _buttons$push.type = button.type || options.type, _buttons$push.locale = button.locale || options.locale, 
+                                _buttons$push.color = button.color || options.color, _buttons$push.shape = button.shape || options.shape, 
+                                _buttons$push.size = button.size || options.size, _buttons$push));
                             });
                         }
                     });
@@ -14488,9 +13553,8 @@
                         listenClick(button.container, button.element, button.click, button.condition, function() {
                             !function(type) {
                                 var _track2;
-                                track((interface__defineProperty(_track2 = {}, constants.u.KEY.STATE, constants.u.STATE.LOAD), 
-                                interface__defineProperty(_track2, constants.u.KEY.TRANSITION, constants.u.TRANSITION.BUTTON_CLICK), 
-                                interface__defineProperty(_track2, constants.u.KEY.BUTTON_TYPE, type), _track2));
+                                track(((_track2 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_CLICK, 
+                                _track2[constants.u.KEY.BUTTON_TYPE] = type, _track2));
                                 Object(client.g)();
                             }(button.type);
                         });
@@ -14647,7 +13711,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.203";
+                payload.version = "4.0.204";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 var query = [];
@@ -14797,13 +13861,13 @@
         };
         __webpack_exports__.m = urlWillRedirectPage;
         __webpack_exports__.b = function(url) {
-            var params = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, hasHash = url.indexOf("#") > 0, _url$split = url.split("#"), _url$split2 = _slicedToArray(_url$split, 2), serverUrl = _url$split2[0], hash = _url$split2[1];
+            var params = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, hasHash = url.indexOf("#") > 0, _url$split = url.split("#"), serverUrl = _url$split[0], hash = _url$split[1];
             if (hash && !serverUrl) {
                 var _ref3 = [ "#" + hash, "" ];
                 serverUrl = _ref3[0];
                 hash = _ref3[1];
             }
-            var _serverUrl$split = serverUrl.split("?"), _serverUrl$split2 = _slicedToArray(_serverUrl$split, 2), originalUrl = _serverUrl$split2[0], originalQueryString = _serverUrl$split2[1];
+            var _serverUrl$split = serverUrl.split("?"), originalUrl = _serverUrl$split[0], originalQueryString = _serverUrl$split[1];
             if (originalQueryString) {
                 var originalQuery = parseQuery(originalQueryString);
                 for (var _key in originalQuery) params.hasOwnProperty(_key) || (params[_key] = originalQuery[_key]);
@@ -14878,32 +13942,8 @@
                 if (entry && entry.name === url && entry.duration && entry.duration >= 0 && entry.duration <= 6e4) return Math.floor(entry.duration);
             }
         };
-        var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./src/constants/index.js"), __WEBPACK_IMPORTED_MODULE_4__util__ = __webpack_require__("./src/lib/util.js"), _slicedToArray = (__webpack_require__("./src/lib/device.js"), 
-        function() {
-            return function(arr, i) {
-                if (Array.isArray(arr)) return arr;
-                if (Symbol.iterator in Object(arr)) return function(arr, i) {
-                    var _arr = [], _n = !0, _d = !1, _e = void 0;
-                    try {
-                        for (var _s, _i = arr[Symbol.iterator](); !(_n = (_s = _i.next()).done); _n = !0) {
-                            _arr.push(_s.value);
-                            if (i && _arr.length === i) break;
-                        }
-                    } catch (err) {
-                        _d = !0;
-                        _e = err;
-                    } finally {
-                        try {
-                            !_n && _i.return && _i.return();
-                        } finally {
-                            if (_d) throw _e;
-                        }
-                    }
-                    return _arr;
-                }(arr, i);
-                throw new TypeError("Invalid attempt to destructure non-iterable instance");
-            };
-        }());
+        var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./src/constants/index.js"), __WEBPACK_IMPORTED_MODULE_4__util__ = __webpack_require__("./src/lib/util.js");
+        __webpack_require__("./src/lib/device.js");
         function isDocumentReady() {
             return Boolean(document.body) && "complete" === document.readyState;
         }
@@ -14956,7 +13996,7 @@
         }
         function normalizeLocale(locale) {
             if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
-                var _locale$split = locale.split(/[-_]/), _locale$split2 = _slicedToArray(_locale$split, 2), lang = _locale$split2[0], country = _locale$split2[1];
+                var _locale$split = locale.split(/[-_]/), lang = _locale$split[0], country = _locale$split[1];
                 if (__WEBPACK_IMPORTED_MODULE_2__config__.a.locales[country] && -1 !== __WEBPACK_IMPORTED_MODULE_2__config__.a.locales[country].indexOf(lang)) return {
                     country: country,
                     lang: lang
@@ -15000,15 +14040,6 @@
             };
         }
         var dom = __webpack_require__("./src/lib/dom.js");
-        function _defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
         function getRefererDomain() {
             return window.xchild && window.xchild.getParentDomain ? window.xchild.getParentDomain() : window.location.host;
         }
@@ -15026,7 +14057,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(session.c)(),
-                    ver: "4.0.203"
+                    ver: "4.0.204"
                 };
             });
             Object(client.a)(function() {
@@ -15050,12 +14081,11 @@
                     contextType = payload[constants.u.KEY.CONTEXT_TYPE];
                     contextID = payload[constants.u.KEY.CONTEXT_ID];
                 }
-                return _defineProperty(_ref = {}, constants.u.KEY.FEED, constants.u.FEED.CHECKOUTJS), 
-                _defineProperty(_ref, constants.u.KEY.DATA_SOURCE, constants.u.DATA_SOURCE.CHECKOUT), 
-                _defineProperty(_ref, constants.u.KEY.CONTEXT_TYPE, contextType), _defineProperty(_ref, constants.u.KEY.CONTEXT_ID, contextID), 
-                _defineProperty(_ref, constants.u.KEY.SELLER_ID, config.a.merchantID), _defineProperty(_ref, constants.u.KEY.SESSION_UID, sessionID), 
-                _defineProperty(_ref, constants.u.KEY.BUTTON_SESSION_UID, buttonSessionID), _defineProperty(_ref, constants.u.KEY.VERSION, config.a.version), 
-                _defineProperty(_ref, constants.u.KEY.TOKEN, paymentToken), _defineProperty(_ref, constants.u.KEY.REFERER, getRefererDomain()), 
+                return (_ref = {})[constants.u.KEY.FEED] = constants.u.FEED.CHECKOUTJS, _ref[constants.u.KEY.DATA_SOURCE] = constants.u.DATA_SOURCE.CHECKOUT, 
+                _ref[constants.u.KEY.CONTEXT_TYPE] = contextType, _ref[constants.u.KEY.CONTEXT_ID] = contextID, 
+                _ref[constants.u.KEY.SELLER_ID] = config.a.merchantID, _ref[constants.u.KEY.SESSION_UID] = sessionID, 
+                _ref[constants.u.KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref[constants.u.KEY.VERSION] = config.a.version, 
+                _ref[constants.u.KEY.TOKEN] = paymentToken, _ref[constants.u.KEY.REFERER] = getRefererDomain(), 
                 _ref;
             });
             Object(client.k)({
@@ -15178,8 +14208,7 @@
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        };
-        var HEADERS = {
+        }, HEADERS = {
             CONTENT_TYPE: "content-type",
             ACCEPT: "accept"
         }, headerBuilders = [], corrids = [];
@@ -15234,7 +14263,7 @@
                 var xhr = new win.XMLHttpRequest();
                 xhr.addEventListener("load", function() {
                     var responseHeaders = function() {
-                        var arr, result = {}, _iterator = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "").trim().split("\n"), _isArray = Array.isArray(_iterator), _i = 0;
+                        var result = {}, _iterator = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "").trim().split("\n"), _isArray = Array.isArray(_iterator), _i = 0;
                         for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                             var _ref;
                             if (_isArray) {
@@ -15244,7 +14273,7 @@
                                 if ((_i = _iterator.next()).done) break;
                                 _ref = _i.value;
                             }
-                            var _line$split = _ref.split(":"), _line$split2 = (arr = _line$split, Array.isArray(arr) ? arr : Array.from(arr)), _key = _line$split2[0], values = _line$split2.slice(1);
+                            var _line$split = _ref.split(":"), _key = _line$split[0], values = _line$split.slice(1);
                             result[_key.toLowerCase()] = values.join(":").trim();
                         }
                         return result;
@@ -15308,15 +14337,6 @@
             }
             return target;
         };
-        function throttle__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
         function isCheckpointUnique(name) {
             return Object(session.d)(function(state) {
                 state.loggedBeacons = state.loggedBeacons || [];
@@ -15360,10 +14380,9 @@
                     if (!started) return this;
                     if (isCheckpointUnique(name + "_" + treatment)) {
                         var _extends2;
-                        Object(client.o)(throttle__extends((throttle__defineProperty(_extends2 = {}, constants.u.KEY.STATE, constants.u.STATE.PXP), 
-                        throttle__defineProperty(_extends2, constants.u.KEY.TRANSITION, constants.u.TRANSITION.PXP), 
-                        throttle__defineProperty(_extends2, constants.u.KEY.EXPERIMENT_NAME, name), throttle__defineProperty(_extends2, constants.u.KEY.TREATMENT_NAME, treatment), 
-                        _extends2), payload));
+                        Object(client.o)(throttle__extends(((_extends2 = {})[constants.u.KEY.STATE] = constants.u.STATE.PXP, 
+                        _extends2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PXP, _extends2[constants.u.KEY.EXPERIMENT_NAME] = name, 
+                        _extends2[constants.u.KEY.TREATMENT_NAME] = treatment, _extends2), payload));
                     }
                     var event = name + "_" + treatment + "_" + checkpointName;
                     isCheckpointUnique(event) && Object(client.j)(event, throttle__extends({}, payload, {
@@ -15410,7 +14429,7 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return "4.0.203";
+            return "4.0.204";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -15427,7 +14446,7 @@
                         domain: metaFrameDomain
                     });
                     return src.bridge.openBridge(Object(dom.b)(metaFrameUrl, {
-                        version: "4.0.203"
+                        version: "4.0.204"
                     }), metaFrameDomain).then(function() {
                         return metaListener;
                     }).then(function(_ref) {
@@ -15797,22 +14816,7 @@
             });
             return new JsxHTMLNodeContainer(nodes);
         };
-        var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__("./src/lib/util.js"), _createClass = function() {
-            function defineProperties(target, props) {
-                for (var i = 0; i < props.length; i++) {
-                    var descriptor = props[i];
-                    descriptor.enumerable = descriptor.enumerable || !1;
-                    descriptor.configurable = !0;
-                    "value" in descriptor && (descriptor.writable = !0);
-                    Object.defineProperty(target, descriptor.key, descriptor);
-                }
-            }
-            return function(Constructor, protoProps, staticProps) {
-                protoProps && defineProperties(Constructor.prototype, protoProps);
-                staticProps && defineProperties(Constructor, staticProps);
-                return Constructor;
-            };
-        }();
+        var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__("./src/lib/util.js");
         function _classCallCheck(instance, Constructor) {
             if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
         }
@@ -15826,45 +14830,38 @@
                 this.props = props;
                 this.children = children;
             }
-            _createClass(JsxHTMLNode, [ {
-                key: "toString",
-                value: function() {
-                    return "<" + this.name + (this.props ? " " : "") + (this.props ? this.propsToString() : "") + ">" + this.childrenToString() + "</" + this.name + ">";
-                }
-            }, {
-                key: "propsToString",
-                value: function() {
-                    var props = this.props;
-                    return props ? Object.keys(props).filter(function(key) {
-                        return "innerHTML" !== key && props && !1 !== props[key];
-                    }).map(function(key) {
-                        return props && !0 === props[key] ? "" + htmlEncode(key) : props ? htmlEncode(key) + '="' + htmlEncode(props[key]) + '"' : "";
-                    }).join(" ") : "";
-                }
-            }, {
-                key: "childrenToString",
-                value: function() {
-                    if (this.props && this.props.innerHTML) return this.props.innerHTML;
-                    if (!this.children) return "";
-                    var result = "";
-                    !function iterate(children) {
-                        var _iterator = children, _isArray = Array.isArray(_iterator), _i = 0;
-                        for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                            var _ref;
-                            if (_isArray) {
-                                if (_i >= _iterator.length) break;
-                                _ref = _iterator[_i++];
-                            } else {
-                                if ((_i = _iterator.next()).done) break;
-                                _ref = _i.value;
-                            }
-                            var child = _ref;
-                            null !== child && void 0 !== child && (Array.isArray(child) ? iterate(child) : result += child instanceof JsxHTMLNode ? child.toString() : htmlEncode(child));
+            JsxHTMLNode.prototype.toString = function() {
+                return "<" + this.name + (this.props ? " " : "") + (this.props ? this.propsToString() : "") + ">" + this.childrenToString() + "</" + this.name + ">";
+            };
+            JsxHTMLNode.prototype.propsToString = function() {
+                var props = this.props;
+                return props ? Object.keys(props).filter(function(key) {
+                    return "innerHTML" !== key && props && !1 !== props[key];
+                }).map(function(key) {
+                    return props && !0 === props[key] ? "" + htmlEncode(key) : props ? htmlEncode(key) + '="' + htmlEncode(props[key]) + '"' : "";
+                }).join(" ") : "";
+            };
+            JsxHTMLNode.prototype.childrenToString = function() {
+                if (this.props && this.props.innerHTML) return this.props.innerHTML;
+                if (!this.children) return "";
+                var result = "";
+                !function iterate(children) {
+                    var _iterator = children, _isArray = Array.isArray(_iterator), _i = 0;
+                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                        var _ref;
+                        if (_isArray) {
+                            if (_i >= _iterator.length) break;
+                            _ref = _iterator[_i++];
+                        } else {
+                            if ((_i = _iterator.next()).done) break;
+                            _ref = _i.value;
                         }
-                    }(this.children);
-                    return result;
-                }
-            } ]);
+                        var child = _ref;
+                        null !== child && void 0 !== child && (Array.isArray(child) ? iterate(child) : result += child instanceof JsxHTMLNode ? child.toString() : htmlEncode(child));
+                    }
+                }(this.children);
+                return result;
+            };
             return JsxHTMLNode;
         }(), JsxHTMLNodeContainer = function(_JsxHTMLNode) {
             !function(subClass, superClass) {
@@ -15878,22 +14875,19 @@
                     }
                 });
                 superClass && (Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass);
-            }(JsxHTMLNodeContainer, JsxHTMLNode);
+            }(JsxHTMLNodeContainer, _JsxHTMLNode);
             function JsxHTMLNodeContainer(children) {
                 _classCallCheck(this, JsxHTMLNodeContainer);
                 return function(self, call) {
                     if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
                     return !call || "object" != typeof call && "function" != typeof call ? self : call;
-                }(this, (JsxHTMLNodeContainer.__proto__ || Object.getPrototypeOf(JsxHTMLNodeContainer)).call(this, "", {}, children));
+                }(this, _JsxHTMLNode.call(this, "", {}, children));
             }
-            _createClass(JsxHTMLNodeContainer, [ {
-                key: "toString",
-                value: function() {
-                    return this.childrenToString();
-                }
-            } ]);
+            JsxHTMLNodeContainer.prototype.toString = function() {
+                return this.childrenToString();
+            };
             return JsxHTMLNodeContainer;
-        }();
+        }(JsxHTMLNode);
     },
     "./src/lib/namespace.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -15909,7 +14903,7 @@
                 }
                 var name = _ref, namespace = window[name];
                 if (namespace) for (var _iterator3 = childnamespaces, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                    var _ref3;
+                    var _extends2, _ref3;
                     if (_isArray3) {
                         if (_i3 >= _iterator3.length) break;
                         _ref3 = _iterator3[_i3++];
@@ -15919,7 +14913,8 @@
                     }
                     var childname = _ref3, childnamespace = xports[childname];
                     namespace[childname] && (childnamespace = _extends({}, namespace[childname], childnamespace));
-                    xports = _extends({}, namespace, xports, _defineProperty({}, childname, childnamespace));
+                    xports = _extends({}, namespace, xports, ((_extends2 = {})[childname] = childnamespace, 
+                    _extends2));
                 }
             }
             for (var _iterator2 = namespaces, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
@@ -15943,15 +14938,6 @@
             }
             return target;
         };
-        function _defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
     },
     "./src/lib/session.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -16252,18 +15238,18 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
-        if (window.paypal && "4.0.203" === window.paypal.version) {
+        if (window.paypal && "4.0.204" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.203"
+                version: "4.0.204"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.203) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.204) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.203" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.204" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.203"
+                version: "4.0.204"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.203");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.204");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
@@ -16351,6 +15337,12 @@
     "./src/resources/fundingLogos/pp_white.svg": function(module, exports) {
         module.exports = '<svg width="24" height="32" viewBox="0 0 24 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <path fill="#ffffff" opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 6.378 28.938 C 6.285 29.238 6.659 29.638 6.94 29.638 L 11.153 29.638 C 11.621 29.638 11.995 29.238 12.089 28.739 L 12.182 28.539 L 12.931 23.341 L 13.025 23.041 C 13.119 22.441 13.493 22.141 13.961 22.141 L 14.616 22.141 C 18.642 22.141 21.731 20.342 22.668 15.443 C 23.042 13.344 22.855 11.545 21.825 10.345 C 21.451 10.046 21.076 9.646 20.702 9.446 L 20.702 9.446"></path>\n    <path fill="#ffffff" opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 7.876 18.642 C 8.063 18.043 8.438 17.643 9.093 17.643 L 11.433 17.643 C 16.021 17.643 19.578 15.643 20.608 9.946 C 20.608 9.746 20.608 9.546 20.702 9.446"></path>\n    <path fill="#ffffff" d="M 9.28 9.446 C 9.28 9.146 9.468 8.846 9.842 8.646 C 9.936 8.646 10.123 8.546 10.216 8.546 L 16.489 8.546 C 17.238 8.546 17.893 8.646 18.548 8.746 C 18.736 8.746 18.829 8.746 19.11 8.846 C 19.204 8.946 19.391 8.946 19.578 9.046 C 19.672 9.046 19.672 9.046 19.859 9.146 C 20.14 9.246 20.421 9.346 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.648 C 18.361 3.248 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 3.048 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 9.28 9.446 Z"></path>\n    <g transform="matrix(0.497737, 0, 0, 0.52612, 1.10144, 0.638654)" opacity="0.2">\n        <path fill="#231f20" d="M39.3 16.7c0.9 0.5 1.7 1.1 2.3 1.8 1 1.1 1.6 2.5 1.9 4.1 0.3-3.2-0.2-5.8-1.9-7.8-0.6-0.7-1.3-1.2-2.1-1.7C39.5 14.2 39.5 15.4 39.3 16.7z"></path>\n        <path fill="#231f20" d="M0.4 45.2L6.7 5.6C6.8 4.5 7.8 3.7 8.9 3.7h16c5.5 0 9.8 1.2 12.2 3.9 1.2 1.4 1.9 3 2.2 4.8 0.4-3.6-0.2-6.1-2.2-8.4C34.7 1.2 30.4 0 24.9 0H8.9c-1.1 0-2.1 0.8-2.3 1.9L0 44.1C0 44.5 0.1 44.9 0.4 45.2z"></path>\n        <path fill="#231f20" d="M10.7 49.4l-0.1 0.6c-0.1 0.4 0.1 0.8 0.4 1.1l0.3-1.7H10.7z"></path>\n    </g>\n</svg>\n';
     },
+    "./src/resources/fundingLogos/sofort.svg": function(module, exports) {
+        module.exports = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="100" height="32" viewBox="0 0 100 32" version="1.1">\n  <g transform="matrix(0.12382426,0,0,0.09880762,10.00356,-24.608421)">\n    <path fill="#ee7f00" d="m 186.20187,287.23124 c -11.04188,0 -21.74936,2.53772 -31.80665,7.27344 -14.36174,6.80251 -27.39036,18.14583 -38.02539,33.19921 -6.90828,9.7725 -12.82318,21.10027 -17.453117,33.76953 -8.73096,23.91455 -8.63328,43.31253 0.29297,56.09571 5.061197,7.22563 15.582517,15.8584 36.974607,15.88281 h 0.082 c 38.96795,0 68.05641,-25.54199 86.47851,-75.91797 4.8659,-13.32835 11.28625,-38.20367 -0.44726,-54.99023 -7.0873,-10.1468 -19.21149,-15.29623 -36.0957,-15.3125 z m 235.12695,0 c -11.03374,0 -21.74968,2.53772 -31.79883,7.27344 -14.36989,6.80251 -27.38841,18.14583 -38.02344,33.19921 -6.91642,9.7725 -12.82514,21.10027 -17.45507,33.76953 -8.73911,23.91455 -8.63361,43.31253 0.30078,56.09571 5.05305,7.22563 15.56624,15.8584 36.97461,15.88281 h 0.0664 c 38.97609,0 68.07269,-25.54199 86.47852,-75.91797 4.88217,-13.32835 11.28592,-38.20367 -0.43946,-54.99023 -7.09543,-10.1468 -19.2193,-15.29623 -36.10351,-15.3125 z m -360.273437,2.02539 c -12.82386,0 -25.28139,-10e-4 -36.44531,5.66211 -11.15579,5.66334 -21.0100901,16.99838 -28.5937501,39.66797 -1.64366,4.87405 -2.51304,9.07338 -2.62695,12.71875 -0.11388,3.6535 0.52101,6.76142 1.90429,9.46289 1.70876,3.29547 4.47537996,6.39584 7.9336,9.00781 3.46635,2.6201 7.6070101,4.74464 12.0742201,6.10352 0.17087,0.0488 2.51533,0.71559 5.36328,1.52929 2.83166,0.8137 6.14285,1.78915 8.24218,2.42383 1.22868,0.3743 2.57828,0.86305 3.79883,1.60352 1.22868,0.72419 2.3279,1.70004 3.01953,3.05078 0.45568,0.89506 0.7002,1.88002 0.72461,2.92968 0.0325,1.05781 -0.14751,2.19808 -0.5625,3.40235 -1.04152,3.07577 -2.62018,5.06103 -5.63086,6.27344 -2.99441,1.2124 -7.41232,1.60156 -14.11718,1.65039 h -83.69727 l -13.23047,36.34765 H 8.7995229 c 8.4299001,0 23.8411001,10e-4 38.6503901,-6.29687 14.80928,-6.28988 29.01803,-18.86166 35.03125,-44.0293 2.26208,-9.45516 1.5617,-17.16093 -2.14062,-23.21484 -3.7186,-6.04577 -10.43974,-10.43885 -20.22852,-13.2461 0,0 -2.18816,-0.63649 -4.76758,-1.37695 -2.56315,-0.74046 -5.5334,-1.58599 -7.04687,-2.02539 -2.50619,-0.71605 -4.43505,-2.16462 -5.57422,-4.01172 -1.13104,-1.83895 -1.4729,-4.07678 -0.83008,-6.36328 0.67536,-2.37599 2.30305,-4.27198 4.64649,-5.58203 2.35972,-1.30193 5.45164,-2.01758 9.06445,-2.01758 h 52.076167 c 0.36616,-0.5289 0.70025,-1.10587 1.06641,-1.63477 9.51211,-13.45855 21.02637,-24.34571 33.63867,-32.03515 z m 234.068357,0 c -23.17409,0 -40.4252,11.72452 -48.57031,33.66992 l -39.36719,108.16406 h 43.12695 l 20.22852,-55.59961 38.11328,0.0254 10.8457,-29.78125 -37.99023,-0.0254 6.11914,-17.24218 c 1.26936,-3.09205 4.32023,-5.54883 8.7793,-5.54883 2.48177,0 30.46379,0.008 44.93945,0.0156 0.37431,-0.53703 0.70806,-1.11368 1.07422,-1.64258 9.51211,-13.45855 22.9795,-24.34571 35.5918,-32.03515 h -82.89063 z m 200.07227,0.0781 -51.64649,141.84375 h 43.86719 l 18.77148,-49.92773 c 0.91948,2.05865 11.99414,49.92773 11.99414,49.92773 h 46.1211 c 0,0 -8.38882,-35.17566 -14.55664,-49.38281 -1.5867,-3.6535 -3.23988,-7.74621 -5.45313,-11.17187 13.02729,-4.8415 31.90499,-15.23255 39.72461,-36.29102 4.80081,-12.94591 4.52535,-23.41082 -0.8125,-31.08398 -6.4689,-9.31684 -19.6345,-13.88965 -40.26172,-13.91407 z m 89.97656,0.002 c 2.77471,2.19698 5.16659,4.70219 7.16015,7.5664 5.10188,7.35583 7.05422,16.09667 5.89063,26.11328 h 26.12109 l -39.36718,108.19727 h 39.33398 l 39.39063,-108.19727 h 50.53906 l 12.26172,-33.67968 z m -61.07422,29.2832 h 7.24219 c 13.23883,0.009 18.17683,3.88144 13.69336,15.96484 -4.20682,11.34294 -11.77401,18.34961 -26.16016,18.34961 h -0.0566 l -7.44531,-0.008 12.72656,-34.30664 z m -348.24609,0.70312 h 0.008 c 13.47481,0.0163 16.55966,7.82841 4.72851,40.19727 h -0.002 c -12.15664,33.27207 -20.97632,41.64453 -34.25586,41.64453 h -0.0254 c -12.93777,-0.008 -17.47695,-8.19503 -5.36914,-41.3125 9.04018,-24.72011 20.74955,-40.5293 34.91602,-40.5293 z m 235.12695,0 h 0.0156 c 13.46668,0.0163 16.55804,7.82841 4.71875,40.19727 -12.1485,33.27207 -20.97664,41.64453 -34.24804,41.64453 h -0.0312 c -12.94592,-0.008 -17.46296,-8.19503 -5.36328,-41.3125 9.03203,-24.72011 20.74987,-40.5293 34.9082,-40.5293 z" />\n    <path fill="#383a41" \n       d="m -38.137977,446.12186 c -2.75844,0 -4.8257,0.50371 -6.20898,1.48828 -1.37515,1.00899 -2.53105,2.79168 -3.4668,5.3711 -0.9032,2.47364 -1.0406,4.18958 -0.41406,5.16601 0.62655,0.98458 2.32587,1.47266 5.125,1.47266 2.79097,0 4.87517,-0.50404 6.24219,-1.5293 1.36701,-1.01712 2.51411,-2.79134 3.43359,-5.33008 0.91134,-2.50618 1.06568,-4.23092 0.44726,-5.19921 -0.60213,-0.96017 -2.32654,-1.43946 -5.1582,-1.43946 z m 23.7832,0 c -2.79912,0 -4.87354,0.50371 -6.23242,1.48828 -1.36701,1.00899 -2.51347,2.79168 -3.44922,5.3711 -0.89506,2.47364 -1.04157,4.18958 -0.43945,5.16601 0.61028,0.98458 2.30244,1.47266 5.10156,1.47266 2.79098,0 4.8742,-0.50404 6.26563,-1.5293 1.38329,-1.01712 2.53723,-2.79134 3.4648399,-5.33008 0.91134,-2.50618 1.05038,-4.23092 0.42383,-5.19921 -0.63469,-0.96017 -2.3437899,-1.43946 -5.1347699,-1.43946 z m 443.980467,18.45117 c -3.23851,0 -6.44312,0.41613 -9.63281,1.2461 -3.1897,0.83811 -6.15269,2.09885 -8.88672,3.7832 -2.74216,1.69249 -5.19007,3.80827 -7.3789,6.36328 -2.18072,2.56315 -3.88264,5.53364 -5.11133,8.90235 -1.07408,2.94558 -1.55302,5.45893 -1.44727,7.5664 0.0976,2.09934 0.56814,3.93087 1.40625,5.46875 0.82996,1.54603 1.93703,2.86408 3.32031,3.97071 1.37516,1.10662 2.83972,2.09842 4.41016,2.96093 1.57044,0.87066 3.10013,1.70941 4.60547,2.48243 1.48906,0.78114 2.77586,1.61079 3.8418,2.50585 1.08221,0.88693 1.8373,1.9038 2.29297,3.04297 0.45567,1.14732 0.39217,2.51453 -0.18555,4.10938 -0.50449,1.37515 -1.21334,2.62905 -2.13281,3.75195 -0.91948,1.13104 -2.00179,2.07529 -3.23047,2.83203 -1.24495,0.76488 -2.62032,1.35845 -4.15821,1.77344 -1.52975,0.41499 -3.16493,0.62695 -4.90625,0.62695 -2.65265,0 -4.87392,-0.30216 -6.66406,-0.90429 -1.79012,-0.594 -3.28662,-1.26019 -4.47461,-1.98438 -1.17986,-0.72419 -2.13224,-1.38419 -2.83203,-1.98633 -0.71605,-0.594 -1.32722,-0.89453 -1.83984,-0.89453 -0.35803,0 -0.70676,0.0974 -1.05664,0.30078 -0.34177,0.19529 -0.68397,0.52806 -1.01758,1 -0.33361,0.47195 -0.6755,1.0906 -1.02539,1.85547 -0.34989,0.75674 -0.73996,1.70946 -1.13867,2.82422 -0.61028,1.67622 -0.97761,2.95291 -1.09961,3.83984 -0.13019,0.88693 -0.0315,1.57103 0.26953,2.04297 0.2848,0.47195 0.87054,1.01636 1.71679,1.63477 0.83811,0.61027 1.96014,1.20417 3.35157,1.76562 1.39142,0.56145 3.05949,1.0427 4.99609,1.44141 1.94474,0.39871 4.13345,0.59375 6.56641,0.59375 3.5884,0 7.13782,-0.47245 10.63672,-1.4082 3.4989,-0.94389 6.7696,-2.35116 9.80468,-4.22266 3.04323,-1.86336 5.75195,-4.19112 8.15235,-6.99023 2.39227,-2.79098 4.26449,-6.03792 5.61523,-9.74024 1.02526,-2.83166 1.48888,-5.28803 1.375,-7.37109 -0.11392,-2.08307 -0.59483,-3.90547 -1.44922,-5.44336 -0.85437,-1.54603 -1.98455,-2.86375 -3.40039,-3.97852 -1.4077,-1.09849 -2.90613,-2.09223 -4.47656,-2.96289 -1.5623,-0.87065 -3.11478,-1.6915 -4.64453,-2.47265 -1.52975,-0.78115 -2.84844,-1.62089 -3.95508,-2.50782 -1.11476,-0.88693 -1.88874,-1.90379 -2.32812,-3.04297 -0.43127,-1.13917 -0.36648,-2.49824 0.20312,-4.06054 0.38244,-1.04967 0.9376,-2.04212 1.66992,-2.99414 0.71605,-0.94389 1.58608,-1.74879 2.61133,-2.41602 1.02526,-0.66723 2.18051,-1.19569 3.48242,-1.57812 1.30191,-0.38244 2.73458,-0.57032 4.29688,-0.57032 1.99355,0 3.74336,0.23607 5.23242,0.73243 1.48906,0.48821 2.75698,1.02449 3.80664,1.63476 1.04968,0.594 1.92,1.14753 2.60352,1.66016 0.69163,0.51263 1.23833,0.75781 1.6289,0.75781 0.40685,0 0.75687,-0.10647 1.07422,-0.32617 0.31734,-0.2197 0.62666,-0.56126 0.92774,-1.0332 0.29292,-0.47195 0.59249,-1.07464 0.91796,-1.79883 0.31734,-0.71606 0.67616,-1.61049 1.0586,-2.66016 0.34176,-0.94389 0.60972,-1.74064 0.79687,-2.36719 0.20343,-0.64282 0.3255,-1.16509 0.39063,-1.58007 0.057,-0.41499 0.0735,-0.75557 0.041,-1.00782 -0.0407,-0.25224 -0.1706,-0.56971 -0.39843,-0.92773 -0.22784,-0.35803 -0.80677,-0.8142 -1.73438,-1.35938 -0.93575,-0.54517 -2.04216,-1.03326 -3.33594,-1.47265 -1.28565,-0.43126 -2.72448,-0.77315 -4.29492,-1.02539 -1.58671,-0.26039 -3.20724,-0.38282 -4.86719,-0.38282 z m 225.99414,0.0469 c -5.54941,0 -10.88672,0.85374 -16.02929,2.5625 -5.14256,1.70876 -9.88631,4.15699 -14.25586,7.37109 -4.35328,3.21411 -8.25077,7.11192 -11.66016,11.70118 -3.40939,4.59738 -6.1601,9.77385 -8.26758,15.54296 -2.02611,5.58196 -3.03489,10.58619 -2.99414,14.98828 0.0163,4.41024 1.01751,8.1534 2.97852,11.2129 1.96915,3.06763 4.88103,5.40222 8.74609,7.02148 3.84879,1.61112 8.5922,2.41602 14.21485,2.41602 1.92846,0 3.8746,-0.0886 5.84375,-0.26758 1.96913,-0.18715 3.95339,-0.45643 5.95507,-0.81446 2.00984,-0.36616 3.96412,-0.79791 5.89258,-1.31054 1.92847,-0.51263 3.56333,-0.99095 4.91406,-1.46289 1.35074,-0.48008 2.36729,-1.12381 3.05079,-1.9375 0.66723,-0.8137 1.21294,-1.76512 1.60351,-2.85547 l 10.20313,-28.02344 c 0.26038,-0.73233 0.40757,-1.37605 0.42383,-1.9375 0.0244,-0.56145 -0.0563,-1.04074 -0.25977,-1.43945 -0.20343,-0.39871 -0.48866,-0.7012 -0.87109,-0.89649 -0.38244,-0.20342 -0.86369,-0.30859 -1.44141,-0.30859 h -23.7832 c -0.32548,0 -0.65109,0.10517 -0.97657,0.30859 -0.32547,0.19529 -0.65043,0.50462 -0.99218,0.92774 -0.32548,0.41498 -0.66801,0.96037 -1.00977,1.66015 -0.34175,0.68351 -0.70024,1.53789 -1.06641,2.54688 -0.71605,1.96914 -1.04168,3.35232 -0.97656,4.16601 0.0732,0.82184 0.43108,1.22852 1.08203,1.22852 h 13.33789 l -5.94922,16.32422 c -1.60298,0.72419 -3.25477,1.2686 -4.94726,1.63476 -1.68436,0.35803 -3.33484,0.54493 -4.92969,0.54493 -3.27105,0 -6.06377,-0.52846 -8.38281,-1.57813 -2.31904,-1.05781 -4.06689,-2.61257 -5.23047,-4.6875 -1.17172,-2.05865 -1.73398,-4.62995 -1.69336,-7.68945 0.0488,-3.06764 0.80488,-6.62292 2.26953,-10.64258 1.33448,-3.66977 3.08394,-7.01406 5.24024,-10.04102 2.14816,-3.02695 4.59768,-5.62267 7.33984,-7.78711 2.75029,-2.15629 5.72079,-3.82404 8.90234,-5.0039 3.1897,-1.17172 6.48514,-1.76563 9.89454,-1.76563 3.18968,0 5.87397,0.32561 8.05468,0.97657 2.16443,0.65095 3.98815,1.36631 5.46094,2.12304 1.45651,0.76488 2.59647,1.47209 3.41016,2.12305 0.8137,0.65096 1.45547,0.97656 1.93554,0.97656 0.31735,0 0.63449,-0.0886 0.93555,-0.26758 0.30921,-0.18715 0.61951,-0.50559 0.95313,-0.95312 0.32548,-0.45567 0.66704,-1.0652 1.0332,-1.83008 0.3743,-0.75674 0.74842,-1.66094 1.13086,-2.71875 0.6591,-1.81454 1.05019,-3.17981 1.16406,-4.10742 0.13019,-0.91948 0.0315,-1.63581 -0.26953,-2.14844 -0.3092,-0.51263 -0.9513,-1.10718 -1.92773,-1.79883 -0.98457,-0.6835 -2.3111,-1.33373 -3.9629,-1.92773 -1.64366,-0.60214 -3.64645,-1.1065 -5.99804,-1.52148 -2.35158,-0.42313 -5.05248,-0.63477 -8.09571,-0.63477 z m -444.88867,0.86914 c -1.85523,0 -3.311,0.0488 -4.37695,0.14648 -1.06594,0.0895 -1.89591,0.33371 -2.49805,0.73243 -0.60212,0.39871 -1.0163,0.96819 -1.24414,1.71679 -0.23597,0.74047 -0.42352,1.76612 -0.57812,3.07617 l -6.36328,61.4336 c -0.10573,0.87879 -0.0814,1.57071 0.0488,2.09961 0.13833,0.52076 0.51994,0.91865 1.14649,1.19531 0.62655,0.26852 1.54703,0.45542 2.76758,0.54492 1.22053,0.0895 2.88113,0.13086 4.98047,0.13086 2.00168,0 3.62028,-0.0414 4.86523,-0.13086 1.24496,-0.0895 2.28591,-0.28324 3.09961,-0.57617 0.80556,-0.28479 1.47336,-0.6918 1.99414,-1.2207 0.51262,-0.52077 1.01763,-1.20486 1.50586,-2.04297 l 26.9082,-44.62305 h 0.10547 l -4.9707,44.62305 c -0.13834,0.87879 -0.13834,1.57071 0,2.09961 0.13019,0.52076 0.51212,0.91865 1.13867,1.19531 0.62654,0.26852 1.54509,0.45542 2.76562,0.54492 1.22055,0.0895 2.86486,0.13086 4.93164,0.13086 1.84711,0 3.39242,-0.0414 4.6211,-0.13086 1.22869,-0.0895 2.27842,-0.2764 3.13281,-0.54492 0.86251,-0.27666 1.58699,-0.67455 2.14844,-1.19531 0.57772,-0.5289 1.13907,-1.22082 1.66797,-2.09961 l 38.46484,-61.27149 c 0.8137,-1.34259 1.39067,-2.40862 1.73242,-3.18164 0.33357,-0.78928 0.37335,-1.37472 0.1211,-1.77343 -0.26038,-0.39871 -0.80382,-0.64291 -1.65821,-0.73243 -0.86251,-0.0976 -2.09102,-0.14648 -3.67773,-0.14648 -1.70876,0 -3.05286,0.0488 -4.0293,0.14648 -0.97644,0.0895 -1.76537,0.25231 -2.35937,0.48829 -0.58587,0.23597 -1.05734,0.56157 -1.38281,0.97656 -0.33362,0.42312 -0.66704,0.91837 -0.98438,1.49609 l -31.92188,53.76953 h -0.10546 l 6.20898,-53.55664 c 0.11388,-0.71605 0.12856,-1.30279 0.0391,-1.74218 -0.0977,-0.42313 -0.38124,-0.76403 -0.86132,-1 -0.48008,-0.23598 -1.21369,-0.39161 -2.22266,-0.46485 -1.01713,-0.0732 -2.38369,-0.11328 -4.125,-0.11328 -1.63553,0 -2.96172,0.0488 -3.9707,0.14648 -1.01713,0.0895 -1.84741,0.25231 -2.49024,0.48829 -0.65096,0.23597 -1.17192,0.56874 -1.5625,1 -0.39871,0.43939 -0.78879,1.01017 -1.1875,1.68554 l -32.32812,53.55664 h -0.0566 l 7.27539,-53.93164 c 0.14646,-0.69164 0.1934,-1.22108 0.14453,-1.60351 -0.0407,-0.38244 -0.27546,-0.67386 -0.71485,-0.86914 -0.4394,-0.20343 -1.13881,-0.32585 -2.11523,-0.38282 -0.98458,-0.0569 -2.32053,-0.0898 -4.0293,-0.0898 z m 169.82813,0.004 c -1.38329,0 -2.5483,0.0563 -3.49219,0.16211 -0.94389,0.11391 -1.73283,0.26043 -2.35938,0.43945 -0.62653,0.17901 -1.11332,0.41605 -1.45507,0.70898 -0.34175,0.29293 -0.57847,0.61854 -0.7168,0.97657 l -24.19922,66.50195 c -0.13019,0.36616 -0.13832,0.6934 0,0.98633 0.12205,0.28479 0.42227,0.5202 0.90235,0.69922 0.48822,0.18715 1.16384,0.33367 2.05078,0.43945 0.87878,0.10578 2.01742,0.16211 3.39257,0.16211 1.41583,0 2.59681,-0.0563 3.54883,-0.16211 0.94389,-0.10578 1.72404,-0.2523 2.32617,-0.43945 0.61842,-0.17902 1.09151,-0.41443 1.44141,-0.69922 0.33361,-0.29293 0.56903,-0.62017 0.69922,-0.98633 l 24.20703,-66.50195 c 0.13894,-0.35803 0.138,-0.68364 0.008,-0.97657 -0.1302,-0.29293 -0.43788,-0.52997 -0.91797,-0.70898 -0.47193,-0.17901 -1.14725,-0.32554 -2.00976,-0.43945 -0.87066,-0.10578 -2.01809,-0.16211 -3.42578,-0.16211 z m -435.378907,0.002 c -1.41584,0 -2.59485,0.0583 -3.54687,0.16406 -0.94389,0.11392 -1.73479,0.26044 -2.36133,0.43945 -0.62655,0.17902 -1.10648,0.41411 -1.42383,0.70704 -0.32548,0.28479 -0.55308,0.6104 -0.69141,0.97656 l -15.58203,42.83203 c -1.63552,4.49974 -2.4245,8.42296 -2.35937,11.77539 0.0732,3.36057 0.90223,6.15849 2.52148,8.4043 1.61113,2.25394 3.97925,3.93048 7.0957,5.03711 3.10833,1.10662 6.88404,1.66015 11.31055,1.66015 4.71945,0 9.11284,-0.61897 13.18945,-1.84765 4.07663,-1.23682 7.77974,-3.02505 11.09961,-5.38477 3.32803,-2.35158 6.24968,-5.24067 8.75586,-8.6582 2.51433,-3.40939 4.55652,-7.26716 6.12696,-11.58789 l 15.3710899,-42.23047 c 0.13825,-0.36616 0.13731,-0.69177 0.0234,-0.97656 -0.10578,-0.29294 -0.39883,-0.52802 -0.87891,-0.70704 -0.48009,-0.17901 -1.1378,-0.32554 -1.99219,-0.43945 -0.84623,-0.10578 -1.9624099,-0.16406 -3.3456999,-0.16406 -1.37515,0 -2.54537,0.0583 -3.51367,0.16406 -0.96016,0.11392 -1.74292,0.26044 -2.36133,0.43945 -0.61026,0.17902 -1.07296,0.41411 -1.39844,0.70704 -0.32548,0.28479 -0.54525,0.6104 -0.68359,0.97656 l -15.42773,42.39453 c -0.89507,2.4655 -2.04315,4.6705 -3.41016,6.61523 -1.38329,1.94474 -2.92958,3.57049 -4.64648,4.88868 -1.71691,1.32632 -3.58685,2.32756 -5.6211,3.02734 -2.01796,0.6835 -4.1585,1.0332 -6.4043,1.0332 -2.2214,0 -4.10208,-0.33244 -5.65625,-1.00781 -1.54602,-0.67537 -2.71788,-1.67693 -3.52343,-3.01953 -0.79743,-1.3426 -1.17028,-3.0351 -1.11328,-5.09375 0.057,-2.04238 0.5942,-4.46651 1.61132,-7.26563 l 15.13477,-41.57226 c 0.13019,-0.36616 0.13019,-0.69177 0,-0.97656 -0.13019,-0.29294 -0.43204,-0.52802 -0.91211,-0.70704 -0.48009,-0.17901 -1.15505,-0.32554 -2.01758,-0.43945 -0.87065,-0.10578 -1.99399,-0.16406 -3.36914,-0.16406 z m 527.986327,0.002 c -1.41583,0 -2.59485,0.0563 -3.54688,0.16211 -0.94388,0.10578 -1.73282,0.25263 -2.35937,0.43164 -0.62655,0.18715 -1.10812,0.42419 -1.43359,0.70899 -0.32549,0.29293 -0.54527,0.61821 -0.6836,0.98437 l -15.58203,42.82422 c -1.63554,4.49974 -2.42481,8.43077 -2.35156,11.7832 0.057,3.36057 0.89473,6.1585 2.50586,8.4043 1.61925,2.25394 3.98087,3.93048 7.10547,5.03711 3.10831,1.10663 6.88208,1.66016 11.30859,1.66016 4.7113,0 9.10664,-0.61898 13.19141,-1.84766 4.07661,-1.23682 7.76963,-3.027 11.09765,-5.38672 3.32801,-2.35972 6.24154,-5.23872 8.75586,-8.65625 2.51433,-3.40939 4.54838,-7.2753 6.12696,-11.58789 l 15.37109,-42.23047 c 0.13825,-0.36616 0.13731,-0.69144 0.0234,-0.98437 -0.11393,-0.2848 -0.39687,-0.52184 -0.87696,-0.70899 -0.48007,-0.17901 -1.13976,-0.32586 -1.99414,-0.43164 -0.84625,-0.10577 -1.9686,-0.16211 -3.34375,-0.16211 -1.37515,0 -2.54732,0.0563 -3.51562,0.16211 -0.96016,0.10578 -1.74097,0.25263 -2.35938,0.43164 -0.61027,0.18715 -1.08305,0.42419 -1.40039,0.70899 -0.32547,0.29293 -0.54527,0.61821 -0.68359,0.98437 l -15.42774,42.39258 c -0.9032,2.4655 -2.04314,4.6705 -3.41015,6.61523 -1.38329,1.94474 -2.92763,3.5643 -4.64453,4.89063 -1.7169,1.32632 -3.58881,2.32789 -5.62305,3.01953 -2.02611,0.69164 -4.17445,1.04102 -6.41211,1.04102 -2.21325,0 -4.09233,-0.34058 -5.64648,-1.00782 -1.54603,-0.67536 -2.72569,-1.67693 -3.53125,-3.01953 -0.79743,-1.3426 -1.17255,-3.04323 -1.10743,-5.09375 0.0488,-2.04238 0.59422,-4.46651 1.61133,-7.26562 l 15.12695,-41.57227 c 0.13834,-0.36616 0.13021,-0.69144 0,-0.98437 -0.12205,-0.2848 -0.43234,-0.52184 -0.90429,-0.70899 -0.48008,-0.17901 -1.15507,-0.32586 -2.01758,-0.43164 -0.87066,-0.10577 -1.99399,-0.16211 -3.36914,-0.16211 z m 122.36719,0.10547 c -1.31005,0 -2.3927,0.0492 -3.27149,0.13867 -0.86252,0.0895 -1.58568,0.2432 -2.17969,0.46289 -0.58586,0.2197 -1.04202,0.47302 -1.35937,0.75782 -0.32547,0.29293 -0.55341,0.61821 -0.68359,0.98437 l -12.03516,33.03516 c -0.9032,2.50618 -1.82922,5.13447 -2.78125,7.88476 -0.95203,2.75844 -1.83897,5.41049 -2.64453,7.94922 h -0.0586 c -0.13018,-1.45652 -0.25881,-2.90318 -0.42968,-4.35156 -0.16274,-1.45652 -0.32685,-2.93021 -0.50586,-4.43555 -0.17901,-1.51347 -0.38936,-3.01028 -0.61719,-4.51562 -0.23597,-1.51348 -0.46357,-3.04317 -0.69141,-4.60547 l -4.3457,-25.73828 c -0.17087,-1.41584 -0.41573,-2.60234 -0.7168,-3.5625 -0.30921,-0.96016 -0.73249,-1.70873 -1.26953,-2.25391 -0.55331,-0.54518 -1.25303,-0.94567 -2.10742,-1.18164 -0.85437,-0.23598 -1.97641,-0.34961 -3.35156,-0.34961 h -7.67383 c -1.44839,0 -2.83056,0.4311 -4.14062,1.27734 -1.31005,0.85439 -2.27028,2.13304 -2.88868,3.8418 l -23.03711,63.28906 c -0.13825,0.35803 -0.16278,0.69145 -0.0977,0.98438 0.0895,0.28479 0.32622,0.52932 0.7168,0.72461 0.40685,0.20342 1.0014,0.35874 1.79882,0.47265 0.79743,0.10578 1.82244,0.16211 3.0918,0.16211 1.30191,0 2.39237,-0.0563 3.2793,-0.16211 0.87065,-0.11391 1.58698,-0.26923 2.14843,-0.47265 0.56145,-0.19529 0.99126,-0.43982 1.3086,-0.72461 0.29292,-0.29293 0.51433,-0.62635 0.64453,-0.98438 l 13.41797,-36.84375 c 1.00085,-2.75843 1.94411,-5.43588 2.80664,-8.02343 0.87879,-2.5957 1.71592,-5.20054 2.52148,-7.8125 h 0.10547 c 0.0488,2.14002 0.19599,4.34697 0.42383,6.61718 0.2197,2.26208 0.48799,4.37689 0.78906,6.3379 l 5.54102,32.92187 c 0.25225,1.81454 0.529,3.29637 0.83008,4.43555 0.31733,1.13917 0.74063,2.04956 1.26953,2.71679 0.54517,0.67537 1.22082,1.14034 2.05078,1.39258 0.83811,0.26039 1.8885,0.38086 3.16601,0.38086 h 6.08594 c 0.69164,0 1.40765,-0.0974 2.15625,-0.30078 0.74046,-0.19529 1.44084,-0.51991 2.0918,-0.95117 0.64281,-0.4394 1.2289,-0.98413 1.75781,-1.62696 0.5289,-0.65909 0.94308,-1.40017 1.24414,-2.23828 l 23.04297,-63.28906 c 0.13025,-0.36616 0.16341,-0.69144 0.082,-0.98437 -0.0732,-0.2848 -0.30148,-0.53812 -0.67578,-0.75782 -0.3743,-0.21969 -0.96006,-0.37337 -1.76562,-0.46289 -0.79743,-0.0895 -1.8143,-0.13867 -3.04297,-0.13867 z m -508.093747,0.21875 c -1.20428,0 -2.33575,0.35068 -3.41797,1.0586 -1.07408,0.71605 -1.89461,1.86218 -2.48047,3.45703 l -22.34375,61.38476 c -0.57769,1.60299 -0.58684,2.75107 -0.0254,3.45899 0.56145,0.70791 1.44092,1.0664 2.62891,1.0664 h 35.37109 c 0.33361,0 0.66769,-0.10712 1.01758,-0.31054 0.33362,-0.19529 0.68396,-0.50397 1.01757,-0.94336 0.34989,-0.4394 0.683,-1.00888 1.041017,-1.7168 0.34175,-0.70792 0.70741,-1.58705 1.08984,-2.63672 0.38244,-1.04967 0.65107,-1.93694 0.83008,-2.63672 0.16269,-0.70791 0.23532,-1.28521 0.21094,-1.72461 -0.0163,-0.43126 -0.1387,-0.74774 -0.33398,-0.95117 -0.19529,-0.18715 -0.46358,-0.29297 -0.78907,-0.29297 H 75.903033 l 7.22461,-19.86328 h 21.279287 c 0.32548,0 0.65825,-0.0882 1,-0.27539 0.33362,-0.17901 0.66833,-0.4815 1.00196,-0.89648 0.33361,-0.41499 0.6742,-0.96656 1.00781,-1.65821 0.34989,-0.69164 0.70741,-1.56361 1.08984,-2.61328 0.3743,-1.01712 0.64391,-1.87997 0.80664,-2.58789 0.17093,-0.69978 0.23563,-1.26047 0.20313,-1.68359 -0.0244,-0.41499 -0.13837,-0.73245 -0.3418,-0.92774 -0.20342,-0.19529 -0.45545,-0.30078 -0.78906,-0.30078 H 87.115923 l 6.24805,-17.19336 H 118.5085 c 0.33362,0 0.6589,-0.0974 0.98437,-0.30078 0.32549,-0.20342 0.65825,-0.51373 1,-0.95312 0.34175,-0.43126 0.67549,-1.00888 1.02539,-1.7168 0.34989,-0.69978 0.70773,-1.56263 1.08203,-2.58789 0.39872,-1.08222 0.67482,-1.97731 0.84571,-2.69336 0.1627,-0.69978 0.24476,-1.28457 0.22851,-1.74024 -0.0244,-0.44753 -0.12112,-0.76434 -0.3164,-0.94336 -0.17902,-0.179 -0.44015,-0.27734 -0.76563,-0.27734 H 87.440143 Z m 59.052727,0 c -1.19614,0 -2.33413,0.35068 -3.4082,1.0586 -1.07409,0.71605 -1.9047,1.86218 -2.48242,3.45703 l -23.27149,63.94921 c -0.13012,0.36617 -0.14708,0.69177 -0.0332,0.97657 0.11392,0.29293 0.40631,0.52802 0.89453,0.70703 0.47194,0.17901 1.15604,0.33368 2.04297,0.43945 0.87879,0.10578 2.00929,0.16211 3.39258,0.16211 1.4077,0 2.59712,-0.0563 3.54101,-0.16211 0.95203,-0.10578 1.73185,-0.26044 2.33399,-0.43945 0.61026,-0.17901 1.08989,-0.4141 1.43164,-0.70703 0.33361,-0.2848 0.57879,-0.6104 0.70898,-0.97657 l 9.76367,-26.83593 h 4.46875 c 1.51348,0 2.77293,0.23476 3.76563,0.71484 0.98457,0.47194 1.75919,1.16418 2.3125,2.0918 0.55331,0.92761 0.93427,2.0757 1.16211,3.45898 0.22784,1.37515 0.39155,2.95238 0.51367,4.73438 l 0.58594,15.7207 c -0.0163,0.4394 0.0313,0.81417 0.1289,1.11523 0.11392,0.30921 0.392,0.57034 0.84766,0.76563 0.44754,0.20342 1.1134,0.33301 1.99219,0.40625 0.88692,0.0732 2.08353,0.11328 3.61328,0.11328 1.81455,0 3.26381,-0.04 4.33789,-0.11328 1.08222,-0.0732 1.91902,-0.19599 2.5293,-0.375 0.61841,-0.18715 1.04299,-0.41507 1.28711,-0.68359 0.2441,-0.26852 0.43947,-0.60911 0.58593,-1.00782 0.1302,-0.35802 0.21871,-0.86336 0.26758,-1.49804 0.0488,-0.63469 0.0563,-1.64243 0.0156,-3.01758 l -0.88672,-13.875 c -0.0814,-1.66808 -0.24417,-3.16391 -0.48828,-4.49024 -0.23598,-1.31818 -0.58601,-2.50762 -1.02539,-3.54101 -0.4394,-1.0334 -0.98316,-1.91058 -1.6504,-2.63477 -0.65908,-0.73232 -1.41612,-1.34316 -2.29492,-1.84765 2.43295,-0.69165 4.70275,-1.60366 6.81836,-2.72657 2.1156,-1.1229 4.02723,-2.44876 5.74414,-3.97851 1.7169,-1.52161 3.22316,-3.24667 4.53321,-5.19141 1.30191,-1.9366 2.38356,-4.08559 3.24609,-6.44531 1.01712,-2.79912 1.49778,-5.27111 1.45703,-7.43555 -0.0569,-2.15629 -0.5851,-4.02103 -1.58594,-5.59961 -1.00085,-1.57857 -2.45858,-2.85559 -4.3789,-3.83203 -1.90405,-0.98457 -4.19924,-1.67551 -6.89258,-2.07422 -0.93575,-0.10578 -1.9842,-0.19629 -3.16406,-0.26953 -1.17173,-0.0732 -2.67831,-0.11328 -4.52539,-0.11328 h -18.23438 z m 171.94336,0 c -1.19614,0 -2.33607,0.35068 -3.41016,1.0586 -1.07407,0.71605 -1.90469,1.86218 -2.48242,3.45703 l -22.34375,61.38476 c -0.57778,1.60299 -0.59433,2.75107 -0.041,3.45899 0.56958,0.70791 1.4484,1.0664 2.64453,1.0664 h 35.37109 c 0.33361,0 0.66802,-0.10712 1.00977,-0.31054 0.3499,-0.19529 0.68396,-0.50397 1.01758,-0.94336 0.35802,-0.4394 0.69926,-1.00888 1.04101,-1.7168 0.34989,-0.70792 0.71522,-1.58705 1.09766,-2.63672 h 0.002 c 0.38244,-1.04967 0.65725,-1.93694 0.82813,-2.63672 0.15455,-0.70791 0.23757,-1.28521 0.20507,-1.72461 -0.0163,-0.43126 -0.13056,-0.74774 -0.33398,-0.95117 -0.19529,-0.18715 -0.46358,-0.29297 -0.78906,-0.29297 h -25.35547 l 7.22656,-19.86328 h 21.27734 c 0.33362,0 0.65825,-0.0882 1,-0.27539 0.34175,-0.17901 0.67615,-0.4815 1.00977,-0.89648 0.33361,-0.41499 0.66802,-0.96656 1.00977,-1.65821 0.34175,-0.69164 0.7074,-1.56361 1.08984,-2.61328 0.36616,-1.01712 0.63414,-1.87997 0.79687,-2.58789 0.17094,-0.69978 0.24344,-1.26047 0.21094,-1.68359 -0.0244,-0.41499 -0.14455,-0.73245 -0.33984,-0.92774 -0.20343,-0.19529 -0.46553,-0.30078 -0.79102,-0.30078 h -21.27734 l 6.25781,-17.19336 h 25.13477 c 0.32548,0 0.65857,-0.0974 0.99218,-0.30078 0.31735,-0.20342 0.65858,-0.51373 0.99219,-0.95312 0.34175,-0.43126 0.69177,-1.00888 1.02539,-1.7168 0.35803,-0.69978 0.7175,-1.56263 1.0918,-2.58789 0.39871,-1.08222 0.667,-1.97731 0.83789,-2.69336 0.17082,-0.69978 0.24281,-1.28457 0.22656,-1.74024 -0.0163,-0.44753 -0.12144,-0.76434 -0.30859,-0.94336 -0.18715,-0.179 -0.43983,-0.27734 -0.77344,-0.27734 H 318.4363 Z m -298.533197,0.004 c -1.19614,0 -2.33608,0.35067 -3.41016,1.05859 -1.07407,0.70792 -1.89656,1.85405 -2.48242,3.45703 l -22.3437501,61.38477 c -0.57768,1.59484 -0.59465,2.74325 -0.0332,3.45117 0.56145,0.70792 1.44058,1.06641 2.63671,1.06641 H 12.994833 c 2.82354,0 5.45996,-0.1716 7.88477,-0.52149 2.43295,-0.34175 4.79131,-0.87932 7.08594,-1.60351 2.29462,-0.72419 4.49246,-1.65054 6.59179,-2.77344 2.09934,-1.1229 4.02824,-2.46537 5.81836,-4.01953 1.782,-1.5623 3.38431,-3.37038 4.81641,-5.39649 1.43211,-2.03424 2.60429,-4.29459 3.51562,-6.80078 0.87066,-2.39227 1.29391,-4.55819 1.26954,-6.47851 -0.0326,-1.92033 -0.4083,-3.59524 -1.14063,-5.02735 -0.73232,-1.4321 -1.77394,-2.60428 -3.13281,-3.51562 -1.35886,-0.90321 -2.96086,-1.54627 -4.82422,-1.9043 1.76571,-0.57772 3.43379,-1.34322 4.99609,-2.28711 1.56229,-0.94389 2.97804,-2.03304 4.26368,-3.26172 1.27751,-1.23682 2.408,-2.60403 3.39257,-4.10937 0.98457,-1.50534 1.78166,-3.10765 2.40821,-4.81641 1.11476,-3.04323 1.53024,-5.69755 1.26172,-7.94336 -0.26852,-2.25394 -1.16426,-4.11737 -2.67774,-5.58203 -1.51347,-1.47279 -3.63708,-2.57073 -6.37109,-3.29492 -2.72589,-0.72419 -6.24796,-1.08203 -10.56055,-1.08203 z m 5.89844,10.71679 h 7.23437 c 2.21325,0 3.90607,0.20286 5.08594,0.60157 1.17986,0.39871 2.06583,0.96819 2.66797,1.71679 0.60213,0.74047 0.91117,1.67593 0.93554,2.79883 0.0244,1.13104 -0.21198,2.39276 -0.72461,3.8086 -0.46381,1.2775 -1.10622,2.47378 -1.91992,3.62109 -0.82184,1.13918 -1.78888,2.13976 -2.91992,2.99414 -1.1229,0.85438 -2.39308,1.52155 -3.80078,2.00977 -1.41583,0.48821 -3.14967,0.74023 -5.22461,0.74023 h -7.99024 z m 126.777337,0.21485 h 6.41992 c 1.63553,0 2.89822,0.0661 3.78516,0.17187 0.88692,0.10578 1.65144,0.251 2.31054,0.42188 2.15629,0.66723 3.47338,1.78178 3.94532,3.38476 0.47195,1.59485 0.27756,3.55597 -0.56055,5.875 -0.56145,1.52162 -1.30937,2.90609 -2.26953,4.13477 -0.95203,1.23682 -2.1089,2.30252 -3.44336,3.18945 -1.3426,0.88693 -2.85569,1.57005 -4.56445,2.06641 -1.70063,0.48822 -3.56342,0.73242 -5.59766,0.73242 h -7.29102 z M 15.336633,505.28232 h 8.48828 c 2.61197,0 4.64471,0.23508 6.10938,0.70703 1.45651,0.47194 2.56421,1.13911 3.30469,2.00977 0.72418,0.87065 1.12987,1.95264 1.20312,3.23828 0.0814,1.28564 -0.17748,2.74337 -0.77148,4.3789 -0.56959,1.57044 -1.35073,2.95361 -2.35157,4.16602 -1.01712,1.21241 -2.16521,2.22927 -3.45898,3.04297 -1.29379,0.82183 -2.70137,1.43234 -4.21485,1.85547 -1.51347,0.42312 -3.26262,0.61718 -5.24804,0.61718 H 8.0553829 Z" />\n  </g>\n</svg>\n';
+    },
+    "./src/resources/fundingLogos/sofort_white.svg": function(module, exports) {
+        module.exports = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="100" height="32" viewBox="0 0 100 32" version="1.1">\n  <g transform="matrix(0.12382426,0,0,0.09880762,10.00356,-24.608421)">\n    <path fill="#ffffff" d="m 186.20187,287.23124 c -11.04188,0 -21.74936,2.53772 -31.80665,7.27344 -14.36174,6.80251 -27.39036,18.14583 -38.02539,33.19921 -6.90828,9.7725 -12.82318,21.10027 -17.453117,33.76953 -8.73096,23.91455 -8.63328,43.31253 0.29297,56.09571 5.061197,7.22563 15.582517,15.8584 36.974607,15.88281 h 0.082 c 38.96795,0 68.05641,-25.54199 86.47851,-75.91797 4.8659,-13.32835 11.28625,-38.20367 -0.44726,-54.99023 -7.0873,-10.1468 -19.21149,-15.29623 -36.0957,-15.3125 z m 235.12695,0 c -11.03374,0 -21.74968,2.53772 -31.79883,7.27344 -14.36989,6.80251 -27.38841,18.14583 -38.02344,33.19921 -6.91642,9.7725 -12.82514,21.10027 -17.45507,33.76953 -8.73911,23.91455 -8.63361,43.31253 0.30078,56.09571 5.05305,7.22563 15.56624,15.8584 36.97461,15.88281 h 0.0664 c 38.97609,0 68.07269,-25.54199 86.47852,-75.91797 4.88217,-13.32835 11.28592,-38.20367 -0.43946,-54.99023 -7.09543,-10.1468 -19.2193,-15.29623 -36.10351,-15.3125 z m -360.273437,2.02539 c -12.82386,0 -25.28139,-10e-4 -36.44531,5.66211 -11.15579,5.66334 -21.0100901,16.99838 -28.5937501,39.66797 -1.64366,4.87405 -2.51304,9.07338 -2.62695,12.71875 -0.11388,3.6535 0.52101,6.76142 1.90429,9.46289 1.70876,3.29547 4.47537996,6.39584 7.9336,9.00781 3.46635,2.6201 7.6070101,4.74464 12.0742201,6.10352 0.17087,0.0488 2.51533,0.71559 5.36328,1.52929 2.83166,0.8137 6.14285,1.78915 8.24218,2.42383 1.22868,0.3743 2.57828,0.86305 3.79883,1.60352 1.22868,0.72419 2.3279,1.70004 3.01953,3.05078 0.45568,0.89506 0.7002,1.88002 0.72461,2.92968 0.0325,1.05781 -0.14751,2.19808 -0.5625,3.40235 -1.04152,3.07577 -2.62018,5.06103 -5.63086,6.27344 -2.99441,1.2124 -7.41232,1.60156 -14.11718,1.65039 h -83.69727 l -13.23047,36.34765 H 8.7995229 c 8.4299001,0 23.8411001,10e-4 38.6503901,-6.29687 14.80928,-6.28988 29.01803,-18.86166 35.03125,-44.0293 2.26208,-9.45516 1.5617,-17.16093 -2.14062,-23.21484 -3.7186,-6.04577 -10.43974,-10.43885 -20.22852,-13.2461 0,0 -2.18816,-0.63649 -4.76758,-1.37695 -2.56315,-0.74046 -5.5334,-1.58599 -7.04687,-2.02539 -2.50619,-0.71605 -4.43505,-2.16462 -5.57422,-4.01172 -1.13104,-1.83895 -1.4729,-4.07678 -0.83008,-6.36328 0.67536,-2.37599 2.30305,-4.27198 4.64649,-5.58203 2.35972,-1.30193 5.45164,-2.01758 9.06445,-2.01758 h 52.076167 c 0.36616,-0.5289 0.70025,-1.10587 1.06641,-1.63477 9.51211,-13.45855 21.02637,-24.34571 33.63867,-32.03515 z m 234.068357,0 c -23.17409,0 -40.4252,11.72452 -48.57031,33.66992 l -39.36719,108.16406 h 43.12695 l 20.22852,-55.59961 38.11328,0.0254 10.8457,-29.78125 -37.99023,-0.0254 6.11914,-17.24218 c 1.26936,-3.09205 4.32023,-5.54883 8.7793,-5.54883 2.48177,0 30.46379,0.008 44.93945,0.0156 0.37431,-0.53703 0.70806,-1.11368 1.07422,-1.64258 9.51211,-13.45855 22.9795,-24.34571 35.5918,-32.03515 h -82.89063 z m 200.07227,0.0781 -51.64649,141.84375 h 43.86719 l 18.77148,-49.92773 c 0.91948,2.05865 11.99414,49.92773 11.99414,49.92773 h 46.1211 c 0,0 -8.38882,-35.17566 -14.55664,-49.38281 -1.5867,-3.6535 -3.23988,-7.74621 -5.45313,-11.17187 13.02729,-4.8415 31.90499,-15.23255 39.72461,-36.29102 4.80081,-12.94591 4.52535,-23.41082 -0.8125,-31.08398 -6.4689,-9.31684 -19.6345,-13.88965 -40.26172,-13.91407 z m 89.97656,0.002 c 2.77471,2.19698 5.16659,4.70219 7.16015,7.5664 5.10188,7.35583 7.05422,16.09667 5.89063,26.11328 h 26.12109 l -39.36718,108.19727 h 39.33398 l 39.39063,-108.19727 h 50.53906 l 12.26172,-33.67968 z m -61.07422,29.2832 h 7.24219 c 13.23883,0.009 18.17683,3.88144 13.69336,15.96484 -4.20682,11.34294 -11.77401,18.34961 -26.16016,18.34961 h -0.0566 l -7.44531,-0.008 12.72656,-34.30664 z m -348.24609,0.70312 h 0.008 c 13.47481,0.0163 16.55966,7.82841 4.72851,40.19727 h -0.002 c -12.15664,33.27207 -20.97632,41.64453 -34.25586,41.64453 h -0.0254 c -12.93777,-0.008 -17.47695,-8.19503 -5.36914,-41.3125 9.04018,-24.72011 20.74955,-40.5293 34.91602,-40.5293 z m 235.12695,0 h 0.0156 c 13.46668,0.0163 16.55804,7.82841 4.71875,40.19727 -12.1485,33.27207 -20.97664,41.64453 -34.24804,41.64453 h -0.0312 c -12.94592,-0.008 -17.46296,-8.19503 -5.36328,-41.3125 9.03203,-24.72011 20.74987,-40.5293 34.9082,-40.5293 z" />\n    <path fill="#ffffff" \n       d="m -38.137977,446.12186 c -2.75844,0 -4.8257,0.50371 -6.20898,1.48828 -1.37515,1.00899 -2.53105,2.79168 -3.4668,5.3711 -0.9032,2.47364 -1.0406,4.18958 -0.41406,5.16601 0.62655,0.98458 2.32587,1.47266 5.125,1.47266 2.79097,0 4.87517,-0.50404 6.24219,-1.5293 1.36701,-1.01712 2.51411,-2.79134 3.43359,-5.33008 0.91134,-2.50618 1.06568,-4.23092 0.44726,-5.19921 -0.60213,-0.96017 -2.32654,-1.43946 -5.1582,-1.43946 z m 23.7832,0 c -2.79912,0 -4.87354,0.50371 -6.23242,1.48828 -1.36701,1.00899 -2.51347,2.79168 -3.44922,5.3711 -0.89506,2.47364 -1.04157,4.18958 -0.43945,5.16601 0.61028,0.98458 2.30244,1.47266 5.10156,1.47266 2.79098,0 4.8742,-0.50404 6.26563,-1.5293 1.38329,-1.01712 2.53723,-2.79134 3.4648399,-5.33008 0.91134,-2.50618 1.05038,-4.23092 0.42383,-5.19921 -0.63469,-0.96017 -2.3437899,-1.43946 -5.1347699,-1.43946 z m 443.980467,18.45117 c -3.23851,0 -6.44312,0.41613 -9.63281,1.2461 -3.1897,0.83811 -6.15269,2.09885 -8.88672,3.7832 -2.74216,1.69249 -5.19007,3.80827 -7.3789,6.36328 -2.18072,2.56315 -3.88264,5.53364 -5.11133,8.90235 -1.07408,2.94558 -1.55302,5.45893 -1.44727,7.5664 0.0976,2.09934 0.56814,3.93087 1.40625,5.46875 0.82996,1.54603 1.93703,2.86408 3.32031,3.97071 1.37516,1.10662 2.83972,2.09842 4.41016,2.96093 1.57044,0.87066 3.10013,1.70941 4.60547,2.48243 1.48906,0.78114 2.77586,1.61079 3.8418,2.50585 1.08221,0.88693 1.8373,1.9038 2.29297,3.04297 0.45567,1.14732 0.39217,2.51453 -0.18555,4.10938 -0.50449,1.37515 -1.21334,2.62905 -2.13281,3.75195 -0.91948,1.13104 -2.00179,2.07529 -3.23047,2.83203 -1.24495,0.76488 -2.62032,1.35845 -4.15821,1.77344 -1.52975,0.41499 -3.16493,0.62695 -4.90625,0.62695 -2.65265,0 -4.87392,-0.30216 -6.66406,-0.90429 -1.79012,-0.594 -3.28662,-1.26019 -4.47461,-1.98438 -1.17986,-0.72419 -2.13224,-1.38419 -2.83203,-1.98633 -0.71605,-0.594 -1.32722,-0.89453 -1.83984,-0.89453 -0.35803,0 -0.70676,0.0974 -1.05664,0.30078 -0.34177,0.19529 -0.68397,0.52806 -1.01758,1 -0.33361,0.47195 -0.6755,1.0906 -1.02539,1.85547 -0.34989,0.75674 -0.73996,1.70946 -1.13867,2.82422 -0.61028,1.67622 -0.97761,2.95291 -1.09961,3.83984 -0.13019,0.88693 -0.0315,1.57103 0.26953,2.04297 0.2848,0.47195 0.87054,1.01636 1.71679,1.63477 0.83811,0.61027 1.96014,1.20417 3.35157,1.76562 1.39142,0.56145 3.05949,1.0427 4.99609,1.44141 1.94474,0.39871 4.13345,0.59375 6.56641,0.59375 3.5884,0 7.13782,-0.47245 10.63672,-1.4082 3.4989,-0.94389 6.7696,-2.35116 9.80468,-4.22266 3.04323,-1.86336 5.75195,-4.19112 8.15235,-6.99023 2.39227,-2.79098 4.26449,-6.03792 5.61523,-9.74024 1.02526,-2.83166 1.48888,-5.28803 1.375,-7.37109 -0.11392,-2.08307 -0.59483,-3.90547 -1.44922,-5.44336 -0.85437,-1.54603 -1.98455,-2.86375 -3.40039,-3.97852 -1.4077,-1.09849 -2.90613,-2.09223 -4.47656,-2.96289 -1.5623,-0.87065 -3.11478,-1.6915 -4.64453,-2.47265 -1.52975,-0.78115 -2.84844,-1.62089 -3.95508,-2.50782 -1.11476,-0.88693 -1.88874,-1.90379 -2.32812,-3.04297 -0.43127,-1.13917 -0.36648,-2.49824 0.20312,-4.06054 0.38244,-1.04967 0.9376,-2.04212 1.66992,-2.99414 0.71605,-0.94389 1.58608,-1.74879 2.61133,-2.41602 1.02526,-0.66723 2.18051,-1.19569 3.48242,-1.57812 1.30191,-0.38244 2.73458,-0.57032 4.29688,-0.57032 1.99355,0 3.74336,0.23607 5.23242,0.73243 1.48906,0.48821 2.75698,1.02449 3.80664,1.63476 1.04968,0.594 1.92,1.14753 2.60352,1.66016 0.69163,0.51263 1.23833,0.75781 1.6289,0.75781 0.40685,0 0.75687,-0.10647 1.07422,-0.32617 0.31734,-0.2197 0.62666,-0.56126 0.92774,-1.0332 0.29292,-0.47195 0.59249,-1.07464 0.91796,-1.79883 0.31734,-0.71606 0.67616,-1.61049 1.0586,-2.66016 0.34176,-0.94389 0.60972,-1.74064 0.79687,-2.36719 0.20343,-0.64282 0.3255,-1.16509 0.39063,-1.58007 0.057,-0.41499 0.0735,-0.75557 0.041,-1.00782 -0.0407,-0.25224 -0.1706,-0.56971 -0.39843,-0.92773 -0.22784,-0.35803 -0.80677,-0.8142 -1.73438,-1.35938 -0.93575,-0.54517 -2.04216,-1.03326 -3.33594,-1.47265 -1.28565,-0.43126 -2.72448,-0.77315 -4.29492,-1.02539 -1.58671,-0.26039 -3.20724,-0.38282 -4.86719,-0.38282 z m 225.99414,0.0469 c -5.54941,0 -10.88672,0.85374 -16.02929,2.5625 -5.14256,1.70876 -9.88631,4.15699 -14.25586,7.37109 -4.35328,3.21411 -8.25077,7.11192 -11.66016,11.70118 -3.40939,4.59738 -6.1601,9.77385 -8.26758,15.54296 -2.02611,5.58196 -3.03489,10.58619 -2.99414,14.98828 0.0163,4.41024 1.01751,8.1534 2.97852,11.2129 1.96915,3.06763 4.88103,5.40222 8.74609,7.02148 3.84879,1.61112 8.5922,2.41602 14.21485,2.41602 1.92846,0 3.8746,-0.0886 5.84375,-0.26758 1.96913,-0.18715 3.95339,-0.45643 5.95507,-0.81446 2.00984,-0.36616 3.96412,-0.79791 5.89258,-1.31054 1.92847,-0.51263 3.56333,-0.99095 4.91406,-1.46289 1.35074,-0.48008 2.36729,-1.12381 3.05079,-1.9375 0.66723,-0.8137 1.21294,-1.76512 1.60351,-2.85547 l 10.20313,-28.02344 c 0.26038,-0.73233 0.40757,-1.37605 0.42383,-1.9375 0.0244,-0.56145 -0.0563,-1.04074 -0.25977,-1.43945 -0.20343,-0.39871 -0.48866,-0.7012 -0.87109,-0.89649 -0.38244,-0.20342 -0.86369,-0.30859 -1.44141,-0.30859 h -23.7832 c -0.32548,0 -0.65109,0.10517 -0.97657,0.30859 -0.32547,0.19529 -0.65043,0.50462 -0.99218,0.92774 -0.32548,0.41498 -0.66801,0.96037 -1.00977,1.66015 -0.34175,0.68351 -0.70024,1.53789 -1.06641,2.54688 -0.71605,1.96914 -1.04168,3.35232 -0.97656,4.16601 0.0732,0.82184 0.43108,1.22852 1.08203,1.22852 h 13.33789 l -5.94922,16.32422 c -1.60298,0.72419 -3.25477,1.2686 -4.94726,1.63476 -1.68436,0.35803 -3.33484,0.54493 -4.92969,0.54493 -3.27105,0 -6.06377,-0.52846 -8.38281,-1.57813 -2.31904,-1.05781 -4.06689,-2.61257 -5.23047,-4.6875 -1.17172,-2.05865 -1.73398,-4.62995 -1.69336,-7.68945 0.0488,-3.06764 0.80488,-6.62292 2.26953,-10.64258 1.33448,-3.66977 3.08394,-7.01406 5.24024,-10.04102 2.14816,-3.02695 4.59768,-5.62267 7.33984,-7.78711 2.75029,-2.15629 5.72079,-3.82404 8.90234,-5.0039 3.1897,-1.17172 6.48514,-1.76563 9.89454,-1.76563 3.18968,0 5.87397,0.32561 8.05468,0.97657 2.16443,0.65095 3.98815,1.36631 5.46094,2.12304 1.45651,0.76488 2.59647,1.47209 3.41016,2.12305 0.8137,0.65096 1.45547,0.97656 1.93554,0.97656 0.31735,0 0.63449,-0.0886 0.93555,-0.26758 0.30921,-0.18715 0.61951,-0.50559 0.95313,-0.95312 0.32548,-0.45567 0.66704,-1.0652 1.0332,-1.83008 0.3743,-0.75674 0.74842,-1.66094 1.13086,-2.71875 0.6591,-1.81454 1.05019,-3.17981 1.16406,-4.10742 0.13019,-0.91948 0.0315,-1.63581 -0.26953,-2.14844 -0.3092,-0.51263 -0.9513,-1.10718 -1.92773,-1.79883 -0.98457,-0.6835 -2.3111,-1.33373 -3.9629,-1.92773 -1.64366,-0.60214 -3.64645,-1.1065 -5.99804,-1.52148 -2.35158,-0.42313 -5.05248,-0.63477 -8.09571,-0.63477 z m -444.88867,0.86914 c -1.85523,0 -3.311,0.0488 -4.37695,0.14648 -1.06594,0.0895 -1.89591,0.33371 -2.49805,0.73243 -0.60212,0.39871 -1.0163,0.96819 -1.24414,1.71679 -0.23597,0.74047 -0.42352,1.76612 -0.57812,3.07617 l -6.36328,61.4336 c -0.10573,0.87879 -0.0814,1.57071 0.0488,2.09961 0.13833,0.52076 0.51994,0.91865 1.14649,1.19531 0.62655,0.26852 1.54703,0.45542 2.76758,0.54492 1.22053,0.0895 2.88113,0.13086 4.98047,0.13086 2.00168,0 3.62028,-0.0414 4.86523,-0.13086 1.24496,-0.0895 2.28591,-0.28324 3.09961,-0.57617 0.80556,-0.28479 1.47336,-0.6918 1.99414,-1.2207 0.51262,-0.52077 1.01763,-1.20486 1.50586,-2.04297 l 26.9082,-44.62305 h 0.10547 l -4.9707,44.62305 c -0.13834,0.87879 -0.13834,1.57071 0,2.09961 0.13019,0.52076 0.51212,0.91865 1.13867,1.19531 0.62654,0.26852 1.54509,0.45542 2.76562,0.54492 1.22055,0.0895 2.86486,0.13086 4.93164,0.13086 1.84711,0 3.39242,-0.0414 4.6211,-0.13086 1.22869,-0.0895 2.27842,-0.2764 3.13281,-0.54492 0.86251,-0.27666 1.58699,-0.67455 2.14844,-1.19531 0.57772,-0.5289 1.13907,-1.22082 1.66797,-2.09961 l 38.46484,-61.27149 c 0.8137,-1.34259 1.39067,-2.40862 1.73242,-3.18164 0.33357,-0.78928 0.37335,-1.37472 0.1211,-1.77343 -0.26038,-0.39871 -0.80382,-0.64291 -1.65821,-0.73243 -0.86251,-0.0976 -2.09102,-0.14648 -3.67773,-0.14648 -1.70876,0 -3.05286,0.0488 -4.0293,0.14648 -0.97644,0.0895 -1.76537,0.25231 -2.35937,0.48829 -0.58587,0.23597 -1.05734,0.56157 -1.38281,0.97656 -0.33362,0.42312 -0.66704,0.91837 -0.98438,1.49609 l -31.92188,53.76953 h -0.10546 l 6.20898,-53.55664 c 0.11388,-0.71605 0.12856,-1.30279 0.0391,-1.74218 -0.0977,-0.42313 -0.38124,-0.76403 -0.86132,-1 -0.48008,-0.23598 -1.21369,-0.39161 -2.22266,-0.46485 -1.01713,-0.0732 -2.38369,-0.11328 -4.125,-0.11328 -1.63553,0 -2.96172,0.0488 -3.9707,0.14648 -1.01713,0.0895 -1.84741,0.25231 -2.49024,0.48829 -0.65096,0.23597 -1.17192,0.56874 -1.5625,1 -0.39871,0.43939 -0.78879,1.01017 -1.1875,1.68554 l -32.32812,53.55664 h -0.0566 l 7.27539,-53.93164 c 0.14646,-0.69164 0.1934,-1.22108 0.14453,-1.60351 -0.0407,-0.38244 -0.27546,-0.67386 -0.71485,-0.86914 -0.4394,-0.20343 -1.13881,-0.32585 -2.11523,-0.38282 -0.98458,-0.0569 -2.32053,-0.0898 -4.0293,-0.0898 z m 169.82813,0.004 c -1.38329,0 -2.5483,0.0563 -3.49219,0.16211 -0.94389,0.11391 -1.73283,0.26043 -2.35938,0.43945 -0.62653,0.17901 -1.11332,0.41605 -1.45507,0.70898 -0.34175,0.29293 -0.57847,0.61854 -0.7168,0.97657 l -24.19922,66.50195 c -0.13019,0.36616 -0.13832,0.6934 0,0.98633 0.12205,0.28479 0.42227,0.5202 0.90235,0.69922 0.48822,0.18715 1.16384,0.33367 2.05078,0.43945 0.87878,0.10578 2.01742,0.16211 3.39257,0.16211 1.41583,0 2.59681,-0.0563 3.54883,-0.16211 0.94389,-0.10578 1.72404,-0.2523 2.32617,-0.43945 0.61842,-0.17902 1.09151,-0.41443 1.44141,-0.69922 0.33361,-0.29293 0.56903,-0.62017 0.69922,-0.98633 l 24.20703,-66.50195 c 0.13894,-0.35803 0.138,-0.68364 0.008,-0.97657 -0.1302,-0.29293 -0.43788,-0.52997 -0.91797,-0.70898 -0.47193,-0.17901 -1.14725,-0.32554 -2.00976,-0.43945 -0.87066,-0.10578 -2.01809,-0.16211 -3.42578,-0.16211 z m -435.378907,0.002 c -1.41584,0 -2.59485,0.0583 -3.54687,0.16406 -0.94389,0.11392 -1.73479,0.26044 -2.36133,0.43945 -0.62655,0.17902 -1.10648,0.41411 -1.42383,0.70704 -0.32548,0.28479 -0.55308,0.6104 -0.69141,0.97656 l -15.58203,42.83203 c -1.63552,4.49974 -2.4245,8.42296 -2.35937,11.77539 0.0732,3.36057 0.90223,6.15849 2.52148,8.4043 1.61113,2.25394 3.97925,3.93048 7.0957,5.03711 3.10833,1.10662 6.88404,1.66015 11.31055,1.66015 4.71945,0 9.11284,-0.61897 13.18945,-1.84765 4.07663,-1.23682 7.77974,-3.02505 11.09961,-5.38477 3.32803,-2.35158 6.24968,-5.24067 8.75586,-8.6582 2.51433,-3.40939 4.55652,-7.26716 6.12696,-11.58789 l 15.3710899,-42.23047 c 0.13825,-0.36616 0.13731,-0.69177 0.0234,-0.97656 -0.10578,-0.29294 -0.39883,-0.52802 -0.87891,-0.70704 -0.48009,-0.17901 -1.1378,-0.32554 -1.99219,-0.43945 -0.84623,-0.10578 -1.9624099,-0.16406 -3.3456999,-0.16406 -1.37515,0 -2.54537,0.0583 -3.51367,0.16406 -0.96016,0.11392 -1.74292,0.26044 -2.36133,0.43945 -0.61026,0.17902 -1.07296,0.41411 -1.39844,0.70704 -0.32548,0.28479 -0.54525,0.6104 -0.68359,0.97656 l -15.42773,42.39453 c -0.89507,2.4655 -2.04315,4.6705 -3.41016,6.61523 -1.38329,1.94474 -2.92958,3.57049 -4.64648,4.88868 -1.71691,1.32632 -3.58685,2.32756 -5.6211,3.02734 -2.01796,0.6835 -4.1585,1.0332 -6.4043,1.0332 -2.2214,0 -4.10208,-0.33244 -5.65625,-1.00781 -1.54602,-0.67537 -2.71788,-1.67693 -3.52343,-3.01953 -0.79743,-1.3426 -1.17028,-3.0351 -1.11328,-5.09375 0.057,-2.04238 0.5942,-4.46651 1.61132,-7.26563 l 15.13477,-41.57226 c 0.13019,-0.36616 0.13019,-0.69177 0,-0.97656 -0.13019,-0.29294 -0.43204,-0.52802 -0.91211,-0.70704 -0.48009,-0.17901 -1.15505,-0.32554 -2.01758,-0.43945 -0.87065,-0.10578 -1.99399,-0.16406 -3.36914,-0.16406 z m 527.986327,0.002 c -1.41583,0 -2.59485,0.0563 -3.54688,0.16211 -0.94388,0.10578 -1.73282,0.25263 -2.35937,0.43164 -0.62655,0.18715 -1.10812,0.42419 -1.43359,0.70899 -0.32549,0.29293 -0.54527,0.61821 -0.6836,0.98437 l -15.58203,42.82422 c -1.63554,4.49974 -2.42481,8.43077 -2.35156,11.7832 0.057,3.36057 0.89473,6.1585 2.50586,8.4043 1.61925,2.25394 3.98087,3.93048 7.10547,5.03711 3.10831,1.10663 6.88208,1.66016 11.30859,1.66016 4.7113,0 9.10664,-0.61898 13.19141,-1.84766 4.07661,-1.23682 7.76963,-3.027 11.09765,-5.38672 3.32801,-2.35972 6.24154,-5.23872 8.75586,-8.65625 2.51433,-3.40939 4.54838,-7.2753 6.12696,-11.58789 l 15.37109,-42.23047 c 0.13825,-0.36616 0.13731,-0.69144 0.0234,-0.98437 -0.11393,-0.2848 -0.39687,-0.52184 -0.87696,-0.70899 -0.48007,-0.17901 -1.13976,-0.32586 -1.99414,-0.43164 -0.84625,-0.10577 -1.9686,-0.16211 -3.34375,-0.16211 -1.37515,0 -2.54732,0.0563 -3.51562,0.16211 -0.96016,0.10578 -1.74097,0.25263 -2.35938,0.43164 -0.61027,0.18715 -1.08305,0.42419 -1.40039,0.70899 -0.32547,0.29293 -0.54527,0.61821 -0.68359,0.98437 l -15.42774,42.39258 c -0.9032,2.4655 -2.04314,4.6705 -3.41015,6.61523 -1.38329,1.94474 -2.92763,3.5643 -4.64453,4.89063 -1.7169,1.32632 -3.58881,2.32789 -5.62305,3.01953 -2.02611,0.69164 -4.17445,1.04102 -6.41211,1.04102 -2.21325,0 -4.09233,-0.34058 -5.64648,-1.00782 -1.54603,-0.67536 -2.72569,-1.67693 -3.53125,-3.01953 -0.79743,-1.3426 -1.17255,-3.04323 -1.10743,-5.09375 0.0488,-2.04238 0.59422,-4.46651 1.61133,-7.26562 l 15.12695,-41.57227 c 0.13834,-0.36616 0.13021,-0.69144 0,-0.98437 -0.12205,-0.2848 -0.43234,-0.52184 -0.90429,-0.70899 -0.48008,-0.17901 -1.15507,-0.32586 -2.01758,-0.43164 -0.87066,-0.10577 -1.99399,-0.16211 -3.36914,-0.16211 z m 122.36719,0.10547 c -1.31005,0 -2.3927,0.0492 -3.27149,0.13867 -0.86252,0.0895 -1.58568,0.2432 -2.17969,0.46289 -0.58586,0.2197 -1.04202,0.47302 -1.35937,0.75782 -0.32547,0.29293 -0.55341,0.61821 -0.68359,0.98437 l -12.03516,33.03516 c -0.9032,2.50618 -1.82922,5.13447 -2.78125,7.88476 -0.95203,2.75844 -1.83897,5.41049 -2.64453,7.94922 h -0.0586 c -0.13018,-1.45652 -0.25881,-2.90318 -0.42968,-4.35156 -0.16274,-1.45652 -0.32685,-2.93021 -0.50586,-4.43555 -0.17901,-1.51347 -0.38936,-3.01028 -0.61719,-4.51562 -0.23597,-1.51348 -0.46357,-3.04317 -0.69141,-4.60547 l -4.3457,-25.73828 c -0.17087,-1.41584 -0.41573,-2.60234 -0.7168,-3.5625 -0.30921,-0.96016 -0.73249,-1.70873 -1.26953,-2.25391 -0.55331,-0.54518 -1.25303,-0.94567 -2.10742,-1.18164 -0.85437,-0.23598 -1.97641,-0.34961 -3.35156,-0.34961 h -7.67383 c -1.44839,0 -2.83056,0.4311 -4.14062,1.27734 -1.31005,0.85439 -2.27028,2.13304 -2.88868,3.8418 l -23.03711,63.28906 c -0.13825,0.35803 -0.16278,0.69145 -0.0977,0.98438 0.0895,0.28479 0.32622,0.52932 0.7168,0.72461 0.40685,0.20342 1.0014,0.35874 1.79882,0.47265 0.79743,0.10578 1.82244,0.16211 3.0918,0.16211 1.30191,0 2.39237,-0.0563 3.2793,-0.16211 0.87065,-0.11391 1.58698,-0.26923 2.14843,-0.47265 0.56145,-0.19529 0.99126,-0.43982 1.3086,-0.72461 0.29292,-0.29293 0.51433,-0.62635 0.64453,-0.98438 l 13.41797,-36.84375 c 1.00085,-2.75843 1.94411,-5.43588 2.80664,-8.02343 0.87879,-2.5957 1.71592,-5.20054 2.52148,-7.8125 h 0.10547 c 0.0488,2.14002 0.19599,4.34697 0.42383,6.61718 0.2197,2.26208 0.48799,4.37689 0.78906,6.3379 l 5.54102,32.92187 c 0.25225,1.81454 0.529,3.29637 0.83008,4.43555 0.31733,1.13917 0.74063,2.04956 1.26953,2.71679 0.54517,0.67537 1.22082,1.14034 2.05078,1.39258 0.83811,0.26039 1.8885,0.38086 3.16601,0.38086 h 6.08594 c 0.69164,0 1.40765,-0.0974 2.15625,-0.30078 0.74046,-0.19529 1.44084,-0.51991 2.0918,-0.95117 0.64281,-0.4394 1.2289,-0.98413 1.75781,-1.62696 0.5289,-0.65909 0.94308,-1.40017 1.24414,-2.23828 l 23.04297,-63.28906 c 0.13025,-0.36616 0.16341,-0.69144 0.082,-0.98437 -0.0732,-0.2848 -0.30148,-0.53812 -0.67578,-0.75782 -0.3743,-0.21969 -0.96006,-0.37337 -1.76562,-0.46289 -0.79743,-0.0895 -1.8143,-0.13867 -3.04297,-0.13867 z m -508.093747,0.21875 c -1.20428,0 -2.33575,0.35068 -3.41797,1.0586 -1.07408,0.71605 -1.89461,1.86218 -2.48047,3.45703 l -22.34375,61.38476 c -0.57769,1.60299 -0.58684,2.75107 -0.0254,3.45899 0.56145,0.70791 1.44092,1.0664 2.62891,1.0664 h 35.37109 c 0.33361,0 0.66769,-0.10712 1.01758,-0.31054 0.33362,-0.19529 0.68396,-0.50397 1.01757,-0.94336 0.34989,-0.4394 0.683,-1.00888 1.041017,-1.7168 0.34175,-0.70792 0.70741,-1.58705 1.08984,-2.63672 0.38244,-1.04967 0.65107,-1.93694 0.83008,-2.63672 0.16269,-0.70791 0.23532,-1.28521 0.21094,-1.72461 -0.0163,-0.43126 -0.1387,-0.74774 -0.33398,-0.95117 -0.19529,-0.18715 -0.46358,-0.29297 -0.78907,-0.29297 H 75.903033 l 7.22461,-19.86328 h 21.279287 c 0.32548,0 0.65825,-0.0882 1,-0.27539 0.33362,-0.17901 0.66833,-0.4815 1.00196,-0.89648 0.33361,-0.41499 0.6742,-0.96656 1.00781,-1.65821 0.34989,-0.69164 0.70741,-1.56361 1.08984,-2.61328 0.3743,-1.01712 0.64391,-1.87997 0.80664,-2.58789 0.17093,-0.69978 0.23563,-1.26047 0.20313,-1.68359 -0.0244,-0.41499 -0.13837,-0.73245 -0.3418,-0.92774 -0.20342,-0.19529 -0.45545,-0.30078 -0.78906,-0.30078 H 87.115923 l 6.24805,-17.19336 H 118.5085 c 0.33362,0 0.6589,-0.0974 0.98437,-0.30078 0.32549,-0.20342 0.65825,-0.51373 1,-0.95312 0.34175,-0.43126 0.67549,-1.00888 1.02539,-1.7168 0.34989,-0.69978 0.70773,-1.56263 1.08203,-2.58789 0.39872,-1.08222 0.67482,-1.97731 0.84571,-2.69336 0.1627,-0.69978 0.24476,-1.28457 0.22851,-1.74024 -0.0244,-0.44753 -0.12112,-0.76434 -0.3164,-0.94336 -0.17902,-0.179 -0.44015,-0.27734 -0.76563,-0.27734 H 87.440143 Z m 59.052727,0 c -1.19614,0 -2.33413,0.35068 -3.4082,1.0586 -1.07409,0.71605 -1.9047,1.86218 -2.48242,3.45703 l -23.27149,63.94921 c -0.13012,0.36617 -0.14708,0.69177 -0.0332,0.97657 0.11392,0.29293 0.40631,0.52802 0.89453,0.70703 0.47194,0.17901 1.15604,0.33368 2.04297,0.43945 0.87879,0.10578 2.00929,0.16211 3.39258,0.16211 1.4077,0 2.59712,-0.0563 3.54101,-0.16211 0.95203,-0.10578 1.73185,-0.26044 2.33399,-0.43945 0.61026,-0.17901 1.08989,-0.4141 1.43164,-0.70703 0.33361,-0.2848 0.57879,-0.6104 0.70898,-0.97657 l 9.76367,-26.83593 h 4.46875 c 1.51348,0 2.77293,0.23476 3.76563,0.71484 0.98457,0.47194 1.75919,1.16418 2.3125,2.0918 0.55331,0.92761 0.93427,2.0757 1.16211,3.45898 0.22784,1.37515 0.39155,2.95238 0.51367,4.73438 l 0.58594,15.7207 c -0.0163,0.4394 0.0313,0.81417 0.1289,1.11523 0.11392,0.30921 0.392,0.57034 0.84766,0.76563 0.44754,0.20342 1.1134,0.33301 1.99219,0.40625 0.88692,0.0732 2.08353,0.11328 3.61328,0.11328 1.81455,0 3.26381,-0.04 4.33789,-0.11328 1.08222,-0.0732 1.91902,-0.19599 2.5293,-0.375 0.61841,-0.18715 1.04299,-0.41507 1.28711,-0.68359 0.2441,-0.26852 0.43947,-0.60911 0.58593,-1.00782 0.1302,-0.35802 0.21871,-0.86336 0.26758,-1.49804 0.0488,-0.63469 0.0563,-1.64243 0.0156,-3.01758 l -0.88672,-13.875 c -0.0814,-1.66808 -0.24417,-3.16391 -0.48828,-4.49024 -0.23598,-1.31818 -0.58601,-2.50762 -1.02539,-3.54101 -0.4394,-1.0334 -0.98316,-1.91058 -1.6504,-2.63477 -0.65908,-0.73232 -1.41612,-1.34316 -2.29492,-1.84765 2.43295,-0.69165 4.70275,-1.60366 6.81836,-2.72657 2.1156,-1.1229 4.02723,-2.44876 5.74414,-3.97851 1.7169,-1.52161 3.22316,-3.24667 4.53321,-5.19141 1.30191,-1.9366 2.38356,-4.08559 3.24609,-6.44531 1.01712,-2.79912 1.49778,-5.27111 1.45703,-7.43555 -0.0569,-2.15629 -0.5851,-4.02103 -1.58594,-5.59961 -1.00085,-1.57857 -2.45858,-2.85559 -4.3789,-3.83203 -1.90405,-0.98457 -4.19924,-1.67551 -6.89258,-2.07422 -0.93575,-0.10578 -1.9842,-0.19629 -3.16406,-0.26953 -1.17173,-0.0732 -2.67831,-0.11328 -4.52539,-0.11328 h -18.23438 z m 171.94336,0 c -1.19614,0 -2.33607,0.35068 -3.41016,1.0586 -1.07407,0.71605 -1.90469,1.86218 -2.48242,3.45703 l -22.34375,61.38476 c -0.57778,1.60299 -0.59433,2.75107 -0.041,3.45899 0.56958,0.70791 1.4484,1.0664 2.64453,1.0664 h 35.37109 c 0.33361,0 0.66802,-0.10712 1.00977,-0.31054 0.3499,-0.19529 0.68396,-0.50397 1.01758,-0.94336 0.35802,-0.4394 0.69926,-1.00888 1.04101,-1.7168 0.34989,-0.70792 0.71522,-1.58705 1.09766,-2.63672 h 0.002 c 0.38244,-1.04967 0.65725,-1.93694 0.82813,-2.63672 0.15455,-0.70791 0.23757,-1.28521 0.20507,-1.72461 -0.0163,-0.43126 -0.13056,-0.74774 -0.33398,-0.95117 -0.19529,-0.18715 -0.46358,-0.29297 -0.78906,-0.29297 h -25.35547 l 7.22656,-19.86328 h 21.27734 c 0.33362,0 0.65825,-0.0882 1,-0.27539 0.34175,-0.17901 0.67615,-0.4815 1.00977,-0.89648 0.33361,-0.41499 0.66802,-0.96656 1.00977,-1.65821 0.34175,-0.69164 0.7074,-1.56361 1.08984,-2.61328 0.36616,-1.01712 0.63414,-1.87997 0.79687,-2.58789 0.17094,-0.69978 0.24344,-1.26047 0.21094,-1.68359 -0.0244,-0.41499 -0.14455,-0.73245 -0.33984,-0.92774 -0.20343,-0.19529 -0.46553,-0.30078 -0.79102,-0.30078 h -21.27734 l 6.25781,-17.19336 h 25.13477 c 0.32548,0 0.65857,-0.0974 0.99218,-0.30078 0.31735,-0.20342 0.65858,-0.51373 0.99219,-0.95312 0.34175,-0.43126 0.69177,-1.00888 1.02539,-1.7168 0.35803,-0.69978 0.7175,-1.56263 1.0918,-2.58789 0.39871,-1.08222 0.667,-1.97731 0.83789,-2.69336 0.17082,-0.69978 0.24281,-1.28457 0.22656,-1.74024 -0.0163,-0.44753 -0.12144,-0.76434 -0.30859,-0.94336 -0.18715,-0.179 -0.43983,-0.27734 -0.77344,-0.27734 H 318.4363 Z m -298.533197,0.004 c -1.19614,0 -2.33608,0.35067 -3.41016,1.05859 -1.07407,0.70792 -1.89656,1.85405 -2.48242,3.45703 l -22.3437501,61.38477 c -0.57768,1.59484 -0.59465,2.74325 -0.0332,3.45117 0.56145,0.70792 1.44058,1.06641 2.63671,1.06641 H 12.994833 c 2.82354,0 5.45996,-0.1716 7.88477,-0.52149 2.43295,-0.34175 4.79131,-0.87932 7.08594,-1.60351 2.29462,-0.72419 4.49246,-1.65054 6.59179,-2.77344 2.09934,-1.1229 4.02824,-2.46537 5.81836,-4.01953 1.782,-1.5623 3.38431,-3.37038 4.81641,-5.39649 1.43211,-2.03424 2.60429,-4.29459 3.51562,-6.80078 0.87066,-2.39227 1.29391,-4.55819 1.26954,-6.47851 -0.0326,-1.92033 -0.4083,-3.59524 -1.14063,-5.02735 -0.73232,-1.4321 -1.77394,-2.60428 -3.13281,-3.51562 -1.35886,-0.90321 -2.96086,-1.54627 -4.82422,-1.9043 1.76571,-0.57772 3.43379,-1.34322 4.99609,-2.28711 1.56229,-0.94389 2.97804,-2.03304 4.26368,-3.26172 1.27751,-1.23682 2.408,-2.60403 3.39257,-4.10937 0.98457,-1.50534 1.78166,-3.10765 2.40821,-4.81641 1.11476,-3.04323 1.53024,-5.69755 1.26172,-7.94336 -0.26852,-2.25394 -1.16426,-4.11737 -2.67774,-5.58203 -1.51347,-1.47279 -3.63708,-2.57073 -6.37109,-3.29492 -2.72589,-0.72419 -6.24796,-1.08203 -10.56055,-1.08203 z m 5.89844,10.71679 h 7.23437 c 2.21325,0 3.90607,0.20286 5.08594,0.60157 1.17986,0.39871 2.06583,0.96819 2.66797,1.71679 0.60213,0.74047 0.91117,1.67593 0.93554,2.79883 0.0244,1.13104 -0.21198,2.39276 -0.72461,3.8086 -0.46381,1.2775 -1.10622,2.47378 -1.91992,3.62109 -0.82184,1.13918 -1.78888,2.13976 -2.91992,2.99414 -1.1229,0.85438 -2.39308,1.52155 -3.80078,2.00977 -1.41583,0.48821 -3.14967,0.74023 -5.22461,0.74023 h -7.99024 z m 126.777337,0.21485 h 6.41992 c 1.63553,0 2.89822,0.0661 3.78516,0.17187 0.88692,0.10578 1.65144,0.251 2.31054,0.42188 2.15629,0.66723 3.47338,1.78178 3.94532,3.38476 0.47195,1.59485 0.27756,3.55597 -0.56055,5.875 -0.56145,1.52162 -1.30937,2.90609 -2.26953,4.13477 -0.95203,1.23682 -2.1089,2.30252 -3.44336,3.18945 -1.3426,0.88693 -2.85569,1.57005 -4.56445,2.06641 -1.70063,0.48822 -3.56342,0.73242 -5.59766,0.73242 h -7.29102 z M 15.336633,505.28232 h 8.48828 c 2.61197,0 4.64471,0.23508 6.10938,0.70703 1.45651,0.47194 2.56421,1.13911 3.30469,2.00977 0.72418,0.87065 1.12987,1.95264 1.20312,3.23828 0.0814,1.28564 -0.17748,2.74337 -0.77148,4.3789 -0.56959,1.57044 -1.35073,2.95361 -2.35157,4.16602 -1.01712,1.21241 -2.16521,2.22927 -3.45898,3.04297 -1.29379,0.82183 -2.70137,1.43234 -4.21485,1.85547 -1.51347,0.42312 -3.26262,0.61718 -5.24804,0.61718 H 8.0553829 Z" />\n  </g>\n</svg>\n';
+    },
     "./src/resources/fundingLogos/venmo_blue.svg": function(module, exports) {
         module.exports = '<svg width="101" height="32" viewBox="0 0 101 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n        <g id="Blue" fill="#3D93CE">\n            <g id="Logo" transform="translate(0.000000, 6.000000)">\n                <path d="M16.6660484,0.18 C17.3466626,1.3390991 17.6535069,2.53297297 17.6535069,4.04108108 C17.6535069,8.85117117 13.671346,15.0998198 10.439346,19.4875676 L3.05725952,19.4875676 L0.0966314879,1.23315315 L6.56045675,0.60036036 L8.12578201,13.5895495 C9.58835986,11.1326126 11.3932543,7.27153153 11.3932543,4.6390991 C11.3932543,3.1981982 11.1538599,2.21675676 10.7797405,1.40864865 L16.6660484,0.18 Z M24.9071592,11.6938739 C24.9071592,13.8367568 26.062718,14.6774775 27.5946678,14.6774775 C29.2629152,14.6774775 30.860218,14.2571171 32.9363097,13.1691892 L32.154346,18.6445045 C30.6915934,19.3814414 28.4119291,19.8731532 26.1991903,19.8731532 C20.5863512,19.8731532 18.5775346,16.3632432 18.5775346,11.9753153 C18.5775346,6.28810811 21.8451817,0.249369369 28.5819516,0.249369369 C32.2909931,0.249369369 34.3649879,2.39207207 34.3649879,5.37567568 C34.3653374,10.1855856 28.3783789,11.6590991 24.9071592,11.6938739 Z M25.0434567,8.2181982 C26.2329152,8.2181982 29.2274429,7.65711712 29.2274429,5.90216216 C29.2274429,5.05945946 28.6495761,4.6390991 27.9686125,4.6390991 C26.7772318,4.6390991 25.2138287,6.11225225 25.0434567,8.2181982 Z M53.0187093,4.4636036 C53.0187093,5.16558559 52.9154377,6.18378378 52.8126903,6.84918919 L50.8730709,19.4873874 L44.5790934,19.4873874 L46.3483408,7.90216216 C46.381891,7.58792793 46.4849879,6.95531532 46.4849879,6.60432432 C46.4849879,5.76162162 45.9743962,5.55135135 45.3605329,5.55135135 C44.5451938,5.55135135 43.7279325,5.93711712 43.1836159,6.21873874 L41.1768962,19.4875676 L34.8474464,19.4875676 L37.7390519,0.565945946 L43.2171661,0.565945946 L43.2865381,2.07621622 C44.5789187,1.19873874 46.2807163,0.24972973 48.6952803,0.24972973 C51.8942543,0.249369369 53.0187093,1.93495495 53.0187093,4.4636036 Z M71.7037093,2.32072072 C73.5063322,0.988108108 75.2084792,0.249369369 77.5554187,0.249369369 C80.7872439,0.249369369 81.9113495,1.93495495 81.9113495,4.4636036 C81.9113495,5.16558559 81.8084273,6.18378378 81.7056799,6.84918919 L79.7683322,19.4873874 L73.4726073,19.4873874 L75.2755796,7.6572973 C75.3087803,7.34108108 75.3785017,6.95531532 75.3785017,6.71063063 C75.3785017,5.7618018 74.8677353,5.55135135 74.2540467,5.55135135 C73.4722578,5.55135135 72.6908183,5.90234234 72.1106799,6.21873874 L70.1043097,19.4875676 L63.8101574,19.4875676 L65.6131298,7.65747748 C65.6463304,7.34126126 65.713955,6.9554955 65.713955,6.71081081 C65.713955,5.76198198 65.2030138,5.55153153 64.5914221,5.55153153 C63.7743356,5.55153153 62.9588218,5.9372973 62.4145052,6.21891892 L60.4062128,19.4877477 L54.0788599,19.4877477 L56.9701159,0.566126126 L62.3813045,0.566126126 L62.551327,2.14576577 C63.8101574,1.1990991 65.5105571,0.25009009 67.7900467,0.25009009 C69.7637405,0.249369369 71.0559464,1.12702703 71.7037093,2.32072072 Z M83.55059,11.7998198 C83.55059,5.83279279 86.6120433,0.249369369 93.6558322,0.249369369 C98.9633997,0.249369369 100.903543,3.47981982 100.903543,7.93873874 C100.903543,13.8365766 97.8751159,19.9443243 90.6614792,19.9443243 C85.3196626,19.9443243 83.55059,16.3281081 83.55059,11.7998198 Z M94.4374464,7.83279279 C94.4374464,6.28810811 94.0628028,5.23495495 92.9409689,5.23495495 C90.4570329,5.23495495 89.9469654,9.76306306 89.9469654,12.0794595 C89.9469654,13.8367568 90.4238322,14.9243243 91.5453166,14.9243243 C93.8931298,14.9243243 94.4374464,10.149009 94.4374464,7.83279279 Z"></path>\n            </g>\n        </g>\n    </g>\n</svg>\n';
     },
@@ -16359,49 +15351,29 @@
     },
     "./src/resources/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var _BUTTON_LOGO$PP, _BUTTON_LOGO$PAYPAL, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$ELV, _BUTTON_LOGO$BANCONTA, _BUTTON_LOGO$GIROPAY, _BUTTON_LOGO$EPS, _BUTTON_LOGO$MYBANK, _fundingLogos, constants = __webpack_require__("./src/constants/index.js"), pp_white = __webpack_require__("./src/resources/fundingLogos/pp_white.svg"), pp_white_default = __webpack_require__.n(pp_white), pp_blue = __webpack_require__("./src/resources/fundingLogos/pp_blue.svg"), pp_blue_default = __webpack_require__.n(pp_blue), pp_black = __webpack_require__("./src/resources/fundingLogos/pp_black.svg"), pp_black_default = __webpack_require__.n(pp_black), paypal_white = __webpack_require__("./src/resources/fundingLogos/paypal_white.svg"), paypal_white_default = __webpack_require__.n(paypal_white), paypal_blue = __webpack_require__("./src/resources/fundingLogos/paypal_blue.svg"), paypal_blue_default = __webpack_require__.n(paypal_blue), paypal_black = __webpack_require__("./src/resources/fundingLogos/paypal_black.svg"), paypal_black_default = __webpack_require__.n(paypal_black), credit_white = __webpack_require__("./src/resources/fundingLogos/credit_white.svg"), credit_white_default = __webpack_require__.n(credit_white), venmo_white = __webpack_require__("./src/resources/fundingLogos/venmo_white.svg"), venmo_white_default = __webpack_require__.n(venmo_white), venmo_blue = __webpack_require__("./src/resources/fundingLogos/venmo_blue.svg"), venmo_blue_default = __webpack_require__.n(venmo_blue), ideal = __webpack_require__("./src/resources/fundingLogos/ideal.svg"), ideal_default = __webpack_require__.n(ideal), elv = __webpack_require__("./src/resources/fundingLogos/elv.svg"), elv_default = __webpack_require__.n(elv), elv_white = __webpack_require__("./src/resources/fundingLogos/elv_white.svg"), elv_white_default = __webpack_require__.n(elv_white), bancontact = __webpack_require__("./src/resources/fundingLogos/bancontact.svg"), bancontact_default = __webpack_require__.n(bancontact), bancontact_white = __webpack_require__("./src/resources/fundingLogos/bancontact_white.svg"), bancontact_white_default = __webpack_require__.n(bancontact_white), giropay = __webpack_require__("./src/resources/fundingLogos/giropay.svg"), giropay_default = __webpack_require__.n(giropay), giropay_white = __webpack_require__("./src/resources/fundingLogos/giropay_white.svg"), giropay_white_default = __webpack_require__.n(giropay_white), eps = __webpack_require__("./src/resources/fundingLogos/eps.svg"), eps_default = __webpack_require__.n(eps), eps_white = __webpack_require__("./src/resources/fundingLogos/eps_white.svg"), eps_white_default = __webpack_require__.n(eps_white), mybank = __webpack_require__("./src/resources/fundingLogos/mybank.svg"), mybank_default = __webpack_require__.n(mybank), mybank_white = __webpack_require__("./src/resources/fundingLogos/mybank_white.svg"), mybank_white_default = __webpack_require__.n(mybank_white);
-        function _defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var _cardLogos, fundingLogos = (_defineProperty(_fundingLogos = {}, constants.h.PP, (_defineProperty(_BUTTON_LOGO$PP = {}, constants.i.WHITE, pp_white_default.a), 
-        _defineProperty(_BUTTON_LOGO$PP, constants.i.BLUE, pp_blue_default.a), _defineProperty(_BUTTON_LOGO$PP, constants.i.BLACK, pp_black_default.a), 
-        _BUTTON_LOGO$PP)), _defineProperty(_fundingLogos, constants.h.PAYPAL, (_defineProperty(_BUTTON_LOGO$PAYPAL = {}, constants.i.WHITE, paypal_white_default.a), 
-        _defineProperty(_BUTTON_LOGO$PAYPAL, constants.i.BLUE, paypal_blue_default.a), _defineProperty(_BUTTON_LOGO$PAYPAL, constants.i.BLACK, paypal_black_default.a), 
-        _BUTTON_LOGO$PAYPAL)), _defineProperty(_fundingLogos, constants.h.CREDIT, _defineProperty({}, constants.i.WHITE, credit_white_default.a)), 
-        _defineProperty(_fundingLogos, constants.h.VENMO, (_defineProperty(_BUTTON_LOGO$VENMO = {}, constants.i.WHITE, venmo_white_default.a), 
-        _defineProperty(_BUTTON_LOGO$VENMO, constants.i.BLUE, venmo_blue_default.a), _BUTTON_LOGO$VENMO)), 
-        _defineProperty(_fundingLogos, constants.h.IDEAL, _defineProperty({}, constants.i.ANY, ideal_default.a)), 
-        _defineProperty(_fundingLogos, constants.h.ELV, (_defineProperty(_BUTTON_LOGO$ELV = {}, constants.i.ANY, elv_default.a), 
-        _defineProperty(_BUTTON_LOGO$ELV, constants.i.WHITE, elv_white_default.a), _BUTTON_LOGO$ELV)), 
-        _defineProperty(_fundingLogos, constants.h.BANCONTACT, (_defineProperty(_BUTTON_LOGO$BANCONTA = {}, constants.i.ANY, bancontact_default.a), 
-        _defineProperty(_BUTTON_LOGO$BANCONTA, constants.i.WHITE, bancontact_white_default.a), 
-        _BUTTON_LOGO$BANCONTA)), _defineProperty(_fundingLogos, constants.h.GIROPAY, (_defineProperty(_BUTTON_LOGO$GIROPAY = {}, constants.i.ANY, giropay_default.a), 
-        _defineProperty(_BUTTON_LOGO$GIROPAY, constants.i.WHITE, giropay_white_default.a), 
-        _BUTTON_LOGO$GIROPAY)), _defineProperty(_fundingLogos, constants.h.EPS, (_defineProperty(_BUTTON_LOGO$EPS = {}, constants.i.ANY, eps_default.a), 
-        _defineProperty(_BUTTON_LOGO$EPS, constants.i.WHITE, eps_white_default.a), _BUTTON_LOGO$EPS)), 
-        _defineProperty(_fundingLogos, constants.h.MYBANK, (_defineProperty(_BUTTON_LOGO$MYBANK = {}, constants.i.ANY, mybank_default.a), 
-        _defineProperty(_BUTTON_LOGO$MYBANK, constants.i.WHITE, mybank_white_default.a), 
-        _BUTTON_LOGO$MYBANK)), _fundingLogos), visa = __webpack_require__("./src/resources/cardLogos/visa.svg"), visa_default = __webpack_require__.n(visa), amex = __webpack_require__("./src/resources/cardLogos/amex.svg"), amex_default = __webpack_require__.n(amex), mastercard = __webpack_require__("./src/resources/cardLogos/mastercard.svg"), mastercard_default = __webpack_require__.n(mastercard), discover = __webpack_require__("./src/resources/cardLogos/discover.svg"), discover_default = __webpack_require__.n(discover), hiper = __webpack_require__("./src/resources/cardLogos/hiper.svg"), hiper_default = __webpack_require__.n(hiper), elo = __webpack_require__("./src/resources/cardLogos/elo.svg"), elo_default = __webpack_require__.n(elo), jcb = __webpack_require__("./src/resources/cardLogos/jcb.svg"), jcb_default = __webpack_require__.n(jcb);
-        function cardLogos__defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
-        var cardLogos = (cardLogos__defineProperty(_cardLogos = {}, constants.o.VISA, visa_default.a), 
-        cardLogos__defineProperty(_cardLogos, constants.o.AMEX, amex_default.a), cardLogos__defineProperty(_cardLogos, constants.o.MASTERCARD, mastercard_default.a), 
-        cardLogos__defineProperty(_cardLogos, constants.o.DISCOVER, discover_default.a), 
-        cardLogos__defineProperty(_cardLogos, constants.o.HIPER, hiper_default.a), cardLogos__defineProperty(_cardLogos, constants.o.ELO, elo_default.a), 
-        cardLogos__defineProperty(_cardLogos, constants.o.JCB, jcb_default.a), _cardLogos);
+        var _BUTTON_LOGO$PP, _BUTTON_LOGO$PAYPAL, _BUTTON_LOGO$CREDIT, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$IDEAL, _BUTTON_LOGO$ELV, _BUTTON_LOGO$BANCONTA, _BUTTON_LOGO$GIROPAY, _BUTTON_LOGO$SOFORT, _BUTTON_LOGO$EPS, _BUTTON_LOGO$MYBANK, _fundingLogos, _cardLogos, constants = __webpack_require__("./src/constants/index.js"), pp_white = __webpack_require__("./src/resources/fundingLogos/pp_white.svg"), pp_white_default = __webpack_require__.n(pp_white), pp_blue = __webpack_require__("./src/resources/fundingLogos/pp_blue.svg"), pp_blue_default = __webpack_require__.n(pp_blue), pp_black = __webpack_require__("./src/resources/fundingLogos/pp_black.svg"), pp_black_default = __webpack_require__.n(pp_black), paypal_white = __webpack_require__("./src/resources/fundingLogos/paypal_white.svg"), paypal_white_default = __webpack_require__.n(paypal_white), paypal_blue = __webpack_require__("./src/resources/fundingLogos/paypal_blue.svg"), paypal_blue_default = __webpack_require__.n(paypal_blue), paypal_black = __webpack_require__("./src/resources/fundingLogos/paypal_black.svg"), paypal_black_default = __webpack_require__.n(paypal_black), credit_white = __webpack_require__("./src/resources/fundingLogos/credit_white.svg"), credit_white_default = __webpack_require__.n(credit_white), venmo_white = __webpack_require__("./src/resources/fundingLogos/venmo_white.svg"), venmo_white_default = __webpack_require__.n(venmo_white), venmo_blue = __webpack_require__("./src/resources/fundingLogos/venmo_blue.svg"), venmo_blue_default = __webpack_require__.n(venmo_blue), ideal = __webpack_require__("./src/resources/fundingLogos/ideal.svg"), ideal_default = __webpack_require__.n(ideal), elv = __webpack_require__("./src/resources/fundingLogos/elv.svg"), elv_default = __webpack_require__.n(elv), elv_white = __webpack_require__("./src/resources/fundingLogos/elv_white.svg"), elv_white_default = __webpack_require__.n(elv_white), bancontact = __webpack_require__("./src/resources/fundingLogos/bancontact.svg"), bancontact_default = __webpack_require__.n(bancontact), bancontact_white = __webpack_require__("./src/resources/fundingLogos/bancontact_white.svg"), bancontact_white_default = __webpack_require__.n(bancontact_white), giropay = __webpack_require__("./src/resources/fundingLogos/giropay.svg"), giropay_default = __webpack_require__.n(giropay), giropay_white = __webpack_require__("./src/resources/fundingLogos/giropay_white.svg"), giropay_white_default = __webpack_require__.n(giropay_white), eps = __webpack_require__("./src/resources/fundingLogos/eps.svg"), eps_default = __webpack_require__.n(eps), eps_white = __webpack_require__("./src/resources/fundingLogos/eps_white.svg"), eps_white_default = __webpack_require__.n(eps_white), mybank = __webpack_require__("./src/resources/fundingLogos/mybank.svg"), mybank_default = __webpack_require__.n(mybank), mybank_white = __webpack_require__("./src/resources/fundingLogos/mybank_white.svg"), mybank_white_default = __webpack_require__.n(mybank_white), sofort = __webpack_require__("./src/resources/fundingLogos/sofort.svg"), sofort_default = __webpack_require__.n(sofort), sofort_white = __webpack_require__("./src/resources/fundingLogos/sofort_white.svg"), sofort_white_default = __webpack_require__.n(sofort_white), fundingLogos = ((_fundingLogos = {})[constants.h.PP] = ((_BUTTON_LOGO$PP = {})[constants.i.WHITE] = pp_white_default.a, 
+        _BUTTON_LOGO$PP[constants.i.BLUE] = pp_blue_default.a, _BUTTON_LOGO$PP[constants.i.BLACK] = pp_black_default.a, 
+        _BUTTON_LOGO$PP), _fundingLogos[constants.h.PAYPAL] = ((_BUTTON_LOGO$PAYPAL = {})[constants.i.WHITE] = paypal_white_default.a, 
+        _BUTTON_LOGO$PAYPAL[constants.i.BLUE] = paypal_blue_default.a, _BUTTON_LOGO$PAYPAL[constants.i.BLACK] = paypal_black_default.a, 
+        _BUTTON_LOGO$PAYPAL), _fundingLogos[constants.h.CREDIT] = ((_BUTTON_LOGO$CREDIT = {})[constants.i.WHITE] = credit_white_default.a, 
+        _BUTTON_LOGO$CREDIT), _fundingLogos[constants.h.VENMO] = ((_BUTTON_LOGO$VENMO = {})[constants.i.WHITE] = venmo_white_default.a, 
+        _BUTTON_LOGO$VENMO[constants.i.BLUE] = venmo_blue_default.a, _BUTTON_LOGO$VENMO), 
+        _fundingLogos[constants.h.IDEAL] = ((_BUTTON_LOGO$IDEAL = {})[constants.i.ANY] = ideal_default.a, 
+        _BUTTON_LOGO$IDEAL), _fundingLogos[constants.h.ELV] = ((_BUTTON_LOGO$ELV = {})[constants.i.ANY] = elv_default.a, 
+        _BUTTON_LOGO$ELV[constants.i.WHITE] = elv_white_default.a, _BUTTON_LOGO$ELV), _fundingLogos[constants.h.BANCONTACT] = ((_BUTTON_LOGO$BANCONTA = {})[constants.i.ANY] = bancontact_default.a, 
+        _BUTTON_LOGO$BANCONTA[constants.i.WHITE] = bancontact_white_default.a, _BUTTON_LOGO$BANCONTA), 
+        _fundingLogos[constants.h.GIROPAY] = ((_BUTTON_LOGO$GIROPAY = {})[constants.i.ANY] = giropay_default.a, 
+        _BUTTON_LOGO$GIROPAY[constants.i.WHITE] = giropay_white_default.a, _BUTTON_LOGO$GIROPAY), 
+        _fundingLogos[constants.h.SOFORT] = ((_BUTTON_LOGO$SOFORT = {})[constants.i.ANY] = sofort_default.a, 
+        _BUTTON_LOGO$SOFORT[constants.i.WHITE] = sofort_white_default.a, _BUTTON_LOGO$SOFORT), 
+        _fundingLogos[constants.h.EPS] = ((_BUTTON_LOGO$EPS = {})[constants.i.ANY] = eps_default.a, 
+        _BUTTON_LOGO$EPS[constants.i.WHITE] = eps_white_default.a, _BUTTON_LOGO$EPS), _fundingLogos[constants.h.MYBANK] = ((_BUTTON_LOGO$MYBANK = {})[constants.i.ANY] = mybank_default.a, 
+        _BUTTON_LOGO$MYBANK[constants.i.WHITE] = mybank_white_default.a, _BUTTON_LOGO$MYBANK), 
+        _fundingLogos), visa = __webpack_require__("./src/resources/cardLogos/visa.svg"), visa_default = __webpack_require__.n(visa), amex = __webpack_require__("./src/resources/cardLogos/amex.svg"), amex_default = __webpack_require__.n(amex), mastercard = __webpack_require__("./src/resources/cardLogos/mastercard.svg"), mastercard_default = __webpack_require__.n(mastercard), discover = __webpack_require__("./src/resources/cardLogos/discover.svg"), discover_default = __webpack_require__.n(discover), hiper = __webpack_require__("./src/resources/cardLogos/hiper.svg"), hiper_default = __webpack_require__.n(hiper), elo = __webpack_require__("./src/resources/cardLogos/elo.svg"), elo_default = __webpack_require__.n(elo), jcb = __webpack_require__("./src/resources/cardLogos/jcb.svg"), jcb_default = __webpack_require__.n(jcb), cardLogos = ((_cardLogos = {})[constants.o.VISA] = visa_default.a, 
+        _cardLogos[constants.o.AMEX] = amex_default.a, _cardLogos[constants.o.MASTERCARD] = mastercard_default.a, 
+        _cardLogos[constants.o.DISCOVER] = discover_default.a, _cardLogos[constants.o.HIPER] = hiper_default.a, 
+        _cardLogos[constants.o.ELO] = elo_default.a, _cardLogos[constants.o.JCB] = jcb_default.a, 
+        _cardLogos);
         __webpack_require__.d(__webpack_exports__, "b", function() {
             return fundingLogos;
         });
@@ -16410,4 +15382,4 @@
         });
     }
 }));
-//# sourceMappingURL=checkout.4.0.203.js.map
+//# sourceMappingURL=checkout.4.0.204.js.map
