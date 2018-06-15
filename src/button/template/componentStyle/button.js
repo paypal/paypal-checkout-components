@@ -34,6 +34,7 @@ export let buttonStyle = `
         cursor: pointer;
         outline: none;
         overflow: hidden;
+        transition: all 0.7s ease-in-out;
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.TRANSPARENT } {
