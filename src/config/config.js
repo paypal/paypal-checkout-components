@@ -171,6 +171,10 @@ export let config = {
 
         'vividseats.com': {
             disable_venmo: true
+        },
+
+        'getcargo.today': {
+            disable_venmo: true
         }
 
     },
