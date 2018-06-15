@@ -26,11 +26,6 @@ export const Card : Component<CardOptions> = create({
     tag:  'card-fields',
     name: 'ppcard',
 
-    dimensions: {
-        height: '200px',
-        width:  '250px'
-    },
-
     buildUrl(props) : string {
         let env = props.env || config.env;
 
