@@ -127,6 +127,7 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
                     #${ id } {
                         font-size: 0;
                         width: 100%;
+                        overflow: hidden;
                     }
 
                     #${ id }.${ tag }-size-${ BUTTON_SIZE.RESPONSIVE } {
