@@ -8,6 +8,15 @@ module.exports = {
     'buttons': {
         entry:           './src/index',
         staticNamespace: '__paypal_checkout__',
+        configQuery:     `
+            clientConfiguration {
+                paypalMerchantConfiguration(merchantId: $clientID, locale: $country) {
+                    creditCard {                                                             
+                        isPayPalBranded                                                    
+                        supportedCardBrands                                                    
+                    }    
+                }
+            }`,
         globals
     }
 };
