@@ -32,7 +32,7 @@ export function determineUrl(env : string, fundingSource : ?string, payment : st
     }
 
     if (fundingSource === FUNDING.IDEAL || fundingSource === FUNDING.BANCONTACT || fundingSource === FUNDING.GIROPAY ||
-        fundingSource === FUNDING.EPS || fundingSource === FUNDING.MYBANK) {
+        fundingSource === FUNDING.SOFORT || fundingSource === FUNDING.EPS || fundingSource === FUNDING.MYBANK) {
         return config.altpayUrls[env];
     }
 

@@ -695,6 +695,13 @@ let buttonConfigs = [
 
             {
                 layout: `vertical`,
+                label:  `sofort`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
                 label:  `eps`,
                 commit: true,
                 valid:  false
@@ -1646,6 +1653,38 @@ let buttonConfigs = [
 
                     funding: {
                         disallowed: [ window.paypal.FUNDING.GIROPAY ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-in to sofort`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    commit: true,
+
+                    funding: {
+                        allowed: [ window.paypal.FUNDING.SOFORT ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-out of sofort`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        disallowed: [ window.paypal.FUNDING.SOFORT ]
                     }
                 }
             },
