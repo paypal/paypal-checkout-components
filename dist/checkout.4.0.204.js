@@ -9784,7 +9784,7 @@
             return obj;
         }
         var config = {
-            scriptUrl: "//www.paypalobjects.com/api/checkout.js",
+            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.204.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
             version: "4.0.204",
             cors: !0,
@@ -15509,7 +15509,7 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return isPayPalObjects() ? "4" : "4.0.204";
+            return "4.0.204";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -15526,7 +15526,7 @@
                         domain: metaFrameDomain
                     });
                     return src.bridge.openBridge(Object(dom.b)(metaFrameUrl, {
-                        version: getScriptVersion()
+                        version: "4.0.204"
                     }), metaFrameDomain).then(function() {
                         return metaListener;
                     }).then(function(_ref) {
@@ -16509,4 +16509,4 @@
         });
     }
 }));
-//# sourceMappingURL=checkout.js.map
+//# sourceMappingURL=checkout.4.0.204.js.map
