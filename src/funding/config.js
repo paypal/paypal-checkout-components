@@ -82,7 +82,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.NL
         ],
 
-        allowHorizontal: true,
+        allowHorizontal: false,
         allowVertical:   true,
 
         requireCommitAsTrue: true
@@ -107,7 +107,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.BE
         ],
 
-        allowHorizontal: true,
+        allowHorizontal: false,
         allowVertical:   true,
 
         requireCommitAsTrue: true
@@ -118,7 +118,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.DE
         ],
 
-        allowHorizontal: true,
+        allowHorizontal: false,
         allowVertical:   true,
 
         requireCommitAsTrue: true
@@ -129,7 +129,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.DE
         ],
 
-        allowHorizontal: true,
+        allowHorizontal: false,
         allowVertical:   true,
 
         requireCommitAsTrue: true
@@ -140,7 +140,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.AT
         ],
 
-        allowHorizontal: true,
+        allowHorizontal: false,
         allowVertical:   true,
 
         requireCommitAsTrue: true
@@ -151,7 +151,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.IT
         ],
 
-        allowHorizontal: true,
+        allowHorizontal: false,
         allowVertical:   true,
 
         requireCommitAsTrue: true
