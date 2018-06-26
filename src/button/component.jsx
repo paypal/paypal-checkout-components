@@ -93,7 +93,7 @@ type ButtonOptions = {
     supplement : {
         getPaymentOptions : Function,
         addPaymentDetails : Function,
-        getPaymentDetails: Function
+        getPaymentDetails : Function
     },
     awaitPopupBridge : Function,
     meta : Object,

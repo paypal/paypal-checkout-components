@@ -65,7 +65,7 @@ export function addPaymentDetails(id : string, details : Object) {
     payments[id].details = details;
 }
 
-export function getPaymentDetails(id: string) {
+export function getPaymentDetails(id : string) : ?Object {
     return payments && payments[id] && payments[id].details;
 }
 
