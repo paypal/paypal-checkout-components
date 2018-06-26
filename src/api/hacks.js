@@ -65,6 +65,10 @@ export function addPaymentDetails(id : string, details : Object) {
     payments[id].details = details;
 }
 
+export function getPaymentDetails(id: string) {
+    return payments && payments[id] && payments[id].details;
+}
+
 export function mergePaymentDetails(id : string, payment : Object) : Object {
     payments[id] = payments[id] || {};
     let details = payments[id].details || {};
