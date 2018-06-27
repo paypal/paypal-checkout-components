@@ -56,8 +56,16 @@ export let buttonTemplate = (req, ctx) => {
         remembered: array(req, 'funding.remembered')
     };
 
-    pre.buttonTypes.res.data.eligible.forEach(source => {
+    let { eligible, ineligible } = pre.buttonTypes.res.data;
+
+    eligible.forEach(source => {
         funding.remembered.push(source);
+    });
+
+    ineligible.forEach(source => {
+        if (funding.disallowed.indexOf(source) === -1) {
+            funding.disallowed.push(source);
+        }
     });
 
     let buttonHTML = dynamicComponentTemplate({

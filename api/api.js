@@ -19,6 +19,15 @@ module.exports = spark.register({
 
                     let remembered = [];
                     let eligible = [];
+                    let ineligible = [];
+
+                    // Slingshot gives us a geo location header (`pp_geo_loc`). Local servers won't have this header.
+                    // For now, forbid clients whos IP's are outside of the locale defined by the xcomponent from
+                    // seeing the PPC button.
+                    let [, country ] = req.query['locale.x'].split('_');
+                    if (req.headers.pp_geo_loc && country !== req.headers.pp_geo_loc) {
+                        ineligible.push(FUNDING.CREDIT);
+                    }
 
                     if (req.cookies.login_email) {
                         remembered.push(FUNDING.PAYPAL);
@@ -32,7 +41,8 @@ module.exports = spark.register({
 
                     return {
                         remembered: remembered,
-                        eligible: eligible
+                        eligible: eligible,
+                        ineligible: ineligible,
                     };
                 }
             },

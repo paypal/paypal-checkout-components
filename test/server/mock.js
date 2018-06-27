@@ -3,7 +3,8 @@ export function mockButtonTypes() {
     return {
         res: {
             data: {
-                eligible: []
+                eligible: [],
+                ineligible: []
             }
         }
     };

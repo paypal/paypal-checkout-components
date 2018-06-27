@@ -87,6 +87,24 @@ test('should use buttonTypes api to inform buttons which are rendered', () => {
     }
 });
 
+test('should use buttonTypes api to inform buttons which are rendered using disallowed', () => {
+
+    let req = mockReq();
+    let ctx = mockContext();
+
+    ctx.pre.buttonTypes.res.data.ineligible = [ FUNDING.CREDIT ];
+
+    req.query['style.layout'] = 'vertical';
+
+    let template = buttonTemplate(req, ctx);
+
+    let fundingSources = getRenderedFundingSources(template);
+
+    if (fundingSources.length !== 6 || fundingSources[1] === FUNDING.CREDIT) {
+        throw new Error(`Not expecting ${ FUNDING.CREDIT } in the funding sources, got: ${ fundingSources.join(', ') }`);
+    }
+});
+
 test('should use funding.allowed to inform buttons which are rendered', () => {
     
     let req = mockReq();
