@@ -10,6 +10,83 @@ type ButtonConfig = {
     }
 };
 
+function getConfig<T : mixed>(conf : Object, category : string, key : string, def : ?T) : T {
+    let categoryConfig = conf[category];
+
+    if (categoryConfig && categoryConfig.hasOwnProperty(key)) {
+        return categoryConfig[key];
+    }
+
+    if (conf[DEFAULT] && conf[DEFAULT].hasOwnProperty(key)) {
+        return conf[DEFAULT][key];
+    }
+
+    if (arguments.length >= 4) {
+        // $FlowFixMe
+        return def;
+    }
+
+    throw new Error(`No value found for ${ category }:${ key }`);
+}
+
+export const LOCALIZED_LABEL = {
+    [ DEFAULT ]: {
+        [ BUTTON_LABEL.PAYPAL ]:      `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
+        [ BUTTON_LABEL.CHECKOUT ]:    `{ content: checkout }`,
+        [ BUTTON_LABEL.PAY ]:         `{ content: pay }`,
+        [ BUTTON_LABEL.BUYNOW ]:      `{ content: buynow }`,
+        [ BUTTON_LABEL.INSTALLMENT ]: ({ installmentperiod }) => {
+            return `{ content: ${ installmentperiod ? 'installment_period' : 'installment' } }`;
+        },
+        [ BUTTON_LABEL.CREDIT ]:      `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`,
+        [ BUTTON_LABEL.VENMO ]:       `{ logo: ${ BUTTON_LOGO.VENMO } }`,
+        [ BUTTON_LABEL.IDEAL ]:       `{ logo: ${ BUTTON_LOGO.IDEAL } } Online betalen`,
+        [ BUTTON_LABEL.ELV ]:         `{ logo: ${ BUTTON_LOGO.ELV } }`,
+        [ BUTTON_LABEL.BANCONTACT ]:  `{ logo: ${ BUTTON_LOGO.BANCONTACT } }`,
+        [ BUTTON_LABEL.GIROPAY ]:     `{ logo: ${ BUTTON_LOGO.GIROPAY } }`,
+        [ BUTTON_LABEL.SOFORT ]:      `{ logo: ${ BUTTON_LOGO.SOFORT } }`,
+        [ BUTTON_LABEL.EPS ]:         `{ logo: ${ BUTTON_LOGO.EPS } }`,
+        [ BUTTON_LABEL.MYBANK ]:      `{ logo: ${ BUTTON_LOGO.MYBANK } }`,
+        [ BUTTON_LABEL.CARD ]:        `{ cards }`
+    }
+};
+
+export const LOCALIZED_LOGO_LABEL = {
+    [ DEFAULT ]: {
+        [ BUTTON_LABEL.PAYPAL ]:      `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
+        [ BUTTON_LABEL.CHECKOUT ]:    `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
+        [ BUTTON_LABEL.PAY ]:         `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
+        [ BUTTON_LABEL.BUYNOW ]:      `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
+        [ BUTTON_LABEL.INSTALLMENT ]: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
+        [ BUTTON_LABEL.CREDIT ]:      `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`,
+        [ BUTTON_LABEL.VENMO ]:       `{ logo: ${ BUTTON_LOGO.VENMO } }`,
+        [ BUTTON_LABEL.IDEAL ]:       `{ logo: ${ BUTTON_LOGO.IDEAL } } Online betalen`,
+        [ BUTTON_LABEL.ELV ]:         `{ logo: ${ BUTTON_LOGO.ELV } }`,
+        [ BUTTON_LABEL.BANCONTACT ]:  `{ logo: ${ BUTTON_LOGO.BANCONTACT } }`,
+        [ BUTTON_LABEL.GIROPAY ]:     `{ logo: ${ BUTTON_LOGO.GIROPAY } }`,
+        [ BUTTON_LABEL.SOFORT ]:      `{ logo: ${ BUTTON_LOGO.SOFORT } }`,
+        [ BUTTON_LABEL.EPS ]:         `{ logo: ${ BUTTON_LOGO.EPS } }`,
+        [ BUTTON_LABEL.MYBANK ]:      `{ logo: ${ BUTTON_LOGO.MYBANK } }`,
+        [ BUTTON_LABEL.CARD ]:        `{ cards }`
+    },
+
+    [ COUNTRY.DE ]: {
+        [ BUTTON_LABEL.CREDIT ]: `{ logo: ${ BUTTON_LOGO.DE_CREDIT } }`
+    }
+};
+
+function fetchLocalizedLabels(label : $Values<typeof BUTTON_LABEL>) : { label : mixed, logoLabel : mixed } {
+    const getLocalConfig = (conf, args) => {
+        let labelConfig = getConfig(conf, args.locale.country, label);
+        return (typeof labelConfig === 'function' ? labelConfig(args) : labelConfig);
+    };
+
+    return {
+        label:     (args) => getLocalConfig(LOCALIZED_LABEL, args),
+        logoLabel: (args) => getLocalConfig(LOCALIZED_LOGO_LABEL, args)
+    };
+}
+
 export const BUTTON_CONFIG : ButtonConfig = {
 
     [ DEFAULT ]: {
@@ -101,8 +178,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
     },
 
     [ BUTTON_LABEL.PAYPAL ]: {
-        label:     `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
+        ...fetchLocalizedLabels(BUTTON_LABEL.PAYPAL),
 
         allowPrimary: true,
 
@@ -111,8 +187,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
     },
 
     [ BUTTON_LABEL.CHECKOUT ]: {
-        label:     `{ content: checkout }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
+        ...fetchLocalizedLabels(BUTTON_LABEL.CHECKOUT),
 
         allowPrimary: true,
 
@@ -121,8 +196,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
     },
 
     [ BUTTON_LABEL.PAY ]: {
-        label:     `{ content: pay }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
+        ...fetchLocalizedLabels(BUTTON_LABEL.PAY),
 
         allowPrimary: true,
 
@@ -131,8 +205,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
     },
 
     [ BUTTON_LABEL.BUYNOW ]: {
-        label:     `{ content: buynow }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
+        ...fetchLocalizedLabels(BUTTON_LABEL.BUYNOW),
 
         defaultBranding: undefined,
 
@@ -145,8 +218,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
     },
 
     [ BUTTON_LABEL.INSTALLMENT ]: {
-        label:     (style) => { return `{ content: ${ style.installmentperiod ? 'installment_period' : 'installment' } }`; },
-        logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
+        ...fetchLocalizedLabels(BUTTON_LABEL.INSTALLMENT),
 
         allowPrimary:             true,
         allowPrimaryVertical:     false,
@@ -156,12 +228,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
     },
 
     [ BUTTON_LABEL.CREDIT ]: {
-        label:     `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`,
-        logoLabel: ({ locale }) => {
-            return locale.country === COUNTRY.DE
-                ? `{ logo: ${ BUTTON_LOGO.DE_CREDIT } }`
-                : `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`;
-        },
+        ...fetchLocalizedLabels(BUTTON_LABEL.CREDIT),
+
         tag:       `{ content: later_tag }`,
 
         colors: [
@@ -192,8 +260,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
     },
 
     [ BUTTON_LABEL.VENMO ]: {
-        label:     `{ logo: ${ BUTTON_LOGO.VENMO } }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.VENMO } }`,
+        ...fetchLocalizedLabels(BUTTON_LABEL.VENMO),
 
         defaultColor: BUTTON_COLOR.SILVER,
 
@@ -224,9 +291,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
     },
 
     [ BUTTON_LABEL.IDEAL ]: {
-
-        label:     `{ logo: ${ BUTTON_LOGO.IDEAL } } Online betalen`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.IDEAL } } Online betalen`,
+        ...fetchLocalizedLabels(BUTTON_LABEL.IDEAL),
 
         defaultColor: BUTTON_COLOR.SILVER,
 
@@ -255,9 +320,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
     },
 
     [ BUTTON_LABEL.ELV ]: {
-
-        label:     `{ logo: ${ BUTTON_LOGO.ELV } }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.ELV } }`,
+        ...fetchLocalizedLabels(BUTTON_LABEL.ELV),
 
         defaultColor: BUTTON_COLOR.SILVER,
 
@@ -286,9 +349,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
     },
 
     [ BUTTON_LABEL.BANCONTACT ]: {
-
-        label:     `{ logo: ${ BUTTON_LOGO.BANCONTACT } }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.BANCONTACT } }`,
+        ...fetchLocalizedLabels(BUTTON_LABEL.BANCONTACT),
 
         defaultColor: BUTTON_COLOR.SILVER,
 
@@ -317,9 +378,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
     },
 
     [ BUTTON_LABEL.GIROPAY ]: {
-
-        label:     `{ logo: ${ BUTTON_LOGO.GIROPAY } }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.GIROPAY } }`,
+        ...fetchLocalizedLabels(BUTTON_LABEL.GIROPAY),
 
         defaultColor: BUTTON_COLOR.SILVER,
 
@@ -348,9 +407,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
     },
 
     [ BUTTON_LABEL.SOFORT ]: {
-
-        label:     `{ logo: ${ BUTTON_LOGO.SOFORT } }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.SOFORT } }`,
+        ...fetchLocalizedLabels(BUTTON_LABEL.SOFORT),
 
         defaultColor: BUTTON_COLOR.SILVER,
 
@@ -379,9 +436,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
     },
 
     [ BUTTON_LABEL.EPS ]: {
-
-        label:     `{ logo: ${ BUTTON_LOGO.EPS } }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.EPS } }`,
+        ...fetchLocalizedLabels(BUTTON_LABEL.EPS),
 
         defaultColor: BUTTON_COLOR.SILVER,
 
@@ -410,9 +465,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
     },
 
     [ BUTTON_LABEL.MYBANK ]: {
-
-        label:     `{ logo: ${ BUTTON_LOGO.MYBANK } }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.MYBANK } }`,
+        ...fetchLocalizedLabels(BUTTON_LABEL.MYBANK),
 
         defaultColor: BUTTON_COLOR.SILVER,
 
@@ -441,9 +494,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
     },
 
     [ BUTTON_LABEL.CARD ]: {
-
-        label:     `{ cards }`,
-        logoLabel: `{ cards }`,
+        ...fetchLocalizedLabels(BUTTON_LABEL.CARD),
 
         defaultColor: BUTTON_COLOR.SILVER,
 
@@ -571,25 +622,6 @@ export function labelToFunding(label : ?string) : string {
 
 export function fundingToDefaultLabel(funding : string) : $Values<typeof BUTTON_LABEL> {
     return FUNDING_TO_DEFAULT_LABEL[funding];
-}
-
-function getConfig<T : mixed>(conf : Object, category : string, key : string, def : ?T) : T {
-    let categoryConfig = conf[category];
-
-    if (categoryConfig && categoryConfig.hasOwnProperty(key)) {
-        return categoryConfig[key];
-    }
-
-    if (conf[DEFAULT] && conf[DEFAULT].hasOwnProperty(key)) {
-        return conf[DEFAULT][key];
-    }
-
-    if (arguments.length >= 4) {
-        // $FlowFixMe
-        return def;
-    }
-
-    throw new Error(`No value found for ${ category }:${ key }`);
 }
 
 export function getButtonConfig<T : mixed>(label : string, key : string, def : ?T) : T {
