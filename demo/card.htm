@@ -9,8 +9,10 @@
         env: 'local', // Optional: specify 'sandbox' environment
         // env: 'stage', // Optional: specify 'sandbox' environment
 
-        locale: 'en_US',
-
+        locale: 'en_NL',
+        funding: {
+            allowed: [ paypal.FUNDING.SOFORT, paypal.FUNDING.IDEAL, paypal.FUNDING.EPS, paypal.FUNDING.CREDIT]
+        },
         style: {
             branding: true, // optional
             layout: 'vertical',
