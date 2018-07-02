@@ -11,8 +11,8 @@ export const FUNDING_PRIORITY = [
     FUNDING.ELV,
     FUNDING.BANCONTACT,
     FUNDING.GIROPAY,
-    FUNDING.SOFORT,
     FUNDING.EPS,
+    FUNDING.SOFORT,
     FUNDING.MYBANK,
     FUNDING.CARD
 ];
@@ -126,7 +126,12 @@ export const FUNDING_CONFIG = {
 
     [ FUNDING.SOFORT ]: {
         allowedCountries: [
-            COUNTRY.DE
+            COUNTRY.DE,
+            COUNTRY.AT,
+            COUNTRY.BE,
+            COUNTRY.ES,
+            COUNTRY.IT,
+            COUNTRY.NL
         ],
 
         allowHorizontal: false,
