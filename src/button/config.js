@@ -48,7 +48,12 @@ export const LOCALIZED_LABEL = {
         [ BUTTON_LABEL.EPS ]:         `{ logo: ${ BUTTON_LOGO.EPS } }`,
         [ BUTTON_LABEL.MYBANK ]:      `{ logo: ${ BUTTON_LOGO.MYBANK } }`,
         [ BUTTON_LABEL.CARD ]:        `{ cards }`
+    },
+
+    [ COUNTRY.DE ]: {
+        [ BUTTON_LABEL.CREDIT ]: `{ logo: ${ BUTTON_LOGO.DE_CREDIT } }`
     }
+
 };
 
 export const LOCALIZED_LOGO_LABEL = {
