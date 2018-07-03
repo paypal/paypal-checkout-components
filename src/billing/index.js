@@ -7,7 +7,7 @@ import { create } from 'xcomponent/src';
 import { type Component } from 'xcomponent/src/component/component';
 import { getBrowserLocale } from '../lib';
 
-import { containerTemplate, componentTemplate } from '../checkout/template';
+import { containerTemplate, componentTemplate } from './template';
 import { ENV } from '../constants';
 
 import { config } from '../config';
@@ -48,6 +48,11 @@ export const BillingPage : Component<BillingOptions> = create({
     },
 
     props: {
+        prefilledZipCode: {
+            type:     'string',
+            required: false
+        },
+    
         locale: {
             type:          'string',
             required:      false,
