@@ -55,7 +55,7 @@ export let config = {
             log_authorize:                   true,
             disable_payment_timeout:         true
         },
-        
+
         'ulta.com': {
             disable_venmo: true
         },
@@ -92,7 +92,7 @@ export let config = {
         'livenation.com': {
             disable_venmo: true
         },
-        
+
         'frontgatetickets.com': {
             disable_venmo: true
         },
@@ -359,7 +359,11 @@ export let config = {
 
     loginUri: `/signin/`,
 
-    loggerUri: `/webapps/hermes/api/logger`,
+    hermesLoggerUri: `/webapps/hermes/api/logger`,
+
+    loggerUri: `/xoplatform/logger`,
+
+    loggerThrottlePercentage: 0.05, // 5%
 
     pptmUri: `/tagmanager/pptm.js`,
 
@@ -653,7 +657,10 @@ export let config = {
     },
 
     get loggerUrl() : string {
-        return `${ config.paypalUrl }${ config.loggerUri }`;
+        let isTestExperiment = Math.random() < config.loggerThrottlePercentage;
+        let loggerUrl = isTestExperiment ? config.loggerUri : config.hermesLoggerUri;
+
+        return `${ config.paypalUrl }${ loggerUrl }`;
     },
 
     get pptmUrl() : string {
