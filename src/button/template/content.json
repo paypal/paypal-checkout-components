@@ -612,11 +612,11 @@
     "BR": {
         "pt": {
             "checkout": "{logo:pp} {logo:paypal} Finalizar",
-            "safer_tag": "A maneira f\u00e1cil e segura de enviar pagamentos.",
+            "safer_tag": "A maneira f\u00e1cil e segura de pagar.",
             "later_tag": "Compre agora e pague depois.",
             "pay": "Pague com {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar agora",
-            "installment": "{logo:pp} {logo:paypal}  Pagamentos<br>  sem juros",
+            "installment": "{logo:pp} {logo:paypal}  Pagamentos<br>  parcelados",
             "installment_period": "{logo:pp} {logo:paypal}  Pague em at\u00e9<br>  [installmentperiod]x sem juros"
         },
         "en": {
@@ -3348,7 +3348,7 @@
             "later_tag": "Compre ahora y pague m\u00e1s adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "installment": "{logo:pp} {logo:paypal}  Pagos sin<br>  inter\u00e9s",
+            "installment": "{logo:pp} {logo:paypal}  Pagos en<br>  mensualidades",
             "installment_period": "{logo:pp} {logo:paypal}  Pague hasta<br>  [installmentperiod]x sin inter\u00e9s"
         },
         "en": {

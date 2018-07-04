@@ -343,6 +343,37 @@ export const BUTTON_CONFIG : ButtonConfig = {
         allowPrimaryHorizontal: false
     },
 
+    [ BUTTON_LABEL.SOFORT ]: {
+
+        label:     `{ logo: ${ BUTTON_LOGO.SOFORT } }`,
+        logoLabel: `{ logo: ${ BUTTON_LOGO.SOFORT } }`,
+
+        defaultColor: BUTTON_COLOR.SILVER,
+
+        colors: [
+            BUTTON_COLOR.SILVER,
+            BUTTON_COLOR.BLACK
+        ],
+
+        logoColors:  {
+            [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLACK,
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE
+        },
+
+        secondaryColors: {
+            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER
+        },
+
+        allowPrimary: false,
+
+        allowPrimaryVertical:   false,
+        allowPrimaryHorizontal: false
+    },
+
     [ BUTTON_LABEL.EPS ]: {
 
         label:     `{ logo: ${ BUTTON_LOGO.EPS } }`,
@@ -444,6 +475,7 @@ export const FUNDING_TO_DEFAULT_LABEL = {
     [ FUNDING.ELV ]:       BUTTON_LABEL.ELV,
     [ FUNDING.BANCONTACT]: BUTTON_LABEL.BANCONTACT,
     [ FUNDING.GIROPAY]:    BUTTON_LABEL.GIROPAY,
+    [ FUNDING.SOFORT]:     BUTTON_LABEL.SOFORT,
     [ FUNDING.EPS]:        BUTTON_LABEL.EPS,
     [ FUNDING.MYBANK]:     BUTTON_LABEL.MYBANK
 };
@@ -461,6 +493,7 @@ export const LABEL_TO_FUNDING = {
     [ BUTTON_LABEL.BANCONTACT]:     FUNDING.BANCONTACT,
     [ BUTTON_LABEL.GIROPAY]:        FUNDING.GIROPAY,
     [ BUTTON_LABEL.GIROPAY]:        FUNDING.EPS,
+    [ BUTTON_LABEL.SOFORT]:         FUNDING.SOFORT,
     [ BUTTON_LABEL.MYBANK]:         FUNDING.MYBANK
 };
 
