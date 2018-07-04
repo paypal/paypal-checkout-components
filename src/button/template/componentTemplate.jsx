@@ -38,12 +38,22 @@ function getLocaleContent(locale : LocaleType) : Object {
     return componentContent[country][lang];
 }
 
-function determineCanRenderLabel({ label, source, multiple, layout } : { label : $Values<typeof BUTTON_LABEL>, source : FundingSource, multiple : boolean,  layout : $Values<typeof BUTTON_LAYOUT> }) : boolean {
-    if (!multiple || layout === BUTTON_LAYOUT.VERTICAL) {
-        return labelToFunding(label) === source;
+function determineLabel({ label, source, multiple, layout } : { label : $Values<typeof BUTTON_LABEL>, source : FundingSource, multiple : boolean,  layout : $Values<typeof BUTTON_LAYOUT> }) : $Values<typeof BUTTON_LABEL> {
+
+    let defaultLabel = fundingToDefaultLabel(source);
+    let labelMatchesFunding = (labelToFunding(label) === source);
+
+    // If chosen label is not for this funding source, display the default label
+    if (!labelMatchesFunding) {
+        return defaultLabel;
     }
 
-    return false;
+    // If there are multiple horizontal buttons, display the default label
+    if (multiple && layout === BUTTON_LAYOUT.HORIZONTAL) {
+        return defaultLabel;
+    }
+
+    return label;
 }
 
 function determineButtons({ label, color, sources, multiple, layout } : { label : $Values<typeof BUTTON_LABEL>, color : string, sources : FundingList, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT> }) :
@@ -51,9 +61,7 @@ function determineButtons({ label, color, sources, multiple, layout } : { label 
 
     return sources.map((source, i) => {
 
-        let buttonLabel = determineCanRenderLabel({ label, source, multiple, layout })
-            ? label
-            : fundingToDefaultLabel(source);
+        let buttonLabel = determineLabel({ label, source, multiple, layout });
 
         let buttonColor = (multiple && i > 0)
             ? getButtonConfig(buttonLabel, 'secondaryColors')[color]
@@ -172,7 +180,11 @@ function renderButton({ label, color, locale, branding, multiple, layout, shape,
 
     let logoColor = getButtonConfig(label, 'logoColors')[color];
 
-    let contentText = determineCanRenderLabel({ label, source, multiple, layout })
+    let buttonLabel = determineLabel({ label, source, multiple, layout });
+
+    // If the determined button label matches up with the label passed by the merchant, use
+    // the label template, otherwise use the logo template.
+    let contentText = (buttonLabel === label)
         ? getButtonConfig(label, 'label')
         : getButtonConfig(label, 'logoLabel');
 
