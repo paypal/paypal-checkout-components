@@ -121,9 +121,11 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
             if (!logoColor) {
                 throw new Error(`Can not determine logo without logo color`);
             }
-
-            let logo = fundingLogos[name][logoColor] || fundingLogos[name][BUTTON_LOGO_COLOR.ANY];
-
+            
+            let logo = (typeof fundingLogos[name] === 'function')
+                ? fundingLogos[name]({ label, locale, color, branding, logoColor, funding, env, cards })
+                : fundingLogos[name][logoColor] || fundingLogos[name][BUTTON_LOGO_COLOR.ANY];
+                
             return (
                 <img
                     class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ name } ${ CLASS.LOGO }-${ color }` }

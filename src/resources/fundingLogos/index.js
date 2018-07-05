@@ -5,9 +5,7 @@ import { BUTTON_LOGO, BUTTON_LOGO_COLOR } from '../../constants';
 import pp_white     from './pp_white.svg';
 import pp_blue      from './pp_blue.svg';
 import pp_black     from './pp_black.svg';
-import paypal_white from './paypal_white.svg';
-import paypal_blue  from './paypal_blue.svg';
-import paypal_black from './paypal_black.svg';
+import { paypalLogo } from './paypal';
 import credit_white from './credit_white.svg';
 import venmo_white  from './venmo_white.svg';
 import venmo_blue   from './venmo_blue.svg';
@@ -33,11 +31,7 @@ export let fundingLogos = {
         [ BUTTON_LOGO_COLOR.BLACK ]: pp_black
     },
 
-    [ BUTTON_LOGO.PAYPAL ]: {
-        [ BUTTON_LOGO_COLOR.WHITE ]: paypal_white,
-        [ BUTTON_LOGO_COLOR.BLUE ]:  paypal_blue,
-        [ BUTTON_LOGO_COLOR.BLACK ]: paypal_black
-    },
+    [ BUTTON_LOGO.PAYPAL ]: paypalLogo,
 
     [ BUTTON_LOGO.CREDIT ]: {
         [ BUTTON_LOGO_COLOR.WHITE ]: credit_white
