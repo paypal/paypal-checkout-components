@@ -3,8 +3,8 @@
 
 import { btoa } from 'Base64';
 
-import { BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, ENV, ATTRIBUTE, FUNDING } from '../../constants';
-import { getButtonConfig, fundingToDefaultLabel } from '../config';
+import { BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING } from '../../constants';
+import { getButtonConfig, labelToFunding, fundingToDefaultLabel } from '../config';
 import { normalizeProps } from '../props';
 import { jsxToHTML, type JsxHTMLNode, jsxRender } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
 import { fundingLogos, cardLogos } from '../../resources';
@@ -38,14 +38,30 @@ function getLocaleContent(locale : LocaleType) : Object {
     return componentContent[country][lang];
 }
 
-function determineButtons({ label, color, sources, multiple } : { label : $Values<typeof BUTTON_LABEL>, color : string, sources : FundingList, multiple : boolean }) :
+function determineLabel({ label, source, multiple, layout } : { label : $Values<typeof BUTTON_LABEL>, source : FundingSource, multiple : boolean,  layout : $Values<typeof BUTTON_LAYOUT> }) : $Values<typeof BUTTON_LABEL> {
+
+    let defaultLabel = fundingToDefaultLabel(source);
+    let labelMatchesFunding = (labelToFunding(label) === source);
+
+    // If chosen label is not for this funding source, display the default label
+    if (!labelMatchesFunding) {
+        return defaultLabel;
+    }
+
+    // If there are multiple horizontal buttons, display the default label
+    if (multiple && layout === BUTTON_LAYOUT.HORIZONTAL) {
+        return defaultLabel;
+    }
+
+    return label;
+}
+
+function determineButtons({ label, color, sources, multiple, layout } : { label : $Values<typeof BUTTON_LABEL>, color : string, sources : FundingList, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT> }) :
     Array<{ label : $Values<typeof BUTTON_LABEL>, color : string, source : FundingSource }> {
 
     return sources.map((source, i) => {
 
-        let buttonLabel = multiple
-            ? fundingToDefaultLabel(source)
-            : label;
+        let buttonLabel = determineLabel({ label, source, multiple, layout });
 
         let buttonColor = (multiple && i > 0)
             ? getButtonConfig(buttonLabel, 'secondaryColors')[color]
@@ -160,13 +176,17 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
 }
 
 function renderButton({ label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, installmentperiod } :
-    { label : string, color : string, branding : boolean, locale : Object, multiple : boolean, layout : string, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : Array<string>, installmentperiod : number }) : JsxHTMLNode {
+    { label : $Values<typeof BUTTON_LABEL>, color : string, branding : boolean, locale : Object, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT>, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : Array<string>, installmentperiod : number }) : JsxHTMLNode {
 
     let logoColor = getButtonConfig(label, 'logoColors')[color];
 
-    let contentText = multiple
-        ? getButtonConfig(label, 'logoLabel')
-        : getButtonConfig(label, 'label');
+    let buttonLabel = determineLabel({ label, source, multiple, layout });
+
+    // If the determined button label matches up with the label passed by the merchant, use
+    // the label template, otherwise use the logo template.
+    let contentText = (buttonLabel === label)
+        ? getButtonConfig(label, 'label')
+        : getButtonConfig(label, 'logoLabel');
 
 
     // Add all the variables in dynamic content required to be plugged in content
@@ -261,7 +281,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
         tagline, funding, layout, sources, multiple,
         fundingicons, env, height, cards, installmentperiod } = normalizeProps(props);
 
-    let buttonNodes = determineButtons({ label, color, sources, multiple })
+    let buttonNodes = determineButtons({ label, color, sources, multiple, layout })
         .map((button, i) => renderButton({
             label:   button.label,
             color:   button.color,
