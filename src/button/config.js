@@ -196,7 +196,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
         allowPrimary: true,
 
-        allowPrimaryVertical:   false,
+        allowPrimaryVertical:   true,
         allowPrimaryHorizontal: true
     },
 
@@ -205,7 +205,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
         allowPrimary: true,
 
-        allowPrimaryVertical:   false,
+        allowPrimaryVertical:   true,
         allowPrimaryHorizontal: true
     },
 
@@ -216,7 +216,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
         allowPrimary: true,
 
-        allowPrimaryVertical:   false,
+        allowPrimaryVertical:   true,
         allowPrimaryHorizontal: true,
 
         allowUnbranded:  true
