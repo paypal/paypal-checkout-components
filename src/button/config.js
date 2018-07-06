@@ -51,7 +51,7 @@ export const LOCALIZED_LABEL = {
     },
 
     [ COUNTRY.DE ]: {
-        [ BUTTON_LABEL.CREDIT ]: `{ logo: ${ BUTTON_LOGO.DE_CREDIT } }`
+        [ BUTTON_LABEL.CREDIT ]: `{ logo: ${ BUTTON_LOGO.CREDIT } }`
     }
 
 };
@@ -76,7 +76,7 @@ export const LOCALIZED_LOGO_LABEL = {
     },
 
     [ COUNTRY.DE ]: {
-        [ BUTTON_LABEL.CREDIT ]: `{ logo: ${ BUTTON_LOGO.DE_CREDIT } }`
+        [ BUTTON_LABEL.CREDIT ]: `{ logo: ${ BUTTON_LOGO.CREDIT } }`
     }
 };
 
