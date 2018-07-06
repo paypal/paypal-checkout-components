@@ -184,10 +184,10 @@ export let config = {
     customCountry: false,
 
     SUPPORTED_BROWSERS: {
-        msie:           '9',
+        msie:           '11',
         firefox:        '30',
         chrome:         '27',
-        safari:         '5.1',
+        safari:         '7',
         opera:          '16',
         msedge:         '12',
         samsungBrowser: '2.1',
