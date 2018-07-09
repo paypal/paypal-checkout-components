@@ -8,6 +8,7 @@ import { type Component } from 'xcomponent/src/component/component';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { config } from '../config';
+import { getBrowserLocale } from '../lib';
 
 type CardOptions = {
     client : {
@@ -19,7 +20,8 @@ type CardOptions = {
     awaitPopupBridge : Function,
     onAuthorize : ({ returnUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
     onCancel? : ({ cancelUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
-    meta : Object
+    meta : Object,
+    commit : boolean
 };
 
 export const Card : Component<CardOptions> = create({
@@ -28,9 +30,12 @@ export const Card : Component<CardOptions> = create({
 
     buildUrl(props) : string {
         let env = props.env || config.env;
+        let { lang, country } = config.locale || getBrowserLocale();
+        const locale = `${ lang }_${ country }`;
+        let isCommit = props.commit ? 1 : 0;
 
         return window.xprops.payment().then(paymentToken => {
-            return `${ config.inlinedCardFieldUrls[env] }?token=${ paymentToken }`;
+            return `${ config.inlinedCardFieldUrls[env] }?token=${ paymentToken }&locale.x=${ locale }&commit=${ isCommit }`;
         });
     },
 

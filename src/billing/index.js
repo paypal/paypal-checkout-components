@@ -20,7 +20,8 @@ type BillingOptions = {
     locale? : string,
     logLevel : string,
     awaitPopupBridge : Function,
-    meta : Object
+    meta : Object,
+    commit : boolean
 };
 
 export const BillingPage : Component<BillingOptions> = create({
@@ -29,7 +30,11 @@ export const BillingPage : Component<BillingOptions> = create({
 
     buildUrl(props) : string {
         let env = props.env || config.env;
-        return `${ config.inlinedCardFieldUrls[env] }/billing`;
+        let { lang, country } = config.locale || getBrowserLocale();
+        const locale = `${ lang }_${ country }`;
+        let isCommit = props.commit ? 1 : 0;
+
+        return `${ config.inlinedCardFieldUrls[env] }/billing?locale.x=${ locale }&commit=${ isCommit }`;
     },
 
     get domain() : Object {
