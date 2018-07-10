@@ -297,7 +297,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let { label, locale, color, shape, branding,
         tagline, funding, layout, sources, multiple,
-        fundingicons, env, height, cards, installmentperiod } = normalizeProps(props);
+        env, height, cards, installmentperiod } = normalizeProps(props);
 
     let buttonNodes = determineButtons({ label, color, sources, multiple })
         .map((button, i) => renderButton({

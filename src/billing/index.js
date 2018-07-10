@@ -5,12 +5,12 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'xcomponent/src';
 import { type Component } from 'xcomponent/src/component/component';
-import { getBrowserLocale } from '../lib';
 
-import { containerTemplate, componentTemplate } from './template';
 import { ENV } from '../constants';
-
+import { getBrowserLocale } from '../lib';
 import { config } from '../config';
+
+import { containerTemplate } from './template';
 
 type BillingOptions = {
     client : {
