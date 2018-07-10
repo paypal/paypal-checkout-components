@@ -12,7 +12,7 @@ type PaymentSupplementType = {
     details? : Object
 };
 
-let payments: { [string] : PaymentSupplementType } = {};
+let payments : { [string] : PaymentSupplementType } = {};
 
 export function validateExtraPaymentOptions(options : Object) {
     if (options.payer && options.payer.shipping_options) {
