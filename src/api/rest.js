@@ -157,7 +157,7 @@ function createTracking(env : string, client : { [key : string] : string }, merc
 
     return createAccessToken(env, client).then((accessToken) : ZalgoPromise<Object> => {
 
-        let headers: Object = {
+        let headers : Object = {
             Authorization: `Bearer ${ accessToken }`
         };
 
@@ -234,7 +234,7 @@ function createPayment(env : string, client : { [key : string] : string }, payme
                     payment.experience_profile_id = experienceID;
                 }
 
-                let headers: Object = {
+                let headers : Object = {
                     Authorization: `Bearer ${ accessToken }`
                 };
 
@@ -307,7 +307,7 @@ function createOrder(env : string, client : { [key : string] : string }, payment
 
     return createAccessToken(env, client).then((accessToken) : ZalgoPromise<Object> => {
 
-        let headers: Object = {
+        let headers : Object = {
             Authorization: `Bearer ${ accessToken }`
         };
 
