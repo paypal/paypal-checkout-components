@@ -12,7 +12,7 @@ type PaymentSupplementType = {
     details? : Object
 };
 
-let payments: { [string] : PaymentSupplementType } = {};
+let payments : { [string] : PaymentSupplementType } = {};
 
 export function validateExtraPaymentOptions(options : Object) {
     if (options.payer && options.payer.shipping_options) {
@@ -63,6 +63,10 @@ export function getPaymentOptions(id : string) : ?Object {
 export function addPaymentDetails(id : string, details : Object) {
     payments[id] = payments[id] || {};
     payments[id].details = details;
+}
+
+export function getPaymentDetails(id : string) : ?Object {
+    return payments && payments[id] && payments[id].details;
 }
 
 export function mergePaymentDetails(id : string, payment : Object) : Object {

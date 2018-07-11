@@ -1,7 +1,7 @@
 /* @flow */
 
 import { CONFIG as POSTROBOT_CONFIG } from 'post-robot/src';
-import { setTransport, getTransport, addPayloadBuilder, addMetaBuilder,
+import { setTransport, getTransport, addPayloadBuilder, addHeaderBuilder, addMetaBuilder,
     addTrackingBuilder, init, logLevels, config as loggerConfig } from 'beaver-logger/client';
 import { getParent } from 'cross-domain-utils/src';
 
@@ -49,6 +49,12 @@ export function initLogger() {
             lang:    config.locale.lang,
             uid:     getSessionID(),
             ver:     __PAYPAL_CHECKOUT__.__MINOR_VERSION__
+        };
+    });
+
+    addHeaderBuilder(() => {
+        return {
+            'x-app-name': 'checkoutjs'
         };
     });
 
