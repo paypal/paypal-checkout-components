@@ -22,6 +22,10 @@ import mybank       from './mybank.svg';
 import mybank_white       from './mybank_white.svg';
 import sofort       from './sofort.svg';
 import sofort_white       from './sofort_white.svg';
+import p24          from './p24.svg';
+import p24_white          from './p24_white.svg';
+import zimpler      from './zimpler.svg';
+import zimpler_white      from './zimpler_white.svg';
 
 export let fundingLogos = {
 
@@ -74,5 +78,15 @@ export let fundingLogos = {
     [ BUTTON_LOGO.MYBANK ]: {
         [ BUTTON_LOGO_COLOR.ANY ]:     mybank,
         [ BUTTON_LOGO_COLOR.WHITE ]:   mybank_white
+    },
+
+    [ BUTTON_LOGO.P24 ]: {
+        [ BUTTON_LOGO_COLOR.ANY ]:     p24,
+        [ BUTTON_LOGO_COLOR.WHITE ]:   p24_white
+    },
+
+    [ BUTTON_LOGO.ZIMPLER ]: {
+        [ BUTTON_LOGO_COLOR.ANY ]:     zimpler,
+        [ BUTTON_LOGO_COLOR.WHITE ]:   zimpler_white
     }
 };
