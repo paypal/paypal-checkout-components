@@ -79,5 +79,12 @@ export const Card : Component<CardOptions> = create({
         required: false,
         once:     true,
         noop:     true
+    },
+
+    props: {
+        initialFormValues: {
+            type:     'object',
+            required: false
+        }
     }
 });
