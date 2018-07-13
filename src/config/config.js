@@ -175,6 +175,18 @@ export let config = {
 
         'getcargo.today': {
             disable_venmo: true
+        },
+        
+        'smartdestinations.com': {
+            disable_venmo: true
+        },
+
+        'philadelphiapass.com': {
+            disable_venmo: true
+        },
+
+        'thesydneypass.com': {
+            disable_venmo: true
         }
 
     },
