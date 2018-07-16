@@ -189,6 +189,10 @@ export let config = {
             disable_venmo: true
         },
 
+        '3secondlash.com': {
+            disable_venmo: true
+        },
+
         'ski-lifts.com': {
             disable_bancontact: true,
             disable_mybank:     true,
