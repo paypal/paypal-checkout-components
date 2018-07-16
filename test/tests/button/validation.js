@@ -1529,6 +1529,7 @@ let buttonConfigs = [
                 }
             },
 
+            /*
             {
                 desc: `opt-in to ideal`,
 
@@ -1560,6 +1561,7 @@ let buttonConfigs = [
                     }
                 }
             },
+            */
 
             {
                 desc: `opt-in to elv`,
