@@ -1833,7 +1833,7 @@
                 })) + ")();"
             }));
             var script;
-            return jsxToHTML("div", _extends({}, (_ref15 = {}, _ref15[constants.c.VERSION] = "4.0.205", 
+            return jsxToHTML("div", _extends({}, (_ref15 = {}, _ref15[constants.c.VERSION] = "4.0.206", 
             _ref15), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -1968,7 +1968,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.205",
+            version: "4.0.206",
             cors: !0,
             env: constants.s.PRODUCTION,
             state: "checkoutjs",
@@ -2435,8 +2435,7 @@
                 return "" + config.paypalDomain;
             },
             get loggerUrl() {
-                var loggerUrl = Math.random() < config.loggerThrottlePercentage ? config.loggerUri : config.hermesLoggerUri;
-                return "" + config.paypalUrl + loggerUrl;
+                return "" + config.paypalUrl + config.hermesLoggerUri;
             },
             get pptmUrl() {
                 return "" + (config.env === constants.s.LOCAL ? config.paypalUrls[constants.s.STAGE] : config.paypalUrl) + config.pptmUri;

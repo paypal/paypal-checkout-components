@@ -582,7 +582,7 @@
                     state: "ui_" + currentState
                 };
             });
-            __webpack_require__.d(__webpack_exports__, "p", function() {
+            __webpack_require__.d(__webpack_exports__, "o", function() {
                 return _track;
             });
             __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -591,40 +591,40 @@
             __webpack_require__.d(__webpack_exports__, !1, function() {
                 return tracking;
             });
-            __webpack_require__.d(__webpack_exports__, "i", function() {
+            __webpack_require__.d(__webpack_exports__, "h", function() {
                 return getTransport;
             });
-            __webpack_require__.d(__webpack_exports__, "o", function() {
+            __webpack_require__.d(__webpack_exports__, "n", function() {
                 return setTransport;
             });
             __webpack_require__.d(__webpack_exports__, !1, function() {
                 return print;
             });
-            __webpack_require__.d(__webpack_exports__, "j", function() {
+            __webpack_require__.d(__webpack_exports__, "i", function() {
                 return immediateFlush;
             });
-            __webpack_require__.d(__webpack_exports__, "h", function() {
+            __webpack_require__.d(__webpack_exports__, "g", function() {
                 return _flush;
             });
             __webpack_require__.d(__webpack_exports__, !1, function() {
                 return log;
             });
-            __webpack_require__.d(__webpack_exports__, "n", function() {
+            __webpack_require__.d(__webpack_exports__, "m", function() {
                 return prefix;
             });
-            __webpack_require__.d(__webpack_exports__, "f", function() {
+            __webpack_require__.d(__webpack_exports__, "e", function() {
                 return debug;
             });
-            __webpack_require__.d(__webpack_exports__, "k", function() {
+            __webpack_require__.d(__webpack_exports__, "j", function() {
                 return info;
             });
-            __webpack_require__.d(__webpack_exports__, "q", function() {
+            __webpack_require__.d(__webpack_exports__, "p", function() {
                 return warn;
             });
-            __webpack_require__.d(__webpack_exports__, "g", function() {
+            __webpack_require__.d(__webpack_exports__, "f", function() {
                 return error;
             });
-            __webpack_require__.d(__webpack_exports__, "l", function() {
+            __webpack_require__.d(__webpack_exports__, "k", function() {
                 return init;
             });
             __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -648,22 +648,22 @@
             __webpack_require__.d(__webpack_exports__, !1, function() {
                 return headerBuilders;
             });
-            __webpack_require__.d(__webpack_exports__, "c", function() {
+            __webpack_require__.d(__webpack_exports__, "b", function() {
                 return addPayloadBuilder;
             });
-            __webpack_require__.d(__webpack_exports__, "b", function() {
+            __webpack_require__.d(__webpack_exports__, "a", function() {
                 return addMetaBuilder;
             });
-            __webpack_require__.d(__webpack_exports__, "d", function() {
+            __webpack_require__.d(__webpack_exports__, "c", function() {
                 return addTrackingBuilder;
             });
-            __webpack_require__.d(__webpack_exports__, "a", function() {
+            __webpack_require__.d(__webpack_exports__, !1, function() {
                 return addHeaderBuilder;
             });
-            __webpack_require__.d(__webpack_exports__, "e", function() {
+            __webpack_require__.d(__webpack_exports__, "d", function() {
                 return config;
             });
-            __webpack_require__.d(__webpack_exports__, "m", function() {
+            __webpack_require__.d(__webpack_exports__, "l", function() {
                 return logLevels;
             });
         },
@@ -4315,7 +4315,7 @@
                     });
                 };
                 ChildComponent.prototype.destroy = function() {
-                    return Object(client.h)().then(function() {
+                    return Object(client.g)().then(function() {
                         window.close();
                     });
                 };
@@ -5891,7 +5891,7 @@
                 ParentComponent.prototype.watchForUnload = function() {
                     var _this17 = this, onunload = Object(lib.L)(function() {
                         _this17.component.log("navigate_away");
-                        Object(client.h)();
+                        Object(client.g)();
                         _this17.destroyComponent();
                     }), unloadWindowListener = Object(lib.b)(window, "unload", onunload);
                     this.clean.register("destroyUnloadWindowListener", unloadWindowListener.cancel);
@@ -6165,7 +6165,7 @@
                     return zalgo_promise_src.a.try(function() {
                         if (_this34.clean.hasTasks()) {
                             _this34.component.log("destroy");
-                            Object(client.h)();
+                            Object(client.g)();
                             return _this34.clean.all();
                         }
                     });
@@ -7880,22 +7880,22 @@
             }
             var post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js"), client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
             function setLogLevel(logLevel) {
-                if (-1 === client.m.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
-                client.e.logLevel = logLevel;
+                if (-1 === client.l.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
+                client.d.logLevel = logLevel;
                 post_robot_src.CONFIG.LOG_LEVEL = logLevel;
                 window.LOG_LEVEL = logLevel;
             }
             function info(name, event) {
                 var payload = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-                Object(client.k)("xc_" + name + "_" + event, payload);
+                Object(client.j)("xc_" + name + "_" + event, payload);
             }
             function warn(name, event) {
                 var payload = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-                Object(client.q)("xc_" + name + "_" + event, payload);
+                Object(client.p)("xc_" + name + "_" + event, payload);
             }
             function logger_error(name, event) {
                 var payload = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-                Object(client.g)("xc_" + name + "_" + event, payload);
+                Object(client.f)("xc_" + name + "_" + event, payload);
             }
             var constants = __webpack_require__("./node_modules/xcomponent/src/constants.js");
             function globalFor(win) {
@@ -8865,7 +8865,7 @@
                         decorate: function(original) {
                             if (original) return function(data) {
                                 var _this = this, actions = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                                data && !data.intent && Object(beaver_logger_client.q)("checkout_authorize_no_intent", {
+                                data && !data.intent && Object(beaver_logger_client.p)("checkout_authorize_no_intent", {
                                     paymentID: data.paymentID,
                                     token: data.paymentToken
                                 });
@@ -8948,12 +8948,12 @@
                         decorate: function(original) {
                             return function(data) {
                                 var _track;
-                                Object(beaver_logger_client.k)("checkout_init");
-                                Object(beaver_logger_client.p)(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.CHECKOUT, 
+                                Object(beaver_logger_client.j)("checkout_init");
+                                Object(beaver_logger_client.o)(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.CHECKOUT, 
                                 _track[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.CHECKOUT_INIT, _track[constants.v.KEY.CONTEXT_TYPE] = constants.v.CONTEXT_TYPE[constants.B.EC_TOKEN], 
                                 _track[constants.v.KEY.TOKEN] = data.paymentToken, _track[constants.v.KEY.SELLER_ID] = data.merchantID, 
                                 _track[constants.v.KEY.CONTEXT_ID] = data.paymentToken, _track));
-                                Object(beaver_logger_client.h)();
+                                Object(beaver_logger_client.g)();
                                 this.paymentToken = data.paymentToken;
                                 this.cancelUrl = data.cancelUrl;
                                 return original.apply(this, arguments);
@@ -8970,7 +8970,7 @@
                             return function(reason) {
                                 var onClose = original.apply(this, arguments), CLOSE_REASONS = xcomponent_src.a.CLOSE_REASONS;
                                 if (this.props.onCancel && -1 !== [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason)) {
-                                    Object(beaver_logger_client.k)("close_trigger_cancel");
+                                    Object(beaver_logger_client.j)("close_trigger_cancel");
                                     return this.props.onCancel({
                                         paymentToken: this.paymentToken,
                                         cancelUrl: this.cancelUrl
@@ -8995,7 +8995,7 @@
                         once: !0,
                         def: function() {
                             return function(url) {
-                                Object(beaver_logger_client.q)("fallback", {
+                                Object(beaver_logger_client.p)("fallback", {
                                     url: url
                                 });
                                 if (Object(lib.n)("allow_full_page_fallback")) {
@@ -9050,19 +9050,19 @@
                     Object(lib.O)(xprops, "onAuthorize", function(_ref) {
                         var callOriginal = _ref.callOriginal, data = _ref.args[0];
                         if (data && !data.intent) {
-                            Object(beaver_logger_client.q)("hermes_authorize_no_intent", {
+                            Object(beaver_logger_client.p)("hermes_authorize_no_intent", {
                                 paymentID: data.paymentID,
                                 token: data.paymentToken
                             });
                             try {
                                 var intent = window.injector.get("$CheckoutCartModel").instance(data.paymentToken).payment_action;
-                                Object(beaver_logger_client.q)("hermes_intent", {
+                                Object(beaver_logger_client.p)("hermes_intent", {
                                     paymentID: data.paymentID,
                                     token: data.paymentToken,
                                     intent: intent
                                 });
                             } catch (err) {}
-                            Object(beaver_logger_client.j)();
+                            Object(beaver_logger_client.i)();
                         }
                         return callOriginal();
                     });
@@ -9136,7 +9136,7 @@
             var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.205",
+                version: "4.0.206",
                 cors: !0,
                 env: constants.u.PRODUCTION,
                 state: "checkoutjs",
@@ -9603,8 +9603,7 @@
                     return "" + config.paypalDomain;
                 },
                 get loggerUrl() {
-                    var loggerUrl = Math.random() < config.loggerThrottlePercentage ? config.loggerUri : config.hermesLoggerUri;
-                    return "" + config.paypalUrl + loggerUrl;
+                    return "" + config.paypalUrl + config.hermesLoggerUri;
                 },
                 get pptmUrl() {
                     return "" + (config.env === constants.u.LOCAL ? config.paypalUrls[constants.u.STAGE] : config.paypalUrl) + config.pptmUri;
@@ -10517,7 +10516,7 @@
                 }
                 return target;
             }, proxyRest = {}, createAccessToken = Object(lib.J)(function(env, client) {
-                Object(beaver_logger_client.k)("rest_api_create_access_token");
+                Object(beaver_logger_client.j)("rest_api_create_access_token");
                 var clientID = client[env = env || config.a.env];
                 if (!clientID) throw new Error("Client ID not found for env: " + env);
                 if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) return proxyRest.createAccessToken(env, client);
@@ -10540,7 +10539,7 @@
                 time: 6e5
             }), createExperienceProfile = Object(lib.J)(function(env, client) {
                 var experienceDetails = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-                Object(beaver_logger_client.k)("rest_api_create_experience_profile");
+                Object(beaver_logger_client.j)("rest_api_create_experience_profile");
                 if (!client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
                 if (proxyRest.createExperienceProfile && !proxyRest.createExperienceProfile.source.closed) return proxyRest.createExperienceProfile(env, client, experienceDetails);
                 experienceDetails.temporary = !0;
@@ -10571,7 +10570,7 @@
                         var match = res.links[i].href.match(/token=((EC-)?[A-Z0-9]{17})/);
                         match && (paymentToken = match[1]);
                     }
-                    Object(beaver_logger_client.p)(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.BUTTON, 
+                    Object(beaver_logger_client.o)(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.BUTTON, 
                     _track[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.CREATE_PAYMENT, _track[constants.v.KEY.CONTEXT_TYPE] = constants.v.CONTEXT_TYPE[constants.B.PAY_ID], 
                     _track[constants.v.KEY.PAY_ID] = paymentID, _track[constants.v.KEY.TOKEN] = paymentToken, 
                     _track[constants.v.KEY.CONTEXT_ID] = paymentID, _track));
@@ -10581,7 +10580,7 @@
                 return Object(cross_domain_utils_src.isFileProtocol)() ? "https://www.paypal.com" : window.location.protocol + "//" + window.location.host;
             }
             function createPayment(env, client, paymentDetails) {
-                Object(beaver_logger_client.k)("rest_api_create_checkout_token");
+                Object(beaver_logger_client.j)("rest_api_create_checkout_token");
                 env = env || config.a.env;
                 if (!client[env]) throw new Error("Client ID not found for env: " + env);
                 var payment = paymentDetails.payment, experience = paymentDetails.experience, meta = paymentDetails.meta, tracking = paymentDetails.tracking;
@@ -10676,7 +10675,7 @@
                 });
             }
             function createOrder(env, client, paymentDetails) {
-                Object(beaver_logger_client.k)("rest_api_create_order_token");
+                Object(beaver_logger_client.j)("rest_api_create_order_token");
                 if (!client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
                 var order = paymentDetails.order, meta = paymentDetails.meta;
                 if (!order) throw new Error("Expected order details to be passed");
@@ -10711,7 +10710,7 @@
                 });
             }
             function createBillingAgreement(env, client, billingDetails, experienceDetails) {
-                Object(beaver_logger_client.k)("rest_api_create_billing_token");
+                Object(beaver_logger_client.j)("rest_api_create_billing_token");
                 env = env || config.a.env;
                 if (!client[env]) throw new Error("Client ID not found for env: " + env);
                 if (proxyRest.createBillingAgreement && !proxyRest.createBillingAgreement.source.closed) return proxyRest.createBillingAgreement(env, client, billingDetails, experienceDetails);
@@ -10771,18 +10770,18 @@
             function log(experiment, treatment, token, state) {
                 Object(lib.x)(function(session) {
                     var event = experiment + "_" + treatment + "_" + state, loggedEvents = session.loggedExperimentEvents = session.loggedExperimentEvents || [];
-                    if (-1 !== loggedEvents.indexOf(event)) Object(beaver_logger_client.k)("duplicate_" + event); else {
+                    if (-1 !== loggedEvents.indexOf(event)) Object(beaver_logger_client.j)("duplicate_" + event); else {
                         var _track;
-                        Object(beaver_logger_client.k)(event);
+                        Object(beaver_logger_client.j)(event);
                         loggedEvents.push(event);
                         var edge = window.navigator && window.navigator.userAgent && window.navigator.userAgent.match(/Edge\/[0-9]{2}/);
-                        edge && (event = Object(beaver_logger_client.k)(edge[0].toLowerCase().replace("/", "_") + "_" + event));
-                        Object(beaver_logger_client.p)(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.CHECKOUT, 
+                        edge && (event = Object(beaver_logger_client.j)(edge[0].toLowerCase().replace("/", "_") + "_" + event));
+                        Object(beaver_logger_client.o)(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.CHECKOUT, 
                         _track[constants.v.KEY.TRANSITION] = state, _track[constants.v.KEY.EXPERIMENT_NAME] = experiment, 
                         _track[constants.v.KEY.TREATMENT_NAME] = treatment, _track[constants.v.KEY.TOKEN] = token, 
                         _track[constants.v.KEY.CONTEXT_ID] = token, _track[constants.v.KEY.CONTEXT_TYPE] = token ? constants.v.CONTEXT_TYPE[constants.B.EC_TOKEN] : constants.v.CONTEXT_TYPE.BUTTON_SESSION_ID, 
                         _track));
-                        Object(beaver_logger_client.j)();
+                        Object(beaver_logger_client.i)();
                     }
                 });
             }
@@ -10801,7 +10800,7 @@
                 var _getSessionState = Object(lib.x)(function(session) {
                     return session;
                 }), externalExperiment = _getSessionState.externalExperiment, externalExperimentTreatment = _getSessionState.externalExperimentTreatment, externalExperimentToken = _getSessionState.externalExperimentToken;
-                externalExperiment && externalExperimentTreatment && externalExperimentToken === token ? log(externalExperiment, externalExperimentTreatment, token, "complete") : Object(beaver_logger_client.k)("experiment_mismatch", {
+                externalExperiment && externalExperimentTreatment && externalExperimentToken === token ? log(externalExperiment, externalExperimentTreatment, token, "complete") : Object(beaver_logger_client.j)("experiment_mismatch", {
                     token: token,
                     externalExperiment: externalExperiment,
                     externalExperimentTreatment: externalExperimentTreatment,
@@ -11875,7 +11874,7 @@
                         innerHTML: "(" + script + ")();"
                     });
                 }();
-                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref15 = {}, _ref15[constants.d.VERSION] = "4.0.205", 
+                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref15 = {}, _ref15[constants.d.VERSION] = "4.0.206", 
                 _ref15), {
                     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
@@ -11982,9 +11981,9 @@
                         })
                     });
                     template.addEventListener("click", function() {
-                        Object(beaver_logger_client.q)("button_pre_template_click");
+                        Object(beaver_logger_client.p)("button_pre_template_click");
                         if (Object(lib.n)("allow_full_page_fallback")) {
-                            Object(beaver_logger_client.k)("pre_template_force_full_page");
+                            Object(beaver_logger_client.j)("pre_template_force_full_page");
                             _this.props.payment().then(function(token) {
                                 window.top.location = Object(lib.i)(config.a.checkoutUrl, {
                                     token: token
@@ -12006,7 +12005,7 @@
                     }
                 },
                 validate: function() {
-                    Object(lib.C)() || Object(beaver_logger_client.q)("button_render_ineligible");
+                    Object(lib.C)() || Object(beaver_logger_client.p)("button_render_ineligible");
                     if (Object(lib.F)()) throw new Error("Can not render button in IE intranet mode");
                 },
                 props: {
@@ -12148,14 +12147,14 @@
                                 this.memoizedToken = this.memoizedToken.then(function(token) {
                                     var _track;
                                     if (!token) {
-                                        Object(beaver_logger_client.g)("no_token_passed_to_payment");
+                                        Object(beaver_logger_client.f)("no_token_passed_to_payment");
                                         throw new Error("No value passed to payment");
                                     }
-                                    Object(beaver_logger_client.p)(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.CHECKOUT, 
+                                    Object(beaver_logger_client.o)(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.CHECKOUT, 
                                     _track[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.RECIEVE_PAYMENT, _track[constants.v.KEY.CONTEXT_TYPE] = constants.v.CONTEXT_TYPE[Object(integrations.d)(token)], 
                                     _track[constants.v.KEY.CONTEXT_ID] = token, _track[constants.v.KEY.BUTTON_SESSION_UID] = _this2.props.buttonSessionID, 
                                     _track));
-                                    Object(beaver_logger_client.h)();
+                                    Object(beaver_logger_client.g)();
                                     return token;
                                 });
                                 return this.memoizedToken;
@@ -12291,8 +12290,8 @@
                         decorate: function(original) {
                             return function() {
                                 var _track2, _getBrowser = Object(lib.j)(), _getBrowser$browser = _getBrowser.browser, browser = void 0 === _getBrowser$browser ? "unrecognized" : _getBrowser$browser, _getBrowser$version = _getBrowser.version, version = void 0 === _getBrowser$version ? "unrecognized" : _getBrowser$version;
-                                Object(beaver_logger_client.k)("button_render_browser_" + browser + "_" + version);
-                                Object(beaver_logger_client.p)(((_track2 = {})[constants.v.KEY.STATE] = constants.v.STATE.LOAD, 
+                                Object(beaver_logger_client.j)("button_render_browser_" + browser + "_" + version);
+                                Object(beaver_logger_client.o)(((_track2 = {})[constants.v.KEY.STATE] = constants.v.STATE.LOAD, 
                                 _track2[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.BUTTON_RENDER, _track2[constants.v.KEY.BUTTON_TYPE] = constants.v.BUTTON_TYPE.IFRAME, 
                                 _track2[constants.v.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track2[constants.v.KEY.BUTTON_SOURCE] = this.props.source, 
                                 _track2));
@@ -12301,7 +12300,7 @@
                                     creditThrottle.logStart(((_creditThrottle$logSt = {})[constants.v.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                                     _creditThrottle$logSt));
                                 }
-                                Object(beaver_logger_client.h)();
+                                Object(beaver_logger_client.g)();
                                 return original.apply(this, arguments);
                             };
                         }
@@ -12312,17 +12311,17 @@
                         decorate: function(original) {
                             return function(data, actions) {
                                 var _track3, _this3 = this;
-                                data && !data.intent && Object(beaver_logger_client.q)("button_authorize_no_intent", {
+                                data && !data.intent && Object(beaver_logger_client.p)("button_authorize_no_intent", {
                                     paymentID: data.paymentID,
                                     token: data.paymentToken
                                 });
-                                Object(beaver_logger_client.k)("button_authorize");
-                                Object(beaver_logger_client.p)(((_track3 = {})[constants.v.KEY.STATE] = constants.v.STATE.CHECKOUT, 
+                                Object(beaver_logger_client.j)("button_authorize");
+                                Object(beaver_logger_client.o)(((_track3 = {})[constants.v.KEY.STATE] = constants.v.STATE.CHECKOUT, 
                                 _track3[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.CHECKOUT_AUTHORIZE, 
                                 _track3[constants.v.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track3));
-                                Object(lib.C)() || Object(beaver_logger_client.k)("button_authorize_ineligible");
+                                Object(lib.C)() || Object(beaver_logger_client.j)("button_authorize_ineligible");
                                 Object(lib.d)("authorize");
-                                Object(beaver_logger_client.h)();
+                                Object(beaver_logger_client.g)();
                                 var restart = actions.restart;
                                 actions.restart = function() {
                                     return restart().then(function() {
@@ -12346,7 +12345,7 @@
                                 actions.payment.execute = function() {
                                     return execute().then(function(result) {
                                         if (!(result && result.id && result.intent && result.state)) {
-                                            Object(beaver_logger_client.q)("execute_result_missing_data");
+                                            Object(beaver_logger_client.p)("execute_result_missing_data");
                                             return new zalgo_promise_src.a();
                                         }
                                         return mergePaymentDetails(result.id, result);
@@ -12356,7 +12355,7 @@
                                 actions.payment.get = function() {
                                     return get().then(function(result) {
                                         if (!(result && result.id && result.intent && result.state)) {
-                                            Object(beaver_logger_client.q)("get_result_missing_data");
+                                            Object(beaver_logger_client.p)("get_result_missing_data");
                                             return new zalgo_promise_src.a();
                                         }
                                         return mergePaymentDetails(result.id, result);
@@ -12376,8 +12375,8 @@
                                         var nonce = _ref4.nonce;
                                         Object.defineProperty(data, "nonce", {
                                             get: function() {
-                                                Object(beaver_logger_client.k)("nonce_getter");
-                                                Object(beaver_logger_client.h)();
+                                                Object(beaver_logger_client.j)("nonce_getter");
+                                                Object(beaver_logger_client.g)();
                                                 return nonce;
                                             }
                                         });
@@ -12398,11 +12397,11 @@
                         decorate: function(original) {
                             return function(data, actions) {
                                 var _track4;
-                                Object(beaver_logger_client.k)("button_cancel");
-                                Object(beaver_logger_client.p)(((_track4 = {})[constants.v.KEY.STATE] = constants.v.STATE.CHECKOUT, 
+                                Object(beaver_logger_client.j)("button_cancel");
+                                Object(beaver_logger_client.o)(((_track4 = {})[constants.v.KEY.STATE] = constants.v.STATE.CHECKOUT, 
                                 _track4[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.CHECKOUT_CANCEL, _track4[constants.v.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                                 _track4));
-                                Object(beaver_logger_client.h)();
+                                Object(beaver_logger_client.g)();
                                 return original.call(this, data, component__extends({}, actions, {
                                     redirect: function(win, url) {
                                         return zalgo_promise_src.a.all([ Object(lib.Q)(win || window.top, url || data.cancelUrl), actions.close() ]);
@@ -12418,8 +12417,8 @@
                         decorate: function(original) {
                             return function(data) {
                                 var _track5;
-                                Object(beaver_logger_client.k)("button_click");
-                                Object(beaver_logger_client.p)(((_track5 = {})[constants.v.KEY.STATE] = constants.v.STATE.BUTTON, 
+                                Object(beaver_logger_client.j)("button_click");
+                                Object(beaver_logger_client.o)(((_track5 = {})[constants.v.KEY.STATE] = constants.v.STATE.BUTTON, 
                                 _track5[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.BUTTON_CLICK, _track5[constants.v.KEY.BUTTON_TYPE] = constants.v.BUTTON_TYPE.IFRAME, 
                                 _track5[constants.v.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track5[constants.v.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
                                 _track5));
@@ -12428,7 +12427,7 @@
                                     creditThrottle.log("click", ((_creditThrottle$log = {})[constants.v.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                                     _creditThrottle$log));
                                 }
-                                Object(beaver_logger_client.h)();
+                                Object(beaver_logger_client.g)();
                                 return original.apply(this, arguments);
                             };
                         }
@@ -12459,13 +12458,13 @@
                         },
                         validate: function() {
                             var style = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, props = arguments[1];
-                            Object(beaver_logger_client.k)("button_render_color_" + (style.color || "default"));
-                            Object(beaver_logger_client.k)("button_render_shape_" + (style.shape || "default"));
-                            Object(beaver_logger_client.k)("button_render_size_" + (style.size || "default"));
-                            Object(beaver_logger_client.k)("button_render_label_" + (style.label || "default"));
-                            Object(beaver_logger_client.k)("button_render_branding_" + (style.branding || "default"));
-                            Object(beaver_logger_client.k)("button_render_fundingicons_" + (style.fundingicons || "default"));
-                            Object(beaver_logger_client.k)("button_render_tagline_" + (style.tagline || "default"));
+                            Object(beaver_logger_client.j)("button_render_color_" + (style.color || "default"));
+                            Object(beaver_logger_client.j)("button_render_shape_" + (style.shape || "default"));
+                            Object(beaver_logger_client.j)("button_render_size_" + (style.size || "default"));
+                            Object(beaver_logger_client.j)("button_render_label_" + (style.label || "default"));
+                            Object(beaver_logger_client.j)("button_render_branding_" + (style.branding || "default"));
+                            Object(beaver_logger_client.j)("button_render_fundingicons_" + (style.fundingicons || "default"));
+                            Object(beaver_logger_client.j)("button_render_tagline_" + (style.tagline || "default"));
                             validateButtonStyle(style, props);
                         }
                     },
@@ -12522,7 +12521,7 @@
                     });
                     function doRender(props, original) {
                         return popupBridge ? renderThroughPopupBridge(props, popupBridge).catch(function(err) {
-                            Object(beaver_logger_client.g)("popup_bridge_error", {
+                            Object(beaver_logger_client.f)("popup_bridge_error", {
                                 err: Object(lib.V)(err)
                             });
                             return original();
@@ -12556,12 +12555,12 @@
                     }).filter(function(source) {
                         return source && source !== constants.w.CARD;
                     }), xprops = ButtonComponent.xprops;
-                    Object(beaver_logger_client.p)(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.BUTTON, 
+                    Object(beaver_logger_client.o)(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.BUTTON, 
                     _track[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.BUTTON_LOAD, _track[constants.v.KEY.BUTTON_TYPE] = constants.v.BUTTON_TYPE.IFRAME, 
                     _track[constants.v.KEY.FUNDING_LIST] = fundingSources.join(":"), _track[constants.v.KEY.FUNDING_COUNT] = fundingSources.length, 
                     _track[constants.v.KEY.PAGE_LOAD_TIME] = pageRenderTime, _track[constants.v.KEY.BUTTON_LAYOUT] = xprops && xprops.style && xprops.style.layout || constants.h.HORIZONTAL, 
                     _track));
-                    Object(beaver_logger_client.h)();
+                    Object(beaver_logger_client.g)();
                 });
                 var xprops = ButtonComponent.xprops || src_checkout.a.xprops;
                 xprops && xprops.logLevel && Object(lib.U)(xprops.logLevel);
@@ -12606,8 +12605,8 @@
                 }
             });
             Object(lib.E)() && Object(lib.n)("ie_full_page") && (src_checkout.a.renderTo = function(win) {
-                Object(beaver_logger_client.k)("force_ie_full_page");
-                Object(beaver_logger_client.h)();
+                Object(beaver_logger_client.j)("force_ie_full_page");
+                Object(beaver_logger_client.g)();
                 var checkout = src_checkout.a.init({
                     onAuthorize: lib.K
                 });
@@ -12670,7 +12669,7 @@
                     }, _i = 0; _i < _arr.length; _i++) _loop();
                     return callOriginal();
                 }
-                Object(beaver_logger_client.q)("button_mutliple_click_debounce");
+                Object(beaver_logger_client.p)("button_mutliple_click_debounce");
             });
             if (component_Button.xprops && component_Button.xprops.validate) {
                 var enabled = !0;
@@ -12701,7 +12700,7 @@
                 style && "creditblue" === style.color && (style.color = constants.f.DARKBLUE);
                 style && "generic" === style.label && (style.label = constants.g.PAYPAL);
                 if (style && (!style.label || style.label === constants.g.CHECKOUT) && "tiny" === style.size) {
-                    Object(beaver_logger_client.q)("unsupported_button_size_tiny");
+                    Object(beaver_logger_client.p)("unsupported_button_size_tiny");
                     style.size = constants.m.SMALL;
                 }
                 return callOriginal();
@@ -12769,13 +12768,13 @@
             }(domain)) && "test" !== currentDomainEnv && (config.a.env = currentDomainEnv);
             zalgo_promise_src.a.onPossiblyUnhandledException(function(err) {
                 var _track;
-                Object(beaver_logger_client.g)("unhandled_error", {
+                Object(beaver_logger_client.f)("unhandled_error", {
                     stack: Object(lib.V)(err),
                     errtype: {}.toString.call(err)
                 });
-                Object(beaver_logger_client.p)(((_track = {})[constants.v.KEY.ERROR_CODE] = "checkoutjs_error", 
+                Object(beaver_logger_client.o)(((_track = {})[constants.v.KEY.ERROR_CODE] = "checkoutjs_error", 
                 _track[constants.v.KEY.ERROR_DESC] = Object(lib.W)(err), _track));
-                return Object(beaver_logger_client.h)().catch(function(err2) {
+                return Object(beaver_logger_client.g)().catch(function(err2) {
                     if (window.console) try {
                         window.console.error ? window.console.error("Error flushing:", Object(lib.V)(err2)) : window.console.log && window.console.log("Error flushing:", Object(lib.V)(err2));
                     } catch (err3) {
@@ -12788,13 +12787,13 @@
             var currentScript = Object(lib.m)(), currentProtocol = window.location.protocol.split(":")[0];
             var init = Object(lib.M)(function(_ref3) {
                 var precacheRemembered = _ref3.precacheRemembered;
-                Object(lib.C)() || Object(beaver_logger_client.q)("ineligible");
+                Object(lib.C)() || Object(beaver_logger_client.p)("ineligible");
                 Object(lib.c)();
                 Object(lib.z)();
                 Object(lib.H)() || function() {
                     var _track;
-                    if (window.location.hostname) if (Boolean(Object(lib.o)(constants.D))) Object(beaver_logger_client.k)("pptm_tried_loading_twice"); else {
-                        Object(beaver_logger_client.p)(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.PPTM, 
+                    if (window.location.hostname) if (Boolean(Object(lib.o)(constants.D))) Object(beaver_logger_client.j)("pptm_tried_loading_twice"); else {
+                        Object(beaver_logger_client.o)(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.PPTM, 
                         _track[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.PPTM_LOAD, _track));
                         var fullUrl = Object(lib.i)(config.a.pptmUrl, {
                             t: "xo",
@@ -12806,10 +12805,10 @@
                             id: constants.D
                         }).then(function() {
                             var _track2;
-                            Object(beaver_logger_client.p)(((_track2 = {})[constants.v.KEY.STATE] = constants.v.STATE.PPTM, 
+                            Object(beaver_logger_client.o)(((_track2 = {})[constants.v.KEY.STATE] = constants.v.STATE.PPTM, 
                             _track2[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.PPTM_LOADED, _track2));
                         }).catch(function(err) {
-                            Object(beaver_logger_client.k)("pptm_script_error", {
+                            Object(beaver_logger_client.j)("pptm_script_error", {
                                 error: Object(lib.V)(err)
                             });
                         });
@@ -12817,8 +12816,8 @@
                 }();
                 precacheRemembered && Object(lib.P)();
                 Object(lib.n)("force_bridge") && !Object(lib.H)() && Object(lib.N)(config.a.env);
-                Object(beaver_logger_client.k)("setup_" + config.a.env);
-                Object(beaver_logger_client.f)("current_protocol_" + currentProtocol);
+                Object(beaver_logger_client.j)("setup_" + config.a.env);
+                Object(beaver_logger_client.e)("current_protocol_" + currentProtocol);
             });
             function setup() {
                 var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -12874,26 +12873,26 @@
             }) : setup();
             if (!Object(lib.H)()) if (currentScript) {
                 var setup__track2, scriptProtocol = currentScript.src.split(":")[0], loadTime = Object(lib.t)(currentScript.src);
-                Object(beaver_logger_client.f)("current_script_protocol_" + scriptProtocol);
-                Object(beaver_logger_client.f)("current_script_protocol_" + (currentProtocol === scriptProtocol ? "match" : "mismatch"));
-                Object(beaver_logger_client.f)("current_script_version_" + config.a.version.replace(/[^0-9a-zA-Z]+/g, "_"));
+                Object(beaver_logger_client.e)("current_script_protocol_" + scriptProtocol);
+                Object(beaver_logger_client.e)("current_script_protocol_" + (currentProtocol === scriptProtocol ? "match" : "mismatch"));
+                Object(beaver_logger_client.e)("current_script_version_" + config.a.version.replace(/[^0-9a-zA-Z]+/g, "_"));
                 if (loadTime) {
-                    Object(beaver_logger_client.f)("current_script_time", {
+                    Object(beaver_logger_client.e)("current_script_time", {
                         loadTime: loadTime
                     });
-                    Object(beaver_logger_client.f)("current_script_time_" + Math.floor(loadTime / 1e3));
+                    Object(beaver_logger_client.e)("current_script_time_" + Math.floor(loadTime / 1e3));
                 }
-                Object(beaver_logger_client.p)(((setup__track2 = {})[constants.v.KEY.STATE] = constants.v.STATE.LOAD, 
+                Object(beaver_logger_client.o)(((setup__track2 = {})[constants.v.KEY.STATE] = constants.v.STATE.LOAD, 
                 setup__track2[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.SCRIPT_LOAD, 
                 setup__track2[constants.v.KEY.TRANSITION_TIME] = loadTime, setup__track2));
             } else {
                 var setup__track3;
-                Object(beaver_logger_client.f)("no_current_script");
-                Object(beaver_logger_client.f)("no_current_script_version_" + config.a.version.replace(/[^0-9a-zA-Z]+/g, "_"));
-                document.currentScript && Object(beaver_logger_client.f)("current_script_not_recognized", {
+                Object(beaver_logger_client.e)("no_current_script");
+                Object(beaver_logger_client.e)("no_current_script_version_" + config.a.version.replace(/[^0-9a-zA-Z]+/g, "_"));
+                document.currentScript && Object(beaver_logger_client.e)("current_script_not_recognized", {
                     src: document.currentScript.src
                 });
-                Object(beaver_logger_client.p)(((setup__track3 = {})[constants.v.KEY.STATE] = constants.v.STATE.LOAD, 
+                Object(beaver_logger_client.o)(((setup__track3 = {})[constants.v.KEY.STATE] = constants.v.STATE.LOAD, 
                 setup__track3[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.SCRIPT_LOAD, 
                 setup__track3));
             }
@@ -12903,7 +12902,7 @@
                     for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
                 }
                 return target;
-            }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.205", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.206", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             interface_checkout = legacy.checkout;
             apps = legacy.apps;
             !function(moduleName, exportBuilder) {
@@ -13164,7 +13163,7 @@
             function isLegacyEligible() {
                 return !!Object(lib.C)() && (!!Object(lib.X)() && !Object(lib.A)());
             }
-            var warn = Object(client.n)(LOG_PREFIX).warn, DEFAULT_COUNTRY = constants.s.US, DEFAULT_LANG = constants.y.EN;
+            var warn = Object(client.m)(LOG_PREFIX).warn, DEFAULT_COUNTRY = constants.s.US, DEFAULT_LANG = constants.y.EN;
             function normalizeLocale(locale) {
                 var _locale$split = locale.split("_"), lang = _locale$split[0], country = _locale$split[1];
                 if (!country) if (config.a.locales[lang]) {
@@ -13189,7 +13188,7 @@
                     lang: lang
                 };
             }
-            var button__prefix = Object(client.n)(LOG_PREFIX), info = button__prefix.info, debug = button__prefix.debug, error = button__prefix.error, loadButtonJS = Object(lib.J)(function() {
+            var button__prefix = Object(client.m)(LOG_PREFIX), info = button__prefix.info, debug = button__prefix.debug, error = button__prefix.error, loadButtonJS = Object(lib.J)(function() {
                 debug("buttonjs_load");
                 return Object(lib.I)(config.a.buttonJSUrl).catch(function(err) {
                     info("buttonjs_load_error_retry", {
@@ -13283,11 +13282,11 @@
                     return button.parentElement && button.parentElement.parentElement;
                 }
             }
-            var util_warn = Object(client.n)(LOG_PREFIX).warn, redirected = !1;
+            var util_warn = Object(client.m)(LOG_PREFIX).warn, redirected = !1;
             function logRedirect(location) {
                 redirected && util_warn("multiple_redirects");
                 Object(lib.Z)(location) && (redirected = !0);
-                Object(client.h)();
+                Object(client.g)();
             }
             function redirect(url) {
                 return src.a.try(function() {
@@ -13304,14 +13303,14 @@
                     return match ? match[1] : (match = token.match(/(EC-[A-Z0-9]{17})/)) ? match[1] : void 0;
                 }
             }
-            var options__prefix = Object(client.n)(LOG_PREFIX), options_info = options__prefix.info, options_warn = options__prefix.warn;
+            var options__prefix = Object(client.m)(LOG_PREFIX), options_info = options__prefix.info, options_warn = options__prefix.warn;
             var _extends = Object.assign || function(target) {
                 for (var i = 1; i < arguments.length; i++) {
                     var source = arguments[i];
                     for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
                 }
                 return target;
-            }, interface__prefix = Object(client.n)(LOG_PREFIX), interface_info = interface__prefix.info, interface_debug = interface__prefix.debug, interface_warn = interface__prefix.warn, interface_error = interface__prefix.error, track = interface__prefix.track, interface_checkout = {}, apps = {
+            }, interface__prefix = Object(client.m)(LOG_PREFIX), interface_info = interface__prefix.info, interface_debug = interface__prefix.debug, interface_warn = interface__prefix.warn, interface_error = interface__prefix.error, track = interface__prefix.track, interface_checkout = {}, apps = {
                 checkout: interface_checkout,
                 Checkout: interface_checkout
             };
@@ -13546,7 +13545,7 @@
                 interface_info("render_" + type + "_button");
                 track(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.LOAD, _track[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.BUTTON_RENDER, 
                 _track[constants.v.KEY.BUTTON_TYPE] = type, _track));
-                Object(client.h)();
+                Object(client.g)();
             }
             var setupCalled = !1;
             function setup(id) {
@@ -13676,10 +13675,10 @@
                     var metaFrameDomain = config.a.paypalDomains[env];
                     if (!post_robot_src.bridge || !post_robot_src.bridge.needsBridge({
                         domain: metaFrameDomain
-                    })) return Object(client.f)("post_bridge_not_required", {
+                    })) return Object(client.e)("post_bridge_not_required", {
                         env: env
                     });
-                    Object(client.f)("setup_post_bridge", {
+                    Object(client.e)("setup_post_bridge", {
                         env: env
                     });
                     return Object(lib.N)(env).then(lib.K);
@@ -13693,7 +13692,7 @@
                                     var _track2;
                                     track(((_track2 = {})[constants.v.KEY.STATE] = constants.v.STATE.LOAD, _track2[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.BUTTON_CLICK, 
                                     _track2[constants.v.KEY.BUTTON_TYPE] = type, _track2));
-                                    Object(client.h)();
+                                    Object(client.g)();
                                 }(button.type);
                             });
                         });
@@ -13746,7 +13745,7 @@
                 }
             }
             interface_checkout.closeFlow = closeFlow;
-            var ready__prefix = Object(client.n)(LOG_PREFIX), ready_error = ready__prefix.error, ready_debug = ready__prefix.debug;
+            var ready__prefix = Object(client.m)(LOG_PREFIX), ready_error = ready__prefix.error, ready_debug = ready__prefix.debug;
             !function(obj, key, callback) {
                 if (obj) {
                     var value = obj[key];
@@ -14053,7 +14052,7 @@
             function redirect() {
                 var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, url = arguments[1];
                 return new zalgo_promise_src.a(function(resolve) {
-                    Object(client.k)("redirect", {
+                    Object(client.j)("redirect", {
                         url: url
                     });
                     setTimeout(function() {
@@ -14222,11 +14221,11 @@
                 return window.xchild && window.xchild.getParentDomain ? window.xchild.getParentDomain() : window.location.host;
             }
             var setupProxyLogTransport = Object(util.m)(function() {
-                Object(client.o)(proxyMethod("log", Object(cross_domain_utils_src.getParent)(window), Object(client.i)()));
+                Object(client.n)(proxyMethod("log", Object(cross_domain_utils_src.getParent)(window), Object(client.h)()));
             });
             function initLogger() {
                 setupProxyLogTransport();
-                Object(client.c)(function() {
+                Object(client.b)(function() {
                     return {
                         referer: getRefererDomain(),
                         host: window.location.host,
@@ -14235,20 +14234,15 @@
                         country: config.a.locale.country,
                         lang: config.a.locale.lang,
                         uid: getSessionID(),
-                        ver: "4.0.205"
+                        ver: "4.0.206"
                     };
                 });
                 Object(client.a)(function() {
                     return {
-                        "x-app-name": "checkoutjs"
-                    };
-                });
-                Object(client.b)(function() {
-                    return {
                         state: config.a.state
                     };
                 });
-                Object(client.d)(function() {
+                Object(client.c)(function() {
                     var _ref, payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, sessionID = getSessionID(), paymentToken = function() {
                         if (window.root && window.root.token) return window.root.token;
                         var queryToken = getQueryParam("token");
@@ -14271,7 +14265,7 @@
                     _ref[constants.v.KEY.TOKEN] = paymentToken, _ref[constants.v.KEY.REFERER] = getRefererDomain(), 
                     _ref;
                 });
-                Object(client.l)({
+                Object(client.k)({
                     uri: config.a.loggerUrl,
                     heartbeat: !1,
                     logPerformance: !1,
@@ -14280,9 +14274,9 @@
                 });
             }
             function setLogLevel(logLevel) {
-                if (-1 === client.m.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
+                if (-1 === client.l.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
                 config.a.logLevel = logLevel;
-                client.e.logLevel = logLevel;
+                client.d.logLevel = logLevel;
                 post_robot_src.CONFIG.LOG_LEVEL = logLevel;
                 window.LOG_LEVEL = logLevel;
             }
@@ -14330,14 +14324,14 @@
             var checkRecognizedBrowser = Object(util.m)(function(state) {
                 if (!getBrowser().browser) {
                     var _getBowser = getBowser(), name = _getBowser.name, _version = _getBowser.version, mobile = _getBowser.mobile, android = _getBowser.android, ios = _getBowser.ios;
-                    Object(client.k)("unrecognized_browser_" + state, {
+                    Object(client.j)("unrecognized_browser_" + state, {
                         name: name,
                         version: _version,
                         mobile: mobile,
                         android: android,
                         ios: ios
                     });
-                    Object(client.h)();
+                    Object(client.g)();
                 }
             });
             function logWarn(err) {
@@ -14349,26 +14343,26 @@
             function checkForCommonErrors() {
                 if ("[]" !== JSON.stringify([])) {
                     Array.prototype.toJSON ? logWarn("Custom Array.prototype.toJSON is causing incorrect json serialization of arrays. This is likely to cause issues. Probable cause is Prototype.js") : logWarn("JSON.stringify is doing incorrect serialization of arrays. This is likely to cause issues.");
-                    Object(client.q)("json_stringify_array_broken");
+                    Object(client.p)("json_stringify_array_broken");
                 }
                 if ("{}" !== JSON.stringify({})) {
                     logWarn("JSON.stringify is doing incorrect serialization of objects. This is likely to cause issues.");
-                    Object(client.q)("json_stringify_object_broken");
+                    Object(client.p)("json_stringify_object_broken");
                 }
-                Object(device.e)() && Object(client.q)("ie_intranet_mode");
-                Object(device.c)() && !Object(device.d)() && Object(client.q)("ie_meta_compatibility_header_missing", {
+                Object(device.e)() && Object(client.p)("ie_intranet_mode");
+                Object(device.c)() && !Object(device.d)() && Object(client.p)("ie_meta_compatibility_header_missing", {
                     message: 'Drop tag: <meta http-equiv="X-UA-Compatible" content="IE=edge">'
                 });
                 3 !== function(bar, baz, zomg) {}.bind({
                     a: 1
-                }).length && Object(client.q)("function_bind_arrity_overwritten");
-                window.opener && window.parent !== window && Object(client.q)("window_has_opener_and_parent");
-                window.name && 0 === window.name.indexOf("__prerender") && Object(client.q)("prerender_running_checkoutjs");
+                }).length && Object(client.p)("function_bind_arrity_overwritten");
+                window.opener && window.parent !== window && Object(client.p)("window_has_opener_and_parent");
+                window.name && 0 === window.name.indexOf("__prerender") && Object(client.p)("prerender_running_checkoutjs");
                 var context = {};
                 (function() {
                     return this;
-                }).bind(context)() !== context && Object(client.q)("function_bind_broken");
-                window.Window && window.constructor && window.Window !== window.constructor && Object(client.q)("window_constructor_does_not_match_window");
+                }).bind(context)() !== context && Object(client.p)("function_bind_broken");
+                window.Window && window.constructor && window.Window !== window.constructor && Object(client.p)("window_constructor_does_not_match_window");
                 Object.assign && JSON.stringify({
                     a: 1,
                     b: 2,
@@ -14379,7 +14373,7 @@
                     b: 2
                 }, {
                     c: 3
-                })) && Object(client.q)("object_assign_broken");
+                })) && Object(client.p)("object_assign_broken");
             }
             var _extends = Object.assign || function(target) {
                 for (var i = 1; i < arguments.length; i++) {
@@ -14395,7 +14389,7 @@
                 CONTENT_TYPE: "content-type",
                 ACCEPT: "accept"
             }, headerBuilders = [], corrids = [];
-            Object(client.c)(function() {
+            Object(client.b)(function() {
                 return {
                     prev_corr_ids: corrids.join(",")
                 };
@@ -14519,15 +14513,14 @@
                     for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
                 }
                 return target;
-            }, BEACON_URL = "https://www.paypal.com/xoplatform/logger/api/logger", APP_NAME = "checkoutjs";
+            }, BEACON_URL = "https://www.paypal.com/webapps/hermes/api/logger";
             function beacon(event) {
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.205";
+                    payload.version = "4.0.206";
                     payload.host = window.location.host;
                     payload.uid = getSessionID();
-                    payload.appName = APP_NAME;
                     var query = [];
                     for (var key in payload) payload.hasOwnProperty(key) && query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
                     query = query.join("&");
@@ -14542,7 +14535,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.205".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.206".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!function(name) {
                         return getSessionState(function(state) {
@@ -14561,7 +14554,7 @@
             function fpti() {
                 var payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, query = [];
                 payload = beacon__extends({}, {
-                    v: "checkout.js.4.0.205",
+                    v: "checkout.js.4.0.206",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -14628,15 +14621,15 @@
                         if (!started) return this;
                         if (throttle_isCheckpointUnique(name + "_" + treatment)) {
                             var _extends2;
-                            Object(client.p)(throttle__extends(((_extends2 = {})[constants.v.KEY.STATE] = constants.v.STATE.PXP, 
+                            Object(client.o)(throttle__extends(((_extends2 = {})[constants.v.KEY.STATE] = constants.v.STATE.PXP, 
                             _extends2[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.PXP, _extends2[constants.v.KEY.EXPERIMENT_NAME] = name, 
                             _extends2[constants.v.KEY.TREATMENT_NAME] = treatment, _extends2), payload));
                         }
                         var event = name + "_" + treatment + "_" + checkpointName;
-                        throttle_isCheckpointUnique(event) && Object(client.k)(event, throttle__extends({}, payload, {
+                        throttle_isCheckpointUnique(event) && Object(client.j)(event, throttle__extends({}, payload, {
                             expuid: uid
                         }));
-                        Object(client.h)();
+                        Object(client.g)();
                         return this;
                     },
                     logStart: function() {
@@ -14720,7 +14713,7 @@
                     if (script.src && (script.src.replace(/^https?:/, "").split("?")[0] === config.a.scriptUrl || script.hasAttribute("data-paypal-checkout"))) return script;
                     if (script.src && -1 !== script.src.indexOf("paypal.checkout.v4.js")) return script;
                 }
-                document.currentScript && Object(client.f)("current_script_not_recognized", {
+                document.currentScript && Object(client.e)("current_script_not_recognized", {
                     src: document.currentScript.src
                 });
             });
@@ -14728,7 +14721,7 @@
                 return Boolean(getCurrentScript());
             }
             function getScriptVersion() {
-                return "4.0.205";
+                return "4.0.206";
             }
             var openMetaFrame = Object(util.j)(function() {
                 var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -14745,7 +14738,7 @@
                             domain: metaFrameDomain
                         });
                         return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                            version: "4.0.205"
+                            version: "4.0.206"
                         }), metaFrameDomain).then(function() {
                             return metaListener;
                         }).then(function(_ref) {
