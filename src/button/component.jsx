@@ -14,7 +14,7 @@ import { SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
 import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, isEligible,
-    getDomainSetting, extendUrl, isDevice, isIosWebview, rememberFunding,
+    getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
 import { rest, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
 import { onAuthorizeListener } from '../experiments';
@@ -551,15 +551,11 @@ export let Button : Component<ButtonOptions> = create({
                     };
 
                     actions.redirect = (win, url) => {
-                        if (isIosWebview()) {
-                            return ZalgoPromise.try(() =>
-                                actions.close()
-                            ).then(() =>
-                                redir(win || window.top, url || data.returnUrl)
-                            );
-                        }
-
-                        return ZalgoPromise.all([ actions.close(), redir(win || window.top, url || data.returnUrl) ]);
+                        return ZalgoPromise.try(() => {
+                            return actions.close();
+                        }).then(() => {
+                            return redir(win || window.top, url || data.returnUrl);
+                        });
                     };
 
                     actions.payment.tokenize = memoize(() => {
