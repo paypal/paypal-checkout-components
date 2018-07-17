@@ -1,9 +1,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <div id="paypal-button"></div>
-<div style="padding-bottom: 1000px;"></div>
 
 <script src="http://localhost.paypal.com:9000/checkout.js"></script>
-<!-- <script src="https://www.paypalobjects.com/api/checkout.js" data&#45;paypal&#45;checkout data&#45;log&#45;level="debug" data&#45;env="stage" data&#45;stage="hermesnodeweb18050633" data&#45;api&#45;stage="msmaster"></script> -->
+<!-- <script src="https://hermesnodeweb18015753.qa.paypal.com/webapps/hermes/static/js/checkout.js" data&#45;paypal&#45;checkout data&#45;log&#45;level="debug" data&#45;env="stage" data&#45;stage="hermesnodeweb18015753" data&#45;api&#45;stage="msmaster"></script> -->
 
 <script>
   paypal.Button.render({
@@ -11,7 +10,13 @@
     env: 'local', // Optional: specify 'sandbox' environment
     // env: 'stage', // Optional: specify 'sandbox' environment
 
-    locale: 'en_US',
+    locale: 'en_JP',
+    // locale: 'en_SG',
+    // locale: 'en_US',
+    // locale: 'ar_YE',
+    // locale: 'fr_FR',
+
+    commit: true, // Optional: show a 'Pay Now' button in the checkout flow
 
     style: {
       branding: true, // optional
@@ -53,8 +58,16 @@
       var payer = {
         payer_info: {
           email: "khang.hoang12123123123213@pp.com",
-          first_name: "khang",
-          last_name: "hoang",
+          // first_name: "khang",
+          // last_name: "hoang",
+          // billing_address: {
+          //   state: "Tokyo",
+          //   line1: "2702394 Calista Court",
+          //   city: "Tokyo",
+          //   postal_code: "1600000",
+          //   country_code: "JP",
+          //   phone: "669-215-8030"
+          // },
           // billing_address: {
           //   state: "CA",
           //   line1: "2702394 Calista Court",
@@ -73,8 +86,6 @@
         }
       });
     },
-
-    commit: true, // Optional: show a 'Pay Now' button in the checkout flow
 
     onAuthorize: function(data, actions) {
 
