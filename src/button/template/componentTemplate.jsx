@@ -234,40 +234,38 @@ function renderStyle({ height, cardNumber } : { height? : ?number, cardNumber? :
 }
 
 function renderPowerByPaypalLogo(
-    { layout, size } :
-    { layout : "vertical" | "horizontal", size : "small" | "medium" | "large" }
+    { layout, size, locale } :
+    { layout : "vertical" | "horizontal", size : "small" | "medium" | "large", locale : LocaleType }
 ) : JsxHTMLNode {
+
+    const content = (path) => getLocaleContent(locale) || path;
 
     if (!(layout === 'vertical' && (size === 'medium' || size === 'large'))) {
         return null;
     }
 
     return (
-        <div style={ `
-            text-align: center;
-            margin: 10px auto;
-        ` }>
+        <div
+            class="powered-by-paypal"
+            style={ `
+                text-align: center;
+                margin: 10px auto;
+            ` }>
             <span style={ `
-                display: inline-block;
-                height: 14px;
-                font-family: HelveticaNeue;
-                font-size: 11px;
-                font-weight: normal;
-                font-style: italic;
-                font-stretch: normal;
-                color: #7b8388;
-                position: relative;
-                margin-right: 3px;
-                bottom: 3px;
-                ` }>
-            Powered by
+              display: inline-block;
+              height: 14px;
+              font-family: HelveticaNeue;
+              font-size: 11px;
+              font-weight: normal;
+              font-style: italic;
+              font-stretch: normal;
+              color: #7b8388;
+              position: relative;
+              margin-right: 3px;
+              bottom: 3px;
+              ` }>
+                { content('poweredBy') }
             </span>
-            <img
-                class="other-options-paypal-logo"
-                style={ `
-                    height: 16px
-                ` }
-                src={ `data:image/svg+xml;base64,${ btoa(fundingLogos[BUTTON_LOGO.PAYPAL][BUTTON_LOGO_COLOR.BLUE]) }` } />
         </div>
     );
 }
@@ -321,7 +319,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let styleNode  = renderStyle({ height, cardNumber: cards.length });
     let scriptNode = renderScript();
-    let labelPowerByPayPal = renderPowerByPaypalLogo(props.style);
+    let labelPowerByPayPal = renderPowerByPaypalLogo({ ...props.style, locale });
 
     return (
         <div { ...{ [ ATTRIBUTE.VERSION ]: __PAYPAL_CHECKOUT__.__MINOR_VERSION__ } } class={ `${ CLASS.CONTAINER } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) }` }>
