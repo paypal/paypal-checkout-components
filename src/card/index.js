@@ -31,11 +31,9 @@ export const Card : Component<CardOptions> = create({
         width:  '250px'
     },
 
-    buildUrl(props) : string {
-        let env = props.env || config.env;
-
+    buildUrl() : string {
         return window.xprops.payment().then(paymentToken => {
-            return `${ config.inlinedCardFieldUrls[env] }?token=${ paymentToken }`;
+            return `${ config.urls.card }?token=${ paymentToken }`;
         });
     },
 

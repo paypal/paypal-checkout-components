@@ -8,10 +8,8 @@ import { fundingLogos } from '../../resources';
 import { BUTTON_LOGO_COLOR } from '../../constants';
 import { isIos } from '../../lib';
 
-import componentContentJSON from './containerContent.json';
+import { containerContent } from './containerContent';
 import { getContainerStyle, getSandboxStyle } from './containerStyle';
-
-let componentContent = JSON.parse(componentContentJSON);
 
 export type ContainerTemplateOptions = {
     id : string,
@@ -36,8 +34,6 @@ export type ContainerTemplateOptions = {
 export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT, on, tag, context, actions, outlet, jsxDom } : ContainerTemplateOptions) : HTMLElement {
 
     let [ lang, country ] = props.locale.split('_');
-
-    let content = componentContent[country][lang];
 
     function close(event) {
         event.preventDefault();
@@ -68,6 +64,8 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
         ? fundingLogos.paypal({ logoColor })
         : fundingLogos.paypal[logoColor];
 
+    let content = containerContent[country][lang];
+
     let el = (
         <div id={ id } onClick={ focus } class={ `${ tag }-context-${ context } paypal-checkout-overlay` }>
             <a href='#' class="paypal-checkout-close" onClick={ close } aria-label="close" role="button"></a>
@@ -84,7 +82,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
                     {content.windowMessage}
                 </div>
                 <div class="paypal-checkout-continue">
-                    <a onClick={ focus } href='#'>{content.continue}</a>
+                    <a onClick={ focus } href='#'>{content.continueMessage}</a>
                 </div>
                 <div class="paypal-checkout-loader">
                     <div class="paypal-spinner"></div>

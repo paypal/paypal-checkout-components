@@ -99,7 +99,7 @@ export function initLogger() {
     let prefix = 'ppxo';
 
     init({
-        uri:            config.loggerUrl,
+        uri:            config.urls.logger,
         heartbeat:      false,
         logPerformance: false,
         prefix,

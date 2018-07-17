@@ -14,7 +14,7 @@ type FrameMetaData = {
     rememberedFunding : Array<string>
 };
 
-export let openMetaFrame = memoize((env : string = config.env) : ZalgoPromise<FrameMetaData> => {
+export let openMetaFrame = memoize(() : ZalgoPromise<FrameMetaData> => {
     return ZalgoPromise.try(() => {
 
         if (isIEIntranet()) {
@@ -25,8 +25,8 @@ export let openMetaFrame = memoize((env : string = config.env) : ZalgoPromise<Fr
             };
         }
 
-        let metaFrameUrl : string = config.metaFrameUrls[env];
-        let metaFrameDomain : string = config.paypalDomains[env];
+        let metaFrameUrl : string = config.urls.meta;
+        let metaFrameDomain : string = config.domains.meta;
 
         return ZalgoPromise.try(() => {
             if (!bridge) {

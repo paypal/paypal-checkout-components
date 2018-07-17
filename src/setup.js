@@ -8,24 +8,6 @@ import { FPTI } from './constants';
 import { initLogger, checkForCommonErrors, stringifyError,
     stringifyErrorMessage, isEligible, once } from './lib';
 
-function domainToEnv(domain : string) : ?string {
-    for (let env of Object.keys(config.paypalUrls)) {
-        if (config.paypalUrls[env] === domain) {
-            return env;
-        }
-    }
-}
-
-function setDomainEnv(domain : string) {
-    let currentDomainEnv = domainToEnv(domain);
-
-    if (currentDomainEnv && currentDomainEnv !== 'test') {
-        config.env = currentDomainEnv;
-    }
-}
-
-setDomainEnv(`${ window.location.protocol }//${ window.location.host }`);
-
 ZalgoPromise.onPossiblyUnhandledException(err => {
 
     error('unhandled_error', {

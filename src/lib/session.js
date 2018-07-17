@@ -68,7 +68,7 @@ export function getSession<T>(handler : (state : Object) => T) : T {
         let session = storage[SESSION_KEY];
         let now     = Date.now();
 
-        if (session && ((now - session.created) > config.session_uid_lifetime)) {
+        if (session && ((now - session.created) > config.sessionLifetime)) {
             session = null;
         }
 

@@ -21,14 +21,14 @@ function getNextMinorVersion() {
 
 module.exports = Object.assign({}, xcomponentGlobals, {
 
-    __POST_ROBOT__: Object.assign({}, postRobotGlobals, {
+    __POST_ROBOT__: Object.assign({}, postRobotGlobals.__POST_ROBOT__, {
         __IE_POPUP_SUPPORT__: false
     }),
 
     __PAYPAL_CHECKOUT__: {
         __DEFAULT_LOG_LEVEL__: 'warn',
-        __MAJOR__:             true,
         __MAJOR_VERSION__:     getNextMajorVersion(),
-        __MINOR_VERSION__:     getNextMinorVersion()
+        __MINOR_VERSION__:     getNextMinorVersion(),
+        __TREE_SHAKE__:        true
     }
 });

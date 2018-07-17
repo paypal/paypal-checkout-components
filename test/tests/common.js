@@ -233,7 +233,7 @@ patchXmlHttpRequest();
 export function getLoggerApiMock(options : Object = {}) : Object {
     return $mockEndpoint.register({
         method: 'POST',
-        uri:    config.loggerUrl,
+        uri:    config.urls.logger,
         data:   {},
         ...options
     });
@@ -242,7 +242,7 @@ export function getLoggerApiMock(options : Object = {}) : Object {
 export function getAuthApiMock(options : Object = {}) : Object {
     return $mockEndpoint.register({
         method: 'POST',
-        uri:    config.authApiUrl,
+        uri:    config.urls.auth,
         handler({ headers, data }) : { access_token : string } {
 
             if (!headers.authorization) {
@@ -274,7 +274,7 @@ export function getAuthApiMock(options : Object = {}) : Object {
 export function getOrderApiMock(options : Object = {}) : Object {
     return $mockEndpoint.register({
         method: 'POST',
-        uri:    config.orderApiUrl,
+        uri:    config.urls.order,
         handler({ data, headers }) : { id : string } {
 
             if (!headers.authorization) {

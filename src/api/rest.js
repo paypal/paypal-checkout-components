@@ -25,7 +25,7 @@ export let createAccessToken = memoize((clientID : string) : ZalgoPromise<string
     return request({
 
         method:  `post`,
-        url:     config.authApiUrls[config.env],
+        url:     config.urls.auth,
         headers: {
             Authorization: `Basic ${ basicAuth }`
         },
@@ -105,7 +105,7 @@ export function createOrder(clientID : string, orderDetails : Object) : ZalgoPro
 
         return request({
             method: `post`,
-            url:    config.orderApiUrls[config.env],
+            url:    config.urls.order,
             headers,
             json:   order
         });

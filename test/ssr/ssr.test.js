@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint no-restricted-globals: 0, promise/no-native: 0 */
 
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 
@@ -7,30 +8,52 @@ import globals from '../../globals';
 
 jest.setTimeout(120000);
 
-let buttonExports = {};
+let cache = {};
 
-beforeAll(async () => {
-    let script = await webpackCompileToString(getWebpackConfig({
+async function getButtonScript(vars = {}) : Promise<{ componentTemplate : (Object) => string }> {
+
+    let config = {
         entry:         './src/button/template/componentTemplate.jsx',
         libraryTarget: 'commonjs',
-        vars:          globals
-    }));
+        
+        vars: {
+            ...globals,
+            ...vars,
+            __PAYPAL_CHECKOUT__: {
+                ...globals.__PAYPAL_CHECKOUT__,
+                __TREE_SHAKE__: false
+            }
+        }
+    };
 
-    let exports = buttonExports; // eslint-disable-line no-unused-vars
+    let cacheKey = JSON.stringify(config);
+    if (cache[cacheKey]) {
+        return cache[cacheKey];
+    }
+
+    let script = await webpackCompileToString(getWebpackConfig(config));
+
+    let exports : Object = {};
     eval(script); // eslint-disable-line no-eval,security/detect-eval-with-expression
 
-    if (typeof buttonExports.componentTemplate !== 'function') {
+    if (typeof exports.componentTemplate !== 'function') {
         throw new TypeError(`Expected componentTemplate to be a function`);
     }
-});
 
-test(`Button should render with ssr, with minimal options`, () => {
+    cache[cacheKey] = exports;
+
+    return exports;
+}
+
+test(`Button should render with ssr, with minimal options`, async () => {
 
     let locale = 'en_US';
 
     let style = {};
 
-    let html = buttonExports.componentTemplate({
+    let { componentTemplate } = await getButtonScript();
+
+    let html = componentTemplate({
         props: { locale, style }
     });
 
@@ -39,7 +62,7 @@ test(`Button should render with ssr, with minimal options`, () => {
     }
 });
 
-test(`Button should render with ssr, with all options`, () => {
+test(`Button should render with ssr, with all options`, async () => {
 
     let env = 'production';
 
@@ -57,7 +80,9 @@ test(`Button should render with ssr, with all options`, () => {
         tagline:      false
     };
 
-    let html = buttonExports.componentTemplate({
+    let { componentTemplate } = await getButtonScript();
+
+    let html = componentTemplate({
         props: { env, locale, style }
     });
 
@@ -66,7 +91,7 @@ test(`Button should render with ssr, with all options`, () => {
     }
 });
 
-test(`Button should fail to render with ssr, with invalid style option`, () => {
+test(`Button should fail to render with ssr, with invalid style option`, async () => {
 
     let locale = 'en_US';
 
@@ -74,10 +99,12 @@ test(`Button should fail to render with ssr, with invalid style option`, () => {
         color: 'vermillion'
     };
 
+    let { componentTemplate } = await getButtonScript();
+
     let expectedErr;
 
     try {
-        buttonExports.componentTemplate({
+        componentTemplate({
             props: { locale, style }
         });
     } catch (err) {
@@ -89,16 +116,18 @@ test(`Button should fail to render with ssr, with invalid style option`, () => {
     }
 });
 
-test(`Button should fail to render with ssr, with invalid locale`, () => {
+test(`Button should fail to render with ssr, with invalid locale`, async () => {
 
     let locale = 'en_XX';
 
     let style = {};
 
+    let { componentTemplate } = await getButtonScript();
+
     let expectedErr;
 
     try {
-        buttonExports.componentTemplate({
+        componentTemplate({
             props: { locale, style }
         });
     } catch (err) {

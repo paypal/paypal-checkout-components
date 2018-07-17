@@ -32,15 +32,6 @@ let setupBrowserPage = (async () => {
         vars:          {
             ...globals,
             __paypal_checkout__: {
-                queryOptions: {
-                    clientID:   'abcxyz123',
-                    merchantID: 'XYZ',
-                    env:        'test',
-                    locale:     {
-                        country: 'US',
-                        lang:    'en'
-                    }
-                },
                 serverConfig: {
                     paypalMerchantConfiguration: {
                         creditCard: {
@@ -48,6 +39,12 @@ let setupBrowserPage = (async () => {
                         }
                     }
                 }
+            },
+            __CLIENT_ID__:   'xyz',
+            __MERCHANT_ID__: 'abc',
+            __LOCALE__:      {
+                __COUNTRY__: 'US',
+                __LANG__:    'en'
             }
         }
     })));

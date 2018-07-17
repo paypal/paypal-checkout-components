@@ -63,20 +63,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
         return config.env === ENV.LOCAL;
     },
 
-    get domain() : Object {
-        return {
-            ...config.paypalDomains,
-            [ ENV.LOCAL ]: /^http:\/\/localhost.paypal.com:\d+$/
-        };
-    },
-
-    get bridgeUrl() : Object {
-        return config.metaFrameUrls;
-    },
-
-    get bridgeDomain() : Object {
-        return config.paypalDomains;
-    },
+    domain: config.domains.paypal,
 
     contexts: {
         iframe: (!supportsPopups()),
@@ -136,14 +123,14 @@ export let Checkout : Component<CheckoutPropsType> = create({
             }
         },
 
-        stageUrl: {
+        stageDomain: {
             type:       'string',
             required:   false,
             queryParam: true,
 
             def() : ?string {
                 if (config.env === ENV.STAGE || config.env === ENV.LOCAL) {
-                    return config.stageUrl;
+                    return config.stageDomain;
                 }
             }
         },
@@ -316,7 +303,6 @@ export let Checkout : Component<CheckoutPropsType> = create({
                         [ FPTI.KEY.TRANSITION ]:   FPTI.TRANSITION.CHECKOUT_INIT,
                         [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.EC_TOKEN,
                         [ FPTI.KEY.TOKEN ]:        data.orderID,
-                        [ FPTI.KEY.SELLER_ID ]:    data.merchantID,
                         [ FPTI.KEY.CONTEXT_ID ]:   data.orderID
                     });
 

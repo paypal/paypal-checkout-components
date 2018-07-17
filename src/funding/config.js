@@ -43,7 +43,7 @@ export const FUNDING_CONFIG = {
 
     [ FUNDING.CARD ]: {
         // $FlowFixMe
-        default: (typeof __paypal_checkout__ !== 'undefined') && __paypal_checkout__.serverConfig.paypalMerchantConfiguration.creditCard.isPayPalBranded,
+        default: true, /* (typeof __paypal_checkout__ !== 'undefined') && __paypal_checkout__.serverConfig.paypalMerchantConfiguration.creditCard.isPayPalBranded, */
 
         allowHorizontal: false,
         allowVertical:   true

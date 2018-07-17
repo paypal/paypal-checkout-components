@@ -32,11 +32,6 @@ function getButtonClasses({ label, color, logoColor }) : string {
     ].join(' ');
 }
 
-function getLocaleContent(locale : LocaleType) : Object {
-    let { country, lang } = locale;
-    return componentContent[country][lang];
-}
-
 function determineLabel({ label, source, multiple, layout } : { label : $Values<typeof BUTTON_LABEL>, source : FundingSource, multiple : boolean,  layout : $Values<typeof BUTTON_LAYOUT> }) : $Values<typeof BUTTON_LABEL> {
 
     let defaultLabel = fundingToDefaultLabel(source);
@@ -102,7 +97,7 @@ function renderFundingIcons({ cards, fundingicons } :
 function renderContent(text : string, { label, locale, color, logoColor, funding, env, cards, dynamicContent } :
     { label? : string, locale : LocaleType, color : string, logoColor? : string, funding? : FundingSelection, env : string, cards : Array<string>, dynamicContent? : Object }) : JsxHTMLNode {
 
-    let content = getLocaleContent(locale);
+    let content = componentContent[locale.country][locale.lang];
 
     return jsxRender(text, {
 

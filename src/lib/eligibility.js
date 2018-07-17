@@ -29,7 +29,7 @@ export function getBrowser() : { browser? : string, version? : string } {
 
     let bowser = getBowser();
 
-    for (let browser of Object.keys(config.SUPPORTED_BROWSERS)) {
+    for (let browser of Object.keys(config.browsers)) {
         if (bowser[browser]) {
             return { browser, version: bowser.version };
         }
@@ -47,7 +47,7 @@ function isBrowserEligible() : boolean {
     let bowser = getBowser();
     let { browser, version } = getBrowser();
 
-    if (browser && version && bowser.compareVersions([ version, config.SUPPORTED_BROWSERS[browser] ]) === -1) {
+    if (browser && version && bowser.compareVersions([ version, config.browsers[browser] ]) === -1) {
         return false;
     }
 

@@ -14,15 +14,6 @@ export default function configKarma(karma : Object) {
             vars: {
                 ...globals,
                 __paypal_checkout__: {
-                    queryOptions: {
-                        clientID:   'abcxyz123',
-                        merchantID: 'XYZ',
-                        env:        'test',
-                        locale:     {
-                            country: 'US',
-                            lang:    'en'
-                        }
-                    },
                     serverConfig: {
                         paypalMerchantConfiguration: {
                             creditCard: {
@@ -32,9 +23,14 @@ export default function configKarma(karma : Object) {
                     }
                 },
                 __PAYPAL_CHECKOUT__: {
-                    __MAJOR__:         false,
-                    __MAJOR_VERSION__: 'test',
-                    __MINOR_VERSION__: 'test_minor'
+                    ...globals.__PAYPAL_CHECKOUT__,
+                    __TREE_SHAKE__: false
+                },
+                __CLIENT_ID__:   'abcxyz123',
+                __MERCHANT_ID__: 'abc',
+                __LOCALE__:      {
+                    __COUNTRY__: 'US',
+                    __LANG__:    'en'
                 }
             }
         })

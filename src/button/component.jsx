@@ -39,9 +39,8 @@ export let Button : Component<ButtonOptions> = create({
     tag:  'paypal-button',
     name: 'ppbutton',
 
-    buildUrl() : string {
-        return config.buttonUrls[config.env];
-    },
+    url:    config.urls.button,
+    domain: config.domains.paypal,
 
     contexts: {
         iframe: true,
@@ -71,10 +70,6 @@ export let Button : Component<ButtonOptions> = create({
                 </body>
             </html>
         );
-    },
-
-    get domain() : Object {
-        return config.paypalDomains;
     },
 
     attributes: {
@@ -142,14 +137,14 @@ export let Button : Component<ButtonOptions> = create({
             }
         },
 
-        stageUrl: {
+        stageDomain: {
             type:       'string',
             required:   false,
             queryParam: true,
 
             def() : ?string {
                 if (config.env === ENV.STAGE || config.env === ENV.LOCAL) {
-                    return config.stageUrl;
+                    return config.stageDomain;
                 }
             }
         },
