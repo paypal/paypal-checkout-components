@@ -116,6 +116,16 @@ export let buttonStyle = `
         visibility: hidden;
     }
 
+    .powered-by-paypal > .${ CLASS.TEXT } {
+        vertical-align: top;
+        line-height: 18px;
+    } 
+
+    .powered-by-paypal > .${ CLASS.LOGO } {
+        height: 16px;
+        min-height: 16px;
+    } 
+
     .${ CLASS.TAGLINE } {
         max-width: 100%;
         font-weight: normal;

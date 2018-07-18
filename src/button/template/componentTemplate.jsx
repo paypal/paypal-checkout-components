@@ -233,12 +233,13 @@ function renderStyle({ height, cardNumber } : { height? : ?number, cardNumber? :
     );
 }
 
-function renderPowerByPaypalLogo(
-    { layout, size, locale } :
-    { layout : "vertical" | "horizontal", size : "small" | "medium" | "large", locale : LocaleType }
-) : JsxHTMLNode {
+function renderPowerByPaypalLogo(props) : JsxHTMLNode {
 
-    const content = (path) => getLocaleContent(locale) || path;
+    if (!props) {
+        return;
+    }
+
+    const { layout, size } = props;
 
     if (!(layout === 'vertical' && (size === 'medium' || size === 'large'))) {
         return null;
@@ -250,22 +251,18 @@ function renderPowerByPaypalLogo(
             style={ `
                 text-align: center;
                 margin: 10px auto;
+                height: 14px;
+                font-family: HelveticaNeue;
+                font-size: 11px;
+                font-weight: normal;
+                font-style: italic;
+                font-stretch: normal;
+                color: #7b8388;
+                position: relative;
+                margin-right: 3px;
+                bottom: 3px;
             ` }>
-            <span style={ `
-              display: inline-block;
-              height: 14px;
-              font-family: HelveticaNeue;
-              font-size: 11px;
-              font-weight: normal;
-              font-style: italic;
-              font-stretch: normal;
-              color: #7b8388;
-              position: relative;
-              margin-right: 3px;
-              bottom: 3px;
-              ` }>
-                { content('poweredBy') }
-            </span>
+            { renderContent('{ content: poweredBy }', { ...props, logoColor: 'blue'}) }
         </div>
     );
 }
@@ -319,7 +316,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let styleNode  = renderStyle({ height, cardNumber: cards.length });
     let scriptNode = renderScript();
-    let labelPowerByPayPal = renderPowerByPaypalLogo({ ...props.style, locale });
+    let labelPowerByPayPal = renderPowerByPaypalLogo(normalizeProps(props));
 
     return (
         <div { ...{ [ ATTRIBUTE.VERSION ]: __PAYPAL_CHECKOUT__.__MINOR_VERSION__ } } class={ `${ CLASS.CONTAINER } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) }` }>

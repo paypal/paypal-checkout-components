@@ -82,7 +82,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -90,7 +90,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -98,7 +98,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -106,7 +106,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "AI": {
@@ -116,7 +116,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -124,7 +124,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -132,7 +132,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -140,7 +140,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "AL": {
@@ -194,7 +194,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -202,7 +202,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -210,7 +210,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -218,7 +218,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "AO": {
@@ -262,7 +262,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -270,7 +270,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "AT": {
@@ -280,7 +280,7 @@
             "later_tag": "Kaufen Sie jetzt und bezahlen Sie nach und nach.",
             "pay": "Mit {logo:paypal} zahlen",
             "buynow": "{logo:pp} {logo:paypal} Jetzt kaufen",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Abgewickelt durch {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -288,7 +288,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "AU": {
@@ -308,7 +308,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -316,7 +316,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -324,7 +324,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -332,7 +332,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "AZ": {
@@ -386,7 +386,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -394,7 +394,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -402,7 +402,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -410,7 +410,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "BE": {
@@ -420,7 +420,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "nl": {
             "checkout": "Betalen met {logo:pp} {logo:paypal}",
@@ -428,7 +428,7 @@
             "later_tag": "Koop nu. Betaal later.",
             "pay": "Betalen met {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Nu kopen",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Mogelijk gemaakt door {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -436,7 +436,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         }
     },
     "BF": {
@@ -600,7 +600,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -608,7 +608,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -616,7 +616,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -624,7 +624,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "BN": {
@@ -634,7 +634,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "BO": {
@@ -644,7 +644,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -652,7 +652,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -660,7 +660,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -668,7 +668,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "BR": {
@@ -680,7 +680,7 @@
             "buynow": "{logo:pp} {logo:paypal} Comprar agora",
             "installment": "{logo:pp} {logo:paypal}  Pagamentos<br>  sem juros",
             "installment_period": "{logo:pp} {logo:paypal}  Pague em até<br>  [installmentperiod]x sem juros",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Com tecnologia {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -690,7 +690,7 @@
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
             "installment": "{logo:pp} {logo:paypal}  Interest free<br>  payments",
             "installment_period": "{logo:pp} {logo:paypal}  Pay up to [installmentperiod]x<br>  without interest",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "BS": {
@@ -700,7 +700,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -708,7 +708,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -716,7 +716,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -724,7 +724,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "BT": {
@@ -734,7 +734,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "BW": {
@@ -788,7 +788,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -796,7 +796,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -804,7 +804,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -812,7 +812,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "C2": {
@@ -822,7 +822,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -830,7 +830,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "CA": {
@@ -926,7 +926,7 @@
             "later_tag": "Kaufen Sie jetzt und bezahlen Sie nach und nach.",
             "pay": "Mit {logo:paypal} zahlen",
             "buynow": "{logo:pp} {logo:paypal} Jetzt kaufen",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Abgewickelt durch {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -934,7 +934,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -942,7 +942,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "CI": {
@@ -1004,7 +1004,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -1012,7 +1012,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -1020,7 +1020,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -1028,7 +1028,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "CM": {
@@ -1056,7 +1056,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "CO": {
@@ -1066,7 +1066,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -1074,7 +1074,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -1082,7 +1082,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -1090,7 +1090,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "CR": {
@@ -1100,7 +1100,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -1108,7 +1108,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -1116,7 +1116,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -1124,7 +1124,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "CV": {
@@ -1178,7 +1178,7 @@
             "later_tag": "Nakupujte nyní, plaťte později.",
             "pay": "Zaplatit přes {logo: paypal}",
             "buynow": "Koupit ihned přes {logo:pp} {logo:paypal}",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Využívá službu {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -1220,7 +1220,7 @@
             "later_tag": "Kaufen Sie jetzt und bezahlen Sie nach und nach.",
             "pay": "Mit {logo:paypal} zahlen",
             "buynow": "{logo:pp} {logo:paypal} Jetzt kaufen",
-            "poweredBy": "Ratenzahlung Powered by {logo:paypal}"
+            "poweredBy": "Abgewickelt durch {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -1228,7 +1228,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": "Ratenzahlung Powered by {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "DJ": {
@@ -1272,7 +1272,7 @@
             "later_tag": "Køb nu, betal senere.",
             "pay": "Betal med {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Køb nu",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Leveret af {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -1280,7 +1280,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "DM": {
@@ -1290,7 +1290,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -1298,7 +1298,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1306,7 +1306,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -1314,7 +1314,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "DO": {
@@ -1324,7 +1324,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -1332,7 +1332,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -1340,7 +1340,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -1348,7 +1348,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "DZ": {
@@ -1400,7 +1400,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -1408,7 +1408,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -1416,7 +1416,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -1424,7 +1424,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "EE": {
@@ -1442,7 +1442,7 @@
             "later_tag": "Покупайте сейчас, платите потом.",
             "pay": "Оплатить через {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Купить сейчас",
-            "poweredBy": "Обработано {logo:paypal}"
+            "poweredBy": "При содействии {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -1604,7 +1604,7 @@
             "later_tag": "Osta nyt. Maksa vähitellen.",
             "pay": "{logo:paypal}-maksu",
             "buynow": "{logo:pp} {logo:paypal} Osta nyt",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Palvelun tarjoaa {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -1646,7 +1646,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -1654,7 +1654,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1662,7 +1662,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -1670,7 +1670,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "FK": {
@@ -1680,7 +1680,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -1688,7 +1688,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1696,7 +1696,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -1704,7 +1704,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "FM": {
@@ -1714,7 +1714,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "FO": {
@@ -1828,7 +1828,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -1836,7 +1836,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1844,7 +1844,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -1852,7 +1852,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "GE": {
@@ -2108,7 +2108,7 @@
             "later_tag": "Αγοράστε τώρα.  Πληρώστε σε δόσεις.",
             "pay": "Πληρωμή μέσω {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Αγορά τώρα",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Με την υποστήριξη του {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -2150,7 +2150,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -2158,7 +2158,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -2166,7 +2166,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -2174,7 +2174,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "GW": {
@@ -2218,7 +2218,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -2226,7 +2226,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2234,7 +2234,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -2242,7 +2242,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "HK": {
@@ -2270,7 +2270,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -2278,7 +2278,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -2286,7 +2286,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -2294,7 +2294,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "HR": {
@@ -2314,7 +2314,7 @@
             "later_tag": "Vásároljon most. Fizessen később.",
             "pay": "{logo:paypal}-fizetés",
             "buynow": "{logo:pp} {logo:paypal} Vásárlás",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Üzemeltető: {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -2356,7 +2356,7 @@
             "later_tag": "Beli Sekarang. Bayar dalam Jangka Waktu Tertentu.",
             "pay": "Bayar dengan {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Beli Sekarang",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Ditunjang teknologi {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -2364,7 +2364,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "IE": {
@@ -2408,7 +2408,7 @@
             "later_tag": "קנה עכשיו. שלם לאורך זמן.",
             "pay": "שלם באמצעות {logo:paypal}‏",
             "buynow": "{logo:pp} {logo:paypal} קנה עכשיו",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "מופעל על-ידי {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -2416,7 +2416,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "IN": {
@@ -2464,7 +2464,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2472,7 +2472,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -2480,7 +2480,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -2488,7 +2488,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "JO": {
@@ -2540,7 +2540,7 @@
             "later_tag": "今すぐ購入して、分割してお支払い。",
             "pay": "{logo:paypal}で支払う",
             "buynow": "{logo:pp} {logo:paypal} 購入",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -2548,7 +2548,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "KE": {
@@ -2626,7 +2626,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "KI": {
@@ -2636,7 +2636,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -2644,7 +2644,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2652,7 +2652,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -2660,7 +2660,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "KM": {
@@ -2704,7 +2704,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -2712,7 +2712,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2720,7 +2720,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -2728,7 +2728,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "KR": {
@@ -2738,7 +2738,7 @@
             "later_tag": "지금 구매하고 천천히 결제하세요.",
             "pay": "{logo:paypal}로 지불하기",
             "buynow": "{logo:pp} {logo:paypal} 바로 구매",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "제공: {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -2746,7 +2746,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "KW": {
@@ -2798,7 +2798,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -2806,7 +2806,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2814,7 +2814,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -2822,7 +2822,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "KZ": {
@@ -2866,7 +2866,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "LC": {
@@ -2876,7 +2876,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -2884,7 +2884,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2892,7 +2892,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -2900,7 +2900,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "LI": {
@@ -2944,7 +2944,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "LS": {
@@ -2996,7 +2996,7 @@
             "later_tag": "Покупайте сейчас, платите потом.",
             "pay": "Оплатить через {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Купить сейчас",
-            "poweredBy": "Обработано {logo:paypal}"
+            "poweredBy": "При содействии {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -3038,7 +3038,7 @@
             "later_tag": "Kaufen Sie jetzt und bezahlen Sie nach und nach.",
             "pay": "Mit {logo:paypal} zahlen",
             "buynow": "{logo:pp} {logo:paypal} Jetzt kaufen",
-            "poweredBy": "Powered by {logo:paypal}"
+            "poweredBy": "Abgewickelt durch {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -3080,7 +3080,7 @@
             "later_tag": "Покупайте сейчас, платите потом.",
             "pay": "Оплатить через {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Купить сейчас",
-            "poweredBy": "Обработано {logo:paypal}"
+            "poweredBy": "При содействии {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -3228,7 +3228,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -3236,7 +3236,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3244,7 +3244,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -3252,7 +3252,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "MK": {
@@ -3306,7 +3306,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "MQ": {
@@ -3384,7 +3384,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -3392,7 +3392,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3400,7 +3400,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -3408,7 +3408,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "MT": {
@@ -3462,7 +3462,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "MW": {
@@ -3508,7 +3508,7 @@
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
             "installment": "{logo:pp} {logo:paypal}  Pagos sin<br>  interés",
             "installment_period": "{logo:pp} {logo:paypal}  Pague hasta<br>  [installmentperiod]x sin interés",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -3518,7 +3518,7 @@
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
             "installment": "{logo:pp} {logo:paypal}  Interest free<br>  payments",
             "installment_period": "{logo:pp} {logo:paypal}  Pay up to [installmentperiod]x<br>  without interest",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "MY": {
@@ -3528,7 +3528,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "MZ": {
@@ -3674,7 +3674,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -3682,7 +3682,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3690,7 +3690,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -3698,7 +3698,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "NG": {
@@ -3718,7 +3718,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -3726,7 +3726,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -3734,7 +3734,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -3742,7 +3742,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "NL": {
@@ -3752,7 +3752,7 @@
             "later_tag": "Koop nu. Betaal later.",
             "pay": "Betalen met {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Nu kopen",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Mogelijk gemaakt door {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -3760,7 +3760,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "NO": {
@@ -3770,7 +3770,7 @@
             "later_tag": "Kjøp nå, betal senere.",
             "pay": "Betal med {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Kjøp nå",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Leveres av {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -3778,7 +3778,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "NP": {
@@ -3788,7 +3788,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "NR": {
@@ -3798,7 +3798,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -3806,7 +3806,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3814,7 +3814,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -3822,7 +3822,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "NU": {
@@ -3832,7 +3832,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -3840,7 +3840,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3848,7 +3848,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -3856,7 +3856,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "NZ": {
@@ -3866,7 +3866,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "{logo:pp} {logo:paypal} Payer",
@@ -3874,7 +3874,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3882,7 +3882,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -3890,7 +3890,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "OM": {
@@ -3942,7 +3942,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -3950,7 +3950,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -3958,7 +3958,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -3966,7 +3966,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "PE": {
@@ -3976,7 +3976,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -3984,7 +3984,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -3992,7 +3992,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -4000,7 +4000,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "PF": {
@@ -4044,7 +4044,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -4052,7 +4052,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4060,7 +4060,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -4068,7 +4068,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "PH": {
@@ -4078,7 +4078,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "PL": {
@@ -4088,7 +4088,7 @@
             "later_tag": "Kup teraz. Płać w ratach",
             "pay": "Zapłać z {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Kup teraz",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Płatności spod znaku {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -4096,7 +4096,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "PM": {
@@ -4140,7 +4140,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -4148,7 +4148,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4156,7 +4156,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -4164,7 +4164,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "PT": {
@@ -4174,7 +4174,7 @@
             "later_tag": "Compre agora. Vá pagando.",
             "pay": "Pagar com {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar agora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -4182,7 +4182,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "PW": {
@@ -4192,7 +4192,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -4200,7 +4200,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4208,7 +4208,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -4216,7 +4216,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "PY": {
@@ -4226,7 +4226,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -4234,7 +4234,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "QA": {
@@ -4388,7 +4388,7 @@
             "later_tag": "Покупайте сейчас, платите потом.",
             "pay": "Оплатить через {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Купить сейчас",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "При содействии {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -4396,7 +4396,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "RW": {
@@ -4482,7 +4482,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -4490,7 +4490,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4498,7 +4498,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -4506,7 +4506,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "SC": {
@@ -4550,7 +4550,7 @@
             "later_tag": "Köp nu, betala senare",
             "pay": "Betala med {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Köp nu",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Tillhandahålls av {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -4558,7 +4558,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "SG": {
@@ -4680,7 +4680,7 @@
             "later_tag": "Nakúpte teraz, zaplaťte postupne",
             "pay": "Zaplatiť cez {logo: paypal}",
             "buynow": "{logo:pp} {logo:paypal} Kúpiť",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Používa technológiu {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -4858,7 +4858,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -4866,7 +4866,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4874,7 +4874,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -4882,7 +4882,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "ST": {
@@ -4926,7 +4926,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -4934,7 +4934,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -4942,7 +4942,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -4950,7 +4950,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "SZ": {
@@ -4994,7 +4994,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -5002,7 +5002,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5010,7 +5010,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -5018,7 +5018,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "TD": {
@@ -5104,7 +5104,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "TJ": {
@@ -5224,7 +5224,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "TR": {
@@ -5234,7 +5234,7 @@
             "later_tag": "Şimdi Alın. Daha Sonra Ödeyin.",
             "pay": "{logo:paypal} ile Öde",
             "buynow": "{logo:pp} {logo:paypal} Hemen Satın Alın",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Çalıştıran {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -5242,7 +5242,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "TT": {
@@ -5252,7 +5252,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -5260,7 +5260,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5268,7 +5268,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -5276,7 +5276,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "TV": {
@@ -5286,7 +5286,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -5294,7 +5294,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5302,7 +5302,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -5310,7 +5310,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "TW": {
@@ -5320,7 +5320,7 @@
             "later_tag": "先購買，後付款。",
             "pay": "使用 {logo:paypal} 付款",
             "buynow": "{logo:pp} {logo:paypal} 立即購",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -5328,7 +5328,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "TZ": {
@@ -5380,7 +5380,7 @@
             "later_tag": "Покупайте сейчас, платите потом.",
             "pay": "Оплатить через {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Купить сейчас",
-            "poweredBy": "Обработано {logo:paypal}"
+            "poweredBy": "При содействии {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -5449,7 +5449,7 @@
             "dual_tag": "Two easy ways to pay",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "{logo:pp} {logo:paypal} Payer",
@@ -5457,7 +5457,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "Pagar con {logo:pp} {logo:paypal}",
@@ -5465,7 +5465,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "使用{logo:pp} {logo:paypal}结账",
@@ -5473,7 +5473,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "UY": {
@@ -5483,7 +5483,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -5491,7 +5491,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -5499,7 +5499,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -5507,7 +5507,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "VA": {
@@ -5551,7 +5551,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -5559,7 +5559,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5567,7 +5567,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -5575,7 +5575,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "VE": {
@@ -5585,7 +5585,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -5593,7 +5593,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -5601,7 +5601,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -5609,7 +5609,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "VG": {
@@ -5619,7 +5619,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -5627,7 +5627,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5635,7 +5635,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -5643,7 +5643,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "VN": {
@@ -5653,7 +5653,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "VU": {
@@ -5663,7 +5663,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -5671,7 +5671,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5679,7 +5679,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -5687,7 +5687,7 @@
             "later_tag": "立即购买，分期付款。",
             "pay": "用{logo:paypal}付款",
             "buynow": "{logo:pp} {logo:paypal} 立即购买",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "技术支持提供方： {logo:paypal}"
         }
     },
     "WF": {
@@ -5731,7 +5731,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "YE": {
