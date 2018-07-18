@@ -551,10 +551,11 @@ export let Button : Component<ButtonOptions> = create({
                     };
 
                     actions.redirect = (win, url) => {
-                        return ZalgoPromise.all([
-                            redir(win || window.top, url || data.returnUrl),
-                            actions.close()
-                        ]);
+                        return ZalgoPromise.try(() => {
+                            return actions.close();
+                        }).then(() => {
+                            return redir(win || window.top, url || data.returnUrl);
+                        });
                     };
 
                     actions.payment.tokenize = memoize(() => {
@@ -651,10 +652,11 @@ export let Button : Component<ButtonOptions> = create({
                     flushLogs();
 
                     let redirect = (win, url) => {
-                        return ZalgoPromise.all([
-                            redir(win || window.top, url || data.cancelUrl),
-                            actions.close()
-                        ]);
+                        return ZalgoPromise.try(() => {
+                            return actions.close();
+                        }).then(() => {
+                            return redir(win || window.top, url || data.cancelUrl);
+                        });
                     };
 
                     return original.call(this, data, { ...actions, redirect });
