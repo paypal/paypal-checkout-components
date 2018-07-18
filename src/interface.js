@@ -10,7 +10,6 @@ import { Checkout as _Checkout } from './checkout';
 import { Button as _Button } from './button';
 import { Card as _Card } from './card';
 import { BillingPage as _BillingPage } from './billing';
-import { CurrencyConversion as _CurrencyConversion } from './billing/currencyConversion';
 
 import './hacks'; // eslint-disable-line import/no-unassigned-import
 
@@ -59,7 +58,6 @@ attach('buttons', ({ clientOptions }) => {
 export let Checkout;
 export let Card;
 export let BillingPage;
-export let CurrencyConversion;
 export let PayPalCheckout;
 export let destroyAll;
 export let enableCheckoutIframe;
@@ -72,7 +70,6 @@ if (isPayPalDomain() || __TEST__) {
     Checkout = _Checkout;
     Card = _Card;
     BillingPage = _BillingPage;
-    CurrencyConversion = _CurrencyConversion;
     PayPalCheckout = _Checkout;
     enableCheckoutIframe = _enableCheckoutIframe;
     destroyAll = _destroyAll;
