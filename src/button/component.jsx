@@ -301,10 +301,11 @@ export let Button : Component<ButtonOptions> = create({
                     };
 
                     actions.redirect = (url, win) => {
-                        return ZalgoPromise.all([
-                            redirect(win || window.top, url),
-                            actions.close()
-                        ]);
+                        return ZalgoPromise.try(() => {
+                            return actions.close();
+                        }).then(() => {
+                            return redir(win || window.top, url || data.returnUrl);
+                        });
                     };
 
                     actions.request = request;
