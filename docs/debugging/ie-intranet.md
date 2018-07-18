@@ -25,7 +25,7 @@ Load up internet options in IE:
 
 ![IE Internet Options](./img/ie-intranet-2.png)
 
-Navigate to the security panel, select 'Local intranet' then click on the 'Sites' button:
+Navigate to the security panel, make sure the Enable Protected Mode is disabled. Select 'Local intranet' then click on the 'Sites' button:
 
 ![IE Internet Options Security](./img/ie-intranet-3.png)
 

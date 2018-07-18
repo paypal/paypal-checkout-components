@@ -175,6 +175,76 @@ export let config = {
 
         'getcargo.today': {
             disable_venmo: true
+        },
+
+        'smartdestinations.com': {
+            disable_venmo: true
+        },
+
+        'philadelphiapass.com': {
+            disable_venmo: true
+        },
+
+        'thesydneypass.com': {
+            disable_venmo: true
+        },
+
+        '3secondlash.com': {
+            disable_venmo: true
+        },
+
+        'ski-lifts.com': {
+            disable_bancontact: true,
+            disable_mybank:     true,
+            disable_eps:        true,
+            disable_giropay:    true,
+            disable_ideal:      true,
+            disable_sofort:     true
+        },
+
+        'wideanglesoftware.com': {
+            disable_bancontact: true,
+            disable_mybank:     true,
+            disable_eps:        true,
+            disable_giropay:    true,
+            disable_ideal:      true,
+            disable_sofort:     true
+        },
+
+        'barcodelove.eu': {
+            disable_bancontact: true,
+            disable_mybank:     true,
+            disable_eps:        true,
+            disable_giropay:    true,
+            disable_ideal:      true,
+            disable_sofort:     true
+        },
+
+        'hooyu.com': {
+            disable_bancontact: true,
+            disable_mybank:     true,
+            disable_eps:        true,
+            disable_giropay:    true,
+            disable_ideal:      true,
+            disable_sofort:     true
+        },
+
+        'camdenpubcrawl.com': {
+            disable_bancontact: true,
+            disable_mybank:     true,
+            disable_eps:        true,
+            disable_giropay:    true,
+            disable_ideal:      true,
+            disable_sofort:     true
+        },
+
+        'xibo.org.uk': {
+            disable_bancontact: true,
+            disable_mybank:     true,
+            disable_eps:        true,
+            disable_giropay:    true,
+            disable_ideal:      true,
+            disable_sofort:     true
         }
 
     },
@@ -657,10 +727,7 @@ export let config = {
     },
 
     get loggerUrl() : string {
-        let isTestExperiment = Math.random() < config.loggerThrottlePercentage;
-        let loggerUrl = isTestExperiment ? config.loggerUri : config.hermesLoggerUri;
-
-        return `${ config.paypalUrl }${ loggerUrl }`;
+        return `${ config.paypalUrl }${ config.hermesLoggerUri }`;
     },
 
     get pptmUrl() : string {

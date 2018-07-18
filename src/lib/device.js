@@ -20,6 +20,10 @@ export function isWebView() : boolean {
     (/Android.*Version\/(\d)\.(\d)/i).test(userAgent);
 }
 
+export function isStandAlone() : boolean {
+    return (window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches);
+}
+
 export function isFacebookWebView(ua? : string = getUserAgent()) : boolean {
     return (ua.indexOf('FBAN') !== -1) || (ua.indexOf('FBAV') !== -1);
 }
@@ -128,5 +132,5 @@ export function isMacOsCna() : boolean {
 
 export function supportsPopups(ua? : string = getUserAgent()) : boolean {
     return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) ||
-        isFirefoxIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron() || isMacOsCna());
+        isFirefoxIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron() || isMacOsCna() || isStandAlone());
 }
