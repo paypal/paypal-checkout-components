@@ -32,6 +32,7 @@ function addHeader(name, value) : void {
 type CheckoutPropsType = {
     payment? : () => ZalgoPromise<string>,
     onAuthorize : ({ returnUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
+    onShippingChange? : (string) => ?ZalgoPromise<void>,
     onCancel? : ({ cancelUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
     fallback? : (string) => ?ZalgoPromise<void>,
     fundingSource? : string,
@@ -330,6 +331,19 @@ export let Checkout : Component<CheckoutPropsType> = create({
                         });
                     };
                 }
+            }
+        },
+
+        onShippingChange: {
+            type:     'function',
+            required: false,
+
+            decorate(original) : Function {
+                return function decorateOnShippingChange(data, actions = {}) : ZalgoPromise<void> {
+                    return ZalgoPromise.try(() => {
+                        return original.call(this, data, actions);
+                    });
+                };
             }
         },
 

@@ -604,6 +604,36 @@ export let Button : Component<ButtonOptions> = create({
             }
         },
 
+        onShippingChange: {
+            type:     'function',
+            required: false,
+            noop:     true,
+
+            decorate(original) : Function {
+                return function decorateOnShippingChange(data, actions) : ZalgoPromise<void> {
+
+                    info('button_shipping_change');
+
+                    track({
+                        [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
+                        [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.CHECKOUT_SHIPPING_CHANGE,
+                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                    });
+
+                    flushLogs();
+
+                    return ZalgoPromise.try(() => {
+                        return original.call(this, data, actions);
+                    }).catch(err => {
+                        if (this.props.onError) {
+                            return this.props.onError(err);
+                        }
+                        throw err;
+                    });
+                };
+            }
+        },
+
         onCancel: {
             type:     'function',
             required: false,

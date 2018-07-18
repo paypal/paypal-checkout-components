@@ -94,7 +94,7 @@ patchMethod(Checkout, 'renderTo', ({ callOriginal, args: [ , props ] }) => {
 
     debounce = true;
 
-    for (let methodName of [ 'onAuthorize', 'onCancel', 'onError', 'onClose' ]) {
+    for (let methodName of [ 'onAuthorize', 'onShippingChange', 'onCancel', 'onError', 'onClose' ]) {
         let original = props[methodName];
         props[methodName] = function unDebounce() : mixed {
             debounce = false;

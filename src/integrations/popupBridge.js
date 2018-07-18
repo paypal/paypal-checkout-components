@@ -12,8 +12,9 @@ import { FUNDING } from '../constants';
 import { determineParameterFromToken, determineUrl } from './checkout';
 
 const OPTYPE = {
-    PAYMENT: 'payment',
-    CANCEL:  'cancel'
+    SHIPPING_CHANGE: 'shipping_change',
+    PAYMENT:         'payment',
+    CANCEL:          'cancel'
 };
 
 const CONTINGENCY = {
@@ -64,17 +65,18 @@ function validateCheckoutProps(props) {
     }
 }
 
-function normalizeCheckoutProps(props : Object) : { env : string, payment : Function, onAuthorize : Function, onCancel : Function } {
+function normalizeCheckoutProps(props : Object) : { env : string, payment : Function, onAuthorize : Function, onShippingChange : Function, onCancel : Function } {
     let env = props.env = props.env || config.env;
 
     let payment = props.payment;
     let onAuthorize = once(props.onAuthorize);
+    let onShippingChange = once(props.onShippingChange);
     let onCancel = once(props.onCancel || noop);
 
-    return { env, payment, onAuthorize, onCancel };
+    return { env, payment, onAuthorize, onShippingChange, onCancel };
 }
 
-function getUrl(props : { env : string, payment : Function, onAuthorize : Function, onCancel? : Function, commit? : boolean }) : ZalgoPromise<string> {
+function getUrl(props : { env : string, payment : Function, onAuthorize : Function, onShippingChange? : Function, onCancel? : Function, commit? : boolean }) : ZalgoPromise<string> {
 
     let { env, payment } = normalizeCheckoutProps(props);
 
@@ -153,7 +155,7 @@ function renderThroughPopupBridge(props : Object, popupBridge : PopupBridge) : Z
     }).then(payload => {
 
         let { opType } = payload.queryItems;
-        let { onAuthorize, onCancel } = normalizeCheckoutProps(props);
+        let { onAuthorize, onShippingChange, onCancel } = normalizeCheckoutProps(props);
 
         let data    = extractDataFromQuery(payload.queryItems);
         let actions = buildActions(payload.queryItems);
@@ -163,6 +165,9 @@ function renderThroughPopupBridge(props : Object, popupBridge : PopupBridge) : Z
 
         } else if (opType === OPTYPE.CANCEL) {
             return onCancel(data, actions);
+        
+        } else if (opType === OPTYPE.SHIPPING_CHANGE) {
+            return onShippingChange(data, actions);
 
         } else {
             throw new Error(`Invalid opType: ${ opType }`);
