@@ -633,25 +633,25 @@ let buttonConfigs = [
             {
                 layout: `vertical`,
                 label:  `paypal`,
-                valid:  false
+                valid:  true
             },
 
             {
                 layout: `vertical`,
                 label:  `checkout`,
-                valid:  false
+                valid:  true
             },
 
             {
                 layout: `vertical`,
                 label:  `pay`,
-                valid:  false
+                valid:  true
             },
 
             {
                 layout: `vertical`,
                 label:  `buynow`,
-                valid:  false
+                valid:  true
             },
 
             {
@@ -689,6 +689,13 @@ let buttonConfigs = [
             {
                 layout: `vertical`,
                 label:  `giropay`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `sofort`,
                 commit: true,
                 valid:  false
             },
@@ -1522,6 +1529,7 @@ let buttonConfigs = [
                 }
             },
 
+            /*
             {
                 desc: `opt-in to ideal`,
 
@@ -1553,6 +1561,7 @@ let buttonConfigs = [
                     }
                 }
             },
+            */
 
             {
                 desc: `opt-in to elv`,
@@ -1646,6 +1655,38 @@ let buttonConfigs = [
 
                     funding: {
                         disallowed: [ window.paypal.FUNDING.GIROPAY ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-in to sofort`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    commit: true,
+
+                    funding: {
+                        allowed: [ window.paypal.FUNDING.SOFORT ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-out of sofort`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        disallowed: [ window.paypal.FUNDING.SOFORT ]
                     }
                 }
             },

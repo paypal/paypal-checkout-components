@@ -55,7 +55,7 @@ export let config = {
             log_authorize:                   true,
             disable_payment_timeout:         true
         },
-        
+
         'ulta.com': {
             disable_venmo: true
         },
@@ -92,7 +92,7 @@ export let config = {
         'livenation.com': {
             disable_venmo: true
         },
-        
+
         'frontgatetickets.com': {
             disable_venmo: true
         },
@@ -167,6 +167,84 @@ export let config = {
 
         'barkshop.com': {
             disable_venmo: true
+        },
+
+        'vividseats.com': {
+            disable_venmo: true
+        },
+
+        'getcargo.today': {
+            disable_venmo: true
+        },
+
+        'smartdestinations.com': {
+            disable_venmo: true
+        },
+
+        'philadelphiapass.com': {
+            disable_venmo: true
+        },
+
+        'thesydneypass.com': {
+            disable_venmo: true
+        },
+
+        '3secondlash.com': {
+            disable_venmo: true
+        },
+
+        'ski-lifts.com': {
+            disable_bancontact: true,
+            disable_mybank:     true,
+            disable_eps:        true,
+            disable_giropay:    true,
+            disable_ideal:      true,
+            disable_sofort:     true
+        },
+
+        'wideanglesoftware.com': {
+            disable_bancontact: true,
+            disable_mybank:     true,
+            disable_eps:        true,
+            disable_giropay:    true,
+            disable_ideal:      true,
+            disable_sofort:     true
+        },
+
+        'barcodelove.eu': {
+            disable_bancontact: true,
+            disable_mybank:     true,
+            disable_eps:        true,
+            disable_giropay:    true,
+            disable_ideal:      true,
+            disable_sofort:     true
+        },
+
+        'hooyu.com': {
+            disable_bancontact: true,
+            disable_mybank:     true,
+            disable_eps:        true,
+            disable_giropay:    true,
+            disable_ideal:      true,
+            disable_sofort:     true
+        },
+
+        'camdenpubcrawl.com': {
+            disable_bancontact: true,
+            disable_mybank:     true,
+            disable_eps:        true,
+            disable_giropay:    true,
+            disable_ideal:      true,
+            disable_sofort:     true
+        },
+
+        'xibo.org.uk': {
+            disable_bancontact: true,
+            disable_mybank:     true,
+            disable_eps:        true,
+            disable_giropay:    true,
+            disable_ideal:      true,
+            disable_sofort:     true
         }
 
     },
@@ -176,10 +254,10 @@ export let config = {
     customCountry: false,
 
     SUPPORTED_BROWSERS: {
-        msie:           '9',
+        msie:           '11',
         firefox:        '30',
         chrome:         '27',
-        safari:         '5.1',
+        safari:         '7',
         opera:          '16',
         msedge:         '12',
         samsungBrowser: '2.1',
@@ -351,7 +429,11 @@ export let config = {
 
     loginUri: `/signin/`,
 
-    loggerUri: `/webapps/hermes/api/logger`,
+    hermesLoggerUri: `/webapps/hermes/api/logger`,
+
+    loggerUri: `/xoplatform/logger`,
+
+    loggerThrottlePercentage: 0.05, // 5%
 
     pptmUri: `/tagmanager/pptm.js`,
 
@@ -645,7 +727,7 @@ export let config = {
     },
 
     get loggerUrl() : string {
-        return `${ config.paypalUrl }${ config.loggerUri }`;
+        return `${ config.paypalUrl }${ config.hermesLoggerUri }`;
     },
 
     get pptmUrl() : string {

@@ -9,6 +9,16 @@ export const FUNDING = {
     ELV:         'elv',
     BANCONTACT:  'bancontact',
     GIROPAY:     'giropay',
+    SOFORT:      'sofort',
+    EPS:         'eps',
+    MYBANK:      'mybank'
+};
+
+export const ALTERNATE_PAYMENT_METHOD = {
+    IDEAL:       'ideal',
+    BANCONTACT:  'bancontact',
+    GIROPAY:     'giropay',
+    SOFORT:      'sofort',
     EPS:         'eps',
     MYBANK:      'mybank'
 };

@@ -49,15 +49,6 @@
             }
             return target;
         };
-        function _defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
         !function(xports) {
             var namespaces = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [], childnamespaces = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [], _iterator = namespaces, _isArray = Array.isArray(_iterator), _i = 0;
             for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
@@ -73,7 +64,7 @@
                 if (namespace) {
                     var _iterator3 = childnamespaces, _isArray3 = Array.isArray(_iterator3), _i3 = 0;
                     for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                        var _ref3;
+                        var _extends2, _ref3;
                         if (_isArray3) {
                             if (_i3 >= _iterator3.length) break;
                             _ref3 = _iterator3[_i3++];
@@ -83,7 +74,8 @@
                         }
                         var childname = _ref3, childnamespace = xports[childname];
                         namespace[childname] && (childnamespace = _extends({}, namespace[childname], childnamespace));
-                        xports = _extends({}, namespace, xports, _defineProperty({}, childname, childnamespace));
+                        xports = _extends({}, namespace, xports, ((_extends2 = {})[childname] = childnamespace, 
+                        _extends2));
                     }
                 }
             }

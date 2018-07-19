@@ -367,7 +367,7 @@ describe(`paypal button component funding mix`, () => {
         }, '#testContainer');
     });
 
-    it('should render ideal in vertical layout', (done) => {
+    it.skip('should render ideal in vertical layout', (done) => {
 
         window.paypal.Button.render({
 
@@ -410,14 +410,14 @@ describe(`paypal button component funding mix`, () => {
         }, '#testContainer');
     });
 
-    it('should render ideal in horizontal layout', (done) => {
+    it.skip('should not render ideal in horizontal layout', (done) => {
 
         window.paypal.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.IDEAL) === -1) {
-                        throw new Error(`Expected ideal to be offered, got ${ JSON.stringify(fundingSources) }`);
+                    if (fundingSources.indexOf(window.paypal.FUNDING.IDEAL) !== -1) {
+                        throw new Error(`Expected ideal to not be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
                     done();
@@ -488,7 +488,7 @@ describe(`paypal button component funding mix`, () => {
         }, '#testContainer');
     });
 
-    it('should not render ideal by default for eligible country when opted out', (done) => {
+    it.skip('should not render ideal by default for eligible country when opted out', (done) => {
 
         window.paypal.Button.render({
 
@@ -531,7 +531,7 @@ describe(`paypal button component funding mix`, () => {
         }, '#testContainer');
     });
 
-    it('should not render ideal for a non-eligible locale', (done) => {
+    it.skip('should not render ideal for a non-eligible locale', (done) => {
 
         window.paypal.Button.render({
 

@@ -41,12 +41,14 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 locale:   'en_US'
             },
 
+            /*
             {
                 source:   window.paypal.FUNDING.IDEAL,
                 fragment: 'checkouturl=true',
                 locale:   'nl_NL',
                 commit:   true
             },
+            */
 
             {
                 source:   window.paypal.FUNDING.ELV,
