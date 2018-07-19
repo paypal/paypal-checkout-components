@@ -32,6 +32,10 @@ export function isFirefoxIOS(ua? : string = getUserAgent()) : boolean {
     return (/FxiOS/i).test(ua);
 }
 
+export function isEdgeIOS(ua? : string = getUserAgent()) : boolean {
+    return (/EdgiOS/i).test(ua);
+}
+
 export function isOperaMini(ua? : string = getUserAgent()) : boolean {
     return ua.indexOf('Opera Mini') > -1;
 }
@@ -132,5 +136,5 @@ export function isMacOsCna() : boolean {
 
 export function supportsPopups(ua? : string = getUserAgent()) : boolean {
     return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) ||
-        isFirefoxIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron() || isMacOsCna() || isStandAlone());
+        isFirefoxIOS(ua) || isEdgeIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron() || isMacOsCna() || isStandAlone());
 }
