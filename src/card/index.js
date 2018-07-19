@@ -21,7 +21,8 @@ type CardOptions = {
     onAuthorize : ({ returnUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
     onCancel? : ({ cancelUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
     meta : Object,
-    commit : boolean
+    commit : boolean,
+    token : string
 };
 
 export const Card : Component<CardOptions> = create({

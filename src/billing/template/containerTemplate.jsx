@@ -9,8 +9,8 @@ import { BUTTON_LOGO_COLOR, CHECKOUT_OVERLAY_COLOR } from '../../constants';
 import { isIos } from '../../lib';
 
 import componentContentJSON from './containerContent.json';
-import { getContainerStyle } from './componentStyle/containerStyle';
 import { getSandboxStyle } from './componentStyle/sandboxStyle';
+import { getContainerStyle } from './componentStyle/containerStyle';
 
 let componentContent = JSON.parse(componentContentJSON);
 
@@ -67,6 +67,14 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
     let overlayColor = style.overlayColor || CHECKOUT_OVERLAY_COLOR.BLACK;
     let logoColor = LOGO_COLOR[overlayColor];
 
+    let ppLogo = (typeof fundingLogos.pp === 'function')
+        ? fundingLogos.pp({ logoColor })
+        : fundingLogos.pp[logoColor];
+
+    let paypalLogo = (typeof fundingLogos.paypal === 'function')
+        ? fundingLogos.paypal({ logoColor })
+        : fundingLogos.paypal[logoColor];
+
     let el = (
         <div id={ id } onClick={ focus } class={ `${ tag }-context-${ context } paypal-checkout-overlay ${ tag }-background-color-${ overlayColor } ${ tag }-logo-color-${ logoColor }` }>
             <a href='#' class="paypal-checkout-close" onClick={ close } aria-label="close" role="button"></a>
@@ -74,10 +82,10 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
                 <div class="paypal-checkout-logo">
                     <img
                         class="paypal-checkout-logo-pp" alt="pp"
-                        src={ `data:image/svg+xml;base64,${ btoa(fundingLogos.pp[logoColor]) }` } />
+                        src={ `data:image/svg+xml;base64,${ btoa(ppLogo) }` } />
                     <img
                         class="paypal-checkout-logo-paypal" alt="paypal"
-                        src={ `data:image/svg+xml;base64,${ btoa(fundingLogos.paypal[logoColor]) }` } />
+                        src={ `data:image/svg+xml;base64,${ btoa(paypalLogo) }` } />
                 </div>
                 <div class="paypal-checkout-message">
                     {content.windowMessage}
@@ -90,7 +98,6 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
                 </div>
             </div>
 
-            <a href='#' class="paypal-checkout-close" id="paypal-checkout-close-inner" onClick={ (e) => { close(e); } } aria-label="close" role="button"></a>
             <div class="paypal-checkout-iframe-container">
                 {outlet}
             </div>
@@ -121,3 +128,4 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
         </div>
     );
 }
+

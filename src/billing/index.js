@@ -21,7 +21,8 @@ type BillingOptions = {
     logLevel : string,
     awaitPopupBridge : Function,
     meta : Object,
-    commit : boolean
+    commit : boolean,
+    token : string
 };
 
 export const BillingPage : Component<BillingOptions> = create({
