@@ -33,8 +33,9 @@ export const BillingPage : Component<BillingOptions> = create({
         let { lang, country } = config.locale || getBrowserLocale();
         const locale = `${ lang }_${ country }`;
         let isCommit = props.commit ? 1 : 0;
+        const { token } = props;
 
-        return `${ config.inlinedCardFieldUrls[env] }/billing?locale.x=${ locale }&commit=${ isCommit }`;
+        return `${ config.inlinedCardFieldUrls[env] }/billing?locale.x=${ locale }&commit=${ isCommit }&token=${ token }`;
     },
 
     get domain() : Object {
@@ -56,6 +57,11 @@ export const BillingPage : Component<BillingOptions> = create({
         prefilledZipCode: {
             type:     'string',
             required: false
+        },
+        
+        token: {
+            type:     'string',
+            required: true
         },
     
         locale: {

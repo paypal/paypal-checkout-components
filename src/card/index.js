@@ -32,11 +32,10 @@ export const Card : Component<CardOptions> = create({
         let env = props.env || config.env;
         let { lang, country } = config.locale || getBrowserLocale();
         const locale = `${ lang }_${ country }`;
+        const { token } = props;
         let isCommit = props.commit ? 1 : 0;
 
-        return window.xprops.payment().then(paymentToken => {
-            return `${ config.inlinedCardFieldUrls[env] }?token=${ paymentToken }&locale.x=${ locale }&commit=${ isCommit }`;
-        });
+        return `${ config.inlinedCardFieldUrls[env] }?token=${ token }&locale.x=${ locale }&commit=${ isCommit }`;
     },
 
     contexts: {
@@ -85,6 +84,11 @@ export const Card : Component<CardOptions> = create({
         initialFormValues: {
             type:     'object',
             required: false
+        },
+
+        token: {
+            type:     'string',
+            required: true
         }
     }
 });
