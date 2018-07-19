@@ -316,7 +316,6 @@ export function isElementVisible(el : HTMLElement) : boolean {
 }
 
 export let enablePerformance = memoize(() : boolean => {
-    /* eslint-disable compat/compat */
     return Boolean(
         window.performance &&
         performance.now &&
@@ -326,7 +325,6 @@ export let enablePerformance = memoize(() : boolean => {
         (Math.abs(performance.now() - Date.now()) > 1000) &&
         (performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart)) > 0
     );
-    /* eslint-enable compat/compat */
 });
 
 export function getPageRenderTime() : ZalgoPromise<?number> {
