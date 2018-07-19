@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint no-template-curly-in-string: off, max-lines: off */
 
-import { FUNDING, DEFAULT, BUTTON_LABEL, BUTTON_COLOR, BUTTON_LOGO_COLOR, BUTTON_SIZE,
+import { FUNDING, DEFAULT, COUNTRY, BUTTON_LABEL, BUTTON_COLOR, BUTTON_LOGO_COLOR, BUTTON_SIZE,
     BUTTON_TAGLINE_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LOGO } from '../constants';
 
 type ButtonConfig = {
@@ -133,9 +133,22 @@ export const BUTTON_CONFIG : ButtonConfig = {
     },
 
     [ BUTTON_LABEL.CREDIT ]: {
-        label:     `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`,
-        tag:       `{ content: later_tag }`,
+        label: ({ locale }) => {
+            if (locale.country === COUNTRY.DE) {
+                return `{ logo: ${ BUTTON_LOGO.CREDIT } }`;
+            }
+
+            return `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`;
+        },
+        logoLabel: ({ locale }) => {
+            if (locale.country === COUNTRY.DE) {
+                return `{ logo: ${ BUTTON_LOGO.CREDIT } }`;
+            }
+
+            return `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`;
+        },
+
+        tag: `{ content: later_tag }`,
 
         colors: [
             BUTTON_COLOR.DARKBLUE,

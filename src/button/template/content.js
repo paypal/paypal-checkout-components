@@ -1064,7 +1064,7 @@ const COMPONENT_CONTENT = {
         de: {
             checkout:  'Direkt zu {logo:pp} {logo:paypal}',
             safer_tag: 'Überall schnell und sicher bezahlen.',
-            later_tag: 'Kaufen Sie jetzt und bezahlen Sie nach und nach.',
+            later_tag: 'Jetzt bei uns bequem in Raten zahlen.',
             pay:       'Mit {logo:paypal} zahlen',
             buynow:    '{logo:pp} {logo:paypal} Jetzt kaufen'
         },

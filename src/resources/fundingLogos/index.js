@@ -6,7 +6,7 @@ import pp_white     from './pp_white.svg';
 import pp_blue      from './pp_blue.svg';
 import pp_black     from './pp_black.svg';
 import { paypalLogo } from './paypal';
-import credit_white from './credit_white.svg';
+import { creditLogo } from './credit';
 import venmo_white  from './venmo_white.svg';
 import venmo_blue   from './venmo_blue.svg';
 import ideal        from './ideal.svg';
@@ -33,9 +33,7 @@ export let fundingLogos = {
 
     [ BUTTON_LOGO.PAYPAL ]: paypalLogo,
 
-    [ BUTTON_LOGO.CREDIT ]: {
-        [ BUTTON_LOGO_COLOR.WHITE ]: credit_white
-    },
+    [ BUTTON_LOGO.CREDIT ]: creditLogo,
 
     [ BUTTON_LOGO.VENMO ]: {
         [ BUTTON_LOGO_COLOR.WHITE ]: venmo_white,

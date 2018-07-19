@@ -183,7 +183,8 @@ function renderButton({ label, color, locale, multiple, layout, shape, source, f
 
     // Add all the variables in dynamic content required to be plugged in content
     let dynamicContent = {
-        installmentperiod
+        installmentperiod,
+        locale
     };
 
     contentText = typeof contentText === 'function' ? contentText(dynamicContent) : contentText;
