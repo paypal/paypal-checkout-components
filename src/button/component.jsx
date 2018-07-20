@@ -442,7 +442,7 @@ export let Button : Component<ButtonOptions> = create({
                 }
 
                 if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1 && !isDevice()) {
-                    allowed = allowed.filter(source => source === FUNDING.VENMO);
+                    allowed = allowed.filter(source => (source !== FUNDING.VENMO));
                 }
 
                 if (isCreditDualEligible(props)) {
@@ -457,7 +457,7 @@ export let Button : Component<ButtonOptions> = create({
 
                 if (!isDevice() || getDomainSetting('disable_venmo')) {
                     if (remembered && remembered.indexOf(FUNDING.VENMO) !== -1) {
-                        remembered = remembered.filter(source => source === FUNDING.VENMO);
+                        remembered = remembered.filter(source => (source !== FUNDING.VENMO));
                     }
 
                     if (disallowed && disallowed.indexOf(FUNDING.VENMO) === -1) {
