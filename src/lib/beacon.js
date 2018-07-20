@@ -5,8 +5,7 @@ import { LOG_LEVEL } from '../constants';
 
 import { getSessionID, getSessionState } from './session';
 
-const BEACON_URL = config.loggerUrl;
-const APP_NAME = 'checkoutjs';
+const BEACON_URL = 'https://www.paypal.com/webapps/hermes/api/logger';
 
 export function beacon(event : string, payload : Object = {}) {
     try {
@@ -15,7 +14,6 @@ export function beacon(event : string, payload : Object = {}) {
         payload.version = __PAYPAL_CHECKOUT__.__MINOR_VERSION__;
         payload.host = window.location.host;
         payload.uid = getSessionID();
-        payload.appName = APP_NAME;
 
         let query = [];
 

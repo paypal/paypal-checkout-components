@@ -431,7 +431,7 @@ export let config = {
 
     hermesLoggerUri: `/webapps/hermes/api/logger`,
 
-    loggerUri: `/xoplatform/logger/api/logger`,
+    loggerUri: `/xoplatform/logger`,
 
     loggerThrottlePercentage: 0.05, // 5%
 
@@ -727,10 +727,7 @@ export let config = {
     },
 
     get loggerUrl() : string {
-        let isTestExperiment = Math.random() < config.loggerThrottlePercentage;
-        let loggerUrl = isTestExperiment ? config.loggerUri : config.hermesLoggerUri;
-
-        return `${ config.paypalUrl }${ loggerUrl }`;
+        return `${ config.paypalUrl }${ config.hermesLoggerUri }`;
     },
 
     get pptmUrl() : string {
