@@ -20,6 +20,7 @@ type CardOptions = {
     awaitPopupBridge : Function,
     onAuthorize : ({ returnUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
     onCancel? : ({ cancelUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
+    onEvent? : ({ type : string, payload : Object }) => void,
     meta : Object,
     commit : boolean,
     token : string
@@ -44,43 +45,6 @@ export const Card : Component<CardOptions> = create({
         popup:  false
     },
 
-    onAuthorize: {
-        type:     'function',
-        required: true,
-        once:     true
-    },
-
-    onAuth: {
-        type:       'function',
-        required:   false,
-        sameDomain: true
-    },
-
-    on: {
-        type:       'function',
-        required:   false,
-        sameDomain: true
-    },
-
-    getState: {
-        type:       'function',
-        required:   false,
-        sameDomain: true
-    },
-
-    dispatch: {
-        type:       'object',
-        required:   false,
-        sameDomain: true
-    },
-
-    onCancel: {
-        type:     'function',
-        required: false,
-        once:     true,
-        noop:     true
-    },
-
     props: {
         initialFormValues: {
             type:     'object',
@@ -90,6 +54,44 @@ export const Card : Component<CardOptions> = create({
         token: {
             type:     'string',
             required: true
-        }
+        },
+
+        onAuthorize: {
+            type:     'function',
+            required: true,
+            once:     true
+        },
+
+        onAuth: {
+            type:       'function',
+            required:   false,
+            sameDomain: true
+        },
+
+        onEvent: {
+            type:       'function',
+            required:   false,
+            sameDomain: true
+        },
+
+        getState: {
+            type:       'function',
+            required:   false,
+            sameDomain: true
+        },
+
+        dispatch: {
+            type:       'object',
+            required:   false,
+            sameDomain: true
+        },
+
+        onCancel: {
+            type:     'function',
+            required: false,
+            once:     true,
+            noop:     true
+        },
+
     }
 });

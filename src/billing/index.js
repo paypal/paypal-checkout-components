@@ -75,27 +75,27 @@ export const BillingPage : Component<BillingOptions> = create({
                 let { lang, country } = getBrowserLocale();
                 return `${ lang }_${ country }`;
             }
+        },
+        onEvent: {
+            type:       'function',
+            required:   false,
+            sameDomain: true
+        },
+
+        dispatch: {
+            type:       'object',
+            required:   false,
+            sameDomain: true
+        },
+
+        onCancel: {
+            type:     'function',
+            required: false,
+            once:     true,
+            noop:     true
         }
     },
 
-    on: {
-        type:       'function',
-        required:   false,
-        sameDomain: true
-    },
-
-    dispatch: {
-        type:       'object',
-        required:   false,
-        sameDomain: true
-    },
-
-    onCancel: {
-        type:     'function',
-        required: false,
-        once:     true,
-        noop:     true
-    },
 
     containerTemplate
 });
