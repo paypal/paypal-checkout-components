@@ -84,9 +84,9 @@ export function createOrder(clientID : string, orderDetails : Object) : ZalgoPro
 
     order = { ...order };
     order.intent = order.intent || 'CAPTURE';
-    order.redirect_urls = order.redirect_urls || {};
-    order.redirect_urls.return_url = order.redirect_urls.return_url || getDefaultReturnUrl();
-    order.redirect_urls.cancel_url = order.redirect_urls.cancel_url || getDefaultReturnUrl();
+    order.application_context = order.application_context || {};
+    order.application_context.return_url = order.application_context.return_url || getDefaultReturnUrl();
+    order.application_context.cancel_url = order.application_context.cancel_url || getDefaultReturnUrl();
     order.purchase_units = order.purchase_units || [];
     order.purchase_units[0] = order.purchase_units[0] || {};
     order.purchase_units.forEach(unit => {

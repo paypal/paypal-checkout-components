@@ -129,7 +129,7 @@ export let config = {
         logger:   `/xoplatform/logger`,
 
         auth:  `/v1/oauth2/token`,
-        order: `/v1/checkout/orders`,
+        order: `/v2/checkout/orders`,
 
         ...({
             local: {
