@@ -445,7 +445,7 @@ export let config = {
 
     authApiUri:       `/v1/oauth2/token`,
     paymentApiUri:    `/v1/payments/payment`,
-    orderApiUri:      `/v1/checkout/orders`,
+    orderApiUri:      `/v2/checkout/orders`,
     billingApiUri:    `/v1/billing-agreements/agreement-tokens`,
     experienceApiUri: `/v1/payment-experience/web-profiles`,
     trackingApiUri:   `/v1/risk/transaction-contexts`,
