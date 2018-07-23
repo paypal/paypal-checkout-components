@@ -5965,7 +5965,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.209",
+            version: "4.0.210",
             cors: !0,
             env: constants.u.PRODUCTION,
             state: "checkoutjs",
@@ -6269,7 +6269,7 @@
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
             paymentApiUri: "/v1/payments/payment",
-            orderApiUri: "/v1/checkout/orders",
+            orderApiUri: "/v2/checkout/orders",
             billingApiUri: "/v1/billing-agreements/agreement-tokens",
             experienceApiUri: "/v1/payment-experience/web-profiles",
             trackingApiUri: "/v1/risk/transaction-contexts",
@@ -9831,7 +9831,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.209"
+                    ver: "4.0.210"
                 };
             });
             Object(beaver_logger_client.a)(function() {
@@ -10163,7 +10163,7 @@
             });
         });
         function getScriptVersion() {
-            return Boolean(getCurrentScript()) ? "4" : "4.0.209";
+            return Boolean(getCurrentScript()) ? "4" : "4.0.210";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -11363,9 +11363,9 @@
                 meta: meta
             });
             (order = rest__extends({}, order)).intent = order.intent || "CAPTURE";
-            order.redirect_urls = order.redirect_urls || {};
-            order.redirect_urls.return_url = order.redirect_urls.return_url || getDefaultReturnUrl();
-            order.redirect_urls.cancel_url = order.redirect_urls.cancel_url || getDefaultReturnUrl();
+            order.application_context = order.application_context || {};
+            order.application_context.return_url = order.application_context.return_url || getDefaultReturnUrl();
+            order.application_context.cancel_url = order.application_context.cancel_url || getDefaultReturnUrl();
             order.purchase_units = order.purchase_units || [];
             order.purchase_units[0] = order.purchase_units[0] || {};
             order.purchase_units.forEach(function(unit) {
@@ -12557,7 +12557,7 @@
                     return class_CLASS[name];
                 }) + ")();"
             });
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref15 = {}, _ref15[src_constants.d.VERSION] = "4.0.209", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref15 = {}, _ref15[src_constants.d.VERSION] = "4.0.210", 
             _ref15), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -13647,7 +13647,7 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.209", interface_checkout = void 0, apps = void 0;
+        }, interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.210", interface_checkout = void 0, apps = void 0;
         !function(moduleName, exportBuilder) {
             if (exportBuilders[moduleName]) throw new Error("Already attached " + moduleName);
             exportBuilders[moduleName] = exportBuilder;
@@ -13772,7 +13772,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.209";
+                payload.version = "4.0.210";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 var query = [];
@@ -14396,18 +14396,18 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
-        if (window.paypal && "4.0.209" === window.paypal.version) {
+        if (window.paypal && "4.0.210" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.209"
+                version: "4.0.210"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.209) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.210) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.209" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.210" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.209"
+                version: "4.0.210"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.209");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.210");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
