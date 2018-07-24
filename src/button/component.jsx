@@ -652,11 +652,10 @@ export let Button : Component<ButtonOptions> = create({
                     flushLogs();
 
                     let redirect = (win, url) => {
-                        return ZalgoPromise.try(() => {
-                            return actions.close();
-                        }).then(() => {
-                            return redir(win || window.top, url || data.cancelUrl);
-                        });
+                        return ZalgoPromise.all([
+                            redir(win || window.top, url || data.cancelUrl),
+                            actions.close()
+                        ]);
                     };
 
                     return original.call(this, data, { ...actions, redirect });
