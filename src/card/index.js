@@ -91,7 +91,6 @@ export const Card : Component<CardOptions> = create({
             required: false,
             once:     true,
             noop:     true
-        },
-
+        }
     }
 });
