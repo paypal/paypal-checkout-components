@@ -442,14 +442,14 @@ export let Button : Component<ButtonOptions> = create({
                 }
 
                 if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1 && !isDevice()) {
-                    allowed.splice(allowed.indexOf(FUNDING.VENMO), 1);
+                    allowed = allowed.filter(source => (source !== FUNDING.VENMO));
                 }
 
                 if (isCreditDualEligible(props)) {
                     creditThrottle = getThrottle('dual_credit_automatic', 50);
 
                     if (creditThrottle.isEnabled()) {
-                        allowed.push(FUNDING.CREDIT);
+                        allowed = [ ...allowed, FUNDING.CREDIT ];
                     }
                 }
 
@@ -457,11 +457,11 @@ export let Button : Component<ButtonOptions> = create({
 
                 if (!isDevice() || getDomainSetting('disable_venmo')) {
                     if (remembered && remembered.indexOf(FUNDING.VENMO) !== -1) {
-                        remembered.splice(remembered.indexOf(FUNDING.VENMO), 1);
+                        remembered = remembered.filter(source => (source !== FUNDING.VENMO));
                     }
 
                     if (disallowed && disallowed.indexOf(FUNDING.VENMO) === -1) {
-                        disallowed.push(FUNDING.VENMO);
+                        disallowed = [ ...disallowed, FUNDING.VENMO ];
                     }
                 }
 
