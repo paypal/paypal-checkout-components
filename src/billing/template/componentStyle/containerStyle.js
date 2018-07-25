@@ -52,7 +52,7 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
 
         #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.BLACK } .paypal-checkout-close:before,
         #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.BLACK } .paypal-checkout-close:after {
-            background-color: #fff;
+            background-color: #111;
         }
 
         #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.WHITE } .paypal-checkout-close:before,
@@ -147,11 +147,13 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
 
         #${ id } .paypal-checkout-close {
             position: absolute;
-            right: 16px;
-            top: 16px;
-            width: 16px;
-            height: 16px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
             opacity: 0.6;
+            top: 20px;
+            opacity: 0.6;
+            z-index: 2;
         }
 
         #${ id }.${ tag }-loading .paypal-checkout-close {
@@ -164,10 +166,10 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
 
         #${ id } .paypal-checkout-close:before, .paypal-checkout-close:after {
             position: absolute;
-            left: 8px;
+            left: 20px;
             content: ' ';
-            height: 16px;
-            width: 2px;
+            height: 40px;
+            width: 1px;
         }
 
         #${ id } .paypal-checkout-close:before {
