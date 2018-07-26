@@ -1,7 +1,7 @@
 
 import { enableLightbox, detectLightboxEligibility } from './lightbox';
 import { memoize, noop, redirect as redir } from './util';
-import { getPayment, executePayment, getOrder, captureOrder, mapToToken, getCheckoutAppData, getCheckoutCart } from './api';
+import { getPayment, executePayment, getOrder, captureOrder, authorizeOrder, mapToToken, getCheckoutAppData, getCheckoutCart } from './api';
 import { persistAccessToken } from './user';
 
 function buildActions(checkout, data, actions, intent) {
@@ -66,6 +66,19 @@ function buildActions(checkout, data, actions, intent) {
             .finally(orderGet.reset);
     });
 
+    let orderAuthorize = memoize(() => {
+        if (!data.orderID) {
+            throw new Error('Client side order capture is only available for REST based transactions');
+        }
+
+        checkout.closeComponent();
+
+        return authorizeOrder(data.orderID)
+            .catch(handleExecuteError)
+            .finally(orderGet.reset);
+
+    });
+
     return {
         ...actions,
         payment: {
@@ -73,8 +86,9 @@ function buildActions(checkout, data, actions, intent) {
             get:     paymentGet
         },
         order: {
-            capture: orderCapture,
-            get:     orderGet
+            capture:    orderCapture,
+            authorize:  orderAuthorize,
+            get:        orderGet
         },
         restart: restartFlow
     };
@@ -87,8 +101,8 @@ function buildCancelActions(checkout, data, actions) {
             redir(win || window.top, url || data.cancelUrl),
             actions.close()
         ]);
-    }; 
-    
+    };
+
     return {
         ...actions,
         redirect

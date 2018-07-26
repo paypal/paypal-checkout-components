@@ -125,6 +125,22 @@ export function captureOrder(orderID) {
     });
 }
 
+export function authorizeOrder(orderID) {
+    return $orderApi.action('authorize', {
+
+        model: {
+            id: orderID
+        }
+
+    }).then(res => {
+        if (res.ack !== 'success') {
+            throw new Error('Authorize order failed');
+        }
+
+        return res.data;
+    });
+}
+
 export function mapToToken(id) {
     return $paymentApi.action('ectoken', {
 
