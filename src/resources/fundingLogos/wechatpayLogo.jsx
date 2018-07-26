@@ -10,8 +10,8 @@ const WECHATPAY_LOGO_COLORS = {
         secondary: '#ffffff'
     },
     [ BUTTON_LOGO_COLOR.BLACK ]: {
-        primary:   '#00A599',
-        secondary: '#ffffff'
+        primary:   '#1AAD19',
+        secondary: '#4D4D4D'
     },
     [ BUTTON_LOGO_COLOR.ANY ]: {
         primary:   '#1AAD19',
