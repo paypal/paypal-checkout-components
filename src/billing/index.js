@@ -55,6 +55,10 @@ export const BillingPage : Component<BillingOptions> = create({
     },
 
     props: {
+        cardType: {
+            type:       'string',
+            required:   false
+        },
         prefilledZipCode: {
             type:     'string',
             required: false
