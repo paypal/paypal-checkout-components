@@ -2,6 +2,9 @@
 
 import { BUTTON_LOGO, BUTTON_LOGO_COLOR } from '../../constants';
 
+import { zimplerLogo }      from './zimpler';
+import { p24Logo }      from './p24';
+import { wechatpayLogo }      from './wechatpayLogo';
 import pp_white     from './pp_white.svg';
 import pp_blue      from './pp_blue.svg';
 import pp_black     from './pp_black.svg';
@@ -22,10 +25,6 @@ import mybank       from './mybank.svg';
 import mybank_white       from './mybank_white.svg';
 import sofort       from './sofort.svg';
 import sofort_white       from './sofort_white.svg';
-import p24          from './p24.svg';
-import p24_white          from './p24_white.svg';
-import zimpler      from './zimpler.svg';
-import zimpler_white      from './zimpler_white.svg';
 
 export let fundingLogos = {
 
@@ -80,13 +79,9 @@ export let fundingLogos = {
         [ BUTTON_LOGO_COLOR.WHITE ]:   mybank_white
     },
 
-    [ BUTTON_LOGO.P24 ]: {
-        [ BUTTON_LOGO_COLOR.ANY ]:     p24,
-        [ BUTTON_LOGO_COLOR.WHITE ]:   p24_white
-    },
+    [ BUTTON_LOGO.P24 ]: p24Logo,
 
-    [ BUTTON_LOGO.ZIMPLER ]: {
-        [ BUTTON_LOGO_COLOR.ANY ]:     zimpler,
-        [ BUTTON_LOGO_COLOR.WHITE ]:   zimpler_white
-    }
+    [ BUTTON_LOGO.ZIMPLER ]: zimplerLogo,
+
+    [ BUTTON_LOGO.WECHATPAY ]: wechatpayLogo
 };
