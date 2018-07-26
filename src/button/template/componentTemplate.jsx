@@ -162,7 +162,7 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
                 throw new Error(`Can not determine card types without funding`);
             }
 
-            return renderCards({ cards, button: true });
+            return renderCards({ cards, button: false });
         },
 
         separator() : JsxHTMLNode {
@@ -315,7 +315,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let { label, locale, color, shape, branding,
         tagline, funding, layout, sources, multiple,
-        env, height, cards, installmentperiod } = normalizeProps(props);
+        env, height, cards, installmentperiod, fundingicons } = normalizeProps(props);
 
     let buttonNodes = determineButtons({ label, color, sources, multiple, layout })
         .map((button, i) => renderButton({
@@ -335,11 +335,11 @@ export function componentTemplate({ props } : { props : Object }) : string {
         }));
 
     let taglineNode     = renderTagline({ label, tagline, color, locale, multiple, env, cards });
-    let fundingiconNode = renderFundingIcons(props);
+    let fundingiconNode = renderFundingIcons({ cards, fundingicons });
 
     let styleNode  = renderStyle({ height, cardNumber: cards.length });
     let scriptNode = renderScript();
-    let labelPowerByPayPal = renderPowerByPaypalLogo(normalizeProps(props));
+    let labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
 
     return (
         <div { ...{ [ ATTRIBUTE.VERSION ]: __PAYPAL_CHECKOUT__.__MINOR_VERSION__ } } class={ `${ CLASS.CONTAINER } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) }` }>
