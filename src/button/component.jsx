@@ -77,17 +77,18 @@ function isCreditDualEligible(props) : boolean {
 }
 
 function determineAPMBlacklist (allowed, disallowed) : Object {
-    Object.getOwnPropertyNames(ALTERNATE_PAYMENT_METHOD).forEach(apm => {
+    for (let apm of Object.keys(ALTERNATE_PAYMENT_METHOD)) {
         let funding = ALTERNATE_PAYMENT_METHOD[apm];
         if (getDomainSetting(`disable_${ funding }`)) {
             if (allowed && allowed.indexOf(funding) !== -1) {
-                allowed.splice(allowed.indexOf(funding), 1);
+                allowed = allowed.filter(source => source !== funding);
             }
             if (disallowed && disallowed.indexOf(funding) === -1) {
-                disallowed.push(funding);
+                disallowed = [ ...disallowed, funding ];
             }
         }
-    });
+    }
+
     return {
         allowed,
         disallowed
@@ -435,10 +436,10 @@ export let Button : Component<ButtonOptions> = create({
             decorate({ allowed = [], disallowed = [] } : Object = {}, props : ButtonOptions) : {} {
 
                 if (allowed && allowed.indexOf(FUNDING.IDEAL) !== -1) {
-                    allowed.splice(allowed.indexOf(FUNDING.IDEAL), 1);
+                    allowed = allowed.filter(source => (source !== FUNDING.IDEAL));
                 }
                 if (disallowed && disallowed.indexOf(FUNDING.IDEAL) === -1) {
-                    disallowed.push(FUNDING.IDEAL);
+                    disallowed = [ ...disallowed, FUNDING.IDEAL ];
                 }
 
                 if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1 && !isDevice()) {
@@ -652,11 +653,10 @@ export let Button : Component<ButtonOptions> = create({
                     flushLogs();
 
                     let redirect = (win, url) => {
-                        return ZalgoPromise.try(() => {
-                            return actions.close();
-                        }).then(() => {
-                            return redir(win || window.top, url || data.cancelUrl);
-                        });
+                        return ZalgoPromise.all([
+                            redir(win || window.top, url || data.cancelUrl),
+                            actions.close()
+                        ]);
                     };
 
                     return original.call(this, data, { ...actions, redirect });
