@@ -8,7 +8,7 @@ import { type Component } from 'xcomponent/src/component/component';
 import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/client';
 
 import { config } from '../config';
-import { ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR, BUTTON_SHAPE } from '../constants';
+import { ENV, FPTI, BUTTON_LABEL, BUTTON_COLOR, BUTTON_SHAPE, PLATFORM } from '../constants';
 import { checkRecognizedBrowser, getSessionID, request, isIEIntranet, isEligible, isDevice, rememberFunding,
     getRememberedFunding, uniqueID, getBrowser, redirect } from '../lib';
 import { createOrder } from '../api';
@@ -31,7 +31,8 @@ type ButtonOptions = {
     meta : Object,
     validate? : ({ enable : () => ZalgoPromise<void>, disable : () => ZalgoPromise<void> }) => void,
     stage? : string,
-    stageUrl? : string
+    stageUrl? : string,
+    platform : string
 };
 
 export let Button : Component<ButtonOptions> = create({
@@ -124,6 +125,15 @@ export let Button : Component<ButtonOptions> = create({
                 return {};
             }
         },
+
+        platform: {
+            type:       'string',
+            required:   false,
+            queryParam: true,
+            get value() : string {
+                return isDevice() ? PLATFORM.MOBILE : PLATFORM.DESKTOP;
+            }
+        },
         
         stage: {
             type:       'string',
@@ -213,20 +223,6 @@ export let Button : Component<ButtonOptions> = create({
             decorate({ allowed = [], disallowed = [] } : Object = {}) : {} {
 
                 let remembered = getRememberedFunding(sources => sources);
-
-                if (!isDevice()) {
-                    if (allowed.indexOf(FUNDING.VENMO) !== -1) {
-                        allowed = allowed.filter(funding => (funding !== FUNDING.VENMO));
-                    }
-
-                    if (remembered.indexOf(FUNDING.VENMO) !== -1) {
-                        remembered = remembered.filter(funding => (funding !== FUNDING.VENMO));
-                    }
-
-                    if (disallowed.indexOf(FUNDING.VENMO) === -1) {
-                        disallowed = [ ...disallowed, FUNDING.VENMO ];
-                    }
-                }
 
                 return {
                     allowed,

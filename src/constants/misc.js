@@ -1,5 +1,7 @@
 /* @flow */
 
+import type { Enum } from '../types';
+
 export const ENV = {
     LOCAL:      'local',
     STAGE:      'stage',
@@ -37,7 +39,9 @@ export const ATTRIBUTE = {
     VERSION:        'data-version'
 };
 
-export const PLATFORM = {
+type PLATFORM_ENUM = Enum<'desktop' | 'mobile'>;
+
+export const PLATFORM : PLATFORM_ENUM = {
     DESKTOP: 'desktop',
     MOBILE:  'mobile'
 };

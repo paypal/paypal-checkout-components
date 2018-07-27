@@ -1,6 +1,6 @@
 /* @flow */
 
-import { BUTTON_LAYOUT, BUTTON_STYLE_OPTIONS, BUTTON_LABEL, BUTTON_COLOR, BUTTON_SIZE, BUTTON_SHAPE } from '../constants';
+import { BUTTON_LAYOUT, BUTTON_STYLE_OPTIONS, BUTTON_LABEL, BUTTON_COLOR, BUTTON_SIZE, BUTTON_SHAPE, PLATFORM } from '../constants';
 import { determineEligibleFunding, determineEligibleCards } from '../funding';
 import { memoize } from '../lib/util';
 import type { LocaleType, FundingSelection, FundingList } from '../types';
@@ -31,7 +31,8 @@ type NormalizedProps = {|
     env : string,
     height : ?number,
     cards : Array<string>,
-    installmentperiod : number
+    installmentperiod : number,
+    platform : $Values<typeof PLATFORM>
 |};
 
 export let normalizeProps = memoize((props : Object, defs? : { locale? : LocaleType } = {}) : NormalizedProps => {
@@ -41,8 +42,11 @@ export let normalizeProps = memoize((props : Object, defs? : { locale? : LocaleT
         locale,
         style   = {},
         funding,
-        commit
+        commit,
+        platform
     } = props;
+
+    platform = platform || PLATFORM.DESKTOP;
 
     locale = locale ? parseLocale(locale) : (defs.locale || getButtonConfig('DEFAULT', 'defaultLocale'));
 
@@ -65,13 +69,13 @@ export let normalizeProps = memoize((props : Object, defs? : { locale? : LocaleT
     } = style;
 
     let selected = labelToFunding(label);
-    let sources  = determineEligibleFunding({ funding, selected, locale, env, layout, commit });
+    let sources  = determineEligibleFunding({ funding, selected, locale, env, layout, commit, platform });
     let multiple = sources.length > 1;
 
     tagline = enableTagline({ tagline, fundingicons, layout });
 
     let cards = determineEligibleCards({ funding, locale });
 
-    return { size, label, locale, color, shape, fundingicons,
+    return { size, label, locale, color, shape, fundingicons, platform,
         tagline, funding, layout, sources, multiple, env, height, cards, installmentperiod };
 });

@@ -1,14 +1,14 @@
 /* @flow */
 
-import { ENV, CARD_PRIORITY, FUNDING, BUTTON_LAYOUT, FUNDING_ELIGIBILITY_REASON } from '../constants';
+import { ENV, CARD_PRIORITY, BUTTON_LAYOUT, FUNDING_ELIGIBILITY_REASON, PLATFORM } from '../constants';
 import type { LocaleType, FundingSource, FundingSelection, FundingList } from '../types';
 
 import { getFundingConfig, getCardConfig, FUNDING_PRIORITY, FUNDING_CONFIG } from './config';
 
 let fundingEligibilityReasons = [];
 
-export function isFundingIneligible(source : FundingSource, { locale, funding, layout, commit } :
-    { locale : LocaleType, funding : FundingSelection, layout : string, commit? : boolean }) : ?string {
+export function isFundingIneligible(source : FundingSource, { locale, funding, layout, commit, platform } :
+    { locale : LocaleType, funding : FundingSelection, layout : string, commit? : boolean, platform : $Values<typeof PLATFORM> }) : ?string {
 
     let isVertical = layout === BUTTON_LAYOUT.VERTICAL;
     let allowSecondary = getFundingConfig(source, isVertical ? 'allowVertical' : 'allowHorizontal');
@@ -21,7 +21,7 @@ export function isFundingIneligible(source : FundingSource, { locale, funding, l
         return FUNDING_ELIGIBILITY_REASON.OPT_OUT;
     }
 
-    if (funding.disallowed.indexOf(source) !== -1 && source === FUNDING.VENMO) {
+    if (funding.disallowed.indexOf(source) !== -1) {
         return FUNDING_ELIGIBILITY_REASON.OPT_OUT;
     }
 
@@ -31,6 +31,10 @@ export function isFundingIneligible(source : FundingSource, { locale, funding, l
 
     if (getFundingConfig(source, 'requireCommitAsTrue') && !commit) {
         return FUNDING_ELIGIBILITY_REASON.COMMIT_NOT_SET;
+    }
+
+    if (getFundingConfig(source, 'platforms').indexOf(platform) === -1) {
+        return FUNDING_ELIGIBILITY_REASON.INELIGIBLE_PLATFORM;
     }
 }
 
@@ -56,8 +60,8 @@ export function isFundingAutoEligible(source : FundingSource, { locale, funding,
     }
 }
 
-export function isFundingEligible(source : FundingSource, { locale, funding, env, layout, selected, commit } :
-    { locale : LocaleType, funding : FundingSelection, env : string, layout : string, selected? : string, commit : boolean }) : { eligible : boolean, reason : string } {
+export function isFundingEligible(source : FundingSource, { locale, funding, env, layout, selected, commit, platform } :
+    { locale : LocaleType, funding : FundingSelection, env : string, layout : string, selected? : string, commit : boolean, platform : $Values<typeof PLATFORM> }) : { eligible : boolean, reason : string } {
 
     if (selected && source === selected) {
         return { eligible: true, reason: FUNDING_ELIGIBILITY_REASON.PRIMARY };
@@ -69,7 +73,7 @@ export function isFundingEligible(source : FundingSource, { locale, funding, env
         }
     }
 
-    let ineligibleReason = isFundingIneligible(source, { locale, funding, layout, commit });
+    let ineligibleReason = isFundingIneligible(source, { locale, funding, layout, commit, platform });
 
     if (ineligibleReason) {
         return { eligible: false, reason: ineligibleReason };
@@ -84,13 +88,13 @@ export function isFundingEligible(source : FundingSource, { locale, funding, env
     return { eligible: false, reason: FUNDING_ELIGIBILITY_REASON.NEED_OPT_IN };
 }
 
-export function determineEligibleFunding({ funding, selected, locale, env, layout, commit } :
-    { funding : FundingSelection, selected : FundingSource, locale : LocaleType, env : string, layout : string, commit : boolean }) : FundingList {
+export function determineEligibleFunding({ funding, selected, locale, env, layout, commit, platform } :
+    { funding : FundingSelection, selected : FundingSource, locale : LocaleType, env : string, layout : string, commit : boolean, platform : $Values<typeof PLATFORM> }) : FundingList {
 
     let reasons = {};
 
     let eligibleFunding = FUNDING_PRIORITY.filter(source => {
-        let { eligible, reason } = isFundingEligible(source, { selected, locale, funding, env, layout, commit });
+        let { eligible, reason } = isFundingEligible(source, { selected, locale, funding, env, layout, commit, platform });
         reasons[source] = { eligible, reason, factors: { env, locale, layout } };
         return eligible;
     });

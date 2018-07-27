@@ -42,7 +42,8 @@ export const FUNDING_ELIGIBILITY_REASON = {
     DEFAULT:              'The funding source is enabled by default for all users',
     REMEMBERED:           'The funding source was remembered for the current user',
     NEED_OPT_IN:          'The funding source needs to be allowed in funding.allowed',
-    COMMIT_NOT_SET:         'The funding source is not enabled when commit is not set as true'
+    COMMIT_NOT_SET:       'The funding source is not enabled when commit is not set as true',
+    INELIGIBLE_PLATFORM:  'The funding source is not available on this platform'
 };
 
 export const CARD_PRIORITY = [

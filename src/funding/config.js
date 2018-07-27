@@ -28,6 +28,11 @@ export const FUNDING_CONFIG = {
         allowHorizontal: true,
         allowVertical:   true,
 
+        platforms: [
+            PLATFORM.DESKTOP,
+            PLATFORM.MOBILE
+        ],
+
         requireCommitAsTrue: false
     },
 
@@ -54,6 +59,9 @@ export const FUNDING_CONFIG = {
         allowedCountries: [
             COUNTRY.US
         ],
+        platforms: [
+            PLATFORM.MOBILE
+        ],
 
         allowHorizontal: true,
         allowVertical:   true
@@ -67,9 +75,6 @@ export const FUNDING_CONFIG = {
         ],
         defaultVerticalCountries: [
             COUNTRY.US
-        ],
-        platforms: [
-            PLATFORM.MOBILE
         ],
 
         allowHorizontal: true,

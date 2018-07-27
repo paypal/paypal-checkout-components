@@ -6,7 +6,6 @@ import { FUNDING } from '../constants';
 import type { FundingSource, FundingList } from '../types';
 
 import { getStorageState, getGlobalState, getSessionState } from './session';
-import { isDevice } from './device';
 import { openMetaFrame } from './meta';
 
 export function getRememberedFunding<T>(handler : (rememberedFunding : FundingList) => T) : T {
@@ -71,11 +70,6 @@ function flushRememberedFundingPromises() {
 export function rememberFunding(sources : FundingList) {
     getRememberedFunding(rememberedFunding => {
         for (let source of sources) {
-
-            if (source === FUNDING.VENMO && !isDevice()) {
-                continue;
-            }
-
             if (rememberedFunding.indexOf(source) === -1) {
                 rememberedFunding.push(source);
             }
