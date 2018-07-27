@@ -90,6 +90,7 @@ function clickButton(event, { fundingSource = 'paypal', card }) {
 export function setupButton() {
 
     const attachClickEventToElement = (element, fn) => {
+        element.addEventListener('touchstart', function() {});
         element.addEventListener('click', fn);
         element.addEventListener('keypress', event => {
             if (event.keyCode === KEY_CODES.ENTER) {
