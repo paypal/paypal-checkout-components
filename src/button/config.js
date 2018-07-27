@@ -516,9 +516,9 @@ export const BUTTON_RELATIVE_STYLE = {
     VERTICAL_MARGIN: 30
 };
 
-export const POWERED_BY_PAYPAL_HEIGHT = 30;
-
 export const BUTTON_STYLE = {
+
+    POWERED_BY_PAYPAL_HEIGHT: 30,
 
     [ BUTTON_SIZE.TINY ]: {
         defaultWidth:    75,

@@ -8,7 +8,7 @@ import { type Component } from 'xcomponent/src/component/component';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { config } from '../config';
-import { getBrowserLocale } from '../lib';
+import { getButtonSessionID, getBrowserLocale, getSessionID } from '../lib';
 
 type CardOptions = {
     client : {
@@ -32,12 +32,7 @@ export const Card : Component<CardOptions> = create({
 
     buildUrl(props) : string {
         let env = props.env || config.env;
-        let { lang, country } = config.locale || getBrowserLocale();
-        const locale = `${ lang }_${ country }`;
-        const { token } = props;
-        let isCommit = props.commit ? 1 : 0;
-
-        return `${ config.inlinedCardFieldUrls[env] }?token=${ token }&locale.x=${ locale }&commit=${ isCommit }`;
+        return config.inlinedCardFieldUrls[env];
     },
 
     contexts: {
@@ -46,15 +41,76 @@ export const Card : Component<CardOptions> = create({
     },
 
     props: {
+        sessionID: {
+            type:     'string',
+            required: false,
+            def() : string {
+                return getSessionID();
+            },
+            queryParam: true
+        },
+
+
+        token: {
+            type:       'string',
+            required:   true,
+            queryParam: true
+        },
+
+        buttonSessionID: {
+            type:     'string',
+            required: false,
+            def() : ?string {
+                return getButtonSessionID();
+            },
+            queryParam: true
+        },
+
+        commit: {
+            type:       'boolean',
+            required:   false,
+            queryParam: true
+        },
+
+        fundingSource: {
+            type:       'string',
+            required:   false,
+            queryParam: true
+        },
+
+        env: {
+            type:       'string',
+            required:   false,
+            queryParam: true,
+
+            def() : string {
+                return config.env;
+            },
+
+            validate(env) {
+                if (!config.paypalUrls[env]) {
+                    throw new Error(`Invalid env: ${ env }`);
+                }
+            }
+        },
+
+        locale: {
+            type:          'string',
+            required:      false,
+            queryParam:    'locale.x',
+            allowDelegate: true,
+
+            def() : string {
+                let { lang, country } = getBrowserLocale();
+                return `${ lang }_${ country }`;
+            }
+        },
+
         initialFormValues: {
             type:     'object',
             required: false
         },
 
-        token: {
-            type:     'string',
-            required: true
-        },
 
         onAuthorize: {
             type:     'function',

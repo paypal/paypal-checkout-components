@@ -7,7 +7,7 @@ import { create } from 'xcomponent/src';
 import { type Component } from 'xcomponent/src/component/component';
 
 import { ENV } from '../constants';
-import { getBrowserLocale } from '../lib';
+import { getButtonSessionID, getBrowserLocale, getSessionID } from '../lib';
 import { config } from '../config';
 
 import { containerTemplate } from './template';
@@ -46,29 +46,60 @@ export const BillingPage : Component<BillingOptions> = create({
         };
     },
 
-    get bridgeUrl() : Object {
-        return config.metaFrameUrls;
-    },
-
-    get bridgeDomain() : Object {
-        return config.paypalDomains;
-    },
-
     props: {
-        cardType: {
-            type:       'string',
-            required:   false
-        },
-        prefilledZipCode: {
+        sessionID: {
             type:     'string',
-            required: false
+            required: false,
+            def() : string {
+                return getSessionID();
+            },
+            queryParam: true
         },
-        
+
+
         token: {
-            type:     'string',
-            required: true
+            type:       'string',
+            required:   true,
+            queryParam: true
         },
-    
+
+        buttonSessionID: {
+            type:     'string',
+            required: false,
+            def() : ?string {
+                return getButtonSessionID();
+            },
+            queryParam: true
+        },
+
+        commit: {
+            type:       'boolean',
+            required:   false,
+            queryParam: true
+        },
+
+        fundingSource: {
+            type:       'string',
+            required:   false,
+            queryParam: true
+        },
+
+        env: {
+            type:       'string',
+            required:   false,
+            queryParam: true,
+
+            def() : string {
+                return config.env;
+            },
+
+            validate(env) {
+                if (!config.paypalUrls[env]) {
+                    throw new Error(`Invalid env: ${ env }`);
+                }
+            }
+        },
+
         locale: {
             type:          'string',
             required:      false,
@@ -80,6 +111,16 @@ export const BillingPage : Component<BillingOptions> = create({
                 return `${ lang }_${ country }`;
             }
         },
+
+        cardType: {
+            type:       'string',
+            required:   false
+        },
+        prefilledZipCode: {
+            type:     'string',
+            required: false
+        },
+
         onEvent: {
             type:       'function',
             required:   false,

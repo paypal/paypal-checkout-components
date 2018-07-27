@@ -2,7 +2,7 @@
 /* @jsx jsxDom */
 
 import { BUTTON_SIZE, BUTTON_LAYOUT } from '../../constants';
-import { getButtonConfig, BUTTON_STYLE, BUTTON_RELATIVE_STYLE, POWERED_BY_PAYPAL_HEIGHT } from '../config';
+import { getButtonConfig, BUTTON_STYLE, BUTTON_RELATIVE_STYLE } from '../config';
 import { normalizeProps } from '../props';
 import { values, min, max, perc } from '../../lib/util';
 import type { DimensionsType } from '../../types';
@@ -65,7 +65,7 @@ function getDimensions({ label, size, tagline, fundingicons, layout, number, vie
     }
 
     if (layout === BUTTON_LAYOUT.VERTICAL && (size === BUTTON_SIZE.LARGE || size === BUTTON_SIZE.MEDIUM)) {
-        height += POWERED_BY_PAYPAL_HEIGHT;
+        height += BUTTON_STYLE.POWERED_BY_PAYPAL_HEIGHT;
     }
 
     return { width, height };

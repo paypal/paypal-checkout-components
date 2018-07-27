@@ -18,6 +18,11 @@ const LOGO_COLOR = {
     [ CHECKOUT_OVERLAY_COLOR.WHITE ]: BUTTON_LOGO_COLOR.BLACK
 };
 
+export {
+    getContainerStyle,
+    getSandboxStyle
+};
+
 export type ContainerTemplateOptions = {
     id : string,
     props : Object,

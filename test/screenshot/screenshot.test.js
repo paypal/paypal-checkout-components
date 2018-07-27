@@ -123,6 +123,6 @@ for (let config of buttonConfigs) {
             await screenshot.write(filepath);
         }
         index += 1;
-        console.log(`${ index } / ${ total }`);
+        console.log(`Generating button screenshot: ${ index } / ${ total }`);
     });
 }

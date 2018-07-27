@@ -8,9 +8,8 @@ import { fundingLogos } from '../../resources';
 import { BUTTON_LOGO_COLOR, CHECKOUT_OVERLAY_COLOR } from '../../constants';
 import { isIos } from '../../lib';
 
-import componentContentJSON from './containerContent.json';
-import { getSandboxStyle } from './componentStyle/sandboxStyle';
-import { getContainerStyle } from './componentStyle/containerStyle';
+import componentContentJSON from '../../checkout/template/containerContent.json';
+import { getSandboxStyle, getContainerStyle } from '../../checkout/template';
 
 let componentContent = JSON.parse(componentContentJSON);
 
@@ -42,6 +41,43 @@ export type ContainerTemplateOptions = {
 export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT, on, tag, context, actions, outlet, jsxDom } : ContainerTemplateOptions) : HTMLElement {
 
     let [ lang, country ] = props.locale.split('_');
+
+    const containerStyle = `
+        ${ getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION }) }
+        @media screen and (max-width: 470px) {
+            #${ id } .paypal-checkout-close {
+                position: absolute;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+                opacity: 0.6;
+                top: 20px;
+                opacity: 0.6;
+                z-index: 2;
+            }
+
+            #${ id } .paypal-checkout-close:before, .paypal-checkout-close:after {
+                position: absolute;
+                left: 20px;
+                content: ' ';
+                height: 40px;
+                width: 1px;
+                background-color: #111 !important;
+            }
+            #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-iframe-container,
+            #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } {
+                height: 100%;
+                min-height: 100%;
+                max-height: 100%;
+                min-width: 100%;
+                max-width: 100%;
+                border-radius: 0px;
+            }
+            #${ id } .xcomponent-outlet {
+                height: 100%;
+            }
+        }
+    `;
 
     let content = componentContent[country][lang];
 
@@ -102,7 +138,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
                 {outlet}
             </div>
 
-            <style>{getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION })}</style>
+            <style>{ containerStyle }</style>
         </div>
     );
 
