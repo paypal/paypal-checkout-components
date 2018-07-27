@@ -426,6 +426,99 @@ export const BUTTON_CONFIG : ButtonConfig = {
         allowPrimaryHorizontal: false
     },
 
+    [ BUTTON_LABEL.P24 ]: {
+
+        label:     `{ logo: ${ BUTTON_LOGO.P24 } }`,
+        logoLabel: `{ logo: ${ BUTTON_LOGO.P24 } }`,
+
+        defaultColor: BUTTON_COLOR.SILVER,
+
+        colors: [
+            BUTTON_COLOR.SILVER,
+            BUTTON_COLOR.BLACK
+        ],
+
+        logoColors:  {
+            [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLACK,
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE
+        },
+
+        secondaryColors: {
+            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER
+        },
+
+        allowPrimary: false,
+
+        allowPrimaryVertical:   false,
+        allowPrimaryHorizontal: false
+    },
+
+    [ BUTTON_LABEL.ZIMPLER ]: {
+
+        label:     `{ logo: ${ BUTTON_LOGO.ZIMPLER } }`,
+        logoLabel: `{ logo: ${ BUTTON_LOGO.ZIMPLER } }`,
+
+        defaultColor: BUTTON_COLOR.SILVER,
+
+        colors: [
+            BUTTON_COLOR.SILVER,
+            BUTTON_COLOR.BLACK
+        ],
+
+        logoColors:  {
+            [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLACK,
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE
+        },
+
+        secondaryColors: {
+            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER
+        },
+
+        allowPrimary: false,
+
+        allowPrimaryVertical:   false,
+        allowPrimaryHorizontal: false
+    },
+
+    [ BUTTON_LABEL.WECHATPAY ]: {
+
+        label:     `{ logo: ${ BUTTON_LOGO.WECHATPAY } }`,
+        logoLabel: `{ logo: ${ BUTTON_LOGO.WECHATPAY } }`,
+
+        defaultColor: BUTTON_COLOR.SILVER,
+
+        colors: [
+            BUTTON_COLOR.SILVER,
+            BUTTON_COLOR.BLACK
+        ],
+
+        logoColors:  {
+            [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLACK,
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE
+        },
+
+        secondaryColors: {
+            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER
+        },
+
+        allowPrimary: false,
+
+        allowPrimaryVertical:   false,
+        allowPrimaryHorizontal: false
+    },
+
     [ BUTTON_LABEL.CARD ]: {
 
         label:     `{ cards }`,
@@ -467,6 +560,9 @@ export const FUNDING_TO_DEFAULT_LABEL = {
     [ FUNDING.GIROPAY]:    BUTTON_LABEL.GIROPAY,
     [ FUNDING.SOFORT]:     BUTTON_LABEL.SOFORT,
     [ FUNDING.EPS]:        BUTTON_LABEL.EPS,
+    [ FUNDING.P24]:        BUTTON_LABEL.P24,
+    [ FUNDING.ZIMPLER]:    BUTTON_LABEL.ZIMPLER,
+    [ FUNDING.WECHATPAY]:  BUTTON_LABEL.WECHATPAY,
     [ FUNDING.MYBANK]:     BUTTON_LABEL.MYBANK
 };
 
@@ -484,6 +580,9 @@ export const LABEL_TO_FUNDING = {
     [ BUTTON_LABEL.GIROPAY]:        FUNDING.GIROPAY,
     [ BUTTON_LABEL.GIROPAY]:        FUNDING.EPS,
     [ BUTTON_LABEL.SOFORT]:         FUNDING.SOFORT,
+    [ BUTTON_LABEL.P24]:            FUNDING.P24,
+    [ BUTTON_LABEL.ZIMPLER]:        FUNDING.ZIMPLER,
+    [ BUTTON_LABEL.WECHATPAY]:      FUNDING.WECHATPAY,
     [ BUTTON_LABEL.MYBANK]:         FUNDING.MYBANK
 };
 

@@ -11,7 +11,10 @@ export const FUNDING = {
     GIROPAY:     'giropay',
     SOFORT:      'sofort',
     EPS:         'eps',
-    MYBANK:      'mybank'
+    MYBANK:      'mybank',
+    P24:         'p24',
+    ZIMPLER:     'zimpler',
+    WECHATPAY:   'wechatpay'
 };
 
 export const CARD = {
