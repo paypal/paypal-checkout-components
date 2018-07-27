@@ -14,6 +14,9 @@ export const FUNDING_PRIORITY = [
     FUNDING.EPS,
     FUNDING.SOFORT,
     FUNDING.MYBANK,
+    FUNDING.P24,
+    FUNDING.ZIMPLER,
+    FUNDING.WECHATPAY,
     FUNDING.CARD
 ];
 
@@ -154,6 +157,36 @@ export const FUNDING_CONFIG = {
     [ FUNDING.MYBANK ]: {
         allowedCountries: [
             COUNTRY.IT
+        ],
+
+        allowHorizontal: false,
+        allowVertical:   true,
+
+        requireCommitAsTrue: true
+    },
+    [ FUNDING.P24 ]: {
+        allowedCountries: [
+            COUNTRY.PL
+        ],
+
+        allowHorizontal: false,
+        allowVertical:   true,
+
+        requireCommitAsTrue: true
+    },
+    [ FUNDING.ZIMPLER ]: {
+        allowedCountries: [
+            COUNTRY.FI
+        ],
+
+        allowHorizontal: false,
+        allowVertical:   true,
+
+        requireCommitAsTrue: true
+    },
+    [ FUNDING.WECHATPAY ]: {
+        allowedCountries: [
+            COUNTRY.CN
         ],
 
         allowHorizontal: false,
