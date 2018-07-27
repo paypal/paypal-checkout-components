@@ -7,7 +7,6 @@ import { btoa } from 'Base64';
 import { fundingLogos } from '../../resources';
 import { BUTTON_LOGO_COLOR, CHECKOUT_OVERLAY_COLOR } from '../../constants';
 import { isIos } from '../../lib';
-
 import componentContentJSON from '../../checkout/template/containerContent.json';
 import { getSandboxStyle, getContainerStyle } from '../../checkout/template';
 
