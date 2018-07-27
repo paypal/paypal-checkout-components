@@ -212,11 +212,21 @@ export let Button : Component<ButtonOptions> = create({
             },
             decorate({ allowed = [], disallowed = [] } : Object = {}) : {} {
 
-                if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1 && !isDevice()) {
-                    allowed.splice(allowed.indexOf(FUNDING.VENMO), 1);
-                }
-
                 let remembered = getRememberedFunding(sources => sources);
+
+                if (!isDevice()) {
+                    if (allowed.indexOf(FUNDING.VENMO) !== -1) {
+                        allowed = allowed.filter(funding => (funding !== FUNDING.VENMO));
+                    }
+
+                    if (remembered.indexOf(FUNDING.VENMO) !== -1) {
+                        remembered = remembered.filter(funding => (funding !== FUNDING.VENMO));
+                    }
+
+                    if (disallowed.indexOf(FUNDING.VENMO) === -1) {
+                        disallowed = [ ...disallowed, FUNDING.VENMO ];
+                    }
+                }
 
                 return {
                     allowed,
