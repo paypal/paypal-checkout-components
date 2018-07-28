@@ -3,7 +3,7 @@
 
 import { btoa } from 'Base64';
 
-import { BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING } from '../../constants';
+import { BUTTON_SIZE, BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING } from '../../constants';
 import { getButtonConfig, labelToFunding, fundingToDefaultLabel } from '../config';
 import { normalizeProps } from '../props';
 import { jsxToHTML, type JsxHTMLNode, type ChildType, jsxRender } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
@@ -75,28 +75,31 @@ function determineButtons({ label, color, sources, multiple, layout } : { label 
     });
 }
 
-function renderCards({ cards, button } : { cards : Array<string>, button : ?boolean }) : Array<JsxHTMLNode> {
+function renderCards({ cards, button, layout, size } :
+  { cards : Array<string>, button : ?boolean, layout? : string, size? : string }) : Array<JsxHTMLNode> {
     return cards.map(name => {
         let logo = cardLogos[name];
 
         return (
             <img
+                data-button-layout={ layout ? layout : '' }
+                data-button-size={ size ? layout : '' }
                 { ...{ [ATTRIBUTE.BUTTON]: (button || false), [ATTRIBUTE.FUNDING_SOURCE]: `${ FUNDING.CARD }`, [ATTRIBUTE.CARD]: `${ name }` } }
-                class={ `${ CLASS.BUTTON } ${ CLASS.CARD } ${ CLASS.CARD }-${ name }` }
+                class={ `${ button ? CLASS.BUTTON : '' } ${ CLASS.CARD } ${ CLASS.CARD }-${ name }` }
                 src={ `data:image/svg+xml;base64,${ btoa(logo) }` }
                 alt={ name } />
         );
     });
 }
 
-function renderFundingIcons({ cards, fundingicons } :
-    { cards : Array<string>, fundingicons : boolean }) : ?JsxHTMLNode {
+function renderFundingIcons({ cards, fundingicons, size, layout } :
+    { cards : Array<string>, fundingicons : boolean, layout : string, size : string }) : ?JsxHTMLNode {
 
     if (!fundingicons) {
         return;
     }
 
-    return <div class={ `${ CLASS.FUNDINGICONS }` }>{ renderCards({ cards, button: true }) }</div>;
+    return <div class={ `${ CLASS.FUNDINGICONS }` }>{ renderCards({ cards, button: true, size, layout }) }</div>;
 }
 
 function renderContent(text : string, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent } :
@@ -264,7 +267,7 @@ function renderPowerByPaypalLogo(props) : ChildType {
 
     const { layout, size } = props;
 
-    if (!(layout === 'vertical' && (size === 'medium' || size === 'large'))) {
+    if (!(layout === BUTTON_LAYOUT.VERTICAL && (size === BUTTON_SIZE.MEDIUM || size === BUTTON_SIZE.LARGE || size === BUTTON_SIZE.HUGE))) {
         return null;
     }
 
@@ -315,7 +318,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let { label, locale, color, shape, branding,
         tagline, funding, layout, sources, multiple,
-        env, height, cards, installmentperiod, fundingicons } = normalizeProps(props);
+        env, height, cards, installmentperiod, fundingicons, size } = normalizeProps(props);
 
     let buttonNodes = determineButtons({ label, color, sources, multiple, layout })
         .map((button, i) => renderButton({
@@ -335,7 +338,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
         }));
 
     let taglineNode     = renderTagline({ label, tagline, color, locale, multiple, env, cards });
-    let fundingiconNode = renderFundingIcons({ cards, fundingicons });
+    let fundingiconNode = renderFundingIcons({ cards, fundingicons, size, layout });
 
     let styleNode  = renderStyle({ height, cardNumber: cards.length });
     let scriptNode = renderScript();
