@@ -82,8 +82,8 @@ function renderCards({ cards, button, layout, size } :
 
         return (
             <img
-                data-button-layout={ layout ? layout : '' }
-                data-button-size={ size ? layout : '' }
+                { ...{ [ATTRIBUTE.LAYOUT]: layout ? layout : '' } }
+                { ...{ [ATTRIBUTE.SIZE]: size ? size : '' } }
                 { ...{ [ATTRIBUTE.BUTTON]: (button || false), [ATTRIBUTE.FUNDING_SOURCE]: `${ FUNDING.CARD }`, [ATTRIBUTE.CARD]: `${ name }` } }
                 class={ `${ button ? CLASS.BUTTON : '' } ${ CLASS.CARD } ${ CLASS.CARD }-${ name }` }
                 src={ `data:image/svg+xml;base64,${ btoa(logo) }` }
@@ -102,8 +102,8 @@ function renderFundingIcons({ cards, fundingicons, size, layout } :
     return <div class={ `${ CLASS.FUNDINGICONS }` }>{ renderCards({ cards, button: true, size, layout }) }</div>;
 }
 
-function renderContent(text : string, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent } :
-    { label? : string, locale : LocaleType, color : string, branding? : boolean, logoColor? : string, funding? : FundingSelection, env : string, cards : Array<string>, dynamicContent? : Object }) : JsxHTMLNode {
+function renderContent(text : string, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size } :
+    { layout : $Values<typeof BUTTON_LAYOUT>, size : $Values<typeof BUTTON_SIZE>, label? : string, locale : LocaleType, color : string, branding? : boolean, logoColor? : string, funding? : FundingSelection, env : string, cards : Array<string>, dynamicContent? : Object }) : JsxHTMLNode {
 
     let content = getLocaleContent(locale);
 
@@ -158,14 +158,15 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
                 throw new Error(`Could not find content ${ name } for ${ locale.lang }_${ locale.country }`);
             }
 
-            return renderContent(contentString || '', { label, locale, color, branding, logoColor, funding, env, cards });        },
+            return renderContent(contentString || '', { label, locale, color, branding, logoColor, funding, env, cards });
+        },
 
         cards() : Array<JsxHTMLNode> {
             if (!funding) {
                 throw new Error(`Can not determine card types without funding`);
             }
 
-            return renderCards({ cards, button: false });
+            return renderCards({ cards, button: false, layout, size });
         },
 
         separator() : JsxHTMLNode {
@@ -179,8 +180,8 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
     });
 }
 
-function renderButton({ label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, installmentperiod } :
-    { label : $Values<typeof BUTTON_LABEL>, color : string, branding : boolean, locale : Object, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT>, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : Array<string>, installmentperiod : number }) : JsxHTMLNode {
+function renderButton({ size, label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, installmentperiod } :
+    { size : $Values<typeof BUTTON_SIZE>, label : $Values<typeof BUTTON_LABEL>, color : string, branding : boolean, locale : Object, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT>, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : Array<string>, installmentperiod : number }) : JsxHTMLNode {
 
     let logoColor = getButtonConfig(label, 'logoColors')[color];
 
@@ -200,10 +201,12 @@ function renderButton({ label, color, locale, branding, multiple, layout, shape,
     };
 
     contentText = typeof contentText === 'function' ? contentText(dynamicContent) : contentText;
-    contentText = renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent });
+    contentText = renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
 
     return (
         <div
+            { ...{ [ATTRIBUTE.LAYOUT]: layout ? layout : '' } }
+            { ...{ [ATTRIBUTE.SIZE]: size ? size : '' } }
             { ...{ [ ATTRIBUTE.FUNDING_SOURCE ]: source, [ ATTRIBUTE.BUTTON ]: true } }
             class={ `${ CLASS.BUTTON } ${ CLASS.NUMBER }-${ i } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) } ${ getButtonClasses({ label, color, logoColor }) }` }
             role='button'
@@ -334,7 +337,8 @@ export function componentTemplate({ props } : { props : Object }) : string {
             layout,
             shape,
             cards,
-            installmentperiod
+            installmentperiod,
+            size
         }));
 
     let taglineNode     = renderTagline({ label, tagline, color, locale, multiple, env, cards });
