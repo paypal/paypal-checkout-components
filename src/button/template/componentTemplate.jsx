@@ -103,7 +103,7 @@ function renderFundingIcons({ cards, fundingicons, size, layout } :
 }
 
 function renderContent(text : string, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size } :
-    { layout : $Values<typeof BUTTON_LAYOUT>, size : $Values<typeof BUTTON_SIZE>, label? : string, locale : LocaleType, color : string, branding? : boolean, logoColor? : string, funding? : FundingSelection, env : string, cards : Array<string>, dynamicContent? : Object }) : JsxHTMLNode {
+    { layout? : $Values<typeof BUTTON_LAYOUT>, size? : $Values<typeof BUTTON_SIZE>, label? : string, locale : LocaleType, color : string, branding? : boolean, logoColor? : string, funding? : FundingSelection, env : string, cards : Array<string>, dynamicContent? : Object }) : JsxHTMLNode {
 
     let content = getLocaleContent(locale);
 
