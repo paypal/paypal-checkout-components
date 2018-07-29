@@ -281,7 +281,7 @@ function renderPowerByPaypalLogo(props) : ChildType {
                 text-align: center;
                 margin: 10px auto;
                 height: 14px;
-                font-family: HelveticaNeue;
+                font-family: PayPal-Sans, HelveticaNeue, sans-serif;
                 font-size: 11px;
                 font-weight: normal;
                 font-style: italic;
