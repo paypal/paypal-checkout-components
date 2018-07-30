@@ -622,11 +622,13 @@ export let Button : Component<ButtonOptions> = create({
 
                     flushLogs();
 
+                    let timeout = __TEST__ ? 500 : 10 * 1000;
+
                     return ZalgoPromise.try(() => {
                         return original.call(this, data, actions);
-                    }).catch(err => {
+                    }).timeout(timeout, new Error(`Timed out waiting ${ timeout }ms for callback`)).catch(err => {
                         if (this.props.onError) {
-                            return this.props.onError(err);
+                            this.props.onError(err);
                         }
                         throw err;
                     });
