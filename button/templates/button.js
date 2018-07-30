@@ -32,6 +32,7 @@ export let buttonTemplate = (req, ctx) => {
 
     let locale = query(req, 'locale.x', 'en_US');
     let commit = query(req, 'commit');
+    let platform = query(req, 'platform', 'desktop');
 
     let style = {
         size:         query(req, 'style.size'),
@@ -70,11 +71,12 @@ export let buttonTemplate = (req, ctx) => {
 
     let buttonHTML = dynamicComponentTemplate({
         props: {
-            env:     meta.env,
-            locale:  locale,
-            style:   style,
-            funding: funding,
-            commit: commit
+            env:      meta.env,
+            platform: platform,
+            locale:   locale,
+            style:    style,
+            funding:  funding,
+            commit:   commit
         }
     });
 
