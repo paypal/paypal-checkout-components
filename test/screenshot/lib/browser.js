@@ -12,9 +12,9 @@ import puppeteer from 'puppeteer';
 import { createTempFile } from './util';
 import { readPNG, type PngType } from './image';
 
-export async function openPage(scriptURL : string) : Promise<Object> {
+export async function openPage(scriptURL : string, { headless = true } : { headless : boolean }) : Promise<Object> {
 
-    let browser = await puppeteer.launch();
+    let browser = await puppeteer.launch({ headless });
     let page    = await browser.newPage();
 
     page.emulate({

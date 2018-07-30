@@ -23,6 +23,8 @@ const USER_AGENTS = {
     iphone6: 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'
 };
 
+const HEADLESS = true;
+
 jest.setTimeout(120000);
 
 let setupBrowserPage = (async () => {
@@ -40,6 +42,10 @@ let setupBrowserPage = (async () => {
                     }
                 }
             },
+            __PAYPAL_CHECKOUT__: {
+                ...globals.__PAYPAL_CHECKOUT__,
+                __TREE_SHAKE__: false
+            },
             __CLIENT_ID__:   'xyz',
             __MERCHANT_ID__: 'abc',
             __LOCALE__:      {
@@ -47,7 +53,7 @@ let setupBrowserPage = (async () => {
                 __LANG__:    'en'
             }
         }
-    })));
+    })), { headless: HEADLESS });
 
     for (let filename of await fs.readdir(IMAGE_DIR)) {
         if (filename.endsWith('-old.png')) {
@@ -91,6 +97,14 @@ for (let config of buttonConfigs) {
             }
 
             let client = window.paypal.client();
+
+            delete client.Button.props.locale;
+            client.Button.props.locale = {
+                required: true,
+                def:      () => {
+                    return options.button.locale || 'en_US';
+                }
+            };
 
             client.Button.render(Object.assign({
                 payment() { /* pass */ },

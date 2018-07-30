@@ -74,7 +74,6 @@ test(`Button should render with ssr, with all options`, async () => {
         label:  'pay',
         layout: 'horizontal',
 
-        maxbuttons: 2,
         height:     45,
         
         tagline:      false

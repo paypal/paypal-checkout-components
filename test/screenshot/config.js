@@ -139,8 +139,7 @@ for (let label of Object.keys(BUTTON_LABEL)) {
         buttonConfigs.push({
             button: {
                 style: {
-                    label,
-                    maxbuttons: 1
+                    label
                 }
             }
         });
@@ -242,8 +241,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
         button: {
             style: {
                 color,
-                layout:     'vertical',
-                maxbuttons: 4
+                layout:     'vertical'
             },
             funding: {
                 allowed: [ FUNDING.CREDIT, FUNDING.VENMO, FUNDING.CARD ]
@@ -256,8 +254,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
         button:    {
             style: {
                 color,
-                layout:     'vertical',
-                maxbuttons: 4
+                layout:     'vertical'
             },
             funding: {
                 allowed: [ FUNDING.CREDIT, FUNDING.VENMO, FUNDING.CARD ]
@@ -270,8 +267,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
             locale: 'pt_BR',
             style:  {
                 color,
-                layout:     'vertical',
-                maxbuttons: 4
+                layout:     'vertical'
             },
             funding: {
                 allowed: [ FUNDING.CREDIT, FUNDING.CARD ]
@@ -284,8 +280,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
             locale: 'de_DE',
             style:  {
                 color,
-                layout:     'vertical',
-                maxbuttons: 4
+                layout:     'vertical'
             },
             funding: {
                 allowed: [ FUNDING.CREDIT, FUNDING.ELV, FUNDING.CARD ]
@@ -299,8 +294,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
             commit: true,
             style:  {
                 color,
-                layout:     'vertical',
-                maxbuttons: 4
+                layout:     'vertical'
             },
             funding: {
                 allowed: [ FUNDING.CREDIT, FUNDING.ELV, FUNDING.GIROPAY, FUNDING.SOFORT ]
@@ -315,8 +309,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
             commit: true,
             style:  {
                 color,
-                layout:     'vertical',
-                maxbuttons: 4
+                layout:     'vertical'
             },
             funding: {
                 allowed: [ FUNDING.CREDIT, FUNDING.IDEAL, FUNDING.SOFORT, FUNDING.CARD ]
@@ -330,8 +323,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
             commit: true,
             style:  {
                 color,
-                layout:     'vertical',
-                maxbuttons: 4
+                layout:     'vertical'
             },
             funding: {
                 allowed: [ FUNDING.CREDIT, FUNDING.BANCONTACT, FUNDING.SOFORT ]
@@ -345,8 +337,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
             commit: true,
             style:  {
                 color,
-                layout:     'vertical',
-                maxbuttons: 4
+                layout:     'vertical'
             },
             funding: {
                 allowed: [ FUNDING.EPS, FUNDING.SOFORT ]
@@ -360,8 +351,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
             commit: true,
             style:  {
                 color,
-                layout:     'vertical',
-                maxbuttons: 4
+                layout:     'vertical'
             },
             funding: {
                 allowed:    [ FUNDING.EPS, FUNDING.SOFORT ],
@@ -376,8 +366,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
             commit: true,
             style:  {
                 color,
-                layout:     'vertical',
-                maxbuttons: 4
+                layout:     'vertical'
             },
             funding: {
                 allowed: [ FUNDING.SOFORT, FUNDING.MYBANK ]
@@ -391,8 +380,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
             commit: true,
             style:  {
                 color,
-                layout:     'vertical',
-                maxbuttons: 4
+                layout:     'vertical'
             },
             funding: {
                 allowed: [ FUNDING.P24 ]
@@ -406,8 +394,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
             commit: true,
             style:  {
                 color,
-                layout:     'vertical',
-                maxbuttons: 4
+                layout:     'vertical'
             },
             funding: {
                 allowed: [ FUNDING.ZIMPLER ]
@@ -421,8 +408,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
             commit: true,
             style:  {
                 color,
-                layout:     'vertical',
-                maxbuttons: 4
+                layout:     'vertical'
             },
             funding: {
                 allowed: [ FUNDING.WECHATPAY ]
