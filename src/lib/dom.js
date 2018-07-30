@@ -121,7 +121,7 @@ export function extendUrl(url : string, params : { [key : string] : string } = {
     return newUrl;
 }
 
-export function redirect(win : CrossDomainWindowType = window, url : string) : ZalgoPromise<void> {
+export function redirect(url : string, win : CrossDomainWindowType = window) : ZalgoPromise<void> {
     return new ZalgoPromise(resolve => {
 
         info(`redirect`, { url });

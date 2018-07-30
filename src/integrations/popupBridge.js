@@ -116,12 +116,12 @@ function buildActions(query : Object) : Object {
 
     if (opType === OPTYPE.PAYMENT) {
         actions.redirect = (win : CrossDomainWindowType = window, redirectUrl : string = return_uri) : ZalgoPromise<void> => {
-            return redirect(win, redirectUrl);
+            return redirect(redirectUrl, win);
         };
 
     } else if (opType === OPTYPE.CANCEL) {
         actions.redirect = (win : CrossDomainWindowType = window, redirectUrl : string = cancel_uri) : ZalgoPromise<void> => {
-            return redirect(win, redirectUrl);
+            return redirect(redirectUrl, win);
         };
     }
 

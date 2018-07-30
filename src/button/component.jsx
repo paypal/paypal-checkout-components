@@ -304,7 +304,7 @@ export let Button : Component<ButtonOptions> = create({
                         return ZalgoPromise.try(() => {
                             return actions.close();
                         }).then(() => {
-                            return redir(win || window.top, url || data.returnUrl);
+                            return redirect(url || data.returnUrl, win || window.top);
                         });
                     };
 
@@ -346,7 +346,7 @@ export let Button : Component<ButtonOptions> = create({
 
                     actions.redirect = (url, win) => {
                         return ZalgoPromise.all([
-                            redirect(win || window.top, url),
+                            redirect(url, win || window.top),
                             actions.close()
                         ]);
                     };

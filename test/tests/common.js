@@ -289,15 +289,15 @@ export function getOrderApiMock(options : Object = {}) : Object {
                 throw new Error(`Expected data.intent to be passed`);
             }
 
-            if (!data.redirect_urls) {
+            if (!data.application_context) {
                 throw new Error(`Expected data.redirect_urls to be passed`);
             }
 
-            if (!data.redirect_urls.return_url) {
+            if (!data.application_context.return_url) {
                 throw new Error(`Expected data.redirect_urls.return_url to be passed`);
             }
 
-            if (!data.redirect_urls.cancel_url) {
+            if (!data.application_context.cancel_url) {
                 throw new Error(`Expected data.redirect_urls.cancel_url to be passed`);
             }
 
