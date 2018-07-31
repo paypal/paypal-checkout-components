@@ -3,8 +3,8 @@
 import { warn } from 'beaver-logger/client';
 import { getParent, getTop } from 'cross-domain-utils/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { patchMethod } from 'belter/src';
 
-import { patchMethod } from './lib';
 import { Button } from './button';
 import { Checkout } from './checkout';
 

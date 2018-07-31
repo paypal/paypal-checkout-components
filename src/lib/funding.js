@@ -5,8 +5,9 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING } from '../constants';
 import type { FundingSource, FundingList } from '../types';
 
-import { getStorageState, getGlobalState, getSessionState } from './session';
+import { getStorageState, getSessionState } from './session';
 import { openMetaFrame } from './meta';
+import { global } from './global';
 
 export function getRememberedFunding<T>(handler : (rememberedFunding : FundingList) => T) : T {
     return getStorageState(storage => {
@@ -43,10 +44,7 @@ function isRememberedFunding(source : FundingSource) : boolean {
 }
 
 function getRememberedFundingPromises() : { [FundingSource] : ZalgoPromise<boolean> } {
-    return getGlobalState(global => {
-        global.rememberFundingPromises = global.rememberFundingPromises || {};
-        return global.rememberFundingPromises;
-    });
+    return global.get('rememberedFundingPromises');
 }
 
 function getRememberedFundingPromise(source : FundingSource) : ZalgoPromise<boolean> {

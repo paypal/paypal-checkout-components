@@ -1,10 +1,11 @@
 /* @flow */
 /* @jsx jsxDom */
 
+import { values, min, max, perc } from 'belter/src';
+
 import { BUTTON_SIZE, BUTTON_LAYOUT } from '../../constants';
 import { getButtonConfig, BUTTON_STYLE, BUTTON_RELATIVE_STYLE } from '../config';
 import { normalizeProps } from '../props';
-import { values, min, max, perc } from '../../lib/util';
 import type { DimensionsType } from '../../types';
 
 type ContainerTemplateOptions = {

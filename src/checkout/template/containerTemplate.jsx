@@ -3,10 +3,10 @@
 /* eslint max-lines: 0 */
 
 import { btoa } from 'Base64';
+import { isIos } from 'belter/src';
 
 import { fundingLogos } from '../../resources';
 import { BUTTON_LOGO_COLOR } from '../../constants';
-import { isIos } from '../../lib';
 
 import { containerContent } from './containerContent';
 import { getContainerStyle, getSandboxStyle } from './containerStyle';

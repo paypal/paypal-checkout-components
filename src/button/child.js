@@ -2,10 +2,11 @@
 /* @flow */
 
 import { track, flush as flushLogs } from 'beaver-logger/client';
+import { getPageRenderTime } from 'belter/src';
 
 import { Checkout } from '../checkout';
 import { setupPopupBridgeProxy } from '../integrations/popupBridge';
-import { getPageRenderTime, setLogLevel } from '../lib';
+import { setLogLevel } from '../lib';
 import { ATTRIBUTE, FUNDING, FPTI, BUTTON_LAYOUT } from '../constants';
 
 import typeof { Button } from './component';

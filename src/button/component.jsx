@@ -6,11 +6,12 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'xcomponent/src';
 import { type Component } from 'xcomponent/src/component/component';
 import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/client';
+import { isIEIntranet, isDevice, uniqueID, redirect } from 'belter/src';
 
 import { config } from '../config';
 import { ENV, FPTI, BUTTON_LABEL, BUTTON_COLOR, BUTTON_SHAPE, PLATFORM } from '../constants';
-import { checkRecognizedBrowser, getSessionID, request, isIEIntranet, isEligible, isDevice, rememberFunding,
-    getRememberedFunding, uniqueID, getBrowser, redirect } from '../lib';
+import { checkRecognizedBrowser, getSessionID, request, isEligible, rememberFunding,
+    getRememberedFunding, getBrowser } from '../lib';
 import { createOrder } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { awaitPopupBridge } from '../integrations/popupBridge';

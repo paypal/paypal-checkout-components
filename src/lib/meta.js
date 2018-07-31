@@ -2,11 +2,9 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { once, bridge } from 'post-robot/src';
+import { isIEIntranet, memoize } from 'belter/src';
 
 import { config } from '../config';
-
-import { isIEIntranet  } from './device';
-import { memoize } from './util';
 
 type FrameMetaData = {
     iframeEligible : boolean,

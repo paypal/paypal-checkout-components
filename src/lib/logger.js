@@ -4,14 +4,13 @@ import { CONFIG as POSTROBOT_CONFIG } from 'post-robot/src';
 import { setTransport, getTransport, addPayloadBuilder, addHeaderBuilder, addMetaBuilder,
     addTrackingBuilder, init, logLevels, config as loggerConfig } from 'beaver-logger/client';
 import { getParent } from 'cross-domain-utils/src';
+import { once, getQueryParam } from 'belter/src';
 
 import { config } from '../config';
 import { FPTI } from '../constants';
 
 import { getSessionID, getButtonSessionID } from './session';
 import { proxyMethod } from './proxy';
-import { once } from './util';
-import { getQueryParam } from './dom';
 
 function getRefererDomain() : string {
     return (window.xchild && window.xchild.getParentDomain)

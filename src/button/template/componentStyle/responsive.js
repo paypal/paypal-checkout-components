@@ -1,8 +1,9 @@
 /* @flow */
 
+import { max, perc } from 'belter/src';
+
 import { BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER, BUTTON_LABEL } from '../../../constants';
 import { BUTTON_STYLE, BUTTON_RELATIVE_STYLE } from '../../config';
-import { max, perc } from '../../../lib/util';
 
 import { CLASS } from './class';
 

@@ -1,7 +1,8 @@
 /* @flow */
 /* @jsx jsxToHTML */
 
-import { jsxToHTML, JsxHTMLNode } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, JsxHTMLNode } from 'belter/src'; // eslint-disable-line no-unused-vars
+
 import { BUTTON_LOGO_COLOR } from '../../constants';
 
 const WECHATPAY_LOGO_COLORS = {

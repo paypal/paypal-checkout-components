@@ -5,10 +5,11 @@ import { on, send } from 'post-robot/src';
 import { btoa } from 'Base64';
 import { info, track } from 'beaver-logger/client';
 import { getAncestor, isSameDomain, isFileProtocol } from 'cross-domain-utils/src';
+import { memoize } from 'belter/src';
 
 import { config } from '../config';
 import { FPTI } from '../constants';
-import { request, memoize, isPayPalDomain } from '../lib';
+import { request, isPayPalDomain } from '../lib';
 
 let proxyRest : { [key : string] : <T>(...args : Array<mixed>) => ZalgoPromise<T> } = {};
 

@@ -1,11 +1,9 @@
 /* @flow */
 
 import { info, flush as flushLogs } from 'beaver-logger/client';
+import { isIEIntranet, getUserAgent, once } from 'belter/src';
 
 import { config } from '../config';
-
-import { isIEIntranet, getUserAgent } from './device';
-import { once } from './util';
 
 let bowserCache = {};
 

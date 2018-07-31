@@ -2,11 +2,11 @@
 
 import { info, track, warn, error, flush as flushLogs } from 'beaver-logger/client';
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { stringifyError, stringifyErrorMessage, once } from 'belter/src';
 
 import { config } from './config';
 import { FPTI } from './constants';
-import { initLogger, checkForCommonErrors, stringifyError,
-    stringifyErrorMessage, isEligible, once } from './lib';
+import { initLogger, checkForCommonErrors, isEligible } from './lib';
 
 ZalgoPromise.onPossiblyUnhandledException(err => {
 

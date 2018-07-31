@@ -1,8 +1,7 @@
 /* @flow */
 
 import { warn } from 'beaver-logger/client';
-
-import { isIE, isIEIntranet, isIECompHeader } from './device';
+import { isIE, isIEIntranet, isIECompHeader } from 'belter/src';
 
 function logWarn(err) : void {
     if (window.console) {

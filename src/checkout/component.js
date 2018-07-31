@@ -6,10 +6,9 @@ import { info, track, flush as flushLogs } from 'beaver-logger/client';
 import { create, CONSTANTS, PopupOpenError } from 'xcomponent/src';
 import { type Component } from 'xcomponent/src/component/component';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
+import { getQueryParam, patchMethod, isDevice, supportsPopups, memoize } from 'belter/src';
 
-import { isDevice, request, getQueryParam, patchMethod,
-    setLogLevel, getSessionID, supportsPopups, memoize,
-    getButtonSessionID } from '../lib';
+import { request, setLogLevel, getSessionID, getButtonSessionID } from '../lib';
 import { config } from '../config';
 import { ENV, FPTI } from '../constants';
 import { determineUrl } from '../integrations';

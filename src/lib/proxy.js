@@ -2,10 +2,9 @@
 
 import { on, send } from 'post-robot/src';
 import { isWindowClosed, getDomain, isSameDomain, type CrossDomainWindowType } from 'cross-domain-utils/src';
+import { noop } from 'belter/src';
 
 import { config } from '../config';
-
-import { noop } from './util';
 
 export function proxyMethod(name : string, win : ?CrossDomainWindowType, originalMethod : Function) : Function {
 

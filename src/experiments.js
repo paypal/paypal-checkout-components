@@ -1,9 +1,10 @@
 /* @flow */
 
 import { info, track, immediateFlush } from 'beaver-logger/client';
+import { eventEmitter } from 'belter/src';
 
 import { FPTI } from './constants';
-import { getSessionState, eventEmitter } from './lib';
+import { getSessionState } from './lib';
 
 export let onAuthorizeListener = eventEmitter();
 

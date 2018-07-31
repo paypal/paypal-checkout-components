@@ -2,11 +2,11 @@
 /* @jsx jsxToHTML */
 
 import { btoa } from 'Base64';
+import { jsxToHTML, type JsxHTMLNode, jsxRender } from 'belter/src'; // eslint-disable-line no-unused-vars
 
 import { BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING } from '../../constants';
 import { getButtonConfig, labelToFunding, fundingToDefaultLabel } from '../config';
 import { normalizeProps } from '../props';
-import { jsxToHTML, type JsxHTMLNode, jsxRender } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
 import { fundingLogos, cardLogos } from '../../resources';
 import { validateButtonProps } from '../validate';
 import type { LocaleType, FundingSource, FundingSelection, FundingList } from '../../types';

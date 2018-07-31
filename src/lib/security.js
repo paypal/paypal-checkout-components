@@ -1,8 +1,7 @@
 /* @flow */
 
 import { getParent, isSameDomain } from 'cross-domain-utils/src';
-
-import { supportsPopups } from './device';
+import { supportsPopups } from 'belter/src';
 
 export function allowIframe() : boolean {
 
