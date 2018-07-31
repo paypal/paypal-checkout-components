@@ -4,7 +4,7 @@ export * from './logger';
 export * from './eligibility';
 export * from './errors';
 export * from './http';
-export * from './throttle';
+export * from './experiment';
 export * from './session';
 export * from './proxy';
 export * from './meta';
