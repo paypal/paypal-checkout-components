@@ -1,6 +1,6 @@
 # Contributing to paypal-checkout
 
-We are always looking for ways to make our modules better. Adding features and fixing bugs allows everyone who depends
+We are always looking for ways to make our modules better. Adding features and fixing bugs allow everyone who depends
 on this code to create better, more stable applications.
 Feel free to raise a pull request to us. Our team would review your proposed modifications and, if appropriate, merge
 your changes into our code. Ideas and other comments are also welcome.
