@@ -101,7 +101,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.AT
         ],
 
-        allowHorizontal: true,
+        allowHorizontal: false,
         allowVertical:   true
     },
 
