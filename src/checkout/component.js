@@ -307,7 +307,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
                                     return request({
                                         win:    this.window,
                                         method: 'get',
-                                        url:    '/webapps/hermes/api/auth'
+                                        url:    '/webapps/xoonboarding/api/auth'
                                     }).then(result => {
                                         if (result && result.data && result.data.access_token) {
                                             addHeader('x-paypal-internal-euat', result.data.access_token);
