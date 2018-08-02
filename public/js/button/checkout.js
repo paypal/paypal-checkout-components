@@ -4,7 +4,7 @@ import { memoize, noop, redirect as redir } from './util';
 import { getPayment, executePayment, getOrder, captureOrder, authorizeOrder, mapToToken, getCheckoutAppData, getCheckoutCart } from './api';
 import { persistAccessToken } from './user';
 
-function buildActions(checkout, data, actions, intent) {
+function buildActions(checkout, data) {
 
     let restartFlow = () => {
         return checkout.close().then(() => {
@@ -80,7 +80,6 @@ function buildActions(checkout, data, actions, intent) {
     });
 
     return {
-        ...actions,
         payment: {
             execute: paymentExecute,
             get:     paymentGet
@@ -143,9 +142,9 @@ export function renderCheckout(props = {}) {
 
         onError: window.xprops.onError,
 
-        onAuthorize(data, actions) {
+        onAuthorize(data) {
 
-            actions = buildActions(this, data, actions);
+            let actions = buildActions(this, data);
 
             return window.xprops.onAuthorize(data, actions).catch(err => {
                 return window.xchild.error(err);
