@@ -1,8 +1,8 @@
 #!/bin/bash
 
-set -i
+set -e;
 
-npm run test
+npm run test;
 
 npm version ${1-patch};
 
