@@ -574,14 +574,14 @@ describe(`paypal button component funding mix`, () => {
         }, '#testContainer');
     });
 
-    it('should render elv in vertical layout', (done) => {
+    it('should not render elv in vertical layout', (done) => {
 
         window.paypal.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.ELV) === -1) {
-                        throw new Error(`Expected elv to be offered, got ${ JSON.stringify(fundingSources) }`);
+                    if (fundingSources.indexOf(window.paypal.FUNDING.ELV) !== -1) {
+                        throw new Error(`Expected elv to not be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
                     done();
