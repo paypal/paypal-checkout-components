@@ -221,12 +221,7 @@ patchMethod(Button.props.payment, 'decorate', ({ original, context, args: [ orig
 });
 
 if (Button.isChild()) {
-
     if (!window.Promise) {
         window.Promise = ZalgoPromise;
     }
 }
-
-patchMethod(BillingPage, 'renderTo', ({ args: [ win, props, el ], original, context }) => {
-    return original.call(context, win.top, props, el);
-});

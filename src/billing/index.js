@@ -78,12 +78,6 @@ export const BillingPage : Component<BillingOptions> = create({
             queryParam: true
         },
 
-        fundingSource: {
-            type:       'string',
-            required:   false,
-            queryParam: true
-        },
-
         env: {
             type:       'string',
             required:   false,
