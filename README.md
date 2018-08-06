@@ -71,6 +71,7 @@ Please feel free to follow the [Contribution Guidelines](./CONTRIBUTING.md) to c
 
 Set up your env:
 
+You can get npm at [here](https://www.npmjs.com/get-npm).
 ```bash
 npm install -g flow-typed
 npm install
