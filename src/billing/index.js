@@ -30,13 +30,8 @@ export const BillingPage : Component<BillingOptions> = create({
     name: 'billing-page',
 
     buildUrl(props) : string {
-        let env = props.env || config.env;
-        let { lang, country } = config.locale || getBrowserLocale();
-        const locale = `${ lang }_${ country }`;
-        let isCommit = props.commit ? 1 : 0;
-        const { token } = props;
-
-        return `${ config.inlinedCardFieldUrls[env] }/billing?locale.x=${ locale }&commit=${ isCommit }&token=${ token }`;
+        const env = props.env || config.env;
+        return `${ config.inlinedCardFieldUrls[env] }/billing`;
     },
 
     get domain() : Object {
