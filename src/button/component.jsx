@@ -10,7 +10,7 @@ import { getDomain } from 'cross-domain-utils/src';
 
 import { config } from '../config';
 import { SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
-    BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY, ALTERNATE_PAYMENT_METHOD } from '../constants';
+    BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY } from '../constants';
 import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, isEligible,
@@ -74,25 +74,6 @@ function isCreditDualEligible(props) : boolean {
     }
 
     return true;
-}
-
-function determineAPMBlacklist (allowed, disallowed) : Object {
-    for (let apm of Object.keys(ALTERNATE_PAYMENT_METHOD)) {
-        let funding = ALTERNATE_PAYMENT_METHOD[apm];
-        if (getDomainSetting(`disable_${ funding }`)) {
-            if (allowed && allowed.indexOf(funding) !== -1) {
-                allowed = allowed.filter(source => source !== funding);
-            }
-            if (disallowed && disallowed.indexOf(funding) === -1) {
-                disallowed = [ ...disallowed, funding ];
-            }
-        }
-    }
-
-    return {
-        allowed,
-        disallowed
-    };
 }
 
 let creditThrottle;
@@ -435,13 +416,6 @@ export let Button : Component<ButtonOptions> = create({
             },
             decorate({ allowed = [], disallowed = [] } : Object = {}, props : ButtonOptions) : {} {
 
-                if (allowed && allowed.indexOf(FUNDING.IDEAL) !== -1) {
-                    allowed = allowed.filter(source => (source !== FUNDING.IDEAL));
-                }
-                if (disallowed && disallowed.indexOf(FUNDING.IDEAL) === -1) {
-                    disallowed = [ ...disallowed, FUNDING.IDEAL ];
-                }
-
                 if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1 && !isDevice()) {
                     allowed = allowed.filter(source => (source !== FUNDING.VENMO));
                 }
@@ -465,8 +439,6 @@ export let Button : Component<ButtonOptions> = create({
                         disallowed = [ ...disallowed, FUNDING.VENMO ];
                     }
                 }
-
-                ({ allowed, disallowed } = determineAPMBlacklist(allowed, disallowed));
 
                 return {
                     allowed,

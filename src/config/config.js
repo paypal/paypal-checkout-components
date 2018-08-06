@@ -176,7 +176,7 @@ export let config = {
         'getcargo.today': {
             disable_venmo: true
         },
-
+        
         'smartdestinations.com': {
             disable_venmo: true
         },
@@ -191,60 +191,6 @@ export let config = {
 
         '3secondlash.com': {
             disable_venmo: true
-        },
-
-        'ski-lifts.com': {
-            disable_bancontact: true,
-            disable_mybank:     true,
-            disable_eps:        true,
-            disable_giropay:    true,
-            disable_ideal:      true,
-            disable_sofort:     true
-        },
-
-        'wideanglesoftware.com': {
-            disable_bancontact: true,
-            disable_mybank:     true,
-            disable_eps:        true,
-            disable_giropay:    true,
-            disable_ideal:      true,
-            disable_sofort:     true
-        },
-
-        'barcodelove.eu': {
-            disable_bancontact: true,
-            disable_mybank:     true,
-            disable_eps:        true,
-            disable_giropay:    true,
-            disable_ideal:      true,
-            disable_sofort:     true
-        },
-
-        'hooyu.com': {
-            disable_bancontact: true,
-            disable_mybank:     true,
-            disable_eps:        true,
-            disable_giropay:    true,
-            disable_ideal:      true,
-            disable_sofort:     true
-        },
-
-        'camdenpubcrawl.com': {
-            disable_bancontact: true,
-            disable_mybank:     true,
-            disable_eps:        true,
-            disable_giropay:    true,
-            disable_ideal:      true,
-            disable_sofort:     true
-        },
-
-        'xibo.org.uk': {
-            disable_bancontact: true,
-            disable_mybank:     true,
-            disable_eps:        true,
-            disable_giropay:    true,
-            disable_ideal:      true,
-            disable_sofort:     true
         },
 
         'newyorkpass.com': {
