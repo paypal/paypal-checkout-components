@@ -43,7 +43,7 @@ function determineResponsiveSize({ label, layout, width = 0 }) : string {
     throw new Error(`Unable to calculate responsive size for width: ${ width }`);
 }
 
-function getDimensions({ label, size, tagline, fundingicons, layout, number, viewport, height: buttonHeight }) : DimensionsType {
+function getDimensions({ label, size, tagline, fundingicons, layout, number, viewport, height: buttonHeight, cards }) : DimensionsType {
 
     if (size === BUTTON_SIZE.RESPONSIVE) {
         size = determineResponsiveSize({ label, layout, width: viewport.width, height: buttonHeight });
@@ -64,7 +64,7 @@ function getDimensions({ label, size, tagline, fundingicons, layout, number, vie
         height = (buttonHeight * number) + (perc(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) * (number - 1));
     }
 
-    if (layout === BUTTON_LAYOUT.VERTICAL && (size === BUTTON_SIZE.LARGE || size === BUTTON_SIZE.MEDIUM)) {
+    if ((cards && cards.length > 0) && layout === BUTTON_LAYOUT.VERTICAL && (size === BUTTON_SIZE.LARGE || size === BUTTON_SIZE.MEDIUM)) {
         height += BUTTON_STYLE[size].byPayPalHeight;
     }
 
@@ -74,7 +74,7 @@ function getDimensions({ label, size, tagline, fundingicons, layout, number, vie
 // eslint-disable-next-line no-unused-vars
 export function containerTemplate({ id, props, CLASS, on, container, tag, context, outlet, jsxDom } : ContainerTemplateOptions) : HTMLElement {
 
-    let { size, label, fundingicons, tagline, layout, sources, height: buttonHeight } = normalizeProps(props);
+    let { size, label, fundingicons, tagline, layout, sources, height: buttonHeight, cards } = normalizeProps(props);
 
     let getContainerDimensions = () => {
         let cont = container;
@@ -92,7 +92,8 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
             size,
             fundingicons,
             tagline,
-            layout
+            layout,
+            cards
         });
     };
 
