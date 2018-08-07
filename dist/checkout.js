@@ -8594,8 +8594,8 @@
         window.onLegacyFallback = window.watchForLegacyFallback;
         var integrations = __webpack_require__("./src/integrations/index.js"), checkoutComponentStyle = "\n\n    body {\n        width: 100%;\n        height: 100%;\n        overflow: hidden;\n        position: fixed;\n        top: 0;\n        left: 0;\n        margin: 0;\n    }\n\n    .spinner {\n        height: 100%;\n        width: 100%;\n        position: absolute;\n        z-index: 10\n    }\n\n    .spinner .spinWrap {\n        width: 200px;\n        height: 100px;\n        position: absolute;\n        top: 50%;\n        left: 50%;\n        margin-left: -100px;\n        margin-top: -50px\n    }\n\n    .spinner .loader,\n    .spinner .spinnerImage {\n        height: 100px;\n        width: 100px;\n        position: absolute;\n        top: 0;\n        left: 50%;\n        opacity: 1;\n        filter: alpha(opacity=100)\n    }\n\n    .spinner .spinnerImage {\n        margin: 28px 0 0 -25px;\n        background: url(https://www.paypalobjects.com/images/checkout/hermes/icon_ot_spin_lock_skinny.png) no-repeat\n    }\n\n    .spinner .loader {\n        margin: 0 0 0 -55px;\n        background-color: transparent;\n        -webkit-animation: rotation .7s infinite linear;\n        -moz-animation: rotation .7s infinite linear;\n        -o-animation: rotation .7s infinite linear;\n        animation: rotation .7s infinite linear;\n        border-left: 5px solid #cbcbca;\n        border-right: 5px solid #cbcbca;\n        border-bottom: 5px solid #cbcbca;\n        border-top: 5px solid #2380be;\n        border-radius: 100%\n    }\n\n    @-webkit-keyframes rotation {\n        from {\n            -webkit-transform: rotate(0deg)\n        }\n        to {\n            -webkit-transform: rotate(359deg)\n        }\n    }\n    @-moz-keyframes rotation {\n        from {\n            -moz-transform: rotate(0deg)\n        }\n        to {\n            -moz-transform: rotate(359deg)\n        }\n    }\n    @-o-keyframes rotation {\n        from {\n            -o-transform: rotate(0deg)\n        }\n        to {\n            -o-transform: rotate(359deg)\n        }\n    }\n    @keyframes rotation {\n        from {\n            transform: rotate(0deg)\n        }\n        to {\n            transform: rotate(359deg)\n        }\n    }\n";
         var _LOGO_COLOR, base64 = __webpack_require__("./node_modules/Base64/base64.js"), resources = __webpack_require__("./src/resources/index.js"), containerContent = __webpack_require__("./src/checkout/template/containerContent.json"), containerContent_default = __webpack_require__.n(containerContent);
-        var componentContent = JSON.parse(containerContent_default.a), LOGO_COLOR = ((_LOGO_COLOR = {})[constants.r.BLACK] = constants.j.WHITE, 
-        _LOGO_COLOR[constants.r.WHITE] = constants.j.BLACK, _LOGO_COLOR);
+        var componentContent = JSON.parse(containerContent_default.a), LOGO_COLOR = ((_LOGO_COLOR = {})[constants.q.BLACK] = constants.i.WHITE, 
+        _LOGO_COLOR[constants.q.WHITE] = constants.i.BLACK, _LOGO_COLOR);
         var _extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
@@ -8616,11 +8616,11 @@
                 });
             },
             get unsafeRenderTo() {
-                return config.a.env === constants.u.LOCAL;
+                return config.a.env === constants.t.LOCAL;
             },
             get domain() {
                 var _extends2;
-                return _extends({}, config.a.paypalDomains, ((_extends2 = {})[constants.u.LOCAL] = /^http:\/\/localhost.paypal.com:\d+$/, 
+                return _extends({}, config.a.paypalDomains, ((_extends2 = {})[constants.t.LOCAL] = /^http:\/\/localhost.paypal.com:\d+$/, 
                 _extends2));
             },
             get bridgeUrl() {
@@ -8658,7 +8658,7 @@
                     event.stopPropagation();
                     Object(lib.G)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
                 }
-                var overlayColor = (props.style || {}).overlayColor || constants.r.BLACK, logoColor = LOGO_COLOR[overlayColor], ppLogo = "function" == typeof resources.b.pp ? resources.b.pp({
+                var overlayColor = (props.style || {}).overlayColor || constants.q.BLACK, logoColor = LOGO_COLOR[overlayColor], ppLogo = "function" == typeof resources.b.pp ? resources.b.pp({
                     logoColor: logoColor
                 }) : resources.b.pp[logoColor], paypalLogo = "function" == typeof resources.b.paypal ? resources.b.paypal({
                     logoColor: logoColor
@@ -8703,7 +8703,7 @@
                     class: "paypal-checkout-iframe-container"
                 }, outlet), jsxDom("style", null, function(_ref2) {
                     var id = _ref2.id, tag = _ref2.tag, CONTEXT = _ref2.CONTEXT, CLASS = _ref2.CLASS, ANIMATION = _ref2.ANIMATION;
-                    return "\n        #" + id + " {\n            position: absolute;\n            z-index: 2147483647;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n\n            -webkit-transform: translate3d(0, 0, 0);\n            -moz-transform: translate3d(0, 0, 0);\n            -ms-transform: translate3d(0, 0, 0);\n            -o-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.r.BLACK + " {\n            background-color: black;\n            background-color: rgba(0, 0, 0, 0.8);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.r.WHITE + " {\n            background-color: white;\n            background-color: rgba(255, 255, 255, 0.4);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,0.65) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,0.65) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,0.65) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,0.65) 1%, rgba(255, 255, 255,0.4) 100%);\n\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.r.BLACK + " a {\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.r.WHITE + " a {\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.r.BLACK + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.r.BLACK + " .paypal-checkout-close:after {\n            background-color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.r.WHITE + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.r.WHITE + " .paypal-checkout-close:after {\n            background-color: #111;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + " a {\n            text-decoration: none;\n        }\n\n        #" + id + ' .paypal-checkout-modal {\n            font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n            font-size: 14px;\n            text-align: center;\n\n            -webkit-box-sizing: border-box;\n            -moz-box-sizing: border-box;\n            -ms-box-sizing: border-box;\n            box-sizing: border-box;\n            max-width: 350px;\n            top: 50%;\n            left: 50%;\n            position: absolute;\n            transform: translateX(-50%) translateY(-50%);\n            -webkit-transform: translateX(-50%) translateY(-50%);\n            -moz-transform: translateX(-50%) translateY(-50%);\n            -o-transform: translateX(-50%) translateY(-50%);\n            -ms-transform: translateX(-50%) translateY(-50%);\n            cursor: pointer;\n            text-align: center;\n        }\n\n        #' + id + "." + tag + "-loading .paypal-checkout-message, #" + id + "." + tag + "-loading .paypal-checkout-continue {\n            display: none;\n        }\n\n        .paypal-checkout-loader {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-loader {\n            display: block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo {\n            cursor: pointer;\n            margin-bottom: 30px;\n            display: inline-block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img {\n            height: 36px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img.paypal-checkout-logo-pp {\n            margin-right: 10px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-message {\n            font-size: 15px;\n            line-height: 1.5;\n            padding: 10px 0;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-message, #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-continue {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue {\n            font-size: 15px;\n            line-height: 1.35;\n            padding: 10px 0;\n            font-weight: bold;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue a {\n            border-bottom: 1px solid white;\n        }\n\n        #" + id + " .paypal-checkout-close {\n            position: absolute;\n            right: 16px;\n            top: 16px;\n            width: 16px;\n            height: 16px;\n            opacity: 0.6;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-close {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-close:hover {\n            opacity: 1;\n        }\n\n        #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n            position: absolute;\n            left: 8px;\n            content: ' ';\n            height: 16px;\n            width: 2px;\n        }\n\n        #" + id + " .paypal-checkout-close:before {\n            transform: rotate(45deg);\n            -webkit-transform: rotate(45deg);\n            -moz-transform: rotate(45deg);\n            -o-transform: rotate(45deg);\n            -ms-transform: rotate(45deg);\n        }\n\n        #" + id + " .paypal-checkout-close:after {\n            transform: rotate(-45deg);\n            -webkit-transform: rotate(-45deg);\n            -moz-transform: rotate(-45deg);\n            -o-transform: rotate(-45deg);\n            -ms-transform: rotate(-45deg);\n        }\n\n        #" + id + " .paypal-checkout-iframe-container {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + ",\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + " > iframe {\n            max-height: 95vh;\n            max-width: 95vw;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container {\n\n            display: block;\n\n            position: absolute;\n\n            top: 50%;\n            left: 50%;\n\n            min-width: 450px;\n\n            transform: translate(-50%, -50%);\n            -webkit-transform: translate(-50%, -50%);\n            -moz-transform: translate(-50%, -50%);\n            -o-transform: translate(-50%, -50%);\n            -ms-transform: translate(-50%, -50%);\n\n            transform: translate3d(-50%, -50%, 0);\n            -webkit-transform: translate3d(-50%, -50%, 0);\n            -moz-transform: translate3d(-50%, -50%, 0);\n            -o-transform: translate3d(-50%, -50%, 0);\n            -ms-transform: translate3d(-50%, -50%, 0);\n\n            border-radius: 10px;\n            overflow: hidden;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n\n            position: relative;\n\n            -webkit-transition: all 0.3s ease;\n            -moz-transition: all 0.3s ease;\n            -ms-transition: all 0.3s ease;\n            -o-transition: all 0.3 ease;\n            transition: all 0.3s ease;\n\n            -webkit-animation-duration: 0.3s;\n            animation-duration: 0.3s;\n            -webkit-animation-fill-mode: both;\n            animation-fill-mode: both;\n\n            min-width: 450px;\n            max-width: 450px;\n            width: 450px;\n            height: 535px;\n\n            background-color: white;\n\n            overflow: auto;\n            -webkit-overflow-scrolling: touch;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            transition: opacity .4s ease-in-out;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n            z-index: 100;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n            opacity: 1;\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n            opacity: 0;\n            z-index: 100;\n        }\n\n        @media screen and (max-width: 470px) {\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                min-width: 100%;\n                min-width: calc(100% - 20px);\n                min-width: -webkit-calc(100% - 20px);\n                min-width: -moz-calc(100% - 20px);\n                min-width: -o-calc(100% - 20px);\n                min-width: -ms-calc(100% - 20px);\n\n                max-width: 100%;\n                max-width: calc(100% - 20px);\n                max-width: -webkit-calc(100% - 20px);\n                max-width: -moz-calc(100% - 20px);\n                max-width: -o-calc(100% - 20px);\n                max-width: -ms-calc(100% - 20px);\n            }\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " iframe {\n            width: 1px;\n            min-width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        .paypal-spinner {\n            height: 30px;\n            width: 30px;\n            display: inline-block;\n            box-sizing: content-box;\n            opacity: 1;\n            filter: alpha(opacity=100);\n            -webkit-animation: rotation .7s infinite linear;\n            -moz-animation: rotation .7s infinite linear;\n            -o-animation: rotation .7s infinite linear;\n            animation: rotation .7s infinite linear;\n            border-left: 8px solid rgba(0, 0, 0, .2);\n            border-right: 8px solid rgba(0, 0, 0, .2);\n            border-bottom: 8px solid rgba(0, 0, 0, .2);\n            border-top: 8px solid #fff;\n            border-radius: 100%\n        }\n\n        @-webkit-keyframes rotation {\n            from {\n                -webkit-transform: rotate(0deg)\n            }\n            to {\n                -webkit-transform: rotate(359deg)\n            }\n        }\n        @-moz-keyframes rotation {\n            from {\n                -moz-transform: rotate(0deg)\n            }\n            to {\n                -moz-transform: rotate(359deg)\n            }\n        }\n        @-o-keyframes rotation {\n            from {\n                -o-transform: rotate(0deg)\n            }\n            to {\n                -o-transform: rotate(359deg)\n            }\n        }\n        @keyframes rotation {\n            from {\n                transform: rotate(0deg)\n            }\n            to {\n                transform: rotate(359deg)\n            }\n        }\n    ";
+                    return "\n        #" + id + " {\n            position: absolute;\n            z-index: 2147483647;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n\n            -webkit-transform: translate3d(0, 0, 0);\n            -moz-transform: translate3d(0, 0, 0);\n            -ms-transform: translate3d(0, 0, 0);\n            -o-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " {\n            background-color: black;\n            background-color: rgba(0, 0, 0, 0.8);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " {\n            background-color: white;\n            background-color: rgba(255, 255, 255, 0.4);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,0.65) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,0.65) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,0.65) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,0.65) 1%, rgba(255, 255, 255,0.4) 100%);\n\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " a {\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " a {\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " .paypal-checkout-close:after {\n            background-color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " .paypal-checkout-close:after {\n            background-color: #111;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + " a {\n            text-decoration: none;\n        }\n\n        #" + id + ' .paypal-checkout-modal {\n            font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n            font-size: 14px;\n            text-align: center;\n\n            -webkit-box-sizing: border-box;\n            -moz-box-sizing: border-box;\n            -ms-box-sizing: border-box;\n            box-sizing: border-box;\n            max-width: 350px;\n            top: 50%;\n            left: 50%;\n            position: absolute;\n            transform: translateX(-50%) translateY(-50%);\n            -webkit-transform: translateX(-50%) translateY(-50%);\n            -moz-transform: translateX(-50%) translateY(-50%);\n            -o-transform: translateX(-50%) translateY(-50%);\n            -ms-transform: translateX(-50%) translateY(-50%);\n            cursor: pointer;\n            text-align: center;\n        }\n\n        #' + id + "." + tag + "-loading .paypal-checkout-message, #" + id + "." + tag + "-loading .paypal-checkout-continue {\n            display: none;\n        }\n\n        .paypal-checkout-loader {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-loader {\n            display: block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo {\n            cursor: pointer;\n            margin-bottom: 30px;\n            display: inline-block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img {\n            height: 36px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img.paypal-checkout-logo-pp {\n            margin-right: 10px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-message {\n            font-size: 15px;\n            line-height: 1.5;\n            padding: 10px 0;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-message, #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-continue {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue {\n            font-size: 15px;\n            line-height: 1.35;\n            padding: 10px 0;\n            font-weight: bold;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue a {\n            border-bottom: 1px solid white;\n        }\n\n        #" + id + " .paypal-checkout-close {\n            position: absolute;\n            right: 16px;\n            top: 16px;\n            width: 16px;\n            height: 16px;\n            opacity: 0.6;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-close {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-close:hover {\n            opacity: 1;\n        }\n\n        #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n            position: absolute;\n            left: 8px;\n            content: ' ';\n            height: 16px;\n            width: 2px;\n        }\n\n        #" + id + " .paypal-checkout-close:before {\n            transform: rotate(45deg);\n            -webkit-transform: rotate(45deg);\n            -moz-transform: rotate(45deg);\n            -o-transform: rotate(45deg);\n            -ms-transform: rotate(45deg);\n        }\n\n        #" + id + " .paypal-checkout-close:after {\n            transform: rotate(-45deg);\n            -webkit-transform: rotate(-45deg);\n            -moz-transform: rotate(-45deg);\n            -o-transform: rotate(-45deg);\n            -ms-transform: rotate(-45deg);\n        }\n\n        #" + id + " .paypal-checkout-iframe-container {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + ",\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + " > iframe {\n            max-height: 95vh;\n            max-width: 95vw;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container {\n\n            display: block;\n\n            position: absolute;\n\n            top: 50%;\n            left: 50%;\n\n            min-width: 450px;\n\n            transform: translate(-50%, -50%);\n            -webkit-transform: translate(-50%, -50%);\n            -moz-transform: translate(-50%, -50%);\n            -o-transform: translate(-50%, -50%);\n            -ms-transform: translate(-50%, -50%);\n\n            transform: translate3d(-50%, -50%, 0);\n            -webkit-transform: translate3d(-50%, -50%, 0);\n            -moz-transform: translate3d(-50%, -50%, 0);\n            -o-transform: translate3d(-50%, -50%, 0);\n            -ms-transform: translate3d(-50%, -50%, 0);\n\n            border-radius: 10px;\n            overflow: hidden;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n\n            position: relative;\n\n            -webkit-transition: all 0.3s ease;\n            -moz-transition: all 0.3s ease;\n            -ms-transition: all 0.3s ease;\n            -o-transition: all 0.3 ease;\n            transition: all 0.3s ease;\n\n            -webkit-animation-duration: 0.3s;\n            animation-duration: 0.3s;\n            -webkit-animation-fill-mode: both;\n            animation-fill-mode: both;\n\n            min-width: 450px;\n            max-width: 450px;\n            width: 450px;\n            height: 535px;\n\n            background-color: white;\n\n            overflow: auto;\n            -webkit-overflow-scrolling: touch;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            transition: opacity .4s ease-in-out;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n            z-index: 100;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n            opacity: 1;\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n            opacity: 0;\n            z-index: 100;\n        }\n\n        @media screen and (max-width: 470px) {\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                min-width: 100%;\n                min-width: calc(100% - 20px);\n                min-width: -webkit-calc(100% - 20px);\n                min-width: -moz-calc(100% - 20px);\n                min-width: -o-calc(100% - 20px);\n                min-width: -ms-calc(100% - 20px);\n\n                max-width: 100%;\n                max-width: calc(100% - 20px);\n                max-width: -webkit-calc(100% - 20px);\n                max-width: -moz-calc(100% - 20px);\n                max-width: -o-calc(100% - 20px);\n                max-width: -ms-calc(100% - 20px);\n            }\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " iframe {\n            width: 1px;\n            min-width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        .paypal-spinner {\n            height: 30px;\n            width: 30px;\n            display: inline-block;\n            box-sizing: content-box;\n            opacity: 1;\n            filter: alpha(opacity=100);\n            -webkit-animation: rotation .7s infinite linear;\n            -moz-animation: rotation .7s infinite linear;\n            -o-animation: rotation .7s infinite linear;\n            animation: rotation .7s infinite linear;\n            border-left: 8px solid rgba(0, 0, 0, .2);\n            border-right: 8px solid rgba(0, 0, 0, .2);\n            border-bottom: 8px solid rgba(0, 0, 0, .2);\n            border-top: 8px solid #fff;\n            border-radius: 100%\n        }\n\n        @-webkit-keyframes rotation {\n            from {\n                -webkit-transform: rotate(0deg)\n            }\n            to {\n                -webkit-transform: rotate(359deg)\n            }\n        }\n        @-moz-keyframes rotation {\n            from {\n                -moz-transform: rotate(0deg)\n            }\n            to {\n                -moz-transform: rotate(359deg)\n            }\n        }\n        @-o-keyframes rotation {\n            from {\n                -o-transform: rotate(0deg)\n            }\n            to {\n                -o-transform: rotate(359deg)\n            }\n        }\n        @keyframes rotation {\n            from {\n                transform: rotate(0deg)\n            }\n            to {\n                transform: rotate(359deg)\n            }\n        }\n    ";
                 }({
                     id: id,
                     tag: tag,
@@ -8771,7 +8771,7 @@
                     queryParam: !0,
                     def: function(props) {
                         var env = props.env || config.a.env;
-                        if (env === constants.u.STAGE || env === constants.u.LOCAL) return config.a.stage;
+                        if (env === constants.t.STAGE || env === constants.t.LOCAL) return config.a.stage;
                     }
                 },
                 stageUrl: {
@@ -8780,7 +8780,7 @@
                     queryParam: !0,
                     def: function(props) {
                         var env = props.env || config.a.env;
-                        if (env === constants.u.STAGE || env === constants.u.LOCAL) return config.a.stageUrl;
+                        if (env === constants.t.STAGE || env === constants.t.LOCAL) return config.a.stageUrl;
                     }
                 },
                 locale: {
@@ -8838,7 +8838,7 @@
                         return {};
                     },
                     validate: function(style) {
-                        if (style.overlayColor && style.overlayColor !== constants.r.BLACK && style.overlayColor !== constants.r.WHITE) throw new Error("Invalid background color: " + style.overlayColor);
+                        if (style.overlayColor && style.overlayColor !== constants.q.BLACK && style.overlayColor !== constants.q.WHITE) throw new Error("Invalid background color: " + style.overlayColor);
                     }
                 },
                 commit: {
@@ -8883,7 +8883,7 @@
                                     if (isButton && isGuest) return Object(lib.S)({
                                         win: _this.window,
                                         method: "get",
-                                        url: "/webapps/hermes/api/auth"
+                                        url: "/webapps/xoonboarding/api/auth"
                                     }).then(function(result) {
                                         result && result.data && result.data.access_token && function(name, value) {
                                             if (window.$Api) window.$Api.addHeader && window.$Api.addHeader(name, value);
@@ -8948,10 +8948,10 @@
                         return function(data) {
                             var _track;
                             Object(beaver_logger_client.j)("checkout_init");
-                            Object(beaver_logger_client.o)(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.CHECKOUT, 
-                            _track[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.CHECKOUT_INIT, _track[constants.v.KEY.CONTEXT_TYPE] = constants.v.CONTEXT_TYPE[constants.B.EC_TOKEN], 
-                            _track[constants.v.KEY.TOKEN] = data.paymentToken, _track[constants.v.KEY.SELLER_ID] = data.merchantID, 
-                            _track[constants.v.KEY.CONTEXT_ID] = data.paymentToken, _track));
+                            Object(beaver_logger_client.o)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
+                            _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CHECKOUT_INIT, _track[constants.u.KEY.CONTEXT_TYPE] = constants.u.CONTEXT_TYPE[constants.A.EC_TOKEN], 
+                            _track[constants.u.KEY.TOKEN] = data.paymentToken, _track[constants.u.KEY.SELLER_ID] = data.merchantID, 
+                            _track[constants.u.KEY.CONTEXT_ID] = data.paymentToken, _track));
                             Object(beaver_logger_client.g)();
                             this.paymentToken = data.paymentToken;
                             this.cancelUrl = data.cancelUrl;
@@ -9076,7 +9076,7 @@
                                 var _throttle$logStart, payButton = document.querySelector(".buttons.reviewButton"), topPayButton = document.querySelector(".buttons.reviewButton.topReviewButton"), reviewSection = document.querySelector("section.review"), throttle = Object(lib.y)("top_pay_button", 0), hash = window.location.hash, logComplete = function() {
                                     if (experimentActive && !loggedComplete && hash && -1 !== hash.indexOf("checkout/review")) {
                                         var _throttle$logComplete;
-                                        throttle.logComplete(((_throttle$logComplete = {})[constants.v.KEY.FEED] = "hermesnodeweb", 
+                                        throttle.logComplete(((_throttle$logComplete = {})[constants.u.KEY.FEED] = "hermesnodeweb", 
                                         _throttle$logComplete));
                                         loggedComplete = !0;
                                     }
@@ -9084,7 +9084,7 @@
                                 payButton && payButton.addEventListener("click", logComplete);
                                 if (reviewSection && reviewSection.firstChild && payButton && !topPayButton && !(payButton.getBoundingClientRect().bottom < window.innerHeight)) {
                                     experimentActive = !0;
-                                    throttle.logStart(((_throttle$logStart = {})[constants.v.KEY.FEED] = "hermesnodeweb", 
+                                    throttle.logStart(((_throttle$logStart = {})[constants.u.KEY.FEED] = "hermesnodeweb", 
                                     _throttle$logStart));
                                     if (throttle.isEnabled()) {
                                         (topPayButton = payButton.cloneNode(!0)).className += " topReviewButton";
@@ -9135,13 +9135,13 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.211",
+            version: "4.0.212",
             cors: !0,
-            env: constants.u.PRODUCTION,
+            env: constants.t.PRODUCTION,
             state: "checkoutjs",
             locale: {
-                country: constants.s.US,
-                lang: constants.y.EN
+                country: constants.r.US,
+                lang: constants.x.EN
             },
             stage: "msmaster",
             stageDomain: "qa.paypal.com",
@@ -9269,53 +9269,8 @@
                 "3secondlash.com": {
                     disable_venmo: !0
                 },
-                "ski-lifts.com": {
-                    disable_bancontact: !0,
-                    disable_mybank: !0,
-                    disable_eps: !0,
-                    disable_giropay: !0,
-                    disable_ideal: !0,
-                    disable_sofort: !0
-                },
-                "wideanglesoftware.com": {
-                    disable_bancontact: !0,
-                    disable_mybank: !0,
-                    disable_eps: !0,
-                    disable_giropay: !0,
-                    disable_ideal: !0,
-                    disable_sofort: !0
-                },
-                "barcodelove.eu": {
-                    disable_bancontact: !0,
-                    disable_mybank: !0,
-                    disable_eps: !0,
-                    disable_giropay: !0,
-                    disable_ideal: !0,
-                    disable_sofort: !0
-                },
-                "hooyu.com": {
-                    disable_bancontact: !0,
-                    disable_mybank: !0,
-                    disable_eps: !0,
-                    disable_giropay: !0,
-                    disable_ideal: !0,
-                    disable_sofort: !0
-                },
-                "camdenpubcrawl.com": {
-                    disable_bancontact: !0,
-                    disable_mybank: !0,
-                    disable_eps: !0,
-                    disable_giropay: !0,
-                    disable_ideal: !0,
-                    disable_sofort: !0
-                },
-                "xibo.org.uk": {
-                    disable_bancontact: !0,
-                    disable_mybank: !0,
-                    disable_eps: !0,
-                    disable_giropay: !0,
-                    disable_ideal: !0,
-                    disable_sofort: !0
+                "newyorkpass.com": {
+                    disable_venmo: !0
                 }
             },
             creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
@@ -9349,81 +9304,81 @@
             },
             get paypalUrls() {
                 var _ref;
-                return (_ref = {})[constants.u.LOCAL] = "http://localhost.paypal.com:" + config.ports.default, 
-                _ref[constants.u.STAGE] = "https://www." + config.stageUrl, _ref[constants.u.SANDBOX] = "https://www.sandbox.paypal.com", 
-                _ref[constants.u.PRODUCTION] = "https://www.paypal.com", _ref[constants.u.TEST] = window.location.protocol + "//" + window.location.host, 
-                _ref[constants.u.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
+                return (_ref = {})[constants.t.LOCAL] = "http://localhost.paypal.com:" + config.ports.default, 
+                _ref[constants.t.STAGE] = "https://www." + config.stageUrl, _ref[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", 
+                _ref[constants.t.PRODUCTION] = "https://www.paypal.com", _ref[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
+                _ref[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
                 _ref;
             },
             get paypalDomains() {
                 var _ref2;
-                return (_ref2 = {})[constants.u.LOCAL] = "http://localhost.paypal.com:" + config.ports.default, 
-                _ref2[constants.u.STAGE] = "https://www." + config.stageUrl, _ref2[constants.u.SANDBOX] = "https://www.sandbox.paypal.com", 
-                _ref2[constants.u.PRODUCTION] = "https://www.paypal.com", _ref2[constants.u.TEST] = "mock://www.paypal.com", 
-                _ref2[constants.u.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
+                return (_ref2 = {})[constants.t.LOCAL] = "http://localhost.paypal.com:" + config.ports.default, 
+                _ref2[constants.t.STAGE] = "https://www." + config.stageUrl, _ref2[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", 
+                _ref2[constants.t.PRODUCTION] = "https://www.paypal.com", _ref2[constants.t.TEST] = "mock://www.paypal.com", 
+                _ref2[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
                 _ref2;
             },
             get wwwApiUrls() {
                 var _ref3;
-                return (_ref3 = {})[constants.u.LOCAL] = "https://www." + config.stageUrl, _ref3[constants.u.STAGE] = "https://www." + config.stageUrl, 
-                _ref3[constants.u.SANDBOX] = "https://www.sandbox.paypal.com", _ref3[constants.u.PRODUCTION] = "https://www.paypal.com", 
-                _ref3[constants.u.TEST] = window.location.protocol + "//" + window.location.host, 
+                return (_ref3 = {})[constants.t.LOCAL] = "https://www." + config.stageUrl, _ref3[constants.t.STAGE] = "https://www." + config.stageUrl, 
+                _ref3[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref3[constants.t.PRODUCTION] = "https://www.paypal.com", 
+                _ref3[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
                 _ref3;
             },
             get corsApiUrls() {
                 var _ref4;
-                return (_ref4 = {})[constants.u.LOCAL] = "https://" + config.apiStageUrl + ":12326", 
-                _ref4[constants.u.STAGE] = "https://" + config.apiStageUrl + ":12326", _ref4[constants.u.SANDBOX] = "https://cors.api.sandbox.paypal.com", 
-                _ref4[constants.u.PRODUCTION] = "https://cors.api.paypal.com", _ref4[constants.u.TEST] = window.location.protocol + "//" + window.location.host, 
+                return (_ref4 = {})[constants.t.LOCAL] = "https://" + config.apiStageUrl + ":12326", 
+                _ref4[constants.t.STAGE] = "https://" + config.apiStageUrl + ":12326", _ref4[constants.t.SANDBOX] = "https://cors.api.sandbox.paypal.com", 
+                _ref4[constants.t.PRODUCTION] = "https://cors.api.paypal.com", _ref4[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
                 _ref4;
             },
             get apiUrls() {
                 var _ref5, domain = window.location.protocol + "//" + window.location.host, corsApiUrls = config.corsApiUrls, wwwApiUrls = config.wwwApiUrls;
-                return (_ref5 = {})[constants.u.LOCAL] = domain === wwwApiUrls.local ? wwwApiUrls.local : corsApiUrls.local, 
-                _ref5[constants.u.STAGE] = domain === wwwApiUrls.stage ? wwwApiUrls.stage : corsApiUrls.stage, 
-                _ref5[constants.u.SANDBOX] = domain === wwwApiUrls.sandbox ? wwwApiUrls.sandbox : corsApiUrls.sandbox, 
-                _ref5[constants.u.PRODUCTION] = domain === wwwApiUrls.production ? wwwApiUrls.production : corsApiUrls.production, 
-                _ref5[constants.u.TEST] = domain === wwwApiUrls.test ? wwwApiUrls.test : corsApiUrls.test, 
+                return (_ref5 = {})[constants.t.LOCAL] = domain === wwwApiUrls.local ? wwwApiUrls.local : corsApiUrls.local, 
+                _ref5[constants.t.STAGE] = domain === wwwApiUrls.stage ? wwwApiUrls.stage : corsApiUrls.stage, 
+                _ref5[constants.t.SANDBOX] = domain === wwwApiUrls.sandbox ? wwwApiUrls.sandbox : corsApiUrls.sandbox, 
+                _ref5[constants.t.PRODUCTION] = domain === wwwApiUrls.production ? wwwApiUrls.production : corsApiUrls.production, 
+                _ref5[constants.t.TEST] = domain === wwwApiUrls.test ? wwwApiUrls.test : corsApiUrls.test, 
                 _ref5;
             },
-            checkoutUris: (_checkoutUris = {}, _checkoutUris[constants.u.LOCAL] = "/webapps/hermes?ul=0", 
-            _checkoutUris[constants.u.STAGE] = "/webapps/hermes", _checkoutUris[constants.u.SANDBOX] = "/checkoutnow", 
-            _checkoutUris[constants.u.PRODUCTION] = "/checkoutnow", _checkoutUris[constants.u.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
-            _checkoutUris[constants.u.DEMO] = "/demo/dev/checkout.htm", _checkoutUris),
-            altpayUris: (_altpayUris = {}, _altpayUris[constants.u.LOCAL] = "/latinumcheckout", 
-            _altpayUris[constants.u.STAGE] = "/latinumcheckout", _altpayUris[constants.u.SANDBOX] = "/latinumcheckout", 
-            _altpayUris[constants.u.PRODUCTION] = "/latinumcheckout", _altpayUris[constants.u.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
-            _altpayUris[constants.u.DEMO] = "/demo/dev/checkout.htm", _altpayUris),
-            guestUris: (_guestUris = {}, _guestUris[constants.u.LOCAL] = "/webapps/xoonboarding", 
-            _guestUris[constants.u.STAGE] = "/webapps/xoonboarding", _guestUris[constants.u.SANDBOX] = "/webapps/xoonboarding", 
-            _guestUris[constants.u.PRODUCTION] = "/webapps/xoonboarding", _guestUris[constants.u.TEST] = "/base/test/windows/checkout/index.htm?guesturl=true", 
-            _guestUris[constants.u.DEMO] = "/demo/dev/guest.htm", _guestUris),
-            billingUris: (_billingUris = {}, _billingUris[constants.u.LOCAL] = "/webapps/hermes/agreements?ul=0", 
-            _billingUris[constants.u.STAGE] = "/webapps/hermes/agreements", _billingUris[constants.u.SANDBOX] = "/agreements/approve", 
-            _billingUris[constants.u.PRODUCTION] = "/agreements/approve", _billingUris[constants.u.TEST] = "/base/test/windows/checkout/index.htm?billingurl=true", 
-            _billingUris[constants.u.DEMO] = "/demo/dev/checkout.htm", _billingUris),
-            buttonUris: (_buttonUris = {}, _buttonUris[constants.u.LOCAL] = "/webapps/hermes/button", 
-            _buttonUris[constants.u.STAGE] = "/webapps/hermes/button", _buttonUris[constants.u.SANDBOX] = "/webapps/hermes/button", 
-            _buttonUris[constants.u.PRODUCTION] = "/webapps/hermes/button", _buttonUris[constants.u.TEST] = "/base/test/windows/button/index.htm", 
-            _buttonUris[constants.u.DEMO] = "/demo/dev/button.htm", _buttonUris),
-            inlinedCardFieldUris: (_inlinedCardFieldUris = {}, _inlinedCardFieldUris[constants.u.LOCAL] = "/webapps/hermes/card-fields", 
-            _inlinedCardFieldUris[constants.u.STAGE] = "/webapps/hermes/card-fields", _inlinedCardFieldUris[constants.u.SANDBOX] = "/webapps/hermes/card-fields", 
-            _inlinedCardFieldUris[constants.u.PRODUCTION] = "/webapps/hermes/card-fields", _inlinedCardFieldUris[constants.u.TEST] = "/base/test/windows/card-fields/index.htm", 
-            _inlinedCardFieldUris[constants.u.DEMO] = "/demo/dev/card.htm", _inlinedCardFieldUris),
-            postBridgeUris: (_postBridgeUris = {}, _postBridgeUris[constants.u.LOCAL] = "/webapps/hermes/component-meta", 
-            _postBridgeUris[constants.u.STAGE] = "/webapps/hermes/component-meta", _postBridgeUris[constants.u.SANDBOX] = "/webapps/hermes/component-meta", 
-            _postBridgeUris[constants.u.PRODUCTION] = "/webapps/hermes/component-meta", _postBridgeUris[constants.u.TEST] = "/base/test/windows/component-meta/index.htm", 
-            _postBridgeUris[constants.u.DEMO] = "/demo/dev/bridge.htm", _postBridgeUris),
-            legacyCheckoutUris: (_legacyCheckoutUris = {}, _legacyCheckoutUris[constants.u.LOCAL] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
-            _legacyCheckoutUris[constants.u.STAGE] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
-            _legacyCheckoutUris[constants.u.SANDBOX] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
-            _legacyCheckoutUris[constants.u.PRODUCTION] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
-            _legacyCheckoutUris[constants.u.TEST] = "#fallback", _legacyCheckoutUris),
-            buttonJSUrls: (_buttonJSUrls = {}, _buttonJSUrls[constants.u.LOCAL] = "https://www.paypalobjects.com/api/button.js", 
-            _buttonJSUrls[constants.u.STAGE] = "https://www.paypalobjects.com/api/button.js", 
-            _buttonJSUrls[constants.u.SANDBOX] = "https://www.paypalobjects.com/api/button.js", 
-            _buttonJSUrls[constants.u.PRODUCTION] = "https://www.paypalobjects.com/api/button.js", 
-            _buttonJSUrls[constants.u.TEST] = "/base/test/lib/button.js", _buttonJSUrls[constants.u.DEMO] = "https://www.paypalobjects.com/api/button.js", 
+            checkoutUris: (_checkoutUris = {}, _checkoutUris[constants.t.LOCAL] = "/webapps/hermes?ul=0", 
+            _checkoutUris[constants.t.STAGE] = "/webapps/hermes", _checkoutUris[constants.t.SANDBOX] = "/checkoutnow", 
+            _checkoutUris[constants.t.PRODUCTION] = "/checkoutnow", _checkoutUris[constants.t.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
+            _checkoutUris[constants.t.DEMO] = "/demo/dev/checkout.htm", _checkoutUris),
+            altpayUris: (_altpayUris = {}, _altpayUris[constants.t.LOCAL] = "/latinumcheckout", 
+            _altpayUris[constants.t.STAGE] = "/latinumcheckout", _altpayUris[constants.t.SANDBOX] = "/latinumcheckout", 
+            _altpayUris[constants.t.PRODUCTION] = "/latinumcheckout", _altpayUris[constants.t.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
+            _altpayUris[constants.t.DEMO] = "/demo/dev/checkout.htm", _altpayUris),
+            guestUris: (_guestUris = {}, _guestUris[constants.t.LOCAL] = "/webapps/xoonboarding", 
+            _guestUris[constants.t.STAGE] = "/webapps/xoonboarding", _guestUris[constants.t.SANDBOX] = "/webapps/xoonboarding", 
+            _guestUris[constants.t.PRODUCTION] = "/webapps/xoonboarding", _guestUris[constants.t.TEST] = "/base/test/windows/checkout/index.htm?guesturl=true", 
+            _guestUris[constants.t.DEMO] = "/demo/dev/guest.htm", _guestUris),
+            billingUris: (_billingUris = {}, _billingUris[constants.t.LOCAL] = "/webapps/hermes/agreements?ul=0", 
+            _billingUris[constants.t.STAGE] = "/webapps/hermes/agreements", _billingUris[constants.t.SANDBOX] = "/agreements/approve", 
+            _billingUris[constants.t.PRODUCTION] = "/agreements/approve", _billingUris[constants.t.TEST] = "/base/test/windows/checkout/index.htm?billingurl=true", 
+            _billingUris[constants.t.DEMO] = "/demo/dev/checkout.htm", _billingUris),
+            buttonUris: (_buttonUris = {}, _buttonUris[constants.t.LOCAL] = "/webapps/hermes/button", 
+            _buttonUris[constants.t.STAGE] = "/webapps/hermes/button", _buttonUris[constants.t.SANDBOX] = "/webapps/hermes/button", 
+            _buttonUris[constants.t.PRODUCTION] = "/webapps/hermes/button", _buttonUris[constants.t.TEST] = "/base/test/windows/button/index.htm", 
+            _buttonUris[constants.t.DEMO] = "/demo/dev/button.htm", _buttonUris),
+            inlinedCardFieldUris: (_inlinedCardFieldUris = {}, _inlinedCardFieldUris[constants.t.LOCAL] = "/webapps/hermes/card-fields", 
+            _inlinedCardFieldUris[constants.t.STAGE] = "/webapps/hermes/card-fields", _inlinedCardFieldUris[constants.t.SANDBOX] = "/webapps/hermes/card-fields", 
+            _inlinedCardFieldUris[constants.t.PRODUCTION] = "/webapps/hermes/card-fields", _inlinedCardFieldUris[constants.t.TEST] = "/base/test/windows/card-fields/index.htm", 
+            _inlinedCardFieldUris[constants.t.DEMO] = "/demo/dev/card.htm", _inlinedCardFieldUris),
+            postBridgeUris: (_postBridgeUris = {}, _postBridgeUris[constants.t.LOCAL] = "/webapps/hermes/component-meta", 
+            _postBridgeUris[constants.t.STAGE] = "/webapps/hermes/component-meta", _postBridgeUris[constants.t.SANDBOX] = "/webapps/hermes/component-meta", 
+            _postBridgeUris[constants.t.PRODUCTION] = "/webapps/hermes/component-meta", _postBridgeUris[constants.t.TEST] = "/base/test/windows/component-meta/index.htm", 
+            _postBridgeUris[constants.t.DEMO] = "/demo/dev/bridge.htm", _postBridgeUris),
+            legacyCheckoutUris: (_legacyCheckoutUris = {}, _legacyCheckoutUris[constants.t.LOCAL] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
+            _legacyCheckoutUris[constants.t.STAGE] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
+            _legacyCheckoutUris[constants.t.SANDBOX] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
+            _legacyCheckoutUris[constants.t.PRODUCTION] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
+            _legacyCheckoutUris[constants.t.TEST] = "#fallback", _legacyCheckoutUris),
+            buttonJSUrls: (_buttonJSUrls = {}, _buttonJSUrls[constants.t.LOCAL] = "https://www.paypalobjects.com/api/button.js", 
+            _buttonJSUrls[constants.t.STAGE] = "https://www.paypalobjects.com/api/button.js", 
+            _buttonJSUrls[constants.t.SANDBOX] = "https://www.paypalobjects.com/api/button.js", 
+            _buttonJSUrls[constants.t.PRODUCTION] = "https://www.paypalobjects.com/api/button.js", 
+            _buttonJSUrls[constants.t.TEST] = "/base/test/lib/button.js", _buttonJSUrls[constants.t.DEMO] = "https://www.paypalobjects.com/api/button.js", 
             _buttonJSUrls),
             get buttonJSUrl() {
                 return config.buttonJSUrls[config.env];
@@ -9445,123 +9400,123 @@
             trackingApiUri: "/v1/risk/transaction-contexts",
             get checkoutUrls() {
                 var _ref6, paypalUrls = config.paypalUrls;
-                return (_ref6 = {})[constants.u.LOCAL] = "" + paypalUrls.local + config.checkoutUris.local.replace(":" + config.ports.default, ":" + config.ports.checkout), 
-                _ref6[constants.u.STAGE] = "" + paypalUrls.stage + config.checkoutUris.stage, _ref6[constants.u.SANDBOX] = "" + paypalUrls.sandbox + config.checkoutUris.sandbox, 
-                _ref6[constants.u.PRODUCTION] = "" + paypalUrls.production + config.checkoutUris.production, 
-                _ref6[constants.u.TEST] = "" + paypalUrls.test + config.checkoutUris.test, _ref6[constants.u.DEMO] = "" + paypalUrls.test + config.checkoutUris.demo, 
+                return (_ref6 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.checkoutUris.local.replace(":" + config.ports.default, ":" + config.ports.checkout), 
+                _ref6[constants.t.STAGE] = "" + paypalUrls.stage + config.checkoutUris.stage, _ref6[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.checkoutUris.sandbox, 
+                _ref6[constants.t.PRODUCTION] = "" + paypalUrls.production + config.checkoutUris.production, 
+                _ref6[constants.t.TEST] = "" + paypalUrls.test + config.checkoutUris.test, _ref6[constants.t.DEMO] = "" + paypalUrls.test + config.checkoutUris.demo, 
                 _ref6;
             },
             get guestUrls() {
                 var _ref7, paypalUrls = config.paypalUrls;
-                return (_ref7 = {})[constants.u.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.guest) + config.guestUris.local, 
-                _ref7[constants.u.STAGE] = "" + paypalUrls.stage + config.guestUris.stage, _ref7[constants.u.SANDBOX] = "" + paypalUrls.sandbox + config.guestUris.sandbox, 
-                _ref7[constants.u.PRODUCTION] = "" + paypalUrls.production + config.guestUris.production, 
-                _ref7[constants.u.TEST] = "" + paypalUrls.test + config.guestUris.test, _ref7[constants.u.DEMO] = "" + paypalUrls.test + config.guestUris.demo, 
+                return (_ref7 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.guest) + config.guestUris.local, 
+                _ref7[constants.t.STAGE] = "" + paypalUrls.stage + config.guestUris.stage, _ref7[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.guestUris.sandbox, 
+                _ref7[constants.t.PRODUCTION] = "" + paypalUrls.production + config.guestUris.production, 
+                _ref7[constants.t.TEST] = "" + paypalUrls.test + config.guestUris.test, _ref7[constants.t.DEMO] = "" + paypalUrls.test + config.guestUris.demo, 
                 _ref7;
             },
             get altpayUrls() {
                 var _ref8, paypalUrls = config.paypalUrls;
-                return (_ref8 = {})[constants.u.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.altpay) + config.altpayUris.local, 
-                _ref8[constants.u.STAGE] = "" + paypalUrls.stage + config.altpayUris.stage, _ref8[constants.u.SANDBOX] = "" + paypalUrls.sandbox + config.altpayUris.sandbox, 
-                _ref8[constants.u.PRODUCTION] = "" + paypalUrls.production + config.altpayUris.production, 
-                _ref8[constants.u.TEST] = "" + paypalUrls.test + config.altpayUris.test, _ref8[constants.u.DEMO] = "" + paypalUrls.test + config.altpayUris.demo, 
+                return (_ref8 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.altpay) + config.altpayUris.local, 
+                _ref8[constants.t.STAGE] = "" + paypalUrls.stage + config.altpayUris.stage, _ref8[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.altpayUris.sandbox, 
+                _ref8[constants.t.PRODUCTION] = "" + paypalUrls.production + config.altpayUris.production, 
+                _ref8[constants.t.TEST] = "" + paypalUrls.test + config.altpayUris.test, _ref8[constants.t.DEMO] = "" + paypalUrls.test + config.altpayUris.demo, 
                 _ref8;
             },
             get billingUrls() {
                 var _ref9, paypalUrls = config.paypalUrls;
-                return (_ref9 = {})[constants.u.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.checkout) + config.billingUris.local, 
-                _ref9[constants.u.STAGE] = "" + paypalUrls.stage + config.billingUris.stage, _ref9[constants.u.SANDBOX] = "" + paypalUrls.sandbox + config.billingUris.sandbox, 
-                _ref9[constants.u.PRODUCTION] = "" + paypalUrls.production + config.billingUris.production, 
-                _ref9[constants.u.TEST] = "" + paypalUrls.test + config.billingUris.test, _ref9[constants.u.DEMO] = "" + paypalUrls.test + config.billingUris.demo, 
+                return (_ref9 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.checkout) + config.billingUris.local, 
+                _ref9[constants.t.STAGE] = "" + paypalUrls.stage + config.billingUris.stage, _ref9[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.billingUris.sandbox, 
+                _ref9[constants.t.PRODUCTION] = "" + paypalUrls.production + config.billingUris.production, 
+                _ref9[constants.t.TEST] = "" + paypalUrls.test + config.billingUris.test, _ref9[constants.t.DEMO] = "" + paypalUrls.test + config.billingUris.demo, 
                 _ref9;
             },
             get buttonUrls() {
                 var _ref10, paypalUrls = config.paypalUrls;
-                return (_ref10 = {})[constants.u.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.buttonUris.local, 
-                _ref10[constants.u.STAGE] = "" + paypalUrls.stage + config.buttonUris.stage, _ref10[constants.u.SANDBOX] = "" + paypalUrls.sandbox + config.buttonUris.sandbox, 
-                _ref10[constants.u.PRODUCTION] = "" + paypalUrls.production + config.buttonUris.production, 
-                _ref10[constants.u.TEST] = "" + paypalUrls.test + config.buttonUris.test, _ref10[constants.u.DEMO] = "" + paypalUrls.demo + config.buttonUris.demo, 
+                return (_ref10 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.buttonUris.local, 
+                _ref10[constants.t.STAGE] = "" + paypalUrls.stage + config.buttonUris.stage, _ref10[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.buttonUris.sandbox, 
+                _ref10[constants.t.PRODUCTION] = "" + paypalUrls.production + config.buttonUris.production, 
+                _ref10[constants.t.TEST] = "" + paypalUrls.test + config.buttonUris.test, _ref10[constants.t.DEMO] = "" + paypalUrls.demo + config.buttonUris.demo, 
                 _ref10;
             },
             get inlinedCardFieldUrls() {
                 var _ref11, paypalUrls = config.paypalUrls;
-                return (_ref11 = {})[constants.u.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.inlinedCardFieldUris.local, 
-                _ref11[constants.u.STAGE] = "" + paypalUrls.stage + config.inlinedCardFieldUris.stage, 
-                _ref11[constants.u.SANDBOX] = "" + paypalUrls.sandbox + config.inlinedCardFieldUris.sandbox, 
-                _ref11[constants.u.PRODUCTION] = "" + paypalUrls.production + config.inlinedCardFieldUris.production, 
-                _ref11[constants.u.TEST] = "" + paypalUrls.test + config.inlinedCardFieldUris.test, 
-                _ref11[constants.u.DEMO] = "" + paypalUrls.demo + config.inlinedCardFieldUris.demo, 
+                return (_ref11 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.inlinedCardFieldUris.local, 
+                _ref11[constants.t.STAGE] = "" + paypalUrls.stage + config.inlinedCardFieldUris.stage, 
+                _ref11[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.inlinedCardFieldUris.sandbox, 
+                _ref11[constants.t.PRODUCTION] = "" + paypalUrls.production + config.inlinedCardFieldUris.production, 
+                _ref11[constants.t.TEST] = "" + paypalUrls.test + config.inlinedCardFieldUris.test, 
+                _ref11[constants.t.DEMO] = "" + paypalUrls.demo + config.inlinedCardFieldUris.demo, 
                 _ref11;
             },
             get loginUrls() {
                 var _ref12, paypalUrls = config.paypalUrls;
-                return (_ref12 = {})[constants.u.LOCAL] = "" + paypalUrls.stage + config.loginUri, 
-                _ref12[constants.u.STAGE] = "" + paypalUrls.stage + config.loginUri, _ref12[constants.u.SANDBOX] = "" + paypalUrls.sandbox + config.loginUri, 
-                _ref12[constants.u.PRODUCTION] = "" + paypalUrls.production + config.loginUri, _ref12[constants.u.TEST] = "" + paypalUrls.test + config.loginUri, 
+                return (_ref12 = {})[constants.t.LOCAL] = "" + paypalUrls.stage + config.loginUri, 
+                _ref12[constants.t.STAGE] = "" + paypalUrls.stage + config.loginUri, _ref12[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.loginUri, 
+                _ref12[constants.t.PRODUCTION] = "" + paypalUrls.production + config.loginUri, _ref12[constants.t.TEST] = "" + paypalUrls.test + config.loginUri, 
                 _ref12;
             },
             get paymentsStandardUrls() {
                 var _ref13, paypalUrls = config.paypalUrls;
-                return (_ref13 = {})[constants.u.LOCAL] = "" + paypalUrls.local + config.paymentStandardUri, 
-                _ref13[constants.u.STAGE] = "" + paypalUrls.stage + config.paymentStandardUri, _ref13[constants.u.SANDBOX] = "" + paypalUrls.sandbox + config.paymentStandardUri, 
-                _ref13[constants.u.PRODUCTION] = "" + paypalUrls.production + config.paymentStandardUri, 
-                _ref13[constants.u.TEST] = "" + paypalUrls.test + config.paymentStandardUri, _ref13;
+                return (_ref13 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.paymentStandardUri, 
+                _ref13[constants.t.STAGE] = "" + paypalUrls.stage + config.paymentStandardUri, _ref13[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.paymentStandardUri, 
+                _ref13[constants.t.PRODUCTION] = "" + paypalUrls.production + config.paymentStandardUri, 
+                _ref13[constants.t.TEST] = "" + paypalUrls.test + config.paymentStandardUri, _ref13;
             },
             get metaFrameUrls() {
                 var _ref14, paypalUrls = config.paypalUrls;
-                return (_ref14 = {})[constants.u.LOCAL] = "" + paypalUrls.local + config.postBridgeUri + "&env=local", 
-                _ref14[constants.u.STAGE] = "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=" + config.stage, 
-                _ref14[constants.u.SANDBOX] = "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox", 
-                _ref14[constants.u.PRODUCTION] = "" + paypalUrls.production + config.postBridgeUri + "&env=production", 
-                _ref14[constants.u.TEST] = "" + paypalUrls.test + config.postBridgeUri + "&env=test", 
-                _ref14[constants.u.DEMO] = "" + paypalUrls.demo + config.postBridgeUri + "&env=demo", 
+                return (_ref14 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.postBridgeUri + "&env=local", 
+                _ref14[constants.t.STAGE] = "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=" + config.stage, 
+                _ref14[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox", 
+                _ref14[constants.t.PRODUCTION] = "" + paypalUrls.production + config.postBridgeUri + "&env=production", 
+                _ref14[constants.t.TEST] = "" + paypalUrls.test + config.postBridgeUri + "&env=test", 
+                _ref14[constants.t.DEMO] = "" + paypalUrls.demo + config.postBridgeUri + "&env=demo", 
                 _ref14;
             },
             get legacyCheckoutUrls() {
                 var _ref15, paypalUrls = config.paypalUrls;
-                return (_ref15 = {})[constants.u.LOCAL] = "" + paypalUrls.stage + config.legacyCheckoutUris.local, 
-                _ref15[constants.u.STAGE] = "" + paypalUrls.stage + config.legacyCheckoutUris.stage, 
-                _ref15[constants.u.SANDBOX] = "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox, 
-                _ref15[constants.u.PRODUCTION] = "" + paypalUrls.production + config.legacyCheckoutUris.production, 
-                _ref15[constants.u.TEST] = "" + paypalUrls.test + config.legacyCheckoutUris.test, 
+                return (_ref15 = {})[constants.t.LOCAL] = "" + paypalUrls.stage + config.legacyCheckoutUris.local, 
+                _ref15[constants.t.STAGE] = "" + paypalUrls.stage + config.legacyCheckoutUris.stage, 
+                _ref15[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox, 
+                _ref15[constants.t.PRODUCTION] = "" + paypalUrls.production + config.legacyCheckoutUris.production, 
+                _ref15[constants.t.TEST] = "" + paypalUrls.test + config.legacyCheckoutUris.test, 
                 _ref15;
             },
             get authApiUrls() {
                 var _ref16, apiUrls = config.apiUrls, authApiUri = config.authApiUri;
-                return (_ref16 = {})[constants.u.LOCAL] = "" + apiUrls.local + authApiUri, _ref16[constants.u.STAGE] = "" + apiUrls.stage + authApiUri, 
-                _ref16[constants.u.SANDBOX] = "" + apiUrls.sandbox + authApiUri, _ref16[constants.u.PRODUCTION] = "" + apiUrls.production + authApiUri, 
-                _ref16[constants.u.TEST] = "" + apiUrls.test + authApiUri, _ref16;
+                return (_ref16 = {})[constants.t.LOCAL] = "" + apiUrls.local + authApiUri, _ref16[constants.t.STAGE] = "" + apiUrls.stage + authApiUri, 
+                _ref16[constants.t.SANDBOX] = "" + apiUrls.sandbox + authApiUri, _ref16[constants.t.PRODUCTION] = "" + apiUrls.production + authApiUri, 
+                _ref16[constants.t.TEST] = "" + apiUrls.test + authApiUri, _ref16;
             },
             get paymentApiUrls() {
                 var _ref17, apiUrls = config.apiUrls, paymentApiUri = config.paymentApiUri;
-                return (_ref17 = {})[constants.u.LOCAL] = "" + apiUrls.local + paymentApiUri, _ref17[constants.u.STAGE] = "" + apiUrls.stage + paymentApiUri, 
-                _ref17[constants.u.SANDBOX] = "" + apiUrls.sandbox + paymentApiUri, _ref17[constants.u.PRODUCTION] = "" + apiUrls.production + paymentApiUri, 
-                _ref17[constants.u.TEST] = "" + apiUrls.test + paymentApiUri, _ref17;
+                return (_ref17 = {})[constants.t.LOCAL] = "" + apiUrls.local + paymentApiUri, _ref17[constants.t.STAGE] = "" + apiUrls.stage + paymentApiUri, 
+                _ref17[constants.t.SANDBOX] = "" + apiUrls.sandbox + paymentApiUri, _ref17[constants.t.PRODUCTION] = "" + apiUrls.production + paymentApiUri, 
+                _ref17[constants.t.TEST] = "" + apiUrls.test + paymentApiUri, _ref17;
             },
             get orderApiUrls() {
                 var _ref18, apiUrls = config.apiUrls, orderApiUri = config.orderApiUri;
-                return (_ref18 = {})[constants.u.LOCAL] = "" + apiUrls.local + orderApiUri, _ref18[constants.u.STAGE] = "" + apiUrls.stage + orderApiUri, 
-                _ref18[constants.u.SANDBOX] = "" + apiUrls.sandbox + orderApiUri, _ref18[constants.u.PRODUCTION] = "" + apiUrls.production + orderApiUri, 
-                _ref18[constants.u.TEST] = "" + apiUrls.test + orderApiUri, _ref18;
+                return (_ref18 = {})[constants.t.LOCAL] = "" + apiUrls.local + orderApiUri, _ref18[constants.t.STAGE] = "" + apiUrls.stage + orderApiUri, 
+                _ref18[constants.t.SANDBOX] = "" + apiUrls.sandbox + orderApiUri, _ref18[constants.t.PRODUCTION] = "" + apiUrls.production + orderApiUri, 
+                _ref18[constants.t.TEST] = "" + apiUrls.test + orderApiUri, _ref18;
             },
             get billingApiUrls() {
                 var _ref19, apiUrls = config.apiUrls, billingApiUri = config.billingApiUri;
-                return (_ref19 = {})[constants.u.LOCAL] = "" + apiUrls.local + billingApiUri, _ref19[constants.u.STAGE] = "" + apiUrls.stage + billingApiUri, 
-                _ref19[constants.u.SANDBOX] = "" + apiUrls.sandbox + billingApiUri, _ref19[constants.u.PRODUCTION] = "" + apiUrls.production + billingApiUri, 
-                _ref19[constants.u.TEST] = "" + apiUrls.test + billingApiUri, _ref19;
+                return (_ref19 = {})[constants.t.LOCAL] = "" + apiUrls.local + billingApiUri, _ref19[constants.t.STAGE] = "" + apiUrls.stage + billingApiUri, 
+                _ref19[constants.t.SANDBOX] = "" + apiUrls.sandbox + billingApiUri, _ref19[constants.t.PRODUCTION] = "" + apiUrls.production + billingApiUri, 
+                _ref19[constants.t.TEST] = "" + apiUrls.test + billingApiUri, _ref19;
             },
             get experienceApiUrls() {
                 var _ref20, apiUrls = config.apiUrls, experienceApiUri = config.experienceApiUri;
-                return (_ref20 = {})[constants.u.LOCAL] = "" + apiUrls.local + experienceApiUri, 
-                _ref20[constants.u.STAGE] = "" + apiUrls.stage + experienceApiUri, _ref20[constants.u.SANDBOX] = "" + apiUrls.sandbox + experienceApiUri, 
-                _ref20[constants.u.PRODUCTION] = "" + apiUrls.production + experienceApiUri, _ref20[constants.u.TEST] = "" + apiUrls.test + experienceApiUri, 
+                return (_ref20 = {})[constants.t.LOCAL] = "" + apiUrls.local + experienceApiUri, 
+                _ref20[constants.t.STAGE] = "" + apiUrls.stage + experienceApiUri, _ref20[constants.t.SANDBOX] = "" + apiUrls.sandbox + experienceApiUri, 
+                _ref20[constants.t.PRODUCTION] = "" + apiUrls.production + experienceApiUri, _ref20[constants.t.TEST] = "" + apiUrls.test + experienceApiUri, 
                 _ref20;
             },
             get trackingApiUrls() {
                 var _ref21, apiUrls = config.apiUrls, trackingApiUri = config.trackingApiUri;
-                return (_ref21 = {})[constants.u.LOCAL] = "" + apiUrls.local + trackingApiUri, _ref21[constants.u.STAGE] = "" + apiUrls.stage + trackingApiUri, 
-                _ref21[constants.u.SANDBOX] = "" + apiUrls.sandbox + trackingApiUri, _ref21[constants.u.PRODUCTION] = "" + apiUrls.production + trackingApiUri, 
-                _ref21[constants.u.TEST] = "" + apiUrls.test + trackingApiUri, _ref21;
+                return (_ref21 = {})[constants.t.LOCAL] = "" + apiUrls.local + trackingApiUri, _ref21[constants.t.STAGE] = "" + apiUrls.stage + trackingApiUri, 
+                _ref21[constants.t.SANDBOX] = "" + apiUrls.sandbox + trackingApiUri, _ref21[constants.t.PRODUCTION] = "" + apiUrls.production + trackingApiUri, 
+                _ref21[constants.t.TEST] = "" + apiUrls.test + trackingApiUri, _ref21;
             },
             _paypalUrl: "",
             get paypalUrl() {
@@ -9605,7 +9560,7 @@
                 return "" + config.paypalUrl + config.hermesLoggerUri;
             },
             get pptmUrl() {
-                return "" + (config.env === constants.u.LOCAL ? config.paypalUrls[constants.u.STAGE] : config.paypalUrl) + config.pptmUri;
+                return "" + (config.env === constants.t.LOCAL ? config.paypalUrls[constants.t.STAGE] : config.paypalUrl) + config.pptmUri;
             },
             get authApiUrl() {
                 return "" + config.apiUrl + config.authApiUri;
@@ -9623,163 +9578,163 @@
                 return "" + config.apiUrl + config.experienceApiUri;
             },
             defaultLocale: {
-                country: constants.s.US,
-                lang: constants.y.EN
+                country: constants.r.US,
+                lang: constants.x.EN
             },
-            locales: (_locales = {}, _locales[constants.s.AD] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.AE] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH, constants.y.AR ], 
-            _locales[constants.s.AG] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.AI] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.AL] = [ constants.y.EN ], _locales[constants.s.AM] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.AN] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.AO] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.AR] = [ constants.y.ES, constants.y.EN ], _locales[constants.s.AT] = [ constants.y.DE, constants.y.EN ], 
-            _locales[constants.s.AU] = [ constants.y.EN ], _locales[constants.s.AW] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.AZ] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.BA] = [ constants.y.EN ], _locales[constants.s.BB] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.BE] = [ constants.y.EN, constants.y.NL, constants.y.FR ], _locales[constants.s.BF] = [ constants.y.FR, constants.y.EN, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.BG] = [ constants.y.EN ], _locales[constants.s.BH] = [ constants.y.AR, constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.BI] = [ constants.y.FR, constants.y.EN, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.BJ] = [ constants.y.FR, constants.y.EN, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.BM] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.BN] = [ constants.y.EN ], _locales[constants.s.BO] = [ constants.y.ES, constants.y.EN, constants.y.FR, constants.y.ZH ], 
-            _locales[constants.s.BR] = [ constants.y.PT, constants.y.EN ], _locales[constants.s.BS] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.BT] = [ constants.y.EN ], _locales[constants.s.BW] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.BY] = [ constants.y.EN ], _locales[constants.s.BZ] = [ constants.y.EN, constants.y.ES, constants.y.FR, constants.y.ZH ], 
-            _locales[constants.s.C2] = [ constants.y.ZH, constants.y.EN ], _locales[constants.s.CA] = [ constants.y.EN, constants.y.FR ], 
-            _locales[constants.s.CD] = [ constants.y.FR, constants.y.EN, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.CG] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.CH] = [ constants.y.DE, constants.y.FR, constants.y.EN ], _locales[constants.s.CI] = [ constants.y.FR, constants.y.EN ], 
-            _locales[constants.s.CK] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.CL] = [ constants.y.ES, constants.y.EN, constants.y.FR, constants.y.ZH ], 
-            _locales[constants.s.CM] = [ constants.y.FR, constants.y.EN ], _locales[constants.s.CN] = [ constants.y.ZH ], 
-            _locales[constants.s.CO] = [ constants.y.ES, constants.y.EN, constants.y.FR, constants.y.ZH ], 
-            _locales[constants.s.CR] = [ constants.y.ES, constants.y.EN, constants.y.FR, constants.y.ZH ], 
-            _locales[constants.s.CV] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.CY] = [ constants.y.EN ], _locales[constants.s.CZ] = [ constants.y.CS, constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.DE] = [ constants.y.DE, constants.y.EN ], _locales[constants.s.DJ] = [ constants.y.FR, constants.y.EN, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.DK] = [ constants.y.DA, constants.y.EN ], _locales[constants.s.DM] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.DO] = [ constants.y.ES, constants.y.EN, constants.y.FR, constants.y.ZH ], 
-            _locales[constants.s.DZ] = [ constants.y.AR, constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.EC] = [ constants.y.ES, constants.y.EN, constants.y.FR, constants.y.ZH ], 
-            _locales[constants.s.EE] = [ constants.y.EN, constants.y.RU, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.EG] = [ constants.y.AR, constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.ER] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.ES] = [ constants.y.ES, constants.y.EN ], _locales[constants.s.ET] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.FI] = [ constants.y.FI, constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.FJ] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.FK] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.FM] = [ constants.y.EN ], _locales[constants.s.FO] = [ constants.y.DA, constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.FR] = [ constants.y.FR, constants.y.EN ], _locales[constants.s.GA] = [ constants.y.FR, constants.y.EN, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.GB] = [ constants.y.EN ], _locales[constants.s.GD] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.GE] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.GF] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.GI] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.GL] = [ constants.y.DA, constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.GM] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.GN] = [ constants.y.FR, constants.y.EN, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.GP] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.GR] = [ constants.y.EL, constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.GT] = [ constants.y.ES, constants.y.EN, constants.y.FR, constants.y.ZH ], 
-            _locales[constants.s.GW] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.GY] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.HK] = [ constants.y.EN, constants.y.ZH ], _locales[constants.s.HN] = [ constants.y.ES, constants.y.EN, constants.y.FR, constants.y.ZH ], 
-            _locales[constants.s.HR] = [ constants.y.EN ], _locales[constants.s.HU] = [ constants.y.HU, constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.ID] = [ constants.y.ID, constants.y.EN ], _locales[constants.s.IE] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.IL] = [ constants.y.HE, constants.y.EN ], _locales[constants.s.IN] = [ constants.y.EN ], 
-            _locales[constants.s.IS] = [ constants.y.EN ], _locales[constants.s.IT] = [ constants.y.IT, constants.y.EN ], 
-            _locales[constants.s.JM] = [ constants.y.EN, constants.y.ES, constants.y.FR, constants.y.ZH ], 
-            _locales[constants.s.JO] = [ constants.y.AR, constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.JP] = [ constants.y.JA, constants.y.EN ], _locales[constants.s.KE] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.KG] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.KH] = [ constants.y.EN ], _locales[constants.s.KI] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.KM] = [ constants.y.FR, constants.y.EN, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.KN] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.KR] = [ constants.y.KO, constants.y.EN ], _locales[constants.s.KW] = [ constants.y.AR, constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.KY] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.KZ] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.LA] = [ constants.y.EN ], _locales[constants.s.LC] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.LI] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.LK] = [ constants.y.EN ], _locales[constants.s.LS] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.LT] = [ constants.y.EN, constants.y.RU, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.LU] = [ constants.y.EN, constants.y.DE, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.LV] = [ constants.y.EN, constants.y.RU, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.MA] = [ constants.y.AR, constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.MC] = [ constants.y.FR, constants.y.EN ], _locales[constants.s.MD] = [ constants.y.EN ], 
-            _locales[constants.s.ME] = [ constants.y.EN ], _locales[constants.s.MG] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.MH] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.MK] = [ constants.y.EN ], _locales[constants.s.ML] = [ constants.y.FR, constants.y.EN, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.MN] = [ constants.y.EN ], _locales[constants.s.MQ] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.MR] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.MS] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.MT] = [ constants.y.EN ], _locales[constants.s.MU] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.MV] = [ constants.y.EN ], _locales[constants.s.MW] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.MX] = [ constants.y.ES, constants.y.EN ], _locales[constants.s.MY] = [ constants.y.EN ], 
-            _locales[constants.s.MZ] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.NA] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.NC] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.NE] = [ constants.y.FR, constants.y.EN, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.NF] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.NG] = [ constants.y.EN ], _locales[constants.s.NI] = [ constants.y.ES, constants.y.EN, constants.y.FR, constants.y.ZH ], 
-            _locales[constants.s.NL] = [ constants.y.NL, constants.y.EN ], _locales[constants.s.NO] = [ constants.y.NO, constants.y.EN ], 
-            _locales[constants.s.NP] = [ constants.y.EN ], _locales[constants.s.NR] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.NU] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.NZ] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.OM] = [ constants.y.AR, constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.PA] = [ constants.y.ES, constants.y.EN, constants.y.FR, constants.y.ZH ], 
-            _locales[constants.s.PE] = [ constants.y.ES, constants.y.EN, constants.y.FR, constants.y.ZH ], 
-            _locales[constants.s.PF] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.PG] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.PH] = [ constants.y.EN ], _locales[constants.s.PL] = [ constants.y.PL, constants.y.EN ], 
-            _locales[constants.s.PM] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.PN] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.PT] = [ constants.y.PT, constants.y.EN ], _locales[constants.s.PW] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.PY] = [ constants.y.ES, constants.y.EN ], _locales[constants.s.QA] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH, constants.y.AR ], 
-            _locales[constants.s.RE] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.RO] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.RS] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.RU] = [ constants.y.RU, constants.y.EN ], _locales[constants.s.RW] = [ constants.y.FR, constants.y.EN, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.SA] = [ constants.y.AR, constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.SB] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.SC] = [ constants.y.FR, constants.y.EN, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.SE] = [ constants.y.SV, constants.y.EN ], _locales[constants.s.SG] = [ constants.y.EN ], 
-            _locales[constants.s.SH] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.SI] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.SJ] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.SK] = [ constants.y.SK, constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.SL] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.SM] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.SN] = [ constants.y.FR, constants.y.EN, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.SO] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.SR] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.ST] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.SV] = [ constants.y.ES, constants.y.EN, constants.y.FR, constants.y.ZH ], 
-            _locales[constants.s.SZ] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.TC] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.TD] = [ constants.y.FR, constants.y.EN, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.TG] = [ constants.y.FR, constants.y.EN, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.TH] = [ constants.y.TH, constants.y.EN ], _locales[constants.s.TJ] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.TM] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.TN] = [ constants.y.AR, constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.TO] = [ constants.y.EN ], _locales[constants.s.TR] = [ constants.y.TR, constants.y.EN ], 
-            _locales[constants.s.TT] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.TV] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.TW] = [ constants.y.ZH, constants.y.EN ], _locales[constants.s.TZ] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.UA] = [ constants.y.EN, constants.y.RU, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.UG] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.US] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.UY] = [ constants.y.ES, constants.y.EN, constants.y.FR, constants.y.ZH ], 
-            _locales[constants.s.VA] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.VC] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.VE] = [ constants.y.ES, constants.y.EN, constants.y.FR, constants.y.ZH ], 
-            _locales[constants.s.VG] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.VN] = [ constants.y.EN ], _locales[constants.s.VU] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.WF] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.WS] = [ constants.y.EN ], _locales[constants.s.YE] = [ constants.y.AR, constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.YT] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.ZA] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.ZM] = [ constants.y.EN, constants.y.FR, constants.y.ES, constants.y.ZH ], 
-            _locales[constants.s.ZW] = [ constants.y.EN ], _locales)
+            locales: (_locales = {}, _locales[constants.r.AD] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.AE] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH, constants.x.AR ], 
+            _locales[constants.r.AG] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.AI] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.AL] = [ constants.x.EN ], _locales[constants.r.AM] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.AN] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.AO] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.AR] = [ constants.x.ES, constants.x.EN ], _locales[constants.r.AT] = [ constants.x.DE, constants.x.EN ], 
+            _locales[constants.r.AU] = [ constants.x.EN ], _locales[constants.r.AW] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.AZ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.BA] = [ constants.x.EN ], _locales[constants.r.BB] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.BE] = [ constants.x.EN, constants.x.NL, constants.x.FR ], _locales[constants.r.BF] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.BG] = [ constants.x.EN ], _locales[constants.r.BH] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.BI] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.BJ] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.BM] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.BN] = [ constants.x.EN ], _locales[constants.r.BO] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.BR] = [ constants.x.PT, constants.x.EN ], _locales[constants.r.BS] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.BT] = [ constants.x.EN ], _locales[constants.r.BW] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.BY] = [ constants.x.EN ], _locales[constants.r.BZ] = [ constants.x.EN, constants.x.ES, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.C2] = [ constants.x.ZH, constants.x.EN ], _locales[constants.r.CA] = [ constants.x.EN, constants.x.FR ], 
+            _locales[constants.r.CD] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.CG] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.CH] = [ constants.x.DE, constants.x.FR, constants.x.EN ], _locales[constants.r.CI] = [ constants.x.FR, constants.x.EN ], 
+            _locales[constants.r.CK] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.CL] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.CM] = [ constants.x.FR, constants.x.EN ], _locales[constants.r.CN] = [ constants.x.ZH ], 
+            _locales[constants.r.CO] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.CR] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.CV] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.CY] = [ constants.x.EN ], _locales[constants.r.CZ] = [ constants.x.CS, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.DE] = [ constants.x.DE, constants.x.EN ], _locales[constants.r.DJ] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.DK] = [ constants.x.DA, constants.x.EN ], _locales[constants.r.DM] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.DO] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.DZ] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.EC] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.EE] = [ constants.x.EN, constants.x.RU, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.EG] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.ER] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.ES] = [ constants.x.ES, constants.x.EN ], _locales[constants.r.ET] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.FI] = [ constants.x.FI, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.FJ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.FK] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.FM] = [ constants.x.EN ], _locales[constants.r.FO] = [ constants.x.DA, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.FR] = [ constants.x.FR, constants.x.EN ], _locales[constants.r.GA] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GB] = [ constants.x.EN ], _locales[constants.r.GD] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GE] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GF] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GI] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GL] = [ constants.x.DA, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GM] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GN] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GP] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GR] = [ constants.x.EL, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GT] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.GW] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.GY] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.HK] = [ constants.x.EN, constants.x.ZH ], _locales[constants.r.HN] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.HR] = [ constants.x.EN ], _locales[constants.r.HU] = [ constants.x.HU, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.ID] = [ constants.x.ID, constants.x.EN ], _locales[constants.r.IE] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.IL] = [ constants.x.HE, constants.x.EN ], _locales[constants.r.IN] = [ constants.x.EN ], 
+            _locales[constants.r.IS] = [ constants.x.EN ], _locales[constants.r.IT] = [ constants.x.IT, constants.x.EN ], 
+            _locales[constants.r.JM] = [ constants.x.EN, constants.x.ES, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.JO] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.JP] = [ constants.x.JA, constants.x.EN ], _locales[constants.r.KE] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.KG] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.KH] = [ constants.x.EN ], _locales[constants.r.KI] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.KM] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.KN] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.KR] = [ constants.x.KO, constants.x.EN ], _locales[constants.r.KW] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.KY] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.KZ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.LA] = [ constants.x.EN ], _locales[constants.r.LC] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.LI] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.LK] = [ constants.x.EN ], _locales[constants.r.LS] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.LT] = [ constants.x.EN, constants.x.RU, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.LU] = [ constants.x.EN, constants.x.DE, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.LV] = [ constants.x.EN, constants.x.RU, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MA] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MC] = [ constants.x.FR, constants.x.EN ], _locales[constants.r.MD] = [ constants.x.EN ], 
+            _locales[constants.r.ME] = [ constants.x.EN ], _locales[constants.r.MG] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MH] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MK] = [ constants.x.EN ], _locales[constants.r.ML] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MN] = [ constants.x.EN ], _locales[constants.r.MQ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MR] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MS] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MT] = [ constants.x.EN ], _locales[constants.r.MU] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MV] = [ constants.x.EN ], _locales[constants.r.MW] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.MX] = [ constants.x.ES, constants.x.EN ], _locales[constants.r.MY] = [ constants.x.EN ], 
+            _locales[constants.r.MZ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.NA] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.NC] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.NE] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.NF] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.NG] = [ constants.x.EN ], _locales[constants.r.NI] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.NL] = [ constants.x.NL, constants.x.EN ], _locales[constants.r.NO] = [ constants.x.NO, constants.x.EN ], 
+            _locales[constants.r.NP] = [ constants.x.EN ], _locales[constants.r.NR] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.NU] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.NZ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.OM] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.PA] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.PE] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.PF] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.PG] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.PH] = [ constants.x.EN ], _locales[constants.r.PL] = [ constants.x.PL, constants.x.EN ], 
+            _locales[constants.r.PM] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.PN] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.PT] = [ constants.x.PT, constants.x.EN ], _locales[constants.r.PW] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.PY] = [ constants.x.ES, constants.x.EN ], _locales[constants.r.QA] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH, constants.x.AR ], 
+            _locales[constants.r.RE] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.RO] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.RS] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.RU] = [ constants.x.RU, constants.x.EN ], _locales[constants.r.RW] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SA] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SB] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SC] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SE] = [ constants.x.SV, constants.x.EN ], _locales[constants.r.SG] = [ constants.x.EN ], 
+            _locales[constants.r.SH] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SI] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SJ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SK] = [ constants.x.SK, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SL] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SM] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SN] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SO] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SR] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.ST] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.SV] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.SZ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.TC] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.TD] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.TG] = [ constants.x.FR, constants.x.EN, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.TH] = [ constants.x.TH, constants.x.EN ], _locales[constants.r.TJ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.TM] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.TN] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.TO] = [ constants.x.EN ], _locales[constants.r.TR] = [ constants.x.TR, constants.x.EN ], 
+            _locales[constants.r.TT] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.TV] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.TW] = [ constants.x.ZH, constants.x.EN ], _locales[constants.r.TZ] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.UA] = [ constants.x.EN, constants.x.RU, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.UG] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.US] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.UY] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.VA] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.VC] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.VE] = [ constants.x.ES, constants.x.EN, constants.x.FR, constants.x.ZH ], 
+            _locales[constants.r.VG] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.VN] = [ constants.x.EN ], _locales[constants.r.VU] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.WF] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.WS] = [ constants.x.EN ], _locales[constants.r.YE] = [ constants.x.AR, constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.YT] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.ZA] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.ZM] = [ constants.x.EN, constants.x.FR, constants.x.ES, constants.x.ZH ], 
+            _locales[constants.r.ZW] = [ constants.x.EN ], _locales)
         };
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return config;
@@ -9814,7 +9769,10 @@
             GIROPAY: "giropay",
             SOFORT: "sofort",
             EPS: "eps",
-            MYBANK: "mybank"
+            MYBANK: "mybank",
+            P24: "p24",
+            ZIMPLER: "zimpler",
+            WECHATPAY: "wechatpay"
         }, BUTTON_COLOR = {
             GOLD: "gold",
             BLUE: "blue",
@@ -9860,7 +9818,10 @@
             GIROPAY: "giropay",
             SOFORT: "sofort",
             EPS: "eps",
-            MYBANK: "mybank"
+            MYBANK: "mybank",
+            P24: "p24",
+            ZIMPLER: "zimpler",
+            WECHATPAY: "wechatpay"
         }, CHECKOUT_OVERLAY_COLOR = {
             BLACK: "black",
             WHITE: "white"
@@ -9875,14 +9836,10 @@
             GIROPAY: "giropay",
             SOFORT: "sofort",
             EPS: "eps",
-            MYBANK: "mybank"
-        }, ALTERNATE_PAYMENT_METHOD = {
-            IDEAL: "ideal",
-            BANCONTACT: "bancontact",
-            GIROPAY: "giropay",
-            SOFORT: "sofort",
-            EPS: "eps",
-            MYBANK: "mybank"
+            MYBANK: "mybank",
+            P24: "p24",
+            ZIMPLER: "zimpler",
+            WECHATPAY: "wechatpay"
         }, CARD = {
             VISA: "visa",
             MASTERCARD: "mastercard",
@@ -10255,67 +10212,64 @@
             BR: [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
             MX: [ 3, 6, 9, 12 ]
         };
-        __webpack_require__.d(__webpack_exports__, "n", function() {
+        __webpack_require__.d(__webpack_exports__, "m", function() {
             return BUTTON_STYLE_OPTIONS;
         });
-        __webpack_require__.d(__webpack_exports__, "g", function() {
+        __webpack_require__.d(__webpack_exports__, "f", function() {
             return BUTTON_LABEL;
         });
-        __webpack_require__.d(__webpack_exports__, "f", function() {
+        __webpack_require__.d(__webpack_exports__, "e", function() {
             return BUTTON_COLOR;
         });
-        __webpack_require__.d(__webpack_exports__, "j", function() {
+        __webpack_require__.d(__webpack_exports__, "i", function() {
             return BUTTON_LOGO_COLOR;
         });
-        __webpack_require__.d(__webpack_exports__, "m", function() {
+        __webpack_require__.d(__webpack_exports__, "l", function() {
             return BUTTON_SIZE;
         });
-        __webpack_require__.d(__webpack_exports__, "o", function() {
+        __webpack_require__.d(__webpack_exports__, "n", function() {
             return BUTTON_TAGLINE_COLOR;
         });
-        __webpack_require__.d(__webpack_exports__, "l", function() {
+        __webpack_require__.d(__webpack_exports__, "k", function() {
             return BUTTON_SHAPE;
         });
-        __webpack_require__.d(__webpack_exports__, "e", function() {
+        __webpack_require__.d(__webpack_exports__, "d", function() {
             return BUTTON_BRANDING;
         });
-        __webpack_require__.d(__webpack_exports__, "h", function() {
+        __webpack_require__.d(__webpack_exports__, "g", function() {
             return BUTTON_LAYOUT;
         });
-        __webpack_require__.d(__webpack_exports__, "k", function() {
+        __webpack_require__.d(__webpack_exports__, "j", function() {
             return BUTTON_NUMBER;
         });
-        __webpack_require__.d(__webpack_exports__, "i", function() {
+        __webpack_require__.d(__webpack_exports__, "h", function() {
             return BUTTON_LOGO;
         });
-        __webpack_require__.d(__webpack_exports__, "r", function() {
+        __webpack_require__.d(__webpack_exports__, "q", function() {
             return CHECKOUT_OVERLAY_COLOR;
         });
-        __webpack_require__.d(__webpack_exports__, "w", function() {
+        __webpack_require__.d(__webpack_exports__, "v", function() {
             return FUNDING;
         });
-        __webpack_require__.d(__webpack_exports__, "c", function() {
-            return ALTERNATE_PAYMENT_METHOD;
-        });
-        __webpack_require__.d(__webpack_exports__, "p", function() {
+        __webpack_require__.d(__webpack_exports__, "o", function() {
             return CARD;
         });
-        __webpack_require__.d(__webpack_exports__, "x", function() {
+        __webpack_require__.d(__webpack_exports__, "w", function() {
             return FUNDING_ELIGIBILITY_REASON;
         });
-        __webpack_require__.d(__webpack_exports__, "q", function() {
+        __webpack_require__.d(__webpack_exports__, "p", function() {
             return CARD_PRIORITY;
         });
-        __webpack_require__.d(__webpack_exports__, "v", function() {
+        __webpack_require__.d(__webpack_exports__, "u", function() {
             return FPTI;
         });
-        __webpack_require__.d(__webpack_exports__, "s", function() {
+        __webpack_require__.d(__webpack_exports__, "r", function() {
             return COUNTRY;
         });
-        __webpack_require__.d(__webpack_exports__, "y", function() {
+        __webpack_require__.d(__webpack_exports__, "x", function() {
             return LANG;
         });
-        __webpack_require__.d(__webpack_exports__, "z", function() {
+        __webpack_require__.d(__webpack_exports__, "y", function() {
             return LANG_TO_DEFAULT_COUNTRY;
         });
         __webpack_require__.d(__webpack_exports__, "a", function() {
@@ -10324,31 +10278,31 @@
         __webpack_require__.d(__webpack_exports__, "b", function() {
             return ALLOWED_INSTALLMENT_PERIOD;
         });
-        __webpack_require__.d(__webpack_exports__, "u", function() {
+        __webpack_require__.d(__webpack_exports__, "t", function() {
             return ENV;
         });
-        __webpack_require__.d(__webpack_exports__, "F", function() {
+        __webpack_require__.d(__webpack_exports__, "E", function() {
             return USERS;
         });
-        __webpack_require__.d(__webpack_exports__, "E", function() {
+        __webpack_require__.d(__webpack_exports__, "D", function() {
             return SOURCE;
         });
-        __webpack_require__.d(__webpack_exports__, "A", function() {
+        __webpack_require__.d(__webpack_exports__, "z", function() {
             return LOG_LEVEL;
         });
-        __webpack_require__.d(__webpack_exports__, "B", function() {
+        __webpack_require__.d(__webpack_exports__, "A", function() {
             return PAYMENT_TYPE;
         });
-        __webpack_require__.d(__webpack_exports__, "D", function() {
+        __webpack_require__.d(__webpack_exports__, "C", function() {
             return "xo-pptm";
         });
-        __webpack_require__.d(__webpack_exports__, "d", function() {
+        __webpack_require__.d(__webpack_exports__, "c", function() {
             return ATTRIBUTE;
         });
-        __webpack_require__.d(__webpack_exports__, "C", function() {
+        __webpack_require__.d(__webpack_exports__, "B", function() {
             return PLATFORM;
         });
-        __webpack_require__.d(__webpack_exports__, "t", function() {
+        __webpack_require__.d(__webpack_exports__, "s", function() {
             return "default";
         });
     },
@@ -10380,19 +10334,19 @@
             return config.a;
         });
         __webpack_require__.d(src_interface_namespaceObject, "ENV", function() {
-            return constants.u;
+            return constants.t;
         });
         __webpack_require__.d(src_interface_namespaceObject, "USERS", function() {
-            return constants.F;
-        });
-        __webpack_require__.d(src_interface_namespaceObject, "SOURCE", function() {
             return constants.E;
         });
+        __webpack_require__.d(src_interface_namespaceObject, "SOURCE", function() {
+            return constants.D;
+        });
         __webpack_require__.d(src_interface_namespaceObject, "FUNDING", function() {
-            return constants.w;
+            return constants.v;
         });
         __webpack_require__.d(src_interface_namespaceObject, "CARD", function() {
-            return constants.p;
+            return constants.o;
         });
         __webpack_require__.d(src_interface_namespaceObject, "request", function() {
             return lib.S;
@@ -10445,7 +10399,7 @@
         __webpack_require__.d(src_interface_namespaceObject, "enableCheckoutIframe", function() {
             return enableCheckoutIframe;
         });
-        var src = __webpack_require__("./node_modules/xcomponent/src/index.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+        var _COUNTRY_LANGS, src = __webpack_require__("./node_modules/xcomponent/src/index.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
@@ -10456,7 +10410,109 @@
             STAGE: "stage",
             LOCAL: "local",
             TEST: "test"
-        }, DEFAULT_ENV = ENV.PRODUCTION;
+        }, DEFAULT_ENV = ENV.PRODUCTION, COUNTRY_AE = "AE", COUNTRY_AG = "AG", COUNTRY_AI = "AI", COUNTRY_AL = "AL", COUNTRY_AM = "AM", COUNTRY_AN = "AN", COUNTRY_AO = "AO", COUNTRY_AR = "AR", COUNTRY_AT = "AT", COUNTRY_AU = "AU", COUNTRY_AW = "AW", COUNTRY_AZ = "AZ", COUNTRY_BA = "BA", COUNTRY_BB = "BB", COUNTRY_BE = "BE", COUNTRY_BF = "BF", COUNTRY_BG = "BG", COUNTRY_BH = "BH", COUNTRY_BI = "BI", COUNTRY_BJ = "BJ", COUNTRY_BM = "BM", COUNTRY_BN = "BN", COUNTRY_BO = "BO", COUNTRY_BR = "BR", COUNTRY_BS = "BS", COUNTRY_BT = "BT", COUNTRY_BW = "BW", COUNTRY_BY = "BY", COUNTRY_BZ = "BZ", COUNTRY_CA = "CA", COUNTRY_CD = "CD", COUNTRY_CG = "CG", COUNTRY_CH = "CH", COUNTRY_CI = "CI", COUNTRY_CK = "CK", COUNTRY_CL = "CL", COUNTRY_CM = "CM", COUNTRY_CN = "CN", COUNTRY_CO = "CO", COUNTRY_CR = "CR", COUNTRY_CV = "CV", COUNTRY_CY = "CY", COUNTRY_CZ = "CZ", COUNTRY_DE = "DE", COUNTRY_DJ = "DJ", COUNTRY_DK = "DK", COUNTRY_DM = "DM", COUNTRY_DO = "DO", COUNTRY_DZ = "DZ", COUNTRY_EC = "EC", COUNTRY_EE = "EE", COUNTRY_EG = "EG", COUNTRY_ER = "ER", COUNTRY_ES = "ES", COUNTRY_ET = "ET", COUNTRY_FI = "FI", COUNTRY_FJ = "FJ", COUNTRY_FK = "FK", COUNTRY_FM = "FM", COUNTRY_FO = "FO", COUNTRY_FR = "FR", COUNTRY_GA = "GA", COUNTRY_GB = "GB", COUNTRY_GD = "GD", COUNTRY_GE = "GE", COUNTRY_GF = "GF", COUNTRY_GI = "GI", COUNTRY_GL = "GL", COUNTRY_GM = "GM", COUNTRY_GN = "GN", COUNTRY_GP = "GP", COUNTRY_GR = "GR", COUNTRY_GT = "GT", COUNTRY_GW = "GW", COUNTRY_GY = "GY", COUNTRY_HK = "HK", COUNTRY_HN = "HN", COUNTRY_HR = "HR", COUNTRY_HU = "HU", COUNTRY_ID = "ID", COUNTRY_IE = "IE", COUNTRY_IL = "IL", COUNTRY_IN = "IN", COUNTRY_IS = "IS", COUNTRY_IT = "IT", COUNTRY_JM = "JM", COUNTRY_JO = "JO", COUNTRY_JP = "JP", COUNTRY_KE = "KE", COUNTRY_KG = "KG", COUNTRY_KH = "KH", COUNTRY_KI = "KI", COUNTRY_KM = "KM", COUNTRY_KN = "KN", COUNTRY_KR = "KR", COUNTRY_KW = "KW", COUNTRY_KY = "KY", COUNTRY_KZ = "KZ", COUNTRY_LA = "LA", COUNTRY_LC = "LC", COUNTRY_LI = "LI", COUNTRY_LK = "LK", COUNTRY_LS = "LS", COUNTRY_LT = "LT", COUNTRY_LU = "LU", COUNTRY_LV = "LV", COUNTRY_MA = "MA", COUNTRY_MC = "MC", COUNTRY_MD = "MD", COUNTRY_ME = "ME", COUNTRY_MG = "MG", COUNTRY_MH = "MH", COUNTRY_MK = "MK", COUNTRY_ML = "ML", COUNTRY_MN = "MN", COUNTRY_MQ = "MQ", COUNTRY_MR = "MR", COUNTRY_MS = "MS", COUNTRY_MT = "MT", COUNTRY_MU = "MU", COUNTRY_MV = "MV", COUNTRY_MW = "MW", COUNTRY_MX = "MX", COUNTRY_MY = "MY", COUNTRY_MZ = "MZ", COUNTRY_NA = "NA", COUNTRY_NC = "NC", COUNTRY_NE = "NE", COUNTRY_NF = "NF", COUNTRY_NG = "NG", COUNTRY_NI = "NI", COUNTRY_NL = "NL", COUNTRY_NO = "NO", COUNTRY_NP = "NP", COUNTRY_NR = "NR", COUNTRY_NU = "NU", COUNTRY_NZ = "NZ", COUNTRY_OM = "OM", COUNTRY_PA = "PA", COUNTRY_PE = "PE", COUNTRY_PF = "PF", COUNTRY_PG = "PG", COUNTRY_PH = "PH", COUNTRY_PL = "PL", COUNTRY_PM = "PM", COUNTRY_PN = "PN", COUNTRY_PT = "PT", COUNTRY_PW = "PW", COUNTRY_PY = "PY", COUNTRY_QA = "QA", COUNTRY_RE = "RE", COUNTRY_RO = "RO", COUNTRY_RS = "RS", COUNTRY_RU = "RU", COUNTRY_RW = "RW", COUNTRY_SA = "SA", COUNTRY_SB = "SB", COUNTRY_SC = "SC", COUNTRY_SE = "SE", COUNTRY_SG = "SG", COUNTRY_SH = "SH", COUNTRY_SI = "SI", COUNTRY_SJ = "SJ", COUNTRY_SK = "SK", COUNTRY_SL = "SL", COUNTRY_SM = "SM", COUNTRY_SN = "SN", COUNTRY_SO = "SO", COUNTRY_SR = "SR", COUNTRY_ST = "ST", COUNTRY_SV = "SV", COUNTRY_SZ = "SZ", COUNTRY_TC = "TC", COUNTRY_TD = "TD", COUNTRY_TG = "TG", COUNTRY_TH = "TH", COUNTRY_TJ = "TJ", COUNTRY_TM = "TM", COUNTRY_TN = "TN", COUNTRY_TO = "TO", COUNTRY_TR = "TR", COUNTRY_TT = "TT", COUNTRY_TV = "TV", COUNTRY_TW = "TW", COUNTRY_TZ = "TZ", COUNTRY_UA = "UA", COUNTRY_UG = "UG", COUNTRY_US = "US", COUNTRY_UY = "UY", COUNTRY_VA = "VA", COUNTRY_VC = "VC", COUNTRY_VE = "VE", COUNTRY_VG = "VG", COUNTRY_VN = "VN", COUNTRY_VU = "VU", COUNTRY_WF = "WF", COUNTRY_WS = "WS", COUNTRY_YE = "YE", COUNTRY_YT = "YT", COUNTRY_ZA = "ZA", COUNTRY_ZM = "ZM", COUNTRY_ZW = "ZW", LANG_AR = "ar", LANG_CS = "cs", LANG_DA = "da", LANG_DE = "de", LANG_EL = "el", LANG_EN = "en", LANG_ES = "es", LANG_FI = "fi", LANG_FR = "fr", LANG_HE = "he", LANG_HU = "hu", LANG_ID = "id", LANG_IT = "it", LANG_JA = "ja", LANG_KO = "ko", LANG_NL = "nl", LANG_NO = "no", LANG_PL = "pl", LANG_PT = "pt", LANG_RU = "ru", LANG_SK = "sk", LANG_SV = "sv", LANG_TH = "th", LANG_TR = "tr", LANG_ZH = "zh";
+        (_COUNTRY_LANGS = {})["AD"] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_AE] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH, LANG_AR ], 
+        _COUNTRY_LANGS[COUNTRY_AG] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_AI] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_AL] = [ LANG_EN ], _COUNTRY_LANGS[COUNTRY_AM] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_AN] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_AO] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_AR] = [ LANG_ES, LANG_EN ], _COUNTRY_LANGS[COUNTRY_AT] = [ LANG_DE, LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_AU] = [ LANG_EN ], _COUNTRY_LANGS[COUNTRY_AW] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_AZ] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_BA] = [ LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_BB] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_BE] = [ LANG_EN, LANG_NL, LANG_FR ], 
+        _COUNTRY_LANGS[COUNTRY_BF] = [ LANG_FR, LANG_EN, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_BG] = [ LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_BH] = [ LANG_AR, LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_BI] = [ LANG_FR, LANG_EN, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_BJ] = [ LANG_FR, LANG_EN, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_BM] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_BN] = [ LANG_EN ], _COUNTRY_LANGS[COUNTRY_BO] = [ LANG_ES, LANG_EN, LANG_FR, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_BR] = [ LANG_PT, LANG_EN ], _COUNTRY_LANGS[COUNTRY_BS] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_BT] = [ LANG_EN ], _COUNTRY_LANGS[COUNTRY_BW] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_BY] = [ LANG_EN ], _COUNTRY_LANGS[COUNTRY_BZ] = [ LANG_EN, LANG_ES, LANG_FR, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_CA] = [ LANG_EN, LANG_FR ], _COUNTRY_LANGS[COUNTRY_CD] = [ LANG_FR, LANG_EN, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_CG] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_CH] = [ LANG_DE, LANG_FR, LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_CI] = [ LANG_FR, LANG_EN ], _COUNTRY_LANGS[COUNTRY_CK] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_CL] = [ LANG_ES, LANG_EN, LANG_FR, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_CM] = [ LANG_FR, LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_CN] = [ LANG_ZH ], _COUNTRY_LANGS[COUNTRY_CO] = [ LANG_ES, LANG_EN, LANG_FR, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_CR] = [ LANG_ES, LANG_EN, LANG_FR, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_CV] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_CY] = [ LANG_EN ], _COUNTRY_LANGS[COUNTRY_CZ] = [ LANG_CS, LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_DE] = [ LANG_DE, LANG_EN ], _COUNTRY_LANGS[COUNTRY_DJ] = [ LANG_FR, LANG_EN, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_DK] = [ LANG_DA, LANG_EN ], _COUNTRY_LANGS[COUNTRY_DM] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_DO] = [ LANG_ES, LANG_EN, LANG_FR, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_DZ] = [ LANG_AR, LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_EC] = [ LANG_ES, LANG_EN, LANG_FR, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_EE] = [ LANG_EN, LANG_RU, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_EG] = [ LANG_AR, LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_ER] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_ES] = [ LANG_ES, LANG_EN ], _COUNTRY_LANGS[COUNTRY_ET] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_FI] = [ LANG_FI, LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_FJ] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_FK] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_FM] = [ LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_FO] = [ LANG_DA, LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_FR] = [ LANG_FR, LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_GA] = [ LANG_FR, LANG_EN, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_GB] = [ LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_GD] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_GE] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_GF] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_GI] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_GL] = [ LANG_DA, LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_GM] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_GN] = [ LANG_FR, LANG_EN, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_GP] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_GR] = [ LANG_EL, LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_GT] = [ LANG_ES, LANG_EN, LANG_FR, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_GW] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_GY] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_HK] = [ LANG_EN, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_HN] = [ LANG_ES, LANG_EN, LANG_FR, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_HR] = [ LANG_EN ], _COUNTRY_LANGS[COUNTRY_HU] = [ LANG_HU, LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_ID] = [ LANG_ID, LANG_EN ], _COUNTRY_LANGS[COUNTRY_IE] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_IL] = [ LANG_HE, LANG_EN ], _COUNTRY_LANGS[COUNTRY_IN] = [ LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_IS] = [ LANG_EN ], _COUNTRY_LANGS[COUNTRY_IT] = [ LANG_IT, LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_JM] = [ LANG_EN, LANG_ES, LANG_FR, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_JO] = [ LANG_AR, LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_JP] = [ LANG_JA, LANG_EN ], _COUNTRY_LANGS[COUNTRY_KE] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_KG] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_KH] = [ LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_KI] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_KM] = [ LANG_FR, LANG_EN, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_KN] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_KR] = [ LANG_KO, LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_KW] = [ LANG_AR, LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_KY] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_KZ] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_LA] = [ LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_LC] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_LI] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_LK] = [ LANG_EN ], _COUNTRY_LANGS[COUNTRY_LS] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_LT] = [ LANG_EN, LANG_RU, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_LU] = [ LANG_EN, LANG_DE, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_LV] = [ LANG_EN, LANG_RU, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_MA] = [ LANG_AR, LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_MC] = [ LANG_FR, LANG_EN ], _COUNTRY_LANGS[COUNTRY_MD] = [ LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_ME] = [ LANG_EN ], _COUNTRY_LANGS[COUNTRY_MG] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_MH] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_MK] = [ LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_ML] = [ LANG_FR, LANG_EN, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_MN] = [ LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_MQ] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_MR] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_MS] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_MT] = [ LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_MU] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_MV] = [ LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_MW] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_MX] = [ LANG_ES, LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_MY] = [ LANG_EN ], _COUNTRY_LANGS[COUNTRY_MZ] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_NA] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_NC] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_NE] = [ LANG_FR, LANG_EN, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_NF] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_NG] = [ LANG_EN ], _COUNTRY_LANGS[COUNTRY_NI] = [ LANG_ES, LANG_EN, LANG_FR, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_NL] = [ LANG_NL, LANG_EN ], _COUNTRY_LANGS[COUNTRY_NO] = [ LANG_NO, LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_NP] = [ LANG_EN ], _COUNTRY_LANGS[COUNTRY_NR] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_NU] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_NZ] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_OM] = [ LANG_AR, LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_PA] = [ LANG_ES, LANG_EN, LANG_FR, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_PE] = [ LANG_ES, LANG_EN, LANG_FR, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_PF] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_PG] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_PH] = [ LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_PL] = [ LANG_PL, LANG_EN ], _COUNTRY_LANGS[COUNTRY_PM] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_PN] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_PT] = [ LANG_PT, LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_PW] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_PY] = [ LANG_ES, LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_QA] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH, LANG_AR ], _COUNTRY_LANGS[COUNTRY_RE] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_RO] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_RS] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_RU] = [ LANG_RU, LANG_EN ], _COUNTRY_LANGS[COUNTRY_RW] = [ LANG_FR, LANG_EN, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_SA] = [ LANG_AR, LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_SB] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_SC] = [ LANG_FR, LANG_EN, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_SE] = [ LANG_SV, LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_SG] = [ LANG_EN ], _COUNTRY_LANGS[COUNTRY_SH] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_SI] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_SJ] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_SK] = [ LANG_SK, LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_SL] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_SM] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_SN] = [ LANG_FR, LANG_EN, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_SO] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_SR] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_ST] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_SV] = [ LANG_ES, LANG_EN, LANG_FR, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_SZ] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_TC] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_TD] = [ LANG_FR, LANG_EN, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_TG] = [ LANG_FR, LANG_EN, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_TH] = [ LANG_TH, LANG_EN ], _COUNTRY_LANGS[COUNTRY_TJ] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_TM] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_TN] = [ LANG_AR, LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_TO] = [ LANG_EN ], _COUNTRY_LANGS[COUNTRY_TR] = [ LANG_TR, LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_TT] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_TV] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_TW] = [ LANG_ZH, LANG_EN ], _COUNTRY_LANGS[COUNTRY_TZ] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_UA] = [ LANG_EN, LANG_RU, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_UG] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_US] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_UY] = [ LANG_ES, LANG_EN, LANG_FR, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_VA] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_VC] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_VE] = [ LANG_ES, LANG_EN, LANG_FR, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_VG] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_VN] = [ LANG_EN ], _COUNTRY_LANGS[COUNTRY_VU] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_WF] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_WS] = [ LANG_EN ], 
+        _COUNTRY_LANGS[COUNTRY_YE] = [ LANG_AR, LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_YT] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_ZA] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], _COUNTRY_LANGS[COUNTRY_ZM] = [ LANG_EN, LANG_FR, LANG_ES, LANG_ZH ], 
+        _COUNTRY_LANGS[COUNTRY_ZW] = [ LANG_EN ];
         function validateClientOptions(_ref) {
             var item, env = _ref.env, auth = _ref.auth;
             if (env && -1 === function(obj) {
@@ -10569,10 +10625,10 @@
                     var match = res.links[i].href.match(/token=((EC-)?[A-Z0-9]{17})/);
                     match && (paymentToken = match[1]);
                 }
-                Object(beaver_logger_client.o)(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.BUTTON, 
-                _track[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.CREATE_PAYMENT, _track[constants.v.KEY.CONTEXT_TYPE] = constants.v.CONTEXT_TYPE[constants.B.PAY_ID], 
-                _track[constants.v.KEY.PAY_ID] = paymentID, _track[constants.v.KEY.TOKEN] = paymentToken, 
-                _track[constants.v.KEY.CONTEXT_ID] = paymentID, _track));
+                Object(beaver_logger_client.o)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
+                _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CREATE_PAYMENT, _track[constants.u.KEY.CONTEXT_TYPE] = constants.u.CONTEXT_TYPE[constants.A.PAY_ID], 
+                _track[constants.u.KEY.PAY_ID] = paymentID, _track[constants.u.KEY.TOKEN] = paymentToken, 
+                _track[constants.u.KEY.CONTEXT_ID] = paymentID, _track));
             }
         }
         function getDefaultReturnUrl() {
@@ -10775,10 +10831,10 @@
                     loggedEvents.push(event);
                     var edge = window.navigator && window.navigator.userAgent && window.navigator.userAgent.match(/Edge\/[0-9]{2}/);
                     edge && (event = Object(beaver_logger_client.j)(edge[0].toLowerCase().replace("/", "_") + "_" + event));
-                    Object(beaver_logger_client.o)(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.CHECKOUT, 
-                    _track[constants.v.KEY.TRANSITION] = state, _track[constants.v.KEY.EXPERIMENT_NAME] = experiment, 
-                    _track[constants.v.KEY.TREATMENT_NAME] = treatment, _track[constants.v.KEY.TOKEN] = token, 
-                    _track[constants.v.KEY.CONTEXT_ID] = token, _track[constants.v.KEY.CONTEXT_TYPE] = token ? constants.v.CONTEXT_TYPE[constants.B.EC_TOKEN] : constants.v.CONTEXT_TYPE.BUTTON_SESSION_ID, 
+                    Object(beaver_logger_client.o)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
+                    _track[constants.u.KEY.TRANSITION] = state, _track[constants.u.KEY.EXPERIMENT_NAME] = experiment, 
+                    _track[constants.u.KEY.TREATMENT_NAME] = treatment, _track[constants.u.KEY.TOKEN] = token, 
+                    _track[constants.u.KEY.CONTEXT_ID] = token, _track[constants.u.KEY.CONTEXT_TYPE] = token ? constants.u.CONTEXT_TYPE[constants.A.EC_TOKEN] : constants.u.CONTEXT_TYPE.BUTTON_SESSION_ID, 
                     _track));
                     Object(beaver_logger_client.i)();
                 }
@@ -10847,7 +10903,7 @@
                     }).then(function(token) {
                         var _extendUrl;
                         if (!token) throw new Error("Expected props.payment to return a payment id or token");
-                        return Object(lib.i)(Object(integrations_checkout.b)(env, constants.w.PAYPAL, token), ((_extendUrl = {})[Object(integrations_checkout.a)(token)] = token, 
+                        return Object(lib.i)(Object(integrations_checkout.b)(env, constants.v.PAYPAL, token), ((_extendUrl = {})[Object(integrations_checkout.a)(token)] = token, 
                         _extendUrl.useraction = props.commit ? "commit" : "", _extendUrl.native_xo = "1", 
                         _extendUrl));
                     });
@@ -10912,7 +10968,7 @@
                 }(popupBridge);
             });
         }
-        var FUNDING_PRIORITY = [ constants.w.PAYPAL, constants.w.VENMO, constants.w.CREDIT, constants.w.IDEAL, constants.w.ELV, constants.w.BANCONTACT, constants.w.GIROPAY, constants.w.EPS, constants.w.SOFORT, constants.w.MYBANK, constants.w.CARD ], FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[constants.t] = {
+        var FUNDING_PRIORITY = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.CREDIT, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.SOFORT, constants.v.MYBANK, constants.v.P24, constants.v.ZIMPLER, constants.v.WECHATPAY, constants.v.CARD ], FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[constants.s] = {
             enabled: !0,
             allowOptIn: !0,
             allowOptOut: !0,
@@ -10920,89 +10976,104 @@
             allowHorizontal: !0,
             allowVertical: !0,
             requireCommitAsTrue: !1
-        }, _FUNDING_CONFIG[constants.w.PAYPAL] = {
+        }, _FUNDING_CONFIG[constants.v.PAYPAL] = {
             default: !0,
             allowOptIn: !1,
             allowOptOut: !1,
             allowHorizontal: !0,
             allowVertical: !0
-        }, _FUNDING_CONFIG[constants.w.CARD] = {
+        }, _FUNDING_CONFIG[constants.v.CARD] = {
             default: "undefined" == typeof __paypal_checkout__ || __paypal_checkout__.serverConfig.paypalMerchantConfiguration.creditCard.isPayPalBranded,
             allowHorizontal: !1,
             allowVertical: !0
-        }, _FUNDING_CONFIG[constants.w.VENMO] = {
+        }, _FUNDING_CONFIG[constants.v.VENMO] = {
             allowOptOut: !1,
-            allowedCountries: [ constants.s.US ],
+            allowedCountries: [ constants.r.US ],
             allowHorizontal: !0,
             allowVertical: !0
-        }, _FUNDING_CONFIG[constants.w.CREDIT] = {
-            allowedCountries: [ constants.s.US, constants.s.GB, constants.s.DE ],
-            defaultVerticalCountries: [ constants.s.US ],
-            platforms: [ constants.C.MOBILE ],
+        }, _FUNDING_CONFIG[constants.v.CREDIT] = {
+            allowedCountries: [ constants.r.US, constants.r.GB, constants.r.DE ],
+            defaultVerticalCountries: [ constants.r.US ],
+            platforms: [ constants.B.MOBILE ],
             allowHorizontal: !0,
             allowVertical: !0
-        }, _FUNDING_CONFIG[constants.w.IDEAL] = {
-            allowedCountries: [ constants.s.NL ],
+        }, _FUNDING_CONFIG[constants.v.IDEAL] = {
+            allowedCountries: [ constants.r.NL ],
             allowHorizontal: !1,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.w.ELV] = {
-            allowedCountries: [ constants.s.DE, constants.s.AT ],
-            defaultVerticalCountries: [ constants.s.DE, constants.s.AT ],
-            allowHorizontal: !0,
+        }, _FUNDING_CONFIG[constants.v.ELV] = {
+            allowedCountries: [ constants.r.DE, constants.r.AT ],
+            defaultVerticalCountries: [ constants.r.DE, constants.r.AT ],
+            allowHorizontal: !1,
             allowVertical: !0
-        }, _FUNDING_CONFIG[constants.w.BANCONTACT] = {
-            allowedCountries: [ constants.s.BE ],
+        }, _FUNDING_CONFIG[constants.v.BANCONTACT] = {
+            allowedCountries: [ constants.r.BE ],
             allowHorizontal: !1,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.w.GIROPAY] = {
-            allowedCountries: [ constants.s.DE ],
+        }, _FUNDING_CONFIG[constants.v.GIROPAY] = {
+            allowedCountries: [ constants.r.DE ],
             allowHorizontal: !1,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.w.SOFORT] = {
-            allowedCountries: [ constants.s.DE, constants.s.AT, constants.s.BE, constants.s.ES, constants.s.IT, constants.s.NL ],
+        }, _FUNDING_CONFIG[constants.v.SOFORT] = {
+            allowedCountries: [ constants.r.DE, constants.r.AT, constants.r.BE, constants.r.ES, constants.r.IT, constants.r.NL ],
             allowHorizontal: !1,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.w.EPS] = {
-            allowedCountries: [ constants.s.AT ],
+        }, _FUNDING_CONFIG[constants.v.EPS] = {
+            allowedCountries: [ constants.r.AT ],
             allowHorizontal: !1,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.w.MYBANK] = {
-            allowedCountries: [ constants.s.IT ],
+        }, _FUNDING_CONFIG[constants.v.MYBANK] = {
+            allowedCountries: [ constants.r.IT ],
             allowHorizontal: !1,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG), CARD_CONFIG = ((_CARD_CONFIG = {})[constants.t] = {
-            priority: [ constants.p.VISA, constants.p.MASTERCARD, constants.p.AMEX ]
-        }, _CARD_CONFIG[constants.s.US] = {
-            priority: [ constants.p.VISA, constants.p.MASTERCARD, constants.p.AMEX, constants.p.DISCOVER ]
-        }, _CARD_CONFIG[constants.s.BR] = {
-            priority: [ constants.p.VISA, constants.p.MASTERCARD, constants.p.AMEX, constants.p.HIPER, constants.p.ELO ]
-        }, _CARD_CONFIG[constants.s.JP] = {
-            priority: [ constants.p.VISA, constants.p.MASTERCARD, constants.p.AMEX, constants.p.JCB ]
+        }, _FUNDING_CONFIG[constants.v.P24] = {
+            allowedCountries: [ constants.r.PL ],
+            allowHorizontal: !1,
+            allowVertical: !0,
+            requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG[constants.v.ZIMPLER] = {
+            allowedCountries: [ constants.r.FI ],
+            allowHorizontal: !1,
+            allowVertical: !0,
+            requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG[constants.v.WECHATPAY] = {
+            allowedCountries: [ constants.r.CN ],
+            allowHorizontal: !1,
+            allowVertical: !0,
+            requireCommitAsTrue: !0
+        }, _FUNDING_CONFIG), CARD_CONFIG = ((_CARD_CONFIG = {})[constants.s] = {
+            priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX ]
+        }, _CARD_CONFIG[constants.r.US] = {
+            priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX, constants.o.DISCOVER ]
+        }, _CARD_CONFIG[constants.r.BR] = {
+            priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX, constants.o.HIPER, constants.o.ELO ]
+        }, _CARD_CONFIG[constants.r.JP] = {
+            priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX, constants.o.JCB ]
         }, _CARD_CONFIG);
         function getConfig(conf, category, key, def) {
             var categoryConfig = conf[category];
             if (categoryConfig && categoryConfig.hasOwnProperty(key)) return categoryConfig[key];
-            if (conf[constants.t] && conf[constants.t].hasOwnProperty(key)) return conf[constants.t][key];
+            if (conf[constants.s] && conf[constants.s].hasOwnProperty(key)) return conf[constants.s][key];
             if (arguments.length >= 4) return def;
             throw new Error("No value found for " + category + ":" + key);
         }
         function getFundingConfig(source, key, def) {
             return getConfig(FUNDING_CONFIG, source, key, def);
         }
-        var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE, fundingEligibilityReasons = [];
+        var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _logoColors14, _secondaryColors14, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE, fundingEligibilityReasons = [];
         function isFundingIneligible(source, _ref) {
             var locale = _ref.locale, funding = _ref.funding, layout = _ref.layout, commit = _ref.commit;
-            return getFundingConfig(source, layout === constants.h.VERTICAL ? "allowVertical" : "allowHorizontal") ? -1 !== funding.disallowed.indexOf(source) && getFundingConfig(source, "allowOptOut") ? constants.x.OPT_OUT : -1 !== funding.disallowed.indexOf(source) && source === constants.w.VENMO ? constants.x.OPT_OUT : -1 === getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) ? constants.x.DISALLOWED_COUNTRY : getFundingConfig(source, "requireCommitAsTrue") && !commit ? constants.x.COMMIT_NOT_SET : void 0 : constants.x.SECONDARY_DISALLOWED;
+            return getFundingConfig(source, layout === constants.g.VERTICAL ? "allowVertical" : "allowHorizontal") ? -1 !== funding.disallowed.indexOf(source) && getFundingConfig(source, "allowOptOut") ? constants.w.OPT_OUT : -1 !== funding.disallowed.indexOf(source) && source === constants.v.VENMO ? constants.w.OPT_OUT : -1 === getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) ? constants.w.DISALLOWED_COUNTRY : getFundingConfig(source, "requireCommitAsTrue") && !commit ? constants.w.COMMIT_NOT_SET : void 0 : constants.w.SECONDARY_DISALLOWED;
         }
         function isFundingAutoEligible(source, _ref2) {
             var locale = _ref2.locale, funding = _ref2.funding;
-            return _ref2.layout === constants.h.VERTICAL && -1 !== getFundingConfig(source, "defaultVerticalCountries", []).indexOf(locale.country) ? constants.x.DEFAULT_COUNTRY : getFundingConfig(source, "default") ? constants.x.DEFAULT : -1 !== funding.allowed.indexOf(source) && getFundingConfig(source, "allowOptIn") ? constants.x.OPT_IN : -1 !== funding.remembered.indexOf(source) && getFundingConfig(source, "allowRemember") ? constants.x.REMEMBERED : void 0;
+            return _ref2.layout === constants.g.VERTICAL && -1 !== getFundingConfig(source, "defaultVerticalCountries", []).indexOf(locale.country) ? constants.w.DEFAULT_COUNTRY : getFundingConfig(source, "default") ? constants.w.DEFAULT : -1 !== funding.allowed.indexOf(source) && getFundingConfig(source, "allowOptIn") ? constants.w.OPT_IN : -1 !== funding.remembered.indexOf(source) && getFundingConfig(source, "allowRemember") ? constants.w.REMEMBERED : void 0;
         }
         function determineEligibleFunding(_ref4) {
             var funding = _ref4.funding, selected = _ref4.selected, locale = _ref4.locale, env = _ref4.env, layout = _ref4.layout, commit = _ref4.commit, reasons = {}, eligibleFunding = FUNDING_PRIORITY.filter(function(source) {
@@ -11010,11 +11081,11 @@
                     var locale = _ref3.locale, funding = _ref3.funding, env = _ref3.env, layout = _ref3.layout, selected = _ref3.selected, commit = _ref3.commit;
                     if (selected && source === selected) return {
                         eligible: !0,
-                        reason: constants.x.PRIMARY
+                        reason: constants.w.PRIMARY
                     };
-                    if (!(getFundingConfig(source, "enabled") || env === constants.u.TEST && getFundingConfig(source, "test"))) return {
+                    if (!(getFundingConfig(source, "enabled") || env === constants.t.TEST && getFundingConfig(source, "test"))) return {
                         eligible: !1,
-                        reason: constants.x.NOT_ENABLED
+                        reason: constants.w.NOT_ENABLED
                     };
                     var ineligibleReason = isFundingIneligible(source, {
                         locale: locale,
@@ -11036,7 +11107,7 @@
                         reason: autoEligibleReason
                     } : {
                         eligible: !1,
-                        reason: constants.x.NEED_OPT_IN
+                        reason: constants.w.NEED_OPT_IN
                     };
                 }(source, {
                     selected: selected,
@@ -11082,42 +11153,42 @@
                 }));
             });
         }
-        var BUTTON_CONFIG = ((_BUTTON_CONFIG = {})[constants.t] = {
-            colors: [ constants.f.GOLD, constants.f.BLUE, constants.f.SILVER, constants.f.BLACK ],
-            sizes: [ constants.m.SMALL, constants.m.MEDIUM, constants.m.LARGE, constants.m.RESPONSIVE ],
-            shapes: [ constants.l.PILL, constants.l.RECT ],
-            layouts: [ constants.h.HORIZONTAL, constants.h.VERTICAL ],
-            logoColors: (_logoColors = {}, _logoColors[constants.f.GOLD] = constants.j.BLUE, 
-            _logoColors[constants.f.SILVER] = constants.j.BLUE, _logoColors[constants.f.BLUE] = constants.j.WHITE, 
-            _logoColors[constants.f.BLACK] = constants.j.WHITE, _logoColors[constants.f.BLACK] = constants.j.WHITE, 
+        var BUTTON_CONFIG = ((_BUTTON_CONFIG = {})[constants.s] = {
+            colors: [ constants.e.GOLD, constants.e.BLUE, constants.e.SILVER, constants.e.BLACK ],
+            sizes: [ constants.l.SMALL, constants.l.MEDIUM, constants.l.LARGE, constants.l.RESPONSIVE ],
+            shapes: [ constants.k.PILL, constants.k.RECT ],
+            layouts: [ constants.g.HORIZONTAL, constants.g.VERTICAL ],
+            logoColors: (_logoColors = {}, _logoColors[constants.e.GOLD] = constants.i.BLUE, 
+            _logoColors[constants.e.SILVER] = constants.i.BLUE, _logoColors[constants.e.BLUE] = constants.i.WHITE, 
+            _logoColors[constants.e.BLACK] = constants.i.WHITE, _logoColors[constants.e.BLACK] = constants.i.WHITE, 
             _logoColors),
-            tagLineColors: (_tagLineColors = {}, _tagLineColors[constants.f.GOLD] = constants.o.BLUE, 
-            _tagLineColors[constants.f.SILVER] = constants.o.BLUE, _tagLineColors[constants.f.BLUE] = constants.o.BLUE, 
-            _tagLineColors[constants.f.BLACK] = constants.o.BLACK, _tagLineColors[constants.f.DARKBLUE] = constants.o.BLUE, 
+            tagLineColors: (_tagLineColors = {}, _tagLineColors[constants.e.GOLD] = constants.n.BLUE, 
+            _tagLineColors[constants.e.SILVER] = constants.n.BLUE, _tagLineColors[constants.e.BLUE] = constants.n.BLUE, 
+            _tagLineColors[constants.e.BLACK] = constants.n.BLACK, _tagLineColors[constants.e.DARKBLUE] = constants.n.BLUE, 
             _tagLineColors),
-            secondaryColors: (_secondaryColors = {}, _secondaryColors[constants.f.GOLD] = constants.f.BLUE, 
-            _secondaryColors[constants.f.SILVER] = constants.f.BLUE, _secondaryColors[constants.f.BLUE] = constants.f.SILVER, 
-            _secondaryColors[constants.f.BLACK] = constants.f.BLACK, _secondaryColors[constants.f.DARKBLUE] = constants.f.SILVER, 
+            secondaryColors: (_secondaryColors = {}, _secondaryColors[constants.e.GOLD] = constants.e.BLUE, 
+            _secondaryColors[constants.e.SILVER] = constants.e.BLUE, _secondaryColors[constants.e.BLUE] = constants.e.SILVER, 
+            _secondaryColors[constants.e.BLACK] = constants.e.BLACK, _secondaryColors[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors),
             tag: "{ content: safer_tag }",
             dualTag: "{ content: dual_tag|safer_tag }",
             defaultLocale: "en_US",
-            defaultLabel: constants.g.CHECKOUT,
-            defaultVerticalLabel: constants.g.PAYPAL,
-            defaultColor: constants.f.GOLD,
-            defaultSize: constants.m.SMALL,
-            defaultVerticalSize: constants.m.MEDIUM,
-            defaultShape: constants.l.PILL,
-            defaultLayout: constants.h.HORIZONTAL,
+            defaultLabel: constants.f.CHECKOUT,
+            defaultVerticalLabel: constants.f.PAYPAL,
+            defaultColor: constants.e.GOLD,
+            defaultSize: constants.l.SMALL,
+            defaultVerticalSize: constants.l.MEDIUM,
+            defaultShape: constants.k.PILL,
+            defaultLayout: constants.g.HORIZONTAL,
             defaultBranding: !0,
             defaultVerticalBranding: !0,
             defaultFundingIcons: !1,
             defaultTagline: !0,
             defaultDual: "",
-            minimumSize: constants.m.TINY,
-            minimumVerticalSize: constants.m.MEDIUM,
-            maximumSize: constants.m.HUGE,
-            maximumVerticalSize: constants.m.HUGE,
+            minimumSize: constants.l.TINY,
+            minimumVerticalSize: constants.l.MEDIUM,
+            maximumSize: constants.l.HUGE,
+            maximumVerticalSize: constants.l.HUGE,
             minHorizontalButtons: 1,
             minVerticalButtons: 1,
             maxHorizontalButtons: 2,
@@ -11127,206 +11198,251 @@
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.g.PAYPAL] = {
-            label: "{ logo: " + constants.i.PP + " } { logo: " + constants.i.PAYPAL + " }",
-            logoLabel: "{ logo: " + constants.i.PP + " } { logo: " + constants.i.PAYPAL + " }",
+        }, _BUTTON_CONFIG[constants.f.PAYPAL] = {
+            label: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
+            logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
             allowPrimary: !0,
             allowPrimaryVertical: !0,
             allowPrimaryHorizontal: !0
-        }, _BUTTON_CONFIG[constants.g.CHECKOUT] = {
+        }, _BUTTON_CONFIG[constants.f.CHECKOUT] = {
             label: "{ content: checkout }",
-            logoLabel: "{ logo: " + constants.i.PP + " } { logo: " + constants.i.PAYPAL + " }",
+            logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
             allowPrimary: !0,
             allowPrimaryVertical: !0,
             allowPrimaryHorizontal: !0
-        }, _BUTTON_CONFIG[constants.g.PAY] = {
+        }, _BUTTON_CONFIG[constants.f.PAY] = {
             label: "{ content: pay }",
-            logoLabel: "{ logo: " + constants.i.PP + " } { logo: " + constants.i.PAYPAL + " }",
+            logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
             allowPrimary: !0,
             allowPrimaryVertical: !0,
             allowPrimaryHorizontal: !0
-        }, _BUTTON_CONFIG[constants.g.BUYNOW] = {
+        }, _BUTTON_CONFIG[constants.f.BUYNOW] = {
             label: "{ content: buynow }",
-            logoLabel: "{ logo: " + constants.i.PP + " } { logo: " + constants.i.PAYPAL + " }",
+            logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
             defaultBranding: void 0,
             allowPrimary: !0,
             allowPrimaryVertical: !0,
             allowPrimaryHorizontal: !0,
             allowUnbranded: !0
-        }, _BUTTON_CONFIG[constants.g.INSTALLMENT] = {
+        }, _BUTTON_CONFIG[constants.f.INSTALLMENT] = {
             label: function(style) {
                 return "{ content: " + (style.installmentperiod ? "installment_period" : "installment") + " }";
             },
-            logoLabel: "{ logo: " + constants.i.PP + " } { logo: " + constants.i.PAYPAL + " }",
+            logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
             allowPrimary: !0,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !0,
             allowSecondaryVertical: !1,
             allowSecondaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.g.CREDIT] = {
+        }, _BUTTON_CONFIG[constants.f.CREDIT] = {
             label: function(_ref) {
-                return _ref.locale.country === constants.s.DE ? "{ logo: " + constants.i.CREDIT + " }" : "{ logo: " + constants.i.PP + " } { logo: " + constants.i.PAYPAL + " } { logo: " + constants.i.CREDIT + " }";
+                return _ref.locale.country === constants.r.DE ? "{ logo: " + constants.h.CREDIT + " }" : "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " } { logo: " + constants.h.CREDIT + " }";
             },
             logoLabel: function(_ref2) {
-                return _ref2.locale.country === constants.s.DE ? "{ logo: " + constants.i.CREDIT + " }" : "{ logo: " + constants.i.PP + " } { logo: " + constants.i.PAYPAL + " } { logo: " + constants.i.CREDIT + " }";
+                return _ref2.locale.country === constants.r.DE ? "{ logo: " + constants.h.CREDIT + " }" : "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " } { logo: " + constants.h.CREDIT + " }";
             },
             tag: "{ content: later_tag }",
-            colors: [ constants.f.DARKBLUE, constants.f.BLACK ],
-            logoColors: (_logoColors2 = {}, _logoColors2[constants.f.BLACK] = constants.j.WHITE, 
-            _logoColors2[constants.f.DARKBLUE] = constants.j.WHITE, _logoColors2),
-            secondaryColors: (_secondaryColors2 = {}, _secondaryColors2[constants.f.GOLD] = constants.f.DARKBLUE, 
-            _secondaryColors2[constants.f.BLUE] = constants.f.DARKBLUE, _secondaryColors2[constants.f.SILVER] = constants.f.DARKBLUE, 
-            _secondaryColors2[constants.f.BLACK] = constants.f.BLACK, _secondaryColors2),
-            defaultColor: constants.f.DARKBLUE,
+            colors: [ constants.e.DARKBLUE, constants.e.BLACK ],
+            logoColors: (_logoColors2 = {}, _logoColors2[constants.e.BLACK] = constants.i.WHITE, 
+            _logoColors2[constants.e.DARKBLUE] = constants.i.WHITE, _logoColors2),
+            secondaryColors: (_secondaryColors2 = {}, _secondaryColors2[constants.e.GOLD] = constants.e.DARKBLUE, 
+            _secondaryColors2[constants.e.BLUE] = constants.e.DARKBLUE, _secondaryColors2[constants.e.SILVER] = constants.e.DARKBLUE, 
+            _secondaryColors2[constants.e.BLACK] = constants.e.BLACK, _secondaryColors2),
+            defaultColor: constants.e.DARKBLUE,
             allowPrimary: !0,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1,
             allowFundingIcons: !1
-        }, _BUTTON_CONFIG[constants.g.VENMO] = {
-            label: "{ logo: " + constants.i.VENMO + " }",
-            logoLabel: "{ logo: " + constants.i.VENMO + " }",
-            defaultColor: constants.f.SILVER,
-            colors: [ constants.f.BLUE, constants.f.SILVER, constants.f.BLACK ],
-            logoColors: (_logoColors3 = {}, _logoColors3[constants.f.BLUE] = constants.j.WHITE, 
-            _logoColors3[constants.f.SILVER] = constants.j.BLUE, _logoColors3[constants.f.BLACK] = constants.j.WHITE, 
+        }, _BUTTON_CONFIG[constants.f.VENMO] = {
+            label: "{ logo: " + constants.h.VENMO + " }",
+            logoLabel: "{ logo: " + constants.h.VENMO + " }",
+            defaultColor: constants.e.SILVER,
+            colors: [ constants.e.BLUE, constants.e.SILVER, constants.e.BLACK ],
+            logoColors: (_logoColors3 = {}, _logoColors3[constants.e.BLUE] = constants.i.WHITE, 
+            _logoColors3[constants.e.SILVER] = constants.i.BLUE, _logoColors3[constants.e.BLACK] = constants.i.WHITE, 
             _logoColors3),
-            secondaryColors: (_secondaryColors3 = {}, _secondaryColors3[constants.f.GOLD] = constants.f.BLUE, 
-            _secondaryColors3[constants.f.BLUE] = constants.f.SILVER, _secondaryColors3[constants.f.SILVER] = constants.f.BLUE, 
-            _secondaryColors3[constants.f.BLACK] = constants.f.BLACK, _secondaryColors3[constants.f.DARKBLUE] = constants.f.SILVER, 
+            secondaryColors: (_secondaryColors3 = {}, _secondaryColors3[constants.e.GOLD] = constants.e.BLUE, 
+            _secondaryColors3[constants.e.BLUE] = constants.e.SILVER, _secondaryColors3[constants.e.SILVER] = constants.e.BLUE, 
+            _secondaryColors3[constants.e.BLACK] = constants.e.BLACK, _secondaryColors3[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors3),
             allowPrimary: !0,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !0
-        }, _BUTTON_CONFIG[constants.g.IDEAL] = {
-            label: "{ logo: " + constants.i.IDEAL + " } Online betalen",
-            logoLabel: "{ logo: " + constants.i.IDEAL + " } Online betalen",
-            defaultColor: constants.f.SILVER,
-            colors: [ constants.f.SILVER, constants.f.BLACK ],
-            logoColors: (_logoColors4 = {}, _logoColors4[constants.f.SILVER] = constants.j.BLACK, 
-            _logoColors4[constants.f.BLACK] = constants.j.WHITE, _logoColors4),
-            secondaryColors: (_secondaryColors4 = {}, _secondaryColors4[constants.f.GOLD] = constants.f.SILVER, 
-            _secondaryColors4[constants.f.BLUE] = constants.f.SILVER, _secondaryColors4[constants.f.SILVER] = constants.f.SILVER, 
-            _secondaryColors4[constants.f.BLACK] = constants.f.BLACK, _secondaryColors4[constants.f.DARKBLUE] = constants.f.SILVER, 
+        }, _BUTTON_CONFIG[constants.f.IDEAL] = {
+            label: "{ logo: " + constants.h.IDEAL + " } Online betalen",
+            logoLabel: "{ logo: " + constants.h.IDEAL + " } Online betalen",
+            defaultColor: constants.e.SILVER,
+            colors: [ constants.e.SILVER, constants.e.BLACK ],
+            logoColors: (_logoColors4 = {}, _logoColors4[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors4[constants.e.BLACK] = constants.i.WHITE, _logoColors4),
+            secondaryColors: (_secondaryColors4 = {}, _secondaryColors4[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors4[constants.e.BLUE] = constants.e.SILVER, _secondaryColors4[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors4[constants.e.BLACK] = constants.e.BLACK, _secondaryColors4[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors4),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.g.ELV] = {
-            label: "{ logo: " + constants.i.ELV + " }",
-            logoLabel: "{ logo: " + constants.i.ELV + " }",
-            defaultColor: constants.f.SILVER,
-            colors: [ constants.f.SILVER, constants.f.BLACK ],
-            logoColors: (_logoColors5 = {}, _logoColors5[constants.f.SILVER] = constants.j.BLACK, 
-            _logoColors5[constants.f.BLACK] = constants.j.WHITE, _logoColors5),
-            secondaryColors: (_secondaryColors5 = {}, _secondaryColors5[constants.f.GOLD] = constants.f.SILVER, 
-            _secondaryColors5[constants.f.BLUE] = constants.f.SILVER, _secondaryColors5[constants.f.SILVER] = constants.f.SILVER, 
-            _secondaryColors5[constants.f.BLACK] = constants.f.BLACK, _secondaryColors5[constants.f.DARKBLUE] = constants.f.SILVER, 
+        }, _BUTTON_CONFIG[constants.f.ELV] = {
+            label: "{ logo: " + constants.h.ELV + " }",
+            logoLabel: "{ logo: " + constants.h.ELV + " }",
+            defaultColor: constants.e.SILVER,
+            colors: [ constants.e.SILVER, constants.e.BLACK ],
+            logoColors: (_logoColors5 = {}, _logoColors5[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors5[constants.e.BLACK] = constants.i.WHITE, _logoColors5),
+            secondaryColors: (_secondaryColors5 = {}, _secondaryColors5[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors5[constants.e.BLUE] = constants.e.SILVER, _secondaryColors5[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors5[constants.e.BLACK] = constants.e.BLACK, _secondaryColors5[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors5),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.g.BANCONTACT] = {
-            label: "{ logo: " + constants.i.BANCONTACT + " }",
-            logoLabel: "{ logo: " + constants.i.BANCONTACT + " }",
-            defaultColor: constants.f.SILVER,
-            colors: [ constants.f.SILVER, constants.f.BLACK ],
-            logoColors: (_logoColors6 = {}, _logoColors6[constants.f.SILVER] = constants.j.BLACK, 
-            _logoColors6[constants.f.BLACK] = constants.j.WHITE, _logoColors6),
-            secondaryColors: (_secondaryColors6 = {}, _secondaryColors6[constants.f.GOLD] = constants.f.SILVER, 
-            _secondaryColors6[constants.f.BLUE] = constants.f.SILVER, _secondaryColors6[constants.f.SILVER] = constants.f.SILVER, 
-            _secondaryColors6[constants.f.BLACK] = constants.f.BLACK, _secondaryColors6[constants.f.DARKBLUE] = constants.f.SILVER, 
+        }, _BUTTON_CONFIG[constants.f.BANCONTACT] = {
+            label: "{ logo: " + constants.h.BANCONTACT + " }",
+            logoLabel: "{ logo: " + constants.h.BANCONTACT + " }",
+            defaultColor: constants.e.SILVER,
+            colors: [ constants.e.SILVER, constants.e.BLACK ],
+            logoColors: (_logoColors6 = {}, _logoColors6[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors6[constants.e.BLACK] = constants.i.WHITE, _logoColors6),
+            secondaryColors: (_secondaryColors6 = {}, _secondaryColors6[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors6[constants.e.BLUE] = constants.e.SILVER, _secondaryColors6[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors6[constants.e.BLACK] = constants.e.BLACK, _secondaryColors6[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors6),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.g.GIROPAY] = {
-            label: "{ logo: " + constants.i.GIROPAY + " }",
-            logoLabel: "{ logo: " + constants.i.GIROPAY + " }",
-            defaultColor: constants.f.SILVER,
-            colors: [ constants.f.SILVER, constants.f.BLACK ],
-            logoColors: (_logoColors7 = {}, _logoColors7[constants.f.SILVER] = constants.j.BLACK, 
-            _logoColors7[constants.f.BLACK] = constants.j.WHITE, _logoColors7),
-            secondaryColors: (_secondaryColors7 = {}, _secondaryColors7[constants.f.GOLD] = constants.f.SILVER, 
-            _secondaryColors7[constants.f.BLUE] = constants.f.SILVER, _secondaryColors7[constants.f.SILVER] = constants.f.SILVER, 
-            _secondaryColors7[constants.f.BLACK] = constants.f.BLACK, _secondaryColors7[constants.f.DARKBLUE] = constants.f.SILVER, 
+        }, _BUTTON_CONFIG[constants.f.GIROPAY] = {
+            label: "{ logo: " + constants.h.GIROPAY + " }",
+            logoLabel: "{ logo: " + constants.h.GIROPAY + " }",
+            defaultColor: constants.e.SILVER,
+            colors: [ constants.e.SILVER, constants.e.BLACK ],
+            logoColors: (_logoColors7 = {}, _logoColors7[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors7[constants.e.BLACK] = constants.i.WHITE, _logoColors7),
+            secondaryColors: (_secondaryColors7 = {}, _secondaryColors7[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors7[constants.e.BLUE] = constants.e.SILVER, _secondaryColors7[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors7[constants.e.BLACK] = constants.e.BLACK, _secondaryColors7[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors7),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.g.SOFORT] = {
-            label: "{ logo: " + constants.i.SOFORT + " }",
-            logoLabel: "{ logo: " + constants.i.SOFORT + " }",
-            defaultColor: constants.f.SILVER,
-            colors: [ constants.f.SILVER, constants.f.BLACK ],
-            logoColors: (_logoColors8 = {}, _logoColors8[constants.f.SILVER] = constants.j.BLACK, 
-            _logoColors8[constants.f.BLACK] = constants.j.WHITE, _logoColors8),
-            secondaryColors: (_secondaryColors8 = {}, _secondaryColors8[constants.f.GOLD] = constants.f.SILVER, 
-            _secondaryColors8[constants.f.BLUE] = constants.f.SILVER, _secondaryColors8[constants.f.SILVER] = constants.f.SILVER, 
-            _secondaryColors8[constants.f.BLACK] = constants.f.BLACK, _secondaryColors8[constants.f.DARKBLUE] = constants.f.SILVER, 
+        }, _BUTTON_CONFIG[constants.f.SOFORT] = {
+            label: "{ logo: " + constants.h.SOFORT + " }",
+            logoLabel: "{ logo: " + constants.h.SOFORT + " }",
+            defaultColor: constants.e.SILVER,
+            colors: [ constants.e.SILVER, constants.e.BLACK ],
+            logoColors: (_logoColors8 = {}, _logoColors8[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors8[constants.e.BLACK] = constants.i.WHITE, _logoColors8),
+            secondaryColors: (_secondaryColors8 = {}, _secondaryColors8[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors8[constants.e.BLUE] = constants.e.SILVER, _secondaryColors8[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors8[constants.e.BLACK] = constants.e.BLACK, _secondaryColors8[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors8),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.g.EPS] = {
-            label: "{ logo: " + constants.i.EPS + " }",
-            logoLabel: "{ logo: " + constants.i.EPS + " }",
-            defaultColor: constants.f.SILVER,
-            colors: [ constants.f.SILVER, constants.f.BLACK ],
-            logoColors: (_logoColors9 = {}, _logoColors9[constants.f.SILVER] = constants.j.BLACK, 
-            _logoColors9[constants.f.BLACK] = constants.j.WHITE, _logoColors9),
-            secondaryColors: (_secondaryColors9 = {}, _secondaryColors9[constants.f.GOLD] = constants.f.SILVER, 
-            _secondaryColors9[constants.f.BLUE] = constants.f.SILVER, _secondaryColors9[constants.f.SILVER] = constants.f.SILVER, 
-            _secondaryColors9[constants.f.BLACK] = constants.f.BLACK, _secondaryColors9[constants.f.DARKBLUE] = constants.f.SILVER, 
+        }, _BUTTON_CONFIG[constants.f.EPS] = {
+            label: "{ logo: " + constants.h.EPS + " }",
+            logoLabel: "{ logo: " + constants.h.EPS + " }",
+            defaultColor: constants.e.SILVER,
+            colors: [ constants.e.SILVER, constants.e.BLACK ],
+            logoColors: (_logoColors9 = {}, _logoColors9[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors9[constants.e.BLACK] = constants.i.WHITE, _logoColors9),
+            secondaryColors: (_secondaryColors9 = {}, _secondaryColors9[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors9[constants.e.BLUE] = constants.e.SILVER, _secondaryColors9[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors9[constants.e.BLACK] = constants.e.BLACK, _secondaryColors9[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors9),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.g.MYBANK] = {
-            label: "{ logo: " + constants.i.MYBANK + " }",
-            logoLabel: "{ logo: " + constants.i.MYBANK + " }",
-            defaultColor: constants.f.SILVER,
-            colors: [ constants.f.SILVER, constants.f.BLACK ],
-            logoColors: (_logoColors10 = {}, _logoColors10[constants.f.SILVER] = constants.j.BLACK, 
-            _logoColors10[constants.f.BLACK] = constants.j.WHITE, _logoColors10),
-            secondaryColors: (_secondaryColors10 = {}, _secondaryColors10[constants.f.GOLD] = constants.f.SILVER, 
-            _secondaryColors10[constants.f.BLUE] = constants.f.SILVER, _secondaryColors10[constants.f.SILVER] = constants.f.SILVER, 
-            _secondaryColors10[constants.f.BLACK] = constants.f.BLACK, _secondaryColors10[constants.f.DARKBLUE] = constants.f.SILVER, 
+        }, _BUTTON_CONFIG[constants.f.MYBANK] = {
+            label: "{ logo: " + constants.h.MYBANK + " }",
+            logoLabel: "{ logo: " + constants.h.MYBANK + " }",
+            defaultColor: constants.e.SILVER,
+            colors: [ constants.e.SILVER, constants.e.BLACK ],
+            logoColors: (_logoColors10 = {}, _logoColors10[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors10[constants.e.BLACK] = constants.i.WHITE, _logoColors10),
+            secondaryColors: (_secondaryColors10 = {}, _secondaryColors10[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors10[constants.e.BLUE] = constants.e.SILVER, _secondaryColors10[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors10[constants.e.BLACK] = constants.e.BLACK, _secondaryColors10[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors10),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[constants.g.CARD] = {
-            label: "{ cards }",
-            logoLabel: "{ cards }",
-            defaultColor: constants.f.SILVER,
-            colors: [ constants.f.TRANSPARENT ],
-            logoColors: (_logoColors11 = {}, _logoColors11[constants.f.TRANSPARENT] = constants.j.BLACK, 
-            _logoColors11),
-            secondaryColors: (_secondaryColors11 = {}, _secondaryColors11[constants.f.GOLD] = constants.f.TRANSPARENT, 
-            _secondaryColors11[constants.f.BLUE] = constants.f.TRANSPARENT, _secondaryColors11[constants.f.SILVER] = constants.f.TRANSPARENT, 
-            _secondaryColors11[constants.f.BLACK] = constants.f.TRANSPARENT, _secondaryColors11[constants.f.DARKBLUE] = constants.f.TRANSPARENT, 
+        }, _BUTTON_CONFIG[constants.f.P24] = {
+            label: "{ logo: " + constants.h.P24 + " }",
+            logoLabel: "{ logo: " + constants.h.P24 + " }",
+            defaultColor: constants.e.SILVER,
+            colors: [ constants.e.SILVER, constants.e.BLACK ],
+            logoColors: (_logoColors11 = {}, _logoColors11[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors11[constants.e.BLACK] = constants.i.WHITE, _logoColors11),
+            secondaryColors: (_secondaryColors11 = {}, _secondaryColors11[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors11[constants.e.BLUE] = constants.e.SILVER, _secondaryColors11[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors11[constants.e.BLACK] = constants.e.BLACK, _secondaryColors11[constants.e.DARKBLUE] = constants.e.SILVER, 
             _secondaryColors11),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG), FUNDING_TO_DEFAULT_LABEL = ((_FUNDING_TO_DEFAULT_L = {})[constants.w.PAYPAL] = constants.g.PAYPAL, 
-        _FUNDING_TO_DEFAULT_L[constants.w.VENMO] = constants.g.VENMO, _FUNDING_TO_DEFAULT_L[constants.w.CARD] = constants.g.CARD, 
-        _FUNDING_TO_DEFAULT_L[constants.w.CREDIT] = constants.g.CREDIT, _FUNDING_TO_DEFAULT_L[constants.w.IDEAL] = constants.g.IDEAL, 
-        _FUNDING_TO_DEFAULT_L[constants.w.ELV] = constants.g.ELV, _FUNDING_TO_DEFAULT_L[constants.w.BANCONTACT] = constants.g.BANCONTACT, 
-        _FUNDING_TO_DEFAULT_L[constants.w.GIROPAY] = constants.g.GIROPAY, _FUNDING_TO_DEFAULT_L[constants.w.SOFORT] = constants.g.SOFORT, 
-        _FUNDING_TO_DEFAULT_L[constants.w.EPS] = constants.g.EPS, _FUNDING_TO_DEFAULT_L[constants.w.MYBANK] = constants.g.MYBANK, 
-        _FUNDING_TO_DEFAULT_L), LABEL_TO_FUNDING = ((_LABEL_TO_FUNDING = {})[constants.g.PAYPAL] = constants.w.PAYPAL, 
-        _LABEL_TO_FUNDING[constants.g.CHECKOUT] = constants.w.PAYPAL, _LABEL_TO_FUNDING[constants.g.PAY] = constants.w.PAYPAL, 
-        _LABEL_TO_FUNDING[constants.g.BUYNOW] = constants.w.PAYPAL, _LABEL_TO_FUNDING[constants.g.INSTALLMENT] = constants.w.PAYPAL, 
-        _LABEL_TO_FUNDING[constants.g.CARD] = constants.w.CARD, _LABEL_TO_FUNDING[constants.g.CREDIT] = constants.w.CREDIT, 
-        _LABEL_TO_FUNDING[constants.g.VENMO] = constants.w.VENMO, _LABEL_TO_FUNDING[constants.g.IDEAL] = constants.w.IDEAL, 
-        _LABEL_TO_FUNDING[constants.g.BANCONTACT] = constants.w.BANCONTACT, _LABEL_TO_FUNDING[constants.g.GIROPAY] = constants.w.GIROPAY, 
-        _LABEL_TO_FUNDING[constants.g.GIROPAY] = constants.w.EPS, _LABEL_TO_FUNDING[constants.g.SOFORT] = constants.w.SOFORT, 
-        _LABEL_TO_FUNDING[constants.g.MYBANK] = constants.w.MYBANK, _LABEL_TO_FUNDING), BUTTON_RELATIVE_STYLE = {
+        }, _BUTTON_CONFIG[constants.f.ZIMPLER] = {
+            label: "{ logo: " + constants.h.ZIMPLER + " }",
+            logoLabel: "{ logo: " + constants.h.ZIMPLER + " }",
+            defaultColor: constants.e.SILVER,
+            colors: [ constants.e.SILVER, constants.e.BLACK ],
+            logoColors: (_logoColors12 = {}, _logoColors12[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors12[constants.e.BLACK] = constants.i.WHITE, _logoColors12),
+            secondaryColors: (_secondaryColors12 = {}, _secondaryColors12[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors12[constants.e.BLUE] = constants.e.SILVER, _secondaryColors12[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors12[constants.e.BLACK] = constants.e.BLACK, _secondaryColors12[constants.e.DARKBLUE] = constants.e.SILVER, 
+            _secondaryColors12),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[constants.f.WECHATPAY] = {
+            label: "{ logo: " + constants.h.WECHATPAY + " }",
+            logoLabel: "{ logo: " + constants.h.WECHATPAY + " }",
+            defaultColor: constants.e.SILVER,
+            colors: [ constants.e.SILVER, constants.e.BLACK ],
+            logoColors: (_logoColors13 = {}, _logoColors13[constants.e.SILVER] = constants.i.BLACK, 
+            _logoColors13[constants.e.BLACK] = constants.i.WHITE, _logoColors13),
+            secondaryColors: (_secondaryColors13 = {}, _secondaryColors13[constants.e.GOLD] = constants.e.SILVER, 
+            _secondaryColors13[constants.e.BLUE] = constants.e.SILVER, _secondaryColors13[constants.e.SILVER] = constants.e.SILVER, 
+            _secondaryColors13[constants.e.BLACK] = constants.e.BLACK, _secondaryColors13[constants.e.DARKBLUE] = constants.e.SILVER, 
+            _secondaryColors13),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[constants.f.CARD] = {
+            label: "{ cards }",
+            logoLabel: "{ cards }",
+            defaultColor: constants.e.SILVER,
+            colors: [ constants.e.TRANSPARENT ],
+            logoColors: (_logoColors14 = {}, _logoColors14[constants.e.TRANSPARENT] = constants.i.BLACK, 
+            _logoColors14),
+            secondaryColors: (_secondaryColors14 = {}, _secondaryColors14[constants.e.GOLD] = constants.e.TRANSPARENT, 
+            _secondaryColors14[constants.e.BLUE] = constants.e.TRANSPARENT, _secondaryColors14[constants.e.SILVER] = constants.e.TRANSPARENT, 
+            _secondaryColors14[constants.e.BLACK] = constants.e.TRANSPARENT, _secondaryColors14[constants.e.DARKBLUE] = constants.e.TRANSPARENT, 
+            _secondaryColors14),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG), FUNDING_TO_DEFAULT_LABEL = ((_FUNDING_TO_DEFAULT_L = {})[constants.v.PAYPAL] = constants.f.PAYPAL, 
+        _FUNDING_TO_DEFAULT_L[constants.v.VENMO] = constants.f.VENMO, _FUNDING_TO_DEFAULT_L[constants.v.CARD] = constants.f.CARD, 
+        _FUNDING_TO_DEFAULT_L[constants.v.CREDIT] = constants.f.CREDIT, _FUNDING_TO_DEFAULT_L[constants.v.IDEAL] = constants.f.IDEAL, 
+        _FUNDING_TO_DEFAULT_L[constants.v.ELV] = constants.f.ELV, _FUNDING_TO_DEFAULT_L[constants.v.BANCONTACT] = constants.f.BANCONTACT, 
+        _FUNDING_TO_DEFAULT_L[constants.v.GIROPAY] = constants.f.GIROPAY, _FUNDING_TO_DEFAULT_L[constants.v.SOFORT] = constants.f.SOFORT, 
+        _FUNDING_TO_DEFAULT_L[constants.v.EPS] = constants.f.EPS, _FUNDING_TO_DEFAULT_L[constants.v.P24] = constants.f.P24, 
+        _FUNDING_TO_DEFAULT_L[constants.v.ZIMPLER] = constants.f.ZIMPLER, _FUNDING_TO_DEFAULT_L[constants.v.WECHATPAY] = constants.f.WECHATPAY, 
+        _FUNDING_TO_DEFAULT_L[constants.v.MYBANK] = constants.f.MYBANK, _FUNDING_TO_DEFAULT_L), LABEL_TO_FUNDING = ((_LABEL_TO_FUNDING = {})[constants.f.PAYPAL] = constants.v.PAYPAL, 
+        _LABEL_TO_FUNDING[constants.f.CHECKOUT] = constants.v.PAYPAL, _LABEL_TO_FUNDING[constants.f.PAY] = constants.v.PAYPAL, 
+        _LABEL_TO_FUNDING[constants.f.BUYNOW] = constants.v.PAYPAL, _LABEL_TO_FUNDING[constants.f.INSTALLMENT] = constants.v.PAYPAL, 
+        _LABEL_TO_FUNDING[constants.f.CARD] = constants.v.CARD, _LABEL_TO_FUNDING[constants.f.CREDIT] = constants.v.CREDIT, 
+        _LABEL_TO_FUNDING[constants.f.VENMO] = constants.v.VENMO, _LABEL_TO_FUNDING[constants.f.IDEAL] = constants.v.IDEAL, 
+        _LABEL_TO_FUNDING[constants.f.BANCONTACT] = constants.v.BANCONTACT, _LABEL_TO_FUNDING[constants.f.GIROPAY] = constants.v.GIROPAY, 
+        _LABEL_TO_FUNDING[constants.f.GIROPAY] = constants.v.EPS, _LABEL_TO_FUNDING[constants.f.SOFORT] = constants.v.SOFORT, 
+        _LABEL_TO_FUNDING[constants.f.P24] = constants.v.P24, _LABEL_TO_FUNDING[constants.f.ZIMPLER] = constants.v.ZIMPLER, 
+        _LABEL_TO_FUNDING[constants.f.WECHATPAY] = constants.v.WECHATPAY, _LABEL_TO_FUNDING[constants.f.MYBANK] = constants.v.MYBANK, 
+        _LABEL_TO_FUNDING), BUTTON_RELATIVE_STYLE = {
             FUNDINGICONS: 100,
             TAGLINE: 50,
             VERTICAL_MARGIN: 30
-        }, BUTTON_STYLE = ((_BUTTON_STYLE = {})[constants.m.TINY] = {
+        }, BUTTON_STYLE = ((_BUTTON_STYLE = {})[constants.l.TINY] = {
             defaultWidth: 75,
             defaultHeight: 25,
             minWidth: 75,
@@ -11335,7 +11451,7 @@
             maxHeight: 30,
             allowFunding: !0,
             allowTagline: !1
-        }, _BUTTON_STYLE[constants.m.SMALL] = {
+        }, _BUTTON_STYLE[constants.l.SMALL] = {
             defaultWidth: 150,
             defaultHeight: 25,
             minWidth: 150,
@@ -11344,7 +11460,7 @@
             maxHeight: 55,
             allowFunding: !0,
             allowTagline: !0
-        }, _BUTTON_STYLE[constants.m.MEDIUM] = {
+        }, _BUTTON_STYLE[constants.l.MEDIUM] = {
             defaultWidth: 250,
             defaultHeight: 35,
             minWidth: 200,
@@ -11353,7 +11469,7 @@
             maxHeight: 55,
             allowFunding: !0,
             allowTagline: !0
-        }, _BUTTON_STYLE[constants.m.LARGE] = {
+        }, _BUTTON_STYLE[constants.l.LARGE] = {
             defaultWidth: 350,
             defaultHeight: 45,
             minWidth: 300,
@@ -11362,7 +11478,7 @@
             maxHeight: 55,
             allowFunding: !0,
             allowTagline: !0
-        }, _BUTTON_STYLE[constants.m.HUGE] = {
+        }, _BUTTON_STYLE[constants.l.HUGE] = {
             defaultWidth: 500,
             defaultHeight: 55,
             minWidth: 500,
@@ -11373,13 +11489,13 @@
             allowTagline: !0
         }, _BUTTON_STYLE);
         function labelToFunding(label) {
-            return label ? LABEL_TO_FUNDING[label] : constants.w.PAYPAL;
+            return label ? LABEL_TO_FUNDING[label] : constants.v.PAYPAL;
         }
         function getButtonConfig(label, key, def) {
             return function(conf, category, key, def) {
                 var categoryConfig = conf[category];
                 if (categoryConfig && categoryConfig.hasOwnProperty(key)) return categoryConfig[key];
-                if (conf[constants.t] && conf[constants.t].hasOwnProperty(key)) return conf[constants.t][key];
+                if (conf[constants.s] && conf[constants.s].hasOwnProperty(key)) return conf[constants.s][key];
                 if (arguments.length >= 4) return def;
                 throw new Error("No value found for " + category + ":" + key);
             }(BUTTON_CONFIG, label, key, def);
@@ -11397,11 +11513,11 @@
             (funding = funding || {}).allowed = funding.allowed || [];
             funding.disallowed = funding.disallowed || [];
             funding.remembered = funding.remembered || [];
-            var label = style[constants.n.LABEL] || getButtonConfig("DEFAULT", style.layout === constants.h.VERTICAL ? "defaultVerticalLabel" : "defaultLabel"), layout = style[constants.n.LAYOUT] || getButtonConfig(label, "defaultLayout"), _style$BUTTON_STYLE_O = style[constants.n.SIZE], size = void 0 === _style$BUTTON_STYLE_O ? getButtonConfig(label, layout === constants.h.VERTICAL ? "defaultVerticalSize" : "defaultSize") : _style$BUTTON_STYLE_O, _style$BUTTON_STYLE_O2 = style[constants.n.COLOR], color = void 0 === _style$BUTTON_STYLE_O2 ? getButtonConfig(label, "defaultColor") : _style$BUTTON_STYLE_O2, _style$BUTTON_STYLE_O3 = style[constants.n.SHAPE], shape = void 0 === _style$BUTTON_STYLE_O3 ? getButtonConfig(label, "defaultShape") : _style$BUTTON_STYLE_O3, _style$BUTTON_STYLE_O4 = style[constants.n.BRANDING], branding = void 0 === _style$BUTTON_STYLE_O4 ? getButtonConfig(label, layout === constants.h.VERTICAL ? "defaultVerticalBranding" : "defaultBranding") : _style$BUTTON_STYLE_O4, _style$BUTTON_STYLE_O5 = style[constants.n.FUNDINGICONS], fundingicons = void 0 === _style$BUTTON_STYLE_O5 ? getButtonConfig(label, "defaultFundingIcons") : _style$BUTTON_STYLE_O5, _style$BUTTON_STYLE_O6 = style[constants.n.TAGLINE], tagline = void 0 === _style$BUTTON_STYLE_O6 ? getButtonConfig(label, "defaultTagline") : _style$BUTTON_STYLE_O6, max = style[constants.n.MAXBUTTONS], height = style[constants.n.HEIGHT], installmentperiod = style[constants.n.INSTALLMENTPERIOD];
+            var label = style[constants.m.LABEL] || getButtonConfig("DEFAULT", style.layout === constants.g.VERTICAL ? "defaultVerticalLabel" : "defaultLabel"), layout = style[constants.m.LAYOUT] || getButtonConfig(label, "defaultLayout"), _style$BUTTON_STYLE_O = style[constants.m.SIZE], size = void 0 === _style$BUTTON_STYLE_O ? getButtonConfig(label, layout === constants.g.VERTICAL ? "defaultVerticalSize" : "defaultSize") : _style$BUTTON_STYLE_O, _style$BUTTON_STYLE_O2 = style[constants.m.COLOR], color = void 0 === _style$BUTTON_STYLE_O2 ? getButtonConfig(label, "defaultColor") : _style$BUTTON_STYLE_O2, _style$BUTTON_STYLE_O3 = style[constants.m.SHAPE], shape = void 0 === _style$BUTTON_STYLE_O3 ? getButtonConfig(label, "defaultShape") : _style$BUTTON_STYLE_O3, _style$BUTTON_STYLE_O4 = style[constants.m.BRANDING], branding = void 0 === _style$BUTTON_STYLE_O4 ? getButtonConfig(label, layout === constants.g.VERTICAL ? "defaultVerticalBranding" : "defaultBranding") : _style$BUTTON_STYLE_O4, _style$BUTTON_STYLE_O5 = style[constants.m.FUNDINGICONS], fundingicons = void 0 === _style$BUTTON_STYLE_O5 ? getButtonConfig(label, "defaultFundingIcons") : _style$BUTTON_STYLE_O5, _style$BUTTON_STYLE_O6 = style[constants.m.TAGLINE], tagline = void 0 === _style$BUTTON_STYLE_O6 ? getButtonConfig(label, "defaultTagline") : _style$BUTTON_STYLE_O6, max = style[constants.m.MAXBUTTONS], height = style[constants.m.HEIGHT], installmentperiod = style[constants.m.INSTALLMENTPERIOD];
             max = function(_ref) {
                 var label = _ref.label, layout = _ref.layout, max = _ref.max;
-                if (!(layout === constants.h.HORIZONTAL ? getButtonConfig(label, "allowPrimaryHorizontal") : getButtonConfig(label, "allowPrimaryVertical"))) return 1;
-                var configMax = layout === constants.h.HORIZONTAL ? getButtonConfig(label, "maxHorizontalButtons") : getButtonConfig(label, "maxVerticalButtons");
+                if (!(layout === constants.g.HORIZONTAL ? getButtonConfig(label, "allowPrimaryHorizontal") : getButtonConfig(label, "allowPrimaryVertical"))) return 1;
+                var configMax = layout === constants.g.HORIZONTAL ? getButtonConfig(label, "maxHorizontalButtons") : getButtonConfig(label, "maxVerticalButtons");
                 return max ? Math.min(configMax, max) : configMax;
             }({
                 label: label,
@@ -11427,7 +11543,7 @@
                 fundingicons: fundingicons,
                 tagline: tagline = function(_ref2) {
                     var tagline = _ref2.tagline, branding = _ref2.branding, fundingicons = _ref2.fundingicons, layout = _ref2.layout;
-                    return Boolean(tagline && branding && !fundingicons && layout === constants.h.HORIZONTAL);
+                    return Boolean(tagline && branding && !fundingicons && layout === constants.g.HORIZONTAL);
                 }({
                     tagline: tagline,
                     branding: branding,
@@ -11457,43 +11573,43 @@
         function validateButtonStyle() {
             var style = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, props = arguments[1];
             if (!style) throw new Error("Expected props.style to be set");
-            var label = style[constants.n.LABEL] || getButtonConfig("DEFAULT", style[constants.n.LAYOUT] === constants.h.VERTICAL ? "defaultVerticalLabel" : "defaultLabel");
+            var label = style[constants.m.LABEL] || getButtonConfig("DEFAULT", style[constants.m.LAYOUT] === constants.g.VERTICAL ? "defaultVerticalLabel" : "defaultLabel");
             if (!BUTTON_CONFIG[label]) throw new Error("Invalid button label: " + label + ", expected: " + Object.keys(BUTTON_CONFIG[label]).join(", "));
-            var color = style[constants.n.COLOR], shape = style[constants.n.SHAPE], size = style[constants.n.SIZE], branding = style[constants.n.BRANDING], fundingicons = style[constants.n.FUNDINGICONS], tagline = style[constants.n.TAGLINE], layout = style[constants.n.LAYOUT], maxbuttons = style[constants.n.MAXBUTTONS], height = style[constants.n.HEIGHT];
-            if (color && -1 === getButtonConfig(label, "colors").indexOf(color)) throw new Error("Unexpected style." + constants.n.COLOR + " for " + label + " button: " + color + ", expected " + getButtonConfig(label, "colors").join(", "));
-            if (shape && -1 === getButtonConfig(label, "shapes").indexOf(shape)) throw new Error("Unexpected style." + constants.n.SHAPE + " for " + label + " button: " + shape + ", expected " + getButtonConfig(label, "shapes").join(", "));
-            if (size && -1 === getButtonConfig(label, "sizes").indexOf(size)) throw new Error("Unexpected style." + constants.n.SIZE + " for " + label + " button: " + size + ", expected " + getButtonConfig(label, "sizes").join(", "));
-            if (!1 === branding) throw new Error("style." + constants.n.BRANDING + ":false is not allowed");
-            if (fundingicons && !getButtonConfig(label, "allowFundingIcons")) throw new Error("style." + constants.n.FUNDINGICONS + ":true is not allowed for " + label + " button");
-            if (layout && -1 === getButtonConfig(label, "layouts").indexOf(layout)) throw new Error("Unexpected style." + constants.n.LAYOUT + " for " + label + " button: " + layout + ", expected " + getButtonConfig(label, "layouts").join(", "));
+            var color = style[constants.m.COLOR], shape = style[constants.m.SHAPE], size = style[constants.m.SIZE], branding = style[constants.m.BRANDING], fundingicons = style[constants.m.FUNDINGICONS], tagline = style[constants.m.TAGLINE], layout = style[constants.m.LAYOUT], maxbuttons = style[constants.m.MAXBUTTONS], height = style[constants.m.HEIGHT];
+            if (color && -1 === getButtonConfig(label, "colors").indexOf(color)) throw new Error("Unexpected style." + constants.m.COLOR + " for " + label + " button: " + color + ", expected " + getButtonConfig(label, "colors").join(", "));
+            if (shape && -1 === getButtonConfig(label, "shapes").indexOf(shape)) throw new Error("Unexpected style." + constants.m.SHAPE + " for " + label + " button: " + shape + ", expected " + getButtonConfig(label, "shapes").join(", "));
+            if (size && -1 === getButtonConfig(label, "sizes").indexOf(size)) throw new Error("Unexpected style." + constants.m.SIZE + " for " + label + " button: " + size + ", expected " + getButtonConfig(label, "sizes").join(", "));
+            if (!1 === branding) throw new Error("style." + constants.m.BRANDING + ":false is not allowed");
+            if (fundingicons && !getButtonConfig(label, "allowFundingIcons")) throw new Error("style." + constants.m.FUNDINGICONS + ":true is not allowed for " + label + " button");
+            if (layout && -1 === getButtonConfig(label, "layouts").indexOf(layout)) throw new Error("Unexpected style." + constants.m.LAYOUT + " for " + label + " button: " + layout + ", expected " + getButtonConfig(label, "layouts").join(", "));
             if (void 0 !== maxbuttons) {
-                if ("number" != typeof maxbuttons) throw new TypeError("Expected style." + constants.n.MAXBUTTONS + " to be a number, got: " + maxbuttons);
-                if (maxbuttons < 1) throw new Error("Expected style." + constants.n.MAXBUTTONS + " to be a at least 1, got: " + maxbuttons);
-                var minButtons = layout === constants.h.VERTICAL ? getButtonConfig(label, "minVerticalButtons") : getButtonConfig(label, "minHorizontalButtons");
-                if (maxbuttons < minButtons) throw new Error("Expected style." + constants.n.MAXBUTTONS + " to be no fewer than " + minButtons + ", got " + maxbuttons);
+                if ("number" != typeof maxbuttons) throw new TypeError("Expected style." + constants.m.MAXBUTTONS + " to be a number, got: " + maxbuttons);
+                if (maxbuttons < 1) throw new Error("Expected style." + constants.m.MAXBUTTONS + " to be a at least 1, got: " + maxbuttons);
+                var minButtons = layout === constants.g.VERTICAL ? getButtonConfig(label, "minVerticalButtons") : getButtonConfig(label, "minHorizontalButtons");
+                if (maxbuttons < minButtons) throw new Error("Expected style." + constants.m.MAXBUTTONS + " to be no fewer than " + minButtons + ", got " + maxbuttons);
             }
             if (void 0 !== height) {
-                if ("number" != typeof height) throw new TypeError("Expected style." + constants.n.HEIGHT + " to be a number, got: " + maxbuttons);
-                var buttonSize = size || getButtonConfig(label, style.layout === constants.h.VERTICAL ? "defaultVerticalSize" : "defaultSize"), _ref = size === constants.m.RESPONSIVE ? {
-                    minHeight: BUTTON_STYLE[constants.m.SMALL].minHeight,
-                    maxHeight: BUTTON_STYLE[constants.m.HUGE].maxHeight
+                if ("number" != typeof height) throw new TypeError("Expected style." + constants.m.HEIGHT + " to be a number, got: " + maxbuttons);
+                var buttonSize = size || getButtonConfig(label, style.layout === constants.g.VERTICAL ? "defaultVerticalSize" : "defaultSize"), _ref = size === constants.l.RESPONSIVE ? {
+                    minHeight: BUTTON_STYLE[constants.l.SMALL].minHeight,
+                    maxHeight: BUTTON_STYLE[constants.l.HUGE].maxHeight
                 } : BUTTON_STYLE[buttonSize], minHeight = _ref.minHeight, maxHeight = _ref.maxHeight;
-                if (height < minHeight || height > maxHeight) throw new Error("Expected style." + constants.n.HEIGHT + " to be between " + minHeight + "px and " + maxHeight + "px - got " + height + "px");
+                if (height < minHeight || height > maxHeight) throw new Error("Expected style." + constants.m.HEIGHT + " to be between " + minHeight + "px and " + maxHeight + "px - got " + height + "px");
             }
             if (!getButtonConfig(label, "allowPrimary")) throw new Error(label + " can not be used as primary button label");
-            if (layout === constants.h.VERTICAL) {
-                if (size && -1 === [ constants.m.MEDIUM, constants.m.LARGE, constants.m.RESPONSIVE ].indexOf(size)) throw new Error("Button must be at least " + constants.m.MEDIUM + " size for " + constants.h.VERTICAL + " layout");
-                if (!getButtonConfig(label, "allowPrimaryVertical")) throw new Error("style." + constants.n.LABEL + " option is not allowed for " + constants.h.VERTICAL + " layout - got " + label);
-                if (fundingicons) throw new Error("style." + constants.n.FUNDINGICONS + " not allowed for " + constants.h.VERTICAL + " layout - got " + fundingicons);
-                if (tagline) throw new Error("style." + constants.n.TAGLINE + " is not allowed for " + constants.h.VERTICAL + " layout - got " + tagline);
+            if (layout === constants.g.VERTICAL) {
+                if (size && -1 === [ constants.l.MEDIUM, constants.l.LARGE, constants.l.RESPONSIVE ].indexOf(size)) throw new Error("Button must be at least " + constants.l.MEDIUM + " size for " + constants.g.VERTICAL + " layout");
+                if (!getButtonConfig(label, "allowPrimaryVertical")) throw new Error("style." + constants.m.LABEL + " option is not allowed for " + constants.g.VERTICAL + " layout - got " + label);
+                if (fundingicons) throw new Error("style." + constants.m.FUNDINGICONS + " not allowed for " + constants.g.VERTICAL + " layout - got " + fundingicons);
+                if (tagline) throw new Error("style." + constants.m.TAGLINE + " is not allowed for " + constants.g.VERTICAL + " layout - got " + tagline);
             }
             !function() {
                 var style = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, country = (arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "en_US").split("_")[1], isInstallmentAllowedCountry = -1 !== constants.a.indexOf(country);
-                if (!isInstallmentAllowedCountry && style.label === constants.g.INSTALLMENT) throw new Error("Unexpected label: style." + style.label + " for country: " + country);
-                if (!isInstallmentAllowedCountry && style[constants.n.INSTALLMENTPERIOD]) throw new Error("style." + constants.n.INSTALLMENTPERIOD + " is invalid for country: " + country);
-                if (isInstallmentAllowedCountry && style[constants.n.INSTALLMENTPERIOD] && style.label !== constants.g.INSTALLMENT) throw new Error("style." + constants.n.INSTALLMENTPERIOD + " is invalid for label: style." + style.label);
-                if (isInstallmentAllowedCountry && style.label === constants.g.INSTALLMENT && style[constants.n.INSTALLMENTPERIOD] && "number" != typeof style[constants.n.INSTALLMENTPERIOD]) throw new Error("style." + constants.n.INSTALLMENTPERIOD + " is expected to be a number");
-                if (isInstallmentAllowedCountry && style.label === constants.g.INSTALLMENT && style[constants.n.INSTALLMENTPERIOD] && -1 === constants.b[country].indexOf(style[constants.n.INSTALLMENTPERIOD])) throw new Error("style." + constants.n.INSTALLMENTPERIOD + ": " + style[constants.n.INSTALLMENTPERIOD] + " is not a valid installment number for " + style.label);
+                if (!isInstallmentAllowedCountry && style.label === constants.f.INSTALLMENT) throw new Error("Unexpected label: style." + style.label + " for country: " + country);
+                if (!isInstallmentAllowedCountry && style[constants.m.INSTALLMENTPERIOD]) throw new Error("style." + constants.m.INSTALLMENTPERIOD + " is invalid for country: " + country);
+                if (isInstallmentAllowedCountry && style[constants.m.INSTALLMENTPERIOD] && style.label !== constants.f.INSTALLMENT) throw new Error("style." + constants.m.INSTALLMENTPERIOD + " is invalid for label: style." + style.label);
+                if (isInstallmentAllowedCountry && style.label === constants.f.INSTALLMENT && style[constants.m.INSTALLMENTPERIOD] && "number" != typeof style[constants.m.INSTALLMENTPERIOD]) throw new Error("style." + constants.m.INSTALLMENTPERIOD + " is expected to be a number");
+                if (isInstallmentAllowedCountry && style.label === constants.f.INSTALLMENT && style[constants.m.INSTALLMENTPERIOD] && -1 === constants.b[country].indexOf(style[constants.m.INSTALLMENTPERIOD])) throw new Error("style." + constants.m.INSTALLMENTPERIOD + ": " + style[constants.m.INSTALLMENTPERIOD] + " is not a valid installment number for " + style.label);
             }(style, props.locale);
         }
         var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n        cursor: default;\n    }\n", class_CLASS = {
@@ -11514,15 +11630,15 @@
             LOGO: "paypal-button-logo",
             CARD: "paypal-button-card",
             SEPARATOR: "paypal-separator"
-        }, buttonStyle = "\n\n    ." + class_CLASS.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.f.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + class_CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.ENV + "-" + constants.u.TEST + " ." + class_CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + class_CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.f.GOLD + ":hover,\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.f.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.f.TRANSPARENT + ":hover {\n        box-shadow: none;\n    }\n\n    ." + class_CLASS.CARD + ", ." + class_CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + class_CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.f.TRANSPARENT + ":focus {\n        box-shadow: none;\n    }\n\n    ." + class_CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + class_CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.LOGO + ",\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        visibility: hidden;\n    }\n\n    ." + class_CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + class_CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.f.BLACK + " ." + class_CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n", layoutStyle = "\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.h.VERTICAL + " ." + class_CLASS.TAGLINE + " {\n        display: none;\n    }\n", brandingStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.e.UNBRANDED + "  {\n        min-width: 60%;\n        width: auto;\n        font-weight: 900;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.e.UNBRANDED + " ." + class_CLASS.LOGO + " {\n        display: none;\n    }\n", labelStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.g.CARD + " {\n        border-radius: 0 !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.g.CREDIT + " ." + class_CLASS.TEXT + " {\n        display: none !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.h.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.k.MULTIPLE + "." + class_CLASS.LABEL + "-" + constants.g.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.i.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + BUTTON_STYLE[constants.m.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.g.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.i.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + BUTTON_STYLE[constants.m.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.g.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.i.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n", DUAL_BUTTON_MIN_RATIO = 2.8;
-        var buttonColorStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.f.GOLD + " {\n        background: #ffc439;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.f.BLUE + " {\n        background: #009cde;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.f.SILVER + " {\n        background: #eee;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.f.BLACK + " {\n        background: #2C2E2F;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.f.DARKBLUE + " {\n        background: #003087;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.f.TRANSPARENT + " {\n        background: transparent;\n        color: #111;\n    }\n";
+        }, buttonStyle = "\n\n    ." + class_CLASS.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + class_CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.ENV + "-" + constants.t.TEST + " ." + class_CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + class_CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.GOLD + ":hover,\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + ":hover {\n        box-shadow: none;\n    }\n\n    ." + class_CLASS.CARD + ", ." + class_CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + class_CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + ":focus {\n        box-shadow: none;\n    }\n\n    ." + class_CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + class_CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.LOGO + ",\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        visibility: hidden;\n    }\n\n    ." + class_CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + class_CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.BLACK + " ." + class_CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n", layoutStyle = "\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.g.VERTICAL + " ." + class_CLASS.TAGLINE + " {\n        display: none;\n    }\n", brandingStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.d.UNBRANDED + "  {\n        min-width: 60%;\n        width: auto;\n        font-weight: 900;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.d.UNBRANDED + " ." + class_CLASS.LOGO + " {\n        display: none;\n    }\n", labelStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CARD + " {\n        border-radius: 0 !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.TEXT + " {\n        display: none !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n", DUAL_BUTTON_MIN_RATIO = 2.8;
+        var buttonColorStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.GOLD + " {\n        background: #ffc439;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.BLUE + " {\n        background: #009cde;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.SILVER + " {\n        background: #eee;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.BLACK + " {\n        background: #2C2E2F;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.DARKBLUE + " {\n        background: #003087;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        background: transparent;\n        color: #111;\n    }\n";
         function componentStyle(_ref) {
             var height = _ref.height, cardNumber = _ref.cardNumber;
             return "\n        " + pageStyle + "\n        " + buttonStyle + "\n        " + buttonColorStyle + "\n        " + layoutStyle + "\n        " + brandingStyle + "\n        " + labelStyle + "\n        " + function(_ref) {
                 var height = _ref.height, _ref$cardNumber = _ref.cardNumber, cardNumber = void 0 === _ref$cardNumber ? 4 : _ref$cardNumber;
                 return Object.keys(BUTTON_STYLE).map(function(size) {
                     var style = BUTTON_STYLE[size], buttonHeight = height || style.defaultHeight, minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
-                    return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + class_CLASS.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(util.i)(Object(util.o)(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + (height || style.minHeight) + "px;\n                    max-height: " + (height || style.maxHeight) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.e.UNBRANDED + " {\n                    font-size: " + Object(util.i)(Object(util.o)(buttonHeight, 45), 10) + "px;\n                }\n\n                ." + class_CLASS.LOGO + " {\n                    height: " + (Object(util.o)(buttonHeight, 35) + 5) + "px;\n                    max-height: " + Object(util.o)(buttonHeight, 60) + "px;\n                    min-height: " + Object(util.o)(buttonHeight, 40) + "px;\n                }\n                \n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.g.EPS + ",\n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.g.MYBANK + " {\n                    height: " + (Object(util.o)(buttonHeight, 50) + 5) + "px;\n                    max-height: " + Object(util.o)(buttonHeight, 70) + "px;\n                    min-height: " + Object(util.o)(buttonHeight, 40) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + constants.l.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + constants.l.RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.h.VERTICAL + " {\n                    margin-bottom: " + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + class_CLASS.SEPARATOR + " {\n                    margin: 0 " + Object(util.o)(buttonHeight, 5) + "px;\n                }\n\n                ." + class_CLASS.TAGLINE + " {\n                    height: " + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                    line-height: " + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " {\n                    height: " + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) + "px;\n                }\n\n                ." + class_CLASS.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n                    width: " + (90 / cardNumber).toFixed(2) + "%;\n                    max-width: " + Object(util.o)(buttonHeight, 160) + "px;\n                    margin-top: 0;\n                    margin-left: " + (5 / cardNumber).toFixed(2) + "%;\n                    margin-right: " + (5 / cardNumber).toFixed(2) + "%;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " {\n                    height: " + Object(util.o)(buttonHeight, 70) + "px;\n                    margin-top: " + Object(util.o)(buttonHeight, 15) + "px;\n                    margin-left: " + Object(util.o)(buttonHeight, 7) + "px;\n                    margin-right: " + Object(util.o)(buttonHeight, 7) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.h.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.k.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.h.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.k.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.h.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.k.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(util.i)(style.minWidth, minDualWidth) + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.h.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.k.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.h.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.k.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.h.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.k.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
+                    return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + class_CLASS.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(util.i)(Object(util.o)(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + (height || style.minHeight) + "px;\n                    max-height: " + (height || style.maxHeight) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.d.UNBRANDED + " {\n                    font-size: " + Object(util.i)(Object(util.o)(buttonHeight, 45), 10) + "px;\n                }\n\n                ." + class_CLASS.LOGO + " {\n                    height: " + (Object(util.o)(buttonHeight, 35) + 5) + "px;\n                    max-height: " + Object(util.o)(buttonHeight, 60) + "px;\n                    min-height: " + Object(util.o)(buttonHeight, 40) + "px;\n                }\n                \n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.f.EPS + ",\n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.f.MYBANK + " {\n                    height: " + (Object(util.o)(buttonHeight, 50) + 5) + "px;\n                    max-height: " + Object(util.o)(buttonHeight, 70) + "px;\n                    min-height: " + Object(util.o)(buttonHeight, 40) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + constants.k.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + constants.k.RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.VERTICAL + " {\n                    margin-bottom: " + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + class_CLASS.SEPARATOR + " {\n                    margin: 0 " + Object(util.o)(buttonHeight, 5) + "px;\n                }\n\n                ." + class_CLASS.TAGLINE + " {\n                    height: " + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                    line-height: " + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " {\n                    height: " + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) + "px;\n                }\n\n                ." + class_CLASS.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n                    width: " + (90 / cardNumber).toFixed(2) + "%;\n                    max-width: " + Object(util.o)(buttonHeight, 160) + "px;\n                    margin-top: 0;\n                    margin-left: " + (5 / cardNumber).toFixed(2) + "%;\n                    margin-right: " + (5 / cardNumber).toFixed(2) + "%;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " {\n                    height: " + Object(util.o)(buttonHeight, 70) + "px;\n                    margin-top: " + Object(util.o)(buttonHeight, 15) + "px;\n                    margin-left: " + Object(util.o)(buttonHeight, 7) + "px;\n                    margin-right: " + Object(util.o)(buttonHeight, 7) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(util.i)(style.minWidth, minDualWidth) + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
                 }).join("\n");
             }({
                 height: height,
@@ -11628,18 +11744,18 @@
         };
         function getCommonButtonClasses(_ref) {
             var layout = _ref.layout, shape = _ref.shape, branding = _ref.branding, multiple = _ref.multiple, env = _ref.env;
-            return [ class_CLASS.LAYOUT + "-" + layout, class_CLASS.SHAPE + "-" + shape, class_CLASS.BRANDING + "-" + (branding ? constants.e.BRANDED : constants.e.UNBRANDED), class_CLASS.NUMBER + "-" + (multiple ? constants.k.MULTIPLE : constants.k.SINGLE), class_CLASS.ENV + "-" + env ].join(" ");
+            return [ class_CLASS.LAYOUT + "-" + layout, class_CLASS.SHAPE + "-" + shape, class_CLASS.BRANDING + "-" + (branding ? constants.d.BRANDED : constants.d.UNBRANDED), class_CLASS.NUMBER + "-" + (multiple ? constants.j.MULTIPLE : constants.j.SINGLE), class_CLASS.ENV + "-" + env ].join(" ");
         }
         function determineLabel(_ref3) {
             var label = _ref3.label, source = _ref3.source, multiple = _ref3.multiple, layout = _ref3.layout, defaultLabel = FUNDING_TO_DEFAULT_LABEL[source];
-            return labelToFunding(label) === source ? multiple && layout === constants.h.HORIZONTAL ? defaultLabel : label : defaultLabel;
+            return labelToFunding(label) === source ? multiple && layout === constants.g.HORIZONTAL ? defaultLabel : label : defaultLabel;
         }
         function renderCards(_ref5) {
             var cards = _ref5.cards, button = _ref5.button;
             return cards.map(function(name) {
                 var _ref6, logo = resources.a[name];
-                return Object(jsx.b)("img", componentTemplate__extends({}, ((_ref6 = {})[constants.d.BUTTON] = button || !1, 
-                _ref6[constants.d.FUNDING_SOURCE] = "" + constants.w.CARD, _ref6[constants.d.CARD] = "" + name, 
+                return Object(jsx.b)("img", componentTemplate__extends({}, ((_ref6 = {})[constants.c.BUTTON] = button || !1, 
+                _ref6[constants.c.FUNDING_SOURCE] = "" + constants.v.CARD, _ref6[constants.c.CARD] = "" + name, 
                 _ref6), {
                     class: class_CLASS.CARD + " " + class_CLASS.CARD + "-" + name + " " + (button ? class_CLASS.BUTTON : ""),
                     src: "data:image/svg+xml;base64," + Object(base64.btoa)(logo),
@@ -11671,7 +11787,7 @@
                             funding: funding,
                             env: env,
                             cards: _cards
-                        }) : resources.b[name][logoColor] || resources.b[name][constants.j.ANY];
+                        }) : resources.b[name][logoColor] || resources.b[name][constants.i.ANY];
                         return Object(jsx.b)("img", {
                             class: class_CLASS.LOGO + " " + class_CLASS.LOGO + "-" + name + " " + class_CLASS.LOGO + "-" + color,
                             src: "data:image/svg+xml;base64," + Object(base64.btoa)(logo),
@@ -11698,7 +11814,7 @@
                     }
                     if (!(contentString = contentString && contentString.replace(/\[([a-z]+)\]/g, function(match, contentVariable) {
                         if (match && contentVariable) return dynamicContent && dynamicContent[contentVariable];
-                    })) && env === constants.u.TEST) throw new Error("Could not find content " + name + " for " + locale.lang + "_" + locale.country);
+                    })) && env === constants.t.TEST) throw new Error("Could not find content " + name + " for " + locale.lang + "_" + locale.country);
                     return renderContent(contentString || "", {
                         label: label,
                         locale: locale,
@@ -11751,8 +11867,8 @@
                 cards: cards,
                 dynamicContent: dynamicContent
             });
-            return Object(jsx.b)("div", componentTemplate__extends({}, ((_ref11 = {})[constants.d.FUNDING_SOURCE] = source, 
-            _ref11[constants.d.BUTTON] = !0, _ref11), {
+            return Object(jsx.b)("div", componentTemplate__extends({}, ((_ref11 = {})[constants.c.FUNDING_SOURCE] = source, 
+            _ref11[constants.c.BUTTON] = !0, _ref11), {
                 class: class_CLASS.BUTTON + " " + class_CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -11878,7 +11994,7 @@
                     innerHTML: "(" + script + ")();"
                 });
             }();
-            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref15 = {}, _ref15[constants.d.VERSION] = "4.0.211", 
+            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref15 = {}, _ref15[constants.c.VERSION] = "4.0.212", 
             _ref15), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -11891,8 +12007,8 @@
         }
         function getDimensions(_ref3) {
             var label = _ref3.label, size = _ref3.size, tagline = _ref3.tagline, fundingicons = _ref3.fundingicons, layout = _ref3.layout, number = _ref3.number, viewport = _ref3.viewport, buttonHeight = _ref3.height;
-            size === constants.m.RESPONSIVE && (size = function(_ref) {
-                var label = _ref.label, layout = _ref.layout, _ref$width = _ref.width, width = void 0 === _ref$width ? 0 : _ref$width, minimumSize = getButtonConfig(label, layout === constants.h.VERTICAL ? "minimumVerticalSize" : "minimumSize"), maximumSize = getButtonConfig(label, layout === constants.h.VERTICAL ? "maximumVerticalSize" : "maximumSize");
+            size === constants.l.RESPONSIVE && (size = function(_ref) {
+                var label = _ref.label, layout = _ref.layout, _ref$width = _ref.width, width = void 0 === _ref$width ? 0 : _ref$width, minimumSize = getButtonConfig(label, layout === constants.g.VERTICAL ? "minimumVerticalSize" : "minimumSize"), maximumSize = getButtonConfig(label, layout === constants.g.VERTICAL ? "maximumVerticalSize" : "maximumSize");
                 if (width < BUTTON_STYLE[minimumSize].minWidth) return minimumSize;
                 if (width >= BUTTON_STYLE[maximumSize].maxWidth) return maximumSize;
                 var _iterator = Object.keys(BUTTON_STYLE), _isArray = Array.isArray(_iterator), _i = 0;
@@ -11916,7 +12032,7 @@
                 height: buttonHeight
             }));
             var _BUTTON_STYLE$size2 = BUTTON_STYLE[size], defaultWidth = _BUTTON_STYLE$size2.defaultWidth, defaultHeight = _BUTTON_STYLE$size2.defaultHeight, minHeight = _BUTTON_STYLE$size2.minHeight, maxHeight = _BUTTON_STYLE$size2.maxHeight, allowFunding = _BUTTON_STYLE$size2.allowFunding, allowTagline = _BUTTON_STYLE$size2.allowTagline, width = defaultWidth, height = buttonHeight = buttonHeight || Object(util.k)(Object(util.i)(defaultHeight, minHeight), maxHeight);
-            fundingicons && allowFunding ? height += Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) : tagline && allowTagline ? height += Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) : layout === constants.h.VERTICAL && (height = buttonHeight * number + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) * (number - 1));
+            fundingicons && allowFunding ? height += Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) : tagline && allowTagline ? height += Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) : layout === constants.g.VERTICAL && (height = buttonHeight * number + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) * (number - 1));
             return {
                 width: width,
                 height: height
@@ -11959,12 +12075,12 @@
                         layout: layout
                     });
                 }, _getContainerDimensio = getContainerDimensions(), width = _getContainerDimensio.width, height = _getContainerDimensio.height;
-                size === constants.m.RESPONSIVE && on("resize", function() {
+                size === constants.l.RESPONSIVE && on("resize", function() {
                     outlet.style.height = getContainerDimensions().height + "px";
                 });
-                var minimumSize = getButtonConfig(label, layout === constants.h.VERTICAL ? "minimumVerticalSize" : "minimumSize"), maximumSize = getButtonConfig(label, layout === constants.h.VERTICAL ? "maximumVerticalSize" : "maximumSize");
+                var minimumSize = getButtonConfig(label, layout === constants.g.VERTICAL ? "minimumVerticalSize" : "minimumSize"), maximumSize = getButtonConfig(label, layout === constants.g.VERTICAL ? "maximumVerticalSize" : "maximumSize");
                 if (buttonHeight) {
-                    var possibleSizes = Object(util.u)(constants.m).filter(function(possibleSize) {
+                    var possibleSizes = Object(util.u)(constants.l).filter(function(possibleSize) {
                         return BUTTON_STYLE[possibleSize] && buttonHeight && BUTTON_STYLE[possibleSize].minHeight <= buttonHeight && BUTTON_STYLE[possibleSize].maxHeight >= buttonHeight;
                     });
                     possibleSizes.sort(function(sizeA, sizeB) {
@@ -11976,7 +12092,7 @@
                 return jsxDom("div", {
                     id: id,
                     class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-                }, jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.m.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.h.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + width + "px;\n                        height: " + height + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.m.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+                }, jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + width + "px;\n                        height: " + height + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
             },
             prerenderTemplate: function(_ref) {
                 var _this = this, props = _ref.props, jsxDom = _ref.jsxDom, template = jsxDom("div", {
@@ -12071,7 +12187,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return constants.E.MANUAL;
+                        return constants.D.MANUAL;
                     }
                 },
                 prefetchLogin: {
@@ -12084,7 +12200,7 @@
                     queryParam: !0,
                     def: function(props) {
                         var env = props.env || config.a.env;
-                        if (env === constants.u.STAGE || env === constants.u.LOCAL) return config.a.stage;
+                        if (env === constants.t.STAGE || env === constants.t.LOCAL) return config.a.stage;
                     }
                 },
                 stageUrl: {
@@ -12093,7 +12209,7 @@
                     queryParam: !0,
                     def: function(props) {
                         var env = props.env || config.a.env;
-                        if (env === constants.u.STAGE || env === constants.u.LOCAL) return config.a.stageUrl;
+                        if (env === constants.t.STAGE || env === constants.t.LOCAL) return config.a.stageUrl;
                     }
                 },
                 braintree: {
@@ -12147,16 +12263,16 @@
                             };
                             if (Object(lib.n)("memoize_payment") && this.memoizedToken) return this.memoizedToken;
                             this.memoizedToken = zalgo_promise_src.a.try(original, this, [ {}, actions ]);
-                            this.props.env !== constants.u.PRODUCTION || Object(lib.n)("disable_payment_timeout") || (this.memoizedToken = this.memoizedToken.timeout(1e4, new Error("Timed out waiting 10000ms for payment")));
+                            this.props.env !== constants.t.PRODUCTION || Object(lib.n)("disable_payment_timeout") || (this.memoizedToken = this.memoizedToken.timeout(1e4, new Error("Timed out waiting 10000ms for payment")));
                             this.memoizedToken = this.memoizedToken.then(function(token) {
                                 var _track;
                                 if (!token) {
                                     Object(beaver_logger_client.f)("no_token_passed_to_payment");
                                     throw new Error("No value passed to payment");
                                 }
-                                Object(beaver_logger_client.o)(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.CHECKOUT, 
-                                _track[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.RECIEVE_PAYMENT, _track[constants.v.KEY.CONTEXT_TYPE] = constants.v.CONTEXT_TYPE[Object(integrations.d)(token)], 
-                                _track[constants.v.KEY.CONTEXT_ID] = token, _track[constants.v.KEY.BUTTON_SESSION_UID] = _this2.props.buttonSessionID, 
+                                Object(beaver_logger_client.o)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
+                                _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.RECIEVE_PAYMENT, _track[constants.u.KEY.CONTEXT_TYPE] = constants.u.CONTEXT_TYPE[Object(integrations.d)(token)], 
+                                _track[constants.u.KEY.CONTEXT_ID] = token, _track[constants.u.KEY.BUTTON_SESSION_UID] = _this2.props.buttonSessionID, 
                                 _track));
                                 Object(beaver_logger_client.g)();
                                 return token;
@@ -12189,7 +12305,7 @@
                                         _ref6 = _i.value;
                                     }
                                     var source = _ref6;
-                                    if (-1 === constants.q.indexOf(source)) {
+                                    if (-1 === constants.p.indexOf(source)) {
                                         if (!FUNDING_CONFIG.hasOwnProperty(source)) throw new Error("Invalid funding source: " + source);
                                         if (!getFundingConfig(source, "allowOptIn")) throw new Error("Can not allow funding source: " + source);
                                         if (funding.disallowed && -1 !== funding.disallowed.indexOf(source)) throw new Error("Can not allow and disallow funding source: " + source);
@@ -12208,7 +12324,7 @@
                                         _ref7 = _i2.value;
                                     }
                                     var _source = _ref7;
-                                    if (-1 === constants.q.indexOf(_source)) {
+                                    if (-1 === constants.p.indexOf(_source)) {
                                         if (!FUNDING_CONFIG.hasOwnProperty(_source)) throw new Error("Invalid funding source: " + _source);
                                         if (!getFundingConfig(_source, "allowOptOut")) throw new Error("Can not disallow funding source: " + _source);
                                     }
@@ -12225,59 +12341,44 @@
                     },
                     decorate: function() {
                         var _ref3 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref3$allowed = _ref3.allowed, allowed = void 0 === _ref3$allowed ? [] : _ref3$allowed, _ref3$disallowed = _ref3.disallowed, disallowed = void 0 === _ref3$disallowed ? [] : _ref3$disallowed, props = arguments[1];
-                        allowed && -1 !== allowed.indexOf(constants.w.IDEAL) && allowed.splice(allowed.indexOf(constants.w.IDEAL), 1);
-                        disallowed && -1 === disallowed.indexOf(constants.w.IDEAL) && disallowed.push(constants.w.IDEAL);
-                        allowed && -1 !== allowed.indexOf(constants.w.VENMO) && !Object(lib.A)() && (allowed = allowed.filter(function(source) {
-                            return source !== constants.w.VENMO;
+                        allowed && -1 !== allowed.indexOf(constants.v.VENMO) && !Object(lib.A)() && (allowed = allowed.filter(function(source) {
+                            return source !== constants.v.VENMO;
                         }));
                         (function(props) {
                             var _normalizeProps = normalizeProps(props, {
                                 locale: Object(lib.k)()
                             }), label = _normalizeProps.label, funding = _normalizeProps.funding, layout = _normalizeProps.layout, locale = _normalizeProps.locale, max = _normalizeProps.max, sources = _normalizeProps.sources, allowed = funding.allowed, country = locale.country;
-                            if (allowed && -1 !== allowed.indexOf(constants.w.CREDIT)) return !1;
-                            if (layout !== constants.h.HORIZONTAL) return !1;
+                            if (allowed && -1 !== allowed.indexOf(constants.v.CREDIT)) return !1;
+                            if (layout !== constants.g.HORIZONTAL) return !1;
                             if (1 === max) return !1;
-                            if (label === constants.g.CREDIT) return !1;
-                            if (country !== constants.s.US) return !1;
-                            if (isFundingIneligible(constants.w.CREDIT, {
+                            if (label === constants.f.CREDIT) return !1;
+                            if (country !== constants.r.US) return !1;
+                            if (isFundingIneligible(constants.v.CREDIT, {
                                 funding: funding,
                                 locale: locale,
                                 layout: layout
                             })) return !1;
-                            if (isFundingAutoEligible(constants.w.CREDIT, {
+                            if (isFundingAutoEligible(constants.v.CREDIT, {
                                 funding: funding,
                                 locale: locale,
                                 layout: layout
                             })) return !1;
-                            if (-1 !== sources.indexOf(constants.w.CREDIT)) return !1;
+                            if (-1 !== sources.indexOf(constants.v.CREDIT)) return !1;
                             var domain = Object(cross_domain_utils_src.getDomain)().replace(/^https?:\/\//, "").replace(/^www\./, "");
                             return -1 !== config.a.creditTestDomains.indexOf(domain);
-                        })(props) && (creditThrottle = Object(lib.y)("dual_credit_automatic", 50)).isEnabled() && (allowed = [].concat(allowed, [ constants.w.CREDIT ]));
+                        })(props) && (creditThrottle = Object(lib.y)("dual_credit_automatic", 50)).isEnabled() && (allowed = [].concat(allowed, [ constants.v.CREDIT ]));
                         var remembered = Object(lib.s)(function(sources) {
                             return sources;
                         });
                         if (!Object(lib.A)() || Object(lib.n)("disable_venmo")) {
-                            remembered && -1 !== remembered.indexOf(constants.w.VENMO) && (remembered = remembered.filter(function(source) {
-                                return source !== constants.w.VENMO;
+                            remembered && -1 !== remembered.indexOf(constants.v.VENMO) && (remembered = remembered.filter(function(source) {
+                                return source !== constants.v.VENMO;
                             }));
-                            disallowed && -1 === disallowed.indexOf(constants.w.VENMO) && (disallowed = [].concat(disallowed, [ constants.w.VENMO ]));
+                            disallowed && -1 === disallowed.indexOf(constants.v.VENMO) && (disallowed = [].concat(disallowed, [ constants.v.VENMO ]));
                         }
-                        var _determineAPMBlacklis = function(allowed, disallowed) {
-                            Object.getOwnPropertyNames(constants.c).forEach(function(apm) {
-                                var funding = constants.c[apm];
-                                if (Object(lib.n)("disable_" + funding)) {
-                                    allowed && -1 !== allowed.indexOf(funding) && allowed.splice(allowed.indexOf(funding), 1);
-                                    disallowed && -1 === disallowed.indexOf(funding) && disallowed.push(funding);
-                                }
-                            });
-                            return {
-                                allowed: allowed,
-                                disallowed: disallowed
-                            };
-                        }(allowed, disallowed);
                         return {
-                            allowed: allowed = _determineAPMBlacklis.allowed,
-                            disallowed: disallowed = _determineAPMBlacklis.disallowed,
+                            allowed: allowed,
+                            disallowed: disallowed,
                             remembered: remembered,
                             remember: function(sources) {
                                 Object(lib.R)(sources);
@@ -12299,13 +12400,13 @@
                         return function() {
                             var _track2, _getBrowser = Object(lib.j)(), _getBrowser$browser = _getBrowser.browser, browser = void 0 === _getBrowser$browser ? "unrecognized" : _getBrowser$browser, _getBrowser$version = _getBrowser.version, version = void 0 === _getBrowser$version ? "unrecognized" : _getBrowser$version;
                             Object(beaver_logger_client.j)("button_render_browser_" + browser + "_" + version);
-                            Object(beaver_logger_client.o)(((_track2 = {})[constants.v.KEY.STATE] = constants.v.STATE.LOAD, 
-                            _track2[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.BUTTON_RENDER, _track2[constants.v.KEY.BUTTON_TYPE] = constants.v.BUTTON_TYPE.IFRAME, 
-                            _track2[constants.v.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track2[constants.v.KEY.BUTTON_SOURCE] = this.props.source, 
+                            Object(beaver_logger_client.o)(((_track2 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
+                            _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_RENDER, _track2[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, 
+                            _track2[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track2[constants.u.KEY.BUTTON_SOURCE] = this.props.source, 
                             _track2));
                             if (creditThrottle) {
                                 var _creditThrottle$logSt;
-                                creditThrottle.logStart(((_creditThrottle$logSt = {})[constants.v.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                creditThrottle.logStart(((_creditThrottle$logSt = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                                 _creditThrottle$logSt));
                             }
                             Object(beaver_logger_client.g)();
@@ -12324,9 +12425,9 @@
                                 token: data.paymentToken
                             });
                             Object(beaver_logger_client.j)("button_authorize");
-                            Object(beaver_logger_client.o)(((_track3 = {})[constants.v.KEY.STATE] = constants.v.STATE.CHECKOUT, 
-                            _track3[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.CHECKOUT_AUTHORIZE, 
-                            _track3[constants.v.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track3));
+                            Object(beaver_logger_client.o)(((_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
+                            _track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CHECKOUT_AUTHORIZE, 
+                            _track3[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track3));
                             Object(lib.C)() || Object(beaver_logger_client.j)("button_authorize_ineligible");
                             Object(lib.d)("authorize");
                             Object(beaver_logger_client.g)();
@@ -12379,7 +12480,7 @@
                             });
                             if (creditThrottle) {
                                 var _creditThrottle$logCo;
-                                creditThrottle.logComplete(((_creditThrottle$logCo = {})[constants.v.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                creditThrottle.logComplete(((_creditThrottle$logCo = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                                 _creditThrottle$logCo));
                             }
                             return zalgo_promise_src.a.try(function() {
@@ -12410,8 +12511,8 @@
                         return function(data, actions) {
                             var _track4;
                             Object(beaver_logger_client.j)("button_cancel");
-                            Object(beaver_logger_client.o)(((_track4 = {})[constants.v.KEY.STATE] = constants.v.STATE.CHECKOUT, 
-                            _track4[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.CHECKOUT_CANCEL, _track4[constants.v.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                            Object(beaver_logger_client.o)(((_track4 = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
+                            _track4[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CHECKOUT_CANCEL, _track4[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                             _track4));
                             Object(beaver_logger_client.g)();
                             return original.call(this, data, component__extends({}, actions, {
@@ -12430,13 +12531,13 @@
                         return function(data) {
                             var _track5;
                             Object(beaver_logger_client.j)("button_click");
-                            Object(beaver_logger_client.o)(((_track5 = {})[constants.v.KEY.STATE] = constants.v.STATE.BUTTON, 
-                            _track5[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.BUTTON_CLICK, _track5[constants.v.KEY.BUTTON_TYPE] = constants.v.BUTTON_TYPE.IFRAME, 
-                            _track5[constants.v.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track5[constants.v.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
+                            Object(beaver_logger_client.o)(((_track5 = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
+                            _track5[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_CLICK, _track5[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, 
+                            _track5[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track5[constants.u.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
                             _track5));
                             if (creditThrottle) {
                                 var _creditThrottle$log;
-                                creditThrottle.log("click", ((_creditThrottle$log = {})[constants.v.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                creditThrottle.log("click", ((_creditThrottle$log = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                                 _creditThrottle$log));
                             }
                             Object(beaver_logger_client.g)();
@@ -12461,10 +12562,10 @@
                     alias: "buttonStyle",
                     def: function() {
                         return {
-                            color: constants.f.GOLD,
-                            shape: constants.l.PILL,
-                            size: constants.m.SMALL,
-                            label: constants.g.CHECKOUT,
+                            color: constants.e.GOLD,
+                            shape: constants.k.PILL,
+                            size: constants.l.SMALL,
+                            label: constants.f.CHECKOUT,
                             fundingicons: !1
                         };
                     },
@@ -12562,15 +12663,15 @@
                 };
             }(src_checkout.a, ButtonComponent);
             Object(lib.q)().then(function(pageRenderTime) {
-                var _track, fundingSources = Array.prototype.slice.call(document.querySelectorAll("[" + constants.d.FUNDING_SOURCE + "]")).map(function(el) {
-                    return el.getAttribute(constants.d.CARD) || el.getAttribute(constants.d.FUNDING_SOURCE);
+                var _track, fundingSources = Array.prototype.slice.call(document.querySelectorAll("[" + constants.c.FUNDING_SOURCE + "]")).map(function(el) {
+                    return el.getAttribute(constants.c.CARD) || el.getAttribute(constants.c.FUNDING_SOURCE);
                 }).filter(function(source) {
-                    return source && source !== constants.w.CARD;
+                    return source && source !== constants.v.CARD;
                 }), xprops = ButtonComponent.xprops;
-                Object(beaver_logger_client.o)(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.BUTTON, 
-                _track[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.BUTTON_LOAD, _track[constants.v.KEY.BUTTON_TYPE] = constants.v.BUTTON_TYPE.IFRAME, 
-                _track[constants.v.KEY.FUNDING_LIST] = fundingSources.join(":"), _track[constants.v.KEY.FUNDING_COUNT] = fundingSources.length, 
-                _track[constants.v.KEY.PAGE_LOAD_TIME] = pageRenderTime, _track[constants.v.KEY.BUTTON_LAYOUT] = xprops && xprops.style && xprops.style.layout || constants.h.HORIZONTAL, 
+                Object(beaver_logger_client.o)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
+                _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_LOAD, _track[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, 
+                _track[constants.u.KEY.FUNDING_LIST] = fundingSources.join(":"), _track[constants.u.KEY.FUNDING_COUNT] = fundingSources.length, 
+                _track[constants.u.KEY.PAGE_LOAD_TIME] = pageRenderTime, _track[constants.u.KEY.BUTTON_LAYOUT] = xprops && xprops.style && xprops.style.layout || constants.g.HORIZONTAL, 
                 _track));
                 Object(beaver_logger_client.g)();
             });
@@ -12709,11 +12810,11 @@
         Object(lib.O)(component_Button.props.style, "validate", function(_ref6) {
             var callOriginal = _ref6.callOriginal, style = _ref6.args[0];
             if (!style) return callOriginal();
-            style && "creditblue" === style.color && (style.color = constants.f.DARKBLUE);
-            style && "generic" === style.label && (style.label = constants.g.PAYPAL);
-            if (style && (!style.label || style.label === constants.g.CHECKOUT) && "tiny" === style.size) {
+            style && "creditblue" === style.color && (style.color = constants.e.DARKBLUE);
+            style && "generic" === style.label && (style.label = constants.f.PAYPAL);
+            if (style && (!style.label || style.label === constants.f.CHECKOUT) && "tiny" === style.size) {
                 Object(beaver_logger_client.p)("unsupported_button_size_tiny");
-                style.size = constants.m.SMALL;
+                style.size = constants.l.SMALL;
             }
             return callOriginal();
         });
@@ -12784,8 +12885,8 @@
                 stack: Object(lib.V)(err),
                 errtype: {}.toString.call(err)
             });
-            Object(beaver_logger_client.o)(((_track = {})[constants.v.KEY.ERROR_CODE] = "checkoutjs_error", 
-            _track[constants.v.KEY.ERROR_DESC] = Object(lib.W)(err), _track));
+            Object(beaver_logger_client.o)(((_track = {})[constants.u.KEY.ERROR_CODE] = "checkoutjs_error", 
+            _track[constants.u.KEY.ERROR_DESC] = Object(lib.W)(err), _track));
             return Object(beaver_logger_client.g)().catch(function(err2) {
                 if (window.console) try {
                     window.console.error ? window.console.error("Error flushing:", Object(lib.V)(err2)) : window.console.log && window.console.log("Error flushing:", Object(lib.V)(err2));
@@ -12804,9 +12905,9 @@
             Object(lib.z)();
             Object(lib.H)() || function() {
                 var _track;
-                if (window.location.hostname) if (Boolean(Object(lib.o)(constants.D))) Object(beaver_logger_client.j)("pptm_tried_loading_twice"); else {
-                    Object(beaver_logger_client.o)(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.PPTM, 
-                    _track[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.PPTM_LOAD, _track));
+                if (window.location.hostname) if (Boolean(Object(lib.o)(constants.C))) Object(beaver_logger_client.j)("pptm_tried_loading_twice"); else {
+                    Object(beaver_logger_client.o)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.PPTM, 
+                    _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PPTM_LOAD, _track));
                     var fullUrl = Object(lib.i)(config.a.pptmUrl, {
                         t: "xo",
                         id: window.location.hostname,
@@ -12814,11 +12915,11 @@
                     });
                     Object(lib.I)(fullUrl, 0, {
                         async: !0,
-                        id: constants.D
+                        id: constants.C
                     }).then(function() {
                         var _track2;
-                        Object(beaver_logger_client.o)(((_track2 = {})[constants.v.KEY.STATE] = constants.v.STATE.PPTM, 
-                        _track2[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.PPTM_LOADED, _track2));
+                        Object(beaver_logger_client.o)(((_track2 = {})[constants.u.KEY.STATE] = constants.u.STATE.PPTM, 
+                        _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PPTM_LOADED, _track2));
                     }).catch(function(err) {
                         Object(beaver_logger_client.j)("pptm_script_error", {
                             error: Object(lib.V)(err)
@@ -12894,9 +12995,9 @@
                 });
                 Object(beaver_logger_client.e)("current_script_time_" + Math.floor(loadTime / 1e3));
             }
-            Object(beaver_logger_client.o)(((setup__track2 = {})[constants.v.KEY.STATE] = constants.v.STATE.LOAD, 
-            setup__track2[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.SCRIPT_LOAD, 
-            setup__track2[constants.v.KEY.TRANSITION_TIME] = loadTime, setup__track2));
+            Object(beaver_logger_client.o)(((setup__track2 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
+            setup__track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, 
+            setup__track2[constants.u.KEY.TRANSITION_TIME] = loadTime, setup__track2));
         } else {
             var setup__track3;
             Object(beaver_logger_client.e)("no_current_script");
@@ -12904,8 +13005,8 @@
             document.currentScript && Object(beaver_logger_client.e)("current_script_not_recognized", {
                 src: document.currentScript.src
             });
-            Object(beaver_logger_client.o)(((setup__track3 = {})[constants.v.KEY.STATE] = constants.v.STATE.LOAD, 
-            setup__track3[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.SCRIPT_LOAD, 
+            Object(beaver_logger_client.o)(((setup__track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
+            setup__track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
         var interface__extends = Object.assign || function(target) {
@@ -12914,7 +13015,7 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.211", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.212", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         !function(moduleName, exportBuilder) {
@@ -12965,19 +13066,19 @@
             return config.a;
         });
         __webpack_require__.d(__webpack_exports__, "ENV", function() {
-            return constants.u;
+            return constants.t;
         });
         __webpack_require__.d(__webpack_exports__, "USERS", function() {
-            return constants.F;
-        });
-        __webpack_require__.d(__webpack_exports__, "SOURCE", function() {
             return constants.E;
         });
+        __webpack_require__.d(__webpack_exports__, "SOURCE", function() {
+            return constants.D;
+        });
         __webpack_require__.d(__webpack_exports__, "FUNDING", function() {
-            return constants.w;
+            return constants.v;
         });
         __webpack_require__.d(__webpack_exports__, "CARD", function() {
-            return constants.p;
+            return constants.o;
         });
         __webpack_require__.d(__webpack_exports__, "request", function() {
             return lib.S;
@@ -13039,15 +13140,15 @@
         };
         __webpack_exports__.c = getPaymentType;
         __webpack_exports__.b = function(env, fundingSource, payment) {
-            if (getPaymentType(payment) === __WEBPACK_IMPORTED_MODULE_1__constants__.B.BA_TOKEN) return __WEBPACK_IMPORTED_MODULE_0__config__.a.billingUrls[env];
-            if (fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.w.CARD || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.w.ELV) return __WEBPACK_IMPORTED_MODULE_0__config__.a.guestUrls[env];
-            if (fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.w.IDEAL || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.w.BANCONTACT || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.w.GIROPAY || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.w.SOFORT || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.w.EPS || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.w.MYBANK) return __WEBPACK_IMPORTED_MODULE_0__config__.a.altpayUrls[env];
+            if (getPaymentType(payment) === __WEBPACK_IMPORTED_MODULE_1__constants__.A.BA_TOKEN) return __WEBPACK_IMPORTED_MODULE_0__config__.a.billingUrls[env];
+            if (fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.CARD || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.ELV) return __WEBPACK_IMPORTED_MODULE_0__config__.a.guestUrls[env];
+            if (fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.IDEAL || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.BANCONTACT || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.GIROPAY || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.SOFORT || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.EPS || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.MYBANK || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.P24 || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.ZIMPLER || fundingSource === __WEBPACK_IMPORTED_MODULE_1__constants__.v.WECHATPAY) return __WEBPACK_IMPORTED_MODULE_0__config__.a.altpayUrls[env];
             return __WEBPACK_IMPORTED_MODULE_0__config__.a.checkoutUrls[env];
         };
         var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/constants/index.js");
         function getPaymentType(payment) {
-            return 0 === payment.indexOf("BA-") ? __WEBPACK_IMPORTED_MODULE_1__constants__.B.BA_TOKEN : 0 === payment.indexOf("PAY-") || 0 === payment.indexOf("PAYID-") ? __WEBPACK_IMPORTED_MODULE_1__constants__.B.PAY_ID : (payment.indexOf("EC-"), 
-            __WEBPACK_IMPORTED_MODULE_1__constants__.B.EC_TOKEN);
+            return 0 === payment.indexOf("BA-") ? __WEBPACK_IMPORTED_MODULE_1__constants__.A.BA_TOKEN : 0 === payment.indexOf("PAY-") || 0 === payment.indexOf("PAYID-") ? __WEBPACK_IMPORTED_MODULE_1__constants__.A.PAY_ID : (payment.indexOf("EC-"), 
+            __WEBPACK_IMPORTED_MODULE_1__constants__.A.EC_TOKEN);
         }
     },
     "./src/integrations/index.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -13175,7 +13276,7 @@
         function isLegacyEligible() {
             return !!Object(lib.C)() && (!!Object(lib.X)() && !Object(lib.A)());
         }
-        var warn = Object(client.m)(LOG_PREFIX).warn, DEFAULT_COUNTRY = constants.s.US, DEFAULT_LANG = constants.y.EN;
+        var warn = Object(client.m)(LOG_PREFIX).warn, DEFAULT_COUNTRY = constants.r.US, DEFAULT_LANG = constants.x.EN;
         function normalizeLocale(locale) {
             var _locale$split = locale.split("_"), lang = _locale$split[0], country = _locale$split[1];
             if (!country) if (config.a.locales[lang]) {
@@ -13228,10 +13329,10 @@
                                 locale = lang + "_" + country;
                             }
                             locale = locale || config.a.locale.lang + "_" + config.a.locale.country;
-                            color = color || constants.f.GOLD;
-                            shape = shape || constants.l.PILL;
-                            size = size || constants.m.SMALL;
-                            type = type || constants.g.CHECKOUT;
+                            color = color || constants.e.GOLD;
+                            shape = shape || constants.k.PILL;
+                            size = size || constants.l.SMALL;
+                            type = type || constants.f.CHECKOUT;
                             debug("render_button_lc_" + locale);
                             debug("render_button_color_" + color);
                             debug("render_button_shape_" + shape);
@@ -13257,10 +13358,10 @@
                     var container = void 0, type = void 0, condition = button.condition, click = button.click;
                     if (button.container) {
                         container = button.container;
-                        type = constants.v.BUTTON_TYPE.HTML;
+                        type = constants.u.BUTTON_TYPE.HTML;
                     } else {
                         container = button.button;
-                        type = constants.v.BUTTON_TYPE.CUSTOM;
+                        type = constants.u.BUTTON_TYPE.CUSTOM;
                     }
                     return {
                         container: container,
@@ -13303,7 +13404,7 @@
         function redirect(url) {
             return src.a.try(function() {
                 if (!url) throw new Error("Redirect url undefined");
-                if (config.a.env === constants.u.TEST && Object(lib.Z)(url)) return Object(lib.Q)(window, "#fullpageRedirect?url=" + url);
+                if (config.a.env === constants.t.TEST && Object(lib.Z)(url)) return Object(lib.Q)(window, "#fullpageRedirect?url=" + url);
                 logRedirect(url);
                 return Object(lib.Q)(window, url);
             });
@@ -13388,7 +13489,7 @@
                     _ref = _i.value;
                 }
                 var env = _ref, paypalUrl = paypalUrls[env];
-                if (env !== constants.u.TEST && env !== constants.u.DEMO && (env !== config.a.env && (0 === url.indexOf(paypalUrl) || 0 === url.indexOf(paypalUrl.replace("//www.", "//"))))) {
+                if (env !== constants.t.TEST && env !== constants.t.DEMO && (env !== config.a.env && (0 === url.indexOf(paypalUrl) || 0 === url.indexOf(paypalUrl.replace("//www.", "//"))))) {
                     interface_warn("mismatched_env_startflow_url", {
                         env: config.a.env,
                         url: url
@@ -13428,7 +13529,7 @@
         function initPayPalCheckout() {
             var props = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
             interface_info("init_checkout");
-            paypalCheckoutInited && config.a.env !== constants.u.TEST && interface_warn("multiple_init_paypal_checkout");
+            paypalCheckoutInited && config.a.env !== constants.t.TEST && interface_warn("multiple_init_paypal_checkout");
             closeFlowCalled && interface_debug("init_after_closeflow");
             paypalCheckoutInited = !0;
             var paypalCheckout = checkout.a.init(_extends({
@@ -13555,8 +13656,8 @@
         function instrumentButtonRender(type) {
             var _track;
             interface_info("render_" + type + "_button");
-            track(((_track = {})[constants.v.KEY.STATE] = constants.v.STATE.LOAD, _track[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.BUTTON_RENDER, 
-            _track[constants.v.KEY.BUTTON_TYPE] = type, _track));
+            track(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_RENDER, 
+            _track[constants.u.KEY.BUTTON_TYPE] = type, _track));
             Object(client.g)();
         }
         var setupCalled = !1;
@@ -13571,7 +13672,7 @@
             setupCalled = !0;
             !function(options) {
                 if (options.environment) {
-                    "live" === options.environment && (options.environment = constants.u.PRODUCTION);
+                    "live" === options.environment && (options.environment = constants.t.PRODUCTION);
                     if (!config.a.paypalUrls[options.environment]) {
                         options_warn("invalid_env", {
                             badenv: options.environment
@@ -13702,13 +13803,13 @@
                         listenClick(button.container, button.element, button.click, button.condition, function() {
                             !function(type) {
                                 var _track2;
-                                track(((_track2 = {})[constants.v.KEY.STATE] = constants.v.STATE.LOAD, _track2[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.BUTTON_CLICK, 
-                                _track2[constants.v.KEY.BUTTON_TYPE] = type, _track2));
+                                track(((_track2 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_CLICK, 
+                                _track2[constants.u.KEY.BUTTON_TYPE] = type, _track2));
                                 Object(client.g)();
                             }(button.type);
                         });
                     });
-                }) : instrumentButtonRender(constants.v.BUTTON_TYPE.CUSTOM);
+                }) : instrumentButtonRender(constants.u.BUTTON_TYPE.CUSTOM);
             });
         }
         interface_checkout.setup = setup;
@@ -13812,7 +13913,7 @@
                         _ref = _i.value;
                     }
                     var button = _ref, id = button.getAttribute(ATTRIBUTES.MERCHANT_ID), environment = void 0;
-                    button.hasAttribute(ATTRIBUTES.ENV) ? environment = button.getAttribute(ATTRIBUTES.ENV) : button.hasAttribute(ATTRIBUTES.SANDBOX) && (environment = constants.u.SANDBOX);
+                    button.hasAttribute(ATTRIBUTES.ENV) ? environment = button.getAttribute(ATTRIBUTES.ENV) : button.hasAttribute(ATTRIBUTES.SANDBOX) && (environment = constants.t.SANDBOX);
                     setup(id, {
                         environment: environment,
                         button: button
@@ -13860,7 +13961,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.211";
+                payload.version = "4.0.212";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 var query = [];
@@ -13868,7 +13969,7 @@
                 query = query.join("&");
                 new window.Image().src = BEACON_URL + "?" + query;
                 setTimeout(function() {
-                    __WEBPACK_IMPORTED_MODULE_0__config__.a.logLevel === __WEBPACK_IMPORTED_MODULE_1__constants__.A.DEBUG && window.console && window.console.log && window.console.log("*", event, payload);
+                    __WEBPACK_IMPORTED_MODULE_0__config__.a.logLevel === __WEBPACK_IMPORTED_MODULE_1__constants__.z.DEBUG && window.console && window.console.log && window.console.log("*", event, payload);
                 }, 1);
             } catch (err) {}
         }
@@ -14157,8 +14258,8 @@
             }
         }
         function normalizeLang(lang) {
-            if (lang && lang.match(/^[a-z]{2}$/) && __WEBPACK_IMPORTED_MODULE_3__constants__.z[lang]) return {
-                country: __WEBPACK_IMPORTED_MODULE_3__constants__.z[lang],
+            if (lang && lang.match(/^[a-z]{2}$/) && __WEBPACK_IMPORTED_MODULE_3__constants__.y[lang]) return {
+                country: __WEBPACK_IMPORTED_MODULE_3__constants__.y[lang],
                 lang: lang
             };
         }
@@ -14210,7 +14311,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(session.c)(),
-                    ver: "4.0.211"
+                    ver: "4.0.212"
                 };
             });
             Object(client.a)(function() {
@@ -14223,22 +14324,22 @@
                     if (window.root && window.root.token) return window.root.token;
                     var queryToken = Object(dom.g)("token");
                     return queryToken || void 0;
-                }(), buttonSessionID = payload[constants.v.KEY.BUTTON_SESSION_UID] || Object(session.a)(), contextType = void 0, contextID = void 0;
+                }(), buttonSessionID = payload[constants.u.KEY.BUTTON_SESSION_UID] || Object(session.a)(), contextType = void 0, contextID = void 0;
                 if (paymentToken) {
-                    contextType = constants.v.CONTEXT_TYPE[constants.B.EC_TOKEN];
+                    contextType = constants.u.CONTEXT_TYPE[constants.A.EC_TOKEN];
                     contextID = paymentToken;
                 } else if (buttonSessionID) {
-                    contextType = constants.v.CONTEXT_TYPE.BUTTON_SESSION_ID;
+                    contextType = constants.u.CONTEXT_TYPE.BUTTON_SESSION_ID;
                     contextID = buttonSessionID;
                 } else {
-                    contextType = payload[constants.v.KEY.CONTEXT_TYPE];
-                    contextID = payload[constants.v.KEY.CONTEXT_ID];
+                    contextType = payload[constants.u.KEY.CONTEXT_TYPE];
+                    contextID = payload[constants.u.KEY.CONTEXT_ID];
                 }
-                return (_ref = {})[constants.v.KEY.FEED] = constants.v.FEED.CHECKOUTJS, _ref[constants.v.KEY.DATA_SOURCE] = constants.v.DATA_SOURCE.CHECKOUT, 
-                _ref[constants.v.KEY.CONTEXT_TYPE] = contextType, _ref[constants.v.KEY.CONTEXT_ID] = contextID, 
-                _ref[constants.v.KEY.SELLER_ID] = config.a.merchantID, _ref[constants.v.KEY.SESSION_UID] = sessionID, 
-                _ref[constants.v.KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref[constants.v.KEY.VERSION] = config.a.version, 
-                _ref[constants.v.KEY.TOKEN] = paymentToken, _ref[constants.v.KEY.REFERER] = getRefererDomain(), 
+                return (_ref = {})[constants.u.KEY.FEED] = constants.u.FEED.CHECKOUTJS, _ref[constants.u.KEY.DATA_SOURCE] = constants.u.DATA_SOURCE.CHECKOUT, 
+                _ref[constants.u.KEY.CONTEXT_TYPE] = contextType, _ref[constants.u.KEY.CONTEXT_ID] = contextID, 
+                _ref[constants.u.KEY.SELLER_ID] = config.a.merchantID, _ref[constants.u.KEY.SESSION_UID] = sessionID, 
+                _ref[constants.u.KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref[constants.u.KEY.VERSION] = config.a.version, 
+                _ref[constants.u.KEY.TOKEN] = paymentToken, _ref[constants.u.KEY.REFERER] = getRefererDomain(), 
                 _ref;
             });
             Object(client.k)({
@@ -14533,9 +14634,9 @@
                     if (!started) return this;
                     if (isCheckpointUnique(name + "_" + treatment)) {
                         var _extends2;
-                        Object(client.o)(throttle__extends(((_extends2 = {})[constants.v.KEY.STATE] = constants.v.STATE.PXP, 
-                        _extends2[constants.v.KEY.TRANSITION] = constants.v.TRANSITION.PXP, _extends2[constants.v.KEY.EXPERIMENT_NAME] = name, 
-                        _extends2[constants.v.KEY.TREATMENT_NAME] = treatment, _extends2), payload));
+                        Object(client.o)(throttle__extends(((_extends2 = {})[constants.u.KEY.STATE] = constants.u.STATE.PXP, 
+                        _extends2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PXP, _extends2[constants.u.KEY.EXPERIMENT_NAME] = name, 
+                        _extends2[constants.u.KEY.TREATMENT_NAME] = treatment, _extends2), payload));
                     }
                     var event = name + "_" + treatment + "_" + checkpointName;
                     isCheckpointUnique(event) && Object(client.j)(event, throttle__extends({}, payload, {
@@ -14582,7 +14683,7 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return isPayPalObjects() ? "4" : "4.0.211";
+            return isPayPalObjects() ? "4" : "4.0.212";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -14670,7 +14771,7 @@
                         _ref2 = _i2.value;
                     }
                     var source = _ref2;
-                    if (source !== constants.w.VENMO || Object(device.b)()) {
+                    if (source !== constants.v.VENMO || Object(device.b)()) {
                         -1 === rememberedFunding.indexOf(source) && rememberedFunding.push(source);
                         flushRememberedFundingPromises();
                     }
@@ -14686,7 +14787,7 @@
             });
         }
         function isFundingRemembered() {
-            var source = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : constants.w.PAYPAL;
+            var source = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : constants.v.PAYPAL;
             return hasRememberedFunding(source) ? getRememberedFundingPromise(source) : loadMeta().then(function() {
                 return getRememberedFundingPromise(source);
             });
@@ -15394,18 +15495,18 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
-        if (window.paypal && "4.0.211" === window.paypal.version) {
+        if (window.paypal && "4.0.212" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.211"
+                version: "4.0.212"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.211) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.212) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.211" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.212" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.211"
+                version: "4.0.212"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.211");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.212");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
@@ -15495,29 +15596,56 @@
     },
     "./src/resources/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var _PAYPAL_LOGO_COLORS, _CREDIT_LOGO_COLORS, constants = __webpack_require__("./src/constants/index.js"), pp_white = __webpack_require__("./src/resources/fundingLogos/pp_white.svg"), pp_white_default = __webpack_require__.n(pp_white), pp_blue = __webpack_require__("./src/resources/fundingLogos/pp_blue.svg"), pp_blue_default = __webpack_require__.n(pp_blue), pp_black = __webpack_require__("./src/resources/fundingLogos/pp_black.svg"), pp_black_default = __webpack_require__.n(pp_black), jsx = __webpack_require__("./src/lib/jsx.js"), PAYPAL_LOGO_COLORS = ((_PAYPAL_LOGO_COLORS = {})[constants.j.BLUE] = {
-            primary: "#003087",
-            secondary: "#009cde"
-        }, _PAYPAL_LOGO_COLORS[constants.j.WHITE] = {
+        var _ZIMPLER_LOGO_COLORS, _P24_LOGO_COLORS, constants = __webpack_require__("./src/constants/index.js"), jsx = __webpack_require__("./src/lib/jsx.js"), ZIMPLER_LOGO_COLORS = ((_ZIMPLER_LOGO_COLORS = {})[constants.i.WHITE] = {
+            primary: "#ffffff"
+        }, _ZIMPLER_LOGO_COLORS[constants.i.BLACK] = {
+            primary: "#00A599"
+        }, _ZIMPLER_LOGO_COLORS[constants.i.ANY] = {
+            primary: "#00A599"
+        }, _ZIMPLER_LOGO_COLORS);
+        var _WECHATPAY_LOGO_COLOR, P24_LOGO_COLORS = ((_P24_LOGO_COLORS = {})[constants.i.WHITE] = {
             primary: "#ffffff",
             secondary: "#ffffff"
-        }, _PAYPAL_LOGO_COLORS[constants.j.BLACK] = {
+        }, _P24_LOGO_COLORS[constants.i.ANY] = {
+            primary: "#d03238",
+            secondary: "#b3b1b1"
+        }, _P24_LOGO_COLORS[constants.i.BLACK] = {
+            primary: "#d03238",
+            secondary: "#b3b1b1"
+        }, _P24_LOGO_COLORS);
+        var WECHATPAY_LOGO_COLORS = ((_WECHATPAY_LOGO_COLOR = {})[constants.i.WHITE] = {
+            primary: "#ffffff",
+            secondary: "#ffffff"
+        }, _WECHATPAY_LOGO_COLOR[constants.i.BLACK] = {
+            primary: "#1AAD19",
+            secondary: "#4D4D4D"
+        }, _WECHATPAY_LOGO_COLOR[constants.i.ANY] = {
+            primary: "#1AAD19",
+            secondary: "#4D4D4D"
+        }, _WECHATPAY_LOGO_COLOR);
+        var _PAYPAL_LOGO_COLORS, _CREDIT_LOGO_COLORS, pp_white = __webpack_require__("./src/resources/fundingLogos/pp_white.svg"), pp_white_default = __webpack_require__.n(pp_white), pp_blue = __webpack_require__("./src/resources/fundingLogos/pp_blue.svg"), pp_blue_default = __webpack_require__.n(pp_blue), pp_black = __webpack_require__("./src/resources/fundingLogos/pp_black.svg"), pp_black_default = __webpack_require__.n(pp_black), PAYPAL_LOGO_COLORS = ((_PAYPAL_LOGO_COLORS = {})[constants.i.BLUE] = {
+            primary: "#003087",
+            secondary: "#009cde"
+        }, _PAYPAL_LOGO_COLORS[constants.i.WHITE] = {
+            primary: "#ffffff",
+            secondary: "#ffffff"
+        }, _PAYPAL_LOGO_COLORS[constants.i.BLACK] = {
             primary: "#333030",
             secondary: "#636363"
         }, _PAYPAL_LOGO_COLORS);
-        var CREDIT_LOGO_COLORS = ((_CREDIT_LOGO_COLORS = {})[constants.j.BLUE] = {
+        var CREDIT_LOGO_COLORS = ((_CREDIT_LOGO_COLORS = {})[constants.i.BLUE] = {
             primary: "#003087",
             secondary: "#009cde"
-        }, _CREDIT_LOGO_COLORS[constants.j.WHITE] = {
+        }, _CREDIT_LOGO_COLORS[constants.i.WHITE] = {
             primary: "#ffffff",
             secondary: "#ffffff"
-        }, _CREDIT_LOGO_COLORS[constants.j.BLACK] = {
+        }, _CREDIT_LOGO_COLORS[constants.i.BLACK] = {
             primary: "#333030",
             secondary: "#636363"
         }, _CREDIT_LOGO_COLORS);
-        var _BUTTON_LOGO$PP, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$IDEAL, _BUTTON_LOGO$ELV, _BUTTON_LOGO$BANCONTA, _BUTTON_LOGO$GIROPAY, _BUTTON_LOGO$SOFORT, _BUTTON_LOGO$EPS, _BUTTON_LOGO$MYBANK, _fundingLogos, _cardLogos, venmo_white = __webpack_require__("./src/resources/fundingLogos/venmo_white.svg"), venmo_white_default = __webpack_require__.n(venmo_white), venmo_blue = __webpack_require__("./src/resources/fundingLogos/venmo_blue.svg"), venmo_blue_default = __webpack_require__.n(venmo_blue), ideal = __webpack_require__("./src/resources/fundingLogos/ideal.svg"), ideal_default = __webpack_require__.n(ideal), elv = __webpack_require__("./src/resources/fundingLogos/elv.svg"), elv_default = __webpack_require__.n(elv), elv_white = __webpack_require__("./src/resources/fundingLogos/elv_white.svg"), elv_white_default = __webpack_require__.n(elv_white), bancontact = __webpack_require__("./src/resources/fundingLogos/bancontact.svg"), bancontact_default = __webpack_require__.n(bancontact), bancontact_white = __webpack_require__("./src/resources/fundingLogos/bancontact_white.svg"), bancontact_white_default = __webpack_require__.n(bancontact_white), giropay = __webpack_require__("./src/resources/fundingLogos/giropay.svg"), giropay_default = __webpack_require__.n(giropay), giropay_white = __webpack_require__("./src/resources/fundingLogos/giropay_white.svg"), giropay_white_default = __webpack_require__.n(giropay_white), eps = __webpack_require__("./src/resources/fundingLogos/eps.svg"), eps_default = __webpack_require__.n(eps), eps_white = __webpack_require__("./src/resources/fundingLogos/eps_white.svg"), eps_white_default = __webpack_require__.n(eps_white), mybank = __webpack_require__("./src/resources/fundingLogos/mybank.svg"), mybank_default = __webpack_require__.n(mybank), mybank_white = __webpack_require__("./src/resources/fundingLogos/mybank_white.svg"), mybank_white_default = __webpack_require__.n(mybank_white), sofort = __webpack_require__("./src/resources/fundingLogos/sofort.svg"), sofort_default = __webpack_require__.n(sofort), sofort_white = __webpack_require__("./src/resources/fundingLogos/sofort_white.svg"), sofort_white_default = __webpack_require__.n(sofort_white), fundingLogos = ((_fundingLogos = {})[constants.i.PP] = ((_BUTTON_LOGO$PP = {})[constants.j.WHITE] = pp_white_default.a, 
-        _BUTTON_LOGO$PP[constants.j.BLUE] = pp_blue_default.a, _BUTTON_LOGO$PP[constants.j.BLACK] = pp_black_default.a, 
-        _BUTTON_LOGO$PP), _fundingLogos[constants.i.PAYPAL] = function(_ref) {
+        var _BUTTON_LOGO$PP, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$IDEAL, _BUTTON_LOGO$ELV, _BUTTON_LOGO$BANCONTA, _BUTTON_LOGO$GIROPAY, _BUTTON_LOGO$SOFORT, _BUTTON_LOGO$EPS, _BUTTON_LOGO$MYBANK, _fundingLogos, _cardLogos, venmo_white = __webpack_require__("./src/resources/fundingLogos/venmo_white.svg"), venmo_white_default = __webpack_require__.n(venmo_white), venmo_blue = __webpack_require__("./src/resources/fundingLogos/venmo_blue.svg"), venmo_blue_default = __webpack_require__.n(venmo_blue), ideal = __webpack_require__("./src/resources/fundingLogos/ideal.svg"), ideal_default = __webpack_require__.n(ideal), elv = __webpack_require__("./src/resources/fundingLogos/elv.svg"), elv_default = __webpack_require__.n(elv), elv_white = __webpack_require__("./src/resources/fundingLogos/elv_white.svg"), elv_white_default = __webpack_require__.n(elv_white), bancontact = __webpack_require__("./src/resources/fundingLogos/bancontact.svg"), bancontact_default = __webpack_require__.n(bancontact), bancontact_white = __webpack_require__("./src/resources/fundingLogos/bancontact_white.svg"), bancontact_white_default = __webpack_require__.n(bancontact_white), giropay = __webpack_require__("./src/resources/fundingLogos/giropay.svg"), giropay_default = __webpack_require__.n(giropay), giropay_white = __webpack_require__("./src/resources/fundingLogos/giropay_white.svg"), giropay_white_default = __webpack_require__.n(giropay_white), eps = __webpack_require__("./src/resources/fundingLogos/eps.svg"), eps_default = __webpack_require__.n(eps), eps_white = __webpack_require__("./src/resources/fundingLogos/eps_white.svg"), eps_white_default = __webpack_require__.n(eps_white), mybank = __webpack_require__("./src/resources/fundingLogos/mybank.svg"), mybank_default = __webpack_require__.n(mybank), mybank_white = __webpack_require__("./src/resources/fundingLogos/mybank_white.svg"), mybank_white_default = __webpack_require__.n(mybank_white), sofort = __webpack_require__("./src/resources/fundingLogos/sofort.svg"), sofort_default = __webpack_require__.n(sofort), sofort_white = __webpack_require__("./src/resources/fundingLogos/sofort_white.svg"), sofort_white_default = __webpack_require__.n(sofort_white), fundingLogos = ((_fundingLogos = {})[constants.h.PP] = ((_BUTTON_LOGO$PP = {})[constants.i.WHITE] = pp_white_default.a, 
+        _BUTTON_LOGO$PP[constants.i.BLUE] = pp_blue_default.a, _BUTTON_LOGO$PP[constants.i.BLACK] = pp_black_default.a, 
+        _BUTTON_LOGO$PP), _fundingLogos[constants.h.PAYPAL] = function(_ref) {
             var logoColor = _ref.logoColor;
             if (!PAYPAL_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " paypal logo available");
             var _PAYPAL_LOGO_COLORS$l = PAYPAL_LOGO_COLORS[logoColor], primary = _PAYPAL_LOGO_COLORS$l.primary, secondary = _PAYPAL_LOGO_COLORS$l.secondary;
@@ -15546,12 +15674,12 @@
                 fill: secondary,
                 d: "M 95.1 5.417 L 91.9 25.717 C 91.8 26.117 92.1 26.417 92.5 26.417 L 95.7 26.417 C 96.2 26.417 96.7 26.017 96.8 25.517 L 100 5.617 C 100.1 5.217 99.8 4.917 99.4 4.917 L 95.8 4.917 C 95.4 4.917 95.2 5.117 95.1 5.417 Z"
             }));
-        }, _fundingLogos[constants.i.CREDIT] = function(_ref) {
+        }, _fundingLogos[constants.h.CREDIT] = function(_ref) {
             var logoColor = _ref.logoColor, locale = _ref.locale;
             if (!CREDIT_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " credit logo available");
             var country = (locale || {}).country, primary = CREDIT_LOGO_COLORS[logoColor].primary;
             switch (country) {
-              case constants.s.DE:
+              case constants.r.DE:
                 return Object(jsx.b)("svg", {
                     width: "135",
                     height: "32",
@@ -15594,23 +15722,129 @@
                     d: "M 17.648 11.435 C 17.648 11.819 17.161 12.011 16.868 11.723 C 15.894 10.763 14.529 10.283 13.068 10.283 C 9.657 10.283 7.025 12.779 6.441 15.851 C 5.953 19.019 7.902 21.323 11.313 21.323 C 12.678 21.323 14.237 20.843 15.407 19.979 C 15.796 19.787 16.284 20.075 16.186 20.459 L 15.407 25.067 C 15.309 25.355 15.114 25.547 14.822 25.643 C 13.165 26.123 11.898 26.507 10.339 26.507 C 1.178 26.507 -0.284 19.019 0.203 15.851 C 1.47 6.923 9.072 4.907 13.652 5.195 C 15.114 5.195 16.479 5.387 17.745 5.867 C 18.233 6.059 18.428 6.443 18.33 6.923 L 17.648 11.435 Z"
                 }));
             }
-        }, _fundingLogos[constants.i.VENMO] = ((_BUTTON_LOGO$VENMO = {})[constants.j.WHITE] = venmo_white_default.a, 
-        _BUTTON_LOGO$VENMO[constants.j.BLUE] = venmo_blue_default.a, _BUTTON_LOGO$VENMO), 
-        _fundingLogos[constants.i.IDEAL] = ((_BUTTON_LOGO$IDEAL = {})[constants.j.ANY] = ideal_default.a, 
-        _BUTTON_LOGO$IDEAL), _fundingLogos[constants.i.ELV] = ((_BUTTON_LOGO$ELV = {})[constants.j.ANY] = elv_default.a, 
-        _BUTTON_LOGO$ELV[constants.j.WHITE] = elv_white_default.a, _BUTTON_LOGO$ELV), _fundingLogos[constants.i.BANCONTACT] = ((_BUTTON_LOGO$BANCONTA = {})[constants.j.ANY] = bancontact_default.a, 
-        _BUTTON_LOGO$BANCONTA[constants.j.WHITE] = bancontact_white_default.a, _BUTTON_LOGO$BANCONTA), 
-        _fundingLogos[constants.i.GIROPAY] = ((_BUTTON_LOGO$GIROPAY = {})[constants.j.ANY] = giropay_default.a, 
-        _BUTTON_LOGO$GIROPAY[constants.j.WHITE] = giropay_white_default.a, _BUTTON_LOGO$GIROPAY), 
-        _fundingLogos[constants.i.SOFORT] = ((_BUTTON_LOGO$SOFORT = {})[constants.j.ANY] = sofort_default.a, 
-        _BUTTON_LOGO$SOFORT[constants.j.WHITE] = sofort_white_default.a, _BUTTON_LOGO$SOFORT), 
-        _fundingLogos[constants.i.EPS] = ((_BUTTON_LOGO$EPS = {})[constants.j.ANY] = eps_default.a, 
-        _BUTTON_LOGO$EPS[constants.j.WHITE] = eps_white_default.a, _BUTTON_LOGO$EPS), _fundingLogos[constants.i.MYBANK] = ((_BUTTON_LOGO$MYBANK = {})[constants.j.ANY] = mybank_default.a, 
-        _BUTTON_LOGO$MYBANK[constants.j.WHITE] = mybank_white_default.a, _BUTTON_LOGO$MYBANK), 
-        _fundingLogos), visa = __webpack_require__("./src/resources/cardLogos/visa.svg"), visa_default = __webpack_require__.n(visa), amex = __webpack_require__("./src/resources/cardLogos/amex.svg"), amex_default = __webpack_require__.n(amex), mastercard = __webpack_require__("./src/resources/cardLogos/mastercard.svg"), mastercard_default = __webpack_require__.n(mastercard), discover = __webpack_require__("./src/resources/cardLogos/discover.svg"), discover_default = __webpack_require__.n(discover), hiper = __webpack_require__("./src/resources/cardLogos/hiper.svg"), hiper_default = __webpack_require__.n(hiper), elo = __webpack_require__("./src/resources/cardLogos/elo.svg"), elo_default = __webpack_require__.n(elo), jcb = __webpack_require__("./src/resources/cardLogos/jcb.svg"), jcb_default = __webpack_require__.n(jcb), cardLogos = ((_cardLogos = {})[constants.p.VISA] = visa_default.a, 
-        _cardLogos[constants.p.AMEX] = amex_default.a, _cardLogos[constants.p.MASTERCARD] = mastercard_default.a, 
-        _cardLogos[constants.p.DISCOVER] = discover_default.a, _cardLogos[constants.p.HIPER] = hiper_default.a, 
-        _cardLogos[constants.p.ELO] = elo_default.a, _cardLogos[constants.p.JCB] = jcb_default.a, 
+        }, _fundingLogos[constants.h.VENMO] = ((_BUTTON_LOGO$VENMO = {})[constants.i.WHITE] = venmo_white_default.a, 
+        _BUTTON_LOGO$VENMO[constants.i.BLUE] = venmo_blue_default.a, _BUTTON_LOGO$VENMO), 
+        _fundingLogos[constants.h.IDEAL] = ((_BUTTON_LOGO$IDEAL = {})[constants.i.ANY] = ideal_default.a, 
+        _BUTTON_LOGO$IDEAL), _fundingLogos[constants.h.ELV] = ((_BUTTON_LOGO$ELV = {})[constants.i.ANY] = elv_default.a, 
+        _BUTTON_LOGO$ELV[constants.i.WHITE] = elv_white_default.a, _BUTTON_LOGO$ELV), _fundingLogos[constants.h.BANCONTACT] = ((_BUTTON_LOGO$BANCONTA = {})[constants.i.ANY] = bancontact_default.a, 
+        _BUTTON_LOGO$BANCONTA[constants.i.WHITE] = bancontact_white_default.a, _BUTTON_LOGO$BANCONTA), 
+        _fundingLogos[constants.h.GIROPAY] = ((_BUTTON_LOGO$GIROPAY = {})[constants.i.ANY] = giropay_default.a, 
+        _BUTTON_LOGO$GIROPAY[constants.i.WHITE] = giropay_white_default.a, _BUTTON_LOGO$GIROPAY), 
+        _fundingLogos[constants.h.SOFORT] = ((_BUTTON_LOGO$SOFORT = {})[constants.i.ANY] = sofort_default.a, 
+        _BUTTON_LOGO$SOFORT[constants.i.WHITE] = sofort_white_default.a, _BUTTON_LOGO$SOFORT), 
+        _fundingLogos[constants.h.EPS] = ((_BUTTON_LOGO$EPS = {})[constants.i.ANY] = eps_default.a, 
+        _BUTTON_LOGO$EPS[constants.i.WHITE] = eps_white_default.a, _BUTTON_LOGO$EPS), _fundingLogos[constants.h.MYBANK] = ((_BUTTON_LOGO$MYBANK = {})[constants.i.ANY] = mybank_default.a, 
+        _BUTTON_LOGO$MYBANK[constants.i.WHITE] = mybank_white_default.a, _BUTTON_LOGO$MYBANK), 
+        _fundingLogos[constants.h.P24] = function(_ref) {
+            var logoColor = _ref.logoColor;
+            if (!P24_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " zimpler logo available");
+            var _P24_LOGO_COLORS$logo = P24_LOGO_COLORS[logoColor], primary = _P24_LOGO_COLORS$logo.primary, secondary = _P24_LOGO_COLORS$logo.secondary;
+            return Object(jsx.b)("svg", {
+                xmlns: "http://www.w3.org/2000/svg",
+                version: "1.1",
+                viewBox: "0 0 100 32",
+                height: "32",
+                width: "100",
+                preserveAspectRatio: "xMinYMin meet"
+            }, Object(jsx.b)("g", {
+                transform: "matrix(1.2953205,0,0,1.4482638,-127.73674,-229.48747)"
+            }, Object(jsx.b)("g", {
+                transform: "translate(99,159)"
+            }, Object(jsx.b)("path", {
+                transform: "matrix(0.77200971,0,0,0.69048194,-0.38599675,-0.54304623)",
+                d: "M 34.123047 14.666016 L 32.416016 14.667969 L 30.496094 27.771484 L 32.208984 27.773438 L 34.123047 14.666016 z M 2.4082031 14.669922 L 0.5 27.771484 L 2.2753906 27.773438 L 2.9785156 22.916016 L 6.421875 22.933594 C 6.421875 22.933594 7.7610468 22.994689 8.7128906 22.419922 C 9.6646511 21.844634 9.9179688 20.537109 9.9179688 20.537109 C 9.9179688 20.537109 10.021944 20.051453 10.107422 19.458984 C 10.201364 18.808401 10.297704 18.027313 10.347656 17.611328 C 10.369589 17.428799 10.382812 17.316406 10.382812 17.316406 C 10.382812 17.316406 10.406035 17.181738 10.408203 16.972656 C 10.411247 16.680039 10.373345 16.24144 10.173828 15.824219 C 10.107822 15.686199 10.023752 15.551336 9.9179688 15.423828 C 9.7749921 15.251532 9.573657 15.118146 9.3457031 15.015625 C 9.1093266 14.909344 8.8444066 14.836083 8.5878906 14.785156 C 8.2611582 14.720236 7.9481918 14.691729 7.7226562 14.679688 C 7.5151753 14.668598 7.3808594 14.669922 7.3808594 14.669922 L 4.5292969 14.669922 L 2.4082031 14.669922 z M 3.9023438 16.636719 L 6.5097656 16.644531 C 6.5097656 16.644531 6.6871684 16.640189 6.9335938 16.644531 C 7.2136679 16.6496 7.5842469 16.667097 7.8886719 16.712891 C 8.149399 16.752066 8.3620627 16.811675 8.4277344 16.90625 C 8.5143382 17.03109 8.5484972 17.190294 8.5605469 17.335938 C 8.5776425 17.542977 8.5477921 17.723762 8.546875 17.736328 C 8.5451652 17.758038 8.3882592 18.81021 8.1777344 20.056641 C 8.0971356 20.533644 7.7783765 20.790093 7.4101562 20.878906 C 6.8022654 21.025453 6.1484375 21 6.1484375 21 L 3.2695312 20.990234 L 3.9023438 16.636719 z M 27.246094 18.195312 C 26.565902 18.205016 26.253806 18.2403 26 18.302734 C 26 18.302734 24.790129 18.501565 24.103516 19.472656 C 23.416902 20.4437 23.212891 22.568359 23.212891 22.568359 C 23.212891 22.568359 22.804576 24.916796 22.923828 25.699219 C 23.042829 26.481642 23.256401 27.206424 24.033203 27.546875 C 24.810173 27.88723 25.46875 27.873047 25.46875 27.873047 C 25.46875 27.873047 26.853325 27.996517 27.896484 27.714844 C 28.939685 27.433792 29.490234 26.595703 29.490234 26.595703 C 29.490234 26.595703 29.735609 26.235379 29.912109 25.804688 C 30.088777 25.374043 30.140682 25.073949 30.148438 25.037109 L 30.257812 24.53125 L 28.484375 24.533203 C 28.484375 24.533203 28.385914 25.868868 27.429688 25.992188 C 26.473716 26.115218 25.960314 26.068498 25.775391 26.060547 C 25.593178 26.052871 24.567122 26.102566 24.650391 25.125 C 24.650808 25.111821 24.651179 25.091912 24.652344 25.064453 C 24.69996 23.94948 24.808594 23.660156 24.808594 23.660156 L 30.375 23.642578 L 30.613281 22.072266 C 30.883598 20.286624 30.683916 18.929319 29.257812 18.398438 C 28.779056 18.220288 27.947801 18.185366 27.246094 18.195312 z M 37.748047 18.197266 C 37.067855 18.206824 36.755758 18.242238 36.501953 18.304688 C 36.501953 18.304688 35.292082 18.503803 34.605469 19.474609 C 33.918854 20.445938 33.714844 22.570313 33.714844 22.570312 C 33.714844 22.570312 33.306572 24.918749 33.425781 25.701172 C 33.545028 26.483643 33.758145 27.207998 34.535156 27.548828 C 35.311959 27.889232 35.970703 27.875 35.970703 27.875 C 35.970703 27.875 37.355488 27.998135 38.398438 27.716797 C 39.441597 27.435412 39.992187 26.597656 39.992188 26.597656 C 39.992188 26.597656 40.237604 26.237189 40.414062 25.806641 C 40.590771 25.376138 40.642384 25.077855 40.650391 25.041016 L 40.759766 24.533203 L 38.986328 24.535156 C 38.986328 24.535156 38.887867 25.871106 37.931641 25.994141 C 36.975669 26.117315 36.462059 26.072303 36.277344 26.064453 C 36.095172 26.056777 35.06916 26.104467 35.152344 25.126953 C 35.152802 25.113774 35.153175 25.093967 35.154297 25.066406 C 35.201874 23.951433 35.310547 23.662109 35.310547 23.662109 L 40.876953 23.644531 L 41.115234 22.076172 C 41.385759 20.290531 41.185607 18.931462 39.759766 18.400391 C 39.280716 18.222193 38.449796 18.187223 37.748047 18.197266 z M 46.277344 18.304688 L 43.757812 24.96875 L 43.179688 18.316406 L 41.541016 18.318359 L 42.371094 27.773438 L 44.355469 27.765625 L 46.90625 21.148438 L 47.486328 27.765625 L 49.505859 27.765625 L 53.117188 18.316406 L 51.417969 18.318359 L 48.898438 24.996094 L 48.300781 18.3125 L 46.277344 18.304688 z M 11.253906 18.310547 L 9.7929688 27.720703 L 11.617188 27.720703 L 12.427734 22.507812 C 12.596271 21.449811 13.285209 20.144531 14.638672 20.144531 L 15.582031 20.140625 L 15.865234 18.310547 L 14.873047 18.310547 C 14.184891 18.310547 13.533952 18.621542 12.978516 18.96875 L 13.076172 18.310547 L 11.253906 18.310547 z M 23.574219 18.310547 L 17.048828 18.320312 L 16.789062 20.167969 L 20.960938 20.167969 L 15.732422 25.884766 L 15.451172 27.771484 L 22.191406 27.769531 L 22.457031 25.939453 L 17.880859 25.951172 L 23.335938 20.005859 L 23.574219 18.310547 z M 59.283203 18.3125 L 56.183594 25.228516 L 55.087891 18.320312 L 53.347656 18.316406 L 54.962891 27.882812 L 54.755859 28.283203 C 54.755859 28.283203 54.42297 29.081956 54.011719 29.267578 C 53.600426 29.452827 52.910156 29.304688 52.910156 29.304688 L 52.650391 31.068359 L 53.066406 31.152344 C 53.459811 31.231491 53.623329 31.198848 54.033203 31.152344 C 54.443329 31.10608 54.748768 30.903232 55.25 30.449219 C 55.751441 29.99568 56.560547 28.207031 56.560547 28.207031 L 61.027344 18.330078 L 59.283203 18.3125 z M 37.816406 20.023438 C 38.153219 20.022293 38.536406 20.045829 38.880859 20.126953 C 39.109271 20.180351 39.326106 20.327316 39.382812 20.544922 C 39.516491 21.058003 39.375 21.841797 39.375 21.841797 L 35.558594 21.835938 L 35.710938 21.144531 C 35.710938 21.144531 35.842858 20.605552 36.107422 20.375 C 36.372026 20.144305 36.710486 20.103629 37.029297 20.068359 C 37.188702 20.050872 37.479594 20.024582 37.816406 20.023438 z M 27.330078 20.027344 C 27.666911 20.026207 28.050203 20.04988 28.394531 20.130859 C 28.623194 20.184445 28.839945 20.329507 28.896484 20.546875 C 29.030121 21.059954 28.886719 21.84375 28.886719 21.84375 L 25.072266 21.839844 L 25.224609 21.148438 C 25.224609 21.148438 25.35653 20.607886 25.621094 20.376953 C 25.885906 20.146258 26.224367 20.107486 26.542969 20.072266 C 26.702373 20.054561 26.993245 20.028481 27.330078 20.027344 z ",
+                fill: primary
+            }), Object(jsx.b)("path", {
+                d: "m 18.656138,16.774358 c -0.0046,0.0239 -0.0083,0.04735 -0.01154,0.07058 -0.0065,0.118231 0.01306,-0.07708 0.01154,-0.07058",
+                fill: primary
+            }), Object(jsx.b)("path", {
+                d: "m 26.763669,16.775893 c -0.0046,0.02391 -0.0083,0.04743 -0.01154,0.07066 -0.0065,0.118089 0.01306,-0.07731 0.01154,-0.07066",
+                fill: primary
+            }), Object(jsx.b)("path", {
+                transform: "matrix(0.77200971,0,0,0.69048194,-0.38599675,-0.54304623)",
+                d: "M 51.226562 0.78710938 C 50.728893 0.78574323 50.439453 0.79296875 50.439453 0.79296875 L 48.318359 5.6542969 C 48.318359 5.6542969 49.531198 5.9719517 51.199219 6.5273438 C 54.144731 7.5791572 56.515625 9.2929688 56.515625 9.2929688 L 66.666016 3.234375 C 66.745656 3.1868271 63.084253 2.0998969 59.082031 1.3945312 C 56.08052 0.86568549 52.71957 0.7912078 51.226562 0.78710938 z M 47.589844 0.90820312 C 47.589844 0.90820313 43.781742 1.1966088 40.910156 1.8066406 C 38.038322 2.4166724 34.904297 3.3691406 34.904297 3.3691406 L 35.34375 6.2011719 C 35.34375 6.2011719 37.385444 5.5830734 39.835938 5.25 C 42.979007 4.7627651 46.330078 5.2851562 46.330078 5.2851562 L 47.589844 0.90820312 z M 32.949219 4.0429688 C 32.949219 4.0429687 31.321834 4.6211203 28.267578 6.0117188 C 25.213321 7.4021267 22.914062 8.8925781 22.914062 8.8925781 L 25.453125 10.84375 C 25.453125 10.84375 27.099522 9.6851386 28.839844 8.8378906 C 30.525001 7.9290065 33.464844 6.8066406 33.464844 6.8066406 L 32.949219 4.0429688 z M 71.046875 5.0175781 L 58.333984 10.615234 L 60.566406 12.546875 L 78.900391 12.546875 C 78.900391 12.546875 78.861436 11.867776 78.373047 10.908203 C 78.067288 10.306786 77.515959 9.6724399 76.935547 9.0117188 C 76.724772 8.771647 75.878829 8.0196942 75.248047 7.5527344 C 73.629269 6.3552786 72.725403 5.8908131 71.046875 5.0175781 z M 20.621094 10.361328 C 20.621094 10.361328 18.007768 12.208509 16.898438 13.080078 C 15.819753 13.883157 13.6875 15.744141 13.6875 15.744141 L 19.160156 15.744141 C 19.160156 15.744141 20.387652 14.611026 21.257812 13.884766 C 22.127974 13.158363 23.712891 12.011719 23.712891 12.011719 L 20.621094 10.361328 z M 66.779297 14.519531 C 65.231195 14.543948 64.467235 14.626145 63.683594 14.955078 C 62.899953 15.283726 62.446574 15.882838 62.158203 16.728516 C 61.840059 17.527168 61.65625 19.259766 61.65625 19.259766 L 63.453125 19.261719 L 63.560547 18.464844 C 63.560547 18.464844 63.753461 17.029388 64.181641 16.751953 C 64.31878 16.663088 64.538495 16.579747 64.792969 16.529297 C 65.262594 16.436347 65.860733 16.425312 66.345703 16.445312 C 67.093861 16.476103 67.374266 16.483376 68.134766 16.582031 C 68.895557 16.68089 68.701172 17.517578 68.701172 17.517578 L 68.552734 18.767578 C 68.552734 18.767578 68.488006 19.327955 68.3125 19.677734 C 68.157306 19.987057 67.733373 20.195678 67.488281 20.287109 C 66.896194 20.507571 64.871094 21.095703 64.871094 21.095703 L 63.275391 21.619141 C 63.275391 21.619141 62.297563 21.944394 61.748047 22.636719 C 61.19878 23.329281 60.983257 24.116118 60.908203 24.527344 C 60.833113 24.938283 60.412109 27.769531 60.412109 27.769531 L 69.009766 27.773438 L 69.296875 25.810547 L 62.496094 25.820312 L 62.619141 25.021484 C 62.619141 25.021484 62.697988 24.196554 62.990234 23.927734 C 63.082461 23.842591 63.127078 23.730658 63.669922 23.509766 C 63.993778 23.377829 65.103516 23.039062 65.103516 23.039062 L 67.669922 22.240234 C 67.669922 22.240234 69.069743 21.828553 69.621094 20.957031 C 70.172403 20.085747 70.384766 18.416016 70.384766 18.416016 C 70.384766 18.416016 70.533003 16.793571 70.419922 16.285156 C 70.307099 15.776804 69.886071 15.166455 69.375 14.90625 C 68.863719 14.646045 68.327565 14.495353 66.779297 14.519531 z ",
+                fill: secondary
+            }), Object(jsx.b)("g", {
+                transform: "translate(53.596306,9.56338)"
+            }, Object(jsx.b)("path", {
+                d: "M 4.7408782,5.7106164 1.839113,5.7061141 5.3711256,1.8647573 Z M 6.112171,5.7095319 7.0417209,0.01876197 5.3948175,0.01774319 0.26289873,5.6444944 0.02981113,7.0693723 4.5178982,7.0688465 4.1894639,9.0682502 l 1.376733,0.00181 0.3251187,-2.001047 1.2714396,0.00269 0.2297076,-1.3639812 z",
+                fill: secondary
+            })))));
+        }, _fundingLogos[constants.h.ZIMPLER] = function(_ref) {
+            var logoColor = _ref.logoColor;
+            if (!ZIMPLER_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " zimpler logo available");
+            var primary = ZIMPLER_LOGO_COLORS[logoColor].primary;
+            return Object(jsx.b)("svg", {
+                width: "127",
+                height: "32",
+                viewBox: "0 0 127 32",
+                version: "1.1",
+                xmlns: "http://www.w3.org/2000/svg",
+                preserveAspectRatio: "xMinYMin meet"
+            }, Object(jsx.b)("g", {
+                transform: "matrix(2.2546708,0,0,2.0580615,0.70028058,1.3242473)",
+                fill: primary
+            }, Object(jsx.b)("path", {
+                d: "m 44.363387,6.5973104 c 0.2184,-1.0706901 1.091377,-1.9895312 2.0692,-1.9895312 0.550355,0 0.9492,0.4072031 0.806711,0.8621302 L 44.211564,7.544662 c 0.05693,-0.5305417 0.151823,-0.9473516 0.151823,-0.9473516 z m -14.0476,2.5296797 0.474755,-2.719026 c 0.208756,-0.6442735 0.968178,-1.5064037 1.755911,-1.5538178 0.303645,-0.018904 0.664534,-0.00961 1.006134,0.2652709 0.294311,0.3315885 0.446133,0.8243229 0.446133,1.4400859 0,1.9421172 -0.9492,3.287375 -2.2876,3.287375 -0.664222,-0.0093 -1.186267,-0.3504922 -1.395333,-0.719888 z M 55.857698,2.8454016 c -1.138978,-0.056711 -2.6292,1.3359609 -2.6292,1.3359609 l -0.474756,-1.184112 h -1.300133 l -0.626578,3.543349 c -0.04729,0.2460573 -0.1708,0.4642239 -0.370222,0.615763 l -1.717956,1.3452578 c 0,0 -0.702177,0.5401484 -1.68,1.1652083 -0.445822,0.2181667 -0.806711,0.3126849 -1.176933,0.3126849 -0.787733,0 -1.281156,-0.3030781 -1.508889,-0.8243229 -0.03827,-0.094518 -0.06658,-0.1989531 -0.0952,-0.2934713 l 4.404089,-2.975 C 49.317831,5.441399 49.308498,4.8352427 49.222942,4.5318547 48.938276,3.5845031 48.083964,2.873912 46.669964,2.873912 c -2.638844,0 -4.451688,2.2455052 -4.451688,5.438362 0,0.2178567 0.0096,0.4261067 0.03795,0.6250599 l -1.252844,0.8813437 c -0.246711,0.1515391 -0.597956,0.2841744 -0.816356,0.2841744 -0.379555,0 -0.541022,-0.2937812 -0.417511,-0.9284478 L 41.40192,0.04115417 39.361342,0.02225052 38.544987,4.5699719 c -0.03796,0.1893463 -0.1232,0.3693958 -0.256045,0.5113281 l -2.249644,2.3685338 c 0.05693,-0.3882994 0.08555,-0.8051093 0.08555,-1.2408229 0,-1.9235234 -0.892266,-3.3443958 -2.391822,-3.3443958 -1.452267,0 -2.534311,1.2219193 -2.534311,1.2219193 L 30.629076,2.9972505 H 29.34792 L 28.645431,7.0048234 C 28.616809,7.184563 28.540898,7.3457088 28.417698,7.4783443 L 27.10792,9.0225552 C 26.747031,9.4111646 26.367476,9.8942922 26.177698,9.903899 25.835787,9.96061 25.683964,9.837581 25.797831,9.2026047 l 0.522045,-2.8990755 c 0.408177,-2.2926094 -0.294,-3.4485209 -2.268312,-3.4485209 -1.176933,0 -2.562622,1.3170573 -2.562622,1.3170573 -0.294311,-0.8624401 -1.015778,-1.3170573 -2.107155,-1.3170573 -1.195911,0 -2.487023,1.3926719 -2.487023,1.3926719 L 16.363387,3.0065474 H 15.062942 L 14.39872,6.7962635 C 14.370098,6.976313 14.294187,7.1374588 14.170987,7.2700943 L 12.680764,9.032162 c -0.360888,0.3886094 -0.740444,0.871737 -0.930222,0.8810338 -0.3416,0.057021 -0.493733,-0.066318 -0.379555,-0.7009843 L 12.50032,3.0065474 h -2.059556 l -0.332266,1.8286953 c -0.0476,0.2367604 -0.1518224,0.464224 -0.3132891,0.6439635 L 6.7864533,8.9469406 C 6.0080533,9.7805604 5.0305422,9.903899 4.83112,9.9131958 H 2.7049867 L 7.5362311,4.4562401 7.7829422,2.978037 H 1.5756533 L 1.2813422,4.6362896 H 4.8880533 L 0.22792,10.093245 -1.2444444e-4,11.637456 c 0,0 4.36613334444,0.01921 4.44204444444,0 1.2814667,0 2.4204444,-1.127401 2.8759111,-1.591625 L 9.6433867,7.3079016 9.2258756,9.6101177 c -0.266,1.4967973 0.3129777,2.2073883 1.5471554,2.1791873 0.759111,-0.01921 1.281156,-0.521245 1.8032,-1.04218 l 1.404667,-1.6390385 -0.465111,2.6431015 h 2.059866 l 0.9016,-5.182388 c 0.113867,-0.6442734 0.939556,-1.7335573 1.803511,-1.7335573 0.911245,0 1.347734,0.4450104 1.138978,1.6672396 l -0.920889,5.2394087 h 2.040889 l 0.987156,-5.5709973 c 0.05693,-0.3693958 0.721155,-1.4115755 1.642044,-1.4115755 0.958534,0 1.271822,0.5209349 1.063067,1.7431641 l -0.569645,3.0980286 c -0.265688,1.4971071 0.313289,2.2076981 1.547156,2.1791871 0.759422,-0.0189 1.281467,-0.520934 1.803511,-1.042179 l 1.214889,-1.4211825 -0.427156,2.4348515 -0.493733,2.813854 h 2.059867 l 0.664222,-3.827523 c 0.284667,0.360099 0.683511,0.65388 1.176933,0.805419 0.113867,0.03781 0.227734,0.06632 0.351245,0.08522 1.328755,0.06632 2.515333,-0.577955 3.568755,-1.676846 l 0.0096,-0.00961 2.989778,-3.0887317 -0.484089,2.7004323 c -0.265689,1.4967974 0.303644,2.1788774 1.547155,2.1884844 0.806711,0 1.556489,-0.397906 2.344222,-0.928448 l 1.044089,-0.748708 c 0.01898,0.03812 0.03796,0.08553 0.05693,0.123338 0.474755,0.918842 1.348044,1.525308 2.638844,1.534915 h 0.0093 c 1.357378,0 2.686134,-1.279251 3.454889,-1.8190892 0.199423,-0.1422422 0.939867,-0.7391016 1.736934,-1.383375 L 49.906371,11.73228 h 2.059556 L 52.86792,6.5498963 c 0.113867,-0.6442734 0.939556,-1.7338671 1.8032,-1.7338671 0.332267,0 0.597956,0.057021 0.797378,0.1896562 z"
+            }), Object(jsx.b)("g", {
+                transform: "translate(10.577778,-0.309896)"
+            }, Object(jsx.b)("path", {
+                d: "m 1.0778133,2.4638268 c 0.6835111,0 1.3287556,-0.5401484 1.4332889,-1.2033255 C 2.6153244,0.59732422 2.1502133,0.05748568 1.4670133,0.04787891 c -0.68351108,0 -1.32875552,0.54014843 -1.43328886,1.20332549 -0.11386666,0.672474 0.35124445,1.2126224 1.04408886,1.2126224"
+            }))));
+        }, _fundingLogos[constants.h.WECHATPAY] = function(_ref) {
+            var logoColor = _ref.logoColor;
+            if (!WECHATPAY_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " wechatpay logo available");
+            var _WECHATPAY_LOGO_COLOR2 = WECHATPAY_LOGO_COLORS[logoColor], primary = _WECHATPAY_LOGO_COLOR2.primary, secondary = _WECHATPAY_LOGO_COLOR2.secondary;
+            return Object(jsx.b)("svg", {
+                width: "81px",
+                height: "15px",
+                viewBox: "0 0 81 15",
+                version: "1.1",
+                xmlns: "http://www.w3.org/2000/svg"
+            }, Object(jsx.b)("g", {
+                stroke: "none",
+                "stroke-width": "1",
+                fill: "none",
+                "fill-rule": "evenodd"
+            }, Object(jsx.b)("g", {
+                transform: "translate(-100.000000, -159.000000)"
+            }, Object(jsx.b)("g", {
+                transform: "translate(100.000000, 159.000000)"
+            }, Object(jsx.b)("path", {
+                d: "M6.14570881,9.41936066 C6.06938663,9.45772131 5.98346261,9.48009836 5.89212219,9.48009836 C5.68112827,9.48009836 5.49746261,9.36378689 5.40095198,9.19214754 L5.36402188,9.1114918 L3.82600669,5.74042623 C3.80926505,5.70354098 3.79892462,5.66222951 3.79892462,5.62190164 C3.79892462,5.4664918 3.92497933,5.34059016 4.08057812,5.34059016 C4.14385167,5.34059016 4.20220122,5.3612459 4.24922553,5.39640984 L6.06421641,6.68714754 C6.19691854,6.77370492 6.35522553,6.82460656 6.52559635,6.82460656 C6.6272772,6.82460656 6.72428024,6.80567213 6.81438967,6.77272131 L15.3506571,2.97821311 C13.8205204,1.17698361 11.3006571,9.83606557e-05 8.4489155,9.83606557e-05 C3.78267538,9.83606557e-05 4.92401216e-05,3.14837705 4.92401216e-05,7.03239344 C4.92401216e-05,9.15157377 1.13823465,11.0587869 2.91924985,12.3480492 C3.0622924,12.4498525 3.15584863,12.6173115 3.15584863,12.8061639 C3.15584863,12.868623 3.1425538,12.925918 3.12605836,12.9854262 C2.98400061,13.5155902 2.75601884,14.3644426 2.74543222,14.4040328 C2.72770578,14.4706721 2.70013131,14.5400164 2.70013131,14.6096066 C2.70013131,14.7650164 2.82618602,14.890918 2.9817848,14.890918 C3.04284255,14.890918 3.09282128,14.8682951 3.1445234,14.838541 L4.99422857,13.7720656 C5.13333191,13.6916557 5.28055988,13.6422295 5.44280608,13.6422295 C5.52922249,13.6422295 5.6124383,13.6552623 5.69122249,13.6793607 C6.55415562,13.9272295 7.48504012,14.0651803 8.4489155,14.0651803 C13.1151556,14.0651803 16.898028,10.9164098 16.898028,7.03239344 C16.898028,5.856 16.5491617,4.74821311 15.9356298,3.77370492 L6.20750517,9.38370492 L6.14570881,9.41936066 Z",
+                fill: primary
+            }), Object(jsx.b)("path", {
+                d: "M29.5311474,7.78413934 C29.4695973,8.00446721 29.4090319,8.21864754 29.3499438,8.42741803 C29.1195,9.24086066 28.9178617,9.9529918 28.7610319,10.6688115 C28.6071565,9.81012295 28.3429833,8.80143443 28.0625608,7.75807377 L26.7178131,2.69422131 L26.0208191,2.69422131 L24.5423845,7.79594262 C24.2043511,8.89659836 23.9096489,9.88020492 23.7515881,10.6766803 C23.601652,9.98348361 23.388196,9.1429918 23.1634149,8.2575 L21.7290502,2.69422131 L20.9618891,2.69422131 L23.3652994,11.7837295 L24.0485061,11.7837295 L25.5941535,6.57528689 C25.9632082,5.35881148 26.2020228,4.52004098 26.3514666,3.76856557 C26.4819529,4.57340164 26.6959012,5.42446721 27.009807,6.57331967 L28.3676033,11.7837295 L29.0643511,11.7837295 L31.7917614,2.69422131 L31.0236155,2.69422131 L29.5311474,7.78413934 Z",
+                fill: secondary
+            }), Object(jsx.b)("path", {
+                d: "M34.628214,5.77482787 C35.1580377,5.77482787 35.5859343,5.93638525 35.9000863,6.25507377 C36.4119374,6.77368033 36.4798888,7.54482787 36.481366,7.90384426 L32.5428948,7.90384426 C32.6832292,6.90769672 33.3071015,5.77482787 34.628214,5.77482787 Z M36.5818158,10.9372869 C36.2093143,11.109418 35.7368553,11.2616311 34.8950954,11.2616311 C33.3940103,11.2616311 32.5266456,10.2630246 32.5089191,8.51958197 L37.220214,8.51958197 L37.2295696,8.47679508 C37.2576365,8.35089344 37.2576365,8.2542541 37.2576365,8.07843443 C37.2576365,7.83695902 37.2236608,6.99228689 36.7878857,6.2602377 C36.3425088,5.51195902 35.6428067,5.13277869 34.7082292,5.13277869 C32.9520802,5.13277869 31.7722869,6.54671311 31.7722869,8.65163115 C31.7722869,10.6048279 32.9949191,11.9172049 34.814834,11.9172049 C35.9744389,11.9172049 36.6283477,11.6233525 36.8558371,11.4972049 L36.8935058,11.4763033 L36.5818158,10.9372869 Z",
+                fill: secondary
+            }), Object(jsx.b)("path", {
+                d: "M42.8043392,11.2616066 C40.4580474,11.2616066 39.057166,9.7827541 39.057166,7.30578689 C39.057166,4.73709836 40.4979319,3.20340984 42.9111903,3.20340984 C43.5806097,3.20340984 44.2094061,3.32931148 44.6939289,3.55677049 L45.0334395,2.96955738 L45.0051264,2.95406557 C44.831555,2.85865574 44.1660748,2.54783607 42.8978954,2.54783607 C40.1362632,2.54783607 38.2808954,4.45455738 38.2808954,7.2925082 C38.2808954,10.7058689 40.6028134,11.9171803 42.5908833,11.9171803 C43.7216827,11.9171803 44.5991416,11.6801311 45.0432875,11.4583279 L45.077017,11.4413607 L44.751786,10.8787377 C44.2308255,11.1184918 43.5099502,11.2616066 42.8043392,11.2616066",
+                fill: secondary
+            }), Object(jsx.b)("path", {
+                d: "M49.1547392,5.13265574 C48.6780948,5.13265574 48.2204079,5.26445902 47.8336267,5.51281967 C47.5150432,5.69478689 47.2255112,5.98347541 47.0216571,6.31839344 L47.0216571,2.5477377 L46.2719763,2.5477377 L46.2719763,11.7838033 L47.0216571,11.7838033 L47.0216571,7.82527869 C47.0216571,7.56634426 47.033721,7.39888525 47.0984717,7.20413115 C47.3929277,6.37814754 48.1669824,5.8015082 48.981414,5.8015082 C50.4657574,5.8015082 50.6875842,7.14462295 50.6875842,7.94527869 L50.6875842,11.7838033 L51.437265,11.7838033 L51.437265,7.87863934 C51.437265,5.26519672 49.5358578,5.13265574 49.1547392,5.13265574",
+                fill: secondary
+            }), Object(jsx.b)("path", {
+                d: "M61.0768805,11.2239836 C60.9456556,11.2517705 60.7622362,11.2748852 60.5106191,11.2748852 C59.9106283,11.2748852 59.6314368,10.873082 59.6314368,10.010459 L59.6314368,5.90808197 L61.4589839,5.90808197 L61.4589839,5.27906557 L59.6314368,5.27906557 L59.6314368,3.8425082 L58.8815097,3.8425082 L58.8815097,5.27906557 L57.8011815,5.27906557 L57.8011815,5.90808197 L58.8815097,5.90808197 L58.8815097,9.89070492 C58.8815097,10.6298852 59.0169201,11.1428361 59.2936495,11.4566066 C59.5366495,11.7666885 59.9295857,11.930459 60.4303578,11.930459 C60.7880872,11.930459 61.0960842,11.8751311 61.346224,11.7659508 L61.3811845,11.750459 L61.0768805,11.2239836 Z",
+                fill: secondary
+            }), Object(jsx.b)("path", {
+                d: "M68.8747432,5.2672377 C68.8747432,6.62977869 67.9564149,7.4110082 66.3548799,7.4110082 C66.0161079,7.4110082 65.5899347,7.3972377 65.2622416,7.29297541 L65.2622416,3.36617213 C65.4183328,3.33518852 65.8238252,3.27002459 66.4747796,3.27002459 C67.9999924,3.27002459 68.8747432,3.99789344 68.8747432,5.2672377 M66.5016155,2.62772951 C65.8550927,2.62772951 65.2009377,2.6862541 64.5576155,2.80182787 L64.5125608,2.80994262 L64.5125608,11.783877 L65.2622416,11.783877 L65.2622416,7.96354918 C65.5552204,8.03756557 65.8809438,8.05305738 66.3014544,8.05305738 C67.4544119,8.05305738 68.4072082,7.69158197 68.9830714,7.0360082 C69.4146611,6.56338525 69.6241778,5.96289344 69.6241778,5.20059836 C69.6241778,4.46018852 69.3784696,3.83830328 68.9141353,3.40281148 C68.3926824,2.8957623 67.5583085,2.62772951 66.5016155,2.62772951",
+                fill: secondary
+            }), Object(jsx.b)("path", {
+                d: "M79.9828222,5.27906557 L78.4091079,9.45791803 C78.2636033,9.83537705 78.1402568,10.2032459 78.03119,10.528082 C78.0050927,10.6060328 77.979734,10.6812787 77.9553602,10.753082 C77.8268435,10.3370164 77.6687827,9.87644262 77.5235243,9.49701639 L75.8427128,5.3132459 L75.8289255,5.27906557 L75.0307432,5.27906557 L77.4356307,11.2832459 C77.4984119,11.4401311 77.5114605,11.5109508 77.5114605,11.5426721 C77.5114605,11.6011967 77.4848708,11.6789016 77.4358769,11.8013607 C77.1103997,12.5732459 76.6822568,13.0945574 76.3811535,13.3952951 C75.9648283,13.7961148 75.5120653,14.0024262 75.2791596,14.0897213 L75.2348435,14.1061967 L75.5795243,14.7025082 C75.7501413,14.6378361 76.1772994,14.4507049 76.6551748,14.0486557 C77.4873328,13.3232459 78.0198647,12.2048852 78.8308495,10.1240656 L80.7819894,5.27906557 L79.9828222,5.27906557 Z",
+                fill: secondary
+            }), Object(jsx.b)("path", {
+                d: "M56.4250185,9.67738525 C56.4250185,9.77279508 56.4139395,9.91394262 56.3610064,10.0462377 C56.1564137,10.6467295 55.5650398,11.2882869 54.518441,11.2882869 C53.9531644,11.2882869 53.2926082,10.9536148 53.2926082,10.0103361 C53.2926082,9.60804098 53.4260489,9.27459836 53.6889912,9.01935246 C54.1434775,8.57820492 54.981052,8.35517213 56.1815261,8.35517213 C56.2610489,8.35517213 56.3422951,8.35615574 56.4250185,8.35812295 L56.4250185,9.67738525 Z M57.2672708,11.720582 C57.1857784,11.2186967 57.1744532,10.698123 57.1744532,10.2102541 L57.1744532,7.7055 C57.1744532,6.02230328 56.3898119,5.13263115 54.9054684,5.13263115 C54.2370337,5.13263115 53.5225596,5.34017213 52.9947055,5.68787705 L52.9917511,5.68984426 L53.297286,6.21804098 C53.7170581,5.93279508 54.2614076,5.77492623 54.8392404,5.77492623 C54.8468726,5.77492623 54.8545049,5.77468033 54.8621371,5.77468033 C55.3363195,5.77468033 55.70759,5.90451639 55.9663468,6.1607459 C56.2748362,6.46615574 56.4250185,6.93681148 56.4250185,7.59902459 L56.4250185,7.71705738 C54.8549973,7.70427049 53.7414319,8.02492623 53.1015565,8.65787705 C52.713052,9.04172951 52.5163377,9.53254918 52.5163377,10.1170574 C52.5163377,10.9905 53.1219912,11.930582 54.4519669,11.930582 C55.4200277,11.930582 56.1258848,11.4289426 56.4902617,10.9295164 L56.5769243,11.7837787 L57.2776112,11.7837787 L57.2672708,11.720582 Z",
+                fill: secondary
+            }), Object(jsx.b)("path", {
+                d: "M73.6282614,9.67738525 C73.6282614,9.77279508 73.6174286,9.91369672 73.5644954,10.0462377 C73.3596565,10.6467295 72.7682827,11.2882869 71.7219301,11.2882869 C71.1564073,11.2882869 70.4958511,10.9536148 70.4958511,10.0103361 C70.4958511,9.60804098 70.6292918,9.27459836 70.892234,9.01935246 C71.3467204,8.57820492 72.1842948,8.35517213 73.384769,8.35517213 C73.4642918,8.35517213 73.545538,8.35615574 73.6282614,8.35812295 L73.6282614,9.67738525 Z M74.4705137,11.720582 C74.3892675,11.2184508 74.3779422,10.697877 74.3779422,10.2102541 L74.3779422,7.7055 C74.3779422,6.02230328 73.5933009,5.13263115 72.1087112,5.13263115 C71.4708055,5.13263115 70.7930152,5.32320492 70.2732857,5.64263115 L70.5775897,6.16886066 C70.9857903,5.91509016 71.4991185,5.77492623 72.0427295,5.77492623 C72.0506079,5.77492623 72.0579939,5.77468033 72.0656261,5.77468033 C72.5395623,5.77468033 72.9108328,5.90451639 73.1695897,6.1605 C73.4783252,6.46615574 73.6282614,6.93681148 73.6282614,7.59902459 L73.6282614,7.71705738 C72.0646413,7.70427049 70.9446748,8.02492623 70.3047994,8.65787705 C69.9162948,9.04172951 69.7195805,9.53254918 69.7195805,10.1170574 C69.7195805,10.9905 70.325234,11.930582 71.6552097,11.930582 C72.6232705,11.930582 73.3291277,11.4291885 73.6935046,10.9295164 L73.7801672,11.7837787 L74.4808541,11.7837787 L74.4705137,11.720582 Z",
+                fill: secondary
+            })))));
+        }, _fundingLogos), visa = __webpack_require__("./src/resources/cardLogos/visa.svg"), visa_default = __webpack_require__.n(visa), amex = __webpack_require__("./src/resources/cardLogos/amex.svg"), amex_default = __webpack_require__.n(amex), mastercard = __webpack_require__("./src/resources/cardLogos/mastercard.svg"), mastercard_default = __webpack_require__.n(mastercard), discover = __webpack_require__("./src/resources/cardLogos/discover.svg"), discover_default = __webpack_require__.n(discover), hiper = __webpack_require__("./src/resources/cardLogos/hiper.svg"), hiper_default = __webpack_require__.n(hiper), elo = __webpack_require__("./src/resources/cardLogos/elo.svg"), elo_default = __webpack_require__.n(elo), jcb = __webpack_require__("./src/resources/cardLogos/jcb.svg"), jcb_default = __webpack_require__.n(jcb), cardLogos = ((_cardLogos = {})[constants.o.VISA] = visa_default.a, 
+        _cardLogos[constants.o.AMEX] = amex_default.a, _cardLogos[constants.o.MASTERCARD] = mastercard_default.a, 
+        _cardLogos[constants.o.DISCOVER] = discover_default.a, _cardLogos[constants.o.HIPER] = hiper_default.a, 
+        _cardLogos[constants.o.ELO] = elo_default.a, _cardLogos[constants.o.JCB] = jcb_default.a, 
         _cardLogos);
         __webpack_require__.d(__webpack_exports__, "b", function() {
             return fundingLogos;
