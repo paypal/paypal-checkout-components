@@ -195,6 +195,10 @@ export let config = {
 
         'newyorkpass.com': {
             disable_venmo: true
+        },
+
+        'dndbeyond.com': {
+            disable_venmo: true
         }
     },
 
