@@ -227,7 +227,7 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
         }
 
         #${ id } .paypal-checkout-modal .paypal-checkout-continue a {
-            border-bottom: 1px solid white;
+            border-bottom: 1px solid currentColor;
         }
 
         #${ id } .paypal-checkout-close {
