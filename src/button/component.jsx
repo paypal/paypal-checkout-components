@@ -626,7 +626,9 @@ export let Button : Component<ButtonOptions> = create({
 
                     let reject = () => {
                         if (data.onReject && typeof data.onReject === 'function') {
-                            return data.onReject.call();
+                            return ZalgoPromise.try(() => {
+                                return data.onReject.call();
+                            });
                         }
                     };
 
