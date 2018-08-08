@@ -64,7 +64,7 @@ function getDimensions({ label, size, tagline, fundingicons, layout, number, vie
         height = (buttonHeight * number) + (perc(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) * (number - 1));
     }
 
-    if ((cards && cards.length > 0) && layout === BUTTON_LAYOUT.VERTICAL && (size === BUTTON_SIZE.LARGE || size === BUTTON_SIZE.MEDIUM)) {
+    if ((cards && cards.length > 0) && layout === BUTTON_LAYOUT.VERTICAL) {
         height += BUTTON_STYLE[size].byPayPalHeight;
     }
 

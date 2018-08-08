@@ -72,12 +72,6 @@ export const Card : Component<CardOptions> = create({
             queryParam: true
         },
 
-        fundingSource: {
-            type:       'string',
-            required:   false,
-            queryParam: true
-        },
-
         env: {
             type:       'string',
             required:   false,
