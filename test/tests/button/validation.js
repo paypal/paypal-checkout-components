@@ -633,25 +633,25 @@ let buttonConfigs = [
             {
                 layout: `vertical`,
                 label:  `paypal`,
-                valid:  false
+                valid:  true
             },
 
             {
                 layout: `vertical`,
                 label:  `checkout`,
-                valid:  false
+                valid:  true
             },
 
             {
                 layout: `vertical`,
                 label:  `pay`,
-                valid:  false
+                valid:  true
             },
 
             {
                 layout: `vertical`,
                 label:  `buynow`,
-                valid:  false
+                valid:  true
             },
 
             {
@@ -710,6 +710,27 @@ let buttonConfigs = [
             {
                 layout: `vertical`,
                 label:  `mybank`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `p24`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `zimpler`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `wechatpay`,
                 commit: true,
                 valid:  false
             },

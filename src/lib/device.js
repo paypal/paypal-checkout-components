@@ -20,12 +20,20 @@ export function isWebView() : boolean {
     (/Android.*Version\/(\d)\.(\d)/i).test(userAgent);
 }
 
+export function isStandAlone() : boolean {
+    return (window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches);
+}
+
 export function isFacebookWebView(ua? : string = getUserAgent()) : boolean {
     return (ua.indexOf('FBAN') !== -1) || (ua.indexOf('FBAV') !== -1);
 }
 
 export function isFirefoxIOS(ua? : string = getUserAgent()) : boolean {
     return (/FxiOS/i).test(ua);
+}
+
+export function isEdgeIOS(ua? : string = getUserAgent()) : boolean {
+    return (/EdgiOS/i).test(ua);
 }
 
 export function isOperaMini(ua? : string = getUserAgent()) : boolean {
@@ -121,7 +129,12 @@ export function isIEIntranet() : boolean {
     return false;
 }
 
+export function isMacOsCna() : boolean {
+    let userAgent = getUserAgent();
+    return (/Macintosh.*AppleWebKit(?!.*Safari)/i).test(userAgent);
+}
+
 export function supportsPopups(ua? : string = getUserAgent()) : boolean {
     return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) ||
-        isFirefoxIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron());
+        isFirefoxIOS(ua) || isEdgeIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron() || isMacOsCna() || isStandAlone());
 }

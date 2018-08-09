@@ -599,7 +599,7 @@ export function setupPopupBridge({ win = window, isAuthorize = true } : { win? :
 
                 let { query, hash } = parseUrl(url);
 
-                let queryItems: Object = {};
+                let queryItems : Object = {};
 
                 if (query.token && query.token.match(/^EC-[A-Z0-9]+$/)) {
                     queryItems.token = query.token;

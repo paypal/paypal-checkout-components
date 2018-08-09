@@ -1,4 +1,5 @@
 /* @flow */
+/* global __paypal_checkout__*/
 
 import { FUNDING, COUNTRY, CARD, PLATFORM, DEFAULT } from '../constants';
 
@@ -10,9 +11,12 @@ export const FUNDING_PRIORITY = [
     FUNDING.ELV,
     FUNDING.BANCONTACT,
     FUNDING.GIROPAY,
-    FUNDING.SOFORT,
     FUNDING.EPS,
+    FUNDING.SOFORT,
     FUNDING.MYBANK,
+    FUNDING.P24,
+    FUNDING.ZIMPLER,
+    FUNDING.WECHATPAY,
     FUNDING.CARD
 ];
 
@@ -42,7 +46,8 @@ export const FUNDING_CONFIG = {
     },
 
     [ FUNDING.CARD ]: {
-        default: true,
+        // $FlowFixMe
+        default: (typeof __paypal_checkout__ === 'undefined' ? true : __paypal_checkout__.serverConfig.paypalMerchantConfiguration.creditCard.isPayPalBranded),
 
         allowHorizontal: false,
         allowVertical:   true
@@ -80,7 +85,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.NL
         ],
 
-        allowHorizontal: true,
+        allowHorizontal: false,
         allowVertical:   true,
 
         requireCommitAsTrue: true
@@ -96,7 +101,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.AT
         ],
 
-        allowHorizontal: true,
+        allowHorizontal: false,
         allowVertical:   true
     },
 
@@ -105,7 +110,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.BE
         ],
 
-        allowHorizontal: true,
+        allowHorizontal: false,
         allowVertical:   true,
 
         requireCommitAsTrue: true
@@ -116,7 +121,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.DE
         ],
 
-        allowHorizontal: true,
+        allowHorizontal: false,
         allowVertical:   true,
 
         requireCommitAsTrue: true
@@ -124,10 +129,15 @@ export const FUNDING_CONFIG = {
 
     [ FUNDING.SOFORT ]: {
         allowedCountries: [
-            COUNTRY.DE
+            COUNTRY.DE,
+            COUNTRY.AT,
+            COUNTRY.BE,
+            COUNTRY.ES,
+            COUNTRY.IT,
+            COUNTRY.NL
         ],
 
-        allowHorizontal: true,
+        allowHorizontal: false,
         allowVertical:   true,
 
         requireCommitAsTrue: true
@@ -138,7 +148,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.AT
         ],
 
-        allowHorizontal: true,
+        allowHorizontal: false,
         allowVertical:   true,
 
         requireCommitAsTrue: true
@@ -149,7 +159,37 @@ export const FUNDING_CONFIG = {
             COUNTRY.IT
         ],
 
-        allowHorizontal: true,
+        allowHorizontal: false,
+        allowVertical:   true,
+
+        requireCommitAsTrue: true
+    },
+    [ FUNDING.P24 ]: {
+        allowedCountries: [
+            COUNTRY.PL
+        ],
+
+        allowHorizontal: false,
+        allowVertical:   true,
+
+        requireCommitAsTrue: true
+    },
+    [ FUNDING.ZIMPLER ]: {
+        allowedCountries: [
+            COUNTRY.FI
+        ],
+
+        allowHorizontal: false,
+        allowVertical:   true,
+
+        requireCommitAsTrue: true
+    },
+    [ FUNDING.WECHATPAY ]: {
+        allowedCountries: [
+            COUNTRY.CN
+        ],
+
+        allowHorizontal: false,
         allowVertical:   true,
 
         requireCommitAsTrue: true

@@ -335,7 +335,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
                 maxbuttons: 4
             },
             funding: {
-                allowed: [ FUNDING.CREDIT, FUNDING.IDEAL, FUNDING.CARD ]
+                allowed: [ FUNDING.CREDIT, FUNDING.IDEAL, FUNDING.SOFORT, FUNDING.CARD ]
             }
         }
     });
@@ -350,7 +350,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
                 maxbuttons: 4
             },
             funding: {
-                allowed: [ FUNDING.CREDIT, FUNDING.BANCONTACT ]
+                allowed: [ FUNDING.CREDIT, FUNDING.BANCONTACT, FUNDING.SOFORT ]
             }
         }
     });
@@ -365,7 +365,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
                 maxbuttons: 4
             },
             funding: {
-                allowed: [ FUNDING.EPS ]
+                allowed: [ FUNDING.EPS, FUNDING.SOFORT ]
             }
         }
     });
@@ -380,7 +380,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
                 maxbuttons: 4
             },
             funding: {
-                allowed:    [ FUNDING.EPS ],
+                allowed:    [ FUNDING.EPS, FUNDING.SOFORT ],
                 disallowed: [ FUNDING.ELV ]
             }
         }
@@ -396,7 +396,52 @@ for (let color of getButtonConfig('paypal', 'colors')) {
                 maxbuttons: 4
             },
             funding: {
-                allowed: [ FUNDING.MYBANK ]
+                allowed: [ FUNDING.SOFORT, FUNDING.MYBANK ]
+            }
+        }
+    });
+
+    buttonConfigs.push({
+        button: {
+            locale: 'en_PL',
+            commit: true,
+            style:  {
+                color,
+                layout:     'vertical',
+                maxbuttons: 4
+            },
+            funding: {
+                allowed: [ FUNDING.P24 ]
+            }
+        }
+    });
+
+    buttonConfigs.push({
+        button: {
+            locale: 'en_FI',
+            commit: true,
+            style:  {
+                color,
+                layout:     'vertical',
+                maxbuttons: 4
+            },
+            funding: {
+                allowed: [ FUNDING.ZIMPLER ]
+            }
+        }
+    });
+
+    buttonConfigs.push({
+        button: {
+            locale: 'zh_CN',
+            commit: true,
+            style:  {
+                color,
+                layout:     'vertical',
+                maxbuttons: 4
+            },
+            funding: {
+                allowed: [ FUNDING.WECHATPAY ]
             }
         }
     });
