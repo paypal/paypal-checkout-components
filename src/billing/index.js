@@ -3,14 +3,16 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { create  } from 'xcomponent/src';
+import { create } from 'xcomponent/src';
 import { type Component } from 'xcomponent/src/component/component';
-import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 
-import { config } from '../config';
+import { ENV } from '../constants';
 import { getButtonSessionID, getBrowserLocale, getSessionID } from '../lib';
+import { config } from '../config';
 
-type CardOptions = {
+import { containerTemplate } from './template';
+
+type BillingOptions = {
     client : {
         [string] : (string | ZalgoPromise<string>)
     },
@@ -18,26 +20,25 @@ type CardOptions = {
     locale? : string,
     logLevel : string,
     awaitPopupBridge : Function,
-    onAuthorize : ({ returnUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
-    onCancel? : ({ cancelUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
-    onEvent? : ({ type : string, payload : Object }) => void,
     meta : Object,
     commit : boolean,
     token : string
 };
 
-export const Card : Component<CardOptions> = create({
-    tag:  'card-fields',
-    name: 'ppcard',
+export const BillingPage : Component<BillingOptions> = create({
+    tag:  'billing-page',
+    name: 'billing-page',
 
     buildUrl(props) : string {
-        let env = props.env || config.env;
-        return config.inlinedCardFieldUrls[env];
+        const env = props.env || config.env;
+        return `${ config.inlinedCardFieldUrls[env] }/billing`;
     },
 
-    contexts: {
-        iframe: true,
-        popup:  false
+    get domain() : Object {
+        return {
+            ...config.paypalDomains,
+            [ ENV.LOCAL ]: /^http:\/\/localhost.paypal.com:\d+$/
+        };
     },
 
     props: {
@@ -100,31 +101,16 @@ export const Card : Component<CardOptions> = create({
             }
         },
 
-        initialFormValues: {
-            type:     'object',
+        cardType: {
+            type:       'string',
+            required:   false
+        },
+        prefilledZipCode: {
+            type:     'string',
             required: false
         },
 
-
-        onAuthorize: {
-            type:     'function',
-            required: true,
-            once:     true
-        },
-
-        onAuth: {
-            type:       'function',
-            required:   false,
-            sameDomain: true
-        },
-
         onEvent: {
-            type:       'function',
-            required:   false,
-            sameDomain: true
-        },
-
-        getState: {
             type:       'function',
             required:   false,
             sameDomain: true
@@ -142,5 +128,8 @@ export const Card : Component<CardOptions> = create({
             once:     true,
             noop:     true
         }
-    }
+    },
+
+
+    containerTemplate
 });

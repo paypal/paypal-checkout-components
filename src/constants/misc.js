@@ -38,7 +38,9 @@ export const ATTRIBUTE = {
     BUTTON:         'data-button',
     FUNDING_SOURCE: 'data-funding-source',
     CARD:           'data-card',
-    VERSION:        'data-version'
+    VERSION:        'data-version',
+    LAYOUT:         'data-layout',
+    SIZE:           'data-size'
 };
 
 export const PLATFORM = {
