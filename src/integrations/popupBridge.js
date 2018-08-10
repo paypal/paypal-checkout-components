@@ -163,7 +163,7 @@ function renderThroughPopupBridge(props : Object, popupBridge : PopupBridge) : Z
 
         } else if (opType === OPTYPE.CANCEL) {
             return onCancel(data, actions);
-        
+ 
         } else {
             throw new Error(`Invalid opType: ${ opType }`);
         }
