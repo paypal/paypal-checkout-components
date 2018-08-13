@@ -14,7 +14,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -48,7 +48,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -90,7 +90,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -124,7 +124,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -168,7 +168,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -202,7 +202,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -236,7 +236,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -298,7 +298,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "AW": {
@@ -316,7 +316,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -350,7 +350,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -394,7 +394,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -446,7 +446,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -506,7 +506,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -532,7 +532,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -566,7 +566,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -608,7 +608,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -660,7 +660,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -674,7 +674,7 @@
     "BR": {
         "pt": {
             "checkout": "{logo:pp} {logo:paypal} Finalizar",
-            "safer_tag": "A maneira f\u00e1cil e segura de pagar.",
+            "safer_tag": "A maneira fácil e segura de pagar.",
             "later_tag": "Compre agora e pague depois.",
             "pay": "Pague com {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar agora",
@@ -708,7 +708,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -752,7 +752,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -804,7 +804,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -840,7 +840,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "fr": {
             "checkout": "{logo:pp} {logo:paypal} Payer",
@@ -848,7 +848,7 @@
             "later_tag": "Acheter. Payer plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         }
     },
     "CD": {
@@ -858,7 +858,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -900,7 +900,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -952,7 +952,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -978,7 +978,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1020,7 +1020,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -1038,7 +1038,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -1082,7 +1082,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -1116,7 +1116,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -1142,7 +1142,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1194,7 +1194,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1216,7 +1216,7 @@
     "DE": {
         "de": {
             "checkout": "Direkt zu {logo:pp} {logo:paypal}",
-            "safer_tag": "\u00dcberall schnell und sicher bezahlen.",
+            "safer_tag": "Überall schnell und sicher bezahlen.",
             "later_tag": "Jetzt bei uns bequem in Raten zahlen.",
             "pay": "Mit {logo:paypal} zahlen",
             "buynow": "{logo:pp} {logo:paypal} Jetzt kaufen",
@@ -1238,7 +1238,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -1298,7 +1298,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1340,7 +1340,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -1374,7 +1374,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1416,7 +1416,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -1442,7 +1442,7 @@
             "later_tag": "Покупайте сейчас, платите потом.",
             "pay": "Оплатить через {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Купить сейчас",
-            "poweredBy": "При содействии {logo:paypal}"
+            "poweredBy": "Обработано {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -1450,7 +1450,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1492,7 +1492,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1526,7 +1526,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1552,7 +1552,7 @@
             "later_tag": "Compre ahora y pague más adelante.",
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Tecnología de {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -1560,7 +1560,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "ET": {
@@ -1578,7 +1578,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1620,7 +1620,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1654,7 +1654,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1688,7 +1688,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1740,7 +1740,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1766,7 +1766,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Pay",
@@ -1774,7 +1774,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "GA": {
@@ -1784,7 +1784,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -1818,7 +1818,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "GD": {
@@ -1836,7 +1836,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1870,7 +1870,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1904,7 +1904,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1938,7 +1938,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -1980,7 +1980,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2014,7 +2014,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2040,7 +2040,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -2082,7 +2082,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2124,7 +2124,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2166,7 +2166,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -2192,7 +2192,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2226,7 +2226,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2252,7 +2252,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal} 結帳",
@@ -2260,7 +2260,7 @@
             "later_tag": "先購買，後付款。",
             "pay": "使用 {logo:paypal} 付款",
             "buynow": "{logo:pp} {logo:paypal} 立即買",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "支援方： {logo:paypal}"
         }
     },
     "HN": {
@@ -2286,7 +2286,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -2330,7 +2330,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2382,7 +2382,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2426,7 +2426,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "IS": {
@@ -2446,7 +2446,7 @@
             "later_tag": "Acquista ora. Paga più tardi.",
             "pay": "Paga con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Paga adesso",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Con tecnologia {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -2454,7 +2454,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "JM": {
@@ -2480,7 +2480,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -2514,7 +2514,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2566,7 +2566,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2600,7 +2600,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2644,7 +2644,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2670,7 +2670,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -2712,7 +2712,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2772,7 +2772,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2806,7 +2806,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2840,7 +2840,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2884,7 +2884,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2918,7 +2918,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2962,7 +2962,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -2996,7 +2996,7 @@
             "later_tag": "Покупайте сейчас, платите потом.",
             "pay": "Оплатить через {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Купить сейчас",
-            "poweredBy": "При содействии {logo:paypal}"
+            "poweredBy": "Обработано {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -3004,7 +3004,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3046,7 +3046,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3080,7 +3080,7 @@
             "later_tag": "Покупайте сейчас, платите потом.",
             "pay": "Оплатить через {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Купить сейчас",
-            "poweredBy": "При содействии {logo:paypal}"
+            "poweredBy": "Обработано {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -3088,7 +3088,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3130,7 +3130,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3156,7 +3156,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -3202,7 +3202,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3236,7 +3236,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3272,7 +3272,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -3324,7 +3324,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3358,7 +3358,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3392,7 +3392,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3436,7 +3436,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3480,7 +3480,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3507,7 +3507,7 @@
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
             "installment": "{logo:pp} {logo:paypal}  Pagos en<br>  mensualidades",
-            "installment_period": "{logo:pp} {logo:paypal}  Pague hasta<br>  [installmentperiod]x sin inter\u00e9s",
+            "installment_period": "{logo:pp} {logo:paypal}  Pague hasta<br>  [installmentperiod]x sin interés",
             "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
@@ -3546,7 +3546,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3580,7 +3580,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3614,7 +3614,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3640,7 +3640,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -3682,7 +3682,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3734,7 +3734,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -3806,7 +3806,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3840,7 +3840,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3874,7 +3874,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3916,7 +3916,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -3958,7 +3958,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -3992,7 +3992,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -4018,7 +4018,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4052,7 +4052,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4088,7 +4088,7 @@
             "later_tag": "Kup teraz. Płać w ratach",
             "pay": "Zapłać z {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Kup teraz",
-            "poweredBy": "Płatności spod znaku {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -4114,7 +4114,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4148,7 +4148,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4200,7 +4200,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4252,7 +4252,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4294,7 +4294,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4328,7 +4328,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4362,7 +4362,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4388,7 +4388,7 @@
             "later_tag": "Покупайте сейчас, платите потом.",
             "pay": "Оплатить через {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Купить сейчас",
-            "poweredBy": "При содействии {logo:paypal}"
+            "poweredBy": "Обработано {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -4406,7 +4406,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -4456,7 +4456,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4490,7 +4490,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4516,7 +4516,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -4568,7 +4568,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "SH": {
@@ -4586,7 +4586,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4620,7 +4620,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4654,7 +4654,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4696,7 +4696,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4730,7 +4730,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4764,7 +4764,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4790,7 +4790,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -4832,7 +4832,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4866,7 +4866,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4900,7 +4900,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -4942,7 +4942,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -4968,7 +4968,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5002,7 +5002,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5028,7 +5028,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -5062,7 +5062,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -5096,7 +5096,7 @@
             "later_tag": "ซื้อวันนี้ แล้วค่อยๆ จ่ายทีหลัง",
             "pay": "ชำระเงินด้วย {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} ซื้อทันที",
-            "poweredBy": " {logo:paypal}"
+            "poweredBy": "ให้บริการโดย {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -5122,7 +5122,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5156,7 +5156,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5198,7 +5198,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5260,7 +5260,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5294,7 +5294,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5320,7 +5320,7 @@
             "later_tag": "先購買，後付款。",
             "pay": "使用 {logo:paypal} 付款",
             "buynow": "{logo:pp} {logo:paypal} 立即購",
-            "poweredBy": "Powered by {logo:paypal}"
+            "poweredBy": "服務提供者： {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -5346,7 +5346,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5380,7 +5380,7 @@
             "later_tag": "Покупайте сейчас, платите потом.",
             "pay": "Оплатить через {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Купить сейчас",
-            "poweredBy": "При содействии {logo:paypal}"
+            "poweredBy": "Обработано {logo:paypal}"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -5388,7 +5388,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5422,7 +5422,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5457,7 +5457,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "Pagar con {logo:pp} {logo:paypal}",
@@ -5499,7 +5499,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -5525,7 +5525,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5559,7 +5559,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5601,7 +5601,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "zh": {
             "checkout": "{logo:pp} {logo:paypal}结账",
@@ -5627,7 +5627,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5671,7 +5671,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5705,7 +5705,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5757,7 +5757,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5791,7 +5791,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5825,7 +5825,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
@@ -5859,7 +5859,7 @@
             "later_tag": "Achetez maintenant et payez plus tard.",
             "pay": "Payer avec {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Acheter",
-            "poweredBy": "Par {logo:paypal}"
+            "poweredBy": "Optimisé par {logo:paypal}"
         },
         "es": {
             "checkout": "{logo:pp} {logo:paypal} Pagar",
