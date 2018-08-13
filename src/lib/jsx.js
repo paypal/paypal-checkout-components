@@ -4,8 +4,8 @@
 import { regexMap } from './util';
 
 // eslint-disable-next-line no-use-before-define
-type ChildType = $ReadOnlyArray<ChildType> | JsxHTMLNode | string | void | null;
-type ChildrenType = $ReadOnlyArray<ChildType>;
+export type ChildType = $ReadOnlyArray<ChildType> | JsxHTMLNode | string | void | null;
+export type ChildrenType = $ReadOnlyArray<ChildType>;
 type PropsType = ?{ class? : string, id? : string, innerHTML? : string };
 
 function htmlEncode(html : string = '') : string {

@@ -679,7 +679,7 @@
             "pay": "Pague com {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar agora",
             "installment": "{logo:pp} {logo:paypal}  Pagamentos<br>  parcelados",
-            "installment_period": "{logo:pp} {logo:paypal}  Pague em até<br>  [installmentperiod]x sem juros",
+            "installment_period": "{logo:pp} {logo:paypal}  Pague em at\u00e9<br>  [installmentperiod]x sem juros",
             "poweredBy": "Com tecnologia {logo:paypal}"
         },
         "en": {
@@ -2314,7 +2314,7 @@
             "later_tag": "Vásároljon most. Fizessen később.",
             "pay": "{logo:paypal}-fizetés",
             "buynow": "{logo:pp} {logo:paypal} Vásárlás",
-            "poweredBy": "undefined {logo:paypal}"
+            "poweredBy": "Üzemeltető: {logo:paypal}"
         },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
@@ -2408,7 +2408,7 @@
             "later_tag": "קנה עכשיו. שלם לאורך זמן.",
             "pay": "שלם באמצעות {logo:paypal}‏",
             "buynow": "{logo:pp} {logo:paypal} קנה עכשיו",
-            "poweredBy": "undefined {logo:paypal}"
+            "poweredBy": "מופעל על-ידי {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -2416,7 +2416,7 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now",
-            "poweredBy": "undefined {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         }
     },
     "IN": {
@@ -3770,7 +3770,7 @@
             "later_tag": "Kjøp nå, betal senere.",
             "pay": "Betal med {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Kjøp nå",
-            "poweredBy": "undefined {logo:paypal}"
+            "poweredBy": "Leveres av {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -5234,7 +5234,7 @@
             "later_tag": "Şimdi Alın. Daha Sonra Ödeyin.",
             "pay": "{logo:paypal} ile Öde",
             "buynow": "{logo:pp} {logo:paypal} Hemen Satın Alın",
-            "poweredBy": "undefined {logo:paypal}"
+            "poweredBy": "Çalıştıran {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
@@ -5889,4 +5889,3 @@
         }
     }
 }
-

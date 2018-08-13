@@ -625,7 +625,8 @@ export const BUTTON_STYLE = {
         minHeight:       25,
         maxHeight:       30,
         allowFunding:    true,
-        allowTagline:    false
+        allowTagline:    false,
+        byPayPalHeight:  0
     },
 
     [ BUTTON_SIZE.SMALL ]: {
@@ -636,7 +637,8 @@ export const BUTTON_STYLE = {
         minHeight:       25,
         maxHeight:       55,
         allowFunding:    true,
-        allowTagline:    true
+        allowTagline:    true,
+        byPayPalHeight:  0
     },
 
     [ BUTTON_SIZE.MEDIUM ]: {
@@ -647,7 +649,8 @@ export const BUTTON_STYLE = {
         minHeight:         35,
         maxHeight:         55,
         allowFunding:      true,
-        allowTagline:      true
+        allowTagline:      true,
+        byPayPalHeight:    30
     },
 
     [ BUTTON_SIZE.LARGE ]: {
@@ -658,18 +661,20 @@ export const BUTTON_STYLE = {
         minHeight:         30,
         maxHeight:         55,
         allowFunding:      true,
-        allowTagline:      true
+        allowTagline:      true,
+        byPayPalHeight:    30
     },
 
     [ BUTTON_SIZE.HUGE ]: {
-        defaultWidth:  500,
-        defaultHeight: 55,
-        minWidth:      500,
-        maxWidth:      750,
-        minHeight:     40,
-        maxHeight:     55,
-        allowFunding:  true,
-        allowTagline:  true
+        defaultWidth:   500,
+        defaultHeight:  55,
+        minWidth:       500,
+        maxWidth:       750,
+        minHeight:      40,
+        maxHeight:      55,
+        allowFunding:   true,
+        allowTagline:   true,
+        byPayPalHeight: 30
     }
 };
 
