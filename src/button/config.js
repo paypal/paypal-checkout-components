@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint no-template-curly-in-string: off, max-lines: off */
 
-import { FUNDING, DEFAULT, BUTTON_LABEL, BUTTON_COLOR, BUTTON_LOGO_COLOR, BUTTON_SIZE,
+import { FUNDING, DEFAULT, COUNTRY, BUTTON_LABEL, BUTTON_COLOR, BUTTON_LOGO_COLOR, BUTTON_SIZE,
     BUTTON_TAGLINE_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LOGO } from '../constants';
 
 type ButtonConfig = {
@@ -156,9 +156,22 @@ export const BUTTON_CONFIG : ButtonConfig = {
     },
 
     [ BUTTON_LABEL.CREDIT ]: {
-        label:     `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`,
-        tag:       `{ content: later_tag }`,
+        label: ({ locale }) => {
+            if (locale.country === COUNTRY.DE) {
+                return `{ logo: ${ BUTTON_LOGO.CREDIT } }`;
+            }
+
+            return `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`;
+        },
+        logoLabel: ({ locale }) => {
+            if (locale.country === COUNTRY.DE) {
+                return `{ logo: ${ BUTTON_LOGO.CREDIT } }`;
+            }
+
+            return `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`;
+        },
+
+        tag: `{ content: later_tag }`,
 
         colors: [
             BUTTON_COLOR.DARKBLUE,
@@ -612,7 +625,8 @@ export const BUTTON_STYLE = {
         minHeight:       25,
         maxHeight:       30,
         allowFunding:    true,
-        allowTagline:    false
+        allowTagline:    false,
+        byPayPalHeight:  0
     },
 
     [ BUTTON_SIZE.SMALL ]: {
@@ -623,7 +637,8 @@ export const BUTTON_STYLE = {
         minHeight:       25,
         maxHeight:       55,
         allowFunding:    true,
-        allowTagline:    true
+        allowTagline:    true,
+        byPayPalHeight:  0
     },
 
     [ BUTTON_SIZE.MEDIUM ]: {
@@ -634,7 +649,8 @@ export const BUTTON_STYLE = {
         minHeight:         35,
         maxHeight:         55,
         allowFunding:      true,
-        allowTagline:      true
+        allowTagline:      true,
+        byPayPalHeight:    30
     },
 
     [ BUTTON_SIZE.LARGE ]: {
@@ -645,18 +661,20 @@ export const BUTTON_STYLE = {
         minHeight:         30,
         maxHeight:         55,
         allowFunding:      true,
-        allowTagline:      true
+        allowTagline:      true,
+        byPayPalHeight:    30
     },
 
     [ BUTTON_SIZE.HUGE ]: {
-        defaultWidth:  500,
-        defaultHeight: 55,
-        minWidth:      500,
-        maxWidth:      750,
-        minHeight:     40,
-        maxHeight:     55,
-        allowFunding:  true,
-        allowTagline:  true
+        defaultWidth:   500,
+        defaultHeight:  55,
+        minWidth:       500,
+        maxWidth:       750,
+        minHeight:      40,
+        maxHeight:      55,
+        allowFunding:   true,
+        allowTagline:   true,
+        byPayPalHeight: 30
     }
 };
 

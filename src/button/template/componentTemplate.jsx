@@ -3,10 +3,10 @@
 
 import { btoa } from 'Base64';
 
-import { BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING } from '../../constants';
+import { BUTTON_SIZE, BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING } from '../../constants';
 import { getButtonConfig, labelToFunding, fundingToDefaultLabel } from '../config';
 import { normalizeProps } from '../props';
-import { jsxToHTML, type JsxHTMLNode, jsxRender } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, type JsxHTMLNode, type ChildType, jsxRender } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
 import { fundingLogos, cardLogos } from '../../resources';
 import { validateButtonProps } from '../validate';
 import type { LocaleType, FundingSource, FundingSelection, FundingList } from '../../types';
@@ -75,33 +75,35 @@ function determineButtons({ label, color, sources, multiple, layout } : { label 
     });
 }
 
-function renderCards({ cards, button } : { cards : Array<string>, button : ?boolean }) : Array<JsxHTMLNode> {
-
+function renderCards({ cards, button, layout, size } :
+  { cards : Array<string>, button : ?boolean, layout? : string, size? : string }) : Array<JsxHTMLNode> {
     return cards.map(name => {
         let logo = cardLogos[name];
 
         return (
             <img
+                { ...{ [ATTRIBUTE.LAYOUT]: layout ? layout : '' } }
+                { ...{ [ATTRIBUTE.SIZE]: size ? size : '' } }
                 { ...{ [ATTRIBUTE.BUTTON]: (button || false), [ATTRIBUTE.FUNDING_SOURCE]: `${ FUNDING.CARD }`, [ATTRIBUTE.CARD]: `${ name }` } }
-                class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name } ${ button ? CLASS.BUTTON : '' }` }
+                class={ `${ button ? CLASS.BUTTON : '' } ${ CLASS.CARD } ${ CLASS.CARD }-${ name }` }
                 src={ `data:image/svg+xml;base64,${ btoa(logo) }` }
                 alt={ name } />
         );
     });
 }
 
-function renderFundingIcons({ cards, fundingicons } :
-    { cards : Array<string>, fundingicons : boolean }) : ?JsxHTMLNode {
+function renderFundingIcons({ cards, fundingicons, size, layout } :
+    { cards : Array<string>, fundingicons : boolean, layout : string, size : string }) : ?JsxHTMLNode {
 
     if (!fundingicons) {
         return;
     }
 
-    return <div class={ `${ CLASS.FUNDINGICONS }` }>{ renderCards({ cards, button: true }) }</div>;
+    return <div class={ `${ CLASS.FUNDINGICONS }` }>{ renderCards({ cards, button: true, size, layout }) }</div>;
 }
 
-function renderContent(text : string, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent } :
-    { label? : string, locale : LocaleType, color : string, branding? : boolean, logoColor? : string, funding? : FundingSelection, env : string, cards : Array<string>, dynamicContent? : Object }) : JsxHTMLNode {
+function renderContent(text : string, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size } :
+    { layout? : $Values<typeof BUTTON_LAYOUT>, size? : $Values<typeof BUTTON_SIZE>, label? : string, locale : LocaleType, color : string, branding? : boolean, logoColor? : string, funding? : FundingSelection, env : string, cards : Array<string>, dynamicContent? : Object }) : JsxHTMLNode {
 
     let content = getLocaleContent(locale);
 
@@ -156,14 +158,15 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
                 throw new Error(`Could not find content ${ name } for ${ locale.lang }_${ locale.country }`);
             }
 
-            return renderContent(contentString || '', { label, locale, color, branding, logoColor, funding, env, cards });        },
+            return renderContent(contentString || '', { label, locale, color, branding, logoColor, funding, env, cards });
+        },
 
         cards() : Array<JsxHTMLNode> {
             if (!funding) {
                 throw new Error(`Can not determine card types without funding`);
             }
 
-            return renderCards({ cards, button: false });
+            return renderCards({ cards, button: false, layout, size });
         },
 
         separator() : JsxHTMLNode {
@@ -177,8 +180,8 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
     });
 }
 
-function renderButton({ label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, installmentperiod } :
-    { label : $Values<typeof BUTTON_LABEL>, color : string, branding : boolean, locale : Object, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT>, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : Array<string>, installmentperiod : number }) : JsxHTMLNode {
+function renderButton({ size, label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, installmentperiod } :
+    { size : $Values<typeof BUTTON_SIZE>, label : $Values<typeof BUTTON_LABEL>, color : string, branding : boolean, locale : Object, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT>, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : Array<string>, installmentperiod : number }) : JsxHTMLNode {
 
     let logoColor = getButtonConfig(label, 'logoColors')[color];
 
@@ -193,14 +196,17 @@ function renderButton({ label, color, locale, branding, multiple, layout, shape,
 
     // Add all the variables in dynamic content required to be plugged in content
     let dynamicContent = {
-        installmentperiod
+        installmentperiod,
+        locale
     };
 
     contentText = typeof contentText === 'function' ? contentText(dynamicContent) : contentText;
-    contentText = renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent });
+    contentText = renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
 
     return (
         <div
+            { ...{ [ATTRIBUTE.LAYOUT]: layout ? layout : '' } }
+            { ...{ [ATTRIBUTE.SIZE]: size ? size : '' } }
             { ...{ [ ATTRIBUTE.FUNDING_SOURCE ]: source, [ ATTRIBUTE.BUTTON ]: true } }
             class={ `${ CLASS.BUTTON } ${ CLASS.NUMBER }-${ i } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) } ${ getButtonClasses({ label, color, logoColor }) }` }
             role='button'
@@ -256,6 +262,40 @@ function renderStyle({ height, cardNumber } : { height? : ?number, cardNumber? :
     );
 }
 
+function renderPowerByPaypalLogo(props) : ChildType {
+
+    if (!props) {
+        return null;
+    }
+
+    const { layout, size } = props;
+
+    if (!(layout === BUTTON_LAYOUT.VERTICAL && (size === BUTTON_SIZE.MEDIUM || size === BUTTON_SIZE.LARGE || size === BUTTON_SIZE.HUGE))) {
+        return null;
+    }
+
+    return (
+        <div
+            class="powered-by-paypal"
+            style={ `
+                text-align: center;
+                margin: 10px auto;
+                height: 14px;
+                font-family: PayPal-Sans, HelveticaNeue, sans-serif;
+                font-size: 11px;
+                font-weight: normal;
+                font-style: italic;
+                font-stretch: normal;
+                color: #7b8388;
+                position: relative;
+                margin-right: 3px;
+                bottom: 3px;
+            ` }>
+            { renderContent('{ content: poweredBy }', { ...props, logoColor: 'blue' }) }
+        </div>
+    );
+}
+
 export function componentTemplate({ props } : { props : Object }) : string {
 
     if (props && props.style) {
@@ -281,7 +321,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let { label, locale, color, shape, branding,
         tagline, funding, layout, sources, multiple,
-        fundingicons, env, height, cards, installmentperiod } = normalizeProps(props);
+        env, height, cards, installmentperiod, fundingicons, size } = normalizeProps(props);
 
     let buttonNodes = determineButtons({ label, color, sources, multiple, layout })
         .map((button, i) => renderButton({
@@ -297,14 +337,16 @@ export function componentTemplate({ props } : { props : Object }) : string {
             layout,
             shape,
             cards,
-            installmentperiod
+            installmentperiod,
+            size
         }));
 
     let taglineNode     = renderTagline({ label, tagline, color, locale, multiple, env, cards });
-    let fundingiconNode = renderFundingIcons({ cards, fundingicons });
+    let fundingiconNode = renderFundingIcons({ cards, fundingicons, size, layout });
 
     let styleNode  = renderStyle({ height, cardNumber: cards.length });
     let scriptNode = renderScript();
+    let labelPowerByPayPal = cards.length > 0 ? renderPowerByPaypalLogo(normalizeProps(props)) : null;
 
     return (
         <div { ...{ [ ATTRIBUTE.VERSION ]: __PAYPAL_CHECKOUT__.__MINOR_VERSION__ } } class={ `${ CLASS.CONTAINER } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) }` }>
@@ -312,6 +354,8 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
             { buttonNodes }
             { taglineNode || fundingiconNode }
+
+            { labelPowerByPayPal }
 
             { scriptNode }
         </div>

@@ -47,12 +47,17 @@ afterAll(async () => {
     await browser.close();
 });
 
+const total = buttonConfigs.length;
+let index = 1;
+
 for (let config of buttonConfigs) {
     let filename = config.filename || dotifyToString(config) || 'base';
 
     test(`Render button with ${ filename }`, async () => {
         let { page } = await setupBrowserPage;
 
+        // fasten up the animation
+        await page._client.send('Animation.setPlaybackRate', { playbackRate: 12.0 });
         let filepath = `${ IMAGE_DIR }/${ filename }.png`;
         let diffpath  = `${ IMAGE_DIR }/${ filename }-old.png`;
 
@@ -117,5 +122,7 @@ for (let config of buttonConfigs) {
         } else {
             await screenshot.write(filepath);
         }
+        index += 1;
+        console.log(`Generating button screenshot: ${ index } / ${ total }`);
     });
 }

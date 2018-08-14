@@ -176,6 +176,14 @@ export let Button : Component<ButtonOptions> = create({
     },
 
     props: {
+        domain: {
+            type:     'string',
+            required: false,
+            def() : string {
+                return escape(window.location.host);
+            },
+            queryParam: true
+        },
 
         sessionID: {
             type:     'string',
@@ -417,14 +425,14 @@ export let Button : Component<ButtonOptions> = create({
             decorate({ allowed = [], disallowed = [] } : Object = {}, props : ButtonOptions) : {} {
 
                 if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1 && !isDevice()) {
-                    allowed.splice(allowed.indexOf(FUNDING.VENMO), 1);
+                    allowed = allowed.filter(source => (source !== FUNDING.VENMO));
                 }
 
                 if (isCreditDualEligible(props)) {
                     creditThrottle = getThrottle('dual_credit_automatic', 50);
 
                     if (creditThrottle.isEnabled()) {
-                        allowed.push(FUNDING.CREDIT);
+                        allowed = [ ...allowed, FUNDING.CREDIT ];
                     }
                 }
 
@@ -432,11 +440,11 @@ export let Button : Component<ButtonOptions> = create({
 
                 if (!isDevice() || getDomainSetting('disable_venmo')) {
                     if (remembered && remembered.indexOf(FUNDING.VENMO) !== -1) {
-                        remembered.splice(remembered.indexOf(FUNDING.VENMO), 1);
+                        remembered = remembered.filter(source => (source !== FUNDING.VENMO));
                     }
 
                     if (disallowed && disallowed.indexOf(FUNDING.VENMO) === -1) {
-                        disallowed.push(FUNDING.VENMO);
+                        disallowed = [ ...disallowed, FUNDING.VENMO ];
                     }
                 }
 
@@ -524,10 +532,11 @@ export let Button : Component<ButtonOptions> = create({
                     };
 
                     actions.redirect = (win, url) => {
-                        return ZalgoPromise.all([
-                            redir(win || window.top, url || data.returnUrl),
-                            actions.close()
-                        ]);
+                        return ZalgoPromise.try(() => {
+                            return actions.close();
+                        }).then(() => {
+                            return redir(win || window.top, url || data.returnUrl);
+                        });
                     };
 
                     actions.payment.tokenize = memoize(() => {
