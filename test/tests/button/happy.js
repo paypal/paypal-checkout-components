@@ -870,6 +870,31 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
+        it('should render a button into a conteiner and click on the button then update on shipping change', () => {
+
+            let token = generateECToken();
+
+            return window.paypal.Button.render({
+
+                test: { action: 'shippingChange' },
+
+                payment() : string | ZalgoPromise<string> {
+                    return token;
+                },
+
+                onShippingChange(data, actions) : ZalgoPromise<void> {
+                    return actions.payment.update({});
+                }
+
+            }, '#testContainer').then(() => {
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
+                });
+
+            });
+        });
+
         if (flow === 'popup') {
             it('should render a button into a container and click on the button, then cancel the payment by closing the window', (done) => {
 

@@ -55,6 +55,21 @@ if (action === 'checkout') {
         });
     });
 
+} else if (action === 'shippingChange') {
+
+    window.xprops.payment().then(paymentToken => {
+
+        window.xprops.onShippingChange({
+            body: {
+                paymentID:    paymentToken,
+                city:         'XXXXX',
+                state:        'YY',
+                postal_code:  '11111',
+                country_code: 'YY'
+            },
+            onReject: () => {}
+        });
+    });
 } else if (action === 'cancel') {
 
     window.xprops.payment().then(paymentToken => {

@@ -68,6 +68,19 @@ function renderCheckout(props = {}) {
             // pass
         },
 
+        onShippingChange(data, actions) : void | ZalgoPromise<void> {
+            return window.xprops.onShippingChange(data, {
+                ...actions,
+
+                payment: {
+                    update() {
+                        // pass
+                    }
+                }
+
+            });
+        },
+
         style: {
             overlayColor: window.xprops.style.overlayColor
         },
