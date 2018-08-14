@@ -5,14 +5,10 @@ module.exports = {
 
     'globals': {
         'Promise': false,
-        '__TEST__': true,
-        '__MIN__': true,
-        '__FILE_NAME__': true,
         '__PAYPAL_CHECKOUT__': true,
         '__paypal_checkout__': true,
         '__sdk__': true,
         '__LOCALE__': true,
-        '__ENV__': true,
         '__CLIENT_ID__': true,
         '__MERCHANT_ID__': true
     },
