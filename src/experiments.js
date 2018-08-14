@@ -1,14 +1,24 @@
 /* @flow */
 
 import { info, track, immediateFlush } from 'beaver-logger/client';
-import { eventEmitter } from 'belter/src';
 
 import { FPTI } from './constants';
 import { getSessionState } from './lib';
 
-export let onAuthorizeListener = eventEmitter();
+export function trackExperiment({ experiment, treatment, state, token } : { experiment : string, treatment : string, state : string, token : ?string }) {
 
-function log(experiment : string, treatment : string, token : ?string, state : string) {
+    if (!experiment || !treatment) {
+        return;
+    }
+
+    getSessionState(session => {
+        session.externalExperiment          = experiment;
+        session.externalExperimentTreatment = treatment;
+
+        if (token) {
+            session.externalExperimentToken = token;
+        }
+    });
 
     getSessionState(session => {
 
@@ -42,22 +52,4 @@ function log(experiment : string, treatment : string, token : ?string, state : s
             immediateFlush();
         }
     });
-}
-
-export function logExperimentTreatment({ experiment, treatment, state, token } : { experiment : string, treatment : string, state : string, token : ?string }) {
-
-    if (!experiment || !treatment) {
-        return;
-    }
-
-    getSessionState(session => {
-        session.externalExperiment          = experiment;
-        session.externalExperimentTreatment = treatment;
-
-        if (token) {
-            session.externalExperimentToken = token;
-        }
-    });
-
-    log(experiment, treatment, token, state);
 }

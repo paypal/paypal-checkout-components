@@ -2,11 +2,10 @@
 /* @jsx jsxDom */
 /* eslint max-lines: 0 */
 
-import { btoa } from 'Base64';
 import { isIos } from 'belter/src';
 
-import { fundingLogos } from '../../resources';
-import { BUTTON_LOGO_COLOR } from '../../constants';
+import { LOGO_COLOR } from '../../constants';
+import { PPLogo, PayPalLogo } from '../../funding/paypal/logo';
 
 import { containerContent } from './containerContent';
 import { getContainerStyle, getSandboxStyle } from './containerStyle';
@@ -33,7 +32,7 @@ export type ContainerTemplateOptions = {
 // eslint-disable-next-line no-unused-vars
 export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT, on, tag, context, actions, outlet, jsxDom } : ContainerTemplateOptions) : HTMLElement {
 
-    let [ lang, country ] = props.locale.split('_');
+    let { lang, country } = props.locale;
 
     function close(event) {
         event.preventDefault();
@@ -54,15 +53,6 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
     }
 
     let style = props.style || {};
-    let logoColor = BUTTON_LOGO_COLOR.WHITE;
-
-    let ppLogo = (typeof fundingLogos.pp === 'function')
-        ? fundingLogos.pp({ logoColor })
-        : fundingLogos.pp[logoColor];
-
-    let paypalLogo = (typeof fundingLogos.paypal === 'function')
-        ? fundingLogos.paypal({ logoColor })
-        : fundingLogos.paypal[logoColor];
 
     let content = containerContent[country][lang];
 
@@ -71,12 +61,8 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
             <a href='#' class="paypal-checkout-close" onClick={ close } aria-label="close" role="button"></a>
             <div class="paypal-checkout-modal">
                 <div class="paypal-checkout-logo">
-                    <img
-                        class="paypal-checkout-logo-pp" alt="pp"
-                        src={ `data:image/svg+xml;base64,${ btoa(ppLogo) }` } />
-                    <img
-                        class="paypal-checkout-logo-paypal" alt="paypal"
-                        src={ `data:image/svg+xml;base64,${ btoa(paypalLogo) }` } />
+                    <span innerHTML={ <PPLogo logoColor={ LOGO_COLOR.WHITE } /> } />
+                    <span innerHTML={ <PayPalLogo logoColor={ LOGO_COLOR.WHITE } /> } />
                 </div>
                 <div class="paypal-checkout-message">
                     {content.windowMessage}

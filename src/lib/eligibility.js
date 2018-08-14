@@ -3,7 +3,7 @@
 import { info, flush as flushLogs } from 'beaver-logger/client';
 import { isIEIntranet, getUserAgent, once } from 'belter/src';
 
-import { config } from '../config';
+import { SUPPORTED_BROWSERS } from '../config';
 
 let bowserCache = {};
 
@@ -27,7 +27,7 @@ export function getBrowser() : { browser? : string, version? : string } {
 
     let bowser = getBowser();
 
-    for (let browser of Object.keys(config.browsers)) {
+    for (let browser of Object.keys(SUPPORTED_BROWSERS)) {
         if (bowser[browser]) {
             return { browser, version: bowser.version };
         }
@@ -45,7 +45,7 @@ function isBrowserEligible() : boolean {
     let bowser = getBowser();
     let { browser, version } = getBrowser();
 
-    if (browser && version && bowser.compareVersions([ version, config.browsers[browser] ]) === -1) {
+    if (browser && version && bowser.compareVersions([ version, SUPPORTED_BROWSERS[browser] ]) === -1) {
         return false;
     }
 

@@ -6,7 +6,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { isWindowClosed, type CrossDomainWindowType, type SameDomainWindowType } from 'cross-domain-utils/src';
 
-import { config } from '../../src/config/config';
+import { URLS } from '../../src/config/config';
 
 for (let level of [ 'log', 'debug', 'info', 'warn', 'error' ]) {
     let original = window.console[level];
@@ -233,7 +233,7 @@ patchXmlHttpRequest();
 export function getLoggerApiMock(options : Object = {}) : Object {
     return $mockEndpoint.register({
         method: 'POST',
-        uri:    config.urls.logger,
+        uri:    URLS.LOGGER,
         data:   {},
         ...options
     });
@@ -242,7 +242,7 @@ export function getLoggerApiMock(options : Object = {}) : Object {
 export function getAuthApiMock(options : Object = {}) : Object {
     return $mockEndpoint.register({
         method: 'POST',
-        uri:    config.urls.auth,
+        uri:    URLS.AUTH,
         handler({ headers, data }) : { access_token : string } {
 
             if (!headers.authorization) {
@@ -274,7 +274,7 @@ export function getAuthApiMock(options : Object = {}) : Object {
 export function getOrderApiMock(options : Object = {}) : Object {
     return $mockEndpoint.register({
         method: 'POST',
-        uri:    config.urls.order,
+        uri:    URLS.ORDER,
         handler({ data, headers }) : { id : string } {
 
             if (!headers.authorization) {

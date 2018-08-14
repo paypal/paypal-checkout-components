@@ -39,7 +39,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onAuthorize() : void {
-                        return done(new Error('Expected onCancel to not be called'));
+                        return done(new Error('Expected onAuthorize to not be called'));
                     },
 
                     onCancel() : void {

@@ -43,20 +43,20 @@ for (let flow of [ 'popup', 'iframe' ]) {
             {
                 source:   client.FUNDING.IDEAL,
                 fragment: 'checkouturl=true',
-                locale:   'nl_NL',
+                country:   'NL',
                 commit:   true
             },
 
             {
-                source:   client.FUNDING.ELV,
+                source:   client.FUNDING.SEPA,
                 fragment: 'guesturl=true',
-                locale:   'de_DE'
+                country:   'DE'
             }
 
         ];
 
         // $FlowFixMe
-        for (let { source, fragment, locale, userAgent, commit } of cases) {
+        for (let { source, fragment, country, userAgent, commit } of cases) {
             it(`should render multiple buttons including ${ source }, click on the ${ source } button, and send the correct url params`, (done) => {
 
                 if (userAgent) {
@@ -65,11 +65,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 let checkoutToken = generateECToken();
 
-                let mockLocaleProp = mockProp(client.Button.props, 'locale', {
-                    required: false,
-                    value:    locale || 'en_US'
-                });
+                let mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[source], 'eligible', true);
+                let mockCountry = mockProp(window.__TEST_LOCALE__, '__COUNTRY__', country || 'US');
 
+                if (source === client.FUNDING.VENMO) {
+                    window.__TEST_REMEMBERED_FUNDING__.push(client.FUNDING.VENMO);
+                }
+                
                 client.Button.render({
 
                     test: { flow, action: 'checkout', selector: `[data-funding-source="${ source }"]` },
@@ -78,10 +80,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     style: {
                         layout: 'vertical'
-                    },
-
-                    funding: {
-                        allowed: [ source ]
                     },
 
                     payment() : string | ZalgoPromise<string> {
@@ -101,7 +99,12 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 }, '#testContainer');
 
-                mockLocaleProp.cancel();
+                mockEligibility.cancel();
+                mockCountry.cancel();
+
+                if (source === client.FUNDING.VENMO) {
+                    window.__TEST_REMEMBERED_FUNDING__.splice(window.__TEST_REMEMBERED_FUNDING__.indexOf(client.FUNDING.VENMO), 1);
+                }
             });
         }
     });

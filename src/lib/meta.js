@@ -4,12 +4,13 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { once, bridge } from 'post-robot/src';
 import { isIEIntranet, memoize } from 'belter/src';
 
-import { config } from '../config';
+import { FUNDING } from '../constants';
+import { URLS, DOMAINS } from '../config';
 
 type FrameMetaData = {
     iframeEligible : boolean,
     iframeEligibleReason : string,
-    rememberedFunding : Array<string>
+    rememberedFunding : Array<$Values<typeof FUNDING>>
 };
 
 export let openMetaFrame = memoize(() : ZalgoPromise<FrameMetaData> => {
@@ -23,8 +24,8 @@ export let openMetaFrame = memoize(() : ZalgoPromise<FrameMetaData> => {
             };
         }
 
-        let metaFrameUrl : string = config.urls.meta;
-        let metaFrameDomain : string = config.domains.meta;
+        let metaFrameUrl : string = URLS.META;
+        let metaFrameDomain : string = DOMAINS.META;
 
         return ZalgoPromise.try(() => {
             if (!bridge) {

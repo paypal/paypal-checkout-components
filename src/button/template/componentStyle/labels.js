@@ -1,9 +1,7 @@
 /* @flow */
 
-import { BUTTON_STYLE } from '../../config';
-import { BUTTON_LABEL, BUTTON_LOGO, BUTTON_SIZE, BUTTON_LAYOUT, BUTTON_NUMBER } from '../../../constants';
-
-import { CLASS } from './class';
+import { BUTTON_SIZE_STYLE } from '../../config';
+import { BUTTON_LABEL, BUTTON_LOGO, BUTTON_SIZE, BUTTON_LAYOUT, BUTTON_NUMBER, CLASS } from '../../../constants';
 
 export let labelStyle = `
 
@@ -19,14 +17,14 @@ export let labelStyle = `
         display: none;
     }
 
-    @media only screen and (max-width : ${ BUTTON_STYLE[BUTTON_SIZE.SMALL].minWidth }px) {
+    @media only screen and (max-width : ${ BUTTON_SIZE_STYLE[BUTTON_SIZE.SMALL].minWidth }px) {
 
         .${ CLASS.BUTTON }.${ CLASS.LABEL }-${ BUTTON_LABEL.CREDIT } .${ CLASS.LOGO }.${ CLASS.LOGO }-${ BUTTON_LOGO.PAYPAL } {
             display: none;
         }
     }
 
-    @media only screen and (min-width : ${ BUTTON_STYLE[BUTTON_SIZE.SMALL].minWidth  }px) {
+    @media only screen and (min-width : ${ BUTTON_SIZE_STYLE[BUTTON_SIZE.SMALL].minWidth  }px) {
 
         .${ CLASS.BUTTON }.${ CLASS.LABEL }-${ BUTTON_LABEL.CREDIT } .${ CLASS.LOGO }.${ CLASS.LOGO }-${ BUTTON_LOGO.PAYPAL } {
             display: inline-block;

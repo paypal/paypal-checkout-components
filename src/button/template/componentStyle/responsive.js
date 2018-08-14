@@ -2,18 +2,16 @@
 
 import { max, perc } from 'belter/src';
 
-import { BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER, BUTTON_LABEL } from '../../../constants';
-import { BUTTON_STYLE, BUTTON_RELATIVE_STYLE } from '../../config';
-
-import { CLASS } from './class';
+import { BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER, BUTTON_LABEL, CLASS } from '../../../constants';
+import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from '../../config';
 
 const DUAL_BUTTON_MIN_RATIO = 2.8;
 
 export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?number, cardNumber? : number }) : string {
 
-    return Object.keys(BUTTON_STYLE).map(size => {
+    return Object.keys(BUTTON_SIZE_STYLE).map(size => {
 
-        let style = BUTTON_STYLE[size];
+        let style = BUTTON_SIZE_STYLE[size];
         let buttonHeight = height || style.defaultHeight;
         let minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
 
@@ -46,7 +44,7 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                     min-height: ${ perc(buttonHeight, 40) }px;
                 }
 
-                .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.PILL } {
+                .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.PILL }:not(${ CLASS.LABEL }-${ CLASS.CARD }) {
                     border-radius: ${ Math.ceil(buttonHeight / 2) }px;
                 }
 
@@ -67,10 +65,6 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                     line-height: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) }px;
                 }
 
-                .${ CLASS.FUNDINGICONS } {
-                    height: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) }px;
-                }
-
                 .${ CLASS.CARD } {
                     display: inline-block;
                 }
@@ -85,17 +79,6 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
 
                 .${ CLASS.BUTTON } .${ CLASS.CARD } img {
                     width: 100%;
-                }
-
-                .${ CLASS.FUNDINGICONS } .${ CLASS.CARD } {
-                    height: ${ perc(buttonHeight, 70) }px;
-                    margin-top: ${ perc(buttonHeight, 15) }px;
-                    margin-left: ${ perc(buttonHeight, 7) }px;
-                    margin-right: ${ perc(buttonHeight, 7) }px;
-                }
-
-                .${ CLASS.FUNDINGICONS } .${ CLASS.CARD } img {
-                    height: 100%;
                 }
             }
 

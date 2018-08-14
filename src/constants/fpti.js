@@ -3,16 +3,16 @@
 export const FPTI = {
 
     KEY: {
-        FEED:               'feed_name',
-        STATE:              'state_name',
-        TRANSITION:         'transition_name',
+        FEED:               ('feed_name' : 'feed_name'),
+        STATE:              ('state_name' : 'state_name'),
+        TRANSITION:         ('transition_name' : 'transition_name'),
         BUTTON_TYPE:        'button_type',
         SESSION_UID:        'page_session_id',
         BUTTON_SESSION_UID: 'button_session_id',
-        TOKEN:              'token',
+        TOKEN:              ('token' : 'token'),
         CONTEXT_ID:         'context_id',
         CONTEXT_TYPE:       'context_type',
-        REFERER:            'referer_url',
+        REFERER:            ('referer_url' : 'referer_url'),
         PAY_ID:             'pay_id',
         SELLER_ID:          'seller_id',
         DATA_SOURCE:        'serverside_data_source',
@@ -27,17 +27,17 @@ export const FPTI = {
         FUNDING_COUNT:      'eligible_payment_count',
         CHOSEN_FUNDING:     'selected_payment_method',
         BUTTON_LAYOUT:      'button_layout',
-        VERSION:            'checkoutjs_version'
+        VERSION:            ('checkoutjs_version' : 'checkoutjs_version')
     },
 
     BUTTON_TYPE: {
-        IFRAME: 'iframe',
-        HTML:   'html',
-        CUSTOM: 'custom'
+        IFRAME: ('iframe' : 'iframe'),
+        HTML:   ('html' : 'html'),
+        CUSTOM: ('custom' : 'custom')
     },
 
     DATA_SOURCE: {
-        CHECKOUT: 'checkout'
+        CHECKOUT: ('checkout' : 'checkout')
     },
 
     CONTEXT_TYPE: {
@@ -46,15 +46,15 @@ export const FPTI = {
     },
 
     FEED: {
-        CHECKOUTJS: 'checkoutjs'
+        CHECKOUTJS: ('checkoutjs' : 'checkoutjs')
     },
 
     STATE: {
-        LOAD:     'checkoutjs_load',
-        BUTTON:   'checkoutjs_button',
-        CHECKOUT: 'checkoutjs_checkout',
-        PPTM:     'checkoutjs_pptm',
-        PXP:      'PXP_CHECK'
+        LOAD:     ('checkoutjs_load' : 'checkoutjs_load'),
+        BUTTON:   ('checkoutjs_button' : 'checkoutjs_button'),
+        CHECKOUT: ('checkoutjs_checkout' : 'checkoutjs_checkout'),
+        PPTM:     ('checkoutjs_pptm' : 'checkoutjs_pptm'),
+        PXP:      ('PXP_CHECK' : 'PXP_CHECK')
     },
 
     TRANSITION: {
@@ -78,6 +78,6 @@ export const FPTI = {
         PPTM_LOAD:   'process_pptm_load',
         PPTM_LOADED: 'process_pptm_loaded',
 
-        PXP: 'process_pxp_check'
+        PXP: ('process_pxp_check' : 'process_pxp_check')
     }
 };

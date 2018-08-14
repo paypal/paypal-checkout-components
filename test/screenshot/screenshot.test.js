@@ -7,7 +7,7 @@
 import fs from 'fs-extra';
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 
-import globals from '../../globals';
+import { testGlobals } from '../globals';
 
 import { webpackCompile } from './lib/compile';
 import { openPage, takeScreenshot } from './lib/browser';
@@ -31,28 +31,7 @@ let setupBrowserPage = (async () => {
     let { browser, page } = await openPage(await webpackCompile(getWebpackConfig({
         libraryTarget: 'window',
         test:          true,
-        vars:          {
-            ...globals,
-            __paypal_checkout__: {
-                serverConfig: {
-                    paypalMerchantConfiguration: {
-                        creditCard: {
-                            isPayPalBranded: true
-                        }
-                    }
-                }
-            },
-            __PAYPAL_CHECKOUT__: {
-                ...globals.__PAYPAL_CHECKOUT__,
-                __TREE_SHAKE__: false
-            },
-            __CLIENT_ID__:   'xyz',
-            __MERCHANT_ID__: 'abc',
-            __LOCALE__:      {
-                __COUNTRY__: 'US',
-                __LANG__:    'en'
-            }
-        }
+        vars:          testGlobals
     })), { headless: HEADLESS });
 
     for (let filename of await fs.readdir(IMAGE_DIR)) {
@@ -90,6 +69,8 @@ for (let config of buttonConfigs) {
 
             if (options.container) {
                 container.style.width = `${ options.container.width }px`;
+            } else {
+                container.style.width = '200px';
             }
 
             if (options.userAgent) {
@@ -97,14 +78,6 @@ for (let config of buttonConfigs) {
             }
 
             let client = window.paypal.client();
-
-            delete client.Button.props.locale;
-            client.Button.props.locale = {
-                required: true,
-                def:      () => {
-                    return options.button.locale || 'en_US';
-                }
-            };
 
             client.Button.render(Object.assign({
                 payment() { /* pass */ },

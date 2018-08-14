@@ -2,47 +2,31 @@
 /* @jsx jsxDom */
 /* eslint max-lines: 0 */
 
+import { ENV, type LocaleType } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { create } from 'xcomponent/src';
-import { type Component } from 'xcomponent/src/component/component';
+import { create } from 'zoid/src';
+import { type Component } from 'zoid/src/component/component';
 import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/client';
-import { isIEIntranet, isDevice, uniqueID, redirect } from 'belter/src';
+import { isIEIntranet, isDevice, uniqueID, redirect, request } from 'belter/src';
 
-import { config } from '../config';
-import { ENV, FPTI, BUTTON_LABEL, BUTTON_COLOR, BUTTON_SHAPE, PLATFORM } from '../constants';
-import { checkRecognizedBrowser, getSessionID, request, isEligible, rememberFunding,
-    getRememberedFunding, getBrowser } from '../lib';
+import { URLS, DOMAINS, STAGE, STAGE_DOMAIN } from '../config';
+import { CURRENT_ENV, CLIENT_ID, LOCALE, LOG_LEVEL, FUNDING_ELIGIBILITY } from '../globals';
+import { FPTI, PLATFORM, FUNDING } from '../constants';
+import { checkRecognizedBrowser, getSessionID, isEligible, getBrowser } from '../lib';
 import { createOrder } from '../api';
-import { onAuthorizeListener } from '../experiments';
-import { awaitPopupBridge } from '../integrations/popupBridge';
-import { validateFunding } from '../funding';
 
-import { containerTemplate, componentTemplate } from './template';
-import { validateButtonStyle } from './validate';
+import { containerTemplate, Buttons } from './template';
+import { rememberFunding, getRememberedFunding } from './funding';
 import { setupButtonChild } from './child';
+import { normalizeButtonStyle, type ButtonProps } from './props';
 
-type ButtonOptions = {
-    style : {|
-        layout? : string
-    |},
-    funding? : { allowed? : Array<string>, disallowed? : Array<string> },
-    env? : string,
-    logLevel : string,
-    awaitPopupBridge : Function,
-    meta : Object,
-    validate? : ({ enable : () => ZalgoPromise<void>, disable : () => ZalgoPromise<void> }) => void,
-    stage? : string,
-    stageUrl? : string,
-    platform : string
-};
-
-export let Button : Component<ButtonOptions> = create({
+export let Button : Component<ButtonProps> = create({
 
     tag:  'paypal-button',
     name: 'ppbutton',
 
-    url:    config.urls.button,
-    domain: config.domains.paypal,
+    url:    URLS.BUTTON,
+    domain: DOMAINS.PAYPAL,
 
     contexts: {
         iframe: true,
@@ -52,13 +36,14 @@ export let Button : Component<ButtonOptions> = create({
     scrolling:       false,
     listenForResize: true,
 
+    // $FlowFixMe
     containerTemplate,
 
     // eslint-disable-next-line no-unused-vars
     prerenderTemplate({ props, jsxDom } : { props : Object, jsxDom : Function }) : HTMLElement {
 
         let template = (
-            <div innerHTML={ componentTemplate({ props }) }></div>
+            <div innerHTML={ <Buttons { ...props } /> }></div>
         );
 
         template.addEventListener('click', () => {
@@ -93,18 +78,16 @@ export let Button : Component<ButtonOptions> = create({
     props: {
 
         sessionID: {
-            type:     'string',
-            required: false,
-            def() : string {
+            type: 'string',
+            value() : string {
                 return getSessionID();
             },
             queryParam: true
         },
 
         buttonSessionID: {
-            type:     'string',
-            required: false,
-            def() : ?string {
+            type: 'string',
+            value() : string {
                 return uniqueID();
             },
             queryParam: true
@@ -112,16 +95,22 @@ export let Button : Component<ButtonOptions> = create({
 
         env: {
             type:       'string',
-            required:   false,
             queryParam: true,
-            get value() : string {
-                return config.env;
+            value() : string {
+                return CURRENT_ENV;
+            }
+        },
+
+        fundingEligibility: {
+            type:       'object',
+            queryParam: true,
+            value() : Object {
+                return FUNDING_ELIGIBILITY;
             }
         },
 
         meta: {
-            type:     'object',
-            required: false,
+            type:   'object',
             def() : Object {
                 return {};
             }
@@ -129,21 +118,20 @@ export let Button : Component<ButtonOptions> = create({
 
         platform: {
             type:       'string',
-            required:   false,
             queryParam: true,
-            get value() : string {
+            value() : string {
                 return isDevice() ? PLATFORM.MOBILE : PLATFORM.DESKTOP;
             }
         },
         
         stage: {
             type:       'string',
-            required:   false,
             queryParam: true,
+            required:   false,
 
-            def() : ?string {
-                if (config.env === ENV.STAGE || config.env === ENV.LOCAL) {
-                    return config.stage;
+            value() : ?string {
+                if (CURRENT_ENV === ENV.STAGE || CURRENT_ENV === ENV.LOCAL) {
+                    return STAGE;
                 }
             }
         },
@@ -154,20 +142,15 @@ export let Button : Component<ButtonOptions> = create({
             queryParam: true,
 
             def() : ?string {
-                if (config.env === ENV.STAGE || config.env === ENV.LOCAL) {
-                    return config.stageDomain;
+                if (CURRENT_ENV === ENV.STAGE || CURRENT_ENV === ENV.LOCAL) {
+                    return STAGE_DOMAIN;
                 }
             }
         },
 
         payment: {
-            type:     'function',
-            required: true,
-            memoize:  false,
-            timeout:  __TEST__ ? 500 : 10 * 1000,
-            alias:    'billingAgreement',
-
-            decorate(original) : Function {
+            type: 'function',
+            decorate(original, props) : Function {
                 return function payment() : ZalgoPromise<string> {
 
                     let data = {};
@@ -175,18 +158,18 @@ export let Button : Component<ButtonOptions> = create({
                     let actions = {
                         request,
                         order: {
-                            create: (options) => createOrder(config.clientID, options)
+                            create: (options) => createOrder(CLIENT_ID, options)
                         }
                     };
                     
-                    this.memoizedToken = ZalgoPromise.try(original, this, [ data, actions ]);
+                    let promisifiedToken = ZalgoPromise.try(original, this, [ data, actions ]);
 
-                    if (config.env === ENV.PRODUCTION) {
+                    if (CURRENT_ENV === ENV.PRODUCTION) {
                         let timeout = __TEST__ ? 500 : 10 * 1000;
-                        this.memoizedToken = this.memoizedToken.timeout(timeout, new Error(`Timed out waiting ${ timeout }ms for payment`));
+                        promisifiedToken = promisifiedToken.timeout(timeout, new Error(`Timed out waiting ${ timeout }ms for payment`));
                     }
                         
-                    this.memoizedToken = this.memoizedToken.then(token => {
+                    return promisifiedToken.then(token => {
 
                         if (!token) {
                             error(`no_token_passed_to_payment`);
@@ -198,47 +181,41 @@ export let Button : Component<ButtonOptions> = create({
                             [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.RECIEVE_PAYMENT,
                             [ FPTI.KEY.CONTEXT_TYPE ]:       FPTI.CONTEXT_TYPE.EC_TOKEN,
                             [ FPTI.KEY.CONTEXT_ID ]:         token,
-                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                            [ FPTI.KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
                         });
 
                         flushLogs();
 
                         return token;
                     });
-
-                    return this.memoizedToken;
                 };
             }
         },
 
-        funding: {
-            type:       'object',
-            required:   false,
+        remembered: {
+            type:       'array',
             queryParam: true,
-            validate({ allowed = [], disallowed = [] } : Object = {}) {
-                validateFunding({ allowed, disallowed, remembered: [] });
-            },
-            def() : Object {
-                return {};
-            },
-            decorate({ allowed = [], disallowed = [] } : Object = {}) : {} {
+            value() : Array<$Values<typeof FUNDING>> {
+                return getRememberedFunding();
+            }
+        },
 
-                let remembered = getRememberedFunding(sources => sources);
+        remember: {
+            type: 'function',
+            value() : Function {
+                return rememberFunding;
+            }
+        },
 
-                return {
-                    allowed,
-                    disallowed,
-                    remembered,
-                    remember(sources) {
-                        rememberFunding(sources);
-                    }
-                };
+        version: {
+            type:     'string',
+            value() : string {
+                return __PAYPAL_CHECKOUT__.__MINOR_VERSION__;
             }
         },
 
         commit: {
             type:       'boolean',
-            required:   false,
             queryParam: true,
             def() : boolean {
                 return true;
@@ -246,11 +223,9 @@ export let Button : Component<ButtonOptions> = create({
         },
 
         onRender: {
-            type:      'function',
-            promisify: true,
-            required:  false,
-            noop:      true,
-            decorate(original) : Function {
+            type:     'function',
+            required: false,
+            decorate(original, props) : Function {
                 return function decorateOnRender() : mixed {
 
                     let { browser = 'unrecognized', version = 'unrecognized' } = getBrowser();
@@ -260,22 +235,22 @@ export let Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.LOAD,
                         [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_RENDER,
                         [ FPTI.KEY.BUTTON_TYPE ]:        FPTI.BUTTON_TYPE.IFRAME,
-                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
-                        [ FPTI.KEY.BUTTON_SOURCE ]:      this.props.source
+                        [ FPTI.KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
                     });
 
                     flushLogs();
 
-                    return original.apply(this, arguments);
+                    if (original) {
+                        return original.apply(this, arguments);
+                    }
                 };
             }
         },
 
         onAuthorize: {
-            type:     'function',
-            required: true,
+            type: 'function',
 
-            decorate(original) : Function {
+            decorate(original, props) : Function {
                 return function decorateOnAuthorize(data, actions) : void | ZalgoPromise<void> {
 
                     info('button_authorize');
@@ -283,7 +258,7 @@ export let Button : Component<ButtonOptions> = create({
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
                         [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.CHECKOUT_AUTHORIZE,
-                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                        [ FPTI.KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
                     });
 
                     if (!isEligible()) {
@@ -309,17 +284,11 @@ export let Button : Component<ButtonOptions> = create({
                         });
                     };
 
-                    actions.request = request;
-
-                    onAuthorizeListener.trigger({
-                        orderID: data.orderID
-                    });
-
                     return ZalgoPromise.try(() => {
                         return original.call(this, data, actions);
                     }).catch(err => {
-                        if (this.props.onError) {
-                            return this.props.onError(err);
+                        if (props.onError) {
+                            return props.onError(err);
                         }
                         throw err;
                     });
@@ -330,9 +299,8 @@ export let Button : Component<ButtonOptions> = create({
         onCancel: {
             type:     'function',
             required: false,
-            noop:     true,
 
-            decorate(original) : Function {
+            decorate(original, props) : Function {
                 return function decorateOnCancel(data, actions) : void | ZalgoPromise<void> {
 
                     info('button_cancel');
@@ -340,7 +308,7 @@ export let Button : Component<ButtonOptions> = create({
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
                         [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.CHECKOUT_CANCEL,
-                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                        [ FPTI.KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
                     });
 
                     flushLogs();
@@ -352,7 +320,9 @@ export let Button : Component<ButtonOptions> = create({
                         ]);
                     };
 
-                    return original.call(this, data, actions);
+                    if (original) {
+                        return original.call(this, data, actions);
+                    }
                 };
             }
         },
@@ -360,8 +330,7 @@ export let Button : Component<ButtonOptions> = create({
         onClick: {
             type:     'function',
             required: false,
-            noop:     true,
-            decorate(original) : Function {
+            decorate(original, props) : Function {
                 return function decorateOnClick(data : ?{ fundingSource : string, card? : string }) : void {
 
                     info('button_click');
@@ -370,75 +339,66 @@ export let Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.BUTTON,
                         [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_CLICK,
                         [ FPTI.KEY.BUTTON_TYPE ]:        FPTI.BUTTON_TYPE.IFRAME,
-                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
+                        [ FPTI.KEY.BUTTON_SESSION_UID ]: props.buttonSessionID,
                         [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                     });
 
                     flushLogs();
 
-                    return original.apply(this, arguments);
+                    if (original) {
+                        return original.call(this, data);
+                    }
                 };
             }
         },
 
         locale: {
-            type:       'string',
-            required:   false,
+            type:       'object',
             queryParam: 'locale.x',
-
-            get value() : string {
-                let { lang, country } = config.locale;
+            queryValue(locale) : string {
+                let { lang, country } = locale;
                 return `${ lang }_${ country }`;
+            },
+            value() : LocaleType {
+                let { LANG, COUNTRY } = LOCALE;
+                return {
+                    lang:    LANG,
+                    country: COUNTRY
+                };
             }
         },
 
         style: {
             type:       'object',
-            required:   false,
             queryParam: true,
-            alias:      'buttonStyle',
+            required:   false,
 
-            def() : Object {
-                return {
-                    color:        BUTTON_COLOR.GOLD,
-                    shape:        BUTTON_SHAPE.PILL,
-                    label:        BUTTON_LABEL.CHECKOUT
-                };
+            decorate(style = {}, props) : Object {
+                let { label, layout, color, shape, tagline, height, period } = normalizeButtonStyle(style, props);
+
+                info(`button_render_color_${ color }`);
+                info(`button_render_shape_${ shape }`);
+                info(`button_render_label_${ label }`);
+                info(`button_render_layout_${ label }`);
+                info(`button_render_tagline_${ tagline.toString() }`);
+
+                return { label, layout, color, shape, tagline, height, period };
             },
 
             validate(style = {}, props) {
-                info(`button_render_color_${ style.color || 'default' }`);
-                info(`button_render_shape_${ style.shape || 'default' }`);
-                info(`button_render_size_${ style.size || 'default' }`);
-                info(`button_render_label_${ style.label || 'default' }`);
-                info(`button_render_tagline_${ style.tagline || 'default' }`);
-
-                validateButtonStyle(style, props);
+                normalizeButtonStyle(style, props);
             }
-        },
-
-        validate: {
-            type:     'function',
-            required: false
         },
 
         logLevel: {
-            type:     'string',
-            required: false,
-            get value() : string {
-                return config.logLevel;
+            type: 'string',
+            value() : string {
+                return LOG_LEVEL;
             }
         },
 
-        awaitPopupBridge: {
-            type:     'object',
-            required: false,
-            value:    () => awaitPopupBridge(Button)
-        },
-
         test: {
-            type:     'object',
-            required: false,
+            type: 'object',
             def() : Object {
                 return { action: 'checkout' };
             }

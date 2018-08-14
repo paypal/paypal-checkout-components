@@ -4,8 +4,7 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { generateECToken, generateOrderID,
-    createElement, createTestContainer, destroyTestContainer, onHashChange,
-    MERCHANT_CLIENT_ID, assert } from '../common';
+    createElement, createTestContainer, destroyTestContainer, onHashChange, assert } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -256,59 +255,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                client: {
-                    test: MERCHANT_CLIENT_ID
-                },
-
-                payment(data, actions) : string | ZalgoPromise<string> {
-                    return actions.order.create({
-                        order: {
-                            purchase_units: [
-                                {
-                                    amount: {
-                                        currency: 'USD',
-                                        total:    '0.01',
-                                        details:  {
-                                            subtotal: '0.01'
-                                        }
-                                    },
-                                    items: [
-                                        {
-                                            currency: 'USD',
-                                            name:     'Denim Woven Shirt',
-                                            price:    '0.01',
-                                            quantity: '1'
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    });
-                },
-
-                onAuthorize() : void {
-                    return done();
-                },
-
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
-                }
-
-            }, '#testContainer');
-        });
-
-        it('should render a button into a container with a promise based client id and click on the button, call the REST api via actions.order to create an order, then complete the payment', (done) => {
-
-            let client = window.paypal.client();
-
-            client.Button.render({
-
-                test: { flow, action: 'checkout' },
-
-                client: {
-                    test: new ZalgoPromise(resolve => { setTimeout(resolve, 50); }).then(() => MERCHANT_CLIENT_ID)
-                },
-
                 payment(data, actions) : string | ZalgoPromise<string> {
                     return actions.order.create({
                         order: {
@@ -353,10 +299,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
             client.Button.render({
 
                 test: { flow, action: 'checkout' },
-
-                client: {
-                    test: MERCHANT_CLIENT_ID
-                },
 
                 payment(data, actions) : string | ZalgoPromise<string> {
                     return actions.order.create({

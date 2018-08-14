@@ -6,7 +6,6 @@ import { experiment, type Experiment } from 'belter/src';
 import { FPTI } from '../constants';
 
 export function createExperiment(name : string, sample : number) : Experiment {
-
     return experiment({
         name,
         sample,

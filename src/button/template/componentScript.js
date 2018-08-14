@@ -104,7 +104,6 @@ export function getComponentScript() : () => void {
         let images    = getElements('.{ CLASS.BUTTON } .{ CLASS.LOGO }');
         let text      = getElements('.{ CLASS.BUTTON } .{ CLASS.TEXT }');
         let tagline   = getElements('.{ CLASS.TAGLINE }');
-        let cards     = getElements('.{ CLASS.FUNDINGICONS } .{ CLASS.CARD }');
         let optionals = getElements('.{ CLASS.BUTTON }-label-credit .{ CLASS.BUTTON }-logo-paypal');
 
         function toggleOptionals() {
@@ -114,9 +113,6 @@ export function getComponentScript() : () => void {
             } else {
                 tagline.forEach(makeElementVisible);
             }
-
-            cards.forEach(el => showElement(el));
-            cards.filter(isOverflowing).forEach(hideElement);
 
             text.forEach(el => showElement(el));
             optionals.forEach(el => showElement(el));

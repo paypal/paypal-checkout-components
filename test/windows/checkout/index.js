@@ -66,8 +66,6 @@ if (action === 'checkout') {
         window.xchild.hide();
 
         client.Checkout.renderPopupTo(window.xchild.getParentRenderWindow(), {
-
-            url:              window.location.href,
             payment:          window.xprops.payment,
             onAuthorize:      window.xprops.onAuthorize,
             onCancel:         window.xprops.onCancel,
@@ -79,35 +77,15 @@ if (action === 'checkout') {
 
 } else if (action === 'error') {
 
-    window.xprops.payment().then(orderID => {
-
-        return client.Promise.try(() => {
-
-            if (window.xprops.init) {
-                return window.xprops.init({
-                    orderID,
-                    cancelUrl: `#cancel?token=${ orderID }${ hash }`
-                });
-            }
-
-        }).then(() => {
-
-            window.xchild.error(new Error('something went wrong'));
-        });
+    window.xprops.payment().then(() => {
+        window.xchild.error(new Error('something went wrong'));
     });
+
 } else if (action === 'init') {
     
-    window.xprops.payment().then(orderID => {
-        if (window.xprops.init) {
-            return window.xprops.init({
-                orderID,
-                cancelUrl: `#cancel?token=${ orderID }${ hash }`
-            }).then(() => {
-
-                if (onInit) {
-                    return onInit(actions);
-                }
-            });
+    window.xprops.payment().then(() => {
+        if (onInit) {
+            return onInit(actions);
         }
     });
 }

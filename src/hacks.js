@@ -2,10 +2,8 @@
 
 import { warn } from 'beaver-logger/client';
 import { getParent, getTop } from 'cross-domain-utils/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
 import { patchMethod } from 'belter/src';
 
-import { Button } from './button';
 import { Checkout } from './checkout';
 
 let parent = getParent(window);
@@ -53,26 +51,3 @@ patchMethod(Checkout, 'renderTo', ({ callOriginal, args: [ , props ] }) => {
 
     return callOriginal();
 });
-
-if (Button.xprops && Button.xprops.validate) {
-
-    let enabled = true;
-
-    // $FlowFixMe
-    Button.xprops.validate({
-        enable() {
-            enabled = true;
-        },
-
-        disable() {
-            enabled = false;
-        }
-    });
-
-    patchMethod(Checkout, 'renderTo', ({ callOriginal }) => {
-        if (enabled) {
-            return callOriginal();
-        }
-        return new ZalgoPromise();
-    });
-}

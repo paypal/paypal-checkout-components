@@ -22,6 +22,10 @@ describe(`paypal button layouts`, () => {
 
         client.Button.render({
 
+            style: {
+                layout: 'horizontal'
+            },
+
             test: {
                 onRender({ fundingSources }) {
                     if (fundingSources.length > 2) {
@@ -30,10 +34,6 @@ describe(`paypal button layouts`, () => {
 
                     done();
                 }
-            },
-
-            funding: {
-                allowed: [ client.FUNDING.CARD, client.FUNDING.VENMO, client.FUNDING.CREDIT ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -67,10 +67,6 @@ describe(`paypal button layouts`, () => {
 
                     done();
                 }
-            },
-
-            funding: {
-                allowed: [ client.FUNDING.CARD, client.FUNDING.VENMO, client.FUNDING.CREDIT, client.FUNDING.IDEAL, client.FUNDING.ELV ]
             },
 
             style: {

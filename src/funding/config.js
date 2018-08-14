@@ -1,13 +1,15 @@
 /* @flow */
 
-import { FUNDING, COUNTRY, CARD, PLATFORM, DEFAULT } from '../constants';
+import { objFilter } from 'belter/src';
+
+import { FUNDING } from '../constants';
 
 export const FUNDING_PRIORITY = [
     FUNDING.PAYPAL,
     FUNDING.VENMO,
     FUNDING.CREDIT,
     FUNDING.IDEAL,
-    FUNDING.ELV,
+    FUNDING.SEPA,
     FUNDING.BANCONTACT,
     FUNDING.GIROPAY,
     FUNDING.EPS,
@@ -19,249 +21,46 @@ export const FUNDING_PRIORITY = [
     FUNDING.CARD
 ];
 
-export const FUNDING_CONFIG = {
+export let FUNDING_CONFIG = objFilter({
+    [ FUNDING.PAYPAL ]: (!__PAYPAL_CHECKOUT__.__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.paypal.eligible)
+        ? require('./paypal').PAYPAL_CONFIG : null,
 
-    [ DEFAULT ]: {
-        enabled: true,
+    [ FUNDING.VENMO ]: (!__PAYPAL_CHECKOUT__.__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.venmo.eligible)
+        ? require('./venmo').VENMO_CONFIG : null,
 
-        allowOptIn:    true,
-        allowOptOut:   true,
-        allowRemember: true,
+    [ FUNDING.CREDIT ]: (!__PAYPAL_CHECKOUT__.__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.credit.eligible)
+        ? require('./credit').CREDIT_CONFIG : null,
 
-        allowHorizontal: true,
-        allowVertical:   true,
+    [ FUNDING.CARD ]: (!__PAYPAL_CHECKOUT__.__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.card.eligible)
+        ? require('./card').CARD_CONFIG : null,
 
-        platforms: [
-            PLATFORM.DESKTOP,
-            PLATFORM.MOBILE
-        ],
+    [ FUNDING.IDEAL ]: (!__PAYPAL_CHECKOUT__.__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.ideal.eligible)
+        ? require('./ideal').IDEAL_CONFIG : null,
 
-        requireCommitAsTrue: false
-    },
+    [ FUNDING.SEPA ]: (!__PAYPAL_CHECKOUT__.__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.sepa.eligible)
+        ? require('./sepa').SEPA_CONFIG : null,
 
-    [ FUNDING.PAYPAL ]: {
-        default: true,
+    [ FUNDING.BANCONTACT ]: (!__PAYPAL_CHECKOUT__.__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.bancontact.eligible)
+        ? require('./bancontact').BANCONTACT_CONFIG : null,
 
-        allowOptIn:  false,
-        allowOptOut: false,
+    [ FUNDING.GIROPAY ]: (!__PAYPAL_CHECKOUT__.__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.giropay.eligible)
+        ? require('./giropay').GIROPAY_CONFIG : null,
 
-        allowHorizontal: true,
-        allowVertical:   true
-    },
+    [ FUNDING.SOFORT ]: (!__PAYPAL_CHECKOUT__.__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.sofort.eligible)
+        ? require('./sofort').SOFORT_CONFIG : null,
 
-    [ FUNDING.CARD ]: {
-        // $FlowFixMe
-        default: true, /* (typeof __paypal_checkout__ !== 'undefined') && __paypal_checkout__.serverConfig.paypalMerchantConfiguration.creditCard.isPayPalBranded, */
+    [ FUNDING.EPS ]: (!__PAYPAL_CHECKOUT__.__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.eps.eligible)
+        ? require('./eps').EPS_CONFIG : null,
 
-        allowHorizontal: false,
-        allowVertical:   true
-    },
+    [ FUNDING.MYBANK ]: (!__PAYPAL_CHECKOUT__.__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.mybank.eligible)
+        ? require('./mybank').MYBANK_CONFIG : null,
 
-    [ FUNDING.VENMO ]: {
-        allowOptOut:      false,
-        allowedCountries: [
-            COUNTRY.US
-        ],
-        platforms: [
-            PLATFORM.MOBILE
-        ],
+    [ FUNDING.P24 ]: (!__PAYPAL_CHECKOUT__.__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.p24.eligible)
+        ? require('./p24').P24_CONFIG : null,
 
-        allowHorizontal: true,
-        allowVertical:   true
-    },
+    [ FUNDING.ZIMPLER ]: (!__PAYPAL_CHECKOUT__.__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.zimpler.eligible)
+        ? require('./zimpler').ZIMPLER_CONFIG : null,
 
-    [ FUNDING.CREDIT ]: {
-        allowedCountries: [
-            COUNTRY.US,
-            COUNTRY.GB,
-            COUNTRY.DE
-        ],
-        defaultVerticalCountries: [
-            COUNTRY.US
-        ],
-
-        allowHorizontal: true,
-        allowVertical:   true
-    },
-
-    [ FUNDING.IDEAL ]: {
-        allowedCountries: [
-            COUNTRY.NL
-        ],
-
-        allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
-    },
-
-    [ FUNDING.ELV ]: {
-        allowedCountries: [
-            COUNTRY.DE,
-            COUNTRY.AT
-        ],
-        defaultVerticalCountries: [
-            COUNTRY.DE,
-            COUNTRY.AT
-        ],
-
-        allowHorizontal: true,
-        allowVertical:   true
-    },
-
-    [ FUNDING.BANCONTACT ]: {
-        allowedCountries: [
-            COUNTRY.BE
-        ],
-
-        allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
-    },
-
-    [ FUNDING.GIROPAY ]: {
-        allowedCountries: [
-            COUNTRY.DE
-        ],
-
-        allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
-    },
-
-    [ FUNDING.SOFORT ]: {
-        allowedCountries: [
-            COUNTRY.DE,
-            COUNTRY.AT,
-            COUNTRY.BE,
-            COUNTRY.ES,
-            COUNTRY.IT,
-            COUNTRY.NL
-        ],
-
-        allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
-    },
-
-    [ FUNDING.EPS ]: {
-        allowedCountries: [
-            COUNTRY.AT
-        ],
-
-        allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
-    },
-
-    [ FUNDING.MYBANK ]: {
-        allowedCountries: [
-            COUNTRY.IT
-        ],
-
-        allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
-    },
-    [ FUNDING.P24 ]: {
-        allowedCountries: [
-            COUNTRY.PL
-        ],
-
-        allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
-    },
-    [ FUNDING.ZIMPLER ]: {
-        allowedCountries: [
-            COUNTRY.FI
-        ],
-
-        allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
-    },
-    [ FUNDING.WECHATPAY ]: {
-        allowedCountries: [
-            COUNTRY.CN
-        ],
-
-        allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
-    }
-};
-
-export const CARD_CONFIG = {
-
-    [ DEFAULT ]: {
-        priority: [
-            CARD.VISA,
-            CARD.MASTERCARD,
-            CARD.AMEX
-        ]
-    },
-
-    [ COUNTRY.US ]: {
-        priority: [
-            CARD.VISA,
-            CARD.MASTERCARD,
-            CARD.AMEX,
-            CARD.DISCOVER
-        ]
-    },
-
-    [ COUNTRY.BR ]: {
-        priority: [
-            CARD.VISA,
-            CARD.MASTERCARD,
-            CARD.AMEX,
-            CARD.HIPER,
-            CARD.ELO
-        ]
-    },
-
-    [ COUNTRY.JP ]: {
-        priority: [
-            CARD.VISA,
-            CARD.MASTERCARD,
-            CARD.AMEX,
-            CARD.JCB
-        ]
-    }
-};
-
-function getConfig<T : mixed>(conf : Object, category : string, key : string, def : ?T) : T {
-    let categoryConfig = conf[category];
-
-    if (categoryConfig && categoryConfig.hasOwnProperty(key)) {
-        return categoryConfig[key];
-    }
-
-    if (conf[DEFAULT] && conf[DEFAULT].hasOwnProperty(key)) {
-        return conf[DEFAULT][key];
-    }
-
-    if (arguments.length >= 4) {
-        // $FlowFixMe
-        return def;
-    }
-
-    throw new Error(`No value found for ${ category }:${ key }`);
-}
-
-export function getFundingConfig<T : mixed>(source : string, key : string, def : ?T) : T {
-    return getConfig(FUNDING_CONFIG, source, key, def);
-}
-
-export function getCardConfig<T : mixed>(source : string, key : string, def : ?T) : T {
-    return getConfig(CARD_CONFIG, source, key, def);
-}
+    [ FUNDING.WECHATPAY ]: (!__PAYPAL_CHECKOUT__.__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.wechatpay.eligible)
+        ? require('./wechatpay').WECHATPAY_CONFIG : null
+});

@@ -1,12 +1,12 @@
 /* @flow */
 
-import { CONFIG as POSTROBOT_CONFIG } from 'post-robot/src';
 import { setTransport, getTransport, addPayloadBuilder, addHeaderBuilder, addMetaBuilder,
-    addTrackingBuilder, init, logLevels, config as loggerConfig } from 'beaver-logger/client';
+    addTrackingBuilder, init } from 'beaver-logger/client';
 import { getParent } from 'cross-domain-utils/src';
 import { once, getQueryParam } from 'belter/src';
 
-import { config } from '../config';
+import { LOG_STATE, URLS } from '../config';
+import { CURRENT_ENV, VERSION, MERCHANT_ID } from '../globals';
 import { FPTI } from '../constants';
 
 import { getSessionID, getButtonSessionID } from './session';
@@ -43,9 +43,9 @@ export function initLogger() {
             referer: getRefererDomain(),
             host:    window.location.host,
             path:    window.location.pathname,
-            env:     config.env,
+            env:     CURRENT_ENV,
             uid:     getSessionID(),
-            ver:     __PAYPAL_CHECKOUT__.__MINOR_VERSION__
+            ver:     VERSION
         };
     });
 
@@ -57,7 +57,7 @@ export function initLogger() {
 
     addMetaBuilder(() => {
         return {
-            state: config.state
+            state: LOG_STATE
         };
     });
 
@@ -86,10 +86,10 @@ export function initLogger() {
             [ FPTI.KEY.DATA_SOURCE ]:        FPTI.DATA_SOURCE.CHECKOUT,
             [ FPTI.KEY.CONTEXT_TYPE ]:       contextType,
             [ FPTI.KEY.CONTEXT_ID ]:         contextID,
-            [ FPTI.KEY.SELLER_ID ]:          config.merchantID,
+            [ FPTI.KEY.SELLER_ID ]:          MERCHANT_ID,
             [ FPTI.KEY.SESSION_UID ]:        sessionID,
             [ FPTI.KEY.BUTTON_SESSION_UID ]: buttonSessionID,
-            [ FPTI.KEY.VERSION ]:            config.version,
+            [ FPTI.KEY.VERSION ]:            VERSION,
             [ FPTI.KEY.TOKEN ]:              orderID,
             [ FPTI.KEY.REFERER ]:            getRefererDomain()
         };
@@ -98,22 +98,10 @@ export function initLogger() {
     let prefix = 'ppxo';
 
     init({
-        uri:            config.urls.logger,
+        uri:            URLS.LOGGER,
         heartbeat:      false,
         logPerformance: false,
         prefix,
         logLevel:       __PAYPAL_CHECKOUT__.__DEFAULT_LOG_LEVEL__
     });
-}
-
-export function setLogLevel(logLevel : string) {
-
-    if (logLevels.indexOf(logLevel) === -1) {
-        throw new Error(`Invalid logLevel: ${ logLevel }`);
-    }
-
-    config.logLevel = logLevel;
-    loggerConfig.logLevel = logLevel;
-    POSTROBOT_CONFIG.LOG_LEVEL = logLevel;
-    window.LOG_LEVEL = logLevel;
 }

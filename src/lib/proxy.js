@@ -4,11 +4,11 @@ import { on, send } from 'post-robot/src';
 import { isWindowClosed, getDomain, isSameDomain, type CrossDomainWindowType } from 'cross-domain-utils/src';
 import { noop } from 'belter/src';
 
-import { config } from '../config';
+import { DOMAINS } from '../config';
 
 export function proxyMethod(name : string, win : ?CrossDomainWindowType, originalMethod : Function) : Function {
 
-    if (win && getDomain() === config.domains.paypal && !isSameDomain(win)) {
+    if (win && getDomain() === DOMAINS.PAYPAL && !isSameDomain(win)) {
 
         if (win) {
             send(win, `proxy_${ name }`, { originalMethod }).catch(noop);
@@ -19,7 +19,7 @@ export function proxyMethod(name : string, win : ?CrossDomainWindowType, origina
 
     let methods = [];
 
-    on(`proxy_${ name }`, { domain: config.paypal_domain_regex }, ({ data }) => {
+    on(`proxy_${ name }`, { domain: DOMAINS.PAYPAL }, ({ data }) => {
         methods.push(data.originalMethod);
     });
 

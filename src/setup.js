@@ -4,7 +4,7 @@ import { info, track, warn, error, flush as flushLogs } from 'beaver-logger/clie
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { stringifyError, stringifyErrorMessage, once } from 'belter/src';
 
-import { config } from './config';
+import { CURRENT_ENV } from './globals';
 import { FPTI } from './constants';
 import { initLogger, checkForCommonErrors, isEligible } from './lib';
 
@@ -47,7 +47,7 @@ export let setup = once(() => {
 
     initLogger();
 
-    info(`setup_${ config.env }`);
+    info(`setup_${ CURRENT_ENV }`);
 });
 
 setup();

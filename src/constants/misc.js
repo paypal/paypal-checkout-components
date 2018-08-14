@@ -1,51 +1,38 @@
 /* @flow */
 
-import type { Enum } from '../types';
-
-export const ENV = {
-    LOCAL:      'local',
-    STAGE:      'stage',
-    SANDBOX:    'sandbox',
-    PRODUCTION: 'production',
-    TEST:       'test',
-    DEMO:       'demo'
-};
-
 export const USERS = {
-    ALL:        'all',
-    REMEMBERED: 'remembered'
+    ALL:        ('all' : 'all'),
+    REMEMBERED: ('remembered' : 'remembered')
 };
 
 export const SOURCE = {
-    MANUAL:         'manual',
-    BUTTON_FACTORY: 'button_factory'
+    MANUAL:         ('manual' : 'manual'),
+    BUTTON_FACTORY: ('button_factory' : 'button_factory')
 };
 
 export const LOG_LEVEL = {
-    DEBUG: 'debug',
-    INFO:  'info',
-    WARN:  'warn',
-    ERROR: 'error'
+    DEBUG: ('debug' : 'debug'),
+    INFO:  ('info' : 'info'),
+    WARN:  ('warn' : 'warn'),
+    ERROR: ('error' : 'error')
 };
 
 export const PAYMENT_TYPE = {
-    EC_TOKEN: 'ec_token'
+    EC_TOKEN: ('ec_token' : 'ec_token')
 };
 
 export const ATTRIBUTE = {
-    BUTTON:         'data-button',
+    BUTTON:         ('data-button' : 'data-button'),
     FUNDING_SOURCE: 'data-funding-source',
-    CARD:           'data-card',
-    VERSION:        'data-version'
+    CARD:           ('data-card' : 'data-card'),
+    VERSION:        ('data-version' : 'data-version')
 };
 
-type PLATFORM_ENUM = Enum<'desktop' | 'mobile'>;
-
-export const PLATFORM : PLATFORM_ENUM = {
-    DESKTOP: 'desktop',
-    MOBILE:  'mobile'
+export const PLATFORM = {
+    DESKTOP: ('desktop' : 'desktop'),
+    MOBILE:  ('mobile' : 'mobile')
 };
 
-export const DEFAULT = 'default';
+export const DEFAULT = ('default' : 'default');
 
 

@@ -4,16 +4,11 @@
 import { track, flush as flushLogs } from 'beaver-logger/client';
 import { getPageRenderTime } from 'belter/src';
 
-import { Checkout } from '../checkout';
-import { setupPopupBridgeProxy } from '../integrations/popupBridge';
-import { setLogLevel } from '../lib';
 import { ATTRIBUTE, FUNDING, FPTI, BUTTON_LAYOUT } from '../constants';
 
 import typeof { Button } from './component';
 
 export function setupButtonChild(ButtonComponent : Button) {
-
-    setupPopupBridgeProxy(Checkout, ButtonComponent);
 
     getPageRenderTime().then(pageRenderTime => {
 
@@ -37,10 +32,4 @@ export function setupButtonChild(ButtonComponent : Button) {
 
         flushLogs();
     });
-
-    let xprops = ButtonComponent.xprops || Checkout.xprops;
-
-    if (xprops && xprops.logLevel) {
-        setLogLevel(xprops.logLevel);
-    }
 }

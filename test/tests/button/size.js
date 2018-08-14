@@ -30,6 +30,10 @@ describe(`paypal button component sizes`, () => {
 
         client.Button.render({
 
+            style: {
+                layout: 'horizontal'
+            },
+
             test: {},
 
             payment() {
@@ -77,6 +81,10 @@ describe(`paypal button component sizes`, () => {
         let client = window.paypal.client();
 
         client.Button.render({
+
+            style: {
+                layout: 'horizontal'
+            },
 
             test: {},
 
@@ -126,6 +134,10 @@ describe(`paypal button component sizes`, () => {
 
         client.Button.render({
 
+            style: {
+                layout: 'horizontal'
+            },
+
             test: {},
 
             payment() {
@@ -167,12 +179,16 @@ describe(`paypal button component sizes`, () => {
             container: '#testContainer'
         });
 
-        let expectedWidth = 75;
-        let expectedHeight = 25;
+        let expectedWidth = 150;
+        let expectedHeight = 38;
 
         let client = window.paypal.client();
 
         client.Button.render({
+
+            style: {
+                layout: 'horizontal'
+            },
 
             test: {},
 
@@ -222,6 +238,10 @@ describe(`paypal button component sizes`, () => {
 
         client.Button.render({
 
+            style: {
+                layout: 'horizontal'
+            },
+
             test: {},
 
             payment() {
@@ -263,12 +283,16 @@ describe(`paypal button component sizes`, () => {
             container: '#testContainer'
         });
 
-        let expectedWidth = 75;
-        let expectedHeight = 25;
+        let expectedWidth = 150;
+        let expectedHeight = 38;
 
         let client = window.paypal.client();
 
         client.Button.render({
+
+            style: {
+                layout: 'horizontal'
+            },
 
             test: {},
 
@@ -318,6 +342,10 @@ describe(`paypal button component sizes`, () => {
 
         client.Button.render({
 
+            style: {
+                layout: 'horizontal'
+            },
+
             test: {},
 
             payment() {
@@ -365,6 +393,10 @@ describe(`paypal button component sizes`, () => {
         let client = window.paypal.client();
 
         client.Button.render({
+
+            style: {
+                layout: 'horizontal'
+            },
 
             test: {},
 
@@ -414,59 +446,11 @@ describe(`paypal button component sizes`, () => {
 
         client.Button.render({
 
-            test: {},
-
-            payment() {
-                done(new Error('Expected payment() to not be called'));
-            },
-
-            onAuthorize() {
-                done(new Error('Expected onAuthorize() to not be called'));
-            },
-
-            onEnter() {
-                setTimeout(() => {
-                    let frame = getElement('#testContainer iframe');
-                    let width = frame.offsetWidth;
-                    let height = frame.offsetHeight;
-
-                    if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${ expectedWidth }px, got ${ width }px`));
-                    }
-
-                    if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${ expectedHeight }px, got ${ height }px`));
-                    }
-
-                    return done();
-                }, 100);
-            }
-
-        }, container);
-    });
-
-    it('should render a responsive credit button below the small spectrum', (done) => {
-
-        let container = createElement({
             style: {
-                width:  '55px',
-                height: '100px'
+                layout: 'horizontal'
             },
-            container: '#testContainer'
-        });
-
-        let expectedWidth = 75;
-        let expectedHeight = 25;
-
-        let client = window.paypal.client();
-
-        client.Button.render({
 
             test: {},
-
-            style: {
-                label: 'credit'
-            },
 
             payment() {
                 done(new Error('Expected payment() to not be called'));
@@ -507,8 +491,8 @@ describe(`paypal button component sizes`, () => {
             container: '#testContainer'
         });
 
-        let expectedWidth = 75;
-        let expectedHeight = 25;
+        let expectedWidth = 150;
+        let expectedHeight = 38;
 
         let client = window.paypal.client();
 
@@ -517,7 +501,8 @@ describe(`paypal button component sizes`, () => {
             test: {},
 
             style: {
-                label: 'pay'
+                layout: 'horizontal',
+                label:  'pay'
             },
 
             payment() {
@@ -627,6 +612,10 @@ describe(`paypal button component sizes`, () => {
 
         client.Button.render({
 
+            style: {
+                layout: 'horizontal'
+            },
+
             test: {},
 
             payment() {
@@ -671,12 +660,16 @@ describe(`paypal button component sizes`, () => {
             container: '#testContainer'
         });
 
-        let expectedWidth = 75;
-        let expectedHeight = 25;
+        let expectedWidth = 150;
+        let expectedHeight = 38;
 
         let client = window.paypal.client();
 
         client.Button.render({
+
+            style: {
+                layout: 'horizontal'
+            },
 
             test: {},
 
@@ -723,6 +716,10 @@ describe(`paypal button component sizes`, () => {
         let client = window.paypal.client();
 
         client.Button.render({
+
+            style: {
+                layout: 'horizontal'
+            },
 
             test: {},
 
@@ -774,7 +771,8 @@ describe(`paypal button component sizes`, () => {
             test: {},
 
             style: {
-                height: 36
+                height: 36,
+                layout: 'horizontal'
             },
 
             payment() {

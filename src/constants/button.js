@@ -1,130 +1,83 @@
 /* @flow */
 
-import type { Enum } from '../types';
-
-type BUTTON_STYLE_OPTIONS_ENUM =
-    Enum<'label' | 'size' | 'shape' | 'color' | 'layout' |
-    'fundingicons' | 'tagline' | 'height' | 'installmentperiod'>;
-
-export const BUTTON_STYLE_OPTIONS : BUTTON_STYLE_OPTIONS_ENUM = {
-    LABEL:              'label',
-    SIZE:               'size',
-    SHAPE:              'shape',
-    COLOR:              'color',
-    LAYOUT:             'layout',
-    FUNDINGICONS:       'fundingicons',
-    TAGLINE:            'tagline',
-    HEIGHT:             'height',
-    INSTALLMENTPERIOD:  'installmentperiod'
+export const BUTTON_LABEL = {
+    PAYPAL:      ('paypal' : 'paypal'),
+    CHECKOUT:    ('checkout' : 'checkout'),
+    PAY:         ('pay' : 'pay'),
+    CREDIT:      ('credit' : 'credit'),
+    CARD:        ('card' : 'card'),
+    INSTALLMENT: ('installment' : 'installment'),
+    VENMO:       ('venmo' : 'venmo'),
+    IDEAL:       ('ideal' : 'ideal'),
+    SEPA:        ('sepa' : 'sepa'),
+    BANCONTACT:  ('bancontact' : 'bancontact'),
+    GIROPAY:     ('giropay' : 'giropay'),
+    SOFORT:      ('sofort' : 'sofort'),
+    EPS:         ('eps' : 'eps'),
+    MYBANK:      ('mybank' : 'mybank'),
+    P24:         ('p24' : 'p24'),
+    ZIMPLER:     ('zimpler' : 'zimpler'),
+    WECHATPAY:   ('wechatpay' : 'wechatpay')
 };
 
-type BUTTON_LABEL_ENUM =
-    Enum<'paypal' | 'checkout' | 'pay' | 'credit' |
-    'card' | 'buynow' | 'installment' | 'venmo' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'sofort' | 'eps' | 'mybank' | 'p24' | 'zimpler' | 'wechatpay'>;
-
-export const BUTTON_LABEL : BUTTON_LABEL_ENUM = {
-    PAYPAL:      'paypal',
-    CHECKOUT:    'checkout',
-    PAY:         'pay',
-    CREDIT:      'credit',
-    CARD:        'card',
-    BUYNOW:      'buynow',
-    INSTALLMENT: 'installment',
-    VENMO:       'venmo',
-    IDEAL:       'ideal',
-    ELV:         'elv',
-    BANCONTACT:  'bancontact',
-    GIROPAY:     'giropay',
-    SOFORT:      'sofort',
-    EPS:         'eps',
-    MYBANK:      'mybank',
-    P24:         'p24',
-    ZIMPLER:     'zimpler',
-    WECHATPAY:   'wechatpay'
+export const BUTTON_COLOR = {
+    GOLD:        ('gold' : 'gold'),
+    BLUE:        ('blue' : 'blue'),
+    SILVER:      ('silver' : 'silver'),
+    DARKBLUE:    ('darkblue' : 'darkblue'),
+    TRANSPARENT: ('transparent' : 'transparent')
 };
 
-type BUTTON_COLOR_ENUM =
-    Enum<'gold' | 'blue' | 'silver' | 'black' | 'darkblue' | 'transparent'>;
-
-export const BUTTON_COLOR : BUTTON_COLOR_ENUM = {
-    GOLD:        'gold',
-    BLUE:        'blue',
-    SILVER:      'silver',
-    BLACK:       'black',
-    DARKBLUE:    'darkblue',
-    TRANSPARENT: 'transparent'
+export const LOGO_COLOR = {
+    BLUE:  ('blue' : 'blue'),
+    BLACK: ('black' : 'black'),
+    WHITE: ('white' : 'white'),
+    ANY:   ('any' : 'any')
 };
 
-type BUTTON_LOGO_COLOR_ENUM =
-    Enum<'blue' | 'white' | 'black' | 'any'>;
-
-export const BUTTON_LOGO_COLOR : BUTTON_LOGO_COLOR_ENUM = {
-    BLUE:  'blue',
-    WHITE: 'white',
-    BLACK: 'black',
-    ANY:   'any'
+export const BUTTON_SIZE = {
+    TINY:       ('tiny' : 'tiny'),
+    SMALL:      ('small' : 'small'),
+    MEDIUM:     ('medium' : 'medium'),
+    LARGE:      ('large' : 'large'),
+    HUGE:       ('huge' : 'huge'),
+    RESPONSIVE: ('responsive' : 'responsive')
 };
 
-type BUTTON_SIZE_ENUM =
-    Enum<'tiny' | 'small' | 'medium' | 'large' | 'huge' | 'responsive'>;
-
-export const BUTTON_SIZE : BUTTON_SIZE_ENUM = {
-    TINY:       'tiny',
-    SMALL:      'small',
-    MEDIUM:     'medium',
-    LARGE:      'large',
-    HUGE:       'huge',
-    RESPONSIVE: 'responsive'
+export const BUTTON_TAGLINE_COLOR = {
+    BLACK: ('black' : 'black'),
+    BLUE:  ('blue' : 'blue')
 };
 
-type BUTTON_TAGLINE_COLOR_ENUM =
-    Enum<'black' | 'blue'>;
-
-export const BUTTON_TAGLINE_COLOR : BUTTON_TAGLINE_COLOR_ENUM = {
-    BLACK: 'black',
-    BLUE:  'blue'
+export const BUTTON_SHAPE = {
+    PILL: ('pill' : 'pill'),
+    RECT: ('rect' : 'rect')
 };
 
-type BUTTON_SHAPE_ENUM =
-    Enum<'pill' | 'rect'>;
-
-export const BUTTON_SHAPE : BUTTON_SHAPE_ENUM = {
-    PILL: 'pill',
-    RECT: 'rect'
+export const BUTTON_LAYOUT = {
+    HORIZONTAL: ('horizontal' : 'horizontal'),
+    VERTICAL:   ('vertical' : 'vertical')
 };
 
-type BUTTON_LAYOUT_ENUM =
-    Enum<'horizontal' | 'vertical'>;
-
-export const BUTTON_LAYOUT : BUTTON_LAYOUT_ENUM = {
-    HORIZONTAL: 'horizontal',
-    VERTICAL:   'vertical'
+export const BUTTON_NUMBER = {
+    SINGLE:   ('single' : 'single'),
+    MULTIPLE: ('multiple' : 'multiple')
 };
 
-type BUTTON_NUMBER_ENUM =
-    Enum<'single' | 'multiple'>;
-
-export const BUTTON_NUMBER : BUTTON_NUMBER_ENUM = {
-    SINGLE:   'single',
-    MULTIPLE: 'multiple'
-};
-
-type BUTTON_LOGO_ENUM =
-    Enum<'pp' | 'paypal' | 'venmo' | 'credit' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'sofort' | 'eps' | 'mybank' | 'p24' | 'zimpler' | 'wechatpay'>;
-
-export const BUTTON_LOGO : BUTTON_LOGO_ENUM = {
-    PP:         'pp',
-    PAYPAL:     'paypal',
-    VENMO:      'venmo',
-    CREDIT:     'credit',
-    IDEAL:      'ideal',
-    ELV:        'elv',
-    BANCONTACT: 'bancontact',
-    GIROPAY:    'giropay',
-    SOFORT:     'sofort',
-    EPS:        'eps',
-    MYBANK:     'mybank',
-    P24:        'p24',
-    ZIMPLER:    'zimpler',
-    WECHATPAY:  'wechatpay'
+export const BUTTON_LOGO = {
+    PP:         ('pp' : 'pp'),
+    PAYPAL:     ('paypal' : 'paypal'),
+    VENMO:      ('venmo' : 'venmo'),
+    CREDIT:     ('credit' : 'credit'),
+    IDEAL:      ('ideal' : 'ideal'),
+    ELV:        ('elv' : 'elv'),
+    SEPA:       ('sepa' : 'sepa'),
+    BANCONTACT: ('bancontact' : 'bancontact'),
+    GIROPAY:    ('giropay' : 'giropay'),
+    SOFORT:     ('sofort' : 'sofort'),
+    EPS:        ('eps' : 'eps'),
+    MYBANK:     ('mybank' : 'mybank'),
+    P24:        ('p24' : 'p24'),
+    ZIMPLER:    ('zimpler' : 'zimpler'),
+    WECHATPAY:  ('wechatpay' : 'wechatpay')
 };

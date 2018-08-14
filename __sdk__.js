@@ -6,7 +6,7 @@ let globals = require('./globals');
 module.exports = {
     
     'buttons': {
-        entry:           './src/index',
+        entry:           './src/interface/button',
         staticNamespace: '__paypal_checkout__',
         configQuery:     `
             clientConfiguration {

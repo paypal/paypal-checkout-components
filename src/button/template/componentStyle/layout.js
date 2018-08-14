@@ -1,8 +1,6 @@
 /* @flow */
 
-import { BUTTON_LAYOUT } from '../../../constants';
-
-import { CLASS } from './class';
+import { BUTTON_LAYOUT, CLASS } from '../../../constants';
 
 export let layoutStyle = `
 

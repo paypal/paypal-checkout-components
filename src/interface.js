@@ -1,6 +1,6 @@
 /* @flow */
 
-import { destroyAll } from 'xcomponent/src';
+import { destroyAll } from 'zoid/src';
 
 import './hacks'; // eslint-disable-line import/no-unassigned-import
 import './interface/button'; // eslint-disable-line import/no-unassigned-import

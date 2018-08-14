@@ -1,175 +1,46 @@
 /* @flow */
 
-import { ENV, CARD_PRIORITY, BUTTON_LAYOUT, FUNDING_ELIGIBILITY_REASON, PLATFORM } from '../constants';
-import type { LocaleType, FundingSource, FundingSelection, FundingList } from '../types';
+import { BUTTON_LAYOUT, PLATFORM, FUNDING } from '../constants';
+import type { FundingEligibilityType } from '../types';
 
-import { getFundingConfig, getCardConfig, FUNDING_PRIORITY, FUNDING_CONFIG } from './config';
+import { FUNDING_PRIORITY, FUNDING_CONFIG } from './config';
 
-let fundingEligibilityReasons = [];
+export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, platform, remembered, fundingEligibility } :
+    { layout : $Values<typeof BUTTON_LAYOUT>, platform : $Values<typeof PLATFORM>, remembered : Array<$Values<typeof FUNDING>>, fundingEligibility : FundingEligibilityType }) : boolean {
 
-export function isFundingIneligible(source : FundingSource, { locale, funding, layout, commit, platform } :
-    { locale : LocaleType, funding : FundingSelection, layout : string, commit? : boolean, platform : $Values<typeof PLATFORM> }) : ?string {
-
-    let isVertical = layout === BUTTON_LAYOUT.VERTICAL;
-    let allowSecondary = getFundingConfig(source, isVertical ? 'allowVertical' : 'allowHorizontal');
-
-    if (!allowSecondary) {
-        return FUNDING_ELIGIBILITY_REASON.SECONDARY_DISALLOWED;
+    if (!fundingEligibility[source].eligible) {
+        return false;
     }
 
-    if (funding.disallowed.indexOf(source) !== -1 && getFundingConfig(source, 'allowOptOut')) {
-        return FUNDING_ELIGIBILITY_REASON.OPT_OUT;
+    let fundingConfig = FUNDING_CONFIG[source];
+
+    if (fundingConfig.layouts && fundingConfig.layouts.indexOf(layout) === -1) {
+        return false;
     }
 
-    if (funding.disallowed.indexOf(source) !== -1) {
-        return FUNDING_ELIGIBILITY_REASON.OPT_OUT;
+    if (fundingConfig.platforms && fundingConfig.platforms.indexOf(platform) === -1) {
+        return false;
     }
 
-    if (getFundingConfig(source, 'allowedCountries', [ locale.country ]).indexOf(locale.country) === -1) {
-        return FUNDING_ELIGIBILITY_REASON.DISALLOWED_COUNTRY;
+    if (fundingConfig.rememberedOnly && remembered && remembered.indexOf(source) === -1) {
+        return false;
     }
 
-    if (getFundingConfig(source, 'requireCommitAsTrue') && !commit) {
-        return FUNDING_ELIGIBILITY_REASON.COMMIT_NOT_SET;
-    }
-
-    if (getFundingConfig(source, 'platforms').indexOf(platform) === -1) {
-        return FUNDING_ELIGIBILITY_REASON.INELIGIBLE_PLATFORM;
-    }
+    return true;
 }
 
-export function isFundingAutoEligible(source : FundingSource, { locale, funding, layout } :
-    { locale : LocaleType, funding : FundingSelection, layout : string }) : ?string {
+export function determineEligibleFunding({ style, platform, remembered, fundingEligibility } :
+    {| remembered : Array<$Values<typeof FUNDING>>, style : { layout : $Values<typeof BUTTON_LAYOUT> }, platform : $Values<typeof PLATFORM>, fundingEligibility : FundingEligibilityType |}) : Array<$Values<typeof FUNDING>> {
 
-    let isVertical = layout === BUTTON_LAYOUT.VERTICAL;
+    let { layout } = style;
 
-    if (isVertical && getFundingConfig(source, 'defaultVerticalCountries', []).indexOf(locale.country) !== -1) {
-        return FUNDING_ELIGIBILITY_REASON.DEFAULT_COUNTRY;
-    }
-
-    if (getFundingConfig(source, 'default')) {
-        return FUNDING_ELIGIBILITY_REASON.DEFAULT;
-    }
-
-    if (funding.allowed.indexOf(source) !== -1 && getFundingConfig(source, 'allowOptIn')) {
-        return FUNDING_ELIGIBILITY_REASON.OPT_IN;
-    }
-
-    if (funding.remembered.indexOf(source) !== -1 && getFundingConfig(source, 'allowRemember')) {
-        return FUNDING_ELIGIBILITY_REASON.REMEMBERED;
-    }
-}
-
-export function isFundingEligible(source : FundingSource, { locale, funding, env, layout, selected, commit, platform } :
-    { locale : LocaleType, funding : FundingSelection, env : string, layout : string, selected? : string, commit : boolean, platform : $Values<typeof PLATFORM> }) : { eligible : boolean, reason : string } {
-
-    if (selected && source === selected) {
-        return { eligible: true, reason: FUNDING_ELIGIBILITY_REASON.PRIMARY };
-    }
-
-    if (!getFundingConfig(source, 'enabled')) {
-        if (!(env === ENV.TEST && getFundingConfig(source, 'test'))) {
-            return { eligible: false, reason: FUNDING_ELIGIBILITY_REASON.NOT_ENABLED };
-        }
-    }
-
-    let ineligibleReason = isFundingIneligible(source, { locale, funding, layout, commit, platform });
-
-    if (ineligibleReason) {
-        return { eligible: false, reason: ineligibleReason };
-    }
-
-    let autoEligibleReason = isFundingAutoEligible(source, { locale, funding, layout });
-
-    if (autoEligibleReason) {
-        return { eligible: true, reason: autoEligibleReason };
-    }
-
-    return { eligible: false, reason: FUNDING_ELIGIBILITY_REASON.NEED_OPT_IN };
-}
-
-export function determineEligibleFunding({ funding, selected, locale, env, layout, commit, platform } :
-    { funding : FundingSelection, selected : FundingSource, locale : LocaleType, env : string, layout : string, commit : boolean, platform : $Values<typeof PLATFORM> }) : FundingList {
-
-    let reasons = {};
-
-    let eligibleFunding = FUNDING_PRIORITY.filter(source => {
-        let { eligible, reason } = isFundingEligible(source, { selected, locale, funding, env, layout, commit, platform });
-        reasons[source] = { eligible, reason, factors: { env, locale, layout } };
-        return eligible;
-    });
-
-    fundingEligibilityReasons.push(reasons);
-
-    eligibleFunding.splice(eligibleFunding.indexOf(selected), 1);
-    eligibleFunding.unshift(selected);
+    let eligibleFunding = FUNDING_PRIORITY.filter(source =>
+        isFundingEligible(source, { layout, platform, remembered, fundingEligibility })
+    );
 
     if (layout === BUTTON_LAYOUT.HORIZONTAL) {
         eligibleFunding = eligibleFunding.slice(0, 2);
     }
 
     return eligibleFunding;
-}
-
-export function determineEligibleCards({ funding, locale } :
-    { funding : FundingSelection, locale : LocaleType }) : FundingList {
-
-    return getCardConfig(locale.country, 'priority')
-        .filter(card => funding.disallowed.indexOf(card) === -1);
-}
-
-export function validateFunding(funding : FundingSelection = { allowed: [], disallowed: [], remembered: [] }) {
-
-    if (funding.allowed) {
-        for (let source of funding.allowed) {
-            if (CARD_PRIORITY.indexOf(source) !== -1) {
-                continue;
-            }
-
-            if (!FUNDING_CONFIG.hasOwnProperty(source)) {
-                throw new Error(`Invalid funding source: ${ source }`);
-            }
-
-            if (!getFundingConfig(source, 'allowOptIn')) {
-                throw new Error(`Can not allow funding source: ${ source }`);
-            }
-
-            if (funding.disallowed && funding.disallowed.indexOf(source) !== -1) {
-                throw new Error(`Can not allow and disallow funding source: ${ source }`);
-            }
-        }
-    }
-
-    if (funding.disallowed) {
-        for (let source of funding.disallowed) {
-            if (CARD_PRIORITY.indexOf(source) !== -1) {
-                continue;
-            }
-
-            if (!FUNDING_CONFIG.hasOwnProperty(source)) {
-                throw new Error(`Invalid funding source: ${ source }`);
-            }
-
-            if (!getFundingConfig(source, 'allowOptOut')) {
-                throw new Error(`Can not disallow funding source: ${ source }`);
-            }
-        }
-    }
-}
-
-export function logFundingEligibility() {
-    fundingEligibilityReasons.forEach((reasons, i) => {
-        console.log(`\nButton ${ i + 1 }:\n`); // eslint-disable-line no-console
-
-        console.table(Object.keys(reasons).map(source => {  // eslint-disable-line no-console
-            let { reason, eligible, factors } = reasons[source];
-
-            return {
-                'Funding':     source,
-                'Reason':      reason,
-                'Eligibility': eligible ? 'eligible' : 'ineligible',
-                'Factors':     JSON.stringify(factors)
-            };
-        }));
-    });
 }

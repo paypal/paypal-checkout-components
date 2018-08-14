@@ -5,11 +5,13 @@ import { attach } from 'paypal-braintree-web-client/src';
 
 import { Button } from '../button';
 import { FUNDING } from '../constants';
+import { allowIframe } from '../lib';
 
 attach('buttons', () => {
     return {
         Button,
         Promise,
-        FUNDING
+        FUNDING,
+        allowIframe
     };
 });

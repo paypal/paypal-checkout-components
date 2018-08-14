@@ -1,7 +1,9 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { createTestContainer, destroyTestContainer, noop, assert } from '../common';
+import { ZalgoPromise } from 'zalgo-promise/src';
+
+import { createTestContainer, destroyTestContainer, noop, assert, mockProp } from '../common';
 
 let client = window.paypal.client();
 
@@ -79,7 +81,7 @@ let buttonConfigs = [
 
             {
                 label: `buynow`,
-                valid: true
+                valid: false
             },
 
             {
@@ -89,12 +91,12 @@ let buttonConfigs = [
 
             {
                 label: `venmo`,
-                valid: true
+                valid: false
             },
 
             {
                 label: `credit`,
-                valid: true
+                valid: false
             },
 
             {
@@ -108,7 +110,7 @@ let buttonConfigs = [
             },
 
             {
-                label: `elv`,
+                label: `sepa`,
                 valid: false
             },
 
@@ -137,34 +139,47 @@ let buttonConfigs = [
         cases: [
 
             {
-                installmentperiod: 4,
-                locale:            `pt_BR`,
+                period: 4,
+                locale:            { country: 'BR', lang: 'pt' },
                 valid:             true
             },
 
             {
-                installmentperiod: 6,
-                locale:            `en_BR`,
+                period: 6,
+                locale:            { country: 'BR', lang: 'en' },
                 valid:             true
             },
 
             {
-                installmentperiod: 6,
-                locale:            `en_MX`,
+                period: 6,
+                locale:            { country: 'MX', lang: 'es' },
                 valid:             true
+            },
+
+            {
+                period: 6,
+                locale: { country: 'MX', lang: 'en' },
+                valid:  true
+            },
+
+            {
+                period: 6,
+                locale: { country: 'US', lang: 'en' },
+                valid:  false
             }
 
-        ].map(({ installmentperiod, locale, valid }) => ({
-
-            desc: `label: installment, locale: ${ locale } and installmentperiod: ${ installmentperiod }`,
+        ].map(({ period, locale, valid }) => ({
+            
+            desc: `label: installment, locale: ${ locale.lang }_${ locale.country } and period: ${ period }`,
 
             valid,
+
+            locale,
 
             conf: {
                 payment:     noop,
                 onAuthorize: noop,
-                locale,
-                style:       { installmentperiod, label: 'installment' }
+                style:       { period, label: 'installment' }
             }
         }))
     },
@@ -204,60 +219,6 @@ let buttonConfigs = [
     },
 
     {
-        name: 'sizes',
-
-        cases: [
-
-            {
-                size:  `tiny`,
-                valid: false
-            },
-
-            {
-                size:  `small`,
-                valid: false
-            },
-
-            {
-                size:  `medium`,
-                valid: false
-            },
-
-            {
-                size:  `large`,
-                valid: false
-            },
-
-            {
-                size:  `responsive`,
-                valid: false
-            },
-
-            {
-                size:  `huge`,
-                valid: false
-            },
-
-            {
-                size:  `blerf`,
-                valid: false
-            }
-
-        ].map(({ size, valid }) => ({
-
-            desc: `size ${ size }`,
-
-            valid,
-
-            conf: {
-                payment:     noop,
-                onAuthorize: noop,
-                style:       { size }
-            }
-        }))
-    },
-
-    {
         name: 'colors',
 
         cases: [
@@ -279,7 +240,7 @@ let buttonConfigs = [
 
             {
                 color: `black`,
-                valid: true
+                valid: false
             },
 
             {
@@ -318,17 +279,17 @@ let buttonConfigs = [
             {
                 label: `checkout`,
                 color: `black`,
-                valid: true
-            },
-
-            {
-                label: `checkout`,
-                color: `creditblue`,
                 valid: false
             },
 
             {
                 label: `checkout`,
+                color: `creditblue`,
+                valid: false
+            },
+
+            {
+                label: `checkout`,
                 color: `darkblue`,
                 valid: false
             },
@@ -360,7 +321,7 @@ let buttonConfigs = [
             {
                 label: `paypal`,
                 color: `black`,
-                valid: true
+                valid: false
             },
 
             {
@@ -402,7 +363,7 @@ let buttonConfigs = [
             {
                 label: `pay`,
                 color: `black`,
-                valid: true
+                valid: false
             },
 
             {
@@ -426,25 +387,25 @@ let buttonConfigs = [
             {
                 label: `buynow`,
                 color: `gold`,
-                valid: true
+                valid: false
             },
 
             {
                 label: `buynow`,
                 color: `blue`,
-                valid: true
+                valid: false
             },
 
             {
                 label: `buynow`,
                 color: `silver`,
-                valid: true
+                valid: false
             },
 
             {
                 label: `buynow`,
                 color: `black`,
-                valid: true
+                valid: false
             },
 
             {
@@ -486,7 +447,7 @@ let buttonConfigs = [
             {
                 label: `credit`,
                 color: `black`,
-                valid: true
+                valid: false
             },
 
             {
@@ -498,7 +459,7 @@ let buttonConfigs = [
             {
                 label: `credit`,
                 color: `darkblue`,
-                valid: true
+                valid: false
             },
 
             {
@@ -516,19 +477,19 @@ let buttonConfigs = [
             {
                 label: `venmo`,
                 color: `blue`,
-                valid: true
+                valid: false
             },
 
             {
                 label: `venmo`,
                 color: `silver`,
-                valid: true
+                valid: false
             },
 
             {
                 label: `venmo`,
                 color: `black`,
-                valid: true
+                valid: false
             },
 
             {
@@ -591,12 +552,6 @@ let buttonConfigs = [
             },
 
             {
-                layout:       `vertical`,
-                fundingicons: true,
-                valid:        false
-            },
-
-            {
                 layout: `vertical`,
                 label:  `paypal`,
                 valid:  true
@@ -617,7 +572,7 @@ let buttonConfigs = [
             {
                 layout: `vertical`,
                 label:  `buynow`,
-                valid:  true
+                valid:  false
             },
 
             {
@@ -634,7 +589,7 @@ let buttonConfigs = [
 
             {
                 layout: `vertical`,
-                label:  `elv`,
+                label:  `sepa`,
                 valid:  false
             },
 
@@ -730,15 +685,30 @@ let buttonConfigs = [
 
             {
                 tagline: true,
+                layout:  'horizontal',
                 valid:   true
             },
 
             {
                 tagline: false,
+                valid:   true,
+                layout:  'vertical'
+            },
+
+            {
+                tagline: false,
+                layout:  'horizontal',
                 valid:   true
+            },
+
+            {
+                tagline: true,
+                valid:   false,
+                layout:  'vertical'
             }
 
-        ].map(({ tagline, valid }) => ({
+
+        ].map(({ tagline, valid, layout }) => ({
 
             desc: `tagline ${ tagline.toString() }`,
 
@@ -747,7 +717,7 @@ let buttonConfigs = [
             conf: {
                 payment:     noop,
                 onAuthorize: noop,
-                style:       { tagline }
+                style:       { tagline, layout }
             }
         }))
     },
@@ -790,357 +760,6 @@ let buttonConfigs = [
                 onAuthorize: noop
             }
         }))
-    },
-
-    {
-        name: 'funding',
-
-        cases: [
-
-            {
-                desc: `opt-in to venmo`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    funding: {
-                        allowed: [ client.FUNDING.VENMO ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-out of venmo`,
-
-                valid: false,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    funding: {
-                        disallowed: [ client.FUNDING.VENMO ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-in to credit`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    funding: {
-                        allowed: [ client.FUNDING.CREDIT ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-out of credit`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    funding: {
-                        disallowed: [ client.FUNDING.CREDIT ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-in to paypal`,
-
-                valid: false,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    funding: {
-                        allowed: [ client.FUNDING.PAYPAL ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-out of paypal`,
-
-                valid: false,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    funding: {
-                        disallowed: [ client.FUNDING.PAYPAL ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-in to ideal`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    commit: true,
-
-                    funding: {
-                        allowed: [ client.FUNDING.IDEAL ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-out of ideal`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    funding: {
-                        disallowed: [ client.FUNDING.IDEAL ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-in to elv`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    commit: true,
-
-                    funding: {
-                        allowed: [ client.FUNDING.ELV ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-out of elv`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    funding: {
-                        disallowed: [ client.FUNDING.ELV ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-in to bancontact`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    commit: true,
-
-                    funding: {
-                        allowed: [ client.FUNDING.BANCONTACT ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-out of bancontact`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    funding: {
-                        disallowed: [ client.FUNDING.BANCONTACT ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-in to giropay`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    commit: true,
-
-                    funding: {
-                        allowed: [ client.FUNDING.GIROPAY ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-out of giropay`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    funding: {
-                        disallowed: [ client.FUNDING.GIROPAY ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-in to sofort`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    commit: true,
-
-                    funding: {
-                        allowed: [ client.FUNDING.SOFORT ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-out of sofort`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    funding: {
-                        disallowed: [ client.FUNDING.SOFORT ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-in to eps`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    commit: true,
-
-                    funding: {
-                        allowed: [ client.FUNDING.EPS ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-out of eps`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    funding: {
-                        disallowed: [ client.FUNDING.EPS ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-in to mybank`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    commit: true,
-
-                    funding: {
-                        allowed: [ client.FUNDING.MYBANK ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-out of mybank`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    funding: {
-                        disallowed: [ client.FUNDING.MYBANK ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-in to card`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    funding: {
-                        allowed: [ client.FUNDING.CARD ]
-                    }
-                }
-            },
-
-            {
-                desc: `opt-out of card`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    funding: {
-                        disallowed: [ client.FUNDING.CARD ]
-                    }
-                }
-            }
-        ]
     }
 ];
 
@@ -1156,25 +775,45 @@ for (let group of buttonConfigs) {
         });
 
         for (let useCase of group.cases) {
-            if (useCase.valid) {
-                it(`should attempt to render a button with ${ useCase.desc } and succeed`, () => {
-                    return client.Button.render({
-                        test: {
-                            action: `none`
-                        },
+            it(`should attempt to render a button with ${ useCase.desc } and ${ useCase.valid ? `succeed` : `fail` }`, () => {
 
-                        ...useCase.conf
-                    }, `body`);
+                let mockCountry;
+                let mockLang;
+
+                if (useCase.locale) {
+                    mockCountry = mockProp(window.__TEST_LOCALE__, '__COUNTRY__', useCase.locale.country);
+                    mockLang = mockProp(window.__TEST_LOCALE__, '__LANG__', useCase.locale.lang);
+                }
+
+                return ZalgoPromise.try(() => {
+
+                    if (useCase.valid) {
+                        return client.Button.render({
+                            test: {
+                                action: `none`
+                            },
+
+                            ...useCase.conf
+                        }, `body`);
+                    } else {
+                        return client.Button.render(useCase.conf, `body`).then(() => {
+                            throw new Error(`Expected error to be thrown`);
+                        }, err => {
+                            assert.ok(err instanceof Error, `Expected error object to be thrown`);
+                        });
+                    }
+
+                }).then(() => {
+
+                    if (mockCountry) {
+                        mockCountry.cancel();
+                    }
+
+                    if (mockLang) {
+                        mockLang.cancel();
+                    }
                 });
-            } else {
-                it(`should attempt to render a button with ${ useCase.desc } and error out`, () => {
-                    return client.Button.render(useCase.conf, `body`).then(() => {
-                        throw new Error(`Expected error to be thrown`);
-                    }, err => {
-                        assert.ok(err instanceof Error, `Expected error object to be thrown`);
-                    });
-                });
-            }
+            });
         }
     });
 }

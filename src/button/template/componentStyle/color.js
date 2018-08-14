@@ -1,8 +1,6 @@
 /* @flow */
 
-import { BUTTON_COLOR } from '../../../constants';
-
-import { CLASS } from './class';
+import { BUTTON_COLOR, CLASS } from '../../../constants';
 
 export let buttonColorStyle = `
 
@@ -19,11 +17,6 @@ export let buttonColorStyle = `
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER } {
         background: #eee;
         color: #111;
-    }
-
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLACK } {
-        background: #2C2E2F;
-        color: #fff;
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.DARKBLUE } {

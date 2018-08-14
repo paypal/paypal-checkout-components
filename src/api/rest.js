@@ -5,20 +5,24 @@ import { on, send } from 'post-robot/src';
 import { btoa } from 'Base64';
 import { info, track } from 'beaver-logger/client';
 import { getAncestor, isSameDomain, isFileProtocol } from 'cross-domain-utils/src';
-import { memoize } from 'belter/src';
+import { memoize, request } from 'belter/src';
 
-import { config } from '../config';
+import { URLS, DOMAINS } from '../config';
 import { FPTI } from '../constants';
-import { request, isPayPalDomain } from '../lib';
+import { isPayPalDomain } from '../lib';
 
-let proxyRest : { [key : string] : <T>(...args : Array<mixed>) => ZalgoPromise<T> } = {};
+type ProxyRest = {
+    [string] : (...args : Array<mixed>) => ZalgoPromise<*>
+};
+
+let proxyRest : ProxyRest = {};
 
 export let createAccessToken = memoize((clientID : string) : ZalgoPromise<string> => {
 
     info(`rest_api_create_access_token`);
 
     if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) {
-        return proxyRest.createAccessToken(config.env, clientID);
+        return proxyRest.createAccessToken(clientID);
     }
 
     let basicAuth : string = btoa(`${ clientID }:`);
@@ -26,7 +30,7 @@ export let createAccessToken = memoize((clientID : string) : ZalgoPromise<string
     return request({
 
         method:  `post`,
-        url:     config.urls.auth,
+        url:     URLS.AUTH,
         headers: {
             Authorization: `Basic ${ basicAuth }`
         },
@@ -37,7 +41,7 @@ export let createAccessToken = memoize((clientID : string) : ZalgoPromise<string
     }).then(res => {
 
         if (res && res.error === 'invalid_client') {
-            throw new Error(`Auth Api invalid ${ config.env } client id: ${ clientID }:\n\n${ JSON.stringify(res, null, 4) }`);
+            throw new Error(`Auth Api invalid client id: ${ clientID }:\n\n${ JSON.stringify(res, null, 4) }`);
         }
 
         if (!res || !res.access_token) {
@@ -70,7 +74,7 @@ export function createOrder(clientID : string, orderDetails : Object) : ZalgoPro
     info(`rest_api_create_order_token`);
 
     if (!clientID) {
-        throw new Error(`Client ID not found for env: ${ config.env }`);
+        throw new Error(`Client ID not passed`);
     }
 
     if (proxyRest.createOrder && !proxyRest.createOrder.source.closed) {
@@ -106,7 +110,7 @@ export function createOrder(clientID : string, orderDetails : Object) : ZalgoPro
 
         return request({
             method: `post`,
-            url:    config.urls.order,
+            url:    URLS.ORDER,
             headers,
             json:   order
         });
@@ -126,7 +130,7 @@ export function createOrder(clientID : string, orderDetails : Object) : ZalgoPro
 const PROXY_REST = `proxy_rest`;
 let parentWin = getAncestor();
 
-on(PROXY_REST, { domain: config.paypal_domain_regex }, ({ data }) => {
+on(PROXY_REST, { domain: DOMAINS.PAYPAL }, ({ data }) => {
     proxyRest = data;
 });
 

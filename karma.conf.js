@@ -15,23 +15,17 @@ export default function configKarma(karma : Object) {
                 ...globals,
                 __paypal_checkout__: {
                     serverConfig: {
-                        paypalMerchantConfiguration: {
-                            creditCard: {
-                                isPayPalBranded: true
-                            }
-                        }
+                        fundingEligibility: () => 'window.__TEST_FUNDING_ELIGIBILITY__'
                     }
                 },
                 __PAYPAL_CHECKOUT__: {
                     ...globals.__PAYPAL_CHECKOUT__,
-                    __TREE_SHAKE__: false
+                    __TREE_SHAKE__:         false,
+                    __REMEMBERED_FUNDING__: () => 'window.__TEST_REMEMBERED_FUNDING__'
                 },
                 __CLIENT_ID__:   'abcxyz123',
                 __MERCHANT_ID__: 'abc',
-                __LOCALE__:      {
-                    __COUNTRY__: 'US',
-                    __LANG__:    'en'
-                }
+                __LOCALE__:      () => 'window.__TEST_LOCALE__'
             }
         })
     });
@@ -56,6 +50,12 @@ export default function configKarma(karma : Object) {
         },
 
         {
+            pattern:  'test/tests/globals.js',
+            included: true,
+            served:   true
+        },
+
+        {
             pattern:  'src/index.js',
             included: true,
             served:   true
@@ -66,10 +66,6 @@ export default function configKarma(karma : Object) {
 
     karmaConfig.preprocessors['src/index.js'] = [ 'webpack', 'sourcemap' ];
     karmaConfig.preprocessors['src/**/*.js'] = [ 'sourcemap' ];
-
-    karmaConfig.proxies = {
-        '/tagmanager/': '/base/test/lib/'
-    };
 
     karmaConfig.client = {
         captureConsole: karmaConfig.client.captureConsole,

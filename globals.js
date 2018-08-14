@@ -1,7 +1,7 @@
 /* eslint import/no-commonjs: off, flowtype/require-valid-file-annotation: off, flowtype/require-return-type: off */
 
 let postRobotGlobals = require('post-robot/globals');
-let xcomponentGlobals = require('xcomponent/globals');
+let zoidGlobals = require('zoid/globals');
 
 function getNextVersion() {
     let version = require('./package.json').version;
@@ -19,16 +19,17 @@ function getNextMinorVersion() {
     return getNextVersion();
 }
 
-module.exports = Object.assign({}, xcomponentGlobals, {
+module.exports = Object.assign({}, zoidGlobals, {
 
     __POST_ROBOT__: Object.assign({}, postRobotGlobals.__POST_ROBOT__, {
         __IE_POPUP_SUPPORT__: false
     }),
 
     __PAYPAL_CHECKOUT__: {
-        __DEFAULT_LOG_LEVEL__: 'warn',
-        __MAJOR_VERSION__:     getNextMajorVersion(),
-        __MINOR_VERSION__:     getNextMinorVersion(),
-        __TREE_SHAKE__:        true
+        __DEFAULT_LOG_LEVEL__:  'warn',
+        __MAJOR_VERSION__:      getNextMajorVersion(),
+        __MINOR_VERSION__:      getNextMinorVersion(),
+        __TREE_SHAKE__:         true,
+        __REMEMBERED_FUNDING__: []
     }
 });

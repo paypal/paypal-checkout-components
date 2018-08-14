@@ -1,8 +1,8 @@
 /* @flow */
 
-import { BUTTON_COLOR, ENV } from '../../../constants';
+import { ENV } from 'paypal-braintree-web-client/src';
 
-import { CLASS } from './class';
+import { BUTTON_COLOR, CLASS } from '../../../constants';
 
 export let buttonStyle = `
 
@@ -101,10 +101,6 @@ export let buttonStyle = `
         text-align: left;
     }
 
-    .${ CLASS.BUTTON } .${ CLASS.CARD } {
-        border-radius: 4px;
-    }
-
     .${ CLASS.BUTTON } .${ CLASS.TEXT } {
         visibility: hidden;
     }
@@ -125,9 +121,5 @@ export let buttonStyle = `
         display: inline-block;
         position: relative;
         top: 10%;
-    }
-
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLACK } .${ CLASS.SEPARATOR } {
-        border-color: rgba(255, 255, 255, 0.45);
     }
 `;
