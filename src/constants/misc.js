@@ -24,8 +24,7 @@ export const PAYMENT_TYPE = {
 export const ATTRIBUTE = {
     BUTTON:         ('data-button' : 'data-button'),
     FUNDING_SOURCE: 'data-funding-source',
-    CARD:           ('data-card' : 'data-card'),
-    VERSION:        ('data-version' : 'data-version')
+    CARD:           ('data-card' : 'data-card')
 };
 
 export const PLATFORM = {

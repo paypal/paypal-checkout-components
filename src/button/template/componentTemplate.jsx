@@ -173,16 +173,13 @@ function getCardNumber() : number {
 }
 
 export function Buttons(props : ButtonPropsInputs) : JsxHTMLNode {
-    let { style, locale, remembered, env, fundingEligibility, version, platform } = normalizeButtonProps(props);
+    let { style, locale, remembered, env, fundingEligibility, platform } = normalizeButtonProps(props);
 
     let sources  = determineEligibleFunding({ style, remembered, platform, fundingEligibility });
     let multiple = sources.length > 1;
 
     return (
-        <div
-            { ...{ [ ATTRIBUTE.VERSION ]: version } }
-            class={ `${ CLASS.CONTAINER } ${ getCommonClasses({ style, multiple, env }) }` }
-        >
+        <div class={ `${ CLASS.CONTAINER } ${ getCommonClasses({ style, multiple, env }) }` }>
 
             <Style
                 style={ style }

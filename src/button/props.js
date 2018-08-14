@@ -40,8 +40,7 @@ export type ButtonProps = {
     fundingEligibility : FundingEligibilityType,
     remembered : Array<$Values<typeof FUNDING>>,
     sessionID : string,
-    buttonSessionID : string,
-    version : string
+    buttonSessionID : string
 };
 
 export type ButtonPropsInputs = {|
@@ -57,8 +56,7 @@ export type ButtonPropsInputs = {|
     fundingEligibility? : $PropertyType<ButtonProps, 'fundingEligibility'> | void,
     remembered? : $PropertyType<ButtonProps, 'remembered'> | void,
     sessionID ? : $PropertyType<ButtonProps, 'sessionID'> | void,
-    buttonSessionID ? : $PropertyType<ButtonProps, 'buttonSessionID'> | void,
-    version? : $PropertyType<ButtonProps, 'version'> | void
+    buttonSessionID ? : $PropertyType<ButtonProps, 'buttonSessionID'> | void
 |};
 
 export const DEFAULT_STYLE = {
@@ -70,7 +68,6 @@ export const DEFAULT_STYLE = {
 
 export const DEFAULT_PROPS = {
     COMMIT:  true,
-    VERSION: __PAYPAL_CHECKOUT__.__MINOR_VERSION__,
     ENV:     __ENV__
 };
 
@@ -166,7 +163,6 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : ButtonProps {
         fundingEligibility,
         platform,
         buttonSessionID,
-        version = DEFAULT_PROPS.VERSION,
         sessionID,
         commit = DEFAULT_PROPS.COMMIT
     } = props;
@@ -211,5 +207,5 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : ButtonProps {
 
     style = normalizeButtonStyle(style, { locale });
 
-    return { style, locale, remembered, env, fundingEligibility, platform, buttonSessionID, commit, version, sessionID };
+    return { style, locale, remembered, env, fundingEligibility, platform, buttonSessionID, commit, sessionID };
 }

@@ -103,7 +103,6 @@ export let Button : Component<ButtonProps> = create({
 
         fundingEligibility: {
             type:       'object',
-            queryParam: true,
             value() : Object {
                 return FUNDING_ELIGIBILITY;
             }
@@ -204,13 +203,6 @@ export let Button : Component<ButtonProps> = create({
             type: 'function',
             value() : Function {
                 return rememberFunding;
-            }
-        },
-
-        version: {
-            type:     'string',
-            value() : string {
-                return __PAYPAL_CHECKOUT__.__MINOR_VERSION__;
             }
         },
 
