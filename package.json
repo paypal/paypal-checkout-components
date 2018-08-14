@@ -18,8 +18,8 @@
     "debug": "cross-env NODE_ENV=debug",
     "demo": "serve ./demo --port 1337",
     "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin",
-    "jest-screenshot": "cross-env NODE_ENV=test babel-node --plugins=transform-es2015-modules-commonjs $(npm bin)/jest test/screenshot/screenshot.test.js --env=node --no-cache",
-    "jest-ssr": "cross-env NODE_ENV=test babel-node --plugins=transform-es2015-modules-commonjs $(npm bin)/jest test/ssr/ssr.test.js --env=node --no-cache"
+    "jest-screenshot": "jest test/screenshot/screenshot.test.js --env=node --no-cache",
+    "jest-ssr": "jest test/ssr/ssr.test.js --env=node --no-cache"
   },
   "files": [
     "src/",
