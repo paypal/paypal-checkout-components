@@ -627,15 +627,15 @@ export let Button : Component<ButtonOptions> = create({
                     let timeout = __TEST__ ? 500 : 10 * 1000;
 
                     let reject = () => {
-                        if (data.onReject && typeof data.onReject === 'function') {
+                        if (actions.reject && typeof actions.reject === 'function') {
                             return ZalgoPromise.try(() => {
-                                return data.onReject.call();
+                                return actions.reject.call();
                             });
                         }
                     };
 
                     return ZalgoPromise.try(() => {
-                        return original.call(this, data.body, { ...actions, reject });
+                        return original.call(this, data, { ...actions, reject });
                     }).timeout(timeout, new Error(`Timed out waiting ${ timeout }ms for payment`)).catch(err => {
                         if (this.props.onError) {
                             return this.props.onError(err);
