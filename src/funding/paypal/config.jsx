@@ -8,7 +8,7 @@ import { URLS } from '../../config';
 import { BUTTON_LABEL, LOGO_COLOR } from '../../constants';
 import { DEFAULT_LABEL_CONFIG } from '../common';
 
-import { componentContent } from './content';
+import { Checkout, Pay, Installment, SaferTag, DualTag } from './labels';
 import { PPLogo, PayPalLogo } from './logo';
 
 export const PAYPAL_CONFIG = {
@@ -29,11 +29,9 @@ export const PAYPAL_CONFIG = {
             },
 
             Tag: ({ multiple, locale } : { locale : LocaleType, multiple : boolean }) => {
-                let { DualTag, SaferTag } = componentContent[locale.country][locale.lang];
-
-                return (multiple && DualTag)
-                    ? <DualTag />
-                    : <SaferTag />;
+                return (multiple)
+                    ? <DualTag locale={ locale } />
+                    : <SaferTag locale={ locale } />;
             },
 
             allowPrimary: true
@@ -43,18 +41,15 @@ export const PAYPAL_CONFIG = {
             ...DEFAULT_LABEL_CONFIG,
 
             Label: ({ locale, logoColor }) => {
-                let { Checkout } = componentContent[locale.country][locale.lang];
                 return (
-                    <Checkout logoColor={ logoColor } />
+                    <Checkout locale={ locale } logoColor={ logoColor } />
                 );
             },
 
             Tag: ({ multiple, locale } : { locale : LocaleType, multiple : boolean }) => {
-                let { DualTag, SaferTag } = componentContent[locale.country][locale.lang];
-
-                return (multiple && DualTag)
-                    ? <DualTag />
-                    : <SaferTag />;
+                return (multiple)
+                    ? <DualTag locale={ locale } />
+                    : <SaferTag locale={ locale } />;
             },
 
             allowPrimary: true
@@ -64,18 +59,15 @@ export const PAYPAL_CONFIG = {
             ...DEFAULT_LABEL_CONFIG,
 
             Label: ({ locale, logoColor }) => {
-                let { Pay } = componentContent[locale.country][locale.lang];
                 return (
-                    <Pay logoColor={ logoColor } />
+                    <Pay locale={ locale } logoColor={ logoColor } />
                 );
             },
 
             Tag: ({ multiple, locale } : { locale : LocaleType, multiple : boolean }) => {
-                let { DualTag, SaferTag } = componentContent[locale.country][locale.lang];
-
-                return (multiple && DualTag)
-                    ? <DualTag />
-                    : <SaferTag />;
+                return (multiple)
+                    ? <DualTag locale={ locale } />
+                    : <SaferTag locale={ locale } />;
             },
 
             allowPrimary: true
@@ -92,18 +84,15 @@ export const PAYPAL_CONFIG = {
             },
 
             Label: ({ locale, logoColor, period }) => {
-                let { Installment } = componentContent[locale.country][locale.lang];
                 return (
-                    <Installment logoColor={ logoColor } period={ period } />
+                    <Installment locale={ locale } logoColor={ logoColor } period={ period } />
                 );
             },
 
             Tag: ({ multiple, locale } : { locale : LocaleType, multiple : boolean }) => {
-                let { DualTag, SaferTag } = componentContent[locale.country][locale.lang];
-
-                return (multiple && DualTag)
-                    ? <DualTag />
-                    : <SaferTag />;
+                return (multiple)
+                    ? <DualTag locale={ locale } />
+                    : <SaferTag locale={ locale } />;
             },
 
             allowPrimary: true
