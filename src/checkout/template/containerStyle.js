@@ -109,12 +109,12 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
 
         #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.BLACK } {
             background-color: black;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.75);
 
-            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.8) 100%);
-            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.8) 100%);
-            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.8) 100%);
-            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.8) 100%);
+            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);
+            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);
+            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);
+            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);
 
             color: #fff;
         }
