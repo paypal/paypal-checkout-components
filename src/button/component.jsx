@@ -176,6 +176,14 @@ export let Button : Component<ButtonOptions> = create({
     },
 
     props: {
+        domain: {
+            type:     'string',
+            required: false,
+            def() : string {
+                return escape(window.location.host);
+            },
+            queryParam: true
+        },
 
         sessionID: {
             type:     'string',

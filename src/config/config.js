@@ -199,6 +199,10 @@ export let config = {
 
         'dndbeyond.com': {
             disable_venmo: true
+        },
+
+        'app.zapbuy.it': {
+            disable_venmo: true
         }
     },
 
