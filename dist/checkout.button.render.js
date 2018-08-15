@@ -844,17 +844,8 @@
             ZalgoPromise.flushQueue = function() {
                 var promisesToFlush = Object(global.a)().flushPromises;
                 Object(global.a)().flushPromises = [];
-                var _iterator = promisesToFlush, _isArray = Array.isArray(_iterator), _i = 0;
-                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                    var _ref;
-                    if (_isArray) {
-                        if (_i >= _iterator.length) break;
-                        _ref = _iterator[_i++];
-                    } else {
-                        if ((_i = _iterator.next()).done) break;
-                        _ref = _i.value;
-                    }
-                    _ref.resolve();
+                for (var _i2 = 0, _length2 = null == promisesToFlush ? 0 : promisesToFlush.length; _i2 < _length2; _i2++) {
+                    promisesToFlush[_i2].resolve();
                 }
             };
             return ZalgoPromise;
@@ -1477,17 +1468,8 @@
                 if (!this.children) return "";
                 var result = "";
                 !function iterate(children) {
-                    var _iterator = children, _isArray = Array.isArray(_iterator), _i = 0;
-                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref = _iterator[_i++];
-                        } else {
-                            if ((_i = _iterator.next()).done) break;
-                            _ref = _i.value;
-                        }
-                        var child = _ref;
+                    for (var _i2 = 0, _length2 = null == children ? 0 : children.length; _i2 < _length2; _i2++) {
+                        var child = children[_i2];
                         null !== child && void 0 !== child && (Array.isArray(child) ? iterate(child) : result += child instanceof JsxHTMLNode ? child.toString() : htmlEncode(child));
                     }
                 }(this.children);
@@ -1949,8 +1931,8 @@
             };
         }
         var template_content = __webpack_require__("./src/button/template/content.json"), content_default = __webpack_require__.n(template_content), componentContent = "string" == typeof content_default.a ? JSON.parse(content_default.a) : content_default.a;
-        __webpack_exports__.componentTemplate = function(_ref14) {
-            var _ref15, props = _ref14.props;
+        __webpack_exports__.componentTemplate = function(_ref13) {
+            var _ref14, props = _ref13.props;
             if (props && props.style) {
                 var style = props.style;
                 "generic" === style.label && (style.label = "paypal");
@@ -1980,8 +1962,8 @@
                 multiple: multiple,
                 layout: layout
             }).map(function(button, i) {
-                return function(_ref10) {
-                    var _ref11, label = _ref10.label, color = _ref10.color, locale = _ref10.locale, branding = _ref10.branding, multiple = _ref10.multiple, layout = _ref10.layout, shape = _ref10.shape, source = _ref10.source, funding = _ref10.funding, i = _ref10.i, env = _ref10.env, cards = _ref10.cards, installmentperiod = _ref10.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = determineLabel({
+                return function(_ref9) {
+                    var _ref10, label = _ref9.label, color = _ref9.color, locale = _ref9.locale, branding = _ref9.branding, multiple = _ref9.multiple, layout = _ref9.layout, shape = _ref9.shape, source = _ref9.source, funding = _ref9.funding, i = _ref9.i, env = _ref9.env, cards = _ref9.cards, installmentperiod = _ref9.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = determineLabel({
                         label: label,
                         source: source,
                         multiple: multiple,
@@ -2001,8 +1983,8 @@
                         cards: cards,
                         dynamicContent: dynamicContent
                     });
-                    return jsxToHTML("div", _extends({}, ((_ref11 = {})[constants.c.FUNDING_SOURCE] = source, 
-                    _ref11[constants.c.BUTTON] = !0, _ref11), {
+                    return jsxToHTML("div", _extends({}, ((_ref10 = {})[constants.c.FUNDING_SOURCE] = source, 
+                    _ref10[constants.c.BUTTON] = !0, _ref10), {
                         class: CLASS.BUTTON + " " + CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
                             layout: layout,
                             shape: shape,
@@ -2036,8 +2018,8 @@
                     cards: cards,
                     installmentperiod: installmentperiod
                 });
-            }), taglineNode = function(_ref12) {
-                var label = _ref12.label, tagline = _ref12.tagline, color = _ref12.color, locale = _ref12.locale, multiple = _ref12.multiple, env = _ref12.env, cards = _ref12.cards;
+            }), taglineNode = function(_ref11) {
+                var label = _ref11.label, tagline = _ref11.tagline, color = _ref11.color, locale = _ref11.locale, multiple = _ref11.multiple, env = _ref11.env, cards = _ref11.cards;
                 if (!tagline) return;
                 var text = renderContent(multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag"), {
                     locale: locale,
@@ -2070,8 +2052,8 @@
             }({
                 cards: cards,
                 fundingicons: fundingicons
-            }), styleNode = function(_ref13) {
-                var height = _ref13.height, cardNumber = _ref13.cardNumber;
+            }), styleNode = function(_ref12) {
+                var height = _ref12.height, cardNumber = _ref12.cardNumber;
                 return jsxToHTML("style", {
                     innerHTML: componentStyle({
                         height: height,
@@ -2087,8 +2069,8 @@
                 })) + ")();"
             }));
             var script;
-            return jsxToHTML("div", _extends({}, (_ref15 = {}, _ref15[constants.c.VERSION] = "4.0.212", 
-            _ref15), {
+            return jsxToHTML("div", _extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.213", 
+            _ref14), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -2158,17 +2140,8 @@
                     }
                 },
                 content: function(name) {
-                    var contentString = void 0, _iterator = name.split("|"), _isArray = Array.isArray(_iterator), _i = 0;
-                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref9;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref9 = _iterator[_i++];
-                        } else {
-                            if ((_i = _iterator.next()).done) break;
-                            _ref9 = _i.value;
-                        }
-                        var key = _ref9;
+                    for (var contentString = void 0, _i2 = 0, _name$split2 = name.split("|"), _length2 = null == _name$split2 ? 0 : _name$split2.length; _i2 < _length2; _i2++) {
+                        var key = _name$split2[_i2];
                         if (_content[key]) {
                             contentString = _content[key];
                             break;
@@ -2222,7 +2195,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.212",
+            version: "4.0.213",
             cors: !0,
             env: constants.s.PRODUCTION,
             state: "checkoutjs",
@@ -2357,6 +2330,9 @@
                     disable_venmo: !0
                 },
                 "newyorkpass.com": {
+                    disable_venmo: !0
+                },
+                "dndbeyond.com": {
                     disable_venmo: !0
                 }
             },

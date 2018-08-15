@@ -12,7 +12,11 @@ import { request, memoize, isPayPalDomain, uniqueID } from '../lib';
 
 import { addPaymentOptions, validateExtraPaymentOptions, removeExtraPaymentOptions } from './hacks';
 
-let proxyRest : { [key : string] : <T>(...args : Array<mixed>) => ZalgoPromise<T> } = {};
+type ProxyRest = {
+    [string] : (...args : Array<mixed>) => ZalgoPromise<*>
+};
+
+let proxyRest : ProxyRest = {};
 
 let createAccessToken = memoize((env : string, client : { [key : string] : string }) : ZalgoPromise<string> => {
 

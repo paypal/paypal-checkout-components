@@ -336,7 +336,17 @@ export let Checkout : Component<CheckoutPropsType> = create({
         onAuth: {
             type:       'function',
             required:   false,
-            sameDomain: true
+            sameDomain: true,
+            childDecorate(original : Function) : ?Function {
+                if (original) {
+                    return function wrapOnAuth(data : string | Object) : Object {
+                        if (typeof data === 'string') {
+                            data = { accessToken: data };
+                        }
+                        return original(data);
+                    };
+                }
+            }
         },
 
         accessToken: {
