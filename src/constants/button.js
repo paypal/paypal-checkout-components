@@ -54,7 +54,8 @@ export const BUTTON_COLOR : BUTTON_COLOR_ENUM = {
     SILVER:      'silver',
     BLACK:       'black',
     DARKBLUE:    'darkblue',
-    TRANSPARENT: 'transparent'
+    TRANSPARENT: 'transparent',
+    WHITE:       'white'
 };
 
 type BUTTON_LOGO_COLOR_ENUM =
