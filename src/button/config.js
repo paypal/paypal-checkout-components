@@ -187,7 +187,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
         logoColors:  {
             [ BUTTON_COLOR.BLACK ]:    BUTTON_LOGO_COLOR.WHITE,
             [ BUTTON_COLOR.DARKBLUE ]: BUTTON_LOGO_COLOR.WHITE,
-            [ BUTTON_COLOR.WHITE ]: BUTTON_LOGO_COLOR.BLUE
+            [ BUTTON_COLOR.WHITE ]:    BUTTON_LOGO_COLOR.BLUE
         },
 
         secondaryColors: {
