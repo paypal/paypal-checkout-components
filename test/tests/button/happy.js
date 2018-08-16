@@ -870,29 +870,56 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render a button into a conteiner and click on the button then update on shipping change', () => {
+        it('should render a button into a container and click on the button then call on shipping change', (done) => {
 
-            let token = generateECToken();
+            window.paypal.Button.render({
 
-            return window.paypal.Button.render({
-
-                test: { action: 'shippingChange' },
+                test: { flow, action: 'shippingChange' },
 
                 payment() : string | ZalgoPromise<string> {
-                    return token;
+                    return generateECToken();
                 },
 
-                onShippingChange(data, actions) : ZalgoPromise<void> {
-                    return actions.payment.update({});
+                onAuthorize() : void {
+                    return done(new Error('Expected onAuthorize to not be called'));
+                },
+
+                onShippingChange() : void {
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(() => {
+            }, '#testContainer');
+        });
 
-                return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
-                });
+        it('should render a button into a container and click on the button then call reject on shipping change', (done) => {
 
-            });
+            window.paypal.Button.render({
+
+                test: { flow, action: 'shippingChange' },
+
+                payment() : string | ZalgoPromise<string> {
+                    return generateECToken();
+                },
+
+                onAuthorize() : void {
+                    return done(new Error('Expected onAuthorize to not be called'));
+                },
+
+                onShippingChange(data, actions) : void {
+                    return actions.reject(() => {
+                        return done();
+                    });
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
         });
 
         if (flow === 'popup') {

@@ -330,5 +330,69 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             }, '#testContainer');
         });
+        
+        it('should render button, render checkout, then return a rejected promise in onShippingChange', (done) => {
+
+            window.paypal.Button.render({
+
+                test: { flow, action: 'shippingChange' },
+
+                payment() : string | ZalgoPromise<string> {
+                    return generateECToken();
+                },
+
+                onError(err) : void {
+                    assert.ok(err instanceof Error);
+                    return done();
+                },
+
+                onShippingChange() : void {
+                    return new window.paypal.Promise((resolve, reject) => {
+                        return reject(new Error('error'));
+                    });
+                },
+
+                onAuthorize() : void {
+                    return done(new Error('Expected onAuthorize to not be called'));
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
+        });
+
+        it('should render button, render checkout, then return a rejected promise for undefined in onShippingChange', (done) => {
+
+            window.paypal.Button.render({
+
+                test: { flow, action: 'shippingChange' },
+
+                payment() : string | ZalgoPromise<string> {
+                    return generateECToken();
+                },
+
+                onError(err) : void {
+                    assert.ok(err instanceof Error);
+                    return done();
+                },
+
+                onShippingChange() : void {
+                    return new window.paypal.Promise((resolve, reject) => {
+                        return reject();
+                    });
+                },
+
+                onAuthorize() : void {
+                    return done(new Error('Expected onAuthorize to not be called'));
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
+        });
     });
 }

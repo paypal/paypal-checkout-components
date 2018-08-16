@@ -121,7 +121,7 @@ if (action === 'auth') {
 
     window.xprops.funding.remember([ remembered ]);
 
-} else if (action === 'checkout' || action === 'cancel' || action === 'fallback' || action === 'error' || action === 'popout') {
+} else if (action === 'checkout' || action === 'shippingChange' || action === 'cancel' || action === 'fallback' || action === 'error' || action === 'popout') {
 
     if (delay) {
         setTimeout(() => {

@@ -634,10 +634,10 @@ export let Button : Component<ButtonOptions> = create({
                     flushLogs();
                     let timeout = __TEST__ ? 500 : 10 * 1000;
 
-                    let reject = () => {
+                    let reject = (...args) => {
                         if (actions.reject && typeof actions.reject === 'function') {
                             return ZalgoPromise.try(() => {
-                                return actions.reject.call();
+                                return actions.reject.call(null, ...args);
                             });
                         }
                     };

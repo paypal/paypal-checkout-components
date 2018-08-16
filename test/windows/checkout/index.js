@@ -60,14 +60,15 @@ if (action === 'checkout') {
     window.xprops.payment().then(paymentToken => {
 
         window.xprops.onShippingChange({
-            body: {
-                paymentID:    paymentToken,
-                city:         'XXXXX',
-                state:        'YY',
-                postal_code:  '11111',
-                country_code: 'YY'
-            },
-            onReject: () => {}
+            paymentID:    paymentToken,
+            city:         'XXXXX',
+            state:        'YY',
+            postal_code:  '11111',
+            country_code: 'YY'
+        }, {
+            reject: (callback) => {
+                callback();
+            }
         });
     });
 } else if (action === 'cancel') {
