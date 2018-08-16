@@ -46,7 +46,7 @@ export const BUTTON_LABEL : BUTTON_LABEL_ENUM = {
 };
 
 type BUTTON_COLOR_ENUM =
-    Enum<'gold' | 'blue' | 'silver' | 'black' | 'darkblue' | 'transparent'>;
+    Enum<'gold' | 'blue' | 'silver' | 'black' | 'darkblue' | 'transparent' | 'white'>;
 
 export const BUTTON_COLOR : BUTTON_COLOR_ENUM = {
     GOLD:        'gold',
