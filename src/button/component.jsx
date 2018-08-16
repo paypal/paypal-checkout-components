@@ -2,16 +2,15 @@
 /* @jsx jsxDom */
 /* eslint max-lines: 0 */
 
-import { ENV, type LocaleType } from 'paypal-braintree-web-client/src';
+import { ENV, logger, FPTI_KEY, type LocaleType } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
-import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/client';
 import { isIEIntranet, isDevice, uniqueID, redirect, request } from 'belter/src';
 
 import { URLS, DOMAINS, STAGE, STAGE_DOMAIN } from '../config';
 import { CURRENT_ENV, CLIENT_ID, LOCALE, LOG_LEVEL, FUNDING_ELIGIBILITY } from '../globals';
-import { FPTI, PLATFORM, FUNDING } from '../constants';
+import { FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_CONTEXT_TYPE, PLATFORM, FUNDING } from '../constants';
 import { checkRecognizedBrowser, getSessionID, isEligible, getBrowser } from '../lib';
 import { createOrder } from '../api';
 
@@ -47,7 +46,7 @@ export let Button : Component<ButtonProps> = create({
         );
 
         template.addEventListener('click', () => {
-            warn('button_pre_template_click');
+            logger.warn('button_pre_template_click');
         });
 
         return (
@@ -67,7 +66,7 @@ export let Button : Component<ButtonProps> = create({
 
     validate() {
         if (!isEligible()) {
-            warn('button_render_ineligible');
+            logger.warn('button_render_ineligible');
         }
 
         if (isIEIntranet()) {
@@ -171,19 +170,19 @@ export let Button : Component<ButtonProps> = create({
                     return promisifiedToken.then(token => {
 
                         if (!token) {
-                            error(`no_token_passed_to_payment`);
+                            logger.error(`no_token_passed_to_payment`);
                             throw new Error(`No value passed to payment`);
                         }
 
-                        track({
-                            [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
-                            [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.RECIEVE_PAYMENT,
-                            [ FPTI.KEY.CONTEXT_TYPE ]:       FPTI.CONTEXT_TYPE.EC_TOKEN,
-                            [ FPTI.KEY.CONTEXT_ID ]:         token,
-                            [ FPTI.KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
+                        logger.track({
+                            [ FPTI_KEY.STATE ]:              FPTI_STATE.CHECKOUT,
+                            [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.RECIEVE_PAYMENT,
+                            [ FPTI_KEY.CONTEXT_TYPE ]:       FPTI_CONTEXT_TYPE.EC_TOKEN,
+                            [ FPTI_KEY.CONTEXT_ID ]:         token,
+                            [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
                         });
 
-                        flushLogs();
+                        logger.flush();
 
                         return token;
                     });
@@ -221,16 +220,16 @@ export let Button : Component<ButtonProps> = create({
                 return function decorateOnRender() : mixed {
 
                     let { browser = 'unrecognized', version = 'unrecognized' } = getBrowser();
-                    info(`button_render_browser_${ browser }_${ version }`);
+                    logger.info(`button_render_browser_${ browser }_${ version }`);
 
-                    track({
-                        [ FPTI.KEY.STATE ]:              FPTI.STATE.LOAD,
-                        [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_RENDER,
-                        [ FPTI.KEY.BUTTON_TYPE ]:        FPTI.BUTTON_TYPE.IFRAME,
-                        [ FPTI.KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
+                    logger.track({
+                        [ FPTI_KEY.STATE ]:              FPTI_STATE.LOAD,
+                        [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.BUTTON_RENDER,
+                        [ FPTI_KEY.BUTTON_TYPE ]:        FPTI_BUTTON_TYPE.IFRAME,
+                        [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
                     });
 
-                    flushLogs();
+                    logger.flush();
 
                     if (original) {
                         return original.apply(this, arguments);
@@ -245,21 +244,21 @@ export let Button : Component<ButtonProps> = create({
             decorate(original, props) : Function {
                 return function decorateOnAuthorize(data, actions) : void | ZalgoPromise<void> {
 
-                    info('button_authorize');
+                    logger.info('button_authorize');
 
-                    track({
-                        [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
-                        [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.CHECKOUT_AUTHORIZE,
-                        [ FPTI.KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
+                    logger.track({
+                        [ FPTI_KEY.STATE ]:              FPTI_STATE.CHECKOUT,
+                        [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.CHECKOUT_AUTHORIZE,
+                        [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
                     });
 
                     if (!isEligible()) {
-                        info('button_authorize_ineligible');
+                        logger.info('button_authorize_ineligible');
                     }
 
                     checkRecognizedBrowser('authorize');
 
-                    flushLogs();
+                    logger.flush();
 
                     let restart = actions.restart;
                     actions.restart = () => {
@@ -295,15 +294,15 @@ export let Button : Component<ButtonProps> = create({
             decorate(original, props) : Function {
                 return function decorateOnCancel(data, actions) : void | ZalgoPromise<void> {
 
-                    info('button_cancel');
+                    logger.info('button_cancel');
 
-                    track({
-                        [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
-                        [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.CHECKOUT_CANCEL,
-                        [ FPTI.KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
+                    logger.track({
+                        [ FPTI_KEY.STATE ]:              FPTI_STATE.CHECKOUT,
+                        [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.CHECKOUT_CANCEL,
+                        [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
                     });
 
-                    flushLogs();
+                    logger.flush();
 
                     actions.redirect = (url, win) => {
                         return ZalgoPromise.all([
@@ -325,17 +324,17 @@ export let Button : Component<ButtonProps> = create({
             decorate(original, props) : Function {
                 return function decorateOnClick(data : ?{ fundingSource : string, card? : string }) : void {
 
-                    info('button_click');
+                    logger.info('button_click');
 
-                    track({
-                        [ FPTI.KEY.STATE ]:              FPTI.STATE.BUTTON,
-                        [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_CLICK,
-                        [ FPTI.KEY.BUTTON_TYPE ]:        FPTI.BUTTON_TYPE.IFRAME,
-                        [ FPTI.KEY.BUTTON_SESSION_UID ]: props.buttonSessionID,
-                        [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
+                    logger.track({
+                        [ FPTI_KEY.STATE ]:              FPTI_STATE.BUTTON,
+                        [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.BUTTON_CLICK,
+                        [ FPTI_KEY.BUTTON_TYPE ]:        FPTI_BUTTON_TYPE.IFRAME,
+                        [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID,
+                        [ FPTI_KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                     });
 
-                    flushLogs();
+                    logger.flush();
 
                     if (original) {
                         return original.call(this, data);
@@ -368,11 +367,11 @@ export let Button : Component<ButtonProps> = create({
             decorate(style = {}, props) : Object {
                 let { label, layout, color, shape, tagline, height, period } = normalizeButtonStyle(style, props);
 
-                info(`button_render_color_${ color }`);
-                info(`button_render_shape_${ shape }`);
-                info(`button_render_label_${ label }`);
-                info(`button_render_layout_${ label }`);
-                info(`button_render_tagline_${ tagline.toString() }`);
+                logger.info(`button_render_color_${ color }`);
+                logger.info(`button_render_shape_${ shape }`);
+                logger.info(`button_render_label_${ label }`);
+                logger.info(`button_render_layout_${ label }`);
+                logger.info(`button_render_tagline_${ tagline.toString() }`);
 
                 return { label, layout, color, shape, tagline, height, period };
             },

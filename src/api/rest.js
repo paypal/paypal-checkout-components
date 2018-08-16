@@ -1,14 +1,13 @@
 /* @flow */
 
+import { logger, FPTI_KEY } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { on, send } from 'post-robot/src';
-import { btoa } from 'Base64';
-import { info, track } from 'beaver-logger/client';
 import { getAncestor, isSameDomain, isFileProtocol } from 'cross-domain-utils/src';
-import { memoize, request } from 'belter/src';
+import { memoize, request, base64encode } from 'belter/src';
 
 import { URLS, DOMAINS } from '../config';
-import { FPTI } from '../constants';
+import { FPTI_STATE, FPTI_CONTEXT_TYPE, FPTI_TRANSITION } from '../constants';
 import { isPayPalDomain } from '../lib';
 
 type ProxyRest = {
@@ -19,13 +18,13 @@ let proxyRest : ProxyRest = {};
 
 export let createAccessToken = memoize((clientID : string) : ZalgoPromise<string> => {
 
-    info(`rest_api_create_access_token`);
+    logger.info(`rest_api_create_access_token`);
 
     if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) {
         return proxyRest.createAccessToken(clientID);
     }
 
-    let basicAuth : string = btoa(`${ clientID }:`);
+    let basicAuth : string = base64encode(`${ clientID }:`);
 
     return request({
 
@@ -54,12 +53,12 @@ export let createAccessToken = memoize((clientID : string) : ZalgoPromise<string
 }, { time: 10 * 60 * 1000 });
 
 function logOrderResponse(orderID) {
-    track({
-        [ FPTI.KEY.STATE ]:        FPTI.STATE.BUTTON,
-        [ FPTI.KEY.TRANSITION ]:   FPTI.TRANSITION.CREATE_PAYMENT,
-        [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.EC_TOKEN,
-        [ FPTI.KEY.TOKEN ]:        orderID,
-        [ FPTI.KEY.CONTEXT_ID ]:   orderID
+    logger.track({
+        [ FPTI_KEY.STATE ]:        FPTI_STATE.BUTTON,
+        [ FPTI_KEY.TRANSITION ]:   FPTI_TRANSITION.CREATE_PAYMENT,
+        [ FPTI_KEY.CONTEXT_TYPE ]: FPTI_CONTEXT_TYPE.EC_TOKEN,
+        [ FPTI_KEY.TOKEN ]:        orderID,
+        [ FPTI_KEY.CONTEXT_ID ]:   orderID
     });
 }
 
@@ -71,7 +70,7 @@ function getDefaultReturnUrl() : string {
 
 export function createOrder(clientID : string, orderDetails : Object) : ZalgoPromise<string> {
 
-    info(`rest_api_create_order_token`);
+    logger.info(`rest_api_create_order_token`);
 
     if (!clientID) {
         throw new Error(`Client ID not passed`);

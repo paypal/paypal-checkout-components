@@ -1,10 +1,10 @@
 
 /* @flow */
 
-import { track, flush as flushLogs } from 'beaver-logger/client';
+import { logger, FPTI_KEY } from 'paypal-braintree-web-client/src';
 import { getPageRenderTime } from 'belter/src';
 
-import { ATTRIBUTE, FUNDING, FPTI, BUTTON_LAYOUT } from '../constants';
+import { ATTRIBUTE, FUNDING, FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, BUTTON_LAYOUT } from '../constants';
 
 import typeof { Button } from './component';
 
@@ -20,16 +20,16 @@ export function setupButtonChild(ButtonComponent : Button) {
 
         let xprops = ButtonComponent.xprops;
 
-        track({
-            [FPTI.KEY.STATE]:          FPTI.STATE.BUTTON,
-            [FPTI.KEY.TRANSITION]:     FPTI.TRANSITION.BUTTON_LOAD,
-            [FPTI.KEY.BUTTON_TYPE]:    FPTI.BUTTON_TYPE.IFRAME,
-            [FPTI.KEY.FUNDING_LIST]:   fundingSources.join(':'),
-            [FPTI.KEY.FUNDING_COUNT]:  fundingSources.length,
-            [FPTI.KEY.PAGE_LOAD_TIME]: pageRenderTime,
-            [FPTI.KEY.BUTTON_LAYOUT]:  (xprops && xprops.style && xprops.style.layout) || BUTTON_LAYOUT.HORIZONTAL
+        logger.track({
+            [FPTI_KEY.STATE]:          FPTI_STATE.BUTTON,
+            [FPTI_KEY.TRANSITION]:     FPTI_TRANSITION.BUTTON_LOAD,
+            [FPTI_KEY.BUTTON_TYPE]:    FPTI_BUTTON_TYPE.IFRAME,
+            [FPTI_KEY.FUNDING_LIST]:   fundingSources.join(':'),
+            [FPTI_KEY.FUNDING_COUNT]:  fundingSources.length.toString(),
+            [FPTI_KEY.PAGE_LOAD_TIME]: pageRenderTime ? pageRenderTime.toString() : '',
+            [FPTI_KEY.BUTTON_LAYOUT]:  (xprops && xprops.style && xprops.style.layout) || BUTTON_LAYOUT.HORIZONTAL
         });
 
-        flushLogs();
+        logger.flush();
     });
 }

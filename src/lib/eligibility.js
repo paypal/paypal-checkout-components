@@ -1,6 +1,6 @@
 /* @flow */
 
-import { info, flush as flushLogs } from 'beaver-logger/client';
+import { logger } from 'paypal-braintree-web-client/src';
 import { isIEIntranet, getUserAgent, once } from 'belter/src';
 
 import { SUPPORTED_BROWSERS } from '../config';
@@ -79,7 +79,7 @@ export let checkRecognizedBrowser = once((state : string) => {
 
     if (!browser) {
         let { name, version, mobile, android, ios } = getBowser();
-        info(`unrecognized_browser_${ state }`, { name, version, mobile, android, ios });
-        flushLogs();
+        logger.info(`unrecognized_browser_${ state }`, { name, version, mobile, android, ios });
+        logger.flush();
     }
 });

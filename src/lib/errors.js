@@ -1,6 +1,6 @@
 /* @flow */
 
-import { warn } from 'beaver-logger/client';
+import { logger } from 'paypal-braintree-web-client/src';
 import { isIE, isIEIntranet, isIECompHeader } from 'belter/src';
 
 function logWarn(err) : void {
@@ -25,21 +25,21 @@ export function checkForCommonErrors() {
             logWarn(`JSON.stringify is doing incorrect serialization of arrays. This is likely to cause issues.`);
         }
 
-        warn(`json_stringify_array_broken`);
+        logger.warn(`json_stringify_array_broken`);
     }
 
     if (JSON.stringify({}) !== '{}') {
         logWarn(`JSON.stringify is doing incorrect serialization of objects. This is likely to cause issues.`);
 
-        warn(`json_stringify_object_broken`);
+        logger.warn(`json_stringify_object_broken`);
     }
 
     if (isIEIntranet()) {
-        warn(`ie_intranet_mode`);
+        logger.warn(`ie_intranet_mode`);
     }
 
     if (isIE() && !isIECompHeader()) {
-        warn(`ie_meta_compatibility_header_missing`, {
+        logger.warn(`ie_meta_compatibility_header_missing`, {
             message: `Drop tag: <meta http-equiv="X-UA-Compatible" content="IE=edge">` });
     }
 
@@ -49,15 +49,15 @@ export function checkForCommonErrors() {
     }
 
     if (foo.bind({ a: 1 }).length !== 3) {
-        warn(`function_bind_arrity_overwritten`);
+        logger.warn(`function_bind_arrity_overwritten`);
     }
 
     if (window.opener && window.parent !== window) {
-        warn(`window_has_opener_and_parent`);
+        logger.warn(`window_has_opener_and_parent`);
     }
 
     if (window.name && window.name.indexOf('__prerender') === 0) {
-        warn(`prerender_running_checkoutjs`);
+        logger.warn(`prerender_running_checkoutjs`);
     }
 
     let context = {};
@@ -67,15 +67,15 @@ export function checkForCommonErrors() {
     }
 
     if (returnContext.bind(context)() !== context) {
-        warn(`function_bind_broken`);
+        logger.warn(`function_bind_broken`);
     }
 
     if (window.Window && window.constructor && window.Window !== window.constructor) {
-        warn(`window_constructor_does_not_match_window`);
+        logger.warn(`window_constructor_does_not_match_window`);
     }
 
     // $FlowFixMe
     if (Object.assign && JSON.stringify({ a: 1, b: 2, c: 3 }) !== JSON.stringify(Object.assign({ a: 1 }, { b: 2 }, { c: 3 }))) {
-        warn(`object_assign_broken`);
+        logger.warn(`object_assign_broken`);
     }
 }

@@ -1,8 +1,9 @@
 /* @flow */
 
-import { info, track, immediateFlush } from 'beaver-logger/client';
 
-import { FPTI } from './constants';
+import { logger, FPTI_KEY } from 'paypal-braintree-web-client/src';
+
+import { FPTI_STATE, FPTI_CONTEXT_TYPE } from './constants';
 import { getSessionState } from './lib';
 
 export function trackExperiment({ experiment, treatment, state, token } : { experiment : string, treatment : string, state : string, token : ?string }) {
@@ -27,29 +28,29 @@ export function trackExperiment({ experiment, treatment, state, token } : { expe
         let duplicate    = loggedEvents.indexOf(event) !== -1;
 
         if (duplicate) {
-            info(`duplicate_${ event }`);
+            logger.info(`duplicate_${ event }`);
 
         } else {
-            info(event);
+            logger.info(event);
             loggedEvents.push(event);
 
             let edge = window.navigator && window.navigator.userAgent && window.navigator.userAgent.match(/Edge\/[0-9]{2}/);
 
             if (edge) {
-                event = info(`${ edge[0].toLowerCase().replace('/', '_') }_${ event }`);
+                event = logger.info(`${ edge[0].toLowerCase().replace('/', '_') }_${ event }`);
             }
 
-            track({
-                [ FPTI.KEY.STATE ]:           FPTI.STATE.CHECKOUT,
-                [ FPTI.KEY.TRANSITION ]:      state,
-                [ FPTI.KEY.EXPERIMENT_NAME ]: experiment,
-                [ FPTI.KEY.TREATMENT_NAME ]:  treatment,
-                [ FPTI.KEY.TOKEN ]:           token,
-                [ FPTI.KEY.CONTEXT_ID ]:      token,
-                [ FPTI.KEY.CONTEXT_TYPE ]:    token ? FPTI.CONTEXT_TYPE.EC_TOKEN : FPTI.CONTEXT_TYPE.BUTTON_SESSION_ID
+            logger.track({
+                [ FPTI_KEY.STATE ]:           FPTI_STATE.CHECKOUT,
+                [ FPTI_KEY.TRANSITION ]:      state,
+                [ FPTI_KEY.EXPERIMENT_NAME ]: experiment,
+                [ FPTI_KEY.TREATMENT_NAME ]:  treatment,
+                [ FPTI_KEY.TOKEN ]:           token,
+                [ FPTI_KEY.CONTEXT_ID ]:      token,
+                [ FPTI_KEY.CONTEXT_TYPE ]:    token ? FPTI_CONTEXT_TYPE.EC_TOKEN : FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID
             });
 
-            immediateFlush();
+            logger.immediateFlush();
         }
     });
 }

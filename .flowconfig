@@ -7,6 +7,7 @@
 [include]
 [libs]
 flow-typed
+node_modules/grumbler-scripts/declarations.js
 node_modules/zoid/src/declarations.js
 node_modules/post-robot/src/declarations.js
 node_modules/paypal-braintree-web-client/src/declarations.js

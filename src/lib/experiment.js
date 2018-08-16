@@ -1,9 +1,10 @@
 /* @flow */
 
-import { info, track, flush as flushLogs } from 'beaver-logger/client';
+
+import { logger, FPTI_KEY } from 'paypal-braintree-web-client/src';
 import { experiment, type Experiment } from 'belter/src';
 
-import { FPTI } from '../constants';
+import { FPTI_STATE, FPTI_TRANSITION } from '../constants';
 
 export function createExperiment(name : string, sample : number) : Experiment {
     return experiment({
@@ -11,18 +12,18 @@ export function createExperiment(name : string, sample : number) : Experiment {
         sample,
 
         logTreatment({ treatment }) {
-            track({
-                [ FPTI.KEY.STATE ]:           FPTI.STATE.PXP,
-                [ FPTI.KEY.TRANSITION ]:      FPTI.TRANSITION.PXP,
-                [ FPTI.KEY.EXPERIMENT_NAME ]: name,
-                [ FPTI.KEY.TREATMENT_NAME ]:  treatment
+            logger.track({
+                [ FPTI_KEY.STATE ]:           FPTI_STATE.PXP,
+                [ FPTI_KEY.TRANSITION ]:      FPTI_TRANSITION.PXP,
+                [ FPTI_KEY.EXPERIMENT_NAME ]: name,
+                [ FPTI_KEY.TREATMENT_NAME ]:  treatment
             });
-            flushLogs();
+            logger.flush();
         },
 
         logCheckpoint({ treatment, checkpoint, payload }) {
-            info(`${ name }_${ treatment }_${ checkpoint }`, payload);
-            flushLogs();
+            logger.info(`${ name }_${ treatment }_${ checkpoint }`, payload);
+            logger.flush();
         }
     });
 }
