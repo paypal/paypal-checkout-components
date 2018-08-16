@@ -22,7 +22,7 @@ const P24_LOGO_COLORS = {
 export function p24Logo({ logoColor } : { logoColor : $Values<typeof BUTTON_LOGO_COLOR> }) : JsxHTMLNode {
 
     if (!P24_LOGO_COLORS[logoColor]) {
-        throw new Error(`No ${ logoColor } zimpler logo available`);
+        throw new Error(`No ${ logoColor } p24 logo available`);
     }
 
     let { primary, secondary } = P24_LOGO_COLORS[logoColor];

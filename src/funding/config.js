@@ -186,7 +186,8 @@ export const FUNDING_CONFIG = {
     },
     [ FUNDING.WECHATPAY ]: {
         allowedCountries: [
-            COUNTRY.CN
+            COUNTRY.CN,
+            COUNTRY.C2
         ],
 
         allowHorizontal: false,
