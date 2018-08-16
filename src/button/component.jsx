@@ -12,7 +12,7 @@ import { config } from '../config';
 import { SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
     BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY } from '../constants';
 import { redirect as redir, checkRecognizedBrowser,
-    getBrowserLocale, getSessionID, request, getScriptVersion,
+    getBrowserLocale, getPotentiallyBetterBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, isEligible,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
@@ -77,6 +77,8 @@ function isCreditDualEligible(props) : boolean {
 }
 
 let creditThrottle;
+
+let localeThrottle = getThrottle('locale_resolution_rule', 50);
 
 type ButtonOptions = {
     style : {|
@@ -510,6 +512,8 @@ export let Button : Component<ButtonOptions> = create({
 
                     info('button_authorize');
 
+                    localeThrottle.logComplete();
+
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
                         [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.CHECKOUT_AUTHORIZE,
@@ -661,6 +665,8 @@ export let Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                     });
 
+                    localeThrottle.log('click');
+
                     if (creditThrottle) {
                         creditThrottle.log('click', {
                             [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
@@ -680,7 +686,13 @@ export let Button : Component<ButtonOptions> = create({
             queryParam: 'locale.x',
 
             def() : string {
-                let { lang, country } = getBrowserLocale();
+
+                let { lang, country } = localeThrottle.isEnabled()
+                    ? getPotentiallyBetterBrowserLocale()
+                    : getBrowserLocale();
+
+                localeThrottle.logStart();
+
                 return `${ lang }_${ country }`;
             },
 
