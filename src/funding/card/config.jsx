@@ -31,13 +31,13 @@ export const CARD_CONFIG = {
         [ BUTTON_LABEL.CARD ]: {
             ...DEFAULT_LABEL_CONFIG,
 
-            Label({ fundingEligibility }) : Array<JsxHTMLNode> {
+            Label({ fundingEligibility, locale }) : Array<JsxHTMLNode> {
                 return CARD_PRIORITY.filter(name => {
                     return fundingEligibility[FUNDING.CARD].vendors[name].eligible;
                 }).map(name => {
                     let { Logo } = CARD_CONFIG.vendors[name];
                     return <Logo />;
-                }).slice(0, CARD_CONFIG.maxCards);
+                }).slice(0, CARD_CONFIG.maxCards[locale.country] || 4);
             },
 
             defaultColor: BUTTON_COLOR.SILVER,
