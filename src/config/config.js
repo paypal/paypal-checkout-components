@@ -149,22 +149,6 @@ export let config = {
             disable_venmo: true
         },
 
-        'searsoutlet.com': {
-            disable_venmo: true
-        },
-
-        'searshometownstores.com': {
-            disable_venmo: true
-        },
-
-        'searshardwarestores.com': {
-            disable_venmo: true
-        },
-
-        'searshomeapplianceshowroom.com': {
-            disable_venmo: true
-        },
-
         'barkshop.com': {
             disable_venmo: true
         },
