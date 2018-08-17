@@ -22,7 +22,7 @@ export const BUTTON_STYLE_OPTIONS : BUTTON_STYLE_OPTIONS_ENUM = {
 
 type BUTTON_LABEL_ENUM =
     Enum<'paypal' | 'checkout' | 'pay' | 'credit' |
-    'card' | 'buynow' | 'installment' | 'venmo' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'sofort' | 'eps' | 'mybank' | 'p24' | 'zimpler' | 'wechatpay'>;
+    'card' | 'buynow' | 'installment' | 'venmo' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'sofort' | 'eps' | 'mybank' | 'p24' | 'zimpler'>;
 
 export const BUTTON_LABEL : BUTTON_LABEL_ENUM = {
     PAYPAL:      'paypal',
@@ -41,8 +41,7 @@ export const BUTTON_LABEL : BUTTON_LABEL_ENUM = {
     EPS:         'eps',
     MYBANK:      'mybank',
     P24:         'p24',
-    ZIMPLER:     'zimpler',
-    WECHATPAY:   'wechatpay'
+    ZIMPLER:     'zimpler'
 };
 
 type BUTTON_COLOR_ENUM =
@@ -120,7 +119,7 @@ export const BUTTON_NUMBER : BUTTON_NUMBER_ENUM = {
 };
 
 type BUTTON_LOGO_ENUM =
-    Enum<'pp' | 'paypal' | 'venmo' | 'credit' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'sofort' | 'eps' | 'mybank' | 'p24' | 'zimpler' | 'wechatpay'>;
+    Enum<'pp' | 'paypal' | 'venmo' | 'credit' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'sofort' | 'eps' | 'mybank' | 'p24' | 'zimpler'>;
 
 export const BUTTON_LOGO : BUTTON_LOGO_ENUM = {
     PP:         'pp',
@@ -135,6 +134,5 @@ export const BUTTON_LOGO : BUTTON_LOGO_ENUM = {
     EPS:        'eps',
     MYBANK:     'mybank',
     P24:        'p24',
-    ZIMPLER:    'zimpler',
-    WECHATPAY:  'wechatpay'
+    ZIMPLER:    'zimpler'
 };

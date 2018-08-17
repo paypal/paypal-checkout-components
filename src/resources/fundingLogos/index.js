@@ -5,7 +5,6 @@ import { BUTTON_LOGO, BUTTON_LOGO_COLOR } from '../../constants';
 import { zimplerLogo }      from './zimpler';
 import { p24Logo }      from './p24';
 import { sofortLogo }       from './sofort';
-import { wechatpayLogo }      from './wechatpay';
 import { idealLogo }          from './ideal';
 import { giropayLogo }      from './giropay';
 import { epsLogo }          from './eps';
@@ -57,7 +56,5 @@ export let fundingLogos = {
 
     [ BUTTON_LOGO.P24 ]: p24Logo,
 
-    [ BUTTON_LOGO.ZIMPLER ]: zimplerLogo,
-
-    [ BUTTON_LOGO.WECHATPAY ]: wechatpayLogo
+    [ BUTTON_LOGO.ZIMPLER ]: zimplerLogo
 };

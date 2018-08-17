@@ -730,13 +730,6 @@ let buttonConfigs = [
 
             {
                 layout: `vertical`,
-                label:  `wechatpay`,
-                commit: true,
-                valid:  false
-            },
-
-            {
-                layout: `vertical`,
                 label:  `card`,
                 valid:  false
             }
