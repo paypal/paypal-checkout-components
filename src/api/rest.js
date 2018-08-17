@@ -37,17 +37,17 @@ export let createAccessToken = memoize((clientID : string) : ZalgoPromise<string
             grant_type: `client_credentials`
         }
 
-    }).then(res => {
+    }).then(({ body }) => {
 
-        if (res && res.error === 'invalid_client') {
-            throw new Error(`Auth Api invalid client id: ${ clientID }:\n\n${ JSON.stringify(res, null, 4) }`);
+        if (body && body.error === 'invalid_client') {
+            throw new Error(`Auth Api invalid client id: ${ clientID }:\n\n${ JSON.stringify(body, null, 4) }`);
         }
 
-        if (!res || !res.access_token) {
-            throw new Error(`Auth Api response error:\n\n${ JSON.stringify(res, null, 4) }`);
+        if (!body || !body.access_token) {
+            throw new Error(`Auth Api response error:\n\n${ JSON.stringify(body, null, 4) }`);
         }
 
-        return res.access_token;
+        return body.access_token;
     });
 
 }, { time: 10 * 60 * 1000 });
@@ -114,15 +114,15 @@ export function createOrder(clientID : string, orderDetails : Object) : ZalgoPro
             json:   order
         });
 
-    }).then((res) : string => {
+    }).then(({ body }) : string => {
 
-        logOrderResponse(res.id);
+        logOrderResponse(body.id);
 
-        if (res && res.id) {
-            return res.id;
+        if (body && body.id) {
+            return body.id;
         }
 
-        throw new Error(`Payment Api response error:\n\n${ JSON.stringify(res, null, 4) }`);
+        throw new Error(`Payment Api response error:\n\n${ JSON.stringify(body, null, 4) }`);
     });
 }
 
