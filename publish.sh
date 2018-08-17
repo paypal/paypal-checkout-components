@@ -18,9 +18,11 @@ fi;
 rm -rf node_modules/zoid node_modules/post-robot node_modules/zalgo-promise node_modules/beaver-logger node_modules/cross-domain-safe-weakmap node_modules/cross-domain-utils
 npm install zoid post-robot zalgo-promise beaver-logger cross-domain-safe-weakmap cross-domain-utils
 
-npm run test;
+npm run build;
 
+git add dist/;
 git add ./test/screenshot/images --all;
+git commit -m "Dist" || echo "Nothing to distribute";
 
 npm version ${1-patch};
 

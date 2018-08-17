@@ -3142,7 +3142,7 @@ const CONTAINER_CONTENT = {
     }
 };
 
-export let containerContent = __PAYPAL_CHECKOUT__.__TREE_SHAKE__
+export let containerContent = __TREE_SHAKE__
 
     ? {
         [__LOCALE__.__COUNTRY__]: {

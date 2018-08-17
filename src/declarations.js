@@ -14,7 +14,6 @@ declare var __PAYPAL_CHECKOUT__ : {
     __MAJOR_VERSION__ : string,
     __MINOR_VERSION__ : string,
     __DEFAULT_LOG_LEVEL__ : string,
-    __TREE_SHAKE__ : boolean,
     __REMEMBERED_FUNDING__ : Array<$Values<typeof FUNDING>>
 };
 

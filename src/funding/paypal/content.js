@@ -3844,7 +3844,7 @@ const COMPONENT_CONTENT : ContentMap = {
     }
 };
 
-export let componentContent = __PAYPAL_CHECKOUT__.__TREE_SHAKE__
+export let componentContent = __TREE_SHAKE__
 
     ? {
         [__LOCALE__.__COUNTRY__]: {

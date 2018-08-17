@@ -20,7 +20,6 @@ export default function configKarma(karma : Object) {
                 },
                 __PAYPAL_CHECKOUT__: {
                     ...globals.__PAYPAL_CHECKOUT__,
-                    __TREE_SHAKE__:         false,
                     __REMEMBERED_FUNDING__: () => 'window.__TEST_REMEMBERED_FUNDING__'
                 },
                 __CLIENT_ID__:   'abcxyz123',

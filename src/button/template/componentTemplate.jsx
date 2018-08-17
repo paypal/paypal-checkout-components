@@ -160,12 +160,12 @@ function Style({ style, cardNumber } :
     );
 }
 
-function getCardNumber() : number {
+function getCardNumber(locale : LocaleType) : number {
     let cardConfig = FUNDING_CONFIG[FUNDING.CARD];
 
     if (cardConfig) {
         let numCards = Object.keys(cardConfig.vendors).length;
-        let maxCards = cardConfig.maxCards;
+        let maxCards = cardConfig.maxCards[locale.country] || 4;
         return Math.min(numCards, maxCards);
     } else {
         return 4;
@@ -183,7 +183,7 @@ export function Buttons(props : ButtonPropsInputs) : JsxHTMLNode {
 
             <Style
                 style={ style }
-                cardNumber={ getCardNumber() }
+                cardNumber={ getCardNumber(locale) }
             />
 
             {

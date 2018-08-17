@@ -29,7 +29,6 @@ module.exports = Object.assign({}, zoidGlobals, {
         __DEFAULT_LOG_LEVEL__:  'warn',
         __MAJOR_VERSION__:      getNextMajorVersion(),
         __MINOR_VERSION__:      getNextMinorVersion(),
-        __TREE_SHAKE__:         true,
         __REMEMBERED_FUNDING__: []
     }
 });

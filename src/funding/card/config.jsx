@@ -62,29 +62,29 @@ export const CARD_CONFIG = {
     },
 
     vendors: objFilter({
-        [ CARD.VISA ]: __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.visa.eligible
+        [ CARD.VISA ]: (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.visa.eligible)
             ? require('./visa').VISA_CONFIG : null,
 
-        [ CARD.AMEX ]: __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.amex.eligible
+        [ CARD.AMEX ]: (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.amex.eligible)
             ? require('./amex').AMEX_CONFIG : null,
 
-        [ CARD.MASTERCARD ]: __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.mastercard.eligible
+        [ CARD.MASTERCARD ]: (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.mastercard.eligible)
             ? require('./mastercard').MASTERCARD_CONFIG : null,
 
-        [ CARD.DISCOVER ]: __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.discover.eligible
+        [ CARD.DISCOVER ]: (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.discover.eligible)
             ? require('./discover').DISCOVER_CONFIG : null,
 
-        [ CARD.JCB ]: __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.jcb.eligible
+        [ CARD.JCB ]: (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.jcb.eligible)
             ? require('./jcb').JCB_CONFIG : null,
 
-        [ CARD.ELO ]: __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.elo.eligible
+        [ CARD.ELO ]: (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.elo.eligible)
             ? require('./elo').ELO_CONFIG : null,
 
-        [ CARD.HIPER ]: __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.hiper.eligible
+        [ CARD.HIPER ]: (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.hiper.eligible)
             ? require('./hiper').HIPER_CONFIG : null
     }),
 
     maxCards: {
         [ COUNTRY.BR ]: 5
-    }[__LOCALE__.__COUNTRY__] || 4
+    }
 };

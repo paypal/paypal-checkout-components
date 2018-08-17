@@ -91,11 +91,6 @@ export const testGlobals = {
             }
         }
     },
-
-    __PAYPAL_CHECKOUT__: {
-        ...globals.__PAYPAL_CHECKOUT__,
-        __TREE_SHAKE__: false
-    },
     
     __CLIENT_ID__:   'xyz',
     __MERCHANT_ID__: 'abc',
