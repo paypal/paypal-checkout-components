@@ -3,12 +3,11 @@
 import { destroyAll as _destroyAll } from 'xcomponent/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import * as _postRobot from 'post-robot/src'; // eslint-disable-line import/no-namespace
-import { attach } from 'paypal-braintree-web-client/src';
 
 import { isPayPalDomain } from './lib';
 import { Checkout as _Checkout } from './checkout';
-import { Button as _Button } from './button';
 import { Card as _Card } from './card';
+import { BillingPage as _BillingPage } from './billing';
 
 import './hacks'; // eslint-disable-line import/no-unassigned-import
 
@@ -38,24 +37,11 @@ if (__PAYPAL_CHECKOUT__.__LEGACY_SUPPORT__) {
     apps = legacy.apps;
 }
 
-attach('buttons', ({ clientOptions }) => {
-    return {
-        Button: {
-            render: (options, element) => {
-                return _Button.render({
-                    ...options,
-                    env:    clientOptions.env,
-                    client: clientOptions.auth
-                }, element);
-            }
-        }
-    };
-});
-
 // -------------------------------------------------------------
 
 export let Checkout;
 export let Card;
+export let BillingPage;
 export let PayPalCheckout;
 export let destroyAll;
 export let enableCheckoutIframe;
@@ -67,6 +53,7 @@ function _enableCheckoutIframe() {
 if (isPayPalDomain() || __TEST__) {
     Checkout = _Checkout;
     Card = _Card;
+    BillingPage = _BillingPage;
     PayPalCheckout = _Checkout;
     enableCheckoutIframe = _enableCheckoutIframe;
     destroyAll = _destroyAll;

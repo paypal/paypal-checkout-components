@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint no-template-curly-in-string: off, max-lines: off */
 
-import { FUNDING, DEFAULT, BUTTON_LABEL, BUTTON_COLOR, BUTTON_LOGO_COLOR, BUTTON_SIZE,
+import { FUNDING, DEFAULT, COUNTRY, BUTTON_LABEL, BUTTON_COLOR, BUTTON_LOGO_COLOR, BUTTON_SIZE,
     BUTTON_TAGLINE_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LOGO } from '../constants';
 
 type ButtonConfig = {
@@ -18,7 +18,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
             BUTTON_COLOR.GOLD,
             BUTTON_COLOR.BLUE,
             BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.WHITE
         ],
 
         sizes:  [
@@ -43,7 +44,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
             [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLUE,
             [ BUTTON_COLOR.BLUE ]:   BUTTON_LOGO_COLOR.WHITE,
             [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE,
-            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE,
+            [ BUTTON_COLOR.WHITE ]:  BUTTON_LOGO_COLOR.BLUE
         },
 
         tagLineColors:  {
@@ -51,7 +53,9 @@ export const BUTTON_CONFIG : ButtonConfig = {
             [ BUTTON_COLOR.SILVER ]:     BUTTON_TAGLINE_COLOR.BLUE,
             [ BUTTON_COLOR.BLUE ]:       BUTTON_TAGLINE_COLOR.BLUE,
             [ BUTTON_COLOR.BLACK ]:      BUTTON_TAGLINE_COLOR.BLACK,
-            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_TAGLINE_COLOR.BLUE
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_TAGLINE_COLOR.BLUE,
+            [ BUTTON_COLOR.WHITE ]:      BUTTON_TAGLINE_COLOR.BLUE
+
         },
 
         secondaryColors: {
@@ -59,7 +63,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
             [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.BLUE,
             [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
             [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
-            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.WHITE ]:      BUTTON_COLOR.WHITE
         },
 
         tag:     `{ content: safer_tag }`,
@@ -116,7 +121,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
         allowPrimary: true,
 
-        allowPrimaryVertical:   false,
+        allowPrimaryVertical:   true,
         allowPrimaryHorizontal: true
     },
 
@@ -126,7 +131,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
         allowPrimary: true,
 
-        allowPrimaryVertical:   false,
+        allowPrimaryVertical:   true,
         allowPrimaryHorizontal: true
     },
 
@@ -138,7 +143,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
         allowPrimary: true,
 
-        allowPrimaryVertical:   false,
+        allowPrimaryVertical:   true,
         allowPrimaryHorizontal: true,
 
         allowUnbranded:  true
@@ -156,25 +161,41 @@ export const BUTTON_CONFIG : ButtonConfig = {
     },
 
     [ BUTTON_LABEL.CREDIT ]: {
-        label:     `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`,
-        tag:       `{ content: later_tag }`,
+        label: ({ locale }) => {
+            if (locale.country === COUNTRY.DE) {
+                return `{ logo: ${ BUTTON_LOGO.CREDIT } }`;
+            }
+
+            return `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`;
+        },
+        logoLabel: ({ locale }) => {
+            if (locale.country === COUNTRY.DE) {
+                return `{ logo: ${ BUTTON_LOGO.CREDIT } }`;
+            }
+
+            return `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`;
+        },
+
+        tag: `{ content: later_tag }`,
 
         colors: [
             BUTTON_COLOR.DARKBLUE,
-            BUTTON_COLOR.BLACK
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.WHITE
         ],
 
         logoColors:  {
             [ BUTTON_COLOR.BLACK ]:    BUTTON_LOGO_COLOR.WHITE,
-            [ BUTTON_COLOR.DARKBLUE ]: BUTTON_LOGO_COLOR.WHITE
+            [ BUTTON_COLOR.DARKBLUE ]: BUTTON_LOGO_COLOR.WHITE,
+            [ BUTTON_COLOR.WHITE ]:    BUTTON_LOGO_COLOR.BLUE
         },
 
         secondaryColors: {
             [ BUTTON_COLOR.GOLD ]:   BUTTON_COLOR.DARKBLUE,
             [ BUTTON_COLOR.BLUE ]:   BUTTON_COLOR.DARKBLUE,
             [ BUTTON_COLOR.SILVER ]: BUTTON_COLOR.DARKBLUE,
-            [ BUTTON_COLOR.BLACK ]:  BUTTON_COLOR.BLACK
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_COLOR.BLACK,
+            [ BUTTON_COLOR.WHITE ]:  BUTTON_COLOR.WHITE
         },
 
         defaultColor: BUTTON_COLOR.DARKBLUE,
@@ -196,13 +217,15 @@ export const BUTTON_CONFIG : ButtonConfig = {
         colors: [
             BUTTON_COLOR.BLUE,
             BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.WHITE
         ],
 
         logoColors:  {
             [ BUTTON_COLOR.BLUE ]:   BUTTON_LOGO_COLOR.WHITE,
             [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLUE,
-            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE,
+            [ BUTTON_COLOR.WHITE ]:  BUTTON_LOGO_COLOR.BLUE
         },
 
         secondaryColors: {
@@ -210,7 +233,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
             [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
             [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.BLUE,
             [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
-            [ BUTTON_COLOR.DARKBLUE ]: BUTTON_COLOR.SILVER
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.WHITE ]:      BUTTON_COLOR.WHITE
         },
 
         allowPrimary: true,
@@ -436,6 +460,99 @@ export const BUTTON_CONFIG : ButtonConfig = {
         allowPrimaryHorizontal: false
     },
 
+    [ BUTTON_LABEL.P24 ]: {
+
+        label:     `{ logo: ${ BUTTON_LOGO.P24 } }`,
+        logoLabel: `{ logo: ${ BUTTON_LOGO.P24 } }`,
+
+        defaultColor: BUTTON_COLOR.SILVER,
+
+        colors: [
+            BUTTON_COLOR.SILVER,
+            BUTTON_COLOR.BLACK
+        ],
+
+        logoColors:  {
+            [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLACK,
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE
+        },
+
+        secondaryColors: {
+            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER
+        },
+
+        allowPrimary: false,
+
+        allowPrimaryVertical:   false,
+        allowPrimaryHorizontal: false
+    },
+
+    [ BUTTON_LABEL.ZIMPLER ]: {
+
+        label:     `{ logo: ${ BUTTON_LOGO.ZIMPLER } }`,
+        logoLabel: `{ logo: ${ BUTTON_LOGO.ZIMPLER } }`,
+
+        defaultColor: BUTTON_COLOR.SILVER,
+
+        colors: [
+            BUTTON_COLOR.SILVER,
+            BUTTON_COLOR.BLACK
+        ],
+
+        logoColors:  {
+            [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLACK,
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE
+        },
+
+        secondaryColors: {
+            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER
+        },
+
+        allowPrimary: false,
+
+        allowPrimaryVertical:   false,
+        allowPrimaryHorizontal: false
+    },
+
+    [ BUTTON_LABEL.WECHATPAY ]: {
+
+        label:     `{ logo: ${ BUTTON_LOGO.WECHATPAY } }`,
+        logoLabel: `{ logo: ${ BUTTON_LOGO.WECHATPAY } }`,
+
+        defaultColor: BUTTON_COLOR.SILVER,
+
+        colors: [
+            BUTTON_COLOR.SILVER,
+            BUTTON_COLOR.BLACK
+        ],
+
+        logoColors:  {
+            [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLACK,
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE
+        },
+
+        secondaryColors: {
+            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER
+        },
+
+        allowPrimary: false,
+
+        allowPrimaryVertical:   false,
+        allowPrimaryHorizontal: false
+    },
+
     [ BUTTON_LABEL.CARD ]: {
 
         label:     `{ cards }`,
@@ -477,6 +594,9 @@ export const FUNDING_TO_DEFAULT_LABEL = {
     [ FUNDING.GIROPAY]:    BUTTON_LABEL.GIROPAY,
     [ FUNDING.SOFORT]:     BUTTON_LABEL.SOFORT,
     [ FUNDING.EPS]:        BUTTON_LABEL.EPS,
+    [ FUNDING.P24]:        BUTTON_LABEL.P24,
+    [ FUNDING.ZIMPLER]:    BUTTON_LABEL.ZIMPLER,
+    [ FUNDING.WECHATPAY]:  BUTTON_LABEL.WECHATPAY,
     [ FUNDING.MYBANK]:     BUTTON_LABEL.MYBANK
 };
 
@@ -494,6 +614,9 @@ export const LABEL_TO_FUNDING = {
     [ BUTTON_LABEL.GIROPAY]:        FUNDING.GIROPAY,
     [ BUTTON_LABEL.GIROPAY]:        FUNDING.EPS,
     [ BUTTON_LABEL.SOFORT]:         FUNDING.SOFORT,
+    [ BUTTON_LABEL.P24]:            FUNDING.P24,
+    [ BUTTON_LABEL.ZIMPLER]:        FUNDING.ZIMPLER,
+    [ BUTTON_LABEL.WECHATPAY]:      FUNDING.WECHATPAY,
     [ BUTTON_LABEL.MYBANK]:         FUNDING.MYBANK
 };
 
@@ -513,7 +636,8 @@ export const BUTTON_STYLE = {
         minHeight:       25,
         maxHeight:       30,
         allowFunding:    true,
-        allowTagline:    false
+        allowTagline:    false,
+        byPayPalHeight:  0
     },
 
     [ BUTTON_SIZE.SMALL ]: {
@@ -524,7 +648,8 @@ export const BUTTON_STYLE = {
         minHeight:       25,
         maxHeight:       55,
         allowFunding:    true,
-        allowTagline:    true
+        allowTagline:    true,
+        byPayPalHeight:  0
     },
 
     [ BUTTON_SIZE.MEDIUM ]: {
@@ -535,7 +660,8 @@ export const BUTTON_STYLE = {
         minHeight:         35,
         maxHeight:         55,
         allowFunding:      true,
-        allowTagline:      true
+        allowTagline:      true,
+        byPayPalHeight:    30
     },
 
     [ BUTTON_SIZE.LARGE ]: {
@@ -546,18 +672,20 @@ export const BUTTON_STYLE = {
         minHeight:         30,
         maxHeight:         55,
         allowFunding:      true,
-        allowTagline:      true
+        allowTagline:      true,
+        byPayPalHeight:    30
     },
 
     [ BUTTON_SIZE.HUGE ]: {
-        defaultWidth:  500,
-        defaultHeight: 55,
-        minWidth:      500,
-        maxWidth:      750,
-        minHeight:     40,
-        maxHeight:     55,
-        allowFunding:  true,
-        allowTagline:  true
+        defaultWidth:   500,
+        defaultHeight:  55,
+        minWidth:       500,
+        maxWidth:       750,
+        minHeight:      40,
+        maxHeight:      55,
+        allowFunding:   true,
+        allowTagline:   true,
+        byPayPalHeight: 30
     }
 };
 

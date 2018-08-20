@@ -12,11 +12,11 @@ import { config } from '../config';
 import { SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
     BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY } from '../constants';
 import { redirect as redir, checkRecognizedBrowser,
-    getBrowserLocale, getSessionID, request, getScriptVersion,
+    getBrowserLocale, getPotentiallyBetterBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, isEligible,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
-import { rest, getPaymentOptions, addPaymentDetails } from '../api';
+import { rest, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
     mapPaymentToBraintree, type BraintreePayPalClient } from '../integrations';
@@ -78,6 +78,8 @@ function isCreditDualEligible(props) : boolean {
 
 let creditThrottle;
 
+let localeThrottle = getThrottle('locale_resolution_rule', 50);
+
 type ButtonOptions = {
     style : {|
         maxbuttons? : number,
@@ -92,7 +94,8 @@ type ButtonOptions = {
     logLevel : string,
     supplement : {
         getPaymentOptions : Function,
-        addPaymentDetails : Function
+        addPaymentDetails : Function,
+        getPaymentDetails : Function
     },
     awaitPopupBridge : Function,
     meta : Object,
@@ -175,6 +178,14 @@ export let Button : Component<ButtonOptions> = create({
     },
 
     props: {
+        domain: {
+            type:     'string',
+            required: false,
+            def() : string {
+                return escape(window.location.host);
+            },
+            queryParam: true
+        },
 
         sessionID: {
             type:     'string',
@@ -416,14 +427,14 @@ export let Button : Component<ButtonOptions> = create({
             decorate({ allowed = [], disallowed = [] } : Object = {}, props : ButtonOptions) : {} {
 
                 if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1 && !isDevice()) {
-                    allowed.splice(allowed.indexOf(FUNDING.VENMO), 1);
+                    allowed = allowed.filter(source => (source !== FUNDING.VENMO));
                 }
 
                 if (isCreditDualEligible(props)) {
                     creditThrottle = getThrottle('dual_credit_automatic', 50);
 
                     if (creditThrottle.isEnabled()) {
-                        allowed.push(FUNDING.CREDIT);
+                        allowed = [ ...allowed, FUNDING.CREDIT ];
                     }
                 }
 
@@ -431,11 +442,11 @@ export let Button : Component<ButtonOptions> = create({
 
                 if (!isDevice() || getDomainSetting('disable_venmo')) {
                     if (remembered && remembered.indexOf(FUNDING.VENMO) !== -1) {
-                        remembered.splice(remembered.indexOf(FUNDING.VENMO), 1);
+                        remembered = remembered.filter(source => (source !== FUNDING.VENMO));
                     }
 
                     if (disallowed && disallowed.indexOf(FUNDING.VENMO) === -1) {
-                        disallowed.push(FUNDING.VENMO);
+                        disallowed = [ ...disallowed, FUNDING.VENMO ];
                     }
                 }
 
@@ -501,6 +512,8 @@ export let Button : Component<ButtonOptions> = create({
 
                     info('button_authorize');
 
+                    localeThrottle.logComplete();
+
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
                         [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.CHECKOUT_AUTHORIZE,
@@ -523,10 +536,11 @@ export let Button : Component<ButtonOptions> = create({
                     };
 
                     actions.redirect = (win, url) => {
-                        return ZalgoPromise.all([
-                            redir(win || window.top, url || data.returnUrl),
-                            actions.close()
-                        ]);
+                        return ZalgoPromise.try(() => {
+                            return actions.close();
+                        }).then(() => {
+                            return redir(win || window.top, url || data.returnUrl);
+                        });
                     };
 
                     actions.payment.tokenize = memoize(() => {
@@ -651,6 +665,8 @@ export let Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                     });
 
+                    localeThrottle.log('click');
+
                     if (creditThrottle) {
                         creditThrottle.log('click', {
                             [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
@@ -670,7 +686,13 @@ export let Button : Component<ButtonOptions> = create({
             queryParam: 'locale.x',
 
             def() : string {
-                let { lang, country } = getBrowserLocale();
+
+                let { lang, country } = localeThrottle.isEnabled()
+                    ? getPotentiallyBetterBrowserLocale()
+                    : getBrowserLocale();
+
+                localeThrottle.logStart();
+
                 return `${ lang }_${ country }`;
             },
 
@@ -728,7 +750,7 @@ export let Button : Component<ButtonOptions> = create({
         supplement: {
             type:     'object',
             required: false,
-            value:    { getPaymentOptions, addPaymentDetails }
+            value:    { getPaymentOptions, addPaymentDetails, getPaymentDetails }
         },
 
         test: {

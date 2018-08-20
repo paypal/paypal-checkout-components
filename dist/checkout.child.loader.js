@@ -49,55 +49,19 @@
             }
             return target;
         };
-        function _defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
         !function(xports) {
-            var namespaces = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [], childnamespaces = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [], _iterator = namespaces, _isArray = Array.isArray(_iterator), _i = 0;
-            for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref = _iterator[_i++];
-                } else {
-                    if ((_i = _iterator.next()).done) break;
-                    _ref = _i.value;
-                }
-                var namespace = window[_ref];
-                if (namespace) {
-                    var _iterator3 = childnamespaces, _isArray3 = Array.isArray(_iterator3), _i3 = 0;
-                    for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                        var _ref3;
-                        if (_isArray3) {
-                            if (_i3 >= _iterator3.length) break;
-                            _ref3 = _iterator3[_i3++];
-                        } else {
-                            if ((_i3 = _iterator3.next()).done) break;
-                            _ref3 = _i3.value;
-                        }
-                        var childname = _ref3, childnamespace = xports[childname];
-                        namespace[childname] && (childnamespace = _extends({}, namespace[childname], childnamespace));
-                        xports = _extends({}, namespace, xports, _defineProperty({}, childname, childnamespace));
-                    }
+            for (var namespaces = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [], childnamespaces = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [], _i2 = 0, _length2 = null == namespaces ? 0 : namespaces.length; _i2 < _length2; _i2++) {
+                var name = namespaces[_i2], namespace = window[name];
+                if (namespace) for (var _i4 = 0, _length4 = null == childnamespaces ? 0 : childnamespaces.length; _i4 < _length4; _i4++) {
+                    var _extends2, childname = childnamespaces[_i4], childnamespace = xports[childname];
+                    namespace[childname] && (childnamespace = _extends({}, namespace[childname], childnamespace));
+                    xports = _extends({}, namespace, xports, ((_extends2 = {})[childname] = childnamespace, 
+                    _extends2));
                 }
             }
-            var _iterator2 = namespaces, _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-            for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                var _ref2;
-                if (_isArray2) {
-                    if (_i2 >= _iterator2.length) break;
-                    _ref2 = _iterator2[_i2++];
-                } else {
-                    if ((_i2 = _iterator2.next()).done) break;
-                    _ref2 = _i2.value;
-                }
-                window[_ref2] = xports;
+            for (var _i6 = 0, _length6 = null == namespaces ? 0 : namespaces.length; _i6 < _length6; _i6++) {
+                var _name = namespaces[_i6];
+                window[_name] = xports;
             }
         }(__webpack_require__("./src/loader/interface.js"), [ "paypal" ]);
     },
@@ -143,17 +107,8 @@
             script.onerror = function(err) {
                 return callback(err);
             };
-            var _iterator = Object.keys(attrs), _isArray = Array.isArray(_iterator), _i = 0;
-            for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref = _iterator[_i++];
-                } else {
-                    if ((_i = _iterator.next()).done) break;
-                    _ref = _i.value;
-                }
-                var attr = _ref;
+            for (var _i2 = 0, _Object$keys2 = Object.keys(attrs), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
+                var attr = _Object$keys2[_i2];
                 script.setAttribute(attr, attrs[attr]);
             }
             container.appendChild(script);
@@ -202,17 +157,8 @@
                 queryString && 0 === queryString.indexOf("?") && (queryString = queryString.slice(1));
                 if (!queryString) return params;
                 if (-1 === queryString.indexOf("=")) throw new Error("Can not parse query string params: " + queryString);
-                var _iterator2 = queryString.split("&"), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                    var _ref2;
-                    if (_isArray2) {
-                        if (_i2 >= _iterator2.length) break;
-                        _ref2 = _iterator2[_i2++];
-                    } else {
-                        if ((_i2 = _iterator2.next()).done) break;
-                        _ref2 = _i2.value;
-                    }
-                    var pair = _ref2;
+                for (var _i4 = 0, _queryString$split2 = queryString.split("&"), _length4 = null == _queryString$split2 ? 0 : _queryString$split2.length; _i4 < _length4; _i4++) {
+                    var pair = _queryString$split2[_i4];
                     (pair = pair.split("="))[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
                 }
                 return params;

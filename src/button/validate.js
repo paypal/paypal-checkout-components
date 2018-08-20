@@ -145,7 +145,7 @@ export function validateButtonStyle(style : Object = {}, props : Object) {
             throw new Error(`Button must be at least ${ BUTTON_SIZE.MEDIUM } size for ${ BUTTON_LAYOUT.VERTICAL } layout`);
         }
 
-        if (style[BUTTON_STYLE_OPTIONS.LABEL]) {
+        if (!getButtonConfig(label, 'allowPrimaryVertical')) {
             throw new Error(`style.${ BUTTON_STYLE_OPTIONS.LABEL } option is not allowed for ${ BUTTON_LAYOUT.VERTICAL } layout - got ${ label }`);
         }
 

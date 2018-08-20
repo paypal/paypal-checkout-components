@@ -307,7 +307,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
                                     return request({
                                         win:    this.window,
                                         method: 'get',
-                                        url:    '/webapps/hermes/api/auth'
+                                        url:    '/webapps/xoonboarding/api/auth'
                                     }).then(result => {
                                         if (result && result.data && result.data.access_token) {
                                             addHeader('x-paypal-internal-euat', result.data.access_token);
@@ -336,7 +336,17 @@ export let Checkout : Component<CheckoutPropsType> = create({
         onAuth: {
             type:       'function',
             required:   false,
-            sameDomain: true
+            sameDomain: true,
+            childDecorate(original : Function) : ?Function {
+                if (original) {
+                    return function wrapOnAuth(data : string | Object) : Object {
+                        if (typeof data === 'string') {
+                            data = { accessToken: data };
+                        }
+                        return original(data);
+                    };
+                }
+            }
         },
 
         accessToken: {

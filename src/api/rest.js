@@ -12,7 +12,11 @@ import { request, memoize, isPayPalDomain, uniqueID } from '../lib';
 
 import { addPaymentOptions, validateExtraPaymentOptions, removeExtraPaymentOptions } from './hacks';
 
-let proxyRest : { [key : string] : <T>(...args : Array<mixed>) => ZalgoPromise<T> } = {};
+type ProxyRest = {
+    [string] : (...args : Array<mixed>) => ZalgoPromise<*>
+};
+
+let proxyRest : ProxyRest = {};
 
 let createAccessToken = memoize((env : string, client : { [key : string] : string }) : ZalgoPromise<string> => {
 
@@ -157,7 +161,7 @@ function createTracking(env : string, client : { [key : string] : string }, merc
 
     return createAccessToken(env, client).then((accessToken) : ZalgoPromise<Object> => {
 
-        let headers: Object = {
+        let headers : Object = {
             Authorization: `Bearer ${ accessToken }`
         };
 
@@ -234,7 +238,7 @@ function createPayment(env : string, client : { [key : string] : string }, payme
                     payment.experience_profile_id = experienceID;
                 }
 
-                let headers: Object = {
+                let headers : Object = {
                     Authorization: `Bearer ${ accessToken }`
                 };
 
@@ -296,9 +300,9 @@ function createOrder(env : string, client : { [key : string] : string }, payment
 
     order = { ...order };
     order.intent = order.intent || 'CAPTURE';
-    order.redirect_urls = order.redirect_urls || {};
-    order.redirect_urls.return_url = order.redirect_urls.return_url || getDefaultReturnUrl();
-    order.redirect_urls.cancel_url = order.redirect_urls.cancel_url || getDefaultReturnUrl();
+    order.application_context = order.application_context || {};
+    order.application_context.return_url = order.application_context.return_url || getDefaultReturnUrl();
+    order.application_context.cancel_url = order.application_context.cancel_url || getDefaultReturnUrl();
     order.purchase_units = order.purchase_units || [];
     order.purchase_units[0] = order.purchase_units[0] || {};
     order.purchase_units.forEach(unit => {
@@ -307,7 +311,7 @@ function createOrder(env : string, client : { [key : string] : string }, payment
 
     return createAccessToken(env, client).then((accessToken) : ZalgoPromise<Object> => {
 
-        let headers: Object = {
+        let headers : Object = {
             Authorization: `Bearer ${ accessToken }`
         };
 
