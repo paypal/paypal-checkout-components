@@ -71,6 +71,7 @@ if (action === 'checkout') {
             }
         });
     });
+    
 } else if (action === 'cancel') {
 
     window.xprops.payment().then(paymentToken => {

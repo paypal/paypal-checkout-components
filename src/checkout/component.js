@@ -32,7 +32,7 @@ function addHeader(name, value) : void {
 type CheckoutPropsType = {
     payment? : () => ZalgoPromise<string>,
     onAuthorize : ({ returnUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
-    onShippingChange? : (string) => ?ZalgoPromise<void>,
+    onShippingChange? : (address : {}) => ?ZalgoPromise<void>,
     onCancel? : ({ cancelUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
     fallback? : (string) => ?ZalgoPromise<void>,
     fundingSource? : string,
