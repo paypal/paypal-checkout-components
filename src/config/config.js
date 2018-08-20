@@ -149,10 +149,6 @@ export let config = {
             disable_venmo: true
         },
 
-        'searsoutlet.com': {
-            disable_venmo: true
-        },
-
         'searshometownstores.com': {
             disable_venmo: true
         },
