@@ -77,6 +77,7 @@ function isCreditDualEligible(props) : boolean {
 }
 
 let creditThrottle;
+let venmoThrottle;
 
 let localeThrottle = getThrottle('locale_resolution_rule', 50);
 
@@ -426,8 +427,20 @@ export let Button : Component<ButtonOptions> = create({
             },
             decorate({ allowed = [], disallowed = [] } : Object = {}, props : ButtonOptions) : {} {
 
+                // remove Venmo from our allowed list if the rendering device is not a mobile one
                 if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1 && !isDevice()) {
                     allowed = allowed.filter(source => (source !== FUNDING.VENMO));
+                }
+
+                // Uncookied venmo ramp. Even without 'pwv' cookie, we'll be rendering venmo button
+                // for a sample of the mobile population. 
+                if (allowed && allowed.indexOf(FUNDING.VENMO) === -1 && isDevice()) {
+                    venmoThrottle = getThrottle('venmo_uncookied_render', 1);
+
+                    if (venmoThrottle.isEnabled()) {
+                        allowed = [ ...allowed, FUNDING.VENMO ];
+                    }
+                    
                 }
 
                 if (isCreditDualEligible(props)) {
@@ -489,6 +502,12 @@ export let Button : Component<ButtonOptions> = create({
                     if (creditThrottle) {
                         creditThrottle.logStart({
                             [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                        });
+                    }
+
+                    if (venmoThrottle) {
+                        venmoThrottle.logStart({
+                           [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
                         });
                     }
 
@@ -591,6 +610,12 @@ export let Button : Component<ButtonOptions> = create({
                         });
                     }
 
+                    if (venmoThrottle) {
+                        venmoThrottle.logComplete({
+                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
+                        });
+                    }
+
                     return ZalgoPromise.try(() => {
 
                         if (this.props.braintree) {
@@ -669,6 +694,12 @@ export let Button : Component<ButtonOptions> = create({
 
                     if (creditThrottle) {
                         creditThrottle.log('click', {
+                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
+                        });
+                    }
+
+                    if (venmoThrottle) {
+                        venmoThrottle.log('click', {
                             [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
                         });
                     }
