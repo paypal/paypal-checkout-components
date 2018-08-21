@@ -1,7 +1,8 @@
 /* @flow */
 
 import { values, uniqueID } from 'belter/src';
-import { ENV, COUNTRY, COUNTRY_LANGS, type LocaleType, type FundingEligibilityType } from 'paypal-braintree-web-client/src';
+import { ENV, COUNTRY, LANG, COUNTRY_LANGS,
+    type LocaleType, type FundingEligibilityType } from 'paypal-braintree-web-client/src';
 
 import { PLATFORM, FUNDING, BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT,
     BUTTON_SHAPE, BUTTON_SIZE, INTENT, COMMIT, VAULT } from '../constants';
@@ -68,8 +69,8 @@ export const DEFAULT_STYLE = {
 
 export const DEFAULT_PROPS = {
     LOCALE:   {
-        country: __LOCALE__.__COUNTRY__,
-        lang:    __LOCALE__.__LANG__
+        country: COUNTRY.US,
+        lang:    LANG.EN
     },
     COMMIT:   COMMIT.TRUE,
     VAULT:    VAULT.FALSE,
