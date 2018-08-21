@@ -17,7 +17,8 @@ async function getButtonScript() : Promise<{ Buttons : (Object) => string, DEFAU
     let config = {
         entry:         './src/button/template/componentTemplate.jsx',
         libraryTarget: 'commonjs',
-        web:           false
+        web:           false,
+        vars:          testGlobals
     };
 
     let cacheKey = JSON.stringify(config);

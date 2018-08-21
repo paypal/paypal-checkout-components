@@ -67,6 +67,10 @@ export const DEFAULT_STYLE = {
 };
 
 export const DEFAULT_PROPS = {
+    LOCALE:   {
+        country: __LOCALE__.__COUNTRY__,
+        lang:    __LOCALE__.__LANG__
+    },
     COMMIT:   COMMIT.TRUE,
     VAULT:    VAULT.FALSE,
     INTENT:   INTENT.SALE,
@@ -160,8 +164,8 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : ButtonProps {
 
     let {
         style = {},
-        locale = { country: __LOCALE__.__COUNTRY__, lang: __LOCALE__.__LANG__ },
         remembered = [],
+        locale = DEFAULT_PROPS.LOCALE,
         env = DEFAULT_PROPS.ENV,
         platform = DEFAULT_PROPS.PLATFORM,
         commit = DEFAULT_PROPS.COMMIT,
