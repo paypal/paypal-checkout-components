@@ -4347,7 +4347,7 @@ var URLS = {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return GLOBAL_NAMESPACE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return DEFAULT_ENV; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return COUNTRY; });
-/* unused harmony export LANG */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return LANG; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return COUNTRY_LANGS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return FPTI_KEY; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FPTI_DATA_SOURCE; });
@@ -4655,6 +4655,7 @@ var FPTI_FEED = {
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "COUNTRY", function() { return __WEBPACK_IMPORTED_MODULE_1__constants__["a"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "COUNTRY_LANGS", function() { return __WEBPACK_IMPORTED_MODULE_1__constants__["b"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "ENV", function() { return __WEBPACK_IMPORTED_MODULE_1__constants__["d"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "LANG", function() { return __WEBPACK_IMPORTED_MODULE_1__constants__["j"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/config.js");
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__logger__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/logger.js");
@@ -5838,8 +5839,8 @@ var DEFAULT_STYLE = {
 
 var DEFAULT_PROPS = {
     LOCALE: {
-        country: __LOCALE__.__COUNTRY__,
-        lang: __LOCALE__.__LANG__
+        country: src["COUNTRY"].US,
+        lang: src["LANG"].EN
     },
     COMMIT: constants["l" /* COMMIT */].TRUE,
     VAULT: constants["q" /* VAULT */].FALSE,
