@@ -432,17 +432,6 @@ export let Button : Component<ButtonOptions> = create({
                     allowed = allowed.filter(source => (source !== FUNDING.VENMO));
                 }
 
-                // Uncookied venmo ramp. Even without 'pwv' cookie, we'll be rendering venmo button
-                // for a sample of the mobile population. 
-                if (allowed && allowed.indexOf(FUNDING.VENMO) === -1 && isDevice()) {
-                    venmoThrottle = getThrottle('venmo_uncookied_render', 1);
-
-                    if (venmoThrottle.isEnabled()) {
-                        allowed = [ ...allowed, FUNDING.VENMO ];
-                    }
-                    
-                }
-
                 if (isCreditDualEligible(props)) {
                     creditThrottle = getThrottle('dual_credit_automatic', 50);
 
@@ -452,6 +441,18 @@ export let Button : Component<ButtonOptions> = create({
                 }
 
                 let remembered = getRememberedFunding(sources => sources);
+
+                // Uncookied venmo ramp. Even without 'pwv' cookie, we'll be rendering venmo button
+                // for a sample of the mobile population.
+                if (allowed && allowed.indexOf(FUNDING.VENMO) === -1 &&
+                    remembered && remembered.indexOf(FUNDING.VENMO) === -1 && isDevice()) {
+
+                    venmoThrottle = getThrottle('venmo_uncookied_render', 1);
+
+                    if (venmoThrottle.isEnabled()) {
+                        allowed = [ ...allowed, FUNDING.VENMO ];
+                    }
+                }
 
                 if (!isDevice() || getDomainSetting('disable_venmo')) {
                     if (remembered && remembered.indexOf(FUNDING.VENMO) !== -1) {
@@ -507,7 +508,7 @@ export let Button : Component<ButtonOptions> = create({
 
                     if (venmoThrottle) {
                         venmoThrottle.logStart({
-                           [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
                         });
                     }
 
