@@ -910,9 +910,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onShippingChange(data, actions) : void {
-                    return actions.reject(() => {
-                        return done();
-                    });
+                    return actions.reject().then(done);
                 },
 
                 onCancel() : void {

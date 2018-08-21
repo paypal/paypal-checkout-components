@@ -66,8 +66,8 @@ if (action === 'checkout') {
             postal_code:  '11111',
             country_code: 'YY'
         }, {
-            reject: (callback) => {
-                callback();
+            reject: () => {
+                // pass
             }
         });
     });
