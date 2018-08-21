@@ -5837,6 +5837,10 @@ var DEFAULT_STYLE = {
 };
 
 var DEFAULT_PROPS = {
+    LOCALE: {
+        country: __LOCALE__.__COUNTRY__,
+        lang: __LOCALE__.__LANG__
+    },
     COMMIT: constants["l" /* COMMIT */].TRUE,
     VAULT: constants["q" /* VAULT */].FALSE,
     INTENT: constants["n" /* INTENT */].SALE,
@@ -5939,10 +5943,10 @@ function normalizeButtonProps(props) {
 
     var _props$style = props.style,
         style = _props$style === undefined ? {} : _props$style,
-        _props$locale = props.locale,
-        locale = _props$locale === undefined ? { country: __LOCALE__.__COUNTRY__, lang: __LOCALE__.__LANG__ } : _props$locale,
         _props$remembered = props.remembered,
         remembered = _props$remembered === undefined ? [] : _props$remembered,
+        _props$locale = props.locale,
+        locale = _props$locale === undefined ? DEFAULT_PROPS.LOCALE : _props$locale,
         _props$env = props.env,
         env = _props$env === undefined ? DEFAULT_PROPS.ENV : _props$env,
         _props$platform = props.platform,
