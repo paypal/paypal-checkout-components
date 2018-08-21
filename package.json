@@ -25,6 +25,7 @@
   },
   "files": [
     "src/",
+    "dist/",
     "__sdk__.js",
     "globals.js"
   ],
