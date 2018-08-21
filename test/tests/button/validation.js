@@ -281,6 +281,12 @@ let buttonConfigs = [
             },
 
             {
+                color: `white`,
+                valid: true
+            },
+
+
+            {
                 color: `creditblue`,
                 valid: false
             },
@@ -310,6 +316,12 @@ let buttonConfigs = [
             {
                 label: `checkout`,
                 color: `silver`,
+                valid: true
+            },
+
+            {
+                label: `checkout`,
+                color: `white`,
                 valid: true
             },
 
@@ -351,6 +363,12 @@ let buttonConfigs = [
 
             {
                 label: `paypal`,
+                color: `white`,
+                valid: true
+            },
+
+            {
+                label: `paypal`,
                 color: `silver`,
                 valid: true
             },
@@ -405,6 +423,12 @@ let buttonConfigs = [
 
             {
                 label: `pay`,
+                color: `white`,
+                valid: true
+            },
+
+            {
+                label: `pay`,
                 color: `creditblue`,
                 valid: false
             },
@@ -447,6 +471,12 @@ let buttonConfigs = [
 
             {
                 label: `buynow`,
+                color: `white`,
+                valid: true
+            },
+
+            {
+                label: `buynow`,
                 color: `creditblue`,
                 valid: false
             },
@@ -496,6 +526,12 @@ let buttonConfigs = [
             {
                 label: `credit`,
                 color: `darkblue`,
+                valid: true
+            },
+
+            {
+                label: `credit`,
+                color: `white`,
                 valid: true
             },
 
@@ -526,6 +562,12 @@ let buttonConfigs = [
             {
                 label: `venmo`,
                 color: `black`,
+                valid: true
+            },
+
+            {
+                label: `venmo`,
+                color: `white`,
                 valid: true
             },
 
