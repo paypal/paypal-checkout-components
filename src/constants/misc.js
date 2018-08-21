@@ -32,6 +32,22 @@ export const PLATFORM = {
     MOBILE:  ('mobile' : 'mobile')
 };
 
+export const INTENT = {
+    SALE:  'sale',
+    AUTH:  'auth',
+    ORDER: 'order'
+};
+
+export const COMMIT = {
+    TRUE:  true,
+    FALSE: false
+};
+
+export const VAULT = {
+    TRUE:  true,
+    FALSE: false
+};
+
 export const DEFAULT = ('default' : 'default');
 
 

@@ -3,7 +3,7 @@
 import { getKarmaConfig } from 'grumbler-scripts/config/karma.conf';
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 
-import globals from './globals';
+import { testGlobals } from './test/globals';
 
 export default function configKarma(karma : Object) {
 
@@ -12,14 +12,15 @@ export default function configKarma(karma : Object) {
         webpack:  getWebpackConfig({
             test: true,
             vars: {
-                ...globals,
+                ...testGlobals,
                 __paypal_checkout__: {
+                    ...testGlobals.__paypal_checkout__,
                     serverConfig: {
                         fundingEligibility: () => 'window.__TEST_FUNDING_ELIGIBILITY__'
                     }
                 },
                 __PAYPAL_CHECKOUT__: {
-                    ...globals.__PAYPAL_CHECKOUT__,
+                    ...testGlobals.__PAYPAL_CHECKOUT__,
                     __REMEMBERED_FUNDING__: () => 'window.__TEST_REMEMBERED_FUNDING__'
                 },
                 __CLIENT_ID__:   'abcxyz123',

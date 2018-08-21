@@ -1,7 +1,8 @@
 /* @flow */
 
+import type { FundingEligibilityType } from 'paypal-braintree-web-client/src';
+
 import { BUTTON_LAYOUT, PLATFORM, FUNDING } from '../constants';
-import type { FundingEligibilityType } from '../types';
 
 import { FUNDING_PRIORITY, FUNDING_CONFIG } from './config';
 

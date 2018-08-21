@@ -10,7 +10,10 @@ module.exports = {
         '__sdk__': true,
         '__LOCALE__': true,
         '__CLIENT_ID__': true,
-        '__MERCHANT_ID__': true
+        '__MERCHANT_ID__': true,
+        '__INTENT__': true,
+        '__COMMIT__': true,
+        '__VAULT__': true
     },
 
     'rules': {

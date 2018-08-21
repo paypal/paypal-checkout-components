@@ -1,17 +1,18 @@
 /* @flow */
 /* @jsx jsxToHTML */
 
-import { ENV, type LocaleType } from 'paypal-braintree-web-client';
+import { ENV, type LocaleType, type FundingEligibilityType } from 'paypal-braintree-web-client/src';
 import { jsxToHTML, type JsxHTMLNode, jsxRender, Fragment } from 'belter/src'; // eslint-disable-line no-unused-vars
 
 import { BUTTON_NUMBER, BUTTON_LABEL, ATTRIBUTE, CLASS, FUNDING,
     BUTTON_COLOR, LOGO_COLOR } from '../../constants';
 import { FUNDING_CONFIG, determineEligibleFunding } from '../../funding';
-import type { FundingEligibilityType } from '../../types';
 import { normalizeButtonProps, type ButtonStyle, type ButtonPropsInputs } from '../props';
 
 import { componentStyle } from './componentStyle';
 import { getComponentScript } from './componentScript';
+
+export { DEFAULT_PROPS } from '../props';
 
 
 function getCommonClasses({ style, multiple, env } :

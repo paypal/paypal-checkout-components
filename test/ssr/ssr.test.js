@@ -12,7 +12,7 @@ jest.setTimeout(120000);
 
 let cache = {};
 
-async function getButtonScript() : Promise<{ Buttons : (Object) => string }> {
+async function getButtonScript() : Promise<{ Buttons : (Object) => string, DEFAULT_PROPS : Object }> {
 
     let config = {
         entry:         './src/button/template/componentTemplate.jsx',
@@ -100,5 +100,34 @@ test(`Button should fail to render with ssr, with invalid locale`, async () => {
 
     if (!expectedErr) {
         throw new Error(`Expected button render to error out`);
+    }
+});
+
+test(`Button renderer should export DEFAULT_PROPS`, async () => {
+
+    let { DEFAULT_PROPS } = await getButtonScript();
+
+    if (!DEFAULT_PROPS) {
+        throw new Error(`Expected DEFAULT_PROPS to be exported`);
+    }
+
+    if (!DEFAULT_PROPS.hasOwnProperty('COMMIT')) {
+        throw new Error(`Expected DEFAULT_PROPS.COMMIT to be exported`);
+    }
+
+    if (!DEFAULT_PROPS.hasOwnProperty('VAULT')) {
+        throw new Error(`Expected DEFAULT_PROPS.VAULT to be exported`);
+    }
+
+    if (!DEFAULT_PROPS.hasOwnProperty('INTENT')) {
+        throw new Error(`Expected DEFAULT_PROPS.INTENT to be exported`);
+    }
+
+    if (!DEFAULT_PROPS.hasOwnProperty('ENV')) {
+        throw new Error(`Expected DEFAULT_PROPS.ENV to be exported`);
+    }
+
+    if (!DEFAULT_PROPS.hasOwnProperty('PLATFORM')) {
+        throw new Error(`Expected DEFAULT_PROPS.PLATFORM to be exported`);
     }
 });

@@ -97,5 +97,9 @@ export const testGlobals = {
     __LOCALE__:      {
         __COUNTRY__: 'US',
         __LANG__:    'en'
-    }
+    },
+
+    __INTENT__: 'sale',
+    __COMMIT__: true,
+    __VAULT__:  true
 };

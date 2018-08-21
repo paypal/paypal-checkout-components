@@ -1,11 +1,11 @@
 /* @flow */
 
-import { values } from 'belter/src';
-import { ENV, COUNTRY, COUNTRY_LANGS, type LocaleType } from 'paypal-braintree-web-client/src';
+import { values, uniqueID } from 'belter/src';
+import { ENV, COUNTRY, COUNTRY_LANGS, type LocaleType, type FundingEligibilityType } from 'paypal-braintree-web-client/src';
 
-import { PLATFORM, FUNDING, BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE } from '../constants';
+import { PLATFORM, FUNDING, BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT,
+    BUTTON_SHAPE, BUTTON_SIZE, INTENT, COMMIT, VAULT } from '../constants';
 import { FUNDING_CONFIG } from '../funding';
-import type { FundingEligibilityType } from '../types';
 
 import { BUTTON_SIZE_STYLE } from './config';
 
@@ -55,8 +55,8 @@ export type ButtonPropsInputs = {|
     platform? : $PropertyType<ButtonProps, 'platform'> | void,
     fundingEligibility? : $PropertyType<ButtonProps, 'fundingEligibility'> | void,
     remembered? : $PropertyType<ButtonProps, 'remembered'> | void,
-    sessionID ? : $PropertyType<ButtonProps, 'sessionID'> | void,
-    buttonSessionID ? : $PropertyType<ButtonProps, 'buttonSessionID'> | void
+    sessionID? : $PropertyType<ButtonProps, 'sessionID'> | void,
+    buttonSessionID? : $PropertyType<ButtonProps, 'buttonSessionID'> | void
 |};
 
 export const DEFAULT_STYLE = {
@@ -67,8 +67,11 @@ export const DEFAULT_STYLE = {
 };
 
 export const DEFAULT_PROPS = {
-    COMMIT:  true,
-    ENV:     __ENV__
+    COMMIT:   COMMIT.TRUE,
+    VAULT:    VAULT.FALSE,
+    INTENT:   INTENT.SALE,
+    ENV:      __ENV__,
+    PLATFORM: PLATFORM.DESKTOP
 };
 
 export function normalizeButtonStyle(style : ButtonStyleInputs, { locale } : { locale : LocaleType }) : ButtonStyle {
@@ -157,19 +160,15 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : ButtonProps {
 
     let {
         style = {},
-        locale,
+        locale = { country: __LOCALE__.__COUNTRY__, lang: __LOCALE__.__LANG__ },
         remembered = [],
         env = DEFAULT_PROPS.ENV,
+        platform = DEFAULT_PROPS.PLATFORM,
+        commit = DEFAULT_PROPS.COMMIT,
         fundingEligibility,
-        platform,
-        buttonSessionID,
-        sessionID,
-        commit = DEFAULT_PROPS.COMMIT
+        sessionID = uniqueID(),
+        buttonSessionID = uniqueID()
     } = props;
-
-    if (!locale) {
-        throw new Error(`Expected locale`);
-    }
 
     let { country, lang } = locale;
 
@@ -181,11 +180,11 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : ButtonProps {
         throw new Error(`Expected valid lang, got ${ lang || 'undefined' }`);
     }
 
-    if (remembered && remembered.find(source => FUNDING_SOURCES.indexOf(source) === -1)) {
+    if (remembered.find(source => FUNDING_SOURCES.indexOf(source) === -1)) {
         throw new Error(`Expected valid funding sources, got ${ JSON.stringify(remembered) }`);
     }
 
-    if (!env || ENVS.indexOf(env) === -1) {
+    if (ENVS.indexOf(env) === -1) {
         throw new Error(`Expected valid env, got ${ env || 'undefined' }`);
     }
 
@@ -193,16 +192,8 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : ButtonProps {
         throw new Error(`Expected fundingEligibility`);
     }
 
-    if (!platform || PLATFORMS.indexOf(platform) === -1) {
+    if (PLATFORMS.indexOf(platform) === -1) {
         throw new Error(`Expected valid platform, got ${ platform || 'undefined' }`);
-    }
-
-    if (!sessionID) {
-        throw new Error(`Expected sessionID`);
-    }
-
-    if (!buttonSessionID) {
-        throw new Error(`Expected buttonSessionID`);
     }
 
     style = normalizeButtonStyle(style, { locale });

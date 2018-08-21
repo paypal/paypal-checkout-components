@@ -1,9 +1,8 @@
 /* @flow */
 /* eslint import/unambiguous: 0 */
 
-import type { SDKGlobalType } from 'paypal-braintree-web-client/src/types';
+import type { SDKGlobalType, FundingEligibilityType } from 'paypal-braintree-web-client/src';
 
-import type { FundingEligibilityType } from './types';
 import { FUNDING } from './constants';
 
 declare var __TEST__: boolean;

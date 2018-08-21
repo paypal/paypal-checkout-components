@@ -9,7 +9,7 @@ import { type Component } from 'zoid/src/component/component';
 import { isIEIntranet, isDevice, uniqueID, redirect, request } from 'belter/src';
 
 import { URLS, DOMAINS, STAGE, STAGE_DOMAIN } from '../config';
-import { CURRENT_ENV, CLIENT_ID, LOCALE, LOG_LEVEL, FUNDING_ELIGIBILITY } from '../globals';
+import { CURRENT_ENV, CLIENT_ID, LOCALE, LOG_LEVEL, FUNDING_ELIGIBILITY, INTENT, COMMIT, VAULT } from '../globals';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_CONTEXT_TYPE, PLATFORM, FUNDING } from '../constants';
 import { checkRecognizedBrowser, getSessionID, isEligible, getBrowser } from '../lib';
 import { createOrder } from '../api';
@@ -205,11 +205,27 @@ export let Button : Component<ButtonProps> = create({
             }
         },
 
+        intent: {
+            type:       'string',
+            queryParam: true,
+            value() : string {
+                return INTENT;
+            }
+        },
+
         commit: {
             type:       'boolean',
             queryParam: true,
-            def() : boolean {
-                return true;
+            value() : boolean {
+                return COMMIT;
+            }
+        },
+
+        vault: {
+            type:       'boolean',
+            queryParam: true,
+            value() : boolean {
+                return VAULT;
             }
         },
 

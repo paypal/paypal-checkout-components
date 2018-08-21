@@ -10,6 +10,10 @@ export const LOCALE = {
     get LANG() : $Values<typeof LANG> { return __LOCALE__.__LANG__; }
 };
 
+export const INTENT = __INTENT__;
+export const COMMIT = __COMMIT__;
+export const VAULT  = __VAULT__;
+
 export const FUNDING_ELIGIBILITY = __paypal_checkout__.serverConfig.fundingEligibility;
 
 export const REMEMBERED_FUNDING = __PAYPAL_CHECKOUT__.__REMEMBERED_FUNDING__;
