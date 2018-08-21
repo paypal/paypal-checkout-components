@@ -10,6 +10,10 @@ window.paypal.Button.render({
 
     onAuthorize() {
         window.paypal.postRobot.send(window.top.frames[0], 'onAuthorize');
+    },
+
+    onShippingChange() {
+        window.paypal.postRobot.send(window.top.frames[0], 'onShippingChange');
     }
 
 }, document.body).then(button => {
