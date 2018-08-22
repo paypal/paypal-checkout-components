@@ -150,7 +150,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
         logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
 
         allowPrimary:             true,
-        allowPrimaryVertical:     false,
+        allowPrimaryVertical:     true,
         allowPrimaryHorizontal:   true,
         allowSecondaryVertical:   false,
         allowSecondaryHorizontal: false
