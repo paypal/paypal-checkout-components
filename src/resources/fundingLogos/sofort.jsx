@@ -6,7 +6,7 @@ import { BUTTON_LOGO_COLOR } from '../../constants';
 
 const SOFORT_LOGO_COLORS = {
     [ BUTTON_LOGO_COLOR.WHITE ]: {
-        primary:   '#ffffff',
+        primary:   '#2C2E2F',
         secondary: '#ffffff'
     },
     [ BUTTON_LOGO_COLOR.ANY ]: {

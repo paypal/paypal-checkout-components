@@ -10,7 +10,10 @@
     env: 'local', // Optional: specify 'sandbox' environment
     // env: 'stage', // Optional: specify 'sandbox' environment
 
-    locale: 'en_JP',
+    locale: 'en_NL',
+        funding: {
+            allowed: [ paypal.FUNDING.SOFORT, paypal.FUNDING.IDEAL, paypal.FUNDING.EPS, paypal.FUNDING.CREDIT]
+        },
     // locale: 'en_SG',
     // locale: 'en_US',
     // locale: 'ar_YE',
@@ -23,7 +26,7 @@
       layout: 'vertical',
       size:  'large', // small | medium | large | responsive
       shape: 'rect',   // pill | rect
-      color: 'gold'   // gold | blue | silve | black
+      color: 'black'   // gold | blue | silve | black
     },
 
     client: {

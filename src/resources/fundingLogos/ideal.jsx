@@ -8,7 +8,7 @@ const IDEAL_LOGO_COLORS = {
     [ BUTTON_LOGO_COLOR.WHITE ]: {
         primary:   '#ffffff',
         secondary: '#ffffff',
-        tertiary:  '#ffffff'
+        tertiary:  '#2C2E2F'
     },
     [ BUTTON_LOGO_COLOR.ANY ]: {
         primary:   '#000000',
