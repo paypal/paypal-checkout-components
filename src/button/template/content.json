@@ -3507,7 +3507,7 @@
             "pay": "Pagar con {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
             "installment": "{logo:pp} {logo:paypal}  Pagos en<br>  mensualidades",
-            "installment_period": "{logo:pp} {logo:paypal}  Pague hasta<br>  [installmentperiod]x sin interés",
+            "installment_period": "{logo:pp} {logo:paypal}  Pague hasta en<br>  [installmentperiod] mensualidades",
             "poweredBy": "Desarrollado por {logo:paypal}"
         },
         "en": {
