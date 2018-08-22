@@ -447,7 +447,7 @@ export let Button : Component<ButtonOptions> = create({
                 if (allowed && allowed.indexOf(FUNDING.VENMO) === -1 &&
                     remembered && remembered.indexOf(FUNDING.VENMO) === -1 && isDevice()) {
 
-                    venmoThrottle = getThrottle('venmo_uncookied_render', 1);
+                    venmoThrottle = getThrottle('venmo_uncookied_render', 10);
 
                     if (venmoThrottle.isEnabled()) {
                         allowed = [ ...allowed, FUNDING.VENMO ];
