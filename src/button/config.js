@@ -18,7 +18,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
             BUTTON_COLOR.GOLD,
             BUTTON_COLOR.BLUE,
             BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.WHITE
         ],
 
         sizes:  [
@@ -176,7 +177,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
         colors: [
             BUTTON_COLOR.DARKBLUE,
-            BUTTON_COLOR.BLACK
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.WHITE
         ],
 
         logoColors:  {
@@ -211,7 +213,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
         colors: [
             BUTTON_COLOR.BLUE,
             BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.WHITE
         ],
 
         logoColors:  {
@@ -243,7 +246,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
         colors: [
             BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.WHITE
         ],
 
         logoColors:  {
@@ -276,7 +280,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
         colors: [
             BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.WHITE
         ],
 
         logoColors:  {
@@ -309,7 +314,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
         colors: [
             BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.WHITE
         ],
 
         logoColors:  {
@@ -342,7 +348,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
         colors: [
             BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.WHITE
         ],
 
         logoColors:  {
@@ -375,7 +382,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
         colors: [
             BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.WHITE
         ],
 
         logoColors:  {
@@ -408,7 +416,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
         colors: [
             BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.WHITE
         ],
 
         logoColors:  {
@@ -441,7 +450,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
         colors: [
             BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.WHITE
         ],
 
         logoColors:  {
@@ -474,7 +484,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
         colors: [
             BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.WHITE
         ],
 
         logoColors:  {
@@ -507,7 +518,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
         colors: [
             BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.WHITE
         ],
 
         logoColors:  {
