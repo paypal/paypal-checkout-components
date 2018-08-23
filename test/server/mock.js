@@ -1,58 +1,56 @@
+/* @flow */
 
-export function mockButtonTypes() {
+type MockReq = {
+    query : { [string] : string }
+};
+
+export function mockReq(opts : Object = {}) : MockReq {
     return {
-        res: {
-            data: {
-                eligible: [],
-                ineligible: []
-            }
-        }
+        query: {},
+        ...opts
     };
 }
 
-export function mockPre() {
-    return {
-        buttonTypes: mockButtonTypes()
-    };
-}
+type MockRes = {
+    _status : number,
+    _headers : { [string] : string },
+    _body? : string,
 
-export function mockConfig() {
-    return {
-        urls: {
-            incontextScript: 'https://www.paypalobjects.com/api'
-        }
-    };
-}
+    status : (number) => MockRes,
+    header : (string, string) => MockRes,
+    send : (string) => MockRes,
 
-export function mockMeta() {
-    return {
-        version: '4',
-        staticUrl: '/webapps/hermes/static',
-        buildId: 'hermes-xxx',
-        env: 'test',
-        icstage: 'stage2md0xx'
-    };
-}
+    getStatus : () => number,
+    getHeader : (string) => ?string,
+    getBody : () => ?string
+};
 
-export function mockCookies() {
+export function mockRes(opts : Object = {}) : MockRes {
     return {
+        _status:  200,
+        _headers: {},
 
-    };
-}
-
-export function mockContext() {
-    return {
-        config: mockConfig(),
-        meta: mockMeta(),
-        cookies: mockCookies(),
-        pre: mockPre()
-    };
-}
-
-export function mockReq() {
-    return {
-        query: {
-            'locale.x': 'en_US'
-        }
+        status(status : number) : MockRes {
+            this._status = status;
+            return this;
+        },
+        header(key : string, value : string) : MockRes {
+            this._headers[key] = value;
+            return this;
+        },
+        send(str : string) : MockRes {
+            this.body = str;
+            return this;
+        },
+        getStatus() : number {
+            return this._status;
+        },
+        getHeader(name : string) : ?string {
+            return this._headers[name];
+        },
+        getBody() : ?string {
+            return this.body;
+        },
+        ...opts
     };
 }

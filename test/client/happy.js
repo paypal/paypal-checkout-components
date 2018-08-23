@@ -1,82 +1,13 @@
+/* @flow */
+/* eslint require-await: off */
 
-import { FUNDING } from '../../constants';
-import { setupButton } from '../../public/js/button/button';
+import { setupButton } from '../../src';
 
-import { createButtonHTML, getPaymentApiMock, executePaymentApiMock,
-    getMockCheckoutInstance, getLocaleApiMock, getFundingApiMock,
+import { createButtonHTML, getMockCheckoutInstance,
     getOrderApiMock, captureOrderApiMock, authorizeOrderApiMock } from './mocks';
 import { triggerKeyPress } from './util';
 
 describe('happy cases', () => {
-
-    it('should set up locale correctly', async () => {
-
-        let country = 'FR';
-        let lang = 'fr';
-
-        let localeApiMock = getLocaleApiMock({
-            data: {
-                ack: 'success',
-                data: {
-                    country,
-                    lang
-                }
-            }
-        });
-
-        localeApiMock.expectCalls();
-
-        await setupButton();
-
-        localeApiMock.done();
-
-        if (window.paypal.config.locale.country !== country) {
-            throw new Error(`Expected paypal.config.locale.country to be ${ country }, got ${ window.paypal.config.country }`);
-        }
-
-        if (window.paypal.config.locale.lang !== lang) {
-            throw new Error(`Expected paypal.config.locale.lang to be ${ lang }, got ${ window.paypal.config.lang }`);
-        }
-    });
-
-    it('should call funding.remember for remembered funding sources', async () => {
-
-        let remembered = [ FUNDING.VENMO, FUNDING.PAYPAL, FUNDING.IDEAL ];
-        let sentRemembered;
-
-        let fundingApiMock = getFundingApiMock({
-            data: {
-                ack: 'success',
-                data: {
-                    eligible: remembered
-                }
-            }
-        });
-
-        fundingApiMock.expectCalls();
-
-        window.xprops.funding.remember = (sources) => {
-            sentRemembered = sources;
-        };
-
-        await setupButton();
-
-        fundingApiMock.done();
-
-        if (!sentRemembered) {
-            throw new Error(`Expected remembered funding sources to be sent`);
-        }
-
-        if (sentRemembered.length !== remembered.length) {
-            throw new Error(`Expected ${ remembered.length } funding sources to be sent, got ${ sentRemembered.length }`);
-        }
-
-        for (let i = 0; i < remembered.length; i++) {
-            if (sentRemembered[i] !== remembered[i]) {
-                throw new Error(`Expected remembered funding source ${ i } to be ${ remembered[i] }, got ${ sentRemembered[i] }`);
-            }
-        }
-    });
 
     it('should render a button, click the button, and render checkout', async () => {
     
@@ -120,7 +51,7 @@ describe('happy cases', () => {
     
         let onClickCalled = false;
     
-        window.xprops.onClick = () => {
+        window.xprops.onClick = async () => {
             onClickCalled = true;
         };
     
@@ -139,7 +70,7 @@ describe('happy cases', () => {
         
         let onClickCalled = false;
     
-        window.xprops.onClick = () => {
+        window.xprops.onClick = async () => {
             onClickCalled = true;
         };
     
@@ -164,7 +95,7 @@ describe('happy cases', () => {
         };
 
         window.paypal.Checkout.renderTo = async (win, props) => {
-            onAuthorize = props.onAuthorize.call(getMockCheckoutInstance());
+            onAuthorize = props.onAuthorize.call(getMockCheckoutInstance(), { orderID: 'xxx', payerID: 'yyy' });
         };
     
         window.document.body.innerHTML = createButtonHTML();
@@ -185,7 +116,7 @@ describe('happy cases', () => {
         let onCancel;
         let onCancelCalled = false;
 
-        window.xprops.onCancel = async () => {
+        window.xprops.onCancel = () => {
             onCancelCalled = true;
         };
 
@@ -208,97 +139,27 @@ describe('happy cases', () => {
 
     it('should render a button, click the button, and render checkout, then pass onAuthorize callback to the parent with the correct data', async () => {
     
-        let paymentID = 'PAY-XXXXXXX';
+        let orderID = 'XXXXXXXXXX';
         let payerID = 'YYYYYYYYYY';
 
         let onAuthorize;
         let onAuthorizeCalled = false;
 
-        window.xprops.onAuthorize = async (data, actions) => {
+        window.xprops.onAuthorize = async (data) => {
 
-            if (data.paymentID !== paymentID) {
-                throw new Error(`Expected data.paymentID to be ${ paymentID }, got ${ data.paymentID }`);
+            if (data.orderID !== orderID) {
+                throw new Error(`Expected data.paymentID to be ${ orderID }, got ${ data.orderID }`);
             }
 
-            if (data.payerID !== payerID) {
-                throw new Error(`Expected data.paymentID to be ${ paymentID }, got ${ data.paymentID }`);
+            if (data.orderID !== orderID) {
+                throw new Error(`Expected data.paymentID to be ${ orderID }, got ${ data.orderID }`);
             }
 
             onAuthorizeCalled = true;
         };
     
         window.paypal.Checkout.renderTo = async (win, props) => {
-            onAuthorize = props.onAuthorize.call(getMockCheckoutInstance(), { paymentID, payerID });
-        };
-    
-        window.document.body.innerHTML = createButtonHTML();
-    
-        await setupButton();
-    
-        window.document.querySelector('.paypal-button').click();
-
-        await onAuthorize;
-
-        if (!onAuthorize || !onAuthorizeCalled) {
-            throw new Error(`Expected onAuthorize to have been called`);
-        }
-    });
-
-    it('should render a button, click the button, and render checkout, then pass onAuthorize callback to the parent with actions.payment.get', async () => {
-    
-        let paymentID = 'PAY-XXXXXXX';
-        let payerID = 'YYYYYYYYYY';
-
-        let onAuthorize;
-        let onAuthorizeCalled = false;
-
-        window.xprops.onAuthorize = async (data, actions) => {
-
-            let getPaymentMock = getPaymentApiMock();
-            getPaymentMock.expectCalls();
-            await actions.payment.get();
-            getPaymentMock.done();
-
-            onAuthorizeCalled = true;
-        };
-    
-        window.paypal.Checkout.renderTo = async (win, props) => {
-            onAuthorize = props.onAuthorize.call(getMockCheckoutInstance(), { paymentID, payerID });
-        };
-    
-        window.document.body.innerHTML = createButtonHTML();
-    
-        await setupButton();
-    
-        window.document.querySelector('.paypal-button').click();
-
-        await onAuthorize;
-
-        if (!onAuthorize || !onAuthorizeCalled) {
-            throw new Error(`Expected onAuthorize to have been called`);
-        }
-    });
-
-    it('should render a button, click the button, and render checkout, then pass onAuthorize callback to the parent with actions.payment.execute', async () => {
-    
-        let paymentID = 'PAY-XXXXXXX';
-        let payerID = 'YYYYYYYYYY';
-
-        let onAuthorize;
-        let onAuthorizeCalled = false;
-
-        window.xprops.onAuthorize = async (data, actions) => {
-
-            let executePaymentMock = executePaymentApiMock();
-            executePaymentMock.expectCalls();
-            await actions.payment.execute();
-            executePaymentMock.done();
-
-            onAuthorizeCalled = true;
-        };
-    
-        window.paypal.Checkout.renderTo = async (win, props) => {
-            onAuthorize = props.onAuthorize.call(getMockCheckoutInstance(), { paymentID, payerID });
+            onAuthorize = props.onAuthorize.call(getMockCheckoutInstance(), { orderID, payerID });
         };
     
         window.document.body.innerHTML = createButtonHTML();
@@ -341,98 +202,6 @@ describe('happy cases', () => {
     
         await setupButton();
     
-        window.document.querySelector('.paypal-button').click();
-
-        await onAuthorize;
-
-        if (!onAuthorize || !onAuthorizeCalled) {
-            throw new Error(`Expected onAuthorize to have been called`);
-        }
-    });
-
-    it('should render a button, click the button, and render checkout, then pass onAuthorize callback to the parent with automatic restart on CC_PROCESSOR_DECLINED', async () => {
-
-        let paymentID = 'PAY-XXXXXXX';
-        let payerID = 'YYYYYYYYYY';
-
-        let onAuthorize;
-        let onAuthorizeCalled = false;
-        let didRestart = false;
-
-        window.xprops.onAuthorize = async (data, actions) => {
-            if (didRestart) {
-                onAuthorizeCalled = true;
-            } else {
-                didRestart = true;
-                onAuthorize = null;
-
-                let executePaymentMock = executePaymentApiMock({
-                    data: {
-                        ack: 'contingency',
-                        contingency: 'CC_PROCESSOR_DECLINED'
-                    }
-                });
-
-                executePaymentMock.expectCalls();
-                actions.payment.execute();
-                executePaymentMock.done();
-            }
-        };
-
-        window.paypal.Checkout.renderTo = async (win, props) => {
-            onAuthorize = props.onAuthorize.call(getMockCheckoutInstance(), { paymentID, payerID });
-        };
-
-        window.document.body.innerHTML = createButtonHTML();
-
-        await setupButton();
-
-        window.document.querySelector('.paypal-button').click();
-
-        await onAuthorize;
-
-        if (!onAuthorize || !onAuthorizeCalled) {
-            throw new Error(`Expected onAuthorize to have been called`);
-        }
-    });
-
-    it('should render a button, click the button, and render checkout, then pass onAuthorize callback to the parent with automatic restart on INSTRUMENT_DECLINED', async () => {
-
-        let paymentID = 'PAY-XXXXXXX';
-        let payerID = 'YYYYYYYYYY';
-
-        let onAuthorize;
-        let onAuthorizeCalled = false;
-        let didRestart = false;
-
-        window.xprops.onAuthorize = async (data, actions) => {
-            if (didRestart) {
-                onAuthorizeCalled = true;
-            } else {
-                didRestart = true;
-                onAuthorize = null;
-
-                let executePaymentMock = executePaymentApiMock({
-                    data: {
-                        ack: 'contingency',
-                        contingency: 'INSTRUMENT_DECLINED'
-                    }
-                });
-
-                executePaymentMock.expectCalls();
-                actions.payment.execute();
-                executePaymentMock.done();
-            }
-        };
-
-        window.paypal.Checkout.renderTo = async (win, props) => {
-            onAuthorize = props.onAuthorize.call(getMockCheckoutInstance(), { paymentID, payerID });
-        };
-
-        window.document.body.innerHTML = createButtonHTML();
-
-        await setupButton();
-
         window.document.querySelector('.paypal-button').click();
 
         await onAuthorize;
@@ -565,7 +334,7 @@ describe('happy cases', () => {
 
                 let captureOrderMock = captureOrderApiMock({
                     data: {
-                        ack: 'contingency',
+                        ack:         'contingency',
                         contingency: 'CC_PROCESSOR_DECLINED'
                     }
                 });
@@ -611,7 +380,7 @@ describe('happy cases', () => {
 
                 let captureOrderMock = captureOrderApiMock({
                     data: {
-                        ack: 'contingency',
+                        ack:         'contingency',
                         contingency: 'INSTRUMENT_DECLINED'
                     }
                 });
@@ -658,7 +427,7 @@ it('should render a button, click the button, and render checkout, then pass onA
 
             let authorizeOrderMock = authorizeOrderApiMock({
                 data: {
-                    ack: 'contingency',
+                    ack:         'contingency',
                     contingency: 'CC_PROCESSOR_DECLINED'
                 }
             });

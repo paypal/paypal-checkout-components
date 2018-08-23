@@ -1,122 +1,71 @@
+/* @flow */
+
+import { regexMap } from 'belter';
 
 import { FUNDING } from '../../constants';
-import { buttonTemplate } from '../../button/templates/button';
+import { buttonMiddleware, paypalCheckoutComponents } from '../../server/button';
 
-import { mockReq, mockContext } from './mock';
-import { regexMap } from './util';
+import { mockReq, mockRes } from './mock';
 
-function getRenderedFundingSources(template) {
-    return regexMap(template, /data-funding-source="([^"]+)"/g, result => result[1]);
+function getRenderedFundingSources(template) : Array<string> {
+    return regexMap(template, /data-funding-source="([^"]+)"/g, (result, group1) => group1);
 }
 
-test('should do a basic button render and succeed', () => {
+afterAll(paypalCheckoutComponents.cancel);
+
+test('should do a basic button render and succeed', async () => {
 
     let req = mockReq();
-    let ctx = mockContext();
+    let res = mockRes();
 
-    buttonTemplate(req, ctx);
-});
+    // $FlowFixMe
+    await buttonMiddleware(req, res);
 
-test('should pass the correct attributes to checkout.js', () => {
+    let status = res.getStatus();
+    let contentType = res.getHeader('content-type');
+    let html = res.getBody();
 
-    let req = mockReq();
-    let ctx = mockContext();
-
-    let template = buttonTemplate(req, ctx);
-
-    if (template.indexOf(`<script src="${ ctx.config.urls.incontextScript }`) === -1) {
-        throw new Error(`Expected button template to have incontext script included`);
+    if (status !== 200) {
+        throw new Error(`Expected response status to be 200, got ${ status }`);
     }
 
-    if (template.indexOf(`data-paypal-checkout`) === -1) {
-        throw new Error(`Expected script to have data-paypal-checkout attribute`);
+    if (contentType !== 'text/html') {
+        throw new Error(`Expected content type to be text/html, got ${ contentType || 'undefined' }`);
     }
 
-    if (template.indexOf(`data-no-bridge`) === -1) {
-        throw new Error(`Expected script to have data-no-bridge attribute`);
+    if (!html) {
+        throw new Error(`Expected res to have a body`);
     }
 
-    if (template.indexOf(`data-env="${ ctx.meta.env }"`) === -1) {
-        throw new Error(`Expected script to have correct data-env attribute`);
-    }
-
-    if (template.indexOf(`data-stage="${ ctx.meta.icstage }"`) === -1) {
-        throw new Error(`Expected script to have correct data-stage attribute`);
-    }
-});
-
-test('should render the button in html', () => {
-
-    let req = mockReq();
-    let ctx = mockContext();
-
-    let template = buttonTemplate(req, ctx);
-
-    if (template.indexOf(`class="paypal-button-container`) === -1) {
+    if (html.indexOf(`class="paypal-button-container`) === -1) {
         throw new Error(`Expected button template to be rendered`);
     }
-});
 
-test('should only render paypal button by default', () => {
+    let fundingSources = getRenderedFundingSources(html);
 
-    let req = mockReq();
-    let ctx = mockContext();
-
-    let template = buttonTemplate(req, ctx);
-
-    let fundingSources = getRenderedFundingSources(template);
-    
-    if (fundingSources.length !== 1 || fundingSources[0] !== FUNDING.PAYPAL) {
-        throw new Error(`Expected only paypal button to be rendered, got: ${ fundingSources.join(', ') }`);
+    if (fundingSources.indexOf(FUNDING.PAYPAL) === -1) {
+        throw new Error(`Expected paypal button to be rendered, got: ${ fundingSources.join(', ') }`);
     }
 });
 
-test('should use buttonTypes api to inform buttons which are rendered', () => {
+test('should render ideal button when locale is nl_NL', async () => {
 
-    let req = mockReq();
-    let ctx = mockContext();
+    let req = mockReq({
+        query: {
+            'locale.country': 'NL',
+            'locale.lang':    'nl'
+        }
+    });
+    let res = mockRes();
 
-    ctx.pre.buttonTypes.res.data.eligible = [ FUNDING.VENMO ];
+    // $FlowFixMe
+    await buttonMiddleware(req, res);
 
-    let template = buttonTemplate(req, ctx);
+    let html = res.getBody();
 
-    let fundingSources = getRenderedFundingSources(template);
+    let fundingSources = getRenderedFundingSources(html);
     
-    if (fundingSources.length !== 2 || fundingSources[1] !== FUNDING.VENMO) {
-        throw new Error(`Expected venmo button to be rendered, got: ${ fundingSources.join(', ') }`);
-    }
-});
-
-test('should use buttonTypes api to inform buttons which are rendered using disallowed', () => {
-
-    let req = mockReq();
-    let ctx = mockContext();
-
-    ctx.pre.buttonTypes.res.data.ineligible = [ FUNDING.CREDIT ];
-
-    req.query['style.layout'] = 'vertical';
-
-    let template = buttonTemplate(req, ctx);
-
-    let fundingSources = getRenderedFundingSources(template);
-
-    if (fundingSources.length !== 6 || fundingSources[1] === FUNDING.CREDIT) {
-        throw new Error(`Not expecting ${ FUNDING.CREDIT } in the funding sources, got: ${ fundingSources.join(', ') }`);
-    }
-});
-
-test('should use funding.allowed to inform buttons which are rendered', () => {
-    
-    let req = mockReq();
-    let ctx = mockContext();
-
-    req.query['funding.allowed'] = FUNDING.VENMO;
-
-    let template = buttonTemplate(req, ctx);
-
-    let fundingSources = getRenderedFundingSources(template);
-    
-    if (fundingSources.length !== 2 || fundingSources[1] !== FUNDING.VENMO) {
-        throw new Error(`Expected venmo button to be rendered, got: ${ fundingSources.join(', ') }`);
+    if (fundingSources.indexOf(FUNDING.IDEAL) === -1) {
+        throw new Error(`Expected ideal button to be rendered, got: ${ fundingSources.join(', ') }`);
     }
 });

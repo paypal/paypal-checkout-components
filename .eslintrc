@@ -1,9 +1,0 @@
-{
-  "extends": "eslint-config-xo/server-es6",
-  "parser" : "babel-eslint",
-
-  "globals": {
-    "window": true,
-    "document": true
-  }
-}

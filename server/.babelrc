@@ -1,0 +1,3 @@
+{  
+    "extends": "grumbler-scripts/config/.babelrc-node"
+}

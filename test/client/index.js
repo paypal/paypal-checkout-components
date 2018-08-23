@@ -1,3 +1,4 @@
+/* @flow */
 
 import { setupMocks } from './mocks';
 

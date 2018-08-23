@@ -1,28 +1,3 @@
-{
-  "presets": [
-      [ "es2015" ]
-  ],
-  
-  "plugins": [
-      [ "transform-flow-strip-types", { "loose": true } ],
-      [ "transform-object-rest-spread", { "loose": true } ],
-      [ "syntax-object-rest-spread", { "loose": true } ],
-      [ "transform-es3-property-literals", { "loose": true } ],
-      [ "transform-es3-member-expression-literals", { "loose": true } ],
-      [ "transform-es2015-for-of", { "loose": true } ],
-      [ "transform-async-to-generator", { "loose": true } ]
-  ],
-
-  "env": {
-      "test": {
-          "plugins": [
-              [ 
-                  "istanbul", {
-                      "only": "public",
-                      "exclude": [ "bower_modules", "test" ]
-                  }
-              ]
-          ]
-      }
-  }
+{  
+    "extends": "grumbler-scripts/config/.babelrc-browser"
 }

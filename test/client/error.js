@@ -1,86 +1,11 @@
+/* @flow */
+/* eslint require-await: off */
 
-import { setupButton } from '../../public/js/button/button';
+import { setupButton } from '../../src';
+
 import { createButtonHTML, getMockCheckoutInstance } from './mocks';
 
 describe('error cases', () => {
-
-    it('should error out on actions.payment.get without a paymentID', async () => {
-
-        let onAuthorize;
-        let onAuthorizeCalled = false;
-    
-        window.paypal.Checkout.renderTo = async (win, props) => {
-            onAuthorize = props.onAuthorize;
-        };
-
-        window.xprops.onAuthorize = async (data, actions) => {
-
-            let error;
-
-            try {
-                await actions.payment.get();
-            } catch (err) {
-                error = err;
-            }
-            
-            if (!error) {
-                throw new Error(`Expected actions.payment.get to throw an error in the absense of a payment id`);
-            }
-
-            onAuthorizeCalled = true;
-        };
-    
-        window.document.body.innerHTML = createButtonHTML();
-    
-        setupButton();
-    
-        window.document.querySelector('.paypal-button').click();
-
-        await onAuthorize.call(getMockCheckoutInstance(), {});
-    
-        if (!onAuthorizeCalled) {
-            throw new Error(`Expected onAuthorize to be called`);
-        }
-    });
-
-    it('should error out on actions.payment.execute without a paymentID', async () => {
-    
-        let onAuthorize;
-        let onAuthorizeCalled = false;
-    
-        window.paypal.Checkout.renderTo = async (win, props) => {
-            onAuthorize = props.onAuthorize;
-        };
-
-        window.xprops.onAuthorize = async (data, actions) => {
-
-            let error;
-
-            try {
-                await actions.payment.execute();
-            } catch (err) {
-                error = err;
-            }
-            
-            if (!error) {
-                throw new Error(`Expected actions.payment.execute to throw an error in the absense of a payment id`);
-            }
-
-            onAuthorizeCalled = true;
-        };
-    
-        window.document.body.innerHTML = createButtonHTML();
-    
-        setupButton();
-    
-        window.document.querySelector('.paypal-button').click();
-
-        await onAuthorize.call(getMockCheckoutInstance(), {});
-    
-        if (!onAuthorizeCalled) {
-            throw new Error(`Expected onAuthorize to be called`);
-        }
-    });
 
     it('should call xchild.error for any onAuthorize error', async () => {
 
@@ -103,7 +28,7 @@ describe('error cases', () => {
         };
 
         window.paypal.Checkout.renderTo = async (win, props) => {
-            onAuthorize = props.onAuthorize.call(getMockCheckoutInstance());
+            onAuthorize = props.onAuthorize.call(getMockCheckoutInstance(), { orderID: 'XXXXX', payerID: 'YYYYY' });
         };
 
         window.document.body.innerHTML = createButtonHTML();
@@ -138,13 +63,13 @@ describe('error cases', () => {
             errorCalled = true;
         };
 
-        window.xprops.onCancel = async () => {
+        window.xprops.onCancel = () => {
             onCancelCalled = true;
             throw error;
         };
 
         window.paypal.Checkout.renderTo = async (win, props) => {
-            onCancel = props.onCancel.call(getMockCheckoutInstance(), {});
+            onCancel = props.onCancel.call(getMockCheckoutInstance(), { payerID: 'YYYYYY' });
         };
 
         window.document.body.innerHTML = createButtonHTML();

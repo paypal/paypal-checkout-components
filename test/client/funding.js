@@ -1,16 +1,18 @@
+/* @flow */
 
 import { FUNDING } from '../../constants';
-import { setupButton } from '../../public/js/button/button';
+import { setupButton } from '../../src';
+
 import { createButtonHTML } from './mocks';
 
 describe('funding source cases', () => {
 
     it('should render a button, click the button, and render checkout with paypal funding source', () => {
     
-        let selectedFundingSource;
+        let selectedFundingSource = '';
     
         window.paypal.Checkout = {
-            async renderTo(win, { fundingSource }) {
+            renderTo: (win, { fundingSource }) => {
                 selectedFundingSource = fundingSource;
             }
         };
@@ -26,12 +28,12 @@ describe('funding source cases', () => {
         }
     });
     
-    it('should render a button, click the button, and render checkout with paypal funding source', () => {
+    it('should render a button, click the button, and render checkout with venmo funding source', () => {
     
-        let selectedFundingSource;
+        let selectedFundingSource = '';
     
         window.paypal.Checkout = {
-            async renderTo(win, { fundingSource }) {
+            renderTo: (win, { fundingSource }) => {
                 selectedFundingSource = fundingSource;
             }
         };
