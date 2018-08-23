@@ -14,7 +14,7 @@
     "start": "node .",
     "setup": "npm install && npm run flow-typed",
     "lint": "eslint src/ server/ test/ *.js",
-    "flow-typed": "flow-typed install --ignoreDeps peer",
+    "flow-typed": "flow-typed install --ignoreDeps peer && flow-typed install jest@22 mocha@3",
     "flow": "flow",
     "karma": "cross-env NODE_ENV=test babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/karma start",
     "babel": "babel src/ test/ --out-dir dist/module",
@@ -49,7 +49,6 @@
   "devDependencies": {
     "flow-bin": "^0.70.0",
     "grumbler-scripts": "^2.0.56",
-    "mocha": "^3.5.3",
     "sync-browser-mocks": "^1.0.44"
   },
   "license": "PayPal",

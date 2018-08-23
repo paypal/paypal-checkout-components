@@ -15,7 +15,11 @@ afterAll(cancelPayPalCheckoutComponentWatcher);
 
 test('should do a basic button render and succeed', async () => {
 
-    let req = mockReq();
+    let req = mockReq({
+        query: {
+            clientID: 'xyz'
+        }
+    });
     let res = mockRes();
 
     // $FlowFixMe
@@ -52,6 +56,7 @@ test('should render ideal button when locale is nl_NL', async () => {
 
     let req = mockReq({
         query: {
+            'clientID':       'xyz',
             'locale.country': 'NL',
             'locale.lang':    'nl'
         }
@@ -67,5 +72,20 @@ test('should render ideal button when locale is nl_NL', async () => {
     
     if (fundingSources.indexOf(FUNDING.IDEAL) === -1) {
         throw new Error(`Expected ideal button to be rendered, got: ${ fundingSources.join(', ') }`);
+    }
+});
+
+test('should give a 400 error with no clientID passed', async () => {
+
+    let req = mockReq();
+    let res = mockRes();
+
+    // $FlowFixMe
+    await buttonMiddleware(req, res);
+
+    let status = res.getStatus();
+
+    if (status !== 400) {
+        throw new Error(`Expected status code to be 400, gor ${ status }`);
     }
 });
