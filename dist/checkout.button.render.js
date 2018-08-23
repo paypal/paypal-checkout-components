@@ -732,13 +732,14 @@
             ZalgoPromise.prototype.catch = function(onError) {
                 return this.then(void 0, onError);
             };
-            ZalgoPromise.prototype.finally = function(handler) {
+            ZalgoPromise.prototype.finally = function(onFinally) {
+                if (onFinally && "function" != typeof onFinally && !onFinally.call) throw new Error("Promise.finally expected a function");
                 return this.then(function(result) {
-                    return ZalgoPromise.try(handler).then(function() {
+                    return ZalgoPromise.try(onFinally).then(function() {
                         return result;
                     });
                 }, function(err) {
-                    return ZalgoPromise.try(handler).then(function() {
+                    return ZalgoPromise.try(onFinally).then(function() {
                         throw err;
                     });
                 });
@@ -819,6 +820,7 @@
                 }(handler);
             };
             ZalgoPromise.try = function(method, context, args) {
+                if (method && "function" != typeof method && !method.call) throw new Error("Promise.try expected a function");
                 var result = void 0;
                 try {
                     result = method.apply(context, args || []);
@@ -936,7 +938,7 @@
             },
             logoLabel: "{ logo: " + constants.h.PP + " } { logo: " + constants.h.PAYPAL + " }",
             allowPrimary: !0,
-            allowPrimaryVertical: !1,
+            allowPrimaryVertical: !0,
             allowPrimaryHorizontal: !0,
             allowSecondaryVertical: !1,
             allowSecondaryHorizontal: !1
@@ -2092,7 +2094,7 @@
                 })));
             }(normalizeProps(props)) : null;
             var script;
-            return jsxToHTML("div", _extends({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.214", 
+            return jsxToHTML("div", _extends({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.215", 
             _ref18), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -2221,7 +2223,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.214",
+            version: "4.0.215",
             cors: !0,
             env: constants.s.PRODUCTION,
             state: "checkoutjs",

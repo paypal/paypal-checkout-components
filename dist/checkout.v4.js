@@ -5510,13 +5510,14 @@
             ZalgoPromise.prototype.catch = function(onError) {
                 return this.then(void 0, onError);
             };
-            ZalgoPromise.prototype.finally = function(handler) {
+            ZalgoPromise.prototype.finally = function(onFinally) {
+                if (onFinally && "function" != typeof onFinally && !onFinally.call) throw new Error("Promise.finally expected a function");
                 return this.then(function(result) {
-                    return ZalgoPromise.try(handler).then(function() {
+                    return ZalgoPromise.try(onFinally).then(function() {
                         return result;
                     });
                 }, function(err) {
-                    return ZalgoPromise.try(handler).then(function() {
+                    return ZalgoPromise.try(onFinally).then(function() {
                         throw err;
                     });
                 });
@@ -5597,6 +5598,7 @@
                 }(handler);
             };
             ZalgoPromise.try = function(method, context, args) {
+                if (method && "function" != typeof method && !method.call) throw new Error("Promise.try expected a function");
                 var result = void 0;
                 try {
                     result = method.apply(context, args || []);
@@ -5643,7 +5645,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.214",
+            version: "4.0.215",
             cors: !0,
             env: constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -9175,7 +9177,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.214"
+                    ver: "4.0.215"
                 };
             });
             Object(beaver_logger_client.a)(function() {
@@ -9452,7 +9454,7 @@
             });
         });
         function getScriptVersion() {
-            return Boolean(getCurrentScript()) ? "4" : "4.0.214";
+            return Boolean(getCurrentScript()) ? "4" : "4.0.215";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -11508,7 +11510,7 @@
             },
             logoLabel: "{ logo: " + src_constants.h.PP + " } { logo: " + src_constants.h.PAYPAL + " }",
             allowPrimary: !0,
-            allowPrimaryVertical: !1,
+            allowPrimaryVertical: !0,
             allowPrimaryHorizontal: !0,
             allowSecondaryVertical: !1,
             allowSecondaryHorizontal: !1
@@ -12284,7 +12286,7 @@
                     logoColor: "blue"
                 })));
             }(props_normalizeProps(props)) : null;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[src_constants.c.VERSION] = "4.0.214", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[src_constants.c.VERSION] = "4.0.215", 
             _ref18), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -12650,7 +12652,7 @@
                         var remembered = getRememberedFunding(function(sources) {
                             return sources;
                         });
-                        allowed && -1 === allowed.indexOf(src_constants.v.VENMO) && remembered && -1 === remembered.indexOf(src_constants.v.VENMO) && Object(device.b)() && (venmoThrottle = getThrottle("venmo_uncookied_render", 1)).isEnabled() && (allowed = [].concat(allowed, [ src_constants.v.VENMO ]));
+                        allowed && -1 === allowed.indexOf(src_constants.v.VENMO) && remembered && -1 === remembered.indexOf(src_constants.v.VENMO) && Object(device.b)() && (venmoThrottle = getThrottle("venmo_uncookied_render", 10)).isEnabled() && (allowed = [].concat(allowed, [ src_constants.v.VENMO ]));
                         if (!Object(device.b)() || Object(util.e)("disable_venmo")) {
                             remembered && -1 !== remembered.indexOf(src_constants.v.VENMO) && (remembered = remembered.filter(function(source) {
                                 return source !== src_constants.v.VENMO;
@@ -13317,7 +13319,7 @@
             setup__track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.214", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_Card = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0;
+        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.215", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_Card = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0;
         if (Object(util.g)()) {
             interface_Checkout = component_Checkout;
             interface_Card = Card;
@@ -13429,7 +13431,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.214";
+                payload.version = "4.0.215";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 var query = [];
@@ -14008,18 +14010,18 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
-        if (window.paypal && "4.0.214" === window.paypal.version) {
+        if (window.paypal && "4.0.215" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.214"
+                version: "4.0.215"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.214) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.215) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.214" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.215" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.214"
+                version: "4.0.215"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.214");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.215");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
