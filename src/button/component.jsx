@@ -76,6 +76,14 @@ export let Button : Component<ButtonProps> = create({
 
     props: {
 
+        clientID: {
+            type: 'string',
+            value() : string {
+                return CLIENT_ID;
+            },
+            queryParam: true
+        },
+
         sessionID: {
             type: 'string',
             value() : string {
@@ -156,7 +164,7 @@ export let Button : Component<ButtonProps> = create({
                     let actions = {
                         request,
                         order: {
-                            create: (options) => createOrder(CLIENT_ID, options)
+                            create: (options) => createOrder(props.clientID, options)
                         }
                     };
                     
