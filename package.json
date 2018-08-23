@@ -17,7 +17,7 @@
     "flow-typed": "flow-typed install --ignoreDeps peer && flow-typed install jest@22 mocha@3",
     "flow": "flow",
     "karma": "cross-env NODE_ENV=test babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/karma start",
-    "babel": "babel src/ test/ --out-dir dist/module",
+    "babel": "babel server/*.js server/**/*.js --exclude=node_modules --out-dir .",
     "webpack": "babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/webpack --progress",
     "test": "npm run lint && npm run flow-typed && npm run flow && npm run karma && npm run jest",
     "build": "npm run test && npm run babel && npm run webpack",
@@ -29,7 +29,9 @@
     "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && flow-typed install",
     "debug": "cross-env NODE_ENV=debug",
     "jest": "jest test/server --collectCoverage --env=node",
-    "cover": "echo no-cover"
+    "cover": "echo no-cover",
+    "prepublish": "in-publish && npm run babel || not-in-publish",
+    "postpublish": "git checkout config"
   },
   "peerDependencies": {
     "cal": "^0.5.44",
