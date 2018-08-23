@@ -35,4 +35,11 @@ export let buttonColorStyle = `
         background: transparent;
         color: #111;
     }
+
+    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE } {
+        background: #fff;
+        color: #2C2E2F;
+        border: 1px solid #2C2E2F;
+    }
 `;
+
