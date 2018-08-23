@@ -1,20 +1,26 @@
 /* @flow */
 
 import { poll } from 'grabthar';
-import { undotify } from 'belter';
+import { undotify, memoize } from 'belter';
 
 import { getFundingEligibility } from './eligibility';
 
 type ExpressRequest = express$Request; // eslint-disable-line no-undef
 type ExpressResponse = express$Response; // eslint-disable-line no-undef
 
-export let paypalCheckoutComponents = poll({
-    name: 'paypal-checkout-components'
+export let getPayPalCheckoutComponentWatcher = memoize(() => {
+    return poll({
+        name: 'paypal-checkout-components'
+    });
 });
+
+export let cancelPayPalCheckoutComponentWatcher = () => {
+    return getPayPalCheckoutComponentWatcher().cancel();
+};
 
 export async function buttonMiddleware(req : ExpressRequest, res : ExpressResponse) : Promise<void> {
     try {
-        let { Buttons, DEFAULT_PROPS } = await paypalCheckoutComponents.import(`dist/button.js`);
+        let { Buttons, DEFAULT_PROPS } = await getPayPalCheckoutComponentWatcher().import(`dist/button.js`);
 
         let params = undotify(req.query);
 

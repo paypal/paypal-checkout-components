@@ -3,7 +3,7 @@
 import { regexMap } from 'belter';
 
 import { FUNDING } from '../../constants';
-import { buttonMiddleware, paypalCheckoutComponents } from '../../server/button';
+import { buttonMiddleware, cancelPayPalCheckoutComponentWatcher } from '../../server/button';
 
 import { mockReq, mockRes } from './mock';
 
@@ -11,7 +11,7 @@ function getRenderedFundingSources(template) : Array<string> {
     return regexMap(template, /data-funding-source="([^"]+)"/g, (result, group1) => group1);
 }
 
-afterAll(paypalCheckoutComponents.cancel);
+afterAll(cancelPayPalCheckoutComponentWatcher);
 
 test('should do a basic button render and succeed', async () => {
 
