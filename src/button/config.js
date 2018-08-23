@@ -18,8 +18,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
             BUTTON_COLOR.GOLD,
             BUTTON_COLOR.BLUE,
             BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK,
-            BUTTON_COLOR.WHITE
+            BUTTON_COLOR.BLACK
         ],
 
         sizes:  [
@@ -44,8 +43,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
             [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLUE,
             [ BUTTON_COLOR.BLUE ]:   BUTTON_LOGO_COLOR.WHITE,
             [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE,
-            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE,
-            [ BUTTON_COLOR.WHITE ]:  BUTTON_LOGO_COLOR.BLUE
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE
         },
 
         tagLineColors:  {
@@ -53,8 +51,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
             [ BUTTON_COLOR.SILVER ]:     BUTTON_TAGLINE_COLOR.BLUE,
             [ BUTTON_COLOR.BLUE ]:       BUTTON_TAGLINE_COLOR.BLUE,
             [ BUTTON_COLOR.BLACK ]:      BUTTON_TAGLINE_COLOR.BLACK,
-            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_TAGLINE_COLOR.BLUE,
-            [ BUTTON_COLOR.WHITE ]:      BUTTON_TAGLINE_COLOR.BLUE
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_TAGLINE_COLOR.BLUE
 
         },
 
@@ -63,8 +60,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
             [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.BLUE,
             [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
             [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
-            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.WHITE ]:      BUTTON_COLOR.WHITE
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER
         },
 
         tag:     `{ content: safer_tag }`,
@@ -154,7 +150,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
         logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
 
         allowPrimary:             true,
-        allowPrimaryVertical:     false,
+        allowPrimaryVertical:     true,
         allowPrimaryHorizontal:   true,
         allowSecondaryVertical:   false,
         allowSecondaryHorizontal: false
@@ -180,14 +176,12 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
         colors: [
             BUTTON_COLOR.DARKBLUE,
-            BUTTON_COLOR.BLACK,
-            BUTTON_COLOR.WHITE
+            BUTTON_COLOR.BLACK
         ],
 
         logoColors:  {
             [ BUTTON_COLOR.BLACK ]:    BUTTON_LOGO_COLOR.WHITE,
             [ BUTTON_COLOR.DARKBLUE ]: BUTTON_LOGO_COLOR.WHITE,
-            [ BUTTON_COLOR.WHITE ]:    BUTTON_LOGO_COLOR.BLUE,
             [ BUTTON_COLOR.WHITE ]:    BUTTON_LOGO_COLOR.BLUE
         },
 
@@ -195,8 +189,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
             [ BUTTON_COLOR.GOLD ]:   BUTTON_COLOR.DARKBLUE,
             [ BUTTON_COLOR.BLUE ]:   BUTTON_COLOR.DARKBLUE,
             [ BUTTON_COLOR.SILVER ]: BUTTON_COLOR.DARKBLUE,
-            [ BUTTON_COLOR.BLACK ]:  BUTTON_COLOR.BLACK,
-            [ BUTTON_COLOR.WHITE ]:  BUTTON_COLOR.WHITE
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_COLOR.BLACK
         },
 
         defaultColor: BUTTON_COLOR.DARKBLUE,
@@ -218,15 +211,13 @@ export const BUTTON_CONFIG : ButtonConfig = {
         colors: [
             BUTTON_COLOR.BLUE,
             BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK,
-            BUTTON_COLOR.WHITE
+            BUTTON_COLOR.BLACK
         ],
 
         logoColors:  {
             [ BUTTON_COLOR.BLUE ]:   BUTTON_LOGO_COLOR.WHITE,
             [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLUE,
-            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE,
-            [ BUTTON_COLOR.WHITE ]:  BUTTON_LOGO_COLOR.BLUE
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE
         },
 
         secondaryColors: {
@@ -234,8 +225,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
             [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
             [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.BLUE,
             [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
-            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.WHITE ]:      BUTTON_COLOR.WHITE
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER
         },
 
         allowPrimary: true,
