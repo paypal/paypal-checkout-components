@@ -11,7 +11,7 @@
     "url": "https://github.paypal.com/Checkout/smart-buttons"
   },
   "scripts": {
-    "start": "node .",
+    "start": "babel-node ./server/server",
     "setup": "npm install && npm run flow-typed",
     "lint": "eslint src/ server/ test/ *.js",
     "flow-typed": "flow-typed install --ignoreDeps peer && flow-typed install jest@22 mocha@3",
