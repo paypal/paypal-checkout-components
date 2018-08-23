@@ -16,7 +16,6 @@ export const FUNDING_PRIORITY = [
     FUNDING.MYBANK,
     FUNDING.P24,
     FUNDING.ZIMPLER,
-    FUNDING.WECHATPAY,
     FUNDING.CARD
 ];
 
@@ -177,16 +176,6 @@ export const FUNDING_CONFIG = {
     [ FUNDING.ZIMPLER ]: {
         allowedCountries: [
             COUNTRY.FI
-        ],
-
-        allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
-    },
-    [ FUNDING.WECHATPAY ]: {
-        allowedCountries: [
-            COUNTRY.CN
         ],
 
         allowHorizontal: false,
