@@ -16,7 +16,7 @@ import { redirect as redir, checkRecognizedBrowser,
     isIEIntranet, isEligible,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
-import { rest, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
+import { rest, addPaymentOptions, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
     mapPaymentToBraintree, type BraintreePayPalClient } from '../integrations';
@@ -633,8 +633,23 @@ export let Button : Component<ButtonOptions> = create({
                     flushLogs();
                     let timeout = __TEST__ ? 500 : 10 * 1000;
 
+                    const shippingOptions = {
+                        update: (options) => {
+                            const paymentOptions = getPaymentOptions(data.paymentID);
+                            const paymentPayer = (paymentOptions && paymentOptions.payer) ? paymentOptions.payer : {};
+
+                            return addPaymentOptions(data.paymentID, {
+                                ...paymentOptions,
+                                payer: {
+                                    ...paymentPayer,
+                                    shipping_options: [ ...options ]
+                                }
+                            });
+                        }
+                    };
+
                     return ZalgoPromise.try(() => {
-                        return original.call(this, data, actions);
+                        return original.call(this, data, { ...actions, shippingOptions });
                     }).timeout(timeout, new Error(`Timed out waiting ${ timeout }ms for payment`));
                 };
             }
