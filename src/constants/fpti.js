@@ -25,8 +25,8 @@ export const FPTI_TRANSITION = {
     BUTTON_LOAD:     'process_button_load',
     BUTTON_CLICK:    'process_button_click',
 
-    CREATE_PAYMENT:  'process_create_payment',
-    RECIEVE_PAYMENT: 'process_recieve_payment',
+    CREATE_ORDER:  'process_create_order',
+    RECIEVE_ORDER: 'process_recieve_order',
 
     CHECKOUT_INIT:      'process_checkout_init',
     CHECKOUT_AUTHORIZE: 'process_checkout_authorize',

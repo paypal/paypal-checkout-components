@@ -80,8 +80,8 @@ for (let config of buttonConfigs) {
             let client = window.paypal.client();
 
             client.Button.render(Object.assign({
-                payment() { /* pass */ },
-                onAuthorize() { /* pass */ }
+                createOrder() { /* pass */ },
+                onApprove() { /* pass */ }
             }, options.button), container);
 
             let rect = container.querySelector('iframe').getBoundingClientRect();

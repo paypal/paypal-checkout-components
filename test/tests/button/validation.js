@@ -14,46 +14,13 @@ let buttonConfigs = [
 
         cases: [
             {
-                desc: `both payment and onAuthorize`,
+                desc: `both createOrder and onApprove`,
 
                 valid: true,
 
                 conf: {
-                    payment:     noop,
-                    onAuthorize: noop
-                }
-            },
-
-            {
-                desc: `just payment, no onAuthorize`,
-
-                valid: false,
-
-                conf: {
-                    payment: noop
-                }
-            },
-
-            {
-                desc: `just onAuthorize, no payment`,
-
-                valid: false,
-
-                conf: {
-                    onAuthorize: noop
-                }
-            },
-
-
-            {
-                desc: `commit true`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-                    commit:      true
+                    createOrder:     noop,
+                    onApprove:   noop
                 }
             }
         ]
@@ -126,8 +93,8 @@ let buttonConfigs = [
             valid,
 
             conf: {
-                payment:     noop,
-                onAuthorize: noop,
+                createOrder:     noop,
+                onApprove:   noop,
                 style:       { label }
             }
         }))
@@ -177,8 +144,8 @@ let buttonConfigs = [
             locale,
 
             conf: {
-                payment:     noop,
-                onAuthorize: noop,
+                createOrder:     noop,
+                onApprove:   noop,
                 style:       { period, label: 'installment' }
             }
         }))
@@ -211,8 +178,8 @@ let buttonConfigs = [
             valid,
 
             conf: {
-                payment:     noop,
-                onAuthorize: noop,
+                createOrder:     noop,
+                onApprove:   noop,
                 style:       { shape }
             }
         }))
@@ -518,8 +485,8 @@ let buttonConfigs = [
             valid,
 
             conf: {
-                payment:     noop,
-                onAuthorize: noop,
+                createOrder:     noop,
+                onApprove:   noop,
                 style:       { label, color }
             }
         }))
@@ -670,8 +637,8 @@ let buttonConfigs = [
             valid,
 
             conf: {
-                payment:     noop,
-                onAuthorize: noop,
+                createOrder:     noop,
+                onApprove:   noop,
                 commit,
                 style:       { label, layout, tagline, fundingicons, size }
             }
@@ -715,8 +682,8 @@ let buttonConfigs = [
             valid,
 
             conf: {
-                payment:     noop,
-                onAuthorize: noop,
+                createOrder:     noop,
+                onApprove:   noop,
                 style:       { tagline, layout }
             }
         }))
@@ -756,8 +723,8 @@ let buttonConfigs = [
 
             conf: {
                 style:       { height, size },
-                payment:     noop,
-                onAuthorize: noop
+                createOrder:     noop,
+                onApprove:   noop
             }
         }))
     }

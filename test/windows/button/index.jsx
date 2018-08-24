@@ -31,19 +31,19 @@ function renderCheckout(props = {}) {
 
     client.Checkout.renderTo(window.xchild.getParentRenderWindow(), {
 
-        payment: window.xprops.payment,
+        payment: window.xprops.createOrder,
         onAuthorize(data, actions) : void | ZalgoPromise<void> {
 
-            return window.xprops.onAuthorize({
+            return window.xprops.onApprove({
                 ...data,
 
-                payment: {}
+                order: {}
 
             }, {
                 ...actions,
 
-                payment: {
-                    execute() {
+                order: {
+                    capture() {
                         // pass
                     },
 

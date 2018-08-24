@@ -17,10 +17,6 @@ export const LOG_LEVEL = {
     ERROR: ('error' : 'error')
 };
 
-export const PAYMENT_TYPE = {
-    EC_TOKEN: ('ec_token' : 'ec_token')
-};
-
 export const ATTRIBUTE = {
     BUTTON:         ('data-button' : 'data-button'),
     FUNDING_SOURCE: 'data-funding-source',

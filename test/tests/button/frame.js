@@ -19,7 +19,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             client.Checkout.contexts.iframe = false;
         });
 
-        it('should render a button into a container and click on the button, then complete the payment', () => {
+        it('should render a button into a container and click on the button, then complete the checkout', () => {
 
             let iframe = document.createElement('iframe');
             iframe.src = `/base/test/windows/buttonframe/index.htm#${ flow }`;
@@ -30,7 +30,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             document.body.appendChild(iframe);
 
-            return once('onAuthorize').then(() => {
+            return once('onApprove').then(() => {
                 if (iframe.parentNode) {
                     iframe.parentNode.removeChild(iframe);
                 }

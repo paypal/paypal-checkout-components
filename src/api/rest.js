@@ -55,7 +55,7 @@ export let createAccessToken = memoize((clientID : string) : ZalgoPromise<string
 function logOrderResponse(orderID) {
     logger.track({
         [ FPTI_KEY.STATE ]:        FPTI_STATE.BUTTON,
-        [ FPTI_KEY.TRANSITION ]:   FPTI_TRANSITION.CREATE_PAYMENT,
+        [ FPTI_KEY.TRANSITION ]:   FPTI_TRANSITION.CREATE_ORDER,
         [ FPTI_KEY.CONTEXT_TYPE ]: FPTI_CONTEXT_TYPE.EC_TOKEN,
         [ FPTI_KEY.TOKEN ]:        orderID,
         [ FPTI_KEY.CONTEXT_ID ]:   orderID
@@ -122,7 +122,7 @@ export function createOrder(clientID : string, orderDetails : Object) : ZalgoPro
             return body.id;
         }
 
-        throw new Error(`Payment Api response error:\n\n${ JSON.stringify(body, null, 4) }`);
+        throw new Error(`Order Api response error:\n\n${ JSON.stringify(body, null, 4) }`);
     });
 }
 

@@ -2,7 +2,7 @@
 
 import { type ZalgoPromise } from 'zalgo-promise/src';
 
-import { generateECToken, assert } from '../common';
+import { generateOrderID, assert } from '../common';
 
 describe(`paypal checkout component validation`, () => {
 
@@ -25,7 +25,7 @@ describe(`paypal checkout component validation`, () => {
 
         return client.Checkout.render({
             payment() : string | ZalgoPromise<string> {
-                return generateECToken();
+                return generateOrderID();
             }
         }, 'body').then(() => {
             throw new Error('Expected error to be thrown');

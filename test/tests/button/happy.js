@@ -3,8 +3,8 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { generateECToken, generateOrderID,
-    createElement, createTestContainer, destroyTestContainer, onHashChange, assert } from '../common';
+import { generateOrderID, createElement, createTestContainer,
+    destroyTestContainer, onHashChange, assert } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -23,7 +23,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             client.Checkout.contexts.iframe = false;
         });
 
-        it('should render a button into a container and click on the button, then complete the payment', (done) => {
+        it('should render a button into a container and click on the button, then complete the checkout', (done) => {
 
             let client = window.paypal.client();
 
@@ -31,11 +31,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | ZalgoPromise<string> {
-                    return generateECToken();
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(generateOrderID());
                 },
 
-                onAuthorize() : void {
+                onApprove() : void {
                     return done();
                 },
 
@@ -46,7 +46,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render a button into a container and click on the button, then cancel the payment', (done) => {
+        it('should render a button into a container and click on the button, then cancel the createOrder', (done) => {
 
             let client = window.paypal.client();
 
@@ -54,12 +54,12 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'cancel' },
 
-                payment() : string | ZalgoPromise<string> {
-                    return generateECToken();
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(generateOrderID());
                 },
 
-                onAuthorize() : void {
-                    return done(new Error('Expected onAuthorize to not be called'));
+                onApprove() : void {
+                    return done(new Error('Expected onApprove to not be called'));
                 },
 
                 onCancel() : void {
@@ -71,7 +71,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on authorize', () => {
 
-            let token = generateECToken();
+            let orderID = generateOrderID();
 
             let client = window.paypal.client();
 
@@ -79,11 +79,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | ZalgoPromise<string> {
-                    return token;
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(orderID);
                 },
 
-                onAuthorize(data, actions) : ZalgoPromise<void> {
+                onApprove(data, actions) : ZalgoPromise<void> {
                     return actions.redirect(data.returnUrl, window);
                 },
 
@@ -94,7 +94,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer').then(() => {
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ orderID }&PayerID=YYYYYYYYYYYYY`);
                 });
 
             });
@@ -102,7 +102,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on authorize and await the promise', (done) => {
 
-            let token = generateECToken();
+            let orderID = generateOrderID();
 
             let client = window.paypal.client();
 
@@ -110,11 +110,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | ZalgoPromise<string> {
-                    return token;
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(orderID);
                 },
 
-                onAuthorize(data, actions) : ZalgoPromise<void> {
+                onApprove(data, actions) : ZalgoPromise<void> {
                     return actions.redirect(data.returnUrl, window).then(() => {
                         return done();
                     }).catch(done);
@@ -129,7 +129,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on authorize with a custom url', () => {
 
-            let token = generateECToken();
+            let orderID = generateOrderID();
 
             let client = window.paypal.client();
 
@@ -137,11 +137,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | ZalgoPromise<string> {
-                    return token;
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(orderID);
                 },
 
-                onAuthorize(data, actions) : ZalgoPromise<void> {
+                onApprove(data, actions) : ZalgoPromise<void> {
                     return actions.redirect('#successUrl', window);
                 },
 
@@ -160,7 +160,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on cancel', () => {
 
-            let token = generateECToken();
+            let orderID = generateOrderID();
 
             let client = window.paypal.client();
 
@@ -168,11 +168,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'cancel' },
 
-                payment() : string | ZalgoPromise<string> {
-                    return token;
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(orderID);
                 },
 
-                onAuthorize(data, actions) : ZalgoPromise<void> {
+                onApprove(data, actions) : ZalgoPromise<void> {
                     return actions.redirect(data.returnUrl, window);
                 },
 
@@ -183,7 +183,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer').then(() => {
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#cancel?token=${ token }`);
+                    assert.equal(urlHash, `#cancel?token=${ orderID }`);
                 });
 
             });
@@ -191,7 +191,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on cancel and await the promise', (done) => {
 
-            let token = generateECToken();
+            let orderID = generateOrderID();
 
             let client = window.paypal.client();
 
@@ -199,12 +199,12 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'cancel' },
 
-                payment() : string | ZalgoPromise<string> {
-                    return token;
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(orderID);
                 },
 
-                onAuthorize() : void {
-                    return done(new Error('Expected onAuthorize to not be called'));
+                onApprove() : void {
+                    return done(new Error('Expected onApprove to not be called'));
                 },
 
                 onCancel(data, actions) : ZalgoPromise<void> {
@@ -218,7 +218,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on cancel with a custom url', () => {
 
-            let token = generateECToken();
+            let orderID = generateOrderID();
 
             let client = window.paypal.client();
 
@@ -226,11 +226,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'cancel' },
 
-                payment() : string | ZalgoPromise<string> {
-                    return token;
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(orderID);
                 },
 
-                onAuthorize(data, actions) : ZalgoPromise<void> {
+                onApprove(data, actions) : ZalgoPromise<void> {
                     return actions.redirect('#successUrl', window);
                 },
 
@@ -247,7 +247,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             });
         });
 
-        it('should render a button into a container and click on the button, call the REST api via actions.order to create an order, then complete the payment', (done) => {
+        it('should render a button into a container and click on the button, call the REST api via actions.order to create an order, then complete the checkout', (done) => {
 
             let client = window.paypal.client();
 
@@ -255,7 +255,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment(data, actions) : string | ZalgoPromise<string> {
+                createOrder(data, actions) : string | ZalgoPromise<string> {
                     return actions.order.create({
                         order: {
                             purchase_units: [
@@ -281,7 +281,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     });
                 },
 
-                onAuthorize() : void {
+                onApprove() : void {
                     return done();
                 },
 
@@ -292,7 +292,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render a button into a container and click on the button, call the REST api via actions.order with an object to create an order, then complete the payment', (done) => {
+        it('should render a button into a container and click on the button, call the REST api via actions.order with an object to create an order, then complete the checkout', (done) => {
 
             let client = window.paypal.client();
 
@@ -300,7 +300,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment(data, actions) : string | ZalgoPromise<string> {
+                createOrder(data, actions) : string | ZalgoPromise<string> {
                     return actions.order.create({
                         order: {
                             purchase_units: [
@@ -326,7 +326,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     });
                 },
 
-                onAuthorize() : void {
+                onApprove() : void {
                     return done();
                 },
 
@@ -337,7 +337,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render a button into a container and click on the button, with an async resolved token passed, then complete the payment', (done) => {
+        it('should render a button into a container and click on the button, with an async resolved token passed, then complete the checkout', (done) => {
 
             let client = window.paypal.client();
 
@@ -345,15 +345,15 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : ZalgoPromise<string> {
+                createOrder() : ZalgoPromise<string> {
                     return new ZalgoPromise(resolve => {
                         setTimeout(() => {
-                            return resolve(generateECToken());
+                            return resolve(generateOrderID());
                         }, 200);
                     });
                 },
 
-                onAuthorize() : void {
+                onApprove() : void {
                     return done();
                 },
 
@@ -364,7 +364,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render a button into a container and click on the button, with a promise token passed, then complete the payment', (done) => {
+        it('should render a button into a container and click on the button, with a promise token passed, then complete the checkout', (done) => {
 
             let client = window.paypal.client();
 
@@ -372,13 +372,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | ZalgoPromise<string> {
+                createOrder() : string | ZalgoPromise<string> {
                     return new ZalgoPromise(resolve => {
-                        return resolve(generateECToken());
+                        return resolve(generateOrderID());
                     });
                 },
 
-                onAuthorize() : void {
+                onApprove() : void {
                     return done();
                 },
 
@@ -389,7 +389,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render a button into a container and click on the button, with a non-zalgo promise token passed, then complete the payment', (done) => {
+        it('should render a button into a container and click on the button, with a non-zalgo promise token passed, then complete the checkout', (done) => {
 
             let client = window.paypal.client();
 
@@ -397,17 +397,17 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | ZalgoPromise<string> {
+                createOrder() : string | ZalgoPromise<string> {
 
                     // $FlowFixMe
                     return {
                         then(successHandler) {
-                            successHandler(generateECToken());
+                            successHandler(generateOrderID());
                         }
                     };
                 },
 
-                onAuthorize() : void {
+                onApprove() : void {
                     return done();
                 },
 
@@ -418,34 +418,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render button with a checkout token on the correct url, then complete the payment', (done) => {
-
-            let checkoutToken = generateECToken();
-
-            let client = window.paypal.client();
-
-            client.Button.render({
-
-                test: { flow, action: 'checkout' },
-
-                payment() : string | ZalgoPromise<string> {
-                    return checkoutToken;
-                },
-
-                onAuthorize(data) : void {
-                    assert.ok(data.currentUrl.indexOf(`token=${ checkoutToken }`) !== -1);
-                    assert.ok(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
-                    return done();
-                },
-
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
-                }
-
-            }, '#testContainer');
-        });
-
-        it('should render button with a payment id on the correct url, then complete the payment', (done) => {
+        it('should render button with a checkout token on the correct url, then complete the checkout', (done) => {
 
             let orderID = generateOrderID();
 
@@ -455,11 +428,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | ZalgoPromise<string> {
-                    return orderID;
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(orderID);
                 },
 
-                onAuthorize(data) : void {
+                onApprove(data) : void {
                     assert.ok(data.currentUrl.indexOf(`token=${ orderID }`) !== -1);
                     assert.ok(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
                     return done();
@@ -472,7 +445,34 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render button with a new-style payment id on the correct url, then complete the payment', (done) => {
+        it('should render button with a createOrder id on the correct url, then complete the checkout', (done) => {
+
+            let orderID = generateOrderID();
+
+            let client = window.paypal.client();
+
+            client.Button.render({
+
+                test: { flow, action: 'checkout' },
+
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(orderID);
+                },
+
+                onApprove(data) : void {
+                    assert.ok(data.currentUrl.indexOf(`token=${ orderID }`) !== -1);
+                    assert.ok(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
+        });
+
+        it('should render button with a new-style createOrder id on the correct url, then complete the checkout', (done) => {
 
             let orderID = generateOrderID().replace('PAY-', 'PAYID-');
 
@@ -482,11 +482,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | ZalgoPromise<string> {
-                    return orderID;
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(orderID);
                 },
 
-                onAuthorize(data) : void {
+                onApprove(data) : void {
                     assert.ok(data.currentUrl.indexOf(`token=${ orderID }`) !== -1);
                     assert.ok(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
                     return done();
@@ -499,7 +499,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render a button into a container and click on the button, restart the payment, then complete the payment', (done) => {
+        it('should render a button into a container and click on the button, restart the createOrder, then complete the checkout', (done) => {
 
             let isRestarted = false;
 
@@ -509,11 +509,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | ZalgoPromise<string> {
-                    return generateECToken();
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(generateOrderID());
                 },
 
-                onAuthorize(data, actions) : void | ZalgoPromise<void> {
+                onApprove(data, actions) : void | ZalgoPromise<void> {
 
                     if (isRestarted) {
                         return done();
@@ -530,7 +530,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render a button into a container before the container exists, and click on the button, then complete the payment', (done) => {
+        it('should render a button into a container before the container exists, and click on the button, then complete the checkout', (done) => {
 
             let readyState = document.readyState;
             Object.defineProperty(document, 'readyState', { value: 'loading', configurable: true });
@@ -543,7 +543,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | ZalgoPromise<string> {
+                createOrder() : string | ZalgoPromise<string> {
                     if (!container) {
                         throw new Error(`Expected container to be created`);
                     }
@@ -560,10 +560,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         throw new Error(`Expected button frame to have width and height`);
                     }
 
-                    return generateECToken();
+                    return ZalgoPromise.resolve(generateOrderID());
                 },
 
-                onAuthorize() : void {
+                onApprove() : void {
                     return done();
                 },
 
@@ -584,7 +584,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         });
 
         if (flow === 'popup') {
-            it('should render a button into a container and click on the button, then cancel the payment by closing the window', (done) => {
+            it('should render a button into a container and click on the button, then cancel the createOrder by closing the window', (done) => {
 
                 let client = window.paypal.client();
 
@@ -601,12 +601,12 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         }
                     },
 
-                    payment() : string | ZalgoPromise<string> {
-                        return generateECToken();
+                    createOrder() : string | ZalgoPromise<string> {
+                        return ZalgoPromise.resolve(generateOrderID());
                     },
 
-                    onAuthorize() : void {
-                        return done(new Error('Expected onAuthorize to not be called'));
+                    onApprove() : void {
+                        return done(new Error('Expected onApprove to not be called'));
                     },
 
                     onCancel() : void {
@@ -616,7 +616,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 }, '#testContainer');
             });
 
-            it('should render a button into a container and click on the button, block the popup, fallback to iframe, then complete the payment', (done) => {
+            it('should render a button into a container and click on the button, block the popup, fallback to iframe, then complete the checkout', (done) => {
 
                 let client = window.paypal.client();
 
@@ -628,11 +628,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         bridge: true
                     },
 
-                    payment() : string | ZalgoPromise<string> {
-                        return generateECToken();
+                    createOrder() : string | ZalgoPromise<string> {
+                        return ZalgoPromise.resolve(generateOrderID());
                     },
 
-                    onAuthorize() : void {
+                    onApprove() : void {
                         return done();
                     },
 
@@ -646,9 +646,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         if (flow === 'iframe') {
 
-            it('should render a button into a container and click on the button, popout, then complete the payment', (done) => {
+            it('should render a button into a container and click on the button, popout, then complete the checkout', (done) => {
 
-                let paymentCalls = 0;
+                let createOrderCalls = 0;
 
                 let client = window.paypal.client();
 
@@ -656,15 +656,15 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     test: { flow, action: 'popout' },
 
-                    payment() : string | ZalgoPromise<string> {
-                        paymentCalls += 1;
+                    createOrder() : string | ZalgoPromise<string> {
+                        createOrderCalls += 1;
 
-                        return generateECToken();
+                        return ZalgoPromise.resolve(generateOrderID());
                     },
 
-                    onAuthorize() : void {
-                        if (paymentCalls !== 1) {
-                            return done(new Error(`Expected payment to be called one time, got ${ paymentCalls } calls`));
+                    onApprove() : void {
+                        if (createOrderCalls !== 1) {
+                            return done(new Error(`Expected createOrder to be called one time, got ${ createOrderCalls } calls`));
                         }
 
                         return done();
@@ -679,7 +679,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             it('should render checkout, popout, then redirect', () => {
 
-                let token = generateECToken();
+                let orderID = generateOrderID();
 
                 let client = window.paypal.client();
 
@@ -687,24 +687,24 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     test: { flow, action: 'popout' },
 
-                    payment() : string | ZalgoPromise<string> {
-                        return token;
+                    createOrder() : string | ZalgoPromise<string> {
+                        return ZalgoPromise.resolve(orderID);
                     },
 
-                    onAuthorize(data, actions) : ZalgoPromise<void> {
+                    onApprove(data, actions) : ZalgoPromise<void> {
                         return actions.redirect(data.returnUrl, window);
                     }
 
                 }, '#testContainer');
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ orderID }&PayerID=YYYYYYYYYYYYY`);
                 }).toPromise();
             });
 
             it('should render checkout, popout, then redirect and await the promise', (done) => {
 
-                let token = generateECToken();
+                let orderID = generateOrderID();
 
                 let client = window.paypal.client();
 
@@ -712,11 +712,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     test: { flow, action: 'popout' },
 
-                    payment() : string | ZalgoPromise<string> {
-                        return token;
+                    createOrder() : string | ZalgoPromise<string> {
+                        return ZalgoPromise.resolve(orderID);
                     },
 
-                    onAuthorize(data, actions) : ZalgoPromise<void> {
+                    onApprove(data, actions) : ZalgoPromise<void> {
                         return actions.redirect(data.returnUrl, window).then(() => {
                             done();
                         });
@@ -729,7 +729,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 }, '#testContainer');
             });
 
-            it('should render a button into a container and click on the button, restart the payment, popout, then complete the payment', (done) => {
+            it('should render a button into a container and click on the button, restart the createOrder, popout, then complete the checkout', (done) => {
 
                 let isRestarted = false;
 
@@ -739,11 +739,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     test: { flow, action: 'checkout' },
 
-                    payment() : string | ZalgoPromise<string> {
-                        return generateECToken();
+                    createOrder() : string | ZalgoPromise<string> {
+                        return ZalgoPromise.resolve(generateOrderID());
                     },
 
-                    onAuthorize(data, actions) : void | ZalgoPromise<void> {
+                    onApprove(data, actions) : void | ZalgoPromise<void> {
 
                         if (isRestarted) {
                             return done();

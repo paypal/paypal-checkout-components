@@ -1,19 +1,20 @@
 /* @flow */
 
+import { ZalgoPromise } from 'zalgo-promise/src';
 import { send } from 'post-robot/src';
 
-import { generateECToken } from '../../tests/common';
+import { generateOrderID } from '../../tests/common';
 
 let client = window.paypal.client();
 
 client.Button.render({
 
-    payment() : string {
-        return generateECToken();
+    createOrder() : ZalgoPromise<string> {
+        return ZalgoPromise.resolve(generateOrderID());
     },
 
-    onAuthorize() {
-        send(window.top.frames[0], 'onAuthorize');
+    onApprove() {
+        send(window.top.frames[0], 'onApprove');
     }
 
 }, document.body).then(button => {

@@ -36,12 +36,12 @@ describe(`paypal button component sizes`, () => {
 
             test: {},
 
-            payment() {
-                done(new Error('Expected payment() to not be called'));
+            createOrder() {
+                done(new Error('Expected createOrder() to not be called'));
             },
 
-            onAuthorize() {
-                done(new Error('Expected onAuthorize() to not be called'));
+            onApprove() {
+                done(new Error('Expected onApprove() to not be called'));
             },
 
             onEnter() {
@@ -88,12 +88,12 @@ describe(`paypal button component sizes`, () => {
 
             test: {},
 
-            payment() {
-                done(new Error('Expected payment() to not be called'));
+            createOrder() {
+                done(new Error('Expected createOrder() to not be called'));
             },
 
-            onAuthorize() {
-                done(new Error('Expected onAuthorize() to not be called'));
+            onApprove() {
+                done(new Error('Expected onApprove() to not be called'));
             },
 
             onEnter() {
@@ -140,12 +140,12 @@ describe(`paypal button component sizes`, () => {
 
             test: {},
 
-            payment() {
-                done(new Error('Expected payment() to not be called'));
+            createOrder() {
+                done(new Error('Expected createOrder() to not be called'));
             },
 
-            onAuthorize() {
-                done(new Error('Expected onAuthorize() to not be called'));
+            onApprove() {
+                done(new Error('Expected onApprove() to not be called'));
             },
 
             onEnter() {
@@ -192,12 +192,12 @@ describe(`paypal button component sizes`, () => {
 
             test: {},
 
-            payment() {
-                done(new Error('Expected payment() to not be called'));
+            createOrder() {
+                done(new Error('Expected createOrder() to not be called'));
             },
 
-            onAuthorize() {
-                done(new Error('Expected onAuthorize() to not be called'));
+            onApprove() {
+                done(new Error('Expected onApprove() to not be called'));
             },
 
             onEnter() {
@@ -244,12 +244,12 @@ describe(`paypal button component sizes`, () => {
 
             test: {},
 
-            payment() {
-                done(new Error('Expected payment() to not be called'));
+            createOrder() {
+                done(new Error('Expected createOrder() to not be called'));
             },
 
-            onAuthorize() {
-                done(new Error('Expected onAuthorize() to not be called'));
+            onApprove() {
+                done(new Error('Expected onApprove() to not be called'));
             },
 
             onEnter() {
@@ -296,12 +296,12 @@ describe(`paypal button component sizes`, () => {
 
             test: {},
 
-            payment() {
-                done(new Error('Expected payment() to not be called'));
+            createOrder() {
+                done(new Error('Expected createOrder() to not be called'));
             },
 
-            onAuthorize() {
-                done(new Error('Expected onAuthorize() to not be called'));
+            onApprove() {
+                done(new Error('Expected onApprove() to not be called'));
             },
 
             onEnter() {
@@ -348,12 +348,12 @@ describe(`paypal button component sizes`, () => {
 
             test: {},
 
-            payment() {
-                done(new Error('Expected payment() to not be called'));
+            createOrder() {
+                done(new Error('Expected createOrder() to not be called'));
             },
 
-            onAuthorize() {
-                done(new Error('Expected onAuthorize() to not be called'));
+            onApprove() {
+                done(new Error('Expected onApprove() to not be called'));
             },
 
             onEnter() {
@@ -400,12 +400,12 @@ describe(`paypal button component sizes`, () => {
 
             test: {},
 
-            payment() {
-                done(new Error('Expected payment() to not be called'));
+            createOrder() {
+                done(new Error('Expected createOrder() to not be called'));
             },
 
-            onAuthorize() {
-                done(new Error('Expected onAuthorize() to not be called'));
+            onApprove() {
+                done(new Error('Expected onApprove() to not be called'));
             },
 
             onEnter() {
@@ -452,12 +452,12 @@ describe(`paypal button component sizes`, () => {
 
             test: {},
 
-            payment() {
-                done(new Error('Expected payment() to not be called'));
+            createOrder() {
+                done(new Error('Expected createOrder() to not be called'));
             },
 
-            onAuthorize() {
-                done(new Error('Expected onAuthorize() to not be called'));
+            onApprove() {
+                done(new Error('Expected onApprove() to not be called'));
             },
 
             onEnter() {
@@ -505,12 +505,12 @@ describe(`paypal button component sizes`, () => {
                 label:  'pay'
             },
 
-            payment() {
-                done(new Error('Expected payment() to not be called'));
+            createOrder() {
+                done(new Error('Expected createOrder() to not be called'));
             },
 
-            onAuthorize() {
-                done(new Error('Expected onAuthorize() to not be called'));
+            onApprove() {
+                done(new Error('Expected onApprove() to not be called'));
             },
 
             onEnter() {
@@ -553,12 +553,12 @@ describe(`paypal button component sizes`, () => {
 
             test: {},
 
-            payment() {
-                done(new Error('Expected payment() to not be called'));
+            createOrder() {
+                done(new Error('Expected createOrder() to not be called'));
             },
 
-            onAuthorize() {
-                done(new Error('Expected onAuthorize() to not be called'));
+            onApprove() {
+                done(new Error('Expected onApprove() to not be called'));
             },
 
             onEnter() {
@@ -618,12 +618,12 @@ describe(`paypal button component sizes`, () => {
 
             test: {},
 
-            payment() {
-                done(new Error('Expected payment() to not be called'));
+            createOrder() {
+                done(new Error('Expected createOrder() to not be called'));
             },
 
-            onAuthorize() {
-                done(new Error('Expected onAuthorize() to not be called'));
+            onApprove() {
+                done(new Error('Expected onApprove() to not be called'));
             },
 
             onEnter() {
@@ -673,12 +673,12 @@ describe(`paypal button component sizes`, () => {
 
             test: {},
 
-            payment() {
-                done(new Error('Expected payment() to not be called'));
+            createOrder() {
+                done(new Error('Expected createOrder() to not be called'));
             },
 
-            onAuthorize() {
-                done(new Error('Expected onAuthorize() to not be called'));
+            onApprove() {
+                done(new Error('Expected onApprove() to not be called'));
             },
 
             onEnter() {
@@ -723,12 +723,12 @@ describe(`paypal button component sizes`, () => {
 
             test: {},
 
-            payment() {
-                done(new Error('Expected payment() to not be called'));
+            createOrder() {
+                done(new Error('Expected createOrder() to not be called'));
             },
 
-            onAuthorize() {
-                done(new Error('Expected onAuthorize() to not be called'));
+            onApprove() {
+                done(new Error('Expected onApprove() to not be called'));
             },
 
             onEnter() {
@@ -775,12 +775,12 @@ describe(`paypal button component sizes`, () => {
                 layout: 'horizontal'
             },
 
-            payment() {
-                done(new Error('Expected payment() to not be called'));
+            createOrder() {
+                done(new Error('Expected createOrder() to not be called'));
             },
 
-            onAuthorize() {
-                done(new Error('Expected onAuthorize() to not be called'));
+            onApprove() {
+                done(new Error('Expected onApprove() to not be called'));
             },
 
             onEnter() {

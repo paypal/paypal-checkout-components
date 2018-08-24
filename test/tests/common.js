@@ -49,10 +49,6 @@ export function uniqueID(length : number = 8, chars : string = '0123456789abcdef
     });
 }
 
-export function generateECToken() : string {
-    return `EC-${ uniqueID(17).toUpperCase() }`;
-}
-
 export function generateOrderID() : string {
     return `${ uniqueID(20).toUpperCase() }`;
 }

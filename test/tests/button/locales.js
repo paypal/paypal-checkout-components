@@ -25,10 +25,10 @@ describe.skip(`paypal button component locales`, () => {
                 let mockLang = mockProp(window.__TEST_LOCALE__, '__LANG__', lang);
 
                 return client.Button.render({
-                    payment() {
+                    createOrder() {
                         // pass
                     },
-                    onAuthorize() {
+                    onApprove() {
                         // pass
                     }
                 }, '#testContainer').then(() => {

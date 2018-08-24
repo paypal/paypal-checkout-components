@@ -36,12 +36,12 @@ describe(`paypal button layouts`, () => {
                 }
             },
 
-            payment() : string | ZalgoPromise<string> {
-                throw new Error('Expected payment to not be called');
+            createOrder() : string | ZalgoPromise<string> {
+                throw new Error('Expected createOrder to not be called');
             },
 
-            onAuthorize() {
-                throw new Error('Expected onAuthorize to not be called');
+            onApprove() {
+                throw new Error('Expected onApprove to not be called');
             },
 
             onCancel() {
@@ -73,12 +73,12 @@ describe(`paypal button layouts`, () => {
                 layout: 'vertical'
             },
 
-            payment() : string | ZalgoPromise<string> {
-                throw new Error('Expected payment to not be called');
+            createOrder() : string | ZalgoPromise<string> {
+                throw new Error('Expected createOrder to not be called');
             },
 
-            onAuthorize() {
-                throw new Error('Expected onAuthorize to not be called');
+            onApprove() {
+                throw new Error('Expected onApprove to not be called');
             },
 
             onCancel() {

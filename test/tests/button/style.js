@@ -3,7 +3,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { generateECToken, createTestContainer, destroyTestContainer, getElementRecursive, assert } from '../common';
+import { generateOrderID, createTestContainer, destroyTestContainer, getElementRecursive, assert } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -37,11 +37,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     }
                 },
 
-                payment() : string | ZalgoPromise<string> {
-                    return generateECToken();
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(generateOrderID());
                 },
 
-                onAuthorize() : void {
+                onApprove() : void {
                     return done();
                 },
 

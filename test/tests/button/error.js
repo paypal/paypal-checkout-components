@@ -1,8 +1,8 @@
 /* @flow */
 
-import { type ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { generateECToken, createTestContainer, destroyTestContainer, assert } from '../common';
+import { generateOrderID, createTestContainer, destroyTestContainer, assert } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -21,7 +21,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             client.Checkout.contexts.iframe = false;
         });
 
-        it('should render button, render checkout, and return a blank string in payment', (done) => {
+        it('should render button, render checkout, and return a blank string in createOrder', (done) => {
 
             let client = window.paypal.client();
 
@@ -29,7 +29,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | ZalgoPromise<string> {
+                createOrder() : string | ZalgoPromise<string> {
                     return '';
                 },
 
@@ -38,7 +38,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done();
                 },
 
-                onAuthorize() : void {
+                onApprove() : void {
                     return done(new Error('Expected onCancel to not be called'));
                 },
 
@@ -49,7 +49,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render button, render checkout, and return a blank string promise in payment', (done) => {
+        it('should render button, render checkout, and return a blank string promise in createOrder', (done) => {
 
             let client = window.paypal.client();
 
@@ -57,7 +57,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | ZalgoPromise<string> {
+                createOrder() : string | ZalgoPromise<string> {
                     return client.Promise.resolve('');
                 },
 
@@ -66,7 +66,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done();
                 },
 
-                onAuthorize() : void {
+                onApprove() : void {
                     return done(new Error('Expected onCancel to not be called'));
                 },
 
@@ -77,7 +77,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render button, render checkout, and throw an error in payment', (done) => {
+        it('should render button, render checkout, and throw an error in createOrder', (done) => {
 
             let client = window.paypal.client();
 
@@ -85,7 +85,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | ZalgoPromise<string> {
+                createOrder() : string | ZalgoPromise<string> {
                     throw new Error('error');
                 },
 
@@ -94,7 +94,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done();
                 },
 
-                onAuthorize() : void {
+                onApprove() : void {
                     return done(new Error('Expected onCancel to not be called'));
                 },
 
@@ -105,7 +105,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render button, render checkout, and return a rejected promise in payment', (done) => {
+        it('should render button, render checkout, and return a rejected promise in createOrder', (done) => {
 
             let client = window.paypal.client();
 
@@ -113,7 +113,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | ZalgoPromise<string> {
+                createOrder() : string | ZalgoPromise<string> {
                     return client.Promise.reject(new Error('error'));
                 },
 
@@ -122,7 +122,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done();
                 },
 
-                onAuthorize() : void {
+                onApprove() : void {
                     return done(new Error('Expected onCancel to not be called'));
                 },
 
@@ -133,7 +133,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render button, render checkout, and call reject in payment', (done) => {
+        it('should render button, render checkout, and call reject in createOrder', (done) => {
 
             let client = window.paypal.client();
 
@@ -141,7 +141,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment(resolve, reject) {
+                createOrder(resolve, reject) {
                     reject(new Error('error'));
                 },
 
@@ -150,7 +150,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done();
                 },
 
-                onAuthorize() : void {
+                onApprove() : void {
                     return done(new Error('Expected onCancel to not be called'));
                 },
 
@@ -161,7 +161,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render button, render checkout, and call reject with undefined in payment', (done) => {
+        it('should render button, render checkout, and call reject with undefined in createOrder', (done) => {
 
             let client = window.paypal.client();
 
@@ -169,7 +169,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment(resolve, reject) {
+                createOrder(resolve, reject) {
                     reject();
                 },
 
@@ -178,7 +178,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done();
                 },
 
-                onAuthorize() : void {
+                onApprove() : void {
                     return done(new Error('Expected onCancel to not be called'));
                 },
 
@@ -197,8 +197,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'error' },
 
-                payment() : string | ZalgoPromise<string> {
-                    return generateECToken();
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(generateOrderID());
                 },
 
                 onError(err) : void {
@@ -206,7 +206,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done();
                 },
 
-                onAuthorize() : void {
+                onApprove() : void {
                     return done(new Error('Expected onCancel to not be called'));
                 },
 
@@ -217,7 +217,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render button, render checkout, then throw an error in onAuthorize', (done) => {
+        it('should render button, render checkout, then throw an error in onApprove', (done) => {
 
             let client = window.paypal.client();
 
@@ -225,8 +225,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | ZalgoPromise<string> {
-                    return generateECToken();
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(generateOrderID());
                 },
 
                 onError(err) : void {
@@ -234,7 +234,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done();
                 },
 
-                onAuthorize() {
+                onApprove() {
                     throw new Error('error');
                 },
 
@@ -245,7 +245,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render button, render checkout, then return a rejected promise in onAuthorize', (done) => {
+        it('should render button, render checkout, then return a rejected promise in onApprove', (done) => {
 
             let client = window.paypal.client();
 
@@ -253,8 +253,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | ZalgoPromise<string> {
-                    return generateECToken();
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(generateOrderID());
                 },
 
                 onError(err) : void {
@@ -262,7 +262,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done();
                 },
 
-                onAuthorize() : void {
+                onApprove() : void {
                     return new client.Promise((resolve, reject) => {
                         return reject(new Error('error'));
                     });
@@ -275,7 +275,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render button, render checkout, then return a rejected promise for undefined in onAuthorize', (done) => {
+        it('should render button, render checkout, then return a rejected promise for undefined in onApprove', (done) => {
 
             let client = window.paypal.client();
 
@@ -283,8 +283,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | ZalgoPromise<string> {
-                    return generateECToken();
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(generateOrderID());
                 },
 
                 onError(err) : void {
@@ -292,7 +292,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done();
                 },
 
-                onAuthorize() : void {
+                onApprove() : void {
                     return new client.Promise((resolve, reject) => {
                         return reject();
                     });
@@ -316,11 +316,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 foobarbaz: 'abcdef',
 
-                payment() : string | ZalgoPromise<string> {
-                    return generateECToken();
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(generateOrderID());
                 },
 
-                onAuthorize() : void {
+                onApprove() : void {
                     delete client.Button.props.foobarbaz;
                     return done();
                 },

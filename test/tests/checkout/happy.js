@@ -3,7 +3,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { generateECToken, generateOrderID,
+import { generateOrderID,
     createTestContainer, destroyTestContainer, createElement,
     getElementRecursive, onWindowOpen, once, assert } from '../common';
 
@@ -34,7 +34,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 return client.Checkout.render({
 
                     payment() : string | ZalgoPromise<string> {
-                        return generateECToken();
+                        return generateOrderID();
                     },
 
                     onAuthorize() : void {
@@ -63,7 +63,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     test: { action: 'cancel' },
 
                     payment() : string | ZalgoPromise<string> {
-                        return generateECToken();
+                        return generateOrderID();
                     },
 
                     onAuthorize() : void {
@@ -91,7 +91,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     payment() : string | ZalgoPromise<string> {
                         return new ZalgoPromise(resolve => {
-                            return resolve(generateECToken());
+                            return resolve(generateOrderID());
                         });
                     },
 
@@ -110,7 +110,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout with a checkout token on the correct url, then complete the payment', (done) => {
 
-            let checkoutToken = generateECToken();
+            let orderID = generateOrderID();
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
@@ -120,11 +120,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 return client.Checkout.render({
 
                     payment() : string | ZalgoPromise<string> {
-                        return checkoutToken;
+                        return orderID;
                     },
 
                     onAuthorize(data) : void {
-                        assert.ok(data.currentUrl.indexOf(`token=${ checkoutToken }`) !== -1);
+                        assert.ok(data.currentUrl.indexOf(`token=${ orderID }`) !== -1);
                         assert.ok(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
                         return done();
                     },
@@ -212,7 +212,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     payment() : string | ZalgoPromise<string> {
-                        return generateECToken();
+                        return generateOrderID();
                     },
 
                     onAuthorize() : void {
@@ -257,7 +257,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         },
 
                         payment() : string | ZalgoPromise<string> {
-                            return generateECToken();
+                            return generateOrderID();
                         },
 
                         onAuthorize() : void {
@@ -299,7 +299,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         },
 
                         payment() : string | ZalgoPromise<string> {
-                            return generateECToken();
+                            return generateOrderID();
                         },
 
                         onAuthorize() : void {
@@ -334,7 +334,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                         payment() : string | ZalgoPromise<string> {
                             paymentCalls += 1;
-                            return generateECToken();
+                            return generateOrderID();
                         },
 
                         onAuthorize() : void {

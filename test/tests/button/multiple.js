@@ -3,7 +3,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { generateECToken, createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, assert, mockProp } from '../common';
+import { generateOrderID, createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, assert, mockProp } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -63,7 +63,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     window.navigator.mockUserAgent = userAgent;
                 }
 
-                let checkoutToken = generateECToken();
+                let orderID = generateOrderID();
 
                 let mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[source], 'eligible', true);
                 let mockCountry = mockProp(window.__TEST_LOCALE__, '__COUNTRY__', country || 'US');
@@ -82,12 +82,12 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         layout: 'vertical'
                     },
 
-                    payment() : string | ZalgoPromise<string> {
-                        return checkoutToken;
+                    createOrder() : string | ZalgoPromise<string> {
+                        return ZalgoPromise.resolve(orderID);
                     },
 
-                    onAuthorize(data) : void {
-                        assert.ok(data.currentUrl.indexOf(`token=${ checkoutToken }`) !== -1);
+                    onApprove(data) : void {
+                        assert.ok(data.currentUrl.indexOf(`token=${ orderID }`) !== -1);
                         assert.ok(data.currentUrl.indexOf(fragment) !== -1);
                         assert.ok(data.currentUrl.indexOf(`fundingSource=${ source }`) !== -1);
                         return done();

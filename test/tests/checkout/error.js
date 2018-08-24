@@ -2,7 +2,7 @@
 
 import { type ZalgoPromise } from 'zalgo-promise/src';
 
-import { generateECToken, createElement, createTestContainer, destroyTestContainer, assert } from '../common';
+import { generateOrderID, createElement, createTestContainer, destroyTestContainer, assert } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -160,7 +160,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     test: { action: 'error' },
 
                     payment() : string | ZalgoPromise<string> {
-                        return generateECToken();
+                        return generateOrderID();
                     },
 
                     onError(err) : void {
@@ -192,7 +192,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 return client.Checkout.render({
 
                     payment() : string | ZalgoPromise<string> {
-                        return generateECToken();
+                        return generateOrderID();
                     },
 
                     onError(err) : void {
@@ -224,7 +224,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 return client.Checkout.render({
 
                     payment() : string | ZalgoPromise<string> {
-                        return generateECToken();
+                        return generateOrderID();
                     },
 
                     onError(err) : void {
@@ -258,7 +258,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 return client.Checkout.render({
 
                     payment() : string | ZalgoPromise<string> {
-                        return generateECToken();
+                        return generateOrderID();
                     },
 
                     onError(err) : void {
@@ -299,7 +299,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         },
 
                         payment() : string | ZalgoPromise<string> {
-                            return generateECToken();
+                            return generateOrderID();
                         },
 
                         onAuthorize() : void {
@@ -325,7 +325,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 client.Checkout.render({
                     payment() : string | ZalgoPromise<string> {
-                        return generateECToken();
+                        return generateOrderID();
                     },
 
                     onError(err) : void {
