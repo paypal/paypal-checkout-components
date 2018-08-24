@@ -1373,6 +1373,10 @@ function memoize(method) {
         return cache[key].value;
     };
 
+    method.__memoized__.reset = function () {
+        cache = {};
+    };
+
     return method.__memoized__;
 }
 
@@ -1688,10 +1692,11 @@ function regexMap(str, regex, handler) {
     var results = [];
 
     // $FlowFixMe
-    str.replace(regex, function regexMapMatcher() {
-        results.push(handler.apply(null, arguments));
+    str.replace(regex, function regexMapMatcher(item) {
+        results.push(handler ? handler.apply(null, arguments) : item);
     });
 
+    // $FlowFixMe
     return results;
 }
 
@@ -5424,7 +5429,6 @@ var promise_ZalgoPromise = function () {
                 } else {
                     // $FlowFixMe
                     result.then(function (res) {
-                        // eslint-disable-line promise/catch-or-return
                         promise.resolve(res);
                     }, function (err) {
                         promise.reject(err);
@@ -5480,13 +5484,18 @@ var promise_ZalgoPromise = function () {
         return this.then(undefined, onError);
     };
 
-    ZalgoPromise.prototype['finally'] = function _finally(handler) {
+    ZalgoPromise.prototype['finally'] = function _finally(onFinally) {
+
+        if (onFinally && typeof onFinally !== 'function' && !onFinally.call) {
+            throw new Error('Promise.finally expected a function');
+        }
+
         return this.then(function (result) {
-            return ZalgoPromise['try'](handler).then(function () {
+            return ZalgoPromise['try'](onFinally).then(function () {
                 return result;
             });
         }, function (err) {
-            return ZalgoPromise['try'](handler).then(function () {
+            return ZalgoPromise['try'](onFinally).then(function () {
                 throw err;
             });
         });
@@ -5547,6 +5556,7 @@ var promise_ZalgoPromise = function () {
     };
 
     ZalgoPromise.all = function all(promises) {
+        // eslint-disable-line no-undef
 
         var promise = new ZalgoPromise();
         var count = promises.length;
@@ -5573,7 +5583,6 @@ var promise_ZalgoPromise = function () {
             }
 
             ZalgoPromise.resolve(prom).then(function (result) {
-                // eslint-disable-line promise/catch-or-return
                 results[i] = result;
                 count -= 1;
                 if (count === 0) {
@@ -5598,6 +5607,7 @@ var promise_ZalgoPromise = function () {
     };
 
     ZalgoPromise.hash = function hash(promises) {
+        // eslint-disable-line no-undef
         var result = {};
 
         return ZalgoPromise.all(Object.keys(promises).map(function (key) {
@@ -5619,6 +5629,10 @@ var promise_ZalgoPromise = function () {
     };
 
     ZalgoPromise['try'] = function _try(method, context, args) {
+
+        if (method && typeof method !== 'function' && !method.call) {
+            throw new Error('Promise.try expected a function');
+        }
 
         var result = void 0;
 
@@ -5942,7 +5956,8 @@ function normalizeButtonProps(props) {
         throw new Error('Expected props');
     }
 
-    var _props$style = props.style,
+    var clientID = props.clientID,
+        _props$style = props.style,
         style = _props$style === undefined ? {} : _props$style,
         _props$remembered = props.remembered,
         remembered = _props$remembered === undefined ? [] : _props$remembered,
@@ -5991,7 +6006,7 @@ function normalizeButtonProps(props) {
 
     style = normalizeButtonStyle(style, { locale: locale });
 
-    return { style: style, locale: locale, remembered: remembered, env: env, fundingEligibility: fundingEligibility, platform: platform, buttonSessionID: buttonSessionID, commit: commit, sessionID: sessionID };
+    return { clientID: clientID, style: style, locale: locale, remembered: remembered, env: env, fundingEligibility: fundingEligibility, platform: platform, buttonSessionID: buttonSessionID, commit: commit, sessionID: sessionID };
 }
 // CONCATENATED MODULE: ./src/button/template/componentStyle/page.js
 var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        touch-callout: none;\n        user-select: none;\n        cursor: default;\n    }\n";
@@ -6763,8 +6778,8 @@ var FPTI_TRANSITION = {
     BUTTON_LOAD: 'process_button_load',
     BUTTON_CLICK: 'process_button_click',
 
-    CREATE_PAYMENT: 'process_create_payment',
-    RECIEVE_PAYMENT: 'process_recieve_payment',
+    CREATE_ORDER: 'process_create_order',
+    RECIEVE_ORDER: 'process_recieve_order',
 
     CHECKOUT_INIT: 'process_checkout_init',
     CHECKOUT_AUTHORIZE: 'process_checkout_authorize',
@@ -6795,10 +6810,6 @@ var LOG_LEVEL = {
     INFO: 'info',
     WARN: 'warn',
     ERROR: 'error'
-};
-
-var PAYMENT_TYPE = {
-    EC_TOKEN: 'ec_token'
 };
 
 var ATTRIBUTE = {
@@ -6877,8 +6888,6 @@ var CLASS = {
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return SOURCE; });
 /* unused concated harmony import null */
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return LOG_LEVEL; });
-/* unused concated harmony import null */
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return PAYMENT_TYPE; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "a", function() { return ATTRIBUTE; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "p", function() { return PLATFORM; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "n", function() { return INTENT; });
