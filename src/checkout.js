@@ -24,13 +24,17 @@ type CheckoutComponent = {
 
 function buildActions(checkout : CheckoutComponent, orderID : string) : ActionsType {
 
-    let restartFlow = () => {
-        return checkout.close().then(() => {
+    let restartFlow = memoize(() =>
+        checkout.close().then(() => {
             enableLightbox();
-            renderCheckout({ payment: () => orderID }); // eslint-disable-line no-use-before-define
-            return new ZalgoPromise(noop);
-        });
-    };
+            // eslint-disable-next-line no-use-before-define
+            return renderCheckout({
+                payment: () => ZalgoPromise.resolve(orderID)
+            });
+        }).then(() =>
+            new ZalgoPromise(noop)
+        )
+    );
 
     let handleCaptureError = (err) => {
         if (err && err.message === 'CC_PROCESSOR_DECLINED') {
@@ -44,22 +48,19 @@ function buildActions(checkout : CheckoutComponent, orderID : string) : ActionsT
         throw new Error('Order could not be captured');
     };
 
-    let orderGet = memoize(() => {
-        return getOrder(orderID);
-    });
+    let orderGet = memoize(() => getOrder(orderID));
 
-    let orderCapture = memoize(() => {
-        return captureOrder(orderID)
+    let orderCapture = memoize(() =>
+        captureOrder(orderID)
             .catch(handleCaptureError)
-            .finally(orderGet.reset);
-    });
+            .finally(orderGet.reset)
+    );
 
-    let orderAuthorize = memoize(() => {
-        return authorizeOrder(orderID)
+    let orderAuthorize = memoize(() =>
+        authorizeOrder(orderID)
             .catch(handleCaptureError)
-            .finally(orderGet.reset);
-
-    });
+            .finally(orderGet.reset)
+    );
 
     return {
         order: {
@@ -73,11 +74,11 @@ function buildActions(checkout : CheckoutComponent, orderID : string) : ActionsT
 
 export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
 
-    let payment = memoize(window.xprops.payment);
+    let createOrder = memoize(window.xprops.createOrder);
 
     return window.paypal.Checkout.renderTo(window.top, {
 
-        payment,
+        payment: createOrder,
 
         locale: window.xprops.locale,
         commit: window.xprops.commit,
@@ -87,14 +88,14 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
         onAuthorize({ orderID, payerID }) : ZalgoPromise<void> {
             let actions = buildActions(this, orderID);
 
-            return window.xprops.onAuthorize({ orderID, payerID }, actions).catch(err => {
+            return window.xprops.onApprove({ orderID, payerID }, actions).catch(err => {
                 return window.xchild.error(err);
             });
         },
 
         onCancel: (data) : ZalgoPromise<void> => {
             return ZalgoPromise.try(() => {
-                return data.orderID || payment();
+                return data.orderID || createOrder();
             }).then(orderID => {
                 return window.xprops.onCancel({ orderID });
             }).catch(err => {

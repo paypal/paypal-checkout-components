@@ -44,7 +44,7 @@ export function setupMocks() {
     };
 
     window.xprops = {
-        payment: () => {
+        createOrder: () => {
             return ZalgoPromise.resolve('PAY-XXXXXXXXXX');
         },
         style: {
@@ -53,7 +53,7 @@ export function setupMocks() {
         onClick: async () => {
             // pass
         },
-        onAuthorize: async () => {
+        onApprove: async () => {
             // pass
         },
         onCancel: async () => {

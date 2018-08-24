@@ -7,10 +7,10 @@ import { createButtonHTML, getMockCheckoutInstance } from './mocks';
 
 describe('error cases', () => {
 
-    it('should call xchild.error for any onAuthorize error', async () => {
+    it('should call xchild.error for any onApprove error', async () => {
 
-        let onAuthorize;
-        let onAuthorizeCalled = false;
+        let onApprove;
+        let onApproveCalled = false;
         let errorCalled = false;
         let error = new Error(`Something went wrong`);
 
@@ -22,13 +22,13 @@ describe('error cases', () => {
             errorCalled = true;
         };
 
-        window.xprops.onAuthorize = async () => {
-            onAuthorizeCalled = true;
+        window.xprops.onApprove = async () => {
+            onApproveCalled = true;
             throw error;
         };
 
         window.paypal.Checkout.renderTo = async (win, props) => {
-            onAuthorize = props.onAuthorize.call(getMockCheckoutInstance(), { orderID: 'XXXXX', payerID: 'YYYYY' });
+            onApprove = props.onAuthorize.call(getMockCheckoutInstance(), { orderID: 'XXXXX', payerID: 'YYYYY' });
         };
 
         window.document.body.innerHTML = createButtonHTML();
@@ -37,10 +37,10 @@ describe('error cases', () => {
 
         window.document.querySelector('.paypal-button').click();
 
-        await onAuthorize;
+        await onApprove;
 
-        if (!onAuthorize || !onAuthorizeCalled) {
-            throw new Error(`Expected onAuthorize to have been called`);
+        if (!onApprove || !onApproveCalled) {
+            throw new Error(`Expected onApprove to have been called`);
         }
 
         if (!errorCalled) {
