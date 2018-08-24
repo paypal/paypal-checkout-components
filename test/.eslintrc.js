@@ -4,6 +4,7 @@ module.exports = {
     'extends': require.resolve('../.eslintrc'),
 
     'globals': {
-        'afterAll': true
+        'afterAll': true,
+        'jest':     true
     }
 };

@@ -11,6 +11,8 @@ function getRenderedFundingSources(template) : Array<string> {
     return regexMap(template, /data-funding-source="([^"]+)"/g, (result, group1) => group1);
 }
 
+jest.setTimeout(20000);
+
 afterAll(cancelPayPalCheckoutComponentWatcher);
 
 test('should do a basic button render and succeed', async () => {
