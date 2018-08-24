@@ -10,6 +10,9 @@
     "type": "git",
     "url": "https://github.paypal.com/Checkout/smart-buttons"
   },
+  "jest": {
+    "coverageDirectory": "./server-coverage/"
+  },
   "scripts": {
     "start": "babel-node ./server/server",
     "setup": "npm install && npm run flow-typed",
