@@ -66,26 +66,6 @@ export default function configKarma(karma : Object) {
 
     karmaConfig.preprocessors['src/index.js'] = [ 'webpack', 'sourcemap' ];
     karmaConfig.preprocessors['src/**/*.js'] = [ 'sourcemap' ];
-
-    karmaConfig.client = {
-        captureConsole: karmaConfig.client.captureConsole,
-        mocha:          {
-            timeout: process.env.TRAVIS ? 60 * 1000 : 10 * 1000, // eslint-disable-line no-process-env
-            bail:    true
-        }
-    };
-
-    /*
-
-    karmaConfig.webpack.module.rules
-        .find(rule => rule.loader === 'babel-loader')
-        .options.plugins.push([
-            'istanbul', {
-                only: `${ __dirname }/src`
-            }
-        ]);
-
-    */
-
+    
     karma.set(karmaConfig);
 }
