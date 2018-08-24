@@ -3,7 +3,7 @@
 import { regexMap } from 'belter';
 
 import { FUNDING } from '../../constants';
-import { buttonMiddleware, cancelPayPalCheckoutComponentWatcher } from '../../server/button';
+import { getButtonMiddleware, cancelPayPalCheckoutComponentWatcher } from '../../server/button';
 
 import { mockReq, mockRes } from './mock';
 
@@ -14,6 +14,8 @@ function getRenderedFundingSources(template) : Array<string> {
 jest.setTimeout(20000);
 
 afterAll(cancelPayPalCheckoutComponentWatcher);
+
+let buttonMiddleware = getButtonMiddleware();
 
 test('should do a basic button render and succeed', async () => {
 

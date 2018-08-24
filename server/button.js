@@ -27,35 +27,36 @@ let getSmartButtonClientJavascript = memoize(async () => {
     return await readFile(BUTTON_CLIENT_JS);
 });
 
-export async function buttonMiddleware(req : ExpressRequest, res : ExpressResponse) : Promise<void> {
-    try {
-        let { Buttons, DEFAULT_PROPS } = await getPayPalCheckoutComponentWatcher().import(`dist/button.js`);
+export function getButtonMiddleware() : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
+    return async function buttonMiddleware(req : ExpressRequest, res : ExpressResponse) : Promise<void> {
+        try {
+            let { Buttons, DEFAULT_PROPS } = await getPayPalCheckoutComponentWatcher().import(`dist/button.js`);
 
-        let params = undotify(req.query);
+            let params = undotify(req.query);
 
-        let {
-            clientID,
-            locale = DEFAULT_PROPS.LOCALE,
-            intent = DEFAULT_PROPS.INTENT,
-            commit = DEFAULT_PROPS.COMMIT,
-            vault  = DEFAULT_PROPS.VAULT
-        } = params;
+            let {
+                clientID,
+                locale = DEFAULT_PROPS.LOCALE,
+                intent = DEFAULT_PROPS.INTENT,
+                commit = DEFAULT_PROPS.COMMIT,
+                vault = DEFAULT_PROPS.VAULT
+            } = params;
 
-        if (!clientID) {
-            res.status(400)
-                .header('content-type', 'text/plain')
-                .send('Please provide a clientID query parameter');
-            return;
-        }
+            if (!clientID) {
+                res.status(400)
+                    .header('content-type', 'text/plain')
+                    .send('Please provide a clientID query parameter');
+                return;
+            }
 
-        let { country } = locale;
+            let { country } = locale;
 
-        let fundingEligibility = await getFundingEligibility({ country, intent, commit, vault });
+            let fundingEligibility = await getFundingEligibility({ country, intent, commit, vault });
 
-        let buttonHTML = Buttons({ ...params, fundingEligibility }).toString();
-        let buttonScript = await getSmartButtonClientJavascript();
+            let buttonHTML = Buttons({ ...params, fundingEligibility }).toString();
+            let buttonScript = await getSmartButtonClientJavascript();
 
-        let pageHTML = `
+            let pageHTML = `
             <body>
                 ${ buttonHTML }
                 <script src="https://www.paypal.com/sdk/js?client-id=${ htmlEncode(clientID) }"></script>
@@ -63,15 +64,17 @@ export async function buttonMiddleware(req : ExpressRequest, res : ExpressRespon
             </body>
         `;
 
-        res
-            .status(200)
-            .header('content-type', 'text/html')
-            .send(pageHTML);
+            res
+                .status(200)
+                .header('content-type', 'text/html')
+                .send(pageHTML);
 
-    } catch (err) {
-        console.error(err.stack ? err.stack : err); // eslint-disable-line no-console
-        res.status(500)
-            .header('content-type', 'text/plain')
-            .send('');
-    }
+        } catch (err) {
+            console.error(err.stack ? err.stack : err); // eslint-disable-line no-console
+            res.status(500)
+                .header('content-type', 'text/plain')
+                .send('');
+        }
+    };
 }
+

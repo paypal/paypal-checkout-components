@@ -34,10 +34,7 @@
     "postpublish": "git checkout server"
   },
   "peerDependencies": {
-    "cal": "^0.5.44",
-    "express": "^4.16.3",
-    "servicecore": "^3",
-    "xo-spark": "^5"
+    "express": "^4.16.3"
   },
   "dependencies": {
     "belter": "^1.0.19",
