@@ -569,8 +569,7 @@ export let Button : Component<ButtonOptions> = create({
                         }
 
                         return this.props.braintree
-                            .then(client => client.tokenizePayment(data))
-                            .then(res => res);
+                            .then(client => client.tokenizePayment(data));
                     });
 
                     let execute = actions.payment.execute;
