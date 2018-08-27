@@ -12,7 +12,7 @@ import { config } from '../config';
 import { SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
     BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY } from '../constants';
 import { redirect as redir, checkRecognizedBrowser,
-    getBrowserLocale, getSessionID, request, getScriptVersion,
+    getBrowserLocale, getPotentiallyBetterBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, isEligible,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
@@ -77,6 +77,9 @@ function isCreditDualEligible(props) : boolean {
 }
 
 let creditThrottle;
+let venmoThrottle;
+
+let localeThrottle = getThrottle('locale_resolution_rule', 50);
 
 type ButtonOptions = {
     style : {|
@@ -424,6 +427,7 @@ export let Button : Component<ButtonOptions> = create({
             },
             decorate({ allowed = [], disallowed = [] } : Object = {}, props : ButtonOptions) : {} {
 
+                // remove Venmo from our allowed list if the rendering device is not a mobile one
                 if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1 && !isDevice()) {
                     allowed = allowed.filter(source => (source !== FUNDING.VENMO));
                 }
@@ -437,6 +441,18 @@ export let Button : Component<ButtonOptions> = create({
                 }
 
                 let remembered = getRememberedFunding(sources => sources);
+
+                // Uncookied venmo ramp. Even without 'pwv' cookie, we'll be rendering venmo button
+                // for a sample of the mobile population.
+                if (allowed && allowed.indexOf(FUNDING.VENMO) === -1 &&
+                    remembered && remembered.indexOf(FUNDING.VENMO) === -1 && isDevice()) {
+
+                    venmoThrottle = getThrottle('venmo_uncookied_render', 10);
+
+                    if (venmoThrottle.isEnabled()) {
+                        allowed = [ ...allowed, FUNDING.VENMO ];
+                    }
+                }
 
                 if (!isDevice() || getDomainSetting('disable_venmo')) {
                     if (remembered && remembered.indexOf(FUNDING.VENMO) !== -1) {
@@ -490,6 +506,12 @@ export let Button : Component<ButtonOptions> = create({
                         });
                     }
 
+                    if (venmoThrottle) {
+                        venmoThrottle.logStart({
+                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                        });
+                    }
+
                     flushLogs();
 
                     return original.apply(this, arguments);
@@ -509,6 +531,8 @@ export let Button : Component<ButtonOptions> = create({
                     }
 
                     info('button_authorize');
+
+                    localeThrottle.logComplete();
 
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
@@ -545,8 +569,7 @@ export let Button : Component<ButtonOptions> = create({
                         }
 
                         return this.props.braintree
-                            .then(client => client.tokenizePayment(data))
-                            .then(res => ({ nonce: res.nonce }));
+                            .then(client => client.tokenizePayment(data));
                     });
 
                     let execute = actions.payment.execute;
@@ -587,6 +610,12 @@ export let Button : Component<ButtonOptions> = create({
                         });
                     }
 
+                    if (venmoThrottle) {
+                        venmoThrottle.logComplete({
+                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
+                        });
+                    }
+
                     return ZalgoPromise.try(() => {
 
                         if (this.props.braintree) {
@@ -610,6 +639,32 @@ export let Button : Component<ButtonOptions> = create({
                         }
                         throw err;
                     });
+                };
+            }
+        },
+
+        onShippingChange: {
+            type:     'function',
+            required: false,
+            noop:     true,
+
+            decorate(original) : Function {
+                return function decorateOnShippingChange(data, actions) : ZalgoPromise<void> {
+
+                    info('button_shipping_change');
+
+                    track({
+                        [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
+                        [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.CHECKOUT_SHIPPING_CHANGE,
+                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                    });
+
+                    flushLogs();
+                    let timeout = __TEST__ ? 500 : 10 * 1000;
+
+                    return ZalgoPromise.try(() => {
+                        return original.call(this, data, actions);
+                    }).timeout(timeout, new Error(`Timed out waiting ${ timeout }ms for payment`));
                 };
             }
         },
@@ -661,8 +716,16 @@ export let Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                     });
 
+                    localeThrottle.log('click');
+
                     if (creditThrottle) {
                         creditThrottle.log('click', {
+                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
+                        });
+                    }
+
+                    if (venmoThrottle) {
+                        venmoThrottle.log('click', {
                             [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
                         });
                     }
@@ -680,7 +743,13 @@ export let Button : Component<ButtonOptions> = create({
             queryParam: 'locale.x',
 
             def() : string {
-                let { lang, country } = getBrowserLocale();
+
+                let { lang, country } = localeThrottle.isEnabled()
+                    ? getPotentiallyBetterBrowserLocale()
+                    : getBrowserLocale();
+
+                localeThrottle.logStart();
+
                 return `${ lang }_${ country }`;
             },
 

@@ -149,10 +149,6 @@ export let config = {
             disable_venmo: true
         },
 
-        'searsoutlet.com': {
-            disable_venmo: true
-        },
-
         'searshometownstores.com': {
             disable_venmo: true
         },
@@ -198,6 +194,10 @@ export let config = {
         },
 
         'dndbeyond.com': {
+            disable_venmo: true
+        },
+
+        'app.zapbuy.it': {
             disable_venmo: true
         }
     },
