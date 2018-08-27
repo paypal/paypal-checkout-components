@@ -3,13 +3,13 @@
 import { BUTTON_LOGO, BUTTON_LOGO_COLOR } from '../../constants';
 
 import { zimplerLogo }      from './zimpler';
-import { p24Logo }      from './p24';
+import { p24Logo }          from './p24';
 import { sofortLogo }       from './sofort';
-import { idealLogo }          from './ideal';
+import { idealLogo }        from './ideal';
 import { giropayLogo }      from './giropay';
 import { epsLogo }          from './eps';
-import { mybankLogo }          from './mybank';
-import { bancontactLogo }          from './bancontact';
+import { mybankLogo }       from './mybank';
+import { bancontactLogo }   from './bancontact';
 import pp_white     from './pp_white.svg';
 import pp_blue      from './pp_blue.svg';
 import pp_black     from './pp_black.svg';
