@@ -1,36 +1,20 @@
 /* @flow */
 
-import { join } from 'path';
-
-import { readFile } from 'fs-extra';
-import { poll } from 'grabthar';
-import { undotify, memoize, htmlEncode } from 'belter';
+import { undotify, htmlEncode } from 'belter';
 
 import { getFundingEligibility } from './eligibility';
-
-const BUTTON_CLIENT_JS = join(__dirname, '..', 'dist/smart-payment-buttons.min.js');
+import { getSmartButtonClientScript, getSmartButtonRenderScript } from './watcher';
 
 type ExpressRequest = express$Request; // eslint-disable-line no-undef
 type ExpressResponse = express$Response; // eslint-disable-line no-undef
 
-export let getPayPalCheckoutComponentWatcher = memoize(() => {
-    return poll({
-        name: 'paypal-checkout-components'
-    });
-});
-
-export let cancelPayPalCheckoutComponentWatcher = () => {
-    return getPayPalCheckoutComponentWatcher().cancel();
-};
-
-let getSmartButtonClientJavascript = memoize(async () => {
-    return await readFile(BUTTON_CLIENT_JS);
-});
-
 export function getButtonMiddleware() : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
     return async function buttonMiddleware(req : ExpressRequest, res : ExpressResponse) : Promise<void> {
         try {
-            let { Buttons, DEFAULT_PROPS } = await getPayPalCheckoutComponentWatcher().import(`dist/button.js`);
+            let [ buttonScript, { Buttons, DEFAULT_PROPS } ] = await Promise.all([
+                getSmartButtonClientScript(),
+                getSmartButtonRenderScript()
+            ]);
 
             let params = undotify(req.query);
 
@@ -54,7 +38,6 @@ export function getButtonMiddleware() : (req : ExpressRequest, res : ExpressResp
             let fundingEligibility = await getFundingEligibility({ country, intent, commit, vault });
 
             let buttonHTML = Buttons({ ...params, fundingEligibility }).toString();
-            let buttonScript = await getSmartButtonClientJavascript();
 
             let pageHTML = `
             <body>

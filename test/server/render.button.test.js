@@ -3,7 +3,7 @@
 import { regexMap } from 'belter';
 
 import { FUNDING } from '../../constants';
-import { getButtonMiddleware, cancelPayPalCheckoutComponentWatcher } from '../../server/button';
+import { getButtonMiddleware, cancelWatchers } from '../../server';
 
 import { mockReq, mockRes } from './mock';
 
@@ -11,9 +11,9 @@ function getRenderedFundingSources(template) : Array<string> {
     return regexMap(template, /data-funding-source="([^"]+)"/g, (result, group1) => group1);
 }
 
-jest.setTimeout(20000);
+jest.setTimeout(300000);
 
-afterAll(cancelPayPalCheckoutComponentWatcher);
+afterAll(cancelWatchers);
 
 let buttonMiddleware = getButtonMiddleware();
 
