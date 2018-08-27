@@ -388,6 +388,21 @@ for (let color of getButtonConfig('paypal', 'colors')) {
 
     buttonConfigs.push({
         button: {
+            locale: 'en_GB',
+            commit: true,
+            style:  {
+                color,
+                layout:     'vertical',
+                maxbuttons: 4
+            },
+            funding: {
+                allowed: [ FUNDING.CREDIT, FUNDING.CARD ]
+            }
+        }
+    });
+
+    buttonConfigs.push({
+        button: {
             locale: 'en_IT',
             commit: true,
             style:  {
