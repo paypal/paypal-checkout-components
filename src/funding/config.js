@@ -195,6 +195,16 @@ export const CARD_CONFIG = {
         ]
     },
 
+    [ COUNTRY.GB ]: {
+        priority: [
+            CARD.VISA,
+            CARD.MASTERCARD,
+            CARD.AMEX,
+            CARD.DISCOVER,
+            CARD.MAESTRO
+        ]
+    },
+
     [ COUNTRY.US ]: {
         priority: [
             CARD.VISA,
