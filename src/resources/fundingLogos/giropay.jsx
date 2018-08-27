@@ -7,8 +7,8 @@ import { BUTTON_LOGO_COLOR } from '../../constants';
 const GIROPAY_LOGO_COLORS = {
     [ BUTTON_LOGO_COLOR.WHITE ]: {
         primary:   '#ffffff',
-        secondary: '#ffffff',
-        tertiary:  '#ffffff'
+        secondary: '#000000',
+        tertiary:  '#2C2E2F'
     },
     [ BUTTON_LOGO_COLOR.ANY ]: {
         primary:   '#FFFFFF',
