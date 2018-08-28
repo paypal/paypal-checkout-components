@@ -33,7 +33,7 @@ export function getButtonMiddleware() : (req : ExpressRequest, res : ExpressResp
                 return;
             }
 
-            let { country } = locale;
+            let { lang, country } = locale;
 
             let fundingEligibility = await getFundingEligibility({ country, intent, commit, vault });
 
@@ -42,7 +42,7 @@ export function getButtonMiddleware() : (req : ExpressRequest, res : ExpressResp
             let pageHTML = `
                 <body>
                     ${ buttonHTML }
-                    <script src="/sdk/js?client-id=${ htmlEncode(clientID) }&components=buttons,checkout"></script>
+                    <script src="/sdk/js?client-id=${ htmlEncode(clientID) }&locale=${ htmlEncode(lang) }_${ htmlEncode(country) }&components=buttons,checkout"></script>
                     <script>${ buttonScript }</script>
                     <script>spb.setupButton()</script>
                 </body>
