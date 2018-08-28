@@ -41,11 +41,11 @@
   },
   "dependencies": {
     "belter": "^1.0.19",
-    "express": "^4.16.3",
     "grabthar": "^2.0.1",
     "zalgo-promise": "^1.0.28"
   },
   "devDependencies": {
+    "express": "^4.16.3",
     "flow-bin": "^0.70.0",
     "grumbler-scripts": "^2.0.56",
     "sync-browser-mocks": "^1.0.44"
