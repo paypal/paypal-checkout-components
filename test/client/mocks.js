@@ -22,6 +22,7 @@ export function setupMocks() {
     };
 
     window.paypal = {
+        client:  () => window.paypal,
         Promise: ZalgoPromise,
         config:  {
             locale: {

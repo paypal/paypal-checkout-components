@@ -15,7 +15,7 @@ type ActionsType = {
 };
 
 function enableLightbox() {
-    window.paypal.Checkout.contexts.iframe = true;
+    window.paypal.client().Checkout.contexts.iframe = true;
 }
 
 type CheckoutComponent = {
@@ -76,7 +76,7 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
 
     let createOrder = memoize(window.xprops.createOrder);
 
-    return window.paypal.Checkout.renderTo(window.top, {
+    return window.paypal.client().Checkout.renderTo(window.top, {
 
         payment: createOrder,
 
