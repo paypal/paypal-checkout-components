@@ -7,15 +7,17 @@ const FILE_NAME = 'smart-payment-buttons';
 const MODULE_NAME = 'spb';
 
 export let WEBPACK_CONFIG = getWebpackConfig({
-    filename:   `${ FILE_NAME }.js`,
-    modulename: MODULE_NAME
+    filename:      `${ FILE_NAME }.js`,
+    modulename:    MODULE_NAME,
+    libraryTarget: 'window'
 });
 
 export let WEBPACK_CONFIG_MIN = getWebpackConfig({
-    filename:   `${ FILE_NAME }.min.js`,
-    modulename: MODULE_NAME,
-    minify:     true,
-    vars:       {
+    filename:      `${ FILE_NAME }.min.js`,
+    modulename:    MODULE_NAME,
+    minify:        true,
+    libraryTarget: 'window',
+    vars:          {
         __MIN__: true
     }
 });
