@@ -40,13 +40,13 @@ export function getButtonMiddleware() : (req : ExpressRequest, res : ExpressResp
             let buttonHTML = Buttons({ ...params, fundingEligibility }).toString();
 
             let pageHTML = `
-            <body>
-                ${ buttonHTML }
-                <script src="/sdk/js?client-id=${ htmlEncode(clientID) }&components=buttons,checkout"></script>
-                <script>${ buttonScript }</script>
-                <script>spb.setup()</script>
-            </body>
-        `;
+                <body>
+                    ${ buttonHTML }
+                    <script src="/sdk/js?client-id=${ htmlEncode(clientID) }&components=buttons,checkout"></script>
+                    <script>${ buttonScript }</script>
+                    <script>spb.setup()</script>
+                </body>
+            `;
 
             res
                 .status(200)
