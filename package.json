@@ -23,7 +23,7 @@
     "babel": "babel server/*.js server/**/*.js --exclude=node_modules --out-dir .",
     "webpack": "babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/webpack --progress",
     "test": "npm run lint && npm run flow-typed && npm run flow && npm run karma && npm run jest",
-    "build": "npm run test && npm run babel && npm run webpack",
+    "build": "npm run test && npm run webpack",
     "release": "./publish.sh",
     "release:patch": "./publish.sh patch",
     "release:minor": "./publish.sh minor",
