@@ -44,6 +44,7 @@ export function getButtonMiddleware() : (req : ExpressRequest, res : ExpressResp
                 ${ buttonHTML }
                 <script src="/sdk/js?client-id=${ htmlEncode(clientID) }&components=buttons,checkout"></script>
                 <script>${ buttonScript }</script>
+                <script>spb.setup()</script>
             </body>
         `;
 
