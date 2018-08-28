@@ -2,7 +2,7 @@
 
 set -e;
 
-npm run test;
+npm run build;
 
 npm version ${1-patch};
 
