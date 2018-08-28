@@ -73,7 +73,7 @@ const URIS = {
     CHECKOUT: `/checkoutnow`,
     ALTPAY:   `/latinumcheckout`,
     GUEST:    `/webapps/xoonboarding`,
-    BUTTON:   `/webapps/hermes/button`,
+    BUTTON:   `/webapps/hermes/smart-button`,
     CARD:     `/webapps/hermes/card-fields`,
     META:     `/webapps/hermes/component-meta`,
     LOGGER:   `/xoplatform/logger`,
