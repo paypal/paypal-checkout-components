@@ -42,7 +42,7 @@ export function getButtonMiddleware() : (req : ExpressRequest, res : ExpressResp
             let pageHTML = `
             <body>
                 ${ buttonHTML }
-                <script src="/sdk/js?client-id=${ htmlEncode(clientID) }"></script>
+                <script src="/sdk/js?client-id=${ htmlEncode(clientID) }&components=buttons,checkout"></script>
                 <script>${ buttonScript }</script>
             </body>
         `;
