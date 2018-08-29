@@ -101,16 +101,11 @@ export let Button : Component<ButtonProps> = create({
 
         locale: {
             type:       'object',
-            queryParam: 'locale.x',
-            queryValue(locale) : string {
-                let { lang, country } = locale;
-                return `${ lang }_${ country }`;
-            },
+            queryParam: true,
             value() : LocaleType {
-                let { LANG, COUNTRY } = LOCALE;
                 return {
-                    lang:    LANG,
-                    country: COUNTRY
+                    lang:    LOCALE.LANG,
+                    country: LOCALE.COUNTRY
                 };
             }
         },
