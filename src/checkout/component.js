@@ -6,9 +6,9 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONSTANTS, PopupOpenError } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
-import { patchMethod, isDevice, supportsPopups, memoize } from 'belter/src';
+import { patchMethod, isDevice, supportsPopups, memoize, isIEIntranet } from 'belter/src';
 
-import { getSessionID, getButtonSessionID } from '../lib';
+import { getSessionID, getButtonSessionID, isEligible } from '../lib';
 import { DOMAINS, STAGE } from '../config';
 import { LOCALE, LOG_LEVEL, CURRENT_ENV, CLIENT_ID } from '../globals';
 import { FUNDING } from '../constants';
@@ -48,6 +48,16 @@ export let Checkout : Component<CheckoutPropsType> = create({
     contexts: {
         iframe: (!supportsPopups()),
         popup:  true
+    },
+
+    validate() {
+        if (isIEIntranet()) {
+            throw new Error(`Can not render button in IE intranet mode`);
+        }
+
+        if (!isEligible()) {
+            logger.warn('button_render_ineligible');
+        }
     },
 
     prerenderTemplate: componentTemplate,
