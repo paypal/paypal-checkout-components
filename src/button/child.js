@@ -5,7 +5,7 @@ import { track, flush as flushLogs } from 'beaver-logger/client';
 
 import { Checkout } from '../checkout';
 import { setupPopupBridgeProxy } from '../integrations/popupBridge';
-import { getPageRenderTime, setLogLevel } from '../lib';
+import { getPageRenderTime, setLogLevel, isIEIntranet } from '../lib';
 import { ATTRIBUTE, FUNDING, FPTI, BUTTON_LAYOUT } from '../constants';
 
 import typeof { Button } from './component';
@@ -41,5 +41,9 @@ export function setupButtonChild(ButtonComponent : Button) {
 
     if (xprops && xprops.logLevel) {
         setLogLevel(xprops.logLevel);
+    }
+
+    if (window.xchild && isIEIntranet()) {
+        window.xchild.error(new Error(`Can not render in IE Intranet mode`));
     }
 }

@@ -3,14 +3,14 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { info, track, warn, flush as flushLogs, immediateFlush } from 'beaver-logger/client';
-import { create, CONSTANTS, PopupOpenError } from 'xcomponent/src';
-import { type Component } from 'xcomponent/src/component/component';
+import { create, CONSTANTS, PopupOpenError } from 'zoid/src';
+import { type Component } from 'zoid/src/component/component';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
     setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize,
     getDomainSetting, documentReady, getThrottle, getScriptVersion,
-    getButtonSessionID, isPayPalDomain } from '../lib';
+    getButtonSessionID, isPayPalDomain, isEligible, isIEIntranet } from '../lib';
 import { config } from '../config';
 import { ENV, FPTI, PAYMENT_TYPE, CHECKOUT_OVERLAY_COLOR } from '../constants';
 import { onLegacyPaymentAuthorize } from '../compat';
@@ -95,6 +95,16 @@ export let Checkout : Component<CheckoutPropsType> = create({
 
     get version() : string {
         return getScriptVersion();
+    },
+
+    validate() {
+        if (!isEligible()) {
+            warn('button_render_ineligible');
+        }
+
+        if (isIEIntranet()) {
+            throw new Error(`Can not render button in IE intranet mode`);
+        }
     },
 
     prerenderTemplate: componentTemplate,
