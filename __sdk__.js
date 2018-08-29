@@ -18,5 +18,20 @@ module.exports = {
                 }
             }`,
         globals
+    },
+
+    'checkout': {
+        entry:           './src/interface/checkout',
+        staticNamespace: '__paypal_checkout__',
+        configQuery:     `
+            clientConfiguration {
+                paypalMerchantConfiguration(merchantId: $clientID, locale: $country) {
+                    creditCard {                                                             
+                        isPayPalBranded                                                    
+                        supportedCardBrands                                                    
+                    }    
+                }
+            }`,
+        globals
     }
 };
