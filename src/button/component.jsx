@@ -67,12 +67,12 @@ export let Button : Component<ButtonProps> = create({
     },
 
     validate() {
-        if (!isEligible()) {
-            logger.warn('button_render_ineligible');
-        }
-
         if (isIEIntranet()) {
             throw new Error(`Can not render button in IE intranet mode`);
+        }
+
+        if (!isEligible()) {
+            logger.warn('button_render_ineligible');
         }
     },
 
