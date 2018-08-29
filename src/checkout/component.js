@@ -9,8 +9,8 @@ import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { patchMethod, isDevice, supportsPopups, memoize } from 'belter/src';
 
 import { getSessionID, getButtonSessionID } from '../lib';
-import { DOMAINS, STAGE, STAGE_DOMAIN } from '../config';
-import { LOCALE, LOG_LEVEL, CURRENT_ENV } from '../globals';
+import { DOMAINS, STAGE } from '../config';
+import { LOCALE, LOG_LEVEL, CURRENT_ENV, CLIENT_ID } from '../globals';
 import { FUNDING } from '../constants';
 import { FUNDING_CONFIG } from '../funding';
 
@@ -54,6 +54,14 @@ export let Checkout : Component<CheckoutPropsType> = create({
     containerTemplate,
 
     props: {
+
+        clientID: {
+            type: 'string',
+            value() : string {
+                return CLIENT_ID;
+            },
+            queryParam: true
+        },
 
         sessionID: {
             type: 'string',
