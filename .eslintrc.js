@@ -13,7 +13,8 @@ module.exports = {
         '__MERCHANT_ID__': true,
         '__INTENT__': true,
         '__COMMIT__': true,
-        '__VAULT__': true
+        '__VAULT__': true,
+        '__PORT__': true
     },
 
     'rules': {

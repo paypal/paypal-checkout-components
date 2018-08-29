@@ -2,11 +2,9 @@
 
 import { isCurrentDomain, buildUrl } from './util';
 
-export const LOG_STATE = 'checkoutjs';
 export const SESSION_LIFETIME = 5 * 60 * 1000;
 
-export const STAGE = 'msmaster';
-export const STAGE_DOMAIN = 'qa.paypal.com';
+export const STAGE = 'msmaster.qa.paypal.com';
 
 export const SUPPORTED_BROWSERS = {
     msie:           '11',
@@ -23,22 +21,24 @@ export const SUPPORTED_BROWSERS = {
 
 export const DOMAINS = {
     local: {
-        PAYPAL: `http://localhost.paypal.com`,
+        get PAYPAL() : string {
+            return `http://localhost.paypal.com:${ __PORT__ }`;
+        },
         get API() : string {
-            return `https://www.${ STAGE }.${ STAGE_DOMAIN }`;
+            return `https://www.${ STAGE }`;
         }
     },
     stage: {
         get PAYPAL() : string {
-            return `https://www.${ STAGE }.${ STAGE_DOMAIN }`;
+            return `https://www.${ STAGE }`;
         },
         get API() : string {
-            return `https://www.${ STAGE }.${ STAGE_DOMAIN }`;
+            return `https://www.${ STAGE }:12326`;
         }
     },
     sandbox: {
-        PAYPAL: `https://www.sandbox.paypal.com`,
-        API:    `https://cors.api.sandbox.paypal.com`
+        PAYPAL:  `https://www.sandbox.paypal.com`,
+        API:     `https://cors.api.sandbox.paypal.com`
     },
     production: {
         PAYPAL: `https://www.paypal.com`,
@@ -48,25 +48,6 @@ export const DOMAINS = {
         PAYPAL: `mock://www.paypal.com`,
         API:    `mock://api.paypal.com`
     }
-}[__ENV__];
-
-const PORTS = {
-    local: {
-        PAYPAL:   8000,
-        BUTTON:   8000,
-        CHECKOUT: 8000,
-        GUEST:    8001,
-        CARD:     8000,
-        ALTPAY:   3000,
-        META:     8000
-    },
-    stage: {
-        AUTH:  12326,
-        ORDER: 12326
-    },
-    sandbox:    {},
-    production: {},
-    test:       {}
 }[__ENV__];
 
 const URIS = {
@@ -107,44 +88,44 @@ const URIS = {
 
 export const URLS = {
     get PAYPAL() : string {
-        return buildUrl(DOMAINS.PAYPAL, PORTS.PAYPAL);
+        return buildUrl(DOMAINS.PAYPAL);
     },
 
     get CHECKOUT() : string {
-        return buildUrl(DOMAINS.PAYPAL, PORTS.CHECKOUT, URIS.CHECKOUT);
+        return buildUrl(DOMAINS.PAYPAL, URIS.CHECKOUT);
     },
 
     get BUTTON() : string {
-        return buildUrl(DOMAINS.PAYPAL, PORTS.BUTTON, URIS.BUTTON);
+        return buildUrl(DOMAINS.PAYPAL, URIS.BUTTON);
     },
 
     get GUEST() : string {
-        return buildUrl(DOMAINS.PAYPAL, PORTS.GUEST, URIS.GUEST);
+        return buildUrl(DOMAINS.PAYPAL, URIS.GUEST);
     },
     
     get CARD() : string {
-        return buildUrl(DOMAINS.PAYPAL, PORTS.CARD, URIS.CARD);
+        return buildUrl(DOMAINS.PAYPAL, URIS.CARD);
     },
 
     get META() : string {
-        return buildUrl(DOMAINS.PAYPAL, PORTS.META, URIS.META);
+        return buildUrl(DOMAINS.PAYPAL, URIS.META);
     },
 
     get ALTPAY() : string {
-        return buildUrl(DOMAINS.PAYPAL, PORTS.ALTPAY, URIS.ALTPAY);
+        return buildUrl(DOMAINS.PAYPAL, URIS.ALTPAY);
     },
 
     get LOGGER() : string {
-        return buildUrl(DOMAINS.PAYPAL, PORTS.LOGGER, URIS.LOGGER);
+        return buildUrl(DOMAINS.PAYPAL, URIS.LOGGER);
     },
 
     get AUTH() : string {
         let domain = isCurrentDomain(DOMAINS.PAYPAL) ? DOMAINS.PAYPAL : DOMAINS.API;
-        return buildUrl(domain, PORTS.AUTH, URIS.AUTH);
+        return buildUrl(domain, URIS.AUTH);
     },
 
     get ORDER() : string {
         let domain = isCurrentDomain(DOMAINS.PAYPAL) ? DOMAINS.PAYPAL : DOMAINS.API;
-        return buildUrl(domain, PORTS.ORDER, URIS.ORDER);
+        return buildUrl(domain, URIS.ORDER);
     }
 };

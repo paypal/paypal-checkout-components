@@ -8,6 +8,7 @@ import { FUNDING } from './constants';
 declare var __TEST__: boolean;
 declare var __MIN__: boolean;
 declare var __FILE_NAME__ : string;
+declare var __PORT__ : number;
 
 declare var __PAYPAL_CHECKOUT__ : {
     __MAJOR_VERSION__ : string,

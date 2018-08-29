@@ -101,5 +101,7 @@ export const testGlobals = {
 
     __INTENT__: 'sale',
     __COMMIT__: true,
-    __VAULT__:  true
+    __VAULT__:  true,
+
+    __PORT__: 8000
 };

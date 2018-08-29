@@ -2,11 +2,11 @@
 
 import { getDomain, getActualDomain } from 'cross-domain-utils/src';
 
-export function buildUrl(domain : string, port? : string, uri? : string) : string {
+export function buildUrl(domain : string, uri? : string) : string {
     if (domain.indexOf('mock://') === 0 && typeof window !== 'undefined') {
         domain = getActualDomain();
     }
-    return `${ domain }${ port ? `:${ port }` : '' }${ uri || '' }`;
+    return `${ domain }${ uri || '' }`;
 }
 
 export function isCurrentDomain(domain : string) : boolean {
