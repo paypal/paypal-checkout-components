@@ -2247,9 +2247,9 @@ window.spb = function(modules) {
                                     return window.xchild.error(err);
                                 });
                             },
-                            onCancel: function(data) {
+                            onCancel: function() {
                                 return zalgo_promise_src.a.try(function() {
-                                    return data.orderID || createOrder();
+                                    return createOrder();
                                 }).then(function(orderID) {
                                     return window.xprops.onCancel({
                                         orderID: orderID
