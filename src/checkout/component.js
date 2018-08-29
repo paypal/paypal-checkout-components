@@ -146,6 +146,22 @@ export let Checkout : Component<CheckoutPropsType> = create({
             }
         },
 
+        xcomponent: {
+            type:       'string',
+            queryParam: true,
+            value() : string {
+                return '1';
+            }
+        },
+
+        version: {
+            type:       'string',
+            queryParam: true,
+            value() : string {
+                return '5';
+            }
+        },
+
         commit: {
             type:       'boolean',
             queryParam: true,
