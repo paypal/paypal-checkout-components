@@ -2,7 +2,11 @@
 
 import { beacon } from './lib/beacon';
 import { extendNamespace } from './lib/namespace';
-import { stringifyError } from './lib/util';
+import { stringifyError, isPayPalDomain } from './lib/util';
+
+if (!__PAYPAL_CHECKOUT__.__MAJOR__ && !isPayPalDomain() && !__TEST__) {
+    throw new Error(`Do not integrate with versioned script url`);
+}
 
 if (window.paypal && window.paypal.version === __PAYPAL_CHECKOUT__.__MINOR_VERSION__) {
 
