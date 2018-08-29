@@ -93,9 +93,9 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
             });
         },
 
-        onCancel: (data) : ZalgoPromise<void> => {
+        onCancel: () : ZalgoPromise<void> => {
             return ZalgoPromise.try(() => {
-                return data.orderID || createOrder();
+                return createOrder();
             }).then(orderID => {
                 return window.xprops.onCancel({ orderID });
             }).catch(err => {
