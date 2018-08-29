@@ -1,5 +1,6 @@
 /* @flow */
 
+import { debug, info, warn, error, track, flush } from 'beaver-logger/client';
 import { destroyAll as _destroyAll } from 'xcomponent/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import * as _postRobot from 'post-robot/src'; // eslint-disable-line import/no-namespace
@@ -45,6 +46,7 @@ export let BillingPage;
 export let PayPalCheckout;
 export let destroyAll;
 export let enableCheckoutIframe;
+export let logger;
 
 function _enableCheckoutIframe() {
     _Checkout.contexts.iframe = true;
@@ -57,4 +59,5 @@ if (isPayPalDomain() || __TEST__) {
     PayPalCheckout = _Checkout;
     enableCheckoutIframe = _enableCheckoutIframe;
     destroyAll = _destroyAll;
+    logger = { debug, info, warn, error, track, flush };
 }
