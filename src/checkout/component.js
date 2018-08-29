@@ -108,18 +108,6 @@ export let Checkout : Component<CheckoutPropsType> = create({
             }
         },
 
-        stageDomain: {
-            type:       'string',
-            queryParam: true,
-            required:   false,
-
-            def() : ?string {
-                if (CURRENT_ENV === ENV.STAGE || CURRENT_ENV === ENV.LOCAL) {
-                    return STAGE_DOMAIN;
-                }
-            }
-        },
-
         locale: {
             type:          'object',
             queryParam:    'locale.x',
