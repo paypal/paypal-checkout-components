@@ -1,5 +1,6 @@
 /* @flow */
 
+import { useLogger } from 'zoid/src';
 import { logger, FPTI_KEY } from 'paypal-braintree-web-client/src';
 import { getQueryParam } from 'belter/src';
 
@@ -27,6 +28,8 @@ function getOrderID() : ?string {
 }
 
 export function setupLogger() {
+    useLogger(logger);
+
     logger.addTrackingBuilder(() => {
 
         let orderID = getOrderID();
