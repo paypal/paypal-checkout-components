@@ -199,6 +199,10 @@ export let config = {
 
         'app.zapbuy.it': {
             disable_venmo: true
+        },
+
+        'gamersaloon.com': {
+            disable_venmo: true
         }
     },
 
