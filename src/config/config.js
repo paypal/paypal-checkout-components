@@ -215,6 +215,10 @@ export let config = {
 
         'shopguyswin.ca': {
             disable_venmo: true
+        },
+
+        'jjill.com': {
+            disable_venmo: true
         }
     },
 
