@@ -203,6 +203,18 @@ export let config = {
 
         'gamersaloon.com': {
             disable_venmo: true
+        },
+
+        '1800contacts.com': {
+            disable_venmo: true
+        },
+
+        'shopchatters.ca': {
+            disable_venmo: true
+        },
+
+        'shopguyswin.ca': {
+            disable_venmo: true
         }
     },
 
