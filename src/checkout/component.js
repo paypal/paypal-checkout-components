@@ -10,7 +10,7 @@ import { patchMethod, isDevice, supportsPopups, memoize, isIEIntranet } from 'be
 
 import { getSessionID, getButtonSessionID, isEligible } from '../lib';
 import { DOMAINS, STAGE } from '../config';
-import { LOCALE, LOG_LEVEL, CURRENT_ENV, CLIENT_ID } from '../globals';
+import { LOCALE, CURRENT_ENV, CLIENT_ID } from '../globals';
 import { FUNDING } from '../constants';
 import { FUNDING_CONFIG } from '../funding';
 
@@ -21,7 +21,6 @@ type CheckoutPropsType = {
     onAuthorize : ({ returnUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
     onCancel? : ({ cancelUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
     fundingSource : string,
-    logLevel? : string,
     env? : string,
     stage? : string,
     stageUrl? : string
@@ -281,13 +280,6 @@ export let Checkout : Component<CheckoutPropsType> = create({
 
                     return onClose;
                 };
-            }
-        },
-
-        logLevel: {
-            type: 'string',
-            value() : string {
-                return LOG_LEVEL;
             }
         },
 

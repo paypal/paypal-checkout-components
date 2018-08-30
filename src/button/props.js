@@ -51,7 +51,6 @@ export type ButtonPropsInputs = {|
     locale? : $PropertyType<ButtonProps, 'locale'> | void,
     commit? : $PropertyType<ButtonProps, 'commit'> | void,
     env? : $PropertyType<ButtonProps, 'env'> | void,
-    logLevel? : $PropertyType<ButtonProps, 'logLevel'> | void,
     meta? : $PropertyType<ButtonProps, 'meta'> | void,
     stage? : $PropertyType<ButtonProps, 'stage'> | void,
     stageUrl? : $PropertyType<ButtonProps, 'stageUrl'> | void,
