@@ -15,7 +15,8 @@ import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getPotentiallyBetterBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, isEligible,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
-    getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
+    getRememberedFunding, memoize, uniqueID, getThrottle,
+    getBrowser, isWebView, isEdgeIOS, isFirefoxIOS } from '../lib';
 import { rest, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
@@ -442,10 +443,13 @@ export let Button : Component<ButtonOptions> = create({
 
                 let remembered = getRememberedFunding(sources => sources);
 
-                // Uncookied venmo ramp. Even without 'pwv' cookie, we'll be rendering venmo button
-                // for a sample of the mobile population.
+                /* Uncookied venmo ramp. Even without 'pwv' cookie, we'll be rendering venmo button
+                    for a sample of the mobile population.
+                    Webviews, EdgeIOS, and FirefoxIOS do NOT qualify for this experiment
+                 */
                 if (allowed && allowed.indexOf(FUNDING.VENMO) === -1 &&
-                    remembered && remembered.indexOf(FUNDING.VENMO) === -1 && isDevice()) {
+                    remembered && remembered.indexOf(FUNDING.VENMO) === -1 &&
+                    isDevice() && !isWebView() && !isEdgeIOS() && !isFirefoxIOS()) {
 
                     venmoThrottle = getThrottle('venmo_uncookied_render', 10);
 
