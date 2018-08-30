@@ -256,16 +256,34 @@
             if ("undefined" != typeof window && config.uri) {
                 var hasBuffer = buffer.length, hasTracking = tracking.length;
                 if (hasBuffer || hasTracking) {
-                    for (var meta = {}, _i2 = 0, _length2 = null == metaBuilders ? 0 : metaBuilders.length; _i2 < _length2; _i2++) {
-                        var builder = metaBuilders[_i2];
+                    var meta = {}, _iterator = metaBuilders, _isArray = Array.isArray(_iterator), _i = 0;
+                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                        var _ref2;
+                        if (_isArray) {
+                            if (_i >= _iterator.length) break;
+                            _ref2 = _iterator[_i++];
+                        } else {
+                            if ((_i = _iterator.next()).done) break;
+                            _ref2 = _i.value;
+                        }
+                        var builder = _ref2;
                         try {
                             extend(meta, builder(meta), !1);
                         } catch (err) {
                             console.error("Error in custom meta builder:", err.stack || err.toString());
                         }
                     }
-                    for (var headers = {}, _i4 = 0, _length4 = null == headerBuilders ? 0 : headerBuilders.length; _i4 < _length4; _i4++) {
-                        var _builder = headerBuilders[_i4];
+                    var headers = {}, _iterator2 = headerBuilders, _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                    for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                        var _ref3;
+                        if (_isArray2) {
+                            if (_i2 >= _iterator2.length) break;
+                            _ref3 = _iterator2[_i2++];
+                        } else {
+                            if ((_i2 = _iterator2.next()).done) break;
+                            _ref3 = _i2.value;
+                        }
+                        var _builder = _ref3;
                         try {
                             extend(headers, _builder(headers), !1);
                         } catch (err) {
@@ -330,8 +348,17 @@
                     return;
                 }
                 payload.timestamp = Date.now();
-                for (var _i6 = 0, _length6 = null == payloadBuilders ? 0 : payloadBuilders.length; _i6 < _length6; _i6++) {
-                    var builder = payloadBuilders[_i6];
+                var _iterator3 = payloadBuilders, _isArray3 = Array.isArray(_iterator3), _i3 = 0;
+                for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                    var _ref4;
+                    if (_isArray3) {
+                        if (_i3 >= _iterator3.length) break;
+                        _ref4 = _iterator3[_i3++];
+                    } else {
+                        if ((_i3 = _iterator3.next()).done) break;
+                        _ref4 = _i3.value;
+                    }
+                    var builder = _ref4;
                     try {
                         extend(payload, builder(payload), !1);
                     } catch (err) {
@@ -383,8 +410,17 @@
                 } catch (err) {
                     return;
                 }
-                for (var _i8 = 0, _length8 = null == trackingBuilders ? 0 : trackingBuilders.length; _i8 < _length8; _i8++) {
-                    var builder = trackingBuilders[_i8];
+                var _iterator4 = trackingBuilders, _isArray4 = Array.isArray(_iterator4), _i4 = 0;
+                for (_iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
+                    var _ref5;
+                    if (_isArray4) {
+                        if (_i4 >= _iterator4.length) break;
+                        _ref5 = _iterator4[_i4++];
+                    } else {
+                        if ((_i4 = _iterator4.next()).done) break;
+                        _ref5 = _i4.value;
+                    }
+                    var builder = _ref5;
                     try {
                         extend(payload, builder(payload), !1);
                     } catch (err) {
@@ -1144,9 +1180,9 @@
                     iframeFrames.splice(i, 1);
                     iframeWindows.splice(i, 1);
                 }
-                for (var _i8 = 0; _i8 < iframeWindows.length; _i8++) if (isWindowClosed(iframeWindows[_i8])) {
-                    iframeFrames.splice(_i8, 1);
-                    iframeWindows.splice(_i8, 1);
+                for (var _i5 = 0; _i5 < iframeWindows.length; _i5++) if (isWindowClosed(iframeWindows[_i5])) {
+                    iframeFrames.splice(_i5, 1);
+                    iframeWindows.splice(_i5, 1);
                 }
             }();
             if (frame && frame.contentWindow) try {
@@ -1164,8 +1200,16 @@
             return function findChildFrameByName(win, name) {
                 var frame = getFrameByName(win, name);
                 if (frame) return frame;
-                for (var _i12 = 0, _getFrames4 = getFrames(win), _length10 = null == _getFrames4 ? 0 : _getFrames4.length; _i12 < _length10; _i12++) {
-                    var childFrame = _getFrames4[_i12], namedFrame = findChildFrameByName(childFrame, name);
+                for (var _iterator5 = getFrames(win), _isArray5 = Array.isArray(_iterator5), _i7 = 0, _iterator5 = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator](); ;) {
+                    var _ref5;
+                    if (_isArray5) {
+                        if (_i7 >= _iterator5.length) break;
+                        _ref5 = _iterator5[_i7++];
+                    } else {
+                        if ((_i7 = _iterator5.next()).done) break;
+                        _ref5 = _i7.value;
+                    }
+                    var childFrame = _ref5, namedFrame = findChildFrameByName(childFrame, name);
                     if (namedFrame) return namedFrame;
                 }
             }(getTop(win) || win, name);
@@ -1179,8 +1223,16 @@
             if (actualParent) return actualParent === parent;
             if (child === parent) return !1;
             if (getTop(child) === child) return !1;
-            for (var _i16 = 0, _getFrames8 = getFrames(parent), _length14 = null == _getFrames8 ? 0 : _getFrames8.length; _i16 < _length14; _i16++) {
-                var frame = _getFrames8[_i16];
+            for (var _iterator7 = getFrames(parent), _isArray7 = Array.isArray(_iterator7), _i9 = 0, _iterator7 = _isArray7 ? _iterator7 : _iterator7[Symbol.iterator](); ;) {
+                var _ref7;
+                if (_isArray7) {
+                    if (_i9 >= _iterator7.length) break;
+                    _ref7 = _iterator7[_i9++];
+                } else {
+                    if ((_i9 = _iterator7.next()).done) break;
+                    _ref7 = _i9.value;
+                }
+                var frame = _ref7;
                 if (frame === child) return !0;
             }
             return !1;
@@ -1407,11 +1459,29 @@
             return result;
         }
         function getAllChildFrames(win) {
-            for (var result = [], _i3 = 0, _getFrames2 = getFrames(win), _length2 = null == _getFrames2 ? 0 : _getFrames2.length; _i3 < _length2; _i3++) {
-                var frame = _getFrames2[_i3];
+            var result = [], _iterator = getFrames(win), _isArray = Array.isArray(_iterator), _i2 = 0;
+            for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                if (_isArray) {
+                    if (_i2 >= _iterator.length) break;
+                    _ref = _iterator[_i2++];
+                } else {
+                    if ((_i2 = _iterator.next()).done) break;
+                    _ref = _i2.value;
+                }
+                var frame = _ref;
                 result.push(frame);
-                for (var _i5 = 0, _getAllChildFrames2 = getAllChildFrames(frame), _length4 = null == _getAllChildFrames2 ? 0 : _getAllChildFrames2.length; _i5 < _length4; _i5++) {
-                    var childFrame = _getAllChildFrames2[_i5];
+                var _iterator2 = getAllChildFrames(frame), _isArray2 = Array.isArray(_iterator2), _i3 = 0;
+                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    var _ref2;
+                    if (_isArray2) {
+                        if (_i3 >= _iterator2.length) break;
+                        _ref2 = _iterator2[_i3++];
+                    } else {
+                        if ((_i3 = _iterator2.next()).done) break;
+                        _ref2 = _i3.value;
+                    }
+                    var childFrame = _ref2;
                     result.push(childFrame);
                 }
             }
@@ -1429,8 +1499,17 @@
                 try {
                     if (isAncestorParent(win, window) && window.top) return window.top;
                 } catch (err) {}
-                for (var _i7 = 0, _getAllChildFrames4 = getAllChildFrames(win), _length6 = null == _getAllChildFrames4 ? 0 : _getAllChildFrames4.length; _i7 < _length6; _i7++) {
-                    var frame = _getAllChildFrames4[_i7];
+                var _iterator3 = getAllChildFrames(win), _isArray3 = Array.isArray(_iterator3), _i4 = 0;
+                for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                    var _ref3;
+                    if (_isArray3) {
+                        if (_i4 >= _iterator3.length) break;
+                        _ref3 = _iterator3[_i4++];
+                    } else {
+                        if ((_i4 = _iterator3.next()).done) break;
+                        _ref3 = _i4.value;
+                    }
+                    var frame = _ref3;
                     try {
                         if (frame.top) return frame.top;
                     } catch (err) {}
@@ -1440,7 +1519,8 @@
         }
         function getAllFramesInWindow(win) {
             var top = getTop(win);
-            return getAllChildFrames(top).concat(top);
+            if (!top) throw new Error("Can not determine top window");
+            return [].concat(getAllChildFrames(top), [ top ]);
         }
         function isFrameWindowClosed(frame) {
             if (!frame.contentWindow) return !0;
@@ -1485,8 +1565,17 @@
             return !1;
         }
         function getFrameByName(win, name) {
-            for (var winFrames = getFrames(win), _i10 = 0, _length8 = null == winFrames ? 0 : winFrames.length; _i10 < _length8; _i10++) {
-                var childFrame = winFrames[_i10];
+            var winFrames = getFrames(win), _iterator4 = winFrames, _isArray4 = Array.isArray(_iterator4), _i6 = 0;
+            for (_iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
+                var _ref4;
+                if (_isArray4) {
+                    if (_i6 >= _iterator4.length) break;
+                    _ref4 = _iterator4[_i6++];
+                } else {
+                    if ((_i6 = _iterator4.next()).done) break;
+                    _ref4 = _i6.value;
+                }
+                var childFrame = _ref4;
                 try {
                     if (isSameDomain(childFrame) && childFrame.name === name && -1 !== winFrames.indexOf(childFrame)) return childFrame;
                 } catch (err) {}
@@ -1511,8 +1600,28 @@
             return Boolean(getParent(window));
         }
         function anyMatch(collection1, collection2) {
-            for (var _i18 = 0, _length16 = null == collection1 ? 0 : collection1.length; _i18 < _length16; _i18++) for (var item1 = collection1[_i18], _i20 = 0, _length18 = null == collection2 ? 0 : collection2.length; _i20 < _length18; _i20++) {
-                if (item1 === collection2[_i20]) return !0;
+            var _iterator8 = collection1, _isArray8 = Array.isArray(_iterator8), _i10 = 0;
+            for (_iterator8 = _isArray8 ? _iterator8 : _iterator8[Symbol.iterator](); ;) {
+                var _ref8;
+                if (_isArray8) {
+                    if (_i10 >= _iterator8.length) break;
+                    _ref8 = _iterator8[_i10++];
+                } else {
+                    if ((_i10 = _iterator8.next()).done) break;
+                    _ref8 = _i10.value;
+                }
+                var item1 = _ref8, _iterator9 = collection2, _isArray9 = Array.isArray(_iterator9), _i11 = 0;
+                for (_iterator9 = _isArray9 ? _iterator9 : _iterator9[Symbol.iterator](); ;) {
+                    var _ref9;
+                    if (_isArray9) {
+                        if (_i11 >= _iterator9.length) break;
+                        _ref9 = _iterator9[_i11++];
+                    } else {
+                        if ((_i11 = _iterator9.next()).done) break;
+                        _ref9 = _i11.value;
+                    }
+                    if (item1 === _ref9) return !0;
+                }
             }
             return !1;
         }
@@ -1830,11 +1939,20 @@
             } catch (err) {}
             delete global.a.tunnelWindows[id];
         }
-        function addTunnelWindow(_ref) {
-            var name = _ref.name, source = _ref.source, canary = _ref.canary, sendMessage = _ref.sendMessage;
+        function addTunnelWindow(_ref2) {
+            var name = _ref2.name, source = _ref2.source, canary = _ref2.canary, sendMessage = _ref2.sendMessage;
             !function() {
-                for (var tunnelWindows = global.a.tunnelWindows, _i2 = 0, _Object$keys2 = Object.keys(tunnelWindows), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
-                    var key = _Object$keys2[_i2], tunnelWindow = tunnelWindows[key];
+                var tunnelWindows = global.a.tunnelWindows, _iterator = Object.keys(tunnelWindows), _isArray = Array.isArray(_iterator), _i = 0;
+                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref = _iterator[_i++];
+                    } else {
+                        if ((_i = _iterator.next()).done) break;
+                        _ref = _i.value;
+                    }
+                    var key = _ref, tunnelWindow = tunnelWindows[key];
                     try {
                         Object(lib.k)(tunnelWindow.source);
                     } catch (err) {
@@ -1853,8 +1971,8 @@
             };
             return global.a.tunnelWindowId;
         }
-        global.a.openTunnelToParent = function(_ref2) {
-            var name = _ref2.name, source = _ref2.source, canary = _ref2.canary, sendMessage = _ref2.sendMessage, parentWindow = Object(cross_domain_utils_src.getParent)(window);
+        global.a.openTunnelToParent = function(_ref3) {
+            var name = _ref3.name, source = _ref3.source, canary = _ref3.canary, sendMessage = _ref3.sendMessage, parentWindow = Object(cross_domain_utils_src.getParent)(window);
             if (!parentWindow) throw new Error("No parent window found to open tunnel to");
             var id = addTunnelWindow({
                 name: name,
@@ -1956,24 +2074,33 @@
         }
         var awaitRemoteBridgeForWindow = Object(lib.s)(function(win) {
             return src.a.try(function() {
-                for (var _i2 = 0, _getFrames2 = Object(cross_domain_utils_src.getFrames)(win), _length2 = null == _getFrames2 ? 0 : _getFrames2.length; _i2 < _length2; _i2++) {
-                    var frame = _getFrames2[_i2];
+                var _iterator = Object(cross_domain_utils_src.getFrames)(win), _isArray = Array.isArray(_iterator), _i = 0;
+                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref = _iterator[_i++];
+                    } else {
+                        if ((_i = _iterator.next()).done) break;
+                        _ref = _i.value;
+                    }
+                    var _frame = _ref;
                     try {
-                        if (frame && frame !== window && Object(cross_domain_utils_src.isSameDomain)(frame) && frame[conf.b.WINDOW_PROPS.POSTROBOT]) return frame;
+                        if (_frame && _frame !== window && Object(cross_domain_utils_src.isSameDomain)(_frame) && _frame[conf.b.WINDOW_PROPS.POSTROBOT]) return _frame;
                     } catch (err) {
                         continue;
                     }
                 }
                 try {
-                    var _frame = Object(cross_domain_utils_src.getFrameByName)(win, getBridgeName(Object(cross_domain_utils_src.getDomain)()));
-                    if (!_frame) return;
-                    return Object(cross_domain_utils_src.isSameDomain)(_frame) && _frame[conf.b.WINDOW_PROPS.POSTROBOT] ? _frame : new src.a(function(resolve) {
+                    var frame = Object(cross_domain_utils_src.getFrameByName)(win, getBridgeName(Object(cross_domain_utils_src.getDomain)()));
+                    if (!frame) return;
+                    return Object(cross_domain_utils_src.isSameDomain)(frame) && frame[conf.b.WINDOW_PROPS.POSTROBOT] ? frame : new src.a(function(resolve) {
                         var interval = void 0, timeout = void 0;
                         interval = setInterval(function() {
-                            if (_frame && Object(cross_domain_utils_src.isSameDomain)(_frame) && _frame[conf.b.WINDOW_PROPS.POSTROBOT]) {
+                            if (frame && Object(cross_domain_utils_src.isSameDomain)(frame) && frame[conf.b.WINDOW_PROPS.POSTROBOT]) {
                                 clearInterval(interval);
                                 clearTimeout(timeout);
-                                return resolve(_frame);
+                                return resolve(frame);
                             }
                         }, 100);
                         timeout = setTimeout(function() {
@@ -2012,8 +2139,8 @@
                                     src.a.reject(err);
                                 }
                             }
-                        }).then(function(_ref) {
-                            var source = _ref.source, origin = _ref.origin, data = _ref.data;
+                        }).then(function(_ref2) {
+                            var source = _ref2.source, origin = _ref2.origin, data = _ref2.data;
                             if (source !== opener) throw new Error("Source does not match opener");
                             registerRemoteSendMessage(source, origin, data.sendMessage);
                         }).catch(function(err) {
@@ -2115,8 +2242,17 @@
             var win = windowOpen.call(this, url, name, options, last);
             if (!win) return win;
             url && registerRemoteWindow(win);
-            for (var _i2 = 0, _Object$keys2 = Object.keys(global.a.popupWindowsByName), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
-                var winName = _Object$keys2[_i2];
+            var _iterator = Object.keys(global.a.popupWindowsByName), _isArray = Array.isArray(_iterator), _i = 0;
+            for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref2;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref2 = _iterator[_i++];
+                } else {
+                    if ((_i = _iterator.next()).done) break;
+                    _ref2 = _i.value;
+                }
+                var winName = _ref2;
                 Object(cross_domain_utils_src.isWindowClosed)(global.a.popupWindowsByName[winName].win) && delete global.a.popupWindowsByName[winName];
             }
             if (name && win) {
@@ -2137,8 +2273,17 @@
             }
         }
         function destroyBridges() {
-            for (var _i4 = 0, _Object$keys4 = Object.keys(global.a.bridgeFrames), _length4 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i4 < _length4; _i4++) {
-                var domain = _Object$keys4[_i4], frame = global.a.bridgeFrames[domain];
+            var _iterator2 = Object.keys(global.a.bridgeFrames), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+            for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                var _ref3;
+                if (_isArray2) {
+                    if (_i2 >= _iterator2.length) break;
+                    _ref3 = _iterator2[_i2++];
+                } else {
+                    if ((_i2 = _iterator2.next()).done) break;
+                    _ref3 = _i2.value;
+                }
+                var domain = _ref3, frame = global.a.bridgeFrames[domain];
                 frame.parentNode && frame.parentNode.removeChild(frame);
             }
             global.a.bridgeFrames = {};
@@ -2490,14 +2635,25 @@
             domain === conf.b.WILDCARD && (domain = null);
             if (!name) throw new Error("Name required to get request listener");
             var nameListeners = global.a.requestListeners[name];
-            if (nameListeners) for (var _i2 = 0, _ref3 = [ win, global.a.WINDOW_WILDCARD ], _length2 = null == _ref3 ? 0 : _ref3.length; _i2 < _length2; _i2++) {
-                var winQualifier = _ref3[_i2], winListeners = winQualifier && nameListeners.get(winQualifier);
+            if (nameListeners) for (var _arr = [ win, global.a.WINDOW_WILDCARD ], _i = 0; _i < _arr.length; _i++) {
+                var winQualifier = _arr[_i], winListeners = winQualifier && nameListeners.get(winQualifier);
                 if (winListeners) {
                     if (domain && "string" == typeof domain) {
                         if (winListeners[domain]) return winListeners[domain];
-                        if (winListeners[__DOMAIN_REGEX__]) for (var _i4 = 0, _winListeners$__DOMAI2 = winListeners[__DOMAIN_REGEX__], _length4 = null == _winListeners$__DOMAI2 ? 0 : _winListeners$__DOMAI2.length; _i4 < _length4; _i4++) {
-                            var _ref5 = _winListeners$__DOMAI2[_i4], regex = _ref5.regex, listener = _ref5.listener;
-                            if (Object(src.matchDomain)(regex, domain)) return listener;
+                        if (winListeners[__DOMAIN_REGEX__]) {
+                            var _iterator = winListeners[__DOMAIN_REGEX__], _isArray = Array.isArray(_iterator), _i2 = 0;
+                            for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                                var _ref3;
+                                if (_isArray) {
+                                    if (_i2 >= _iterator.length) break;
+                                    _ref3 = _iterator[_i2++];
+                                } else {
+                                    if ((_i2 = _iterator.next()).done) break;
+                                    _ref3 = _i2.value;
+                                }
+                                var _ref4 = _ref3, regex = _ref4.regex, listener = _ref4.listener;
+                                if (Object(src.matchDomain)(regex, domain)) return listener;
+                            }
                         }
                     }
                     if (winListeners[conf.b.WILDCARD]) return winListeners[conf.b.WILDCARD];
@@ -2765,12 +2921,21 @@
                 window: win,
                 domain: domain || conf.b.WILDCARD,
                 name: name
-            }, requestListener = function addRequestListener(_ref6, listener) {
-                var name = _ref6.name, win = _ref6.win, domain = _ref6.domain;
+            }, requestListener = function addRequestListener(_ref5, listener) {
+                var name = _ref5.name, win = _ref5.win, domain = _ref5.domain;
                 if (!name || "string" != typeof name) throw new Error("Name required to add request listener");
                 if (Array.isArray(win)) {
-                    for (var listenersCollection = [], _i6 = 0, _win2 = win, _length6 = null == _win2 ? 0 : _win2.length; _i6 < _length6; _i6++) {
-                        var item = _win2[_i6];
+                    var listenersCollection = [], _iterator2 = win, _isArray2 = Array.isArray(_iterator2), _i3 = 0;
+                    for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                        var _ref6;
+                        if (_isArray2) {
+                            if (_i3 >= _iterator2.length) break;
+                            _ref6 = _iterator2[_i3++];
+                        } else {
+                            if ((_i3 = _iterator2.next()).done) break;
+                            _ref6 = _i3.value;
+                        }
+                        var item = _ref6;
                         listenersCollection.push(addRequestListener({
                             name: name,
                             domain: domain,
@@ -2779,13 +2944,33 @@
                     }
                     return {
                         cancel: function() {
-                            for (var _i8 = 0, _length8 = null == listenersCollection ? 0 : listenersCollection.length; _i8 < _length8; _i8++) listenersCollection[_i8].cancel();
+                            var _iterator3 = listenersCollection, _isArray3 = Array.isArray(_iterator3), _i4 = 0;
+                            for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                                var _ref7;
+                                if (_isArray3) {
+                                    if (_i4 >= _iterator3.length) break;
+                                    _ref7 = _iterator3[_i4++];
+                                } else {
+                                    if ((_i4 = _iterator3.next()).done) break;
+                                    _ref7 = _i4.value;
+                                }
+                                _ref7.cancel();
+                            }
                         }
                     };
                 }
                 if (Array.isArray(domain)) {
-                    for (var _listenersCollection = [], _i10 = 0, _domain2 = domain, _length10 = null == _domain2 ? 0 : _domain2.length; _i10 < _length10; _i10++) {
-                        var _item = _domain2[_i10];
+                    var _listenersCollection = [], _iterator4 = domain, _isArray4 = Array.isArray(_iterator4), _i5 = 0;
+                    for (_iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
+                        var _ref8;
+                        if (_isArray4) {
+                            if (_i5 >= _iterator4.length) break;
+                            _ref8 = _iterator4[_i5++];
+                        } else {
+                            if ((_i5 = _iterator4.next()).done) break;
+                            _ref8 = _i5.value;
+                        }
+                        var _item = _ref8;
                         _listenersCollection.push(addRequestListener({
                             name: name,
                             win: win,
@@ -2794,7 +2979,18 @@
                     }
                     return {
                         cancel: function() {
-                            for (var _i12 = 0, _length12 = null == _listenersCollection ? 0 : _listenersCollection.length; _i12 < _length12; _i12++) _listenersCollection[_i12].cancel();
+                            var _iterator5 = _listenersCollection, _isArray5 = Array.isArray(_iterator5), _i6 = 0;
+                            for (_iterator5 = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator](); ;) {
+                                var _ref9;
+                                if (_isArray5) {
+                                    if (_i6 >= _iterator5.length) break;
+                                    _ref9 = _iterator5[_i6++];
+                                } else {
+                                    if ((_i6 = _iterator5.next()).done) break;
+                                    _ref9 = _i6.value;
+                                }
+                                _ref9.cancel();
+                            }
                         }
                     };
                 }
@@ -2909,8 +3105,19 @@
         var public_parent = Object(src.getAncestor)();
         function cleanUpWindow(win) {
             var requestPromises = global.a.requestPromises.get(win);
-            if (requestPromises) for (var _i2 = 0, _length2 = null == requestPromises ? 0 : requestPromises.length; _i2 < _length2; _i2++) {
-                requestPromises[_i2].reject(new Error("No response from window - cleaned up"));
+            if (requestPromises) {
+                var _iterator = requestPromises, _isArray = Array.isArray(_iterator), _i = 0;
+                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref = _iterator[_i++];
+                    } else {
+                        if ((_i = _iterator.next()).done) break;
+                        _ref = _i.value;
+                    }
+                    _ref.reject(new Error("No response from window - cleaned up"));
+                }
             }
             global.a.popupWindowsByWin && global.a.popupWindowsByWin.delete(win);
             global.a.remoteWindows && global.a.remoteWindows.delete(win);
@@ -3765,9 +3972,17 @@
             },
             register: function(component, ng) {
                 return ng.module(component.tag, []).directive(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.i)(component.tag), function() {
-                    for (var scope = {}, _i2 = 0, _component$getPropNam2 = component.getPropNames(), _length2 = null == _component$getPropNam2 ? 0 : _component$getPropNam2.length; _i2 < _length2; _i2++) {
-                        var key = _component$getPropNam2[_i2];
-                        scope[key] = "=";
+                    var scope = {}, _iterator = component.getPropNames(), _isArray = Array.isArray(_iterator), _i = 0;
+                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                        var _ref;
+                        if (_isArray) {
+                            if (_i >= _iterator.length) break;
+                            _ref = _iterator[_i++];
+                        } else {
+                            if ((_i = _iterator.next()).done) break;
+                            _ref = _i.value;
+                        }
+                        scope[_ref] = "=";
                     }
                     component.looseProps && (scope.props = "=");
                     return {
@@ -3780,9 +3995,18 @@
                                 var scopeProps = void 0;
                                 if ($scope.props) scopeProps = $scope.props; else {
                                     scopeProps = {};
-                                    for (var _i4 = 0, _Object$keys2 = Object.keys(scope), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) {
-                                        var _key = _Object$keys2[_i4];
-                                        void 0 !== $scope[_key] && (scopeProps[_key] = $scope[_key]);
+                                    var _iterator2 = Object.keys(scope), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                                    for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                                        var _ref2;
+                                        if (_isArray2) {
+                                            if (_i2 >= _iterator2.length) break;
+                                            _ref2 = _iterator2[_i2++];
+                                        } else {
+                                            if ((_i2 = _iterator2.next()).done) break;
+                                            _ref2 = _i2.value;
+                                        }
+                                        var key = _ref2;
+                                        void 0 !== $scope[key] && (scopeProps[key] = $scope[key]);
                                     }
                                 }
                                 return scopeProps = Object(__WEBPACK_IMPORTED_MODULE_0__lib__.Q)(scopeProps, {
@@ -4039,8 +4263,17 @@
                     }
                 }
                 function scan() {
-                    for (var scriptTags = Array.prototype.slice.call(document.getElementsByTagName("script")), _i2 = 0, _length2 = null == scriptTags ? 0 : scriptTags.length; _i2 < _length2; _i2++) {
-                        render(scriptTags[_i2]);
+                    var _iterator = Array.prototype.slice.call(document.getElementsByTagName("script")), _isArray = Array.isArray(_iterator), _i = 0;
+                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                        var _ref;
+                        if (_isArray) {
+                            if (_i >= _iterator.length) break;
+                            _ref = _iterator[_i++];
+                        } else {
+                            if ((_i = _iterator.next()).done) break;
+                            _ref = _i.value;
+                        }
+                        render(_ref);
                     }
                 }
                 scan();
@@ -4347,8 +4580,19 @@
                 },
                 trigger: function(eventName) {
                     var handlerList = handlers[eventName];
-                    if (handlerList) for (var _i3 = 0, _length2 = null == handlerList ? 0 : handlerList.length; _i3 < _length2; _i3++) {
-                        (0, handlerList[_i3])();
+                    if (handlerList) {
+                        var _iterator = handlerList, _isArray = Array.isArray(_iterator), _i2 = 0;
+                        for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                            var _ref;
+                            if (_isArray) {
+                                if (_i2 >= _iterator.length) break;
+                                _ref = _iterator[_i2++];
+                            } else {
+                                if ((_i2 = _iterator.next()).done) break;
+                                _ref = _i2.value;
+                            }
+                            _ref();
+                        }
                     }
                 },
                 triggerOnce: function(eventName) {
@@ -4522,9 +4766,20 @@
             var element = document.createElement(tag);
             options.style && extend(element.style, options.style);
             options.class && (element.className = options.class.join(" "));
-            if (options.attributes) for (var _i2 = 0, _Object$keys2 = Object.keys(options.attributes), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
-                var key = _Object$keys2[_i2];
-                element.setAttribute(key, options.attributes[key]);
+            if (options.attributes) {
+                var _iterator = Object.keys(options.attributes), _isArray = Array.isArray(_iterator), _i = 0;
+                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref = _iterator[_i++];
+                    } else {
+                        if ((_i = _iterator.next()).done) break;
+                        _ref = _i.value;
+                    }
+                    var key = _ref;
+                    element.setAttribute(key, options.attributes[key]);
+                }
             }
             options.styleSheet && setStyle(element, options.styleSheet);
             container && appendChild(container, element);
@@ -4592,8 +4847,17 @@
             var params = {};
             if (!queryString) return params;
             if (-1 === queryString.indexOf("=")) throw new Error("Can not parse query string params: " + queryString);
-            for (var _i4 = 0, _queryString$split2 = queryString.split("&"), _length4 = null == _queryString$split2 ? 0 : _queryString$split2.length; _i4 < _length4; _i4++) {
-                var pair = _queryString$split2[_i4];
+            var _iterator2 = queryString.split("&"), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+            for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                var _ref2;
+                if (_isArray2) {
+                    if (_i2 >= _iterator2.length) break;
+                    _ref2 = _iterator2[_i2++];
+                } else {
+                    if ((_i2 = _iterator2.next()).done) break;
+                    _ref2 = _i2.value;
+                }
+                var pair = _ref2;
                 (pair = pair.split("="))[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
             }
             return params;
@@ -4651,8 +4915,17 @@
         }
         function changeStyle(el, styles) {
             return new zalgo_promise_src.a(function(resolve) {
-                for (var _i6 = 0, _Object$keys4 = Object.keys(styles), _length6 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i6 < _length6; _i6++) {
-                    var key = _Object$keys4[_i6];
+                var _iterator3 = Object.keys(styles), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
+                for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                    var _ref3;
+                    if (_isArray3) {
+                        if (_i3 >= _iterator3.length) break;
+                        _ref3 = _iterator3[_i3++];
+                    } else {
+                        if ((_i3 = _iterator3.next()).done) break;
+                        _ref3 = _i3.value;
+                    }
+                    var key = _ref3;
                     el.style[key] = styles[key];
                 }
                 setTimeout(resolve, 1);
@@ -4669,14 +4942,14 @@
                 }
             };
         }
-        function trackDimensions(el, _ref2) {
-            var _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$threshold = _ref2.threshold, threshold = void 0 === _ref2$threshold ? 0 : _ref2$threshold, currentDimensions = getCurrentDimensions(el);
+        function trackDimensions(el, _ref5) {
+            var _ref5$width = _ref5.width, width = void 0 === _ref5$width || _ref5$width, _ref5$height = _ref5.height, height = void 0 === _ref5$height || _ref5$height, _ref5$threshold = _ref5.threshold, threshold = void 0 === _ref5$threshold ? 0 : _ref5$threshold, currentDimensions = getCurrentDimensions(el);
             return {
                 check: function() {
                     var newDimensions = getCurrentDimensions(el);
                     return {
-                        changed: function(one, two, _ref) {
-                            var _ref$width = _ref.width, width = void 0 === _ref$width || _ref$width, _ref$height = _ref.height, height = void 0 === _ref$height || _ref$height, _ref$threshold = _ref.threshold, threshold = void 0 === _ref$threshold ? 0 : _ref$threshold;
+                        changed: function(one, two, _ref4) {
+                            var _ref4$width = _ref4.width, width = void 0 === _ref4$width || _ref4$width, _ref4$height = _ref4.height, height = void 0 === _ref4$height || _ref4$height, _ref4$threshold = _ref4.threshold, threshold = void 0 === _ref4$threshold ? 0 : _ref4$threshold;
                             return !!(width && Math.abs(one.width - two.width) > threshold) || !!(height && Math.abs(one.height - two.height) > threshold);
                         }(currentDimensions, newDimensions, {
                             width: width,
@@ -4691,8 +4964,8 @@
                 }
             };
         }
-        function onDimensionsChange(el, _ref3) {
-            var _ref3$width = _ref3.width, width = void 0 === _ref3$width || _ref3$width, _ref3$height = _ref3.height, height = void 0 === _ref3$height || _ref3$height, _ref3$delay = _ref3.delay, delay = void 0 === _ref3$delay ? 50 : _ref3$delay, _ref3$threshold = _ref3.threshold, threshold = void 0 === _ref3$threshold ? 0 : _ref3$threshold;
+        function onDimensionsChange(el, _ref6) {
+            var _ref6$width = _ref6.width, width = void 0 === _ref6$width || _ref6$width, _ref6$height = _ref6.height, height = void 0 === _ref6$height || _ref6$height, _ref6$delay = _ref6.delay, delay = void 0 === _ref6$delay ? 50 : _ref6$delay, _ref6$threshold = _ref6.threshold, threshold = void 0 === _ref6$threshold ? 0 : _ref6$threshold;
             return new zalgo_promise_src.a(function(resolve) {
                 var tracker = trackDimensions(el, {
                     width: width,
@@ -4719,21 +4992,39 @@
                 });
             });
         }
-        function dimensionsMatchViewport(el, _ref4) {
-            var width = _ref4.width, height = _ref4.height, dimensions = getCurrentDimensions(el);
+        function dimensionsMatchViewport(el, _ref7) {
+            var width = _ref7.width, height = _ref7.height, dimensions = getCurrentDimensions(el);
             return (!width || dimensions.width === window.innerWidth) && (!height || dimensions.height === window.innerHeight);
         }
         function bindEvents(element, eventNames, handler) {
             handler = once(handler);
-            for (var _i8 = 0, _length8 = null == eventNames ? 0 : eventNames.length; _i8 < _length8; _i8++) {
-                var eventName = eventNames[_i8];
+            var _iterator4 = eventNames, _isArray4 = Array.isArray(_iterator4), _i4 = 0;
+            for (_iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
+                var _ref8;
+                if (_isArray4) {
+                    if (_i4 >= _iterator4.length) break;
+                    _ref8 = _iterator4[_i4++];
+                } else {
+                    if ((_i4 = _iterator4.next()).done) break;
+                    _ref8 = _i4.value;
+                }
+                var eventName = _ref8;
                 element.addEventListener(eventName, handler);
             }
             return {
                 cancel: once(function() {
-                    for (var _i10 = 0, _length10 = null == eventNames ? 0 : eventNames.length; _i10 < _length10; _i10++) {
-                        var _eventName = eventNames[_i10];
-                        element.removeEventListener(_eventName, handler);
+                    var _iterator5 = eventNames, _isArray5 = Array.isArray(_iterator5), _i5 = 0;
+                    for (_iterator5 = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator](); ;) {
+                        var _ref9;
+                        if (_isArray5) {
+                            if (_i5 >= _iterator5.length) break;
+                            _ref9 = _iterator5[_i5++];
+                        } else {
+                            if ((_i5 = _iterator5.next()).done) break;
+                            _ref9 = _i5.value;
+                        }
+                        var eventName = _ref9;
+                        element.removeEventListener(eventName, handler);
                     }
                 })
             };
@@ -4741,8 +5032,17 @@
         var VENDOR_PREFIXES = [ "webkit", "moz", "ms", "o" ];
         function setVendorCSS(element, name, value) {
             element.style[name] = value;
-            for (var capitalizedName = capitalizeFirstLetter(name), _i12 = 0, _length12 = null == VENDOR_PREFIXES ? 0 : VENDOR_PREFIXES.length; _i12 < _length12; _i12++) {
-                var prefix = VENDOR_PREFIXES[_i12];
+            var capitalizedName = capitalizeFirstLetter(name), _iterator6 = VENDOR_PREFIXES, _isArray6 = Array.isArray(_iterator6), _i6 = 0;
+            for (_iterator6 = _isArray6 ? _iterator6 : _iterator6[Symbol.iterator](); ;) {
+                var _ref10;
+                if (_isArray6) {
+                    if (_i6 >= _iterator6.length) break;
+                    _ref10 = _iterator6[_i6++];
+                } else {
+                    if ((_i6 = _iterator6.next()).done) break;
+                    _ref10 = _i6.value;
+                }
+                var prefix = _ref10;
                 element.style["" + prefix + capitalizedName] = value;
             }
         }
@@ -4904,8 +5204,17 @@
             onClick: "click"
         };
         function fixScripts(el) {
-            for (var doc = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : window.document, _i14 = 0, _querySelectorAll2 = querySelectorAll(el, "script"), _length14 = null == _querySelectorAll2 ? 0 : _querySelectorAll2.length; _i14 < _length14; _i14++) {
-                var script = _querySelectorAll2[_i14], newScript = doc.createElement("script");
+            var doc = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : window.document, _iterator7 = querySelectorAll(el, "script"), _isArray7 = Array.isArray(_iterator7), _i7 = 0;
+            for (_iterator7 = _isArray7 ? _iterator7 : _iterator7[Symbol.iterator](); ;) {
+                var _ref11;
+                if (_isArray7) {
+                    if (_i7 >= _iterator7.length) break;
+                    _ref11 = _iterator7[_i7++];
+                } else {
+                    if ((_i7 = _iterator7.next()).done) break;
+                    _ref11 = _i7.value;
+                }
+                var script = _ref11, newScript = doc.createElement("script");
                 newScript.text = script.textContent;
                 script.parentNode.replaceChild(newScript, script);
             }
@@ -5624,8 +5933,17 @@
             ZalgoPromise.flushQueue = function() {
                 var promisesToFlush = Object(global.a)().flushPromises;
                 Object(global.a)().flushPromises = [];
-                for (var _i2 = 0, _length2 = null == promisesToFlush ? 0 : promisesToFlush.length; _i2 < _length2; _i2++) {
-                    promisesToFlush[_i2].resolve();
+                var _iterator = promisesToFlush, _isArray = Array.isArray(_iterator), _i = 0;
+                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref = _iterator[_i++];
+                    } else {
+                        if ((_i = _iterator.next()).done) break;
+                        _ref = _i.value;
+                    }
+                    _ref.resolve();
                 }
             };
             return ZalgoPromise;
@@ -5645,7 +5963,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.215",
+            version: "4.0.216",
             cors: !0,
             env: constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -5783,6 +6101,24 @@
                     disable_venmo: !0
                 },
                 "app.zapbuy.it": {
+                    disable_venmo: !0
+                },
+                "gamersaloon.com": {
+                    disable_venmo: !0
+                },
+                "1800contacts.com": {
+                    disable_venmo: !0
+                },
+                "shopchatters.ca": {
+                    disable_venmo: !0
+                },
+                "shopguyswin.ca": {
+                    disable_venmo: !0
+                },
+                "jjill.com": {
+                    disable_venmo: !0
+                },
+                "qvc.com": {
                     disable_venmo: !0
                 }
             },
@@ -6284,14 +6620,14 @@
             EPS: "eps",
             MYBANK: "mybank",
             P24: "p24",
-            ZIMPLER: "zimpler",
-            WECHATPAY: "wechatpay"
+            ZIMPLER: "zimpler"
         }, BUTTON_COLOR = {
             GOLD: "gold",
             BLUE: "blue",
             SILVER: "silver",
             BLACK: "black",
             DARKBLUE: "darkblue",
+            WHITE: "white",
             TRANSPARENT: "transparent"
         }, BUTTON_LOGO_COLOR = {
             BLUE: "blue",
@@ -6333,8 +6669,7 @@
             EPS: "eps",
             MYBANK: "mybank",
             P24: "p24",
-            ZIMPLER: "zimpler",
-            WECHATPAY: "wechatpay"
+            ZIMPLER: "zimpler"
         }, CHECKOUT_OVERLAY_COLOR = {
             BLACK: "black",
             WHITE: "white"
@@ -6351,8 +6686,7 @@
             EPS: "eps",
             MYBANK: "mybank",
             P24: "p24",
-            ZIMPLER: "zimpler",
-            WECHATPAY: "wechatpay"
+            ZIMPLER: "zimpler"
         }, CARD = {
             VISA: "visa",
             MASTERCARD: "mastercard",
@@ -6946,7 +7280,10 @@
         __webpack_require__.d(src_interface_namespaceObject, "enableCheckoutIframe", function() {
             return enableCheckoutIframe;
         });
-        var src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js"), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), lib = __webpack_require__("./node_modules/xcomponent/src/lib/index.js");
+        __webpack_require__.d(src_interface_namespaceObject, "logger", function() {
+            return logger;
+        });
+        var beaver_logger_client = __webpack_require__("./node_modules/beaver-logger/client/index.js"), src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js"), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), lib = __webpack_require__("./node_modules/xcomponent/src/lib/index.js");
         var base_BaseComponent = function() {
             function BaseComponent() {
                 !function(instance, Constructor) {
@@ -6990,8 +7327,17 @@
                         return src.a.all(results).then(function() {});
                     },
                     run: function(name) {
-                        for (var results = [], _i2 = 0, _length2 = null == tasks ? 0 : tasks.length; _i2 < _length2; _i2++) {
-                            var item = tasks[_i2];
+                        var results = [], _iterator = tasks, _isArray = Array.isArray(_iterator), _i = 0;
+                        for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                            var _ref;
+                            if (_isArray) {
+                                if (_i >= _iterator.length) break;
+                                _ref = _iterator[_i++];
+                            } else {
+                                if ((_i = _iterator.next()).done) break;
+                                _ref = _i.value;
+                            }
+                            var item = _ref;
                             item.name === name && results.push(item.run());
                         }
                         return src.a.all(results).then(lib.I);
@@ -7016,36 +7362,49 @@
                 var _this = this;
                 if (!win) throw this.component.createError("window to listen to not set");
                 if (!domain) throw new Error("Must pass domain to listen to");
-                if (this.listeners) for (var listeners = this.listeners(), _loop = function(_i4, _Object$keys2, _length4) {
-                    var listenerName = _Object$keys2[_i4], name = listenerName.replace(/^xcomponent_/, ""), errorHandler = function(err) {
-                        _this.error(err);
-                    }, listener = Object(post_robot_src.on)(listenerName, {
-                        window: win,
-                        domain: domain,
-                        errorHandler: errorHandler
-                    }, function(_ref) {
-                        var source = _ref.source, data = _ref.data;
-                        _this.component.log("listener_" + name);
-                        return listeners[listenerName].call(_this, source, data);
-                    }), errorListener = Object(post_robot_src.on)(listenerName, {
-                        window: win,
-                        errorHandler: errorHandler
-                    }, function(_ref2) {
-                        var origin = _ref2.origin;
-                        _this.component.logError("unexpected_listener_" + name, {
-                            origin: origin,
-                            domain: domain.toString()
+                if (this.listeners) {
+                    var listeners = this.listeners(), _loop = function() {
+                        if (_isArray2) {
+                            if (_i2 >= _iterator2.length) return "break";
+                            _ref2 = _iterator2[_i2++];
+                        } else {
+                            if ((_i2 = _iterator2.next()).done) return "break";
+                            _ref2 = _i2.value;
+                        }
+                        var listenerName = _ref2, name = listenerName.replace(/^xcomponent_/, ""), errorHandler = function(err) {
+                            _this.error(err);
+                        }, listener = Object(post_robot_src.on)(listenerName, {
+                            window: win,
+                            domain: domain,
+                            errorHandler: errorHandler
+                        }, function(_ref3) {
+                            var source = _ref3.source, data = _ref3.data;
+                            _this.component.log("listener_" + name);
+                            return listeners[listenerName].call(_this, source, data);
+                        }), errorListener = Object(post_robot_src.on)(listenerName, {
+                            window: win,
+                            errorHandler: errorHandler
+                        }, function(_ref4) {
+                            var origin = _ref4.origin;
+                            _this.component.logError("unexpected_listener_" + name, {
+                                origin: origin,
+                                domain: domain.toString()
+                            });
+                            _this.error(new Error("Unexpected " + name + " message from domain " + origin + " -- expected message from " + domain.toString()));
                         });
-                        _this.error(new Error("Unexpected " + name + " message from domain " + origin + " -- expected message from " + domain.toString()));
-                    });
-                    _this.clean.register(function() {
-                        listener.cancel();
-                        errorListener.cancel();
-                    });
-                }, _i4 = 0, _Object$keys2 = Object.keys(listeners), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) _loop(_i4, _Object$keys2);
+                        _this.clean.register(function() {
+                            listener.cancel();
+                            errorListener.cancel();
+                        });
+                    }, _iterator2 = Object.keys(listeners), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                    for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                        var _ref2;
+                        if ("break" === _loop()) break;
+                    }
+                }
             };
             return BaseComponent;
-        }(), beaver_logger_client = __webpack_require__("./node_modules/beaver-logger/client/index.js"), base32 = __webpack_require__("./node_modules/hi-base32/src/base32.js"), base32_default = __webpack_require__.n(base32), constants = __webpack_require__("./node_modules/xcomponent/src/constants.js");
+        }(), base32 = __webpack_require__("./node_modules/hi-base32/src/base32.js"), base32_default = __webpack_require__.n(base32), constants = __webpack_require__("./node_modules/xcomponent/src/constants.js");
         function normalize(str) {
             return str.replace(/^[^a-z0-9A-Z]+|[^a-z0-9A-Z]+$/g, "").replace(/[^a-z0-9A-Z]+/g, "_");
         }
@@ -7083,11 +7442,22 @@
             ref === constants.WINDOW_REFERENCES.OPENER ? result = Object(cross_domain_utils_src.getOpener)(window) : ref === constants.WINDOW_REFERENCES.TOP ? result = Object(cross_domain_utils_src.getTop)(window) : ref === constants.WINDOW_REFERENCES.PARENT && (result = distance ? Object(cross_domain_utils_src.getNthParentFromTop)(window, distance) : Object(cross_domain_utils_src.getParent)(window));
             if (ref === constants.WINDOW_REFERENCES.GLOBAL) {
                 var ancestor = Object(cross_domain_utils_src.getAncestor)(window);
-                if (ancestor) for (var _i2 = 0, _getAllFramesInWindow2 = Object(cross_domain_utils_src.getAllFramesInWindow)(ancestor), _length2 = null == _getAllFramesInWindow2 ? 0 : _getAllFramesInWindow2.length; _i2 < _length2; _i2++) {
-                    var frame = _getAllFramesInWindow2[_i2], global = Object(lib.z)(frame);
-                    if (global && global.windows && global.windows[uid]) {
-                        result = global.windows[uid];
-                        break;
+                if (ancestor) {
+                    var _iterator = Object(cross_domain_utils_src.getAllFramesInWindow)(ancestor), _isArray = Array.isArray(_iterator), _i = 0;
+                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                        var _ref2;
+                        if (_isArray) {
+                            if (_i >= _iterator.length) break;
+                            _ref2 = _iterator[_i++];
+                        } else {
+                            if ((_i = _iterator.next()).done) break;
+                            _ref2 = _i.value;
+                        }
+                        var frame = _ref2, global = Object(lib.z)(frame);
+                        if (global && global.windows && global.windows[uid]) {
+                            result = global.windows[uid];
+                            break;
+                        }
                     }
                 }
             }
@@ -7148,9 +7518,13 @@
                 }
                 _this.component.log("construct_child");
                 _this.onPropHandlers = [];
-                for (var _loop = function(_i2, _ref2, _length2) {
-                    for (var item = _ref2[_i2], _loop2 = function(_i4, _ref4, _length4) {
-                        var _ref4$_i = _ref4[_i4], name = _ref4$_i[0], getter = _ref4$_i[1];
+                for (var _arr = [ _this.component, window ], _loop = function() {
+                    for (var item = _arr[_i], _arr2 = [ [ "xchild", function() {
+                        return _this;
+                    } ], [ "xprops", function() {
+                        return _this.props;
+                    } ] ], _loop2 = function() {
+                        var _arr2$_i = _arr2[_i2], name = _arr2$_i[0], getter = _arr2$_i[1];
                         Object.defineProperty(item, name, {
                             configurable: !0,
                             get: function() {
@@ -7160,19 +7534,15 @@
                                 return item[name];
                             }
                         });
-                    }, _i4 = 0, _ref4 = [ [ "xchild", function() {
-                        return _this;
-                    } ], [ "xprops", function() {
-                        return _this.props;
-                    } ] ], _length4 = null == _ref4 ? 0 : _ref4.length; _i4 < _length4; _i4++) _loop2(_i4, _ref4);
-                }, _i2 = 0, _ref2 = [ _this.component, window ], _length2 = null == _ref2 ? 0 : _ref2.length; _i2 < _length2; _i2++) _loop(_i2, _ref2);
+                    }, _i2 = 0; _i2 < _arr2.length; _i2++) _loop2();
+                }, _i = 0; _i < _arr.length; _i++) _loop();
                 _this.component.log("init_child");
                 _this.setWindows();
                 _this.listenForResize();
                 _this.onInit = _this.sendToParent(constants.POST_MESSAGE.INIT, {
                     exports: _this.exports()
-                }).then(function(_ref5) {
-                    var origin = _ref5.origin, data = _ref5.data;
+                }).then(function(_ref) {
+                    var origin = _ref.origin, data = _ref.data;
                     _this.context = data.context;
                     _this.setProps(data.props, origin);
                     _this.watchForResize();
@@ -7228,8 +7598,8 @@
                     props = JSON.parse(global.props[componentMeta.uid]);
                 }
                 if (!props) throw new Error("Initial props not found");
-                return Object(lib.k)(props, function(_ref6) {
-                    var fullKey = _ref6.fullKey, self = _ref6.self, args = _ref6.args;
+                return Object(lib.k)(props, function(_ref2) {
+                    var fullKey = _ref2.fullKey, self = _ref2.self, args = _ref2.args;
                     return _this3.onInit.then(function() {
                         var func = Object(lib.v)(_this3.props, fullKey);
                         if ("function" != typeof func) throw new TypeError("Expected " + fullKey + " to be function, got " + (void 0 === func ? "undefined" : _typeof(func)));
@@ -7241,23 +7611,52 @@
                 var required = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
                 this.props = this.props || {};
                 var normalizedProps = function(component, props, origin) {
-                    for (var required = !(arguments.length > 3 && void 0 !== arguments[3]) || arguments[3], result = {}, _i2 = 0, _Object$keys2 = Object.keys(props), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
-                        var key = _Object$keys2[_i2], prop = component.getProp(key), value = props[key];
+                    var required = !(arguments.length > 3 && void 0 !== arguments[3]) || arguments[3], result = {}, _iterator = Object.keys(props), _isArray = Array.isArray(_iterator), _i = 0;
+                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                        var _ref;
+                        if (_isArray) {
+                            if (_i >= _iterator.length) break;
+                            _ref = _iterator[_i++];
+                        } else {
+                            if ((_i = _iterator.next()).done) break;
+                            _ref = _i.value;
+                        }
+                        var _key = _ref, prop = component.getProp(_key), value = props[_key];
                         if (!prop || !prop.sameDomain || origin === Object(cross_domain_utils_src.getDomain)(window)) {
-                            result[key] = normalizeChildProp(component, 0, key, value);
+                            result[_key] = normalizeChildProp(component, 0, _key, value);
                             prop && prop.alias && !result[prop.alias] && (result[prop.alias] = value);
                         }
                     }
-                    if (required) for (var _i4 = 0, _component$getPropNam2 = component.getPropNames(), _length4 = null == _component$getPropNam2 ? 0 : _component$getPropNam2.length; _i4 < _length4; _i4++) {
-                        var _key = _component$getPropNam2[_i4];
-                        props.hasOwnProperty(_key) || (result[_key] = normalizeChildProp(component, 0, _key, props[_key]));
+                    if (required) {
+                        var _iterator2 = component.getPropNames(), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                        for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                            var _ref2;
+                            if (_isArray2) {
+                                if (_i2 >= _iterator2.length) break;
+                                _ref2 = _iterator2[_i2++];
+                            } else {
+                                if ((_i2 = _iterator2.next()).done) break;
+                                _ref2 = _i2.value;
+                            }
+                            var key = _ref2;
+                            props.hasOwnProperty(key) || (result[key] = normalizeChildProp(component, 0, key, props[key]));
+                        }
                     }
                     return result;
                 }(this.component, props, origin, required);
                 Object(lib.t)(this.props, normalizedProps);
                 this.props.logLevel && Object(lib.S)(this.props.logLevel);
-                for (var _i6 = 0, _onPropHandlers2 = this.onPropHandlers, _length6 = null == _onPropHandlers2 ? 0 : _onPropHandlers2.length; _i6 < _length6; _i6++) {
-                    _onPropHandlers2[_i6].call(this, this.props);
+                var _iterator = this.onPropHandlers, _isArray = Array.isArray(_iterator), _i3 = 0;
+                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref3;
+                    if (_isArray) {
+                        if (_i3 >= _iterator.length) break;
+                        _ref3 = _iterator[_i3++];
+                    } else {
+                        if ((_i3 = _iterator.next()).done) break;
+                        _ref3 = _i3.value;
+                    }
+                    _ref3.call(this, this.props);
                 }
             };
             ChildComponent.prototype.sendToParent = function(name) {
@@ -7283,7 +7682,7 @@
                 });
             };
             ChildComponent.prototype.enableAutoResize = function() {
-                var _ref7 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref7$width = _ref7.width, width = void 0 === _ref7$width || _ref7$width, _ref7$height = _ref7.height, height = void 0 === _ref7$height || _ref7$height;
+                var _ref4 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref4$width = _ref4.width, width = void 0 === _ref4$width || _ref4$width, _ref4$height = _ref4.height, height = void 0 === _ref4$height || _ref4$height;
                 this.autoResize = {
                     width: width,
                     height: height
@@ -7363,15 +7762,24 @@
                     }).then(lib.I);
                 });
             };
-            ChildComponent.prototype.resizeToElement = function(el, _ref8) {
-                var _this8 = this, width = _ref8.width, height = _ref8.height, history = [];
+            ChildComponent.prototype.resizeToElement = function(el, _ref5) {
+                var _this8 = this, width = _ref5.width, height = _ref5.height, history = [];
                 return function resize() {
                     return src.a.try(function() {
-                        for (var tracker = Object(lib.Z)(el, {
+                        var tracker = Object(lib.Z)(el, {
                             width: width,
                             height: height
-                        }), dimensions = tracker.check().dimensions, _i8 = 0, _length8 = null == history ? 0 : history.length; _i8 < _length8; _i8++) {
-                            var size = history[_i8], widthMatch = !width || size.width === dimensions.width, heightMatch = !height || size.height === dimensions.height;
+                        }), dimensions = tracker.check().dimensions, _iterator2 = history, _isArray2 = Array.isArray(_iterator2), _i4 = 0;
+                        for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                            var _ref6;
+                            if (_isArray2) {
+                                if (_i4 >= _iterator2.length) break;
+                                _ref6 = _iterator2[_i4++];
+                            } else {
+                                if ((_i4 = _iterator2.next()).done) break;
+                                _ref6 = _i4.value;
+                            }
+                            var size = _ref6, widthMatch = !width || size.width === dimensions.width, heightMatch = !height || size.height === dimensions.height;
                             if (widthMatch && heightMatch) return;
                         }
                         history.push({
@@ -7558,8 +7966,8 @@
             open: function() {
                 var _this5 = this, url = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "";
                 return src.a.try(function() {
-                    var _ref = _this5.component.dimensions || {}, _ref$width = _ref.width, width = void 0 === _ref$width ? constants.DEFAULT_DIMENSIONS.WIDTH : _ref$width, _ref$height = _ref.height, height = void 0 === _ref$height ? constants.DEFAULT_DIMENSIONS.HEIGHT : _ref$height, _getPosition = function(_ref2) {
-                        var width = _ref2.width, height = _ref2.height, x = 0, y = 0;
+                    var _ref = _this5.component.dimensions || {}, _ref$width = _ref.width, width = void 0 === _ref$width ? constants.DEFAULT_DIMENSIONS.WIDTH : _ref$width, _ref$height = _ref.height, height = void 0 === _ref$height ? constants.DEFAULT_DIMENSIONS.HEIGHT : _ref$height, _getPosition = function(_ref3) {
+                        var width = _ref3.width, height = _ref3.height, x = 0, y = 0;
                         width && (window.outerWidth ? x = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (x = Math.round((window.screen.width - width) / 2)));
                         height && (window.outerHeight ? y = Math.round((window.outerHeight - height) / 2) + window.screenY : window.screen.height && (y = Math.round((window.screen.height - height) / 2)));
                         return {
@@ -7708,15 +8116,24 @@
                         return src.a.try(function() {
                             return "function" == typeof prop.queryValue ? prop.queryValue(value) : value;
                         });
-                    }(prop, 0, value) ]).then(function(_ref) {
-                        var queryParam = _ref[0], queryValue = _ref[1], result = void 0;
+                    }(prop, 0, value) ]).then(function(_ref3) {
+                        var queryParam = _ref3[0], queryValue = _ref3[1], result = void 0;
                         if ("boolean" == typeof queryValue) result = "1"; else if ("string" == typeof queryValue) result = queryValue.toString(); else {
                             if ("function" == typeof queryValue) return;
                             if ("object" === (void 0 === queryValue ? "undefined" : props__typeof(queryValue)) && null !== queryValue) {
                                 if ("json" !== prop.serialization) {
                                     result = Object(lib.o)(queryValue, key);
-                                    for (var _i6 = 0, _Object$keys4 = Object.keys(result), _length6 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i6 < _length6; _i6++) {
-                                        var dotkey = _Object$keys4[_i6];
+                                    var _iterator3 = Object.keys(result), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
+                                    for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                                        var _ref4;
+                                        if (_isArray3) {
+                                            if (_i3 >= _iterator3.length) break;
+                                            _ref4 = _iterator3[_i3++];
+                                        } else {
+                                            if ((_i3 = _iterator3.next()).done) break;
+                                            _ref4 = _i3.value;
+                                        }
+                                        var dotkey = _ref4;
                                         params[dotkey] = result[dotkey];
                                     }
                                     return;
@@ -8019,20 +8436,47 @@
                 !function(component, props) {
                     var required = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
                     if ((props = props || {}).env && "object" === validate__typeof(component.url) && !component.url[props.env]) throw new Error("Invalid env: " + props.env);
-                    for (var _i2 = 0, _component$getPropNam2 = component.getPropNames(), _length2 = null == _component$getPropNam2 ? 0 : _component$getPropNam2.length; _i2 < _length2; _i2++) {
-                        var key = _component$getPropNam2[_i2], prop = component.getProp(key);
+                    var _iterator = component.getPropNames(), _isArray = Array.isArray(_iterator), _i = 0;
+                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                        var _ref;
+                        if (_isArray) {
+                            if (_i >= _iterator.length) break;
+                            _ref = _iterator[_i++];
+                        } else {
+                            if ((_i = _iterator.next()).done) break;
+                            _ref = _i.value;
+                        }
+                        var key = _ref, prop = component.getProp(key);
                         if (prop.alias && props.hasOwnProperty(prop.alias)) {
                             var value = props[prop.alias];
                             delete props[prop.alias];
                             props[key] || (props[key] = value);
                         }
                     }
-                    for (var _i4 = 0, _Object$keys2 = Object.keys(props), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) {
-                        var _key = _Object$keys2[_i4], _prop = component.getProp(_key), _value = props[_key];
+                    var _iterator2 = Object.keys(props), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                    for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                        var _ref2;
+                        if (_isArray2) {
+                            if (_i2 >= _iterator2.length) break;
+                            _ref2 = _iterator2[_i2++];
+                        } else {
+                            if ((_i2 = _iterator2.next()).done) break;
+                            _ref2 = _i2.value;
+                        }
+                        var _key = _ref2, _prop = component.getProp(_key), _value = props[_key];
                         _prop && validateProp(_prop, _key, _value, props, required);
                     }
-                    for (var _i6 = 0, _component$getPropNam4 = component.getPropNames(), _length6 = null == _component$getPropNam4 ? 0 : _component$getPropNam4.length; _i6 < _length6; _i6++) {
-                        var _key2 = _component$getPropNam4[_i6], _prop2 = component.getProp(_key2), _value2 = props[_key2];
+                    var _iterator3 = component.getPropNames(), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
+                    for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                        var _ref3;
+                        if (_isArray3) {
+                            if (_i3 >= _iterator3.length) break;
+                            _ref3 = _iterator3[_i3++];
+                        } else {
+                            if ((_i3 = _iterator3.next()).done) break;
+                            _ref3 = _i3.value;
+                        }
+                        var _key2 = _ref3, _prop2 = component.getProp(_key2), _value2 = props[_key2];
                         _prop2 && !props.hasOwnProperty(_key2) && validateProp(_prop2, _key2, _value2, props, required);
                     }
                 }(this.component, props, required);
@@ -8041,12 +8485,30 @@
                 Object(lib.t)(this.props, function(component, instance, props) {
                     var result = {};
                     props = props || {};
-                    for (var _i2 = 0, _Object$keys2 = Object.keys(props), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
-                        var key = _Object$keys2[_i2];
+                    var _iterator = Object.keys(props), _isArray = Array.isArray(_iterator), _i = 0;
+                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                        var _ref;
+                        if (_isArray) {
+                            if (_i >= _iterator.length) break;
+                            _ref = _iterator[_i++];
+                        } else {
+                            if ((_i = _iterator.next()).done) break;
+                            _ref = _i.value;
+                        }
+                        var key = _ref;
                         -1 !== component.getPropNames().indexOf(key) ? result[key] = normalizeProp(component, instance, props, key, props[key]) : result[key] = props[key];
                     }
-                    for (var _i4 = 0, _component$getPropNam2 = component.getPropNames(), _length4 = null == _component$getPropNam2 ? 0 : _component$getPropNam2.length; _i4 < _length4; _i4++) {
-                        var _key = _component$getPropNam2[_i4];
+                    var _iterator2 = component.getPropNames(), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                    for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                        var _ref2;
+                        if (_isArray2) {
+                            if (_i2 >= _iterator2.length) break;
+                            _ref2 = _iterator2[_i2++];
+                        } else {
+                            if ((_i2 = _iterator2.next()).done) break;
+                            _ref2 = _i2.value;
+                        }
+                        var _key = _ref2;
                         if (!(props.hasOwnProperty(_key) || instance.props && instance.props.hasOwnProperty(_key))) {
                             var normalizedProp = normalizeProp(component, instance, props, _key, props[_key]);
                             void 0 !== normalizedProp && (result[_key] = normalizedProp);
@@ -8086,8 +8548,17 @@
                 });
             };
             ParentComponent.prototype.getPropsForChild = function() {
-                for (var result = {}, _i2 = 0, _Object$keys2 = Object.keys(this.props), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
-                    var key = _Object$keys2[_i2], prop = this.component.getProp(key);
+                var result = {}, _iterator = Object.keys(this.props), _isArray = Array.isArray(_iterator), _i = 0;
+                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref8;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref8 = _iterator[_i++];
+                    } else {
+                        if ((_i = _iterator.next()).done) break;
+                        _ref8 = _i.value;
+                    }
+                    var key = _ref8, prop = this.component.getProp(key);
                     prop && !1 === prop.sendToChild || (result[key] = this.props[key]);
                 }
                 return result;
@@ -8152,16 +8623,25 @@
             ParentComponent.prototype.delegate = function(win) {
                 var _this14 = this;
                 this.component.log("delegate_" + this.context);
-                for (var props = {
+                var props = {
                     uid: this.props.uid,
                     dimensions: this.props.dimensions,
                     onClose: this.props.onClose,
                     onDisplay: this.props.onDisplay
-                }, _i4 = 0, _component$getPropNam2 = this.component.getPropNames(), _length4 = null == _component$getPropNam2 ? 0 : _component$getPropNam2.length; _i4 < _length4; _i4++) {
-                    var propName = _component$getPropNam2[_i4];
+                }, _iterator2 = this.component.getPropNames(), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    var _ref9;
+                    if (_isArray2) {
+                        if (_i2 >= _iterator2.length) break;
+                        _ref9 = _iterator2[_i2++];
+                    } else {
+                        if ((_i2 = _iterator2.next()).done) break;
+                        _ref9 = _i2.value;
+                    }
+                    var propName = _ref9;
                     this.component.getProp(propName).allowDelegate && (props[propName] = this.props[propName]);
                 }
-                for (var delegate = Object(post_robot_src.send)(win, constants.POST_MESSAGE.DELEGATE + "_" + this.component.name, {
+                var delegate = Object(post_robot_src.send)(win, constants.POST_MESSAGE.DELEGATE + "_" + this.component.name, {
                     context: this.context,
                     env: this.props.env,
                     options: {
@@ -8186,14 +8666,21 @@
                             }
                         }
                     }
-                }).then(function(_ref8) {
-                    var data = _ref8.data;
+                }).then(function(_ref10) {
+                    var data = _ref10.data;
                     _this14.clean.register(data.destroy);
                     return data;
                 }).catch(function(err) {
                     throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.X)(err));
-                }), overrides = this.driver.delegateOverrides, _loop = function(_i6, _Object$keys4, _length6) {
-                    var key = _Object$keys4[_i6], val = overrides[key];
+                }), overrides = this.driver.delegateOverrides, _loop = function() {
+                    if (_isArray3) {
+                        if (_i3 >= _iterator3.length) return "break";
+                        _ref11 = _iterator3[_i3++];
+                    } else {
+                        if ((_i3 = _iterator3.next()).done) return "break";
+                        _ref11 = _i3.value;
+                    }
+                    var key = _ref11, val = overrides[key];
                     if (val === constants.DELEGATE.CALL_ORIGINAL) return "continue";
                     var original = _this14[key];
                     _this14[key] = function() {
@@ -8205,7 +8692,18 @@
                             throw new Error("Expected delgate to be CALL_ORIGINAL, CALL_DELEGATE, or factory method");
                         });
                     };
-                }, _i6 = 0, _Object$keys4 = Object.keys(overrides), _length6 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i6 < _length6; _i6++) _loop(_i6, _Object$keys4);
+                };
+                var _iterator3 = Object.keys(overrides), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
+                _loop2: for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                    var _ref11;
+                    switch (_loop()) {
+                      case "break":
+                        break _loop2;
+
+                      case "continue":
+                        continue;
+                    }
+                }
             };
             ParentComponent.prototype.watchForClose = function() {
                 var _this16 = this, closeWindowListener = Object(cross_domain_utils_src.onCloseWindow)(this.window, function() {
@@ -8260,8 +8758,8 @@
                 }
             };
             ParentComponent.prototype.listeners = function() {
-                var _ref9;
-                return (_ref9 = {})[constants.POST_MESSAGE.INIT] = function(source, data) {
+                var _ref12;
+                return (_ref12 = {})[constants.POST_MESSAGE.INIT] = function(source, data) {
                     this.childExports = data.exports;
                     this.onInit.resolve(this);
                     this.timeout && clearTimeout(this.timeout);
@@ -8269,27 +8767,27 @@
                         props: this.getPropsForChild(),
                         context: this.context
                     };
-                }, _ref9[constants.POST_MESSAGE.CLOSE] = function(source, data) {
+                }, _ref12[constants.POST_MESSAGE.CLOSE] = function(source, data) {
                     this.close(data.reason);
-                }, _ref9[constants.POST_MESSAGE.CHECK_CLOSE] = function() {
+                }, _ref12[constants.POST_MESSAGE.CHECK_CLOSE] = function() {
                     this.checkClose();
-                }, _ref9[constants.POST_MESSAGE.RESIZE] = function(source, data) {
+                }, _ref12[constants.POST_MESSAGE.RESIZE] = function(source, data) {
                     var _this20 = this;
                     return src.a.try(function() {
                         if (_this20.driver.allowResize) return _this20.resize(data.width, data.height);
                     });
-                }, _ref9[constants.POST_MESSAGE.ONRESIZE] = function() {
+                }, _ref12[constants.POST_MESSAGE.ONRESIZE] = function() {
                     this.event.trigger("resize");
-                }, _ref9[constants.POST_MESSAGE.HIDE] = function() {
+                }, _ref12[constants.POST_MESSAGE.HIDE] = function() {
                     this.hide();
-                }, _ref9[constants.POST_MESSAGE.SHOW] = function() {
+                }, _ref12[constants.POST_MESSAGE.SHOW] = function() {
                     this.show();
-                }, _ref9[constants.POST_MESSAGE.ERROR] = function(source, data) {
+                }, _ref12[constants.POST_MESSAGE.ERROR] = function(source, data) {
                     this.error(new Error(data.error));
-                }, _ref9;
+                }, _ref12;
             };
             ParentComponent.prototype.resize = function(width, height) {
-                var _this21 = this, _ref10$waitForTransit = (arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}).waitForTransition, waitForTransition = void 0 === _ref10$waitForTransit || _ref10$waitForTransit;
+                var _this21 = this, _ref13$waitForTransit = (arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}).waitForTransition, waitForTransition = void 0 === _ref13$waitForTransit || _ref13$waitForTransit;
                 return src.a.try(function() {
                     _this21.component.log("resize", {
                         height: Object(lib.W)(height),
@@ -8422,17 +8920,18 @@
                         } catch (err) {
                             return;
                         }
+                        var el = _this31.renderTemplate(_this31.component.prerenderTemplate, {
+                            jsxDom: lib.F.bind(doc),
+                            document: doc
+                        });
                         try {
-                            Object(lib._3)(win, _this31.renderTemplate(_this31.component.prerenderTemplate, {
-                                jsxDom: lib.F.bind(doc),
-                                document: doc
-                            }));
+                            Object(lib._3)(win, el);
                         } catch (err) {}
                     }) : src.a.resolve();
                 });
             };
             ParentComponent.prototype.renderTemplate = function(renderer) {
-                var _this32 = this, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, _ref11 = this.component.dimensions || {}, _ref11$width = _ref11.width, width = void 0 === _ref11$width ? constants.DEFAULT_DIMENSIONS.WIDTH + "px" : _ref11$width, _ref11$height = _ref11.height, height = void 0 === _ref11$height ? constants.DEFAULT_DIMENSIONS.HEIGHT + "px" : _ref11$height;
+                var _this32 = this, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, _ref14 = this.component.dimensions || {}, _ref14$width = _ref14.width, width = void 0 === _ref14$width ? constants.DEFAULT_DIMENSIONS.WIDTH + "px" : _ref14$width, _ref14$height = _ref14.height, height = void 0 === _ref14$height ? constants.DEFAULT_DIMENSIONS.HEIGHT + "px" : _ref14$height;
                 return renderer.call(this, parent__extends({
                     id: constants.CLASS_NAMES.XCOMPONENT + "-" + this.component.tag + "-" + this.props.uid,
                     props: renderer.__xdomain__ ? null : this.props,
@@ -8602,8 +9101,17 @@
                     onClose: options.props.onClose,
                     onDisplay: options.props.onDisplay
                 };
-                for (var _i2 = 0, _component$getPropNam2 = component.getPropNames(), _length2 = null == _component$getPropNam2 ? 0 : _component$getPropNam2.length; _i2 < _length2; _i2++) {
-                    var propName = _component$getPropNam2[_i2];
+                var _iterator = component.getPropNames(), _isArray = Array.isArray(_iterator), _i = 0;
+                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref = _iterator[_i++];
+                    } else {
+                        if ((_i = _iterator.next()).done) break;
+                        _ref = _i.value;
+                    }
+                    var propName = _ref;
                     _this.component.getProp(propName).allowDelegate && (_this.props[propName] = options.props[propName]);
                 }
                 _this.focus = function() {
@@ -8616,8 +9124,17 @@
                 _this.getDomain = options.overrides.getDomain;
                 _this.error = options.overrides.error;
                 _this.on = options.overrides.on;
-                for (var delegateOverrides = RENDER_DRIVERS[options.context].delegateOverrides, _i4 = 0, _Object$keys2 = Object.keys(delegateOverrides), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) {
-                    var key = _Object$keys2[_i4];
+                var delegateOverrides = RENDER_DRIVERS[options.context].delegateOverrides, _iterator2 = Object.keys(delegateOverrides), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    var _ref2;
+                    if (_isArray2) {
+                        if (_i2 >= _iterator2.length) break;
+                        _ref2 = _iterator2[_i2++];
+                    } else {
+                        if ((_i2 = _iterator2.next()).done) break;
+                        _ref2 = _i2.value;
+                    }
+                    var key = _ref2;
                     _this[key] = parent_ParentComponent.prototype[key];
                 }
                 _this.childWindowName = options.childWindowName;
@@ -8632,12 +9149,23 @@
                 this.clean.register("destroyCloseWindowListener", closeWindowListener.cancel);
             };
             DelegateComponent.prototype.getOverrides = function(context) {
-                for (var delegateOverrides = RENDER_DRIVERS[context].delegateOverrides, overrides = {}, self = this, _loop = function(_i6, _Object$keys4, _length6) {
-                    var key = _Object$keys4[_i6];
+                var delegateOverrides = RENDER_DRIVERS[context].delegateOverrides, overrides = {}, self = this, _loop = function() {
+                    if (_isArray3) {
+                        if (_i3 >= _iterator3.length) return "break";
+                        _ref3 = _iterator3[_i3++];
+                    } else {
+                        if ((_i3 = _iterator3.next()).done) return "break";
+                        _ref3 = _i3.value;
+                    }
+                    var key = _ref3;
                     overrides[key] = function() {
                         return parent_ParentComponent.prototype[key].apply(self, arguments);
                     };
-                }, _i6 = 0, _Object$keys4 = Object.keys(delegateOverrides), _length6 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i6 < _length6; _i6++) _loop(_i6, _Object$keys4);
+                }, _iterator3 = Object.keys(delegateOverrides), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
+                for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                    var _ref3;
+                    if ("break" === _loop()) break;
+                }
                 return overrides;
             };
             DelegateComponent.prototype.destroy = function() {
@@ -8661,12 +9189,23 @@
             if (!options.tag || !options.tag.match(/^[a-z0-9-]+$/)) throw new Error("Invalid options.tag: " + options.tag);
             !function(options) {
                 if (options.props && "object" !== component_validate__typeof(options.props)) throw new Error("Expected options.props to be an object");
-                if (options.props) for (var _i2 = 0, _Object$keys2 = Object.keys(options.props), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
-                    var key = _Object$keys2[_i2], prop = options.props[key];
-                    if (!prop || "object" !== (void 0 === prop ? "undefined" : component_validate__typeof(prop))) throw new Error("Expected options.props." + key + " to be an object");
-                    if (!prop.type) throw new Error("Expected prop.type");
-                    if (-1 === constants.PROP_TYPES_LIST.indexOf(prop.type)) throw new Error("Expected prop.type to be one of " + constants.PROP_TYPES_LIST.join(", "));
-                    if (prop.required && prop.def) throw new Error("Required prop can not have a default value");
+                if (options.props) {
+                    var _iterator = Object.keys(options.props), _isArray = Array.isArray(_iterator), _i = 0;
+                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                        var _ref;
+                        if (_isArray) {
+                            if (_i >= _iterator.length) break;
+                            _ref = _iterator[_i++];
+                        } else {
+                            if ((_i = _iterator.next()).done) break;
+                            _ref = _i.value;
+                        }
+                        var key = _ref, prop = options.props[key];
+                        if (!prop || "object" !== (void 0 === prop ? "undefined" : component_validate__typeof(prop))) throw new Error("Expected options.props." + key + " to be an object");
+                        if (!prop.type) throw new Error("Expected prop.type");
+                        if (-1 === constants.PROP_TYPES_LIST.indexOf(prop.type)) throw new Error("Expected prop.type to be one of " + constants.PROP_TYPES_LIST.join(", "));
+                        if (prop.required && prop.def) throw new Error("Required prop can not have a default value");
+                    }
                 }
             }(options);
             if (options.dimensions) {
@@ -8675,8 +9214,17 @@
             }
             if (options.contexts) {
                 options.contexts.popup, 0;
-                for (var anyEnabled = !1, _i4 = 0, _Object$keys4 = Object.keys(options.contexts), _length4 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i4 < _length4; _i4++) {
-                    var context = _Object$keys4[_i4];
+                var anyEnabled = !1, _iterator2 = Object.keys(options.contexts), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    var _ref2;
+                    if (_isArray2) {
+                        if (_i2 >= _iterator2.length) break;
+                        _ref2 = _iterator2[_i2++];
+                    } else {
+                        if ((_i2 = _iterator2.next()).done) break;
+                        _ref2 = _i2.value;
+                    }
+                    var context = _ref2;
                     if (-1 === constants.CONTEXT_TYPES_LIST.indexOf(context)) throw new Error("Unsupported context type: " + context);
                     (options.contexts && options.contexts[context] || options.contexts && void 0 === options.contexts[context]) && (anyEnabled = !0);
                 }
@@ -8694,8 +9242,17 @@
             }
             if (options.url && "object" === component_validate__typeof(options.url)) {
                 if (!options.defaultEnv) throw new Error("Must pass options.defaultEnv with env->url mapping");
-                for (var _i6 = 0, _Object$keys6 = Object.keys(options.url), _length6 = null == _Object$keys6 ? 0 : _Object$keys6.length; _i6 < _length6; _i6++) {
-                    var env = _Object$keys6[_i6];
+                var _iterator3 = Object.keys(options.url), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
+                for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                    var _ref3;
+                    if (_isArray3) {
+                        if (_i3 >= _iterator3.length) break;
+                        _ref3 = _iterator3[_i3++];
+                    } else {
+                        if ((_i3 = _iterator3.next()).done) break;
+                        _ref3 = _i3.value;
+                    }
+                    var env = _ref3;
                     if (!options.url[env]) throw new Error("No url specified for env: " + env);
                 }
             }
@@ -8913,8 +9470,17 @@
                 return _this;
             }
             Component.prototype.getPropNames = function() {
-                for (var props = Object.keys(this.props), _i2 = 0, _Object$keys2 = Object.keys(this.builtinProps), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
-                    var key = _Object$keys2[_i2];
+                var props = Object.keys(this.props), _iterator = Object.keys(this.builtinProps), _isArray = Array.isArray(_iterator), _i = 0;
+                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref = _iterator[_i++];
+                    } else {
+                        if ((_i = _iterator.next()).done) break;
+                        _ref = _i.value;
+                    }
+                    var key = _ref;
                     -1 === props.indexOf(key) && props.push(key);
                 }
                 return props;
@@ -8924,8 +9490,17 @@
             };
             Component.prototype.registerDrivers = function() {
                 this.driverCache = {};
-                for (var _i4 = 0, _Object$keys4 = Object.keys(component_drivers), _length4 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i4 < _length4; _i4++) {
-                    var driverName = _Object$keys4[_i4];
+                var _iterator2 = Object.keys(component_drivers), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    var _ref2;
+                    if (_isArray2) {
+                        if (_i2 >= _iterator2.length) break;
+                        _ref2 = _iterator2[_i2++];
+                    } else {
+                        if ((_i2 = _iterator2.next()).done) break;
+                        _ref2 = _i2.value;
+                    }
+                    var driverName = _ref2;
                     if (0 !== driverName.indexOf("_")) {
                         var glob = component_drivers[driverName].global();
                         glob && this.driver(driverName, glob);
@@ -8948,8 +9523,8 @@
                 Object(post_robot_src.on)(constants.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name, function() {
                     return !0;
                 });
-                Object(post_robot_src.on)(constants.POST_MESSAGE.DELEGATE + "_" + this.name, function(_ref) {
-                    var source = _ref.source, origin = _ref.origin, data = _ref.data, domain = _this3.getDomain(null, data.env || _this3.defaultEnv);
+                Object(post_robot_src.on)(constants.POST_MESSAGE.DELEGATE + "_" + this.name, function(_ref3) {
+                    var source = _ref3.source, origin = _ref3.origin, data = _ref3.data, domain = _this3.getDomain(null, data.env || _this3.defaultEnv);
                     if (!domain) throw new Error("Could not determine domain to allow remote render");
                     if (!Object(cross_domain_utils_src.matchDomain)(domain, origin)) throw new Error("Can not render from " + origin + " - expected " + domain.toString());
                     var delegate = _this3.delegate(source, data.options);
@@ -8962,8 +9537,8 @@
                 });
             };
             Component.prototype.canRenderTo = function(win) {
-                return Object(post_robot_src.send)(win, constants.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name).then(function(_ref2) {
-                    return _ref2.data;
+                return Object(post_robot_src.send)(win, constants.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name).then(function(_ref4) {
+                    return _ref4.data;
                 }).catch(function() {
                     return !1;
                 });
@@ -8973,9 +9548,19 @@
                     var domain = Object(cross_domain_utils_src.getDomainFromUrl)(url);
                     if ("string" == typeof this.domain && domain === this.domain) return domain;
                     var domains = this.domain;
-                    if (domains && "object" === (void 0 === domains ? "undefined" : component__typeof(domains)) && !(domains instanceof RegExp)) for (var _i6 = 0, _Object$keys6 = Object.keys(domains), _length6 = null == _Object$keys6 ? 0 : _Object$keys6.length; _i6 < _length6; _i6++) {
-                        var env = _Object$keys6[_i6];
-                        if ("test" !== env && domain === domains[env]) return domain;
+                    if (domains && "object" === (void 0 === domains ? "undefined" : component__typeof(domains)) && !(domains instanceof RegExp)) {
+                        var _iterator3 = Object.keys(domains), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
+                        for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                            var _ref5;
+                            if (_isArray3) {
+                                if (_i3 >= _iterator3.length) break;
+                                _ref5 = _iterator3[_i3++];
+                            } else {
+                                if ((_i3 = _iterator3.next()).done) break;
+                                _ref5 = _i3.value;
+                            }
+                            if ("test" !== _ref5 && domain === domains[_ref5]) return domain;
+                        }
                     }
                 }
             };
@@ -9177,7 +9762,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.215"
+                    ver: "4.0.216"
                 };
             });
             Object(beaver_logger_client.a)(function() {
@@ -9233,8 +9818,17 @@
             return bowser;
         }
         function getBrowser() {
-            for (var bowser = getBowser(), _i2 = 0, _Object$keys2 = Object.keys(config.a.SUPPORTED_BROWSERS), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
-                var _browser = _Object$keys2[_i2];
+            var bowser = getBowser(), _iterator = Object.keys(config.a.SUPPORTED_BROWSERS), _isArray = Array.isArray(_iterator), _i = 0;
+            for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref = _iterator[_i++];
+                } else {
+                    if ((_i = _iterator.next()).done) break;
+                    _ref = _i.value;
+                }
+                var _browser = _ref;
                 if (bowser[_browser]) return {
                     browser: _browser,
                     version: bowser.version
@@ -9244,11 +9838,11 @@
         }
         var eligibilityResults = {};
         function isEligible() {
-            if (Object(device.e)()) return !1;
+            if (Object(device.g)()) return !1;
             var userAgent = window.navigator.userAgent;
             if (userAgent && eligibilityResults.hasOwnProperty(userAgent)) return eligibilityResults[userAgent];
             var result = function() {
-                if (Object(device.e)()) return !1;
+                if (Object(device.g)()) return !1;
                 var bowser = getBowser(), _getBrowser = getBrowser(), browser = _getBrowser.browser, version = _getBrowser.version;
                 return !browser || !version || -1 !== bowser.compareVersions([ version, config.a.SUPPORTED_BROWSERS[browser] ]);
             }();
@@ -9293,26 +9887,63 @@
                 prev_corr_ids: corrids.join(",")
             };
         });
-        function request(_ref) {
-            var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
+        function request(_ref2) {
+            var url = _ref2.url, _ref2$method = _ref2.method, method = void 0 === _ref2$method ? "get" : _ref2$method, _ref2$headers = _ref2.headers, headers = void 0 === _ref2$headers ? {} : _ref2$headers, json = _ref2.json, data = _ref2.data, body = _ref2.body, _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win, _ref2$timeout = _ref2.timeout, timeout = void 0 === _ref2$timeout ? 0 : _ref2$timeout;
             return "/demo/checkout/api/braintree/client-token/" === url ? src.a.resolve("eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiJjMDFhZmRkM2Y1OTJmNWVhNTNlMzE5MWQwYmIyMWVjYjM5NzNlZGM1MzkwNDZiMjJmNTA2ODEyNzIzZmRlMTJifGNsaWVudF9pZD1jbGllbnRfaWQkc2FuZGJveCQ0ZHByYmZjNnBoNTk1Y2NqXHUwMDI2Y3JlYXRlZF9hdD0yMDE3LTA0LTI2VDIzOjI2OjU5Ljg3OTA3ODYwNiswMDAwXHUwMDI2bWVyY2hhbnRfaWQ9M3cydHR2d2QyNDY1NDhoZCIsImNvbmZpZ1VybCI6Imh0dHBzOi8vYXBpLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb206NDQzL21lcmNoYW50cy8zdzJ0dHZ3ZDI0NjU0OGhkL2NsaWVudF9hcGkvdjEvY29uZmlndXJhdGlvbiIsImNoYWxsZW5nZXMiOltdLCJlbnZpcm9ubWVudCI6InNhbmRib3giLCJjbGllbnRBcGlVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvM3cydHR2d2QyNDY1NDhoZC9jbGllbnRfYXBpIiwiYXNzZXRzVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhdXRoVXJsIjoiaHR0cHM6Ly9hdXRoLnZlbm1vLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhbmFseXRpY3MiOnsidXJsIjoiaHR0cHM6Ly9jbGllbnQtYW5hbHl0aWNzLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20vM3cydHR2d2QyNDY1NDhoZCJ9LCJ0aHJlZURTZWN1cmVFbmFibGVkIjpmYWxzZSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiYmFyY28uMDMtZmFjaWxpdGF0b3JAZ21haWwuY29tIiwiY2xpZW50SWQiOiJBV3VZdnFnMGtaN2Y5S0V4TVpqZU53T3RjQV8yZVhnOWpMZy1QSnBGX0pnYk44M0YyVml5aEdnV2JCNDg4RGU3MFpucGRBZEI2TUNqekNqSyIsInByaXZhY3lVcmwiOiJodHRwczovL2V4YW1wbGUuY29tIiwidXNlckFncmVlbWVudFVybCI6Imh0dHBzOi8vZXhhbXBsZS5jb20iLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjpmYWxzZSwiZW52aXJvbm1lbnQiOiJvZmZsaW5lIiwidW52ZXR0ZWRNZXJjaGFudCI6ZmFsc2UsImJyYWludHJlZUNsaWVudElkIjoibWFzdGVyY2xpZW50MyIsImJpbGxpbmdBZ3JlZW1lbnRzRW5hYmxlZCI6dHJ1ZSwibWVyY2hhbnRBY2NvdW50SWQiOiJVU0QiLCJjdXJyZW5jeUlzb0NvZGUiOiJVU0QifSwiY29pbmJhc2VFbmFibGVkIjpmYWxzZSwibWVyY2hhbnRJZCI6IjN3MnR0dndkMjQ2NTQ4aGQiLCJ2ZW5tbyI6Im9mZiJ9") : new src.a(function(resolve, reject) {
                 if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
-                for (var normalizedHeaders = {}, _i4 = 0, _Object$keys2 = Object.keys(headers), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) {
-                    var _key2 = _Object$keys2[_i4];
-                    normalizedHeaders[_key2.toLowerCase()] = headers[_key2];
+                var normalizedHeaders = {}, _iterator2 = Object.keys(headers), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    var _ref3;
+                    if (_isArray2) {
+                        if (_i2 >= _iterator2.length) break;
+                        _ref3 = _iterator2[_i2++];
+                    } else {
+                        if ((_i2 = _iterator2.next()).done) break;
+                        _ref3 = _i2.value;
+                    }
+                    var _key3 = _ref3;
+                    normalizedHeaders[_key3.toLowerCase()] = headers[_key3];
                 }
                 json ? normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || "application/json" : (data || body) && (normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || "application/x-www-form-urlencoded; charset=utf-8");
                 normalizedHeaders[HEADERS.ACCEPT] = normalizedHeaders[HEADERS.ACCEPT] || "application/json";
-                for (var _i6 = 0, _length6 = null == headerBuilders ? 0 : headerBuilders.length; _i6 < _length6; _i6++) for (var builtHeaders = (0, 
-                headerBuilders[_i6])(), _i8 = 0, _Object$keys4 = Object.keys(builtHeaders), _length8 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i8 < _length8; _i8++) {
-                    var _key3 = _Object$keys4[_i8];
-                    normalizedHeaders[_key3.toLowerCase()] = builtHeaders[_key3];
+                var _iterator3 = headerBuilders, _isArray3 = Array.isArray(_iterator3), _i3 = 0;
+                for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                    var _ref4;
+                    if (_isArray3) {
+                        if (_i3 >= _iterator3.length) break;
+                        _ref4 = _iterator3[_i3++];
+                    } else {
+                        if ((_i3 = _iterator3.next()).done) break;
+                        _ref4 = _i3.value;
+                    }
+                    var builtHeaders = _ref4(), _iterator4 = Object.keys(builtHeaders), _isArray4 = Array.isArray(_iterator4), _i4 = 0;
+                    for (_iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
+                        var _ref5;
+                        if (_isArray4) {
+                            if (_i4 >= _iterator4.length) break;
+                            _ref5 = _iterator4[_i4++];
+                        } else {
+                            if ((_i4 = _iterator4.next()).done) break;
+                            _ref5 = _i4.value;
+                        }
+                        var _key4 = _ref5;
+                        normalizedHeaders[_key4.toLowerCase()] = builtHeaders[_key4];
+                    }
                 }
                 var xhr = new win.XMLHttpRequest();
                 xhr.addEventListener("load", function() {
                     var responseHeaders = function() {
-                        for (var result = {}, _i2 = 0, _rawHeaders$trim$spli2 = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "").trim().split("\n"), _length2 = null == _rawHeaders$trim$spli2 ? 0 : _rawHeaders$trim$spli2.length; _i2 < _length2; _i2++) {
-                            var _line$split = _rawHeaders$trim$spli2[_i2].split(":"), _key = _line$split[0], values = _line$split.slice(1);
+                        var result = {}, _iterator = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "").trim().split("\n"), _isArray = Array.isArray(_iterator), _i = 0;
+                        for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                            var _ref;
+                            if (_isArray) {
+                                if (_i >= _iterator.length) break;
+                                _ref = _iterator[_i++];
+                            } else {
+                                if ((_i = _iterator.next()).done) break;
+                                _ref = _i.value;
+                            }
+                            var _line$split = _ref.split(":"), _key = _line$split[0], values = _line$split.slice(1);
                             result[_key.toLowerCase()] = values.join(":").trim();
                         }
                         return result;
@@ -9340,7 +9971,7 @@
                     reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + ". Correlation id: " + corrID));
                 }, !1);
                 xhr.open(method, url, !0);
-                for (var _key4 in normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
+                for (var _key2 in normalizedHeaders) normalizedHeaders.hasOwnProperty(_key2) && xhr.setRequestHeader(_key2, normalizedHeaders[_key2]);
                 json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map(function(key) {
                     return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
                 }).join("&"));
@@ -9444,8 +10075,17 @@
         }
         __webpack_require__("./src/lib/namespace.js");
         var getCurrentScript = Object(util.j)(function() {
-            for (var scripts = Array.prototype.slice.call(document.getElementsByTagName("script")), _i2 = 0, _length2 = null == scripts ? 0 : scripts.length; _i2 < _length2; _i2++) {
-                var script = scripts[_i2];
+            var _iterator = Array.prototype.slice.call(document.getElementsByTagName("script")), _isArray = Array.isArray(_iterator), _i = 0;
+            for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref = _iterator[_i++];
+                } else {
+                    if ((_i = _iterator.next()).done) break;
+                    _ref = _i.value;
+                }
+                var script = _ref;
                 if (script.src && (script.src.replace(/^https?:/, "").split("?")[0] === config.a.scriptUrl || script.hasAttribute("data-paypal-checkout"))) return script;
                 if (script.src && -1 !== script.src.indexOf("paypal.checkout.v4.js")) return script;
             }
@@ -9454,12 +10094,12 @@
             });
         });
         function getScriptVersion() {
-            return Boolean(getCurrentScript()) ? "4" : "4.0.215";
+            return Boolean(getCurrentScript()) ? "4" : "4.0.216";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
             return src.a.try(function() {
-                if (Object(device.e)()) return {
+                if (Object(device.g)()) return {
                     iframeEligible: !1,
                     iframeEligibleReason: "ie_intranet",
                     rememberedFunding: []
@@ -9513,17 +10153,35 @@
             return promise;
         }
         function flushRememberedFundingPromises() {
-            for (var promises = getRememberedFundingPromises(), rememberedFunding = getRememberedFunding(function(sources) {
+            var promises = getRememberedFundingPromises(), rememberedFunding = getRememberedFunding(function(sources) {
                 return sources;
-            }), _i2 = 0, _Object$keys2 = Object.keys(promises), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
-                var source = _Object$keys2[_i2];
+            }), _iterator = Object.keys(promises), _isArray = Array.isArray(_iterator), _i = 0;
+            for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref = _iterator[_i++];
+                } else {
+                    if ((_i = _iterator.next()).done) break;
+                    _ref = _i.value;
+                }
+                var source = _ref;
                 promises[source].resolve(-1 !== rememberedFunding.indexOf(source));
             }
         }
         function rememberFunding(sources) {
             getRememberedFunding(function(rememberedFunding) {
-                for (var _i4 = 0, _length4 = null == sources ? 0 : sources.length; _i4 < _length4; _i4++) {
-                    var source = sources[_i4];
+                var _iterator2 = sources, _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    var _ref2;
+                    if (_isArray2) {
+                        if (_i2 >= _iterator2.length) break;
+                        _ref2 = _iterator2[_i2++];
+                    } else {
+                        if ((_i2 = _iterator2.next()).done) break;
+                        _ref2 = _i2.value;
+                    }
+                    var source = _ref2;
                     if (source !== src_constants.v.VENMO || Object(device.b)()) {
                         -1 === rememberedFunding.indexOf(source) && rememberedFunding.push(source);
                         flushRememberedFundingPromises();
@@ -9535,8 +10193,8 @@
             });
         }
         function loadMeta() {
-            return openMetaFrame().then(function(_ref) {
-                rememberFunding(_ref.rememberedFunding || []);
+            return openMetaFrame().then(function(_ref3) {
+                rememberFunding(_ref3.rememberedFunding || []);
             });
         }
         function isFundingRemembered() {
@@ -9574,8 +10232,17 @@
                 if (!this.children) return "";
                 var result = "";
                 !function iterate(children) {
-                    for (var _i2 = 0, _length2 = null == children ? 0 : children.length; _i2 < _length2; _i2++) {
-                        var child = children[_i2];
+                    var _iterator = children, _isArray = Array.isArray(_iterator), _i = 0;
+                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                        var _ref;
+                        if (_isArray) {
+                            if (_i >= _iterator.length) break;
+                            _ref = _iterator[_i++];
+                        } else {
+                            if ((_i = _iterator.next()).done) break;
+                            _ref = _i.value;
+                        }
+                        var child = _ref;
                         null !== child && void 0 !== child && (Array.isArray(child) ? iterate(child) : result += child instanceof JsxHTMLNode ? child.toString() : htmlEncode(child));
                     }
                 }(this.children);
@@ -9612,7 +10279,7 @@
             return new JsxHTMLNode(name, props, children);
         }
         function allowIframe() {
-            if (!Object(device.g)()) return !0;
+            if (!Object(device.j)()) return !0;
             var parentWindow = Object(cross_domain_utils_src.getParent)(window);
             if (parentWindow && Object(cross_domain_utils_src.isSameDomain)(parentWindow)) return !0;
             var parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
@@ -9707,7 +10374,7 @@
             src_constants.A.EC_TOKEN);
         }
         function determineUrl(env, fundingSource, payment) {
-            return getPaymentType(payment) === src_constants.A.BA_TOKEN ? config.a.billingUrls[env] : fundingSource === src_constants.v.CARD || fundingSource === src_constants.v.ELV ? config.a.guestUrls[env] : fundingSource === src_constants.v.IDEAL || fundingSource === src_constants.v.BANCONTACT || fundingSource === src_constants.v.GIROPAY || fundingSource === src_constants.v.SOFORT || fundingSource === src_constants.v.EPS || fundingSource === src_constants.v.MYBANK || fundingSource === src_constants.v.P24 || fundingSource === src_constants.v.ZIMPLER || fundingSource === src_constants.v.WECHATPAY ? config.a.altpayUrls[env] : config.a.checkoutUrls[env];
+            return getPaymentType(payment) === src_constants.A.BA_TOKEN ? config.a.billingUrls[env] : fundingSource === src_constants.v.CARD || fundingSource === src_constants.v.ELV ? config.a.guestUrls[env] : fundingSource === src_constants.v.IDEAL || fundingSource === src_constants.v.BANCONTACT || fundingSource === src_constants.v.GIROPAY || fundingSource === src_constants.v.SOFORT || fundingSource === src_constants.v.EPS || fundingSource === src_constants.v.MYBANK || fundingSource === src_constants.v.P24 || fundingSource === src_constants.v.ZIMPLER ? config.a.altpayUrls[env] : config.a.checkoutUrls[env];
         }
         var braintree__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
             return typeof obj;
@@ -9743,8 +10410,17 @@
         };
         function mapPaymentToBraintree(payment) {
             !function braintree_validate(obj, supported, name) {
-                for (var supportedKeys = Object.keys(supported), _i2 = 0, _Object$keys2 = Object.keys(obj), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
-                    var key = _Object$keys2[_i2];
+                var supportedKeys = Object.keys(supported), _iterator = Object.keys(obj), _isArray = Array.isArray(_iterator), _i = 0;
+                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref = _iterator[_i++];
+                    } else {
+                        if ((_i = _iterator.next()).done) break;
+                        _ref = _i.value;
+                    }
+                    var key = _ref;
                     if (-1 === supportedKeys.indexOf(key)) throw new Error("Unsupported REST key for Braintree: " + name + "." + key);
                     "object" === braintree__typeof(obj[key]) && braintree_validate(obj[key], supported[key], name + "." + key);
                 }
@@ -9788,7 +10464,7 @@
         }, _ZIMPLER_LOGO_COLORS[src_constants.i.ANY] = {
             primary: "#00A599"
         }, _ZIMPLER_LOGO_COLORS);
-        var _WECHATPAY_LOGO_COLOR, P24_LOGO_COLORS = ((_P24_LOGO_COLORS = {})[src_constants.i.WHITE] = {
+        var _SOFORT_LOGO_COLORS, P24_LOGO_COLORS = ((_P24_LOGO_COLORS = {})[src_constants.i.WHITE] = {
             primary: "#ffffff",
             secondary: "#ffffff"
         }, _P24_LOGO_COLORS[src_constants.i.ANY] = {
@@ -9798,16 +10474,78 @@
             primary: "#d03238",
             secondary: "#b3b1b1"
         }, _P24_LOGO_COLORS);
-        var WECHATPAY_LOGO_COLORS = ((_WECHATPAY_LOGO_COLOR = {})[src_constants.i.WHITE] = {
+        var _IDEAL_LOGO_COLORS, SOFORT_LOGO_COLORS = ((_SOFORT_LOGO_COLORS = {})[src_constants.i.WHITE] = {
+            primary: "#2C2E2F",
+            secondary: "#ffffff"
+        }, _SOFORT_LOGO_COLORS[src_constants.i.ANY] = {
+            primary: "#EB6F93",
+            secondary: "#FFFFFF"
+        }, _SOFORT_LOGO_COLORS[src_constants.i.BLACK] = {
+            primary: "#EB6F93",
+            secondary: "#FFFFFF"
+        }, _SOFORT_LOGO_COLORS);
+        var _GIROPAY_LOGO_COLORS, IDEAL_LOGO_COLORS = ((_IDEAL_LOGO_COLORS = {})[src_constants.i.WHITE] = {
+            primary: "#ffffff",
+            secondary: "#ffffff",
+            tertiary: "#2C2E2F"
+        }, _IDEAL_LOGO_COLORS[src_constants.i.ANY] = {
+            primary: "#000000",
+            secondary: "#FFFFFF",
+            tertiary: "#CD0067"
+        }, _IDEAL_LOGO_COLORS[src_constants.i.BLACK] = {
+            primary: "#000000",
+            secondary: "#FFFFFF",
+            tertiary: "#CD0067"
+        }, _IDEAL_LOGO_COLORS);
+        var _EPS_LOGO_COLORS, GIROPAY_LOGO_COLORS = ((_GIROPAY_LOGO_COLORS = {})[src_constants.i.WHITE] = {
+            primary: "#ffffff",
+            secondary: "#000000",
+            tertiary: "#2C2E2F"
+        }, _GIROPAY_LOGO_COLORS[src_constants.i.ANY] = {
+            primary: "#FFFFFF",
+            secondary: "#003A7D",
+            tertiary: "#ED1C24"
+        }, _GIROPAY_LOGO_COLORS[src_constants.i.BLACK] = {
+            primary: "#FFFFFF",
+            secondary: "#003A7D",
+            tertiary: "#ED1C24"
+        }, _GIROPAY_LOGO_COLORS);
+        var _MYBANK_LOGO_COLORS, EPS_LOGO_COLORS = ((_EPS_LOGO_COLORS = {})[src_constants.i.WHITE] = {
+            primary: "#ffffff",
+            secondary: "#ffffff",
+            tertiary: "#ffffff"
+        }, _EPS_LOGO_COLORS[src_constants.i.ANY] = {
+            primary: "#71706F",
+            secondary: "#FFFFFF",
+            tertiary: "#C8036F"
+        }, _EPS_LOGO_COLORS[src_constants.i.BLACK] = {
+            primary: "#71706F",
+            secondary: "#FFFFFF",
+            tertiary: "#C8036F"
+        }, _EPS_LOGO_COLORS);
+        var _BANCONTACT_LOGO_COLO, MYBANK_LOGO_COLORS = ((_MYBANK_LOGO_COLORS = {})[src_constants.i.WHITE] = {
+            primary: "#ffffff",
+            secondary: "#ffffff",
+            tertiary: "#ffffff"
+        }, _MYBANK_LOGO_COLORS[src_constants.i.ANY] = {
+            primary: "#1A4B67",
+            secondary: "#00C0EE",
+            tertiary: "#FFFFFF"
+        }, _MYBANK_LOGO_COLORS[src_constants.i.BLACK] = {
+            primary: "#1A4B67",
+            secondary: "#00C0EE",
+            tertiary: "#FFFFFF"
+        }, _MYBANK_LOGO_COLORS);
+        var BANCONTACT_LOGO_COLORS = ((_BANCONTACT_LOGO_COLO = {})[src_constants.i.WHITE] = {
             primary: "#ffffff",
             secondary: "#ffffff"
-        }, _WECHATPAY_LOGO_COLOR[src_constants.i.BLACK] = {
-            primary: "#1AAD19",
-            secondary: "#4D4D4D"
-        }, _WECHATPAY_LOGO_COLOR[src_constants.i.ANY] = {
-            primary: "#1AAD19",
-            secondary: "#4D4D4D"
-        }, _WECHATPAY_LOGO_COLOR);
+        }, _BANCONTACT_LOGO_COLO[src_constants.i.ANY] = {
+            primary: "#1A4B67",
+            secondary: "#00C0EE"
+        }, _BANCONTACT_LOGO_COLO[src_constants.i.BLACK] = {
+            primary: "#005498",
+            secondary: "#FFD800"
+        }, _BANCONTACT_LOGO_COLO);
         var _PAYPAL_LOGO_COLORS, _CREDIT_LOGO_COLORS, pp_white = __webpack_require__("./src/resources/fundingLogos/pp_white.svg"), pp_white_default = __webpack_require__.n(pp_white), pp_blue = __webpack_require__("./src/resources/fundingLogos/pp_blue.svg"), pp_blue_default = __webpack_require__.n(pp_blue), pp_black = __webpack_require__("./src/resources/fundingLogos/pp_black.svg"), pp_black_default = __webpack_require__.n(pp_black), PAYPAL_LOGO_COLORS = ((_PAYPAL_LOGO_COLORS = {})[src_constants.i.BLUE] = {
             primary: "#003087",
             secondary: "#009cde"
@@ -9828,7 +10566,7 @@
             primary: "#333030",
             secondary: "#636363"
         }, _CREDIT_LOGO_COLORS);
-        var _BUTTON_LOGO$PP, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$IDEAL, _BUTTON_LOGO$ELV, _BUTTON_LOGO$BANCONTA, _BUTTON_LOGO$GIROPAY, _BUTTON_LOGO$SOFORT, _BUTTON_LOGO$EPS, _BUTTON_LOGO$MYBANK, _fundingLogos, _cardLogos, _LOGO_COLOR, venmo_white = __webpack_require__("./src/resources/fundingLogos/venmo_white.svg"), venmo_white_default = __webpack_require__.n(venmo_white), venmo_blue = __webpack_require__("./src/resources/fundingLogos/venmo_blue.svg"), venmo_blue_default = __webpack_require__.n(venmo_blue), ideal = __webpack_require__("./src/resources/fundingLogos/ideal.svg"), ideal_default = __webpack_require__.n(ideal), elv = __webpack_require__("./src/resources/fundingLogos/elv.svg"), elv_default = __webpack_require__.n(elv), elv_white = __webpack_require__("./src/resources/fundingLogos/elv_white.svg"), elv_white_default = __webpack_require__.n(elv_white), bancontact = __webpack_require__("./src/resources/fundingLogos/bancontact.svg"), bancontact_default = __webpack_require__.n(bancontact), bancontact_white = __webpack_require__("./src/resources/fundingLogos/bancontact_white.svg"), bancontact_white_default = __webpack_require__.n(bancontact_white), giropay = __webpack_require__("./src/resources/fundingLogos/giropay.svg"), giropay_default = __webpack_require__.n(giropay), giropay_white = __webpack_require__("./src/resources/fundingLogos/giropay_white.svg"), giropay_white_default = __webpack_require__.n(giropay_white), eps = __webpack_require__("./src/resources/fundingLogos/eps.svg"), eps_default = __webpack_require__.n(eps), eps_white = __webpack_require__("./src/resources/fundingLogos/eps_white.svg"), eps_white_default = __webpack_require__.n(eps_white), mybank = __webpack_require__("./src/resources/fundingLogos/mybank.svg"), mybank_default = __webpack_require__.n(mybank), mybank_white = __webpack_require__("./src/resources/fundingLogos/mybank_white.svg"), mybank_white_default = __webpack_require__.n(mybank_white), sofort = __webpack_require__("./src/resources/fundingLogos/sofort.svg"), sofort_default = __webpack_require__.n(sofort), sofort_white = __webpack_require__("./src/resources/fundingLogos/sofort_white.svg"), sofort_white_default = __webpack_require__.n(sofort_white), fundingLogos = ((_fundingLogos = {})[src_constants.h.PP] = ((_BUTTON_LOGO$PP = {})[src_constants.i.WHITE] = pp_white_default.a, 
+        var _BUTTON_LOGO$PP, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$ELV, _fundingLogos, _cardLogos, _LOGO_COLOR, venmo_white = __webpack_require__("./src/resources/fundingLogos/venmo_white.svg"), venmo_white_default = __webpack_require__.n(venmo_white), venmo_blue = __webpack_require__("./src/resources/fundingLogos/venmo_blue.svg"), venmo_blue_default = __webpack_require__.n(venmo_blue), elv = __webpack_require__("./src/resources/fundingLogos/elv.svg"), elv_default = __webpack_require__.n(elv), elv_white = __webpack_require__("./src/resources/fundingLogos/elv_white.svg"), elv_white_default = __webpack_require__.n(elv_white), fundingLogos = ((_fundingLogos = {})[src_constants.h.PP] = ((_BUTTON_LOGO$PP = {})[src_constants.i.WHITE] = pp_white_default.a, 
         _BUTTON_LOGO$PP[src_constants.i.BLUE] = pp_blue_default.a, _BUTTON_LOGO$PP[src_constants.i.BLACK] = pp_black_default.a, 
         _BUTTON_LOGO$PP), _fundingLogos[src_constants.h.PAYPAL] = function(_ref) {
             var logoColor = _ref.logoColor;
@@ -9909,22 +10647,333 @@
             }
         }, _fundingLogos[src_constants.h.VENMO] = ((_BUTTON_LOGO$VENMO = {})[src_constants.i.WHITE] = venmo_white_default.a, 
         _BUTTON_LOGO$VENMO[src_constants.i.BLUE] = venmo_blue_default.a, _BUTTON_LOGO$VENMO), 
-        _fundingLogos[src_constants.h.IDEAL] = ((_BUTTON_LOGO$IDEAL = {})[src_constants.i.ANY] = ideal_default.a, 
-        _BUTTON_LOGO$IDEAL), _fundingLogos[src_constants.h.ELV] = ((_BUTTON_LOGO$ELV = {})[src_constants.i.ANY] = elv_default.a, 
-        _BUTTON_LOGO$ELV[src_constants.i.WHITE] = elv_white_default.a, _BUTTON_LOGO$ELV), 
-        _fundingLogos[src_constants.h.BANCONTACT] = ((_BUTTON_LOGO$BANCONTA = {})[src_constants.i.ANY] = bancontact_default.a, 
-        _BUTTON_LOGO$BANCONTA[src_constants.i.WHITE] = bancontact_white_default.a, _BUTTON_LOGO$BANCONTA), 
-        _fundingLogos[src_constants.h.GIROPAY] = ((_BUTTON_LOGO$GIROPAY = {})[src_constants.i.ANY] = giropay_default.a, 
-        _BUTTON_LOGO$GIROPAY[src_constants.i.WHITE] = giropay_white_default.a, _BUTTON_LOGO$GIROPAY), 
-        _fundingLogos[src_constants.h.SOFORT] = ((_BUTTON_LOGO$SOFORT = {})[src_constants.i.ANY] = sofort_default.a, 
-        _BUTTON_LOGO$SOFORT[src_constants.i.WHITE] = sofort_white_default.a, _BUTTON_LOGO$SOFORT), 
-        _fundingLogos[src_constants.h.EPS] = ((_BUTTON_LOGO$EPS = {})[src_constants.i.ANY] = eps_default.a, 
-        _BUTTON_LOGO$EPS[src_constants.i.WHITE] = eps_white_default.a, _BUTTON_LOGO$EPS), 
-        _fundingLogos[src_constants.h.MYBANK] = ((_BUTTON_LOGO$MYBANK = {})[src_constants.i.ANY] = mybank_default.a, 
-        _BUTTON_LOGO$MYBANK[src_constants.i.WHITE] = mybank_white_default.a, _BUTTON_LOGO$MYBANK), 
-        _fundingLogos[src_constants.h.P24] = function(_ref) {
+        _fundingLogos[src_constants.h.IDEAL] = function(_ref) {
             var logoColor = _ref.logoColor;
-            if (!P24_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " zimpler logo available");
+            if (!IDEAL_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " ideal logo available");
+            var _IDEAL_LOGO_COLORS$lo = IDEAL_LOGO_COLORS[logoColor], primary = _IDEAL_LOGO_COLORS$lo.primary, secondary = _IDEAL_LOGO_COLORS$lo.secondary, tertiary = _IDEAL_LOGO_COLORS$lo.tertiary;
+            return jsxToHTML("svg", {
+                width: "38",
+                height: "32",
+                viewBox: "0 0 38 32",
+                preserveAspectRatio: "xMinYMin meet",
+                xmlns: "http://www.w3.org/2000/svg"
+            }, jsxToHTML("polygon", {
+                fill: primary,
+                points: "4.47 27.632 10.452 27.632 10.452 17.982 4.47 17.982"
+            }), jsxToHTML("g", {
+                transform: "matrix(0.952642, 0, 0, 0.930979, 0.31993, 0.181113)"
+            }, jsxToHTML("path", {
+                d: "M11.1102604,13.937999 C11.1102604,15.8893766 9.51859887,17.4723289 7.55546104,17.4723289 C5.59238806,17.4723289 4.00066169,15.8893766 4.00066169,13.937999 C4.00066169,11.9865569 5.59238806,10.4043136 7.55546104,10.4043136 C9.51859887,10.4043136 11.1102604,11.9865569 11.1102604,13.937999",
+                fill: primary
+            }), jsxToHTML("g", null, jsxToHTML("mask", {
+                fill: secondary
+            }, jsxToHTML("polygon", {
+                points: "39.1898554 33.9678282 0 33.9678282 0 0.001572704 39.1898554 0.001572704",
+                transform: "matrix(1, 0, 0, 1, 0, 0)"
+            })), jsxToHTML("g", null), jsxToHTML("path", {
+                d: "M22.1049929,2.25750057 C26.4717361,2.25750057 30.1110886,3.433548 32.6296578,5.65853743 C35.476843,8.17370364 36.9204068,11.9843525 36.9204068,16.9847134 C36.9204068,26.8945533 32.0742264,31.7119261 22.1049929,31.7119261 L2.26942909,31.7119261 L2.26942909,2.25750057 L22.1049929,2.25750057 Z M22.531325,0.001572704 L-1.9452416e-05,0.001572704 L-1.9452416e-05,33.967854 L22.531325,33.967854 L22.531325,33.9614085 C27.4529808,33.8947619 31.3518934,32.6793969 34.1187402,30.3394196 C37.4837488,27.4935988 39.1898554,23.0003706 39.1898554,16.9847134 C39.1898554,14.1090499 38.7410881,11.5297509 37.8560681,9.31836144 C37.0093692,7.2028812 35.758125,5.40419768 34.13722,3.97219912 C31.2823834,1.45020067 27.2749912,0.0865245021 22.531325,0.00904949351 L22.531325,0.001572704 Z",
+                fill: primary
+            })), jsxToHTML("path", {
+                d: "M21.4851352,29.4975138 L13.5194356,29.4975138 L13.5194356,5.00387361 L21.4851352,5.00387361 L21.1636516,5.00387361 C27.8067813,5.00387361 34.8779291,7.60998594 34.8779291,17.282889 C34.8779291,27.5088167 27.8067813,29.4975138 21.1636516,29.4975138 L21.4851352,29.4975138 Z",
+                fill: tertiary
+            })), jsxToHTML("g", {
+                transform: "matrix(0.952642, 0, 0, 0.930979, 11.685725, 10.562208)",
+                fill: secondary
+            }, jsxToHTML("path", {
+                d: "M1.41115607,1.17495169 L1.41115607,5.07048794 L2.30681015,5.07048794 C2.64178075,5.07048794 2.88357428,5.05173151 3.03219074,5.0142831 C3.2267149,4.96613516 3.38810511,4.88459948 3.51649106,4.76961161 C3.64474732,4.65455929 3.749531,4.46538363 3.83058274,4.20189125 C3.91163447,3.93846333 3.95216034,3.57944852 3.95216034,3.12471792 C3.95216034,2.67005177 3.91163447,2.3210275 3.83058274,2.07764511 C3.749531,1.83426272 3.63605858,1.64437805 3.49016546,1.5079911 C3.34420749,1.37160414 3.15915018,1.27930447 2.93492866,1.23109207 C2.76737852,1.19370812 2.43915142,1.17495169 1.95018252,1.17495169 L1.41115607,1.17495169 Z M0.215675421,0.175897919 L2.40271056,0.175897919 C2.89589415,0.175897919 3.27190935,0.213410777 3.53069132,0.288436492 C3.878306,0.390275522 4.17612249,0.571265392 4.42407595,0.831212737 C4.67202941,1.09116008 4.86065301,1.40950373 4.99001157,1.78598587 C5.11937014,2.16253246 5.18408185,2.62686687 5.18408185,3.1789891 C5.18408185,3.66407805 5.12345515,4.08213371 5.00220176,4.433285 C4.85397434,4.86210466 4.6423969,5.20919527 4.36753426,5.47449239 C4.15997698,5.67552779 3.87966767,5.832347 3.52660632,5.94488558 C3.26244251,6.02796818 2.90938115,6.06954171 2.46742226,6.06954171 L0.215675421,6.06954171 L0.215675421,0.175897919 Z"
+            }), jsxToHTML("path", {
+                d: "M2.40271056,0.337035624 C2.87825729,0.337035624 3.24247136,0.372743739 3.48523751,0.443128689 C3.80302515,0.536201827 4.07944398,0.704171771 4.30645367,0.942075479 C4.53702965,1.18384649 4.7154083,1.48530291 4.83666169,1.83813003 C4.95966581,2.19611355 5.02197838,2.64723467 5.02197838,3.1789891 C5.02197838,3.64390361 4.96375081,4.04829479 4.84885188,4.38094747 C4.70970226,4.78359837 4.50973142,5.11264156 4.25458057,5.35892443 C4.06589213,5.54165459 3.80438682,5.68712971 3.47713234,5.79148248 C3.23060538,5.86895749 2.89070683,5.908404 2.46742226,5.908404 L0.377778888,5.908404 L0.377778888,0.337035624 L2.40271056,0.337035624 Z M0.0535719538,0.0147602138 L0.0535719538,6.23067941 L2.46742226,6.23067941 C2.92390562,6.23067941 3.2967436,6.18614095 3.57549672,6.09848204 C3.95157676,5.97866004 4.25594223,5.80759625 4.48061764,5.58993144 C4.77246872,5.30819828 4.9996081,4.93661473 5.15548679,4.48562252 C5.28205718,4.11919538 5.34618531,3.67954727 5.34618531,3.1789891 C5.34618531,2.61178438 5.27797217,2.12559969 5.1434263,1.73390616 C5.00706486,1.33699177 4.80456521,0.995959927 4.54169823,0.720349996 C4.27494076,0.440679396 3.9502151,0.243317935 3.57646934,0.133873205 C3.29992083,0.0536910833 2.91612466,0.0147602138 2.40271056,0.0147602138 L0.0535719538,0.0147602138 Z"
+            }), jsxToHTML("path", {
+                d: "M1.9501501,1.33608939 C2.54124418,1.33608939 2.79263424,1.36451409 2.899428,1.38836247 C3.09466542,1.43032272 3.25566658,1.50998921 3.37905974,1.6253638 C3.50439814,1.74254314 3.60457808,1.91180219 3.6766817,2.12824235 C3.75189771,2.35415741 3.79002445,2.68945275 3.79002445,3.12471792 C3.79002445,3.56127219 3.75150867,3.90784717 3.67551456,4.15477459 C3.60360546,4.38861762 3.51354078,4.55523401 3.40791416,4.64991853 C3.30014777,4.74647224 3.16054427,4.81647046 2.99299412,4.85797953 C2.85754047,4.89207627 2.62683481,4.90935023 2.30677773,4.90935023 L1.57329196,4.90935023 L1.57329196,1.33608939 L1.9501501,1.33608939 Z M1.24902018,1.01381398 L1.24902018,5.23162564 L2.30677773,5.23162564 C2.65860709,5.23162564 2.90889484,5.21158011 3.07203577,5.17052222 C3.29100514,5.1163155 3.47729444,5.02163098 3.62500312,4.88924025 C3.77699133,4.7529822 3.89493781,4.54356764 3.98558607,4.24900792 C4.07214932,3.96766148 4.11423138,3.59988078 4.11423138,3.12471792 C4.11423138,2.64833041 4.07176027,2.2893156 3.98441893,2.02698342 C3.89519718,1.75904364 3.76622766,1.54492386 3.60120633,1.39061839 C3.43423976,1.23450819 3.22162485,1.12789948 2.96919733,1.0736283 C2.78932733,1.03347278 2.45558871,1.01381398 1.9501501,1.01381398 L1.24902018,1.01381398 Z"
+            }), jsxToHTML("polygon", {
+                points: "6.53678989 6.06950948 6.53678989 0.175865691 10.9257088 0.175865691 10.9257088 1.17491946 7.73227054 1.17491946 7.73227054 2.48013487 10.702849 2.48013487 10.702849 3.47918864 7.73227054 3.47918864 7.73227054 5.07045571 11.0391813 5.07045571 11.0391813 6.06950948"
+            }), jsxToHTML("path", {
+                d: "M10.7636378,0.337035624 L10.7636378,1.01381398 L7.57019949,1.01381398 L7.57019949,2.64130481 L10.5407779,2.64130481 L10.5407779,3.31808317 L7.57019949,3.31808317 L7.57019949,5.23162564 L10.8771102,5.23162564 L10.8771102,5.908404 L6.69892578,5.908404 L6.69892578,0.337035624 L10.7636378,0.337035624 Z M6.37471884,0.0147602138 L6.37471884,6.23067941 L11.2013172,6.23067941 L11.2013172,4.90935023 L7.89440643,4.90935023 L7.89440643,3.64035858 L10.8649849,3.64035858 L10.8649849,2.3190294 L7.89440643,2.3190294 L7.89440643,1.33608939 L11.0878447,1.33608939 L11.0878447,0.0147602138 L6.37471884,0.0147602138 Z"
+            }), jsxToHTML("path", {
+                d: "M15.5303032,3.73301276 L14.7130424,1.54959685 L13.9121864,3.73301276 L15.5303032,3.73301276 Z M17.7341971,6.06950948 L16.431793,6.06950948 L15.9144884,4.73206653 L13.5458326,4.73206653 L13.055113,6.06950948 L11.7849999,6.06950948 L14.0890089,0.175865691 L15.363207,0.175865691 L17.7341971,6.06950948 Z"
+            }), jsxToHTML("path", {
+                d: "M15.2534629,0.337035624 C15.3291976,0.525244463 17.332991,5.50626875 17.4947703,5.908404 L16.5431581,5.908404 C16.4751395,5.73244163 16.0257887,4.57096105 16.0257887,4.57096105 L13.4323926,4.57096105 C13.4323926,4.57096105 13.0075518,5.72876769 12.9417378,5.908404 L12.0218979,5.908404 C12.1781008,5.50884695 14.1252876,0.527951577 14.1999201,0.337035624 L15.2534629,0.337035624 Z M13.9780328,0.0147602138 L11.5481019,6.23067941 L13.168553,6.23067941 C13.168553,6.23067941 13.5933289,5.07280832 13.6592077,4.89323646 L15.8031882,4.89323646 C15.871142,5.06913438 16.3204928,6.23067941 16.3204928,6.23067941 L17.9736239,6.23067941 L15.472951,0.0147602138 L13.9780328,0.0147602138 Z"
+            }), jsxToHTML("path", {
+                d: "M14.7145337,2.01579402 C14.8921991,2.49044124 15.1926093,3.29290701 15.2970039,3.57186861 L14.1437998,3.57186861 C14.2457305,3.2940672 14.5401752,2.49134361 14.7145337,2.01579402 L14.7145337,2.01579402 Z M13.680573,3.89414402 L15.7636025,3.89414402 L14.7114862,1.0833868 L13.680573,3.89414402 Z"
+            }), jsxToHTML("polygon", {
+                points: "18.7343171 6.06950948 18.7343171 0.224207003 19.9297978 0.224207003 19.9297978 5.07045571 22.9084814 5.07045571 22.9084814 6.06950948"
+            }), jsxToHTML("path", {
+                d: "M19.7677267,0.385376935 L19.7677267,5.23162564 L22.7464104,5.23162564 L22.7464104,5.908404 L18.8963882,5.908404 L18.8963882,0.385376935 L19.7677267,0.385376935 Z M18.5722461,0.0631015253 L18.5722461,6.23067941 L23.0706173,6.23067941 L23.0706173,4.90935023 L20.0919337,4.90935023 L20.0919337,0.0631015253 L18.5722461,0.0631015253 Z"
+            })));
+        }, _fundingLogos[src_constants.h.ELV] = ((_BUTTON_LOGO$ELV = {})[src_constants.i.ANY] = elv_default.a, 
+        _BUTTON_LOGO$ELV[src_constants.i.WHITE] = elv_white_default.a, _BUTTON_LOGO$ELV), 
+        _fundingLogos[src_constants.h.BANCONTACT] = function(_ref) {
+            var logoColor = _ref.logoColor;
+            if (!BANCONTACT_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " bancontact logo available");
+            var _BANCONTACT_LOGO_COLO2 = BANCONTACT_LOGO_COLORS[logoColor], primary = _BANCONTACT_LOGO_COLO2.primary, secondary = _BANCONTACT_LOGO_COLO2.secondary;
+            return jsxToHTML("svg", {
+                version: "1.1",
+                id: "Layer_1",
+                x: "0px",
+                y: "0px",
+                width: "226px",
+                height: "32px",
+                viewBox: "36.09922790527344 36.68461608886719 226 32",
+                style: "enable-background:new 0 0 476.9 123.4;",
+                xmlns: "http://www.w3.org/2000/svg"
+            }, jsxToHTML("g", {
+                transform: "matrix(0.557769, 0, 0, 0.557769, 15.684875, 18.15871)"
+            }, jsxToHTML("g", null, jsxToHTML("path", {
+                fill: primary,
+                d: "M147.6,50.2h-5.8h-26.9h-5.8l-3.9,4.4L92.5,68.9l0,0l-3.9,4.4h-6H56.2h-5.8l3.9-4.5l1.8-2.1l3.9-4.5h-5.8h-7.6 h-4.2c-3.2,0-5.8,2.7-5.8,6l0,0v11.5v1.1c0,3.3,2.6,6,5.8,6H44h61.1h4.4c3.2,0,7.6-2,9.7-4.4l10.2-11.6L147.6,50.2z"
+            }), jsxToHTML("path", {
+                fill: secondary,
+                d: "M155.3,36.8c3.2,0,5.8,2.7,5.8,6v12.6c0,3.3-2.6,6-5.8,6h-3.2h-8.5h-5.8l3.9-4.4l0,0l1.9-2.2l3.9-4.4h-38.6 L88.3,73.6H50l27.5-31.1l1-1.2c2.2-2.4,6.5-4.4,9.7-4.4h1.4h65.7V36.8z"
+            })), jsxToHTML("path", {
+                fill: primary,
+                d: "M 440.7 85.6 L 440.7 81.8 C 440.7 81.3 440.4 81 439.7 81 L 437.3 81 C 436.6 81 436.1 80.9 436 80.6 C 435.8 80.3 435.8 79.7 435.8 78.7 L 435.8 64.7 L 439.7 64.7 C 440 64.7 440.2 64.6 440.4 64.4 C 440.6 64.2 440.7 64 440.7 63.7 L 440.7 59.8 C 440.7 59.5 440.6 59.3 440.4 59.1 C 440.2 58.9 440 58.8 439.7 58.8 L 435.8 58.8 L 435.8 53.8 C 435.8 53.5 435.7 53.3 435.6 53.2 C 435.4 53.1 435.2 53 435 53 L 434.9 53 L 429.1 54 C 428.8 54.1 428.6 54.2 428.4 54.3 C 428.2 54.5 428.1 54.7 428.1 54.9 L 428.1 58.8 L 424.2 58.8 C 423.9 58.8 423.7 58.9 423.5 59.1 C 423.3 59.3 423.2 59.5 423.2 59.8 L 423.2 63 C 423.2 63.3 423.3 63.5 423.5 63.6 C 423.7 63.8 423.9 63.9 424.2 64 L 428.1 64.6 L 428.1 78.6 C 428.1 80.3 428.3 81.7 428.6 82.8 C 429 83.9 429.5 84.7 430.1 85.3 C 430.8 85.9 431.6 86.3 432.6 86.5 C 433.6 86.7 434.8 86.8 436.1 86.8 C 436.8 86.8 437.4 86.8 438 86.7 C 438.5 86.6 439.2 86.5 439.9 86.4 C 440.4 86.4 440.7 86.1 440.7 85.6 M 419.9 85.1 L 419.9 80.8 C 419.9 80.5 419.8 80.3 419.6 80.2 C 419.4 80.1 419.2 80 418.9 80 L 418.8 80 C 417.9 80.1 417 80.2 416.2 80.2 C 415.4 80.3 414.3 80.3 412.9 80.3 C 412.4 80.3 411.8 80.2 411.4 80 C 410.9 79.8 410.5 79.5 410.1 79.1 C 409.7 78.7 409.5 78.1 409.3 77.4 C 409.1 76.7 409 75.8 409 74.7 L 409 70.7 C 409 69.6 409.1 68.7 409.3 68 C 409.5 67.3 409.8 66.7 410.1 66.3 C 410.5 65.9 410.9 65.6 411.4 65.4 C 411.9 65.2 412.4 65.1 412.9 65.1 C 414.3 65.1 415.4 65.1 416.2 65.2 C 417 65.3 417.9 65.3 418.8 65.4 L 418.9 65.4 C 419.2 65.4 419.4 65.3 419.6 65.2 C 419.8 65.1 419.9 64.9 419.9 64.6 L 419.9 60.3 C 419.9 59.9 419.8 59.7 419.7 59.6 C 419.5 59.5 419.3 59.3 418.9 59.2 C 418.2 59 417.3 58.9 416.3 58.7 C 415.2 58.5 414 58.5 412.5 58.5 C 409.1 58.5 406.4 59.5 404.3 61.6 C 402.3 63.7 401.2 66.7 401.2 70.7 L 401.2 74.7 C 401.2 78.6 402.2 81.7 404.3 83.8 C 406.3 85.9 409.1 86.9 412.5 86.9 C 413.9 86.9 415.2 86.8 416.3 86.7 C 417.4 86.5 418.3 86.4 418.9 86.2 C 419.3 86.1 419.5 86 419.7 85.8 C 419.8 85.7 419.9 85.4 419.9 85.1 M 388.6 80 C 388 80.3 387.4 80.5 386.7 80.7 C 386 80.9 385.3 81 384.6 81 C 383.6 81 382.8 80.9 382.3 80.6 C 381.8 80.3 381.6 79.7 381.6 78.6 L 381.6 78.2 C 381.6 77.6 381.7 77.1 381.8 76.7 C 381.9 76.3 382.2 75.9 382.5 75.6 C 382.8 75.3 383.3 75.1 383.8 74.9 C 384.3 74.8 385 74.7 385.9 74.7 L 388.6 74.7 L 388.6 80 L 388.6 80 Z M 396.2 68.3 C 396.2 66.5 395.9 65 395.4 63.8 C 394.9 62.6 394.1 61.6 393.2 60.8 C 392.2 60 391.1 59.4 389.7 59.1 C 388.3 58.7 386.7 58.5 385 58.5 C 383.4 58.5 381.8 58.6 380.3 58.8 C 378.8 59 377.6 59.2 376.7 59.5 C 376.1 59.7 375.8 60 375.8 60.6 L 375.8 64.5 C 375.8 64.8 375.9 65 376 65.2 C 376.2 65.3 376.4 65.4 376.6 65.4 L 376.8 65.4 C 377.2 65.4 377.7 65.3 378.2 65.3 C 378.8 65.3 379.4 65.2 380.2 65.2 C 380.9 65.2 381.7 65.1 382.5 65.1 C 383.3 65.1 384.1 65.1 384.8 65.1 C 385.9 65.1 386.8 65.3 387.4 65.7 C 388 66.1 388.4 67 388.4 68.4 L 388.4 70.1 L 385.8 70.1 C 381.7 70.1 378.6 70.7 376.8 72 C 375 73.3 374 75.4 374 78.2 L 374 78.6 C 374 80.2 374.2 81.5 374.7 82.5 C 375.2 83.6 375.8 84.4 376.6 85.1 C 377.4 85.7 378.2 86.2 379.2 86.5 C 380.2 86.8 381.2 86.9 382.3 86.9 C 383.7 86.9 385 86.7 386 86.3 C 387 85.9 388 85.4 389 84.7 L 389 85.5 C 389 85.8 389.1 86 389.3 86.2 C 389.5 86.4 389.7 86.5 390 86.5 L 395.4 86.5 C 395.7 86.5 395.9 86.4 396.1 86.2 C 396.3 86 396.4 85.8 396.4 85.5 L 396.4 68.3 L 396.2 68.3 Z M 370.5 85.6 L 370.5 81.8 C 370.5 81.3 370.2 81 369.5 81 L 367.1 81 C 366.4 81 365.9 80.9 365.8 80.6 C 365.6 80.3 365.6 79.7 365.6 78.7 L 365.6 64.7 L 369.5 64.7 C 369.8 64.7 370 64.6 370.2 64.4 C 370.4 64.2 370.5 64 370.5 63.7 L 370.5 59.8 C 370.5 59.5 370.4 59.3 370.2 59.1 C 370 58.9 369.8 58.8 369.5 58.8 L 365.6 58.8 L 365.6 53.8 C 365.6 53.5 365.5 53.3 365.4 53.2 C 365.2 53.1 365 53 364.8 53 L 364.7 53 L 358.9 54 C 358.6 54.1 358.4 54.2 358.2 54.3 C 358 54.5 357.9 54.7 357.9 54.9 L 357.9 58.8 L 354 58.8 C 353.7 58.8 353.5 58.9 353.3 59.1 C 353.1 59.3 353 59.5 353 59.8 L 353 63 C 353 63.3 353.1 63.5 353.3 63.6 C 353.5 63.8 353.7 63.9 354 64 L 357.9 64.6 L 357.9 78.6 C 357.9 80.3 358.1 81.7 358.4 82.8 C 358.8 83.9 359.3 84.7 359.9 85.3 C 360.6 85.9 361.4 86.3 362.4 86.5 C 363.4 86.7 364.6 86.8 365.9 86.8 C 366.6 86.8 367.2 86.8 367.8 86.7 C 368.3 86.6 369 86.5 369.7 86.4 C 370.2 86.4 370.5 86.1 370.5 85.6 M 349.5 85.5 L 349.5 69.5 C 349.5 68 349.4 66.6 349.1 65.2 C 348.9 63.9 348.4 62.7 347.8 61.7 C 347.2 60.7 346.3 59.9 345.2 59.4 C 344.1 58.8 342.7 58.5 340.9 58.5 C 339.4 58.5 338 58.7 336.8 59.1 C 335.6 59.5 334.4 60.1 333 61.1 L 333 59.8 C 333 59.5 332.9 59.3 332.7 59.1 C 332.5 58.9 332.3 58.8 332 58.8 L 326.6 58.8 C 326.3 58.8 326.1 58.9 325.9 59.1 C 325.7 59.3 325.6 59.5 325.6 59.8 L 325.6 85.4 C 325.6 85.7 325.7 85.9 325.9 86.1 C 326.1 86.3 326.3 86.4 326.6 86.4 L 332.4 86.4 C 332.7 86.4 332.9 86.3 333.1 86.1 C 333.3 85.9 333.4 85.7 333.4 85.4 L 333.4 66.5 C 334.2 66.1 335 65.7 335.8 65.4 C 336.5 65.1 337.3 65 338 65 C 338.7 65 339.3 65.1 339.8 65.2 C 340.3 65.3 340.6 65.6 340.9 65.9 C 341.2 66.3 341.3 66.7 341.4 67.3 C 341.5 67.9 341.5 68.6 341.5 69.4 L 341.5 85.4 C 341.5 85.7 341.6 85.9 341.8 86.1 C 342 86.3 342.2 86.4 342.5 86.4 L 348.3 86.4 C 348.6 86.4 348.8 86.3 349 86.1 C 349.4 85.9 349.5 85.7 349.5 85.5 M 313.1 74.4 C 313.1 78.3 311.7 80.3 308.8 80.3 C 307.4 80.3 306.3 79.8 305.6 78.8 C 304.9 77.8 304.5 76.3 304.5 74.4 L 304.5 71 C 304.5 69 304.9 67.6 305.6 66.6 C 306.3 65.6 307.4 65.1 308.8 65.1 C 311.6 65.1 313.1 67.1 313.1 71 L 313.1 74.4 Z M 320.9 71 C 320.9 69.1 320.6 67.3 320.1 65.8 C 319.6 64.3 318.8 63 317.8 61.9 C 316.8 60.8 315.5 60 314 59.4 C 312.5 58.8 310.8 58.5 308.8 58.5 C 306.8 58.5 305.1 58.8 303.6 59.4 C 302.1 60 300.8 60.8 299.8 61.9 C 298.8 63 298 64.3 297.5 65.8 C 297 67.3 296.7 69.1 296.7 71 L 296.7 74.4 C 296.7 76.3 297 78.1 297.5 79.6 C 298 81.1 298.8 82.4 299.8 83.5 C 300.8 84.6 302.1 85.4 303.6 86 C 305.1 86.6 306.8 86.9 308.8 86.9 C 310.8 86.9 312.5 86.6 314 86 C 315.5 85.4 316.8 84.6 317.8 83.5 C 318.8 82.4 319.6 81.1 320.1 79.6 C 320.6 78.1 320.9 76.3 320.9 74.4 L 320.9 71 Z M 294.1 85.1 L 294.1 80.8 C 294.1 80.5 294 80.3 293.8 80.2 C 293.6 80.1 293.4 80 293.1 80 L 293 80 C 292.1 80.1 291.2 80.2 290.4 80.2 C 289.6 80.2 288.5 80.3 287.1 80.3 C 286.6 80.3 286 80.2 285.6 80 C 285.1 79.8 284.7 79.5 284.3 79.1 C 283.9 78.7 283.7 78.1 283.5 77.4 C 283.3 76.7 283.2 75.8 283.2 74.7 L 283.2 70.7 C 283.2 69.6 283.3 68.7 283.5 68 C 283.7 67.3 284 66.7 284.3 66.3 C 284.7 65.9 285.1 65.6 285.6 65.4 C 286.1 65.2 286.6 65.1 287.1 65.1 C 288.5 65.1 289.6 65.1 290.4 65.2 C 291.2 65.3 292.1 65.3 293 65.4 L 293.1 65.4 C 293.4 65.4 293.6 65.3 293.8 65.2 C 294 65.1 294.1 64.9 294.1 64.6 L 294.1 60.3 C 294.1 59.9 294 59.7 293.9 59.6 C 293.7 59.5 293.5 59.3 293.1 59.2 C 292.4 59 291.6 58.9 290.5 58.7 C 289.4 58.5 288.2 58.5 286.7 58.5 C 283.3 58.5 280.6 59.5 278.5 61.6 C 276.5 63.7 275.4 66.7 275.4 70.7 L 275.4 74.7 C 275.4 78.6 276.4 81.7 278.5 83.8 C 280.5 85.9 283.3 86.9 286.7 86.9 C 288.1 86.9 289.4 86.8 290.5 86.7 C 291.6 86.5 292.4 86.4 293.1 86.2 C 293.5 86.1 293.7 86 293.9 85.8 C 294 85.7 294.1 85.4 294.1 85.1 M 270.4 85.5 L 270.4 69.5 C 270.4 68 270.3 66.6 270 65.2 C 269.7 63.8 269.3 62.7 268.7 61.7 C 268.1 60.7 267.2 59.9 266.1 59.4 C 265 58.8 263.6 58.5 261.8 58.5 C 260.3 58.5 258.9 58.7 257.7 59.1 C 256.5 59.5 255.3 60.1 253.9 61.1 L 253.9 59.8 C 253.9 59.5 253.8 59.3 253.6 59.1 C 253.4 58.9 253.2 58.8 252.9 58.8 L 247.5 58.8 C 247.2 58.8 247 58.9 246.8 59.1 C 246.6 59.3 246.5 59.5 246.5 59.8 L 246.5 85.4 C 246.5 85.7 246.6 85.9 246.8 86.1 C 247 86.3 247.2 86.4 247.5 86.4 L 253.3 86.4 C 253.6 86.4 253.8 86.3 254 86.1 C 254.2 85.9 254.3 85.7 254.3 85.4 L 254.3 66.5 C 255.1 66.1 255.9 65.7 256.7 65.4 C 257.4 65.1 258.2 65 258.9 65 C 259.6 65 260.2 65.1 260.7 65.2 C 261.2 65.3 261.5 65.6 261.8 65.9 C 262.1 66.3 262.2 66.7 262.3 67.3 C 262.4 67.9 262.4 68.6 262.4 69.4 L 262.4 85.4 C 262.4 85.7 262.5 85.9 262.7 86.1 C 262.9 86.3 263.1 86.4 263.4 86.4 L 269.2 86.4 C 269.5 86.4 269.7 86.3 269.9 86.1 C 270.3 85.9 270.4 85.7 270.4 85.5 M 233.3 80 C 232.7 80.3 232.1 80.5 231.4 80.7 C 230.7 80.9 230 81 229.3 81 C 228.3 81 227.5 80.9 227 80.6 C 226.5 80.3 226.3 79.7 226.3 78.6 L 226.3 78.2 C 226.3 77.6 226.4 77.1 226.5 76.7 C 226.6 76.3 226.9 75.9 227.2 75.6 C 227.5 75.3 228 75.1 228.5 74.9 C 229 74.8 229.7 74.7 230.6 74.7 L 233.3 74.7 L 233.3 80 L 233.3 80 Z M 241 68.3 C 241 66.5 240.7 65 240.2 63.8 C 239.7 62.6 238.9 61.6 238 60.8 C 237 60 235.9 59.4 234.5 59.1 C 233.1 58.7 231.5 58.5 229.8 58.5 C 228.2 58.5 226.6 58.6 225.1 58.8 C 223.6 59 222.4 59.2 221.5 59.5 C 220.9 59.7 220.6 60 220.6 60.6 L 220.6 64.5 C 220.6 64.8 220.7 65 220.8 65.2 C 221 65.3 221.2 65.4 221.4 65.4 L 221.6 65.4 C 222 65.4 222.5 65.3 223 65.3 C 223.6 65.3 224.2 65.2 225 65.2 C 225.7 65.2 226.5 65.1 227.3 65.1 C 228.1 65.1 228.9 65.1 229.6 65.1 C 230.7 65.1 231.6 65.3 232.2 65.7 C 232.8 66.1 233.2 67 233.2 68.4 L 233.2 70.1 L 230.6 70.1 C 226.5 70.1 223.4 70.7 221.6 72 C 219.8 73.3 218.8 75.4 218.8 78.2 L 218.8 78.6 C 218.8 80.2 219 81.5 219.5 82.5 C 220 83.6 220.6 84.4 221.4 85.1 C 222.2 85.7 223 86.2 224 86.5 C 225 86.8 226 86.9 227.1 86.9 C 228.5 86.9 229.8 86.7 230.8 86.3 C 231.8 85.9 232.8 85.4 233.8 84.7 L 233.8 85.5 C 233.8 85.8 233.9 86 234.1 86.2 C 234.3 86.4 234.5 86.5 234.8 86.5 L 240.2 86.5 C 240.5 86.5 240.7 86.4 240.9 86.2 C 241.1 86 241.2 85.8 241.2 85.5 L 241.2 68.3 L 241 68.3 Z M 206.6 75.9 C 206.6 77.2 206.1 78.3 205.2 79 C 204.3 79.7 202.5 80.1 200.1 80.1 L 199.3 80.1 C 198.9 80.1 198.5 80.1 198.1 80.1 C 197.7 80.1 197.3 80.1 196.9 80.1 L 196.1 80.1 L 196.1 71.1 L 201.5 71.1 C 203.4 71.1 204.8 71.5 205.5 72.4 C 206.2 73.3 206.6 74.3 206.6 75.4 L 206.6 75.9 Z M 206.4 61.6 C 206.4 62.1 206.3 62.6 206.2 63.1 C 206 63.6 205.8 64 205.4 64.3 C 205 64.6 204.5 64.9 203.9 65.1 C 203.3 65.3 202.5 65.4 201.5 65.4 L 196.1 65.4 L 196.1 57.1 C 196.3 57.1 196.5 57.1 196.8 57.1 C 197.1 57.1 197.5 57.1 197.9 57.1 L 199 57.1 L 199.8 57.1 C 202.3 57.1 204 57.4 205 58 C 206 58.6 206.5 59.6 206.5 60.9 L 206.5 61.6 L 206.4 61.6 Z M 214.6 75.4 C 214.6 73.7 214.2 72.3 213.4 71.1 C 212.6 69.9 211.6 68.9 210.3 68.3 C 211.6 67.7 212.6 66.7 213.3 65.5 C 214 64.2 214.4 62.8 214.4 61.3 L 214.4 60.4 C 214.4 58.5 214 56.9 213.3 55.6 C 212.6 54.3 211.5 53.3 210.2 52.5 C 208.9 51.7 207.3 51.2 205.4 50.8 C 203.5 50.5 201.5 50.3 199.2 50.3 C 198.4 50.3 197.6 50.3 196.8 50.3 C 196 50.3 195.2 50.4 194.4 50.4 C 193.6 50.4 192.9 50.5 192.2 50.6 C 191.5 50.7 191 50.7 190.6 50.8 C 189.7 51 189 51.3 188.6 51.7 C 188.2 52.1 188 52.9 188 54 L 188 83.3 C 188 84.4 188.2 85.1 188.6 85.6 C 189 86 189.7 86.3 190.6 86.5 C 191.1 86.6 191.7 86.7 192.3 86.7 C 193 86.8 193.7 86.8 194.5 86.9 C 195.3 86.9 196.1 87 196.9 87 C 197.7 87 198.6 87 199.4 87 C 201.5 87 203.5 86.8 205.3 86.5 C 207.1 86.2 208.7 85.6 210.1 84.8 C 211.5 84 212.5 82.9 213.4 81.5 C 214.2 80.1 214.6 78.3 214.6 76.2 L 214.6 75.4 L 214.6 75.4 Z"
+            })));
+        }, _fundingLogos[src_constants.h.GIROPAY] = function(_ref) {
+            var logoColor = _ref.logoColor;
+            if (!GIROPAY_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " giropay logo available");
+            var _GIROPAY_LOGO_COLORS$ = GIROPAY_LOGO_COLORS[logoColor], primary = _GIROPAY_LOGO_COLORS$.primary, secondary = _GIROPAY_LOGO_COLORS$.secondary, tertiary = _GIROPAY_LOGO_COLORS$.tertiary;
+            return jsxToHTML("svg", {
+                width: "75px",
+                height: "32px",
+                viewBox: "0 0 75 32",
+                version: "1.1",
+                xmlns: "http://www.w3.org/2000/svg"
+            }, jsxToHTML("g", {
+                stroke: "none",
+                "stroke-width": "1",
+                fill: "none",
+                "fill-rule": "evenodd",
+                transform: "matrix(1.614571, 0, 0, 1.614571, -161.457123, -256.816772)"
+            }, jsxToHTML("g", {
+                transform: "translate(100.000000, 159.000000)"
+            }, jsxToHTML("g", {
+                transform: "translate(0.000000, 0.144715)"
+            }, jsxToHTML("mask", {
+                fill: primary
+            }, jsxToHTML("polygon", {
+                points: "0 0.017902439 46.0918699 0.017902439 46.0918699 19.8373984 0 19.8373984",
+                transform: "matrix(1, 0, 0, 1, 0, 0)"
+            })), jsxToHTML("path", {
+                d: "M0,3.5735122 C0,1.60977236 1.5998374,0.017902439 3.57349593,0.017902439 L42.5182114,0.017902439 C44.4918699,0.017902439 46.0918699,1.60977236 46.0918699,3.5735122 L46.0918699,16.2818049 C46.0918699,18.2455447 44.4918699,19.8374146 42.5182114,19.8374146 L3.57349593,19.8374146 C1.5998374,19.8374146 0,18.2455447 0,16.2818049 L0,3.5735122 Z",
+                fill: secondary
+            })), jsxToHTML("path", {
+                d: "M1.46738211,3.84021138 L1.46738211,16.3065528 C1.46738211,17.5338699 2.46738211,18.5288293 3.70087805,18.5288293 L24.1036423,18.5288293 L24.1036423,1.61793496 L3.70087805,1.61793496 C2.46738211,1.61793496 1.46738211,2.61289431 1.46738211,3.84021138",
+                fill: primary
+            }), jsxToHTML("path", {
+                d: "M5.67102439,10.0205528 C5.67102439,9.34152846 6.00582114,8.77730081 6.64663415,8.77730081 C7.42126829,8.77730081 7.74630894,9.39892683 7.74630894,9.95356098 C7.74630894,10.7187642 7.25866667,11.235187 6.64663415,11.235187 C6.13004878,11.235187 5.67102439,10.795187 5.67102439,10.0205528 Z M9.41053659,7.57226016 L7.8515122,7.57226016 L7.8515122,8.47112195 L7.8324878,8.47112195 C7.46907317,7.85908943 6.87606504,7.45746341 6.13964228,7.45746341 C4.59021138,7.45746341 3.8921626,8.56689431 3.8921626,10.0491707 C3.8921626,11.5221789 4.74321951,12.5550244 6.11102439,12.5550244 C6.79964228,12.5550244 7.37346341,12.2872195 7.78468293,11.7038049 L7.80370732,11.7038049 L7.80370732,11.9716098 C7.80370732,12.9472195 7.26826016,13.4158374 6.27362602,13.4158374 C5.55622764,13.4158374 5.11622764,13.2628293 4.59021138,13.0046179 L4.50419512,14.3626667 C4.90582114,14.5060813 5.58500813,14.6782764 6.40744715,14.6782764 C8.41590244,14.6782764 9.41053659,14.0182764 9.41053659,11.9716098 L9.41053659,7.57226016 Z",
+                fill: tertiary
+            }), jsxToHTML("mask", {
+                fill: primary
+            }, jsxToHTML("polygon", {
+                points: "0 19.9821138 46.0918699 19.9821138 46.0918699 0.162601626 0 0.162601626",
+                transform: "matrix(1, 0, 0, 1, 0, 0)"
+            })), jsxToHTML("path", {
+                d: "M10.5985366,6.75918699 L12.32,6.75918699 L12.32,5.49674797 L10.5985366,5.49674797 L10.5985366,6.75918699 Z M10.598374,12.5549593 L12.3198374,12.5549593 L12.3198374,7.57219512 L10.598374,7.57219512 L10.598374,12.5549593 Z",
+                id: "Fill-8",
+                fill: tertiary
+            }), jsxToHTML("path", {
+                d: "M17.1133333,7.51479675 C16.9411382,7.48617886 16.7307317,7.45739837 16.5299187,7.45739837 C15.7839024,7.45739837 15.3534959,7.85918699 15.0570732,8.4904065 L15.0380488,8.4904065 L15.0380488,7.57219512 L13.4694309,7.57219512 L13.4694309,12.5549593 L15.1910569,12.5549593 L15.1910569,10.4508943 C15.1910569,9.47544715 15.6404878,8.89203252 16.4439024,8.89203252 C16.6447154,8.89203252 16.835935,8.89203252 17.0273171,8.94943089 L17.1133333,7.51479675 Z",
+                fill: tertiary
+            }), jsxToHTML("path", {
+                d: "M20.0773496,11.4647154 C19.2835285,11.4647154 18.9583252,10.804878 18.9583252,10.0682927 C18.9583252,9.32243902 19.2835285,8.66243902 20.0773496,8.66243902 C20.8711707,8.66243902 21.196374,9.32243902 21.196374,10.0682927 C21.196374,10.804878 20.8711707,11.4647154 20.0773496,11.4647154 M20.0773496,12.6697561 C21.7223902,12.6697561 22.9752358,11.7133333 22.9752358,10.0682927 C22.9752358,8.41382114 21.7223902,7.45739837 20.0773496,7.45739837 C18.4323089,7.45739837 17.1794634,8.41382114 17.1794634,10.0682927 C17.1794634,11.7133333 18.4323089,12.6697561 20.0773496,12.6697561",
+                fill: tertiary
+            }), jsxToHTML("path", {
+                d: "M29.3757073,10.0110244 C29.3757073,10.8048455 28.9836748,11.3500488 28.3332683,11.3500488 C27.7594472,11.3500488 27.2812358,10.8048455 27.2812358,10.0780163 C27.2812358,9.332 27.7020488,8.77720325 28.3332683,8.77720325 C29.0026992,8.77720325 29.3757073,9.35102439 29.3757073,10.0110244 Z M25.5597724,14.5633821 L27.2812358,14.5633821 L27.2812358,11.856878 L27.3002602,11.856878 C27.6254634,12.4498862 28.2758699,12.6697236 28.8783089,12.6697236 C30.360748,12.6697236 31.1545691,11.4456585 31.1545691,9.97265041 C31.1545691,8.76777236 30.399122,7.45736585 29.0218862,7.45736585 C28.2376585,7.45736585 27.5106667,7.77297561 27.166439,8.47118699 L27.147252,8.47118699 L27.147252,7.5721626 L25.5597724,7.5721626 L25.5597724,14.5633821 Z",
+                id: "Fill-12",
+                fill: primary,
+                mask: "url(#mask-4)"
+            }), jsxToHTML("path", {
+                d: "M33.505252,10.9769919 C33.505252,10.4987805 33.9642764,10.3169919 34.5476911,10.3169919 C34.8059024,10.3169919 35.0546829,10.3361789 35.2745203,10.3457724 C35.2745203,10.929187 34.8633008,11.5221951 34.2128943,11.5221951 C33.8112683,11.5221951 33.505252,11.3212195 33.505252,10.9769919 Z M36.9769593,12.5550407 C36.900374,12.1628455 36.8813496,11.770813 36.8813496,11.3786179 L36.8813496,9.52317073 C36.8813496,8.00252033 35.7815122,7.45747967 34.5094797,7.45747967 C33.7730569,7.45747967 33.1322439,7.56268293 32.5202114,7.81130081 L32.5488293,8.97813008 C33.0270407,8.7103252 33.5816748,8.60512195 34.1364715,8.60512195 C34.7580976,8.60512195 35.2650894,8.78674797 35.2745203,9.46577236 C35.0546829,9.42756098 34.7485041,9.39894309 34.4711057,9.39894309 C33.5530569,9.39894309 31.8984228,9.58056911 31.8984228,11.1013821 C31.8984228,12.1820325 32.7784228,12.6698374 33.7634634,12.6698374 C34.4711057,12.6698374 34.9493171,12.392439 35.3415122,11.770813 L35.3606992,11.770813 C35.3606992,12.0290244 35.3893171,12.2872358 35.3989106,12.5550407 L36.9769593,12.5550407 Z",
+                fill: primary
+            }), jsxToHTML("path", {
+                d: "M37.750748,14.5634634 C38.1045691,14.6398862 38.4583902,14.6782602 38.8218049,14.6782602 C40.3998537,14.6782602 40.7728618,13.463626 41.2606667,12.2107805 L43.0873333,7.5722439 L41.3658699,7.5722439 L40.3426179,10.8239512 L40.3234309,10.8239512 L39.2522114,7.5722439 L37.3967642,7.5722439 L39.414813,12.6698049 C39.2904228,13.1098049 38.9653821,13.3584228 38.5445691,13.3584228 C38.3053821,13.3584228 38.0949756,13.3296423 37.8655447,13.2532195 L37.750748,14.5634634 Z",
+                fill: primary
+            }))));
+        }, _fundingLogos[src_constants.h.SOFORT] = function(_ref) {
+            var logoColor = _ref.logoColor;
+            if (!SOFORT_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " sofort logo available");
+            var _SOFORT_LOGO_COLORS$l = SOFORT_LOGO_COLORS[logoColor], primary = _SOFORT_LOGO_COLORS$l.primary, secondary = _SOFORT_LOGO_COLORS$l.secondary;
+            return jsxToHTML("svg", {
+                width: "138px",
+                height: "32px",
+                viewBox: "0 0 138 44",
+                version: "1.1",
+                xmlns: "http://www.w3.org/2000/svg"
+            }, jsxToHTML("g", {
+                stroke: "none",
+                "stroke-width": "1",
+                fill: "none",
+                "fill-rule": "evenodd"
+            }, jsxToHTML("g", {
+                transform: "translate(-24.000000, -436.000000)"
+            }, jsxToHTML("g", {
+                transform: "translate(24.000000, 436.000000)"
+            }, jsxToHTML("g", {
+                "stroke-width": "1"
+            }, jsxToHTML("g", {
+                mask: "url(#mask-2)",
+                "fill-rule": "evenodd",
+                fill: primary
+            }, jsxToHTML("rect", {
+                x: "0",
+                y: "0",
+                width: "138",
+                height: "44"
+            })), jsxToHTML("g", {
+                transform: "translate(16.000000, 5.000000)",
+                "fill-rule": "nonzero",
+                fill: secondary
+            }, jsxToHTML("path", {
+                d: "M8.55107133,24.0386247 C9.22879411,24.6861671 9.24327745,25.7425763 8.58354713,26.4073957 L8.45110904,26.5423627 C7.79086355,27.1983175 6.69897696,27.2144066 6.01224032,26.5722566 L2.17289107,22.8768054 C1.11590922,21.8458618 0.96410333,20.5754632 1.63678914,19.9042365 L1.77159366,19.7668966 C2.32598975,19.2126062 3.22970309,19.1541252 3.86016464,19.6360673 C4.15990129,19.8651943 4.59424066,19.8150784 4.83028878,19.5241303 C5.0663369,19.2331822 5.01470714,18.8115781 4.7149705,18.5824512 C3.5284497,17.675442 1.82767241,17.7855026 0.775688111,18.8373698 L0.64137931,18.9742146 C-0.604692328,20.2175294 -0.354282964,22.3130983 1.19683948,23.8259789 L5.04656839,27.5313427 C6.28726435,28.6915831 8.24857838,28.6626828 9.44549924,27.4733999 L9.58132339,27.3350447 C10.7636633,26.1435999 10.7376475,24.2460125 9.52028002,23.0828568 C9.24837962,22.8230647 8.81099605,22.8264175 8.54335646,23.0903455 C8.27571687,23.3542735 8.27917094,23.7788325 8.55107133,24.0386247 Z"
+            }), jsxToHTML("path", {
+                d: "M6.25316137,4.00463901 L7.82450265,16.5582851 C7.87051944,16.9259191 8.21485204,17.1877352 8.59359104,17.1430676 C8.97233003,17.0984001 9.24205468,16.7641637 9.19603789,16.3965297 L7.61982167,3.8039371 L7.60423898,3.7221812 C7.33535457,2.67817937 8.00377183,1.50751858 8.89431251,1.32322405 C9.39350944,1.21977105 9.9143927,1.3151232 10.3403167,1.58785163 C10.7662406,1.86058007 11.0615522,2.28785533 11.1600097,2.7738347 L13.8959914,14.1304918 C13.9828807,14.4910975 14.3544774,14.7150537 14.7259757,14.6307121 C15.097474,14.5463704 15.3281952,14.1856693 15.2413059,13.8250637 L12.5104951,2.49173037 C12.3457557,1.67638792 11.8361294,0.939028727 11.1011021,0.468374716 C10.3660749,-0.00227929421 9.46717414,-0.16683078 8.60603358,0.0116310396 C6.93120471,0.358231477 5.83076908,2.26447015 6.25316137,4.00463901 Z"
+            }), jsxToHTML("path", {
+                d: "M20.6946385,18.7562157 L23.8016655,3.70806757 C24.1627527,2.08823591 23.171098,0.461930237 21.5243733,-0.0131380565 C19.6806639,-0.465927398 17.8331452,0.588982967 17.3518411,2.34622562 L13.9119445,13.7963592 C13.8051409,14.1518899 14.01548,14.5241472 14.3817501,14.6278193 C14.7480201,14.7314913 15.1315221,14.5273196 15.2383257,14.1717889 L18.6826501,2.70623335 C18.9740354,1.64312835 20.0755418,1.01418179 21.1583367,1.27975309 C22.0849843,1.54768368 22.6596154,2.49007404 22.4491321,3.43451398 L19.3399561,18.4926732 C19.2649826,18.8557898 19.5074605,19.20915 19.8815457,19.2819253 C20.2556309,19.3547006 20.6196649,19.1193324 20.6946385,18.7562157 Z"
+            }), jsxToHTML("path", {
+                d: "M12.8691892,33.2538889 C7.94394615,33.2538889 3.83027027,29.7443025 3.83027027,24.757037 C3.83027027,24.3866994 3.52098374,24.0864815 3.13945946,24.0864815 C2.75793518,24.0864815 2.44864865,24.3866994 2.44864865,24.757037 C2.44864865,30.5262551 7.21772847,34.595 12.8691892,34.595 C13.2507135,34.595 13.56,34.2947821 13.56,33.9244444 C13.56,33.5541068 13.2507135,33.2538889 12.8691892,33.2538889 Z"
+            }), jsxToHTML("path", {
+                d: "M10.432735,21.523985 C10.32527,21.8997898 10.0848456,22.2268322 9.75367873,22.4476857 L9.6059963,22.5431752 C8.81135162,23.0620226 7.73737824,22.860771 7.20041193,22.0943828 L4.18000129,17.7280455 C3.35596459,16.5133712 3.46371228,15.2353866 4.25688098,14.7069262 L4.40481451,14.6112693 C5.42222949,14.0388226 6.28666557,14.4731364 7.17531296,15.7298428 L9.70102318,19.3822431 C9.91366027,19.6897297 10.3428334,19.7716746 10.6596081,19.5652723 C10.9763829,19.3588699 11.0608031,18.9422806 10.848166,18.634794 L8.31843628,14.9766458 C7.06906995,13.2097547 5.52101546,12.4319743 3.67452351,13.4735669 L3.48275305,13.5961381 C1.99799965,14.5853027 1.82065576,16.6887608 3.02954142,18.4706511 L6.05567438,22.8452879 C7.02249844,24.2252138 8.95163568,24.5867144 10.3747579,23.6575027 L10.5280578,23.5583063 C11.1349164,23.1536749 11.5696876,22.5622681 11.7640218,21.8826817 C11.8660652,21.5258361 11.650769,21.1562586 11.2831443,21.0572072 C10.9155196,20.9581559 10.5347784,21.1671394 10.432735,21.523985 Z"
+            }), jsxToHTML("path", {
+                d: "M15.0071132,23.7451482 C13.5716937,24.5235597 12.6792061,25.9892512 12.5683793,28.2063913 C12.5498892,28.5762937 12.8438232,28.8907086 13.2248991,28.9086565 C13.6059751,28.9266044 13.9298874,28.6412889 13.9483774,28.2713865 C14.048744,26.2635083 14.8525076,25.179561 16.152515,24.704555 C16.8482268,24.4503509 17.6046979,24.3996276 18.2711038,24.4684707 C18.3606758,24.477724 18.4201821,24.4863334 18.4442402,24.4906858 C19.3337661,24.6516105 19.6045203,23.3685934 18.7214531,23.1770635 L13.4090206,22.0248413 C10.9225036,21.3638621 10.5472361,20.4704561 11.0076227,18.9808309 C11.2064187,18.3317669 11.6147718,17.9986147 12.2306776,17.865687 C12.6373189,17.7779238 13.0941226,17.7888366 13.5282841,17.8626882 C13.6538003,17.8840387 13.7420731,17.9043308 13.7811352,17.9152244 L21.8451208,19.7433694 C21.8985237,19.7533496 21.9361525,19.763479 22.0020154,19.7924494 C22.1354002,19.8511201 22.2742678,19.9453829 22.4097247,20.0858789 C22.9502905,20.6465543 23.2485509,21.7041959 23.09758,23.4414127 C22.571614,29.5314735 19.6483005,33.3130406 12.7195863,33.2539148 C12.3380768,33.2506592 12.0260833,33.5482264 12.0227294,33.9185497 C12.0193755,34.288873 12.3259312,34.5917185 12.7074407,34.5949741 C20.4944029,34.6614237 23.8949457,30.262518 24.474342,23.5537955 C24.6558214,21.4655214 24.2521788,20.0341915 23.4184922,19.1694909 C22.9588119,18.69271 22.4737204,18.4793376 22.1015974,18.4267977 L14.1289333,16.6177417 C14.0788208,16.6028791 13.9434651,16.5717637 13.7667652,16.5417067 C13.169132,16.4400483 12.5401983,16.4250234 11.9308051,16.5565455 C10.8493625,16.7899475 10.0333579,17.4556796 9.68377867,18.5970598 C9.0191343,20.7475737 9.72889785,22.4373206 13.0761134,23.3260543 L15.0071132,23.7451482 Z"
+            }))), jsxToHTML("path", {
+                d: "M60.72,30.286 C63.712,30.286 66,28.284 66,25.336 C66,22.608 64.064,21.42 61.688,20.716 C60.17,20.276 59.224,19.946 59.224,18.868 C59.224,17.966 59.884,17.262 60.918,17.262 C61.798,17.262 62.458,17.768 62.92,18.538 L65.406,16.976 C64.636,15.26 62.898,14.38 61.006,14.38 C58.014,14.38 56.122,16.536 56.122,19.022 C56.122,21.002 57.31,22.542 60.258,23.4 C61.864,23.862 62.876,24.17 62.876,25.446 C62.876,26.634 62.018,27.382 60.764,27.382 C59.422,27.382 58.41,26.524 57.794,25.732 L55.726,27.822 C56.826,29.318 58.63,30.286 60.72,30.286 Z M73.546,30.286 C70.378,30.286 67.804,27.756 67.804,24.676 C67.804,21.596 70.378,19.066 73.546,19.066 C76.714,19.066 79.288,21.596 79.288,24.676 C79.288,27.756 76.714,30.286 73.546,30.286 Z M73.546,27.47 C75.086,27.47 76.296,26.26 76.296,24.676 C76.296,23.092 75.086,21.882 73.546,21.882 C72.006,21.882 70.796,23.092 70.796,24.676 C70.796,26.26 72.006,27.47 73.546,27.47 Z M87.428,17.416 L87.428,14.6 L86.988,14.6 C83.336,14.6 81.554,17.02 81.554,19.88 L81.554,30 L84.546,30 L84.546,25.556 C84.546,24.082 85.69,23.026 87.34,22.982 L87.34,20.122 C86.152,20.122 85.206,20.474 84.546,21.178 L84.546,20.034 C84.546,18.186 85.756,17.35 87.428,17.416 Z M95.018,30.286 C91.85,30.286 89.276,27.756 89.276,24.676 C89.276,21.596 91.85,19.066 95.018,19.066 C98.186,19.066 100.76,21.596 100.76,24.676 C100.76,27.756 98.186,30.286 95.018,30.286 Z M95.018,27.47 C96.558,27.47 97.768,26.26 97.768,24.676 C97.768,23.092 96.558,21.882 95.018,21.882 C93.478,21.882 92.268,23.092 92.268,24.676 C92.268,26.26 93.478,27.47 95.018,27.47 Z M106.018,20.562 L106.018,19.352 L103.114,19.352 L103.114,30 L106.106,30 L106.106,25.138 C106.106,23.378 107.14,22.388 108.944,22.388 L108.944,19.176 C107.58,19.132 106.612,19.594 106.018,20.562 Z M114.378,24.566 L114.378,21.97 C115.038,22.674 115.984,23.026 117.172,23.026 L117.172,20.166 C115.544,20.122 114.378,19.044 114.378,17.592 L114.378,15.92 L111.386,15.92 L111.386,24.72 C111.386,27.58 113.168,30 116.82,30 L117.26,30 L117.26,27.184 C115.588,27.25 114.378,26.414 114.378,24.566 Z M121.572,30.176 C122.672,30.176 123.574,29.274 123.574,28.174 C123.574,27.074 122.672,26.172 121.572,26.172 C120.472,26.172 119.57,27.074 119.57,28.174 C119.57,29.274 120.472,30.176 121.572,30.176 Z",
+                fill: secondary
+            })))));
+        }, _fundingLogos[src_constants.h.EPS] = function(_ref) {
+            var logoColor = _ref.logoColor;
+            if (!EPS_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " eps logo available");
+            var _EPS_LOGO_COLORS$logo = EPS_LOGO_COLORS[logoColor], primary = _EPS_LOGO_COLORS$logo.primary, secondary = _EPS_LOGO_COLORS$logo.secondary, tertiary = _EPS_LOGO_COLORS$logo.tertiary;
+            return jsxToHTML("svg", {
+                width: "52px",
+                height: "32px",
+                viewBox: "0 0 52 32",
+                version: "1.1",
+                xmlns: "http://www.w3.org/2000/svg"
+            }, jsxToHTML("g", {
+                stroke: "none",
+                "stroke-width": "1",
+                fill: "none",
+                "fill-rule": "evenodd",
+                transform: "matrix(1.333759, 0, 0, 1.333759, 0.000008, -0.000005)"
+            }, jsxToHTML("g", {
+                transform: "translate(-100.000000, -159.000000)"
+            }, jsxToHTML("g", {
+                transform: "translate(100.000000, 159.000000)"
+            }, jsxToHTML("path", {
+                d: "M30.5812744,12.0000152 L27.4748661,12.0000152 C27.129394,12.0000152 26.8482796,11.7245987 26.8482796,11.3798207 C26.8482796,11.0350427 27.129394,10.7315163 27.4748661,10.7315163 L32.2041612,10.7315163 L32.2041612,8.39747822 L27.4748661,8.39747822 C25.824238,8.39747822 24.4812484,9.74381226 24.4812484,11.3911357 C24.4812484,13.0384592 25.824238,14.3847932 27.4748661,14.3847932 L30.5390793,14.3847932 C30.8846021,14.3847932 31.1657165,14.6590934 31.1657165,15.0038715 C31.1657165,15.3486495 30.8846021,15.6025522 30.5390793,15.6025522 L23.9683147,15.6025522 C23.4104473,16.6680913 22.8679974,17.5814106 21.7668179,18.0380702 L30.5812744,18.0380702 C32.2041612,18.0146791 33.5316827,16.6405903 33.5316827,15.0078292 C33.5316827,13.3751696 32.2041612,12.0234063 30.5812744,12.0000152",
+                fill: primary
+            }), jsxToHTML("path", {
+                d: "M18.6731848,15.6025522 L16.2795788,15.6025522 L16.2795788,13.1992034 C16.2795788,11.8562182 17.3483005,10.7635839 18.6731848,10.7635839 C19.9980691,10.7635839 21.0759195,11.8562182 21.0759195,13.1992034 C21.0759195,14.5422393 19.9980691,15.6025522 18.6731848,15.6025522 M18.6731848,8.39747822 C16.0403551,8.39747822 13.8959637,10.5557023 13.8959637,13.2076262 L13.8959637,13.3091061 L13.8959637,23.2135459 L16.2795788,23.2135459 L16.2795788,18.0380702 L18.6682147,18.0380702 C21.3010951,18.0380702 23.4379299,15.8511273 23.4379299,13.1992034 C23.4379299,10.5472795 21.3060651,8.39747822 18.6731848,8.39747822",
+                fill: primary
+            }), jsxToHTML("g", {
+                transform: "translate(0.000000, 6.842233)"
+            }, jsxToHTML("mask", {
+                fill: secondary
+            }, jsxToHTML("polygon", {
+                points: "0 0.0330469345 12.6787834 0.0330469345 12.6787834 12.7180364 0 12.7180364",
+                transform: "matrix(1, 0, 0, 1, 0, 0)"
+            })), jsxToHTML("path", {
+                d: "M6.34967672,11.1958376 C4.09589259,11.1958376 2.20112146,9.58905539 1.68833992,7.48994334 C1.68833992,7.48994334 1.54020078,6.7959222 1.54020078,6.3389074 C1.54020078,5.8818926 1.68042835,5.18071712 1.68042835,5.18071712 C2.19686138,3.08678055 4.08935033,1.52754165 6.33943225,1.52754165 C8.98580286,1.52754165 11.1573269,3.67982918 11.1573269,6.32744017 L11.1573269,7.49182072 L4.12642315,7.49182072 C4.54162861,8.30366004 5.38137113,8.76031966 6.34967672,8.76031966 L12.6701111,8.76031966 L12.6787834,1.89423932 C12.6787834,0.870560677 11.8417287,0.0330469345 10.8185493,0.0330469345 L1.86031521,0.0330469345 C0.837135761,0.0330469345 -2.02860858e-05,0.845190698 -2.02860858e-05,1.86886934 L-2.02860858e-05,10.831474 C-2.02860858e-05,11.8551526 0.837135761,12.7180364 1.86031521,12.7180364 L10.8185493,12.7180364 C11.7367482,12.7180364 12.5027001,12.0584169 12.6506871,11.1958376 L6.34967672,11.1958376 Z",
+                fill: tertiary
+            })), jsxToHTML("path", {
+                d: "M6.33943732,10.6481099 C5.37483394,10.6481099 4.53595358,11.238926 4.11907451,12.0000254 L8.55990156,12.0000254 C8.1430225,11.238926 7.30419285,10.6481099 6.33943732,10.6481099",
+                fill: tertiary
+            }), jsxToHTML("path", {
+                d: "M10.396619,3.96072558 C10.396619,1.77327526 8.57959428,1.52219873e-05 6.33823537,1.52219873e-05 C4.134,1.52219873e-05 2.34126788,1.71527949 2.28238752,3.85259873 C2.28142393,3.86163044 2.28218466,3.87040846 2.28218466,3.87969387 L2.28218466,5.0699518 C2.28218466,5.21232812 2.39806892,5.35308076 2.54392588,5.35308076 L4.03703251,5.35308076 C4.18288947,5.35308076 4.31079324,5.21232812 4.31079324,5.0699518 L4.31079324,3.96072558 C4.31079324,2.86839577 5.22011704,1.97968541 6.33940182,1.97968541 C7.45868661,1.97968541 8.3680104,2.86839577 8.3680104,3.96072558 L8.3680104,5.0699518 C8.3680104,5.21232812 8.486329,5.35308076 8.63218596,5.35308076 L10.1253433,5.35308076 C10.2712003,5.35308076 10.396619,5.21232812 10.396619,5.0699518 L10.396619,3.96072558 Z",
+                fill: tertiary
+            }), jsxToHTML("path", {
+                d: "M20.7598572,20.7474063 C20.7598572,20.8523366 20.8407987,20.9002858 20.9277753,20.9002858 C21.0206856,20.9002858 21.1436192,20.8253429 21.1436192,20.687381 C21.1436192,20.5884888 21.0716036,20.5345015 20.9907129,20.5345015 C20.8827909,20.5345015 20.7598572,20.6034063 20.7598572,20.7474063 Z M20.0403098,20.7504 C20.0403098,20.8523366 20.1183098,20.9002858 20.2022434,20.9002858 C20.3071732,20.9002858 20.4211303,20.8253429 20.4211303,20.6843873 C20.4211303,20.5854444 20.3550991,20.5345015 20.2681732,20.5345015 C20.160302,20.5345015 20.0403098,20.6034063 20.0403098,20.7504 Z M21.3474437,21.133233 L21.1315997,22.3559645 C21.0236778,22.9739772 20.6189196,23.2570047 20.0702824,23.2570047 C19.6056296,23.2570047 19.2458559,22.9539856 19.3508364,22.3569793 L19.5666296,21.133233 L19.8994736,21.133233 L19.6835282,22.3559645 C19.6175984,22.7370723 19.7885087,22.9540364 20.1122746,22.9540364 C20.4450679,22.9540364 20.7298845,22.7559983 20.7988065,22.3569793 L21.0146505,21.133233 L21.3474437,21.133233 Z",
+                fill: tertiary
+            }), jsxToHTML("path", {
+                d: "M21.9179189,22.5590867 C21.9059501,22.8050233 22.0647901,22.9639915 22.2956458,22.9639915 C22.5864468,22.9639915 22.8682205,22.7389598 22.8862244,22.3971247 C22.898244,22.1481438 22.736361,22.0011501 22.511439,22.0011501 C22.2236302,22.0011501 21.9358213,22.2321691 21.9179189,22.5590867 Z M22.1517667,21.1331924 L22.0018525,21.9781142 C22.1307199,21.8042283 22.388556,21.7122368 22.5684429,21.7122368 C22.9401854,21.7122368 23.1980216,21.9302156 23.1980216,22.3350698 C23.1980216,22.9079746 22.7992479,23.2524989 22.2896614,23.2524989 C22.0917706,23.2524989 21.9238525,23.178926 21.8219657,22.9930148 L21.7650125,23.2135307 L21.4741607,23.2135307 L21.8429111,21.1331924 L22.1517667,21.1331924 Z",
+                fill: tertiary
+            }), jsxToHTML("path", {
+                d: "M24.7516112,22.3509666 C24.7755995,22.0972668 24.6256853,21.994011 24.3768257,21.994011 C24.1520559,21.994011 23.9451886,22.0972668 23.8551691,22.3509666 L24.7516112,22.3509666 Z M23.804251,22.6046664 C23.7922315,22.8076262 23.9511222,22.9733429 24.2209779,22.9733429 C24.3708921,22.9733429 24.5686814,22.9146875 24.6766034,22.812751 L24.8445215,23.006882 C24.6616931,23.1747298 24.3918375,23.2582985 24.1640247,23.2582985 C23.7383212,23.2582985 23.4894616,23.0032288 23.4894616,22.6132922 C23.4894616,22.0943746 23.8971612,21.7076854 24.4188179,21.7076854 C24.895541,21.7076854 25.1653459,21.9957869 25.0034629,22.6046664 L23.804251,22.6046664 Z",
+                id: "Fill-16",
+                fill: tertiary
+            }), jsxToHTML("path", {
+                d: "M25.8283814,21.7420871 L25.8133697,21.9376896 C25.9573502,21.7485311 26.131202,21.7099687 26.290042,21.7099687 C26.4339718,21.7099687 26.5628391,21.7610638 26.6318118,21.8360068 L26.4459913,22.1059941 C26.3800108,22.0461717 26.314081,22.0161844 26.2001239,22.0161844 C25.9872215,22.0161844 25.7774633,22.1438968 25.729436,22.4168778 L25.5885999,23.2135459 L25.2797442,23.2135459 L25.5405726,21.7420871 L25.8283814,21.7420871 Z",
+                fill: tertiary
+            }), jsxToHTML("polygon", {
+                fill: tertiary,
+                points: "28.1192941 21.7420871 28.275142 22.9057573 28.8387909 21.7420871 29.1835529 21.7420871 28.4100952 23.2135459 28.0473293 23.2135459 27.900458 22.2428397 27.6635672 22.7250723 27.4057818 23.2135459 27.0460081 23.2135459 26.7851797 21.7420871 27.1329847 21.7420871 27.285891 22.9057573 27.8524307 21.7420871"
+            }), jsxToHTML("path", {
+                d: "M30.5274503,22.3509666 C30.5513879,22.0972668 30.4015244,21.994011 30.1526649,21.994011 C29.9278951,21.994011 29.7210277,22.0972668 29.6310082,22.3509666 L30.5274503,22.3509666 Z M29.5800901,22.6046664 C29.5680706,22.8076262 29.7269614,22.9733429 29.996817,22.9733429 C30.1467312,22.9733429 30.3445205,22.9146875 30.4524425,22.812751 L30.6203606,23.006882 C30.4375322,23.1747298 30.1676766,23.2582985 29.9398638,23.2582985 C29.5141603,23.2582985 29.2653008,23.0032288 29.2653008,22.6132922 C29.2653008,22.0943746 29.6730004,21.7076854 30.1946571,21.7076854 C30.6713801,21.7076854 30.941185,21.9957869 30.7793021,22.6046664 L29.5800901,22.6046664 Z",
+                fill: tertiary
+            }), jsxToHTML("path", {
+                d: "M31.3524449,21.3412364 C31.3524449,21.4461666 31.4304449,21.5003569 31.5144293,21.5003569 C31.63432,21.5003569 31.7452342,21.4222173 31.7452342,21.2753759 C31.7452342,21.1762808 31.6702264,21.119249 31.5892849,21.119249 C31.4783707,21.119249 31.3524449,21.1913505 31.3524449,21.3412364 Z M31.625242,21.742082 L31.3645151,23.2135408 L31.0556594,23.2135408 L31.3164878,21.742082 L31.625242,21.742082 Z",
+                fill: tertiary
+            }), jsxToHTML("path", {
+                d: "M32.9955925,22.1060753 C32.8996393,21.9981006 32.7767563,21.9681133 32.629885,21.9681133 C32.4259085,21.9681133 32.2820801,22.0371704 32.2820801,22.1661006 C32.2820801,22.2740753 32.398928,22.3191831 32.5728811,22.3341006 C32.8426861,22.3580499 33.1874481,22.4481133 33.1154832,22.8290182 C33.0645651,23.1049421 32.7887251,23.266904 32.4049631,23.266904 C32.1651815,23.266904 31.9342752,23.2129167 31.7784273,22.9939738 L31.9792596,22.7750309 C32.0901737,22.9279104 32.2850723,22.9909801 32.4589241,22.9939738 C32.6057953,22.9939738 32.7797485,22.9399865 32.806729,22.8020245 C32.8337095,22.6700499 32.7167602,22.619107 32.5009163,22.5979992 C32.2490645,22.5739992 31.9733259,22.481145 31.9733259,22.202126 C31.9733259,21.833145 32.3719475,21.7042148 32.6718265,21.7042148 C32.8996393,21.7042148 33.0675573,21.7551577 33.2055027,21.9022021 L32.9955925,22.1060753 Z",
+                fill: tertiary
+            }), jsxToHTML("path", {
+                d: "M33.9703034,21.7420871 L33.8294672,22.534493 C33.7844828,22.7865184 33.8984399,22.9606579 34.1562254,22.9606579 C34.3990498,22.9606579 34.6059172,22.7593725 34.6478079,22.5134359 L34.7827104,21.7420871 L35.0915153,21.7420871 L34.8307884,23.2135459 L34.5519562,23.2135459 L34.5729016,23.0003366 C34.3990498,23.1652922 34.2280888,23.2430765 34.0213229,23.2430765 C33.658557,23.2430765 33.442713,22.982882 33.5206116,22.5361167 L33.6615492,21.7420871 L33.9703034,21.7420871 Z",
+                fill: tertiary
+            }), jsxToHTML("path", {
+                d: "M36.4472345,23.2135459 L36.588172,22.4259603 C36.633055,22.1709412 36.5462813,22.0020279 36.2644061,22.0020279 C36.0185895,22.0020279 35.8116207,22.199863 35.7697299,22.4428059 L35.6348274,23.2135459 L35.3260225,23.2135459 L35.5869016,21.7420871 L35.8686246,21.7420871 L35.8476792,21.957123 C36.0185895,21.7981548 36.1953827,21.7197615 36.3872384,21.7197615 C36.7470121,21.7197615 36.9809614,21.9701632 36.9000199,22.4231696 L36.7590823,23.2135459 L36.4472345,23.2135459 Z",
+                fill: tertiary
+            }), jsxToHTML("g", {
+                transform: "translate(37.174252, 21.709040)"
+            }, jsxToHTML("mask", {
+                fill: secondary
+            }, jsxToHTML("polygon", {
+                points: "0.0103575649 0.00128879493 1.81575683 0.00128879493 1.81575683 2.2832981 0.0103575649 2.2832981",
+                transform: "matrix(1, 0, 0, 1, 0, 0)"
+            })), jsxToHTML("path", {
+                d: "M0.406639662,0.85909852 C0.406639662,1.11092093 0.571514824,1.26400338 0.808507022,1.26400338 C1.44691014,1.26400338 1.61787113,0.2832 0.979214434,0.2832 C0.676444603,0.2832 0.406639662,0.508028753 0.406639662,0.85909852 Z M0.319663069,1.70747061 C0.298717685,1.91043044 0.45456554,1.9925277 0.715495319,1.9925277 C0.943358778,1.9925277 1.18922614,1.86522114 1.24617932,1.54134799 L1.291113,1.288663 C1.15621053,1.4776186 0.910343173,1.55220634 0.72756554,1.55220634 C0.349686476,1.55220634 0.085916645,1.32717463 0.085916645,0.91912389 C0.085916645,0.337339535 0.517553836,0.00128879493 1.00619493,0.00128879493 C1.21316372,0.00128879493 1.39903498,0.099572093 1.46501547,0.267572093 L1.51598427,0.0330520085 L1.8157619,0.0330520085 L1.55787503,1.54824863 C1.46202328,2.1092296 1.04524564,2.28331839 0.664526528,2.28331839 C0.208748895,2.28331839 -0.0429507152,2.06265032 0.0198854356,1.70747061 L0.319663069,1.70747061 Z",
+                fill: tertiary
+            }))))));
+        }, _fundingLogos[src_constants.h.MYBANK] = function(_ref) {
+            var logoColor = _ref.logoColor;
+            if (!MYBANK_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " mybank logo available");
+            var _MYBANK_LOGO_COLORS$l = MYBANK_LOGO_COLORS[logoColor], primary = _MYBANK_LOGO_COLORS$l.primary, secondary = _MYBANK_LOGO_COLORS$l.secondary, tertiary = _MYBANK_LOGO_COLORS$l.tertiary;
+            return jsxToHTML("svg", {
+                width: "58px",
+                height: "32px",
+                viewBox: "0 0 58 32",
+                version: "1.1",
+                xmlns: "http://www.w3.org/2000/svg"
+            }, jsxToHTML("g", {
+                stroke: "none",
+                "stroke-width": "1",
+                fill: "none",
+                "fill-rule": "evenodd",
+                transform: "matrix(1.333867, 0, 0, 1.333867, -0.00001, -0.00321)"
+            }, jsxToHTML("g", {
+                transform: "translate(-100.000000, -159.000000)"
+            }, jsxToHTML("g", {
+                transform: "translate(100.000000, 159.000000)"
+            }, jsxToHTML("path", {
+                d: "M29.010016,14.6206556 C29.010016,14.6206556 27.947442,14.8389924 27.9585564,14.0777038 C27.9698571,13.3164773 29.8942008,13.3619719 30.0914038,13.4236258 C30.0914038,13.4236258 30.1519432,14.2874637 29.010016,14.6206556 M29.3297879,9.81836571 C27.677716,9.80301439 26.9053582,10.753926 26.9053582,10.753926 C26.4037199,11.2864986 26.7253546,12.0076376 27.2173686,12.0597202 C27.924406,12.1345501 27.9170171,11.5413802 29.0022546,11.2784811 C29.9542434,11.0477763 29.9954723,11.9305703 29.9954723,11.9305703 C25.9352386,11.8295126 26.1290887,15.239929 27.5113104,15.9642377 C28.8367183,16.658714 30.0756326,15.7825701 30.0756326,15.7825701 C30.0756326,15.7825701 30.1222013,16.2545455 30.777951,16.2545455 C31.5283904,16.2545455 31.5272727,15.5049412 31.5272727,15.5049412 L31.5242302,12.1853897 C31.4748674,9.75671183 29.3297879,9.81836571 29.3297879,9.81836571",
+                id: "Fill-1",
+                fill: primary
+            }), jsxToHTML("path", {
+                d: "M42.4169651,14.9132636 L40.766254,12.4266353 L41.9794586,11.2784792 C41.9794586,11.2784792 42.5394372,10.7597112 42.0797024,10.2455911 C41.5701862,9.67606803 40.9629029,10.2382165 40.9629029,10.2382165 L39.4383789,11.6556411 L39.4383789,8.81056644 C39.4383789,8.40291433 39.1083605,8.07272727 38.7011934,8.07272727 C38.2936547,8.07272727 37.9636364,8.40291433 37.9636364,8.81056644 L37.9636364,15.5050966 C37.9636364,15.9126248 38.2936547,16.2429358 38.7011934,16.2429358 C39.1083605,16.2429358 39.4383789,15.9126248 39.4383789,15.5050966 L39.4383789,13.7227806 L39.7172538,13.4440304 L41.2106953,15.7865117 C41.2106953,15.7865117 41.697426,16.5998328 42.4143027,16.0821803 C42.9532914,15.6931198 42.4169651,14.9132636 42.4169651,14.9132636",
+                fill: primary
+            }), jsxToHTML("path", {
+                d: "M37.0887651,12.0920353 C37.0887651,9.6760941 35.0962232,9.33568291 33.7411943,10.1020724 C33.7401529,10.1029393 33.7389278,10.1056016 33.7382539,10.1063446 C33.6363205,9.81249385 33.362313,9.6 33.0365425,9.6 C32.6248269,9.6 32.2909091,9.93768691 32.2909091,10.3541303 L32.2909091,15.3913243 C32.2909091,15.8078915 32.6248269,16.1454545 33.0365425,16.1454545 C33.4485644,16.1454545 33.7826048,15.8078915 33.7826048,15.3913243 L33.7723134,11.9929705 C33.7723134,11.9929705 33.9532086,11.7752139 34.2436332,11.5669922 C34.9412403,11.0671487 35.6063806,11.2374162 35.6063806,12.0917257 L35.6234716,15.4035835 C35.6234716,15.8135877 35.9518762,16.1454545 36.3573435,16.1454545 C36.7625045,16.1454545 37.0909091,15.8135877 37.0909091,15.4035835 L37.0887651,12.0920353 Z",
+                fill: primary
+            }), jsxToHTML("path", {
+                d: "M15.5613016,16.2862697 C15.7330634,15.9971851 15.762994,15.7935853 15.762994,15.7935853 L14.0695172,11.3349218 C14.0695172,11.3349218 13.7622674,10.4721348 14.4393994,10.2166114 C15.1567468,9.94557914 15.4157136,10.6357839 15.4696009,10.7805123 C15.5234881,10.9252407 16.5395249,13.6504516 16.5395249,13.6504516 L17.5177483,10.7867779 C17.5177483,10.7867779 17.7979621,9.89638514 18.5815138,10.2138818 C19.2290232,10.4764773 18.8964002,11.3498103 18.8964002,11.3498103 C18.8964002,11.3498103 17.8952671,14.3335844 17.0561037,16.4983684 C16.5548597,17.7916804 16.1267792,17.9191009 15.6376676,18.0403799 C14.9830758,18.2027884 13.7454545,18.1223286 13.7454545,17.30247 C13.7454545,16.655814 14.4027561,16.615491 14.6992284,16.6251065 C14.7151175,16.6254167 15.3279543,16.6788911 15.5613016,16.2862697",
+                fill: secondary
+            }), jsxToHTML("path", {
+                d: "M11.5669215,8.85710249 L10.0137262,13.1590392 L8.3203761,8.88327934 C8.3203761,8.88327934 8.06948196,8.07272727 7.36345596,8.07272727 C6.54545455,8.07272727 6.57202708,8.72317872 6.55361169,8.88327934 C6.53525811,9.04350403 6.55361169,15.569481 6.55361169,15.569481 C6.55361169,15.569481 6.54545455,16.2545455 7.29591229,16.2545455 C8.06280792,16.2545455 8.02603896,15.56334 8.03209502,15.56334 C8.03821288,15.56334 8.03209502,12.1182301 8.03209502,12.1182301 L9.27754342,15.56334 C9.27754342,15.56334 9.46151186,16.2407127 10.0381976,16.2283686 C10.6148833,16.2161486 10.7804982,15.56334 10.7804982,15.56334 L11.823501,12.1244331 L11.823501,15.56334 C11.823501,15.56334 11.823501,16.2545455 12.5780991,16.2545455 C13.3081022,16.2545455 13.3081022,15.56334 13.3081022,15.56334 L13.3090909,8.88948239 C13.3090909,8.88948239 13.3090909,8.07272727 12.5166733,8.07663519 C11.8595284,8.07973672 11.609932,8.71207526 11.5669215,8.85710249 C11.5619778,8.8740368 11.5596913,8.88327934 11.5596913,8.88327934",
+                fill: secondary
+            }), jsxToHTML("g", null, jsxToHTML("mask", {
+                fill: tertiary
+            }, jsxToHTML("polygon", {
+                points: "3.086436e-05 0.00960615385 42.6159033 0.00960615385 42.6159033 24 3.086436e-05 24",
+                transform: "matrix(1, 0, 0, 1, 0, 0)"
+            })), jsxToHTML("g", null), jsxToHTML("path", {
+                d: "M42.6159341,18.6971754 L29.5208652,18.6971754 L19.9057529,18.6956369 L19.9124196,18.7062215 C18.0119775,20.9263446 15.1892466,22.3382831 12.0318843,22.3382831 C6.30740974,22.3382831 1.66682976,17.7116369 1.66682976,12.0048677 C1.66682976,6.29803692 6.30740974,1.67182154 12.0318843,1.67182154 C15.2027652,1.67182154 18.0390147,3.09182154 19.9398272,5.32819077 L22.0210727,5.32819077 C19.8613082,2.12277538 16.1963507,0.00960615385 12.0318843,0.00960615385 C5.38703452,0.00960615385 3.086436e-05,5.38012923 3.086436e-05,12.0048677 C3.086436e-05,18.6296062 5.38703452,24.0000062 12.0318843,24.0000062 C15.5178286,24.0000062 18.6504994,22.5164985 20.846622,20.1542215 L41.6296327,20.1336062 L42.6159341,18.6971754 Z",
+                fill: secondary
+            })), jsxToHTML("path", {
+                d: "M23.5642714,14.6942333 L21.476941,14.6942333 L21.476941,12.703212 L23.5642714,12.703212 C24.0691167,12.729228 24.5593003,12.986305 24.5593003,13.698846 C24.5593003,14.4306215 24.1135333,14.6942333 23.5642714,14.6942333 Z M21.476941,9.5856756 L23.4225205,9.5856756 C23.8122278,9.59572442 24.2213404,9.80372869 24.2213404,10.3852036 C24.2213404,10.9910915 23.8636056,11.1846082 23.4225205,11.1846082 L21.476941,11.1846082 L21.476941,9.5856756 Z M25.2086687,11.7878453 C25.2484033,11.7332241 25.7477042,11.3284357 25.7082776,10.252103 C25.6287468,8.0729285 23.7375637,8.09777311 23.3189641,8.08507338 C22.644646,8.06479081 22.2387368,8.0729285 21.0010496,8.08507338 C19.9559983,8.09543044 19.9636372,9.0459372 19.9636372,9.0459372 L19.9636364,16.1454545 L23.4862807,16.1454545 C25.3714882,16.1454545 26.0727273,15.1069128 26.0727273,13.6549518 C26.0727273,12.1940516 25.2086687,11.7878453 25.2086687,11.7878453 Z",
+                fill: secondary
+            })))));
+        }, _fundingLogos[src_constants.h.P24] = function(_ref) {
+            var logoColor = _ref.logoColor;
+            if (!P24_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " p24 logo available");
             var _P24_LOGO_COLORS$logo = P24_LOGO_COLORS[logoColor], primary = _P24_LOGO_COLORS$logo.primary, secondary = _P24_LOGO_COLORS$logo.secondary;
             return jsxToHTML("svg", {
                 xmlns: "http://www.w3.org/2000/svg",
@@ -9977,61 +11026,11 @@
             }, jsxToHTML("path", {
                 d: "m 1.0778133,2.4638268 c 0.6835111,0 1.3287556,-0.5401484 1.4332889,-1.2033255 C 2.6153244,0.59732422 2.1502133,0.05748568 1.4670133,0.04787891 c -0.68351108,0 -1.32875552,0.54014843 -1.43328886,1.20332549 -0.11386666,0.672474 0.35124445,1.2126224 1.04408886,1.2126224"
             }))));
-        }, _fundingLogos[src_constants.h.WECHATPAY] = function(_ref) {
-            var logoColor = _ref.logoColor;
-            if (!WECHATPAY_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " wechatpay logo available");
-            var _WECHATPAY_LOGO_COLOR2 = WECHATPAY_LOGO_COLORS[logoColor], primary = _WECHATPAY_LOGO_COLOR2.primary, secondary = _WECHATPAY_LOGO_COLOR2.secondary;
-            return jsxToHTML("svg", {
-                width: "81px",
-                height: "15px",
-                viewBox: "0 0 81 15",
-                version: "1.1",
-                xmlns: "http://www.w3.org/2000/svg"
-            }, jsxToHTML("g", {
-                stroke: "none",
-                "stroke-width": "1",
-                fill: "none",
-                "fill-rule": "evenodd"
-            }, jsxToHTML("g", {
-                transform: "translate(-100.000000, -159.000000)"
-            }, jsxToHTML("g", {
-                transform: "translate(100.000000, 159.000000)"
-            }, jsxToHTML("path", {
-                d: "M6.14570881,9.41936066 C6.06938663,9.45772131 5.98346261,9.48009836 5.89212219,9.48009836 C5.68112827,9.48009836 5.49746261,9.36378689 5.40095198,9.19214754 L5.36402188,9.1114918 L3.82600669,5.74042623 C3.80926505,5.70354098 3.79892462,5.66222951 3.79892462,5.62190164 C3.79892462,5.4664918 3.92497933,5.34059016 4.08057812,5.34059016 C4.14385167,5.34059016 4.20220122,5.3612459 4.24922553,5.39640984 L6.06421641,6.68714754 C6.19691854,6.77370492 6.35522553,6.82460656 6.52559635,6.82460656 C6.6272772,6.82460656 6.72428024,6.80567213 6.81438967,6.77272131 L15.3506571,2.97821311 C13.8205204,1.17698361 11.3006571,9.83606557e-05 8.4489155,9.83606557e-05 C3.78267538,9.83606557e-05 4.92401216e-05,3.14837705 4.92401216e-05,7.03239344 C4.92401216e-05,9.15157377 1.13823465,11.0587869 2.91924985,12.3480492 C3.0622924,12.4498525 3.15584863,12.6173115 3.15584863,12.8061639 C3.15584863,12.868623 3.1425538,12.925918 3.12605836,12.9854262 C2.98400061,13.5155902 2.75601884,14.3644426 2.74543222,14.4040328 C2.72770578,14.4706721 2.70013131,14.5400164 2.70013131,14.6096066 C2.70013131,14.7650164 2.82618602,14.890918 2.9817848,14.890918 C3.04284255,14.890918 3.09282128,14.8682951 3.1445234,14.838541 L4.99422857,13.7720656 C5.13333191,13.6916557 5.28055988,13.6422295 5.44280608,13.6422295 C5.52922249,13.6422295 5.6124383,13.6552623 5.69122249,13.6793607 C6.55415562,13.9272295 7.48504012,14.0651803 8.4489155,14.0651803 C13.1151556,14.0651803 16.898028,10.9164098 16.898028,7.03239344 C16.898028,5.856 16.5491617,4.74821311 15.9356298,3.77370492 L6.20750517,9.38370492 L6.14570881,9.41936066 Z",
-                fill: primary
-            }), jsxToHTML("path", {
-                d: "M29.5311474,7.78413934 C29.4695973,8.00446721 29.4090319,8.21864754 29.3499438,8.42741803 C29.1195,9.24086066 28.9178617,9.9529918 28.7610319,10.6688115 C28.6071565,9.81012295 28.3429833,8.80143443 28.0625608,7.75807377 L26.7178131,2.69422131 L26.0208191,2.69422131 L24.5423845,7.79594262 C24.2043511,8.89659836 23.9096489,9.88020492 23.7515881,10.6766803 C23.601652,9.98348361 23.388196,9.1429918 23.1634149,8.2575 L21.7290502,2.69422131 L20.9618891,2.69422131 L23.3652994,11.7837295 L24.0485061,11.7837295 L25.5941535,6.57528689 C25.9632082,5.35881148 26.2020228,4.52004098 26.3514666,3.76856557 C26.4819529,4.57340164 26.6959012,5.42446721 27.009807,6.57331967 L28.3676033,11.7837295 L29.0643511,11.7837295 L31.7917614,2.69422131 L31.0236155,2.69422131 L29.5311474,7.78413934 Z",
-                fill: secondary
-            }), jsxToHTML("path", {
-                d: "M34.628214,5.77482787 C35.1580377,5.77482787 35.5859343,5.93638525 35.9000863,6.25507377 C36.4119374,6.77368033 36.4798888,7.54482787 36.481366,7.90384426 L32.5428948,7.90384426 C32.6832292,6.90769672 33.3071015,5.77482787 34.628214,5.77482787 Z M36.5818158,10.9372869 C36.2093143,11.109418 35.7368553,11.2616311 34.8950954,11.2616311 C33.3940103,11.2616311 32.5266456,10.2630246 32.5089191,8.51958197 L37.220214,8.51958197 L37.2295696,8.47679508 C37.2576365,8.35089344 37.2576365,8.2542541 37.2576365,8.07843443 C37.2576365,7.83695902 37.2236608,6.99228689 36.7878857,6.2602377 C36.3425088,5.51195902 35.6428067,5.13277869 34.7082292,5.13277869 C32.9520802,5.13277869 31.7722869,6.54671311 31.7722869,8.65163115 C31.7722869,10.6048279 32.9949191,11.9172049 34.814834,11.9172049 C35.9744389,11.9172049 36.6283477,11.6233525 36.8558371,11.4972049 L36.8935058,11.4763033 L36.5818158,10.9372869 Z",
-                fill: secondary
-            }), jsxToHTML("path", {
-                d: "M42.8043392,11.2616066 C40.4580474,11.2616066 39.057166,9.7827541 39.057166,7.30578689 C39.057166,4.73709836 40.4979319,3.20340984 42.9111903,3.20340984 C43.5806097,3.20340984 44.2094061,3.32931148 44.6939289,3.55677049 L45.0334395,2.96955738 L45.0051264,2.95406557 C44.831555,2.85865574 44.1660748,2.54783607 42.8978954,2.54783607 C40.1362632,2.54783607 38.2808954,4.45455738 38.2808954,7.2925082 C38.2808954,10.7058689 40.6028134,11.9171803 42.5908833,11.9171803 C43.7216827,11.9171803 44.5991416,11.6801311 45.0432875,11.4583279 L45.077017,11.4413607 L44.751786,10.8787377 C44.2308255,11.1184918 43.5099502,11.2616066 42.8043392,11.2616066",
-                fill: secondary
-            }), jsxToHTML("path", {
-                d: "M49.1547392,5.13265574 C48.6780948,5.13265574 48.2204079,5.26445902 47.8336267,5.51281967 C47.5150432,5.69478689 47.2255112,5.98347541 47.0216571,6.31839344 L47.0216571,2.5477377 L46.2719763,2.5477377 L46.2719763,11.7838033 L47.0216571,11.7838033 L47.0216571,7.82527869 C47.0216571,7.56634426 47.033721,7.39888525 47.0984717,7.20413115 C47.3929277,6.37814754 48.1669824,5.8015082 48.981414,5.8015082 C50.4657574,5.8015082 50.6875842,7.14462295 50.6875842,7.94527869 L50.6875842,11.7838033 L51.437265,11.7838033 L51.437265,7.87863934 C51.437265,5.26519672 49.5358578,5.13265574 49.1547392,5.13265574",
-                fill: secondary
-            }), jsxToHTML("path", {
-                d: "M61.0768805,11.2239836 C60.9456556,11.2517705 60.7622362,11.2748852 60.5106191,11.2748852 C59.9106283,11.2748852 59.6314368,10.873082 59.6314368,10.010459 L59.6314368,5.90808197 L61.4589839,5.90808197 L61.4589839,5.27906557 L59.6314368,5.27906557 L59.6314368,3.8425082 L58.8815097,3.8425082 L58.8815097,5.27906557 L57.8011815,5.27906557 L57.8011815,5.90808197 L58.8815097,5.90808197 L58.8815097,9.89070492 C58.8815097,10.6298852 59.0169201,11.1428361 59.2936495,11.4566066 C59.5366495,11.7666885 59.9295857,11.930459 60.4303578,11.930459 C60.7880872,11.930459 61.0960842,11.8751311 61.346224,11.7659508 L61.3811845,11.750459 L61.0768805,11.2239836 Z",
-                fill: secondary
-            }), jsxToHTML("path", {
-                d: "M68.8747432,5.2672377 C68.8747432,6.62977869 67.9564149,7.4110082 66.3548799,7.4110082 C66.0161079,7.4110082 65.5899347,7.3972377 65.2622416,7.29297541 L65.2622416,3.36617213 C65.4183328,3.33518852 65.8238252,3.27002459 66.4747796,3.27002459 C67.9999924,3.27002459 68.8747432,3.99789344 68.8747432,5.2672377 M66.5016155,2.62772951 C65.8550927,2.62772951 65.2009377,2.6862541 64.5576155,2.80182787 L64.5125608,2.80994262 L64.5125608,11.783877 L65.2622416,11.783877 L65.2622416,7.96354918 C65.5552204,8.03756557 65.8809438,8.05305738 66.3014544,8.05305738 C67.4544119,8.05305738 68.4072082,7.69158197 68.9830714,7.0360082 C69.4146611,6.56338525 69.6241778,5.96289344 69.6241778,5.20059836 C69.6241778,4.46018852 69.3784696,3.83830328 68.9141353,3.40281148 C68.3926824,2.8957623 67.5583085,2.62772951 66.5016155,2.62772951",
-                fill: secondary
-            }), jsxToHTML("path", {
-                d: "M79.9828222,5.27906557 L78.4091079,9.45791803 C78.2636033,9.83537705 78.1402568,10.2032459 78.03119,10.528082 C78.0050927,10.6060328 77.979734,10.6812787 77.9553602,10.753082 C77.8268435,10.3370164 77.6687827,9.87644262 77.5235243,9.49701639 L75.8427128,5.3132459 L75.8289255,5.27906557 L75.0307432,5.27906557 L77.4356307,11.2832459 C77.4984119,11.4401311 77.5114605,11.5109508 77.5114605,11.5426721 C77.5114605,11.6011967 77.4848708,11.6789016 77.4358769,11.8013607 C77.1103997,12.5732459 76.6822568,13.0945574 76.3811535,13.3952951 C75.9648283,13.7961148 75.5120653,14.0024262 75.2791596,14.0897213 L75.2348435,14.1061967 L75.5795243,14.7025082 C75.7501413,14.6378361 76.1772994,14.4507049 76.6551748,14.0486557 C77.4873328,13.3232459 78.0198647,12.2048852 78.8308495,10.1240656 L80.7819894,5.27906557 L79.9828222,5.27906557 Z",
-                fill: secondary
-            }), jsxToHTML("path", {
-                d: "M56.4250185,9.67738525 C56.4250185,9.77279508 56.4139395,9.91394262 56.3610064,10.0462377 C56.1564137,10.6467295 55.5650398,11.2882869 54.518441,11.2882869 C53.9531644,11.2882869 53.2926082,10.9536148 53.2926082,10.0103361 C53.2926082,9.60804098 53.4260489,9.27459836 53.6889912,9.01935246 C54.1434775,8.57820492 54.981052,8.35517213 56.1815261,8.35517213 C56.2610489,8.35517213 56.3422951,8.35615574 56.4250185,8.35812295 L56.4250185,9.67738525 Z M57.2672708,11.720582 C57.1857784,11.2186967 57.1744532,10.698123 57.1744532,10.2102541 L57.1744532,7.7055 C57.1744532,6.02230328 56.3898119,5.13263115 54.9054684,5.13263115 C54.2370337,5.13263115 53.5225596,5.34017213 52.9947055,5.68787705 L52.9917511,5.68984426 L53.297286,6.21804098 C53.7170581,5.93279508 54.2614076,5.77492623 54.8392404,5.77492623 C54.8468726,5.77492623 54.8545049,5.77468033 54.8621371,5.77468033 C55.3363195,5.77468033 55.70759,5.90451639 55.9663468,6.1607459 C56.2748362,6.46615574 56.4250185,6.93681148 56.4250185,7.59902459 L56.4250185,7.71705738 C54.8549973,7.70427049 53.7414319,8.02492623 53.1015565,8.65787705 C52.713052,9.04172951 52.5163377,9.53254918 52.5163377,10.1170574 C52.5163377,10.9905 53.1219912,11.930582 54.4519669,11.930582 C55.4200277,11.930582 56.1258848,11.4289426 56.4902617,10.9295164 L56.5769243,11.7837787 L57.2776112,11.7837787 L57.2672708,11.720582 Z",
-                fill: secondary
-            }), jsxToHTML("path", {
-                d: "M73.6282614,9.67738525 C73.6282614,9.77279508 73.6174286,9.91369672 73.5644954,10.0462377 C73.3596565,10.6467295 72.7682827,11.2882869 71.7219301,11.2882869 C71.1564073,11.2882869 70.4958511,10.9536148 70.4958511,10.0103361 C70.4958511,9.60804098 70.6292918,9.27459836 70.892234,9.01935246 C71.3467204,8.57820492 72.1842948,8.35517213 73.384769,8.35517213 C73.4642918,8.35517213 73.545538,8.35615574 73.6282614,8.35812295 L73.6282614,9.67738525 Z M74.4705137,11.720582 C74.3892675,11.2184508 74.3779422,10.697877 74.3779422,10.2102541 L74.3779422,7.7055 C74.3779422,6.02230328 73.5933009,5.13263115 72.1087112,5.13263115 C71.4708055,5.13263115 70.7930152,5.32320492 70.2732857,5.64263115 L70.5775897,6.16886066 C70.9857903,5.91509016 71.4991185,5.77492623 72.0427295,5.77492623 C72.0506079,5.77492623 72.0579939,5.77468033 72.0656261,5.77468033 C72.5395623,5.77468033 72.9108328,5.90451639 73.1695897,6.1605 C73.4783252,6.46615574 73.6282614,6.93681148 73.6282614,7.59902459 L73.6282614,7.71705738 C72.0646413,7.70427049 70.9446748,8.02492623 70.3047994,8.65787705 C69.9162948,9.04172951 69.7195805,9.53254918 69.7195805,10.1170574 C69.7195805,10.9905 70.325234,11.930582 71.6552097,11.930582 C72.6232705,11.930582 73.3291277,11.4291885 73.6935046,10.9295164 L73.7801672,11.7837787 L74.4808541,11.7837787 L74.4705137,11.720582 Z",
-                fill: secondary
-            })))));
-        }, _fundingLogos), visa = __webpack_require__("./src/resources/cardLogos/visa.svg"), visa_default = __webpack_require__.n(visa), amex = __webpack_require__("./src/resources/cardLogos/amex.svg"), amex_default = __webpack_require__.n(amex), mastercard = __webpack_require__("./src/resources/cardLogos/mastercard.svg"), mastercard_default = __webpack_require__.n(mastercard), discover = __webpack_require__("./src/resources/cardLogos/discover.svg"), discover_default = __webpack_require__.n(discover), hiper = __webpack_require__("./src/resources/cardLogos/hiper.svg"), hiper_default = __webpack_require__.n(hiper), elo = __webpack_require__("./src/resources/cardLogos/elo.svg"), elo_default = __webpack_require__.n(elo), jcb = __webpack_require__("./src/resources/cardLogos/jcb.svg"), jcb_default = __webpack_require__.n(jcb), cardLogos = ((_cardLogos = {})[src_constants.o.VISA] = visa_default.a, 
+        }, _fundingLogos), visa = __webpack_require__("./src/resources/cardLogos/visa.svg"), visa_default = __webpack_require__.n(visa), amex = __webpack_require__("./src/resources/cardLogos/amex.svg"), amex_default = __webpack_require__.n(amex), mastercard = __webpack_require__("./src/resources/cardLogos/mastercard.svg"), mastercard_default = __webpack_require__.n(mastercard), maestro = __webpack_require__("./src/resources/cardLogos/maestro.svg"), maestro_default = __webpack_require__.n(maestro), discover = __webpack_require__("./src/resources/cardLogos/discover.svg"), discover_default = __webpack_require__.n(discover), hiper = __webpack_require__("./src/resources/cardLogos/hiper.svg"), hiper_default = __webpack_require__.n(hiper), elo = __webpack_require__("./src/resources/cardLogos/elo.svg"), elo_default = __webpack_require__.n(elo), jcb = __webpack_require__("./src/resources/cardLogos/jcb.svg"), jcb_default = __webpack_require__.n(jcb), cardLogos = ((_cardLogos = {})[src_constants.o.VISA] = visa_default.a, 
         _cardLogos[src_constants.o.AMEX] = amex_default.a, _cardLogos[src_constants.o.MASTERCARD] = mastercard_default.a, 
-        _cardLogos[src_constants.o.DISCOVER] = discover_default.a, _cardLogos[src_constants.o.HIPER] = hiper_default.a, 
-        _cardLogos[src_constants.o.ELO] = elo_default.a, _cardLogos[src_constants.o.JCB] = jcb_default.a, 
-        _cardLogos), containerContent = __webpack_require__("./src/checkout/template/containerContent.json"), containerContent_default = __webpack_require__.n(containerContent);
+        _cardLogos[src_constants.o.MAESTRO] = maestro_default.a, _cardLogos[src_constants.o.DISCOVER] = discover_default.a, 
+        _cardLogos[src_constants.o.HIPER] = hiper_default.a, _cardLogos[src_constants.o.ELO] = elo_default.a, 
+        _cardLogos[src_constants.o.JCB] = jcb_default.a, _cardLogos), containerContent = __webpack_require__("./src/checkout/template/containerContent.json"), containerContent_default = __webpack_require__.n(containerContent);
         function getSandboxStyle(_ref) {
             var id = _ref.id, ANIMATION = _ref.ANIMATION;
             return "\n        #" + id + ".paypal-checkout-sandbox {\n            display: block;\n            position: fixed;\n            top: 0;\n            left: 0;\n\n            width: 100%;\n            height: 100%;\n            width: 100vw;\n            height: 100vh;\n            max-width: 100%;\n            max-height: 100%;\n            min-width: 100%;\n            min-height: 100%;\n\n            z-index: 2147483647;\n\n            -webkit-animation-duration: 1s;\n            animation-duration: 1s;\n\n            animation-fill-mode:forwards;\n            animation-iteration-count: 1;\n\n            -webkit-animation-fill-mode:forwards;\n            -webkit-animation-iteration-count: 1;\n        }\n\n        #" + id + ".paypal-checkout-sandbox .paypal-checkout-sandbox-iframe {\n            display: block;\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_CONTAINER + " {\n            from {\n                opacity: 0;\n            }\n\n            to {\n                opacity: 1;\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_CONTAINER + " {\n            from {\n                opacity: 0;\n            }\n\n            to {\n                opacity: 1;\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_CONTAINER + " {\n            from {\n                opacity: 1;\n            }\n\n            50% {\n                opacity: 1;\n            }\n\n            to {\n                opacity: 0;\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_CONTAINER + " {\n            from {\n                opacity: 1;\n            }\n\n            50% {\n                opacity: 1;\n            }\n\n            to {\n                opacity: 0;\n            }\n        }\n    ";
@@ -10076,7 +11075,7 @@
                 return config.a.paypalDomains;
             },
             contexts: {
-                iframe: !Object(device.g)(),
+                iframe: !Object(device.j)(),
                 popup: !0
             },
             get version() {
@@ -10102,7 +11101,7 @@
                 function focus(event) {
                     event.preventDefault();
                     event.stopPropagation();
-                    Object(device.f)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
+                    Object(device.h)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
                 }
                 var overlayColor = (props.style || {}).overlayColor || src_constants.q.BLACK, logoColor = LOGO_COLOR[overlayColor], ppLogo = "function" == typeof fundingLogos.pp ? fundingLogos.pp({
                     logoColor: logoColor
@@ -10775,7 +11774,7 @@
                 function focus(event) {
                     event.preventDefault();
                     event.stopPropagation();
-                    Object(device.f)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
+                    Object(device.h)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
                 }
                 var overlayColor = (props.style || {}).overlayColor || src_constants.q.BLACK, logoColor = containerTemplate_LOGO_COLOR[overlayColor], ppLogo = "function" == typeof fundingLogos.pp ? fundingLogos.pp({
                     logoColor: logoColor
@@ -10929,8 +11928,17 @@
             !function(options) {
                 if (options.payer && options.payer.shipping_options) {
                     if (!Array.isArray(options.payer.shipping_options)) throw new TypeError("Expected shipping_options to be an array");
-                    for (var uniqueIdCheck = {}, _i2 = 0, _options$payer$shippi2 = options.payer.shipping_options, _length2 = null == _options$payer$shippi2 ? 0 : _options$payer$shippi2.length; _i2 < _length2; _i2++) {
-                        var option = _options$payer$shippi2[_i2];
+                    var uniqueIdCheck = {}, _iterator = options.payer.shipping_options, _isArray = Array.isArray(_iterator), _i = 0;
+                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                        var _ref;
+                        if (_isArray) {
+                            if (_i >= _iterator.length) break;
+                            _ref = _iterator[_i++];
+                        } else {
+                            if ((_i = _iterator.next()).done) break;
+                            _ref = _i.value;
+                        }
+                        var option = _ref;
                         if (!option.id) throw new Error("Expected option.id for shipping_options");
                         if (uniqueIdCheck.hasOwnProperty(option.id)) throw new Error("Expected unique option.id for shipping_options");
                         uniqueIdCheck[option.id] = "seen";
@@ -11248,7 +12256,7 @@
                 }(popupBridge);
             });
         }
-        var FUNDING_PRIORITY = [ src_constants.v.PAYPAL, src_constants.v.VENMO, src_constants.v.CREDIT, src_constants.v.IDEAL, src_constants.v.ELV, src_constants.v.BANCONTACT, src_constants.v.GIROPAY, src_constants.v.EPS, src_constants.v.SOFORT, src_constants.v.MYBANK, src_constants.v.P24, src_constants.v.ZIMPLER, src_constants.v.WECHATPAY, src_constants.v.CARD ], FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[src_constants.s] = {
+        var FUNDING_PRIORITY = [ src_constants.v.PAYPAL, src_constants.v.VENMO, src_constants.v.CREDIT, src_constants.v.IDEAL, src_constants.v.ELV, src_constants.v.BANCONTACT, src_constants.v.GIROPAY, src_constants.v.EPS, src_constants.v.SOFORT, src_constants.v.MYBANK, src_constants.v.P24, src_constants.v.ZIMPLER, src_constants.v.CARD ], FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[src_constants.s] = {
             enabled: !0,
             allowOptIn: !0,
             allowOptOut: !0,
@@ -11322,13 +12330,10 @@
             allowHorizontal: !1,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[src_constants.v.WECHATPAY] = {
-            allowedCountries: [ src_constants.r.CN ],
-            allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
         }, _FUNDING_CONFIG), CARD_CONFIG = ((_CARD_CONFIG = {})[src_constants.s] = {
             priority: [ src_constants.o.VISA, src_constants.o.MASTERCARD, src_constants.o.AMEX ]
+        }, _CARD_CONFIG[src_constants.r.GB] = {
+            priority: [ src_constants.o.VISA, src_constants.o.MASTERCARD, src_constants.o.AMEX, src_constants.o.DISCOVER, src_constants.o.MAESTRO ]
         }, _CARD_CONFIG[src_constants.r.US] = {
             priority: [ src_constants.o.VISA, src_constants.o.MASTERCARD, src_constants.o.AMEX, src_constants.o.DISCOVER ]
         }, _CARD_CONFIG[src_constants.r.BR] = {
@@ -11346,7 +12351,7 @@
         function getFundingConfig(source, key, def) {
             return getConfig(FUNDING_CONFIG, source, key, def);
         }
-        var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _logoColors14, _secondaryColors14, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE, fundingEligibilityReasons = [];
+        var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE, fundingEligibilityReasons = [];
         function isFundingIneligible(source, _ref) {
             var locale = _ref.locale, funding = _ref.funding, layout = _ref.layout, commit = _ref.commit;
             return getFundingConfig(source, layout === src_constants.g.VERTICAL ? "allowVertical" : "allowHorizontal") ? -1 !== funding.disallowed.indexOf(source) && getFundingConfig(source, "allowOptOut") ? src_constants.w.OPT_OUT : -1 !== funding.disallowed.indexOf(source) && source === src_constants.v.VENMO ? src_constants.w.OPT_OUT : -1 === getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) ? src_constants.w.DISALLOWED_COUNTRY : getFundingConfig(source, "requireCommitAsTrue") && !commit ? src_constants.w.COMMIT_NOT_SET : void 0 : src_constants.w.SECONDARY_DISALLOWED;
@@ -11434,14 +12439,14 @@
             });
         }
         var BUTTON_CONFIG = ((_BUTTON_CONFIG = {})[src_constants.s] = {
-            colors: [ src_constants.e.GOLD, src_constants.e.BLUE, src_constants.e.SILVER, src_constants.e.BLACK ],
+            colors: [ src_constants.e.GOLD, src_constants.e.BLUE, src_constants.e.SILVER, src_constants.e.BLACK, src_constants.e.WHITE ],
             sizes: [ src_constants.l.SMALL, src_constants.l.MEDIUM, src_constants.l.LARGE, src_constants.l.RESPONSIVE ],
             shapes: [ src_constants.k.PILL, src_constants.k.RECT ],
             layouts: [ src_constants.g.HORIZONTAL, src_constants.g.VERTICAL ],
             logoColors: (_logoColors = {}, _logoColors[src_constants.e.GOLD] = src_constants.i.BLUE, 
             _logoColors[src_constants.e.SILVER] = src_constants.i.BLUE, _logoColors[src_constants.e.BLUE] = src_constants.i.WHITE, 
             _logoColors[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors[src_constants.e.BLACK] = src_constants.i.WHITE, 
-            _logoColors),
+            _logoColors[src_constants.e.WHITE] = src_constants.i.BLUE, _logoColors),
             tagLineColors: (_tagLineColors = {}, _tagLineColors[src_constants.e.GOLD] = src_constants.n.BLUE, 
             _tagLineColors[src_constants.e.SILVER] = src_constants.n.BLUE, _tagLineColors[src_constants.e.BLUE] = src_constants.n.BLUE, 
             _tagLineColors[src_constants.e.BLACK] = src_constants.n.BLACK, _tagLineColors[src_constants.e.DARKBLUE] = src_constants.n.BLUE, 
@@ -11449,7 +12454,7 @@
             secondaryColors: (_secondaryColors = {}, _secondaryColors[src_constants.e.GOLD] = src_constants.e.BLUE, 
             _secondaryColors[src_constants.e.SILVER] = src_constants.e.BLUE, _secondaryColors[src_constants.e.BLUE] = src_constants.e.SILVER, 
             _secondaryColors[src_constants.e.BLACK] = src_constants.e.BLACK, _secondaryColors[src_constants.e.DARKBLUE] = src_constants.e.SILVER, 
-            _secondaryColors),
+            _secondaryColors[src_constants.e.WHITE] = src_constants.e.WHITE, _secondaryColors),
             tag: "{ content: safer_tag }",
             dualTag: "{ content: dual_tag|safer_tag }",
             defaultLocale: "en_US",
@@ -11522,12 +12527,14 @@
                 return _ref2.locale.country === src_constants.r.DE ? "{ logo: " + src_constants.h.CREDIT + " }" : "{ logo: " + src_constants.h.PP + " } { logo: " + src_constants.h.PAYPAL + " } { logo: " + src_constants.h.CREDIT + " }";
             },
             tag: "{ content: later_tag }",
-            colors: [ src_constants.e.DARKBLUE, src_constants.e.BLACK ],
+            colors: [ src_constants.e.DARKBLUE, src_constants.e.BLACK, src_constants.e.WHITE ],
             logoColors: (_logoColors2 = {}, _logoColors2[src_constants.e.BLACK] = src_constants.i.WHITE, 
-            _logoColors2[src_constants.e.DARKBLUE] = src_constants.i.WHITE, _logoColors2),
+            _logoColors2[src_constants.e.DARKBLUE] = src_constants.i.WHITE, _logoColors2[src_constants.e.WHITE] = src_constants.i.BLUE, 
+            _logoColors2),
             secondaryColors: (_secondaryColors2 = {}, _secondaryColors2[src_constants.e.GOLD] = src_constants.e.DARKBLUE, 
             _secondaryColors2[src_constants.e.BLUE] = src_constants.e.DARKBLUE, _secondaryColors2[src_constants.e.SILVER] = src_constants.e.DARKBLUE, 
-            _secondaryColors2[src_constants.e.BLACK] = src_constants.e.BLACK, _secondaryColors2),
+            _secondaryColors2[src_constants.e.BLACK] = src_constants.e.BLACK, _secondaryColors2[src_constants.e.WHITE] = src_constants.e.WHITE, 
+            _secondaryColors2),
             defaultColor: src_constants.e.DARKBLUE,
             allowPrimary: !0,
             allowPrimaryVertical: !1,
@@ -11537,14 +12544,14 @@
             label: "{ logo: " + src_constants.h.VENMO + " }",
             logoLabel: "{ logo: " + src_constants.h.VENMO + " }",
             defaultColor: src_constants.e.SILVER,
-            colors: [ src_constants.e.BLUE, src_constants.e.SILVER, src_constants.e.BLACK ],
+            colors: [ src_constants.e.BLUE, src_constants.e.SILVER, src_constants.e.BLACK, src_constants.e.WHITE ],
             logoColors: (_logoColors3 = {}, _logoColors3[src_constants.e.BLUE] = src_constants.i.WHITE, 
             _logoColors3[src_constants.e.SILVER] = src_constants.i.BLUE, _logoColors3[src_constants.e.BLACK] = src_constants.i.WHITE, 
-            _logoColors3),
+            _logoColors3[src_constants.e.WHITE] = src_constants.i.BLUE, _logoColors3),
             secondaryColors: (_secondaryColors3 = {}, _secondaryColors3[src_constants.e.GOLD] = src_constants.e.BLUE, 
             _secondaryColors3[src_constants.e.BLUE] = src_constants.e.SILVER, _secondaryColors3[src_constants.e.SILVER] = src_constants.e.BLUE, 
             _secondaryColors3[src_constants.e.BLACK] = src_constants.e.BLACK, _secondaryColors3[src_constants.e.DARKBLUE] = src_constants.e.SILVER, 
-            _secondaryColors3),
+            _secondaryColors3[src_constants.e.WHITE] = src_constants.e.WHITE, _secondaryColors3),
             allowPrimary: !0,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !0
@@ -11552,13 +12559,14 @@
             label: "{ logo: " + src_constants.h.IDEAL + " } Online betalen",
             logoLabel: "{ logo: " + src_constants.h.IDEAL + " } Online betalen",
             defaultColor: src_constants.e.SILVER,
-            colors: [ src_constants.e.SILVER, src_constants.e.BLACK ],
+            colors: [ src_constants.e.SILVER, src_constants.e.BLACK, src_constants.e.WHITE ],
             logoColors: (_logoColors4 = {}, _logoColors4[src_constants.e.SILVER] = src_constants.i.BLACK, 
-            _logoColors4[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors4),
+            _logoColors4[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors4[src_constants.e.WHITE] = src_constants.i.BLACK, 
+            _logoColors4),
             secondaryColors: (_secondaryColors4 = {}, _secondaryColors4[src_constants.e.GOLD] = src_constants.e.SILVER, 
             _secondaryColors4[src_constants.e.BLUE] = src_constants.e.SILVER, _secondaryColors4[src_constants.e.SILVER] = src_constants.e.SILVER, 
             _secondaryColors4[src_constants.e.BLACK] = src_constants.e.BLACK, _secondaryColors4[src_constants.e.DARKBLUE] = src_constants.e.SILVER, 
-            _secondaryColors4),
+            _secondaryColors4[src_constants.e.WHITE] = src_constants.e.WHITE, _secondaryColors4),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
@@ -11566,13 +12574,14 @@
             label: "{ logo: " + src_constants.h.ELV + " }",
             logoLabel: "{ logo: " + src_constants.h.ELV + " }",
             defaultColor: src_constants.e.SILVER,
-            colors: [ src_constants.e.SILVER, src_constants.e.BLACK ],
+            colors: [ src_constants.e.SILVER, src_constants.e.BLACK, src_constants.e.WHITE ],
             logoColors: (_logoColors5 = {}, _logoColors5[src_constants.e.SILVER] = src_constants.i.BLACK, 
-            _logoColors5[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors5),
+            _logoColors5[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors5[src_constants.e.WHITE] = src_constants.i.BLACK, 
+            _logoColors5),
             secondaryColors: (_secondaryColors5 = {}, _secondaryColors5[src_constants.e.GOLD] = src_constants.e.SILVER, 
             _secondaryColors5[src_constants.e.BLUE] = src_constants.e.SILVER, _secondaryColors5[src_constants.e.SILVER] = src_constants.e.SILVER, 
             _secondaryColors5[src_constants.e.BLACK] = src_constants.e.BLACK, _secondaryColors5[src_constants.e.DARKBLUE] = src_constants.e.SILVER, 
-            _secondaryColors5),
+            _secondaryColors5[src_constants.e.WHITE] = src_constants.e.WHITE, _secondaryColors5),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
@@ -11580,13 +12589,14 @@
             label: "{ logo: " + src_constants.h.BANCONTACT + " }",
             logoLabel: "{ logo: " + src_constants.h.BANCONTACT + " }",
             defaultColor: src_constants.e.SILVER,
-            colors: [ src_constants.e.SILVER, src_constants.e.BLACK ],
+            colors: [ src_constants.e.SILVER, src_constants.e.BLACK, src_constants.e.WHITE ],
             logoColors: (_logoColors6 = {}, _logoColors6[src_constants.e.SILVER] = src_constants.i.BLACK, 
-            _logoColors6[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors6),
+            _logoColors6[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors6[src_constants.e.WHITE] = src_constants.i.BLACK, 
+            _logoColors6),
             secondaryColors: (_secondaryColors6 = {}, _secondaryColors6[src_constants.e.GOLD] = src_constants.e.SILVER, 
             _secondaryColors6[src_constants.e.BLUE] = src_constants.e.SILVER, _secondaryColors6[src_constants.e.SILVER] = src_constants.e.SILVER, 
             _secondaryColors6[src_constants.e.BLACK] = src_constants.e.BLACK, _secondaryColors6[src_constants.e.DARKBLUE] = src_constants.e.SILVER, 
-            _secondaryColors6),
+            _secondaryColors6[src_constants.e.WHITE] = src_constants.e.WHITE, _secondaryColors6),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
@@ -11594,13 +12604,14 @@
             label: "{ logo: " + src_constants.h.GIROPAY + " }",
             logoLabel: "{ logo: " + src_constants.h.GIROPAY + " }",
             defaultColor: src_constants.e.SILVER,
-            colors: [ src_constants.e.SILVER, src_constants.e.BLACK ],
+            colors: [ src_constants.e.SILVER, src_constants.e.BLACK, src_constants.e.WHITE ],
             logoColors: (_logoColors7 = {}, _logoColors7[src_constants.e.SILVER] = src_constants.i.BLACK, 
-            _logoColors7[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors7),
+            _logoColors7[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors7[src_constants.e.WHITE] = src_constants.i.BLACK, 
+            _logoColors7),
             secondaryColors: (_secondaryColors7 = {}, _secondaryColors7[src_constants.e.GOLD] = src_constants.e.SILVER, 
             _secondaryColors7[src_constants.e.BLUE] = src_constants.e.SILVER, _secondaryColors7[src_constants.e.SILVER] = src_constants.e.SILVER, 
             _secondaryColors7[src_constants.e.BLACK] = src_constants.e.BLACK, _secondaryColors7[src_constants.e.DARKBLUE] = src_constants.e.SILVER, 
-            _secondaryColors7),
+            _secondaryColors7[src_constants.e.WHITE] = src_constants.e.WHITE, _secondaryColors7),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
@@ -11608,13 +12619,14 @@
             label: "{ logo: " + src_constants.h.SOFORT + " }",
             logoLabel: "{ logo: " + src_constants.h.SOFORT + " }",
             defaultColor: src_constants.e.SILVER,
-            colors: [ src_constants.e.SILVER, src_constants.e.BLACK ],
+            colors: [ src_constants.e.SILVER, src_constants.e.BLACK, src_constants.e.WHITE ],
             logoColors: (_logoColors8 = {}, _logoColors8[src_constants.e.SILVER] = src_constants.i.BLACK, 
-            _logoColors8[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors8),
+            _logoColors8[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors8[src_constants.e.WHITE] = src_constants.i.BLACK, 
+            _logoColors8),
             secondaryColors: (_secondaryColors8 = {}, _secondaryColors8[src_constants.e.GOLD] = src_constants.e.SILVER, 
             _secondaryColors8[src_constants.e.BLUE] = src_constants.e.SILVER, _secondaryColors8[src_constants.e.SILVER] = src_constants.e.SILVER, 
             _secondaryColors8[src_constants.e.BLACK] = src_constants.e.BLACK, _secondaryColors8[src_constants.e.DARKBLUE] = src_constants.e.SILVER, 
-            _secondaryColors8),
+            _secondaryColors8[src_constants.e.WHITE] = src_constants.e.WHITE, _secondaryColors8),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
@@ -11622,13 +12634,14 @@
             label: "{ logo: " + src_constants.h.EPS + " }",
             logoLabel: "{ logo: " + src_constants.h.EPS + " }",
             defaultColor: src_constants.e.SILVER,
-            colors: [ src_constants.e.SILVER, src_constants.e.BLACK ],
+            colors: [ src_constants.e.SILVER, src_constants.e.BLACK, src_constants.e.WHITE ],
             logoColors: (_logoColors9 = {}, _logoColors9[src_constants.e.SILVER] = src_constants.i.BLACK, 
-            _logoColors9[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors9),
+            _logoColors9[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors9[src_constants.e.WHITE] = src_constants.i.BLACK, 
+            _logoColors9),
             secondaryColors: (_secondaryColors9 = {}, _secondaryColors9[src_constants.e.GOLD] = src_constants.e.SILVER, 
             _secondaryColors9[src_constants.e.BLUE] = src_constants.e.SILVER, _secondaryColors9[src_constants.e.SILVER] = src_constants.e.SILVER, 
             _secondaryColors9[src_constants.e.BLACK] = src_constants.e.BLACK, _secondaryColors9[src_constants.e.DARKBLUE] = src_constants.e.SILVER, 
-            _secondaryColors9),
+            _secondaryColors9[src_constants.e.WHITE] = src_constants.e.WHITE, _secondaryColors9),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
@@ -11636,13 +12649,14 @@
             label: "{ logo: " + src_constants.h.MYBANK + " }",
             logoLabel: "{ logo: " + src_constants.h.MYBANK + " }",
             defaultColor: src_constants.e.SILVER,
-            colors: [ src_constants.e.SILVER, src_constants.e.BLACK ],
+            colors: [ src_constants.e.SILVER, src_constants.e.BLACK, src_constants.e.WHITE ],
             logoColors: (_logoColors10 = {}, _logoColors10[src_constants.e.SILVER] = src_constants.i.BLACK, 
-            _logoColors10[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors10),
+            _logoColors10[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors10[src_constants.e.WHITE] = src_constants.i.BLACK, 
+            _logoColors10),
             secondaryColors: (_secondaryColors10 = {}, _secondaryColors10[src_constants.e.GOLD] = src_constants.e.SILVER, 
             _secondaryColors10[src_constants.e.BLUE] = src_constants.e.SILVER, _secondaryColors10[src_constants.e.SILVER] = src_constants.e.SILVER, 
             _secondaryColors10[src_constants.e.BLACK] = src_constants.e.BLACK, _secondaryColors10[src_constants.e.DARKBLUE] = src_constants.e.SILVER, 
-            _secondaryColors10),
+            _secondaryColors10[src_constants.e.WHITE] = src_constants.e.WHITE, _secondaryColors10),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
@@ -11650,13 +12664,14 @@
             label: "{ logo: " + src_constants.h.P24 + " }",
             logoLabel: "{ logo: " + src_constants.h.P24 + " }",
             defaultColor: src_constants.e.SILVER,
-            colors: [ src_constants.e.SILVER, src_constants.e.BLACK ],
+            colors: [ src_constants.e.SILVER, src_constants.e.BLACK, src_constants.e.WHITE ],
             logoColors: (_logoColors11 = {}, _logoColors11[src_constants.e.SILVER] = src_constants.i.BLACK, 
-            _logoColors11[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors11),
+            _logoColors11[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors11[src_constants.e.WHITE] = src_constants.i.BLACK, 
+            _logoColors11),
             secondaryColors: (_secondaryColors11 = {}, _secondaryColors11[src_constants.e.GOLD] = src_constants.e.SILVER, 
             _secondaryColors11[src_constants.e.BLUE] = src_constants.e.SILVER, _secondaryColors11[src_constants.e.SILVER] = src_constants.e.SILVER, 
             _secondaryColors11[src_constants.e.BLACK] = src_constants.e.BLACK, _secondaryColors11[src_constants.e.DARKBLUE] = src_constants.e.SILVER, 
-            _secondaryColors11),
+            _secondaryColors11[src_constants.e.WHITE] = src_constants.e.WHITE, _secondaryColors11),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
@@ -11664,27 +12679,14 @@
             label: "{ logo: " + src_constants.h.ZIMPLER + " }",
             logoLabel: "{ logo: " + src_constants.h.ZIMPLER + " }",
             defaultColor: src_constants.e.SILVER,
-            colors: [ src_constants.e.SILVER, src_constants.e.BLACK ],
+            colors: [ src_constants.e.SILVER, src_constants.e.BLACK, src_constants.e.WHITE ],
             logoColors: (_logoColors12 = {}, _logoColors12[src_constants.e.SILVER] = src_constants.i.BLACK, 
-            _logoColors12[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors12),
+            _logoColors12[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors12[src_constants.e.WHITE] = src_constants.i.BLACK, 
+            _logoColors12),
             secondaryColors: (_secondaryColors12 = {}, _secondaryColors12[src_constants.e.GOLD] = src_constants.e.SILVER, 
             _secondaryColors12[src_constants.e.BLUE] = src_constants.e.SILVER, _secondaryColors12[src_constants.e.SILVER] = src_constants.e.SILVER, 
             _secondaryColors12[src_constants.e.BLACK] = src_constants.e.BLACK, _secondaryColors12[src_constants.e.DARKBLUE] = src_constants.e.SILVER, 
-            _secondaryColors12),
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[src_constants.f.WECHATPAY] = {
-            label: "{ logo: " + src_constants.h.WECHATPAY + " }",
-            logoLabel: "{ logo: " + src_constants.h.WECHATPAY + " }",
-            defaultColor: src_constants.e.SILVER,
-            colors: [ src_constants.e.SILVER, src_constants.e.BLACK ],
-            logoColors: (_logoColors13 = {}, _logoColors13[src_constants.e.SILVER] = src_constants.i.BLACK, 
-            _logoColors13[src_constants.e.BLACK] = src_constants.i.WHITE, _logoColors13),
-            secondaryColors: (_secondaryColors13 = {}, _secondaryColors13[src_constants.e.GOLD] = src_constants.e.SILVER, 
-            _secondaryColors13[src_constants.e.BLUE] = src_constants.e.SILVER, _secondaryColors13[src_constants.e.SILVER] = src_constants.e.SILVER, 
-            _secondaryColors13[src_constants.e.BLACK] = src_constants.e.BLACK, _secondaryColors13[src_constants.e.DARKBLUE] = src_constants.e.SILVER, 
-            _secondaryColors13),
+            _secondaryColors12[src_constants.e.WHITE] = src_constants.e.WHITE, _secondaryColors12),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
@@ -11693,12 +12695,12 @@
             logoLabel: "{ cards }",
             defaultColor: src_constants.e.SILVER,
             colors: [ src_constants.e.TRANSPARENT ],
-            logoColors: (_logoColors14 = {}, _logoColors14[src_constants.e.TRANSPARENT] = src_constants.i.BLACK, 
-            _logoColors14),
-            secondaryColors: (_secondaryColors14 = {}, _secondaryColors14[src_constants.e.GOLD] = src_constants.e.TRANSPARENT, 
-            _secondaryColors14[src_constants.e.BLUE] = src_constants.e.TRANSPARENT, _secondaryColors14[src_constants.e.SILVER] = src_constants.e.TRANSPARENT, 
-            _secondaryColors14[src_constants.e.BLACK] = src_constants.e.TRANSPARENT, _secondaryColors14[src_constants.e.DARKBLUE] = src_constants.e.TRANSPARENT, 
-            _secondaryColors14),
+            logoColors: (_logoColors13 = {}, _logoColors13[src_constants.e.TRANSPARENT] = src_constants.i.BLACK, 
+            _logoColors13),
+            secondaryColors: (_secondaryColors13 = {}, _secondaryColors13[src_constants.e.GOLD] = src_constants.e.TRANSPARENT, 
+            _secondaryColors13[src_constants.e.BLUE] = src_constants.e.TRANSPARENT, _secondaryColors13[src_constants.e.SILVER] = src_constants.e.TRANSPARENT, 
+            _secondaryColors13[src_constants.e.BLACK] = src_constants.e.TRANSPARENT, _secondaryColors13[src_constants.e.DARKBLUE] = src_constants.e.TRANSPARENT, 
+            _secondaryColors13[src_constants.e.WHITE] = src_constants.e.TRANSPARENT, _secondaryColors13),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
@@ -11708,8 +12710,8 @@
         _FUNDING_TO_DEFAULT_L[src_constants.v.ELV] = src_constants.f.ELV, _FUNDING_TO_DEFAULT_L[src_constants.v.BANCONTACT] = src_constants.f.BANCONTACT, 
         _FUNDING_TO_DEFAULT_L[src_constants.v.GIROPAY] = src_constants.f.GIROPAY, _FUNDING_TO_DEFAULT_L[src_constants.v.SOFORT] = src_constants.f.SOFORT, 
         _FUNDING_TO_DEFAULT_L[src_constants.v.EPS] = src_constants.f.EPS, _FUNDING_TO_DEFAULT_L[src_constants.v.P24] = src_constants.f.P24, 
-        _FUNDING_TO_DEFAULT_L[src_constants.v.ZIMPLER] = src_constants.f.ZIMPLER, _FUNDING_TO_DEFAULT_L[src_constants.v.WECHATPAY] = src_constants.f.WECHATPAY, 
-        _FUNDING_TO_DEFAULT_L[src_constants.v.MYBANK] = src_constants.f.MYBANK, _FUNDING_TO_DEFAULT_L), LABEL_TO_FUNDING = ((_LABEL_TO_FUNDING = {})[src_constants.f.PAYPAL] = src_constants.v.PAYPAL, 
+        _FUNDING_TO_DEFAULT_L[src_constants.v.ZIMPLER] = src_constants.f.ZIMPLER, _FUNDING_TO_DEFAULT_L[src_constants.v.MYBANK] = src_constants.f.MYBANK, 
+        _FUNDING_TO_DEFAULT_L), LABEL_TO_FUNDING = ((_LABEL_TO_FUNDING = {})[src_constants.f.PAYPAL] = src_constants.v.PAYPAL, 
         _LABEL_TO_FUNDING[src_constants.f.CHECKOUT] = src_constants.v.PAYPAL, _LABEL_TO_FUNDING[src_constants.f.PAY] = src_constants.v.PAYPAL, 
         _LABEL_TO_FUNDING[src_constants.f.BUYNOW] = src_constants.v.PAYPAL, _LABEL_TO_FUNDING[src_constants.f.INSTALLMENT] = src_constants.v.PAYPAL, 
         _LABEL_TO_FUNDING[src_constants.f.CARD] = src_constants.v.CARD, _LABEL_TO_FUNDING[src_constants.f.CREDIT] = src_constants.v.CREDIT, 
@@ -11717,8 +12719,7 @@
         _LABEL_TO_FUNDING[src_constants.f.BANCONTACT] = src_constants.v.BANCONTACT, _LABEL_TO_FUNDING[src_constants.f.GIROPAY] = src_constants.v.GIROPAY, 
         _LABEL_TO_FUNDING[src_constants.f.GIROPAY] = src_constants.v.EPS, _LABEL_TO_FUNDING[src_constants.f.SOFORT] = src_constants.v.SOFORT, 
         _LABEL_TO_FUNDING[src_constants.f.P24] = src_constants.v.P24, _LABEL_TO_FUNDING[src_constants.f.ZIMPLER] = src_constants.v.ZIMPLER, 
-        _LABEL_TO_FUNDING[src_constants.f.WECHATPAY] = src_constants.v.WECHATPAY, _LABEL_TO_FUNDING[src_constants.f.MYBANK] = src_constants.v.MYBANK, 
-        _LABEL_TO_FUNDING), BUTTON_RELATIVE_STYLE = {
+        _LABEL_TO_FUNDING[src_constants.f.MYBANK] = src_constants.v.MYBANK, _LABEL_TO_FUNDING), BUTTON_RELATIVE_STYLE = {
             FUNDINGICONS: 100,
             TAGLINE: 50,
             VERTICAL_MARGIN: 30
@@ -11915,7 +12916,7 @@
             CARD: "paypal-button-card",
             SEPARATOR: "paypal-separator"
         }, buttonStyle = "\n\n    ." + class_CLASS.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + class_CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.ENV + "-" + src_constants.t.TEST + " ." + class_CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + class_CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.GOLD + ":hover,\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.TRANSPARENT + ":hover {\n        box-shadow: none;\n    }\n\n    ." + class_CLASS.CARD + ", ." + class_CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + class_CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.TRANSPARENT + ":focus {\n        box-shadow: none;\n    }\n\n    ." + class_CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + class_CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.LOGO + ",\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        visibility: hidden;\n    }\n\n    .powered-by-paypal > ." + class_CLASS.TEXT + " {\n        vertical-align: top;\n        line-height: 18px;\n    } \n\n    .powered-by-paypal > ." + class_CLASS.LOGO + " {\n        height: 16px;\n        min-height: 16px;\n    } \n\n    ." + class_CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + class_CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.BLACK + " ." + class_CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n", layoutStyle = "\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + src_constants.g.VERTICAL + " ." + class_CLASS.TAGLINE + " {\n        display: none;\n    }\n", brandingStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + src_constants.d.UNBRANDED + "  {\n        min-width: 60%;\n        width: auto;\n        font-weight: 900;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + src_constants.d.UNBRANDED + " ." + class_CLASS.LOGO + " {\n        display: none;\n    }\n", labelStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + src_constants.f.CARD + " {\n        border-radius: 0 !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + src_constants.f.CREDIT + " ." + class_CLASS.TEXT + " {\n        display: none !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.LABEL + "-" + src_constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + src_constants.h.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + BUTTON_STYLE[src_constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + src_constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + src_constants.h.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + BUTTON_STYLE[src_constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + src_constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + src_constants.h.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n", DUAL_BUTTON_MIN_RATIO = 2.8;
-        var buttonColorStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.GOLD + " {\n        background: #ffc439;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.BLUE + " {\n        background: #009cde;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.SILVER + " {\n        background: #eee;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.BLACK + " {\n        background: #2C2E2F;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.DARKBLUE + " {\n        background: #003087;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.TRANSPARENT + " {\n        background: transparent;\n        color: #111;\n    }\n";
+        var buttonColorStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.GOLD + " {\n        background: #ffc439;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.BLUE + " {\n        background: #009cde;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.SILVER + " {\n        background: #eee;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.BLACK + " {\n        background: #2C2E2F;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.DARKBLUE + " {\n        background: #003087;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.TRANSPARENT + " {\n        background: transparent;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.WHITE + " {\n        background: #fff;\n        color: #2C2E2F;\n        border: 1px solid #2C2E2F;\n    }\n";
         function componentStyle(_ref) {
             var height = _ref.height, cardNumber = _ref.cardNumber;
             return "\n        " + pageStyle + "\n        " + buttonStyle + "\n        " + buttonColorStyle + "\n        " + layoutStyle + "\n        " + brandingStyle + "\n        " + labelStyle + "\n        " + function(_ref) {
@@ -12080,8 +13081,17 @@
                     }
                 },
                 content: function(name) {
-                    for (var contentString = void 0, _i2 = 0, _name$split2 = name.split("|"), _length2 = null == _name$split2 ? 0 : _name$split2.length; _i2 < _length2; _i2++) {
-                        var key = _name$split2[_i2];
+                    var contentString = void 0, _iterator = name.split("|"), _isArray = Array.isArray(_iterator), _i = 0;
+                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                        var _ref11;
+                        if (_isArray) {
+                            if (_i >= _iterator.length) break;
+                            _ref11 = _iterator[_i++];
+                        } else {
+                            if ((_i = _iterator.next()).done) break;
+                            _ref11 = _i.value;
+                        }
+                        var key = _ref11;
                         if (_content[key]) {
                             contentString = _content[key];
                             break;
@@ -12128,8 +13138,8 @@
                 return text && text.trim() && renderers.text ? /<br>/.test(text) ? renderers.break(text) : renderers.text(text) : text;
             }), new JsxHTMLNodeContainer(nodes);
         }
-        function renderButton(_ref11) {
-            var _ref12, _ref13, _ref14, size = _ref11.size, label = _ref11.label, color = _ref11.color, locale = _ref11.locale, branding = _ref11.branding, multiple = _ref11.multiple, layout = _ref11.layout, shape = _ref11.shape, source = _ref11.source, funding = _ref11.funding, i = _ref11.i, env = _ref11.env, cards = _ref11.cards, installmentperiod = _ref11.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = getButtonConfig(label, determineLabel({
+        function renderButton(_ref12) {
+            var _ref13, _ref14, _ref15, size = _ref12.size, label = _ref12.label, color = _ref12.color, locale = _ref12.locale, branding = _ref12.branding, multiple = _ref12.multiple, layout = _ref12.layout, shape = _ref12.shape, source = _ref12.source, funding = _ref12.funding, i = _ref12.i, env = _ref12.env, cards = _ref12.cards, installmentperiod = _ref12.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = getButtonConfig(label, determineLabel({
                 label: label,
                 source: source,
                 multiple: multiple,
@@ -12151,9 +13161,9 @@
                 layout: layout,
                 size: size
             });
-            return jsxToHTML("div", componentTemplate__extends({}, ((_ref12 = {})[src_constants.c.LAYOUT] = layout || "", 
-            _ref12), ((_ref13 = {})[src_constants.c.SIZE] = size || "", _ref13), ((_ref14 = {})[src_constants.c.FUNDING_SOURCE] = source, 
-            _ref14[src_constants.c.BUTTON] = !0, _ref14), {
+            return jsxToHTML("div", componentTemplate__extends({}, ((_ref13 = {})[src_constants.c.LAYOUT] = layout || "", 
+            _ref13), ((_ref14 = {})[src_constants.c.SIZE] = size || "", _ref14), ((_ref15 = {})[src_constants.c.FUNDING_SOURCE] = source, 
+            _ref15[src_constants.c.BUTTON] = !0, _ref15), {
                 class: class_CLASS.BUTTON + " " + class_CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -12173,8 +13183,8 @@
                 tabindex: "0"
             }), contentText);
         }
-        function componentTemplate_componentTemplate(_ref17) {
-            var _ref18, props = _ref17.props;
+        function componentTemplate_componentTemplate(_ref18) {
+            var _ref19, props = _ref18.props;
             if (props && props.style) {
                 var style = props.style;
                 "generic" === style.label && (style.label = "paypal");
@@ -12187,7 +13197,7 @@
                 validateButtonLocale(locale);
                 validateButtonStyle(style, props);
             }(props);
-            var _ref16, _normalizeProps = props_normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, buttonNodes = function(_ref4) {
+            var _ref17, _normalizeProps = props_normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, buttonNodes = function(_ref4) {
                 var label = _ref4.label, color = _ref4.color, sources = _ref4.sources, multiple = _ref4.multiple, layout = _ref4.layout;
                 return sources.map(function(source, i) {
                     var buttonLabel = determineLabel({
@@ -12225,8 +13235,8 @@
                     installmentperiod: installmentperiod,
                     size: size
                 });
-            }), taglineNode = function(_ref15) {
-                var label = _ref15.label, tagline = _ref15.tagline, color = _ref15.color, locale = _ref15.locale, multiple = _ref15.multiple, env = _ref15.env, cards = _ref15.cards;
+            }), taglineNode = function(_ref16) {
+                var label = _ref16.label, tagline = _ref16.tagline, color = _ref16.color, locale = _ref16.locale, multiple = _ref16.multiple, env = _ref16.env, cards = _ref16.cards;
                 if (tagline) {
                     var text = renderContent(multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag"), {
                         locale: locale,
@@ -12266,11 +13276,11 @@
                 layout: layout
             }), styleNode = jsxToHTML("style", {
                 innerHTML: componentStyle({
-                    height: (_ref16 = {
+                    height: (_ref17 = {
                         height: height,
                         cardNumber: cards.length
                     }).height,
-                    cardNumber: _ref16.cardNumber
+                    cardNumber: _ref17.cardNumber
                 })
             }), scriptNode = jsxToHTML("script", {
                 innerHTML: "(" + getComponentScript().toString().replace(/\{\s*CLASS\.([A-Z0-9_]+)\s*\}/g, function(match, name) {
@@ -12286,8 +13296,8 @@
                     logoColor: "blue"
                 })));
             }(props_normalizeProps(props)) : null;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[src_constants.c.VERSION] = "4.0.215", 
-            _ref18), {
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref19 = {}, _ref19[src_constants.c.VERSION] = "4.0.216", 
+            _ref19), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -12297,14 +13307,23 @@
                 })
             }), styleNode, buttonNodes, taglineNode || fundingiconNode, labelPowerByPayPal, scriptNode).toString();
         }
-        function getDimensions(_ref2) {
-            var label = _ref2.label, size = _ref2.size, tagline = _ref2.tagline, fundingicons = _ref2.fundingicons, layout = _ref2.layout, number = _ref2.number, viewport = _ref2.viewport, buttonHeight = _ref2.height, cards = _ref2.cards;
+        function getDimensions(_ref3) {
+            var label = _ref3.label, size = _ref3.size, tagline = _ref3.tagline, fundingicons = _ref3.fundingicons, layout = _ref3.layout, number = _ref3.number, viewport = _ref3.viewport, buttonHeight = _ref3.height, cards = _ref3.cards;
             size === src_constants.l.RESPONSIVE && (size = function(_ref) {
                 var label = _ref.label, layout = _ref.layout, _ref$width = _ref.width, width = void 0 === _ref$width ? 0 : _ref$width, minimumSize = getButtonConfig(label, layout === src_constants.g.VERTICAL ? "minimumVerticalSize" : "minimumSize"), maximumSize = getButtonConfig(label, layout === src_constants.g.VERTICAL ? "maximumVerticalSize" : "maximumSize");
                 if (width < BUTTON_STYLE[minimumSize].minWidth) return minimumSize;
                 if (width >= BUTTON_STYLE[maximumSize].maxWidth) return maximumSize;
-                for (var _i2 = 0, _Object$keys2 = Object.keys(BUTTON_STYLE), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
-                    var size = _Object$keys2[_i2], _BUTTON_STYLE$size = BUTTON_STYLE[size], minWidth = _BUTTON_STYLE$size.minWidth, maxWidth = _BUTTON_STYLE$size.maxWidth;
+                var _iterator = Object.keys(BUTTON_STYLE), _isArray = Array.isArray(_iterator), _i = 0;
+                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref2;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref2 = _iterator[_i++];
+                    } else {
+                        if ((_i = _iterator.next()).done) break;
+                        _ref2 = _i.value;
+                    }
+                    var size = _ref2, _BUTTON_STYLE$size = BUTTON_STYLE[size], minWidth = _BUTTON_STYLE$size.minWidth, maxWidth = _BUTTON_STYLE$size.maxWidth;
                     if (width >= minWidth && width < maxWidth) return size;
                 }
                 throw new Error("Unable to calculate responsive size for width: " + width);
@@ -12342,8 +13361,8 @@
             },
             scrolling: !1,
             listenForResize: !0,
-            containerTemplate: function(_ref3) {
-                var id = _ref3.id, props = _ref3.props, CLASS = _ref3.CLASS, on = _ref3.on, container = _ref3.container, tag = _ref3.tag, context = _ref3.context, outlet = _ref3.outlet, jsxDom = _ref3.jsxDom, _normalizeProps = props_normalizeProps(props), size = _normalizeProps.size, label = _normalizeProps.label, fundingicons = _normalizeProps.fundingicons, tagline = _normalizeProps.tagline, layout = _normalizeProps.layout, sources = _normalizeProps.sources, buttonHeight = _normalizeProps.height, cards = _normalizeProps.cards, getContainerDimensions = function() {
+            containerTemplate: function(_ref4) {
+                var id = _ref4.id, props = _ref4.props, CLASS = _ref4.CLASS, on = _ref4.on, container = _ref4.container, tag = _ref4.tag, context = _ref4.context, outlet = _ref4.outlet, jsxDom = _ref4.jsxDom, _normalizeProps = props_normalizeProps(props), size = _normalizeProps.size, label = _normalizeProps.label, fundingicons = _normalizeProps.fundingicons, tagline = _normalizeProps.tagline, layout = _normalizeProps.layout, sources = _normalizeProps.sources, buttonHeight = _normalizeProps.height, cards = _normalizeProps.cards, getContainerDimensions = function() {
                     for (var cont = container; 0 === cont.offsetWidth && cont.parentElement && cont.parentElement !== cont; ) cont = cont.parentElement;
                     return getDimensions({
                         viewport: {
@@ -12411,7 +13430,7 @@
             },
             validate: function() {
                 isEligible() || Object(beaver_logger_client.o)("button_render_ineligible");
-                if (Object(device.e)()) throw new Error("Can not render button in IE intranet mode");
+                if (Object(device.g)()) throw new Error("Can not render button in IE intranet mode");
             },
             props: {
                 domain: {
@@ -12597,19 +13616,41 @@
                                 disallowed: [],
                                 remembered: []
                             };
-                            if (funding.allowed) for (var _i2 = 0, _funding$allowed2 = funding.allowed, _length2 = null == _funding$allowed2 ? 0 : _funding$allowed2.length; _i2 < _length2; _i2++) {
-                                var source = _funding$allowed2[_i2];
-                                if (-1 === src_constants.p.indexOf(source)) {
-                                    if (!FUNDING_CONFIG.hasOwnProperty(source)) throw new Error("Invalid funding source: " + source);
-                                    if (!getFundingConfig(source, "allowOptIn")) throw new Error("Can not allow funding source: " + source);
-                                    if (funding.disallowed && -1 !== funding.disallowed.indexOf(source)) throw new Error("Can not allow and disallow funding source: " + source);
+                            if (funding.allowed) {
+                                var _iterator = funding.allowed, _isArray = Array.isArray(_iterator), _i = 0;
+                                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                                    var _ref6;
+                                    if (_isArray) {
+                                        if (_i >= _iterator.length) break;
+                                        _ref6 = _iterator[_i++];
+                                    } else {
+                                        if ((_i = _iterator.next()).done) break;
+                                        _ref6 = _i.value;
+                                    }
+                                    var source = _ref6;
+                                    if (-1 === src_constants.p.indexOf(source)) {
+                                        if (!FUNDING_CONFIG.hasOwnProperty(source)) throw new Error("Invalid funding source: " + source);
+                                        if (!getFundingConfig(source, "allowOptIn")) throw new Error("Can not allow funding source: " + source);
+                                        if (funding.disallowed && -1 !== funding.disallowed.indexOf(source)) throw new Error("Can not allow and disallow funding source: " + source);
+                                    }
                                 }
                             }
-                            if (funding.disallowed) for (var _i4 = 0, _funding$disallowed2 = funding.disallowed, _length4 = null == _funding$disallowed2 ? 0 : _funding$disallowed2.length; _i4 < _length4; _i4++) {
-                                var _source = _funding$disallowed2[_i4];
-                                if (-1 === src_constants.p.indexOf(_source)) {
-                                    if (!FUNDING_CONFIG.hasOwnProperty(_source)) throw new Error("Invalid funding source: " + _source);
-                                    if (!getFundingConfig(_source, "allowOptOut")) throw new Error("Can not disallow funding source: " + _source);
+                            if (funding.disallowed) {
+                                var _iterator2 = funding.disallowed, _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+                                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                                    var _ref7;
+                                    if (_isArray2) {
+                                        if (_i2 >= _iterator2.length) break;
+                                        _ref7 = _iterator2[_i2++];
+                                    } else {
+                                        if ((_i2 = _iterator2.next()).done) break;
+                                        _ref7 = _i2.value;
+                                    }
+                                    var _source = _ref7;
+                                    if (-1 === src_constants.p.indexOf(_source)) {
+                                        if (!FUNDING_CONFIG.hasOwnProperty(_source)) throw new Error("Invalid funding source: " + _source);
+                                        if (!getFundingConfig(_source, "allowOptOut")) throw new Error("Can not disallow funding source: " + _source);
+                                    }
                                 }
                             }
                         }({
@@ -12652,7 +13693,7 @@
                         var remembered = getRememberedFunding(function(sources) {
                             return sources;
                         });
-                        allowed && -1 === allowed.indexOf(src_constants.v.VENMO) && remembered && -1 === remembered.indexOf(src_constants.v.VENMO) && Object(device.b)() && (venmoThrottle = getThrottle("venmo_uncookied_render", 10)).isEnabled() && (allowed = [].concat(allowed, [ src_constants.v.VENMO ]));
+                        allowed && -1 === allowed.indexOf(src_constants.v.VENMO) && remembered && -1 === remembered.indexOf(src_constants.v.VENMO) && Object(device.b)() && !Object(device.i)() && !Object(device.c)() && !Object(device.d)() && (venmoThrottle = getThrottle("venmo_uncookied_render", 10)).isEnabled() && (allowed = [].concat(allowed, [ src_constants.v.VENMO ]));
                         if (!Object(device.b)() || Object(util.e)("disable_venmo")) {
                             remembered && -1 !== remembered.indexOf(src_constants.v.VENMO) && (remembered = remembered.filter(function(source) {
                                 return source !== src_constants.v.VENMO;
@@ -12737,10 +13778,6 @@
                                 if (!_this3.props.braintree) throw new Error("Must pass in Braintree client to tokenize payment");
                                 return _this3.props.braintree.then(function(client) {
                                     return client.tokenizePayment(data);
-                                }).then(function(res) {
-                                    return {
-                                        nonce: res.nonce
-                                    };
                                 });
                             });
                             var execute = actions.payment.execute;
@@ -12999,7 +14036,7 @@
             var xprops = ButtonComponent.xprops || component_Checkout.xprops;
             xprops && xprops.logLevel && setLogLevel(xprops.logLevel);
         }(component_Button);
-        Object(device.c)() && Object(util.e)("ie_full_page") && (component_Checkout.renderTo = function(win) {
+        Object(device.e)() && Object(util.e)("ie_full_page") && (component_Checkout.renderTo = function(win) {
             Object(beaver_logger_client.j)("force_ie_full_page");
             Object(beaver_logger_client.g)();
             var checkout = component_Checkout.init({
@@ -13055,13 +14092,13 @@
             var callOriginal = _ref3.callOriginal, props = _ref3.args[1];
             if (!debounce) {
                 debounce = !0;
-                for (var _loop = function(_i2, _ref5, _length2) {
-                    var methodName = _ref5[_i2], original = props[methodName];
+                for (var _arr = [ "onAuthorize", "onShippingChange", "onCancel", "onError", "onClose" ], _loop = function() {
+                    var methodName = _arr[_i], original = props[methodName];
                     props[methodName] = function() {
                         debounce = !1;
                         if (original) return original.apply(this, arguments);
                     };
-                }, _i2 = 0, _ref5 = [ "onAuthorize", "onShippingChange", "onCancel", "onError", "onClose" ], _length2 = null == _ref5 ? 0 : _ref5.length; _i2 < _length2; _i2++) _loop(_i2, _ref5);
+                }, _i = 0; _i < _arr.length; _i++) _loop();
                 return callOriginal();
             }
             Object(beaver_logger_client.o)("button_mutliple_click_debounce");
@@ -13076,21 +14113,21 @@
                     enabled = !1;
                 }
             });
-            Object(util.n)(component_Checkout, "renderTo", function(_ref6) {
-                var callOriginal = _ref6.callOriginal;
+            Object(util.n)(component_Checkout, "renderTo", function(_ref4) {
+                var callOriginal = _ref4.callOriginal;
                 return enabled ? callOriginal() : new src.a();
             });
         }
-        Object(util.n)(rest.payment, "create", function(_ref7) {
-            var createOriginal = _ref7.original, createContext = _ref7.context, _ref7$args = _ref7.args, env = _ref7$args[0], client = _ref7$args[1], options = _ref7$args[2], experience = _ref7$args[3];
+        Object(util.n)(rest.payment, "create", function(_ref5) {
+            var createOriginal = _ref5.original, createContext = _ref5.context, _ref5$args = _ref5.args, env = _ref5$args[0], client = _ref5$args[1], options = _ref5$args[2], experience = _ref5$args[3];
             options.payment || (options = {
                 payment: options,
                 experience: experience
             });
             return createOriginal.call(createContext, env, client, options);
         });
-        Object(util.n)(component_Button.props.style, "validate", function(_ref8) {
-            var callOriginal = _ref8.callOriginal, style = _ref8.args[0];
+        Object(util.n)(component_Button.props.style, "validate", function(_ref6) {
+            var callOriginal = _ref6.callOriginal, style = _ref6.args[0];
             if (!style) return callOriginal();
             style && "creditblue" === style.color && (style.color = src_constants.e.DARKBLUE);
             style && "generic" === style.label && (style.label = src_constants.f.PAYPAL);
@@ -13100,21 +14137,21 @@
             }
             return callOriginal();
         });
-        Object(util.n)(component_Button, "render", function(_ref9) {
-            var callOriginal = _ref9.callOriginal, props = _ref9.args[0];
+        Object(util.n)(component_Button, "render", function(_ref7) {
+            var callOriginal = _ref7.callOriginal, props = _ref7.args[0];
             if (props.billingAgreement) {
                 props.payment = props.billingAgreement;
                 delete props.billingAgreement;
             }
             return callOriginal();
         });
-        Object(util.n)(component_Button.props.payment, "decorate", function(_ref10) {
-            var original = _ref10.original, context = _ref10.context, originalPayment = _ref10.args[0];
+        Object(util.n)(component_Button.props.payment, "decorate", function(_ref8) {
+            var original = _ref8.original, context = _ref8.context, originalPayment = _ref8.args[0];
             return original.call(context, function(data, actions) {
                 var _this = this;
                 return new src.a(function(resolve, reject) {
-                    Object(util.n)(actions.payment, "create", function(_ref11) {
-                        var createOriginal = _ref11.original, createContext = _ref11.context, _ref11$args = _ref11.args, options = _ref11$args[0], experience = _ref11$args[1];
+                    Object(util.n)(actions.payment, "create", function(_ref9) {
+                        var createOriginal = _ref9.original, createContext = _ref9.context, _ref9$args = _ref9.args, options = _ref9$args[0], experience = _ref9$args[1];
                         options.payment || (options = {
                             payment: options,
                             experience: experience
@@ -13147,8 +14184,17 @@
         });
         component_Button.isChild() && (window.Promise || (window.Promise = src.a));
         domain = window.location.protocol + "//" + window.location.host, (currentDomainEnv = function(domain) {
-            for (var _i2 = 0, _Object$keys2 = Object.keys(config.a.paypalUrls), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
-                var _env = _Object$keys2[_i2];
+            var _iterator = Object.keys(config.a.paypalUrls), _isArray = Array.isArray(_iterator), _i = 0;
+            for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref = _iterator[_i++];
+                } else {
+                    if ((_i = _iterator.next()).done) break;
+                    _ref = _i.value;
+                }
+                var _env = _ref;
                 if (config.a.paypalUrls[_env] === domain) return _env;
             }
         }(domain)) && "test" !== currentDomainEnv && (config.a.env = currentDomainEnv);
@@ -13171,8 +14217,8 @@
             });
         });
         var currentScript = getCurrentScript(), currentProtocol = window.location.protocol.split(":")[0];
-        var setup_init = Object(util.m)(function(_ref2) {
-            var precacheRemembered = _ref2.precacheRemembered;
+        var setup_init = Object(util.m)(function(_ref3) {
+            var precacheRemembered = _ref3.precacheRemembered;
             isEligible() || Object(beaver_logger_client.o)("ineligible");
             !function() {
                 if ("[]" !== JSON.stringify([])) {
@@ -13183,8 +14229,8 @@
                     logWarn("JSON.stringify is doing incorrect serialization of objects. This is likely to cause issues.");
                     Object(beaver_logger_client.o)("json_stringify_object_broken");
                 }
-                Object(device.e)() && Object(beaver_logger_client.o)("ie_intranet_mode");
-                Object(device.c)() && !Object(device.d)() && Object(beaver_logger_client.o)("ie_meta_compatibility_header_missing", {
+                Object(device.g)() && Object(beaver_logger_client.o)("ie_intranet_mode");
+                Object(device.e)() && !Object(device.f)() && Object(beaver_logger_client.o)("ie_meta_compatibility_header_missing", {
                     message: 'Drop tag: <meta http-equiv="X-UA-Compatible" content="IE=edge">'
                 });
                 3 !== function(bar, baz, zomg) {}.bind({
@@ -13245,7 +14291,7 @@
         function setup() {
             var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
             !function() {
-                var _ref = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, env = _ref.env, stage = _ref.stage, stageUrl = _ref.stageUrl, apiStage = _ref.apiStage, state = _ref.state, logLevel = _ref.logLevel, merchantID = _ref.merchantID;
+                var _ref2 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, env = _ref2.env, stage = _ref2.stage, stageUrl = _ref2.stageUrl, apiStage = _ref2.apiStage, state = _ref2.state, logLevel = _ref2.logLevel, merchantID = _ref2.merchantID;
                 if (env) {
                     if (!config.a.paypalUrls[env]) throw new Error("Invalid env: " + env);
                     delete config.a.env;
@@ -13319,7 +14365,7 @@
             setup__track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.215", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_Card = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0;
+        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.216", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_Card = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
         if (Object(util.g)()) {
             interface_Checkout = component_Checkout;
             interface_Card = Card;
@@ -13329,6 +14375,14 @@
                 component_Checkout.contexts.iframe = !0;
             };
             src_interface_destroyAll = interface_destroyAll;
+            logger = {
+                debug: beaver_logger_client.e,
+                info: beaver_logger_client.j,
+                warn: beaver_logger_client.o,
+                error: beaver_logger_client.f,
+                track: beaver_logger_client.n,
+                flush: beaver_logger_client.g
+            };
         }
         __webpack_require__.d(__webpack_exports__, "postRobot", function() {
             return interface_postRobot;
@@ -13420,6 +14474,9 @@
         __webpack_require__.d(__webpack_exports__, "enableCheckoutIframe", function() {
             return enableCheckoutIframe;
         });
+        __webpack_require__.d(__webpack_exports__, "logger", function() {
+            return logger;
+        });
         __webpack_exports__.default = src_interface_namespaceObject;
     },
     "./src/lib/beacon.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -13431,7 +14488,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.215";
+                payload.version = "4.0.216";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 var query = [];
@@ -13452,17 +14509,22 @@
                 if (getUserAgent().match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) return !0;
                 return !1;
             };
-            __webpack_exports__.f = isIos;
-            __webpack_exports__.c = function() {
+            __webpack_exports__.d = isFirefoxIOS;
+            __webpack_exports__.c = isEdgeIOS;
+            __webpack_exports__.h = isIos;
+            __webpack_exports__.i = function() {
+                return isFacebookWebView() || isIosWebview() || isAndroidWebview();
+            };
+            __webpack_exports__.e = function() {
                 if (window.document.documentMode) return !0;
                 return Boolean(window.navigator && window.navigator.userAgent && /Edge|MSIE/i.test(window.navigator.userAgent));
             };
-            __webpack_exports__.d = function() {
+            __webpack_exports__.f = function() {
                 var mHttp = window.document.querySelector('meta[http-equiv="X-UA-Compatible"]'), mContent = window.document.querySelector('meta[content="IE=edge"]');
                 if (mHttp && mContent) return !0;
                 return !1;
             };
-            __webpack_exports__.e = function() {
+            __webpack_exports__.g = function() {
                 if (window.document.documentMode) try {
                     var status = window.status;
                     window.status = "testIntranetMode";
@@ -13476,32 +14538,9 @@
                 }
                 return !1;
             };
-            __webpack_exports__.g = function() {
+            __webpack_exports__.j = function() {
                 var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                return !(function() {
-                    var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                    if (isIos(ua)) return !!function() {
-                        var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                        return /\bGSA\b/.test(ua);
-                    }(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua);
-                    return !1;
-                }(ua) || function() {
-                    var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                    if (function() {
-                        var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                        return /Android/.test(ua);
-                    }(ua)) return /Version\/[\d.]+/.test(ua) && !isOperaMini(ua);
-                    return !1;
-                }(ua) || isOperaMini(ua) || function() {
-                    var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                    return /FxiOS/i.test(ua);
-                }(ua) || function() {
-                    var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                    return /EdgiOS/i.test(ua);
-                }(ua) || function() {
-                    var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                    return -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
-                }(ua) || function() {
+                return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isEdgeIOS(ua) || isFacebookWebView(ua) || function() {
                     var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
                     return /QQBrowser/.test(ua);
                 }(ua) || function() {
@@ -13513,12 +14552,38 @@
             function getUserAgent() {
                 return window.navigator.mockUserAgent || window.navigator.userAgent;
             }
+            function isFacebookWebView() {
+                var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                return -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
+            }
+            function isFirefoxIOS() {
+                var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                return /FxiOS/i.test(ua);
+            }
+            function isEdgeIOS() {
+                var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                return /EdgiOS/i.test(ua);
+            }
             function isOperaMini() {
                 return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent()).indexOf("Opera Mini") > -1;
             }
             function isIos() {
                 var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
                 return /iPhone|iPod|iPad/.test(ua);
+            }
+            function isIosWebview() {
+                var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                return !!isIos(ua) && (!!function() {
+                    var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                    return /\bGSA\b/.test(ua);
+                }(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
+            }
+            function isAndroidWebview() {
+                var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                return !!function() {
+                    var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                    return /Android/.test(ua);
+                }(ua) && (/Version\/[\d.]+/.test(ua) && !isOperaMini(ua));
             }
         }).call(__webpack_exports__, __webpack_require__("./node_modules/process/browser.js"));
     },
@@ -13544,8 +14609,16 @@
                 timeout && setTimeout(function() {
                     return reject(new Error("script_loading_timed_out"));
                 }, timeout);
-                for (var _i2 = 0, _Object$keys2 = Object.keys(attrs), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
-                    var attr = _Object$keys2[_i2];
+                for (var _iterator = Object.keys(attrs), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref = _iterator[_i++];
+                    } else {
+                        if ((_i = _iterator.next()).done) break;
+                        _ref = _i.value;
+                    }
+                    var attr = _ref;
                     script.setAttribute(attr, attrs[attr]);
                 }
                 script.setAttribute("src", src);
@@ -13560,9 +14633,9 @@
         __webpack_exports__.b = function(url) {
             var params = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, hasHash = url.indexOf("#") > 0, _url$split = url.split("#"), serverUrl = _url$split[0], hash = _url$split[1];
             if (hash && !serverUrl) {
-                var _ref = [ "#" + hash, "" ];
-                serverUrl = _ref[0];
-                hash = _ref[1];
+                var _ref3 = [ "#" + hash, "" ];
+                serverUrl = _ref3[0];
+                hash = _ref3[1];
             }
             var _serverUrl$split = serverUrl.split("?"), originalUrl = _serverUrl$split[0], originalQueryString = _serverUrl$split[1];
             if (originalQueryString) {
@@ -13651,8 +14724,17 @@
             var params = {};
             if (!queryString) return params;
             if (-1 === queryString.indexOf("=")) return params;
-            for (var _i4 = 0, _queryString$split2 = queryString.split("&"), _length4 = null == _queryString$split2 ? 0 : _queryString$split2.length; _i4 < _length4; _i4++) {
-                var pair = _queryString$split2[_i4];
+            var _iterator2 = queryString.split("&"), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
+            for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                var _ref2;
+                if (_isArray2) {
+                    if (_i2 >= _iterator2.length) break;
+                    _ref2 = _iterator2[_i2++];
+                } else {
+                    if ((_i2 = _iterator2.next()).done) break;
+                    _ref2 = _i2.value;
+                }
+                var pair = _ref2;
                 (pair = pair.split("="))[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
             }
             return params;
@@ -13679,8 +14761,17 @@
             };
         }
         var getPotentiallyBetterBrowserLocale = Object(__WEBPACK_IMPORTED_MODULE_4__util__.j)(function() {
-            for (var locales = getBrowserLocales(), _i6 = 0, _length6 = null == locales ? 0 : locales.length; _i6 < _length6; _i6++) {
-                var locale = locales[_i6], loc = normalizeLocale(locale);
+            var _iterator3 = getBrowserLocales(), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
+            for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                var _ref4;
+                if (_isArray3) {
+                    if (_i3 >= _iterator3.length) break;
+                    _ref4 = _iterator3[_i3++];
+                } else {
+                    if ((_i3 = _iterator3.next()).done) break;
+                    _ref4 = _i3.value;
+                }
+                var locale = _ref4, loc = normalizeLocale(locale);
                 if (loc) {
                     Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("better_browser_locale_full");
                     return loc;
@@ -13692,15 +14783,33 @@
             }
             return __WEBPACK_IMPORTED_MODULE_2__config__.a.defaultLocale;
         }), getBrowserLocale = Object(__WEBPACK_IMPORTED_MODULE_4__util__.j)(function() {
-            for (var locales = getBrowserLocales(), _i8 = 0, _length8 = null == locales ? 0 : locales.length; _i8 < _length8; _i8++) {
-                var loc = normalizeLocale(locales[_i8]);
+            var locales = getBrowserLocales(), _iterator4 = locales, _isArray4 = Array.isArray(_iterator4), _i4 = 0;
+            for (_iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
+                var _ref5;
+                if (_isArray4) {
+                    if (_i4 >= _iterator4.length) break;
+                    _ref5 = _iterator4[_i4++];
+                } else {
+                    if ((_i4 = _iterator4.next()).done) break;
+                    _ref5 = _i4.value;
+                }
+                var loc = normalizeLocale(_ref5);
                 if (loc) {
                     Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("browser_locale_full");
                     return loc;
                 }
             }
-            for (var _i10 = 0, _length10 = null == locales ? 0 : locales.length; _i10 < _length10; _i10++) {
-                var _loc = normalizeLang(locales[_i10]);
+            var _iterator5 = locales, _isArray5 = Array.isArray(_iterator5), _i5 = 0;
+            for (_iterator5 = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator](); ;) {
+                var _ref6;
+                if (_isArray5) {
+                    if (_i5 >= _iterator5.length) break;
+                    _ref6 = _iterator5[_i5++];
+                } else {
+                    if ((_i5 = _iterator5.next()).done) break;
+                    _ref6 = _i5.value;
+                }
+                var _loc = normalizeLang(_ref6);
                 if (_loc) {
                     Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("browser_locale_lang");
                     return _loc;
@@ -13715,17 +14824,41 @@
     "./src/lib/namespace.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_exports__.a = function(xports) {
-            for (var namespaces = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [], childnamespaces = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [], _i2 = 0, _length2 = null == namespaces ? 0 : namespaces.length; _i2 < _length2; _i2++) {
-                var name = namespaces[_i2], namespace = window[name];
-                if (namespace) for (var _i4 = 0, _length4 = null == childnamespaces ? 0 : childnamespaces.length; _i4 < _length4; _i4++) {
-                    var _extends2, childname = childnamespaces[_i4], childnamespace = xports[childname];
+            for (var namespaces = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [], childnamespaces = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [], _iterator = namespaces, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref = _iterator[_i++];
+                } else {
+                    if ((_i = _iterator.next()).done) break;
+                    _ref = _i.value;
+                }
+                var name = _ref, namespace = window[name];
+                if (namespace) for (var _iterator3 = childnamespaces, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                    var _extends2, _ref3;
+                    if (_isArray3) {
+                        if (_i3 >= _iterator3.length) break;
+                        _ref3 = _iterator3[_i3++];
+                    } else {
+                        if ((_i3 = _iterator3.next()).done) break;
+                        _ref3 = _i3.value;
+                    }
+                    var childname = _ref3, childnamespace = xports[childname];
                     namespace[childname] && (childnamespace = _extends({}, namespace[childname], childnamespace));
                     xports = _extends({}, namespace, xports, ((_extends2 = {})[childname] = childnamespace, 
                     _extends2));
                 }
             }
-            for (var _i6 = 0, _length6 = null == namespaces ? 0 : namespaces.length; _i6 < _length6; _i6++) {
-                var _name = namespaces[_i6];
+            for (var _iterator2 = namespaces, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                var _ref2;
+                if (_isArray2) {
+                    if (_i2 >= _iterator2.length) break;
+                    _ref2 = _iterator2[_i2++];
+                } else {
+                    if ((_i2 = _iterator2.next()).done) break;
+                    _ref2 = _i2.value;
+                }
+                var _name = _ref2;
                 window[_name] = xports;
             }
             return xports;
@@ -13847,8 +14980,16 @@
                         });
                     },
                     trigger: function() {
-                        for (var _i2 = 0, _length2 = null == listeners ? 0 : listeners.length; _i2 < _length2; _i2++) {
-                            var listener = listeners[_i2];
+                        for (var _iterator = listeners, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                            var _ref;
+                            if (_isArray) {
+                                if (_i >= _iterator.length) break;
+                                _ref = _iterator[_i++];
+                            } else {
+                                if ((_i = _iterator.next()).done) break;
+                                _ref = _i.value;
+                            }
+                            var listener = _ref;
                             listener.apply(void 0, arguments);
                         }
                     }
@@ -13899,8 +15040,16 @@
             });
             __webpack_exports__.e = function(name, def) {
                 var hostname = window.xchild ? window.xchild.getParentDomain() : Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.getDomain)();
-                if (__WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings) for (var _i4 = 0, _Object$keys2 = Object.keys(__WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) {
-                    var domain = _Object$keys2[_i4];
+                if (__WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings) for (var _iterator2 = Object.keys(__WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    var _ref2;
+                    if (_isArray2) {
+                        if (_i2 >= _iterator2.length) break;
+                        _ref2 = _iterator2[_i2++];
+                    } else {
+                        if ((_i2 = _iterator2.next()).done) break;
+                        _ref2 = _i2.value;
+                    }
+                    var domain = _ref2;
                     if (domainMatches(hostname, domain)) return __WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings[domain][name];
                 }
                 return def;
@@ -14010,18 +15159,19 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
-        if (window.paypal && "4.0.215" === window.paypal.version) {
+        0;
+        if (window.paypal && "4.0.216" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.215"
+                version: "4.0.216"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.215) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.216) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.215" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.216" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.215"
+                version: "4.0.216"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.215");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.216");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
@@ -14049,44 +15199,20 @@
     "./src/resources/cardLogos/jcb.svg": function(module, exports) {
         module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="40" height="24" viewBox="0 0 40 24" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <defs>\n    <pattern id="pattern-0" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse" viewBox="0 0 100 100">\n      <path d="M 0 0 L 50 0 L 50 100 L 0 100 Z" style="fill: black;"/>\n    </pattern>\n  </defs>\n  <path d="M38.333 24H1.667C.75 24 0 23.28 0 22.4V1.6C0 .72.75 0 1.667 0h36.666C39.25 0 40 .72 40 1.6v20.8c0 .88-.75 1.6-1.667 1.6z" style="fill: rgb(255, 255, 255); stroke: rgb(233, 234, 231);"/>\n  <g transform="matrix(0.100306, 0, 0, 0.100306, 4.733743, 10.105099)" id="g6321">\n    <g transform="matrix(1.8215159,0,0,1.8215159,-8.5437653,-109.83667)" id="g6323">\n      <path style="fill:#ffffff" id="path6325" d="m 174,108.3 c 0,14 -11.4,25.4 -25.4,25.4 l -138.2,0 0,-100.6 c 0,-14 11.4,-25.4 25.4,-25.4 l 138.2,0 0,100.6 z" class="st0"/>\n      <g id="g6327">\n        <linearGradient gradientTransform="matrix(1.125,0,0,1.125,-11.9755,-13.8615)" y2="81.398598" x2="157.3299" y1="81.398598" x1="117.3856" gradientUnits="userSpaceOnUse" id="SVGID_1_">\n          <stop id="stop6330" style="stop-color:#007940" offset="0"/>\n          <stop id="stop6332" style="stop-color:#00873F" offset="0.2285"/>\n          <stop id="stop6334" style="stop-color:#40A737" offset="0.7433"/>\n          <stop id="stop6336" style="stop-color:#5CB531" offset="1"/>\n        </linearGradient>\n        <path style="fill:url(#SVGID_1_)" id="path6338" d="m 129,82.5 10.5,0 c 0.3,0 1,-0.1 1.3,-0.1 2,-0.4 3.7,-2.2 3.7,-4.7 0,-2.4 -1.7,-4.2 -3.7,-4.7 -0.3,-0.1 -0.9,-0.1 -1.3,-0.1 l -10.5,0 0,9.6 z" class="st1"/>\n        <linearGradient gradientTransform="matrix(1.125,0,0,1.125,-11.9755,-13.8615)" y2="75.171402" x2="157.3318" y1="75.171402" x1="117.3844" gradientUnits="userSpaceOnUse" id="SVGID_2_">\n          <stop id="stop6341" style="stop-color:#007940" offset="0"/>\n          <stop id="stop6343" style="stop-color:#00873F" offset="0.2285"/>\n          <stop id="stop6345" style="stop-color:#40A737" offset="0.7433"/>\n          <stop id="stop6347" style="stop-color:#5CB531" offset="1"/>\n        </linearGradient>\n        <path style="fill:url(#SVGID_2_)" id="path6349" d="m 138.3,16.2 c -10,0 -18.2,8.1 -18.2,18.2 l 0,18.9 25.7,0 c 0.6,0 1.3,0 1.8,0.1 5.8,0.3 10.1,3.3 10.1,8.5 0,4.1 -2.9,7.6 -8.3,8.3 l 0,0.2 c 5.9,0.4 10.4,3.7 10.4,8.8 0,5.5 -5,9.1 -11.6,9.1 l -28.2,0 0,37 26.7,0 c 10,0 18.2,-8.1 18.2,-18.2 l 0,-90.9 -26.6,0 z" class="st2"/>\n        <linearGradient gradientTransform="matrix(1.125,0,0,1.125,-11.9755,-13.8615)" y2="68.399101" x2="157.33051" y1="68.399101" x1="117.3846" gradientUnits="userSpaceOnUse" id="SVGID_3_">\n          <stop id="stop6352" style="stop-color:#007940" offset="0"/>\n          <stop id="stop6354" style="stop-color:#00873F" offset="0.2285"/>\n          <stop id="stop6356" style="stop-color:#40A737" offset="0.7433"/>\n          <stop id="stop6358" style="stop-color:#5CB531" offset="1"/>\n        </linearGradient>\n        <path style="fill:url(#SVGID_3_)" id="path6360" d="m 143.2,63.1 c 0,-2.4 -1.7,-4 -3.7,-4.3 -0.2,0 -0.7,-0.1 -1,-0.1 l -9.5,0 0,8.8 9.5,0 c 0.3,0 0.9,0 1,-0.1 2,-0.3 3.7,-1.9 3.7,-4.3 z" class="st3"/>\n      </g>\n      <linearGradient gradientTransform="matrix(1.125,0,0,1.125,-11.9755,-13.8615)" y2="75.171402" x2="68.522102" y1="75.171402" x1="27.9594" gradientUnits="userSpaceOnUse" id="SVGID_4_">\n        <stop id="stop6363" style="stop-color:#1F286F" offset="0"/>\n        <stop id="stop6365" style="stop-color:#004E94" offset="0.4751"/>\n        <stop id="stop6367" style="stop-color:#0066B1" offset="0.8261"/>\n        <stop id="stop6369" style="stop-color:#006FBC" offset="1"/>\n      </linearGradient>\n      <path style="fill:url(#SVGID_4_)" id="path6371" d="m 37.7,16.2 c -10,0 -18.2,8.1 -18.2,18.2 l 0,44.9 c 5.1,2.5 10.4,4.1 15.7,4.1 6.3,0 9.7,-3.8 9.7,-9 l 0,-21.2 15.6,0 0,21.1 c 0,8.2 -5.1,14.9 -22.4,14.9 -10.5,0 -18.7,-2.3 -18.7,-2.3 l 0,38.3 26.7,0 c 10,0 18.2,-8.1 18.2,-18.2 l 0,-90.8 -26.6,0 z" class="st4"/>\n      <linearGradient gradientTransform="matrix(1.125,0,0,1.125,-11.9755,-13.8615)" y2="75.171402" x2="111.8553" y1="75.171402" x1="72.459503" gradientUnits="userSpaceOnUse" id="SVGID_5_">\n        <stop id="stop6374" style="stop-color:#6C2C2F" offset="0"/>\n        <stop id="stop6376" style="stop-color:#882730" offset="0.1735"/>\n        <stop id="stop6378" style="stop-color:#BE1833" offset="0.5731"/>\n        <stop id="stop6380" style="stop-color:#DC0436" offset="0.8585"/>\n        <stop id="stop6382" style="stop-color:#E60039" offset="1"/>\n      </linearGradient>\n      <path style="fill:url(#SVGID_5_)" id="path6384" d="m 88,16.2 c -10,0 -18.2,8.1 -18.2,18.2 l 0,23.8 c 4.6,-3.9 12.6,-6.4 25.5,-5.8 6.9,0.3 14.3,2.2 14.3,2.2 l 0,7.7 c -3.7,-1.9 -8.1,-3.6 -13.8,-4 -9.8,-0.7 -15.7,4.1 -15.7,12.5 0,8.5 5.9,13.3 15.7,12.5 5.7,-0.4 10.1,-2.2 13.8,-4 l 0,7.7 c 0,0 -7.3,1.9 -14.3,2.2 -12.9,0.6 -20.9,-1.9 -25.5,-5.8 l 0,42 26.7,0 c 10,0 18.2,-8.1 18.2,-18.2 l 0,-91 -26.7,0 z" class="st5"/>\n    </g>\n    <g id="g6386"/>\n  </g>\n</svg>';
     },
+    "./src/resources/cardLogos/maestro.svg": function(module, exports) {
+        module.exports = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 23.999999" width="40" height="24" preserveAspectRatio="xMinYMin meet" version="1.1">\n    <path d="M 0,1.927 C 0,0.86299997 0.892,0 1.992,0 H 38.008 C 39.108,0 40,0.86299997 40,1.927 V 22.073 C 40,23.137 39.108,24 38.008,24 H 1.992 C 0.892,24 0,23.137 0,22.073 Z" style="fill:#3e3939" />\n    <path d="m 23.74623,18.221667 v 0.929759 h -0.621716 v 0.609196 h 0.621716 v 1.394324 c 0,0.71165 0.275786,1.135118 1.064369,1.135118 a 1.564348,1.564348 0 0 0 0.833339,-0.237293 l -0.192215,-0.571003 a 1.2309624,1.2309624 0 0 1 -0.589785,0.17343 c -0.333383,0 -0.442649,-0.192213 -0.442649,-0.512774 v -1.388065 h 1.086908 V 19.151426 H 24.419289 V 18.221667 Z M 10.802242,19.066278 A 1.1860835,1.1860835 0 0 0 9.8436827,19.612862 1.1251765,1.1251765 0 0 0 8.830654,19.068153 1.0129794,1.0129794 0 0 0 7.9328276,19.523328 V 19.145165 H 7.2660325 v 3.061001 H 7.939089 v -1.704869 a 0.71485573,0.71485573 0 0 1 0.7500683,-0.814556 c 0.4423764,0 0.6667964,0.288356 0.6667964,0.807671 v 1.702363 h 0.6736813 v -1.695478 a 0.72126699,0.72126699 0 0 1 0.750068,-0.814556 c 0.4552,0 0.673058,0.288356 0.673058,0.807671 v 1.702363 l 0.669926,0.0094 v -1.923369 a 1.1379991,1.1379991 0 0 0 -1.202112,-1.214633 1.1860835,1.1860835 0 0 0 -0.118329,-0.002 z m 10.549158,0.002 c -0.782176,0 -1.282253,0.372027 -1.282253,0.981097 0,0.50008 0.372102,0.80792 1.058106,0.904089 l 0.320567,0.04445 c 0.365439,0.05128 0.538444,0.147461 0.538444,0.320563 0,0.237218 -0.243528,0.371902 -0.69873,0.371902 a 1.6316662,1.6316662 0 0 1 -1.019289,-0.320606 l -0.320562,0.519663 a 2.2086798,2.2086798 0 0 0 1.323576,0.396946 c 0.881546,0 1.394948,-0.461335 1.394948,-0.999881 0,-0.538545 -0.403858,-0.820441 -1.07063,-0.916612 l -0.320563,-0.04509 c -0.288506,-0.03848 -0.519662,-0.07675 -0.519662,-0.301152 0,-0.224394 0.218082,-0.359382 0.583526,-0.359382 a 1.9714631,1.9714631 0 0 1 0.961688,0.262961 l 0.298023,-0.538445 A 2.2888207,2.2888207 0 0 0 21.3514,19.06818 Z m 6.45947,0 0.0132,0.01254 a 0.90398792,0.90398792 0 0 0 -0.80829,0.448915 v -0.371917 h -0.659908 v 3.061628 h 0.666794 v -1.714927 c 0,-0.506487 0.205162,-0.788884 0.641127,-0.788884 a 1.0835034,1.0835034 0 0 1 0.416355,0.07701 l 0.205363,-0.641127 a 1.4200945,1.4200945 0 0 0 -0.474583,-0.08326 z m 2.301544,0 a 1.7246296,1.7246296 0 0 0 -0.656779,0.13148 1.5835818,1.5835818 0 0 0 -0.519661,0.339973 1.564348,1.564348 0 0 0 -0.343103,0.509644 1.7021902,1.7021902 0 0 0 0,1.282252 1.564348,1.564348 0 0 0 0.343103,0.509647 1.5835818,1.5835818 0 0 0 0.519661,0.339972 1.8143872,1.8143872 0 0 0 1.314183,0 1.6028157,1.6028157 0 0 0 0.522793,-0.339972 1.5483199,1.5483199 0 0 0 0.345606,-0.509647 1.6989845,1.6989845 0 0 0 0,-1.282252 1.5515252,1.5515252 0 0 0 -0.345606,-0.509644 1.6028157,1.6028157 0 0 0 -0.532186,-0.343105 1.7246296,1.7246296 0 0 0 -0.641125,-0.122092 z m -15.816534,0.0025 a 1.1604384,1.1604384 0 0 0 -0.05759,6.27e-4 1.602816,1.602816 0 0 0 0,3.205632 1.1604384,1.1604384 0 0 0 0.961689,-0.448915 v 0.371903 h 0.666796 l 0.0062,-1.522675 v -1.528937 h -0.673017 v 0.371902 a 1.1604384,1.1604384 0 0 0 -0.904087,-0.449539 z m 3.747834,0.0039 a 1.6029727,1.6029727 0 0 0 0.04446,3.205629 1.859266,1.859266 0 0 0 1.253452,-0.429506 l -0.320573,-0.493394 a 1.458562,1.458562 0 0 1 -0.89094,0.320563 0.84949219,0.84949219 0 0 1 -0.917235,-0.750067 h 2.273368 c 0.0096,-0.07692 0.0094,-0.160682 0.0094,-0.250439 0,-0.961691 -0.596025,-1.602816 -1.451926,-1.602816 z m -0.05135,0.589784 a 0.78858528,0.78858528 0 0 1 0.03819,0 0.75973457,0.75973457 0 0 1 0.775738,0.743808 h -1.589666 a 0.78858528,0.78858528 0 0 1 0.775738,-0.743808 z m 12.120042,0.03256 a 0.99374563,0.99374563 0 0 1 0.385051,0.08952 0.91681058,0.91681058 0 0 1 0.320563,0.201604 0.92963292,0.92963292 0 0 1 0.201606,0.320564 1.1123539,1.1123539 0 0 1 0,0.795147 0.92642727,0.92642727 0 0 1 -0.201606,0.320562 0.91681058,0.91681058 0 0 1 -0.320563,0.202231 1.0418302,1.0418302 0 0 1 -0.760083,0 0.89757672,0.89757672 0 0 1 -0.304286,-0.202231 0.9360443,0.9360443 0 0 1 -0.202231,-0.320562 1.1123539,1.1123539 0 0 1 0,-0.795147 0.93924994,0.93924994 0 0 1 0.202231,-0.320564 0.90078228,0.90078228 0 0 1 0.304286,-0.201604 0.99374563,0.99374563 0 0 1 0.381918,-0.07073 z M 14.309018,19.80595 a 0.92642727,0.92642727 0 1 1 0.01565,1.852627 0.91681058,0.91681058 0 0 1 -0.936018,-0.981097 h 0.0069 a 0.92642727,0.92642727 0 0 1 0.913439,-0.871499 z m 18.111818,1.952179 -0.01629,0.0031 a 0.3205631,0.3205631 0 0 0 -0.10581,0.0194 0.3205631,0.3205631 0 0 0 -0.09955,0.06386 0.3205631,0.3205631 0 0 0 -0.067,0.09641 0.30132932,0.30132932 0 0 0 0,0.236665 0.3205631,0.3205631 0 0 0 0.288631,0.185952 0.30132932,0.30132932 0 0 0 0.12147,-0.02567 0.3205631,0.3205631 0 0 0 0.09956,-0.06384 0.3205631,0.3205631 0 0 0 0.06763,-0.09642 0.2981237,0.2981237 0 0 0 0,-0.236664 0.3205631,0.3205631 0 0 0 -0.06763,-0.09641 0.3205631,0.3205631 0 0 0 -0.09956,-0.06387 0.3205631,0.3205631 0 0 0 -0.12147,-0.02255 z m 0,0.067 a 0.23080544,0.23080544 0 0 1 0.09266,0.01941 0.2372167,0.2372167 0 0 1 0.07387,0.384424 0.24042232,0.24042232 0 0 1 -0.07387,0.05135 0.2275998,0.2275998 0 0 1 -0.09266,0.01941 v -0.01321 a 0.2372167,0.2372167 0 0 1 -0.170301,-0.07014 0.2372167,0.2372167 0 0 1 0,-0.320564 0.23401105,0.23401105 0 0 1 0.07701,-0.05134 0.24042232,0.24042232 0 0 1 0.09329,-0.0194 z m 0.01878,0.09329 -0.134612,0.0031 v 0.281748 h 0.06134 v -0.105802 h 0.0288 l 0.08639,0.105811 h 0.07388 l -0.09329,-0.105811 a 0.11219709,0.11219709 0 0 0 0.06761,-0.02879 0.07693513,0.07693513 0 0 0 0.02255,-0.05761 0.08014078,0.08014078 0 0 0 -0.0288,-0.067 0.12822525,0.12822525 0 0 0 -0.08391,-0.02567 z m -0.07014,0.05448 0.07014,0.01878 a 0.06731826,0.06731826 0 0 1 0.03881,0 0.03205633,0.03205633 0 0 1 0,0.02943 0.03205633,0.03205633 0 0 1 0,0.0288 0.06731826,0.06731826 0 0 1 -0.03881,0 h -0.07014 z" style="fill:#ffffff;stroke-width:0.77356213" />\n    <g transform="matrix(0.21220782,0,0,0.21220782,2.1400282,0.14227739)">\n        <rect x="68.410004" y="15.14" width="31.5" height="56.610001" style="fill:#7673c0" />\n        <path d="m 382.25,296.22 a 35.94,35.94 0 0 1 13.75,-28.3 36,36 0 1 0 0,56.61 35.94,35.94 0 0 1 -13.75,-28.31 z" transform="translate(-311.84,-252.78)" id="path8" style="fill:#eb001b" />\n        <path d="m 450.81,318.53 v -1.16 h 0.47 v -0.24 h -1.19 v 0.24 h 0.47 v 1.16 z m 2.31,0 v -1.4 h -0.36 l -0.42,1 -0.42,-1 h -0.36 v 1.4 h 0.26 v -1.05 l 0.39,0.91 h 0.27 l 0.39,-0.91 v 1.06 z" transform="translate(-311.84,-252.78)" style="fill:#00a1df" />\n        <path d="m 454.25,296.22 a 36,36 0 0 1 -58.25,28.3 36,36 0 0 0 0,-56.61 36,36 0 0 1 58.25,28.3 z" transform="translate(-311.84,-252.78)" style="fill:#00a1df" />\n    </g>\n</svg>\n';
+    },
     "./src/resources/cardLogos/mastercard.svg": function(module, exports) {
         module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="40" height="24" viewBox="0 0 40 24" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <path d="M0 1.927C0 .863.892 0 1.992 0h36.016C39.108 0 40 .863 40 1.927v20.146C40 23.137 39.108 24 38.008 24H1.992C.892 24 0 23.137 0 22.073V1.927z" style="fill: rgb(62, 57, 57);"/>\n  <path style="fill: rgb(255, 95, 0);" d="M 22.205 3.901 L 15.688 3.901 L 15.688 15.589 L 22.205 15.589"/>\n  <path d="M 16.1 9.747 C 16.1 7.371 17.218 5.265 18.935 3.901 C 17.67 2.912 16.078 2.312 14.342 2.312 C 10.223 2.312 6.892 5.636 6.892 9.746 C 6.892 13.853 10.223 17.178 14.342 17.178 C 16.078 17.178 17.67 16.58 18.935 15.588 C 17.216 14.246 16.099 12.119 16.099 9.745 Z" style="fill: rgb(235, 0, 27);"/>\n  <path d="M 30.996 9.747 C 30.996 13.854 27.663 17.179 23.547 17.179 C 21.81 17.179 20.216 16.581 18.954 15.589 C 20.691 14.227 21.788 12.12 21.788 9.746 C 21.788 7.37 20.671 5.264 18.954 3.9 C 20.216 2.911 21.81 2.311 23.547 2.311 C 27.663 2.311 30.996 5.657 30.996 9.745 Z" style="fill: rgb(247, 158, 27);"/>\n  <path d="M 7.167 22.481 L 7.167 20.43 C 7.167 19.641 6.685 19.127 5.857 19.127 C 5.443 19.127 4.993 19.262 4.683 19.71 C 4.44 19.332 4.096 19.127 3.579 19.127 C 3.233 19.127 2.888 19.23 2.612 19.607 L 2.612 19.197 L 1.886 19.197 L 1.886 22.481 L 2.612 22.481 L 2.612 20.668 C 2.612 20.086 2.921 19.812 3.406 19.812 C 3.888 19.812 4.131 20.121 4.131 20.669 L 4.131 22.481 L 4.856 22.481 L 4.856 20.668 C 4.856 20.086 5.204 19.812 5.651 19.812 C 6.137 19.812 6.377 20.121 6.377 20.669 L 6.377 22.481 L 7.171 22.481 Z M 17.909 19.197 L 16.734 19.197 L 16.734 18.204 L 16.007 18.204 L 16.007 19.197 L 15.352 19.197 L 15.352 19.845 L 16.007 19.845 L 16.007 21.351 C 16.007 22.106 16.319 22.551 17.146 22.551 C 17.459 22.551 17.804 22.449 18.044 22.309 L 17.839 21.695 C 17.632 21.831 17.389 21.867 17.216 21.867 C 16.872 21.867 16.734 21.66 16.734 21.319 L 16.734 19.847 L 17.909 19.847 L 17.909 19.198 Z M 24.053 19.127 C 23.639 19.127 23.364 19.332 23.191 19.607 L 23.191 19.197 L 22.465 19.197 L 22.465 22.481 L 23.191 22.481 L 23.191 20.633 C 23.191 20.086 23.434 19.777 23.882 19.777 C 24.018 19.777 24.192 19.812 24.33 19.847 L 24.538 19.162 C 24.401 19.127 24.192 19.127 24.052 19.127 Z M 14.765 19.469 C 14.42 19.229 13.937 19.127 13.418 19.127 C 12.588 19.127 12.036 19.538 12.036 20.188 C 12.036 20.736 12.453 21.044 13.175 21.146 L 13.524 21.181 C 13.903 21.249 14.108 21.351 14.108 21.523 C 14.108 21.765 13.832 21.934 13.35 21.934 C 12.864 21.934 12.484 21.764 12.244 21.592 L 11.898 22.139 C 12.278 22.411 12.794 22.549 13.313 22.549 C 14.28 22.549 14.831 22.105 14.831 21.488 C 14.831 20.908 14.383 20.599 13.692 20.496 L 13.348 20.462 C 13.037 20.428 12.795 20.36 12.795 20.155 C 12.795 19.914 13.038 19.777 13.418 19.777 C 13.83 19.777 14.245 19.949 14.453 20.052 L 14.764 19.469 Z M 34.033 19.127 C 33.618 19.127 33.342 19.332 33.171 19.607 L 33.171 19.197 L 32.445 19.197 L 32.445 22.481 L 33.171 22.481 L 33.171 20.633 C 33.171 20.086 33.414 19.777 33.862 19.777 C 33.998 19.777 34.17 19.812 34.307 19.847 L 34.515 19.162 C 34.38 19.127 34.172 19.127 34.033 19.127 Z M 24.779 20.838 C 24.779 21.834 25.47 22.551 26.54 22.551 C 27.025 22.551 27.369 22.449 27.715 22.173 L 27.369 21.593 C 27.092 21.798 26.816 21.901 26.504 21.901 C 25.919 21.901 25.505 21.49 25.505 20.84 C 25.505 20.226 25.919 19.813 26.507 19.78 C 26.816 19.78 27.092 19.883 27.369 20.089 L 27.715 19.507 C 27.369 19.233 27.024 19.13 26.54 19.13 C 25.47 19.13 24.779 19.85 24.779 20.841 Z M 31.478 20.838 L 31.478 19.198 L 30.75 19.198 L 30.75 19.608 C 30.51 19.3 30.165 19.128 29.717 19.128 C 28.784 19.128 28.058 19.848 28.058 20.84 C 28.058 21.835 28.784 22.552 29.716 22.552 C 30.197 22.552 30.543 22.382 30.748 22.074 L 30.748 22.484 L 31.477 22.484 L 31.477 20.84 Z M 28.818 20.838 C 28.818 20.259 29.196 19.779 29.819 19.779 C 30.406 19.779 30.821 20.224 30.821 20.84 C 30.821 21.424 30.406 21.902 29.819 21.902 C 29.196 21.869 28.818 21.424 28.818 20.841 Z M 20.148 19.128 C 19.183 19.128 18.494 19.813 18.494 20.84 C 18.494 21.869 19.183 22.552 20.185 22.552 C 20.671 22.552 21.154 22.417 21.533 22.108 L 21.188 21.595 C 20.914 21.799 20.565 21.937 20.222 21.937 C 19.772 21.937 19.323 21.732 19.219 21.149 L 21.671 21.149 L 21.671 20.878 C 21.705 19.815 21.083 19.13 20.15 19.13 Z M 20.148 19.748 C 20.6 19.748 20.911 20.019 20.98 20.532 L 19.253 20.532 C 19.321 20.087 19.633 19.748 20.148 19.748 Z M 38.141 20.84 L 38.141 17.898 L 37.412 17.898 L 37.412 19.61 C 37.173 19.302 36.828 19.13 36.38 19.13 C 35.446 19.13 34.721 19.85 34.721 20.841 C 34.721 21.837 35.446 22.554 36.379 22.554 C 36.861 22.554 37.206 22.383 37.41 22.076 L 37.41 22.486 L 38.14 22.486 L 38.14 20.841 Z M 35.481 20.84 C 35.481 20.261 35.861 19.78 36.484 19.78 C 37.069 19.78 37.486 20.226 37.486 20.841 C 37.486 21.426 37.069 21.904 36.484 21.904 C 35.861 21.87 35.481 21.426 35.481 20.843 Z M 11.237 20.84 L 11.237 19.2 L 10.515 19.2 L 10.515 19.61 C 10.272 19.302 9.928 19.13 9.478 19.13 C 8.545 19.13 7.82 19.85 7.82 20.841 C 7.82 21.837 8.545 22.554 9.477 22.554 C 9.96 22.554 10.304 22.383 10.512 22.076 L 10.512 22.486 L 11.236 22.486 L 11.236 20.841 Z M 8.546 20.84 C 8.546 20.261 8.926 19.78 9.548 19.78 C 10.134 19.78 10.55 20.226 10.55 20.841 C 10.55 21.426 10.134 21.904 9.548 21.904 C 8.926 21.87 8.546 21.426 8.546 20.843 Z" style="fill: rgb(255, 255, 255);"/>\n</svg>';
     },
     "./src/resources/cardLogos/visa.svg": function(module, exports) {
         module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="40" height="24" viewBox="0 0 40 24" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <path d="M0 1.927C0 .863.892 0 1.992 0h36.016C39.108 0 40 .863 40 1.927v20.146C40 23.137 39.108 24 38.008 24H1.992C.892 24 0 23.137 0 22.073V1.927z" style="fill: rgb(33, 86, 154);"/>\n  <path d="M19.596 7.885l-2.11 9.478H14.93l2.11-9.478h2.554zm10.743 6.12l1.343-3.56.773 3.56H30.34zm2.85 3.358h2.36l-2.063-9.478H31.31c-.492 0-.905.274-1.088.695l-3.832 8.783h2.682l.532-1.415h3.276l.31 1.415zm-6.667-3.094c.01-2.502-3.6-2.64-3.577-3.76.008-.338.345-.7 1.083-.793.365-.045 1.373-.08 2.517.425l.448-2.01c-.615-.214-1.405-.42-2.39-.42-2.523 0-4.3 1.288-4.313 3.133-.016 1.364 1.268 2.125 2.234 2.58.996.464 1.33.762 1.325 1.177-.006.636-.793.918-1.526.928-1.285.02-2.03-.333-2.623-.6l-.462 2.08c.598.262 1.7.49 2.84.502 2.682 0 4.437-1.273 4.445-3.243zM15.948 7.884l-4.138 9.478h-2.7L7.076 9.8c-.123-.466-.23-.637-.606-.834-.615-.32-1.63-.62-2.52-.806l.06-.275h4.345c.554 0 1.052.354 1.178.966l1.076 5.486 2.655-6.45h2.683z" style="fill: rgb(255, 255, 255);"/>\n</svg>';
     },
-    "./src/resources/fundingLogos/bancontact.svg": function(module, exports) {
-        module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg version="1.1" id="Layer_1" x="0px" y="0px" width="226px" height="32px" viewBox="36.09922790527344 36.68461608886719 226 32" style="enable-background:new 0 0 476.9 123.4;" xmlns="http://www.w3.org/2000/svg">\n  <style type="text/css">\n\t.st0{fill:#FFFFFF;}\n\t.st1{fill:#005498;}\n\t.st2{fill:#FFD800;}\n</style>\n  <g transform="matrix(0.557769, 0, 0, 0.557769, 15.684875, 18.15871)">\n    <g>\n      <path class="st1" d="M147.6,50.2h-5.8h-26.9h-5.8l-3.9,4.4L92.5,68.9l0,0l-3.9,4.4h-6H56.2h-5.8l3.9-4.5l1.8-2.1l3.9-4.5h-5.8h-7.6&#10;&#9;&#9;h-4.2c-3.2,0-5.8,2.7-5.8,6l0,0v11.5v1.1c0,3.3,2.6,6,5.8,6H44h61.1h4.4c3.2,0,7.6-2,9.7-4.4l10.2-11.6L147.6,50.2z"/>\n      <path class="st2" d="M155.3,36.8c3.2,0,5.8,2.7,5.8,6v12.6c0,3.3-2.6,6-5.8,6h-3.2h-8.5h-5.8l3.9-4.4l0,0l1.9-2.2l3.9-4.4h-38.6&#10;&#9;&#9;L88.3,73.6H50l27.5-31.1l1-1.2c2.2-2.4,6.5-4.4,9.7-4.4h1.4h65.7V36.8z"/>\n    </g>\n    <path class="st1" d="M 440.7 85.6 L 440.7 81.8 C 440.7 81.3 440.4 81 439.7 81 L 437.3 81 C 436.6 81 436.1 80.9 436 80.6 C 435.8 80.3 435.8 79.7 435.8 78.7 L 435.8 64.7 L 439.7 64.7 C 440 64.7 440.2 64.6 440.4 64.4 C 440.6 64.2 440.7 64 440.7 63.7 L 440.7 59.8 C 440.7 59.5 440.6 59.3 440.4 59.1 C 440.2 58.9 440 58.8 439.7 58.8 L 435.8 58.8 L 435.8 53.8 C 435.8 53.5 435.7 53.3 435.6 53.2 C 435.4 53.1 435.2 53 435 53 L 434.9 53 L 429.1 54 C 428.8 54.1 428.6 54.2 428.4 54.3 C 428.2 54.5 428.1 54.7 428.1 54.9 L 428.1 58.8 L 424.2 58.8 C 423.9 58.8 423.7 58.9 423.5 59.1 C 423.3 59.3 423.2 59.5 423.2 59.8 L 423.2 63 C 423.2 63.3 423.3 63.5 423.5 63.6 C 423.7 63.8 423.9 63.9 424.2 64 L 428.1 64.6 L 428.1 78.6 C 428.1 80.3 428.3 81.7 428.6 82.8 C 429 83.9 429.5 84.7 430.1 85.3 C 430.8 85.9 431.6 86.3 432.6 86.5 C 433.6 86.7 434.8 86.8 436.1 86.8 C 436.8 86.8 437.4 86.8 438 86.7 C 438.5 86.6 439.2 86.5 439.9 86.4 C 440.4 86.4 440.7 86.1 440.7 85.6 M 419.9 85.1 L 419.9 80.8 C 419.9 80.5 419.8 80.3 419.6 80.2 C 419.4 80.1 419.2 80 418.9 80 L 418.8 80 C 417.9 80.1 417 80.2 416.2 80.2 C 415.4 80.3 414.3 80.3 412.9 80.3 C 412.4 80.3 411.8 80.2 411.4 80 C 410.9 79.8 410.5 79.5 410.1 79.1 C 409.7 78.7 409.5 78.1 409.3 77.4 C 409.1 76.7 409 75.8 409 74.7 L 409 70.7 C 409 69.6 409.1 68.7 409.3 68 C 409.5 67.3 409.8 66.7 410.1 66.3 C 410.5 65.9 410.9 65.6 411.4 65.4 C 411.9 65.2 412.4 65.1 412.9 65.1 C 414.3 65.1 415.4 65.1 416.2 65.2 C 417 65.3 417.9 65.3 418.8 65.4 L 418.9 65.4 C 419.2 65.4 419.4 65.3 419.6 65.2 C 419.8 65.1 419.9 64.9 419.9 64.6 L 419.9 60.3 C 419.9 59.9 419.8 59.7 419.7 59.6 C 419.5 59.5 419.3 59.3 418.9 59.2 C 418.2 59 417.3 58.9 416.3 58.7 C 415.2 58.5 414 58.5 412.5 58.5 C 409.1 58.5 406.4 59.5 404.3 61.6 C 402.3 63.7 401.2 66.7 401.2 70.7 L 401.2 74.7 C 401.2 78.6 402.2 81.7 404.3 83.8 C 406.3 85.9 409.1 86.9 412.5 86.9 C 413.9 86.9 415.2 86.8 416.3 86.7 C 417.4 86.5 418.3 86.4 418.9 86.2 C 419.3 86.1 419.5 86 419.7 85.8 C 419.8 85.7 419.9 85.4 419.9 85.1 M 388.6 80 C 388 80.3 387.4 80.5 386.7 80.7 C 386 80.9 385.3 81 384.6 81 C 383.6 81 382.8 80.9 382.3 80.6 C 381.8 80.3 381.6 79.7 381.6 78.6 L 381.6 78.2 C 381.6 77.6 381.7 77.1 381.8 76.7 C 381.9 76.3 382.2 75.9 382.5 75.6 C 382.8 75.3 383.3 75.1 383.8 74.9 C 384.3 74.8 385 74.7 385.9 74.7 L 388.6 74.7 L 388.6 80 L 388.6 80 Z M 396.2 68.3 C 396.2 66.5 395.9 65 395.4 63.8 C 394.9 62.6 394.1 61.6 393.2 60.8 C 392.2 60 391.1 59.4 389.7 59.1 C 388.3 58.7 386.7 58.5 385 58.5 C 383.4 58.5 381.8 58.6 380.3 58.8 C 378.8 59 377.6 59.2 376.7 59.5 C 376.1 59.7 375.8 60 375.8 60.6 L 375.8 64.5 C 375.8 64.8 375.9 65 376 65.2 C 376.2 65.3 376.4 65.4 376.6 65.4 L 376.8 65.4 C 377.2 65.4 377.7 65.3 378.2 65.3 C 378.8 65.3 379.4 65.2 380.2 65.2 C 380.9 65.2 381.7 65.1 382.5 65.1 C 383.3 65.1 384.1 65.1 384.8 65.1 C 385.9 65.1 386.8 65.3 387.4 65.7 C 388 66.1 388.4 67 388.4 68.4 L 388.4 70.1 L 385.8 70.1 C 381.7 70.1 378.6 70.7 376.8 72 C 375 73.3 374 75.4 374 78.2 L 374 78.6 C 374 80.2 374.2 81.5 374.7 82.5 C 375.2 83.6 375.8 84.4 376.6 85.1 C 377.4 85.7 378.2 86.2 379.2 86.5 C 380.2 86.8 381.2 86.9 382.3 86.9 C 383.7 86.9 385 86.7 386 86.3 C 387 85.9 388 85.4 389 84.7 L 389 85.5 C 389 85.8 389.1 86 389.3 86.2 C 389.5 86.4 389.7 86.5 390 86.5 L 395.4 86.5 C 395.7 86.5 395.9 86.4 396.1 86.2 C 396.3 86 396.4 85.8 396.4 85.5 L 396.4 68.3 L 396.2 68.3 Z M 370.5 85.6 L 370.5 81.8 C 370.5 81.3 370.2 81 369.5 81 L 367.1 81 C 366.4 81 365.9 80.9 365.8 80.6 C 365.6 80.3 365.6 79.7 365.6 78.7 L 365.6 64.7 L 369.5 64.7 C 369.8 64.7 370 64.6 370.2 64.4 C 370.4 64.2 370.5 64 370.5 63.7 L 370.5 59.8 C 370.5 59.5 370.4 59.3 370.2 59.1 C 370 58.9 369.8 58.8 369.5 58.8 L 365.6 58.8 L 365.6 53.8 C 365.6 53.5 365.5 53.3 365.4 53.2 C 365.2 53.1 365 53 364.8 53 L 364.7 53 L 358.9 54 C 358.6 54.1 358.4 54.2 358.2 54.3 C 358 54.5 357.9 54.7 357.9 54.9 L 357.9 58.8 L 354 58.8 C 353.7 58.8 353.5 58.9 353.3 59.1 C 353.1 59.3 353 59.5 353 59.8 L 353 63 C 353 63.3 353.1 63.5 353.3 63.6 C 353.5 63.8 353.7 63.9 354 64 L 357.9 64.6 L 357.9 78.6 C 357.9 80.3 358.1 81.7 358.4 82.8 C 358.8 83.9 359.3 84.7 359.9 85.3 C 360.6 85.9 361.4 86.3 362.4 86.5 C 363.4 86.7 364.6 86.8 365.9 86.8 C 366.6 86.8 367.2 86.8 367.8 86.7 C 368.3 86.6 369 86.5 369.7 86.4 C 370.2 86.4 370.5 86.1 370.5 85.6 M 349.5 85.5 L 349.5 69.5 C 349.5 68 349.4 66.6 349.1 65.2 C 348.9 63.9 348.4 62.7 347.8 61.7 C 347.2 60.7 346.3 59.9 345.2 59.4 C 344.1 58.8 342.7 58.5 340.9 58.5 C 339.4 58.5 338 58.7 336.8 59.1 C 335.6 59.5 334.4 60.1 333 61.1 L 333 59.8 C 333 59.5 332.9 59.3 332.7 59.1 C 332.5 58.9 332.3 58.8 332 58.8 L 326.6 58.8 C 326.3 58.8 326.1 58.9 325.9 59.1 C 325.7 59.3 325.6 59.5 325.6 59.8 L 325.6 85.4 C 325.6 85.7 325.7 85.9 325.9 86.1 C 326.1 86.3 326.3 86.4 326.6 86.4 L 332.4 86.4 C 332.7 86.4 332.9 86.3 333.1 86.1 C 333.3 85.9 333.4 85.7 333.4 85.4 L 333.4 66.5 C 334.2 66.1 335 65.7 335.8 65.4 C 336.5 65.1 337.3 65 338 65 C 338.7 65 339.3 65.1 339.8 65.2 C 340.3 65.3 340.6 65.6 340.9 65.9 C 341.2 66.3 341.3 66.7 341.4 67.3 C 341.5 67.9 341.5 68.6 341.5 69.4 L 341.5 85.4 C 341.5 85.7 341.6 85.9 341.8 86.1 C 342 86.3 342.2 86.4 342.5 86.4 L 348.3 86.4 C 348.6 86.4 348.8 86.3 349 86.1 C 349.4 85.9 349.5 85.7 349.5 85.5 M 313.1 74.4 C 313.1 78.3 311.7 80.3 308.8 80.3 C 307.4 80.3 306.3 79.8 305.6 78.8 C 304.9 77.8 304.5 76.3 304.5 74.4 L 304.5 71 C 304.5 69 304.9 67.6 305.6 66.6 C 306.3 65.6 307.4 65.1 308.8 65.1 C 311.6 65.1 313.1 67.1 313.1 71 L 313.1 74.4 Z M 320.9 71 C 320.9 69.1 320.6 67.3 320.1 65.8 C 319.6 64.3 318.8 63 317.8 61.9 C 316.8 60.8 315.5 60 314 59.4 C 312.5 58.8 310.8 58.5 308.8 58.5 C 306.8 58.5 305.1 58.8 303.6 59.4 C 302.1 60 300.8 60.8 299.8 61.9 C 298.8 63 298 64.3 297.5 65.8 C 297 67.3 296.7 69.1 296.7 71 L 296.7 74.4 C 296.7 76.3 297 78.1 297.5 79.6 C 298 81.1 298.8 82.4 299.8 83.5 C 300.8 84.6 302.1 85.4 303.6 86 C 305.1 86.6 306.8 86.9 308.8 86.9 C 310.8 86.9 312.5 86.6 314 86 C 315.5 85.4 316.8 84.6 317.8 83.5 C 318.8 82.4 319.6 81.1 320.1 79.6 C 320.6 78.1 320.9 76.3 320.9 74.4 L 320.9 71 Z M 294.1 85.1 L 294.1 80.8 C 294.1 80.5 294 80.3 293.8 80.2 C 293.6 80.1 293.4 80 293.1 80 L 293 80 C 292.1 80.1 291.2 80.2 290.4 80.2 C 289.6 80.2 288.5 80.3 287.1 80.3 C 286.6 80.3 286 80.2 285.6 80 C 285.1 79.8 284.7 79.5 284.3 79.1 C 283.9 78.7 283.7 78.1 283.5 77.4 C 283.3 76.7 283.2 75.8 283.2 74.7 L 283.2 70.7 C 283.2 69.6 283.3 68.7 283.5 68 C 283.7 67.3 284 66.7 284.3 66.3 C 284.7 65.9 285.1 65.6 285.6 65.4 C 286.1 65.2 286.6 65.1 287.1 65.1 C 288.5 65.1 289.6 65.1 290.4 65.2 C 291.2 65.3 292.1 65.3 293 65.4 L 293.1 65.4 C 293.4 65.4 293.6 65.3 293.8 65.2 C 294 65.1 294.1 64.9 294.1 64.6 L 294.1 60.3 C 294.1 59.9 294 59.7 293.9 59.6 C 293.7 59.5 293.5 59.3 293.1 59.2 C 292.4 59 291.6 58.9 290.5 58.7 C 289.4 58.5 288.2 58.5 286.7 58.5 C 283.3 58.5 280.6 59.5 278.5 61.6 C 276.5 63.7 275.4 66.7 275.4 70.7 L 275.4 74.7 C 275.4 78.6 276.4 81.7 278.5 83.8 C 280.5 85.9 283.3 86.9 286.7 86.9 C 288.1 86.9 289.4 86.8 290.5 86.7 C 291.6 86.5 292.4 86.4 293.1 86.2 C 293.5 86.1 293.7 86 293.9 85.8 C 294 85.7 294.1 85.4 294.1 85.1 M 270.4 85.5 L 270.4 69.5 C 270.4 68 270.3 66.6 270 65.2 C 269.7 63.8 269.3 62.7 268.7 61.7 C 268.1 60.7 267.2 59.9 266.1 59.4 C 265 58.8 263.6 58.5 261.8 58.5 C 260.3 58.5 258.9 58.7 257.7 59.1 C 256.5 59.5 255.3 60.1 253.9 61.1 L 253.9 59.8 C 253.9 59.5 253.8 59.3 253.6 59.1 C 253.4 58.9 253.2 58.8 252.9 58.8 L 247.5 58.8 C 247.2 58.8 247 58.9 246.8 59.1 C 246.6 59.3 246.5 59.5 246.5 59.8 L 246.5 85.4 C 246.5 85.7 246.6 85.9 246.8 86.1 C 247 86.3 247.2 86.4 247.5 86.4 L 253.3 86.4 C 253.6 86.4 253.8 86.3 254 86.1 C 254.2 85.9 254.3 85.7 254.3 85.4 L 254.3 66.5 C 255.1 66.1 255.9 65.7 256.7 65.4 C 257.4 65.1 258.2 65 258.9 65 C 259.6 65 260.2 65.1 260.7 65.2 C 261.2 65.3 261.5 65.6 261.8 65.9 C 262.1 66.3 262.2 66.7 262.3 67.3 C 262.4 67.9 262.4 68.6 262.4 69.4 L 262.4 85.4 C 262.4 85.7 262.5 85.9 262.7 86.1 C 262.9 86.3 263.1 86.4 263.4 86.4 L 269.2 86.4 C 269.5 86.4 269.7 86.3 269.9 86.1 C 270.3 85.9 270.4 85.7 270.4 85.5 M 233.3 80 C 232.7 80.3 232.1 80.5 231.4 80.7 C 230.7 80.9 230 81 229.3 81 C 228.3 81 227.5 80.9 227 80.6 C 226.5 80.3 226.3 79.7 226.3 78.6 L 226.3 78.2 C 226.3 77.6 226.4 77.1 226.5 76.7 C 226.6 76.3 226.9 75.9 227.2 75.6 C 227.5 75.3 228 75.1 228.5 74.9 C 229 74.8 229.7 74.7 230.6 74.7 L 233.3 74.7 L 233.3 80 L 233.3 80 Z M 241 68.3 C 241 66.5 240.7 65 240.2 63.8 C 239.7 62.6 238.9 61.6 238 60.8 C 237 60 235.9 59.4 234.5 59.1 C 233.1 58.7 231.5 58.5 229.8 58.5 C 228.2 58.5 226.6 58.6 225.1 58.8 C 223.6 59 222.4 59.2 221.5 59.5 C 220.9 59.7 220.6 60 220.6 60.6 L 220.6 64.5 C 220.6 64.8 220.7 65 220.8 65.2 C 221 65.3 221.2 65.4 221.4 65.4 L 221.6 65.4 C 222 65.4 222.5 65.3 223 65.3 C 223.6 65.3 224.2 65.2 225 65.2 C 225.7 65.2 226.5 65.1 227.3 65.1 C 228.1 65.1 228.9 65.1 229.6 65.1 C 230.7 65.1 231.6 65.3 232.2 65.7 C 232.8 66.1 233.2 67 233.2 68.4 L 233.2 70.1 L 230.6 70.1 C 226.5 70.1 223.4 70.7 221.6 72 C 219.8 73.3 218.8 75.4 218.8 78.2 L 218.8 78.6 C 218.8 80.2 219 81.5 219.5 82.5 C 220 83.6 220.6 84.4 221.4 85.1 C 222.2 85.7 223 86.2 224 86.5 C 225 86.8 226 86.9 227.1 86.9 C 228.5 86.9 229.8 86.7 230.8 86.3 C 231.8 85.9 232.8 85.4 233.8 84.7 L 233.8 85.5 C 233.8 85.8 233.9 86 234.1 86.2 C 234.3 86.4 234.5 86.5 234.8 86.5 L 240.2 86.5 C 240.5 86.5 240.7 86.4 240.9 86.2 C 241.1 86 241.2 85.8 241.2 85.5 L 241.2 68.3 L 241 68.3 Z M 206.6 75.9 C 206.6 77.2 206.1 78.3 205.2 79 C 204.3 79.7 202.5 80.1 200.1 80.1 L 199.3 80.1 C 198.9 80.1 198.5 80.1 198.1 80.1 C 197.7 80.1 197.3 80.1 196.9 80.1 L 196.1 80.1 L 196.1 71.1 L 201.5 71.1 C 203.4 71.1 204.8 71.5 205.5 72.4 C 206.2 73.3 206.6 74.3 206.6 75.4 L 206.6 75.9 Z M 206.4 61.6 C 206.4 62.1 206.3 62.6 206.2 63.1 C 206 63.6 205.8 64 205.4 64.3 C 205 64.6 204.5 64.9 203.9 65.1 C 203.3 65.3 202.5 65.4 201.5 65.4 L 196.1 65.4 L 196.1 57.1 C 196.3 57.1 196.5 57.1 196.8 57.1 C 197.1 57.1 197.5 57.1 197.9 57.1 L 199 57.1 L 199.8 57.1 C 202.3 57.1 204 57.4 205 58 C 206 58.6 206.5 59.6 206.5 60.9 L 206.5 61.6 L 206.4 61.6 Z M 214.6 75.4 C 214.6 73.7 214.2 72.3 213.4 71.1 C 212.6 69.9 211.6 68.9 210.3 68.3 C 211.6 67.7 212.6 66.7 213.3 65.5 C 214 64.2 214.4 62.8 214.4 61.3 L 214.4 60.4 C 214.4 58.5 214 56.9 213.3 55.6 C 212.6 54.3 211.5 53.3 210.2 52.5 C 208.9 51.7 207.3 51.2 205.4 50.8 C 203.5 50.5 201.5 50.3 199.2 50.3 C 198.4 50.3 197.6 50.3 196.8 50.3 C 196 50.3 195.2 50.4 194.4 50.4 C 193.6 50.4 192.9 50.5 192.2 50.6 C 191.5 50.7 191 50.7 190.6 50.8 C 189.7 51 189 51.3 188.6 51.7 C 188.2 52.1 188 52.9 188 54 L 188 83.3 C 188 84.4 188.2 85.1 188.6 85.6 C 189 86 189.7 86.3 190.6 86.5 C 191.1 86.6 191.7 86.7 192.3 86.7 C 193 86.8 193.7 86.8 194.5 86.9 C 195.3 86.9 196.1 87 196.9 87 C 197.7 87 198.6 87 199.4 87 C 201.5 87 203.5 86.8 205.3 86.5 C 207.1 86.2 208.7 85.6 210.1 84.8 C 211.5 84 212.5 82.9 213.4 81.5 C 214.2 80.1 214.6 78.3 214.6 76.2 L 214.6 75.4 L 214.6 75.4 Z"/>\n  </g>\n</svg>';
-    },
-    "./src/resources/fundingLogos/bancontact_white.svg": function(module, exports) {
-        module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg version="1.1" id="Layer_1" x="0px" y="0px" width="258px" height="32px" viewBox="0 0 258 32" enable-background="new 0 0 403.866 49.999" xmlns="http://www.w3.org/2000/svg">\n  <g>\n    <path fill="none" d="M440.514,66.851c0,10.913-8.929,19.843-19.843,19.843H-16.593c-10.913,0-19.843-8.929-19.843-19.843v-83.81&#10;&#9;&#9;c0-10.913,8.929-19.843,19.843-19.843h437.264c10.913,0,19.843,8.929,19.843,19.843V66.851z"/>\n  </g>\n  <g transform="matrix(0.637323, 0, 0, 0.637323, 0, 0)">\n    <path fill="#FFFFFF" d="M404.061,48.855v-3.727c0-0.541-0.337-0.812-1.011-0.812h-2.36c-0.739,0-1.188-0.136-1.348-0.409&#10;&#9;&#9;c-0.161-0.272-0.241-0.891-0.241-1.854V28.039h3.949c0.256,0,0.481-0.097,0.674-0.291c0.192-0.194,0.289-0.421,0.289-0.68v-3.933&#10;&#9;&#9;c0-0.258-0.097-0.486-0.289-0.68c-0.193-0.194-0.418-0.291-0.674-0.291h-3.949v-5.105c0-0.256-0.08-0.457-0.24-0.602&#10;&#9;&#9;c-0.159-0.144-0.367-0.216-0.622-0.216h-0.144l-5.839,1.011c-0.256,0.065-0.479,0.177-0.67,0.337&#10;&#9;&#9;c-0.191,0.161-0.287,0.369-0.287,0.626v3.949h-3.852c-0.258,0-0.49,0.105-0.699,0.313c-0.209,0.209-0.313,0.442-0.313,0.698v3.179&#10;&#9;&#9;c0,0.257,0.104,0.474,0.313,0.65c0.209,0.177,0.441,0.297,0.699,0.361l3.852,0.626v13.966c0,1.702,0.176,3.09,0.526,4.165&#10;&#9;&#9;c0.351,1.076,0.862,1.919,1.532,2.529c0.67,0.61,1.507,1.019,2.513,1.228c1.005,0.208,2.162,0.313,3.472,0.313&#10;&#9;&#9;c0.705,0,1.331-0.033,1.878-0.096c0.545-0.064,1.187-0.159,1.926-0.287C403.755,49.715,404.061,49.396,404.061,48.855&#10;&#9;&#9; M383.305,48.362v-4.286c0-0.257-0.089-0.458-0.265-0.602c-0.177-0.145-0.393-0.217-0.65-0.217h-0.096&#10;&#9;&#9;c-0.899,0.096-1.758,0.177-2.577,0.241c-0.818,0.064-1.918,0.096-3.298,0.096c-0.547,0-1.06-0.088-1.541-0.265&#10;&#9;&#9;c-0.482-0.176-0.9-0.481-1.253-0.915c-0.353-0.433-0.634-1.011-0.842-1.733c-0.21-0.723-0.313-1.614-0.313-2.673v-4.045&#10;&#9;&#9;c0-1.06,0.103-1.951,0.313-2.673c0.208-0.723,0.489-1.3,0.842-1.734c0.353-0.433,0.771-0.738,1.253-0.915&#10;&#9;&#9;c0.481-0.176,0.994-0.265,1.541-0.265c1.38,0,2.48,0.033,3.298,0.097c0.819,0.064,1.678,0.144,2.577,0.24h0.096&#10;&#9;&#9;c0.257,0,0.473-0.072,0.65-0.216c0.176-0.145,0.265-0.345,0.265-0.602v-4.286c0-0.353-0.08-0.602-0.241-0.747&#10;&#9;&#9;c-0.161-0.144-0.417-0.265-0.77-0.361c-0.674-0.16-1.55-0.32-2.625-0.482c-1.076-0.16-2.335-0.24-3.78-0.24&#10;&#9;&#9;c-3.404,0-6.124,1.043-8.163,3.13s-3.058,5.105-3.058,9.054v4.045c0,3.949,1.019,6.967,3.058,9.053&#10;&#9;&#9;c2.039,2.088,4.759,3.131,8.163,3.131c1.445,0,2.704-0.081,3.78-0.241c1.075-0.161,1.951-0.321,2.625-0.482&#10;&#9;&#9;c0.353-0.096,0.609-0.216,0.77-0.361C383.225,48.964,383.305,48.715,383.305,48.362 M351.955,43.257&#10;&#9;&#9;c-0.578,0.289-1.197,0.538-1.854,0.746c-0.659,0.21-1.357,0.313-2.095,0.313c-1.028,0-1.79-0.144-2.288-0.433&#10;&#9;&#9;c-0.498-0.289-0.746-0.947-0.746-1.974v-0.434c0-0.578,0.064-1.091,0.193-1.541c0.127-0.449,0.352-0.819,0.674-1.108&#10;&#9;&#9;c0.32-0.288,0.754-0.505,1.3-0.65c0.546-0.144,1.236-0.216,2.071-0.216h2.745V43.257z M359.612,31.603&#10;&#9;&#9;c0-1.765-0.265-3.267-0.795-4.503c-0.53-1.235-1.276-2.247-2.239-3.034c-0.963-0.786-2.143-1.364-3.54-1.733&#10;&#9;&#9;c-1.396-0.369-2.961-0.554-4.695-0.554c-1.606,0-3.171,0.113-4.695,0.337c-1.526,0.225-2.738,0.45-3.636,0.674&#10;&#9;&#9;c-0.611,0.161-0.915,0.514-0.915,1.059v3.901c0,0.322,0.079,0.547,0.24,0.674c0.161,0.129,0.369,0.193,0.626,0.193h0.241&#10;&#9;&#9;c0.386-0.032,0.867-0.072,1.445-0.12c0.578-0.048,1.228-0.088,1.95-0.121c0.723-0.031,1.477-0.055,2.264-0.072&#10;&#9;&#9;c0.786-0.016,1.565-0.024,2.335-0.024c1.124,0,2.007,0.209,2.649,0.626c0.642,0.418,0.963,1.317,0.963,2.697v1.734h-2.6&#10;&#9;&#9;c-4.142,0-7.152,0.65-9.03,1.95c-1.878,1.3-2.817,3.363-2.817,6.188v0.434c0,1.573,0.232,2.889,0.698,3.948&#10;&#9;&#9;c0.465,1.06,1.084,1.911,1.854,2.553c0.771,0.642,1.645,1.1,2.625,1.372c0.979,0.273,1.998,0.41,3.058,0.41&#10;&#9;&#9;c1.445,0,2.688-0.193,3.732-0.578c1.043-0.385,2.03-0.915,2.962-1.589v0.77c0,0.257,0.096,0.482,0.289,0.674&#10;&#9;&#9;c0.192,0.193,0.417,0.289,0.674,0.289h5.394c0.256,0,0.481-0.096,0.674-0.289c0.192-0.192,0.289-0.417,0.289-0.674V31.603z&#10;&#9;&#9; M333.896,48.855v-3.727c0-0.541-0.337-0.812-1.011-0.812h-2.36c-0.739,0-1.188-0.136-1.348-0.409&#10;&#9;&#9;c-0.161-0.272-0.241-0.891-0.241-1.854V28.039h3.949c0.256,0,0.481-0.097,0.674-0.291s0.289-0.421,0.289-0.68v-3.933&#10;&#9;&#9;c0-0.258-0.096-0.486-0.289-0.68c-0.193-0.194-0.418-0.291-0.674-0.291h-3.949v-5.105c0-0.256-0.08-0.457-0.239-0.602&#10;&#9;&#9;c-0.16-0.144-0.368-0.216-0.623-0.216h-0.143l-5.839,1.011c-0.256,0.065-0.48,0.177-0.671,0.337&#10;&#9;&#9;c-0.191,0.161-0.287,0.369-0.287,0.626v3.949h-3.852c-0.258,0-0.49,0.105-0.699,0.313c-0.209,0.209-0.313,0.442-0.313,0.698v3.179&#10;&#9;&#9;c0,0.257,0.104,0.474,0.313,0.65c0.209,0.177,0.441,0.297,0.699,0.361l3.852,0.626v13.966c0,1.702,0.176,3.09,0.526,4.165&#10;&#9;&#9;c0.351,1.076,0.862,1.919,1.532,2.529c0.67,0.61,1.508,1.019,2.513,1.228c1.005,0.208,2.162,0.313,3.472,0.313&#10;&#9;&#9;c0.705,0,1.332-0.033,1.878-0.096c0.545-0.064,1.187-0.159,1.926-0.287C333.591,49.715,333.896,49.396,333.896,48.855&#10;&#9;&#9; M312.899,48.747V32.71c0-1.508-0.121-2.929-0.361-4.261c-0.241-1.332-0.675-2.488-1.301-3.468c-0.626-0.979-1.493-1.758-2.6-2.335&#10;&#9;&#9;c-1.108-0.578-2.528-0.867-4.262-0.867c-1.541,0-2.906,0.186-4.094,0.558c-1.188,0.372-2.44,1.027-3.756,1.965v-1.167&#10;&#9;&#9;c0-0.258-0.096-0.485-0.289-0.679c-0.192-0.194-0.417-0.292-0.674-0.292h-5.394c-0.257,0-0.481,0.096-0.674,0.289&#10;&#9;&#9;c-0.192,0.193-0.289,0.418-0.289,0.674v25.62c0,0.257,0.104,0.49,0.313,0.698c0.209,0.209,0.441,0.313,0.699,0.313h5.827&#10;&#9;&#9;c0.256,0,0.481-0.104,0.674-0.312c0.192-0.208,0.289-0.44,0.289-0.697V29.817c0.834-0.448,1.621-0.816,2.359-1.104&#10;&#9;&#9;c0.739-0.289,1.461-0.433,2.168-0.433c0.738,0,1.34,0.072,1.805,0.217c0.465,0.144,0.827,0.392,1.084,0.745&#10;&#9;&#9;c0.257,0.352,0.433,0.816,0.53,1.392c0.096,0.577,0.144,1.282,0.144,2.115v16c0,0.257,0.097,0.489,0.289,0.697&#10;&#9;&#9;c0.193,0.208,0.417,0.312,0.674,0.312h5.827c0.257,0,0.49-0.104,0.699-0.313C312.794,49.237,312.899,49.004,312.899,48.747&#10;&#9;&#9; M276.444,37.671c0,3.949-1.421,5.923-4.262,5.923c-1.405,0-2.474-0.497-3.208-1.493c-0.735-0.995-1.102-2.472-1.102-4.43V34.3&#10;&#9;&#9;c0-1.958,0.367-3.427,1.102-4.407c0.734-0.979,1.803-1.469,3.208-1.469c2.841,0,4.262,1.959,4.262,5.876V37.671z M284.246,34.3&#10;&#9;&#9;c0-1.927-0.266-3.66-0.797-5.201c-0.531-1.541-1.303-2.849-2.316-3.925c-1.013-1.075-2.268-1.91-3.763-2.504&#10;&#9;&#9;c-1.496-0.594-3.226-0.891-5.188-0.891c-1.962,0-3.691,0.297-5.187,0.891c-1.496,0.594-2.759,1.429-3.788,2.504&#10;&#9;&#9;c-1.03,1.076-1.81,2.384-2.34,3.925c-0.532,1.541-0.797,3.274-0.797,5.201v3.371c0,1.926,0.265,3.66,0.797,5.201&#10;&#9;&#9;c0.53,1.541,1.31,2.849,2.34,3.925c1.029,1.076,2.292,1.91,3.788,2.504c1.496,0.593,3.225,0.891,5.187,0.891&#10;&#9;&#9;c1.962,0,3.692-0.298,5.188-0.891c1.495-0.594,2.75-1.428,3.763-2.504s1.785-2.384,2.316-3.925&#10;&#9;&#9;c0.531-1.541,0.797-3.275,0.797-5.201V34.3z M257.518,48.362v-4.286c0-0.257-0.089-0.458-0.265-0.602&#10;&#9;&#9;c-0.177-0.145-0.394-0.217-0.65-0.217h-0.097c-0.899,0.096-1.757,0.177-2.576,0.241c-0.819,0.064-1.919,0.096-3.299,0.096&#10;&#9;&#9;c-0.546,0-1.059-0.088-1.541-0.265c-0.482-0.176-0.899-0.481-1.252-0.915c-0.354-0.433-0.634-1.011-0.843-1.733&#10;&#9;&#9;c-0.209-0.723-0.313-1.614-0.313-2.673v-4.045c0-1.06,0.104-1.951,0.313-2.673c0.209-0.723,0.489-1.3,0.843-1.734&#10;&#9;&#9;c0.353-0.433,0.77-0.738,1.252-0.915c0.482-0.176,0.995-0.265,1.541-0.265c1.38,0,2.48,0.033,3.299,0.097&#10;&#9;&#9;c0.819,0.064,1.677,0.144,2.576,0.24h0.097c0.256,0,0.473-0.072,0.65-0.216c0.176-0.145,0.265-0.345,0.265-0.602v-4.286&#10;&#9;&#9;c0-0.353-0.081-0.602-0.241-0.747c-0.161-0.144-0.418-0.265-0.771-0.361c-0.674-0.16-1.549-0.32-2.624-0.482&#10;&#9;&#9;c-1.076-0.16-2.336-0.24-3.781-0.24c-3.403,0-6.124,1.043-8.162,3.13c-2.039,2.087-3.058,5.105-3.058,9.054v4.045&#10;&#9;&#9;c0,3.949,1.019,6.967,3.058,9.053c2.038,2.088,4.759,3.131,8.162,3.131c1.445,0,2.705-0.081,3.781-0.241&#10;&#9;&#9;c1.075-0.161,1.95-0.321,2.624-0.482c0.353-0.096,0.61-0.216,0.771-0.361C257.437,48.964,257.518,48.715,257.518,48.362&#10;&#9;&#9; M233.824,48.747V32.71c0-1.508-0.12-2.929-0.361-4.261c-0.241-1.332-0.674-2.488-1.3-3.468c-0.626-0.979-1.493-1.758-2.601-2.335&#10;&#9;&#9;c-1.107-0.578-2.528-0.867-4.262-0.867c-1.541,0-2.906,0.186-4.093,0.558c-1.188,0.372-2.44,1.027-3.756,1.965v-1.167&#10;&#9;&#9;c0-0.258-0.097-0.485-0.289-0.679c-0.193-0.194-0.418-0.292-0.675-0.292h-5.393c-0.258,0-0.482,0.096-0.674,0.289&#10;&#9;&#9;c-0.193,0.193-0.289,0.418-0.289,0.674v25.62c0,0.257,0.103,0.49,0.313,0.698c0.208,0.209,0.441,0.313,0.698,0.313h5.827&#10;&#9;&#9;c0.257,0,0.482-0.104,0.674-0.312c0.193-0.208,0.289-0.44,0.289-0.697V29.817c0.835-0.448,1.621-0.816,2.36-1.104&#10;&#9;&#9;c0.738-0.289,1.46-0.433,2.167-0.433c0.738,0,1.34,0.072,1.806,0.217c0.465,0.144,0.826,0.392,1.083,0.745&#10;&#9;&#9;c0.257,0.352,0.434,0.816,0.53,1.392c0.096,0.577,0.145,1.282,0.145,2.115v16c0,0.257,0.096,0.489,0.289,0.697&#10;&#9;&#9;c0.192,0.208,0.416,0.312,0.674,0.312h5.827c0.256,0,0.489-0.104,0.698-0.313C233.72,49.237,233.824,49.004,233.824,48.747&#10;&#9;&#9; M196.695,43.257c-0.578,0.289-1.197,0.538-1.854,0.746c-0.659,0.21-1.357,0.313-2.095,0.313c-1.028,0-1.79-0.144-2.288-0.433&#10;&#9;&#9;c-0.498-0.289-0.746-0.947-0.746-1.974v-0.434c0-0.578,0.064-1.091,0.193-1.541c0.128-0.449,0.353-0.819,0.674-1.108&#10;&#9;&#9;c0.32-0.288,0.754-0.505,1.3-0.65c0.546-0.144,1.236-0.216,2.071-0.216h2.745V43.257z M204.352,31.603&#10;&#9;&#9;c0-1.765-0.265-3.267-0.795-4.503c-0.529-1.235-1.276-2.247-2.239-3.034c-0.963-0.786-2.143-1.364-3.54-1.733&#10;&#9;&#9;c-1.396-0.369-2.961-0.554-4.695-0.554c-1.606,0-3.171,0.113-4.695,0.337c-1.526,0.225-2.738,0.45-3.636,0.674&#10;&#9;&#9;c-0.61,0.161-0.915,0.514-0.915,1.059v3.901c0,0.322,0.08,0.547,0.241,0.674c0.16,0.129,0.368,0.193,0.626,0.193h0.24&#10;&#9;&#9;c0.386-0.032,0.867-0.072,1.445-0.12c0.578-0.048,1.228-0.088,1.951-0.121c0.722-0.031,1.476-0.055,2.263-0.072&#10;&#9;&#9;c0.786-0.016,1.565-0.024,2.336-0.024c1.123,0,2.006,0.209,2.648,0.626c0.642,0.418,0.963,1.317,0.963,2.697v1.734h-2.6&#10;&#9;&#9;c-4.142,0-7.152,0.65-9.03,1.95c-1.878,1.3-2.817,3.363-2.817,6.188v0.434c0,1.573,0.233,2.889,0.698,3.948&#10;&#9;&#9;c0.465,1.06,1.084,1.911,1.854,2.553c0.771,0.642,1.645,1.1,2.625,1.372c0.979,0.273,1.999,0.41,3.058,0.41&#10;&#9;&#9;c1.445,0,2.689-0.193,3.732-0.578c1.043-0.385,2.03-0.915,2.962-1.589v0.77c0,0.257,0.096,0.482,0.289,0.674&#10;&#9;&#9;c0.193,0.193,0.417,0.289,0.674,0.289h5.394c0.256,0,0.481-0.096,0.674-0.289c0.193-0.192,0.289-0.417,0.289-0.674V31.603z&#10;&#9;&#9; M169.968,39.212c0,1.348-0.474,2.392-1.421,3.13c-0.947,0.739-2.657,1.108-5.129,1.108h-0.794c-0.37,0-0.755-0.008-1.156-0.024&#10;&#9;&#9;c-0.402-0.016-0.787-0.025-1.156-0.025h-0.842v-9.005h5.393c1.926,0,3.258,0.426,3.997,1.276c0.738,0.851,1.108,1.854,1.108,3.01&#10;&#9;&#9;V39.212z M169.775,24.861c0,0.514-0.08,1.004-0.241,1.469c-0.161,0.465-0.425,0.866-0.794,1.204&#10;&#9;&#9;c-0.37,0.337-0.867,0.61-1.493,0.818c-0.626,0.209-1.421,0.313-2.384,0.313h-5.393v-8.331c0.16,0,0.409-0.008,0.746-0.024&#10;&#9;&#9;c0.337-0.016,0.69-0.024,1.059-0.024h1.06h0.794c2.472,0,4.198,0.313,5.177,0.939c0.979,0.626,1.469,1.597,1.469,2.913V24.861z&#10;&#9;&#9; M177.962,38.682c0-1.669-0.394-3.114-1.18-4.334c-0.787-1.22-1.822-2.151-3.106-2.793c1.284-0.642,2.279-1.59,2.986-2.842&#10;&#9;&#9;c0.706-1.252,1.059-2.664,1.059-4.237v-0.867c0-1.927-0.369-3.532-1.107-4.816c-0.739-1.284-1.775-2.312-3.107-3.082&#10;&#9;&#9;c-1.332-0.771-2.93-1.324-4.791-1.662c-1.863-0.337-3.933-0.505-6.213-0.505c-0.77,0-1.573,0.016-2.407,0.048&#10;&#9;&#9;c-0.836,0.032-1.646,0.072-2.432,0.12c-0.787,0.048-1.51,0.105-2.167,0.169c-0.659,0.065-1.197,0.129-1.614,0.192&#10;&#9;&#9;c-0.931,0.162-1.589,0.45-1.974,0.867c-0.385,0.418-0.578,1.173-0.578,2.264v29.28c0,1.091,0.2,1.846,0.602,2.263&#10;&#9;&#9;c0.401,0.418,1.083,0.706,2.047,0.867c0.481,0.096,1.059,0.176,1.733,0.241c0.674,0.064,1.404,0.12,2.191,0.168&#10;&#9;&#9;c0.787,0.048,1.597,0.088,2.432,0.121c0.835,0.031,1.653,0.048,2.456,0.048c2.087,0,4.053-0.161,5.9-0.482&#10;&#9;&#9;c1.845-0.32,3.45-0.891,4.815-1.71c1.365-0.818,2.448-1.926,3.251-3.322c0.802-1.397,1.204-3.155,1.204-5.274V38.682z"/>\n    <g>\n      <path fill="#FFFFFF" d="M111.197,13.496H74.411L52.094,39.608h-44l11.876-13.99h-2.404h-7.519H5.835&#10;&#9;&#9;&#9;C2.626,25.618,0,28.311,0,31.601v0v11.555v1.07c0,3.291,2.626,5.984,5.835,5.984h1.639h61.221h4.389c3.209,0,7.593-2,9.742-4.444&#10;&#9;&#9;&#9;l10.172-11.57l18.037-20.517L111.197,13.496z"/>\n      <polygon fill="#FFFFFF" points="105.356,20.145 101.451,24.591 101.451,24.591 105.356,20.145 &#9;&#9;"/>\n      <path fill="#FFFFFF" d="M118.959,0H51.902c-3.209,0-7.599,1.994-9.755,4.432l-28.55,32.282h36.646l22.714-26.106h43.804&#10;&#9;&#9;&#9;l-11.766,13.983h13.964c3.209,0,5.835-2.693,5.835-5.984V5.984C124.794,2.693,122.168,0,118.959,0z"/>\n      <polygon fill="#FFFFFF" points="109.24,15.724 107.292,17.941 106.772,18.533 &#9;&#9;"/>\n    </g>\n  </g>\n</svg>';
-    },
     "./src/resources/fundingLogos/elv.svg": function(module, exports) {
         module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="100" height="32" viewBox="0 0 100 32" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <path fill="#005DA0" d="M 39.871 18.772 C 37.78 18.772 35.843 18.278 34.272 17.425 L 34.81 13.935 C 36.409 14.769 38.051 15.263 39.826 15.263 C 41.809 15.263 42.661 14.544 42.661 13.284 C 42.661 10.45 34.34 11.641 34.34 5.59 C 34.34 2.53 36.319 0.055 40.885 0.055 C 42.639 0.055 44.549 0.416 45.946 0.999 L 45.474 4.395 C 43.989 3.926 42.481 3.633 41.108 3.633 C 38.86 3.633 38.275 4.395 38.275 5.364 C 38.275 8.175 46.598 6.895 46.598 13.013 C 46.576 16.569 44.101 18.772 39.871 18.772 Z"/>\n  <path fill="#005DA0" d="M 62.233 14.881 L 62.233 18.413 L 49.951 18.413 L 49.951 0.345 L 62.233 0.345 L 62.233 3.946 L 54.022 3.946 L 54.022 7.549 L 60.705 7.549 L 60.705 10.787 L 54.022 10.787 L 54.022 14.905 L 62.233 14.905 Z"/>\n  <path fill="#005DA0" d="M 72.313 12.565 L 69.905 12.565 L 69.905 18.437 L 65.834 18.437 L 65.834 0.345 L 72.313 0.345 C 77.328 0.345 79.376 2.328 79.376 6.534 C 79.376 10.361 77.355 12.565 72.313 12.565 Z M 72.313 3.766 L 69.905 3.766 L 69.905 9.302 L 72.313 9.302 C 74.314 9.302 75.194 8.808 75.194 6.534 C 75.194 4.352 74.428 3.766 72.313 3.766 Z"/>\n  <path fill="#005DA0" d="M 91.797 14.924 L 85.246 14.924 L 84.234 18.437 L 79.939 18.437 L 86.193 0.345 L 91.031 0.345 L 97.352 18.437 L 92.808 18.437 L 91.797 14.924 Z M 88.04 5.318 L 86.238 11.506 L 90.85 11.506 L 89.118 5.318 L 88.645 3.408 L 88.578 3.408 L 88.04 5.318 Z"/>\n  <path fill="#005DA0" d="M 39.736 30.157 L 39.692 31.867 L 34.382 31.867 L 34.382 23.475 L 36.299 23.475 L 36.299 30.157 L 39.736 30.157 Z"/>\n  <path fill="#005DA0" d="M 44.798 31.215 L 44.778 31.215 C 44.371 31.71 43.722 31.977 42.931 31.977 C 41.648 31.977 40.818 31.257 40.818 29.727 C 40.818 28.468 41.695 27.613 43.222 27.613 C 43.722 27.613 44.168 27.68 44.527 27.796 L 44.527 27.411 C 44.527 26.736 44.168 26.421 43.244 26.421 C 42.505 26.421 42.007 26.534 41.382 26.782 L 41.245 25.387 C 41.919 25.095 42.707 24.936 43.563 24.936 C 45.563 24.936 46.263 25.792 46.263 27.658 L 46.263 31.867 L 44.933 31.867 L 44.798 31.215 Z M 44.549 28.966 C 44.393 28.896 44.056 28.828 43.583 28.828 C 42.819 28.828 42.46 29.12 42.46 29.727 C 42.46 30.38 42.842 30.63 43.427 30.63 C 44.012 30.63 44.549 30.271 44.549 29.842 L 44.549 28.966 Z"/>\n  <path fill="#005DA0" d="M 50.02 32.002 C 49.21 32.002 48.466 31.842 47.883 31.529 L 48.062 30.088 C 48.625 30.405 49.41 30.561 49.996 30.561 C 50.693 30.561 50.986 30.29 50.986 29.887 C 50.986 28.807 47.84 29.436 47.84 27.051 C 47.84 25.838 48.667 24.959 50.403 24.959 C 51.075 24.959 51.752 25.095 52.336 25.32 L 52.201 26.736 C 51.64 26.512 50.897 26.396 50.381 26.396 C 49.816 26.396 49.503 26.625 49.503 26.961 C 49.503 27.995 52.603 27.366 52.603 29.707 C 52.603 31.101 51.862 32.002 50.02 32.002 Z"/>\n  <path fill="#005DA0" d="M 56.026 26.375 L 56.026 29.842 C 56.026 30.36 56.295 30.582 56.836 30.582 C 57.014 30.582 57.239 30.561 57.374 30.514 L 57.464 31.776 C 57.239 31.888 56.789 31.956 56.295 31.956 C 54.946 31.956 54.27 31.169 54.27 29.887 L 54.27 26.352 L 53.506 26.352 L 53.506 25.095 L 54.337 25.095 L 54.631 23.562 L 56.002 23.451 L 56.002 25.116 L 57.51 25.116 L 57.51 26.421 L 56.026 26.421 Z"/>\n  <path fill="#005DA0" d="M 60.885 32.002 C 60.073 32.002 59.331 31.842 58.748 31.529 L 58.929 30.088 C 59.49 30.405 60.275 30.561 60.862 30.561 C 61.561 30.561 61.851 30.29 61.851 29.887 C 61.851 28.807 58.702 29.436 58.702 27.051 C 58.702 25.838 59.534 24.959 61.269 24.959 C 61.943 24.959 62.615 25.095 63.203 25.32 L 63.069 26.736 C 62.505 26.512 61.764 26.396 61.246 26.396 C 60.681 26.396 60.367 26.625 60.367 26.961 C 60.367 27.995 63.47 27.366 63.47 29.707 C 63.47 31.101 62.729 32.002 60.885 32.002 Z"/>\n  <path fill="#005DA0" d="M 69.365 26.736 C 69.028 26.625 68.603 26.534 68.22 26.534 C 66.958 26.534 66.53 27.051 66.53 28.49 C 66.53 29.954 67.116 30.514 68.174 30.514 C 68.623 30.514 69.05 30.425 69.41 30.271 L 69.525 31.616 C 69.119 31.867 68.511 32.002 67.792 32.002 C 65.787 32.002 64.732 30.854 64.732 28.49 C 64.732 26.242 65.653 24.981 67.835 24.981 C 68.397 24.981 69.05 25.095 69.479 25.276 L 69.365 26.736 Z"/>\n  <path fill="#005DA0" d="M 75.078 31.867 L 75.078 27.546 C 75.078 26.849 74.743 26.491 74.001 26.491 C 73.508 26.491 73.055 26.714 72.855 27.008 L 72.855 31.867 L 71.122 31.867 L 71.122 23.16 L 72.855 23.069 L 72.855 24.622 L 72.83 25.52 L 72.855 25.545 C 73.348 25.116 73.979 24.959 74.541 24.959 C 75.98 24.959 76.812 25.926 76.812 27.546 L 76.812 31.867 L 75.078 31.867 Z"/>\n  <path fill="#005DA0" d="M 78.658 31.867 L 78.658 25.139 L 80.052 25.072 L 80.21 26.199 L 80.231 26.199 C 80.66 25.387 81.313 24.981 82.098 24.981 C 82.39 24.981 82.663 25.028 82.84 25.072 L 82.731 26.782 C 82.528 26.714 82.257 26.667 81.985 26.667 C 81.088 26.667 80.413 27.321 80.413 28.468 L 80.413 31.867 L 78.658 31.867 Z"/>\n  <path fill="#005DA0" d="M 85.382 24.35 C 84.708 24.35 84.395 24.172 84.395 23.609 C 84.395 23.136 84.708 22.867 85.382 22.867 C 86.058 22.867 86.375 23.113 86.375 23.609 C 86.354 24.105 86.058 24.35 85.382 24.35 Z M 84.484 31.867 L 84.484 25.139 L 86.259 25.072 L 86.259 31.888 L 84.484 31.888 Z"/>\n  <path fill="#005DA0" d="M 88.757 31.867 L 88.757 26.375 L 87.902 26.375 L 87.902 25.095 L 88.757 25.095 L 88.757 24.798 C 88.757 23.79 89.454 22.935 91.076 22.935 C 91.459 22.935 91.885 22.979 92.178 23.069 L 92.063 24.195 C 91.863 24.147 91.636 24.126 91.411 24.126 C 90.738 24.126 90.466 24.399 90.466 24.825 L 90.466 25.072 L 91.907 25.072 L 91.907 26.352 L 90.466 26.352 L 90.466 31.842 L 88.757 31.842 Z"/>\n  <path fill="#005DA0" d="M 95.486 26.375 L 95.486 29.842 C 95.486 30.36 95.754 30.582 96.296 30.582 C 96.473 30.582 96.698 30.561 96.834 30.514 L 96.924 31.776 C 96.698 31.888 96.249 31.956 95.754 31.956 C 94.406 31.956 93.729 31.169 93.729 29.887 L 93.729 26.352 L 92.965 26.352 L 92.965 25.095 L 93.798 25.095 L 94.09 23.562 L 95.461 23.451 L 95.461 25.116 L 96.969 25.116 L 96.969 26.421 L 95.486 26.421 Z"/>\n  <path fill="#AEB1BC" d="M 20.357 8.826 L 15.368 5.081 L 10.379 1.334 C 10.033 1.074 9.54 1.146 9.281 1.493 L 4.883 7.322 C 4.811 7.409 4.768 7.51 4.754 7.624 C 4.68 7.93 4.782 8.248 5.043 8.45 L 8.022 10.677 L 12.042 13.698 L 15.021 15.926 C 15.281 16.13 15.629 16.13 15.888 15.97 C 15.991 15.912 16.062 15.854 16.136 15.752 L 20.531 9.91 C 20.763 9.578 20.706 9.087 20.357 8.826 Z M 10.047 1.769 L 13.012 3.995 L 13.012 3.995 L 15.021 5.5 L 17.046 7.017 L 17.046 7.017 L 20.025 9.245 C 20.142 9.332 20.156 9.491 20.082 9.607 L 19.374 10.591 L 16.005 8.058 L 12.36 5.326 L 8.976 2.809 L 9.684 1.826 C 9.772 1.709 9.931 1.682 10.047 1.769 Z M 15.673 15.463 C 15.629 15.507 15.585 15.536 15.528 15.55 C 15.469 15.564 15.398 15.55 15.339 15.507 L 12.345 13.265 L 8.34 10.257 L 5.361 8.001 C 5.302 7.958 5.275 7.9 5.259 7.842 C 5.259 7.785 5.259 7.726 5.302 7.669 L 6.113 6.585 C 6.113 6.585 7.009 5.427 7.791 4.386 L 11.16 6.917 L 14.804 9.65 L 18.173 12.181 C 17.393 13.222 16.496 14.379 16.496 14.379 L 15.673 15.463 Z"/>\n  <g transform="matrix(0.144619, 0, 0, 0.144619, -7.250457, -3.988513)">\n    <path fill="#005DA0" d="M197.1,150.4l52-69.6l5.3-7c0,0,0.1-0.2,0.2-0.2c0.4-0.5,0.3-1.2-0.2-1.6l-14.7-10.7&#10;&#9;&#9;&#9;c-0.5-0.4-1.2-0.2-1.6,0.3c-0.1,0.1-0.2,0.2-0.2,0.2l-2,2.5l-64.3,86l-70.8,0l-26.5,87.4h177.1l-25-87.4L197.1,150.4z M79.1,234.3&#10;&#9;&#9;&#9;l24.2-80.5l65.7,0l-5.7,7.6l-8.1,11.3l-0.9,1.7l-0.9,1.9l-0.9,2.2l-0.9,2.3l-0.9,2.5l-0.9,2.5l-0.8,2.5l-0.8,2.4l-0.7,2.3&#10;&#9;&#9;&#9;l-0.7,2.1l-0.6,1.9l-0.4,1.6l-0.3,1.2l-0.3,0.7c0,0-0.1,0.2-0.2,0.4c-0.2,0.2-1.2,1.1-2,0.5c-0.8-0.6-0.7-2.6-0.6-3.6&#10;&#9;&#9;&#9;c0.2-3,0.5-6,0.7-8.9c0.1-1-1.2-1.6-2-1.2c-3.6,2.1-5.8,4.6-7.8,7.5c0.2-0.7,0.4-1.4,0.6-2c0.8-3.1,2-6.2,2.5-9.4&#10;&#9;&#9;&#9;c0.3-1.8-0.2-3.9-2.3-4.3c-2.4-0.4-3.9,2.1-5.1,3.7c-3.5,5-5.6,11.2-9.9,15.5c-1.6,1.6-3.5,2.8-5.8,2.1c-2.7-0.8-3.8,2.4,1,2.9&#10;&#9;&#9;&#9;c4.7,0.4,8.3-4.6,10.4-8.1c1.6-2.5,2.9-5.2,4.5-7.8c0.7-1.2,1.5-2.4,2.3-3.6c0.4-0.5,1-1.8,1.7-2c0.8-0.2,0.6,0.3,0.6,0.9&#10;&#9;&#9;&#9;c-0.1,1.5-0.7,3-1.1,4.5c-0.4,1.6-0.9,3.2-1.3,4.7c-0.9,3.4-1.8,6.8-2.8,10.1c-0.4,1.5,1.6,2.2,2.5,1c3.4-4.8,5.1-8.9,9.2-12.1&#10;&#9;&#9;&#9;c-0.1,1.1-0.2,2.1-0.3,3.2c-0.1,1.7-0.5,3.6-0.4,5.3c0.2,2.9,2.4,4.8,5.1,3.6c1.4-0.7,2.4-1.7,2.4-1.7l0.2-0.1l0.6-0.4l1-0.7&#10;&#9;&#9;&#9;l1.4-1l1.6-1.2l1.7-1.2l2.1-1.4l2.1-1.5l2.1-1.5l2.1-1.5l2-1.5l1.9-1.4l1.8-1.4l1.5-1.2l1.2-1.1l1-0.9l0-0.1l0,0l6.5-7.6&#10;&#9;&#9;&#9;l16.6-22.1l29.4,0l22.9,80.5H79.1z"/>\n    <path fill="#005DA0" d="M261.1,77.1l-1.9-1.5c-0.4-0.3-0.9-0.2-1.2,0.2l-24.7,32.9c-0.3,0.4-0.2,0.9,0.2,1.2l1.9,1.5&#10;&#9;&#9;&#9;c0.4,0.3,0.9,0.2,1.2-0.2l24.7-32.9C261.5,77.9,261.5,77.4,261.1,77.1z"/>\n    <polygon fill="#005DA0" points="161.7,217.2 210.9,217.2 209.9,213.3 161.7,213.3 113.6,213.3 112.5,217.2 &#9;&#9;"/>\n  </g>\n</svg>';
     },
     "./src/resources/fundingLogos/elv_white.svg": function(module, exports) {
         module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="100" height="32" viewBox="0 0 100 32" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <path d="M 39.871 18.772 C 37.78 18.772 35.843 18.278 34.272 17.425 L 34.81 13.935 C 36.409 14.769 38.051 15.263 39.826 15.263 C 41.809 15.263 42.661 14.544 42.661 13.284 C 42.661 10.45 34.34 11.641 34.34 5.59 C 34.34 2.53 36.319 0.055 40.885 0.055 C 42.639 0.055 44.549 0.416 45.946 0.999 L 45.474 4.395 C 43.989 3.926 42.481 3.633 41.108 3.633 C 38.86 3.633 38.275 4.395 38.275 5.364 C 38.275 8.175 46.598 6.895 46.598 13.013 C 46.576 16.569 44.101 18.772 39.871 18.772 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 62.233 14.881 L 62.233 18.413 L 49.951 18.413 L 49.951 0.345 L 62.233 0.345 L 62.233 3.946 L 54.022 3.946 L 54.022 7.549 L 60.705 7.549 L 60.705 10.787 L 54.022 10.787 L 54.022 14.905 L 62.233 14.905 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 72.313 12.565 L 69.905 12.565 L 69.905 18.437 L 65.834 18.437 L 65.834 0.345 L 72.313 0.345 C 77.328 0.345 79.376 2.328 79.376 6.534 C 79.376 10.361 77.355 12.565 72.313 12.565 Z M 72.313 3.766 L 69.905 3.766 L 69.905 9.302 L 72.313 9.302 C 74.314 9.302 75.194 8.808 75.194 6.534 C 75.194 4.352 74.428 3.766 72.313 3.766 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 91.797 14.924 L 85.246 14.924 L 84.234 18.437 L 79.939 18.437 L 86.193 0.345 L 91.031 0.345 L 97.352 18.437 L 92.808 18.437 L 91.797 14.924 Z M 88.04 5.318 L 86.238 11.506 L 90.85 11.506 L 89.118 5.318 L 88.645 3.408 L 88.578 3.408 L 88.04 5.318 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 39.736 30.157 L 39.692 31.867 L 34.382 31.867 L 34.382 23.475 L 36.299 23.475 L 36.299 30.157 L 39.736 30.157 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 44.798 31.215 L 44.778 31.215 C 44.371 31.71 43.722 31.977 42.931 31.977 C 41.648 31.977 40.818 31.257 40.818 29.727 C 40.818 28.468 41.695 27.613 43.222 27.613 C 43.722 27.613 44.168 27.68 44.527 27.796 L 44.527 27.411 C 44.527 26.736 44.168 26.421 43.244 26.421 C 42.505 26.421 42.007 26.534 41.382 26.782 L 41.245 25.387 C 41.919 25.095 42.707 24.936 43.563 24.936 C 45.563 24.936 46.263 25.792 46.263 27.658 L 46.263 31.867 L 44.933 31.867 L 44.798 31.215 Z M 44.549 28.966 C 44.393 28.896 44.056 28.828 43.583 28.828 C 42.819 28.828 42.46 29.12 42.46 29.727 C 42.46 30.38 42.842 30.63 43.427 30.63 C 44.012 30.63 44.549 30.271 44.549 29.842 L 44.549 28.966 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 50.02 32.002 C 49.21 32.002 48.466 31.842 47.883 31.529 L 48.062 30.088 C 48.625 30.405 49.41 30.561 49.996 30.561 C 50.693 30.561 50.986 30.29 50.986 29.887 C 50.986 28.807 47.84 29.436 47.84 27.051 C 47.84 25.838 48.667 24.959 50.403 24.959 C 51.075 24.959 51.752 25.095 52.336 25.32 L 52.201 26.736 C 51.64 26.512 50.897 26.396 50.381 26.396 C 49.816 26.396 49.503 26.625 49.503 26.961 C 49.503 27.995 52.603 27.366 52.603 29.707 C 52.603 31.101 51.862 32.002 50.02 32.002 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 56.026 26.375 L 56.026 29.842 C 56.026 30.36 56.295 30.582 56.836 30.582 C 57.014 30.582 57.239 30.561 57.374 30.514 L 57.464 31.776 C 57.239 31.888 56.789 31.956 56.295 31.956 C 54.946 31.956 54.27 31.169 54.27 29.887 L 54.27 26.352 L 53.506 26.352 L 53.506 25.095 L 54.337 25.095 L 54.631 23.562 L 56.002 23.451 L 56.002 25.116 L 57.51 25.116 L 57.51 26.421 L 56.026 26.421 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 60.885 32.002 C 60.073 32.002 59.331 31.842 58.748 31.529 L 58.929 30.088 C 59.49 30.405 60.275 30.561 60.862 30.561 C 61.561 30.561 61.851 30.29 61.851 29.887 C 61.851 28.807 58.702 29.436 58.702 27.051 C 58.702 25.838 59.534 24.959 61.269 24.959 C 61.943 24.959 62.615 25.095 63.203 25.32 L 63.069 26.736 C 62.505 26.512 61.764 26.396 61.246 26.396 C 60.681 26.396 60.367 26.625 60.367 26.961 C 60.367 27.995 63.47 27.366 63.47 29.707 C 63.47 31.101 62.729 32.002 60.885 32.002 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 69.365 26.736 C 69.028 26.625 68.603 26.534 68.22 26.534 C 66.958 26.534 66.53 27.051 66.53 28.49 C 66.53 29.954 67.116 30.514 68.174 30.514 C 68.623 30.514 69.05 30.425 69.41 30.271 L 69.525 31.616 C 69.119 31.867 68.511 32.002 67.792 32.002 C 65.787 32.002 64.732 30.854 64.732 28.49 C 64.732 26.242 65.653 24.981 67.835 24.981 C 68.397 24.981 69.05 25.095 69.479 25.276 L 69.365 26.736 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 75.078 31.867 L 75.078 27.546 C 75.078 26.849 74.743 26.491 74.001 26.491 C 73.508 26.491 73.055 26.714 72.855 27.008 L 72.855 31.867 L 71.122 31.867 L 71.122 23.16 L 72.855 23.069 L 72.855 24.622 L 72.83 25.52 L 72.855 25.545 C 73.348 25.116 73.979 24.959 74.541 24.959 C 75.98 24.959 76.812 25.926 76.812 27.546 L 76.812 31.867 L 75.078 31.867 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 78.658 31.867 L 78.658 25.139 L 80.052 25.072 L 80.21 26.199 L 80.231 26.199 C 80.66 25.387 81.313 24.981 82.098 24.981 C 82.39 24.981 82.663 25.028 82.84 25.072 L 82.731 26.782 C 82.528 26.714 82.257 26.667 81.985 26.667 C 81.088 26.667 80.413 27.321 80.413 28.468 L 80.413 31.867 L 78.658 31.867 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 85.382 24.35 C 84.708 24.35 84.395 24.172 84.395 23.609 C 84.395 23.136 84.708 22.867 85.382 22.867 C 86.058 22.867 86.375 23.113 86.375 23.609 C 86.354 24.105 86.058 24.35 85.382 24.35 Z M 84.484 31.867 L 84.484 25.139 L 86.259 25.072 L 86.259 31.888 L 84.484 31.888 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 88.757 31.867 L 88.757 26.375 L 87.902 26.375 L 87.902 25.095 L 88.757 25.095 L 88.757 24.798 C 88.757 23.79 89.454 22.935 91.076 22.935 C 91.459 22.935 91.885 22.979 92.178 23.069 L 92.063 24.195 C 91.863 24.147 91.636 24.126 91.411 24.126 C 90.738 24.126 90.466 24.399 90.466 24.825 L 90.466 25.072 L 91.907 25.072 L 91.907 26.352 L 90.466 26.352 L 90.466 31.842 L 88.757 31.842 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 95.486 26.375 L 95.486 29.842 C 95.486 30.36 95.754 30.582 96.296 30.582 C 96.473 30.582 96.698 30.561 96.834 30.514 L 96.924 31.776 C 96.698 31.888 96.249 31.956 95.754 31.956 C 94.406 31.956 93.729 31.169 93.729 29.887 L 93.729 26.352 L 92.965 26.352 L 92.965 25.095 L 93.798 25.095 L 94.09 23.562 L 95.461 23.451 L 95.461 25.116 L 96.969 25.116 L 96.969 26.421 L 95.486 26.421 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 20.357 8.826 L 15.368 5.081 L 10.379 1.334 C 10.033 1.074 9.54 1.146 9.281 1.493 L 4.883 7.322 C 4.811 7.409 4.768 7.51 4.754 7.624 C 4.68 7.93 4.782 8.248 5.043 8.45 L 8.022 10.677 L 12.042 13.698 L 15.021 15.926 C 15.281 16.13 15.629 16.13 15.888 15.97 C 15.991 15.912 16.062 15.854 16.136 15.752 L 20.531 9.91 C 20.763 9.578 20.706 9.087 20.357 8.826 Z M 10.047 1.769 L 13.012 3.995 L 13.012 3.995 L 15.021 5.5 L 17.046 7.017 L 17.046 7.017 L 20.025 9.245 C 20.142 9.332 20.156 9.491 20.082 9.607 L 19.374 10.591 L 16.005 8.058 L 12.36 5.326 L 8.976 2.809 L 9.684 1.826 C 9.772 1.709 9.931 1.682 10.047 1.769 Z M 15.673 15.463 C 15.629 15.507 15.585 15.536 15.528 15.55 C 15.469 15.564 15.398 15.55 15.339 15.507 L 12.345 13.265 L 8.34 10.257 L 5.361 8.001 C 5.302 7.958 5.275 7.9 5.259 7.842 C 5.259 7.785 5.259 7.726 5.302 7.669 L 6.113 6.585 C 6.113 6.585 7.009 5.427 7.791 4.386 L 11.16 6.917 L 14.804 9.65 L 18.173 12.181 C 17.393 13.222 16.496 14.379 16.496 14.379 L 15.673 15.463 Z" style="fill: rgb(255, 255, 255);"/>\n  <g transform="matrix(0.144619, 0, 0, 0.144619, -7.250457, -3.988513)">\n    <path d="M197.1,150.4l52-69.6l5.3-7c0,0,0.1-0.2,0.2-0.2c0.4-0.5,0.3-1.2-0.2-1.6l-14.7-10.7&#10;&#9;&#9;&#9;c-0.5-0.4-1.2-0.2-1.6,0.3c-0.1,0.1-0.2,0.2-0.2,0.2l-2,2.5l-64.3,86l-70.8,0l-26.5,87.4h177.1l-25-87.4L197.1,150.4z M79.1,234.3&#10;&#9;&#9;&#9;l24.2-80.5l65.7,0l-5.7,7.6l-8.1,11.3l-0.9,1.7l-0.9,1.9l-0.9,2.2l-0.9,2.3l-0.9,2.5l-0.9,2.5l-0.8,2.5l-0.8,2.4l-0.7,2.3&#10;&#9;&#9;&#9;l-0.7,2.1l-0.6,1.9l-0.4,1.6l-0.3,1.2l-0.3,0.7c0,0-0.1,0.2-0.2,0.4c-0.2,0.2-1.2,1.1-2,0.5c-0.8-0.6-0.7-2.6-0.6-3.6&#10;&#9;&#9;&#9;c0.2-3,0.5-6,0.7-8.9c0.1-1-1.2-1.6-2-1.2c-3.6,2.1-5.8,4.6-7.8,7.5c0.2-0.7,0.4-1.4,0.6-2c0.8-3.1,2-6.2,2.5-9.4&#10;&#9;&#9;&#9;c0.3-1.8-0.2-3.9-2.3-4.3c-2.4-0.4-3.9,2.1-5.1,3.7c-3.5,5-5.6,11.2-9.9,15.5c-1.6,1.6-3.5,2.8-5.8,2.1c-2.7-0.8-3.8,2.4,1,2.9&#10;&#9;&#9;&#9;c4.7,0.4,8.3-4.6,10.4-8.1c1.6-2.5,2.9-5.2,4.5-7.8c0.7-1.2,1.5-2.4,2.3-3.6c0.4-0.5,1-1.8,1.7-2c0.8-0.2,0.6,0.3,0.6,0.9&#10;&#9;&#9;&#9;c-0.1,1.5-0.7,3-1.1,4.5c-0.4,1.6-0.9,3.2-1.3,4.7c-0.9,3.4-1.8,6.8-2.8,10.1c-0.4,1.5,1.6,2.2,2.5,1c3.4-4.8,5.1-8.9,9.2-12.1&#10;&#9;&#9;&#9;c-0.1,1.1-0.2,2.1-0.3,3.2c-0.1,1.7-0.5,3.6-0.4,5.3c0.2,2.9,2.4,4.8,5.1,3.6c1.4-0.7,2.4-1.7,2.4-1.7l0.2-0.1l0.6-0.4l1-0.7&#10;&#9;&#9;&#9;l1.4-1l1.6-1.2l1.7-1.2l2.1-1.4l2.1-1.5l2.1-1.5l2.1-1.5l2-1.5l1.9-1.4l1.8-1.4l1.5-1.2l1.2-1.1l1-0.9l0-0.1l0,0l6.5-7.6&#10;&#9;&#9;&#9;l16.6-22.1l29.4,0l22.9,80.5H79.1z" style="fill: rgb(255, 255, 255);"/>\n    <path d="M261.1,77.1l-1.9-1.5c-0.4-0.3-0.9-0.2-1.2,0.2l-24.7,32.9c-0.3,0.4-0.2,0.9,0.2,1.2l1.9,1.5&#10;&#9;&#9;&#9;c0.4,0.3,0.9,0.2,1.2-0.2l24.7-32.9C261.5,77.9,261.5,77.4,261.1,77.1z" style="fill: rgb(255, 255, 255);"/>\n    <polygon points="161.7,217.2 210.9,217.2 209.9,213.3 161.7,213.3 113.6,213.3 112.5,217.2 &#9;&#9;" style="fill: rgb(255, 255, 255);"/>\n  </g>\n</svg>';
-    },
-    "./src/resources/fundingLogos/eps.svg": function(module, exports) {
-        module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="52px" height="32px" viewBox="0 0 52 32" version="1.1" xmlns="http://www.w3.org/2000/svg">\n  <title>Page 1</title>\n  <desc>Created with Sketch.</desc>\n  <defs>\n    <polygon id="path-1" points="0 0.0330469345 12.6787834 0.0330469345 12.6787834 12.7180364 0 12.7180364"/>\n    <polygon id="path-3" points="0.0103575649 0.00128879493 1.81575683 0.00128879493 1.81575683 2.2832981 0.0103575649 2.2832981"/>\n  </defs>\n  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="matrix(1.333759, 0, 0, 1.333759, 0.000008, -0.000005)">\n    <g id="SPB_&amp;_AltPay_NewAssets" transform="translate(-100.000000, -159.000000)">\n      <g id="Page-1" transform="translate(100.000000, 159.000000)">\n        <path d="M30.5812744,12.0000152 L27.4748661,12.0000152 C27.129394,12.0000152 26.8482796,11.7245987 26.8482796,11.3798207 C26.8482796,11.0350427 27.129394,10.7315163 27.4748661,10.7315163 L32.2041612,10.7315163 L32.2041612,8.39747822 L27.4748661,8.39747822 C25.824238,8.39747822 24.4812484,9.74381226 24.4812484,11.3911357 C24.4812484,13.0384592 25.824238,14.3847932 27.4748661,14.3847932 L30.5390793,14.3847932 C30.8846021,14.3847932 31.1657165,14.6590934 31.1657165,15.0038715 C31.1657165,15.3486495 30.8846021,15.6025522 30.5390793,15.6025522 L23.9683147,15.6025522 C23.4104473,16.6680913 22.8679974,17.5814106 21.7668179,18.0380702 L30.5812744,18.0380702 C32.2041612,18.0146791 33.5316827,16.6405903 33.5316827,15.0078292 C33.5316827,13.3751696 32.2041612,12.0234063 30.5812744,12.0000152" id="Fill-1" fill="#71706F"/>\n        <path d="M18.6731848,15.6025522 L16.2795788,15.6025522 L16.2795788,13.1992034 C16.2795788,11.8562182 17.3483005,10.7635839 18.6731848,10.7635839 C19.9980691,10.7635839 21.0759195,11.8562182 21.0759195,13.1992034 C21.0759195,14.5422393 19.9980691,15.6025522 18.6731848,15.6025522 M18.6731848,8.39747822 C16.0403551,8.39747822 13.8959637,10.5557023 13.8959637,13.2076262 L13.8959637,13.3091061 L13.8959637,23.2135459 L16.2795788,23.2135459 L16.2795788,18.0380702 L18.6682147,18.0380702 C21.3010951,18.0380702 23.4379299,15.8511273 23.4379299,13.1992034 C23.4379299,10.5472795 21.3060651,8.39747822 18.6731848,8.39747822" id="Fill-3" fill="#71706F"/>\n        <g id="Group-7" transform="translate(0.000000, 6.842233)">\n          <mask id="mask-2" fill="white">\n            <polygon id="" points="0 0.0330469345 12.6787834 0.0330469345 12.6787834 12.7180364 0 12.7180364" transform="matrix(1, 0, 0, 1, 0, 0)"/>\n          </mask>\n          <g id="Clip-6"/>\n          <path d="M6.34967672,11.1958376 C4.09589259,11.1958376 2.20112146,9.58905539 1.68833992,7.48994334 C1.68833992,7.48994334 1.54020078,6.7959222 1.54020078,6.3389074 C1.54020078,5.8818926 1.68042835,5.18071712 1.68042835,5.18071712 C2.19686138,3.08678055 4.08935033,1.52754165 6.33943225,1.52754165 C8.98580286,1.52754165 11.1573269,3.67982918 11.1573269,6.32744017 L11.1573269,7.49182072 L4.12642315,7.49182072 C4.54162861,8.30366004 5.38137113,8.76031966 6.34967672,8.76031966 L12.6701111,8.76031966 L12.6787834,1.89423932 C12.6787834,0.870560677 11.8417287,0.0330469345 10.8185493,0.0330469345 L1.86031521,0.0330469345 C0.837135761,0.0330469345 -2.02860858e-05,0.845190698 -2.02860858e-05,1.86886934 L-2.02860858e-05,10.831474 C-2.02860858e-05,11.8551526 0.837135761,12.7180364 1.86031521,12.7180364 L10.8185493,12.7180364 C11.7367482,12.7180364 12.5027001,12.0584169 12.6506871,11.1958376 L6.34967672,11.1958376 Z" id="Fill-5" fill="#C8036F" mask="url(#mask-2)"/>\n        </g>\n        <path d="M6.33943732,10.6481099 C5.37483394,10.6481099 4.53595358,11.238926 4.11907451,12.0000254 L8.55990156,12.0000254 C8.1430225,11.238926 7.30419285,10.6481099 6.33943732,10.6481099" id="Fill-8" fill="#C8036F"/>\n        <path d="M10.396619,3.96072558 C10.396619,1.77327526 8.57959428,1.52219873e-05 6.33823537,1.52219873e-05 C4.134,1.52219873e-05 2.34126788,1.71527949 2.28238752,3.85259873 C2.28142393,3.86163044 2.28218466,3.87040846 2.28218466,3.87969387 L2.28218466,5.0699518 C2.28218466,5.21232812 2.39806892,5.35308076 2.54392588,5.35308076 L4.03703251,5.35308076 C4.18288947,5.35308076 4.31079324,5.21232812 4.31079324,5.0699518 L4.31079324,3.96072558 C4.31079324,2.86839577 5.22011704,1.97968541 6.33940182,1.97968541 C7.45868661,1.97968541 8.3680104,2.86839577 8.3680104,3.96072558 L8.3680104,5.0699518 C8.3680104,5.21232812 8.486329,5.35308076 8.63218596,5.35308076 L10.1253433,5.35308076 C10.2712003,5.35308076 10.396619,5.21232812 10.396619,5.0699518 L10.396619,3.96072558 Z" id="Fill-10" fill="#C8036F"/>\n        <path d="M20.7598572,20.7474063 C20.7598572,20.8523366 20.8407987,20.9002858 20.9277753,20.9002858 C21.0206856,20.9002858 21.1436192,20.8253429 21.1436192,20.687381 C21.1436192,20.5884888 21.0716036,20.5345015 20.9907129,20.5345015 C20.8827909,20.5345015 20.7598572,20.6034063 20.7598572,20.7474063 Z M20.0403098,20.7504 C20.0403098,20.8523366 20.1183098,20.9002858 20.2022434,20.9002858 C20.3071732,20.9002858 20.4211303,20.8253429 20.4211303,20.6843873 C20.4211303,20.5854444 20.3550991,20.5345015 20.2681732,20.5345015 C20.160302,20.5345015 20.0403098,20.6034063 20.0403098,20.7504 Z M21.3474437,21.133233 L21.1315997,22.3559645 C21.0236778,22.9739772 20.6189196,23.2570047 20.0702824,23.2570047 C19.6056296,23.2570047 19.2458559,22.9539856 19.3508364,22.3569793 L19.5666296,21.133233 L19.8994736,21.133233 L19.6835282,22.3559645 C19.6175984,22.7370723 19.7885087,22.9540364 20.1122746,22.9540364 C20.4450679,22.9540364 20.7298845,22.7559983 20.7988065,22.3569793 L21.0146505,21.133233 L21.3474437,21.133233 Z" id="Fill-12" fill="#71706F"/>\n        <path d="M21.9179189,22.5590867 C21.9059501,22.8050233 22.0647901,22.9639915 22.2956458,22.9639915 C22.5864468,22.9639915 22.8682205,22.7389598 22.8862244,22.3971247 C22.898244,22.1481438 22.736361,22.0011501 22.511439,22.0011501 C22.2236302,22.0011501 21.9358213,22.2321691 21.9179189,22.5590867 Z M22.1517667,21.1331924 L22.0018525,21.9781142 C22.1307199,21.8042283 22.388556,21.7122368 22.5684429,21.7122368 C22.9401854,21.7122368 23.1980216,21.9302156 23.1980216,22.3350698 C23.1980216,22.9079746 22.7992479,23.2524989 22.2896614,23.2524989 C22.0917706,23.2524989 21.9238525,23.178926 21.8219657,22.9930148 L21.7650125,23.2135307 L21.4741607,23.2135307 L21.8429111,21.1331924 L22.1517667,21.1331924 Z" id="Fill-14" fill="#71706F"/>\n        <path d="M24.7516112,22.3509666 C24.7755995,22.0972668 24.6256853,21.994011 24.3768257,21.994011 C24.1520559,21.994011 23.9451886,22.0972668 23.8551691,22.3509666 L24.7516112,22.3509666 Z M23.804251,22.6046664 C23.7922315,22.8076262 23.9511222,22.9733429 24.2209779,22.9733429 C24.3708921,22.9733429 24.5686814,22.9146875 24.6766034,22.812751 L24.8445215,23.006882 C24.6616931,23.1747298 24.3918375,23.2582985 24.1640247,23.2582985 C23.7383212,23.2582985 23.4894616,23.0032288 23.4894616,22.6132922 C23.4894616,22.0943746 23.8971612,21.7076854 24.4188179,21.7076854 C24.895541,21.7076854 25.1653459,21.9957869 25.0034629,22.6046664 L23.804251,22.6046664 Z" id="Fill-16" fill="#71706F"/>\n        <path d="M25.8283814,21.7420871 L25.8133697,21.9376896 C25.9573502,21.7485311 26.131202,21.7099687 26.290042,21.7099687 C26.4339718,21.7099687 26.5628391,21.7610638 26.6318118,21.8360068 L26.4459913,22.1059941 C26.3800108,22.0461717 26.314081,22.0161844 26.2001239,22.0161844 C25.9872215,22.0161844 25.7774633,22.1438968 25.729436,22.4168778 L25.5885999,23.2135459 L25.2797442,23.2135459 L25.5405726,21.7420871 L25.8283814,21.7420871 Z" id="Fill-18" fill="#71706F"/>\n        <polygon id="Fill-20" fill="#71706F" points="28.1192941 21.7420871 28.275142 22.9057573 28.8387909 21.7420871 29.1835529 21.7420871 28.4100952 23.2135459 28.0473293 23.2135459 27.900458 22.2428397 27.6635672 22.7250723 27.4057818 23.2135459 27.0460081 23.2135459 26.7851797 21.7420871 27.1329847 21.7420871 27.285891 22.9057573 27.8524307 21.7420871"/>\n        <path d="M30.5274503,22.3509666 C30.5513879,22.0972668 30.4015244,21.994011 30.1526649,21.994011 C29.9278951,21.994011 29.7210277,22.0972668 29.6310082,22.3509666 L30.5274503,22.3509666 Z M29.5800901,22.6046664 C29.5680706,22.8076262 29.7269614,22.9733429 29.996817,22.9733429 C30.1467312,22.9733429 30.3445205,22.9146875 30.4524425,22.812751 L30.6203606,23.006882 C30.4375322,23.1747298 30.1676766,23.2582985 29.9398638,23.2582985 C29.5141603,23.2582985 29.2653008,23.0032288 29.2653008,22.6132922 C29.2653008,22.0943746 29.6730004,21.7076854 30.1946571,21.7076854 C30.6713801,21.7076854 30.941185,21.9957869 30.7793021,22.6046664 L29.5800901,22.6046664 Z" id="Fill-22" fill="#71706F"/>\n        <path d="M31.3524449,21.3412364 C31.3524449,21.4461666 31.4304449,21.5003569 31.5144293,21.5003569 C31.63432,21.5003569 31.7452342,21.4222173 31.7452342,21.2753759 C31.7452342,21.1762808 31.6702264,21.119249 31.5892849,21.119249 C31.4783707,21.119249 31.3524449,21.1913505 31.3524449,21.3412364 Z M31.625242,21.742082 L31.3645151,23.2135408 L31.0556594,23.2135408 L31.3164878,21.742082 L31.625242,21.742082 Z" id="Fill-24" fill="#71706F"/>\n        <path d="M32.9955925,22.1060753 C32.8996393,21.9981006 32.7767563,21.9681133 32.629885,21.9681133 C32.4259085,21.9681133 32.2820801,22.0371704 32.2820801,22.1661006 C32.2820801,22.2740753 32.398928,22.3191831 32.5728811,22.3341006 C32.8426861,22.3580499 33.1874481,22.4481133 33.1154832,22.8290182 C33.0645651,23.1049421 32.7887251,23.266904 32.4049631,23.266904 C32.1651815,23.266904 31.9342752,23.2129167 31.7784273,22.9939738 L31.9792596,22.7750309 C32.0901737,22.9279104 32.2850723,22.9909801 32.4589241,22.9939738 C32.6057953,22.9939738 32.7797485,22.9399865 32.806729,22.8020245 C32.8337095,22.6700499 32.7167602,22.619107 32.5009163,22.5979992 C32.2490645,22.5739992 31.9733259,22.481145 31.9733259,22.202126 C31.9733259,21.833145 32.3719475,21.7042148 32.6718265,21.7042148 C32.8996393,21.7042148 33.0675573,21.7551577 33.2055027,21.9022021 L32.9955925,22.1060753 Z" id="Fill-26" fill="#71706F"/>\n        <path d="M33.9703034,21.7420871 L33.8294672,22.534493 C33.7844828,22.7865184 33.8984399,22.9606579 34.1562254,22.9606579 C34.3990498,22.9606579 34.6059172,22.7593725 34.6478079,22.5134359 L34.7827104,21.7420871 L35.0915153,21.7420871 L34.8307884,23.2135459 L34.5519562,23.2135459 L34.5729016,23.0003366 C34.3990498,23.1652922 34.2280888,23.2430765 34.0213229,23.2430765 C33.658557,23.2430765 33.442713,22.982882 33.5206116,22.5361167 L33.6615492,21.7420871 L33.9703034,21.7420871 Z" id="Fill-28" fill="#71706F"/>\n        <path d="M36.4472345,23.2135459 L36.588172,22.4259603 C36.633055,22.1709412 36.5462813,22.0020279 36.2644061,22.0020279 C36.0185895,22.0020279 35.8116207,22.199863 35.7697299,22.4428059 L35.6348274,23.2135459 L35.3260225,23.2135459 L35.5869016,21.7420871 L35.8686246,21.7420871 L35.8476792,21.957123 C36.0185895,21.7981548 36.1953827,21.7197615 36.3872384,21.7197615 C36.7470121,21.7197615 36.9809614,21.9701632 36.9000199,22.4231696 L36.7590823,23.2135459 L36.4472345,23.2135459 Z" id="Fill-30" fill="#71706F"/>\n        <g id="Group-34" transform="translate(37.174252, 21.709040)">\n          <mask id="mask-4" fill="white">\n            <polygon id="" points="0.0103575649 0.00128879493 1.81575683 0.00128879493 1.81575683 2.2832981 0.0103575649 2.2832981" transform="matrix(1, 0, 0, 1, 0, 0)"/>\n          </mask>\n          <g id="Clip-33"/>\n          <path d="M0.406639662,0.85909852 C0.406639662,1.11092093 0.571514824,1.26400338 0.808507022,1.26400338 C1.44691014,1.26400338 1.61787113,0.2832 0.979214434,0.2832 C0.676444603,0.2832 0.406639662,0.508028753 0.406639662,0.85909852 Z M0.319663069,1.70747061 C0.298717685,1.91043044 0.45456554,1.9925277 0.715495319,1.9925277 C0.943358778,1.9925277 1.18922614,1.86522114 1.24617932,1.54134799 L1.291113,1.288663 C1.15621053,1.4776186 0.910343173,1.55220634 0.72756554,1.55220634 C0.349686476,1.55220634 0.085916645,1.32717463 0.085916645,0.91912389 C0.085916645,0.337339535 0.517553836,0.00128879493 1.00619493,0.00128879493 C1.21316372,0.00128879493 1.39903498,0.099572093 1.46501547,0.267572093 L1.51598427,0.0330520085 L1.8157619,0.0330520085 L1.55787503,1.54824863 C1.46202328,2.1092296 1.04524564,2.28331839 0.664526528,2.28331839 C0.208748895,2.28331839 -0.0429507152,2.06265032 0.0198854356,1.70747061 L0.319663069,1.70747061 Z" id="Fill-32" fill="#71706F" mask="url(#mask-4)"/>\n        </g>\n      </g>\n    </g>\n  </g>\n</svg>';
-    },
-    "./src/resources/fundingLogos/eps_white.svg": function(module, exports) {
-        module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="52px" height="32px" viewBox="0 0 52 32" version="1.1" xmlns="http://www.w3.org/2000/svg">\n  <title>Page 1</title>\n  <desc>Created with Sketch.</desc>\n  <defs>\n    <polygon id="path-1" points="0 0.0413086681 15.9297534 0.0413086681 15.9297534 15.8975455 0 15.8975455"/>\n    <polygon id="path-3" points="0.0130133508 0.00161099366 2.2813355 0.00161099366 2.2813355 2.85412262 0.0130133508 2.85412262"/>\n  </defs>\n  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n    <g id="SPB_&amp;_AltPay_NewAssets" transform="matrix(1.067008, 0, 0, 1.067008, -252.880768, -656.209595)">\n      <g id="Group-Copy" transform="translate(101.000000, 606.000000)">\n        <g id="Page-1" transform="translate(136.000000, 9.000000)">\n          <path d="M38.4226268,15.000019 L34.5197035,15.000019 C34.0856489,15.000019 33.7324538,14.6557484 33.7324538,14.2247759 C33.7324538,13.7938034 34.0856489,13.4143953 34.5197035,13.4143953 L40.4616385,13.4143953 L40.4616385,10.4968478 L34.5197035,10.4968478 C32.4458375,10.4968478 30.7584915,12.1797653 30.7584915,14.2389197 C30.7584915,16.298074 32.4458375,17.9809915 34.5197035,17.9809915 L38.3696125,17.9809915 C38.8037308,17.9809915 39.1569259,18.3238668 39.1569259,18.7548393 C39.1569259,19.1858118 38.8037308,19.5031903 38.3696125,19.5031903 L30.1140364,19.5031903 C29.4131261,20.8351142 28.7315865,21.9767632 27.3480533,22.5475877 L38.4226268,22.5475877 C40.4616385,22.5183488 42.1295501,20.8007378 42.1295501,18.7597865 C42.1295501,16.7189619 40.4616385,15.0292579 38.4226268,15.000019" id="Fill-1" fill="#FFFFFF"/>\n          <path d="M23.4611809,19.5031903 L20.4538298,19.5031903 L20.4538298,16.4990042 C20.4538298,14.8202727 21.7965827,13.4544799 23.4611809,13.4544799 C25.1257791,13.4544799 26.4800014,14.8202727 26.4800014,16.4990042 C26.4800014,18.1777992 25.1257791,19.5031903 23.4611809,19.5031903 M23.4611809,10.4968478 C20.1532667,10.4968478 17.4590313,13.1946279 17.4590313,16.5095328 L17.4590313,16.6363827 L17.4590313,29.0169323 L20.4538298,29.0169323 L20.4538298,22.5475877 L23.4549364,22.5475877 C26.7629143,22.5475877 29.4476555,19.8139091 29.4476555,16.4990042 C29.4476555,13.1840994 26.7691588,10.4968478 23.4611809,10.4968478" id="Fill-3" fill="#FFFFFF"/>\n          <g id="Group-7" transform="translate(0.000000, 8.552791)">\n            <mask id="mask-2" fill="white">\n              <polygon id="" points="0 0.0413086681 15.9297534 0.0413086681 15.9297534 15.8975455 0 15.8975455" transform="matrix(1, 0, 0, 1, 0, 0)"/>\n            </mask>\n            <g id="Clip-6"/>\n            <path d="M7.97779896,13.994797 C5.14612146,13.994797 2.76551157,11.9863192 2.12124759,9.36242918 C2.12124759,9.36242918 1.93512406,8.49490275 1.93512406,7.92363425 C1.93512406,7.35236575 2.11130741,6.47589641 2.11130741,6.47589641 C2.76015917,3.85847569 5.13790169,1.90942706 7.9649277,1.90942706 C11.2898549,1.90942706 14.01818,4.59978647 14.01818,7.90930021 L14.01818,9.3647759 L5.18448036,9.3647759 C5.70614876,10.3795751 6.76120988,10.9503996 7.97779896,10.9503996 L15.9188575,10.9503996 L15.9297534,2.36779915 C15.9297534,1.08820085 14.8780694,0.0413086681 13.5925363,0.0413086681 L2.33731912,0.0413086681 C1.05178596,0.0413086681 -2.54876463e-05,1.05648837 -2.54876463e-05,2.33608668 L-2.54876463e-05,13.5393425 C-2.54876463e-05,14.8189408 1.05178596,15.8975455 2.33731912,15.8975455 L13.5925363,15.8975455 C14.7461709,15.8975455 15.7085207,15.0730211 15.8944531,13.994797 L7.97779896,13.994797 Z" id="Fill-5" fill="#FFFFFF" mask="url(#mask-2)"/>\n          </g>\n          <path d="M7.96493407,13.3101374 C6.75299649,13.3101374 5.6990186,14.0486575 5.17524746,15.0000317 L10.7547481,15.0000317 C10.230977,14.0486575 9.17706281,13.3101374 7.96493407,13.3101374" id="Fill-8" fill="#FFFFFF"/>\n          <path d="M13.0624187,4.95090698 C13.0624187,2.21659408 10.7794902,1.90274841e-05 7.96342393,1.90274841e-05 C5.194,1.90274841e-05 2.94159298,2.14409937 2.86761508,4.81574841 C2.86640442,4.82703805 2.86736021,4.83801057 2.86736021,4.84961734 L2.86736021,6.33743975 C2.86736021,6.51541015 3.01295839,6.69135095 3.19621456,6.69135095 L5.07216905,6.69135095 C5.25542523,6.69135095 5.41612484,6.51541015 5.41612484,6.33743975 L5.41612484,4.95090698 C5.41612484,3.58549471 6.55860858,2.47460677 7.96488947,2.47460677 C9.37117035,2.47460677 10.5136541,3.58549471 10.5136541,4.95090698 L10.5136541,6.33743975 C10.5136541,6.51541015 10.6623108,6.69135095 10.845567,6.69135095 L12.7215852,6.69135095 C12.9048414,6.69135095 13.0624187,6.51541015 13.0624187,6.33743975 L13.0624187,4.95090698 Z" id="Fill-10" fill="#FFFFFF"/>\n          <path d="M26.0828975,25.9342579 C26.0828975,26.0654207 26.1845932,26.1253573 26.2938715,26.1253573 C26.4106049,26.1253573 26.5650601,26.0316786 26.5650601,25.8592262 C26.5650601,25.735611 26.4745789,25.6681268 26.3729469,25.6681268 C26.2373527,25.6681268 26.0828975,25.7542579 26.0828975,25.9342579 Z M25.1788507,25.938 C25.1788507,26.0654207 25.2768507,26.1253573 25.3823059,26.1253573 C25.5141407,26.1253573 25.6573176,26.0316786 25.6573176,25.8554841 C25.6573176,25.7318055 25.5743553,25.6681268 25.4651407,25.6681268 C25.3296101,25.6681268 25.1788507,25.7542579 25.1788507,25.938 Z M26.8211472,26.4165412 L26.5499586,27.9449556 C26.4143644,28.7174715 25.9058221,29.0712558 25.2165087,29.0712558 C24.6327142,29.0712558 24.1806908,28.692482 24.3125893,27.9462241 L24.5837142,26.4165412 L25.0019027,26.4165412 L24.7305867,27.9449556 C24.6477519,28.4213404 24.8624853,28.6925455 25.2692681,28.6925455 C25.687393,28.6925455 26.0452395,28.4449979 26.1318338,27.9462241 L26.4030224,26.4165412 L26.8211472,26.4165412 Z" id="Fill-12" fill="#FFFFFF"/>\n          <path d="M27.537898,28.1988584 C27.5228603,28.5062791 27.7224286,28.7049894 28.012478,28.7049894 C28.3778434,28.7049894 28.7318668,28.4236998 28.7544871,27.9964059 C28.7695886,27.6851797 28.5661971,27.5014376 28.2836029,27.5014376 C27.9219969,27.5014376 27.5603909,27.7902114 27.537898,28.1988584 Z M27.8317069,26.4164905 L27.6433532,27.4726427 C27.8052635,27.2552854 28.1292114,27.140296 28.3552231,27.140296 C28.8222843,27.140296 29.1462322,27.4127696 29.1462322,27.9188372 C29.1462322,28.6349683 28.6452088,29.0656237 28.0049592,29.0656237 C27.7563272,29.0656237 27.5453532,28.9736575 27.4173415,28.7412685 L27.3457849,29.0169133 L26.9803558,29.0169133 L27.4436575,26.4164905 L27.8317069,26.4164905 Z" id="Fill-14" fill="#FFFFFF"/>\n          <path d="M31.0981782,27.9387082 C31.1283173,27.6215835 30.9399636,27.4925137 30.6272939,27.4925137 C30.3448908,27.4925137 30.0849805,27.6215835 29.9718791,27.9387082 L31.0981782,27.9387082 Z M29.9079051,28.255833 C29.8928036,28.5095328 30.0924356,28.7166786 30.431485,28.7166786 C30.6198388,28.7166786 30.8683433,28.6433594 31.0039376,28.5159387 L31.2149116,28.7586025 C30.9852042,28.9684123 30.6461547,29.0728732 30.3599285,29.0728732 C29.8250702,29.0728732 29.5124005,28.7540359 29.5124005,28.2666152 C29.5124005,27.6179683 30.0246385,27.1346068 30.6800533,27.1346068 C31.279013,27.1346068 31.6179987,27.4947336 31.4146073,28.255833 L29.9079051,28.255833 Z" id="Fill-16" fill="#FFFFFF"/>\n          <path d="M32.4510433,27.1776089 L32.4321824,27.4221121 C32.613081,27.1856638 32.8315101,27.1374609 33.0310784,27.1374609 C33.2119133,27.1374609 33.3738235,27.2013298 33.4604815,27.2950085 L33.2270147,27.6324926 C33.1441161,27.5577146 33.0612813,27.5202304 32.9181044,27.5202304 C32.6506116,27.5202304 32.3870693,27.679871 32.3267273,28.0210973 L32.1497793,29.0169323 L31.7617299,29.0169323 L32.0894373,27.1776089 L32.4510433,27.1776089 Z" id="Fill-18" fill="#FFFFFF"/>\n          <polygon id="Fill-20" fill="#FFFFFF" points="35.3293696 27.1776089 35.5251784 28.6321966 36.2333527 27.1776089 36.6665152 27.1776089 35.694735 29.0169323 35.2389521 29.0169323 35.0544216 27.8035497 34.7567896 28.4063404 34.4329053 29.0169323 33.9808819 29.0169323 33.6531745 27.1776089 34.0901602 27.1776089 34.2822733 28.6321966 34.9940796 27.1776089"/>\n          <path d="M38.3550017,27.9387082 C38.3850771,27.6215835 38.1967871,27.4925137 37.8841174,27.4925137 C37.6017143,27.4925137 37.341804,27.6215835 37.2287026,27.9387082 L38.3550017,27.9387082 Z M37.1647286,28.255833 C37.1496272,28.5095328 37.3492592,28.7166786 37.6883086,28.7166786 C37.8766623,28.7166786 38.1251668,28.6433594 38.2607611,28.5159387 L38.4717351,28.7586025 C38.2420277,28.9684123 37.9029783,29.0728732 37.616752,29.0728732 C37.0818938,29.0728732 36.7692241,28.7540359 36.7692241,28.2666152 C36.7692241,27.6179683 37.281462,27.1346068 37.9368769,27.1346068 C38.5358365,27.1346068 38.8748222,27.4947336 38.6714308,28.255833 L37.1647286,28.255833 Z" id="Fill-22" fill="#FFFFFF"/>\n          <path d="M39.3915333,26.6765455 C39.3915333,26.8077082 39.4895333,26.8754461 39.5950521,26.8754461 C39.7456841,26.8754461 39.8850378,26.7777717 39.8850378,26.5942199 C39.8850378,26.470351 39.7907973,26.3990613 39.6891016,26.3990613 C39.5497479,26.3990613 39.3915333,26.4891882 39.3915333,26.6765455 Z M39.7342784,27.1776025 L39.4066984,29.016926 L39.018649,29.016926 L39.3463564,27.1776025 L39.7342784,27.1776025 Z" id="Fill-24" fill="#FFFFFF"/>\n          <path d="M41.4560008,27.6325941 C41.3354442,27.4976258 41.1810528,27.4601416 40.9965222,27.4601416 C40.740244,27.4601416 40.5595365,27.546463 40.5595365,27.7076258 C40.5595365,27.8425941 40.7063454,27.8989789 40.924902,27.9176258 C41.2638876,27.9475624 41.6970502,28.0601416 41.6066328,28.5362727 C41.5426588,28.8811776 41.1960905,29.08363 40.713928,29.08363 C40.412664,29.08363 40.1225508,29.0161459 39.926742,28.7424672 L40.1790697,28.4687886 C40.3184234,28.6598879 40.563296,28.7387252 40.7817251,28.7424672 C40.9662557,28.7424672 41.1848122,28.6749831 41.2187108,28.5025307 C41.2526094,28.3375624 41.1056731,28.2738837 40.8344845,28.2474989 C40.5180554,28.2174989 40.1716146,28.1014313 40.1716146,27.7526575 C40.1716146,27.2914313 40.6724468,27.1302685 41.0492179,27.1302685 C41.3354442,27.1302685 41.5464182,27.1939471 41.7197342,27.3777526 L41.4560008,27.6325941 Z" id="Fill-26" fill="#FFFFFF"/>\n          <path d="M42.6806376,27.1776089 L42.5036896,28.1681163 C42.4471707,28.483148 42.5903476,28.7008224 42.9142319,28.7008224 C43.219319,28.7008224 43.4792293,28.4492156 43.5318612,28.1417949 L43.7013541,27.1776089 L44.0893398,27.1776089 L43.7617598,29.0169323 L43.4114321,29.0169323 L43.4377481,28.7504207 C43.219319,28.9566152 43.0045218,29.0538457 42.744739,29.0538457 C42.2889562,29.0538457 42.0177676,28.7286025 42.1156402,28.1701459 L42.2927156,27.1776089 L42.6806376,27.1776089 Z" id="Fill-28" fill="#FFFFFF"/>\n          <path d="M45.7926792,29.0169323 L45.9697546,28.0324503 C46.026146,27.7136765 45.9171226,27.5025349 45.5629718,27.5025349 C45.2541252,27.5025349 44.9940875,27.7498288 44.9414555,28.0535074 L44.7719627,29.0169323 L44.383977,29.0169323 L44.7117481,27.1776089 L45.0657078,27.1776089 L45.0393918,27.4464038 C45.2541252,27.2476934 45.4762501,27.1497019 45.7172995,27.1497019 C46.1693229,27.1497019 46.4632592,27.462704 46.3615635,28.0289619 L46.184488,29.0169323 L45.7926792,29.0169323 Z" id="Fill-30" fill="#FFFFFF"/>\n          <g id="Group-34" transform="translate(46.706112, 27.136300)">\n            <mask id="mask-4" fill="white">\n              <polygon id="" points="0.0130133508 0.00161099366 2.2813355 0.00161099366 2.2813355 2.85412262 0.0130133508 2.85412262" transform="matrix(1, 0, 0, 1, 0, 0)"/>\n            </mask>\n            <g id="Clip-33"/>\n            <path d="M0.510906242,1.07387315 C0.510906242,1.38865116 0.718057087,1.58000423 1.01581651,1.58000423 C1.81791274,1.58000423 2.03270988,0.354 1.23029506,0.354 C0.849891938,0.354 0.510906242,0.635035941 0.510906242,1.07387315 Z M0.401627958,2.13433827 C0.375311964,2.38803805 0.571120806,2.49065962 0.898955657,2.49065962 C1.18524564,2.49065962 1.49415592,2.33152643 1.56571248,1.92668499 L1.62216762,1.61082875 C1.45267477,1.84702326 1.1437645,1.94025793 0.914120806,1.94025793 C0.439349675,1.94025793 0.107946554,1.65896829 0.107946554,1.14890486 C0.107946554,0.421674419 0.650259948,0.00161099366 1.26419363,0.00161099366 C1.52423134,0.00161099366 1.7577619,0.124465116 1.84066047,0.334465116 L1.90469818,0.0413150106 L2.28134187,0.0413150106 L1.95733017,1.93531078 C1.83690104,2.636537 1.31325735,2.85414799 0.834917945,2.85414799 C0.262274252,2.85414799 -0.0539637191,2.5783129 0.0249842653,2.13433827 L0.401627958,2.13433827 Z" id="Fill-32" fill="#FFFFFF" mask="url(#mask-4)"/>\n          </g>\n        </g>\n      </g>\n    </g>\n  </g>\n</svg>';
-    },
-    "./src/resources/fundingLogos/giropay.svg": function(module, exports) {
-        module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="75px" height="32px" viewBox="0 0 75 32" version="1.1" xmlns="http://www.w3.org/2000/svg">\n  <title>logo giropay</title>\n  <desc>Created with Sketch.</desc>\n  <defs>\n    <polygon id="path-1" points="0 0.017902439 46.0918699 0.017902439 46.0918699 19.8373984 0 19.8373984"/>\n    <polygon id="path-3" points="0 19.9821138 46.0918699 19.9821138 46.0918699 0.162601626 0 0.162601626"/>\n  </defs>\n  <g id="SPB_&amp;_AltPay_NewAssets" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="matrix(1.614571, 0, 0, 1.614571, -161.457123, -256.816772)">\n    <g id="logo-giropay" transform="translate(100.000000, 159.000000)">\n      <g id="Group-3" transform="translate(0.000000, 0.144715)">\n        <mask id="mask-2" fill="white">\n          <polygon id="" points="0 0.017902439 46.0918699 0.017902439 46.0918699 19.8373984 0 19.8373984" transform="matrix(1, 0, 0, 1, 0, 0)"/>\n        </mask>\n        <g id="Clip-2"/>\n        <path d="M0,3.5735122 C0,1.60977236 1.5998374,0.017902439 3.57349593,0.017902439 L42.5182114,0.017902439 C44.4918699,0.017902439 46.0918699,1.60977236 46.0918699,3.5735122 L46.0918699,16.2818049 C46.0918699,18.2455447 44.4918699,19.8374146 42.5182114,19.8374146 L3.57349593,19.8374146 C1.5998374,19.8374146 0,18.2455447 0,16.2818049 L0,3.5735122 Z" id="Fill-1" fill="#003A7D" mask="url(#mask-2)"/>\n      </g>\n      <path d="M1.46738211,3.84021138 L1.46738211,16.3065528 C1.46738211,17.5338699 2.46738211,18.5288293 3.70087805,18.5288293 L24.1036423,18.5288293 L24.1036423,1.61793496 L3.70087805,1.61793496 C2.46738211,1.61793496 1.46738211,2.61289431 1.46738211,3.84021138" id="Fill-4" fill="#FFFFFF"/>\n      <path d="M5.67102439,10.0205528 C5.67102439,9.34152846 6.00582114,8.77730081 6.64663415,8.77730081 C7.42126829,8.77730081 7.74630894,9.39892683 7.74630894,9.95356098 C7.74630894,10.7187642 7.25866667,11.235187 6.64663415,11.235187 C6.13004878,11.235187 5.67102439,10.795187 5.67102439,10.0205528 Z M9.41053659,7.57226016 L7.8515122,7.57226016 L7.8515122,8.47112195 L7.8324878,8.47112195 C7.46907317,7.85908943 6.87606504,7.45746341 6.13964228,7.45746341 C4.59021138,7.45746341 3.8921626,8.56689431 3.8921626,10.0491707 C3.8921626,11.5221789 4.74321951,12.5550244 6.11102439,12.5550244 C6.79964228,12.5550244 7.37346341,12.2872195 7.78468293,11.7038049 L7.80370732,11.7038049 L7.80370732,11.9716098 C7.80370732,12.9472195 7.26826016,13.4158374 6.27362602,13.4158374 C5.55622764,13.4158374 5.11622764,13.2628293 4.59021138,13.0046179 L4.50419512,14.3626667 C4.90582114,14.5060813 5.58500813,14.6782764 6.40744715,14.6782764 C8.41590244,14.6782764 9.41053659,14.0182764 9.41053659,11.9716098 L9.41053659,7.57226016 Z" id="Fill-6" fill="#ED1C24"/>\n      <mask id="mask-4" fill="white">\n        <polygon id="" points="0 19.9821138 46.0918699 19.9821138 46.0918699 0.162601626 0 0.162601626" transform="matrix(1, 0, 0, 1, 0, 0)"/>\n      </mask>\n      <g id="Clip-9"/>\n      <path d="M10.5985366,6.75918699 L12.32,6.75918699 L12.32,5.49674797 L10.5985366,5.49674797 L10.5985366,6.75918699 Z M10.598374,12.5549593 L12.3198374,12.5549593 L12.3198374,7.57219512 L10.598374,7.57219512 L10.598374,12.5549593 Z" id="Fill-8" fill="#ED1C24" mask="url(#mask-4)"/>\n      <path d="M17.1133333,7.51479675 C16.9411382,7.48617886 16.7307317,7.45739837 16.5299187,7.45739837 C15.7839024,7.45739837 15.3534959,7.85918699 15.0570732,8.4904065 L15.0380488,8.4904065 L15.0380488,7.57219512 L13.4694309,7.57219512 L13.4694309,12.5549593 L15.1910569,12.5549593 L15.1910569,10.4508943 C15.1910569,9.47544715 15.6404878,8.89203252 16.4439024,8.89203252 C16.6447154,8.89203252 16.835935,8.89203252 17.0273171,8.94943089 L17.1133333,7.51479675 Z" id="Fill-10" fill="#ED1C24" mask="url(#mask-4)"/>\n      <path d="M20.0773496,11.4647154 C19.2835285,11.4647154 18.9583252,10.804878 18.9583252,10.0682927 C18.9583252,9.32243902 19.2835285,8.66243902 20.0773496,8.66243902 C20.8711707,8.66243902 21.196374,9.32243902 21.196374,10.0682927 C21.196374,10.804878 20.8711707,11.4647154 20.0773496,11.4647154 M20.0773496,12.6697561 C21.7223902,12.6697561 22.9752358,11.7133333 22.9752358,10.0682927 C22.9752358,8.41382114 21.7223902,7.45739837 20.0773496,7.45739837 C18.4323089,7.45739837 17.1794634,8.41382114 17.1794634,10.0682927 C17.1794634,11.7133333 18.4323089,12.6697561 20.0773496,12.6697561" id="Fill-11" fill="#ED1C24" mask="url(#mask-4)"/>\n      <path d="M29.3757073,10.0110244 C29.3757073,10.8048455 28.9836748,11.3500488 28.3332683,11.3500488 C27.7594472,11.3500488 27.2812358,10.8048455 27.2812358,10.0780163 C27.2812358,9.332 27.7020488,8.77720325 28.3332683,8.77720325 C29.0026992,8.77720325 29.3757073,9.35102439 29.3757073,10.0110244 Z M25.5597724,14.5633821 L27.2812358,14.5633821 L27.2812358,11.856878 L27.3002602,11.856878 C27.6254634,12.4498862 28.2758699,12.6697236 28.8783089,12.6697236 C30.360748,12.6697236 31.1545691,11.4456585 31.1545691,9.97265041 C31.1545691,8.76777236 30.399122,7.45736585 29.0218862,7.45736585 C28.2376585,7.45736585 27.5106667,7.77297561 27.166439,8.47118699 L27.147252,8.47118699 L27.147252,7.5721626 L25.5597724,7.5721626 L25.5597724,14.5633821 Z" id="Fill-12" fill="#FFFFFF" mask="url(#mask-4)"/>\n      <path d="M33.505252,10.9769919 C33.505252,10.4987805 33.9642764,10.3169919 34.5476911,10.3169919 C34.8059024,10.3169919 35.0546829,10.3361789 35.2745203,10.3457724 C35.2745203,10.929187 34.8633008,11.5221951 34.2128943,11.5221951 C33.8112683,11.5221951 33.505252,11.3212195 33.505252,10.9769919 Z M36.9769593,12.5550407 C36.900374,12.1628455 36.8813496,11.770813 36.8813496,11.3786179 L36.8813496,9.52317073 C36.8813496,8.00252033 35.7815122,7.45747967 34.5094797,7.45747967 C33.7730569,7.45747967 33.1322439,7.56268293 32.5202114,7.81130081 L32.5488293,8.97813008 C33.0270407,8.7103252 33.5816748,8.60512195 34.1364715,8.60512195 C34.7580976,8.60512195 35.2650894,8.78674797 35.2745203,9.46577236 C35.0546829,9.42756098 34.7485041,9.39894309 34.4711057,9.39894309 C33.5530569,9.39894309 31.8984228,9.58056911 31.8984228,11.1013821 C31.8984228,12.1820325 32.7784228,12.6698374 33.7634634,12.6698374 C34.4711057,12.6698374 34.9493171,12.392439 35.3415122,11.770813 L35.3606992,11.770813 C35.3606992,12.0290244 35.3893171,12.2872358 35.3989106,12.5550407 L36.9769593,12.5550407 Z" id="Fill-13" fill="#FFFFFF" mask="url(#mask-4)"/>\n      <path d="M37.750748,14.5634634 C38.1045691,14.6398862 38.4583902,14.6782602 38.8218049,14.6782602 C40.3998537,14.6782602 40.7728618,13.463626 41.2606667,12.2107805 L43.0873333,7.5722439 L41.3658699,7.5722439 L40.3426179,10.8239512 L40.3234309,10.8239512 L39.2522114,7.5722439 L37.3967642,7.5722439 L39.414813,12.6698049 C39.2904228,13.1098049 38.9653821,13.3584228 38.5445691,13.3584228 C38.3053821,13.3584228 38.0949756,13.3296423 37.8655447,13.2532195 L37.750748,14.5634634 Z" id="Fill-14" fill="#FFFFFF" mask="url(#mask-4)"/>\n    </g>\n  </g>\n</svg>';
-    },
-    "./src/resources/fundingLogos/giropay_white.svg": function(module, exports) {
-        module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="75px" height="32px" viewBox="0 0 75 32" version="1.1" xmlns="http://www.w3.org/2000/svg">\n  <title>logo giropay copy</title>\n  <desc>Created with Sketch.</desc>\n  <defs>\n    <polygon id="path-1" points="0 0.0268536585 69.1378049 0.0268536585 69.1378049 29.7560976 0 29.7560976"/>\n    <polygon id="path-3" points="0 29.9731707 69.1378049 29.9731707 69.1378049 0.243902439 0 0.243902439"/>\n  </defs>\n  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="matrix(1.07638, 0, 0, 1.07638, 0, -0.018629)">\n    <g id="SPB_&amp;_AltPay_NewAssets" transform="translate(-226.000000, -633.000000)">\n      <g id="logo-giropay-copy" transform="translate(226.000000, 633.000000)">\n        <g id="Group-3" transform="translate(0.000000, 0.217073)">\n          <mask id="mask-2" fill="white">\n            <polygon id="" points="0 0.0268536585 69.1378049 0.0268536585 69.1378049 29.7560976 0 29.7560976" transform="matrix(1, 0, 0, 1, 0, 0)"/>\n          </mask>\n          <g id="Clip-2"/>\n          <path d="M0,5.36026829 C0,2.41465854 2.3997561,0.0268536585 5.3602439,0.0268536585 L63.7773171,0.0268536585 C66.7378049,0.0268536585 69.1378049,2.41465854 69.1378049,5.36026829 L69.1378049,24.4227073 C69.1378049,27.3683171 66.7378049,29.756122 63.7773171,29.756122 L5.3602439,29.756122 C2.3997561,29.756122 0,27.3683171 0,24.4227073 L0,5.36026829 Z" id="Fill-1" fill="#FFFFFF" mask="url(#mask-2)"/>\n        </g>\n        <path d="M2.20107317,5.76031707 L2.20107317,24.4598293 C2.20107317,26.3008049 3.70107317,27.7932439 5.55131707,27.7932439 L36.1554634,27.7932439 L36.1554634,2.42690244 L5.55131707,2.42690244 C3.70107317,2.42690244 2.20107317,3.91934146 2.20107317,5.76031707" id="Fill-4" fill="#000000"/>\n        <path d="M8.50653659,15.0308293 C8.50653659,14.0122927 9.00873171,13.1659512 9.96995122,13.1659512 C11.1319024,13.1659512 11.6194634,14.0983902 11.6194634,14.9303415 C11.6194634,16.0781463 10.888,16.8527805 9.96995122,16.8527805 C9.19507317,16.8527805 8.50653659,16.1927805 8.50653659,15.0308293 Z M14.1158049,11.3583902 L11.7772683,11.3583902 L11.7772683,12.7066829 L11.7487317,12.7066829 C11.2036098,11.7886341 10.3140976,11.1861951 9.20946341,11.1861951 C6.88531707,11.1861951 5.8382439,12.8503415 5.8382439,15.0737561 C5.8382439,17.2832683 7.11482927,18.8325366 9.16653659,18.8325366 C10.1994634,18.8325366 11.0601951,18.4308293 11.6770244,17.5557073 L11.705561,17.5557073 L11.705561,17.9574146 C11.705561,19.4208293 10.9023902,20.1237561 9.41043902,20.1237561 C8.33434146,20.1237561 7.67434146,19.8942439 6.88531707,19.5069268 L6.75629268,21.544 C7.35873171,21.759122 8.3775122,22.0174146 9.61117073,22.0174146 C12.6238537,22.0174146 14.1158049,21.0274146 14.1158049,17.9574146 L14.1158049,11.3583902 Z" id="Fill-6" fill="#FFFFFF"/>\n        <mask id="mask-4" fill="white">\n          <polygon id="" points="0 29.9731707 69.1378049 29.9731707 69.1378049 0.243902439 0 0.243902439" transform="matrix(1, 0, 0, 1, 0, 0)"/>\n        </mask>\n        <g id="Clip-9"/>\n        <path d="M15.8978049,10.1387805 L18.48,10.1387805 L18.48,8.24512195 L15.8978049,8.24512195 L15.8978049,10.1387805 Z M15.897561,18.832439 L18.4797561,18.832439 L18.4797561,11.3582927 L15.897561,11.3582927 L15.897561,18.832439 Z" id="Fill-8" fill="#FFFFFF" mask="url(#mask-4)"/>\n        <path d="M25.67,11.2721951 C25.4117073,11.2292683 25.0960976,11.1860976 24.794878,11.1860976 C23.6758537,11.1860976 23.0302439,11.7887805 22.5856098,12.7356098 L22.5570732,12.7356098 L22.5570732,11.3582927 L20.2041463,11.3582927 L20.2041463,18.832439 L22.7865854,18.832439 L22.7865854,15.6763415 C22.7865854,14.2131707 23.4607317,13.3380488 24.6658537,13.3380488 C24.9670732,13.3380488 25.2539024,13.3380488 25.5409756,13.4241463 L25.67,11.2721951 Z" id="Fill-10" fill="#FFFFFF" mask="url(#mask-4)"/>\n        <path d="M30.1160244,17.1970732 C28.9252927,17.1970732 28.4374878,16.2073171 28.4374878,15.102439 C28.4374878,13.9836585 28.9252927,12.9936585 30.1160244,12.9936585 C31.3067561,12.9936585 31.794561,13.9836585 31.794561,15.102439 C31.794561,16.2073171 31.3067561,17.1970732 30.1160244,17.1970732 M30.1160244,19.0046341 C32.5835854,19.0046341 34.4628537,17.57 34.4628537,15.102439 C34.4628537,12.6207317 32.5835854,11.1860976 30.1160244,11.1860976 C27.6484634,11.1860976 25.7691951,12.6207317 25.7691951,15.102439 C25.7691951,17.57 27.6484634,19.0046341 30.1160244,19.0046341" id="Fill-11" fill="#FFFFFF" mask="url(#mask-4)"/>\n        <path d="M44.063561,15.0165366 C44.063561,16.2072683 43.4755122,17.0250732 42.4999024,17.0250732 C41.6391707,17.0250732 40.9218537,16.2072683 40.9218537,15.1170244 C40.9218537,13.998 41.5530732,13.1658049 42.4999024,13.1658049 C43.5040488,13.1658049 44.063561,14.0265366 44.063561,15.0165366 Z M38.3396585,21.8450732 L40.9218537,21.8450732 L40.9218537,17.7853171 L40.9503902,17.7853171 C41.4381951,18.6748293 42.4138049,19.0045854 43.3174634,19.0045854 C45.541122,19.0045854 46.7318537,17.1684878 46.7318537,14.9589756 C46.7318537,13.1516585 45.5986829,11.1860488 43.5328293,11.1860488 C42.3564878,11.1860488 41.266,11.6594634 40.7496585,12.7067805 L40.720878,12.7067805 L40.720878,11.3582439 L38.3396585,11.3582439 L38.3396585,21.8450732 Z" id="Fill-12" fill="#000000" mask="url(#mask-4)"/>\n        <path d="M50.257878,16.4654878 C50.257878,15.7481707 50.9464146,15.4754878 51.8215366,15.4754878 C52.2088537,15.4754878 52.5820244,15.5042683 52.9117805,15.5186585 C52.9117805,16.3937805 52.2949512,17.2832927 51.3193415,17.2832927 C50.7169024,17.2832927 50.257878,16.9818293 50.257878,16.4654878 Z M55.465439,18.832561 C55.350561,18.2442683 55.3220244,17.6562195 55.3220244,17.0679268 L55.3220244,14.2847561 C55.3220244,12.0037805 53.6722683,11.1862195 51.7642195,11.1862195 C50.6595854,11.1862195 49.6983659,11.3440244 48.7803171,11.7169512 L48.8232439,13.4671951 C49.540561,13.0654878 50.3725122,12.9076829 51.2047073,12.9076829 C52.1371463,12.9076829 52.8976341,13.180122 52.9117805,14.1986585 C52.5820244,14.1413415 52.1227561,14.0984146 51.7066585,14.0984146 C50.3295854,14.0984146 47.8476341,14.3708537 47.8476341,16.6520732 C47.8476341,18.2730488 49.1676341,19.0047561 50.6451951,19.0047561 C51.7066585,19.0047561 52.4239756,18.5886585 53.0122683,17.6562195 L53.0410488,17.6562195 C53.0410488,18.0435366 53.0839756,18.4308537 53.0983659,18.832561 L55.465439,18.832561 Z" id="Fill-13" fill="#000000" mask="url(#mask-4)"/>\n        <path d="M56.626122,21.8451951 C57.1568537,21.9598293 57.6875854,22.0173902 58.2327073,22.0173902 C60.5997805,22.0173902 61.1592927,20.195439 61.891,18.3161707 L64.631,11.3583659 L62.0488049,11.3583659 L60.5139268,16.2359268 L60.4851463,16.2359268 L58.8783171,11.3583659 L56.0951463,11.3583659 L59.1222195,19.0047073 C58.9356341,19.6647073 58.4480732,20.0376341 57.8168537,20.0376341 C57.4580732,20.0376341 57.1424634,19.9944634 56.7983171,19.8798293 L56.626122,21.8451951 Z" id="Fill-14" fill="#000000" mask="url(#mask-4)"/>\n      </g>\n    </g>\n  </g>\n</svg>';
-    },
-    "./src/resources/fundingLogos/ideal.svg": function(module, exports) {
-        module.exports = '<svg width="38" height="32" viewBox="0 0 38 32" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <polygon id="Fill-1" fill="#000000" points="4.47 27.632 10.452 27.632 10.452 17.982 4.47 17.982"/>\n  <g id="Group-9" transform="matrix(0.952642, 0, 0, 0.930979, 0.31993, 0.181113)">\n    <path d="M11.1102604,13.937999 C11.1102604,15.8893766 9.51859887,17.4723289 7.55546104,17.4723289 C5.59238806,17.4723289 4.00066169,15.8893766 4.00066169,13.937999 C4.00066169,11.9865569 5.59238806,10.4043136 7.55546104,10.4043136 C9.51859887,10.4043136 11.1102604,11.9865569 11.1102604,13.937999" id="Fill-2" fill="#000000"/>\n    <g id="Group-6">\n      <mask id="mask-2" fill="white">\n        <polygon id="" points="39.1898554 33.9678282 0 33.9678282 0 0.001572704 39.1898554 0.001572704" transform="matrix(1, 0, 0, 1, 0, 0)"/>\n      </mask>\n      <g id="Clip-5"/>\n      <path d="M22.1049929,2.25750057 C26.4717361,2.25750057 30.1110886,3.433548 32.6296578,5.65853743 C35.476843,8.17370364 36.9204068,11.9843525 36.9204068,16.9847134 C36.9204068,26.8945533 32.0742264,31.7119261 22.1049929,31.7119261 L2.26942909,31.7119261 L2.26942909,2.25750057 L22.1049929,2.25750057 Z M22.531325,0.001572704 L-1.9452416e-05,0.001572704 L-1.9452416e-05,33.967854 L22.531325,33.967854 L22.531325,33.9614085 C27.4529808,33.8947619 31.3518934,32.6793969 34.1187402,30.3394196 C37.4837488,27.4935988 39.1898554,23.0003706 39.1898554,16.9847134 C39.1898554,14.1090499 38.7410881,11.5297509 37.8560681,9.31836144 C37.0093692,7.2028812 35.758125,5.40419768 34.13722,3.97219912 C31.2823834,1.45020067 27.2749912,0.0865245021 22.531325,0.00904949351 L22.531325,0.001572704 Z" id="Fill-4" fill="#000000" mask="url(#mask-2)"/>\n    </g>\n    <path d="M21.4851352,29.4975138 L13.5194356,29.4975138 L13.5194356,5.00387361 L21.4851352,5.00387361 L21.1636516,5.00387361 C27.8067813,5.00387361 34.8779291,7.60998594 34.8779291,17.282889 C34.8779291,27.5088167 27.8067813,29.4975138 21.1636516,29.4975138 L21.4851352,29.4975138 Z" id="Fill-7" fill="#CD0067"/>\n  </g>\n  <g id="Group-30" transform="matrix(0.952642, 0, 0, 0.930979, 11.685725, 10.562208)" fill="#FFFFFF">\n    <path d="M1.41115607,1.17495169 L1.41115607,5.07048794 L2.30681015,5.07048794 C2.64178075,5.07048794 2.88357428,5.05173151 3.03219074,5.0142831 C3.2267149,4.96613516 3.38810511,4.88459948 3.51649106,4.76961161 C3.64474732,4.65455929 3.749531,4.46538363 3.83058274,4.20189125 C3.91163447,3.93846333 3.95216034,3.57944852 3.95216034,3.12471792 C3.95216034,2.67005177 3.91163447,2.3210275 3.83058274,2.07764511 C3.749531,1.83426272 3.63605858,1.64437805 3.49016546,1.5079911 C3.34420749,1.37160414 3.15915018,1.27930447 2.93492866,1.23109207 C2.76737852,1.19370812 2.43915142,1.17495169 1.95018252,1.17495169 L1.41115607,1.17495169 Z M0.215675421,0.175897919 L2.40271056,0.175897919 C2.89589415,0.175897919 3.27190935,0.213410777 3.53069132,0.288436492 C3.878306,0.390275522 4.17612249,0.571265392 4.42407595,0.831212737 C4.67202941,1.09116008 4.86065301,1.40950373 4.99001157,1.78598587 C5.11937014,2.16253246 5.18408185,2.62686687 5.18408185,3.1789891 C5.18408185,3.66407805 5.12345515,4.08213371 5.00220176,4.433285 C4.85397434,4.86210466 4.6423969,5.20919527 4.36753426,5.47449239 C4.15997698,5.67552779 3.87966767,5.832347 3.52660632,5.94488558 C3.26244251,6.02796818 2.90938115,6.06954171 2.46742226,6.06954171 L0.215675421,6.06954171 L0.215675421,0.175897919 Z" id="Fill-10"/>\n    <path d="M2.40271056,0.337035624 C2.87825729,0.337035624 3.24247136,0.372743739 3.48523751,0.443128689 C3.80302515,0.536201827 4.07944398,0.704171771 4.30645367,0.942075479 C4.53702965,1.18384649 4.7154083,1.48530291 4.83666169,1.83813003 C4.95966581,2.19611355 5.02197838,2.64723467 5.02197838,3.1789891 C5.02197838,3.64390361 4.96375081,4.04829479 4.84885188,4.38094747 C4.70970226,4.78359837 4.50973142,5.11264156 4.25458057,5.35892443 C4.06589213,5.54165459 3.80438682,5.68712971 3.47713234,5.79148248 C3.23060538,5.86895749 2.89070683,5.908404 2.46742226,5.908404 L0.377778888,5.908404 L0.377778888,0.337035624 L2.40271056,0.337035624 Z M0.0535719538,0.0147602138 L0.0535719538,6.23067941 L2.46742226,6.23067941 C2.92390562,6.23067941 3.2967436,6.18614095 3.57549672,6.09848204 C3.95157676,5.97866004 4.25594223,5.80759625 4.48061764,5.58993144 C4.77246872,5.30819828 4.9996081,4.93661473 5.15548679,4.48562252 C5.28205718,4.11919538 5.34618531,3.67954727 5.34618531,3.1789891 C5.34618531,2.61178438 5.27797217,2.12559969 5.1434263,1.73390616 C5.00706486,1.33699177 4.80456521,0.995959927 4.54169823,0.720349996 C4.27494076,0.440679396 3.9502151,0.243317935 3.57646934,0.133873205 C3.29992083,0.0536910833 2.91612466,0.0147602138 2.40271056,0.0147602138 L0.0535719538,0.0147602138 Z" id="Fill-12"/>\n    <path d="M1.9501501,1.33608939 C2.54124418,1.33608939 2.79263424,1.36451409 2.899428,1.38836247 C3.09466542,1.43032272 3.25566658,1.50998921 3.37905974,1.6253638 C3.50439814,1.74254314 3.60457808,1.91180219 3.6766817,2.12824235 C3.75189771,2.35415741 3.79002445,2.68945275 3.79002445,3.12471792 C3.79002445,3.56127219 3.75150867,3.90784717 3.67551456,4.15477459 C3.60360546,4.38861762 3.51354078,4.55523401 3.40791416,4.64991853 C3.30014777,4.74647224 3.16054427,4.81647046 2.99299412,4.85797953 C2.85754047,4.89207627 2.62683481,4.90935023 2.30677773,4.90935023 L1.57329196,4.90935023 L1.57329196,1.33608939 L1.9501501,1.33608939 Z M1.24902018,1.01381398 L1.24902018,5.23162564 L2.30677773,5.23162564 C2.65860709,5.23162564 2.90889484,5.21158011 3.07203577,5.17052222 C3.29100514,5.1163155 3.47729444,5.02163098 3.62500312,4.88924025 C3.77699133,4.7529822 3.89493781,4.54356764 3.98558607,4.24900792 C4.07214932,3.96766148 4.11423138,3.59988078 4.11423138,3.12471792 C4.11423138,2.64833041 4.07176027,2.2893156 3.98441893,2.02698342 C3.89519718,1.75904364 3.76622766,1.54492386 3.60120633,1.39061839 C3.43423976,1.23450819 3.22162485,1.12789948 2.96919733,1.0736283 C2.78932733,1.03347278 2.45558871,1.01381398 1.9501501,1.01381398 L1.24902018,1.01381398 Z" id="Fill-14"/>\n    <polygon id="Fill-16" points="6.53678989 6.06950948 6.53678989 0.175865691 10.9257088 0.175865691 10.9257088 1.17491946 7.73227054 1.17491946 7.73227054 2.48013487 10.702849 2.48013487 10.702849 3.47918864 7.73227054 3.47918864 7.73227054 5.07045571 11.0391813 5.07045571 11.0391813 6.06950948"/>\n    <path d="M10.7636378,0.337035624 L10.7636378,1.01381398 L7.57019949,1.01381398 L7.57019949,2.64130481 L10.5407779,2.64130481 L10.5407779,3.31808317 L7.57019949,3.31808317 L7.57019949,5.23162564 L10.8771102,5.23162564 L10.8771102,5.908404 L6.69892578,5.908404 L6.69892578,0.337035624 L10.7636378,0.337035624 Z M6.37471884,0.0147602138 L6.37471884,6.23067941 L11.2013172,6.23067941 L11.2013172,4.90935023 L7.89440643,4.90935023 L7.89440643,3.64035858 L10.8649849,3.64035858 L10.8649849,2.3190294 L7.89440643,2.3190294 L7.89440643,1.33608939 L11.0878447,1.33608939 L11.0878447,0.0147602138 L6.37471884,0.0147602138 Z" id="Fill-18"/>\n    <path d="M15.5303032,3.73301276 L14.7130424,1.54959685 L13.9121864,3.73301276 L15.5303032,3.73301276 Z M17.7341971,6.06950948 L16.431793,6.06950948 L15.9144884,4.73206653 L13.5458326,4.73206653 L13.055113,6.06950948 L11.7849999,6.06950948 L14.0890089,0.175865691 L15.363207,0.175865691 L17.7341971,6.06950948 Z" id="Fill-20"/>\n    <path d="M15.2534629,0.337035624 C15.3291976,0.525244463 17.332991,5.50626875 17.4947703,5.908404 L16.5431581,5.908404 C16.4751395,5.73244163 16.0257887,4.57096105 16.0257887,4.57096105 L13.4323926,4.57096105 C13.4323926,4.57096105 13.0075518,5.72876769 12.9417378,5.908404 L12.0218979,5.908404 C12.1781008,5.50884695 14.1252876,0.527951577 14.1999201,0.337035624 L15.2534629,0.337035624 Z M13.9780328,0.0147602138 L11.5481019,6.23067941 L13.168553,6.23067941 C13.168553,6.23067941 13.5933289,5.07280832 13.6592077,4.89323646 L15.8031882,4.89323646 C15.871142,5.06913438 16.3204928,6.23067941 16.3204928,6.23067941 L17.9736239,6.23067941 L15.472951,0.0147602138 L13.9780328,0.0147602138 Z" id="Fill-22"/>\n    <path d="M14.7145337,2.01579402 C14.8921991,2.49044124 15.1926093,3.29290701 15.2970039,3.57186861 L14.1437998,3.57186861 C14.2457305,3.2940672 14.5401752,2.49134361 14.7145337,2.01579402 L14.7145337,2.01579402 Z M13.680573,3.89414402 L15.7636025,3.89414402 L14.7114862,1.0833868 L13.680573,3.89414402 Z" id="Fill-24"/>\n    <polygon id="Fill-26" points="18.7343171 6.06950948 18.7343171 0.224207003 19.9297978 0.224207003 19.9297978 5.07045571 22.9084814 5.07045571 22.9084814 6.06950948"/>\n    <path d="M19.7677267,0.385376935 L19.7677267,5.23162564 L22.7464104,5.23162564 L22.7464104,5.908404 L18.8963882,5.908404 L18.8963882,0.385376935 L19.7677267,0.385376935 Z M18.5722461,0.0631015253 L18.5722461,6.23067941 L23.0706173,6.23067941 L23.0706173,4.90935023 L20.0919337,4.90935023 L20.0919337,0.0631015253 L18.5722461,0.0631015253 Z" id="Fill-28"/>\n  </g>\n</svg>\n';
-    },
-    "./src/resources/fundingLogos/mybank.svg": function(module, exports) {
-        module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="58px" height="32px" viewBox="0 0 58 32" version="1.1" xmlns="http://www.w3.org/2000/svg">\n  <title>MyBank</title>\n  <desc>Created with Sketch.</desc>\n  <defs>\n    <polygon id="path-1" points="3.086436e-05 0.00960615385 42.6159033 0.00960615385 42.6159033 24 3.086436e-05 24"/>\n  </defs>\n  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="matrix(1.333867, 0, 0, 1.333867, -0.00001, -0.00321)">\n    <g id="SPB_&amp;_AltPay_NewAssets" transform="translate(-100.000000, -159.000000)">\n      <g id="MyBank" transform="translate(100.000000, 159.000000)">\n        <path d="M29.010016,14.6206556 C29.010016,14.6206556 27.947442,14.8389924 27.9585564,14.0777038 C27.9698571,13.3164773 29.8942008,13.3619719 30.0914038,13.4236258 C30.0914038,13.4236258 30.1519432,14.2874637 29.010016,14.6206556 M29.3297879,9.81836571 C27.677716,9.80301439 26.9053582,10.753926 26.9053582,10.753926 C26.4037199,11.2864986 26.7253546,12.0076376 27.2173686,12.0597202 C27.924406,12.1345501 27.9170171,11.5413802 29.0022546,11.2784811 C29.9542434,11.0477763 29.9954723,11.9305703 29.9954723,11.9305703 C25.9352386,11.8295126 26.1290887,15.239929 27.5113104,15.9642377 C28.8367183,16.658714 30.0756326,15.7825701 30.0756326,15.7825701 C30.0756326,15.7825701 30.1222013,16.2545455 30.777951,16.2545455 C31.5283904,16.2545455 31.5272727,15.5049412 31.5272727,15.5049412 L31.5242302,12.1853897 C31.4748674,9.75671183 29.3297879,9.81836571 29.3297879,9.81836571" id="Fill-1" fill="#1A4B67"/>\n        <path d="M42.4169651,14.9132636 L40.766254,12.4266353 L41.9794586,11.2784792 C41.9794586,11.2784792 42.5394372,10.7597112 42.0797024,10.2455911 C41.5701862,9.67606803 40.9629029,10.2382165 40.9629029,10.2382165 L39.4383789,11.6556411 L39.4383789,8.81056644 C39.4383789,8.40291433 39.1083605,8.07272727 38.7011934,8.07272727 C38.2936547,8.07272727 37.9636364,8.40291433 37.9636364,8.81056644 L37.9636364,15.5050966 C37.9636364,15.9126248 38.2936547,16.2429358 38.7011934,16.2429358 C39.1083605,16.2429358 39.4383789,15.9126248 39.4383789,15.5050966 L39.4383789,13.7227806 L39.7172538,13.4440304 L41.2106953,15.7865117 C41.2106953,15.7865117 41.697426,16.5998328 42.4143027,16.0821803 C42.9532914,15.6931198 42.4169651,14.9132636 42.4169651,14.9132636" id="Fill-3" fill="#1A4B67"/>\n        <path d="M37.0887651,12.0920353 C37.0887651,9.6760941 35.0962232,9.33568291 33.7411943,10.1020724 C33.7401529,10.1029393 33.7389278,10.1056016 33.7382539,10.1063446 C33.6363205,9.81249385 33.362313,9.6 33.0365425,9.6 C32.6248269,9.6 32.2909091,9.93768691 32.2909091,10.3541303 L32.2909091,15.3913243 C32.2909091,15.8078915 32.6248269,16.1454545 33.0365425,16.1454545 C33.4485644,16.1454545 33.7826048,15.8078915 33.7826048,15.3913243 L33.7723134,11.9929705 C33.7723134,11.9929705 33.9532086,11.7752139 34.2436332,11.5669922 C34.9412403,11.0671487 35.6063806,11.2374162 35.6063806,12.0917257 L35.6234716,15.4035835 C35.6234716,15.8135877 35.9518762,16.1454545 36.3573435,16.1454545 C36.7625045,16.1454545 37.0909091,15.8135877 37.0909091,15.4035835 L37.0887651,12.0920353 Z" id="Fill-5" fill="#1A4B67"/>\n        <path d="M15.5613016,16.2862697 C15.7330634,15.9971851 15.762994,15.7935853 15.762994,15.7935853 L14.0695172,11.3349218 C14.0695172,11.3349218 13.7622674,10.4721348 14.4393994,10.2166114 C15.1567468,9.94557914 15.4157136,10.6357839 15.4696009,10.7805123 C15.5234881,10.9252407 16.5395249,13.6504516 16.5395249,13.6504516 L17.5177483,10.7867779 C17.5177483,10.7867779 17.7979621,9.89638514 18.5815138,10.2138818 C19.2290232,10.4764773 18.8964002,11.3498103 18.8964002,11.3498103 C18.8964002,11.3498103 17.8952671,14.3335844 17.0561037,16.4983684 C16.5548597,17.7916804 16.1267792,17.9191009 15.6376676,18.0403799 C14.9830758,18.2027884 13.7454545,18.1223286 13.7454545,17.30247 C13.7454545,16.655814 14.4027561,16.615491 14.6992284,16.6251065 C14.7151175,16.6254167 15.3279543,16.6788911 15.5613016,16.2862697" id="Fill-7" fill="#00C0EE"/>\n        <path d="M11.5669215,8.85710249 L10.0137262,13.1590392 L8.3203761,8.88327934 C8.3203761,8.88327934 8.06948196,8.07272727 7.36345596,8.07272727 C6.54545455,8.07272727 6.57202708,8.72317872 6.55361169,8.88327934 C6.53525811,9.04350403 6.55361169,15.569481 6.55361169,15.569481 C6.55361169,15.569481 6.54545455,16.2545455 7.29591229,16.2545455 C8.06280792,16.2545455 8.02603896,15.56334 8.03209502,15.56334 C8.03821288,15.56334 8.03209502,12.1182301 8.03209502,12.1182301 L9.27754342,15.56334 C9.27754342,15.56334 9.46151186,16.2407127 10.0381976,16.2283686 C10.6148833,16.2161486 10.7804982,15.56334 10.7804982,15.56334 L11.823501,12.1244331 L11.823501,15.56334 C11.823501,15.56334 11.823501,16.2545455 12.5780991,16.2545455 C13.3081022,16.2545455 13.3081022,15.56334 13.3081022,15.56334 L13.3090909,8.88948239 C13.3090909,8.88948239 13.3090909,8.07272727 12.5166733,8.07663519 C11.8595284,8.07973672 11.609932,8.71207526 11.5669215,8.85710249 C11.5619778,8.8740368 11.5596913,8.88327934 11.5596913,8.88327934" id="Fill-9" fill="#00C0EE"/>\n        <g id="Group-13">\n          <mask id="mask-2" fill="white">\n            <polygon id="" points="3.086436e-05 0.00960615385 42.6159033 0.00960615385 42.6159033 24 3.086436e-05 24" transform="matrix(1, 0, 0, 1, 0, 0)"/>\n          </mask>\n          <g id="Clip-12"/>\n          <path d="M42.6159341,18.6971754 L29.5208652,18.6971754 L19.9057529,18.6956369 L19.9124196,18.7062215 C18.0119775,20.9263446 15.1892466,22.3382831 12.0318843,22.3382831 C6.30740974,22.3382831 1.66682976,17.7116369 1.66682976,12.0048677 C1.66682976,6.29803692 6.30740974,1.67182154 12.0318843,1.67182154 C15.2027652,1.67182154 18.0390147,3.09182154 19.9398272,5.32819077 L22.0210727,5.32819077 C19.8613082,2.12277538 16.1963507,0.00960615385 12.0318843,0.00960615385 C5.38703452,0.00960615385 3.086436e-05,5.38012923 3.086436e-05,12.0048677 C3.086436e-05,18.6296062 5.38703452,24.0000062 12.0318843,24.0000062 C15.5178286,24.0000062 18.6504994,22.5164985 20.846622,20.1542215 L41.6296327,20.1336062 L42.6159341,18.6971754 Z" id="Fill-11" fill="#00C0EE" mask="url(#mask-2)"/>\n        </g>\n        <path d="M23.5642714,14.6942333 L21.476941,14.6942333 L21.476941,12.703212 L23.5642714,12.703212 C24.0691167,12.729228 24.5593003,12.986305 24.5593003,13.698846 C24.5593003,14.4306215 24.1135333,14.6942333 23.5642714,14.6942333 Z M21.476941,9.5856756 L23.4225205,9.5856756 C23.8122278,9.59572442 24.2213404,9.80372869 24.2213404,10.3852036 C24.2213404,10.9910915 23.8636056,11.1846082 23.4225205,11.1846082 L21.476941,11.1846082 L21.476941,9.5856756 Z M25.2086687,11.7878453 C25.2484033,11.7332241 25.7477042,11.3284357 25.7082776,10.252103 C25.6287468,8.0729285 23.7375637,8.09777311 23.3189641,8.08507338 C22.644646,8.06479081 22.2387368,8.0729285 21.0010496,8.08507338 C19.9559983,8.09543044 19.9636372,9.0459372 19.9636372,9.0459372 L19.9636364,16.1454545 L23.4862807,16.1454545 C25.3714882,16.1454545 26.0727273,15.1069128 26.0727273,13.6549518 C26.0727273,12.1940516 25.2086687,11.7878453 25.2086687,11.7878453 Z" id="Fill-14" fill="#1A4B67"/>\n      </g>\n    </g>\n  </g>\n</svg>';
-    },
-    "./src/resources/fundingLogos/mybank_white.svg": function(module, exports) {
-        module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="58px" height="32px" viewBox="0 0 58 32" version="1.1" xmlns="http://www.w3.org/2000/svg">\n  <title>MyBank</title>\n  <desc>Created with Sketch.</desc>\n  <defs>\n    <polygon id="path-1" points="3.76266281e-05 0.0116074359 51.9528915 0.0116074359 51.9528915 29 3.76266281e-05 29"/>\n  </defs>\n  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="matrix(1.10389, 0, 0, 1.10389, -0.000003, -0.001206)">\n    <g id="SPB_&amp;_AltPay_NewAssets" transform="translate(-234.000000, -615.000000)">\n      <g id="Group-4-Copy" transform="translate(100.000000, 606.000000)">\n        <g id="MyBank" transform="translate(134.000000, 9.000000)">\n          <path d="M35.3660042,17.6666255 C35.3660042,17.6666255 34.0706241,17.9304491 34.0841736,17.0105587 C34.0979502,16.0907434 36.4439106,16.145716 36.6843201,16.2202145 C36.6843201,16.2202145 36.7581234,17.2640186 35.3660042,17.6666255 M35.7558369,11.8638586 C33.7418021,11.8453091 32.8002236,12.9943272 32.8002236,12.9943272 C32.1886782,13.6378525 32.5807818,14.5092288 33.1805943,14.5721619 C34.042541,14.6625814 34.0335332,13.9458344 35.3565422,13.6281647 C36.5171083,13.3493964 36.5673703,14.4161058 36.5673703,14.4161058 C31.6175543,14.2939944 31.8538762,18.4149142 33.5389377,19.2901206 C35.1547376,20.1292794 36.6650934,19.0706056 36.6650934,19.0706056 C36.6650934,19.0706056 36.7218651,19.6409091 37.5212872,19.6409091 C38.4361451,19.6409091 38.4347826,18.7351373 38.4347826,18.7351373 L38.4310735,14.7240126 C38.3708955,11.7893601 35.7558369,11.8638586 35.7558369,11.8638586" id="Fill-1" fill="#FFFFFF"/>\n          <path d="M51.7103667,18.0201935 L49.6979908,15.0155176 L51.1770041,13.6281624 C51.1770041,13.6281624 51.859672,13.0013177 51.299211,12.3800893 C50.6780617,11.6919155 49.9377247,12.3711782 49.9377247,12.3711782 L48.0791832,14.0838996 L48.0791832,10.6461011 C48.0791832,10.1535215 47.676859,9.75454545 47.180483,9.75454545 C46.6836541,9.75454545 46.2813299,10.1535215 46.2813299,10.6461011 L46.2813299,18.7353251 C46.2813299,19.227755 46.6836541,19.6268808 47.180483,19.6268808 C47.676859,19.6268808 48.0791832,19.227755 48.0791832,18.7353251 L48.0791832,16.5816932 L48.4191585,16.24487 L50.2398076,19.0753683 C50.2398076,19.0753683 50.8331792,20.0581313 51.7071209,19.4326346 C52.3642001,18.9625198 51.7103667,18.0201935 51.7103667,18.0201935" id="Fill-3" fill="#FFFFFF"/>\n          <path d="M45.2147775,14.6112093 C45.2147775,11.691947 42.7856771,11.2806168 41.1337663,12.2066709 C41.1324968,12.2077183 41.1310032,12.2109353 41.1301817,12.2118331 C41.005915,11.8567634 40.6718735,11.6 40.2747279,11.6 C39.7728069,11.6 39.3657289,12.0080383 39.3657289,12.5112408 L39.3657289,18.5978502 C39.3657289,19.1012022 39.7728069,19.5090909 40.2747279,19.5090909 C40.7770223,19.5090909 41.1842497,19.1012022 41.1842497,18.5978502 L41.1717035,14.4915061 C41.1717035,14.4915061 41.3922321,14.2283834 41.7462877,13.9767822 C42.5967379,13.3728047 43.407608,13.5785446 43.407608,14.6108352 L43.4284436,18.6126634 C43.4284436,19.1080851 43.8288005,19.5090909 44.3231042,19.5090909 C44.8170344,19.5090909 45.2173913,19.1080851 45.2173913,18.6126634 L45.2147775,14.6112093 Z" id="Fill-5" fill="#FFFFFF"/>\n          <path d="M18.9707258,19.6792425 C19.18012,19.329932 19.2166082,19.0839155 19.2166082,19.0839155 L17.1520968,13.6963639 C17.1520968,13.6963639 16.7775297,12.6538296 17.6030189,12.3450721 C18.4775344,12.0175748 18.7932399,12.8515723 18.8589337,13.0264524 C18.9246275,13.2013325 20.1632742,16.4942957 20.1632742,16.4942957 L21.3558227,13.0340233 C21.3558227,13.0340233 21.6974303,11.958132 22.6526554,12.3417739 C23.4420317,12.6590767 23.0365322,13.7143541 23.0365322,13.7143541 C23.0365322,13.7143541 21.8160545,17.3197478 20.7930335,19.9355284 C20.1819688,21.4982805 19.6600975,21.6522469 19.0638232,21.7987924 C18.2658128,21.9950359 16.7570332,21.8978137 16.7570332,20.9071512 C16.7570332,20.1257752 17.5583471,20.0770516 17.9197755,20.0886703 C17.9391458,20.0890451 18.6862529,20.1536601 18.9707258,19.6792425" id="Fill-7" fill="#FFFFFF"/>\n          <path d="M14.1011917,10.7023322 L12.2076968,15.9005057 L10.14334,10.7339625 C10.14334,10.7339625 9.83747587,9.75454545 8.97676216,9.75454545 C7.97953964,9.75454545 8.01193412,10.5405076 7.98948399,10.7339625 C7.9671092,10.9275674 7.98948399,18.8131229 7.98948399,18.8131229 C7.98948399,18.8131229 7.97953964,19.6409091 8.89441993,19.6409091 C9.82933958,19.6409091 9.78451467,18.8057025 9.7918976,18.8057025 C9.79935586,18.8057025 9.7918976,14.6428613 9.7918976,14.6428613 L11.3102192,18.8057025 C11.3102192,18.8057025 11.5344944,19.6241945 12.2375299,19.6092787 C12.9405654,19.5945129 13.1424658,18.8057025 13.1424658,18.8057025 L14.4139867,14.6503567 L14.4139867,18.8057025 C14.4139867,18.8057025 14.4139867,19.6409091 15.3339145,19.6409091 C16.2238586,19.6409091 16.2238586,18.8057025 16.2238586,18.8057025 L16.2250639,10.7414579 C16.2250639,10.7414579 16.2250639,9.75454545 15.2590305,9.75926752 C14.4579076,9.7630152 14.1536255,10.5270909 14.1011917,10.7023322 C14.0951648,10.7227945 14.0923773,10.7339625 14.0923773,10.7339625" id="Fill-9" fill="#FFFFFF"/>\n          <g id="Group-13">\n            <mask id="mask-2" fill="white">\n              <polygon id="" points="3.76266281e-05 0.0116074359 51.9528915 0.0116074359 51.9528915 29 3.76266281e-05 29" transform="matrix(1, 0, 0, 1, 0, 0)"/>\n            </mask>\n            <g id="Clip-12"/>\n            <path d="M51.9529291,22.5924203 L35.9887786,22.5924203 L24.2670304,22.5905613 L24.2751577,22.603351 C21.9583357,25.2859997 18.5171548,26.9920921 14.668026,26.9920921 C7.68934009,26.9920921 2.03202605,21.4015613 2.03202605,14.5058818 C2.03202605,7.61012795 7.68934009,2.02011769 14.668026,2.02011769 C18.5336353,2.02011769 21.9912967,3.73595103 24.3085702,6.43823051 L26.845809,6.43823051 C24.212848,2.56502026 19.7449117,0.0116074359 14.668026,0.0116074359 C6.56731404,0.0116074359 3.76266281e-05,6.50098949 3.76266281e-05,14.5058818 C3.76266281e-05,22.5107741 6.56731404,29.0000074 14.668026,29.0000074 C18.9177279,29.0000074 22.7367554,27.2074356 25.4140405,24.3530177 L50.7505326,24.3281074 L51.9529291,22.5924203 Z" id="Fill-11" fill="#FFFFFF" mask="url(#mask-2)"/>\n          </g>\n          <path d="M28.7271169,17.7555319 L26.18246,17.7555319 L26.18246,15.3497145 L28.7271169,15.3497145 C29.342572,15.3811504 29.9401529,15.6917852 29.9401529,16.5527722 C29.9401529,17.437001 29.39672,17.7555319 28.7271169,17.7555319 Z M26.18246,11.5826914 L28.5543089,11.5826914 C29.0293996,11.5948337 29.5281473,11.8461722 29.5281473,12.5487876 C29.5281473,13.2809023 29.0920341,13.514735 28.5543089,13.514735 L26.18246,13.514735 L26.18246,11.5826914 Z M30.7317956,14.2436464 C30.7802359,14.1776458 31.3889318,13.6885265 31.340867,12.3879578 C31.2439113,9.7547886 28.9383768,9.78480918 28.4280636,9.76946367 C27.6060049,9.74495556 27.1111625,9.7547886 25.6023026,9.76946367 C24.3282843,9.78197845 24.3375969,10.9305075 24.3375969,10.9305075 L24.3375959,19.5090909 L28.6320387,19.5090909 C30.9302883,19.5090909 31.7851662,18.2541863 31.7851662,16.4997334 C31.7851662,14.734479 30.7317956,14.2436464 30.7317956,14.2436464 Z" id="Fill-14" fill="#FFFFFF"/>\n        </g>\n      </g>\n    </g>\n  </g>\n</svg>';
     },
     "./src/resources/fundingLogos/pp_black.svg": function(module, exports) {
         module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="24" height="32" viewBox="0 0 24 32" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <path opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 6.378 28.938 C 6.285 29.238 6.659 29.638 6.94 29.638 L 11.153 29.638 C 11.621 29.638 11.995 29.238 12.089 28.739 L 12.182 28.539 L 12.931 23.341 L 13.025 23.041 C 13.119 22.441 13.493 22.141 13.961 22.141 L 14.616 22.141 C 18.642 22.141 21.731 20.342 22.668 15.443 C 23.042 13.344 22.855 11.545 21.825 10.345 C 21.451 10.046 21.076 9.646 20.702 9.446 L 20.702 9.446" style="fill: rgb(99, 99, 99);"/>\n  <path opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 7.876 18.642 C 8.063 18.043 8.438 17.643 9.093 17.643 L 11.433 17.643 C 16.021 17.643 19.578 15.643 20.608 9.946 C 20.608 9.746 20.608 9.546 20.702 9.446"/>\n  <path d="M 9.28 9.446 C 9.28 9.146 9.468 8.846 9.842 8.646 C 9.936 8.646 10.123 8.546 10.216 8.546 L 16.489 8.546 C 17.238 8.546 17.893 8.646 18.548 8.746 C 18.736 8.746 18.829 8.746 19.11 8.846 C 19.204 8.946 19.391 8.946 19.578 9.046 C 19.672 9.046 19.672 9.046 19.859 9.146 C 20.14 9.246 20.421 9.346 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.648 C 18.361 3.248 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 3.048 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 9.28 9.446 Z" style="fill: rgb(51, 48, 48);"/>\n  <g transform="matrix(0.497737, 0, 0, 0.52612, 1.10144, 0.638654)" opacity="0.2">\n    <path fill="#231f20" d="M39.3 16.7c0.9 0.5 1.7 1.1 2.3 1.8 1 1.1 1.6 2.5 1.9 4.1 0.3-3.2-0.2-5.8-1.9-7.8-0.6-0.7-1.3-1.2-2.1-1.7C39.5 14.2 39.5 15.4 39.3 16.7z"/>\n    <path fill="#231f20" d="M0.4 45.2L6.7 5.6C6.8 4.5 7.8 3.7 8.9 3.7h16c5.5 0 9.8 1.2 12.2 3.9 1.2 1.4 1.9 3 2.2 4.8 0.4-3.6-0.2-6.1-2.2-8.4C34.7 1.2 30.4 0 24.9 0H8.9c-1.1 0-2.1 0.8-2.3 1.9L0 44.1C0 44.5 0.1 44.9 0.4 45.2z"/>\n    <path fill="#231f20" d="M10.7 49.4l-0.1 0.6c-0.1 0.4 0.1 0.8 0.4 1.1l0.3-1.7H10.7z"/>\n  </g>\n</svg>';
@@ -14096,12 +15222,6 @@
     },
     "./src/resources/fundingLogos/pp_white.svg": function(module, exports) {
         module.exports = '<svg width="24" height="32" viewBox="0 0 24 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <path fill="#ffffff" opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 6.378 28.938 C 6.285 29.238 6.659 29.638 6.94 29.638 L 11.153 29.638 C 11.621 29.638 11.995 29.238 12.089 28.739 L 12.182 28.539 L 12.931 23.341 L 13.025 23.041 C 13.119 22.441 13.493 22.141 13.961 22.141 L 14.616 22.141 C 18.642 22.141 21.731 20.342 22.668 15.443 C 23.042 13.344 22.855 11.545 21.825 10.345 C 21.451 10.046 21.076 9.646 20.702 9.446 L 20.702 9.446"></path>\n    <path fill="#ffffff" opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 7.876 18.642 C 8.063 18.043 8.438 17.643 9.093 17.643 L 11.433 17.643 C 16.021 17.643 19.578 15.643 20.608 9.946 C 20.608 9.746 20.608 9.546 20.702 9.446"></path>\n    <path fill="#ffffff" d="M 9.28 9.446 C 9.28 9.146 9.468 8.846 9.842 8.646 C 9.936 8.646 10.123 8.546 10.216 8.546 L 16.489 8.546 C 17.238 8.546 17.893 8.646 18.548 8.746 C 18.736 8.746 18.829 8.746 19.11 8.846 C 19.204 8.946 19.391 8.946 19.578 9.046 C 19.672 9.046 19.672 9.046 19.859 9.146 C 20.14 9.246 20.421 9.346 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.648 C 18.361 3.248 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 3.048 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 9.28 9.446 Z"></path>\n    <g transform="matrix(0.497737, 0, 0, 0.52612, 1.10144, 0.638654)" opacity="0.2">\n        <path fill="#231f20" d="M39.3 16.7c0.9 0.5 1.7 1.1 2.3 1.8 1 1.1 1.6 2.5 1.9 4.1 0.3-3.2-0.2-5.8-1.9-7.8-0.6-0.7-1.3-1.2-2.1-1.7C39.5 14.2 39.5 15.4 39.3 16.7z"></path>\n        <path fill="#231f20" d="M0.4 45.2L6.7 5.6C6.8 4.5 7.8 3.7 8.9 3.7h16c5.5 0 9.8 1.2 12.2 3.9 1.2 1.4 1.9 3 2.2 4.8 0.4-3.6-0.2-6.1-2.2-8.4C34.7 1.2 30.4 0 24.9 0H8.9c-1.1 0-2.1 0.8-2.3 1.9L0 44.1C0 44.5 0.1 44.9 0.4 45.2z"></path>\n        <path fill="#231f20" d="M10.7 49.4l-0.1 0.6c-0.1 0.4 0.1 0.8 0.4 1.1l0.3-1.7H10.7z"></path>\n    </g>\n</svg>\n';
-    },
-    "./src/resources/fundingLogos/sofort.svg": function(module, exports) {
-        module.exports = '<?xml version="1.0" encoding="utf-8"?>\n\x3c!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --\x3e\n<svg version="1.1" id="Layer_1" width="100" height="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"\n\t viewBox="0 0 452.9 101.1" style="enable-background:new 0 0 452.9 101.1;" xml:space="preserve">\n<path d="M79.7,0H57.4c0,18.3-8.4,35-23,46l-8.8,6.6l34.2,46.6h28.1L56.4,56.3C71.3,41.5,79.7,21.5,79.7,0z"/>\n<rect width="22.8" height="99.2"/>\n<rect x="94.5" width="21.5" height="99.2"/>\n<path d="M304.6,28.7c-8.2,0-16,2.5-21.2,9.6v-7.7H263v68.6h20.7v-36c0-10.4,7-15.5,15.4-15.5c9,0,14.2,5.4,14.2,15.4v36.2h20.5V55.6\n\tC333.8,39.6,321.1,28.7,304.6,28.7z"/>\n<path d="M181,30.6V35c-5.8-4-12.8-6.3-20.4-6.3c-20,0-36.2,16.2-36.2,36.2s16.2,36.2,36.2,36.2c7.6,0,14.6-2.3,20.4-6.3v4.4h20.5\n\tV30.6H181z M162.3,82.5c-10.3,0-18.6-7.9-18.6-17.6s8.3-17.6,18.6-17.6c10.3,0,18.6,7.9,18.6,17.6S172.6,82.5,162.3,82.5z"/>\n<path d="M233.3,39.5v-8.9h-21v68.6h21.1v-32c0-10.8,11.7-16.6,19.8-16.6c0.1,0,0.2,0,0.2,0v-20C245.1,30.6,237.4,34.2,233.3,39.5z"\n\t/>\n<path d="M397.6,30.6V35c-5.8-4-12.8-6.3-20.4-6.3c-20,0-36.2,16.2-36.2,36.2s16.2,36.2,36.2,36.2c7.6,0,14.6-2.3,20.4-6.3v4.4h20.5\n\tV30.6H397.6z M378.9,82.5c-10.3,0-18.6-7.9-18.6-17.6s8.3-17.6,18.6-17.6c10.3,0,18.6,7.9,18.6,17.6\n\tC397.6,74.6,389.2,82.5,378.9,82.5z"/>\n<g>\n\t<path d="M434,32.6c0-1-0.7-1.6-1.8-1.6h-1.9v5.2h0.9v-1.9h1l0.8,1.9h1l-0.9-2.1C433.7,33.8,434,33.3,434,32.6z M432.2,33.4h-1v-1.6\n\t\th1c0.6,0,0.9,0.3,0.9,0.8S432.9,33.4,432.2,33.4z"/>\n\t<path d="M431.9,28.8c-2.7,0-4.9,2.2-4.9,4.9c0.1,2.7,2.2,4.9,4.9,4.9s4.9-2.2,4.9-4.9C436.8,31,434.6,28.8,431.9,28.8z M431.9,37.7\n\t\tc-2.2,0-3.9-1.8-3.9-4c0-2.2,1.8-4,3.9-4c2.2,0,3.9,1.8,3.9,4C435.8,35.9,434,37.7,431.9,37.7z"/>\n</g>\n<path d="M440,74.9c-7.1,0-12.9,5.8-12.9,12.9c0,7.1,5.8,12.9,12.9,12.9c7.1,0,12.9-5.8,12.9-12.9C452.9,80.6,447.1,74.9,440,74.9z"\n\t/>\n</svg>\n';
-    },
-    "./src/resources/fundingLogos/sofort_white.svg": function(module, exports) {
-        module.exports = '<?xml version="1.0" encoding="utf-8"?>\n\x3c!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --\x3e\n<svg version="1.1" id="Layer_1" width="100" height="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"\n\t viewBox="0 0 452.9 101.1" style="enable-background:new 0 0 452.9 101.1;" xml:space="preserve">\n<style type="text/css">\n\t.st0{fill:#FFFFFF;}\n</style>\n<path class="st0" d="M79.7,0H57.4c0,18.3-8.4,35-23,46l-8.8,6.6l34.2,46.6h28.1L56.4,56.3C71.3,41.5,79.7,21.5,79.7,0z"/>\n<rect class="st0" width="22.8" height="99.2"/>\n<rect x="94.5" class="st0" width="21.5" height="99.2"/>\n<path class="st0" d="M304.6,28.7c-8.2,0-16,2.5-21.2,9.6v-7.7H263v68.6h20.7v-36c0-10.4,7-15.5,15.4-15.5c9,0,14.2,5.4,14.2,15.4\n\tv36.2h20.5V55.6C333.8,39.6,321.1,28.7,304.6,28.7z"/>\n<path class="st0" d="M181,30.6V35c-5.8-4-12.8-6.3-20.4-6.3c-20,0-36.2,16.2-36.2,36.2s16.2,36.2,36.2,36.2c7.6,0,14.6-2.3,20.4-6.3\n\tv4.4h20.5V30.6H181z M162.3,82.5c-10.3,0-18.6-7.9-18.6-17.6s8.3-17.6,18.6-17.6c10.3,0,18.6,7.9,18.6,17.6S172.6,82.5,162.3,82.5z"\n\t/>\n<path class="st0" d="M233.3,39.5v-8.9h-21v68.6h21.1v-32c0-10.8,11.7-16.6,19.8-16.6c0.1,0,0.2,0,0.2,0v-20\n\tC245.1,30.6,237.4,34.2,233.3,39.5z"/>\n<path class="st0" d="M397.6,30.6V35c-5.8-4-12.8-6.3-20.4-6.3c-20,0-36.2,16.2-36.2,36.2s16.2,36.2,36.2,36.2\n\tc7.6,0,14.6-2.3,20.4-6.3v4.4h20.5V30.6H397.6z M378.9,82.5c-10.3,0-18.6-7.9-18.6-17.6s8.3-17.6,18.6-17.6\n\tc10.3,0,18.6,7.9,18.6,17.6C397.6,74.6,389.2,82.5,378.9,82.5z"/>\n<g>\n\t<path class="st0" d="M434,32.6c0-1-0.7-1.6-1.8-1.6h-1.9v5.2h0.9v-1.9h1l0.8,1.9h1l-0.9-2.1C433.7,33.8,434,33.3,434,32.6z\n\t\t M432.2,33.4h-1v-1.6h1c0.6,0,0.9,0.3,0.9,0.8S432.9,33.4,432.2,33.4z"/>\n\t<path class="st0" d="M431.9,28.8c-2.7,0-4.9,2.2-4.9,4.9c0.1,2.7,2.2,4.9,4.9,4.9s4.9-2.2,4.9-4.9C436.8,31,434.6,28.8,431.9,28.8z\n\t\t M431.9,37.7c-2.2,0-3.9-1.8-3.9-4c0-2.2,1.8-4,3.9-4c2.2,0,3.9,1.8,3.9,4C435.8,35.9,434,37.7,431.9,37.7z"/>\n</g>\n<path class="st0" d="M440,74.9c-7.1,0-12.9,5.8-12.9,12.9c0,7.1,5.8,12.9,12.9,12.9c7.1,0,12.9-5.8,12.9-12.9\n\tC452.9,80.6,447.1,74.9,440,74.9z"/>\n</svg>\n';
     },
     "./src/resources/fundingLogos/venmo_blue.svg": function(module, exports) {
         module.exports = '<svg width="101" height="32" viewBox="0 0 101 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n        <g id="Blue" fill="#3D93CE">\n            <g id="Logo" transform="translate(0.000000, 6.000000)">\n                <path d="M16.6660484,0.18 C17.3466626,1.3390991 17.6535069,2.53297297 17.6535069,4.04108108 C17.6535069,8.85117117 13.671346,15.0998198 10.439346,19.4875676 L3.05725952,19.4875676 L0.0966314879,1.23315315 L6.56045675,0.60036036 L8.12578201,13.5895495 C9.58835986,11.1326126 11.3932543,7.27153153 11.3932543,4.6390991 C11.3932543,3.1981982 11.1538599,2.21675676 10.7797405,1.40864865 L16.6660484,0.18 Z M24.9071592,11.6938739 C24.9071592,13.8367568 26.062718,14.6774775 27.5946678,14.6774775 C29.2629152,14.6774775 30.860218,14.2571171 32.9363097,13.1691892 L32.154346,18.6445045 C30.6915934,19.3814414 28.4119291,19.8731532 26.1991903,19.8731532 C20.5863512,19.8731532 18.5775346,16.3632432 18.5775346,11.9753153 C18.5775346,6.28810811 21.8451817,0.249369369 28.5819516,0.249369369 C32.2909931,0.249369369 34.3649879,2.39207207 34.3649879,5.37567568 C34.3653374,10.1855856 28.3783789,11.6590991 24.9071592,11.6938739 Z M25.0434567,8.2181982 C26.2329152,8.2181982 29.2274429,7.65711712 29.2274429,5.90216216 C29.2274429,5.05945946 28.6495761,4.6390991 27.9686125,4.6390991 C26.7772318,4.6390991 25.2138287,6.11225225 25.0434567,8.2181982 Z M53.0187093,4.4636036 C53.0187093,5.16558559 52.9154377,6.18378378 52.8126903,6.84918919 L50.8730709,19.4873874 L44.5790934,19.4873874 L46.3483408,7.90216216 C46.381891,7.58792793 46.4849879,6.95531532 46.4849879,6.60432432 C46.4849879,5.76162162 45.9743962,5.55135135 45.3605329,5.55135135 C44.5451938,5.55135135 43.7279325,5.93711712 43.1836159,6.21873874 L41.1768962,19.4875676 L34.8474464,19.4875676 L37.7390519,0.565945946 L43.2171661,0.565945946 L43.2865381,2.07621622 C44.5789187,1.19873874 46.2807163,0.24972973 48.6952803,0.24972973 C51.8942543,0.249369369 53.0187093,1.93495495 53.0187093,4.4636036 Z M71.7037093,2.32072072 C73.5063322,0.988108108 75.2084792,0.249369369 77.5554187,0.249369369 C80.7872439,0.249369369 81.9113495,1.93495495 81.9113495,4.4636036 C81.9113495,5.16558559 81.8084273,6.18378378 81.7056799,6.84918919 L79.7683322,19.4873874 L73.4726073,19.4873874 L75.2755796,7.6572973 C75.3087803,7.34108108 75.3785017,6.95531532 75.3785017,6.71063063 C75.3785017,5.7618018 74.8677353,5.55135135 74.2540467,5.55135135 C73.4722578,5.55135135 72.6908183,5.90234234 72.1106799,6.21873874 L70.1043097,19.4875676 L63.8101574,19.4875676 L65.6131298,7.65747748 C65.6463304,7.34126126 65.713955,6.9554955 65.713955,6.71081081 C65.713955,5.76198198 65.2030138,5.55153153 64.5914221,5.55153153 C63.7743356,5.55153153 62.9588218,5.9372973 62.4145052,6.21891892 L60.4062128,19.4877477 L54.0788599,19.4877477 L56.9701159,0.566126126 L62.3813045,0.566126126 L62.551327,2.14576577 C63.8101574,1.1990991 65.5105571,0.25009009 67.7900467,0.25009009 C69.7637405,0.249369369 71.0559464,1.12702703 71.7037093,2.32072072 Z M83.55059,11.7998198 C83.55059,5.83279279 86.6120433,0.249369369 93.6558322,0.249369369 C98.9633997,0.249369369 100.903543,3.47981982 100.903543,7.93873874 C100.903543,13.8365766 97.8751159,19.9443243 90.6614792,19.9443243 C85.3196626,19.9443243 83.55059,16.3281081 83.55059,11.7998198 Z M94.4374464,7.83279279 C94.4374464,6.28810811 94.0628028,5.23495495 92.9409689,5.23495495 C90.4570329,5.23495495 89.9469654,9.76306306 89.9469654,12.0794595 C89.9469654,13.8367568 90.4238322,14.9243243 91.5453166,14.9243243 C93.8931298,14.9243243 94.4374464,10.149009 94.4374464,7.83279279 Z"></path>\n            </g>\n        </g>\n    </g>\n</svg>\n';
