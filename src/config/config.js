@@ -219,6 +219,10 @@ export let config = {
 
         'jjill.com': {
             disable_venmo: true
+        },
+
+        'qvc.com': {
+            disable_venmo: true
         }
     },
 
