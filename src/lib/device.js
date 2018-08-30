@@ -13,16 +13,6 @@ export function isDevice() : boolean {
     return false;
 }
 
-export function isWebView() : boolean {
-    let userAgent = getUserAgent();
-    return isFacebookWebView() ||
-            isIosWebview() ||
-            isAndroidWebview() ||
-        (/(iPhone|iPod|iPad|Macintosh).*AppleWebKit(?!.*Safari)/i).test(userAgent) ||
-        (/\bwv\b/).test(userAgent) ||
-    (/Android.*Version\/(\d)\.(\d)/i).test(userAgent);
-}
-
 export function isStandAlone() : boolean {
     return (window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches);
 }
@@ -74,6 +64,12 @@ export function isAndroidWebview(ua? : string = getUserAgent()) : boolean {
         return (/Version\/[\d.]+/).test(ua) && !isOperaMini(ua);
     }
     return false;
+}
+
+export function isWebView() : boolean {
+    return isFacebookWebView() ||
+        isIosWebview() ||
+        isAndroidWebview();
 }
 
 export function isIE() : boolean {
