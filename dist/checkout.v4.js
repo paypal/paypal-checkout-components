@@ -256,34 +256,16 @@
             if ("undefined" != typeof window && config.uri) {
                 var hasBuffer = buffer.length, hasTracking = tracking.length;
                 if (hasBuffer || hasTracking) {
-                    var meta = {}, _iterator = metaBuilders, _isArray = Array.isArray(_iterator), _i = 0;
-                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref2;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref2 = _iterator[_i++];
-                        } else {
-                            if ((_i = _iterator.next()).done) break;
-                            _ref2 = _i.value;
-                        }
-                        var builder = _ref2;
+                    for (var meta = {}, _i2 = 0, _length2 = null == metaBuilders ? 0 : metaBuilders.length; _i2 < _length2; _i2++) {
+                        var builder = metaBuilders[_i2];
                         try {
                             extend(meta, builder(meta), !1);
                         } catch (err) {
                             console.error("Error in custom meta builder:", err.stack || err.toString());
                         }
                     }
-                    var headers = {}, _iterator2 = headerBuilders, _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                    for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                        var _ref3;
-                        if (_isArray2) {
-                            if (_i2 >= _iterator2.length) break;
-                            _ref3 = _iterator2[_i2++];
-                        } else {
-                            if ((_i2 = _iterator2.next()).done) break;
-                            _ref3 = _i2.value;
-                        }
-                        var _builder = _ref3;
+                    for (var headers = {}, _i4 = 0, _length4 = null == headerBuilders ? 0 : headerBuilders.length; _i4 < _length4; _i4++) {
+                        var _builder = headerBuilders[_i4];
                         try {
                             extend(headers, _builder(headers), !1);
                         } catch (err) {
@@ -348,17 +330,8 @@
                     return;
                 }
                 payload.timestamp = Date.now();
-                var _iterator3 = payloadBuilders, _isArray3 = Array.isArray(_iterator3), _i3 = 0;
-                for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                    var _ref4;
-                    if (_isArray3) {
-                        if (_i3 >= _iterator3.length) break;
-                        _ref4 = _iterator3[_i3++];
-                    } else {
-                        if ((_i3 = _iterator3.next()).done) break;
-                        _ref4 = _i3.value;
-                    }
-                    var builder = _ref4;
+                for (var _i6 = 0, _length6 = null == payloadBuilders ? 0 : payloadBuilders.length; _i6 < _length6; _i6++) {
+                    var builder = payloadBuilders[_i6];
                     try {
                         extend(payload, builder(payload), !1);
                     } catch (err) {
@@ -410,17 +383,8 @@
                 } catch (err) {
                     return;
                 }
-                var _iterator4 = trackingBuilders, _isArray4 = Array.isArray(_iterator4), _i4 = 0;
-                for (_iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
-                    var _ref5;
-                    if (_isArray4) {
-                        if (_i4 >= _iterator4.length) break;
-                        _ref5 = _iterator4[_i4++];
-                    } else {
-                        if ((_i4 = _iterator4.next()).done) break;
-                        _ref5 = _i4.value;
-                    }
-                    var builder = _ref5;
+                for (var _i8 = 0, _length8 = null == trackingBuilders ? 0 : trackingBuilders.length; _i8 < _length8; _i8++) {
+                    var builder = trackingBuilders[_i8];
                     try {
                         extend(payload, builder(payload), !1);
                     } catch (err) {
@@ -576,7 +540,7 @@
                 state: "ui_" + currentState
             };
         });
-        __webpack_require__.d(__webpack_exports__, "n", function() {
+        __webpack_require__.d(__webpack_exports__, "o", function() {
             return _track;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -585,19 +549,19 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return tracking;
         });
-        __webpack_require__.d(__webpack_exports__, "h", function() {
+        __webpack_require__.d(__webpack_exports__, "i", function() {
             return getTransport;
         });
-        __webpack_require__.d(__webpack_exports__, "m", function() {
+        __webpack_require__.d(__webpack_exports__, "n", function() {
             return setTransport;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return print;
         });
-        __webpack_require__.d(__webpack_exports__, "i", function() {
+        __webpack_require__.d(__webpack_exports__, "j", function() {
             return immediateFlush;
         });
-        __webpack_require__.d(__webpack_exports__, "g", function() {
+        __webpack_require__.d(__webpack_exports__, "h", function() {
             return _flush;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -606,19 +570,19 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return prefix;
         });
-        __webpack_require__.d(__webpack_exports__, "e", function() {
+        __webpack_require__.d(__webpack_exports__, "f", function() {
             return debug;
         });
-        __webpack_require__.d(__webpack_exports__, "j", function() {
+        __webpack_require__.d(__webpack_exports__, "k", function() {
             return info;
         });
-        __webpack_require__.d(__webpack_exports__, "o", function() {
+        __webpack_require__.d(__webpack_exports__, "p", function() {
             return warn;
         });
-        __webpack_require__.d(__webpack_exports__, "f", function() {
+        __webpack_require__.d(__webpack_exports__, "g", function() {
             return error;
         });
-        __webpack_require__.d(__webpack_exports__, "k", function() {
+        __webpack_require__.d(__webpack_exports__, "l", function() {
             return init;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -642,22 +606,22 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return headerBuilders;
         });
-        __webpack_require__.d(__webpack_exports__, "b", function() {
+        __webpack_require__.d(__webpack_exports__, "c", function() {
             return addPayloadBuilder;
         });
-        __webpack_require__.d(__webpack_exports__, "a", function() {
+        __webpack_require__.d(__webpack_exports__, "b", function() {
             return addMetaBuilder;
         });
-        __webpack_require__.d(__webpack_exports__, "c", function() {
+        __webpack_require__.d(__webpack_exports__, "d", function() {
             return addTrackingBuilder;
         });
-        __webpack_require__.d(__webpack_exports__, !1, function() {
+        __webpack_require__.d(__webpack_exports__, "a", function() {
             return addHeaderBuilder;
         });
-        __webpack_require__.d(__webpack_exports__, "d", function() {
+        __webpack_require__.d(__webpack_exports__, "e", function() {
             return config;
         });
-        __webpack_require__.d(__webpack_exports__, "l", function() {
+        __webpack_require__.d(__webpack_exports__, "m", function() {
             return logLevels;
         });
     },
@@ -1180,9 +1144,9 @@
                     iframeFrames.splice(i, 1);
                     iframeWindows.splice(i, 1);
                 }
-                for (var _i5 = 0; _i5 < iframeWindows.length; _i5++) if (isWindowClosed(iframeWindows[_i5])) {
-                    iframeFrames.splice(_i5, 1);
-                    iframeWindows.splice(_i5, 1);
+                for (var _i8 = 0; _i8 < iframeWindows.length; _i8++) if (isWindowClosed(iframeWindows[_i8])) {
+                    iframeFrames.splice(_i8, 1);
+                    iframeWindows.splice(_i8, 1);
                 }
             }();
             if (frame && frame.contentWindow) try {
@@ -1200,16 +1164,8 @@
             return function findChildFrameByName(win, name) {
                 var frame = getFrameByName(win, name);
                 if (frame) return frame;
-                for (var _iterator5 = getFrames(win), _isArray5 = Array.isArray(_iterator5), _i7 = 0, _iterator5 = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator](); ;) {
-                    var _ref5;
-                    if (_isArray5) {
-                        if (_i7 >= _iterator5.length) break;
-                        _ref5 = _iterator5[_i7++];
-                    } else {
-                        if ((_i7 = _iterator5.next()).done) break;
-                        _ref5 = _i7.value;
-                    }
-                    var childFrame = _ref5, namedFrame = findChildFrameByName(childFrame, name);
+                for (var _i12 = 0, _getFrames4 = getFrames(win), _length10 = null == _getFrames4 ? 0 : _getFrames4.length; _i12 < _length10; _i12++) {
+                    var childFrame = _getFrames4[_i12], namedFrame = findChildFrameByName(childFrame, name);
                     if (namedFrame) return namedFrame;
                 }
             }(getTop(win) || win, name);
@@ -1223,16 +1179,8 @@
             if (actualParent) return actualParent === parent;
             if (child === parent) return !1;
             if (getTop(child) === child) return !1;
-            for (var _iterator7 = getFrames(parent), _isArray7 = Array.isArray(_iterator7), _i9 = 0, _iterator7 = _isArray7 ? _iterator7 : _iterator7[Symbol.iterator](); ;) {
-                var _ref7;
-                if (_isArray7) {
-                    if (_i9 >= _iterator7.length) break;
-                    _ref7 = _iterator7[_i9++];
-                } else {
-                    if ((_i9 = _iterator7.next()).done) break;
-                    _ref7 = _i9.value;
-                }
-                var frame = _ref7;
+            for (var _i16 = 0, _getFrames8 = getFrames(parent), _length14 = null == _getFrames8 ? 0 : _getFrames8.length; _i16 < _length14; _i16++) {
+                var frame = _getFrames8[_i16];
                 if (frame === child) return !0;
             }
             return !1;
@@ -1373,7 +1321,7 @@
             if (protocol === CONSTANTS.FILE_PROTOCOL) return CONSTANTS.FILE_PROTOCOL + "//";
             if (protocol === CONSTANTS.ABOUT_PROTOCOL) {
                 var parent = getParent(win);
-                return parent && canReadFromWindow(win) ? getActualDomain(parent) : CONSTANTS.ABOUT_PROTOCOL + "//";
+                return parent && canReadFromWindow(parent) ? getActualDomain(parent) : CONSTANTS.ABOUT_PROTOCOL + "//";
             }
             var host = location.host;
             if (!host) throw new Error("Can not read window host");
@@ -1459,29 +1407,11 @@
             return result;
         }
         function getAllChildFrames(win) {
-            var result = [], _iterator = getFrames(win), _isArray = Array.isArray(_iterator), _i2 = 0;
-            for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
-                if (_isArray) {
-                    if (_i2 >= _iterator.length) break;
-                    _ref = _iterator[_i2++];
-                } else {
-                    if ((_i2 = _iterator.next()).done) break;
-                    _ref = _i2.value;
-                }
-                var frame = _ref;
+            for (var result = [], _i3 = 0, _getFrames2 = getFrames(win), _length2 = null == _getFrames2 ? 0 : _getFrames2.length; _i3 < _length2; _i3++) {
+                var frame = _getFrames2[_i3];
                 result.push(frame);
-                var _iterator2 = getAllChildFrames(frame), _isArray2 = Array.isArray(_iterator2), _i3 = 0;
-                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                    var _ref2;
-                    if (_isArray2) {
-                        if (_i3 >= _iterator2.length) break;
-                        _ref2 = _iterator2[_i3++];
-                    } else {
-                        if ((_i3 = _iterator2.next()).done) break;
-                        _ref2 = _i3.value;
-                    }
-                    var childFrame = _ref2;
+                for (var _i5 = 0, _getAllChildFrames2 = getAllChildFrames(frame), _length4 = null == _getAllChildFrames2 ? 0 : _getAllChildFrames2.length; _i5 < _length4; _i5++) {
+                    var childFrame = _getAllChildFrames2[_i5];
                     result.push(childFrame);
                 }
             }
@@ -1499,17 +1429,8 @@
                 try {
                     if (isAncestorParent(win, window) && window.top) return window.top;
                 } catch (err) {}
-                var _iterator3 = getAllChildFrames(win), _isArray3 = Array.isArray(_iterator3), _i4 = 0;
-                for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                    var _ref3;
-                    if (_isArray3) {
-                        if (_i4 >= _iterator3.length) break;
-                        _ref3 = _iterator3[_i4++];
-                    } else {
-                        if ((_i4 = _iterator3.next()).done) break;
-                        _ref3 = _i4.value;
-                    }
-                    var frame = _ref3;
+                for (var _i7 = 0, _getAllChildFrames4 = getAllChildFrames(win), _length6 = null == _getAllChildFrames4 ? 0 : _getAllChildFrames4.length; _i7 < _length6; _i7++) {
+                    var frame = _getAllChildFrames4[_i7];
                     try {
                         if (frame.top) return frame.top;
                     } catch (err) {}
@@ -1565,17 +1486,8 @@
             return !1;
         }
         function getFrameByName(win, name) {
-            var winFrames = getFrames(win), _iterator4 = winFrames, _isArray4 = Array.isArray(_iterator4), _i6 = 0;
-            for (_iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
-                var _ref4;
-                if (_isArray4) {
-                    if (_i6 >= _iterator4.length) break;
-                    _ref4 = _iterator4[_i6++];
-                } else {
-                    if ((_i6 = _iterator4.next()).done) break;
-                    _ref4 = _i6.value;
-                }
-                var childFrame = _ref4;
+            for (var winFrames = getFrames(win), _i10 = 0, _length8 = null == winFrames ? 0 : winFrames.length; _i10 < _length8; _i10++) {
+                var childFrame = winFrames[_i10];
                 try {
                     if (isSameDomain(childFrame) && childFrame.name === name && -1 !== winFrames.indexOf(childFrame)) return childFrame;
                 } catch (err) {}
@@ -1600,28 +1512,8 @@
             return Boolean(getParent(window));
         }
         function anyMatch(collection1, collection2) {
-            var _iterator8 = collection1, _isArray8 = Array.isArray(_iterator8), _i10 = 0;
-            for (_iterator8 = _isArray8 ? _iterator8 : _iterator8[Symbol.iterator](); ;) {
-                var _ref8;
-                if (_isArray8) {
-                    if (_i10 >= _iterator8.length) break;
-                    _ref8 = _iterator8[_i10++];
-                } else {
-                    if ((_i10 = _iterator8.next()).done) break;
-                    _ref8 = _i10.value;
-                }
-                var item1 = _ref8, _iterator9 = collection2, _isArray9 = Array.isArray(_iterator9), _i11 = 0;
-                for (_iterator9 = _isArray9 ? _iterator9 : _iterator9[Symbol.iterator](); ;) {
-                    var _ref9;
-                    if (_isArray9) {
-                        if (_i11 >= _iterator9.length) break;
-                        _ref9 = _iterator9[_i11++];
-                    } else {
-                        if ((_i11 = _iterator9.next()).done) break;
-                        _ref9 = _i11.value;
-                    }
-                    if (item1 === _ref9) return !0;
-                }
+            for (var _i18 = 0, _length16 = null == collection1 ? 0 : collection1.length; _i18 < _length16; _i18++) for (var item1 = collection1[_i18], _i20 = 0, _length18 = null == collection2 ? 0 : collection2.length; _i20 < _length18; _i20++) {
+                if (item1 === collection2[_i20]) return !0;
             }
             return !1;
         }
@@ -1939,20 +1831,11 @@
             } catch (err) {}
             delete global.a.tunnelWindows[id];
         }
-        function addTunnelWindow(_ref2) {
-            var name = _ref2.name, source = _ref2.source, canary = _ref2.canary, sendMessage = _ref2.sendMessage;
+        function addTunnelWindow(_ref) {
+            var name = _ref.name, source = _ref.source, canary = _ref.canary, sendMessage = _ref.sendMessage;
             !function() {
-                var tunnelWindows = global.a.tunnelWindows, _iterator = Object.keys(tunnelWindows), _isArray = Array.isArray(_iterator), _i = 0;
-                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                    var _ref;
-                    if (_isArray) {
-                        if (_i >= _iterator.length) break;
-                        _ref = _iterator[_i++];
-                    } else {
-                        if ((_i = _iterator.next()).done) break;
-                        _ref = _i.value;
-                    }
-                    var key = _ref, tunnelWindow = tunnelWindows[key];
+                for (var tunnelWindows = global.a.tunnelWindows, _i2 = 0, _Object$keys2 = Object.keys(tunnelWindows), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
+                    var key = _Object$keys2[_i2], tunnelWindow = tunnelWindows[key];
                     try {
                         Object(lib.k)(tunnelWindow.source);
                     } catch (err) {
@@ -1971,8 +1854,8 @@
             };
             return global.a.tunnelWindowId;
         }
-        global.a.openTunnelToParent = function(_ref3) {
-            var name = _ref3.name, source = _ref3.source, canary = _ref3.canary, sendMessage = _ref3.sendMessage, parentWindow = Object(cross_domain_utils_src.getParent)(window);
+        global.a.openTunnelToParent = function(_ref2) {
+            var name = _ref2.name, source = _ref2.source, canary = _ref2.canary, sendMessage = _ref2.sendMessage, parentWindow = Object(cross_domain_utils_src.getParent)(window);
             if (!parentWindow) throw new Error("No parent window found to open tunnel to");
             var id = addTunnelWindow({
                 name: name,
@@ -2074,33 +1957,24 @@
         }
         var awaitRemoteBridgeForWindow = Object(lib.s)(function(win) {
             return src.a.try(function() {
-                var _iterator = Object(cross_domain_utils_src.getFrames)(win), _isArray = Array.isArray(_iterator), _i = 0;
-                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                    var _ref;
-                    if (_isArray) {
-                        if (_i >= _iterator.length) break;
-                        _ref = _iterator[_i++];
-                    } else {
-                        if ((_i = _iterator.next()).done) break;
-                        _ref = _i.value;
-                    }
-                    var _frame = _ref;
+                for (var _i2 = 0, _getFrames2 = Object(cross_domain_utils_src.getFrames)(win), _length2 = null == _getFrames2 ? 0 : _getFrames2.length; _i2 < _length2; _i2++) {
+                    var frame = _getFrames2[_i2];
                     try {
-                        if (_frame && _frame !== window && Object(cross_domain_utils_src.isSameDomain)(_frame) && _frame[conf.b.WINDOW_PROPS.POSTROBOT]) return _frame;
+                        if (frame && frame !== window && Object(cross_domain_utils_src.isSameDomain)(frame) && frame[conf.b.WINDOW_PROPS.POSTROBOT]) return frame;
                     } catch (err) {
                         continue;
                     }
                 }
                 try {
-                    var frame = Object(cross_domain_utils_src.getFrameByName)(win, getBridgeName(Object(cross_domain_utils_src.getDomain)()));
-                    if (!frame) return;
-                    return Object(cross_domain_utils_src.isSameDomain)(frame) && frame[conf.b.WINDOW_PROPS.POSTROBOT] ? frame : new src.a(function(resolve) {
+                    var _frame = Object(cross_domain_utils_src.getFrameByName)(win, getBridgeName(Object(cross_domain_utils_src.getDomain)()));
+                    if (!_frame) return;
+                    return Object(cross_domain_utils_src.isSameDomain)(_frame) && _frame[conf.b.WINDOW_PROPS.POSTROBOT] ? _frame : new src.a(function(resolve) {
                         var interval = void 0, timeout = void 0;
                         interval = setInterval(function() {
-                            if (frame && Object(cross_domain_utils_src.isSameDomain)(frame) && frame[conf.b.WINDOW_PROPS.POSTROBOT]) {
+                            if (_frame && Object(cross_domain_utils_src.isSameDomain)(_frame) && _frame[conf.b.WINDOW_PROPS.POSTROBOT]) {
                                 clearInterval(interval);
                                 clearTimeout(timeout);
-                                return resolve(frame);
+                                return resolve(_frame);
                             }
                         }, 100);
                         timeout = setTimeout(function() {
@@ -2139,8 +2013,8 @@
                                     src.a.reject(err);
                                 }
                             }
-                        }).then(function(_ref2) {
-                            var source = _ref2.source, origin = _ref2.origin, data = _ref2.data;
+                        }).then(function(_ref) {
+                            var source = _ref.source, origin = _ref.origin, data = _ref.data;
                             if (source !== opener) throw new Error("Source does not match opener");
                             registerRemoteSendMessage(source, origin, data.sendMessage);
                         }).catch(function(err) {
@@ -2242,17 +2116,8 @@
             var win = windowOpen.call(this, url, name, options, last);
             if (!win) return win;
             url && registerRemoteWindow(win);
-            var _iterator = Object.keys(global.a.popupWindowsByName), _isArray = Array.isArray(_iterator), _i = 0;
-            for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref2;
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref2 = _iterator[_i++];
-                } else {
-                    if ((_i = _iterator.next()).done) break;
-                    _ref2 = _i.value;
-                }
-                var winName = _ref2;
+            for (var _i2 = 0, _Object$keys2 = Object.keys(global.a.popupWindowsByName), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
+                var winName = _Object$keys2[_i2];
                 Object(cross_domain_utils_src.isWindowClosed)(global.a.popupWindowsByName[winName].win) && delete global.a.popupWindowsByName[winName];
             }
             if (name && win) {
@@ -2273,17 +2138,8 @@
             }
         }
         function destroyBridges() {
-            var _iterator2 = Object.keys(global.a.bridgeFrames), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-            for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                var _ref3;
-                if (_isArray2) {
-                    if (_i2 >= _iterator2.length) break;
-                    _ref3 = _iterator2[_i2++];
-                } else {
-                    if ((_i2 = _iterator2.next()).done) break;
-                    _ref3 = _i2.value;
-                }
-                var domain = _ref3, frame = global.a.bridgeFrames[domain];
+            for (var _i4 = 0, _Object$keys4 = Object.keys(global.a.bridgeFrames), _length4 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i4 < _length4; _i4++) {
+                var domain = _Object$keys4[_i4], frame = global.a.bridgeFrames[domain];
                 frame.parentNode && frame.parentNode.removeChild(frame);
             }
             global.a.bridgeFrames = {};
@@ -2635,25 +2491,14 @@
             domain === conf.b.WILDCARD && (domain = null);
             if (!name) throw new Error("Name required to get request listener");
             var nameListeners = global.a.requestListeners[name];
-            if (nameListeners) for (var _arr = [ win, global.a.WINDOW_WILDCARD ], _i = 0; _i < _arr.length; _i++) {
-                var winQualifier = _arr[_i], winListeners = winQualifier && nameListeners.get(winQualifier);
+            if (nameListeners) for (var _i2 = 0, _ref3 = [ win, global.a.WINDOW_WILDCARD ], _length2 = null == _ref3 ? 0 : _ref3.length; _i2 < _length2; _i2++) {
+                var winQualifier = _ref3[_i2], winListeners = winQualifier && nameListeners.get(winQualifier);
                 if (winListeners) {
                     if (domain && "string" == typeof domain) {
                         if (winListeners[domain]) return winListeners[domain];
-                        if (winListeners[__DOMAIN_REGEX__]) {
-                            var _iterator = winListeners[__DOMAIN_REGEX__], _isArray = Array.isArray(_iterator), _i2 = 0;
-                            for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                                var _ref3;
-                                if (_isArray) {
-                                    if (_i2 >= _iterator.length) break;
-                                    _ref3 = _iterator[_i2++];
-                                } else {
-                                    if ((_i2 = _iterator.next()).done) break;
-                                    _ref3 = _i2.value;
-                                }
-                                var _ref4 = _ref3, regex = _ref4.regex, listener = _ref4.listener;
-                                if (Object(src.matchDomain)(regex, domain)) return listener;
-                            }
+                        if (winListeners[__DOMAIN_REGEX__]) for (var _i4 = 0, _winListeners$__DOMAI2 = winListeners[__DOMAIN_REGEX__], _length4 = null == _winListeners$__DOMAI2 ? 0 : _winListeners$__DOMAI2.length; _i4 < _length4; _i4++) {
+                            var _ref5 = _winListeners$__DOMAI2[_i4], regex = _ref5.regex, listener = _ref5.listener;
+                            if (Object(src.matchDomain)(regex, domain)) return listener;
                         }
                     }
                     if (winListeners[conf.b.WILDCARD]) return winListeners[conf.b.WILDCARD];
@@ -2921,21 +2766,12 @@
                 window: win,
                 domain: domain || conf.b.WILDCARD,
                 name: name
-            }, requestListener = function addRequestListener(_ref5, listener) {
-                var name = _ref5.name, win = _ref5.win, domain = _ref5.domain;
+            }, requestListener = function addRequestListener(_ref6, listener) {
+                var name = _ref6.name, win = _ref6.win, domain = _ref6.domain;
                 if (!name || "string" != typeof name) throw new Error("Name required to add request listener");
                 if (Array.isArray(win)) {
-                    var listenersCollection = [], _iterator2 = win, _isArray2 = Array.isArray(_iterator2), _i3 = 0;
-                    for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                        var _ref6;
-                        if (_isArray2) {
-                            if (_i3 >= _iterator2.length) break;
-                            _ref6 = _iterator2[_i3++];
-                        } else {
-                            if ((_i3 = _iterator2.next()).done) break;
-                            _ref6 = _i3.value;
-                        }
-                        var item = _ref6;
+                    for (var listenersCollection = [], _i6 = 0, _win2 = win, _length6 = null == _win2 ? 0 : _win2.length; _i6 < _length6; _i6++) {
+                        var item = _win2[_i6];
                         listenersCollection.push(addRequestListener({
                             name: name,
                             domain: domain,
@@ -2944,33 +2780,13 @@
                     }
                     return {
                         cancel: function() {
-                            var _iterator3 = listenersCollection, _isArray3 = Array.isArray(_iterator3), _i4 = 0;
-                            for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                                var _ref7;
-                                if (_isArray3) {
-                                    if (_i4 >= _iterator3.length) break;
-                                    _ref7 = _iterator3[_i4++];
-                                } else {
-                                    if ((_i4 = _iterator3.next()).done) break;
-                                    _ref7 = _i4.value;
-                                }
-                                _ref7.cancel();
-                            }
+                            for (var _i8 = 0, _length8 = null == listenersCollection ? 0 : listenersCollection.length; _i8 < _length8; _i8++) listenersCollection[_i8].cancel();
                         }
                     };
                 }
                 if (Array.isArray(domain)) {
-                    var _listenersCollection = [], _iterator4 = domain, _isArray4 = Array.isArray(_iterator4), _i5 = 0;
-                    for (_iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
-                        var _ref8;
-                        if (_isArray4) {
-                            if (_i5 >= _iterator4.length) break;
-                            _ref8 = _iterator4[_i5++];
-                        } else {
-                            if ((_i5 = _iterator4.next()).done) break;
-                            _ref8 = _i5.value;
-                        }
-                        var _item = _ref8;
+                    for (var _listenersCollection = [], _i10 = 0, _domain2 = domain, _length10 = null == _domain2 ? 0 : _domain2.length; _i10 < _length10; _i10++) {
+                        var _item = _domain2[_i10];
                         _listenersCollection.push(addRequestListener({
                             name: name,
                             win: win,
@@ -2979,18 +2795,7 @@
                     }
                     return {
                         cancel: function() {
-                            var _iterator5 = _listenersCollection, _isArray5 = Array.isArray(_iterator5), _i6 = 0;
-                            for (_iterator5 = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator](); ;) {
-                                var _ref9;
-                                if (_isArray5) {
-                                    if (_i6 >= _iterator5.length) break;
-                                    _ref9 = _iterator5[_i6++];
-                                } else {
-                                    if ((_i6 = _iterator5.next()).done) break;
-                                    _ref9 = _i6.value;
-                                }
-                                _ref9.cancel();
-                            }
+                            for (var _i12 = 0, _length12 = null == _listenersCollection ? 0 : _listenersCollection.length; _i12 < _length12; _i12++) _listenersCollection[_i12].cancel();
                         }
                     };
                 }
@@ -3105,19 +2910,8 @@
         var public_parent = Object(src.getAncestor)();
         function cleanUpWindow(win) {
             var requestPromises = global.a.requestPromises.get(win);
-            if (requestPromises) {
-                var _iterator = requestPromises, _isArray = Array.isArray(_iterator), _i = 0;
-                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                    var _ref;
-                    if (_isArray) {
-                        if (_i >= _iterator.length) break;
-                        _ref = _iterator[_i++];
-                    } else {
-                        if ((_i = _iterator.next()).done) break;
-                        _ref = _i.value;
-                    }
-                    _ref.reject(new Error("No response from window - cleaned up"));
-                }
+            if (requestPromises) for (var _i2 = 0, _length2 = null == requestPromises ? 0 : requestPromises.length; _i2 < _length2; _i2++) {
+                requestPromises[_i2].reject(new Error("No response from window - cleaned up"));
             }
             global.a.popupWindowsByWin && global.a.popupWindowsByWin.delete(win);
             global.a.remoteWindows && global.a.remoteWindows.delete(win);
@@ -3972,17 +3766,9 @@
             },
             register: function(component, ng) {
                 return ng.module(component.tag, []).directive(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.i)(component.tag), function() {
-                    var scope = {}, _iterator = component.getPropNames(), _isArray = Array.isArray(_iterator), _i = 0;
-                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref = _iterator[_i++];
-                        } else {
-                            if ((_i = _iterator.next()).done) break;
-                            _ref = _i.value;
-                        }
-                        scope[_ref] = "=";
+                    for (var scope = {}, _i2 = 0, _component$getPropNam2 = component.getPropNames(), _length2 = null == _component$getPropNam2 ? 0 : _component$getPropNam2.length; _i2 < _length2; _i2++) {
+                        var key = _component$getPropNam2[_i2];
+                        scope[key] = "=";
                     }
                     component.looseProps && (scope.props = "=");
                     return {
@@ -3995,18 +3781,9 @@
                                 var scopeProps = void 0;
                                 if ($scope.props) scopeProps = $scope.props; else {
                                     scopeProps = {};
-                                    var _iterator2 = Object.keys(scope), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                                    for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                                        var _ref2;
-                                        if (_isArray2) {
-                                            if (_i2 >= _iterator2.length) break;
-                                            _ref2 = _iterator2[_i2++];
-                                        } else {
-                                            if ((_i2 = _iterator2.next()).done) break;
-                                            _ref2 = _i2.value;
-                                        }
-                                        var key = _ref2;
-                                        void 0 !== $scope[key] && (scopeProps[key] = $scope[key]);
+                                    for (var _i4 = 0, _Object$keys2 = Object.keys(scope), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) {
+                                        var _key = _Object$keys2[_i4];
+                                        void 0 !== $scope[_key] && (scopeProps[_key] = $scope[_key]);
                                     }
                                 }
                                 return scopeProps = Object(__WEBPACK_IMPORTED_MODULE_0__lib__.Q)(scopeProps, {
@@ -4263,17 +4040,8 @@
                     }
                 }
                 function scan() {
-                    var _iterator = Array.prototype.slice.call(document.getElementsByTagName("script")), _isArray = Array.isArray(_iterator), _i = 0;
-                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref = _iterator[_i++];
-                        } else {
-                            if ((_i = _iterator.next()).done) break;
-                            _ref = _i.value;
-                        }
-                        render(_ref);
+                    for (var scriptTags = Array.prototype.slice.call(document.getElementsByTagName("script")), _i2 = 0, _length2 = null == scriptTags ? 0 : scriptTags.length; _i2 < _length2; _i2++) {
+                        render(scriptTags[_i2]);
                     }
                 }
                 scan();
@@ -4580,19 +4348,8 @@
                 },
                 trigger: function(eventName) {
                     var handlerList = handlers[eventName];
-                    if (handlerList) {
-                        var _iterator = handlerList, _isArray = Array.isArray(_iterator), _i2 = 0;
-                        for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                            var _ref;
-                            if (_isArray) {
-                                if (_i2 >= _iterator.length) break;
-                                _ref = _iterator[_i2++];
-                            } else {
-                                if ((_i2 = _iterator.next()).done) break;
-                                _ref = _i2.value;
-                            }
-                            _ref();
-                        }
+                    if (handlerList) for (var _i3 = 0, _length2 = null == handlerList ? 0 : handlerList.length; _i3 < _length2; _i3++) {
+                        (0, handlerList[_i3])();
                     }
                 },
                 triggerOnce: function(eventName) {
@@ -4766,20 +4523,9 @@
             var element = document.createElement(tag);
             options.style && extend(element.style, options.style);
             options.class && (element.className = options.class.join(" "));
-            if (options.attributes) {
-                var _iterator = Object.keys(options.attributes), _isArray = Array.isArray(_iterator), _i = 0;
-                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                    var _ref;
-                    if (_isArray) {
-                        if (_i >= _iterator.length) break;
-                        _ref = _iterator[_i++];
-                    } else {
-                        if ((_i = _iterator.next()).done) break;
-                        _ref = _i.value;
-                    }
-                    var key = _ref;
-                    element.setAttribute(key, options.attributes[key]);
-                }
+            if (options.attributes) for (var _i2 = 0, _Object$keys2 = Object.keys(options.attributes), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
+                var key = _Object$keys2[_i2];
+                element.setAttribute(key, options.attributes[key]);
             }
             options.styleSheet && setStyle(element, options.styleSheet);
             container && appendChild(container, element);
@@ -4847,17 +4593,8 @@
             var params = {};
             if (!queryString) return params;
             if (-1 === queryString.indexOf("=")) throw new Error("Can not parse query string params: " + queryString);
-            var _iterator2 = queryString.split("&"), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-            for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                var _ref2;
-                if (_isArray2) {
-                    if (_i2 >= _iterator2.length) break;
-                    _ref2 = _iterator2[_i2++];
-                } else {
-                    if ((_i2 = _iterator2.next()).done) break;
-                    _ref2 = _i2.value;
-                }
-                var pair = _ref2;
+            for (var _i4 = 0, _queryString$split2 = queryString.split("&"), _length4 = null == _queryString$split2 ? 0 : _queryString$split2.length; _i4 < _length4; _i4++) {
+                var pair = _queryString$split2[_i4];
                 (pair = pair.split("="))[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
             }
             return params;
@@ -4915,17 +4652,8 @@
         }
         function changeStyle(el, styles) {
             return new zalgo_promise_src.a(function(resolve) {
-                var _iterator3 = Object.keys(styles), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
-                for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                    var _ref3;
-                    if (_isArray3) {
-                        if (_i3 >= _iterator3.length) break;
-                        _ref3 = _iterator3[_i3++];
-                    } else {
-                        if ((_i3 = _iterator3.next()).done) break;
-                        _ref3 = _i3.value;
-                    }
-                    var key = _ref3;
+                for (var _i6 = 0, _Object$keys4 = Object.keys(styles), _length6 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i6 < _length6; _i6++) {
+                    var key = _Object$keys4[_i6];
                     el.style[key] = styles[key];
                 }
                 setTimeout(resolve, 1);
@@ -4942,14 +4670,14 @@
                 }
             };
         }
-        function trackDimensions(el, _ref5) {
-            var _ref5$width = _ref5.width, width = void 0 === _ref5$width || _ref5$width, _ref5$height = _ref5.height, height = void 0 === _ref5$height || _ref5$height, _ref5$threshold = _ref5.threshold, threshold = void 0 === _ref5$threshold ? 0 : _ref5$threshold, currentDimensions = getCurrentDimensions(el);
+        function trackDimensions(el, _ref2) {
+            var _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$threshold = _ref2.threshold, threshold = void 0 === _ref2$threshold ? 0 : _ref2$threshold, currentDimensions = getCurrentDimensions(el);
             return {
                 check: function() {
                     var newDimensions = getCurrentDimensions(el);
                     return {
-                        changed: function(one, two, _ref4) {
-                            var _ref4$width = _ref4.width, width = void 0 === _ref4$width || _ref4$width, _ref4$height = _ref4.height, height = void 0 === _ref4$height || _ref4$height, _ref4$threshold = _ref4.threshold, threshold = void 0 === _ref4$threshold ? 0 : _ref4$threshold;
+                        changed: function(one, two, _ref) {
+                            var _ref$width = _ref.width, width = void 0 === _ref$width || _ref$width, _ref$height = _ref.height, height = void 0 === _ref$height || _ref$height, _ref$threshold = _ref.threshold, threshold = void 0 === _ref$threshold ? 0 : _ref$threshold;
                             return !!(width && Math.abs(one.width - two.width) > threshold) || !!(height && Math.abs(one.height - two.height) > threshold);
                         }(currentDimensions, newDimensions, {
                             width: width,
@@ -4964,8 +4692,8 @@
                 }
             };
         }
-        function onDimensionsChange(el, _ref6) {
-            var _ref6$width = _ref6.width, width = void 0 === _ref6$width || _ref6$width, _ref6$height = _ref6.height, height = void 0 === _ref6$height || _ref6$height, _ref6$delay = _ref6.delay, delay = void 0 === _ref6$delay ? 50 : _ref6$delay, _ref6$threshold = _ref6.threshold, threshold = void 0 === _ref6$threshold ? 0 : _ref6$threshold;
+        function onDimensionsChange(el, _ref3) {
+            var _ref3$width = _ref3.width, width = void 0 === _ref3$width || _ref3$width, _ref3$height = _ref3.height, height = void 0 === _ref3$height || _ref3$height, _ref3$delay = _ref3.delay, delay = void 0 === _ref3$delay ? 50 : _ref3$delay, _ref3$threshold = _ref3.threshold, threshold = void 0 === _ref3$threshold ? 0 : _ref3$threshold;
             return new zalgo_promise_src.a(function(resolve) {
                 var tracker = trackDimensions(el, {
                     width: width,
@@ -4992,39 +4720,21 @@
                 });
             });
         }
-        function dimensionsMatchViewport(el, _ref7) {
-            var width = _ref7.width, height = _ref7.height, dimensions = getCurrentDimensions(el);
+        function dimensionsMatchViewport(el, _ref4) {
+            var width = _ref4.width, height = _ref4.height, dimensions = getCurrentDimensions(el);
             return (!width || dimensions.width === window.innerWidth) && (!height || dimensions.height === window.innerHeight);
         }
         function bindEvents(element, eventNames, handler) {
             handler = once(handler);
-            var _iterator4 = eventNames, _isArray4 = Array.isArray(_iterator4), _i4 = 0;
-            for (_iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
-                var _ref8;
-                if (_isArray4) {
-                    if (_i4 >= _iterator4.length) break;
-                    _ref8 = _iterator4[_i4++];
-                } else {
-                    if ((_i4 = _iterator4.next()).done) break;
-                    _ref8 = _i4.value;
-                }
-                var eventName = _ref8;
+            for (var _i8 = 0, _length8 = null == eventNames ? 0 : eventNames.length; _i8 < _length8; _i8++) {
+                var eventName = eventNames[_i8];
                 element.addEventListener(eventName, handler);
             }
             return {
                 cancel: once(function() {
-                    var _iterator5 = eventNames, _isArray5 = Array.isArray(_iterator5), _i5 = 0;
-                    for (_iterator5 = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator](); ;) {
-                        var _ref9;
-                        if (_isArray5) {
-                            if (_i5 >= _iterator5.length) break;
-                            _ref9 = _iterator5[_i5++];
-                        } else {
-                            if ((_i5 = _iterator5.next()).done) break;
-                            _ref9 = _i5.value;
-                        }
-                        var eventName = _ref9;
-                        element.removeEventListener(eventName, handler);
+                    for (var _i10 = 0, _length10 = null == eventNames ? 0 : eventNames.length; _i10 < _length10; _i10++) {
+                        var _eventName = eventNames[_i10];
+                        element.removeEventListener(_eventName, handler);
                     }
                 })
             };
@@ -5032,17 +4742,8 @@
         var VENDOR_PREFIXES = [ "webkit", "moz", "ms", "o" ];
         function setVendorCSS(element, name, value) {
             element.style[name] = value;
-            var capitalizedName = capitalizeFirstLetter(name), _iterator6 = VENDOR_PREFIXES, _isArray6 = Array.isArray(_iterator6), _i6 = 0;
-            for (_iterator6 = _isArray6 ? _iterator6 : _iterator6[Symbol.iterator](); ;) {
-                var _ref10;
-                if (_isArray6) {
-                    if (_i6 >= _iterator6.length) break;
-                    _ref10 = _iterator6[_i6++];
-                } else {
-                    if ((_i6 = _iterator6.next()).done) break;
-                    _ref10 = _i6.value;
-                }
-                var prefix = _ref10;
+            for (var capitalizedName = capitalizeFirstLetter(name), _i12 = 0, _length12 = null == VENDOR_PREFIXES ? 0 : VENDOR_PREFIXES.length; _i12 < _length12; _i12++) {
+                var prefix = VENDOR_PREFIXES[_i12];
                 element.style["" + prefix + capitalizedName] = value;
             }
         }
@@ -5204,17 +4905,8 @@
             onClick: "click"
         };
         function fixScripts(el) {
-            var doc = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : window.document, _iterator7 = querySelectorAll(el, "script"), _isArray7 = Array.isArray(_iterator7), _i7 = 0;
-            for (_iterator7 = _isArray7 ? _iterator7 : _iterator7[Symbol.iterator](); ;) {
-                var _ref11;
-                if (_isArray7) {
-                    if (_i7 >= _iterator7.length) break;
-                    _ref11 = _iterator7[_i7++];
-                } else {
-                    if ((_i7 = _iterator7.next()).done) break;
-                    _ref11 = _i7.value;
-                }
-                var script = _ref11, newScript = doc.createElement("script");
+            for (var doc = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : window.document, _i14 = 0, _querySelectorAll2 = querySelectorAll(el, "script"), _length14 = null == _querySelectorAll2 ? 0 : _querySelectorAll2.length; _i14 < _length14; _i14++) {
+                var script = _querySelectorAll2[_i14], newScript = doc.createElement("script");
                 newScript.text = script.textContent;
                 script.parentNode.replaceChild(newScript, script);
             }
@@ -5242,7 +4934,7 @@
                 if (arguments.length > 3) throw new Error("Expected only text content for " + name + " tag");
                 el.text = content;
             } else for (var i = 2; i < arguments.length; i++) if ("string" == typeof arguments[i]) {
-                var textNode = document.createTextNode(arguments[i]);
+                var textNode = doc.createTextNode(arguments[i]);
                 appendChild(el, textNode);
             } else appendChild(el, arguments[i]);
             return el;
@@ -5323,22 +5015,22 @@
         }
         var post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js"), client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
         function setLogLevel(logLevel) {
-            if (-1 === client.l.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
-            client.d.logLevel = logLevel;
+            if (-1 === client.m.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
+            client.e.logLevel = logLevel;
             post_robot_src.CONFIG.LOG_LEVEL = logLevel;
             window.LOG_LEVEL = logLevel;
         }
         function info(name, event) {
             var payload = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-            Object(client.j)("xc_" + name + "_" + event, payload);
+            Object(client.k)("xc_" + name + "_" + event, payload);
         }
         function warn(name, event) {
             var payload = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-            Object(client.o)("xc_" + name + "_" + event, payload);
+            Object(client.p)("xc_" + name + "_" + event, payload);
         }
         function logger_error(name, event) {
             var payload = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-            Object(client.f)("xc_" + name + "_" + event, payload);
+            Object(client.g)("xc_" + name + "_" + event, payload);
         }
         var constants = __webpack_require__("./node_modules/xcomponent/src/constants.js");
         function globalFor(win) {
@@ -5933,17 +5625,8 @@
             ZalgoPromise.flushQueue = function() {
                 var promisesToFlush = Object(global.a)().flushPromises;
                 Object(global.a)().flushPromises = [];
-                var _iterator = promisesToFlush, _isArray = Array.isArray(_iterator), _i = 0;
-                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                    var _ref;
-                    if (_isArray) {
-                        if (_i >= _iterator.length) break;
-                        _ref = _iterator[_i++];
-                    } else {
-                        if ((_i = _iterator.next()).done) break;
-                        _ref = _i.value;
-                    }
-                    _ref.resolve();
+                for (var _i2 = 0, _length2 = null == promisesToFlush ? 0 : promisesToFlush.length; _i2 < _length2; _i2++) {
+                    promisesToFlush[_i2].resolve();
                 }
             };
             return ZalgoPromise;
@@ -5963,7 +5646,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.216",
+            version: "4.0.217",
             cors: !0,
             env: constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -6234,7 +5917,7 @@
             },
             loginUri: "/signin/",
             hermesLoggerUri: "/webapps/hermes/api/logger",
-            loggerUri: "/xoplatform/logger",
+            loggerUri: "/xoplatform/logger/api/logger",
             loggerThrottlePercentage: .05,
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
@@ -6406,7 +6089,8 @@
                 return "" + config.paypalDomain;
             },
             get loggerUrl() {
-                return "" + config.paypalUrl + config.hermesLoggerUri;
+                var loggerUrl = Math.random() < config.loggerThrottlePercentage ? config.loggerUri : config.hermesLoggerUri;
+                return "" + config.paypalUrl + loggerUrl;
             },
             get pptmUrl() {
                 return "" + (config.env === constants.t.LOCAL ? config.paypalUrls[constants.t.STAGE] : config.paypalUrl) + config.pptmUri;
@@ -7327,17 +7011,8 @@
                         return src.a.all(results).then(function() {});
                     },
                     run: function(name) {
-                        var results = [], _iterator = tasks, _isArray = Array.isArray(_iterator), _i = 0;
-                        for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                            var _ref;
-                            if (_isArray) {
-                                if (_i >= _iterator.length) break;
-                                _ref = _iterator[_i++];
-                            } else {
-                                if ((_i = _iterator.next()).done) break;
-                                _ref = _i.value;
-                            }
-                            var item = _ref;
+                        for (var results = [], _i2 = 0, _length2 = null == tasks ? 0 : tasks.length; _i2 < _length2; _i2++) {
+                            var item = tasks[_i2];
                             item.name === name && results.push(item.run());
                         }
                         return src.a.all(results).then(lib.I);
@@ -7362,46 +7037,33 @@
                 var _this = this;
                 if (!win) throw this.component.createError("window to listen to not set");
                 if (!domain) throw new Error("Must pass domain to listen to");
-                if (this.listeners) {
-                    var listeners = this.listeners(), _loop = function() {
-                        if (_isArray2) {
-                            if (_i2 >= _iterator2.length) return "break";
-                            _ref2 = _iterator2[_i2++];
-                        } else {
-                            if ((_i2 = _iterator2.next()).done) return "break";
-                            _ref2 = _i2.value;
-                        }
-                        var listenerName = _ref2, name = listenerName.replace(/^xcomponent_/, ""), errorHandler = function(err) {
-                            _this.error(err);
-                        }, listener = Object(post_robot_src.on)(listenerName, {
-                            window: win,
-                            domain: domain,
-                            errorHandler: errorHandler
-                        }, function(_ref3) {
-                            var source = _ref3.source, data = _ref3.data;
-                            _this.component.log("listener_" + name);
-                            return listeners[listenerName].call(_this, source, data);
-                        }), errorListener = Object(post_robot_src.on)(listenerName, {
-                            window: win,
-                            errorHandler: errorHandler
-                        }, function(_ref4) {
-                            var origin = _ref4.origin;
-                            _this.component.logError("unexpected_listener_" + name, {
-                                origin: origin,
-                                domain: domain.toString()
-                            });
-                            _this.error(new Error("Unexpected " + name + " message from domain " + origin + " -- expected message from " + domain.toString()));
+                if (this.listeners) for (var listeners = this.listeners(), _loop = function(_i4, _Object$keys2, _length4) {
+                    var listenerName = _Object$keys2[_i4], name = listenerName.replace(/^xcomponent_/, ""), errorHandler = function(err) {
+                        _this.error(err);
+                    }, listener = Object(post_robot_src.on)(listenerName, {
+                        window: win,
+                        domain: domain,
+                        errorHandler: errorHandler
+                    }, function(_ref) {
+                        var source = _ref.source, data = _ref.data;
+                        _this.component.log("listener_" + name);
+                        return listeners[listenerName].call(_this, source, data);
+                    }), errorListener = Object(post_robot_src.on)(listenerName, {
+                        window: win,
+                        errorHandler: errorHandler
+                    }, function(_ref2) {
+                        var origin = _ref2.origin;
+                        _this.component.logError("unexpected_listener_" + name, {
+                            origin: origin,
+                            domain: domain.toString()
                         });
-                        _this.clean.register(function() {
-                            listener.cancel();
-                            errorListener.cancel();
-                        });
-                    }, _iterator2 = Object.keys(listeners), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                    for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                        var _ref2;
-                        if ("break" === _loop()) break;
-                    }
-                }
+                        _this.error(new Error("Unexpected " + name + " message from domain " + origin + " -- expected message from " + domain.toString()));
+                    });
+                    _this.clean.register(function() {
+                        listener.cancel();
+                        errorListener.cancel();
+                    });
+                }, _i4 = 0, _Object$keys2 = Object.keys(listeners), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) _loop(_i4, _Object$keys2);
             };
             return BaseComponent;
         }(), base32 = __webpack_require__("./node_modules/hi-base32/src/base32.js"), base32_default = __webpack_require__.n(base32), constants = __webpack_require__("./node_modules/xcomponent/src/constants.js");
@@ -7442,22 +7104,11 @@
             ref === constants.WINDOW_REFERENCES.OPENER ? result = Object(cross_domain_utils_src.getOpener)(window) : ref === constants.WINDOW_REFERENCES.TOP ? result = Object(cross_domain_utils_src.getTop)(window) : ref === constants.WINDOW_REFERENCES.PARENT && (result = distance ? Object(cross_domain_utils_src.getNthParentFromTop)(window, distance) : Object(cross_domain_utils_src.getParent)(window));
             if (ref === constants.WINDOW_REFERENCES.GLOBAL) {
                 var ancestor = Object(cross_domain_utils_src.getAncestor)(window);
-                if (ancestor) {
-                    var _iterator = Object(cross_domain_utils_src.getAllFramesInWindow)(ancestor), _isArray = Array.isArray(_iterator), _i = 0;
-                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref2;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref2 = _iterator[_i++];
-                        } else {
-                            if ((_i = _iterator.next()).done) break;
-                            _ref2 = _i.value;
-                        }
-                        var frame = _ref2, global = Object(lib.z)(frame);
-                        if (global && global.windows && global.windows[uid]) {
-                            result = global.windows[uid];
-                            break;
-                        }
+                if (ancestor) for (var _i2 = 0, _getAllFramesInWindow2 = Object(cross_domain_utils_src.getAllFramesInWindow)(ancestor), _length2 = null == _getAllFramesInWindow2 ? 0 : _getAllFramesInWindow2.length; _i2 < _length2; _i2++) {
+                    var frame = _getAllFramesInWindow2[_i2], global = Object(lib.z)(frame);
+                    if (global && global.windows && global.windows[uid]) {
+                        result = global.windows[uid];
+                        break;
                     }
                 }
             }
@@ -7518,13 +7169,9 @@
                 }
                 _this.component.log("construct_child");
                 _this.onPropHandlers = [];
-                for (var _arr = [ _this.component, window ], _loop = function() {
-                    for (var item = _arr[_i], _arr2 = [ [ "xchild", function() {
-                        return _this;
-                    } ], [ "xprops", function() {
-                        return _this.props;
-                    } ] ], _loop2 = function() {
-                        var _arr2$_i = _arr2[_i2], name = _arr2$_i[0], getter = _arr2$_i[1];
+                for (var _loop = function(_i2, _ref2, _length2) {
+                    for (var item = _ref2[_i2], _loop2 = function(_i4, _ref4, _length4) {
+                        var _ref4$_i = _ref4[_i4], name = _ref4$_i[0], getter = _ref4$_i[1];
                         Object.defineProperty(item, name, {
                             configurable: !0,
                             get: function() {
@@ -7534,15 +7181,19 @@
                                 return item[name];
                             }
                         });
-                    }, _i2 = 0; _i2 < _arr2.length; _i2++) _loop2();
-                }, _i = 0; _i < _arr.length; _i++) _loop();
+                    }, _i4 = 0, _ref4 = [ [ "xchild", function() {
+                        return _this;
+                    } ], [ "xprops", function() {
+                        return _this.props;
+                    } ] ], _length4 = null == _ref4 ? 0 : _ref4.length; _i4 < _length4; _i4++) _loop2(_i4, _ref4);
+                }, _i2 = 0, _ref2 = [ _this.component, window ], _length2 = null == _ref2 ? 0 : _ref2.length; _i2 < _length2; _i2++) _loop(_i2, _ref2);
                 _this.component.log("init_child");
                 _this.setWindows();
                 _this.listenForResize();
                 _this.onInit = _this.sendToParent(constants.POST_MESSAGE.INIT, {
                     exports: _this.exports()
-                }).then(function(_ref) {
-                    var origin = _ref.origin, data = _ref.data;
+                }).then(function(_ref5) {
+                    var origin = _ref5.origin, data = _ref5.data;
                     _this.context = data.context;
                     _this.setProps(data.props, origin);
                     _this.watchForResize();
@@ -7598,8 +7249,8 @@
                     props = JSON.parse(global.props[componentMeta.uid]);
                 }
                 if (!props) throw new Error("Initial props not found");
-                return Object(lib.k)(props, function(_ref2) {
-                    var fullKey = _ref2.fullKey, self = _ref2.self, args = _ref2.args;
+                return Object(lib.k)(props, function(_ref6) {
+                    var fullKey = _ref6.fullKey, self = _ref6.self, args = _ref6.args;
                     return _this3.onInit.then(function() {
                         var func = Object(lib.v)(_this3.props, fullKey);
                         if ("function" != typeof func) throw new TypeError("Expected " + fullKey + " to be function, got " + (void 0 === func ? "undefined" : _typeof(func)));
@@ -7611,52 +7262,23 @@
                 var required = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
                 this.props = this.props || {};
                 var normalizedProps = function(component, props, origin) {
-                    var required = !(arguments.length > 3 && void 0 !== arguments[3]) || arguments[3], result = {}, _iterator = Object.keys(props), _isArray = Array.isArray(_iterator), _i = 0;
-                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref = _iterator[_i++];
-                        } else {
-                            if ((_i = _iterator.next()).done) break;
-                            _ref = _i.value;
-                        }
-                        var _key = _ref, prop = component.getProp(_key), value = props[_key];
+                    for (var required = !(arguments.length > 3 && void 0 !== arguments[3]) || arguments[3], result = {}, _i2 = 0, _Object$keys2 = Object.keys(props), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
+                        var key = _Object$keys2[_i2], prop = component.getProp(key), value = props[key];
                         if (!prop || !prop.sameDomain || origin === Object(cross_domain_utils_src.getDomain)(window)) {
-                            result[_key] = normalizeChildProp(component, 0, _key, value);
+                            result[key] = normalizeChildProp(component, 0, key, value);
                             prop && prop.alias && !result[prop.alias] && (result[prop.alias] = value);
                         }
                     }
-                    if (required) {
-                        var _iterator2 = component.getPropNames(), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                        for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                            var _ref2;
-                            if (_isArray2) {
-                                if (_i2 >= _iterator2.length) break;
-                                _ref2 = _iterator2[_i2++];
-                            } else {
-                                if ((_i2 = _iterator2.next()).done) break;
-                                _ref2 = _i2.value;
-                            }
-                            var key = _ref2;
-                            props.hasOwnProperty(key) || (result[key] = normalizeChildProp(component, 0, key, props[key]));
-                        }
+                    if (required) for (var _i4 = 0, _component$getPropNam2 = component.getPropNames(), _length4 = null == _component$getPropNam2 ? 0 : _component$getPropNam2.length; _i4 < _length4; _i4++) {
+                        var _key = _component$getPropNam2[_i4];
+                        props.hasOwnProperty(_key) || (result[_key] = normalizeChildProp(component, 0, _key, props[_key]));
                     }
                     return result;
                 }(this.component, props, origin, required);
                 Object(lib.t)(this.props, normalizedProps);
                 this.props.logLevel && Object(lib.S)(this.props.logLevel);
-                var _iterator = this.onPropHandlers, _isArray = Array.isArray(_iterator), _i3 = 0;
-                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                    var _ref3;
-                    if (_isArray) {
-                        if (_i3 >= _iterator.length) break;
-                        _ref3 = _iterator[_i3++];
-                    } else {
-                        if ((_i3 = _iterator.next()).done) break;
-                        _ref3 = _i3.value;
-                    }
-                    _ref3.call(this, this.props);
+                for (var _i6 = 0, _onPropHandlers2 = this.onPropHandlers, _length6 = null == _onPropHandlers2 ? 0 : _onPropHandlers2.length; _i6 < _length6; _i6++) {
+                    _onPropHandlers2[_i6].call(this, this.props);
                 }
             };
             ChildComponent.prototype.sendToParent = function(name) {
@@ -7682,7 +7304,7 @@
                 });
             };
             ChildComponent.prototype.enableAutoResize = function() {
-                var _ref4 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref4$width = _ref4.width, width = void 0 === _ref4$width || _ref4$width, _ref4$height = _ref4.height, height = void 0 === _ref4$height || _ref4$height;
+                var _ref7 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref7$width = _ref7.width, width = void 0 === _ref7$width || _ref7$width, _ref7$height = _ref7.height, height = void 0 === _ref7$height || _ref7$height;
                 this.autoResize = {
                     width: width,
                     height: height
@@ -7762,24 +7384,15 @@
                     }).then(lib.I);
                 });
             };
-            ChildComponent.prototype.resizeToElement = function(el, _ref5) {
-                var _this8 = this, width = _ref5.width, height = _ref5.height, history = [];
+            ChildComponent.prototype.resizeToElement = function(el, _ref8) {
+                var _this8 = this, width = _ref8.width, height = _ref8.height, history = [];
                 return function resize() {
                     return src.a.try(function() {
-                        var tracker = Object(lib.Z)(el, {
+                        for (var tracker = Object(lib.Z)(el, {
                             width: width,
                             height: height
-                        }), dimensions = tracker.check().dimensions, _iterator2 = history, _isArray2 = Array.isArray(_iterator2), _i4 = 0;
-                        for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                            var _ref6;
-                            if (_isArray2) {
-                                if (_i4 >= _iterator2.length) break;
-                                _ref6 = _iterator2[_i4++];
-                            } else {
-                                if ((_i4 = _iterator2.next()).done) break;
-                                _ref6 = _i4.value;
-                            }
-                            var size = _ref6, widthMatch = !width || size.width === dimensions.width, heightMatch = !height || size.height === dimensions.height;
+                        }), dimensions = tracker.check().dimensions, _i8 = 0, _length8 = null == history ? 0 : history.length; _i8 < _length8; _i8++) {
+                            var size = history[_i8], widthMatch = !width || size.width === dimensions.width, heightMatch = !height || size.height === dimensions.height;
                             if (widthMatch && heightMatch) return;
                         }
                         history.push({
@@ -7814,7 +7427,7 @@
                 });
             };
             ChildComponent.prototype.destroy = function() {
-                return Object(beaver_logger_client.g)().then(function() {
+                return Object(beaver_logger_client.h)().then(function() {
                     window.close();
                 });
             };
@@ -7966,8 +7579,8 @@
             open: function() {
                 var _this5 = this, url = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "";
                 return src.a.try(function() {
-                    var _ref = _this5.component.dimensions || {}, _ref$width = _ref.width, width = void 0 === _ref$width ? constants.DEFAULT_DIMENSIONS.WIDTH : _ref$width, _ref$height = _ref.height, height = void 0 === _ref$height ? constants.DEFAULT_DIMENSIONS.HEIGHT : _ref$height, _getPosition = function(_ref3) {
-                        var width = _ref3.width, height = _ref3.height, x = 0, y = 0;
+                    var _ref = _this5.component.dimensions || {}, _ref$width = _ref.width, width = void 0 === _ref$width ? constants.DEFAULT_DIMENSIONS.WIDTH : _ref$width, _ref$height = _ref.height, height = void 0 === _ref$height ? constants.DEFAULT_DIMENSIONS.HEIGHT : _ref$height, _getPosition = function(_ref2) {
+                        var width = _ref2.width, height = _ref2.height, x = 0, y = 0;
                         width && (window.outerWidth ? x = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (x = Math.round((window.screen.width - width) / 2)));
                         height && (window.outerHeight ? y = Math.round((window.outerHeight - height) / 2) + window.screenY : window.screen.height && (y = Math.round((window.screen.height - height) / 2)));
                         return {
@@ -8116,24 +7729,15 @@
                         return src.a.try(function() {
                             return "function" == typeof prop.queryValue ? prop.queryValue(value) : value;
                         });
-                    }(prop, 0, value) ]).then(function(_ref3) {
-                        var queryParam = _ref3[0], queryValue = _ref3[1], result = void 0;
+                    }(prop, 0, value) ]).then(function(_ref) {
+                        var queryParam = _ref[0], queryValue = _ref[1], result = void 0;
                         if ("boolean" == typeof queryValue) result = "1"; else if ("string" == typeof queryValue) result = queryValue.toString(); else {
                             if ("function" == typeof queryValue) return;
                             if ("object" === (void 0 === queryValue ? "undefined" : props__typeof(queryValue)) && null !== queryValue) {
                                 if ("json" !== prop.serialization) {
                                     result = Object(lib.o)(queryValue, key);
-                                    var _iterator3 = Object.keys(result), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
-                                    for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                                        var _ref4;
-                                        if (_isArray3) {
-                                            if (_i3 >= _iterator3.length) break;
-                                            _ref4 = _iterator3[_i3++];
-                                        } else {
-                                            if ((_i3 = _iterator3.next()).done) break;
-                                            _ref4 = _i3.value;
-                                        }
-                                        var dotkey = _ref4;
+                                    for (var _i6 = 0, _Object$keys4 = Object.keys(result), _length6 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i6 < _length6; _i6++) {
+                                        var dotkey = _Object$keys4[_i6];
                                         params[dotkey] = result[dotkey];
                                     }
                                     return;
@@ -8436,47 +8040,20 @@
                 !function(component, props) {
                     var required = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
                     if ((props = props || {}).env && "object" === validate__typeof(component.url) && !component.url[props.env]) throw new Error("Invalid env: " + props.env);
-                    var _iterator = component.getPropNames(), _isArray = Array.isArray(_iterator), _i = 0;
-                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref = _iterator[_i++];
-                        } else {
-                            if ((_i = _iterator.next()).done) break;
-                            _ref = _i.value;
-                        }
-                        var key = _ref, prop = component.getProp(key);
+                    for (var _i2 = 0, _component$getPropNam2 = component.getPropNames(), _length2 = null == _component$getPropNam2 ? 0 : _component$getPropNam2.length; _i2 < _length2; _i2++) {
+                        var key = _component$getPropNam2[_i2], prop = component.getProp(key);
                         if (prop.alias && props.hasOwnProperty(prop.alias)) {
                             var value = props[prop.alias];
                             delete props[prop.alias];
                             props[key] || (props[key] = value);
                         }
                     }
-                    var _iterator2 = Object.keys(props), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                    for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                        var _ref2;
-                        if (_isArray2) {
-                            if (_i2 >= _iterator2.length) break;
-                            _ref2 = _iterator2[_i2++];
-                        } else {
-                            if ((_i2 = _iterator2.next()).done) break;
-                            _ref2 = _i2.value;
-                        }
-                        var _key = _ref2, _prop = component.getProp(_key), _value = props[_key];
+                    for (var _i4 = 0, _Object$keys2 = Object.keys(props), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) {
+                        var _key = _Object$keys2[_i4], _prop = component.getProp(_key), _value = props[_key];
                         _prop && validateProp(_prop, _key, _value, props, required);
                     }
-                    var _iterator3 = component.getPropNames(), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
-                    for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                        var _ref3;
-                        if (_isArray3) {
-                            if (_i3 >= _iterator3.length) break;
-                            _ref3 = _iterator3[_i3++];
-                        } else {
-                            if ((_i3 = _iterator3.next()).done) break;
-                            _ref3 = _i3.value;
-                        }
-                        var _key2 = _ref3, _prop2 = component.getProp(_key2), _value2 = props[_key2];
+                    for (var _i6 = 0, _component$getPropNam4 = component.getPropNames(), _length6 = null == _component$getPropNam4 ? 0 : _component$getPropNam4.length; _i6 < _length6; _i6++) {
+                        var _key2 = _component$getPropNam4[_i6], _prop2 = component.getProp(_key2), _value2 = props[_key2];
                         _prop2 && !props.hasOwnProperty(_key2) && validateProp(_prop2, _key2, _value2, props, required);
                     }
                 }(this.component, props, required);
@@ -8485,30 +8062,12 @@
                 Object(lib.t)(this.props, function(component, instance, props) {
                     var result = {};
                     props = props || {};
-                    var _iterator = Object.keys(props), _isArray = Array.isArray(_iterator), _i = 0;
-                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref = _iterator[_i++];
-                        } else {
-                            if ((_i = _iterator.next()).done) break;
-                            _ref = _i.value;
-                        }
-                        var key = _ref;
+                    for (var _i2 = 0, _Object$keys2 = Object.keys(props), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
+                        var key = _Object$keys2[_i2];
                         -1 !== component.getPropNames().indexOf(key) ? result[key] = normalizeProp(component, instance, props, key, props[key]) : result[key] = props[key];
                     }
-                    var _iterator2 = component.getPropNames(), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                    for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                        var _ref2;
-                        if (_isArray2) {
-                            if (_i2 >= _iterator2.length) break;
-                            _ref2 = _iterator2[_i2++];
-                        } else {
-                            if ((_i2 = _iterator2.next()).done) break;
-                            _ref2 = _i2.value;
-                        }
-                        var _key = _ref2;
+                    for (var _i4 = 0, _component$getPropNam2 = component.getPropNames(), _length4 = null == _component$getPropNam2 ? 0 : _component$getPropNam2.length; _i4 < _length4; _i4++) {
+                        var _key = _component$getPropNam2[_i4];
                         if (!(props.hasOwnProperty(_key) || instance.props && instance.props.hasOwnProperty(_key))) {
                             var normalizedProp = normalizeProp(component, instance, props, _key, props[_key]);
                             void 0 !== normalizedProp && (result[_key] = normalizedProp);
@@ -8548,17 +8107,8 @@
                 });
             };
             ParentComponent.prototype.getPropsForChild = function() {
-                var result = {}, _iterator = Object.keys(this.props), _isArray = Array.isArray(_iterator), _i = 0;
-                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                    var _ref8;
-                    if (_isArray) {
-                        if (_i >= _iterator.length) break;
-                        _ref8 = _iterator[_i++];
-                    } else {
-                        if ((_i = _iterator.next()).done) break;
-                        _ref8 = _i.value;
-                    }
-                    var key = _ref8, prop = this.component.getProp(key);
+                for (var result = {}, _i2 = 0, _Object$keys2 = Object.keys(this.props), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
+                    var key = _Object$keys2[_i2], prop = this.component.getProp(key);
                     prop && !1 === prop.sendToChild || (result[key] = this.props[key]);
                 }
                 return result;
@@ -8623,25 +8173,16 @@
             ParentComponent.prototype.delegate = function(win) {
                 var _this14 = this;
                 this.component.log("delegate_" + this.context);
-                var props = {
+                for (var props = {
                     uid: this.props.uid,
                     dimensions: this.props.dimensions,
                     onClose: this.props.onClose,
                     onDisplay: this.props.onDisplay
-                }, _iterator2 = this.component.getPropNames(), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                    var _ref9;
-                    if (_isArray2) {
-                        if (_i2 >= _iterator2.length) break;
-                        _ref9 = _iterator2[_i2++];
-                    } else {
-                        if ((_i2 = _iterator2.next()).done) break;
-                        _ref9 = _i2.value;
-                    }
-                    var propName = _ref9;
+                }, _i4 = 0, _component$getPropNam2 = this.component.getPropNames(), _length4 = null == _component$getPropNam2 ? 0 : _component$getPropNam2.length; _i4 < _length4; _i4++) {
+                    var propName = _component$getPropNam2[_i4];
                     this.component.getProp(propName).allowDelegate && (props[propName] = this.props[propName]);
                 }
-                var delegate = Object(post_robot_src.send)(win, constants.POST_MESSAGE.DELEGATE + "_" + this.component.name, {
+                for (var delegate = Object(post_robot_src.send)(win, constants.POST_MESSAGE.DELEGATE + "_" + this.component.name, {
                     context: this.context,
                     env: this.props.env,
                     options: {
@@ -8666,21 +8207,14 @@
                             }
                         }
                     }
-                }).then(function(_ref10) {
-                    var data = _ref10.data;
+                }).then(function(_ref8) {
+                    var data = _ref8.data;
                     _this14.clean.register(data.destroy);
                     return data;
                 }).catch(function(err) {
                     throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.X)(err));
-                }), overrides = this.driver.delegateOverrides, _loop = function() {
-                    if (_isArray3) {
-                        if (_i3 >= _iterator3.length) return "break";
-                        _ref11 = _iterator3[_i3++];
-                    } else {
-                        if ((_i3 = _iterator3.next()).done) return "break";
-                        _ref11 = _i3.value;
-                    }
-                    var key = _ref11, val = overrides[key];
+                }), overrides = this.driver.delegateOverrides, _loop = function(_i6, _Object$keys4, _length6) {
+                    var key = _Object$keys4[_i6], val = overrides[key];
                     if (val === constants.DELEGATE.CALL_ORIGINAL) return "continue";
                     var original = _this14[key];
                     _this14[key] = function() {
@@ -8692,18 +8226,7 @@
                             throw new Error("Expected delgate to be CALL_ORIGINAL, CALL_DELEGATE, or factory method");
                         });
                     };
-                };
-                var _iterator3 = Object.keys(overrides), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
-                _loop2: for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                    var _ref11;
-                    switch (_loop()) {
-                      case "break":
-                        break _loop2;
-
-                      case "continue":
-                        continue;
-                    }
-                }
+                }, _i6 = 0, _Object$keys4 = Object.keys(overrides), _length6 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i6 < _length6; _i6++) _loop(_i6, _Object$keys4);
             };
             ParentComponent.prototype.watchForClose = function() {
                 var _this16 = this, closeWindowListener = Object(cross_domain_utils_src.onCloseWindow)(this.window, function() {
@@ -8719,7 +8242,7 @@
             ParentComponent.prototype.watchForUnload = function() {
                 var _this17 = this, onunload = Object(lib.L)(function() {
                     _this17.component.log("navigate_away");
-                    Object(beaver_logger_client.g)();
+                    Object(beaver_logger_client.h)();
                     _this17.destroyComponent();
                 }), unloadWindowListener = Object(lib.b)(window, "unload", onunload);
                 this.clean.register("destroyUnloadWindowListener", unloadWindowListener.cancel);
@@ -8758,8 +8281,8 @@
                 }
             };
             ParentComponent.prototype.listeners = function() {
-                var _ref12;
-                return (_ref12 = {})[constants.POST_MESSAGE.INIT] = function(source, data) {
+                var _ref9;
+                return (_ref9 = {})[constants.POST_MESSAGE.INIT] = function(source, data) {
                     this.childExports = data.exports;
                     this.onInit.resolve(this);
                     this.timeout && clearTimeout(this.timeout);
@@ -8767,27 +8290,27 @@
                         props: this.getPropsForChild(),
                         context: this.context
                     };
-                }, _ref12[constants.POST_MESSAGE.CLOSE] = function(source, data) {
+                }, _ref9[constants.POST_MESSAGE.CLOSE] = function(source, data) {
                     this.close(data.reason);
-                }, _ref12[constants.POST_MESSAGE.CHECK_CLOSE] = function() {
+                }, _ref9[constants.POST_MESSAGE.CHECK_CLOSE] = function() {
                     this.checkClose();
-                }, _ref12[constants.POST_MESSAGE.RESIZE] = function(source, data) {
+                }, _ref9[constants.POST_MESSAGE.RESIZE] = function(source, data) {
                     var _this20 = this;
                     return src.a.try(function() {
                         if (_this20.driver.allowResize) return _this20.resize(data.width, data.height);
                     });
-                }, _ref12[constants.POST_MESSAGE.ONRESIZE] = function() {
+                }, _ref9[constants.POST_MESSAGE.ONRESIZE] = function() {
                     this.event.trigger("resize");
-                }, _ref12[constants.POST_MESSAGE.HIDE] = function() {
+                }, _ref9[constants.POST_MESSAGE.HIDE] = function() {
                     this.hide();
-                }, _ref12[constants.POST_MESSAGE.SHOW] = function() {
+                }, _ref9[constants.POST_MESSAGE.SHOW] = function() {
                     this.show();
-                }, _ref12[constants.POST_MESSAGE.ERROR] = function(source, data) {
+                }, _ref9[constants.POST_MESSAGE.ERROR] = function(source, data) {
                     this.error(new Error(data.error));
-                }, _ref12;
+                }, _ref9;
             };
             ParentComponent.prototype.resize = function(width, height) {
-                var _this21 = this, _ref13$waitForTransit = (arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}).waitForTransition, waitForTransition = void 0 === _ref13$waitForTransit || _ref13$waitForTransit;
+                var _this21 = this, _ref10$waitForTransit = (arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}).waitForTransition, waitForTransition = void 0 === _ref10$waitForTransit || _ref10$waitForTransit;
                 return src.a.try(function() {
                     _this21.component.log("resize", {
                         height: Object(lib.W)(height),
@@ -8920,18 +8443,32 @@
                         } catch (err) {
                             return;
                         }
-                        var el = _this31.renderTemplate(_this31.component.prerenderTemplate, {
-                            jsxDom: lib.F.bind(doc),
-                            document: doc
-                        });
+                        var el = void 0;
+                        try {
+                            el = _this31.renderTemplate(_this31.component.prerenderTemplate, {
+                                jsxDom: lib.F.bind(doc),
+                                document: doc
+                            });
+                        } catch (err) {
+                            _this31.component.logError("preprender_error", {
+                                err: err.stack ? err.stack : err.toString()
+                            });
+                            console.error(err.stack ? err.stack : err);
+                            return;
+                        }
                         try {
                             Object(lib._3)(win, el);
-                        } catch (err) {}
+                        } catch (err) {
+                            _this31.component.logError("preprender_error", {
+                                err: err.stack ? err.stack : err.toString()
+                            });
+                            console.error(err.stack ? err.stack : err);
+                        }
                     }) : src.a.resolve();
                 });
             };
             ParentComponent.prototype.renderTemplate = function(renderer) {
-                var _this32 = this, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, _ref14 = this.component.dimensions || {}, _ref14$width = _ref14.width, width = void 0 === _ref14$width ? constants.DEFAULT_DIMENSIONS.WIDTH + "px" : _ref14$width, _ref14$height = _ref14.height, height = void 0 === _ref14$height ? constants.DEFAULT_DIMENSIONS.HEIGHT + "px" : _ref14$height;
+                var _this32 = this, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, _ref11 = this.component.dimensions || {}, _ref11$width = _ref11.width, width = void 0 === _ref11$width ? constants.DEFAULT_DIMENSIONS.WIDTH + "px" : _ref11$width, _ref11$height = _ref11.height, height = void 0 === _ref11$height ? constants.DEFAULT_DIMENSIONS.HEIGHT + "px" : _ref11$height;
                 return renderer.call(this, parent__extends({
                     id: constants.CLASS_NAMES.XCOMPONENT + "-" + this.component.tag + "-" + this.props.uid,
                     props: renderer.__xdomain__ ? null : this.props,
@@ -8994,7 +8531,7 @@
                 return src.a.try(function() {
                     if (_this34.clean.hasTasks()) {
                         _this34.component.log("destroy");
-                        Object(beaver_logger_client.g)();
+                        Object(beaver_logger_client.h)();
                         return _this34.clean.all();
                     }
                 });
@@ -9101,17 +8638,8 @@
                     onClose: options.props.onClose,
                     onDisplay: options.props.onDisplay
                 };
-                var _iterator = component.getPropNames(), _isArray = Array.isArray(_iterator), _i = 0;
-                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                    var _ref;
-                    if (_isArray) {
-                        if (_i >= _iterator.length) break;
-                        _ref = _iterator[_i++];
-                    } else {
-                        if ((_i = _iterator.next()).done) break;
-                        _ref = _i.value;
-                    }
-                    var propName = _ref;
+                for (var _i2 = 0, _component$getPropNam2 = component.getPropNames(), _length2 = null == _component$getPropNam2 ? 0 : _component$getPropNam2.length; _i2 < _length2; _i2++) {
+                    var propName = _component$getPropNam2[_i2];
                     _this.component.getProp(propName).allowDelegate && (_this.props[propName] = options.props[propName]);
                 }
                 _this.focus = function() {
@@ -9124,17 +8652,8 @@
                 _this.getDomain = options.overrides.getDomain;
                 _this.error = options.overrides.error;
                 _this.on = options.overrides.on;
-                var delegateOverrides = RENDER_DRIVERS[options.context].delegateOverrides, _iterator2 = Object.keys(delegateOverrides), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                    var _ref2;
-                    if (_isArray2) {
-                        if (_i2 >= _iterator2.length) break;
-                        _ref2 = _iterator2[_i2++];
-                    } else {
-                        if ((_i2 = _iterator2.next()).done) break;
-                        _ref2 = _i2.value;
-                    }
-                    var key = _ref2;
+                for (var delegateOverrides = RENDER_DRIVERS[options.context].delegateOverrides, _i4 = 0, _Object$keys2 = Object.keys(delegateOverrides), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) {
+                    var key = _Object$keys2[_i4];
                     _this[key] = parent_ParentComponent.prototype[key];
                 }
                 _this.childWindowName = options.childWindowName;
@@ -9149,23 +8668,12 @@
                 this.clean.register("destroyCloseWindowListener", closeWindowListener.cancel);
             };
             DelegateComponent.prototype.getOverrides = function(context) {
-                var delegateOverrides = RENDER_DRIVERS[context].delegateOverrides, overrides = {}, self = this, _loop = function() {
-                    if (_isArray3) {
-                        if (_i3 >= _iterator3.length) return "break";
-                        _ref3 = _iterator3[_i3++];
-                    } else {
-                        if ((_i3 = _iterator3.next()).done) return "break";
-                        _ref3 = _i3.value;
-                    }
-                    var key = _ref3;
+                for (var delegateOverrides = RENDER_DRIVERS[context].delegateOverrides, overrides = {}, self = this, _loop = function(_i6, _Object$keys4, _length6) {
+                    var key = _Object$keys4[_i6];
                     overrides[key] = function() {
                         return parent_ParentComponent.prototype[key].apply(self, arguments);
                     };
-                }, _iterator3 = Object.keys(delegateOverrides), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
-                for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                    var _ref3;
-                    if ("break" === _loop()) break;
-                }
+                }, _i6 = 0, _Object$keys4 = Object.keys(delegateOverrides), _length6 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i6 < _length6; _i6++) _loop(_i6, _Object$keys4);
                 return overrides;
             };
             DelegateComponent.prototype.destroy = function() {
@@ -9189,23 +8697,12 @@
             if (!options.tag || !options.tag.match(/^[a-z0-9-]+$/)) throw new Error("Invalid options.tag: " + options.tag);
             !function(options) {
                 if (options.props && "object" !== component_validate__typeof(options.props)) throw new Error("Expected options.props to be an object");
-                if (options.props) {
-                    var _iterator = Object.keys(options.props), _isArray = Array.isArray(_iterator), _i = 0;
-                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref = _iterator[_i++];
-                        } else {
-                            if ((_i = _iterator.next()).done) break;
-                            _ref = _i.value;
-                        }
-                        var key = _ref, prop = options.props[key];
-                        if (!prop || "object" !== (void 0 === prop ? "undefined" : component_validate__typeof(prop))) throw new Error("Expected options.props." + key + " to be an object");
-                        if (!prop.type) throw new Error("Expected prop.type");
-                        if (-1 === constants.PROP_TYPES_LIST.indexOf(prop.type)) throw new Error("Expected prop.type to be one of " + constants.PROP_TYPES_LIST.join(", "));
-                        if (prop.required && prop.def) throw new Error("Required prop can not have a default value");
-                    }
+                if (options.props) for (var _i2 = 0, _Object$keys2 = Object.keys(options.props), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
+                    var key = _Object$keys2[_i2], prop = options.props[key];
+                    if (!prop || "object" !== (void 0 === prop ? "undefined" : component_validate__typeof(prop))) throw new Error("Expected options.props." + key + " to be an object");
+                    if (!prop.type) throw new Error("Expected prop.type");
+                    if (-1 === constants.PROP_TYPES_LIST.indexOf(prop.type)) throw new Error("Expected prop.type to be one of " + constants.PROP_TYPES_LIST.join(", "));
+                    if (prop.required && prop.def) throw new Error("Required prop can not have a default value");
                 }
             }(options);
             if (options.dimensions) {
@@ -9214,17 +8711,8 @@
             }
             if (options.contexts) {
                 options.contexts.popup, 0;
-                var anyEnabled = !1, _iterator2 = Object.keys(options.contexts), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                    var _ref2;
-                    if (_isArray2) {
-                        if (_i2 >= _iterator2.length) break;
-                        _ref2 = _iterator2[_i2++];
-                    } else {
-                        if ((_i2 = _iterator2.next()).done) break;
-                        _ref2 = _i2.value;
-                    }
-                    var context = _ref2;
+                for (var anyEnabled = !1, _i4 = 0, _Object$keys4 = Object.keys(options.contexts), _length4 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i4 < _length4; _i4++) {
+                    var context = _Object$keys4[_i4];
                     if (-1 === constants.CONTEXT_TYPES_LIST.indexOf(context)) throw new Error("Unsupported context type: " + context);
                     (options.contexts && options.contexts[context] || options.contexts && void 0 === options.contexts[context]) && (anyEnabled = !0);
                 }
@@ -9242,17 +8730,8 @@
             }
             if (options.url && "object" === component_validate__typeof(options.url)) {
                 if (!options.defaultEnv) throw new Error("Must pass options.defaultEnv with env->url mapping");
-                var _iterator3 = Object.keys(options.url), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
-                for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                    var _ref3;
-                    if (_isArray3) {
-                        if (_i3 >= _iterator3.length) break;
-                        _ref3 = _iterator3[_i3++];
-                    } else {
-                        if ((_i3 = _iterator3.next()).done) break;
-                        _ref3 = _i3.value;
-                    }
-                    var env = _ref3;
+                for (var _i6 = 0, _Object$keys6 = Object.keys(options.url), _length6 = null == _Object$keys6 ? 0 : _Object$keys6.length; _i6 < _length6; _i6++) {
+                    var env = _Object$keys6[_i6];
                     if (!options.url[env]) throw new Error("No url specified for env: " + env);
                 }
             }
@@ -9470,17 +8949,8 @@
                 return _this;
             }
             Component.prototype.getPropNames = function() {
-                var props = Object.keys(this.props), _iterator = Object.keys(this.builtinProps), _isArray = Array.isArray(_iterator), _i = 0;
-                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                    var _ref;
-                    if (_isArray) {
-                        if (_i >= _iterator.length) break;
-                        _ref = _iterator[_i++];
-                    } else {
-                        if ((_i = _iterator.next()).done) break;
-                        _ref = _i.value;
-                    }
-                    var key = _ref;
+                for (var props = Object.keys(this.props), _i2 = 0, _Object$keys2 = Object.keys(this.builtinProps), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
+                    var key = _Object$keys2[_i2];
                     -1 === props.indexOf(key) && props.push(key);
                 }
                 return props;
@@ -9490,17 +8960,8 @@
             };
             Component.prototype.registerDrivers = function() {
                 this.driverCache = {};
-                var _iterator2 = Object.keys(component_drivers), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                    var _ref2;
-                    if (_isArray2) {
-                        if (_i2 >= _iterator2.length) break;
-                        _ref2 = _iterator2[_i2++];
-                    } else {
-                        if ((_i2 = _iterator2.next()).done) break;
-                        _ref2 = _i2.value;
-                    }
-                    var driverName = _ref2;
+                for (var _i4 = 0, _Object$keys4 = Object.keys(component_drivers), _length4 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i4 < _length4; _i4++) {
+                    var driverName = _Object$keys4[_i4];
                     if (0 !== driverName.indexOf("_")) {
                         var glob = component_drivers[driverName].global();
                         glob && this.driver(driverName, glob);
@@ -9523,8 +8984,8 @@
                 Object(post_robot_src.on)(constants.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name, function() {
                     return !0;
                 });
-                Object(post_robot_src.on)(constants.POST_MESSAGE.DELEGATE + "_" + this.name, function(_ref3) {
-                    var source = _ref3.source, origin = _ref3.origin, data = _ref3.data, domain = _this3.getDomain(null, data.env || _this3.defaultEnv);
+                Object(post_robot_src.on)(constants.POST_MESSAGE.DELEGATE + "_" + this.name, function(_ref) {
+                    var source = _ref.source, origin = _ref.origin, data = _ref.data, domain = _this3.getDomain(null, data.env || _this3.defaultEnv);
                     if (!domain) throw new Error("Could not determine domain to allow remote render");
                     if (!Object(cross_domain_utils_src.matchDomain)(domain, origin)) throw new Error("Can not render from " + origin + " - expected " + domain.toString());
                     var delegate = _this3.delegate(source, data.options);
@@ -9537,8 +8998,8 @@
                 });
             };
             Component.prototype.canRenderTo = function(win) {
-                return Object(post_robot_src.send)(win, constants.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name).then(function(_ref4) {
-                    return _ref4.data;
+                return Object(post_robot_src.send)(win, constants.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name).then(function(_ref2) {
+                    return _ref2.data;
                 }).catch(function() {
                     return !1;
                 });
@@ -9548,19 +9009,9 @@
                     var domain = Object(cross_domain_utils_src.getDomainFromUrl)(url);
                     if ("string" == typeof this.domain && domain === this.domain) return domain;
                     var domains = this.domain;
-                    if (domains && "object" === (void 0 === domains ? "undefined" : component__typeof(domains)) && !(domains instanceof RegExp)) {
-                        var _iterator3 = Object.keys(domains), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
-                        for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                            var _ref5;
-                            if (_isArray3) {
-                                if (_i3 >= _iterator3.length) break;
-                                _ref5 = _iterator3[_i3++];
-                            } else {
-                                if ((_i3 = _iterator3.next()).done) break;
-                                _ref5 = _i3.value;
-                            }
-                            if ("test" !== _ref5 && domain === domains[_ref5]) return domain;
-                        }
+                    if (domains && "object" === (void 0 === domains ? "undefined" : component__typeof(domains)) && !(domains instanceof RegExp)) for (var _i6 = 0, _Object$keys6 = Object.keys(domains), _length6 = null == _Object$keys6 ? 0 : _Object$keys6.length; _i6 < _length6; _i6++) {
+                        var env = _Object$keys6[_i6];
+                        if ("test" !== env && domain === domains[env]) return domain;
                     }
                 }
             };
@@ -9727,7 +9178,7 @@
             return window.xchild && window.xchild.getParentDomain ? window.xchild.getParentDomain() : window.location.host;
         }
         var setupProxyLogTransport = Object(util.m)(function() {
-            Object(beaver_logger_client.m)(function(name, win, originalMethod) {
+            Object(beaver_logger_client.n)(function(name, win, originalMethod) {
                 if (win && Object(cross_domain_utils_src.getDomain)() === config.a.paypalDomain && !Object(cross_domain_utils_src.isSameDomain)(win)) {
                     win && Object(post_robot_src.send)(win, "proxy_" + name, {
                         originalMethod: originalMethod
@@ -9749,11 +9200,11 @@
                         return originalMethod.apply(_this, _arguments);
                     }) : originalMethod.apply(this, arguments);
                 };
-            }("log", Object(cross_domain_utils_src.getParent)(window), Object(beaver_logger_client.h)()));
+            }("log", Object(cross_domain_utils_src.getParent)(window), Object(beaver_logger_client.i)()));
         });
         function initLogger() {
             setupProxyLogTransport();
-            Object(beaver_logger_client.b)(function() {
+            Object(beaver_logger_client.c)(function() {
                 return {
                     referer: getRefererDomain(),
                     host: window.location.host,
@@ -9762,15 +9213,20 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.216"
+                    ver: "4.0.217"
                 };
             });
             Object(beaver_logger_client.a)(function() {
                 return {
+                    "x-app-name": "checkoutjs"
+                };
+            });
+            Object(beaver_logger_client.b)(function() {
+                return {
                     state: config.a.state
                 };
             });
-            Object(beaver_logger_client.c)(function() {
+            Object(beaver_logger_client.d)(function() {
                 var _ref, payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, sessionID = Object(lib_session.c)(), paymentToken = function() {
                     if (window.root && window.root.token) return window.root.token;
                     var queryToken = Object(dom.g)("token");
@@ -9793,7 +9249,7 @@
                 _ref[src_constants.u.KEY.VERSION] = config.a.version, _ref[src_constants.u.KEY.TOKEN] = paymentToken, 
                 _ref[src_constants.u.KEY.REFERER] = getRefererDomain(), _ref;
             });
-            Object(beaver_logger_client.k)({
+            Object(beaver_logger_client.l)({
                 uri: config.a.loggerUrl,
                 heartbeat: !1,
                 logPerformance: !1,
@@ -9802,9 +9258,9 @@
             });
         }
         function setLogLevel(logLevel) {
-            if (-1 === beaver_logger_client.l.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
+            if (-1 === beaver_logger_client.m.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
             config.a.logLevel = logLevel;
-            beaver_logger_client.d.logLevel = logLevel;
+            beaver_logger_client.e.logLevel = logLevel;
             post_robot_src.CONFIG.LOG_LEVEL = logLevel;
             window.LOG_LEVEL = logLevel;
         }
@@ -9818,17 +9274,8 @@
             return bowser;
         }
         function getBrowser() {
-            var bowser = getBowser(), _iterator = Object.keys(config.a.SUPPORTED_BROWSERS), _isArray = Array.isArray(_iterator), _i = 0;
-            for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref = _iterator[_i++];
-                } else {
-                    if ((_i = _iterator.next()).done) break;
-                    _ref = _i.value;
-                }
-                var _browser = _ref;
+            for (var bowser = getBowser(), _i2 = 0, _Object$keys2 = Object.keys(config.a.SUPPORTED_BROWSERS), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
+                var _browser = _Object$keys2[_i2];
                 if (bowser[_browser]) return {
                     browser: _browser,
                     version: bowser.version
@@ -9852,14 +9299,14 @@
         var checkRecognizedBrowser = Object(util.m)(function(state) {
             if (!getBrowser().browser) {
                 var _getBowser = getBowser(), name = _getBowser.name, _version = _getBowser.version, mobile = _getBowser.mobile, android = _getBowser.android, ios = _getBowser.ios;
-                Object(beaver_logger_client.j)("unrecognized_browser_" + state, {
+                Object(beaver_logger_client.k)("unrecognized_browser_" + state, {
                     name: name,
                     version: _version,
                     mobile: mobile,
                     android: android,
                     ios: ios
                 });
-                Object(beaver_logger_client.g)();
+                Object(beaver_logger_client.h)();
             }
         });
         function logWarn(err) {
@@ -9882,68 +9329,31 @@
             CONTENT_TYPE: "content-type",
             ACCEPT: "accept"
         }, headerBuilders = [], corrids = [];
-        Object(beaver_logger_client.b)(function() {
+        Object(beaver_logger_client.c)(function() {
             return {
                 prev_corr_ids: corrids.join(",")
             };
         });
-        function request(_ref2) {
-            var url = _ref2.url, _ref2$method = _ref2.method, method = void 0 === _ref2$method ? "get" : _ref2$method, _ref2$headers = _ref2.headers, headers = void 0 === _ref2$headers ? {} : _ref2$headers, json = _ref2.json, data = _ref2.data, body = _ref2.body, _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win, _ref2$timeout = _ref2.timeout, timeout = void 0 === _ref2$timeout ? 0 : _ref2$timeout;
+        function request(_ref) {
+            var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
             return "/demo/checkout/api/braintree/client-token/" === url ? src.a.resolve("eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiJjMDFhZmRkM2Y1OTJmNWVhNTNlMzE5MWQwYmIyMWVjYjM5NzNlZGM1MzkwNDZiMjJmNTA2ODEyNzIzZmRlMTJifGNsaWVudF9pZD1jbGllbnRfaWQkc2FuZGJveCQ0ZHByYmZjNnBoNTk1Y2NqXHUwMDI2Y3JlYXRlZF9hdD0yMDE3LTA0LTI2VDIzOjI2OjU5Ljg3OTA3ODYwNiswMDAwXHUwMDI2bWVyY2hhbnRfaWQ9M3cydHR2d2QyNDY1NDhoZCIsImNvbmZpZ1VybCI6Imh0dHBzOi8vYXBpLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb206NDQzL21lcmNoYW50cy8zdzJ0dHZ3ZDI0NjU0OGhkL2NsaWVudF9hcGkvdjEvY29uZmlndXJhdGlvbiIsImNoYWxsZW5nZXMiOltdLCJlbnZpcm9ubWVudCI6InNhbmRib3giLCJjbGllbnRBcGlVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvM3cydHR2d2QyNDY1NDhoZC9jbGllbnRfYXBpIiwiYXNzZXRzVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhdXRoVXJsIjoiaHR0cHM6Ly9hdXRoLnZlbm1vLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhbmFseXRpY3MiOnsidXJsIjoiaHR0cHM6Ly9jbGllbnQtYW5hbHl0aWNzLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20vM3cydHR2d2QyNDY1NDhoZCJ9LCJ0aHJlZURTZWN1cmVFbmFibGVkIjpmYWxzZSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiYmFyY28uMDMtZmFjaWxpdGF0b3JAZ21haWwuY29tIiwiY2xpZW50SWQiOiJBV3VZdnFnMGtaN2Y5S0V4TVpqZU53T3RjQV8yZVhnOWpMZy1QSnBGX0pnYk44M0YyVml5aEdnV2JCNDg4RGU3MFpucGRBZEI2TUNqekNqSyIsInByaXZhY3lVcmwiOiJodHRwczovL2V4YW1wbGUuY29tIiwidXNlckFncmVlbWVudFVybCI6Imh0dHBzOi8vZXhhbXBsZS5jb20iLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjpmYWxzZSwiZW52aXJvbm1lbnQiOiJvZmZsaW5lIiwidW52ZXR0ZWRNZXJjaGFudCI6ZmFsc2UsImJyYWludHJlZUNsaWVudElkIjoibWFzdGVyY2xpZW50MyIsImJpbGxpbmdBZ3JlZW1lbnRzRW5hYmxlZCI6dHJ1ZSwibWVyY2hhbnRBY2NvdW50SWQiOiJVU0QiLCJjdXJyZW5jeUlzb0NvZGUiOiJVU0QifSwiY29pbmJhc2VFbmFibGVkIjpmYWxzZSwibWVyY2hhbnRJZCI6IjN3MnR0dndkMjQ2NTQ4aGQiLCJ2ZW5tbyI6Im9mZiJ9") : new src.a(function(resolve, reject) {
                 if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
-                var normalizedHeaders = {}, _iterator2 = Object.keys(headers), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                    var _ref3;
-                    if (_isArray2) {
-                        if (_i2 >= _iterator2.length) break;
-                        _ref3 = _iterator2[_i2++];
-                    } else {
-                        if ((_i2 = _iterator2.next()).done) break;
-                        _ref3 = _i2.value;
-                    }
-                    var _key3 = _ref3;
-                    normalizedHeaders[_key3.toLowerCase()] = headers[_key3];
+                for (var normalizedHeaders = {}, _i4 = 0, _Object$keys2 = Object.keys(headers), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) {
+                    var _key2 = _Object$keys2[_i4];
+                    normalizedHeaders[_key2.toLowerCase()] = headers[_key2];
                 }
                 json ? normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || "application/json" : (data || body) && (normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || "application/x-www-form-urlencoded; charset=utf-8");
                 normalizedHeaders[HEADERS.ACCEPT] = normalizedHeaders[HEADERS.ACCEPT] || "application/json";
-                var _iterator3 = headerBuilders, _isArray3 = Array.isArray(_iterator3), _i3 = 0;
-                for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                    var _ref4;
-                    if (_isArray3) {
-                        if (_i3 >= _iterator3.length) break;
-                        _ref4 = _iterator3[_i3++];
-                    } else {
-                        if ((_i3 = _iterator3.next()).done) break;
-                        _ref4 = _i3.value;
-                    }
-                    var builtHeaders = _ref4(), _iterator4 = Object.keys(builtHeaders), _isArray4 = Array.isArray(_iterator4), _i4 = 0;
-                    for (_iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
-                        var _ref5;
-                        if (_isArray4) {
-                            if (_i4 >= _iterator4.length) break;
-                            _ref5 = _iterator4[_i4++];
-                        } else {
-                            if ((_i4 = _iterator4.next()).done) break;
-                            _ref5 = _i4.value;
-                        }
-                        var _key4 = _ref5;
-                        normalizedHeaders[_key4.toLowerCase()] = builtHeaders[_key4];
-                    }
+                for (var _i6 = 0, _length6 = null == headerBuilders ? 0 : headerBuilders.length; _i6 < _length6; _i6++) for (var builtHeaders = (0, 
+                headerBuilders[_i6])(), _i8 = 0, _Object$keys4 = Object.keys(builtHeaders), _length8 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i8 < _length8; _i8++) {
+                    var _key3 = _Object$keys4[_i8];
+                    normalizedHeaders[_key3.toLowerCase()] = builtHeaders[_key3];
                 }
                 var xhr = new win.XMLHttpRequest();
                 xhr.addEventListener("load", function() {
                     var responseHeaders = function() {
-                        var result = {}, _iterator = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "").trim().split("\n"), _isArray = Array.isArray(_iterator), _i = 0;
-                        for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                            var _ref;
-                            if (_isArray) {
-                                if (_i >= _iterator.length) break;
-                                _ref = _iterator[_i++];
-                            } else {
-                                if ((_i = _iterator.next()).done) break;
-                                _ref = _i.value;
-                            }
-                            var _line$split = _ref.split(":"), _key = _line$split[0], values = _line$split.slice(1);
+                        for (var result = {}, _i2 = 0, _rawHeaders$trim$spli2 = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "").trim().split("\n"), _length2 = null == _rawHeaders$trim$spli2 ? 0 : _rawHeaders$trim$spli2.length; _i2 < _length2; _i2++) {
+                            var _line$split = _rawHeaders$trim$spli2[_i2].split(":"), _key = _line$split[0], values = _line$split.slice(1);
                             result[_key.toLowerCase()] = values.join(":").trim();
                         }
                         return result;
@@ -9971,7 +9381,7 @@
                     reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + ". Correlation id: " + corrID));
                 }, !1);
                 xhr.open(method, url, !0);
-                for (var _key2 in normalizedHeaders) normalizedHeaders.hasOwnProperty(_key2) && xhr.setRequestHeader(_key2, normalizedHeaders[_key2]);
+                for (var _key4 in normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
                 json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map(function(key) {
                     return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
                 }).join("&"));
@@ -10051,15 +9461,15 @@
                     if (!started) return this;
                     if (isCheckpointUnique(name + "_" + treatment)) {
                         var _extends2;
-                        Object(beaver_logger_client.n)(throttle__extends(((_extends2 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.PXP, 
+                        Object(beaver_logger_client.o)(throttle__extends(((_extends2 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.PXP, 
                         _extends2[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.PXP, _extends2[src_constants.u.KEY.EXPERIMENT_NAME] = name, 
                         _extends2[src_constants.u.KEY.TREATMENT_NAME] = treatment, _extends2), payload));
                     }
                     var event = name + "_" + treatment + "_" + checkpointName;
-                    isCheckpointUnique(event) && Object(beaver_logger_client.j)(event, throttle__extends({}, payload, {
+                    isCheckpointUnique(event) && Object(beaver_logger_client.k)(event, throttle__extends({}, payload, {
                         expuid: uid
                     }));
-                    Object(beaver_logger_client.g)();
+                    Object(beaver_logger_client.h)();
                     return this;
                 },
                 logStart: function() {
@@ -10075,26 +9485,17 @@
         }
         __webpack_require__("./src/lib/namespace.js");
         var getCurrentScript = Object(util.j)(function() {
-            var _iterator = Array.prototype.slice.call(document.getElementsByTagName("script")), _isArray = Array.isArray(_iterator), _i = 0;
-            for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref = _iterator[_i++];
-                } else {
-                    if ((_i = _iterator.next()).done) break;
-                    _ref = _i.value;
-                }
-                var script = _ref;
+            for (var scripts = Array.prototype.slice.call(document.getElementsByTagName("script")), _i2 = 0, _length2 = null == scripts ? 0 : scripts.length; _i2 < _length2; _i2++) {
+                var script = scripts[_i2];
                 if (script.src && (script.src.replace(/^https?:/, "").split("?")[0] === config.a.scriptUrl || script.hasAttribute("data-paypal-checkout"))) return script;
                 if (script.src && -1 !== script.src.indexOf("paypal.checkout.v4.js")) return script;
             }
-            document.currentScript && Object(beaver_logger_client.e)("current_script_not_recognized", {
+            document.currentScript && Object(beaver_logger_client.f)("current_script_not_recognized", {
                 src: document.currentScript.src
             });
         });
         function getScriptVersion() {
-            return Boolean(getCurrentScript()) ? "4" : "4.0.216";
+            return Boolean(getCurrentScript()) ? "4" : "4.0.217";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -10153,35 +9554,17 @@
             return promise;
         }
         function flushRememberedFundingPromises() {
-            var promises = getRememberedFundingPromises(), rememberedFunding = getRememberedFunding(function(sources) {
+            for (var promises = getRememberedFundingPromises(), rememberedFunding = getRememberedFunding(function(sources) {
                 return sources;
-            }), _iterator = Object.keys(promises), _isArray = Array.isArray(_iterator), _i = 0;
-            for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref = _iterator[_i++];
-                } else {
-                    if ((_i = _iterator.next()).done) break;
-                    _ref = _i.value;
-                }
-                var source = _ref;
+            }), _i2 = 0, _Object$keys2 = Object.keys(promises), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
+                var source = _Object$keys2[_i2];
                 promises[source].resolve(-1 !== rememberedFunding.indexOf(source));
             }
         }
         function rememberFunding(sources) {
             getRememberedFunding(function(rememberedFunding) {
-                var _iterator2 = sources, _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                    var _ref2;
-                    if (_isArray2) {
-                        if (_i2 >= _iterator2.length) break;
-                        _ref2 = _iterator2[_i2++];
-                    } else {
-                        if ((_i2 = _iterator2.next()).done) break;
-                        _ref2 = _i2.value;
-                    }
-                    var source = _ref2;
+                for (var _i4 = 0, _length4 = null == sources ? 0 : sources.length; _i4 < _length4; _i4++) {
+                    var source = sources[_i4];
                     if (source !== src_constants.v.VENMO || Object(device.b)()) {
                         -1 === rememberedFunding.indexOf(source) && rememberedFunding.push(source);
                         flushRememberedFundingPromises();
@@ -10193,8 +9576,8 @@
             });
         }
         function loadMeta() {
-            return openMetaFrame().then(function(_ref3) {
-                rememberFunding(_ref3.rememberedFunding || []);
+            return openMetaFrame().then(function(_ref) {
+                rememberFunding(_ref.rememberedFunding || []);
             });
         }
         function isFundingRemembered() {
@@ -10232,17 +9615,8 @@
                 if (!this.children) return "";
                 var result = "";
                 !function iterate(children) {
-                    var _iterator = children, _isArray = Array.isArray(_iterator), _i = 0;
-                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref = _iterator[_i++];
-                        } else {
-                            if ((_i = _iterator.next()).done) break;
-                            _ref = _i.value;
-                        }
-                        var child = _ref;
+                    for (var _i2 = 0, _length2 = null == children ? 0 : children.length; _i2 < _length2; _i2++) {
+                        var child = children[_i2];
                         null !== child && void 0 !== child && (Array.isArray(child) ? iterate(child) : result += child instanceof JsxHTMLNode ? child.toString() : htmlEncode(child));
                     }
                 }(this.children);
@@ -10410,17 +9784,8 @@
         };
         function mapPaymentToBraintree(payment) {
             !function braintree_validate(obj, supported, name) {
-                var supportedKeys = Object.keys(supported), _iterator = Object.keys(obj), _isArray = Array.isArray(_iterator), _i = 0;
-                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                    var _ref;
-                    if (_isArray) {
-                        if (_i >= _iterator.length) break;
-                        _ref = _iterator[_i++];
-                    } else {
-                        if ((_i = _iterator.next()).done) break;
-                        _ref = _i.value;
-                    }
-                    var key = _ref;
+                for (var supportedKeys = Object.keys(supported), _i2 = 0, _Object$keys2 = Object.keys(obj), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
+                    var key = _Object$keys2[_i2];
                     if (-1 === supportedKeys.indexOf(key)) throw new Error("Unsupported REST key for Braintree: " + name + "." + key);
                     "object" === braintree__typeof(obj[key]) && braintree_validate(obj[key], supported[key], name + "." + key);
                 }
@@ -11303,7 +10668,7 @@
                     decorate: function(original) {
                         if (original) return function(data) {
                             var _this = this, actions = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                            data && !data.intent && Object(beaver_logger_client.o)("checkout_authorize_no_intent", {
+                            data && !data.intent && Object(beaver_logger_client.p)("checkout_authorize_no_intent", {
                                 paymentID: data.paymentID,
                                 token: data.paymentToken
                             });
@@ -11398,13 +10763,13 @@
                     decorate: function(original) {
                         return function(data) {
                             var _track;
-                            Object(beaver_logger_client.j)("checkout_init");
-                            Object(beaver_logger_client.n)(((_track = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
+                            Object(beaver_logger_client.k)("checkout_init");
+                            Object(beaver_logger_client.o)(((_track = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
                             _track[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.CHECKOUT_INIT, 
                             _track[src_constants.u.KEY.CONTEXT_TYPE] = src_constants.u.CONTEXT_TYPE[src_constants.A.EC_TOKEN], 
                             _track[src_constants.u.KEY.TOKEN] = data.paymentToken, _track[src_constants.u.KEY.SELLER_ID] = data.merchantID, 
                             _track[src_constants.u.KEY.CONTEXT_ID] = data.paymentToken, _track));
-                            Object(beaver_logger_client.g)();
+                            Object(beaver_logger_client.h)();
                             this.paymentToken = data.paymentToken;
                             this.cancelUrl = data.cancelUrl;
                             return original.apply(this, arguments);
@@ -11421,7 +10786,7 @@
                         return function(reason) {
                             var onClose = original.apply(this, arguments), CLOSE_REASONS = CONSTANTS.CLOSE_REASONS;
                             if (this.props.onCancel && -1 !== [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason)) {
-                                Object(beaver_logger_client.j)("close_trigger_cancel");
+                                Object(beaver_logger_client.k)("close_trigger_cancel");
                                 return this.props.onCancel({
                                     paymentToken: this.paymentToken,
                                     cancelUrl: this.cancelUrl
@@ -11446,7 +10811,7 @@
                     once: !0,
                     def: function() {
                         return function(url) {
-                            Object(beaver_logger_client.o)("fallback", {
+                            Object(beaver_logger_client.p)("fallback", {
                                 url: url
                             });
                             if (Object(util.e)("allow_full_page_fallback")) {
@@ -11501,19 +10866,19 @@
                 Object(util.n)(xprops, "onAuthorize", function(_ref) {
                     var callOriginal = _ref.callOriginal, data = _ref.args[0];
                     if (data && !data.intent) {
-                        Object(beaver_logger_client.o)("hermes_authorize_no_intent", {
+                        Object(beaver_logger_client.p)("hermes_authorize_no_intent", {
                             paymentID: data.paymentID,
                             token: data.paymentToken
                         });
                         try {
                             var intent = window.injector.get("$CheckoutCartModel").instance(data.paymentToken).payment_action;
-                            Object(beaver_logger_client.o)("hermes_intent", {
+                            Object(beaver_logger_client.p)("hermes_intent", {
                                 paymentID: data.paymentID,
                                 token: data.paymentToken,
                                 intent: intent
                             });
                         } catch (err) {}
-                        Object(beaver_logger_client.i)();
+                        Object(beaver_logger_client.j)();
                     }
                     return callOriginal();
                 });
@@ -11855,7 +11220,7 @@
             }
             return target;
         }, proxyRest = {}, createAccessToken = Object(util.j)(function(env, client) {
-            Object(beaver_logger_client.j)("rest_api_create_access_token");
+            Object(beaver_logger_client.k)("rest_api_create_access_token");
             var clientID = client[env = env || config.a.env];
             if (!clientID) throw new Error("Client ID not found for env: " + env);
             if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) return proxyRest.createAccessToken(env, client);
@@ -11878,7 +11243,7 @@
             time: 6e5
         }), createExperienceProfile = Object(util.j)(function(env, client) {
             var experienceDetails = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-            Object(beaver_logger_client.j)("rest_api_create_experience_profile");
+            Object(beaver_logger_client.k)("rest_api_create_experience_profile");
             if (!client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
             if (proxyRest.createExperienceProfile && !proxyRest.createExperienceProfile.source.closed) return proxyRest.createExperienceProfile(env, client, experienceDetails);
             experienceDetails.temporary = !0;
@@ -11909,7 +11274,7 @@
                     var match = res.links[i].href.match(/token=((EC-)?[A-Z0-9]{17})/);
                     match && (paymentToken = match[1]);
                 }
-                Object(beaver_logger_client.n)(((_track = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.BUTTON, 
+                Object(beaver_logger_client.o)(((_track = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.BUTTON, 
                 _track[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.CREATE_PAYMENT, 
                 _track[src_constants.u.KEY.CONTEXT_TYPE] = src_constants.u.CONTEXT_TYPE[src_constants.A.PAY_ID], 
                 _track[src_constants.u.KEY.PAY_ID] = paymentID, _track[src_constants.u.KEY.TOKEN] = paymentToken, 
@@ -11920,7 +11285,7 @@
             return Object(cross_domain_utils_src.isFileProtocol)() ? "https://www.paypal.com" : window.location.protocol + "//" + window.location.host;
         }
         function createPayment(env, client, paymentDetails) {
-            Object(beaver_logger_client.j)("rest_api_create_checkout_token");
+            Object(beaver_logger_client.k)("rest_api_create_checkout_token");
             env = env || config.a.env;
             if (!client[env]) throw new Error("Client ID not found for env: " + env);
             var payment = paymentDetails.payment, experience = paymentDetails.experience, meta = paymentDetails.meta, tracking = paymentDetails.tracking;
@@ -11928,17 +11293,8 @@
             !function(options) {
                 if (options.payer && options.payer.shipping_options) {
                     if (!Array.isArray(options.payer.shipping_options)) throw new TypeError("Expected shipping_options to be an array");
-                    var uniqueIdCheck = {}, _iterator = options.payer.shipping_options, _isArray = Array.isArray(_iterator), _i = 0;
-                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref = _iterator[_i++];
-                        } else {
-                            if ((_i = _iterator.next()).done) break;
-                            _ref = _i.value;
-                        }
-                        var option = _ref;
+                    for (var uniqueIdCheck = {}, _i2 = 0, _options$payer$shippi2 = options.payer.shipping_options, _length2 = null == _options$payer$shippi2 ? 0 : _options$payer$shippi2.length; _i2 < _length2; _i2++) {
+                        var option = _options$payer$shippi2[_i2];
                         if (!option.id) throw new Error("Expected option.id for shipping_options");
                         if (uniqueIdCheck.hasOwnProperty(option.id)) throw new Error("Expected unique option.id for shipping_options");
                         uniqueIdCheck[option.id] = "seen";
@@ -12015,7 +11371,7 @@
             });
         }
         function createOrder(env, client, paymentDetails) {
-            Object(beaver_logger_client.j)("rest_api_create_order_token");
+            Object(beaver_logger_client.k)("rest_api_create_order_token");
             if (!client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
             var order = paymentDetails.order, meta = paymentDetails.meta;
             if (!order) throw new Error("Expected order details to be passed");
@@ -12050,7 +11406,7 @@
             });
         }
         function createBillingAgreement(env, client, billingDetails, experienceDetails) {
-            Object(beaver_logger_client.j)("rest_api_create_billing_token");
+            Object(beaver_logger_client.k)("rest_api_create_billing_token");
             env = env || config.a.env;
             if (!client[env]) throw new Error("Client ID not found for env: " + env);
             if (proxyRest.createBillingAgreement && !proxyRest.createBillingAgreement.source.closed) return proxyRest.createBillingAgreement(env, client, billingDetails, experienceDetails);
@@ -12110,18 +11466,18 @@
         function experiments_log(experiment, treatment, token, state) {
             Object(lib_session.d)(function(session) {
                 var event = experiment + "_" + treatment + "_" + state, loggedEvents = session.loggedExperimentEvents = session.loggedExperimentEvents || [];
-                if (-1 !== loggedEvents.indexOf(event)) Object(beaver_logger_client.j)("duplicate_" + event); else {
+                if (-1 !== loggedEvents.indexOf(event)) Object(beaver_logger_client.k)("duplicate_" + event); else {
                     var _track;
-                    Object(beaver_logger_client.j)(event);
+                    Object(beaver_logger_client.k)(event);
                     loggedEvents.push(event);
                     var edge = window.navigator && window.navigator.userAgent && window.navigator.userAgent.match(/Edge\/[0-9]{2}/);
-                    edge && (event = Object(beaver_logger_client.j)(edge[0].toLowerCase().replace("/", "_") + "_" + event));
-                    Object(beaver_logger_client.n)(((_track = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
+                    edge && (event = Object(beaver_logger_client.k)(edge[0].toLowerCase().replace("/", "_") + "_" + event));
+                    Object(beaver_logger_client.o)(((_track = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
                     _track[src_constants.u.KEY.TRANSITION] = state, _track[src_constants.u.KEY.EXPERIMENT_NAME] = experiment, 
                     _track[src_constants.u.KEY.TREATMENT_NAME] = treatment, _track[src_constants.u.KEY.TOKEN] = token, 
                     _track[src_constants.u.KEY.CONTEXT_ID] = token, _track[src_constants.u.KEY.CONTEXT_TYPE] = token ? src_constants.u.CONTEXT_TYPE[src_constants.A.EC_TOKEN] : src_constants.u.CONTEXT_TYPE.BUTTON_SESSION_ID, 
                     _track));
-                    Object(beaver_logger_client.i)();
+                    Object(beaver_logger_client.j)();
                 }
             });
         }
@@ -12140,7 +11496,7 @@
             var _getSessionState = Object(lib_session.d)(function(session) {
                 return session;
             }), externalExperiment = _getSessionState.externalExperiment, externalExperimentTreatment = _getSessionState.externalExperimentTreatment, externalExperimentToken = _getSessionState.externalExperimentToken;
-            externalExperiment && externalExperimentTreatment && externalExperimentToken === token ? experiments_log(externalExperiment, externalExperimentTreatment, token, "complete") : Object(beaver_logger_client.j)("experiment_mismatch", {
+            externalExperiment && externalExperimentTreatment && externalExperimentToken === token ? experiments_log(externalExperiment, externalExperimentTreatment, token, "complete") : Object(beaver_logger_client.k)("experiment_mismatch", {
                 token: token,
                 externalExperiment: externalExperiment,
                 externalExperimentTreatment: externalExperimentTreatment,
@@ -13081,17 +12437,8 @@
                     }
                 },
                 content: function(name) {
-                    var contentString = void 0, _iterator = name.split("|"), _isArray = Array.isArray(_iterator), _i = 0;
-                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref11;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref11 = _iterator[_i++];
-                        } else {
-                            if ((_i = _iterator.next()).done) break;
-                            _ref11 = _i.value;
-                        }
-                        var key = _ref11;
+                    for (var contentString = void 0, _i2 = 0, _name$split2 = name.split("|"), _length2 = null == _name$split2 ? 0 : _name$split2.length; _i2 < _length2; _i2++) {
+                        var key = _name$split2[_i2];
                         if (_content[key]) {
                             contentString = _content[key];
                             break;
@@ -13138,8 +12485,8 @@
                 return text && text.trim() && renderers.text ? /<br>/.test(text) ? renderers.break(text) : renderers.text(text) : text;
             }), new JsxHTMLNodeContainer(nodes);
         }
-        function renderButton(_ref12) {
-            var _ref13, _ref14, _ref15, size = _ref12.size, label = _ref12.label, color = _ref12.color, locale = _ref12.locale, branding = _ref12.branding, multiple = _ref12.multiple, layout = _ref12.layout, shape = _ref12.shape, source = _ref12.source, funding = _ref12.funding, i = _ref12.i, env = _ref12.env, cards = _ref12.cards, installmentperiod = _ref12.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = getButtonConfig(label, determineLabel({
+        function renderButton(_ref11) {
+            var _ref12, _ref13, _ref14, size = _ref11.size, label = _ref11.label, color = _ref11.color, locale = _ref11.locale, branding = _ref11.branding, multiple = _ref11.multiple, layout = _ref11.layout, shape = _ref11.shape, source = _ref11.source, funding = _ref11.funding, i = _ref11.i, env = _ref11.env, cards = _ref11.cards, installmentperiod = _ref11.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = getButtonConfig(label, determineLabel({
                 label: label,
                 source: source,
                 multiple: multiple,
@@ -13161,9 +12508,9 @@
                 layout: layout,
                 size: size
             });
-            return jsxToHTML("div", componentTemplate__extends({}, ((_ref13 = {})[src_constants.c.LAYOUT] = layout || "", 
-            _ref13), ((_ref14 = {})[src_constants.c.SIZE] = size || "", _ref14), ((_ref15 = {})[src_constants.c.FUNDING_SOURCE] = source, 
-            _ref15[src_constants.c.BUTTON] = !0, _ref15), {
+            return jsxToHTML("div", componentTemplate__extends({}, ((_ref12 = {})[src_constants.c.LAYOUT] = layout || "", 
+            _ref12), ((_ref13 = {})[src_constants.c.SIZE] = size || "", _ref13), ((_ref14 = {})[src_constants.c.FUNDING_SOURCE] = source, 
+            _ref14[src_constants.c.BUTTON] = !0, _ref14), {
                 class: class_CLASS.BUTTON + " " + class_CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -13183,8 +12530,8 @@
                 tabindex: "0"
             }), contentText);
         }
-        function componentTemplate_componentTemplate(_ref18) {
-            var _ref19, props = _ref18.props;
+        function componentTemplate_componentTemplate(_ref17) {
+            var _ref18, props = _ref17.props;
             if (props && props.style) {
                 var style = props.style;
                 "generic" === style.label && (style.label = "paypal");
@@ -13197,7 +12544,7 @@
                 validateButtonLocale(locale);
                 validateButtonStyle(style, props);
             }(props);
-            var _ref17, _normalizeProps = props_normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, buttonNodes = function(_ref4) {
+            var _ref16, _normalizeProps = props_normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, buttonNodes = function(_ref4) {
                 var label = _ref4.label, color = _ref4.color, sources = _ref4.sources, multiple = _ref4.multiple, layout = _ref4.layout;
                 return sources.map(function(source, i) {
                     var buttonLabel = determineLabel({
@@ -13235,8 +12582,8 @@
                     installmentperiod: installmentperiod,
                     size: size
                 });
-            }), taglineNode = function(_ref16) {
-                var label = _ref16.label, tagline = _ref16.tagline, color = _ref16.color, locale = _ref16.locale, multiple = _ref16.multiple, env = _ref16.env, cards = _ref16.cards;
+            }), taglineNode = function(_ref15) {
+                var label = _ref15.label, tagline = _ref15.tagline, color = _ref15.color, locale = _ref15.locale, multiple = _ref15.multiple, env = _ref15.env, cards = _ref15.cards;
                 if (tagline) {
                     var text = renderContent(multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag"), {
                         locale: locale,
@@ -13276,11 +12623,11 @@
                 layout: layout
             }), styleNode = jsxToHTML("style", {
                 innerHTML: componentStyle({
-                    height: (_ref17 = {
+                    height: (_ref16 = {
                         height: height,
                         cardNumber: cards.length
                     }).height,
-                    cardNumber: _ref17.cardNumber
+                    cardNumber: _ref16.cardNumber
                 })
             }), scriptNode = jsxToHTML("script", {
                 innerHTML: "(" + getComponentScript().toString().replace(/\{\s*CLASS\.([A-Z0-9_]+)\s*\}/g, function(match, name) {
@@ -13296,8 +12643,8 @@
                     logoColor: "blue"
                 })));
             }(props_normalizeProps(props)) : null;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref19 = {}, _ref19[src_constants.c.VERSION] = "4.0.216", 
-            _ref19), {
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[src_constants.c.VERSION] = "4.0.217", 
+            _ref18), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -13307,23 +12654,14 @@
                 })
             }), styleNode, buttonNodes, taglineNode || fundingiconNode, labelPowerByPayPal, scriptNode).toString();
         }
-        function getDimensions(_ref3) {
-            var label = _ref3.label, size = _ref3.size, tagline = _ref3.tagline, fundingicons = _ref3.fundingicons, layout = _ref3.layout, number = _ref3.number, viewport = _ref3.viewport, buttonHeight = _ref3.height, cards = _ref3.cards;
+        function getDimensions(_ref2) {
+            var label = _ref2.label, size = _ref2.size, tagline = _ref2.tagline, fundingicons = _ref2.fundingicons, layout = _ref2.layout, number = _ref2.number, viewport = _ref2.viewport, buttonHeight = _ref2.height, cards = _ref2.cards;
             size === src_constants.l.RESPONSIVE && (size = function(_ref) {
                 var label = _ref.label, layout = _ref.layout, _ref$width = _ref.width, width = void 0 === _ref$width ? 0 : _ref$width, minimumSize = getButtonConfig(label, layout === src_constants.g.VERTICAL ? "minimumVerticalSize" : "minimumSize"), maximumSize = getButtonConfig(label, layout === src_constants.g.VERTICAL ? "maximumVerticalSize" : "maximumSize");
                 if (width < BUTTON_STYLE[minimumSize].minWidth) return minimumSize;
                 if (width >= BUTTON_STYLE[maximumSize].maxWidth) return maximumSize;
-                var _iterator = Object.keys(BUTTON_STYLE), _isArray = Array.isArray(_iterator), _i = 0;
-                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                    var _ref2;
-                    if (_isArray) {
-                        if (_i >= _iterator.length) break;
-                        _ref2 = _iterator[_i++];
-                    } else {
-                        if ((_i = _iterator.next()).done) break;
-                        _ref2 = _i.value;
-                    }
-                    var size = _ref2, _BUTTON_STYLE$size = BUTTON_STYLE[size], minWidth = _BUTTON_STYLE$size.minWidth, maxWidth = _BUTTON_STYLE$size.maxWidth;
+                for (var _i2 = 0, _Object$keys2 = Object.keys(BUTTON_STYLE), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
+                    var size = _Object$keys2[_i2], _BUTTON_STYLE$size = BUTTON_STYLE[size], minWidth = _BUTTON_STYLE$size.minWidth, maxWidth = _BUTTON_STYLE$size.maxWidth;
                     if (width >= minWidth && width < maxWidth) return size;
                 }
                 throw new Error("Unable to calculate responsive size for width: " + width);
@@ -13361,8 +12699,8 @@
             },
             scrolling: !1,
             listenForResize: !0,
-            containerTemplate: function(_ref4) {
-                var id = _ref4.id, props = _ref4.props, CLASS = _ref4.CLASS, on = _ref4.on, container = _ref4.container, tag = _ref4.tag, context = _ref4.context, outlet = _ref4.outlet, jsxDom = _ref4.jsxDom, _normalizeProps = props_normalizeProps(props), size = _normalizeProps.size, label = _normalizeProps.label, fundingicons = _normalizeProps.fundingicons, tagline = _normalizeProps.tagline, layout = _normalizeProps.layout, sources = _normalizeProps.sources, buttonHeight = _normalizeProps.height, cards = _normalizeProps.cards, getContainerDimensions = function() {
+            containerTemplate: function(_ref3) {
+                var id = _ref3.id, props = _ref3.props, CLASS = _ref3.CLASS, on = _ref3.on, container = _ref3.container, tag = _ref3.tag, context = _ref3.context, outlet = _ref3.outlet, jsxDom = _ref3.jsxDom, _normalizeProps = props_normalizeProps(props), size = _normalizeProps.size, label = _normalizeProps.label, fundingicons = _normalizeProps.fundingicons, tagline = _normalizeProps.tagline, layout = _normalizeProps.layout, sources = _normalizeProps.sources, buttonHeight = _normalizeProps.height, cards = _normalizeProps.cards, getContainerDimensions = function() {
                     for (var cont = container; 0 === cont.offsetWidth && cont.parentElement && cont.parentElement !== cont; ) cont = cont.parentElement;
                     return getDimensions({
                         viewport: {
@@ -13405,9 +12743,9 @@
                     })
                 });
                 template.addEventListener("click", function() {
-                    Object(beaver_logger_client.o)("button_pre_template_click");
+                    Object(beaver_logger_client.p)("button_pre_template_click");
                     if (Object(util.e)("allow_full_page_fallback")) {
-                        Object(beaver_logger_client.j)("pre_template_force_full_page");
+                        Object(beaver_logger_client.k)("pre_template_force_full_page");
                         _this.props.payment().then(function(token) {
                             window.top.location = Object(dom.b)(config.a.checkoutUrl, {
                                 token: token
@@ -13429,7 +12767,7 @@
                 }
             },
             validate: function() {
-                isEligible() || Object(beaver_logger_client.o)("button_render_ineligible");
+                isEligible() || Object(beaver_logger_client.p)("button_render_ineligible");
                 if (Object(device.g)()) throw new Error("Can not render button in IE intranet mode");
             },
             props: {
@@ -13589,15 +12927,15 @@
                             this.memoizedToken = this.memoizedToken.then(function(token) {
                                 var _track;
                                 if (!token) {
-                                    Object(beaver_logger_client.f)("no_token_passed_to_payment");
+                                    Object(beaver_logger_client.g)("no_token_passed_to_payment");
                                     throw new Error("No value passed to payment");
                                 }
-                                Object(beaver_logger_client.n)(((_track = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
+                                Object(beaver_logger_client.o)(((_track = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
                                 _track[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.RECIEVE_PAYMENT, 
                                 _track[src_constants.u.KEY.CONTEXT_TYPE] = src_constants.u.CONTEXT_TYPE[getPaymentType(token)], 
                                 _track[src_constants.u.KEY.CONTEXT_ID] = token, _track[src_constants.u.KEY.BUTTON_SESSION_UID] = _this2.props.buttonSessionID, 
                                 _track));
-                                Object(beaver_logger_client.g)();
+                                Object(beaver_logger_client.h)();
                                 return token;
                             });
                             return this.memoizedToken;
@@ -13616,41 +12954,19 @@
                                 disallowed: [],
                                 remembered: []
                             };
-                            if (funding.allowed) {
-                                var _iterator = funding.allowed, _isArray = Array.isArray(_iterator), _i = 0;
-                                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                                    var _ref6;
-                                    if (_isArray) {
-                                        if (_i >= _iterator.length) break;
-                                        _ref6 = _iterator[_i++];
-                                    } else {
-                                        if ((_i = _iterator.next()).done) break;
-                                        _ref6 = _i.value;
-                                    }
-                                    var source = _ref6;
-                                    if (-1 === src_constants.p.indexOf(source)) {
-                                        if (!FUNDING_CONFIG.hasOwnProperty(source)) throw new Error("Invalid funding source: " + source);
-                                        if (!getFundingConfig(source, "allowOptIn")) throw new Error("Can not allow funding source: " + source);
-                                        if (funding.disallowed && -1 !== funding.disallowed.indexOf(source)) throw new Error("Can not allow and disallow funding source: " + source);
-                                    }
+                            if (funding.allowed) for (var _i2 = 0, _funding$allowed2 = funding.allowed, _length2 = null == _funding$allowed2 ? 0 : _funding$allowed2.length; _i2 < _length2; _i2++) {
+                                var source = _funding$allowed2[_i2];
+                                if (-1 === src_constants.p.indexOf(source)) {
+                                    if (!FUNDING_CONFIG.hasOwnProperty(source)) throw new Error("Invalid funding source: " + source);
+                                    if (!getFundingConfig(source, "allowOptIn")) throw new Error("Can not allow funding source: " + source);
+                                    if (funding.disallowed && -1 !== funding.disallowed.indexOf(source)) throw new Error("Can not allow and disallow funding source: " + source);
                                 }
                             }
-                            if (funding.disallowed) {
-                                var _iterator2 = funding.disallowed, _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-                                for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                                    var _ref7;
-                                    if (_isArray2) {
-                                        if (_i2 >= _iterator2.length) break;
-                                        _ref7 = _iterator2[_i2++];
-                                    } else {
-                                        if ((_i2 = _iterator2.next()).done) break;
-                                        _ref7 = _i2.value;
-                                    }
-                                    var _source = _ref7;
-                                    if (-1 === src_constants.p.indexOf(_source)) {
-                                        if (!FUNDING_CONFIG.hasOwnProperty(_source)) throw new Error("Invalid funding source: " + _source);
-                                        if (!getFundingConfig(_source, "allowOptOut")) throw new Error("Can not disallow funding source: " + _source);
-                                    }
+                            if (funding.disallowed) for (var _i4 = 0, _funding$disallowed2 = funding.disallowed, _length4 = null == _funding$disallowed2 ? 0 : _funding$disallowed2.length; _i4 < _length4; _i4++) {
+                                var _source = _funding$disallowed2[_i4];
+                                if (-1 === src_constants.p.indexOf(_source)) {
+                                    if (!FUNDING_CONFIG.hasOwnProperty(_source)) throw new Error("Invalid funding source: " + _source);
+                                    if (!getFundingConfig(_source, "allowOptOut")) throw new Error("Can not disallow funding source: " + _source);
                                 }
                             }
                         }({
@@ -13723,8 +13039,8 @@
                     decorate: function(original) {
                         return function() {
                             var _track2, _getBrowser = getBrowser(), _getBrowser$browser = _getBrowser.browser, browser = void 0 === _getBrowser$browser ? "unrecognized" : _getBrowser$browser, _getBrowser$version = _getBrowser.version, version = void 0 === _getBrowser$version ? "unrecognized" : _getBrowser$version;
-                            Object(beaver_logger_client.j)("button_render_browser_" + browser + "_" + version);
-                            Object(beaver_logger_client.n)(((_track2 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.LOAD, 
+                            Object(beaver_logger_client.k)("button_render_browser_" + browser + "_" + version);
+                            Object(beaver_logger_client.o)(((_track2 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.LOAD, 
                             _track2[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.BUTTON_RENDER, 
                             _track2[src_constants.u.KEY.BUTTON_TYPE] = src_constants.u.BUTTON_TYPE.IFRAME, _track2[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                             _track2[src_constants.u.KEY.BUTTON_SOURCE] = this.props.source, _track2));
@@ -13738,7 +13054,7 @@
                                 venmoThrottle.logStart(((_venmoThrottle$logSta = {})[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                                 _venmoThrottle$logSta));
                             }
-                            Object(beaver_logger_client.g)();
+                            Object(beaver_logger_client.h)();
                             return original.apply(this, arguments);
                         };
                     }
@@ -13749,18 +13065,18 @@
                     decorate: function(original) {
                         return function(data, actions) {
                             var _track3, _this3 = this;
-                            data && !data.intent && Object(beaver_logger_client.o)("button_authorize_no_intent", {
+                            data && !data.intent && Object(beaver_logger_client.p)("button_authorize_no_intent", {
                                 paymentID: data.paymentID,
                                 token: data.paymentToken
                             });
-                            Object(beaver_logger_client.j)("button_authorize");
+                            Object(beaver_logger_client.k)("button_authorize");
                             localeThrottle.logComplete();
-                            Object(beaver_logger_client.n)(((_track3 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
+                            Object(beaver_logger_client.o)(((_track3 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
                             _track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.CHECKOUT_AUTHORIZE, 
                             _track3[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track3));
-                            isEligible() || Object(beaver_logger_client.j)("button_authorize_ineligible");
+                            isEligible() || Object(beaver_logger_client.k)("button_authorize_ineligible");
                             checkRecognizedBrowser("authorize");
-                            Object(beaver_logger_client.g)();
+                            Object(beaver_logger_client.h)();
                             var restart = actions.restart;
                             actions.restart = function() {
                                 return restart().then(function() {
@@ -13784,7 +13100,7 @@
                             actions.payment.execute = function() {
                                 return execute().then(function(result) {
                                     if (!(result && result.id && result.intent && result.state)) {
-                                        Object(beaver_logger_client.o)("execute_result_missing_data");
+                                        Object(beaver_logger_client.p)("execute_result_missing_data");
                                         return new src.a();
                                     }
                                     return mergePaymentDetails(result.id, result);
@@ -13794,7 +13110,7 @@
                             actions.payment.get = function() {
                                 return get().then(function(result) {
                                     if (!(result && result.id && result.intent && result.state)) {
-                                        Object(beaver_logger_client.o)("get_result_missing_data");
+                                        Object(beaver_logger_client.p)("get_result_missing_data");
                                         return new src.a();
                                     }
                                     return mergePaymentDetails(result.id, result);
@@ -13819,8 +13135,8 @@
                                     var nonce = _ref4.nonce;
                                     Object.defineProperty(data, "nonce", {
                                         get: function() {
-                                            Object(beaver_logger_client.j)("nonce_getter");
-                                            Object(beaver_logger_client.g)();
+                                            Object(beaver_logger_client.k)("nonce_getter");
+                                            Object(beaver_logger_client.h)();
                                             return nonce;
                                         }
                                     });
@@ -13841,11 +13157,11 @@
                     decorate: function(original) {
                         return function(data, actions) {
                             var _track4, _this4 = this;
-                            Object(beaver_logger_client.j)("button_shipping_change");
-                            Object(beaver_logger_client.n)(((_track4 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
+                            Object(beaver_logger_client.k)("button_shipping_change");
+                            Object(beaver_logger_client.o)(((_track4 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
                             _track4[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.CHECKOUT_SHIPPING_CHANGE, 
                             _track4[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track4));
-                            Object(beaver_logger_client.g)();
+                            Object(beaver_logger_client.h)();
                             return src.a.try(function() {
                                 return original.call(_this4, data, actions);
                             }).timeout(1e4, new Error("Timed out waiting 10000ms for payment"));
@@ -13859,11 +13175,11 @@
                     decorate: function(original) {
                         return function(data, actions) {
                             var _track5;
-                            Object(beaver_logger_client.j)("button_cancel");
-                            Object(beaver_logger_client.n)(((_track5 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
+                            Object(beaver_logger_client.k)("button_cancel");
+                            Object(beaver_logger_client.o)(((_track5 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
                             _track5[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.CHECKOUT_CANCEL, 
                             _track5[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track5));
-                            Object(beaver_logger_client.g)();
+                            Object(beaver_logger_client.h)();
                             return original.call(this, data, button_component__extends({}, actions, {
                                 redirect: function(win, url) {
                                     return src.a.all([ Object(dom.j)(win || window.top, url || data.cancelUrl), actions.close() ]);
@@ -13879,8 +13195,8 @@
                     decorate: function(original) {
                         return function(data) {
                             var _track6;
-                            Object(beaver_logger_client.j)("button_click");
-                            Object(beaver_logger_client.n)(((_track6 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.BUTTON, 
+                            Object(beaver_logger_client.k)("button_click");
+                            Object(beaver_logger_client.o)(((_track6 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.BUTTON, 
                             _track6[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.BUTTON_CLICK, 
                             _track6[src_constants.u.KEY.BUTTON_TYPE] = src_constants.u.BUTTON_TYPE.IFRAME, _track6[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                             _track6[src_constants.u.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
@@ -13896,7 +13212,7 @@
                                 venmoThrottle.log("click", ((_venmoThrottle$log = {})[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                                 _venmoThrottle$log));
                             }
-                            Object(beaver_logger_client.g)();
+                            Object(beaver_logger_client.h)();
                             return original.apply(this, arguments);
                         };
                     }
@@ -13928,13 +13244,13 @@
                     },
                     validate: function() {
                         var style = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, props = arguments[1];
-                        Object(beaver_logger_client.j)("button_render_color_" + (style.color || "default"));
-                        Object(beaver_logger_client.j)("button_render_shape_" + (style.shape || "default"));
-                        Object(beaver_logger_client.j)("button_render_size_" + (style.size || "default"));
-                        Object(beaver_logger_client.j)("button_render_label_" + (style.label || "default"));
-                        Object(beaver_logger_client.j)("button_render_branding_" + (style.branding || "default"));
-                        Object(beaver_logger_client.j)("button_render_fundingicons_" + (style.fundingicons || "default"));
-                        Object(beaver_logger_client.j)("button_render_tagline_" + (style.tagline || "default"));
+                        Object(beaver_logger_client.k)("button_render_color_" + (style.color || "default"));
+                        Object(beaver_logger_client.k)("button_render_shape_" + (style.shape || "default"));
+                        Object(beaver_logger_client.k)("button_render_size_" + (style.size || "default"));
+                        Object(beaver_logger_client.k)("button_render_label_" + (style.label || "default"));
+                        Object(beaver_logger_client.k)("button_render_branding_" + (style.branding || "default"));
+                        Object(beaver_logger_client.k)("button_render_fundingicons_" + (style.fundingicons || "default"));
+                        Object(beaver_logger_client.k)("button_render_tagline_" + (style.tagline || "default"));
                         validateButtonStyle(style, props);
                     }
                 },
@@ -13991,7 +13307,7 @@
                 });
                 function doRender(props, original) {
                     return popupBridge ? renderThroughPopupBridge(props, popupBridge).catch(function(err) {
-                        Object(beaver_logger_client.f)("popup_bridge_error", {
+                        Object(beaver_logger_client.g)("popup_bridge_error", {
                             err: Object(util.q)(err)
                         });
                         return original();
@@ -14025,20 +13341,20 @@
                 }).filter(function(source) {
                     return source && source !== src_constants.v.CARD;
                 }), xprops = ButtonComponent.xprops;
-                Object(beaver_logger_client.n)(((_track = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.BUTTON, 
+                Object(beaver_logger_client.o)(((_track = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.BUTTON, 
                 _track[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.BUTTON_LOAD, 
                 _track[src_constants.u.KEY.BUTTON_TYPE] = src_constants.u.BUTTON_TYPE.IFRAME, _track[src_constants.u.KEY.FUNDING_LIST] = fundingSources.join(":"), 
                 _track[src_constants.u.KEY.FUNDING_COUNT] = fundingSources.length, _track[src_constants.u.KEY.PAGE_LOAD_TIME] = pageRenderTime, 
                 _track[src_constants.u.KEY.BUTTON_LAYOUT] = xprops && xprops.style && xprops.style.layout || src_constants.g.HORIZONTAL, 
                 _track));
-                Object(beaver_logger_client.g)();
+                Object(beaver_logger_client.h)();
             });
             var xprops = ButtonComponent.xprops || component_Checkout.xprops;
             xprops && xprops.logLevel && setLogLevel(xprops.logLevel);
         }(component_Button);
         Object(device.e)() && Object(util.e)("ie_full_page") && (component_Checkout.renderTo = function(win) {
-            Object(beaver_logger_client.j)("force_ie_full_page");
-            Object(beaver_logger_client.g)();
+            Object(beaver_logger_client.k)("force_ie_full_page");
+            Object(beaver_logger_client.h)();
             var checkout = component_Checkout.init({
                 onAuthorize: util.l
             });
@@ -14092,16 +13408,16 @@
             var callOriginal = _ref3.callOriginal, props = _ref3.args[1];
             if (!debounce) {
                 debounce = !0;
-                for (var _arr = [ "onAuthorize", "onShippingChange", "onCancel", "onError", "onClose" ], _loop = function() {
-                    var methodName = _arr[_i], original = props[methodName];
+                for (var _loop = function(_i2, _ref5, _length2) {
+                    var methodName = _ref5[_i2], original = props[methodName];
                     props[methodName] = function() {
                         debounce = !1;
                         if (original) return original.apply(this, arguments);
                     };
-                }, _i = 0; _i < _arr.length; _i++) _loop();
+                }, _i2 = 0, _ref5 = [ "onAuthorize", "onShippingChange", "onCancel", "onError", "onClose" ], _length2 = null == _ref5 ? 0 : _ref5.length; _i2 < _length2; _i2++) _loop(_i2, _ref5);
                 return callOriginal();
             }
-            Object(beaver_logger_client.o)("button_mutliple_click_debounce");
+            Object(beaver_logger_client.p)("button_mutliple_click_debounce");
         });
         if (component_Button.xprops && component_Button.xprops.validate) {
             var enabled = !0;
@@ -14113,45 +13429,45 @@
                     enabled = !1;
                 }
             });
-            Object(util.n)(component_Checkout, "renderTo", function(_ref4) {
-                var callOriginal = _ref4.callOriginal;
+            Object(util.n)(component_Checkout, "renderTo", function(_ref6) {
+                var callOriginal = _ref6.callOriginal;
                 return enabled ? callOriginal() : new src.a();
             });
         }
-        Object(util.n)(rest.payment, "create", function(_ref5) {
-            var createOriginal = _ref5.original, createContext = _ref5.context, _ref5$args = _ref5.args, env = _ref5$args[0], client = _ref5$args[1], options = _ref5$args[2], experience = _ref5$args[3];
+        Object(util.n)(rest.payment, "create", function(_ref7) {
+            var createOriginal = _ref7.original, createContext = _ref7.context, _ref7$args = _ref7.args, env = _ref7$args[0], client = _ref7$args[1], options = _ref7$args[2], experience = _ref7$args[3];
             options.payment || (options = {
                 payment: options,
                 experience: experience
             });
             return createOriginal.call(createContext, env, client, options);
         });
-        Object(util.n)(component_Button.props.style, "validate", function(_ref6) {
-            var callOriginal = _ref6.callOriginal, style = _ref6.args[0];
+        Object(util.n)(component_Button.props.style, "validate", function(_ref8) {
+            var callOriginal = _ref8.callOriginal, style = _ref8.args[0];
             if (!style) return callOriginal();
             style && "creditblue" === style.color && (style.color = src_constants.e.DARKBLUE);
             style && "generic" === style.label && (style.label = src_constants.f.PAYPAL);
             if (style && (!style.label || style.label === src_constants.f.CHECKOUT) && "tiny" === style.size) {
-                Object(beaver_logger_client.o)("unsupported_button_size_tiny");
+                Object(beaver_logger_client.p)("unsupported_button_size_tiny");
                 style.size = src_constants.l.SMALL;
             }
             return callOriginal();
         });
-        Object(util.n)(component_Button, "render", function(_ref7) {
-            var callOriginal = _ref7.callOriginal, props = _ref7.args[0];
+        Object(util.n)(component_Button, "render", function(_ref9) {
+            var callOriginal = _ref9.callOriginal, props = _ref9.args[0];
             if (props.billingAgreement) {
                 props.payment = props.billingAgreement;
                 delete props.billingAgreement;
             }
             return callOriginal();
         });
-        Object(util.n)(component_Button.props.payment, "decorate", function(_ref8) {
-            var original = _ref8.original, context = _ref8.context, originalPayment = _ref8.args[0];
+        Object(util.n)(component_Button.props.payment, "decorate", function(_ref10) {
+            var original = _ref10.original, context = _ref10.context, originalPayment = _ref10.args[0];
             return original.call(context, function(data, actions) {
                 var _this = this;
                 return new src.a(function(resolve, reject) {
-                    Object(util.n)(actions.payment, "create", function(_ref9) {
-                        var createOriginal = _ref9.original, createContext = _ref9.context, _ref9$args = _ref9.args, options = _ref9$args[0], experience = _ref9$args[1];
+                    Object(util.n)(actions.payment, "create", function(_ref11) {
+                        var createOriginal = _ref11.original, createContext = _ref11.context, _ref11$args = _ref11.args, options = _ref11$args[0], experience = _ref11$args[1];
                         options.payment || (options = {
                             payment: options,
                             experience: experience
@@ -14184,29 +13500,20 @@
         });
         component_Button.isChild() && (window.Promise || (window.Promise = src.a));
         domain = window.location.protocol + "//" + window.location.host, (currentDomainEnv = function(domain) {
-            var _iterator = Object.keys(config.a.paypalUrls), _isArray = Array.isArray(_iterator), _i = 0;
-            for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref = _iterator[_i++];
-                } else {
-                    if ((_i = _iterator.next()).done) break;
-                    _ref = _i.value;
-                }
-                var _env = _ref;
+            for (var _i2 = 0, _Object$keys2 = Object.keys(config.a.paypalUrls), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
+                var _env = _Object$keys2[_i2];
                 if (config.a.paypalUrls[_env] === domain) return _env;
             }
         }(domain)) && "test" !== currentDomainEnv && (config.a.env = currentDomainEnv);
         src.a.onPossiblyUnhandledException(function(err) {
             var _track;
-            Object(beaver_logger_client.f)("unhandled_error", {
+            Object(beaver_logger_client.g)("unhandled_error", {
                 stack: Object(util.q)(err),
                 errtype: {}.toString.call(err)
             });
-            Object(beaver_logger_client.n)(((_track = {})[src_constants.u.KEY.ERROR_CODE] = "checkoutjs_error", 
+            Object(beaver_logger_client.o)(((_track = {})[src_constants.u.KEY.ERROR_CODE] = "checkoutjs_error", 
             _track[src_constants.u.KEY.ERROR_DESC] = Object(util.r)(err), _track));
-            return Object(beaver_logger_client.g)().catch(function(err2) {
+            return Object(beaver_logger_client.h)().catch(function(err2) {
                 if (window.console) try {
                     window.console.error ? window.console.error("Error flushing:", Object(util.q)(err2)) : window.console.log && window.console.log("Error flushing:", Object(util.q)(err2));
                 } catch (err3) {
@@ -14217,32 +13524,32 @@
             });
         });
         var currentScript = getCurrentScript(), currentProtocol = window.location.protocol.split(":")[0];
-        var setup_init = Object(util.m)(function(_ref3) {
-            var precacheRemembered = _ref3.precacheRemembered;
-            isEligible() || Object(beaver_logger_client.o)("ineligible");
+        var setup_init = Object(util.m)(function(_ref2) {
+            var precacheRemembered = _ref2.precacheRemembered;
+            isEligible() || Object(beaver_logger_client.p)("ineligible");
             !function() {
                 if ("[]" !== JSON.stringify([])) {
                     Array.prototype.toJSON ? logWarn("Custom Array.prototype.toJSON is causing incorrect json serialization of arrays. This is likely to cause issues. Probable cause is Prototype.js") : logWarn("JSON.stringify is doing incorrect serialization of arrays. This is likely to cause issues.");
-                    Object(beaver_logger_client.o)("json_stringify_array_broken");
+                    Object(beaver_logger_client.p)("json_stringify_array_broken");
                 }
                 if ("{}" !== JSON.stringify({})) {
                     logWarn("JSON.stringify is doing incorrect serialization of objects. This is likely to cause issues.");
-                    Object(beaver_logger_client.o)("json_stringify_object_broken");
+                    Object(beaver_logger_client.p)("json_stringify_object_broken");
                 }
-                Object(device.g)() && Object(beaver_logger_client.o)("ie_intranet_mode");
-                Object(device.e)() && !Object(device.f)() && Object(beaver_logger_client.o)("ie_meta_compatibility_header_missing", {
+                Object(device.g)() && Object(beaver_logger_client.p)("ie_intranet_mode");
+                Object(device.e)() && !Object(device.f)() && Object(beaver_logger_client.p)("ie_meta_compatibility_header_missing", {
                     message: 'Drop tag: <meta http-equiv="X-UA-Compatible" content="IE=edge">'
                 });
                 3 !== function(bar, baz, zomg) {}.bind({
                     a: 1
-                }).length && Object(beaver_logger_client.o)("function_bind_arrity_overwritten");
-                window.opener && window.parent !== window && Object(beaver_logger_client.o)("window_has_opener_and_parent");
-                window.name && 0 === window.name.indexOf("__prerender") && Object(beaver_logger_client.o)("prerender_running_checkoutjs");
+                }).length && Object(beaver_logger_client.p)("function_bind_arrity_overwritten");
+                window.opener && window.parent !== window && Object(beaver_logger_client.p)("window_has_opener_and_parent");
+                window.name && 0 === window.name.indexOf("__prerender") && Object(beaver_logger_client.p)("prerender_running_checkoutjs");
                 var context = {};
                 (function() {
                     return this;
-                }).bind(context)() !== context && Object(beaver_logger_client.o)("function_bind_broken");
-                window.Window && window.constructor && window.Window !== window.constructor && Object(beaver_logger_client.o)("window_constructor_does_not_match_window");
+                }).bind(context)() !== context && Object(beaver_logger_client.p)("function_bind_broken");
+                window.Window && window.constructor && window.Window !== window.constructor && Object(beaver_logger_client.p)("window_constructor_does_not_match_window");
                 Object.assign && JSON.stringify({
                     a: 1,
                     b: 2,
@@ -14253,13 +13560,13 @@
                     b: 2
                 }, {
                     c: 3
-                })) && Object(beaver_logger_client.o)("object_assign_broken");
+                })) && Object(beaver_logger_client.p)("object_assign_broken");
             }();
             initLogger();
             Object(util.g)() || function() {
                 var _track;
-                if (window.location.hostname) if (Boolean(Object(dom.d)(src_constants.C))) Object(beaver_logger_client.j)("pptm_tried_loading_twice"); else {
-                    Object(beaver_logger_client.n)(((_track = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.PPTM, 
+                if (window.location.hostname) if (Boolean(Object(dom.d)(src_constants.C))) Object(beaver_logger_client.k)("pptm_tried_loading_twice"); else {
+                    Object(beaver_logger_client.o)(((_track = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.PPTM, 
                     _track[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.PPTM_LOAD, _track));
                     var fullUrl = Object(dom.b)(config.a.pptmUrl, {
                         t: "xo",
@@ -14271,11 +13578,11 @@
                         id: src_constants.C
                     }).then(function() {
                         var _track2;
-                        Object(beaver_logger_client.n)(((_track2 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.PPTM, 
+                        Object(beaver_logger_client.o)(((_track2 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.PPTM, 
                         _track2[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.PPTM_LOADED, 
                         _track2));
                     }).catch(function(err) {
-                        Object(beaver_logger_client.j)("pptm_script_error", {
+                        Object(beaver_logger_client.k)("pptm_script_error", {
                             error: Object(util.q)(err)
                         });
                     });
@@ -14285,13 +13592,13 @@
                 return session.recentlyCheckedRemembered;
             }) ? src.a.resolve() : loadMeta());
             Object(util.e)("force_bridge") && !Object(util.g)() && openMetaFrame(config.a.env);
-            Object(beaver_logger_client.j)("setup_" + config.a.env);
-            Object(beaver_logger_client.e)("current_protocol_" + currentProtocol);
+            Object(beaver_logger_client.k)("setup_" + config.a.env);
+            Object(beaver_logger_client.f)("current_protocol_" + currentProtocol);
         });
         function setup() {
             var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
             !function() {
-                var _ref2 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, env = _ref2.env, stage = _ref2.stage, stageUrl = _ref2.stageUrl, apiStage = _ref2.apiStage, state = _ref2.state, logLevel = _ref2.logLevel, merchantID = _ref2.merchantID;
+                var _ref = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, env = _ref.env, stage = _ref.stage, stageUrl = _ref.stageUrl, apiStage = _ref.apiStage, state = _ref.state, logLevel = _ref.logLevel, merchantID = _ref.merchantID;
                 if (env) {
                     if (!config.a.paypalUrls[env]) throw new Error("Invalid env: " + env);
                     delete config.a.env;
@@ -14314,7 +13621,7 @@
                     delete config.a.stageUrl;
                     config.a.stageUrl = component_Button.xprops.stageUrl;
                 } else if (component_Checkout.xprops && component_Checkout.xprops.stageUrl) {
-                    delete config.a.stage;
+                    delete config.a.stageUrl;
                     config.a.stageUrl = component_Checkout.xprops.stageUrl;
                 }
                 if (apiStage) {
@@ -14342,30 +13649,30 @@
         }) : setup();
         if (!Object(util.g)()) if (currentScript) {
             var setup__track2, scriptProtocol = currentScript.src.split(":")[0], loadTime = Object(dom.h)(currentScript.src);
-            Object(beaver_logger_client.e)("current_script_protocol_" + scriptProtocol);
-            Object(beaver_logger_client.e)("current_script_protocol_" + (currentProtocol === scriptProtocol ? "match" : "mismatch"));
-            Object(beaver_logger_client.e)("current_script_version_" + config.a.version.replace(/[^0-9a-zA-Z]+/g, "_"));
+            Object(beaver_logger_client.f)("current_script_protocol_" + scriptProtocol);
+            Object(beaver_logger_client.f)("current_script_protocol_" + (currentProtocol === scriptProtocol ? "match" : "mismatch"));
+            Object(beaver_logger_client.f)("current_script_version_" + config.a.version.replace(/[^0-9a-zA-Z]+/g, "_"));
             if (loadTime) {
-                Object(beaver_logger_client.e)("current_script_time", {
+                Object(beaver_logger_client.f)("current_script_time", {
                     loadTime: loadTime
                 });
-                Object(beaver_logger_client.e)("current_script_time_" + Math.floor(loadTime / 1e3));
+                Object(beaver_logger_client.f)("current_script_time_" + Math.floor(loadTime / 1e3));
             }
-            Object(beaver_logger_client.n)(((setup__track2 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.LOAD, 
+            Object(beaver_logger_client.o)(((setup__track2 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.LOAD, 
             setup__track2[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track2[src_constants.u.KEY.TRANSITION_TIME] = loadTime, setup__track2));
         } else {
             var setup__track3;
-            Object(beaver_logger_client.e)("no_current_script");
-            Object(beaver_logger_client.e)("no_current_script_version_" + config.a.version.replace(/[^0-9a-zA-Z]+/g, "_"));
-            document.currentScript && Object(beaver_logger_client.e)("current_script_not_recognized", {
+            Object(beaver_logger_client.f)("no_current_script");
+            Object(beaver_logger_client.f)("no_current_script_version_" + config.a.version.replace(/[^0-9a-zA-Z]+/g, "_"));
+            document.currentScript && Object(beaver_logger_client.f)("current_script_not_recognized", {
                 src: document.currentScript.src
             });
-            Object(beaver_logger_client.n)(((setup__track3 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.LOAD, 
+            Object(beaver_logger_client.o)(((setup__track3 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.LOAD, 
             setup__track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.216", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_Card = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
+        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.217", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_Card = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
         if (Object(util.g)()) {
             interface_Checkout = component_Checkout;
             interface_Card = Card;
@@ -14376,12 +13683,12 @@
             };
             src_interface_destroyAll = interface_destroyAll;
             logger = {
-                debug: beaver_logger_client.e,
-                info: beaver_logger_client.j,
-                warn: beaver_logger_client.o,
-                error: beaver_logger_client.f,
-                track: beaver_logger_client.n,
-                flush: beaver_logger_client.g
+                debug: beaver_logger_client.f,
+                info: beaver_logger_client.k,
+                warn: beaver_logger_client.p,
+                error: beaver_logger_client.g,
+                track: beaver_logger_client.o,
+                flush: beaver_logger_client.h
             };
         }
         __webpack_require__.d(__webpack_exports__, "postRobot", function() {
@@ -14483,14 +13790,15 @@
         "use strict";
         __webpack_exports__.a = beacon;
         var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/constants/index.js"), __WEBPACK_IMPORTED_MODULE_2__session__ = __webpack_require__("./src/lib/session.js"), BEACON_URL = (Object.assign, 
-        "https://www.paypal.com/webapps/hermes/api/logger");
+        __WEBPACK_IMPORTED_MODULE_0__config__.a.loggerUrl), APP_NAME = "checkoutjs";
         function beacon(event) {
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.216";
+                payload.version = "4.0.217";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
+                payload.appName = APP_NAME;
                 var query = [];
                 for (var key in payload) payload.hasOwnProperty(key) && query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
                 query = query.join("&");
@@ -14609,16 +13917,8 @@
                 timeout && setTimeout(function() {
                     return reject(new Error("script_loading_timed_out"));
                 }, timeout);
-                for (var _iterator = Object.keys(attrs), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                    var _ref;
-                    if (_isArray) {
-                        if (_i >= _iterator.length) break;
-                        _ref = _iterator[_i++];
-                    } else {
-                        if ((_i = _iterator.next()).done) break;
-                        _ref = _i.value;
-                    }
-                    var attr = _ref;
+                for (var _i2 = 0, _Object$keys2 = Object.keys(attrs), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
+                    var attr = _Object$keys2[_i2];
                     script.setAttribute(attr, attrs[attr]);
                 }
                 script.setAttribute("src", src);
@@ -14633,9 +13933,9 @@
         __webpack_exports__.b = function(url) {
             var params = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, hasHash = url.indexOf("#") > 0, _url$split = url.split("#"), serverUrl = _url$split[0], hash = _url$split[1];
             if (hash && !serverUrl) {
-                var _ref3 = [ "#" + hash, "" ];
-                serverUrl = _ref3[0];
-                hash = _ref3[1];
+                var _ref = [ "#" + hash, "" ];
+                serverUrl = _ref[0];
+                hash = _ref[1];
             }
             var _serverUrl$split = serverUrl.split("?"), originalUrl = _serverUrl$split[0], originalQueryString = _serverUrl$split[1];
             if (originalQueryString) {
@@ -14654,7 +13954,7 @@
         __webpack_exports__.j = function() {
             var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, url = arguments[1];
             return new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve) {
-                Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("redirect", {
+                Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.k)("redirect", {
                     url: url
                 });
                 setTimeout(function() {
@@ -14724,17 +14024,8 @@
             var params = {};
             if (!queryString) return params;
             if (-1 === queryString.indexOf("=")) return params;
-            var _iterator2 = queryString.split("&"), _isArray2 = Array.isArray(_iterator2), _i2 = 0;
-            for (_iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                var _ref2;
-                if (_isArray2) {
-                    if (_i2 >= _iterator2.length) break;
-                    _ref2 = _iterator2[_i2++];
-                } else {
-                    if ((_i2 = _iterator2.next()).done) break;
-                    _ref2 = _i2.value;
-                }
-                var pair = _ref2;
+            for (var _i4 = 0, _queryString$split2 = queryString.split("&"), _length4 = null == _queryString$split2 ? 0 : _queryString$split2.length; _i4 < _length4; _i4++) {
+                var pair = _queryString$split2[_i4];
                 (pair = pair.split("="))[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
             }
             return params;
@@ -14761,57 +14052,30 @@
             };
         }
         var getPotentiallyBetterBrowserLocale = Object(__WEBPACK_IMPORTED_MODULE_4__util__.j)(function() {
-            var _iterator3 = getBrowserLocales(), _isArray3 = Array.isArray(_iterator3), _i3 = 0;
-            for (_iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                var _ref4;
-                if (_isArray3) {
-                    if (_i3 >= _iterator3.length) break;
-                    _ref4 = _iterator3[_i3++];
-                } else {
-                    if ((_i3 = _iterator3.next()).done) break;
-                    _ref4 = _i3.value;
-                }
-                var locale = _ref4, loc = normalizeLocale(locale);
+            for (var locales = getBrowserLocales(), _i6 = 0, _length6 = null == locales ? 0 : locales.length; _i6 < _length6; _i6++) {
+                var locale = locales[_i6], loc = normalizeLocale(locale);
                 if (loc) {
-                    Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("better_browser_locale_full");
+                    Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.k)("better_browser_locale_full");
                     return loc;
                 }
                 if (loc = normalizeLang(locale)) {
-                    Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("better_browser_locale_lang");
+                    Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.k)("better_browser_locale_lang");
                     return loc;
                 }
             }
             return __WEBPACK_IMPORTED_MODULE_2__config__.a.defaultLocale;
         }), getBrowserLocale = Object(__WEBPACK_IMPORTED_MODULE_4__util__.j)(function() {
-            var locales = getBrowserLocales(), _iterator4 = locales, _isArray4 = Array.isArray(_iterator4), _i4 = 0;
-            for (_iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
-                var _ref5;
-                if (_isArray4) {
-                    if (_i4 >= _iterator4.length) break;
-                    _ref5 = _iterator4[_i4++];
-                } else {
-                    if ((_i4 = _iterator4.next()).done) break;
-                    _ref5 = _i4.value;
-                }
-                var loc = normalizeLocale(_ref5);
+            for (var locales = getBrowserLocales(), _i8 = 0, _length8 = null == locales ? 0 : locales.length; _i8 < _length8; _i8++) {
+                var loc = normalizeLocale(locales[_i8]);
                 if (loc) {
-                    Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("browser_locale_full");
+                    Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.k)("browser_locale_full");
                     return loc;
                 }
             }
-            var _iterator5 = locales, _isArray5 = Array.isArray(_iterator5), _i5 = 0;
-            for (_iterator5 = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator](); ;) {
-                var _ref6;
-                if (_isArray5) {
-                    if (_i5 >= _iterator5.length) break;
-                    _ref6 = _iterator5[_i5++];
-                } else {
-                    if ((_i5 = _iterator5.next()).done) break;
-                    _ref6 = _i5.value;
-                }
-                var _loc = normalizeLang(_ref6);
+            for (var _i10 = 0, _length10 = null == locales ? 0 : locales.length; _i10 < _length10; _i10++) {
+                var _loc = normalizeLang(locales[_i10]);
                 if (_loc) {
-                    Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("browser_locale_lang");
+                    Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.k)("browser_locale_lang");
                     return _loc;
                 }
             }
@@ -14824,41 +14088,17 @@
     "./src/lib/namespace.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_exports__.a = function(xports) {
-            for (var namespaces = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [], childnamespaces = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [], _iterator = namespaces, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref = _iterator[_i++];
-                } else {
-                    if ((_i = _iterator.next()).done) break;
-                    _ref = _i.value;
-                }
-                var name = _ref, namespace = window[name];
-                if (namespace) for (var _iterator3 = childnamespaces, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                    var _extends2, _ref3;
-                    if (_isArray3) {
-                        if (_i3 >= _iterator3.length) break;
-                        _ref3 = _iterator3[_i3++];
-                    } else {
-                        if ((_i3 = _iterator3.next()).done) break;
-                        _ref3 = _i3.value;
-                    }
-                    var childname = _ref3, childnamespace = xports[childname];
+            for (var namespaces = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [], childnamespaces = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [], _i2 = 0, _length2 = null == namespaces ? 0 : namespaces.length; _i2 < _length2; _i2++) {
+                var name = namespaces[_i2], namespace = window[name];
+                if (namespace) for (var _i4 = 0, _length4 = null == childnamespaces ? 0 : childnamespaces.length; _i4 < _length4; _i4++) {
+                    var _extends2, childname = childnamespaces[_i4], childnamespace = xports[childname];
                     namespace[childname] && (childnamespace = _extends({}, namespace[childname], childnamespace));
                     xports = _extends({}, namespace, xports, ((_extends2 = {})[childname] = childnamespace, 
                     _extends2));
                 }
             }
-            for (var _iterator2 = namespaces, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                var _ref2;
-                if (_isArray2) {
-                    if (_i2 >= _iterator2.length) break;
-                    _ref2 = _iterator2[_i2++];
-                } else {
-                    if ((_i2 = _iterator2.next()).done) break;
-                    _ref2 = _i2.value;
-                }
-                var _name = _ref2;
+            for (var _i6 = 0, _length6 = null == namespaces ? 0 : namespaces.length; _i6 < _length6; _i6++) {
+                var _name = namespaces[_i6];
                 window[_name] = xports;
             }
             return xports;
@@ -14980,16 +14220,8 @@
                         });
                     },
                     trigger: function() {
-                        for (var _iterator = listeners, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                            var _ref;
-                            if (_isArray) {
-                                if (_i >= _iterator.length) break;
-                                _ref = _iterator[_i++];
-                            } else {
-                                if ((_i = _iterator.next()).done) break;
-                                _ref = _i.value;
-                            }
-                            var listener = _ref;
+                        for (var _i2 = 0, _length2 = null == listeners ? 0 : listeners.length; _i2 < _length2; _i2++) {
+                            var listener = listeners[_i2];
                             listener.apply(void 0, arguments);
                         }
                     }
@@ -15040,16 +14272,8 @@
             });
             __webpack_exports__.e = function(name, def) {
                 var hostname = window.xchild ? window.xchild.getParentDomain() : Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.getDomain)();
-                if (__WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings) for (var _iterator2 = Object.keys(__WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                    var _ref2;
-                    if (_isArray2) {
-                        if (_i2 >= _iterator2.length) break;
-                        _ref2 = _iterator2[_i2++];
-                    } else {
-                        if ((_i2 = _iterator2.next()).done) break;
-                        _ref2 = _i2.value;
-                    }
-                    var domain = _ref2;
+                if (__WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings) for (var _i4 = 0, _Object$keys2 = Object.keys(__WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) {
+                    var domain = _Object$keys2[_i4];
                     if (domainMatches(hostname, domain)) return __WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings[domain][name];
                 }
                 return def;
@@ -15160,18 +14384,18 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         0;
-        if (window.paypal && "4.0.216" === window.paypal.version) {
+        if (window.paypal && "4.0.217" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.216"
+                version: "4.0.217"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.216) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.217) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.216" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.217" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.216"
+                version: "4.0.217"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.216");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.217");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
