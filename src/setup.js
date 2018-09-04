@@ -107,7 +107,7 @@ function configure({ env, stage, stageUrl, apiStage, state, logLevel, merchantID
         // $FlowFixMe
         config.stageUrl = Button.xprops.stageUrl;
     } else if (Checkout.xprops && Checkout.xprops.stageUrl) {
-        delete config.stage;
+        delete config.stageUrl;
         // $FlowFixMe
         config.stageUrl = Checkout.xprops.stageUrl;
     }
