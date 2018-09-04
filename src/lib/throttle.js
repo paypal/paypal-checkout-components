@@ -1,8 +1,10 @@
 /* @flow */
 
 import { info, track, flush as flushLogs } from 'beaver-logger/client';
+import { getDomain } from 'cross-domain-utils/src';
 
 import { FPTI } from '../constants';
+import { config } from '../config';
 
 import { match } from './util';
 import { getStorageState, getStorageID, getSessionState } from './session';
@@ -132,3 +134,44 @@ export function getReturnToken() : ?string {
         return token;
     }
 }
+
+type FundingLogoExperimentSettings = {
+    start : Date,
+    end : Date
+};
+
+type CustomThrottle = Throttle & {
+    isActive : () => boolean
+};
+
+export let fundingLogoThrottle = (function getFundingLogoExperiment() : CustomThrottle {
+    let emptyThrottle = {
+        isActive:     () => false,
+        isEnabled:    () => false,
+        isDisabled:   () => true,
+        getTreatment: () => '',
+        log:          () => emptyThrottle,
+        logStart:     () => emptyThrottle,
+        logComplete:  () => emptyThrottle
+    };
+
+    let domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
+    if (config.bmlCreditTest.domains.indexOf(domain) === -1) {
+        return emptyThrottle;
+    }
+
+    let settings : ?FundingLogoExperimentSettings = config.bmlCreditTest.timeline;
+    if (!settings) {
+        return emptyThrottle;
+    }
+
+    let currentDateTime = Date.now();
+    if (currentDateTime <= settings.start.getTime() || currentDateTime >= settings.end.getTime()) {
+        return emptyThrottle;
+    }
+
+    return {
+        ...getThrottle('funding_logo_bml', 50),
+        isActive: () => true
+    };
+}());
