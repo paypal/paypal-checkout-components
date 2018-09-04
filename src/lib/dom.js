@@ -259,6 +259,24 @@ export function hasMetaViewPort() : boolean {
     return true;
 }
 
+export function getBrowserLocales() : Array<string> {
+    let nav = window.navigator;
+
+    let locales = nav.languages
+        ? Array.prototype.slice.apply(nav.languages)
+        : [];
+
+    if (nav.language) {
+        locales.push(nav.language);
+    }
+
+    if (nav.userLanguage) {
+        locales.push(nav.userLanguage);
+    }
+
+    return locales;
+}
+
 export function normalizeLocale(locale : string) : ?LocaleType {
 
     if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
@@ -278,25 +296,35 @@ export function normalizeLang(lang : string) : ?LocaleType {
     }
 }
 
-export function getBrowserLocale() : LocaleType {
+export let getPotentiallyBetterBrowserLocale = memoize(() : LocaleType => {
 
-    let nav = window.navigator;
-
-    let locales = nav.languages
-        ? Array.prototype.slice.apply(nav.languages)
-        : [];
-
-    if (nav.language) {
-        locales.push(nav.language);
-    }
-
-    if (nav.userLanguage) {
-        locales.push(nav.userLanguage);
-    }
+    let locales = getBrowserLocales();
 
     for (let locale of locales) {
         let loc = normalizeLocale(locale);
         if (loc) {
+            info('better_browser_locale_full');
+            return loc;
+        }
+
+        loc = normalizeLang(locale);
+        if (loc) {
+            info('better_browser_locale_lang');
+            return loc;
+        }
+    }
+
+    return config.defaultLocale;
+});
+
+export let getBrowserLocale = memoize(() : LocaleType => {
+
+    let locales = getBrowserLocales();
+
+    for (let locale of locales) {
+        let loc = normalizeLocale(locale);
+        if (loc) {
+            info('browser_locale_full');
             return loc;
         }
     }
@@ -304,12 +332,13 @@ export function getBrowserLocale() : LocaleType {
     for (let locale of locales) {
         let loc = normalizeLang(locale);
         if (loc) {
+            info('browser_locale_lang');
             return loc;
         }
     }
 
     return config.defaultLocale;
-}
+});
 
 export function isElementVisible(el : HTMLElement) : boolean {
     return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);

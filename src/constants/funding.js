@@ -13,8 +13,7 @@ export const FUNDING = {
     EPS:         'eps',
     MYBANK:      'mybank',
     P24:         'p24',
-    ZIMPLER:     'zimpler',
-    WECHATPAY:   'wechatpay'
+    ZIMPLER:     'zimpler'
 };
 
 export const CARD = {

@@ -149,10 +149,6 @@ export let config = {
             disable_venmo: true
         },
 
-        'searsoutlet.com': {
-            disable_venmo: true
-        },
-
         'searshometownstores.com': {
             disable_venmo: true
         },
@@ -202,6 +198,30 @@ export let config = {
         },
 
         'app.zapbuy.it': {
+            disable_venmo: true
+        },
+
+        'gamersaloon.com': {
+            disable_venmo: true
+        },
+
+        '1800contacts.com': {
+            disable_venmo: true
+        },
+
+        'shopchatters.ca': {
+            disable_venmo: true
+        },
+
+        'shopguyswin.ca': {
+            disable_venmo: true
+        },
+
+        'jjill.com': {
+            disable_venmo: true
+        },
+
+        'qvc.com': {
             disable_venmo: true
         }
     },
@@ -388,7 +408,7 @@ export let config = {
 
     hermesLoggerUri: `/webapps/hermes/api/logger`,
 
-    loggerUri: `/xoplatform/logger`,
+    loggerUri: `/xoplatform/logger/api/logger`,
 
     loggerThrottlePercentage: 0.05, // 5%
 
@@ -684,7 +704,10 @@ export let config = {
     },
 
     get loggerUrl() : string {
-        return `${ config.paypalUrl }${ config.hermesLoggerUri }`;
+        let isTestExperiment = Math.random() < config.loggerThrottlePercentage;
+        let loggerUrl = isTestExperiment ? config.loggerUri : config.hermesLoggerUri;
+
+        return `${ config.paypalUrl }${ loggerUrl }`;
     },
 
     get pptmUrl() : string {

@@ -16,7 +16,6 @@ export const FUNDING_PRIORITY = [
     FUNDING.MYBANK,
     FUNDING.P24,
     FUNDING.ZIMPLER,
-    FUNDING.WECHATPAY,
     FUNDING.CARD
 ];
 
@@ -183,16 +182,6 @@ export const FUNDING_CONFIG = {
         allowVertical:   true,
 
         requireCommitAsTrue: true
-    },
-    [ FUNDING.WECHATPAY ]: {
-        allowedCountries: [
-            COUNTRY.CN
-        ],
-
-        allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
     }
 };
 
@@ -203,6 +192,16 @@ export const CARD_CONFIG = {
             CARD.VISA,
             CARD.MASTERCARD,
             CARD.AMEX
+        ]
+    },
+
+    [ COUNTRY.GB ]: {
+        priority: [
+            CARD.VISA,
+            CARD.MASTERCARD,
+            CARD.AMEX,
+            CARD.DISCOVER,
+            CARD.MAESTRO
         ]
     },
 

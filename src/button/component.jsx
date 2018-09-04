@@ -12,11 +12,12 @@ import { config } from '../config';
 import { SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
     BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY } from '../constants';
 import { redirect as redir, checkRecognizedBrowser,
-    getBrowserLocale, getSessionID, request, getScriptVersion,
+    getBrowserLocale, getPotentiallyBetterBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, isEligible,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
-    getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
-import { rest, addPaymentOptions, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
+    getRememberedFunding, memoize, uniqueID, getThrottle,
+    getBrowser, isWebView, isEdgeIOS, isFirefoxIOS } from '../lib';
+import { rest, getPaymentOptions, addPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
     mapPaymentToBraintree, type BraintreePayPalClient } from '../integrations';
@@ -77,6 +78,9 @@ function isCreditDualEligible(props) : boolean {
 }
 
 let creditThrottle;
+let venmoThrottle;
+
+let localeThrottle = getThrottle('locale_resolution_rule', 50);
 
 type ButtonOptions = {
     style : {|
@@ -424,6 +428,7 @@ export let Button : Component<ButtonOptions> = create({
             },
             decorate({ allowed = [], disallowed = [] } : Object = {}, props : ButtonOptions) : {} {
 
+                // remove Venmo from our allowed list if the rendering device is not a mobile one
                 if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1 && !isDevice()) {
                     allowed = allowed.filter(source => (source !== FUNDING.VENMO));
                 }
@@ -437,6 +442,21 @@ export let Button : Component<ButtonOptions> = create({
                 }
 
                 let remembered = getRememberedFunding(sources => sources);
+
+                /* Uncookied venmo ramp. Even without 'pwv' cookie, we'll be rendering venmo button
+                    for a sample of the mobile population.
+                    Webviews, EdgeIOS, and FirefoxIOS do NOT qualify for this experiment
+                 */
+                if (allowed && allowed.indexOf(FUNDING.VENMO) === -1 &&
+                    remembered && remembered.indexOf(FUNDING.VENMO) === -1 &&
+                    isDevice() && !isWebView() && !isEdgeIOS() && !isFirefoxIOS()) {
+
+                    venmoThrottle = getThrottle('venmo_uncookied_render', 10);
+
+                    if (venmoThrottle.isEnabled()) {
+                        allowed = [ ...allowed, FUNDING.VENMO ];
+                    }
+                }
 
                 if (!isDevice() || getDomainSetting('disable_venmo')) {
                     if (remembered && remembered.indexOf(FUNDING.VENMO) !== -1) {
@@ -490,6 +510,12 @@ export let Button : Component<ButtonOptions> = create({
                         });
                     }
 
+                    if (venmoThrottle) {
+                        venmoThrottle.logStart({
+                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                        });
+                    }
+
                     flushLogs();
 
                     return original.apply(this, arguments);
@@ -509,6 +535,8 @@ export let Button : Component<ButtonOptions> = create({
                     }
 
                     info('button_authorize');
+
+                    localeThrottle.logComplete();
 
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
@@ -545,8 +573,7 @@ export let Button : Component<ButtonOptions> = create({
                         }
 
                         return this.props.braintree
-                            .then(client => client.tokenizePayment(data))
-                            .then(res => ({ nonce: res.nonce }));
+                            .then(client => client.tokenizePayment(data));
                     });
 
                     let execute = actions.payment.execute;
@@ -583,6 +610,12 @@ export let Button : Component<ButtonOptions> = create({
 
                     if (creditThrottle) {
                         creditThrottle.logComplete({
+                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
+                        });
+                    }
+
+                    if (venmoThrottle) {
+                        venmoThrottle.logComplete({
                             [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
                         });
                     }
@@ -702,8 +735,16 @@ export let Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                     });
 
+                    localeThrottle.log('click');
+
                     if (creditThrottle) {
                         creditThrottle.log('click', {
+                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
+                        });
+                    }
+
+                    if (venmoThrottle) {
+                        venmoThrottle.log('click', {
                             [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
                         });
                     }
@@ -721,7 +762,13 @@ export let Button : Component<ButtonOptions> = create({
             queryParam: 'locale.x',
 
             def() : string {
-                let { lang, country } = getBrowserLocale();
+
+                let { lang, country } = localeThrottle.isEnabled()
+                    ? getPotentiallyBetterBrowserLocale()
+                    : getBrowserLocale();
+
+                localeThrottle.logStart();
+
                 return `${ lang }_${ country }`;
             },
 

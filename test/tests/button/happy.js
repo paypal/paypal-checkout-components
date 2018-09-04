@@ -43,6 +43,32 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
+        it('should render a button into a hidden container and click on the button, then complete the payment', (done) => {
+
+            let ele = document.getElementById('testContainer');
+            if (ele) {
+                ele.style.display = 'none';
+            }
+
+            window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
+
+                payment() : string | ZalgoPromise<string> {
+                    return generateECToken();
+                },
+
+                onAuthorize() : void {
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
+        });
+
         it('should render a button into a container with billingAgreement and click on the button, then complete the payment', (done) => {
 
             window.paypal.Button.render({

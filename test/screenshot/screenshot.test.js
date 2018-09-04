@@ -16,7 +16,7 @@ import { buttonConfigs } from './config';
 
 const IMAGE_DIR = `${ __dirname }/images`;
 
-const DIFF_THRESHOLD = 50;
+const DIFF_THRESHOLD = 100;
 
 const USER_AGENTS = {
     iphone6: 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'
