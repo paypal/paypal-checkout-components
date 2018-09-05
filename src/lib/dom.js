@@ -296,7 +296,7 @@ export function normalizeLang(lang : string) : ?LocaleType {
     }
 }
 
-export let getPotentiallyBetterBrowserLocale = memoize(() : LocaleType => {
+export let getBrowserLocale = memoize(() : LocaleType => {
 
     let locales = getBrowserLocales();
 
@@ -310,29 +310,6 @@ export let getPotentiallyBetterBrowserLocale = memoize(() : LocaleType => {
         loc = normalizeLang(locale);
         if (loc) {
             info('better_browser_locale_lang');
-            return loc;
-        }
-    }
-
-    return config.defaultLocale;
-});
-
-export let getBrowserLocale = memoize(() : LocaleType => {
-
-    let locales = getBrowserLocales();
-
-    for (let locale of locales) {
-        let loc = normalizeLocale(locale);
-        if (loc) {
-            info('browser_locale_full');
-            return loc;
-        }
-    }
-
-    for (let locale of locales) {
-        let loc = normalizeLang(locale);
-        if (loc) {
-            info('browser_locale_lang');
             return loc;
         }
     }
