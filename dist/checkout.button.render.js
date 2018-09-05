@@ -101,7 +101,7 @@
             if (protocol === CONSTANTS.FILE_PROTOCOL) return CONSTANTS.FILE_PROTOCOL + "//";
             if (protocol === CONSTANTS.ABOUT_PROTOCOL) {
                 var parent = getParent(win);
-                return parent && canReadFromWindow(win) ? getActualDomain(parent) : CONSTANTS.ABOUT_PROTOCOL + "//";
+                return parent && canReadFromWindow(parent) ? getActualDomain(parent) : CONSTANTS.ABOUT_PROTOCOL + "//";
             }
             var host = location.host;
             if (!host) throw new Error("Can not read window host");
@@ -846,17 +846,8 @@
             ZalgoPromise.flushQueue = function() {
                 var promisesToFlush = Object(global.a)().flushPromises;
                 Object(global.a)().flushPromises = [];
-                var _iterator = promisesToFlush, _isArray = Array.isArray(_iterator), _i = 0;
-                for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                    var _ref;
-                    if (_isArray) {
-                        if (_i >= _iterator.length) break;
-                        _ref = _iterator[_i++];
-                    } else {
-                        if ((_i = _iterator.next()).done) break;
-                        _ref = _i.value;
-                    }
-                    _ref.resolve();
+                for (var _i2 = 0, _length2 = null == promisesToFlush ? 0 : promisesToFlush.length; _i2 < _length2; _i2++) {
+                    promisesToFlush[_i2].resolve();
                 }
             };
             return ZalgoPromise;
@@ -1477,17 +1468,8 @@
                 if (!this.children) return "";
                 var result = "";
                 !function iterate(children) {
-                    var _iterator = children, _isArray = Array.isArray(_iterator), _i = 0;
-                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref = _iterator[_i++];
-                        } else {
-                            if ((_i = _iterator.next()).done) break;
-                            _ref = _i.value;
-                        }
-                        var child = _ref;
+                    for (var _i2 = 0, _length2 = null == children ? 0 : children.length; _i2 < _length2; _i2++) {
+                        var child = children[_i2];
                         null !== child && void 0 !== child && (Array.isArray(child) ? iterate(child) : result += child instanceof JsxHTMLNode ? child.toString() : htmlEncode(child));
                     }
                 }(this.children);
@@ -2273,8 +2255,8 @@
             };
         }
         var template_content = __webpack_require__("./src/button/template/content.json"), content_default = __webpack_require__.n(template_content), componentContent = "string" == typeof content_default.a ? JSON.parse(content_default.a) : content_default.a;
-        __webpack_exports__.componentTemplate = function(_ref18) {
-            var _ref19, props = _ref18.props;
+        __webpack_exports__.componentTemplate = function(_ref17) {
+            var _ref18, props = _ref17.props;
             if (props && props.style) {
                 var style = props.style;
                 "generic" === style.label && (style.label = "paypal");
@@ -2304,8 +2286,8 @@
                 multiple: multiple,
                 layout: layout
             }).map(function(button, i) {
-                return function(_ref12) {
-                    var _ref13, _ref14, _ref15, size = _ref12.size, label = _ref12.label, color = _ref12.color, locale = _ref12.locale, branding = _ref12.branding, multiple = _ref12.multiple, layout = _ref12.layout, shape = _ref12.shape, source = _ref12.source, funding = _ref12.funding, i = _ref12.i, env = _ref12.env, cards = _ref12.cards, installmentperiod = _ref12.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = determineLabel({
+                return function(_ref11) {
+                    var _ref12, _ref13, _ref14, size = _ref11.size, label = _ref11.label, color = _ref11.color, locale = _ref11.locale, branding = _ref11.branding, multiple = _ref11.multiple, layout = _ref11.layout, shape = _ref11.shape, source = _ref11.source, funding = _ref11.funding, i = _ref11.i, env = _ref11.env, cards = _ref11.cards, installmentperiod = _ref11.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = determineLabel({
                         label: label,
                         source: source,
                         multiple: multiple,
@@ -2327,9 +2309,9 @@
                         layout: layout,
                         size: size
                     });
-                    return jsxToHTML("div", _extends({}, ((_ref13 = {})[constants.c.LAYOUT] = layout || "", 
-                    _ref13), ((_ref14 = {})[constants.c.SIZE] = size || "", _ref14), ((_ref15 = {})[constants.c.FUNDING_SOURCE] = source, 
-                    _ref15[constants.c.BUTTON] = !0, _ref15), {
+                    return jsxToHTML("div", _extends({}, ((_ref12 = {})[constants.c.LAYOUT] = layout || "", 
+                    _ref12), ((_ref13 = {})[constants.c.SIZE] = size || "", _ref13), ((_ref14 = {})[constants.c.FUNDING_SOURCE] = source, 
+                    _ref14[constants.c.BUTTON] = !0, _ref14), {
                         class: CLASS.BUTTON + " " + CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
                             layout: layout,
                             shape: shape,
@@ -2364,8 +2346,8 @@
                     installmentperiod: installmentperiod,
                     size: size
                 });
-            }), taglineNode = function(_ref16) {
-                var label = _ref16.label, tagline = _ref16.tagline, color = _ref16.color, locale = _ref16.locale, multiple = _ref16.multiple, env = _ref16.env, cards = _ref16.cards;
+            }), taglineNode = function(_ref15) {
+                var label = _ref15.label, tagline = _ref15.tagline, color = _ref15.color, locale = _ref15.locale, multiple = _ref15.multiple, env = _ref15.env, cards = _ref15.cards;
                 if (!tagline) return;
                 var text = renderContent(multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag"), {
                     locale: locale,
@@ -2402,8 +2384,8 @@
                 fundingicons: fundingicons,
                 size: size,
                 layout: layout
-            }), styleNode = function(_ref17) {
-                var height = _ref17.height, cardNumber = _ref17.cardNumber;
+            }), styleNode = function(_ref16) {
+                var height = _ref16.height, cardNumber = _ref16.cardNumber;
                 return jsxToHTML("style", {
                     innerHTML: componentStyle({
                         height: height,
@@ -2429,8 +2411,8 @@
                 })));
             }(normalizeProps(props)) : null;
             var script;
-            return jsxToHTML("div", _extends({}, (_ref19 = {}, _ref19[constants.c.VERSION] = "4.0.216", 
-            _ref19), {
+            return jsxToHTML("div", _extends({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.217", 
+            _ref18), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -2501,17 +2483,8 @@
                     }
                 },
                 content: function(name) {
-                    var contentString = void 0, _iterator = name.split("|"), _isArray = Array.isArray(_iterator), _i = 0;
-                    for (_iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref11;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref11 = _iterator[_i++];
-                        } else {
-                            if ((_i = _iterator.next()).done) break;
-                            _ref11 = _i.value;
-                        }
-                        var key = _ref11;
+                    for (var contentString = void 0, _i2 = 0, _name$split2 = name.split("|"), _length2 = null == _name$split2 ? 0 : _name$split2.length; _i2 < _length2; _i2++) {
+                        var key = _name$split2[_i2];
                         if (_content[key]) {
                             contentString = _content[key];
                             break;
@@ -2567,7 +2540,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.216",
+            version: "4.0.217",
             cors: !0,
             env: constants.s.PRODUCTION,
             state: "checkoutjs",
@@ -2838,7 +2811,7 @@
             },
             loginUri: "/signin/",
             hermesLoggerUri: "/webapps/hermes/api/logger",
-            loggerUri: "/xoplatform/logger",
+            loggerUri: "/xoplatform/logger/api/logger",
             loggerThrottlePercentage: .05,
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
@@ -3010,7 +2983,8 @@
                 return "" + config.paypalDomain;
             },
             get loggerUrl() {
-                return "" + config.paypalUrl + config.hermesLoggerUri;
+                var loggerUrl = Math.random() < config.loggerThrottlePercentage ? config.loggerUri : config.hermesLoggerUri;
+                return "" + config.paypalUrl + loggerUrl;
             },
             get pptmUrl() {
                 return "" + (config.env === constants.s.LOCAL ? config.paypalUrls[constants.s.STAGE] : config.paypalUrl) + config.pptmUri;
