@@ -681,8 +681,10 @@ export let Button : Component<ButtonOptions> = create({
                         }
                     };
 
+                    const resolve = () => ZalgoPromise.resolve();
+
                     return ZalgoPromise.try(() => {
-                        return original.call(this, data, { ...actions, shippingOptions });
+                        return original.call(this, data, { ...actions, resolve, shippingOptions });
                     }).timeout(timeout, new Error(`Timed out waiting ${ timeout }ms for payment`));
                 };
             }
