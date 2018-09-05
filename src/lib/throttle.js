@@ -135,11 +135,6 @@ export function getReturnToken() : ?string {
     }
 }
 
-type FundingLogoExperimentSettings = {
-    start : Date,
-    end : Date
-};
-
 type CustomThrottle = Throttle & {
     isActive : () => boolean
 };
@@ -157,16 +152,6 @@ export let fundingLogoThrottle = (function getFundingLogoExperiment() : CustomTh
 
     let domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
     if (config.bmlCreditTest.domains.indexOf(domain) === -1) {
-        return emptyThrottle;
-    }
-
-    let settings : ?FundingLogoExperimentSettings = config.bmlCreditTest.timeline;
-    if (!settings) {
-        return emptyThrottle;
-    }
-
-    let currentDateTime = Date.now();
-    if (currentDateTime <= settings.start.getTime() || currentDateTime >= settings.end.getTime()) {
         return emptyThrottle;
     }
 

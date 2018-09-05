@@ -128,7 +128,7 @@ export let Button : Component<ButtonOptions> = create({
     buildUrl(props) : string {
         let env = props.env || config.env;
 
-        return `${ config.buttonUrls[env] }`;
+        return config.buttonUrls[env];
     },
 
     contexts: {
@@ -457,8 +457,9 @@ export let Button : Component<ButtonOptions> = create({
                 // if fundingLogoThrottle is enabled force add FUNDING.CREDIT
                 if (shouldForceCreditFunding(props)) {
                     allowed = [ ...allowed, FUNDING.CREDIT ];
-                    if (disallowed.indexOf(FUNDING.CREDIT) === 0) {
-                        disallowed.splice(disallowed.indexOf(FUNDING.CREDIT), 1);
+                    const creditIndex = disallowed.indexOf(FUNDING.CREDIT);
+                    if (creditIndex !== -1) {
+                        disallowed = [ ...disallowed.slice(0, creditIndex), ...disallowed.slice(creditIndex + 1) ];
                     }
                 }
 
