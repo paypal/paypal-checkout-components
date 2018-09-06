@@ -650,12 +650,6 @@ export let Button : Component<ButtonOptions> = create({
                             [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
                         });
                     }
-                    
-                    if (fundingLogoThrottle.isActive()) {
-                        fundingLogoThrottle.logComplete({
-                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
-                        });
-                    }
 
                     if (venmoThrottle) {
                         venmoThrottle.logComplete({
@@ -771,7 +765,8 @@ export let Button : Component<ButtonOptions> = create({
                     
                     if (fundingLogoThrottle.isActive()) {
                         fundingLogoThrottle.log('click', {
-                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
+                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
+                            [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                         });
                     }
 

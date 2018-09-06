@@ -92,7 +92,7 @@ export function getThrottle(name : string, sample : number) : Throttle {
             if (!started) {
                 return this;
             }
-
+            
             if (isCheckpointUnique(`${ name }_${ treatment }`)) {
                 track({
                     [ FPTI.KEY.STATE ]:           FPTI.STATE.PXP,
@@ -156,7 +156,7 @@ export let fundingLogoThrottle = (function getFundingLogoExperiment() : CustomTh
     }
 
     return {
-        ...getThrottle('funding_logo_bml', 50),
+        ...getThrottle('ppc_rebrand', 50),
         isActive: () => true
     };
 }());
