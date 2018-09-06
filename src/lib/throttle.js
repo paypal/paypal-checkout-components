@@ -1,8 +1,10 @@
 /* @flow */
 
 import { info, track, flush as flushLogs } from 'beaver-logger/client';
+import { getDomain } from 'cross-domain-utils/src';
 
 import { FPTI } from '../constants';
+import { config } from '../config';
 
 import { match } from './util';
 import { getStorageState, getStorageID, getSessionState } from './session';
@@ -90,7 +92,7 @@ export function getThrottle(name : string, sample : number) : Throttle {
             if (!started) {
                 return this;
             }
-
+            
             if (isCheckpointUnique(`${ name }_${ treatment }`)) {
                 track({
                     [ FPTI.KEY.STATE ]:           FPTI.STATE.PXP,
@@ -132,3 +134,29 @@ export function getReturnToken() : ?string {
         return token;
     }
 }
+
+type CustomThrottle = Throttle & {
+    isActive : () => boolean
+};
+
+export let fundingLogoThrottle = (function getFundingLogoExperiment() : CustomThrottle {
+    let emptyThrottle = {
+        isActive:     () => false,
+        isEnabled:    () => false,
+        isDisabled:   () => true,
+        getTreatment: () => '',
+        log:          () => emptyThrottle,
+        logStart:     () => emptyThrottle,
+        logComplete:  () => emptyThrottle
+    };
+
+    let domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
+    if (config.bmlCreditTest.domains.indexOf(domain) === -1) {
+        return emptyThrottle;
+    }
+
+    return {
+        ...getThrottle('ppc_rebrand', 50),
+        isActive: () => true
+    };
+}());
