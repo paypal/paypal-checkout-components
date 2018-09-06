@@ -16,7 +16,7 @@ import { redirect as redir, checkRecognizedBrowser,
     isIEIntranet, isEligible,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, getThrottle,
-    getBrowser, isWebView, isEdgeIOS, isFirefoxIOS } from '../lib';
+    getBrowser, isWebView, isEdgeIOS, isFirefoxIOS, fundingLogoThrottle } from '../lib';
 import { rest, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
@@ -77,6 +77,20 @@ function isCreditDualEligible(props) : boolean {
     return true;
 }
 
+function shouldForceCreditFunding(props) : boolean {
+    let { layout, label } = normalizeProps(props, { locale: getBrowserLocale() });
+
+    if (label !== 'checkout' && label !== 'paypal' && label !== 'pay' && label !== 'buynow') {
+        return false;
+    }
+
+    if (fundingLogoThrottle.isEnabled() && (layout === undefined || (layout && layout === 'horizontal'))) {
+        return true;
+    }
+    
+    return false;
+}
+
 let creditThrottle;
 let venmoThrottle;
 
@@ -127,6 +141,10 @@ export let Button : Component<ButtonOptions> = create({
 
     // eslint-disable-next-line no-unused-vars
     prerenderTemplate({ props, jsxDom } : { props : Object, jsxDom : Function }) : HTMLElement {
+
+        if (shouldForceCreditFunding(props)) {
+            props.isFundingThrottleEnabled = true;
+        }
 
         let template = (
             <div innerHTML={ componentTemplate({ props }) }></div>
@@ -185,6 +203,14 @@ export let Button : Component<ButtonOptions> = create({
                 return escape(window.location.host);
             },
             queryParam: true
+        },
+
+        isFundingThrottleEnabled: {
+            type:     'boolean',
+            required: false,
+            def() : boolean {
+                return false;
+            }
         },
 
         sessionID: {
@@ -426,6 +452,15 @@ export let Button : Component<ButtonOptions> = create({
             },
             decorate({ allowed = [], disallowed = [] } : Object = {}, props : ButtonOptions) : {} {
 
+                // if fundingLogoThrottle is enabled force add FUNDING.CREDIT
+                if (shouldForceCreditFunding(props)) {
+                    allowed = [ ...allowed, FUNDING.CREDIT ];
+                    const creditIndex = disallowed.indexOf(FUNDING.CREDIT);
+                    if (creditIndex !== -1) {
+                        disallowed = [ ...disallowed.slice(0, creditIndex), ...disallowed.slice(creditIndex + 1) ];
+                    }
+                }
+
                 // remove Venmo from our allowed list if the rendering device is not a mobile one
                 if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1 && !isDevice()) {
                     allowed = allowed.filter(source => (source !== FUNDING.VENMO));
@@ -510,6 +545,12 @@ export let Button : Component<ButtonOptions> = create({
 
                     if (venmoThrottle) {
                         venmoThrottle.logStart({
+                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                        });
+                    }
+
+                    if (fundingLogoThrottle.isActive()) {
+                        fundingLogoThrottle.logStart({
                             [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
                         });
                     }
@@ -606,6 +647,12 @@ export let Button : Component<ButtonOptions> = create({
 
                     if (creditThrottle) {
                         creditThrottle.logComplete({
+                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
+                        });
+                    }
+                    
+                    if (fundingLogoThrottle.isActive()) {
+                        fundingLogoThrottle.logComplete({
                             [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
                         });
                     }
@@ -718,6 +765,12 @@ export let Button : Component<ButtonOptions> = create({
 
                     if (creditThrottle) {
                         creditThrottle.log('click', {
+                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
+                        });
+                    }
+                    
+                    if (fundingLogoThrottle.isActive()) {
+                        fundingLogoThrottle.log('click', {
                             [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
                         });
                     }
