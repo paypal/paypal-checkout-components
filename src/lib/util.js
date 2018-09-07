@@ -330,7 +330,7 @@ export function getDomainSetting<T : mixed>(name : string, def : ?T) : ?T {
 export function patchWithOps<T : Object>(obj : ?Object, patch : Array<T>) : Object {
     let patchedObj = { ...obj };
 
-    const changePropertyFromPath = (target, path, value, op) => {
+    const changePropertyFromPath = (target : Object, path : string, value : mixed, op : ?string) => {
         const props = path.split('/').filter(p => p);
         const length = (props.length - 1);
 
