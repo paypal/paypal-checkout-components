@@ -1,6 +1,6 @@
 /* @flow */
 
-import { extend, deepExtend } from '../lib';
+import { extend, deepExtend, patchWithOps } from '../lib';
 
 const SHIPPING_OPTIONS_TYPES = [
     'SHIP_TO_HOME',
@@ -76,4 +76,9 @@ export function mergePaymentDetails(id : string, payment : Object) : Object {
     extend(result, payment);
     deepExtend(result, details);
     return result;
+}
+
+export function patchPaymentOptions<T : Object>(id : string, patch : Array<T>) {
+    const options = getPaymentOptions(id);
+    addPaymentOptions(id, patchWithOps(options, patch));
 }

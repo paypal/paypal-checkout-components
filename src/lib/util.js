@@ -327,6 +327,46 @@ export function getDomainSetting<T : mixed>(name : string, def : ?T) : ?T {
     return def;
 }
 
+export function patchWithOps<T : Object>(obj : ?Object, patch : Array<T>) : Object {
+    let patchedObj = { ...obj };
+
+    const changePropertyFromPath = (target, path, value, op) => {
+        const props = path.split('/').filter(p => p);
+        const length = (props.length - 1);
+
+        for (let i = 0; i < length; i++) {
+            if (typeof target[props[i]] === 'undefined') {
+                target[props[i]] = {};
+            }
+
+            target = target[props[i]];
+        }
+        
+        let targetProp = target[props[length]];
+
+        switch (op) {
+        case 'add':
+            if (Array.isArray(target[props[length]])) {
+                targetProp = [ ...targetProp, value ];
+            } else if (typeof targetProp === 'object') {
+                targetProp = { ...targetProp, value };
+            }
+            break;
+        case 'replace':
+        default:
+            target[props[length]] = value;
+        }
+    };
+
+    try {
+        patch.map(op => changePropertyFromPath(patchedObj, op.path, op.value, op.op));
+    } catch (err) {
+        throw new Error('Invalid patch syntax');
+    }
+
+    return patchedObj;
+}
+
 export function patchMethod(obj : Object, name : string, handler : Function) {
     let original = obj[name];
 

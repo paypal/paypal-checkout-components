@@ -17,13 +17,13 @@ import { redirect as redir, checkRecognizedBrowser,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, getThrottle,
     getBrowser, isWebView, isEdgeIOS, isFirefoxIOS } from '../lib';
-import { rest, getPaymentOptions, addPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
+import { rest, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
     mapPaymentToBraintree, type BraintreePayPalClient } from '../integrations';
 import { awaitPopupBridge } from '../integrations/popupBridge';
 import { validateFunding, isFundingIneligible, isFundingAutoEligible } from '../funding';
-import { mergePaymentDetails } from '../api/hacks';
+import { mergePaymentDetails, patchPaymentOptions } from '../api/hacks';
 
 import { containerTemplate, componentTemplate } from './template';
 import { validateButtonLocale, validateButtonStyle } from './validate';
@@ -662,25 +662,30 @@ export let Button : Component<ButtonOptions> = create({
                     flushLogs();
                     let timeout = __TEST__ ? 500 : 10 * 1000;
 
-                    const shippingOptions = {
-                        update: (options) => {
-                            const paymentOptions = getPaymentOptions(data.paymentID);
-                            const paymentPayer = (paymentOptions && paymentOptions.payer) ? paymentOptions.payer : {};
+                    let patch = actions.payment.patch;
+                    actions.payment.patch = (patchObject) => {
+                        
+                        const payerPatches = patchObject.filter((op, index) => {
+                            if (op.path.indexOf('/payer') !== -1) {
+                                return patchObject.splice(index, 1);
+                            }
 
-                            return addPaymentOptions(data.paymentID, {
-                                ...paymentOptions,
-                                payer: {
-                                    ...paymentPayer,
-                                    shipping_options: [ ...options ]
-                                }
-                            });
-                        }
+                            return false;
+                        });
+
+                        return ZalgoPromise.try(() => {
+                            if (payerPatches.length) {
+                                return patchPaymentOptions(data.paymentID, payerPatches);
+                            }
+                        }).then(() => {
+                            return patch(patchObject);
+                        });
                     };
-
+                   
                     const resolve = () => ZalgoPromise.resolve();
 
                     return ZalgoPromise.try(() => {
-                        return original.call(this, data, { ...actions, resolve, shippingOptions });
+                        return original.call(this, data, { ...actions, resolve });
                     }).timeout(timeout, new Error(`Timed out waiting ${ timeout }ms for payment`));
                 };
             }
