@@ -17,8 +17,8 @@ if (body) {
 }
 
 if (flow === 'iframe') {
-    let client = window.paypal.client();
-    client.Checkout.contexts.iframe = true;
+
+    window.paypal.Checkout.contexts.iframe = true;
 }
 
 if (bridge) {
@@ -27,9 +27,9 @@ if (bridge) {
 }
 
 function renderCheckout(props = {}) {
-    let client = window.paypal.client();
 
-    client.Checkout.renderTo(window.xchild.getParentRenderWindow(), {
+
+    window.paypal.Checkout.renderTo(window.xchild.getParentRenderWindow(), {
 
         payment: window.xprops.createOrder,
         onAuthorize(data, actions) : void | ZalgoPromise<void> {
@@ -53,7 +53,7 @@ function renderCheckout(props = {}) {
                 },
 
                 restart() {
-                    client.Checkout.contexts.iframe = true;
+                    window.paypal.Checkout.contexts.iframe = true;
                     renderCheckout();
                 }
 

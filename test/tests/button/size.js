@@ -26,9 +26,8 @@ describe(`paypal button component sizes`, () => {
         let expectedWidth = 162;
         let expectedHeight = 38;
 
-        let client = window.paypal.client();
 
-        client.Button.render({
+        window.paypal.Button.render({
 
             style: {
                 layout: 'horizontal'
@@ -78,9 +77,8 @@ describe(`paypal button component sizes`, () => {
         let expectedWidth = 250;
         let expectedHeight = 53;
 
-        let client = window.paypal.client();
 
-        client.Button.render({
+        window.paypal.Button.render({
 
             style: {
                 layout: 'horizontal'
@@ -130,9 +128,8 @@ describe(`paypal button component sizes`, () => {
         let expectedWidth = 350;
         let expectedHeight = 68;
 
-        let client = window.paypal.client();
 
-        client.Button.render({
+        window.paypal.Button.render({
 
             style: {
                 layout: 'horizontal'
@@ -182,9 +179,8 @@ describe(`paypal button component sizes`, () => {
         let expectedWidth = 150;
         let expectedHeight = 38;
 
-        let client = window.paypal.client();
 
-        client.Button.render({
+        window.paypal.Button.render({
 
             style: {
                 layout: 'horizontal'
@@ -234,9 +230,8 @@ describe(`paypal button component sizes`, () => {
         let expectedWidth = 750;
         let expectedHeight = 83;
 
-        let client = window.paypal.client();
 
-        client.Button.render({
+        window.paypal.Button.render({
 
             style: {
                 layout: 'horizontal'
@@ -286,9 +281,8 @@ describe(`paypal button component sizes`, () => {
         let expectedWidth = 150;
         let expectedHeight = 38;
 
-        let client = window.paypal.client();
 
-        client.Button.render({
+        window.paypal.Button.render({
 
             style: {
                 layout: 'horizontal'
@@ -338,9 +332,8 @@ describe(`paypal button component sizes`, () => {
         let expectedWidth = 155;
         let expectedHeight = 38;
 
-        let client = window.paypal.client();
 
-        client.Button.render({
+        window.paypal.Button.render({
 
             style: {
                 layout: 'horizontal'
@@ -390,9 +383,8 @@ describe(`paypal button component sizes`, () => {
         let expectedWidth = 235;
         let expectedHeight = 53;
 
-        let client = window.paypal.client();
 
-        client.Button.render({
+        window.paypal.Button.render({
 
             style: {
                 layout: 'horizontal'
@@ -442,9 +434,8 @@ describe(`paypal button component sizes`, () => {
         let expectedWidth = 370;
         let expectedHeight = 68;
 
-        let client = window.paypal.client();
 
-        client.Button.render({
+        window.paypal.Button.render({
 
             style: {
                 layout: 'horizontal'
@@ -494,9 +485,8 @@ describe(`paypal button component sizes`, () => {
         let expectedWidth = 150;
         let expectedHeight = 38;
 
-        let client = window.paypal.client();
 
-        client.Button.render({
+        window.paypal.Button.render({
 
             test: {},
 
@@ -547,9 +537,8 @@ describe(`paypal button component sizes`, () => {
         let expectedWidth = 255;
         let expectedHeight = 53;
 
-        let client = window.paypal.client();
 
-        client.Button.render({
+        window.paypal.Button.render({
 
             test: {},
 
@@ -608,9 +597,8 @@ describe(`paypal button component sizes`, () => {
         let expectedWidth = 172;
         let expectedHeight = 38;
 
-        let client = window.paypal.client();
 
-        client.Button.render({
+        window.paypal.Button.render({
 
             style: {
                 layout: 'horizontal'
@@ -663,9 +651,8 @@ describe(`paypal button component sizes`, () => {
         let expectedWidth = 150;
         let expectedHeight = 38;
 
-        let client = window.paypal.client();
 
-        client.Button.render({
+        window.paypal.Button.render({
 
             style: {
                 layout: 'horizontal'
@@ -713,9 +700,8 @@ describe(`paypal button component sizes`, () => {
             container: '#testContainer'
         });
 
-        let client = window.paypal.client();
 
-        client.Button.render({
+        window.paypal.Button.render({
 
             style: {
                 layout: 'horizontal'
@@ -764,9 +750,8 @@ describe(`paypal button component sizes`, () => {
         let expectedWidth = 162;
         let expectedHeight = 54;
 
-        let client = window.paypal.client();
 
-        client.Button.render({
+        window.paypal.Button.render({
 
             test: {},
 

@@ -103,5 +103,9 @@ export const testGlobals = {
     __COMMIT__: true,
     __VAULT__:  true,
 
-    __PORT__: 8000
+    __PORT__:       8000,
+    __STAGE_HOST__: 'msmaster.qa.paypal.com',
+    __HOST__:       'mock://test.paypal.com',
+    __HOSTNAME__:   'mock://test.paypal.com',
+    __PATH__:       '/sdk/js'
 };

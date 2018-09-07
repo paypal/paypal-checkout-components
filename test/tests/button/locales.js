@@ -16,7 +16,6 @@ describe.skip(`paypal button component locales`, () => {
         window.location.hash = '';
     });
 
-    let client = window.paypal.client();
 
     for (let country of Object.keys(COUNTRY_LANGS)) {
         for (let lang of COUNTRY_LANGS[country]) {
@@ -24,7 +23,7 @@ describe.skip(`paypal button component locales`, () => {
                 let mockCountry = mockProp(window.__TEST_LOCALE__, '__COUNTRY__', country);
                 let mockLang = mockProp(window.__TEST_LOCALE__, '__LANG__', lang);
 
-                return client.Button.render({
+                return window.paypal.Button.render({
                     createOrder() {
                         // pass
                     },

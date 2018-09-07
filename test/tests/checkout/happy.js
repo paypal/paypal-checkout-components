@@ -13,15 +13,15 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         beforeEach(() => {
             createTestContainer();
-            let client = window.paypal.client();
-            client.Checkout.contexts.iframe = (flow === 'iframe');
+
+            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            let client = window.paypal.client();
-            client.Checkout.contexts.iframe = false;
+
+            window.paypal.Checkout.contexts.iframe = false;
         });
 
         it('should render checkout, then complete the payment', (done) => {
@@ -29,9 +29,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
-                let client = window.paypal.client();
 
-                return client.Checkout.render({
+
+                return window.paypal.Checkout.render({
 
                     payment() : string | ZalgoPromise<string> {
                         return generateOrderID();
@@ -56,9 +56,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
-                let client = window.paypal.client();
 
-                return client.Checkout.render({
+
+                return window.paypal.Checkout.render({
 
                     test: { action: 'cancel' },
 
@@ -85,9 +85,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
-                let client = window.paypal.client();
 
-                return client.Checkout.render({
+
+                return window.paypal.Checkout.render({
 
                     payment() : string | ZalgoPromise<string> {
                         return new ZalgoPromise(resolve => {
@@ -115,9 +115,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
-                let client = window.paypal.client();
 
-                return client.Checkout.render({
+
+                return window.paypal.Checkout.render({
 
                     payment() : string | ZalgoPromise<string> {
                         return orderID;
@@ -145,9 +145,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
-                let client = window.paypal.client();
 
-                return client.Checkout.render({
+
+                return window.paypal.Checkout.render({
 
                     payment() : string | ZalgoPromise<string> {
                         return orderID;
@@ -175,9 +175,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
-                let client = window.paypal.client();
 
-                return client.Checkout.render({
+
+                return window.paypal.Checkout.render({
 
                     payment() : string | ZalgoPromise<string> {
                         return orderID;
@@ -203,9 +203,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
-                let client = window.paypal.client();
 
-                return client.Checkout.render({
+
+                return window.paypal.Checkout.render({
 
                     test: {
                         action: 'init'
@@ -248,9 +248,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         childWindow = win;
                     });
 
-                    let client = window.paypal.client();
 
-                    return client.Checkout.render({
+                    return window.paypal.Checkout.render({
 
                         test: {
                             action: 'init'
@@ -286,9 +285,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', () => {
-                    let client = window.paypal.client();
 
-                    return client.Checkout.render({
+
+                    return window.paypal.Checkout.render({
 
                         test: {
                             flow,
@@ -326,9 +325,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let paymentCalls = 0;
 
                 testButton.addEventListener('click', () => {
-                    let client = window.paypal.client();
 
-                    return client.Checkout.render({
+
+                    return window.paypal.Checkout.render({
 
                         test: { action: 'popout' },
 

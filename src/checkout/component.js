@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { ENV, logger, type LocaleType } from 'paypal-braintree-web-client/src';
+import { ENV, logger, getLocale, getEnv, getClientID } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONSTANTS, PopupOpenError } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
@@ -9,8 +9,7 @@ import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { patchMethod, isDevice, supportsPopups, memoize, isIEIntranet } from 'belter/src';
 
 import { getSessionID, getButtonSessionID, isEligible } from '../lib';
-import { DOMAINS, STAGE } from '../config';
-import { LOCALE, CURRENT_ENV, CLIENT_ID } from '../globals';
+import { DOMAINS } from '../config';
 import { FUNDING } from '../constants';
 import { FUNDING_CONFIG } from '../funding';
 
@@ -39,14 +38,14 @@ export let Checkout : Component<CheckoutPropsType> = create({
     },
 
     get unsafeRenderTo() : boolean {
-        return CURRENT_ENV === ENV.LOCAL;
+        return getEnv() === ENV.LOCAL;
     },
 
     domain: DOMAINS.PAYPAL,
 
     contexts: {
-        iframe: (!supportsPopups()),
-        popup:  true
+        iframe: !supportsPopups(),
+        popup:  supportsPopups()
     },
 
     validate() {
@@ -65,10 +64,8 @@ export let Checkout : Component<CheckoutPropsType> = create({
     props: {
 
         clientID: {
-            type: 'string',
-            value() : string {
-                return CLIENT_ID;
-            },
+            type:       'string',
+            value:      getClientID,
             queryParam: true
         },
 
@@ -92,9 +89,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
         env: {
             type:       'string',
             queryParam: true,
-            value() : string {
-                return CURRENT_ENV;
-            }
+            value:      getEnv
         },
 
         meta: {
@@ -102,18 +97,6 @@ export let Checkout : Component<CheckoutPropsType> = create({
             def() : Object {
                 let meta = window.xprops && window.xprops.meta;
                 return meta || {};
-            }
-        },
-
-        stage: {
-            type:       'string',
-            queryParam: true,
-            required:   false,
-
-            def() : ?string {
-                if (CURRENT_ENV === ENV.STAGE || CURRENT_ENV === ENV.LOCAL) {
-                    return STAGE;
-                }
             }
         },
 
@@ -125,13 +108,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
                 let { lang, country } = locale;
                 return `${ lang }_${ country }`;
             },
-            value() : LocaleType {
-                let { LANG, COUNTRY } = LOCALE;
-                return {
-                    lang:    LANG,
-                    country: COUNTRY
-                };
-            }
+            value: getLocale
         },
         
         payment: {
@@ -292,18 +269,9 @@ export let Checkout : Component<CheckoutPropsType> = create({
     },
 
     get dimensions() : { width : string, height : string } {
-
-        if (isDevice()) {
-            return {
-                width:  '100%',
-                height: '535px'
-            };
-        }
-
-        return {
-            width:  '450px',
-            height: '535px'
-        };
+        return isDevice()
+            ? { width:  '100%', height: '535px' }
+            : { width:  '450px', height: '535px' };
     }
 });
 

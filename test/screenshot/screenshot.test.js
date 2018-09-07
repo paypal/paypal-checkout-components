@@ -77,9 +77,8 @@ for (let config of buttonConfigs) {
                 window.navigator.mockUserAgent = userAgents[options.userAgent];
             }
 
-            let client = window.paypal.client();
 
-            client.Button.render(Object.assign({
+            window.paypal.Button.render(Object.assign({
                 createOrder() { /* pass */ },
                 onApprove() { /* pass */ }
             }, options.button), container);

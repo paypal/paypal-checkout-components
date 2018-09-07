@@ -76,7 +76,7 @@ export const DEFAULT_PROPS = {
     COMMIT:   COMMIT.TRUE,
     VAULT:    VAULT.FALSE,
     INTENT:   INTENT.SALE,
-    ENV:      __ENV__,
+    ENV:      ENV.PRODUCTION,
     PLATFORM: PLATFORM.DESKTOP
 };
 

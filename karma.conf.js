@@ -1,33 +1,14 @@
 /* @flow */
 
 import { getKarmaConfig } from 'grumbler-scripts/config/karma.conf';
-import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 
-import { testGlobals } from './test/globals';
+import { WEBPACK_CONFIG_TEST } from './webpack.config';
 
 export default function configKarma(karma : Object) {
 
     let karmaConfig = getKarmaConfig(karma, {
         basePath: __dirname,
-        webpack:  getWebpackConfig({
-            test: true,
-            vars: {
-                ...testGlobals,
-                __paypal_checkout__: {
-                    ...testGlobals.__paypal_checkout__,
-                    serverConfig: {
-                        fundingEligibility: () => 'window.__TEST_FUNDING_ELIGIBILITY__'
-                    }
-                },
-                __PAYPAL_CHECKOUT__: {
-                    ...testGlobals.__PAYPAL_CHECKOUT__,
-                    __REMEMBERED_FUNDING__: () => 'window.__TEST_REMEMBERED_FUNDING__'
-                },
-                __CLIENT_ID__:   'abcxyz123',
-                __MERCHANT_ID__: 'abc',
-                __LOCALE__:      () => 'window.__TEST_LOCALE__'
-            }
-        })
+        webpack:  WEBPACK_CONFIG_TEST
     });
 
     karmaConfig.files = [

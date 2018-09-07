@@ -7,7 +7,7 @@ export const FPTI_BUTTON_TYPE = {
 
 export const FPTI_CONTEXT_TYPE = {
     BUTTON_SESSION_ID: 'button_session_id',
-    EC_TOKEN:          'EC-Token'
+    ORDER_ID:          'EC-Token'
 };
 
 export const FPTI_STATE = {

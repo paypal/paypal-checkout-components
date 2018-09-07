@@ -18,9 +18,8 @@ describe(`paypal button layouts`, () => {
 
     it('should render a maximum of 2 buttons horizontally', (done) => {
 
-        let client = window.paypal.client();
 
-        client.Button.render({
+        window.paypal.Button.render({
 
             style: {
                 layout: 'horizontal'
@@ -55,9 +54,8 @@ describe(`paypal button layouts`, () => {
 
     it('should render a maximum of 4 buttons vertically', (done) => {
 
-        let client = window.paypal.client();
 
-        client.Button.render({
+        window.paypal.Button.render({
 
             test: {
                 onRender({ fundingSources }) {

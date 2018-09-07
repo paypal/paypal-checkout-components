@@ -14,7 +14,8 @@ module.exports = {
         '__INTENT__': true,
         '__COMMIT__': true,
         '__VAULT__': true,
-        '__PORT__': true
+        '__PORT__': true,
+        '__STAGE_HOST__': true
     },
 
     'rules': {

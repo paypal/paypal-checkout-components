@@ -9,46 +9,45 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal multiple button component happy path on ${ flow }`, () => {
 
-        let client = window.paypal.client();
 
         beforeEach(() => {
             createTestContainer();
-            client.Checkout.contexts.iframe = (flow === 'iframe');
+            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            client.Checkout.contexts.iframe = false;
+            window.paypal.Checkout.contexts.iframe = false;
         });
 
         let cases = [
 
             {
-                source:   client.FUNDING.CARD,
+                source:   window.paypal.FUNDING.CARD,
                 fragment: 'guesturl=true'
             },
 
             {
-                source:    client.FUNDING.VENMO,
+                source:    window.paypal.FUNDING.VENMO,
                 fragment:  'checkouturl=true',
                 userAgent: IPHONE6_USER_AGENT
             },
 
             {
-                source:   client.FUNDING.CREDIT,
+                source:   window.paypal.FUNDING.CREDIT,
                 fragment: 'checkouturl=true'
             },
 
             {
-                source:   client.FUNDING.IDEAL,
+                source:   window.paypal.FUNDING.IDEAL,
                 fragment: 'checkouturl=true',
                 country:   'NL',
                 commit:   true
             },
 
             {
-                source:   client.FUNDING.SEPA,
+                source:   window.paypal.FUNDING.SEPA,
                 fragment: 'guesturl=true',
                 country:   'DE'
             }
@@ -68,11 +67,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[source], 'eligible', true);
                 let mockCountry = mockProp(window.__TEST_LOCALE__, '__COUNTRY__', country || 'US');
 
-                if (source === client.FUNDING.VENMO) {
-                    window.__TEST_REMEMBERED_FUNDING__.push(client.FUNDING.VENMO);
+                if (source === window.paypal.FUNDING.VENMO) {
+                    window.__TEST_REMEMBERED_FUNDING__.push(window.paypal.FUNDING.VENMO);
                 }
                 
-                client.Button.render({
+                window.paypal.Button.render({
 
                     test: { flow, action: 'checkout', selector: `[data-funding-source="${ source }"]` },
 
@@ -102,8 +101,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 mockEligibility.cancel();
                 mockCountry.cancel();
 
-                if (source === client.FUNDING.VENMO) {
-                    window.__TEST_REMEMBERED_FUNDING__.splice(window.__TEST_REMEMBERED_FUNDING__.indexOf(client.FUNDING.VENMO), 1);
+                if (source === window.paypal.FUNDING.VENMO) {
+                    window.__TEST_REMEMBERED_FUNDING__.splice(window.__TEST_REMEMBERED_FUNDING__.indexOf(window.paypal.FUNDING.VENMO), 1);
                 }
             });
         }

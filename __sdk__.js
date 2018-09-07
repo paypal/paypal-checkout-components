@@ -4,9 +4,15 @@
 let globals = require('./globals');
 
 module.exports = {
+
+    '__paypal-checkout-components-common__': {
+        entry:     './src/interface/common',
+        automatic: true
+    },
     
     'buttons': {
         entry:           './src/interface/button',
+        setupHandler:    'setupButtons',
         staticNamespace: '__paypal_checkout__',
         configQuery:     `
             clientConfiguration {
@@ -22,6 +28,7 @@ module.exports = {
 
     'checkout': {
         entry:           './src/interface/checkout',
+        setupHandler:    'setupCheckout',
         staticNamespace: '__paypal_checkout__',
         configQuery:     `
             clientConfiguration {

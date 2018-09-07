@@ -2,20 +2,20 @@
 /* @jsx jsxDom */
 /* eslint max-lines: 0 */
 
-import { ENV, logger, FPTI_KEY, type LocaleType } from 'paypal-braintree-web-client/src';
+import { ENV, logger, FPTI_KEY, getLocale, getClientID, getEnv, getIntent, getCommit, getVault } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
 import { isIEIntranet, isDevice, uniqueID, redirect } from 'belter/src';
 
 import { URLS, DOMAINS } from '../config';
-import { CURRENT_ENV, CLIENT_ID, LOCALE, FUNDING_ELIGIBILITY, INTENT, COMMIT, VAULT } from '../globals';
-import { FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_CONTEXT_TYPE, PLATFORM, FUNDING } from '../constants';
+import { getFundingEligibility } from '../globals';
+import { FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_CONTEXT_TYPE, PLATFORM } from '../constants';
 import { checkRecognizedBrowser, getSessionID, isEligible, getBrowser } from '../lib';
 import { createOrder } from '../api';
 
 import { containerTemplate, Buttons } from './template';
-import { rememberFunding, getRememberedFunding } from './funding';
+import { rememberFunding, findRememberedFunding } from './funding';
 import { setupButtonChild } from './child';
 import { normalizeButtonStyle, type ButtonProps } from './props';
 
@@ -102,12 +102,7 @@ export let Button : Component<ButtonProps> = create({
         locale: {
             type:       'object',
             queryParam: true,
-            value() : LocaleType {
-                return {
-                    lang:    LOCALE.LANG,
-                    country: LOCALE.COUNTRY
-                };
-            }
+            value:      getLocale
         },
 
         createOrder: {
@@ -131,7 +126,7 @@ export let Button : Component<ButtonProps> = create({
                             throw new Error(`Expected createOrder to return a promise for an order id`);
                         }
 
-                        if (CURRENT_ENV === ENV.PRODUCTION) {
+                        if (getEnv() === ENV.PRODUCTION) {
                             return order.timeout(ORDER_CREATE_TIMEOUT, new Error(`Timed out waiting ${ ORDER_CREATE_TIMEOUT }ms for order to be created`));
                         }
 
@@ -147,7 +142,7 @@ export let Button : Component<ButtonProps> = create({
                         logger.track({
                             [ FPTI_KEY.STATE ]:              FPTI_STATE.CHECKOUT,
                             [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.RECIEVE_ORDER,
-                            [ FPTI_KEY.CONTEXT_TYPE ]:       FPTI_CONTEXT_TYPE.EC_TOKEN,
+                            [ FPTI_KEY.CONTEXT_TYPE ]:       FPTI_CONTEXT_TYPE.ORDER_ID,
                             [ FPTI_KEY.CONTEXT_ID ]:         orderID,
                             [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
                         });
@@ -292,10 +287,8 @@ export let Button : Component<ButtonProps> = create({
         },
 
         clientID: {
-            type: 'string',
-            value() : string {
-                return CLIENT_ID;
-            },
+            type:       'string',
+            value:      getClientID,
             queryParam: true
         },
 
@@ -318,16 +311,12 @@ export let Button : Component<ButtonProps> = create({
         env: {
             type:       'string',
             queryParam: true,
-            value() : string {
-                return CURRENT_ENV;
-            }
+            value:      getEnv
         },
 
         fundingEligibility: {
             type:       'object',
-            value() : Object {
-                return FUNDING_ELIGIBILITY;
-            }
+            value:       getFundingEligibility
         },
 
         meta: {
@@ -348,9 +337,7 @@ export let Button : Component<ButtonProps> = create({
         remembered: {
             type:       'array',
             queryParam: true,
-            value() : Array<$Values<typeof FUNDING>> {
-                return getRememberedFunding();
-            }
+            value:      findRememberedFunding
         },
 
         remember: {
@@ -363,25 +350,19 @@ export let Button : Component<ButtonProps> = create({
         intent: {
             type:       'string',
             queryParam: true,
-            value() : string {
-                return INTENT;
-            }
+            value:      getIntent
         },
 
         commit: {
             type:       'boolean',
             queryParam: true,
-            value() : boolean {
-                return COMMIT;
-            }
+            value:      getCommit
         },
 
         vault: {
             type:       'boolean',
             queryParam: true,
-            value() : boolean {
-                return VAULT;
-            }
+            value:      getVault
         },
 
         test: {

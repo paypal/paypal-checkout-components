@@ -47,7 +47,7 @@ export function trackExperiment({ experiment, treatment, state, token } : { expe
                 [ FPTI_KEY.TREATMENT_NAME ]:  treatment,
                 [ FPTI_KEY.TOKEN ]:           token,
                 [ FPTI_KEY.CONTEXT_ID ]:      token,
-                [ FPTI_KEY.CONTEXT_TYPE ]:    token ? FPTI_CONTEXT_TYPE.EC_TOKEN : FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID
+                [ FPTI_KEY.CONTEXT_TYPE ]:    token ? FPTI_CONTEXT_TYPE.ORDER_ID : FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID
             });
 
             logger.immediateFlush();

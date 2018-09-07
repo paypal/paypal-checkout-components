@@ -5,8 +5,6 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { createTestContainer, destroyTestContainer, noop, assert, mockProp } from '../common';
 
-let client = window.paypal.client();
-
 let buttonConfigs = [
 
     {
@@ -755,7 +753,7 @@ for (let group of buttonConfigs) {
                 return ZalgoPromise.try(() => {
 
                     if (useCase.valid) {
-                        return client.Button.render({
+                        return window.paypal.Button.render({
                             test: {
                                 action: `none`
                             },
@@ -763,7 +761,7 @@ for (let group of buttonConfigs) {
                             ...useCase.conf
                         }, `body`);
                     } else {
-                        return client.Button.render(useCase.conf, `body`).then(() => {
+                        return window.paypal.Button.render(useCase.conf, `body`).then(() => {
                             throw new Error(`Expected error to be thrown`);
                         }, err => {
                             assert.ok(err instanceof Error, `Expected error object to be thrown`);

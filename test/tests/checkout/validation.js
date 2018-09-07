@@ -8,9 +8,8 @@ describe(`paypal checkout component validation`, () => {
 
     it('should attempt to render checkout with invalid env and error out', () => {
 
-        let client = window.paypal.client();
 
-        return client.Checkout.render({
+        return window.paypal.Checkout.render({
             env: 'moo'
         }, 'body').then(() => {
             throw new Error('Expected error to be thrown');
@@ -21,9 +20,8 @@ describe(`paypal checkout component validation`, () => {
 
     it('should attempt to render checkout with payment and no onAuthorize, and error out', () => {
 
-        let client = window.paypal.client();
 
-        return client.Checkout.render({
+        return window.paypal.Checkout.render({
             payment() : string | ZalgoPromise<string> {
                 return generateOrderID();
             }
@@ -36,9 +34,8 @@ describe(`paypal checkout component validation`, () => {
 
     it('should attempt to render checkout with no payment and error out', () => {
 
-        let client = window.paypal.client();
 
-        return client.Checkout.render({
+        return window.paypal.Checkout.render({
             onAuthorize() {
                 // pass
             }

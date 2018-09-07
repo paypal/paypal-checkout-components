@@ -12,13 +12,11 @@ let actions = {
 
 let hash = window.location.hash ? `&hash=${ window.location.hash.slice(1) }` : '';
 
-let client = window.paypal.client();
-
 if (action === 'checkout') {
 
     window.xprops.payment().then(orderID => {
 
-        return client.Promise.try(() => {
+        return window.paypal.Promise.try(() => {
 
             if (window.xprops.init) {
                 return window.xprops.init({
@@ -65,7 +63,7 @@ if (action === 'checkout') {
     testButton.addEventListener('click', () => {
         window.xchild.hide();
 
-        client.Checkout.renderPopupTo(window.xchild.getParentRenderWindow(), {
+        window.paypal.Checkout.renderPopupTo(window.xchild.getParentRenderWindow(), {
             payment:          window.xprops.payment,
             onAuthorize:      window.xprops.onAuthorize,
             onCancel:         window.xprops.onCancel,

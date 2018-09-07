@@ -1,10 +1,10 @@
 /* @flow */
 
+import { getPort, getStageHost } from 'paypal-braintree-web-client/src';
+
 import { isCurrentDomain, buildUrl } from './util';
 
 export const SESSION_LIFETIME = 5 * 60 * 1000;
-
-export const STAGE = 'msmaster.qa.paypal.com';
 
 export const SUPPORTED_BROWSERS = {
     msie:           '11',
@@ -22,18 +22,18 @@ export const SUPPORTED_BROWSERS = {
 export const DOMAINS = {
     local: {
         get PAYPAL() : string {
-            return `http://localhost.paypal.com:${ __PORT__ }`;
+            return `http://localhost.paypal.com:${ getPort() }`;
         },
         get API() : string {
-            return `https://www.${ STAGE }`;
+            return `https://www.${ getStageHost() }`;
         }
     },
     stage: {
         get PAYPAL() : string {
-            return `https://www.${ STAGE }`;
+            return `https://www.${ getStageHost() }`;
         },
         get API() : string {
-            return `https://www.${ STAGE }:12326`;
+            return `https://www.${ getStageHost() }:12326`;
         }
     },
     sandbox: {

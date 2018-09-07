@@ -1,15 +1,11 @@
 /* @flow */
 
-import { ZalgoPromise as Promise } from 'zalgo-promise/src';
-import { attach } from 'paypal-braintree-web-client/src';
+import './hacks'; // eslint-disable-line import/no-unassigned-import
+import { setup } from './setup';
 
-import { Checkout } from '../checkout';
-import { allowIframe } from '../lib';
+export { Checkout } from '../checkout';
+export { allowIframe } from '../lib';
 
-attach('checkout', () => {
-    return {
-        Checkout,
-        Promise,
-        allowIframe
-    };
-});
+export function setupCheckout() {
+    setup();
+}

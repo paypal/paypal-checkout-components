@@ -9,14 +9,14 @@ for (let flow of [ 'popup', 'iframe' ]) {
     describe(`paypal button component embedded frame on ${ flow }`, () => {
 
         beforeEach(() => {
-            let client = window.paypal.client();
-            client.Checkout.contexts.iframe = (flow === 'iframe');
+
+            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
         });
 
         afterEach(() => {
             window.location.hash = '';
-            let client = window.paypal.client();
-            client.Checkout.contexts.iframe = false;
+
+            window.paypal.Checkout.contexts.iframe = false;
         });
 
         it('should render a button into a container and click on the button, then complete the checkout', () => {

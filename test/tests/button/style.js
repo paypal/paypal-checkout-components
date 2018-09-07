@@ -11,22 +11,21 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         beforeEach(() => {
             createTestContainer();
-            let client = window.paypal.client();
-            client.Checkout.contexts.iframe = (flow === 'iframe');
+
+            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            let client = window.paypal.client();
-            client.Checkout.contexts.iframe = false;
+
+            window.paypal.Checkout.contexts.iframe = false;
         });
 
         it('should render a button and click and get a black overlay', (done) => {
 
-            let client = window.paypal.client();
 
-            client.Button.render({
+            window.paypal.Button.render({
 
                 test: {
                     flow,

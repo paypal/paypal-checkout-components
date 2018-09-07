@@ -56,7 +56,7 @@ function logOrderResponse(orderID) {
     logger.track({
         [ FPTI_KEY.STATE ]:        FPTI_STATE.BUTTON,
         [ FPTI_KEY.TRANSITION ]:   FPTI_TRANSITION.CREATE_ORDER,
-        [ FPTI_KEY.CONTEXT_TYPE ]: FPTI_CONTEXT_TYPE.EC_TOKEN,
+        [ FPTI_KEY.CONTEXT_TYPE ]: FPTI_CONTEXT_TYPE.ORDER_ID,
         [ FPTI_KEY.TOKEN ]:        orderID,
         [ FPTI_KEY.CONTEXT_ID ]:   orderID
     });
