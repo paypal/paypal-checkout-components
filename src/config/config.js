@@ -410,7 +410,7 @@ export let config = {
 
     loggerUri: `/xoplatform/logger/api/logger`,
 
-    loggerThrottlePercentage: 0.05, // 5%
+    loggerThrottlePercentage: 0.25, // 25%
 
     pptmUri: `/tagmanager/pptm.js`,
 
