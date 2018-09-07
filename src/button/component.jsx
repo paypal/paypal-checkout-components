@@ -16,7 +16,7 @@ import { redirect as redir, checkRecognizedBrowser,
     isIEIntranet, isEligible,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, getThrottle,
-    getBrowser, isWebView, isEdgeIOS, isFirefoxIOS, fundingLogoThrottle } from '../lib';
+    getBrowser, isWebView, isEdgeIOS, isFirefoxIOS, buildFundingLogoThrottle } from '../lib';
 import { rest, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
@@ -77,22 +77,9 @@ function isCreditDualEligible(props) : boolean {
     return true;
 }
 
-function shouldForceCreditFunding(props) : boolean {
-    let { layout, label } = normalizeProps(props, { locale: getBrowserLocale() });
-
-    if (label !== 'checkout' && label !== 'paypal' && label !== 'pay' && label !== 'buynow') {
-        return false;
-    }
-
-    if (fundingLogoThrottle.isEnabled() && (layout === undefined || (layout && layout === 'horizontal'))) {
-        return true;
-    }
-    
-    return false;
-}
-
 let creditThrottle;
 let venmoThrottle;
+let fundingLogoThrottle;
 
 type ButtonOptions = {
     style : {|
@@ -142,7 +129,7 @@ export let Button : Component<ButtonOptions> = create({
     // eslint-disable-next-line no-unused-vars
     prerenderTemplate({ props, jsxDom } : { props : Object, jsxDom : Function }) : HTMLElement {
 
-        if (shouldForceCreditFunding(props)) {
+        if (fundingLogoThrottle.isEnabled()) {
             props.isFundingThrottleEnabled = true;
         }
 
@@ -452,8 +439,9 @@ export let Button : Component<ButtonOptions> = create({
             },
             decorate({ allowed = [], disallowed = [] } : Object = {}, props : ButtonOptions) : {} {
 
-                // if fundingLogoThrottle is enabled force add FUNDING.CREDIT
-                if (shouldForceCreditFunding(props)) {
+                fundingLogoThrottle = buildFundingLogoThrottle(normalizeProps(props));
+
+                if (fundingLogoThrottle.isEnabled()) {
                     allowed = [ ...allowed, FUNDING.CREDIT ];
                     const creditIndex = disallowed.indexOf(FUNDING.CREDIT);
                     if (creditIndex !== -1) {

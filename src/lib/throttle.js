@@ -89,10 +89,11 @@ export function getThrottle(name : string, sample : number) : Throttle {
         },
 
         log(checkpointName : string, payload? : { [string] : ?string } = {}) : Throttle {
+            
             if (!started) {
                 return this;
             }
-            
+
             if (isCheckpointUnique(`${ name }_${ treatment }`)) {
                 track({
                     [ FPTI.KEY.STATE ]:           FPTI.STATE.PXP,
@@ -139,7 +140,7 @@ type CustomThrottle = Throttle & {
     isActive : () => boolean
 };
 
-export let fundingLogoThrottle = (function getFundingLogoExperiment() : CustomThrottle {
+export function buildFundingLogoThrottle(props: Object) : CustomThrottle {
     let emptyThrottle = {
         isActive:     () => false,
         isEnabled:    () => false,
@@ -150,13 +151,28 @@ export let fundingLogoThrottle = (function getFundingLogoExperiment() : CustomTh
         logComplete:  () => emptyThrottle
     };
 
+    let { layout, label, locale } = props;
+
+    if (locale !== 'en_US') {
+        return emptyThrottle;
+    }
+
+    if (label !== 'checkout' && label !== 'paypal' && label !== 'pay' && label !== 'buynow') {
+        return emptyThrottle;
+    }
+
     let domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
     if (config.bmlCreditTest.domains.indexOf(domain) === -1) {
         return emptyThrottle;
     }
 
-    return {
-        ...getThrottle('ppc_rebrand', 50),
-        isActive: () => true
-    };
-}());
+    if (layout === undefined || (layout && layout === 'horizontal')) {
+        return {
+            ...getThrottle('ppc_rebrand', 50),
+            isActive: () => true
+        };
+    }
+
+    return emptyThrottle;
+
+} 
