@@ -219,14 +219,12 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     contentText = typeof contentText === 'function' ? contentText(dynamicContent) : contentText;
     contentText = renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size, isFundingThrottleEnabled });
 
-    let classString = `${ CLASS.BUTTON } ${ CLASS.NUMBER }-${ i } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) } ${ getButtonClasses({ label, color, logoColor, isFundingThrottleEnabled }) }`;
-
     return (
         <div
             { ...{ [ATTRIBUTE.LAYOUT]: layout ? layout : '' } }
             { ...{ [ATTRIBUTE.SIZE]: size ? size : '' } }
             { ...{ [ ATTRIBUTE.FUNDING_SOURCE ]: source, [ ATTRIBUTE.BUTTON ]: true } }
-            class={ classString }
+            class={ `${ CLASS.BUTTON } ${ CLASS.NUMBER }-${ i } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) } ${ getButtonClasses({ label, color, logoColor, isFundingThrottleEnabled }) }` }
             role='button'
             aria-label={ source }
             tabindex='0'>

@@ -441,7 +441,7 @@ export let Button : Component<ButtonOptions> = create({
 
                 fundingLogoThrottle = buildFundingLogoThrottle(normalizeProps(props));
 
-                if (fundingLogoThrottle.isEnabled()) {
+                if (fundingLogoThrottle.isActive()) {
                     allowed = [ ...allowed, FUNDING.CREDIT ];
                     const creditIndex = disallowed.indexOf(FUNDING.CREDIT);
                     if (creditIndex !== -1) {

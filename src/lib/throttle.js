@@ -89,7 +89,7 @@ export function getThrottle(name : string, sample : number) : Throttle {
         },
 
         log(checkpointName : string, payload? : { [string] : ?string } = {}) : Throttle {
-            
+
             if (!started) {
                 return this;
             }
@@ -140,7 +140,8 @@ type CustomThrottle = Throttle & {
     isActive : () => boolean
 };
 
-export function buildFundingLogoThrottle(props: Object) : CustomThrottle {
+export function buildFundingLogoThrottle(props : Object) : CustomThrottle {
+
     let emptyThrottle = {
         isActive:     () => false,
         isEnabled:    () => false,
@@ -153,7 +154,13 @@ export function buildFundingLogoThrottle(props: Object) : CustomThrottle {
 
     let { layout, label, locale } = props;
 
-    if (locale !== 'en_US') {
+    let localeString = locale;
+
+    if (typeof locale === 'object') {
+        localeString = `${ locale.lang }_${ locale.country }`;
+    }
+
+    if (localeString !== 'en_US') {
         return emptyThrottle;
     }
 
@@ -175,4 +182,4 @@ export function buildFundingLogoThrottle(props: Object) : CustomThrottle {
 
     return emptyThrottle;
 
-} 
+}
