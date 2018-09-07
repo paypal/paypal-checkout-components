@@ -439,7 +439,8 @@ export let Button : Component<ButtonOptions> = create({
             },
             decorate({ allowed = [], disallowed = [] } : Object = {}, props : ButtonOptions) : {} {
 
-                fundingLogoThrottle = buildFundingLogoThrottle(normalizeProps(props));
+                let throttleProps = { ...normalizeProps(props), browserLocale: getBrowserLocale() };
+                fundingLogoThrottle = buildFundingLogoThrottle(throttleProps);
 
                 if (fundingLogoThrottle.isActive()) {
                     allowed = [ ...allowed, FUNDING.CREDIT ];

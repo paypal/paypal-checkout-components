@@ -3,11 +3,12 @@
 import { info, track, flush as flushLogs } from 'beaver-logger/client';
 import { getDomain } from 'cross-domain-utils/src';
 
-import { FPTI } from '../constants';
+import { FPTI, COUNTRY } from '../constants';
 import { config } from '../config';
 
 import { match } from './util';
 import { getStorageState, getStorageID, getSessionState } from './session';
+
 
 function isCheckpointUnique(name : string) : boolean {
     return getSessionState(state => {
@@ -152,7 +153,11 @@ export function buildFundingLogoThrottle(props : Object) : CustomThrottle {
         logComplete:  () => emptyThrottle
     };
 
-    let { layout, label, locale } = props;
+    let { layout, label, locale, browserLocale } = props;
+
+    if (browserLocale.country !== COUNTRY.US) {
+        return emptyThrottle;
+    }
 
     let localeString = locale;
 
