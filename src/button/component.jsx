@@ -665,8 +665,8 @@ export let Button : Component<ButtonOptions> = create({
                     let patch = actions.payment.patch;
                     actions.payment.patch = (patchObject) => {
                         
-                        const payerPatches = patchObject.filter((op, index) => {
-                            if (op.path.indexOf('/payer') !== -1) {
+                        const itemListPatches = patchObject.filter((op, index) => {
+                            if (op.path.indexOf('/item_list') !== -1) {
                                 return patchObject.splice(index, 1);
                             }
 
@@ -674,8 +674,8 @@ export let Button : Component<ButtonOptions> = create({
                         });
 
                         return ZalgoPromise.try(() => {
-                            if (payerPatches.length) {
-                                return patchPaymentOptions(data.paymentID, payerPatches);
+                            if (itemListPatches.length) {
+                                return patchPaymentOptions(data.paymentID, itemListPatches);
                             }
                         }).then(() => {
                             return patch(patchObject);
