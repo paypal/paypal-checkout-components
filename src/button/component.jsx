@@ -666,7 +666,7 @@ export let Button : Component<ButtonOptions> = create({
                     actions.payment.patch = (patchObject) => {
                         
                         const itemListPatches = patchObject.filter((op, index) => {
-                            if (op.path.indexOf('/item_list') !== -1) {
+                            if (op.path.indexOf('/item_list/shipping_options') !== -1) {
                                 return patchObject.splice(index, 1);
                             }
 
