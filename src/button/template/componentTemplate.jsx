@@ -3,7 +3,7 @@
 
 import { btoa } from 'Base64';
 
-import { BUTTON_SIZE, BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING } from '../../constants';
+import { BUTTON_SIZE, BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING, BUTTON_LOGO, BUTTON_COLOR } from '../../constants';
 import { getButtonConfig, labelToFunding, fundingToDefaultLabel } from '../config';
 import { normalizeProps } from '../props';
 import { jsxToHTML, type JsxHTMLNode, type ChildType, jsxRender } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
@@ -26,8 +26,8 @@ function getCommonButtonClasses({ layout, shape, branding, multiple, env }) : st
 }
 
 function getButtonClasses({ label, color, logoColor, isFundingThrottleEnabled }) : string {
-    if (isFundingThrottleEnabled && label === 'credit') {
-        color = 'silver';
+    if (isFundingThrottleEnabled && label === BUTTON_LABEL.CREDIT) {
+        color = BUTTON_COLOR.SILVER;
     }
 
     return [
@@ -128,14 +128,14 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
                 throw new Error(`Can not determine logo without logo color`);
             }
 
-            if (isFundingThrottleEnabled && layout !== 'vertical') {
-                if (label === 'credit' && (name === 'paypal' || name === 'pp')) {
+            if (isFundingThrottleEnabled && layout !== BUTTON_LAYOUT.VERTICAL) {
+                if (label === BUTTON_LABEL.CREDIT && (name === BUTTON_LOGO.PAYPAL || name === BUTTON_LOGO.PP)) {
                     return;
                 }
 
-                if (name === 'credit') {
-                    color = 'silver';
-                    logoColor = 'blue';
+                if (name === BUTTON_LOGO.CREDIT) {
+                    color = BUTTON_COLOR.SILVER;
+                    logoColor = BUTTON_COLOR.BLUE;
                 }
             }
             

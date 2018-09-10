@@ -3,7 +3,7 @@
 import { info, track, flush as flushLogs } from 'beaver-logger/client';
 import { getDomain } from 'cross-domain-utils/src';
 
-import { FPTI, COUNTRY } from '../constants';
+import { FPTI, COUNTRY, BUTTON_LABEL, BUTTON_LAYOUT } from '../constants';
 import { config } from '../config';
 
 import { match } from './util';
@@ -137,26 +137,12 @@ export function getReturnToken() : ?string {
     }
 }
 
-type CustomThrottle = Throttle & {
-    isActive : () => boolean
-};
-
-export function buildFundingLogoThrottle(props : Object) : CustomThrottle {
-
-    let emptyThrottle = {
-        isActive:     () => false,
-        isEnabled:    () => false,
-        isDisabled:   () => true,
-        getTreatment: () => '',
-        log:          () => emptyThrottle,
-        logStart:     () => emptyThrottle,
-        logComplete:  () => emptyThrottle
-    };
+export function buildFundingLogoThrottle(props : Object) : ?Throttle {
 
     let { layout, label, locale, browserLocale } = props;
 
     if (browserLocale.country !== COUNTRY.US) {
-        return emptyThrottle;
+        return null;
     }
 
     let localeString = locale;
@@ -166,25 +152,24 @@ export function buildFundingLogoThrottle(props : Object) : CustomThrottle {
     }
 
     if (localeString !== 'en_US') {
-        return emptyThrottle;
+        return null;
     }
 
-    if (label !== 'checkout' && label !== 'paypal' && label !== 'pay' && label !== 'buynow') {
-        return emptyThrottle;
+    if (label !== BUTTON_LABEL.CHECKOUT && label !== BUTTON_LABEL.PAYPAL && label !== BUTTON_LABEL.PAY && label !== BUTTON_LABEL.BUYNOW) {
+        return null;
     }
 
     let domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
     if (config.bmlCreditTest.domains.indexOf(domain) === -1) {
-        return emptyThrottle;
+        return null;
     }
 
-    if (layout === undefined || (layout && layout === 'horizontal')) {
+    if (layout === undefined || (layout && layout === BUTTON_LAYOUT.HORIZONTAL)) {
         return {
-            ...getThrottle('ppc_rebrand', 50),
-            isActive: () => true
+            ...getThrottle('ppc_rebrand', 50)
         };
     }
 
-    return emptyThrottle;
+    return null;
 
 }

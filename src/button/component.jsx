@@ -129,10 +129,6 @@ export let Button : Component<ButtonOptions> = create({
     // eslint-disable-next-line no-unused-vars
     prerenderTemplate({ props, jsxDom } : { props : Object, jsxDom : Function }) : HTMLElement {
 
-        if (fundingLogoThrottle.isEnabled()) {
-            props.isFundingThrottleEnabled = true;
-        }
-
         let template = (
             <div innerHTML={ componentTemplate({ props }) }></div>
         );
@@ -193,10 +189,11 @@ export let Button : Component<ButtonOptions> = create({
         },
 
         isFundingThrottleEnabled: {
-            type:     'boolean',
-            required: false,
+            type:       'boolean',
+            queryParam: true,
+            required:   false,
             def() : boolean {
-                return false;
+                return fundingLogoThrottle && fundingLogoThrottle.isEnabled() ? true : false;
             }
         },
 
@@ -438,11 +435,9 @@ export let Button : Component<ButtonOptions> = create({
                 return {};
             },
             decorate({ allowed = [], disallowed = [] } : Object = {}, props : ButtonOptions) : {} {
-
-                let throttleProps = { ...normalizeProps(props), browserLocale: getBrowserLocale() };
-                fundingLogoThrottle = buildFundingLogoThrottle(throttleProps);
-
-                if (fundingLogoThrottle.isActive()) {
+                
+                fundingLogoThrottle = buildFundingLogoThrottle({ ...normalizeProps(props), browserLocale: getBrowserLocale() });
+                if (fundingLogoThrottle) {
                     allowed = [ ...allowed, FUNDING.CREDIT ];
                     const creditIndex = disallowed.indexOf(FUNDING.CREDIT);
                     if (creditIndex !== -1) {
@@ -538,7 +533,7 @@ export let Button : Component<ButtonOptions> = create({
                         });
                     }
 
-                    if (fundingLogoThrottle.isActive()) {
+                    if (fundingLogoThrottle) {
                         fundingLogoThrottle.logStart({
                             [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
                         });
@@ -633,6 +628,12 @@ export let Button : Component<ButtonOptions> = create({
                     onAuthorizeListener.trigger({
                         paymentToken: data.paymentToken
                     });
+
+                    if (fundingLogoThrottle) {
+                        fundingLogoThrottle.logComplete({
+                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
+                        });
+                    }
 
                     if (creditThrottle) {
                         creditThrottle.logComplete({
@@ -752,7 +753,7 @@ export let Button : Component<ButtonOptions> = create({
                         });
                     }
                     
-                    if (fundingLogoThrottle.isActive()) {
+                    if (fundingLogoThrottle) {
                         fundingLogoThrottle.log('click', {
                             [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
                             [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
