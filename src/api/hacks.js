@@ -15,13 +15,15 @@ type PaymentSupplementType = {
 let payments : { [string] : PaymentSupplementType } = {};
 
 export function validateExtraPaymentOptions(options : Object) {
-    if (options.payer && options.payer.shipping_options) {
-        if (!Array.isArray(options.payer.shipping_options)) {
+    const transaction = options.transactions && options.transactions[0];
+
+    if (transaction && transaction.item_list && transaction.item_list.shipping_options) {
+        if (!Array.isArray(transaction.item_list.shipping_options)) {
             throw new TypeError(`Expected shipping_options to be an array`);
         }
 
         let uniqueIdCheck = {};
-        for (let option of options.payer.shipping_options) {
+        for (let option of transaction.item_list.shipping_options) {
             if (!option.id) {
                 throw new Error(`Expected option.id for shipping_options`);
             }
@@ -44,9 +46,11 @@ export function validateExtraPaymentOptions(options : Object) {
 }
 
 export function removeExtraPaymentOptions(options : Object) : Object {
+    const transaction = options.transactions && options.transactions[0];
+
     options = JSON.parse(JSON.stringify(options));
-    if (options.payer && options.payer.shipping_options) {
-        delete options.payer.shipping_options;
+    if (transaction.item_list.shipping_options) {
+        delete options.transactions[0].item_list.shipping_options;
     }
     return options;
 }
