@@ -327,7 +327,20 @@ export function getDomainSetting<T : mixed>(name : string, def : ?T) : ?T {
     return def;
 }
 
-export function patchWithOps<T : Object>(obj : ?Object, patch : Array<T>) : Object {
+const PATCH_OPS = {
+    add:     'add',
+    remove:  'remove',
+    replace: 'replace'
+};
+
+type PatchOp = $Values<typeof PATCH_OPS>;
+type Patch = {
+    op : PatchOp,
+    path : string,
+    value : ?mixed
+};
+
+export function patchWithOps(obj : ?Object, patch : Array<Patch>) : Object {
     let patchedObj = { ...obj };
 
     const changePropertyFromPath = (target : Object, path : string, value : mixed, op : ?string) => {
@@ -345,14 +358,14 @@ export function patchWithOps<T : Object>(obj : ?Object, patch : Array<T>) : Obje
         let targetProp = target[props[length]];
 
         switch (op) {
-        case 'add':
+        case PATCH_OPS.add:
             if (Array.isArray(target[props[length]])) {
                 targetProp = [ ...targetProp, value ];
             } else if (typeof targetProp === 'object') {
                 targetProp = { ...targetProp, value };
             }
             break;
-        case 'replace':
+        case PATCH_OPS.replace:
         default:
             target[props[length]] = value;
         }
