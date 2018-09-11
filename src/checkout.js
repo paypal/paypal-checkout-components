@@ -22,7 +22,7 @@ type CheckoutComponent = {
     close : () => ZalgoPromise<void>
 };
 
-function buildActions(checkout : CheckoutComponent, orderID : string) : ActionsType {
+function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : ActionsType {
 
     let restartFlow = memoize(() =>
         checkout.close().then(() => {
@@ -86,7 +86,7 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
         onError: window.xprops.onError,
 
         onAuthorize({ orderID, payerID }) : ZalgoPromise<void> {
-            let actions = buildActions(this, orderID);
+            let actions = buildExecuteActions(this, orderID);
 
             return window.xprops.onApprove({ orderID, payerID }, actions).catch(err => {
                 return window.xchild.error(err);
