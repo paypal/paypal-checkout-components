@@ -277,14 +277,16 @@ export let Button : Component<ButtonProps> = create({
                         }
                     };
 
-                    return ZalgoPromise.try(() => {
-                        return original.call(this, data, actions);
-                    }).catch(err => {
-                        if (props.onError) {
-                            return props.onError(err);
-                        }
-                        throw err;
-                    });
+                    if (original) {
+                        return ZalgoPromise.try(() => {
+                            return original.call(this, data, actions);
+                        }).catch(err => {
+                            if (props.onError) {
+                                return props.onError(err);
+                            }
+                            throw err;
+                        });
+                    }
                 };
             }
         },
