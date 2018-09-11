@@ -37,9 +37,9 @@ module.exports =
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
+/******/ 			console.warn('meep'); Object.defineProperty(exports, name, {
+/******/ 				configurable: true,
+/******/ 				enumerable: false,
 /******/ 				get: getter
 /******/ 			});
 /******/ 		}
@@ -352,9 +352,10 @@ var KEY_CODES = {
 /* unused harmony export enablePerformance */
 /* unused harmony export getPageRenderTime */
 /* unused harmony export htmlEncode */
-/* harmony export (immutable) */ __webpack_exports__["a"] = isBrowser;
+/* harmony export (immutable) */ __webpack_exports__["b"] = isBrowser;
 /* unused harmony export querySelectorAll */
 /* unused harmony export onClick */
+/* harmony export (immutable) */ __webpack_exports__["a"] = getScript;
 
 
 
@@ -576,6 +577,31 @@ function onClick(element, handler) {
             return handler(event);
         }
     });
+}
+
+function getScript(_ref2) {
+    var _ref2$host = _ref2.host,
+        host = _ref2$host === undefined ? window.location.host : _ref2$host,
+        path = _ref2.path;
+
+    return Object(util["b" /* inlineMemoize */])(getScript, function () {
+
+        var url = '' + host + path;
+        var scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
+
+        for (var _i4 = 0, _length4 = scripts == null ? 0 : scripts.length; _i4 < _length4; _i4++) {
+            var script = scripts[_i4];
+            if (!script.src) {
+                continue;
+            }
+
+            var src = script.src.replace(/^https?:\/\//, '').split('?')[0];
+
+            if (src === url) {
+                return script;
+            }
+        }
+    }, [path]);
 }
 
 /***/ }),
@@ -883,7 +909,8 @@ function addHeaderBuilder(method) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__device__ = __webpack_require__("./node_modules/belter/src/device.js");
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dom__ = __webpack_require__("./node_modules/belter/src/dom.js");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "isBrowser", function() { return __WEBPACK_IMPORTED_MODULE_1__dom__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "getScript", function() { return __WEBPACK_IMPORTED_MODULE_1__dom__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "isBrowser", function() { return __WEBPACK_IMPORTED_MODULE_1__dom__["b"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__experiment__ = __webpack_require__("./node_modules/belter/src/experiment.js");
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__global__ = __webpack_require__("./node_modules/belter/src/global.js");
@@ -896,15 +923,16 @@ function addHeaderBuilder(method) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__storage__ = __webpack_require__("./node_modules/belter/src/storage.js");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "getStorage", function() { return __WEBPACK_IMPORTED_MODULE_5__storage__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__util__ = __webpack_require__("./node_modules/belter/src/util.js");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "getGlobal", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["a"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "max", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["d"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "noop", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["e"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "objFilter", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["f"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "perc", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["g"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "promiseDebounce", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["h"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "safeInterval", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["k"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "uniqueID", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["m"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "values", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["n"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "stringifyError", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["l"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "stringifyErrorMessage", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["m"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "uniqueID", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["o"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "values", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["p"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__http__ = __webpack_require__("./node_modules/belter/src/http.js");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "request", function() { return __WEBPACK_IMPORTED_MODULE_7__http__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__types__ = __webpack_require__("./node_modules/belter/src/types.js");
@@ -1116,7 +1144,7 @@ function SVG(props) {
         throw new TypeError('Expected svg prop to be a string or jsx html node');
     }
 
-    return jsxToHTML('img', _extends({ src: Object(__WEBPACK_IMPORTED_MODULE_0__util__["l" /* svgToBase64 */])(svg.toString()) }, otherProps));
+    return jsxToHTML('img', _extends({ src: Object(__WEBPACK_IMPORTED_MODULE_0__util__["n" /* svgToBase64 */])(svg.toString()) }, otherProps));
 }
 
 function placeholderToJSX(text, placeholders) {
@@ -1177,12 +1205,12 @@ function getStorage(_ref) {
 
         if (!storage) {
             storage = {
-                id: Object(__WEBPACK_IMPORTED_MODULE_0__util__["m" /* uniqueID */])()
+                id: Object(__WEBPACK_IMPORTED_MODULE_0__util__["o" /* uniqueID */])()
             };
         }
 
         if (!storage.id) {
-            storage.id = Object(__WEBPACK_IMPORTED_MODULE_0__util__["m" /* uniqueID */])();
+            storage.id = Object(__WEBPACK_IMPORTED_MODULE_0__util__["o" /* uniqueID */])();
         }
 
         accessedStorage = storage;
@@ -1218,7 +1246,7 @@ function getStorage(_ref) {
 
             if (!session) {
                 session = {
-                    guid: Object(__WEBPACK_IMPORTED_MODULE_0__util__["m" /* uniqueID */])(),
+                    guid: Object(__WEBPACK_IMPORTED_MODULE_0__util__["o" /* uniqueID */])(),
                     created: now
                 };
             }
@@ -1270,25 +1298,25 @@ function getStorage(_ref) {
 /* unused harmony export once */
 /* unused harmony export base64encode */
 /* unused harmony export base64decode */
-/* harmony export (immutable) */ __webpack_exports__["m"] = uniqueID;
+/* harmony export (immutable) */ __webpack_exports__["o"] = uniqueID;
 /* unused harmony export hashStr */
 /* unused harmony export strHashStr */
 /* unused harmony export match */
 /* unused harmony export eventEmitter */
 /* unused harmony export awaitKey */
-/* unused harmony export stringifyError */
-/* unused harmony export stringifyErrorMessage */
+/* harmony export (immutable) */ __webpack_exports__["l"] = stringifyError;
+/* harmony export (immutable) */ __webpack_exports__["m"] = stringifyErrorMessage;
 /* unused harmony export stringify */
 /* harmony export (immutable) */ __webpack_exports__["c"] = isLocalStorageEnabled;
 /* unused harmony export domainMatches */
 /* unused harmony export patchMethod */
 /* unused harmony export extend */
-/* harmony export (immutable) */ __webpack_exports__["n"] = values;
+/* harmony export (immutable) */ __webpack_exports__["p"] = values;
 /* harmony export (immutable) */ __webpack_exports__["g"] = perc;
 /* unused harmony export min */
 /* harmony export (immutable) */ __webpack_exports__["d"] = max;
 /* harmony export (immutable) */ __webpack_exports__["i"] = regexMap;
-/* harmony export (immutable) */ __webpack_exports__["l"] = svgToBase64;
+/* harmony export (immutable) */ __webpack_exports__["n"] = svgToBase64;
 /* harmony export (immutable) */ __webpack_exports__["f"] = objFilter;
 /* unused harmony export identity */
 /* harmony export (immutable) */ __webpack_exports__["j"] = regexTokenize;
@@ -1752,9 +1780,9 @@ function promiseDebounce(method) {
             timeout = null;
 
             __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__["a" /* ZalgoPromise */]['try'](method).then(function (result) {
-                return localPromise.resolve(result);
+                localPromise.resolve(result);
             }, function (err) {
-                return localPromise.reject(err);
+                localPromise.reject(err);
             });
         }, delay);
 
@@ -1874,8 +1902,7 @@ function undotify(obj) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__("./node_modules/cross-domain-utils/src/utils.js");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "getActualDomain", function() { return __WEBPACK_IMPORTED_MODULE_0__utils__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "getDomain", function() { return __WEBPACK_IMPORTED_MODULE_0__utils__["b"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "isCurrentDomain", function() { return __WEBPACK_IMPORTED_MODULE_0__utils__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__types__ = __webpack_require__("./node_modules/cross-domain-utils/src/types.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__types__);
 /* unused harmony namespace reexport */
@@ -1911,8 +1938,8 @@ function noop() {
 /* unused harmony export getParent */
 /* unused harmony export getOpener */
 /* unused harmony export canReadFromWindow */
-/* harmony export (immutable) */ __webpack_exports__["a"] = getActualDomain;
-/* harmony export (immutable) */ __webpack_exports__["b"] = getDomain;
+/* unused harmony export getActualDomain */
+/* unused harmony export getDomain */
 /* unused harmony export isBlankDomain */
 /* unused harmony export isActuallySameDomain */
 /* unused harmony export isSameDomain */
@@ -1947,6 +1974,8 @@ function noop() {
 /* unused harmony export getDomainFromUrl */
 /* unused harmony export onCloseWindow */
 /* unused harmony export isWindow */
+/* unused harmony export isBrowser */
+/* harmony export (immutable) */ __webpack_exports__["a"] = isCurrentDomain;
 
 /* eslint max-lines: 0 */
 
@@ -2042,7 +2071,7 @@ function getActualDomain(win) {
     if (protocol === CONSTANTS.ABOUT_PROTOCOL) {
 
         var parent = getParent(win);
-        if (parent && canReadFromWindow(win)) {
+        if (parent && canReadFromWindow(parent)) {
             // $FlowFixMe
             return getActualDomain(parent);
         }
@@ -2322,8 +2351,12 @@ function getTop(win) {
 
 function getAllFramesInWindow(win) {
     var top = getTop(win);
-    // $FlowFixMe
-    return getAllChildFrames(top).concat(top);
+
+    if (!top) {
+        throw new Error('Can not determine top window');
+    }
+
+    return [].concat(getAllChildFrames(top), [top]);
 }
 
 function isTop(win) {
@@ -2927,6 +2960,18 @@ function isWindow(obj) {
     return false;
 }
 
+function isBrowser() {
+    return typeof window !== 'undefined';
+}
+
+function isCurrentDomain(domain) {
+    if (!isBrowser()) {
+        return false;
+    }
+
+    return getDomain() === domain;
+}
+
 /***/ }),
 
 /***/ "./node_modules/paypal-braintree-web-client/dist/paypal-braintree-sdk-client.js":
@@ -2980,10 +3025,20 @@ function isWindow(obj) {
         },
         "./node_modules/belter/src/dom.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
-            __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __webpack_require__("./node_modules/belter/src/util.js"), 
+            __webpack_require__("./node_modules/zalgo-promise/src/index.js");
+            var util = __webpack_require__("./node_modules/belter/src/util.js");
             __webpack_require__("./node_modules/belter/src/device.js");
-            __webpack_exports__.a = function() {
+            __webpack_exports__.b = function() {
                 return "undefined" != typeof window;
+            };
+            __webpack_exports__.a = function getScript(_ref2) {
+                var _ref2$host = _ref2.host, host = void 0 === _ref2$host ? window.location.host : _ref2$host, path = _ref2.path;
+                return Object(util.b)(getScript, function() {
+                    for (var url = "" + host + path, scripts = Array.prototype.slice.call(document.getElementsByTagName("script")), _i4 = 0, _length4 = null == scripts ? 0 : scripts.length; _i4 < _length4; _i4++) {
+                        var script = scripts[_i4];
+                        if (script.src && script.src.replace(/^https?:\/\//, "").split("?")[0] === url) return script;
+                    }
+                }, [ path ]);
             };
         },
         "./node_modules/belter/src/experiment.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -3059,8 +3114,11 @@ function isWindow(obj) {
             "use strict";
             __webpack_require__("./node_modules/belter/src/device.js");
             var __WEBPACK_IMPORTED_MODULE_1__dom__ = __webpack_require__("./node_modules/belter/src/dom.js");
-            __webpack_require__.d(__webpack_exports__, "isBrowser", function() {
+            __webpack_require__.d(__webpack_exports__, "getScript", function() {
                 return __WEBPACK_IMPORTED_MODULE_1__dom__.a;
+            });
+            __webpack_require__.d(__webpack_exports__, "isBrowser", function() {
+                return __WEBPACK_IMPORTED_MODULE_1__dom__.b;
             });
             __webpack_require__("./node_modules/belter/src/experiment.js"), __webpack_require__("./node_modules/belter/src/global.js"), 
             __webpack_require__("./node_modules/belter/src/jsx.jsx");
@@ -3069,9 +3127,6 @@ function isWindow(obj) {
                 return __WEBPACK_IMPORTED_MODULE_5__storage__.a;
             });
             var __WEBPACK_IMPORTED_MODULE_6__util__ = __webpack_require__("./node_modules/belter/src/util.js");
-            __webpack_require__.d(__webpack_exports__, "getGlobal", function() {
-                return __WEBPACK_IMPORTED_MODULE_6__util__.a;
-            });
             __webpack_require__.d(__webpack_exports__, "noop", function() {
                 return __WEBPACK_IMPORTED_MODULE_6__util__.d;
             });
@@ -3083,6 +3138,12 @@ function isWindow(obj) {
             });
             __webpack_require__.d(__webpack_exports__, "safeInterval", function() {
                 return __WEBPACK_IMPORTED_MODULE_6__util__.i;
+            });
+            __webpack_require__.d(__webpack_exports__, "stringifyError", function() {
+                return __WEBPACK_IMPORTED_MODULE_6__util__.j;
+            });
+            __webpack_require__.d(__webpack_exports__, "stringifyErrorMessage", function() {
+                return __WEBPACK_IMPORTED_MODULE_6__util__.k;
             });
             var __WEBPACK_IMPORTED_MODULE_7__http__ = __webpack_require__("./node_modules/belter/src/http.js");
             __webpack_require__.d(__webpack_exports__, "request", function() {
@@ -3175,9 +3236,9 @@ function isWindow(obj) {
                     }
                     storage || (storage = Object(__WEBPACK_IMPORTED_MODULE_0__util__.a)()[STORAGE_KEY]);
                     storage || (storage = {
-                        id: Object(__WEBPACK_IMPORTED_MODULE_0__util__.k)()
+                        id: Object(__WEBPACK_IMPORTED_MODULE_0__util__.m)()
                     });
-                    storage.id || (storage.id = Object(__WEBPACK_IMPORTED_MODULE_0__util__.k)());
+                    storage.id || (storage.id = Object(__WEBPACK_IMPORTED_MODULE_0__util__.m)());
                     accessedStorage = storage;
                     var result = handler(storage);
                     localStorageEnabled ? window.localStorage.setItem(STORAGE_KEY, JSON.stringify(storage)) : Object(__WEBPACK_IMPORTED_MODULE_0__util__.a)()[STORAGE_KEY] = storage;
@@ -3189,7 +3250,7 @@ function isWindow(obj) {
                         var session = storage.__session__, now = Date.now();
                         session && now - session.created > lifetime && (session = null);
                         session || (session = {
-                            guid: Object(__WEBPACK_IMPORTED_MODULE_0__util__.k)(),
+                            guid: Object(__WEBPACK_IMPORTED_MODULE_0__util__.m)(),
                             created: now
                         });
                         storage.__session__ = session;
@@ -3224,11 +3285,32 @@ function isWindow(obj) {
             __webpack_exports__.a = getGlobal;
             __webpack_exports__.b = inlineMemoize;
             __webpack_exports__.d = function() {};
-            __webpack_exports__.k = function() {
+            __webpack_exports__.m = function() {
                 var chars = "0123456789abcdef";
                 return "xxxxxxxxxx".replace(/./g, function() {
                     return chars.charAt(Math.floor(Math.random() * chars.length));
                 }) + "_" + base64encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+            };
+            __webpack_exports__.j = function stringifyError(err) {
+                var level = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1;
+                if (level >= 3) return "stringifyError stack overflow";
+                try {
+                    if (!err) return "<unknown error: " + Object.prototype.toString.call(err) + ">";
+                    if ("string" == typeof err) return err;
+                    if (err instanceof Error) {
+                        var stack = err && err.stack, message = err && err.message;
+                        if (stack && message) return -1 !== stack.indexOf(message) ? stack : message + "\n" + stack;
+                        if (stack) return stack;
+                        if (message) return message;
+                    }
+                    return "function" == typeof err.toString ? err.toString() : Object.prototype.toString.call(err);
+                } catch (newErr) {
+                    return "Error while stringifying error: " + stringifyError(newErr, level + 1);
+                }
+            };
+            __webpack_exports__.k = function(err) {
+                var defaultMessage = "<unknown error: " + Object.prototype.toString.call(err) + ">";
+                return err ? err instanceof Error ? err.message || defaultMessage : "string" == typeof err.message && err.message || defaultMessage : defaultMessage;
             };
             __webpack_exports__.c = function isLocalStorageEnabled() {
                 return inlineMemoize(isLocalStorageEnabled, function() {
@@ -3247,12 +3329,12 @@ function isWindow(obj) {
             };
             __webpack_exports__.g = function(str, regex, handler) {
                 var results = [];
-                str.replace(regex, function() {
-                    results.push(handler.apply(null, arguments));
+                str.replace(regex, function(item) {
+                    results.push(handler ? handler.apply(null, arguments) : item);
                 });
                 return results;
             };
-            __webpack_exports__.j = function(svg) {
+            __webpack_exports__.l = function(svg) {
                 return "data:image/svg+xml;base64," + base64encode(svg);
             };
             __webpack_exports__.e = function(obj) {
@@ -3277,9 +3359,9 @@ function isWindow(obj) {
                         promise = null;
                         timeout = null;
                         __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(method).then(function(result) {
-                            return localPromise.resolve(result);
+                            localPromise.resolve(result);
                         }, function(err) {
-                            return localPromise.reject(err);
+                            localPromise.reject(err);
                         });
                     }, delay);
                     return localPromise;
@@ -3335,6 +3417,9 @@ function isWindow(obj) {
                         };
                         return cache[key].value;
                     };
+                    method.__memoized__.reset = function() {
+                        cache = {};
+                    };
                     return method.__memoized__;
                 }(logic));
                 return method.__memoized__.apply(method, args);
@@ -3375,8 +3460,8 @@ function isWindow(obj) {
             function getGlobal() {
                 var glob = void 0;
                 if ("undefined" != typeof window) glob = window; else {
-                    if ("undefined" == typeof global) throw new TypeError("Can not find global");
-                    glob = global;
+                    if ("undefined" == typeof window) throw new TypeError("Can not find global");
+                    glob = window;
                 }
                 var zalgoGlobal = glob.__zalgopromise__ = glob.__zalgopromise__ || {};
                 zalgoGlobal.flushPromises = zalgoGlobal.flushPromises || [];
@@ -3436,15 +3521,15 @@ function isWindow(obj) {
                     this.rejected = !0;
                     this.error = error;
                     this.errorHandled || setTimeout(function() {
-                        _this2.errorHandled || function(err) {
+                        _this2.errorHandled || function(err, promise) {
                             if (-1 === getGlobal().dispatchedErrors.indexOf(err)) {
                                 getGlobal().dispatchedErrors.push(err);
                                 setTimeout(function() {
                                     throw err;
                                 }, 1);
-                                for (var j = 0; j < getGlobal().possiblyUnhandledPromiseHandlers.length; j++) getGlobal().possiblyUnhandledPromiseHandlers[j](err);
+                                for (var j = 0; j < getGlobal().possiblyUnhandledPromiseHandlers.length; j++) getGlobal().possiblyUnhandledPromiseHandlers[j](err, promise);
                             }
-                        }(error);
+                        }(error, _this2);
                     }, 1);
                     this.dispatch();
                     return this;
@@ -3508,13 +3593,14 @@ function isWindow(obj) {
                 ZalgoPromise.prototype.catch = function(onError) {
                     return this.then(void 0, onError);
                 };
-                ZalgoPromise.prototype.finally = function(handler) {
+                ZalgoPromise.prototype.finally = function(onFinally) {
+                    if (onFinally && "function" != typeof onFinally && !onFinally.call) throw new Error("Promise.finally expected a function");
                     return this.then(function(result) {
-                        return ZalgoPromise.try(handler).then(function() {
+                        return ZalgoPromise.try(onFinally).then(function() {
                             return result;
                         });
                     }, function(err) {
-                        return ZalgoPromise.try(handler).then(function() {
+                        return ZalgoPromise.try(onFinally).then(function() {
                             throw err;
                         });
                     });
@@ -3595,6 +3681,7 @@ function isWindow(obj) {
                     }(handler);
                 };
                 ZalgoPromise.try = function(method, context, args) {
+                    if (method && "function" != typeof method && !method.call) throw new Error("Promise.try expected a function");
                     var result = void 0;
                     try {
                         result = method.apply(context, args || []);
@@ -3630,11 +3717,25 @@ function isWindow(obj) {
         },
         "./src/config.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
+            __webpack_exports__.c = buildConfigUrl;
             __webpack_require__.d(__webpack_exports__, "a", function() {
+                return DOMAINS;
+            });
+            __webpack_require__.d(__webpack_exports__, "b", function() {
                 return URLS;
             });
-            var URLS = {
-                LOGGER: "https://www.paypal.com/webapps/hermes/logger"
+            __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __webpack_require__("./src/globals.js");
+            function buildConfigUrl(domain, uri) {
+                return "" + domain + (uri || "");
+            }
+            var DOMAINS = {
+                PAYPAL: "https://www.paypal.com",
+                LOGGER: "https://www.paypal.com",
+                API: "https://www.cors.api.paypal.com"
+            }, URLS = {
+                get LOGGER() {
+                    return buildConfigUrl(DOMAINS.LOGGER, "/xoplatform/logger/api/logger");
+                }
             };
         },
         "./src/constants.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -3650,6 +3751,9 @@ function isWindow(obj) {
             });
             __webpack_require__.d(__webpack_exports__, "c", function() {
                 return DEFAULT_ENV;
+            });
+            __webpack_require__.d(__webpack_exports__, "k", function() {
+                return SDK_SETTINGS;
             });
             __webpack_require__.d(__webpack_exports__, "a", function() {
                 return COUNTRY;
@@ -3676,7 +3780,9 @@ function isWindow(obj) {
                 PRODUCTION: "production",
                 TEST: "test",
                 DEMO: "demo"
-            }, GLOBAL_NAMESPACE = "paypal", DEFAULT_ENV = ENV.PRODUCTION, COUNTRY = {
+            }, GLOBAL_NAMESPACE = "paypal", DEFAULT_ENV = ENV.PRODUCTION, SDK_SETTINGS = {
+                CLIENT_TOKEN: "data-client-token"
+            }, COUNTRY = {
                 AD: "AD",
                 AE: "AE",
                 AG: "AG",
@@ -4041,113 +4147,161 @@ function isWindow(obj) {
                 PAYMENTS_SDK: "payments_sdk"
             };
         },
+        "./src/globals.js": function(module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_exports__.d = function() {
+                return __HOST__;
+            };
+            __webpack_exports__.e = function() {
+                return __HOSTNAME__;
+            };
+            __webpack_exports__.j = function() {
+                return __PORT__;
+            };
+            __webpack_exports__.i = function() {
+                return __PATH__;
+            };
+            __webpack_exports__.c = function() {
+                return "production";
+            };
+            __webpack_exports__.a = function() {
+                return __CLIENT_ID__;
+            };
+            __webpack_exports__.h = function() {
+                return __MERCHANT_ID__;
+            };
+            __webpack_exports__.g = function() {
+                return {
+                    lang: __LOCALE__.__LANG__,
+                    country: __LOCALE__.__COUNTRY__
+                };
+            };
+            __webpack_exports__.k = function() {
+                return __STAGE_HOST__;
+            };
+            __webpack_exports__.f = function() {
+                return __INTENT__;
+            };
+            __webpack_exports__.b = function() {
+                return __COMMIT__;
+            };
+            __webpack_exports__.l = function() {
+                return __VAULT__;
+            };
+        },
         "./src/index.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
             Object.defineProperty(__webpack_exports__, "__esModule", {
                 value: !0
             });
-            var __WEBPACK_IMPORTED_MODULE_0__interface__ = __webpack_require__("./src/interface.js");
-            __webpack_require__.d(__webpack_exports__, "attach", function() {
-                return __WEBPACK_IMPORTED_MODULE_0__interface__.a;
-            });
-            var __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/constants.js");
+            var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/constants.js");
             __webpack_require__.d(__webpack_exports__, "GLOBAL_KEY", function() {
-                return __WEBPACK_IMPORTED_MODULE_1__constants__.h;
+                return __WEBPACK_IMPORTED_MODULE_0__constants__.h;
             });
             __webpack_require__.d(__webpack_exports__, "ENV", function() {
-                return __WEBPACK_IMPORTED_MODULE_1__constants__.d;
+                return __WEBPACK_IMPORTED_MODULE_0__constants__.d;
             });
             __webpack_require__.d(__webpack_exports__, "GLOBAL_NAMESPACE", function() {
-                return __WEBPACK_IMPORTED_MODULE_1__constants__.i;
+                return __WEBPACK_IMPORTED_MODULE_0__constants__.i;
             });
             __webpack_require__.d(__webpack_exports__, "DEFAULT_ENV", function() {
-                return __WEBPACK_IMPORTED_MODULE_1__constants__.c;
+                return __WEBPACK_IMPORTED_MODULE_0__constants__.c;
+            });
+            __webpack_require__.d(__webpack_exports__, "SDK_SETTINGS", function() {
+                return __WEBPACK_IMPORTED_MODULE_0__constants__.k;
             });
             __webpack_require__.d(__webpack_exports__, "COUNTRY", function() {
-                return __WEBPACK_IMPORTED_MODULE_1__constants__.a;
+                return __WEBPACK_IMPORTED_MODULE_0__constants__.a;
             });
             __webpack_require__.d(__webpack_exports__, "LANG", function() {
-                return __WEBPACK_IMPORTED_MODULE_1__constants__.j;
+                return __WEBPACK_IMPORTED_MODULE_0__constants__.j;
             });
             __webpack_require__.d(__webpack_exports__, "COUNTRY_LANGS", function() {
-                return __WEBPACK_IMPORTED_MODULE_1__constants__.b;
+                return __WEBPACK_IMPORTED_MODULE_0__constants__.b;
             });
             __webpack_require__.d(__webpack_exports__, "FPTI_KEY", function() {
-                return __WEBPACK_IMPORTED_MODULE_1__constants__.g;
+                return __WEBPACK_IMPORTED_MODULE_0__constants__.g;
             });
             __webpack_require__.d(__webpack_exports__, "FPTI_DATA_SOURCE", function() {
-                return __WEBPACK_IMPORTED_MODULE_1__constants__.e;
+                return __WEBPACK_IMPORTED_MODULE_0__constants__.e;
             });
             __webpack_require__.d(__webpack_exports__, "FPTI_FEED", function() {
-                return __WEBPACK_IMPORTED_MODULE_1__constants__.f;
+                return __WEBPACK_IMPORTED_MODULE_0__constants__.f;
             });
-            var __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config.js");
+            var __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__("./src/config.js");
+            __webpack_require__.d(__webpack_exports__, "buildConfigUrl", function() {
+                return __WEBPACK_IMPORTED_MODULE_1__config__.c;
+            });
+            __webpack_require__.d(__webpack_exports__, "DOMAINS", function() {
+                return __WEBPACK_IMPORTED_MODULE_1__config__.a;
+            });
             __webpack_require__.d(__webpack_exports__, "URLS", function() {
-                return __WEBPACK_IMPORTED_MODULE_2__config__.a;
+                return __WEBPACK_IMPORTED_MODULE_1__config__.b;
             });
-            var __WEBPACK_IMPORTED_MODULE_3__logger__ = __webpack_require__("./src/logger.js");
+            var __WEBPACK_IMPORTED_MODULE_2__logger__ = __webpack_require__("./src/logger.js");
             __webpack_require__.d(__webpack_exports__, "logger", function() {
-                return __WEBPACK_IMPORTED_MODULE_3__logger__.b;
+                return __WEBPACK_IMPORTED_MODULE_2__logger__.b;
             });
             __webpack_require__.d(__webpack_exports__, "getSessionID", function() {
-                return __WEBPACK_IMPORTED_MODULE_3__logger__.a;
+                return __WEBPACK_IMPORTED_MODULE_2__logger__.a;
             });
-            var __WEBPACK_IMPORTED_MODULE_4__types__ = __webpack_require__("./src/types.js");
-            __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__types__);
-            for (var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_4__types__) [ "attach", "GLOBAL_KEY", "ENV", "GLOBAL_NAMESPACE", "DEFAULT_ENV", "COUNTRY", "LANG", "COUNTRY_LANGS", "FPTI_KEY", "FPTI_DATA_SOURCE", "FPTI_FEED", "URLS", "logger", "getSessionID", "default" ].indexOf(__WEBPACK_IMPORT_KEY__) < 0 && function(key) {
+            __webpack_require__.d(__webpack_exports__, "setupLogger", function() {
+                return __WEBPACK_IMPORTED_MODULE_2__logger__.c;
+            });
+            var __WEBPACK_IMPORTED_MODULE_3__types__ = __webpack_require__("./src/types.js");
+            __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__types__);
+            for (var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_3__types__) [ "GLOBAL_KEY", "ENV", "GLOBAL_NAMESPACE", "DEFAULT_ENV", "SDK_SETTINGS", "COUNTRY", "LANG", "COUNTRY_LANGS", "FPTI_KEY", "FPTI_DATA_SOURCE", "FPTI_FEED", "buildConfigUrl", "DOMAINS", "URLS", "logger", "getSessionID", "setupLogger", "default" ].indexOf(__WEBPACK_IMPORT_KEY__) < 0 && function(key) {
                 __webpack_require__.d(__webpack_exports__, key, function() {
-                    return __WEBPACK_IMPORTED_MODULE_4__types__[key];
+                    return __WEBPACK_IMPORTED_MODULE_3__types__[key];
                 });
             }(__WEBPACK_IMPORT_KEY__);
-        },
-        "./src/interface.js": function(module, __webpack_exports__, __webpack_require__) {
-            "use strict";
-            var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-                return typeof obj;
-            } : function(obj) {
-                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-            }, src = __webpack_require__("./node_modules/belter/src/index.js"), constants = __webpack_require__("./src/constants.js");
-            __webpack_exports__.a = function(moduleName, exportBuilder) {
-                if (exportBuilders[moduleName]) throw new Error("Already attached " + moduleName);
-                window[constants.i] = window[constants.i] || {};
-                window[constants.i].client = window.client || client;
-                exportBuilders[moduleName] = exportBuilder;
-            };
-            var exportBuilders = function(key, def) {
-                var glob = Object(src.getGlobal)();
-                glob[constants.h] = glob[constants.h] || {};
-                if (glob[constants.h].hasOwnProperty(key)) return glob[constants.h][key];
-                def = def || {};
-                glob[constants.h][key] = def;
-                return def;
-            }("exportBuilders", {});
-            function client() {
-                var clientOptions = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {
-                    env: constants.c
-                };
-                !function(_ref) {
-                    var item, env = _ref.env, auth = _ref.auth;
-                    if (env && -1 === function(obj) {
-                        if (Object.values) return Object.values(obj);
-                        var result = [];
-                        for (var key in obj) obj.hasOwnProperty(key) && result.push(obj[key]);
-                        return result;
-                    }(constants.d).indexOf(env)) throw new Error("Invalid env: " + env);
-                    if (auth && !(item = auth, "object" === (void 0 === item ? "undefined" : _typeof(item)) && null !== item)) throw new Error("Expected auth to be passed");
-                    if (auth && env && !auth[env]) throw new Error("Expected auth to be passed for env: " + env);
-                }(clientOptions = JSON.parse(JSON.stringify(clientOptions)));
-                var xports = {};
-                Object.keys(exportBuilders).forEach(function(moduleName) {
-                    !function(obj, source) {
-                        if (!source) return obj;
-                        if (Object.assign) return Object.assign(obj, source);
-                        for (var key in source) source.hasOwnProperty(key) && (obj[key] = source[key]);
-                    }(xports, exportBuilders[moduleName]({
-                        clientOptions: clientOptions
-                    }));
-                });
-                return xports;
-            }
+            var __WEBPACK_IMPORTED_MODULE_4__globals__ = __webpack_require__("./src/globals.js");
+            __webpack_require__.d(__webpack_exports__, "getHost", function() {
+                return __WEBPACK_IMPORTED_MODULE_4__globals__.d;
+            });
+            __webpack_require__.d(__webpack_exports__, "getHostName", function() {
+                return __WEBPACK_IMPORTED_MODULE_4__globals__.e;
+            });
+            __webpack_require__.d(__webpack_exports__, "getPort", function() {
+                return __WEBPACK_IMPORTED_MODULE_4__globals__.j;
+            });
+            __webpack_require__.d(__webpack_exports__, "getPath", function() {
+                return __WEBPACK_IMPORTED_MODULE_4__globals__.i;
+            });
+            __webpack_require__.d(__webpack_exports__, "getEnv", function() {
+                return __WEBPACK_IMPORTED_MODULE_4__globals__.c;
+            });
+            __webpack_require__.d(__webpack_exports__, "getClientID", function() {
+                return __WEBPACK_IMPORTED_MODULE_4__globals__.a;
+            });
+            __webpack_require__.d(__webpack_exports__, "getMerchantID", function() {
+                return __WEBPACK_IMPORTED_MODULE_4__globals__.h;
+            });
+            __webpack_require__.d(__webpack_exports__, "getLocale", function() {
+                return __WEBPACK_IMPORTED_MODULE_4__globals__.g;
+            });
+            __webpack_require__.d(__webpack_exports__, "getStageHost", function() {
+                return __WEBPACK_IMPORTED_MODULE_4__globals__.k;
+            });
+            __webpack_require__.d(__webpack_exports__, "getIntent", function() {
+                return __WEBPACK_IMPORTED_MODULE_4__globals__.f;
+            });
+            __webpack_require__.d(__webpack_exports__, "getCommit", function() {
+                return __WEBPACK_IMPORTED_MODULE_4__globals__.b;
+            });
+            __webpack_require__.d(__webpack_exports__, "getVault", function() {
+                return __WEBPACK_IMPORTED_MODULE_4__globals__.l;
+            });
+            var __WEBPACK_IMPORTED_MODULE_5__script__ = __webpack_require__("./src/script.js");
+            __webpack_require__.d(__webpack_exports__, "getSDKScript", function() {
+                return __WEBPACK_IMPORTED_MODULE_5__script__.b;
+            });
+            __webpack_require__.d(__webpack_exports__, "getSDKSettings", function() {
+                return __WEBPACK_IMPORTED_MODULE_5__script__.c;
+            });
+            __webpack_require__.d(__webpack_exports__, "getClientToken", function() {
+                return __WEBPACK_IMPORTED_MODULE_5__script__.a;
+            });
         },
         "./src/logger.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
@@ -4170,11 +4324,38 @@ function isWindow(obj) {
             function extendIfDefined(target, source) {
                 for (var key in source) source.hasOwnProperty(key) && source[key] && (target[key] = source[key]);
             }
-            var config = __webpack_require__("./src/config.js"), constants = __webpack_require__("./src/constants.js");
+            var config = __webpack_require__("./src/config.js"), constants = __webpack_require__("./src/constants.js"), globals = __webpack_require__("./src/globals.js");
             __webpack_require__.d(__webpack_exports__, "b", function() {
                 return logger;
             });
             __webpack_exports__.a = getSessionID;
+            __webpack_exports__.c = function() {
+                logger.addPayloadBuilder(function() {
+                    return {
+                        referer: window.location.host,
+                        uid: getSessionID(),
+                        env: Object(globals.c)()
+                    };
+                });
+                logger.addTrackingBuilder(function() {
+                    var _ref, sessionID = getSessionID();
+                    return (_ref = {})[constants.g.FEED] = constants.f.PAYMENTS_SDK, _ref[constants.g.DATA_SOURCE] = constants.e.PAYMENTS_SDK, 
+                    _ref[constants.g.CLIENT_ID] = Object(globals.a)(), _ref[constants.g.SELLER_ID] = Object(globals.h)(), 
+                    _ref[constants.g.SESSION_UID] = sessionID, _ref[constants.g.REFERER] = window.location.host, 
+                    _ref;
+                });
+                src.a.onPossiblyUnhandledException(function(err) {
+                    var _logger$track;
+                    logger.track(((_logger$track = {})[constants.g.ERROR_CODE] = "checkoutjs_error", 
+                    _logger$track[constants.g.ERROR_DESC] = Object(belter_src.stringifyErrorMessage)(err), 
+                    _logger$track));
+                    logger.error("unhandled_error", {
+                        stack: Object(belter_src.stringifyError)(err),
+                        errtype: {}.toString.call(err)
+                    });
+                    logger.flush().catch(belter_src.noop);
+                });
+            };
             var logger = function(_ref2) {
                 var url = _ref2.url, prefix = _ref2.prefix, _ref2$logLevel = _ref2.logLevel, logLevel = void 0 === _ref2$logLevel ? "warn" : _ref2$logLevel, _ref2$transport = _ref2.transport, transport = void 0 === _ref2$transport ? httpTransport : _ref2$transport, _ref2$flushInterval = _ref2.flushInterval, flushInterval = void 0 === _ref2$flushInterval ? 6e4 : _ref2$flushInterval, events = [], tracking = [], payloadBuilders = [], metaBuilders = [], trackingBuilders = [], headerBuilders = [];
                 function print(level, event, payload) {
@@ -4276,27 +4457,37 @@ function isWindow(obj) {
                     }
                 };
             }({
-                url: config.a.LOGGER
+                url: config.b.LOGGER
             }), storage = Object(belter_src.getStorage)({
                 name: "paypal_payments_sdk"
             });
             function getSessionID() {
                 return storage.getSessionID();
             }
-            logger.addPayloadBuilder(function() {
+        },
+        "./src/script.js": function(module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            __webpack_exports__.b = getSDKScript;
+            __webpack_exports__.c = getSDKSettings;
+            __webpack_exports__.a = function() {
+                var clientToken = getSDKSettings().clientToken;
+                if (!clientToken) throw new Error('Expected data-client-token="xyz" to be passed with client token, to ' + getSDKScript().outerHTML);
+                return clientToken;
+            };
+            var __WEBPACK_IMPORTED_MODULE_0_belter_src__ = __webpack_require__("./node_modules/belter/src/index.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/constants.js"), __WEBPACK_IMPORTED_MODULE_2__globals__ = __webpack_require__("./src/globals.js");
+            function getSDKScript() {
+                var script = Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__.getScript)({
+                    host: Object(__WEBPACK_IMPORTED_MODULE_2__globals__.d)(),
+                    path: Object(__WEBPACK_IMPORTED_MODULE_2__globals__.i)()
+                });
+                if (!script) throw new Error("PayPal Payments SDK script not present on page!");
+                return script;
+            }
+            function getSDKSettings() {
                 return {
-                    referer: window.location.host,
-                    uid: getSessionID(),
-                    env: "production"
+                    clientToken: getSDKScript().getAttribute(__WEBPACK_IMPORTED_MODULE_1__constants__.k.CLIENT_TOKEN)
                 };
-            });
-            logger.addTrackingBuilder(function() {
-                var _ref, sessionID = getSessionID();
-                return (_ref = {})[constants.g.FEED] = constants.f.PAYMENTS_SDK, _ref[constants.g.DATA_SOURCE] = constants.e.PAYMENTS_SDK, 
-                _ref[constants.g.CLIENT_ID] = __CLIENT_ID__, _ref[constants.g.SELLER_ID] = __MERCHANT_ID__, 
-                _ref[constants.g.SESSION_UID] = sessionID, _ref[constants.g.REFERER] = window.location.host, 
-                _ref;
-            });
+            }
         },
         "./src/types.js": function(module, exports) {}
     });
@@ -4320,26 +4511,71 @@ module.exports = __webpack_require__("./node_modules/paypal-braintree-web-client
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return URLS; });
-var URLS = {
+/* harmony export (immutable) */ __webpack_exports__["c"] = buildConfigUrl;
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DOMAINS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return URLS; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__globals__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/globals.js");
+
+
+
+
+function buildConfigUrl(domain, uri) {
+    if (false) {
+        domain = getActualDomain();
+    }
+    return '' + domain + (uri || '');
+}
+
+var DOMAINS = {
     local: {
-        LOGGER: 'http://localhost.paypal.com:8000/webapps/hermes/logger'
+        get PAYPAL() {
+            return 'http://localhost.paypal.com:' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["f" /* getPort */])();
+        },
+        get LOGGER() {
+            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["g" /* getStageHost */])();
+        },
+        get API() {
+            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["g" /* getStageHost */])();
+        }
     },
     stage: {
+        get PAYPAL() {
+            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["g" /* getStageHost */])();
+        },
         get LOGGER() {
-            return 'http://www.' + __STAGE__ + '/webapps/hermes/logger';
+            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["g" /* getStageHost */])();
+        },
+        get API() {
+            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["g" /* getStageHost */])() + ':12326';
         }
     },
     sandbox: {
-        LOGGER: 'https://www.sandbox.paypal.com/webapps/hermes/logger'
+        PAYPAL: 'https://www.sandbox.paypal.com',
+        LOGGER: 'https://www.sandbox.paypal.com',
+        API: 'https://cors.api.sandbox.paypal.com'
     },
     production: {
-        LOGGER: 'https://www.paypal.com/webapps/hermes/logger'
+        PAYPAL: 'https://www.paypal.com',
+        LOGGER: 'https://www.paypal.com',
+        API: 'https://www.cors.api.paypal.com'
     },
     test: {
-        LOGGER: 'mock://www.paypal.com/webapps/hermes/logger'
+        PAYPAL: 'mock://www.paypal.com',
+        LOGGER: 'mock://www.paypal.com',
+        API: 'mock://api.paypal.com'
     }
 }["production"];
+
+var URIS = {
+    LOGGER: '/xoplatform/logger/api/logger'
+};
+
+var URLS = {
+    get LOGGER() {
+        return buildConfigUrl(DOMAINS.LOGGER, URIS.LOGGER);
+    }
+};
 
 /***/ }),
 
@@ -4347,16 +4583,17 @@ var URLS = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return GLOBAL_KEY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return ENV; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return GLOBAL_NAMESPACE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return DEFAULT_ENV; });
+/* unused harmony export GLOBAL_KEY */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return ENV; });
+/* unused harmony export GLOBAL_NAMESPACE */
+/* unused harmony export DEFAULT_ENV */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return SDK_SETTINGS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return COUNTRY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return LANG; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return LANG; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return COUNTRY_LANGS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return FPTI_KEY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FPTI_DATA_SOURCE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return FPTI_FEED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return FPTI_KEY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return FPTI_DATA_SOURCE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FPTI_FEED; });
 var _COUNTRY_LANGS;
 
 /* eslint max-lines: 0 */
@@ -4374,6 +4611,10 @@ var ENV = {
 var GLOBAL_NAMESPACE = 'paypal';
 
 var DEFAULT_ENV = ENV.PRODUCTION;
+
+var SDK_SETTINGS = {
+    CLIENT_TOKEN: 'data-client-token'
+};
 
 var COUNTRY = {
     AD: 'AD',
@@ -4650,23 +4891,97 @@ var FPTI_FEED = {
 
 /***/ }),
 
+/***/ "./node_modules/paypal-braintree-web-client/src/globals.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["c"] = getHost;
+/* unused harmony export getHostName */
+/* harmony export (immutable) */ __webpack_exports__["f"] = getPort;
+/* harmony export (immutable) */ __webpack_exports__["e"] = getPath;
+/* harmony export (immutable) */ __webpack_exports__["b"] = getEnv;
+/* harmony export (immutable) */ __webpack_exports__["a"] = getClientID;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getMerchantID;
+/* unused harmony export getLocale */
+/* harmony export (immutable) */ __webpack_exports__["g"] = getStageHost;
+/* unused harmony export getIntent */
+/* unused harmony export getCommit */
+/* unused harmony export getVault */
+
+
+function getHost() {
+    return __HOST__;
+}
+
+function getHostName() {
+    return __HOSTNAME__;
+}
+
+function getPort() {
+    return __PORT__;
+}
+
+function getPath() {
+    return __PATH__;
+}
+
+function getEnv() {
+    return "production";
+}
+
+function getClientID() {
+    return __CLIENT_ID__;
+}
+
+function getMerchantID() {
+    return __MERCHANT_ID__;
+}
+
+function getLocale() {
+    return {
+        lang: __LOCALE__.__LANG__,
+        country: __LOCALE__.__COUNTRY__
+    };
+}
+
+function getStageHost() {
+    return __STAGE_HOST__;
+}
+
+function getIntent() {
+    return __INTENT__;
+}
+
+function getCommit() {
+    return __COMMIT__;
+}
+
+function getVault() {
+    return __VAULT__;
+}
+
+/***/ }),
+
 /***/ "./node_modules/paypal-braintree-web-client/src/index.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__interface__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/interface.js");
-/* unused harmony reexport attach */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/constants.js");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "COUNTRY", function() { return __WEBPACK_IMPORTED_MODULE_1__constants__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "COUNTRY_LANGS", function() { return __WEBPACK_IMPORTED_MODULE_1__constants__["b"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "ENV", function() { return __WEBPACK_IMPORTED_MODULE_1__constants__["d"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "LANG", function() { return __WEBPACK_IMPORTED_MODULE_1__constants__["j"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/config.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/constants.js");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "COUNTRY", function() { return __WEBPACK_IMPORTED_MODULE_0__constants__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "COUNTRY_LANGS", function() { return __WEBPACK_IMPORTED_MODULE_0__constants__["b"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "ENV", function() { return __WEBPACK_IMPORTED_MODULE_0__constants__["c"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "LANG", function() { return __WEBPACK_IMPORTED_MODULE_0__constants__["g"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/config.js");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "DOMAINS", function() { return __WEBPACK_IMPORTED_MODULE_1__config__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "buildConfigUrl", function() { return __WEBPACK_IMPORTED_MODULE_1__config__["c"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__logger__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/logger.js");
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__logger__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/logger.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__types__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/types.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__types__);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__types__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/types.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__globals__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/globals.js");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__script__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/script.js");
 /* unused harmony namespace reexport */
 
 
@@ -4674,162 +4989,6 @@ var FPTI_FEED = {
 
 
 
-/***/ }),
-
-/***/ "./node_modules/paypal-braintree-web-client/src/interface.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/paypal-braintree-web-client/src/util.js
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-/**
- * Extend an object with another object
- */
-function extend(obj, source) {
-    if (!source) {
-        return obj;
-    }
-
-    if (Object.assign) {
-        return Object.assign(obj, source);
-    }
-
-    for (var key in source) {
-        if (source.hasOwnProperty(key)) {
-            obj[key] = source[key];
-        }
-    }
-
-    return obj;
-}
-
-/**
- * Extract the values from an object
- */
-function values(obj) {
-    if (Object.values) {
-        // $FlowFixMe
-        return Object.values(obj);
-    }
-
-    var result = [];
-
-    for (var key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            result.push(obj[key]);
-        }
-    }
-
-    return result;
-}
-
-/**
- * Return true if the passed value is an object
- */
-function isObject(item) {
-    return (typeof item === 'undefined' ? 'undefined' : _typeof(item)) === 'object' && item !== null;
-}
-// EXTERNAL MODULE: ./node_modules/belter/src/index.js
-var src = __webpack_require__("./node_modules/belter/src/index.js");
-
-// EXTERNAL MODULE: ./node_modules/paypal-braintree-web-client/src/constants.js
-var constants = __webpack_require__("./node_modules/paypal-braintree-web-client/src/constants.js");
-
-// CONCATENATED MODULE: ./node_modules/paypal-braintree-web-client/src/global.js
-
-
-
-
-/**
- * Get a shared global object namespaced for the client
- */
-function getGlobal(key, def) {
-    var glob = Object(src["getGlobal"])();
-
-    glob[constants["h" /* GLOBAL_KEY */]] = glob[constants["h" /* GLOBAL_KEY */]] || {};
-    if (glob[constants["h" /* GLOBAL_KEY */]].hasOwnProperty(key)) {
-        return glob[constants["h" /* GLOBAL_KEY */]][key];
-    }
-    // $FlowFixMe
-    def = def || {};
-    glob[constants["h" /* GLOBAL_KEY */]][key] = def;
-    // $FlowFixMe
-    return def;
-}
-// CONCATENATED MODULE: ./node_modules/paypal-braintree-web-client/src/validation.js
-
-
-
-
-/**
- * Validate options passed to the public client
- */
-function validateClientOptions(_ref) {
-    var env = _ref.env,
-        auth = _ref.auth;
-
-
-    if (env && values(constants["d" /* ENV */]).indexOf(env) === -1) {
-        throw new Error('Invalid env: ' + env);
-    }
-
-    if (auth && !isObject(auth)) {
-        throw new Error('Expected auth to be passed');
-    }
-
-    if (auth && env && !auth[env]) {
-        throw new Error('Expected auth to be passed for env: ' + env);
-    }
-}
-// CONCATENATED MODULE: ./node_modules/paypal-braintree-web-client/src/interface.js
-/* unused harmony export client */
-/* unused harmony export attach */
-
-
-
-
-
-
-var exportBuilders = getGlobal('exportBuilders', {});
-
-/**
- * Instantiate the public client
- */
-function client() {
-    var clientOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { env: constants["c" /* DEFAULT_ENV */] };
-
-    clientOptions = JSON.parse(JSON.stringify(clientOptions));
-
-    if (typeof __sdk__ !== 'undefined') {
-        clientOptions.env = __sdk__.queryOptions.env;
-    }
-
-    validateClientOptions(clientOptions);
-
-    var xports = {};
-
-    Object.keys(exportBuilders).forEach(function (moduleName) {
-        extend(xports, exportBuilders[moduleName]({ clientOptions: clientOptions }));
-    });
-
-    return xports;
-}
-
-/**
- * Attach an interface builder function
- */
-function attach(moduleName, exportBuilder) {
-    if (exportBuilders[moduleName]) {
-        throw new Error('Already attached ' + moduleName);
-    }
-
-    window[constants["i" /* GLOBAL_NAMESPACE */]] = window[constants["i" /* GLOBAL_NAMESPACE */]] || {};
-    window[constants["i" /* GLOBAL_NAMESPACE */]].client = window.client || client;
-
-    exportBuilders[moduleName] = exportBuilder;
-}
 
 /***/ }),
 
@@ -5105,9 +5264,15 @@ var config = __webpack_require__("./node_modules/paypal-braintree-web-client/src
 // EXTERNAL MODULE: ./node_modules/paypal-braintree-web-client/src/constants.js
 var constants = __webpack_require__("./node_modules/paypal-braintree-web-client/src/constants.js");
 
+// EXTERNAL MODULE: ./node_modules/paypal-braintree-web-client/src/globals.js
+var globals = __webpack_require__("./node_modules/paypal-braintree-web-client/src/globals.js");
+
 // CONCATENATED MODULE: ./node_modules/paypal-braintree-web-client/src/logger.js
 /* unused harmony export logger */
 /* unused harmony export getSessionID */
+/* unused harmony export setupLogger */
+
+
 
 
 
@@ -5115,7 +5280,7 @@ var constants = __webpack_require__("./node_modules/paypal-braintree-web-client/
 
 
 var logger = Logger({
-    url: config["a" /* URLS */].LOGGER
+    url: config["b" /* URLS */].LOGGER
 });
 
 var storage = Object(belter_src["getStorage"])({ name: 'paypal_payments_sdk' });
@@ -5124,21 +5289,83 @@ function getSessionID() {
     return storage.getSessionID();
 }
 
-logger.addPayloadBuilder(function () {
+function setupLogger() {
+    logger.addPayloadBuilder(function () {
+        return {
+            referer: window.location.host,
+            uid: getSessionID(),
+            env: Object(globals["b" /* getEnv */])()
+        };
+    });
+
+    logger.addTrackingBuilder(function () {
+        var _ref;
+
+        var sessionID = getSessionID();
+
+        return _ref = {}, _ref[constants["f" /* FPTI_KEY */].FEED] = constants["e" /* FPTI_FEED */].PAYMENTS_SDK, _ref[constants["f" /* FPTI_KEY */].DATA_SOURCE] = constants["d" /* FPTI_DATA_SOURCE */].PAYMENTS_SDK, _ref[constants["f" /* FPTI_KEY */].CLIENT_ID] = Object(globals["a" /* getClientID */])(), _ref[constants["f" /* FPTI_KEY */].SELLER_ID] = Object(globals["d" /* getMerchantID */])(), _ref[constants["f" /* FPTI_KEY */].SESSION_UID] = sessionID, _ref[constants["f" /* FPTI_KEY */].REFERER] = window.location.host, _ref;
+    });
+
+    src["a" /* ZalgoPromise */].onPossiblyUnhandledException(function (err) {
+        var _logger$track;
+
+        logger.track((_logger$track = {}, _logger$track[constants["f" /* FPTI_KEY */].ERROR_CODE] = 'checkoutjs_error', _logger$track[constants["f" /* FPTI_KEY */].ERROR_DESC] = Object(belter_src["stringifyErrorMessage"])(err), _logger$track));
+
+        logger.error('unhandled_error', {
+            stack: Object(belter_src["stringifyError"])(err),
+            errtype: {}.toString.call(err)
+        });
+
+        // eslint-disable-next-line promise/no-promise-in-callback
+        logger.flush()['catch'](belter_src["noop"]);
+    });
+}
+
+/***/ }),
+
+/***/ "./node_modules/paypal-braintree-web-client/src/script.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export getSDKScript */
+/* unused harmony export getSDKSettings */
+/* unused harmony export getClientToken */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_belter_src__ = __webpack_require__("./node_modules/belter/src/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/constants.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__globals__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/globals.js");
+
+
+
+
+
+function getSDKScript() {
+    var script = Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__["getScript"])({ host: Object(__WEBPACK_IMPORTED_MODULE_2__globals__["c" /* getHost */])(), path: Object(__WEBPACK_IMPORTED_MODULE_2__globals__["e" /* getPath */])() });
+
+    if (!script) {
+        throw new Error('PayPal Payments SDK script not present on page!');
+    }
+
+    return script;
+}
+
+function getSDKSettings() {
+    var sdkScript = getSDKScript();
+
     return {
-        referer: window.location.host,
-        uid: getSessionID(),
-        env: "production"
+        clientToken: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1__constants__["h" /* SDK_SETTINGS */].CLIENT_TOKEN)
     };
-});
+}
 
-logger.addTrackingBuilder(function () {
-    var _ref;
+function getClientToken() {
+    var _getSDKSettings = getSDKSettings(),
+        clientToken = _getSDKSettings.clientToken;
 
-    var sessionID = getSessionID();
+    if (!clientToken) {
+        throw new Error('Expected data-client-token="xyz" to be passed with client token, to ' + getSDKScript().outerHTML);
+    }
 
-    return _ref = {}, _ref[constants["g" /* FPTI_KEY */].FEED] = constants["f" /* FPTI_FEED */].PAYMENTS_SDK, _ref[constants["g" /* FPTI_KEY */].DATA_SOURCE] = constants["e" /* FPTI_DATA_SOURCE */].PAYMENTS_SDK, _ref[constants["g" /* FPTI_KEY */].CLIENT_ID] = __CLIENT_ID__, _ref[constants["g" /* FPTI_KEY */].SELLER_ID] = __MERCHANT_ID__, _ref[constants["g" /* FPTI_KEY */].SESSION_UID] = sessionID, _ref[constants["g" /* FPTI_KEY */].REFERER] = window.location.host, _ref;
-});
+    return clientToken;
+}
 
 /***/ }),
 
@@ -5205,7 +5432,7 @@ function getGlobal() {
         throw new TypeError('Can not find global');
     }
 
-    var zalgoGlobal = glob.__zalgopromise__ = glob.__zalgopromise__ || {};
+    var zalgoGlobal = global.__zalgopromise__ = global.__zalgopromise__ || {};
     zalgoGlobal.flushPromises = zalgoGlobal.flushPromises || [];
     zalgoGlobal.activeCount = zalgoGlobal.activeCount || 0;
     zalgoGlobal.possiblyUnhandledPromiseHandlers = zalgoGlobal.possiblyUnhandledPromiseHandlers || [];
@@ -5216,7 +5443,8 @@ function getGlobal() {
 // CONCATENATED MODULE: ./node_modules/zalgo-promise/src/exceptions.js
 
 
-function dispatchPossiblyUnhandledError(err) {
+
+function dispatchPossiblyUnhandledError(err, promise) {
 
     if (getGlobal().dispatchedErrors.indexOf(err) !== -1) {
         return;
@@ -5225,11 +5453,16 @@ function dispatchPossiblyUnhandledError(err) {
     getGlobal().dispatchedErrors.push(err);
 
     setTimeout(function () {
+        if (false) {
+            // $FlowFixMe
+            throw new Error((err.stack || err.toString()) + '\n\nFrom promise:\n\n' + promise.stack);
+        }
+
         throw err;
     }, 1);
 
     for (var j = 0; j < getGlobal().possiblyUnhandledPromiseHandlers.length; j++) {
-        getGlobal().possiblyUnhandledPromiseHandlers[j](err);
+        getGlobal().possiblyUnhandledPromiseHandlers[j](err, promise);
     }
 }
 
@@ -5299,6 +5532,14 @@ var promise_ZalgoPromise = function () {
                 this.reject(_error);
             }
         }
+
+        if (false) {
+            try {
+                throw new Error('ZalgoPromise');
+            } catch (err) {
+                this.stack = err.stack;
+            }
+        }
     }
 
     ZalgoPromise.prototype.resolve = function resolve(result) {
@@ -5339,7 +5580,7 @@ var promise_ZalgoPromise = function () {
         if (!this.errorHandled) {
             setTimeout(function () {
                 if (!_this2.errorHandled) {
-                    dispatchPossiblyUnhandledError(error);
+                    dispatchPossiblyUnhandledError(error, _this2);
                 }
             }, 1);
         }
@@ -5532,7 +5773,7 @@ var promise_ZalgoPromise = function () {
             throw new TypeError('Could not find Promise');
         }
         // $FlowFixMe
-        return Promise.resolve(this);
+        return Promise.resolve(this); // eslint-disable-line compat/compat
     };
 
     ZalgoPromise.resolve = function resolve(value) {
@@ -5859,7 +6100,7 @@ var DEFAULT_PROPS = {
     COMMIT: constants["l" /* COMMIT */].TRUE,
     VAULT: constants["q" /* VAULT */].FALSE,
     INTENT: constants["n" /* INTENT */].SALE,
-    ENV: "production",
+    ENV: src["ENV"].PRODUCTION,
     PLATFORM: constants["p" /* PLATFORM */].DESKTOP
 };
 
@@ -6454,33 +6695,16 @@ function Buttons(props) {
 // EXTERNAL MODULE: ./node_modules/cross-domain-utils/src/index.js
 var src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js");
 
-// CONCATENATED MODULE: ./src/config/util.js
+// EXTERNAL MODULE: ./node_modules/paypal-braintree-web-client/src/index.js
+var paypal_braintree_web_client_src = __webpack_require__("./node_modules/paypal-braintree-web-client/src/index.js");
 
-
-function buildUrl(domain, port, uri) {
-    if (domain.indexOf('mock://') === 0 && typeof window !== 'undefined') {
-        domain = Object(src["getActualDomain"])();
-    }
-    return '' + domain + (port ? ':' + port : '') + (uri || '');
-}
-
-function isCurrentDomain(domain) {
-    if (typeof window === 'undefined') {
-        return false;
-    }
-
-    return Object(src["getDomain"])() === domain;
-}
 // CONCATENATED MODULE: ./src/config/config.js
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
 
-var LOG_STATE = 'checkoutjs';
-var SESSION_LIFETIME = 5 * 60 * 1000;
 
-var STAGE = 'msmaster';
-var STAGE_DOMAIN = 'qa.paypal.com';
+var SESSION_LIFETIME = 5 * 60 * 1000;
 
 var SUPPORTED_BROWSERS = {
     msie: '11',
@@ -6495,62 +6719,13 @@ var SUPPORTED_BROWSERS = {
     vivaldi: '1.91'
 };
 
-var DOMAINS = {
-    local: {
-        PAYPAL: 'http://localhost.paypal.com',
-        get API() {
-            return 'https://www.' + STAGE + '.' + STAGE_DOMAIN;
-        }
-    },
-    stage: {
-        get PAYPAL() {
-            return 'https://www.' + STAGE + '.' + STAGE_DOMAIN;
-        },
-        get API() {
-            return 'https://www.' + STAGE + '.' + STAGE_DOMAIN;
-        }
-    },
-    sandbox: {
-        PAYPAL: 'https://www.sandbox.paypal.com',
-        API: 'https://cors.api.sandbox.paypal.com'
-    },
-    production: {
-        PAYPAL: 'https://www.paypal.com',
-        API: 'https://www.cors.api.paypal.com'
-    },
-    test: {
-        PAYPAL: 'mock://www.paypal.com',
-        API: 'mock://api.paypal.com'
-    }
-}["production"];
-
-var PORTS = {
-    local: {
-        PAYPAL: 8000,
-        BUTTON: 8000,
-        CHECKOUT: 8000,
-        GUEST: 8001,
-        CARD: 8000,
-        ALTPAY: 3000,
-        META: 8000
-    },
-    stage: {
-        AUTH: 12326,
-        ORDER: 12326
-    },
-    sandbox: {},
-    production: {},
-    test: {}
-}["production"];
-
 var URIS = _extends({
     CHECKOUT: '/checkoutnow',
     ALTPAY: '/latinumcheckout',
     GUEST: '/webapps/xoonboarding',
-    BUTTON: '/webapps/hermes/button',
+    BUTTON: '/webapps/hermes/smart-button',
     CARD: '/webapps/hermes/card-fields',
     META: '/webapps/hermes/component-meta',
-    LOGGER: '/xoplatform/logger',
 
     AUTH: '/v1/oauth2/token',
     ORDER: '/v2/checkout/orders'
@@ -6580,60 +6755,52 @@ var URIS = _extends({
 
 var URLS = {
     get PAYPAL() {
-        return buildUrl(DOMAINS.PAYPAL, PORTS.PAYPAL);
+        return Object(paypal_braintree_web_client_src["buildConfigUrl"])(paypal_braintree_web_client_src["DOMAINS"].PAYPAL);
     },
 
     get CHECKOUT() {
-        return buildUrl(DOMAINS.PAYPAL, PORTS.CHECKOUT, URIS.CHECKOUT);
+        return Object(paypal_braintree_web_client_src["buildConfigUrl"])(paypal_braintree_web_client_src["DOMAINS"].PAYPAL, URIS.CHECKOUT);
     },
 
     get BUTTON() {
-        return buildUrl(DOMAINS.PAYPAL, PORTS.BUTTON, URIS.BUTTON);
+        return Object(paypal_braintree_web_client_src["buildConfigUrl"])(paypal_braintree_web_client_src["DOMAINS"].PAYPAL, URIS.BUTTON);
     },
 
     get GUEST() {
-        return buildUrl(DOMAINS.PAYPAL, PORTS.GUEST, URIS.GUEST);
+        return Object(paypal_braintree_web_client_src["buildConfigUrl"])(paypal_braintree_web_client_src["DOMAINS"].PAYPAL, URIS.GUEST);
     },
 
     get CARD() {
-        return buildUrl(DOMAINS.PAYPAL, PORTS.CARD, URIS.CARD);
+        return Object(paypal_braintree_web_client_src["buildConfigUrl"])(paypal_braintree_web_client_src["DOMAINS"].PAYPAL, URIS.CARD);
     },
 
     get META() {
-        return buildUrl(DOMAINS.PAYPAL, PORTS.META, URIS.META);
+        return Object(paypal_braintree_web_client_src["buildConfigUrl"])(paypal_braintree_web_client_src["DOMAINS"].PAYPAL, URIS.META);
     },
 
     get ALTPAY() {
-        return buildUrl(DOMAINS.PAYPAL, PORTS.ALTPAY, URIS.ALTPAY);
+        return Object(paypal_braintree_web_client_src["buildConfigUrl"])(paypal_braintree_web_client_src["DOMAINS"].PAYPAL, URIS.ALTPAY);
     },
 
     get LOGGER() {
-        return buildUrl(DOMAINS.PAYPAL, PORTS.LOGGER, URIS.LOGGER);
+        return Object(paypal_braintree_web_client_src["buildConfigUrl"])(paypal_braintree_web_client_src["DOMAINS"].PAYPAL, URIS.LOGGER);
     },
 
     get AUTH() {
-        var domain = isCurrentDomain(DOMAINS.PAYPAL) ? DOMAINS.PAYPAL : DOMAINS.API;
-        return buildUrl(domain, PORTS.AUTH, URIS.AUTH);
+        var domain = Object(src["isCurrentDomain"])(paypal_braintree_web_client_src["DOMAINS"].PAYPAL) ? paypal_braintree_web_client_src["DOMAINS"].PAYPAL : paypal_braintree_web_client_src["DOMAINS"].API;
+        return Object(paypal_braintree_web_client_src["buildConfigUrl"])(domain, URIS.AUTH);
     },
 
     get ORDER() {
-        var domain = isCurrentDomain(DOMAINS.PAYPAL) ? DOMAINS.PAYPAL : DOMAINS.API;
-        return buildUrl(domain, PORTS.ORDER, URIS.ORDER);
+        var domain = Object(src["isCurrentDomain"])(paypal_braintree_web_client_src["DOMAINS"].PAYPAL) ? paypal_braintree_web_client_src["DOMAINS"].PAYPAL : paypal_braintree_web_client_src["DOMAINS"].API;
+        return Object(paypal_braintree_web_client_src["buildConfigUrl"])(domain, URIS.ORDER);
     }
 };
 // CONCATENATED MODULE: ./src/config/index.js
 /* unused concated harmony import null */
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return LOG_STATE; });
-/* unused concated harmony import null */
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return SESSION_LIFETIME; });
 /* unused concated harmony import null */
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return STAGE; });
-/* unused concated harmony import null */
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return STAGE_DOMAIN; });
-/* unused concated harmony import null */
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return SUPPORTED_BROWSERS; });
-/* unused concated harmony import null */
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return DOMAINS; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "a", function() { return URLS; });
 
 
@@ -6760,7 +6927,7 @@ var FPTI_BUTTON_TYPE = {
 
 var FPTI_CONTEXT_TYPE = {
     BUTTON_SESSION_ID: 'button_session_id',
-    EC_TOKEN: 'EC-Token'
+    ORDER_ID: 'EC-Token'
 };
 
 var FPTI_STATE = {
@@ -6913,7 +7080,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./src/config/index.js + 2 modules
+// EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
 // EXTERNAL MODULE: ./src/constants/index.js + 5 modules
@@ -7297,7 +7464,7 @@ var paypal_braintree_web_client_default = /*#__PURE__*/__webpack_require__.n(pay
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./src/config/index.js + 2 modules
+// EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
 // EXTERNAL MODULE: ./src/constants/index.js + 5 modules
@@ -7648,7 +7815,7 @@ var paypal_braintree_web_client_default = /*#__PURE__*/__webpack_require__.n(pay
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./src/config/index.js + 2 modules
+// EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
 // EXTERNAL MODULE: ./src/constants/index.js + 5 modules
@@ -7797,7 +7964,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./src/config/index.js + 2 modules
+// EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
 // EXTERNAL MODULE: ./src/constants/index.js + 5 modules
@@ -7947,7 +8114,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./src/config/index.js + 2 modules
+// EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
 // EXTERNAL MODULE: ./src/constants/index.js + 5 modules
@@ -8083,7 +8250,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./src/config/index.js + 2 modules
+// EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
 // EXTERNAL MODULE: ./src/constants/index.js + 5 modules
@@ -8199,7 +8366,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./src/config/index.js + 2 modules
+// EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
 // EXTERNAL MODULE: ./src/constants/index.js + 5 modules
@@ -8330,7 +8497,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./src/config/index.js + 2 modules
+// EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
 // EXTERNAL MODULE: ./src/constants/index.js + 5 modules
@@ -8452,7 +8619,7 @@ var src = __webpack_require__("./node_modules/paypal-braintree-web-client/src/in
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var belter_src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./src/config/index.js + 2 modules
+// EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
 // EXTERNAL MODULE: ./src/constants/index.js + 5 modules
@@ -8465,3841 +8632,145 @@ var common = __webpack_require__("./src/funding/common.jsx");
 var logo = __webpack_require__("./src/funding/paypal/logo.jsx");
 
 // CONCATENATED MODULE: ./src/funding/paypal/content.js
-var _LOCALE__$__COUNTRY_, content__ref;
 
 /* eslint max-lines: 0 */
 
 
 
-var COMPONENT_CONTENT = {
-    AD: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    AE: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        },
-        ar: {
-            checkout: 'السداد بواسطة {pp} {paypal}',
-            safer_tag: 'الطريقة الأسهل والأكثر أماناً في الدفع',
-            pay: 'دفع بواسطة {paypal}'
-        }
-    },
-    AG: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    AI: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    AL: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    AM: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    AN: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    AO: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    AR: {
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    AT: {
-        de: {
-            checkout: 'Direkt zu {pp} {paypal}',
-            safer_tag: 'Einfach schneller und sicherer bezahlen',
-            pay: 'Mit {paypal} zahlen'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    AU: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    AW: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    AZ: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    BA: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    BB: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    BE: {
-        en: {
-            checkout: 'Pay with {pp} {paypal}',
-            safer_tag: 'The safer, faster way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        nl: {
-            checkout: 'Betalen met {pp} {paypal}',
-            safer_tag: 'De veiligere en snellere manier om te betalen.',
-            pay: 'Betalen met {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Le réflexe sécurité pour payer',
-            pay: 'Payer avec {paypal}'
-        }
-    },
-    BF: {
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    BG: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    BH: {
-        ar: {
-            checkout: 'السداد بواسطة {pp} {paypal}',
-            safer_tag: 'الطريقة الأسهل والأكثر أماناً في الدفع',
-            pay: 'دفع بواسطة {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    BI: {
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    BJ: {
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    BM: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    BN: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'A safer, faster way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    BO: {
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    BR: {
-        pt: {
-            checkout: '{pp} {paypal} Finalizar',
-            safer_tag: 'A maneira fácil e segura de pagar.',
-            pay: 'Pague com {paypal}',
-            installment: '{pp} {paypal}  Pagamentos{br}  parcelados',
-            installment_period: '{pp} {paypal}  Pague em até{br}  {period}x sem juros'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}',
-            installment: '{pp} {paypal}  Interest free{br}  payments',
-            installment_period: '{pp} {paypal}  Pay up to {period}x{br}  without interest'
-        }
-    },
-    BS: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    BT: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'A safer, faster way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    BW: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    BY: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    BZ: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    CA: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: '{pp} {paypal} Payer',
-            safer_tag: 'Votre réflexe sécurité pour payer',
-            pay: 'Payer avec {paypal}'
-        }
-    },
-    CD: {
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    CG: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    CH: {
-        de: {
-            checkout: 'Direkt zu {pp} {paypal}',
-            safer_tag: 'Einfach schneller und sicherer bezahlen',
-            pay: 'Mit {paypal} zahlen'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Le réflexe sécurité pour payer',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    CI: {
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    CK: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    CL: {
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    CM: {
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    CN: {
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    CO: {
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    CR: {
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    CV: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    CY: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    CZ: {
-        cs: {
-            checkout: 'Zaplatit přes {pp} {paypal}',
-            safer_tag: 'Jednodušší a bezpečnější způsob placení',
-            pay: 'Zaplatit přes {logo: paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    DE: {
-        de: {
-            checkout: 'Direkt zu {pp} {paypal}',
-            safer_tag: 'Überall schnell und sicher bezahlen.',
-            pay: 'Mit {paypal} zahlen'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    DJ: {
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    DK: {
-        da: {
-            checkout: '{pp} {paypal} Betal',
-            safer_tag: 'Betal nemt og sikkert',
-            pay: 'Betal med {paypal}'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    DM: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    DO: {
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    DZ: {
-        ar: {
-            checkout: 'السداد بواسطة {pp} {paypal}',
-            safer_tag: 'الطريقة الأسهل والأكثر أماناً في الدفع',
-            pay: 'دفع بواسطة {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    EC: {
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    EE: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        ru: {
-            checkout: 'Оформить заказ через {pp} {paypal}',
-            safer_tag: 'Более безопасный и простой способ оплаты.',
-            pay: 'Оплатить через {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    EG: {
-        ar: {
-            checkout: 'السداد بواسطة {pp} {paypal}',
-            safer_tag: 'الطريقة الأسهل والأكثر أماناً في الدفع',
-            pay: 'دفع بواسطة {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    ER: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    ES: {
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    ET: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    FI: {
-        fi: {
-            checkout: '{pp} {paypal}-maksu',
-            safer_tag: 'Turvallisempi ja helpompi maksutapa',
-            pay: '{paypal}-maksu'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    FJ: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    FK: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    FM: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'A safer, faster way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    FO: {
-        da: {
-            checkout: 'Betal med {pp} {paypal}',
-            safer_tag: 'Betal nemt og sikkert',
-            pay: 'Betal med {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    FR: {
-        fr: {
-            checkout: '{pp} {paypal} Payer',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: '{pp} {paypal} Pay',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    GA: {
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    GB: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    GD: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    GE: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    GF: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    GI: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    GL: {
-        da: {
-            checkout: 'Betal med {pp} {paypal}',
-            safer_tag: 'Betal nemt og sikkert',
-            pay: 'Betal med {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    GM: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    GN: {
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    GP: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    GR: {
-        el: {
-            checkout: 'Ολοκλήρωση αγοράς μέσω {pp} {paypal}',
-            safer_tag: 'Ο ασφαλέστερος και ευκολότερος τρόπος πληρωμής',
-            pay: 'Πληρωμή μέσω {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    GT: {
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    GW: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    GY: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    HK: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal} 結帳',
-            safer_tag: '更安全、更方便的付款方式',
-            pay: '使用 {paypal} 付款'
-        }
-    },
-    HN: {
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    HR: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    HU: {
-        hu: {
-            checkout: '{pp} {paypal}-fizetés',
-            safer_tag: 'Biztonságosabb, könnyebb fizetési mód.',
-            pay: '{paypal}-fizetés'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    ID: {
-        id: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'Cara yang lebih mudah dan aman untuk membayar.',
-            pay: 'Bayar dengan {paypal}'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    IE: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    IL: {
-        he: {
-            checkout: '{pp} {paypal} שלם',
-            safer_tag: '.הדרך הקלה והבטוחה יותר לשלם',
-            pay: 'שלם באמצעות {paypal}‏'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    IN: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'A safer, faster way to pay.',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    IS: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    IT: {
-        it: {
-            checkout: '{pp} {paypal} Paga adesso',
-            safer_tag: 'Il modo rapido e sicuro per pagare',
-            pay: 'Paga con {paypal}'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    JM: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    JO: {
-        ar: {
-            checkout: 'السداد بواسطة {pp} {paypal}',
-            safer_tag: 'الطريقة الأسهل والأكثر أماناً في الدفع',
-            pay: 'دفع بواسطة {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    JP: {
-        ja: {
-            checkout: '{pp} {paypal}で支払う',
-            safer_tag: 'より安全・簡単にお支払い',
-            pay: '{paypal}で支払う'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    KE: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    KG: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    KH: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'A safer, faster way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    KI: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    KM: {
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    KN: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    KR: {
-        ko: {
-            checkout: '{pp} {paypal} 체크 아웃',
-            safer_tag: '더 안전하고 빠른 결제 방법',
-            pay: '{paypal}로 지불하기'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'A safer, faster way to pay.',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    KW: {
-        ar: {
-            checkout: 'السداد بواسطة {pp} {paypal}',
-            safer_tag: 'الطريقة الأسهل والأكثر أماناً في الدفع',
-            pay: 'دفع بواسطة {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    KY: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    KZ: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    LA: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'A safer, faster way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    LC: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    LI: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    LK: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'A safer, faster way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    LS: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    LT: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        ru: {
-            checkout: 'Оформить заказ через {pp} {paypal}',
-            safer_tag: 'Более безопасный и простой способ оплаты.',
-            pay: 'Оплатить через {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    LU: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        de: {
-            checkout: 'Direkt zu {pp} {paypal}',
-            safer_tag: 'Einfach schneller und sicherer bezahlen',
-            pay: 'Mit {paypal} zahlen'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    LV: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        ru: {
-            checkout: 'Оформить заказ через {pp} {paypal}',
-            safer_tag: 'Более безопасный и простой способ оплаты.',
-            pay: 'Оплатить через {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    MA: {
-        ar: {
-            checkout: 'السداد بواسطة {pp} {paypal}',
-            safer_tag: 'الطريقة الأسهل والأكثر أماناً في الدفع',
-            pay: 'دفع بواسطة {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    MC: {
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    MD: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    ME: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    MG: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    MH: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    MK: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    ML: {
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    MN: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'A safer, faster way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    MQ: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    MR: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    MS: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    MT: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    MU: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    MV: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'A safer, faster way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    MW: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    MX: {
-        es: {
-            checkout: 'Pagar con {pp} {paypal}',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}',
-            installment: '{pp} {paypal}  Pagos en{br}  mensualidades',
-            installment_period: '{pp} {paypal}  Pague hasta{br}  {period}x sin interés'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, faster way to pay',
-            pay: 'Pay with {paypal}',
-            installment: '{pp} {paypal}  Interest free{br}  payments',
-            installment_period: '{pp} {paypal}  Pay up to {period}x{br}  without interest'
-        }
-    },
-    MY: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'A safer, faster way to pay.',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    MZ: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    NA: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    NC: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    NE: {
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    NF: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    NG: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    NI: {
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    NL: {
-        nl: {
-            checkout: '{pp} {paypal} Betalen',
-            safer_tag: 'Een veilige en makkelijke manier om te betalen.',
-            pay: 'Betalen met {paypal}'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    NO: {
-        no: {
-            checkout: '{pp} {paypal} Betal',
-            safer_tag: 'En trygg og enkel betalingsmetode',
-            pay: 'Betal med {paypal}'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    NP: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'A safer, faster way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    NR: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    NU: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    NZ: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'A safer, faster way to pay.',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: '{pp} {paypal} Payer',
-            safer_tag: 'Un réflexe sécurité.',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar.',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式。',
-            pay: '用{paypal}付款'
-        }
-    },
-    OM: {
-        ar: {
-            checkout: 'السداد بواسطة {pp} {paypal}',
-            safer_tag: 'الطريقة الأسهل والأكثر أماناً في الدفع',
-            pay: 'دفع بواسطة {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    PA: {
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    PE: {
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    PF: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    PG: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    PH: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'A safer, faster way to pay.',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    PL: {
-        pl: {
-            checkout: '{pp} {paypal} Do kasy',
-            safer_tag: 'Płać wygodnie i bezpiecznie',
-            pay: 'Zapłać z {paypal}'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    PM: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    PN: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    PT: {
-        pt: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'A forma rápida e segura de pagar',
-            pay: 'Pagar com {paypal}'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    PW: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    PY: {
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    QA: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        },
-        ar: {
-            checkout: 'السداد بواسطة {pp} {paypal}',
-            safer_tag: 'الطريقة الأسهل والأكثر أماناً في الدفع',
-            pay: 'دفع بواسطة {paypal}'
-        }
-    },
-    RE: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    RO: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    RS: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    RU: {
-        ru: {
-            checkout: '{pp} {paypal} Оформить покупку',
-            safer_tag: 'Более безопасный и простой способ оплаты.',
-            pay: 'Оплатить через {paypal}'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    RW: {
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    SA: {
-        ar: {
-            checkout: 'السداد بواسطة {pp} {paypal}',
-            safer_tag: 'الطريقة الأسهل والأكثر أماناً في الدفع',
-            pay: 'دفع بواسطة {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    SB: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    SC: {
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    SE: {
-        sv: {
-            checkout: '{pp} {paypal} Betala',
-            safer_tag: 'Ett tryggt och smidigt sätt att betala',
-            pay: 'Betala med {paypal}'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    SG: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'A safer, faster way to pay.',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    SH: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    SI: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    SJ: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    SK: {
-        sk: {
-            checkout: 'Zaplatiť cez {pp} {paypal}',
-            safer_tag: 'Jednoduchší a bezpečnejší spôsob platby',
-            pay: 'Zaplatiť cez {logo: paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    SL: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    SM: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    SN: {
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    SO: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    SR: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    ST: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    SV: {
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    SZ: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    TC: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    TD: {
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    TG: {
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    TH: {
-        th: {
-            checkout: '{pp} {paypal} ชำระเงิน',
-            safer_tag: 'วิธีชำระเงินที่ปลอดภัยและง่ายกว่า',
-            pay: 'ชำระเงินด้วย {paypal}'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    TJ: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    TM: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    TN: {
-        ar: {
-            checkout: 'السداد بواسطة {pp} {paypal}',
-            safer_tag: 'الطريقة الأسهل والأكثر أماناً في الدفع',
-            pay: 'دفع بواسطة {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    TO: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'A safer, faster way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    TR: {
-        tr: {
-            checkout: '{pp} {paypal} ile Satın Alın',
-            safer_tag: 'Ödeme yapmanın daha güvenli ve kolay yolu',
-            pay: '{paypal} ile Öde'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    TT: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    TV: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    TW: {
-        zh: {
-            checkout: '{pp} {paypal} 結帳',
-            safer_tag: '更安全、更方便的付款方式',
-            pay: '使用 {paypal} 付款'
-        },
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    TZ: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    UA: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        ru: {
-            checkout: 'Оформить заказ через {pp} {paypal}',
-            safer_tag: 'Более безопасный и простой способ оплаты.',
-            pay: 'Оплатить через {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    UG: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    US: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'The safer, easier way to pay',
-            dual_tag: 'Two easy ways to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: '{pp} {paypal} Payer',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: 'Pagar con {pp} {paypal}',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '使用{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    UY: {
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    VA: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    VC: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    VE: {
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    VG: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    VN: {
-        en: {
-            checkout: '{pp} {paypal} Checkout',
-            safer_tag: 'A safer, faster way to pay.',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    VU: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    WF: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    WS: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
-    },
-    YE: {
-        ar: {
-            checkout: 'السداد بواسطة {pp} {paypal}',
-            safer_tag: 'الطريقة الأسهل والأكثر أماناً في الدفع',
-            pay: 'دفع بواسطة {paypal}'
-        },
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    YT: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    ZA: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    ZM: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        },
-        fr: {
-            checkout: 'Payer avec {pp} {paypal}',
-            safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-            pay: 'Payer avec {paypal}'
-        },
-        es: {
-            checkout: '{pp} {paypal} Pagar',
-            safer_tag: 'La forma rápida y segura de pagar',
-            pay: 'Pagar con {paypal}'
-        },
-        zh: {
-            checkout: '{pp} {paypal}结账',
-            safer_tag: '更安全、更便捷的付款方式',
-            pay: '用{paypal}付款'
-        }
-    },
-    ZW: {
-        en: {
-            checkout: 'Check out with {pp} {paypal}',
-            safer_tag: 'The safer, easier way to pay',
-            pay: 'Pay with {paypal}'
-        }
+var componentContent = {
+    en: {
+        checkout: '{pp} {paypal} Checkout',
+        safer_tag: 'The safer, easier way to pay',
+        pay: 'Pay with {paypal}',
+        installment: '{pp} {paypal}  Interest free{br}  payments',
+        installment_period: '{pp} {paypal}  Pay up to {period}x{br}  without interest',
+        dual_tag: 'Two easy ways to pay'
+    },
+    fr: {
+        checkout: '{pp} {paypal} Payer',
+        safer_tag: 'Votre réflexe sécurité pour payer en ligne',
+        pay: 'Payer avec {paypal}'
+    },
+    es: {
+        checkout: '{pp} {paypal} Pagar',
+        safer_tag: 'La forma rápida y segura de pagar',
+        pay: 'Pagar con {paypal}',
+        installment: '{pp} {paypal}  Pagos en{br}  mensualidades',
+        installment_period: '{pp} {paypal}  Pague hasta{br}  {period}x sin interés'
+    },
+    zh: {
+        checkout: '{pp} {paypal} 結帳',
+        safer_tag: '更安全、更便捷的付款方式',
+        pay: '用{paypal}付款'
+    },
+    ar: {
+        checkout: 'السداد بواسطة {pp} {paypal}',
+        safer_tag: 'الطريقة الأسهل والأكثر أماناً في الدفع',
+        pay: 'دفع بواسطة {paypal}'
+    },
+    de: {
+        checkout: 'Direkt zu {pp} {paypal}',
+        safer_tag: 'Überall schnell und sicher bezahlen',
+        pay: 'Mit {paypal} zahlen'
+    },
+    nl: {
+        checkout: '{pp} {paypal} Betalen',
+        safer_tag: 'De veiligere en snellere manier om te betalen',
+        pay: 'Betalen met {paypal}'
+    },
+    pt: {
+        checkout: '{pp} {paypal} Checkout',
+        safer_tag: 'A maneira fácil e segura de pagar',
+        pay: 'Pague com {paypal}',
+        installment: '{pp} {paypal}  Pagamentos{br}  parcelados',
+        installment_period: '{pp} {paypal}  Pague em até{br}  {period}x sem juros'
+    },
+    cs: {
+        checkout: 'Zaplatit přes {pp} {paypal}',
+        safer_tag: 'Jednodušší a bezpečnější způsob placení',
+        pay: 'Zaplatit přes {logo: paypal}'
+    },
+    da: {
+        checkout: '{pp} {paypal} Betal',
+        safer_tag: 'Betal nemt og sikkert',
+        pay: 'Betal med {paypal}'
+    },
+    ru: {
+        checkout: '{pp} {paypal} Оформить покупку',
+        safer_tag: 'Более безопасный и простой способ оплаты',
+        pay: 'Оплатить через {paypal}'
+    },
+    fi: {
+        checkout: '{pp} {paypal}-maksu',
+        safer_tag: 'Turvallisempi ja helpompi maksutapa',
+        pay: '{paypal}-maksu'
+    },
+    el: {
+        checkout: 'Ολοκλήρωση αγοράς μέσω {pp} {paypal}',
+        safer_tag: 'Ο ασφαλέστερος και ευκολότερος τρόπος πληρωμής',
+        pay: 'Πληρωμή μέσω {paypal}'
+    },
+    hu: {
+        checkout: '{pp} {paypal}-fizetés',
+        safer_tag: 'Biztonságosabb, könnyebb fizetési mód',
+        pay: '{paypal}-fizetés'
+    },
+    id: {
+        checkout: '{pp} {paypal} Checkout',
+        safer_tag: 'Cara yang lebih mudah dan aman untuk membayar',
+        pay: 'Bayar dengan {paypal}'
+    },
+    he: {
+        checkout: '{pp} {paypal} שלם',
+        safer_tag: '.הדרך הקלה והבטוחה יותר לשלם',
+        pay: 'שלם באמצעות {paypal}‏'
+    },
+    it: {
+        checkout: '{pp} {paypal} Paga adesso',
+        safer_tag: 'Il modo rapido e sicuro per pagare',
+        pay: 'Paga con {paypal}'
+    },
+    ja: {
+        checkout: '{pp} {paypal}で支払う',
+        safer_tag: 'より安全・簡単にお支払い',
+        pay: '{paypal}で支払う'
+    },
+    ko: {
+        checkout: '{pp} {paypal} 체크 아웃',
+        safer_tag: '더 안전하고 빠른 결제 방법',
+        pay: '{paypal}로 지불하기'
+    },
+    no: {
+        checkout: '{pp} {paypal} Betal',
+        safer_tag: 'En trygg og enkel betalingsmetode',
+        pay: 'Betal med {paypal}'
+    },
+    pl: {
+        checkout: '{pp} {paypal} Do kasy',
+        safer_tag: 'Płać wygodnie i bezpiecznie',
+        pay: 'Zapłać z {paypal}'
+    },
+    sv: {
+        checkout: '{pp} {paypal} Betala',
+        safer_tag: 'Ett tryggt och smidigt sätt att betala',
+        pay: 'Betala med {paypal}'
+    },
+    sk: {
+        checkout: 'Zaplatiť cez {pp} {paypal}',
+        safer_tag: 'Jednoduchší a bezpečnejší spôsob platby',
+        pay: 'Zaplatiť cez {logo: paypal}'
+    },
+    th: {
+        checkout: '{pp} {paypal} ชำระเงิน',
+        safer_tag: 'วิธีชำระเงินที่ปลอดภัยและง่ายกว่า',
+        pay: 'ชำระเงินด้วย {paypal}'
+    },
+    tr: {
+        checkout: '{pp} {paypal} ile Satın Alın',
+        safer_tag: 'Ödeme yapmanın daha güvenli ve kolay yolu',
+        pay: '{paypal} ile Öde'
     }
 };
-
-var componentContent =  false ? (content__ref = {}, content__ref[__LOCALE__.__COUNTRY__] = (_LOCALE__$__COUNTRY_ = {}, _LOCALE__$__COUNTRY_[__LOCALE__.__LANG__] = COMPONENT_CONTENT[__LOCALE__.__COUNTRY__][__LOCALE__.__LANG__], _LOCALE__$__COUNTRY_), content__ref) : COMPONENT_CONTENT;
 // CONCATENATED MODULE: ./src/funding/paypal/labels.jsx
 
 /* @jsx jsxToHTML */
@@ -12318,10 +8789,9 @@ function contentToJSX(key, locale) {
         logoColor = _ref.logoColor,
         _period = _ref.period;
 
-    var country = locale.country,
-        lang = locale.lang;
+    var lang = locale.lang;
 
-    var text = componentContent[country][lang][key];
+    var text = componentContent[lang][key];
 
     return Object(belter_src["placeholderToJSX"])(text, {
         text: function text(token) {
@@ -12376,11 +8846,10 @@ function SaferTag(_ref5) {
 
 function DualTag(_ref6) {
     var locale = _ref6.locale;
-    var country = locale.country,
-        lang = locale.lang;
+    var lang = locale.lang;
 
 
-    return componentContent[country][lang].dual_tag ? contentToJSX('dual_tag', locale) : contentToJSX('safer_tag', locale);
+    return componentContent[lang].dual_tag ? contentToJSX('dual_tag', locale) : contentToJSX('safer_tag', locale);
 }
 // CONCATENATED MODULE: ./src/funding/paypal/config.jsx
 var _allowedPeriods, _labels;
@@ -12621,7 +9090,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./src/config/index.js + 2 modules
+// EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
 // EXTERNAL MODULE: ./src/constants/index.js + 5 modules
@@ -12731,7 +9200,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./src/config/index.js + 2 modules
+// EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
 // EXTERNAL MODULE: ./src/constants/index.js + 5 modules
@@ -12835,7 +9304,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./src/config/index.js + 2 modules
+// EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
 // EXTERNAL MODULE: ./src/constants/index.js + 5 modules
@@ -12949,7 +9418,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./src/config/index.js + 2 modules
+// EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
 // EXTERNAL MODULE: ./src/constants/index.js + 5 modules
@@ -13073,7 +9542,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./src/config/index.js + 2 modules
+// EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
 // EXTERNAL MODULE: ./src/constants/index.js + 5 modules
