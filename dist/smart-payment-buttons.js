@@ -2188,7 +2188,7 @@ window.spb = function(modules) {
                     });
                     !function renderCheckout() {
                         var props = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, createOrder = Object(belter.memoize)(window.xprops.createOrder);
-                        return window.paypal.client().Checkout.renderTo(window.top, checkout__extends({
+                        return window.paypal.Checkout.renderTo(window.top, checkout__extends({
                             payment: createOrder,
                             locale: window.xprops.locale,
                             commit: window.xprops.commit,
@@ -2197,7 +2197,7 @@ window.spb = function(modules) {
                                 var orderID = _ref.orderID, payerID = _ref.payerID, actions = function(checkout, orderID) {
                                     var restartFlow = Object(belter.memoize)(function() {
                                         return checkout.close().then(function() {
-                                            window.paypal.client().Checkout.contexts.iframe = !0;
+                                            window.paypal.Checkout.contexts.iframe = !0;
                                             return renderCheckout({
                                                 payment: function() {
                                                     return zalgo_promise_src.a.resolve(orderID);
