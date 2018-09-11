@@ -3,7 +3,7 @@
 import { info, track, flush as flushLogs } from 'beaver-logger/client';
 import { getDomain } from 'cross-domain-utils/src';
 
-import { FPTI, COUNTRY, BUTTON_LABEL, BUTTON_LAYOUT } from '../constants';
+import { FPTI, BUTTON_LABEL, BUTTON_LAYOUT } from '../constants';
 import { config } from '../config';
 
 import { match } from './util';
@@ -139,23 +139,14 @@ export function getReturnToken() : ?string {
 
 export function buildFundingLogoThrottle(props : Object) : ?Throttle {
 
-    let { layout, label, locale, browserLocale } = props;
+    let { layout, label } = props.style;
+    let locale = props.locale || `${ props.browserLocale.lang }_${ props.browserLocale.country }`;
 
-    if (browserLocale.country !== COUNTRY.US) {
+    if (locale !== 'en_US') {
         return null;
     }
 
-    let localeString = locale;
-
-    if (typeof locale === 'object') {
-        localeString = `${ locale.lang }_${ locale.country }`;
-    }
-
-    if (localeString !== 'en_US') {
-        return null;
-    }
-
-    if (label !== BUTTON_LABEL.CHECKOUT && label !== BUTTON_LABEL.PAYPAL && label !== BUTTON_LABEL.PAY && label !== BUTTON_LABEL.BUYNOW) {
+    if (label !== undefined && label !== BUTTON_LABEL.CHECKOUT && label !== BUTTON_LABEL.PAYPAL && label !== BUTTON_LABEL.PAY && label !== BUTTON_LABEL.BUYNOW) {
         return null;
     }
 
@@ -165,9 +156,7 @@ export function buildFundingLogoThrottle(props : Object) : ?Throttle {
     }
 
     if (layout === undefined || (layout && layout === BUTTON_LAYOUT.HORIZONTAL)) {
-        return {
-            ...getThrottle('ppc_rebrand', 50)
-        };
+        return getThrottle('ppc_rebrand', 50);
     }
 
     return null;

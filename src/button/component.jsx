@@ -192,7 +192,8 @@ export let Button : Component<ButtonOptions> = create({
             type:       'boolean',
             queryParam: true,
             required:   false,
-            def() : boolean {
+            def(props) : boolean {
+                fundingLogoThrottle = fundingLogoThrottle || buildFundingLogoThrottle({ ...props, browserLocale: getBrowserLocale() });
                 return fundingLogoThrottle && fundingLogoThrottle.isEnabled() ? true : false;
             }
         },
@@ -436,13 +437,10 @@ export let Button : Component<ButtonOptions> = create({
             },
             decorate({ allowed = [], disallowed = [] } : Object = {}, props : ButtonOptions) : {} {
                 
-                fundingLogoThrottle = buildFundingLogoThrottle({ ...normalizeProps(props), browserLocale: getBrowserLocale() });
+                fundingLogoThrottle = fundingLogoThrottle || buildFundingLogoThrottle({ ...props, browserLocale: getBrowserLocale() });
                 if (fundingLogoThrottle) {
                     allowed = [ ...allowed, FUNDING.CREDIT ];
-                    const creditIndex = disallowed.indexOf(FUNDING.CREDIT);
-                    if (creditIndex !== -1) {
-                        disallowed = [ ...disallowed.slice(0, creditIndex), ...disallowed.slice(creditIndex + 1) ];
-                    }
+                    disallowed = disallowed.filter(source => (source !== FUNDING.CREDIT));
                 }
 
                 // remove Venmo from our allowed list if the rendering device is not a mobile one
