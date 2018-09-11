@@ -106,8 +106,8 @@ window.spb = function(modules) {
                     function getGlobal() {
                         var glob = void 0;
                         if ("undefined" != typeof window) glob = window; else {
-                            if ("undefined" == typeof global) throw new TypeError("Can not find global");
-                            glob = global;
+                            if ("undefined" == typeof window) throw new TypeError("Can not find global");
+                            glob = window;
                         }
                         var zalgoGlobal = glob.__zalgopromise__ = glob.__zalgopromise__ || {};
                         zalgoGlobal.flushPromises = zalgoGlobal.flushPromises || [];
@@ -167,15 +167,15 @@ window.spb = function(modules) {
                             this.rejected = !0;
                             this.error = error;
                             this.errorHandled || setTimeout(function() {
-                                _this2.errorHandled || function(err) {
+                                _this2.errorHandled || function(err, promise) {
                                     if (-1 === getGlobal().dispatchedErrors.indexOf(err)) {
                                         getGlobal().dispatchedErrors.push(err);
                                         setTimeout(function() {
                                             throw err;
                                         }, 1);
-                                        for (var j = 0; j < getGlobal().possiblyUnhandledPromiseHandlers.length; j++) getGlobal().possiblyUnhandledPromiseHandlers[j](err);
+                                        for (var j = 0; j < getGlobal().possiblyUnhandledPromiseHandlers.length; j++) getGlobal().possiblyUnhandledPromiseHandlers[j](err, promise);
                                     }
-                                }(error);
+                                }(error, _this2);
                             }, 1);
                             this.dispatch();
                             return this;
@@ -239,13 +239,14 @@ window.spb = function(modules) {
                         ZalgoPromise.prototype.catch = function(onError) {
                             return this.then(void 0, onError);
                         };
-                        ZalgoPromise.prototype.finally = function(handler) {
+                        ZalgoPromise.prototype.finally = function(onFinally) {
+                            if (onFinally && "function" != typeof onFinally && !onFinally.call) throw new Error("Promise.finally expected a function");
                             return this.then(function(result) {
-                                return ZalgoPromise.try(handler).then(function() {
+                                return ZalgoPromise.try(onFinally).then(function() {
                                     return result;
                                 });
                             }, function(err) {
-                                return ZalgoPromise.try(handler).then(function() {
+                                return ZalgoPromise.try(onFinally).then(function() {
                                     throw err;
                                 });
                             });
@@ -326,6 +327,7 @@ window.spb = function(modules) {
                             }(handler);
                         };
                         ZalgoPromise.try = function(method, context, args) {
+                            if (method && "function" != typeof method && !method.call) throw new Error("Promise.try expected a function");
                             var result = void 0;
                             try {
                                 result = method.apply(context, args || []);
@@ -463,8 +465,8 @@ window.spb = function(modules) {
                 "./src/dom.js": function(module, __webpack_exports__, __webpack_require__) {
                     "use strict";
                     var src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), util = __webpack_require__("./src/util.js"), device = __webpack_require__("./src/device.js");
-                    __webpack_exports__.h = isDocumentReady;
-                    __webpack_exports__.q = function waitForWindowReady() {
+                    __webpack_exports__.i = isDocumentReady;
+                    __webpack_exports__.r = function waitForWindowReady() {
                         return Object(util.l)(waitForWindowReady, function() {
                             return new src.a(function(resolve) {
                                 isDocumentReady() && resolve();
@@ -474,18 +476,18 @@ window.spb = function(modules) {
                             });
                         });
                     };
-                    __webpack_exports__.p = waitForDocumentReady;
-                    __webpack_exports__.o = function() {
+                    __webpack_exports__.q = waitForDocumentReady;
+                    __webpack_exports__.p = function() {
                         return waitForDocumentReady.then(function() {
                             if (document.body) return document.body;
                             throw new Error("Document ready but document.body not present");
                         });
                     };
-                    __webpack_exports__.k = parseQuery;
+                    __webpack_exports__.l = parseQuery;
                     __webpack_exports__.d = function(name) {
                         return parseQuery(window.location.search.slice(1))[name];
                     };
-                    __webpack_exports__.n = urlWillRedirectPage;
+                    __webpack_exports__.o = urlWillRedirectPage;
                     __webpack_exports__.b = function(url) {
                         var params = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, hasHash = url.indexOf("#") > 0, _url$split = url.split("#"), serverUrl = _url$split[0], hash = _url$split[1];
                         if (hash && !serverUrl) {
@@ -507,18 +509,18 @@ window.spb = function(modules) {
                         hasHash && (newUrl = newUrl + "#" + (hash || ""));
                         return newUrl;
                     };
-                    __webpack_exports__.m = function(url) {
+                    __webpack_exports__.n = function(url) {
                         var win = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : window;
                         return new src.a(function(resolve) {
                             win.location = url;
                             urlWillRedirectPage(url) || resolve();
                         });
                     };
-                    __webpack_exports__.e = function() {
+                    __webpack_exports__.f = function() {
                         var meta = document.querySelector("meta[name=viewport]");
                         return !(Object(device.d)() && window.screen.width < 660 && !meta);
                     };
-                    __webpack_exports__.i = function(el) {
+                    __webpack_exports__.j = function(el) {
                         return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
                     };
                     __webpack_exports__.a = enablePerformance;
@@ -530,22 +532,31 @@ window.spb = function(modules) {
                             }
                         });
                     };
-                    __webpack_exports__.f = function() {
+                    __webpack_exports__.g = function() {
                         return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "").toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").replace(/\//g, "&#x2F;");
                     };
-                    __webpack_exports__.g = function() {
+                    __webpack_exports__.h = function() {
                         return "undefined" != typeof window;
                     };
-                    __webpack_exports__.l = function(selector) {
+                    __webpack_exports__.m = function(selector) {
                         var doc = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : window.document;
                         return Array.prototype.slice.call(doc.querySelectorAll(selector));
                     };
-                    __webpack_exports__.j = function(element, handler) {
+                    __webpack_exports__.k = function(element, handler) {
                         element.addEventListener("touchstart", util.t);
                         element.addEventListener("click", handler);
                         element.addEventListener("keypress", function(event) {
                             if (13 === event.keyCode) return handler(event);
                         });
+                    };
+                    __webpack_exports__.e = function getScript(_ref2) {
+                        var _ref2$host = _ref2.host, host = void 0 === _ref2$host ? window.location.host : _ref2$host, path = _ref2.path;
+                        return Object(util.l)(getScript, function() {
+                            for (var url = "" + host + path, scripts = Array.prototype.slice.call(document.getElementsByTagName("script")), _i4 = 0, _length4 = null == scripts ? 0 : scripts.length; _i4 < _length4; _i4++) {
+                                var script = scripts[_i4];
+                                if (script.src && script.src.replace(/^https?:\/\//, "").split("?")[0] === url) return script;
+                            }
+                        }, [ path ]);
                     };
                     function isDocumentReady() {
                         return Boolean(document.body) && "complete" === document.readyState;
@@ -802,37 +813,37 @@ window.spb = function(modules) {
                     });
                     var __WEBPACK_IMPORTED_MODULE_1__dom__ = __webpack_require__("./src/dom.js");
                     __webpack_require__.d(__webpack_exports__, "isDocumentReady", function() {
-                        return __WEBPACK_IMPORTED_MODULE_1__dom__.h;
+                        return __WEBPACK_IMPORTED_MODULE_1__dom__.i;
                     });
                     __webpack_require__.d(__webpack_exports__, "waitForWindowReady", function() {
-                        return __WEBPACK_IMPORTED_MODULE_1__dom__.q;
+                        return __WEBPACK_IMPORTED_MODULE_1__dom__.r;
                     });
                     __webpack_require__.d(__webpack_exports__, "waitForDocumentReady", function() {
-                        return __WEBPACK_IMPORTED_MODULE_1__dom__.p;
+                        return __WEBPACK_IMPORTED_MODULE_1__dom__.q;
                     });
                     __webpack_require__.d(__webpack_exports__, "waitForDocumentBody", function() {
-                        return __WEBPACK_IMPORTED_MODULE_1__dom__.o;
+                        return __WEBPACK_IMPORTED_MODULE_1__dom__.p;
                     });
                     __webpack_require__.d(__webpack_exports__, "parseQuery", function() {
-                        return __WEBPACK_IMPORTED_MODULE_1__dom__.k;
+                        return __WEBPACK_IMPORTED_MODULE_1__dom__.l;
                     });
                     __webpack_require__.d(__webpack_exports__, "getQueryParam", function() {
                         return __WEBPACK_IMPORTED_MODULE_1__dom__.d;
                     });
                     __webpack_require__.d(__webpack_exports__, "urlWillRedirectPage", function() {
-                        return __WEBPACK_IMPORTED_MODULE_1__dom__.n;
+                        return __WEBPACK_IMPORTED_MODULE_1__dom__.o;
                     });
                     __webpack_require__.d(__webpack_exports__, "extendUrl", function() {
                         return __WEBPACK_IMPORTED_MODULE_1__dom__.b;
                     });
                     __webpack_require__.d(__webpack_exports__, "redirect", function() {
-                        return __WEBPACK_IMPORTED_MODULE_1__dom__.m;
+                        return __WEBPACK_IMPORTED_MODULE_1__dom__.n;
                     });
                     __webpack_require__.d(__webpack_exports__, "hasMetaViewPort", function() {
-                        return __WEBPACK_IMPORTED_MODULE_1__dom__.e;
+                        return __WEBPACK_IMPORTED_MODULE_1__dom__.f;
                     });
                     __webpack_require__.d(__webpack_exports__, "isElementVisible", function() {
-                        return __WEBPACK_IMPORTED_MODULE_1__dom__.i;
+                        return __WEBPACK_IMPORTED_MODULE_1__dom__.j;
                     });
                     __webpack_require__.d(__webpack_exports__, "enablePerformance", function() {
                         return __WEBPACK_IMPORTED_MODULE_1__dom__.a;
@@ -841,16 +852,19 @@ window.spb = function(modules) {
                         return __WEBPACK_IMPORTED_MODULE_1__dom__.c;
                     });
                     __webpack_require__.d(__webpack_exports__, "htmlEncode", function() {
-                        return __WEBPACK_IMPORTED_MODULE_1__dom__.f;
-                    });
-                    __webpack_require__.d(__webpack_exports__, "isBrowser", function() {
                         return __WEBPACK_IMPORTED_MODULE_1__dom__.g;
                     });
+                    __webpack_require__.d(__webpack_exports__, "isBrowser", function() {
+                        return __WEBPACK_IMPORTED_MODULE_1__dom__.h;
+                    });
                     __webpack_require__.d(__webpack_exports__, "querySelectorAll", function() {
-                        return __WEBPACK_IMPORTED_MODULE_1__dom__.l;
+                        return __WEBPACK_IMPORTED_MODULE_1__dom__.m;
                     });
                     __webpack_require__.d(__webpack_exports__, "onClick", function() {
-                        return __WEBPACK_IMPORTED_MODULE_1__dom__.j;
+                        return __WEBPACK_IMPORTED_MODULE_1__dom__.k;
+                    });
+                    __webpack_require__.d(__webpack_exports__, "getScript", function() {
+                        return __WEBPACK_IMPORTED_MODULE_1__dom__.e;
                     });
                     var __WEBPACK_IMPORTED_MODULE_2__experiment__ = __webpack_require__("./src/experiment.js");
                     __webpack_require__.d(__webpack_exports__, "experiment", function() {
@@ -1007,7 +1021,7 @@ window.spb = function(modules) {
                     });
                     var __WEBPACK_IMPORTED_MODULE_8__types__ = __webpack_require__("./src/types.js");
                     __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__types__);
-                    for (var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_8__types__) [ "getUserAgent", "isDevice", "isWebView", "isStandAlone", "isFacebookWebView", "isFirefoxIOS", "isEdgeIOS", "isOperaMini", "isAndroid", "isIos", "isGoogleSearchApp", "isQQBrowser", "isIosWebview", "isAndroidWebview", "isIE", "isIECompHeader", "isElectron", "isIEIntranet", "isMacOsCna", "supportsPopups", "isDocumentReady", "waitForWindowReady", "waitForDocumentReady", "waitForDocumentBody", "parseQuery", "getQueryParam", "urlWillRedirectPage", "extendUrl", "redirect", "hasMetaViewPort", "isElementVisible", "enablePerformance", "getPageRenderTime", "htmlEncode", "isBrowser", "querySelectorAll", "onClick", "experiment", "getGlobalNameSpace", "JsxHTMLNode", "JsxHTMLNodeContainer", "jsxToHTML", "jsxRender", "Fragment", "SVG", "placeholderToJSX", "getStorage", "getGlobal", "memoize", "inlineMemoize", "noop", "once", "base64encode", "base64decode", "uniqueID", "hashStr", "strHashStr", "match", "eventEmitter", "awaitKey", "stringifyError", "stringifyErrorMessage", "stringify", "isLocalStorageEnabled", "domainMatches", "patchMethod", "extend", "values", "perc", "min", "max", "regexMap", "svgToBase64", "objFilter", "identity", "regexTokenize", "promiseDebounce", "safeInterval", "isInteger", "isFloat", "serializePrimitive", "deserializePrimitive", "dotify", "undotify", "request", "addHeaderBuilder", "default" ].indexOf(__WEBPACK_IMPORT_KEY__) < 0 && function(key) {
+                    for (var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_8__types__) [ "getUserAgent", "isDevice", "isWebView", "isStandAlone", "isFacebookWebView", "isFirefoxIOS", "isEdgeIOS", "isOperaMini", "isAndroid", "isIos", "isGoogleSearchApp", "isQQBrowser", "isIosWebview", "isAndroidWebview", "isIE", "isIECompHeader", "isElectron", "isIEIntranet", "isMacOsCna", "supportsPopups", "isDocumentReady", "waitForWindowReady", "waitForDocumentReady", "waitForDocumentBody", "parseQuery", "getQueryParam", "urlWillRedirectPage", "extendUrl", "redirect", "hasMetaViewPort", "isElementVisible", "enablePerformance", "getPageRenderTime", "htmlEncode", "isBrowser", "querySelectorAll", "onClick", "getScript", "experiment", "getGlobalNameSpace", "JsxHTMLNode", "JsxHTMLNodeContainer", "jsxToHTML", "jsxRender", "Fragment", "SVG", "placeholderToJSX", "getStorage", "getGlobal", "memoize", "inlineMemoize", "noop", "once", "base64encode", "base64decode", "uniqueID", "hashStr", "strHashStr", "match", "eventEmitter", "awaitKey", "stringifyError", "stringifyErrorMessage", "stringify", "isLocalStorageEnabled", "domainMatches", "patchMethod", "extend", "values", "perc", "min", "max", "regexMap", "svgToBase64", "objFilter", "identity", "regexTokenize", "promiseDebounce", "safeInterval", "isInteger", "isFloat", "serializePrimitive", "deserializePrimitive", "dotify", "undotify", "request", "addHeaderBuilder", "default" ].indexOf(__WEBPACK_IMPORT_KEY__) < 0 && function(key) {
                         __webpack_require__.d(__webpack_exports__, key, function() {
                             return __WEBPACK_IMPORTED_MODULE_8__types__[key];
                         });
@@ -1383,9 +1397,9 @@ window.spb = function(modules) {
                                 promise = null;
                                 timeout = null;
                                 __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(method).then(function(result) {
-                                    return localPromise.resolve(result);
+                                    localPromise.resolve(result);
                                 }, function(err) {
-                                    return localPromise.reject(err);
+                                    localPromise.reject(err);
                                 });
                             }, delay);
                             return localPromise;
@@ -1439,16 +1453,13 @@ window.spb = function(modules) {
                     };
                     function getGlobal() {
                         if ("undefined" != typeof window) return window;
-                        if ("undefined" != typeof global) return global;
+                        if ("undefined" != typeof window) return window;
                         throw new Error("No global found");
                     }
                     function memoize(method) {
-                        var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                        if (method.__memoized__) return method.__memoized__;
-                        var cache = {};
-                        method.__memoized__ = function() {
+                        var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, cache = {};
+                        function memoizedFunction() {
                             for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-                            if (method.__memoized__ && method.__memoized__.__calling__) throw new Error("Can not call memoized method recursively");
                             var key = void 0;
                             try {
                                 key = JSON.stringify(Array.prototype.slice.call(arguments));
@@ -1460,23 +1471,24 @@ window.spb = function(modules) {
                             var glob = getGlobal();
                             glob.__CACHE_START_TIME__ && cache[key] && cache[key].time < glob.__CACHE_START_TIME__ && delete cache[key];
                             if (cache[key]) return cache[key].value;
-                            method.__memoized__.__calling__ = !0;
+                            memoizedFunction.__calling__ = !0;
                             var time = Date.now(), value = method.apply(this, arguments);
-                            method.__memoized__.__calling__ = !1;
+                            memoizedFunction.__calling__ = !1;
                             cache[key] = {
                                 time: time,
                                 value: value
                             };
                             return cache[key].value;
-                        };
-                        method.__memoized__.reset = function() {
+                        }
+                        memoizedFunction.reset = function() {
                             cache = {};
                         };
-                        return method.__memoized__;
+                        return memoizedFunction;
                     }
                     function inlineMemoize(method, logic) {
                         var args = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [];
                         method.__memoized__ || (method.__memoized__ = memoize(logic));
+                        if (method.__memoized__ && method.__memoized__.__calling__) throw new Error("Can not call memoized method recursively");
                         return method.__memoized__.apply(method, args);
                     }
                     function base64encode(str) {
@@ -1802,12 +1814,9 @@ window.spb = function(modules) {
             throw new Error("No global found");
         }
         function memoize(method) {
-            var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-            if (method.__memoized__) return method.__memoized__;
-            var cache = {};
-            method.__memoized__ = function() {
+            var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, cache = {};
+            function memoizedFunction() {
                 for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-                if (method.__memoized__ && method.__memoized__.__calling__) throw new Error("Can not call memoized method recursively");
                 var key = void 0;
                 try {
                     key = JSON.stringify(Array.prototype.slice.call(arguments));
@@ -1819,23 +1828,24 @@ window.spb = function(modules) {
                 var glob = getGlobal();
                 glob.__CACHE_START_TIME__ && cache[key] && cache[key].time < glob.__CACHE_START_TIME__ && delete cache[key];
                 if (cache[key]) return cache[key].value;
-                method.__memoized__.__calling__ = !0;
+                memoizedFunction.__calling__ = !0;
                 var time = Date.now(), value = method.apply(this, arguments);
-                method.__memoized__.__calling__ = !1;
+                memoizedFunction.__calling__ = !1;
                 cache[key] = {
                     time: time,
                     value: value
                 };
                 return cache[key].value;
-            };
-            method.__memoized__.reset = function() {
+            }
+            memoizedFunction.reset = function() {
                 cache = {};
             };
-            return method.__memoized__;
+            return memoizedFunction;
         }
         function inlineMemoize(method, logic) {
             var args = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [];
             method.__memoized__ || (method.__memoized__ = memoize(logic));
+            if (method.__memoized__ && method.__memoized__.__calling__) throw new Error("Can not call memoized method recursively");
             return method.__memoized__.apply(method, args);
         }
         function base64encode(str) {
@@ -1874,8 +1884,8 @@ window.spb = function(modules) {
         function getGlobal() {
             var glob = void 0;
             if ("undefined" != typeof window) glob = window; else {
-                if ("undefined" == typeof global) throw new TypeError("Can not find global");
-                glob = global;
+                if ("undefined" == typeof window) throw new TypeError("Can not find global");
+                glob = window;
             }
             var zalgoGlobal = glob.__zalgopromise__ = glob.__zalgopromise__ || {};
             zalgoGlobal.flushPromises = zalgoGlobal.flushPromises || [];
