@@ -217,19 +217,15 @@ export let Button : Component<ButtonProps> = create({
 
                     logger.flush();
 
-                    let restart = actions.restart;
-                    actions.restart = () => {
-                        return restart().then(() => {
-                            return new ZalgoPromise();
-                        });
-                    };
-
-                    actions.redirect = (url, win) => {
-                        return ZalgoPromise.try(() => {
-                            return actions.close();
-                        }).then(() => {
-                            return redirect(url || data.returnUrl, win || window.top);
-                        });
+                    actions = {
+                        ...actions,
+                        redirect: (url, win) => {
+                            return ZalgoPromise.try(() => {
+                                return this.close();
+                            }).then(() => {
+                                return redirect(url || data.returnUrl, win || window.top);
+                            });
+                        }
                     };
 
                     return ZalgoPromise.try(() => {
@@ -259,7 +255,7 @@ export let Button : Component<ButtonProps> = create({
             required: false,
 
             decorate(original, props) : Function {
-                return function decorateOnCancel(data, actions) : void | ZalgoPromise<void> {
+                return function decorateOnCancel(data, actions = {}) : void | ZalgoPromise<void> {
 
                     logger.info('button_cancel');
 
@@ -271,16 +267,24 @@ export let Button : Component<ButtonProps> = create({
 
                     logger.flush();
 
-                    actions.redirect = (url, win) => {
-                        return ZalgoPromise.all([
-                            redirect(url, win || window.top),
-                            actions.close()
-                        ]);
+                    actions = {
+                        ...actions,
+                        redirect: (url, win) => {
+                            return ZalgoPromise.all([
+                                redirect(url, win || window.top),
+                                this.close()
+                            ]);
+                        }
                     };
 
-                    if (original) {
+                    return ZalgoPromise.try(() => {
                         return original.call(this, data, actions);
-                    }
+                    }).catch(err => {
+                        if (props.onError) {
+                            return props.onError(err);
+                        }
+                        throw err;
+                    });
                 };
             }
         },
