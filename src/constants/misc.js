@@ -29,9 +29,9 @@ export const PLATFORM = {
 };
 
 export const INTENT = {
-    SALE:  'sale',
-    AUTH:  'auth',
-    ORDER: 'order'
+    CAPTURE: 'capture',
+    AUTH:    'auth',
+    ORDER:   'order'
 };
 
 export const COMMIT = {
