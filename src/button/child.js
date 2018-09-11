@@ -2,13 +2,17 @@
 /* @flow */
 
 import { logger, FPTI_KEY } from 'paypal-braintree-web-client/src';
-import { getPageRenderTime } from 'belter/src';
+import { getPageRenderTime, isIEIntranet } from 'belter/src';
 
 import { ATTRIBUTE, FUNDING, FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, BUTTON_LAYOUT } from '../constants';
 
 import typeof { Button } from './component';
 
-export function setupButtonChild(ButtonComponent : Button) {
+export function setupButtonChild(ButtonComponent : Button) : void {
+
+    if (isIEIntranet()) {
+        return window.xchild.error(new Error(`Can not render button in IE Intranet mode`));
+    }
 
     getPageRenderTime().then(pageRenderTime => {
 

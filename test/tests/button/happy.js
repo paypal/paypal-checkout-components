@@ -23,10 +23,52 @@ for (let flow of [ 'popup', 'iframe' ]) {
             window.paypal.Checkout.contexts.iframe = false;
         });
 
+        it('should render a button into a container and click on the button, then complete the checkout without createOrder', (done) => {
+            window.paypal.Button({
+
+                test: { flow, action: 'checkout' },
+
+                onApprove() : void {
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }).render('#testContainer');
+        });
+
+        it('should render a button into a container and click on the button, then complete the checkout without onApprove', (done) => {
+            window.paypal.Button({
+
+                test: { flow, action: 'checkout', captureOrder: () => done() },
+
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(generateOrderID());
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }).render('#testContainer');
+        });
+
+        it('should render a button into a container and click on the button, then complete the checkout without createOrder or onApprove', (done) => {
+            window.paypal.Button({
+
+                test: { flow, action: 'checkout', captureOrder: () => done() },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }).render('#testContainer');
+        });
+
         it('should render a button into a container and click on the button, then complete the checkout', (done) => {
-
-
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -42,13 +84,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render a button into a container and click on the button, then cancel the createOrder', (done) => {
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'cancel' },
 
@@ -64,7 +106,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done();
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render a button into a container and click on the button then redirect on authorize', () => {
@@ -72,7 +114,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let orderID = generateOrderID();
 
 
-            return window.paypal.Button.render({
+            return window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -88,7 +130,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return actions.redirect(data.cancelUrl, window);
                 }
 
-            }, '#testContainer').then(() => {
+            }).render('#testContainer').then(() => {
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${ orderID }&PayerID=YYYYYYYYYYYYY`);
@@ -102,7 +144,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let orderID = generateOrderID();
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -120,7 +162,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render a button into a container and click on the button then redirect on authorize with a custom url', () => {
@@ -128,7 +170,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let orderID = generateOrderID();
 
 
-            return window.paypal.Button.render({
+            return window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -144,7 +186,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return actions.redirect('#cancelUrl', window);
                 }
 
-            }, '#testContainer').then(() => {
+            }).render('#testContainer').then(() => {
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#successUrl`);
@@ -158,7 +200,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let orderID = generateOrderID();
 
 
-            return window.paypal.Button.render({
+            return window.paypal.Button({
 
                 test: { flow, action: 'cancel' },
 
@@ -174,7 +216,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return actions.redirect(data.cancelUrl, window);
                 }
 
-            }, '#testContainer').then(() => {
+            }).render('#testContainer').then(() => {
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#cancel?token=${ orderID }`);
@@ -188,7 +230,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let orderID = generateOrderID();
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'cancel' },
 
@@ -206,7 +248,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     }).catch(done);
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render a button into a container and click on the button then redirect on cancel with a custom url', () => {
@@ -214,7 +256,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let orderID = generateOrderID();
 
 
-            return window.paypal.Button.render({
+            return window.paypal.Button({
 
                 test: { flow, action: 'cancel' },
 
@@ -230,7 +272,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return actions.redirect('#cancelUrl', window);
                 }
 
-            }, '#testContainer').then(() => {
+            }).render('#testContainer').then(() => {
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#cancelUrl`);
@@ -242,33 +284,20 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button into a container and click on the button, call the REST api via actions.order to create an order, then complete the checkout', (done) => {
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
                 createOrder(data, actions) : string | ZalgoPromise<string> {
                     return actions.order.create({
-                        order: {
-                            purchase_units: [
-                                {
-                                    amount: {
-                                        currency: 'USD',
-                                        total:    '0.01',
-                                        details:  {
-                                            subtotal: '0.01'
-                                        }
-                                    },
-                                    items: [
-                                        {
-                                            currency: 'USD',
-                                            name:     'Denim Woven Shirt',
-                                            price:    '0.01',
-                                            quantity: '1'
-                                        }
-                                    ]
+                        purchase_units: [
+                            {
+                                amount: {
+                                    currency_code: 'USD',
+                                    value:         '0.01'
                                 }
-                            ]
-                        }
+                            }
+                        ]
                     });
                 },
 
@@ -280,39 +309,26 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render a button into a container and click on the button, call the REST api via actions.order with an object to create an order, then complete the checkout', (done) => {
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
                 createOrder(data, actions) : string | ZalgoPromise<string> {
                     return actions.order.create({
-                        order: {
-                            purchase_units: [
-                                {
-                                    amount: {
-                                        currency: 'USD',
-                                        total:    '0.01',
-                                        details:  {
-                                            subtotal: '0.01'
-                                        }
-                                    },
-                                    items: [
-                                        {
-                                            currency: 'USD',
-                                            name:     'Denim Woven Shirt',
-                                            price:    '0.01',
-                                            quantity: '1'
-                                        }
-                                    ]
+                        purchase_units: [
+                            {
+                                amount: {
+                                    currency_code: 'USD',
+                                    value:         '0.01'
                                 }
-                            ]
-                        }
+                            }
+                        ]
                     });
                 },
 
@@ -324,13 +340,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render a button into a container and click on the button, with an async resolved token passed, then complete the checkout', (done) => {
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -350,13 +366,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render a button into a container and click on the button, with a promise token passed, then complete the checkout', (done) => {
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -374,13 +390,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render a button into a container and click on the button, with a non-zalgo promise token passed, then complete the checkout', (done) => {
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -402,7 +418,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render button with a checkout token on the correct url, then complete the checkout', (done) => {
@@ -410,7 +426,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let orderID = generateOrderID();
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -428,7 +444,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render button with a createOrder id on the correct url, then complete the checkout', (done) => {
@@ -436,7 +452,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let orderID = generateOrderID();
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -454,7 +470,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render button with a new-style createOrder id on the correct url, then complete the checkout', (done) => {
@@ -462,7 +478,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let orderID = generateOrderID().replace('PAY-', 'PAYID-');
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -480,7 +496,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render a button into a container and click on the button, restart the createOrder, then complete the checkout', (done) => {
@@ -488,7 +504,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let isRestarted = false;
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -510,7 +526,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render a button into a container before the container exists, and click on the button, then complete the checkout', (done) => {
@@ -521,7 +537,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let container;
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -555,7 +571,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 onError: done
 
-            }, '#lateContainer');
+            }).render('#lateContainer');
 
             container = createElement({
                 id:        'lateContainer',
@@ -569,7 +585,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             it('should render a button into a container and click on the button, then cancel the createOrder by closing the window', (done) => {
 
 
-                window.paypal.Button.render({
+                window.paypal.Button({
 
                     test: {
                         flow,
@@ -594,13 +610,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return done();
                     }
 
-                }, '#testContainer');
+                }).render('#testContainer');
             });
 
             it('should render a button into a container and click on the button, block the popup, fallback to iframe, then complete the checkout', (done) => {
 
 
-                window.paypal.Button.render({
+                window.paypal.Button({
 
                     test: {
                         flow,
@@ -620,7 +636,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, '#testContainer');
+                }).render('#testContainer');
             });
         }
 
@@ -631,7 +647,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let createOrderCalls = 0;
 
 
-                window.paypal.Button.render({
+                window.paypal.Button({
 
                     test: { flow, action: 'popout' },
 
@@ -653,7 +669,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, '#testContainer');
+                }).render('#testContainer');
             });
 
             it('should render checkout, popout, then redirect', () => {
@@ -661,7 +677,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let orderID = generateOrderID();
 
 
-                window.paypal.Button.render({
+                window.paypal.Button({
 
                     test: { flow, action: 'popout' },
 
@@ -673,7 +689,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return actions.redirect(data.returnUrl, window);
                     }
 
-                }, '#testContainer');
+                }).render('#testContainer');
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${ orderID }&PayerID=YYYYYYYYYYYYY`);
@@ -685,7 +701,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let orderID = generateOrderID();
 
 
-                window.paypal.Button.render({
+                window.paypal.Button({
 
                     test: { flow, action: 'popout' },
 
@@ -703,7 +719,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, '#testContainer');
+                }).render('#testContainer');
             });
 
             it('should render a button into a container and click on the button, restart the createOrder, popout, then complete the checkout', (done) => {
@@ -711,7 +727,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let isRestarted = false;
 
 
-                window.paypal.Button.render({
+                window.paypal.Button({
 
                     test: { flow, action: 'checkout' },
 
@@ -739,7 +755,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, '#testContainer');
+                }).render('#testContainer');
             });
         }
     });

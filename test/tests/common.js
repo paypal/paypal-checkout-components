@@ -226,141 +226,89 @@ export function destroyTestContainer() : void {
 
 patchXmlHttpRequest();
 
-export function getLoggerApiMock(options : Object = {}) : Object {
-    return $mockEndpoint.register({
-        method: 'POST',
-        uri:    URLS.LOGGER,
-        data:   {},
-        ...options
-    });
-}
+export let loggerApiMock = $mockEndpoint.register({
+    method: 'POST',
+    uri:    URLS.LOGGER,
+    data:   {}
+});
 
-export function getAuthApiMock(options : Object = {}) : Object {
-    return $mockEndpoint.register({
-        method: 'POST',
-        uri:    URLS.AUTH,
-        handler({ headers, data }) : { access_token : string } {
+export let authApiMock = $mockEndpoint.register({
+    method: 'POST',
+    uri:    URLS.AUTH,
+    handler({ headers, data }) : { access_token : string } {
 
-            if (!headers.authorization) {
-                throw new Error(`Expected authorization header for auth api request`);
+        if (!headers.authorization) {
+            throw new Error(`Expected authorization header for auth api request`);
+        }
+
+        if (!headers.authorization.match(/^Basic .+$/)) {
+            throw new Error(`Expected authorization header to be Basic XXXX, got "${ headers.authorization }"`);
+        }
+
+        if (data !== 'grant_type=client_credentials') {
+            throw new Error(`Expected grant_type to be client_credentials, got "${ data.grant_type }"`);
+        }
+
+        let clientID = atob(headers.authorization.replace('Basic ', '')).split(':')[0];
+
+        if (clientID !== MERCHANT_CLIENT_ID) {
+            throw new Error(`Expected client id to be ${ MERCHANT_CLIENT_ID }, got ${ clientID }`);
+        }
+
+        return {
+            access_token: MERCHANT_ACCESS_TOKEN
+        };
+    }
+});
+
+export let orderApiMock = $mockEndpoint.register({
+    method: 'POST',
+    uri:    URLS.ORDER,
+    handler({ data, headers }) : { id : string } {
+
+        if (!headers.authorization) {
+            throw new Error(`Expected authorization header for auth api request`);
+        }
+
+        if (!headers.authorization.match(/^Bearer .+$/)) {
+            throw new Error(`Expected authorization header to be Bearer XXXX, got "${ headers.authorization }"`);
+        }
+
+        if (!data.intent) {
+            throw new Error(`Expected data.intent to be passed`);
+        }
+
+        if (!data.intent) {
+            throw new Error(`Expected data.intent to be passed`);
+        }
+
+        if (!data.purchase_units) {
+            throw new Error(`Expected data.purchase_units to be passed`);
+        }
+
+        data.purchase_units.forEach(unit => {
+            if (!unit.amount) {
+                throw new Error(`Expected unit.amount to be passed`);
             }
 
-            if (!headers.authorization.match(/^Basic .+$/)) {
-                throw new Error(`Expected authorization header to be Basic XXXX, got "${ headers.authorization }"`);
+            if (!unit.amount.currency_code) {
+                throw new Error(`Expected unit.amount.currency_code to be passed`);
             }
 
-            if (data !== 'grant_type=client_credentials') {
-                throw new Error(`Expected grant_type to be client_credentials, got "${ data.grant_type }"`);
+            if (!unit.amount.value) {
+                throw new Error(`Expected unit.amount.total to be passed`);
             }
+        });
 
-            let clientID = atob(headers.authorization.replace('Basic ', '')).split(':')[0];
+        return {
+            id: generateOrderID()
+        };
+    }
+});
 
-            if (clientID !== MERCHANT_CLIENT_ID) {
-                throw new Error(`Expected client id to be ${ MERCHANT_CLIENT_ID }, got ${ clientID }`);
-            }
-
-            return {
-                access_token: MERCHANT_ACCESS_TOKEN
-            };
-        },
-        ...options
-    });
-}
-
-export function getOrderApiMock(options : Object = {}) : Object {
-    return $mockEndpoint.register({
-        method: 'POST',
-        uri:    URLS.ORDER,
-        handler({ data, headers }) : { id : string } {
-
-            if (!headers.authorization) {
-                throw new Error(`Expected authorization header for auth api request`);
-            }
-
-            if (!headers.authorization.match(/^Bearer .+$/)) {
-                throw new Error(`Expected authorization header to be Bearer XXXX, got "${ headers.authorization }"`);
-            }
-
-            if (!data.intent) {
-                throw new Error(`Expected data.intent to be passed`);
-            }
-
-            if (!data.application_context) {
-                throw new Error(`Expected data.redirect_urls to be passed`);
-            }
-
-            if (!data.application_context.return_url) {
-                throw new Error(`Expected data.redirect_urls.return_url to be passed`);
-            }
-
-            if (!data.application_context.cancel_url) {
-                throw new Error(`Expected data.redirect_urls.cancel_url to be passed`);
-            }
-
-            if (!data.intent) {
-                throw new Error(`Expected data.intent to be passed`);
-            }
-
-            if (!data.purchase_units) {
-                throw new Error(`Expected data.purchase_units to be passed`);
-            }
-
-            data.purchase_units.forEach(unit => {
-                if (!unit.amount) {
-                    throw new Error(`Expected unit.amount to be passed`);
-                }
-
-                if (!unit.amount.currency) {
-                    throw new Error(`Expected unit.amount.currency to be passed`);
-                }
-
-                if (!unit.amount.total) {
-                    throw new Error(`Expected unit.amount.total to be passed`);
-                }
-
-                if (!unit.amount.details) {
-                    throw new Error(`Expected unit.amount.details to be passed`);
-                }
-
-                if (!unit.amount.details.subtotal) {
-                    throw new Error(`Expected unit.amount.details.subtotal to be passed`);
-                }
-
-                if (!unit.reference_id) {
-                    throw new Error(`Expected unit.reference_id to be passed`);
-                }
-
-                unit.items.forEach(item => {
-
-                    if (!item.currency) {
-                        throw new Error(`Expected item.currency to be passed`);
-                    }
-
-                    if (!item.name) {
-                        throw new Error(`Expected item.name to be passed`);
-                    }
-
-                    if (!item.price) {
-                        throw new Error(`Expected item.price to be passed`);
-                    }
-
-                    if (!item.quantity) {
-                        throw new Error(`Expected item.quantity to be passed`);
-                    }
-                });
-            });
-
-            return {
-                id: generateOrderID()
-            };
-        },
-        ...options
-    });
-}
-
-getLoggerApiMock().listen();
-getAuthApiMock().listen();
-getOrderApiMock().listen();
+loggerApiMock.listen();
+authApiMock.listen();
+orderApiMock.listen();
 
 window.karma = window.karma || (window.top && window.top.karma) || (window.parent && window.parent.karma) || (window.opener && window.opener.karma);
 

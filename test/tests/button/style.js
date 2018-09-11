@@ -25,7 +25,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button and click and get a black overlay', (done) => {
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: {
                     flow,
@@ -48,7 +48,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
     });
 }

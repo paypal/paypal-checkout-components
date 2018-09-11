@@ -753,15 +753,15 @@ for (let group of buttonConfigs) {
                 return ZalgoPromise.try(() => {
 
                     if (useCase.valid) {
-                        return window.paypal.Button.render({
+                        return window.paypal.Button({
                             test: {
                                 action: `none`
                             },
 
                             ...useCase.conf
-                        }, `body`);
+                        }).render(`body`);
                     } else {
-                        return window.paypal.Button.render(useCase.conf, `body`).then(() => {
+                        return window.paypal.Button(useCase.conf).render(`body`).then(() => {
                             throw new Error(`Expected error to be thrown`);
                         }, err => {
                             assert.ok(err instanceof Error, `Expected error object to be thrown`);

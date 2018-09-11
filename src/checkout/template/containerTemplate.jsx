@@ -32,7 +32,7 @@ export type ContainerTemplateOptions = {
 // eslint-disable-next-line no-unused-vars
 export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT, on, tag, context, actions, outlet, jsxDom } : ContainerTemplateOptions) : HTMLElement {
 
-    let { lang, country } = props.locale;
+    let { lang } = props.locale;
 
     function close(event) {
         event.preventDefault();
@@ -54,7 +54,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
 
     let style = props.style || {};
 
-    let content = containerContent[country][lang];
+    let content = containerContent[lang];
 
     let el = (
         <div id={ id } onClick={ focus } class={ `${ tag }-context-${ context } paypal-checkout-overlay` }>

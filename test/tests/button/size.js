@@ -27,7 +27,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 38;
 
 
-        window.paypal.Button.render({
+        window.paypal.Button({
 
             style: {
                 layout: 'horizontal'
@@ -61,7 +61,7 @@ describe(`paypal button component sizes`, () => {
                 }, 100);
             }
 
-        }, container);
+        }).render(container);
     });
 
     it('should render a responsive button in the medium spectrum', (done) => {
@@ -78,7 +78,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 53;
 
 
-        window.paypal.Button.render({
+        window.paypal.Button({
 
             style: {
                 layout: 'horizontal'
@@ -112,7 +112,7 @@ describe(`paypal button component sizes`, () => {
                 }, 100);
             }
 
-        }, container);
+        }).render(container);
     });
 
     it('should render a responsive button in the large spectrum', (done) => {
@@ -129,7 +129,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 68;
 
 
-        window.paypal.Button.render({
+        window.paypal.Button({
 
             style: {
                 layout: 'horizontal'
@@ -163,7 +163,7 @@ describe(`paypal button component sizes`, () => {
                 }, 100);
             }
 
-        }, container);
+        }).render(container);
     });
 
     it('should render a responsive button below the tiny spectrum', (done) => {
@@ -180,7 +180,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 38;
 
 
-        window.paypal.Button.render({
+        window.paypal.Button({
 
             style: {
                 layout: 'horizontal'
@@ -214,7 +214,7 @@ describe(`paypal button component sizes`, () => {
                 }, 100);
             }
 
-        }, container);
+        }).render(container);
     });
 
     it('should render a responsive button above the large spectrum', (done) => {
@@ -231,7 +231,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 83;
 
 
-        window.paypal.Button.render({
+        window.paypal.Button({
 
             style: {
                 layout: 'horizontal'
@@ -265,7 +265,7 @@ describe(`paypal button component sizes`, () => {
                 }, 100);
             }
 
-        }, container);
+        }).render(container);
     });
 
     it('should render a responsive button in the tiny spectrum into an element below the minimum height', (done) => {
@@ -282,7 +282,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 38;
 
 
-        window.paypal.Button.render({
+        window.paypal.Button({
 
             style: {
                 layout: 'horizontal'
@@ -316,7 +316,7 @@ describe(`paypal button component sizes`, () => {
                 }, 100);
             }
 
-        }, container);
+        }).render(container);
     });
 
     it('should render a responsive button in the small spectrum into an element below the minimum height', (done) => {
@@ -333,7 +333,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 38;
 
 
-        window.paypal.Button.render({
+        window.paypal.Button({
 
             style: {
                 layout: 'horizontal'
@@ -367,7 +367,7 @@ describe(`paypal button component sizes`, () => {
                 }, 100);
             }
 
-        }, container);
+        }).render(container);
     });
 
     it('should render a responsive button in the medium spectrum into an element below the minimum height', (done) => {
@@ -384,7 +384,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 53;
 
 
-        window.paypal.Button.render({
+        window.paypal.Button({
 
             style: {
                 layout: 'horizontal'
@@ -418,7 +418,7 @@ describe(`paypal button component sizes`, () => {
                 }, 100);
             }
 
-        }, container);
+        }).render(container);
     });
 
     it('should render a responsive button in the large spectrum into an element below the minimum height', (done) => {
@@ -435,7 +435,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 68;
 
 
-        window.paypal.Button.render({
+        window.paypal.Button({
 
             style: {
                 layout: 'horizontal'
@@ -469,7 +469,7 @@ describe(`paypal button component sizes`, () => {
                 }, 100);
             }
 
-        }, container);
+        }).render(container);
     });
 
     it('should render a responsive pay button below the small spectrum', (done) => {
@@ -486,7 +486,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 38;
 
 
-        window.paypal.Button.render({
+        window.paypal.Button({
 
             test: {},
 
@@ -521,7 +521,7 @@ describe(`paypal button component sizes`, () => {
                 }, 100);
             }
 
-        }, container);
+        }).render(container);
     });
 
     it.skip('should render a responsive button and resize it', (done) => {
@@ -538,7 +538,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 53;
 
 
-        window.paypal.Button.render({
+        window.paypal.Button({
 
             test: {},
 
@@ -580,7 +580,7 @@ describe(`paypal button component sizes`, () => {
                 container.style.width = '255px';
             }
 
-        }, container);
+        }).render(container);
     });
 
     it('should render a responsive button in a hidden element then display it', (done) => {
@@ -598,7 +598,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 38;
 
 
-        window.paypal.Button.render({
+        window.paypal.Button({
 
             style: {
                 layout: 'horizontal'
@@ -635,7 +635,7 @@ describe(`paypal button component sizes`, () => {
                 });
             }
 
-        }, container);
+        }).render(container);
     });
 
     it('should render a responsive button in a floated div without a width', (done) => {
@@ -652,7 +652,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 38;
 
 
-        window.paypal.Button.render({
+        window.paypal.Button({
 
             style: {
                 layout: 'horizontal'
@@ -686,7 +686,7 @@ describe(`paypal button component sizes`, () => {
                 }, 100);
             }
 
-        }, container);
+        }).render(container);
     });
 
     it('should render a responsive button centered', (done) => {
@@ -701,7 +701,7 @@ describe(`paypal button component sizes`, () => {
         });
 
 
-        window.paypal.Button.render({
+        window.paypal.Button({
 
             style: {
                 layout: 'horizontal'
@@ -734,7 +734,7 @@ describe(`paypal button component sizes`, () => {
                 }, 100);
             }
 
-        }, container);
+        }).render(container);
     });
 
     it('should render a responsive button with a custon height', (done) => {
@@ -751,7 +751,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 54;
 
 
-        window.paypal.Button.render({
+        window.paypal.Button({
 
             test: {},
 
@@ -786,6 +786,6 @@ describe(`paypal button component sizes`, () => {
                 }, 100);
             }
 
-        }, container);
+        }).render(container);
     });
 });

@@ -71,7 +71,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     window.__TEST_REMEMBERED_FUNDING__.push(window.paypal.FUNDING.VENMO);
                 }
                 
-                window.paypal.Button.render({
+                window.paypal.Button({
 
                     test: { flow, action: 'checkout', selector: `[data-funding-source="${ source }"]` },
 
@@ -96,7 +96,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, '#testContainer');
+                }).render('#testContainer');
 
                 mockEligibility.cancel();
                 mockCountry.cancel();

@@ -11,8 +11,8 @@ import { PPLogo, PayPalLogo } from './logo';
 import { componentContent } from './content';
 
 function contentToJSX(key : string, locale : LocaleType, { logoColor, period } : { logoColor? : $Values<typeof LOGO_COLOR>, period? : number } = {}) : Array<JsxHTMLNode | string> {
-    let { country, lang } = locale;
-    let text = componentContent[country][lang][key];
+    let { lang } = locale;
+    let text = componentContent[lang][key];
 
     return placeholderToJSX(text, {
         text:   (token) => <span class={ CLASS.TEXT }>{ token }</span>,
@@ -40,9 +40,9 @@ export function SaferTag({ locale } : { locale : LocaleType }) : Array<string | 
 }
 
 export function DualTag({ locale } : { locale : LocaleType }) : Array<string | JsxHTMLNode> {
-    let { country, lang } = locale;
+    let { lang } = locale;
 
-    return componentContent[country][lang].dual_tag
+    return componentContent[lang].dual_tag
         ? contentToJSX('dual_tag', locale)
         : contentToJSX('safer_tag', locale);
 }

@@ -2,17 +2,18 @@
 /* @jsx jsxDom */
 /* eslint max-lines: 0 */
 
-import { ENV, logger, FPTI_KEY, getLocale, getClientID, getEnv, getIntent, getCommit, getVault } from 'paypal-braintree-web-client/src';
+import { ENV, logger, FPTI_KEY, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, DOMAINS } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
 import { isIEIntranet, isDevice, uniqueID, redirect } from 'belter/src';
+import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 
-import { URLS, DOMAINS } from '../config';
+import { URLS } from '../config';
 import { getFundingEligibility } from '../globals';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_CONTEXT_TYPE, PLATFORM } from '../constants';
 import { checkRecognizedBrowser, getSessionID, isEligible, getBrowser } from '../lib';
-import { createOrder } from '../api';
+import { createOrder, type OrderCreateRequest, type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from '../api';
 
 import { containerTemplate, Buttons } from './template';
 import { rememberFunding, findRememberedFunding } from './funding';
@@ -20,6 +21,30 @@ import { setupButtonChild } from './child';
 import { normalizeButtonStyle, type ButtonProps } from './props';
 
 const ORDER_CREATE_TIMEOUT = 10 * 1000;
+
+type CreateOrderData = {};
+type CreateOrderActions = {
+    order : {
+        create : (OrderCreateRequest) => ZalgoPromise<string>
+    }
+};
+
+type CreateOrder = (data : CreateOrderData, actions : CreateOrderActions) => ZalgoPromise<string>;
+
+type OnApproveData = {
+    orderID : string
+};
+
+type OnApproveActions = {
+    redirect : (string, CrossDomainWindowType) => ZalgoPromise<void>,
+    order : {
+        capture : () => ZalgoPromise<OrderCaptureResponse>,
+        get : () => ZalgoPromise<OrderGetResponse>
+    }
+};
+
+type OnApprove = (data : OnApproveData, actions : OnApproveActions) =>
+    void | ZalgoPromise<void> | ZalgoPromise<OrderCaptureResponse> | ZalgoPromise<OrderGetResponse> | ZalgoPromise<OrderAuthorizeResponse>;
 
 export let Button : Component<ButtonProps> = create({
 
@@ -108,7 +133,7 @@ export let Button : Component<ButtonProps> = create({
         createOrder: {
             type:     'function',
             required: false,
-            decorate(original, props) : Function {
+            decorate(original : CreateOrder, props) : Function {
                 return () : ZalgoPromise<string> => {
                     return ZalgoPromise.try(() => {
 
@@ -152,6 +177,20 @@ export let Button : Component<ButtonProps> = create({
                         return orderID;
                     });
                 };
+            },
+            def() : CreateOrder {
+                return (data, actions) => {
+                    return actions.order.create({
+                        purchase_units: [
+                            {
+                                amount: {
+                                    currency_code: 'USD',
+                                    value:         '0.01'
+                                }
+                            }
+                        ]
+                    });
+                };
             }
         },
 
@@ -159,7 +198,7 @@ export let Button : Component<ButtonProps> = create({
             type:     'function',
             required: false,
 
-            decorate(original, props) : Function {
+            decorate(original : OnApprove, props) : Function {
                 return function decorateOnApprove(data, actions) : void | ZalgoPromise<void> {
 
                     logger.info('button_authorize');
@@ -201,6 +240,16 @@ export let Button : Component<ButtonProps> = create({
                         }
                         throw err;
                     });
+                };
+            },
+
+            def() : OnApprove {
+                return function onApproveDefault(data : OnApproveData, actions : OnApproveActions) : ZalgoPromise<OrderCaptureResponse> {
+                    if (this.props.commit) {
+                        return actions.order.capture();
+                    } else {
+                        throw new Error(`Please specify onApprove callback to handle buyer approval success`);
+                    }
                 };
             }
         },

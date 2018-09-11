@@ -23,14 +23,14 @@ describe.skip(`paypal button component locales`, () => {
                 let mockCountry = mockProp(window.__TEST_LOCALE__, '__COUNTRY__', country);
                 let mockLang = mockProp(window.__TEST_LOCALE__, '__LANG__', lang);
 
-                return window.paypal.Button.render({
+                return window.paypal.Button({
                     createOrder() {
                         // pass
                     },
                     onApprove() {
                         // pass
                     }
-                }, '#testContainer').then(() => {
+                }).render('#testContainer').then(() => {
                     mockCountry.cancel();
                     mockLang.cancel();
                 });

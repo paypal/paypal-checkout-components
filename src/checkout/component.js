@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { ENV, logger, getLocale, getEnv, getClientID } from 'paypal-braintree-web-client/src';
+import { ENV, DOMAINS, logger, getLocale, getEnv, getClientID } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONSTANTS, PopupOpenError } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
@@ -9,7 +9,6 @@ import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { patchMethod, isDevice, supportsPopups, memoize, isIEIntranet } from 'belter/src';
 
 import { getSessionID, getButtonSessionID, isEligible } from '../lib';
-import { DOMAINS } from '../config';
 import { FUNDING } from '../constants';
 import { FUNDING_CONFIG } from '../funding';
 
@@ -54,7 +53,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
         }
 
         if (!isEligible()) {
-            logger.warn('button_render_ineligible');
+            logger.warn('checkout_render_ineligible');
         }
     },
 

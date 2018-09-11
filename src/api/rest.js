@@ -1,12 +1,12 @@
 /* @flow */
 
-import { logger, FPTI_KEY } from 'paypal-braintree-web-client/src';
+import { logger, FPTI_KEY, DOMAINS } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { on, send } from 'post-robot/src';
-import { getAncestor, isSameDomain, isFileProtocol } from 'cross-domain-utils/src';
+import { getAncestor, isSameDomain } from 'cross-domain-utils/src';
 import { memoize, request, base64encode } from 'belter/src';
 
-import { URLS, DOMAINS } from '../config';
+import { URLS } from '../config';
 import { FPTI_STATE, FPTI_CONTEXT_TYPE, FPTI_TRANSITION } from '../constants';
 import { isPayPalDomain } from '../lib';
 
@@ -15,6 +15,20 @@ type ProxyRest = {
 };
 
 let proxyRest : ProxyRest = {};
+
+export type OrderCreateRequest = {
+    intent? : 'CAPTURE' | 'AUTHORIZE',
+    purchase_units? : Array<{
+        amount : {
+            currency_code : string,
+            value : string
+        }
+    }>
+};
+
+export type OrderCaptureResponse = {};
+export type OrderGetResponse = {};
+export type OrderAuthorizeResponse = {};
 
 export let createAccessToken = memoize((clientID : string) : ZalgoPromise<string> => {
 
@@ -62,13 +76,7 @@ function logOrderResponse(orderID) {
     });
 }
 
-function getDefaultReturnUrl() : string {
-    return isFileProtocol()
-        ? `https://www.paypal.com`
-        : `${ window.location.protocol }//${ window.location.host }`;
-}
-
-export function createOrder(clientID : string, orderDetails : Object) : ZalgoPromise<string> {
+export function createOrder(clientID : string, order : OrderCreateRequest) : ZalgoPromise<string> {
 
     logger.info(`rest_api_create_order_token`);
 
@@ -77,10 +85,8 @@ export function createOrder(clientID : string, orderDetails : Object) : ZalgoPro
     }
 
     if (proxyRest.createOrder && !proxyRest.createOrder.source.closed) {
-        return proxyRest.createOrder(clientID, orderDetails);
+        return proxyRest.createOrder(clientID, order);
     }
-
-    let { order, meta } = orderDetails;
 
     if (!order) {
         throw new Error(`Expected order details to be passed`);
@@ -88,24 +94,12 @@ export function createOrder(clientID : string, orderDetails : Object) : ZalgoPro
 
     order = { ...order };
     order.intent = order.intent || 'CAPTURE';
-    order.application_context = order.application_context || {};
-    order.application_context.return_url = order.application_context.return_url || getDefaultReturnUrl();
-    order.application_context.cancel_url = order.application_context.cancel_url || getDefaultReturnUrl();
-    order.purchase_units = order.purchase_units || [];
-    order.purchase_units[0] = order.purchase_units[0] || {};
-    order.purchase_units.forEach(unit => {
-        unit.reference_id = unit.reference_id || Math.random().toString();
-    });
 
     return createAccessToken(clientID).then((accessToken) : ZalgoPromise<Object> => {
 
         let headers : Object = {
             Authorization: `Bearer ${ accessToken }`
         };
-
-        if (meta && meta.partner_attribution_id) {
-            headers['PayPal-Partner-Attribution-Id'] = meta.partner_attribution_id;
-        }
 
         return request({
             method: `post`,

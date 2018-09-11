@@ -1,8 +1,7 @@
 /* @flow */
 
-import { getPort, getStageHost } from 'paypal-braintree-web-client/src';
-
-import { isCurrentDomain, buildUrl } from './util';
+import { isCurrentDomain } from 'cross-domain-utils/src';
+import { DOMAINS, buildConfigUrl } from 'paypal-braintree-web-client/src';
 
 export const SESSION_LIFETIME = 5 * 60 * 1000;
 
@@ -19,37 +18,6 @@ export const SUPPORTED_BROWSERS = {
     vivaldi:        '1.91'
 };
 
-export const DOMAINS = {
-    local: {
-        get PAYPAL() : string {
-            return `http://localhost.paypal.com:${ getPort() }`;
-        },
-        get API() : string {
-            return `https://www.${ getStageHost() }`;
-        }
-    },
-    stage: {
-        get PAYPAL() : string {
-            return `https://www.${ getStageHost() }`;
-        },
-        get API() : string {
-            return `https://www.${ getStageHost() }:12326`;
-        }
-    },
-    sandbox: {
-        PAYPAL:  `https://www.sandbox.paypal.com`,
-        API:     `https://cors.api.sandbox.paypal.com`
-    },
-    production: {
-        PAYPAL: `https://www.paypal.com`,
-        API:    `https://www.cors.api.paypal.com`
-    },
-    test: {
-        PAYPAL: `mock://www.paypal.com`,
-        API:    `mock://api.paypal.com`
-    }
-}[__ENV__];
-
 const URIS = {
     CHECKOUT: `/checkoutnow`,
     ALTPAY:   `/latinumcheckout`,
@@ -57,7 +25,6 @@ const URIS = {
     BUTTON:   `/webapps/hermes/smart-button`,
     CARD:     `/webapps/hermes/card-fields`,
     META:     `/webapps/hermes/component-meta`,
-    LOGGER:   `/xoplatform/logger`,
 
     AUTH:  `/v1/oauth2/token`,
     ORDER: `/v2/checkout/orders`,
@@ -88,44 +55,44 @@ const URIS = {
 
 export const URLS = {
     get PAYPAL() : string {
-        return buildUrl(DOMAINS.PAYPAL);
+        return buildConfigUrl(DOMAINS.PAYPAL);
     },
 
     get CHECKOUT() : string {
-        return buildUrl(DOMAINS.PAYPAL, URIS.CHECKOUT);
+        return buildConfigUrl(DOMAINS.PAYPAL, URIS.CHECKOUT);
     },
 
     get BUTTON() : string {
-        return buildUrl(DOMAINS.PAYPAL, URIS.BUTTON);
+        return buildConfigUrl(DOMAINS.PAYPAL, URIS.BUTTON);
     },
 
     get GUEST() : string {
-        return buildUrl(DOMAINS.PAYPAL, URIS.GUEST);
+        return buildConfigUrl(DOMAINS.PAYPAL, URIS.GUEST);
     },
     
     get CARD() : string {
-        return buildUrl(DOMAINS.PAYPAL, URIS.CARD);
+        return buildConfigUrl(DOMAINS.PAYPAL, URIS.CARD);
     },
 
     get META() : string {
-        return buildUrl(DOMAINS.PAYPAL, URIS.META);
+        return buildConfigUrl(DOMAINS.PAYPAL, URIS.META);
     },
 
     get ALTPAY() : string {
-        return buildUrl(DOMAINS.PAYPAL, URIS.ALTPAY);
+        return buildConfigUrl(DOMAINS.PAYPAL, URIS.ALTPAY);
     },
 
     get LOGGER() : string {
-        return buildUrl(DOMAINS.PAYPAL, URIS.LOGGER);
+        return buildConfigUrl(DOMAINS.PAYPAL, URIS.LOGGER);
     },
 
     get AUTH() : string {
         let domain = isCurrentDomain(DOMAINS.PAYPAL) ? DOMAINS.PAYPAL : DOMAINS.API;
-        return buildUrl(domain, URIS.AUTH);
+        return buildConfigUrl(domain, URIS.AUTH);
     },
 
     get ORDER() : string {
         let domain = isCurrentDomain(DOMAINS.PAYPAL) ? DOMAINS.PAYPAL : DOMAINS.API;
-        return buildUrl(domain, URIS.ORDER);
+        return buildConfigUrl(domain, URIS.ORDER);
     }
 };

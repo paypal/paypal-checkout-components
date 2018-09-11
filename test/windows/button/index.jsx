@@ -1,13 +1,13 @@
 /* @flow */
 /* @jsx jsxToHTML */
 
-import { jsxToHTML } from 'belter/src'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, noop } from 'belter/src'; // eslint-disable-line no-unused-vars
 import { type ZalgoPromise } from 'zalgo-promise/src';
 
 import { Buttons } from '../../../src/button/template';
 import { getElement, getElements, errorOnWindowOpen } from '../../tests/common';
 
-let { action, flow = 'popup', authed = false, bridge = false, delay = 0, onRender, checkout, selector, remembered } = window.xprops.test;
+let { action, flow = 'popup', authed = false, bridge = false, delay = 0, onRender, checkout, selector, remembered, captureOrder = noop } = window.xprops.test;
 
 let body = document.body;
 if (body) {
@@ -43,9 +43,7 @@ function renderCheckout(props = {}) {
                 ...actions,
 
                 order: {
-                    capture() {
-                        // pass
-                    },
+                    capture: captureOrder,
 
                     get() : Object {
                         return {};

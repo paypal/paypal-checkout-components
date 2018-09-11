@@ -1,10 +1,9 @@
 /* @flow */
 
+import { DOMAINS } from 'paypal-braintree-web-client/src';
 import { on, send } from 'post-robot/src';
 import { isWindowClosed, getDomain, isSameDomain, type CrossDomainWindowType } from 'cross-domain-utils/src';
 import { noop } from 'belter/src';
-
-import { DOMAINS } from '../config';
 
 export function proxyMethod(name : string, win : ?CrossDomainWindowType, originalMethod : Function) : Function {
 

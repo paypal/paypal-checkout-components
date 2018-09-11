@@ -78,10 +78,7 @@ for (let config of buttonConfigs) {
             }
 
 
-            window.paypal.Button.render(Object.assign({
-                createOrder() { /* pass */ },
-                onApprove() { /* pass */ }
-            }, options.button), container);
+            window.paypal.Button(options.button).render(container);
 
             let rect = container.querySelector('iframe').getBoundingClientRect();
 

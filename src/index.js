@@ -1,5 +1,7 @@
 /* @flow */
 
+import { destroyAll } from 'zoid/src';
+
 import * as button from './interface/button'; // eslint-disable-line import/no-namespace
 import * as checkout from './interface/checkout'; // eslint-disable-line import/no-namespace
 import * as common from './interface/common'; // eslint-disable-line import/no-namespace
@@ -10,5 +12,6 @@ checkout.setupCheckout();
 window.paypal = {
     ...button,
     ...checkout,
-    ...common
+    ...common,
+    destroyAll: __TEST__ && destroyAll
 };

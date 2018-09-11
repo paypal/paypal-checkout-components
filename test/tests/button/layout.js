@@ -19,7 +19,7 @@ describe(`paypal button layouts`, () => {
     it('should render a maximum of 2 buttons horizontally', (done) => {
 
 
-        window.paypal.Button.render({
+        window.paypal.Button({
 
             style: {
                 layout: 'horizontal'
@@ -49,13 +49,13 @@ describe(`paypal button layouts`, () => {
 
             onError: done
 
-        }, '#testContainer');
+        }).render('#testContainer');
     });
 
     it('should render a maximum of 4 buttons vertically', (done) => {
 
 
-        window.paypal.Button.render({
+        window.paypal.Button({
 
             test: {
                 onRender({ fundingSources }) {
@@ -85,6 +85,6 @@ describe(`paypal button layouts`, () => {
 
             onError: done
 
-        }, '#testContainer');
+        }).render('#testContainer');
     });
 });

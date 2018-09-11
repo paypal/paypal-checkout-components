@@ -24,7 +24,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render button, render checkout, and return a blank string in createOrder', (done) => {
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -45,13 +45,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render button, render checkout, and return a blank string promise in createOrder', (done) => {
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -72,13 +72,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render button, render checkout, and throw an error in createOrder', (done) => {
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -99,13 +99,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render button, render checkout, and return a rejected promise in createOrder', (done) => {
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -126,13 +126,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render button, render checkout, and call reject in createOrder', (done) => {
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -153,13 +153,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render button, render checkout, and call reject with undefined in createOrder', (done) => {
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -180,13 +180,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render button, render checkout, then error out', (done) => {
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'error' },
 
@@ -207,13 +207,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render button, render checkout, then throw an error in onApprove', (done) => {
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -234,13 +234,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render button, render checkout, then return a rejected promise in onApprove', (done) => {
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -263,13 +263,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
+            }).render('#testContainer');
         });
 
         it('should render button, render checkout, then return a rejected promise for undefined in onApprove', (done) => {
 
 
-            window.paypal.Button.render({
+            window.paypal.Button({
 
                 test: { flow, action: 'checkout' },
 
@@ -292,34 +292,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer');
-        });
-
-        it('should render button with an extra prop unknown to child', (done) => {
-
-
-            window.paypal.Button.props.foobarbaz = { type: 'string', required: true };
-
-            window.paypal.Button.render({
-
-                test: { flow, action: 'checkout' },
-
-                foobarbaz: 'abcdef',
-
-                createOrder() : string | ZalgoPromise<string> {
-                    return ZalgoPromise.resolve(generateOrderID());
-                },
-
-                onApprove() : void {
-                    delete window.paypal.Button.props.foobarbaz;
-                    return done();
-                },
-
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
-                }
-
-            }, '#testContainer');
+            }).render('#testContainer');
         });
     });
 }
