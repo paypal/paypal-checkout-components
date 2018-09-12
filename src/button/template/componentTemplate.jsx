@@ -85,6 +85,7 @@ function renderCards({ cards, button, layout, size } :
                 { ...{ [ATTRIBUTE.LAYOUT]: layout ? layout : '' } }
                 { ...{ [ATTRIBUTE.SIZE]: size ? size : '' } }
                 { ...{ [ATTRIBUTE.BUTTON]: (button || false), [ATTRIBUTE.FUNDING_SOURCE]: `${ FUNDING.CARD }`, [ATTRIBUTE.CARD]: `${ name }` } }
+                tabindex='0'
                 class={ `${ button ? CLASS.BUTTON : '' } ${ CLASS.CARD } ${ CLASS.CARD }-${ name }` }
                 src={ `data:image/svg+xml;base64,${ btoa(logo) }` }
                 alt={ name } />
