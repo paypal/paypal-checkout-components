@@ -139,7 +139,7 @@ export function getReturnToken() : ?string {
 
 export function buildFundingLogoThrottle(props : Object) : ?Throttle {
 
-    let { layout, label } = props.style;
+    let { layout, label } = props.style || { layout: undefined, label: undefined };
     let locale = props.locale || `${ props.browserLocale.lang }_${ props.browserLocale.country }`;
 
     if (locale !== 'en_US') {

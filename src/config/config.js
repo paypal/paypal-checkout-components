@@ -230,7 +230,6 @@ export let config = {
 
     bmlCreditTest: {
         domains: [
-            'localhost.paypal.com:5500',
             'fashionsandthings.com',
             'medicinal-herb-store.commercehq.com',
             'medicinalherbstore.com',
