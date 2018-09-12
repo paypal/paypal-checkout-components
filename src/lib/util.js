@@ -332,9 +332,10 @@ const PATCH_OPS = {
     remove:  'remove',
     replace: 'replace'
 };
-type PatchOp = $Values<typeof PATCH_OPS>;
+export type PatchOp = $Values<typeof PATCH_OPS>;
+export type Patch = { op : PatchOp, path : string, value : ?mixed };
 
-export function patchWithOps(obj : ?Object, patch : Array<{ op : PatchOp, path : string, value : ?mixed }>) : Object {
+export function patchWithOps(obj : ?Object, patch : Array<Patch>) : Object {
     let patchedObj = { ...obj };
 
     const changePropertyFromPath = (target : Object, path : string, value : mixed, op : ?string) => {
