@@ -1,7 +1,7 @@
 /* @flow */
 
 
-import { logger, FPTI_KEY } from 'paypal-braintree-web-client/src';
+import { getLogger, FPTI_KEY } from 'paypal-braintree-web-client/src';
 
 import { FPTI_STATE, FPTI_CONTEXT_TYPE } from './constants';
 import { getSessionState } from './lib';
@@ -22,6 +22,7 @@ export function trackExperiment({ experiment, treatment, state, token } : { expe
     });
 
     getSessionState(session => {
+        let logger = getLogger();
 
         let event        = `${ experiment }_${ treatment }_${ state }`;
         let loggedEvents = session.loggedExperimentEvents = session.loggedExperimentEvents || [];

@@ -533,7 +533,7 @@ export function setupPopupBridge({ win = window, isAuthorize = true } : { win? :
                     queryItems.opType = 'payment';
                     queryItems.PayerID = 'YYYYYYYYYYYYY';
                     queryItems.return_uri = `#return?token=${ queryItems.token }&PayerID=YYYYYYYYYYYYY`;
-                    queryItems.intent = 'sale';
+                    queryItems.intent = 'commit';
                     if (hash) {
                         queryItems.return_uri = `${ queryItems.return_uri }&hash=${ hash }`;
                     }

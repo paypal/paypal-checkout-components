@@ -1,6 +1,6 @@
 /* @flow */
 
-import { logger } from 'paypal-braintree-web-client/src';
+import { getLogger } from 'paypal-braintree-web-client/src';
 import { getParent, getTop } from 'cross-domain-utils/src';
 import { patchMethod } from 'belter/src';
 
@@ -33,7 +33,7 @@ let debounce = false;
 patchMethod(Checkout, 'renderTo', ({ callOriginal, args: [ , props ] }) => {
 
     if (debounce) {
-        logger.warn('button_multiple_click_debounce');
+        getLogger().warn('button_multiple_click_debounce');
         return;
     }
 

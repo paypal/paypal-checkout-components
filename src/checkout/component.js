@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { ENV, DOMAINS, logger, getLocale, getEnv, getClientID } from 'paypal-braintree-web-client/src';
+import { ENV, DOMAINS, getLogger, getLocale, getEnv, getClientID } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONSTANTS, PopupOpenError } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
@@ -53,7 +53,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
         }
 
         if (!isEligible()) {
-            logger.warn('checkout_render_ineligible');
+            getLogger().warn('checkout_render_ineligible');
         }
     },
 
@@ -249,7 +249,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
                         [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1;
 
                     if (shouldCancel) {
-                        logger.info(`close_trigger_cancel`);
+                        getLogger().info(`close_trigger_cancel`);
                         return this.props.onCancel()
                             .then(() => onClose);
                     }

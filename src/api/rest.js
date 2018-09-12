@@ -1,6 +1,6 @@
 /* @flow */
 
-import { logger, FPTI_KEY, DOMAINS } from 'paypal-braintree-web-client/src';
+import { getLogger, FPTI_KEY, DOMAINS, getIntent } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { on, send } from 'post-robot/src';
 import { getAncestor, isSameDomain } from 'cross-domain-utils/src';
@@ -31,8 +31,7 @@ export type OrderGetResponse = {};
 export type OrderAuthorizeResponse = {};
 
 export let createAccessToken = memoize((clientID : string) : ZalgoPromise<string> => {
-
-    logger.info(`rest_api_create_access_token`);
+    getLogger().info(`rest_api_create_access_token`);
 
     if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) {
         return proxyRest.createAccessToken(clientID);
@@ -67,7 +66,7 @@ export let createAccessToken = memoize((clientID : string) : ZalgoPromise<string
 }, { time: 10 * 60 * 1000 });
 
 function logOrderResponse(orderID) {
-    logger.track({
+    getLogger().track({
         [ FPTI_KEY.STATE ]:        FPTI_STATE.BUTTON,
         [ FPTI_KEY.TRANSITION ]:   FPTI_TRANSITION.CREATE_ORDER,
         [ FPTI_KEY.CONTEXT_TYPE ]: FPTI_CONTEXT_TYPE.ORDER_ID,
@@ -77,8 +76,7 @@ function logOrderResponse(orderID) {
 }
 
 export function createOrder(clientID : string, order : OrderCreateRequest) : ZalgoPromise<string> {
-
-    logger.info(`rest_api_create_order_token`);
+    getLogger().info(`rest_api_create_order_token`);
 
     if (!clientID) {
         throw new Error(`Client ID not passed`);
@@ -93,7 +91,9 @@ export function createOrder(clientID : string, order : OrderCreateRequest) : Zal
     }
 
     order = { ...order };
-    order.intent = order.intent || 'CAPTURE';
+
+    // $FlowFixMe
+    order.intent = order.intent || getIntent().toUpperCase();
 
     return createAccessToken(clientID).then((accessToken) : ZalgoPromise<Object> => {
 

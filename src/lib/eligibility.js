@@ -1,6 +1,6 @@
 /* @flow */
 
-import { logger } from 'paypal-braintree-web-client/src';
+import { getLogger } from 'paypal-braintree-web-client/src';
 import { isIEIntranet, getUserAgent, once } from 'belter/src';
 
 import { SUPPORTED_BROWSERS } from '../config';
@@ -79,6 +79,8 @@ export let checkRecognizedBrowser = once((state : string) => {
 
     if (!browser) {
         let { name, version, mobile, android, ios } = getBowser();
+        
+        let logger = getLogger();
         logger.info(`unrecognized_browser_${ state }`, { name, version, mobile, android, ios });
         logger.flush();
     }

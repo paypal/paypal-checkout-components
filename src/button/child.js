@@ -1,7 +1,7 @@
 
 /* @flow */
 
-import { logger, FPTI_KEY } from 'paypal-braintree-web-client/src';
+import { getLogger, FPTI_KEY } from 'paypal-braintree-web-client/src';
 import { getPageRenderTime, isIEIntranet } from 'belter/src';
 
 import { ATTRIBUTE, FUNDING, FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, BUTTON_LAYOUT } from '../constants';
@@ -15,6 +15,7 @@ export function setupButtonChild(ButtonComponent : Button) : void {
     }
 
     getPageRenderTime().then(pageRenderTime => {
+        let logger = getLogger();
 
         let fundingSources = Array.prototype.slice.call(document.querySelectorAll(`[${ ATTRIBUTE.FUNDING_SOURCE }]`)).map(el => {
             return el.getAttribute(ATTRIBUTE.CARD) || el.getAttribute(ATTRIBUTE.FUNDING_SOURCE);

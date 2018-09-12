@@ -1,6 +1,6 @@
 /* @flow */
 
-import { logger } from 'paypal-braintree-web-client/src';
+import { getLogger } from 'paypal-braintree-web-client/src';
 import { isIE, isIEIntranet, isIECompHeader } from 'belter/src';
 
 function logWarn(err) : void {
@@ -17,6 +17,8 @@ function logWarn(err) : void {
 
 export function checkForCommonErrors() {
     if (__DEBUG__) {
+        let logger = getLogger();
+        
         if (JSON.stringify([]) !== '[]') {
             // $FlowFixMe
             if (Array.prototype.toJSON) {

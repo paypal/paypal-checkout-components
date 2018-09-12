@@ -35,7 +35,7 @@ if (action === 'checkout') {
 
             window.xprops.onAuthorize({
                 orderID,
-                intent:     'sale',
+                intent:     'commit',
                 payerID:    'YYYYYYYYYYYYY',
                 cancelUrl:  `#cancel?token=${ orderID }${ hash }`,
                 returnUrl:  `#return?token=${ orderID }&PayerID=YYYYYYYYYYYYY${ hash }`,

@@ -1,12 +1,14 @@
 /* @flow */
 
 
-import { logger, FPTI_KEY } from 'paypal-braintree-web-client/src';
+import { getLogger, FPTI_KEY } from 'paypal-braintree-web-client/src';
 import { experiment, type Experiment } from 'belter/src';
 
 import { FPTI_STATE, FPTI_TRANSITION } from '../constants';
 
 export function createExperiment(name : string, sample : number) : Experiment {
+    let logger = getLogger();
+    
     return experiment({
         name,
         sample,

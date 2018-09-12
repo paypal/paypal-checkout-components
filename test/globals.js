@@ -92,14 +92,12 @@ export const testGlobals = {
         }
     },
     
-    __CLIENT_ID__:   'xyz',
-    __MERCHANT_ID__: 'abc',
-    __LOCALE__:      {
-        __COUNTRY__: 'US',
-        __LANG__:    'en'
-    },
+    __CLIENT_ID__:      'xyz',
+    __MERCHANT_ID__:    'abc',
+    __LOCALE_COUNTRY__: 'US',
+    __DEFAULT_LANG__:   'en',
 
-    __INTENT__: 'sale',
+    __INTENT__: 'capture',
     __COMMIT__: true,
     __VAULT__:  true,
 
