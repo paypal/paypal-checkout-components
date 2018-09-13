@@ -74,6 +74,9 @@ export let buttonStyle = `
 
     .${ CLASS.BUTTON }:focus {
         box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;
+        outline: auto 2px Highlight;
+        outline: auto 5px -webkit-focus-ring-color;
+        outline-offset: -4px;
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.TRANSPARENT }:focus {

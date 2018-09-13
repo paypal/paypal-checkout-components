@@ -16,7 +16,7 @@ import { redirect as redir, checkRecognizedBrowser,
     isIEIntranet, isEligible,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, getThrottle,
-    getBrowser, isWebView, isEdgeIOS, isFirefoxIOS } from '../lib';
+    getBrowser, isWebView, isEdgeIOS, isFirefoxIOS, buildFundingLogoThrottle } from '../lib';
 import { rest, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
@@ -79,6 +79,7 @@ function isCreditDualEligible(props) : boolean {
 
 let creditThrottle;
 let venmoThrottle;
+let fundingLogoThrottle;
 
 type ButtonOptions = {
     style : {|
@@ -185,6 +186,16 @@ export let Button : Component<ButtonOptions> = create({
                 return escape(window.location.host);
             },
             queryParam: true
+        },
+
+        isFundingThrottleEnabled: {
+            type:       'boolean',
+            queryParam: true,
+            required:   false,
+            def(props) : boolean {
+                fundingLogoThrottle = fundingLogoThrottle || buildFundingLogoThrottle({ ...props, browserLocale: getBrowserLocale() });
+                return fundingLogoThrottle && fundingLogoThrottle.isEnabled() ? true : false;
+            }
         },
 
         sessionID: {
@@ -425,6 +436,12 @@ export let Button : Component<ButtonOptions> = create({
                 return {};
             },
             decorate({ allowed = [], disallowed = [] } : Object = {}, props : ButtonOptions) : {} {
+                
+                fundingLogoThrottle = fundingLogoThrottle || buildFundingLogoThrottle({ ...props, browserLocale: getBrowserLocale() });
+                if (fundingLogoThrottle) {
+                    allowed = [ ...allowed, FUNDING.CREDIT ];
+                    disallowed = disallowed.filter(source => (source !== FUNDING.CREDIT));
+                }
 
                 // remove Venmo from our allowed list if the rendering device is not a mobile one
                 if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1 && !isDevice()) {
@@ -510,6 +527,12 @@ export let Button : Component<ButtonOptions> = create({
 
                     if (venmoThrottle) {
                         venmoThrottle.logStart({
+                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                        });
+                    }
+
+                    if (fundingLogoThrottle) {
+                        fundingLogoThrottle.logStart({
                             [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
                         });
                     }
@@ -603,6 +626,12 @@ export let Button : Component<ButtonOptions> = create({
                     onAuthorizeListener.trigger({
                         paymentToken: data.paymentToken
                     });
+
+                    if (fundingLogoThrottle) {
+                        fundingLogoThrottle.logComplete({
+                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
+                        });
+                    }
 
                     if (creditThrottle) {
                         creditThrottle.logComplete({
@@ -741,6 +770,13 @@ export let Button : Component<ButtonOptions> = create({
                     if (creditThrottle) {
                         creditThrottle.log('click', {
                             [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
+                        });
+                    }
+                    
+                    if (fundingLogoThrottle) {
+                        fundingLogoThrottle.log('click', {
+                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
+                            [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                         });
                     }
 
