@@ -223,6 +223,22 @@ export let config = {
 
         'qvc.com': {
             disable_venmo: true
+        },
+
+        'stelladot.com': {
+            disable_venmo: true
+        },
+
+        'keepcollective.com': {
+            disable_venmo: true
+        },
+
+        'everskin.com': {
+            disable_venmo: true
+        },
+        
+        'zulily.com': {
+            disable_venmo: true
         }
     },
 
