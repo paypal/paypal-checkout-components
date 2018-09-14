@@ -46,10 +46,10 @@ export function validateExtraPaymentOptions(options : Object) {
 }
 
 export function removeExtraPaymentOptions(options : Object) : Object {
+    options = JSON.parse(JSON.stringify(options));
     const transaction = options.transactions && options.transactions[0];
 
-    options = JSON.parse(JSON.stringify(options));
-    if (transaction.item_list.shipping_options) {
+    if (transaction && transaction.item_list && transaction.item_list.shipping_options) {
         delete options.transactions[0].item_list.shipping_options;
     }
     return options;
