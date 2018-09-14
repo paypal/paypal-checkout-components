@@ -48,7 +48,9 @@ function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : A
         throw new Error('Order could not be captured');
     };
 
-    let orderGet = memoize(() => getOrder(orderID));
+    let orderGet = memoize(() =>
+        getOrder(orderID)
+    );
 
     let orderCapture = memoize(() =>
         captureOrder(orderID)

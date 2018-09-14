@@ -9,7 +9,7 @@ export const FUNDING_CONFIG = {
 
         allowOptOut: false,
 
-        intent:  [ INTENT.SALE, INTENT.AUTH, INTENT.ORDER ],
+        intent:  [ INTENT.CAPTURE, INTENT.AUTH, INTENT.ORDER ],
         commit:  [ COMMIT.TRUE, COMMIT.FALSE ],
         vault:   [ VAULT.TRUE, VAULT.FALSE ]
     },
@@ -19,7 +19,7 @@ export const FUNDING_CONFIG = {
 
         allowOptOut: true,
 
-        intent:  [ INTENT.SALE, INTENT.AUTH, INTENT.ORDER ],
+        intent:  [ INTENT.CAPTURE, INTENT.AUTH, INTENT.ORDER ],
         commit:  [ COMMIT.TRUE, COMMIT.FALSE ],
         vault:   [ VAULT.TRUE, VAULT.FALSE ]
     },
@@ -33,7 +33,7 @@ export const FUNDING_CONFIG = {
 
         allowOptOut: false,
 
-        intent:  [ INTENT.SALE, INTENT.AUTH ],
+        intent:  [ INTENT.CAPTURE, INTENT.AUTH ],
         commit:  [ COMMIT.TRUE, COMMIT.FALSE ],
         vault:   [ VAULT.FALSE ]
     },
@@ -49,7 +49,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.DE
         ],
 
-        intent:  [ INTENT.SALE, INTENT.AUTH, INTENT.ORDER ],
+        intent:  [ INTENT.CAPTURE, INTENT.AUTH, INTENT.ORDER ],
         commit:  [ COMMIT.TRUE, COMMIT.FALSE ],
         vault:   [ VAULT.TRUE, VAULT.FALSE ]
     },
@@ -63,7 +63,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.NL
         ],
 
-        intent:  [ INTENT.SALE ],
+        intent:  [ INTENT.CAPTURE ],
         commit:  [ COMMIT.TRUE ],
         vault:   [ VAULT.FALSE ]
     },
@@ -77,7 +77,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.DE
         ],
 
-        intent:  [ INTENT.SALE, INTENT.AUTH, INTENT.ORDER ],
+        intent:  [ INTENT.CAPTURE, INTENT.AUTH, INTENT.ORDER ],
         commit:  [ COMMIT.TRUE, COMMIT.FALSE ],
         vault:   [ VAULT.FALSE ]
     },
@@ -91,7 +91,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.BE
         ],
 
-        intent:  [ INTENT.SALE ],
+        intent:  [ INTENT.CAPTURE ],
         commit:  [ COMMIT.TRUE ],
         vault:   [ VAULT.FALSE ]
     },
@@ -105,7 +105,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.DE
         ],
 
-        intent:  [ INTENT.SALE ],
+        intent:  [ INTENT.CAPTURE ],
         commit:  [ COMMIT.TRUE ],
         vault:   [ VAULT.FALSE ]
     },
@@ -124,7 +124,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.NL
         ],
 
-        intent:  [ INTENT.SALE ],
+        intent:  [ INTENT.CAPTURE ],
         commit:  [ COMMIT.TRUE ],
         vault:   [ VAULT.FALSE ]
     },
@@ -138,7 +138,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.AT
         ],
 
-        intent:  [ INTENT.SALE ],
+        intent:  [ INTENT.CAPTURE ],
         commit:  [ COMMIT.TRUE ],
         vault:   [ VAULT.FALSE ]
     },
@@ -152,7 +152,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.IT
         ],
 
-        intent:  [ INTENT.SALE ],
+        intent:  [ INTENT.CAPTURE ],
         commit:  [ COMMIT.TRUE ],
         vault:   [ VAULT.FALSE ]
     },
@@ -166,7 +166,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.PL
         ],
 
-        intent:  [ INTENT.SALE ],
+        intent:  [ INTENT.CAPTURE ],
         commit:  [ COMMIT.TRUE ],
         vault:   [ VAULT.FALSE ]
     },
@@ -180,7 +180,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.FI
         ],
 
-        intent:  [ INTENT.SALE ],
+        intent:  [ INTENT.CAPTURE ],
         commit:  [ COMMIT.TRUE ],
         vault:   [ VAULT.FALSE ]
     },
@@ -194,7 +194,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.CN
         ],
 
-        intent:  [ INTENT.SALE ],
+        intent:  [ INTENT.CAPTURE ],
         commit:  [ COMMIT.TRUE ],
         vault:   [ VAULT.FALSE ]
     }

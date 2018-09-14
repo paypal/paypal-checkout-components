@@ -2,7 +2,7 @@
 
 import { values } from 'belter';
 
-import { FUNDING, CARD } from './constants';
+import { FUNDING, CARD, INTENT } from './constants';
 import { FUNDING_CONFIG, CARD_CONFIG } from './config';
 
 function isFundingEligible(funding : string, { country, intent, commit, vault } : { country : string, intent : string, commit : boolean, vault : boolean }) : boolean {
@@ -21,11 +21,11 @@ function isFundingEligible(funding : string, { country, intent, commit, vault } 
         return false;
     }
 
-    if (config.commit && config.commit.indexOf(commit.toString()) === -1) {
+    if (config.commit && config.commit.indexOf(commit) === -1) {
         return false;
     }
 
-    if (config.vault && config.vault.indexOf(vault.toString()) === -1) {
+    if (config.vault && config.vault.indexOf(vault) === -1) {
         return false;
     }
 
@@ -43,6 +43,11 @@ function isCardEligible(card : string, { country }) : boolean {
 // $FlowFixMe
 export function getFundingEligibility({ country, intent, commit, vault } : { country : string, intent : string, commit : boolean, vault : boolean }) : Object {
     
+
+    if (intent === INTENT.SALE) {
+        intent = INTENT.CAPTURE;
+    }
+
     let fundingEligibility = {};
     
     for (let funding of values(FUNDING)) {

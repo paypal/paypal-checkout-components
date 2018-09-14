@@ -1,19 +1,20 @@
 /* @flow */
 
 export const INTENT = {
-    SALE:  'sale',
-    AUTH:  'auth',
-    ORDER: 'order'
+    SALE:    'sale',
+    CAPTURE: 'capture',
+    AUTH:    'auth',
+    ORDER:   'order'
 };
 
 export const COMMIT = {
-    TRUE:  'true',
-    FALSE: 'false'
+    TRUE:  true,
+    FALSE: false
 };
 
 export const VAULT = {
-    TRUE:  'true',
-    FALSE: 'false'
+    TRUE:  true,
+    FALSE: false
 };
 
 export const COUNTRY = {
