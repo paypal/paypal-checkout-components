@@ -42,6 +42,11 @@ export async function getSmartButtonClientScript() : Promise<string> {
     return await fileRead(join(modulePath, BUTTON_CLIENT_JS));
 }
 
+export function startWatchers() {
+    getPayPalCheckoutComponentWatcher();
+    getSmartButtonWatcher();
+}
+
 export function cancelWatchers() {
     getPayPalCheckoutComponentWatcher().cancel();
     getSmartButtonWatcher().cancel();

@@ -4,12 +4,14 @@ import { undotify, htmlEncode } from 'belter';
 import { logger } from 'beaver-logger-paypal';
 
 import { getFundingEligibility } from './eligibility';
-import { getSmartButtonClientScript, getSmartButtonRenderScript } from './watcher';
+import { getSmartButtonClientScript, getSmartButtonRenderScript, startWatchers } from './watcher';
 
 type ExpressRequest = express$Request; // eslint-disable-line no-undef
 type ExpressResponse = express$Response; // eslint-disable-line no-undef
 
 export function getButtonMiddleware() : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
+    startWatchers();
+
     return async function buttonMiddleware(req : ExpressRequest, res : ExpressResponse) : Promise<void> {
         try {
             let [ buttonScript, { Buttons, DEFAULT_PROPS } ] = await Promise.all([
