@@ -60,10 +60,6 @@ export let buttonStyle = `
         box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);
     }
 
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.TRANSPARENT }:hover {
-        box-shadow: none;
-    }
-
     .${ CLASS.CARD }, .${ CLASS.CARD } * {
         cursor: pointer;
     }
@@ -78,9 +74,9 @@ export let buttonStyle = `
 
     .${ CLASS.SHOULD_FOCUS } .${ CLASS.BUTTON }:focus,
     .${ CLASS.SHOULD_FOCUS } .${ CLASS.CARD }:focus {
-        outline: auto 2px Highlight;
+        outline: solid 2px Highlight;
         outline: auto 5px -webkit-focus-ring-color;
-        outline-offset: -4px;
+        outline-offset: -3px;
     }
 
     .${ CLASS.BUTTON }:focus {
