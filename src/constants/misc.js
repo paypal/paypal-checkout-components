@@ -29,6 +29,7 @@ export const PLATFORM = {
 };
 
 export const INTENT = {
+    SALE:    'sale',
     CAPTURE: 'capture',
     AUTH:    'auth',
     ORDER:   'order'
