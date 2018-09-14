@@ -3030,21 +3030,21 @@ var DOMAINS = {
             return 'http://localhost.paypal.com:' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["h" /* getPort */])();
         },
         get LOGGER() {
-            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["i" /* getStageHost */])();
+            return 'https://' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["i" /* getStageHost */])();
         },
         get API() {
-            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["i" /* getStageHost */])();
+            return 'https://' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["i" /* getStageHost */])();
         }
     },
     stage: {
         get PAYPAL() {
-            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["i" /* getStageHost */])();
+            return 'https://' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["i" /* getStageHost */])();
         },
         get LOGGER() {
-            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["i" /* getStageHost */])();
+            return 'https://' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["i" /* getStageHost */])();
         },
         get API() {
-            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["i" /* getStageHost */])() + ':12326';
+            return 'https://' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["i" /* getStageHost */])() + ':12326';
         }
     },
     sandbox: {
@@ -5275,6 +5275,10 @@ function Buttons(props) {
     var sources = determineEligibleFunding({ style: style, remembered: remembered, platform: platform, fundingEligibility: fundingEligibility });
     var multiple = sources.length > 1;
 
+    if (!sources.length) {
+        throw new Error('No eligible funding sources found to render buttons:\n\n' + JSON.stringify(fundingEligibility, null, 4));
+    }
+
     return Object(belter_src["jsxToHTML"])(
         'div',
         { 'class': constants["k" /* CLASS */].CONTAINER + ' ' + getCommonClasses({ style: style, multiple: multiple, env: env }) },
@@ -5610,6 +5614,7 @@ var PLATFORM = {
 };
 
 var INTENT = {
+    SALE: 'sale',
     CAPTURE: 'capture',
     AUTH: 'auth',
     ORDER: 'order'
