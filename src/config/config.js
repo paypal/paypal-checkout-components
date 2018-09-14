@@ -235,6 +235,10 @@ export let config = {
 
         'everskin.com': {
             disable_venmo: true
+        },
+        
+        'zulily.com': {
+            disable_venmo: true
         }
     },
 
