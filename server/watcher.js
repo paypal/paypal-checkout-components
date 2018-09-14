@@ -16,7 +16,8 @@ const BUTTON_CLIENT_JS = 'dist/smart-payment-buttons.min.js';
 
 let getPayPalCheckoutComponentWatcher = memoize(() => {
     return poll({
-        name: BUTTON_RENDER_MODULE
+        name: BUTTON_RENDER_MODULE,
+        flat: true
     });
 });
 
@@ -25,7 +26,8 @@ let getSmartButtonWatcher = memoize(() => {
         name:       BUTTON_CLIENT_MODULE,
         npmOptions: {
             registry: NPM_REGISTRY
-        }
+        },
+        flat: true
     });
 });
 
