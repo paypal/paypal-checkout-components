@@ -40,6 +40,7 @@
     "express": "^4.16.3"
   },
   "dependencies": {
+    "beaver-logger-paypal": "^1.0.4",
     "belter": "^1.0.19",
     "grabthar": "^2.0.1",
     "zalgo-promise": "^1.0.28"

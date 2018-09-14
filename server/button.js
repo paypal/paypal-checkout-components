@@ -1,6 +1,7 @@
 /* @flow */
 
 import { undotify, htmlEncode } from 'belter';
+import { logger } from 'beaver-logger-paypal';
 
 import { getFundingEligibility } from './eligibility';
 import { getSmartButtonClientScript, getSmartButtonRenderScript } from './watcher';
@@ -54,6 +55,7 @@ export function getButtonMiddleware() : (req : ExpressRequest, res : ExpressResp
                 .send(pageHTML);
 
         } catch (err) {
+            logger.error(req, 'smart_button_error', { err: err.stack ? err.stack : err.toString() });
             console.error(err.stack ? err.stack : err); // eslint-disable-line no-console
             res.status(500)
                 .header('content-type', 'text/plain')
