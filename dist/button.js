@@ -61,7 +61,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/button/template/componentTemplate.jsx");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/buttons/template/componentTemplate.jsx");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -352,10 +352,12 @@ var KEY_CODES = {
 /* unused harmony export enablePerformance */
 /* unused harmony export getPageRenderTime */
 /* unused harmony export htmlEncode */
-/* harmony export (immutable) */ __webpack_exports__["b"] = isBrowser;
+/* harmony export (immutable) */ __webpack_exports__["c"] = isBrowser;
 /* unused harmony export querySelectorAll */
 /* unused harmony export onClick */
-/* harmony export (immutable) */ __webpack_exports__["a"] = getScript;
+/* harmony export (immutable) */ __webpack_exports__["b"] = getScript;
+/* harmony export (immutable) */ __webpack_exports__["d"] = isLocalStorageEnabled;
+/* harmony export (immutable) */ __webpack_exports__["a"] = getBrowserLocales;
 
 
 
@@ -569,7 +571,7 @@ function querySelectorAll(selector) {
 }
 
 function onClick(element, handler) {
-    element.addEventListener('touchstart', util["e" /* noop */]);
+    element.addEventListener('touchstart', util["d" /* noop */]);
     element.addEventListener('click', handler);
     element.addEventListener('keypress', function (event) {
         // $FlowFixMe
@@ -602,6 +604,60 @@ function getScript(_ref2) {
             }
         }
     }, [path]);
+}
+
+function isLocalStorageEnabled() {
+    return Object(util["b" /* inlineMemoize */])(isLocalStorageEnabled, function () {
+        try {
+            if (typeof window === 'undefined') {
+                return false;
+            }
+
+            if (window.localStorage) {
+                var value = Math.random().toString();
+                window.localStorage.setItem('__test__localStorage__', value);
+                var result = window.localStorage.getItem('__test__localStorage__');
+                window.localStorage.removeItem('__test__localStorage__');
+                if (value === result) {
+                    return true;
+                }
+            }
+        } catch (err) {
+            // pass
+        }
+        return false;
+    });
+}
+
+function getBrowserLocales() {
+    var nav = window.navigator;
+
+    var locales = nav.languages ? Array.prototype.slice.apply(nav.languages) : [];
+
+    if (nav.language) {
+        locales.push(nav.language);
+    }
+
+    if (nav.userLanguage) {
+        locales.push(nav.userLanguage);
+    }
+
+    return locales.map(function (locale) {
+
+        if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
+            var _locale$split = locale.split(/[-_]/),
+                _lang = _locale$split[0],
+                _country = _locale$split[1];
+
+            return { country: _country, lang: _lang };
+        }
+
+        if (locale && locale.match(/^[a-z]{2}$/)) {
+            return { lang: locale };
+        }
+
+        return null;
+    }).filter(Boolean);
 }
 
 /***/ }),
@@ -652,9 +708,9 @@ function experiment(_ref) {
         _ref$sample = _ref.sample,
         sample = _ref$sample === undefined ? 50 : _ref$sample,
         _ref$logTreatment = _ref.logTreatment,
-        logTreatment = _ref$logTreatment === undefined ? __WEBPACK_IMPORTED_MODULE_0__util__["e" /* noop */] : _ref$logTreatment,
+        logTreatment = _ref$logTreatment === undefined ? __WEBPACK_IMPORTED_MODULE_0__util__["d" /* noop */] : _ref$logTreatment,
         _ref$logCheckpoint = _ref.logCheckpoint,
-        logCheckpoint = _ref$logCheckpoint === undefined ? __WEBPACK_IMPORTED_MODULE_0__util__["e" /* noop */] : _ref$logCheckpoint;
+        logCheckpoint = _ref$logCheckpoint === undefined ? __WEBPACK_IMPORTED_MODULE_0__util__["d" /* noop */] : _ref$logCheckpoint;
 
 
     var throttle = getThrottlePercentile(name);
@@ -909,8 +965,9 @@ function addHeaderBuilder(method) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__device__ = __webpack_require__("./node_modules/belter/src/device.js");
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dom__ = __webpack_require__("./node_modules/belter/src/dom.js");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "getScript", function() { return __WEBPACK_IMPORTED_MODULE_1__dom__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "isBrowser", function() { return __WEBPACK_IMPORTED_MODULE_1__dom__["b"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "getBrowserLocales", function() { return __WEBPACK_IMPORTED_MODULE_1__dom__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "getScript", function() { return __WEBPACK_IMPORTED_MODULE_1__dom__["b"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "isBrowser", function() { return __WEBPACK_IMPORTED_MODULE_1__dom__["c"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__experiment__ = __webpack_require__("./node_modules/belter/src/experiment.js");
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__global__ = __webpack_require__("./node_modules/belter/src/global.js");
@@ -923,16 +980,17 @@ function addHeaderBuilder(method) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__storage__ = __webpack_require__("./node_modules/belter/src/storage.js");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "getStorage", function() { return __WEBPACK_IMPORTED_MODULE_5__storage__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__util__ = __webpack_require__("./node_modules/belter/src/util.js");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "max", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["d"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "noop", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["e"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "objFilter", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["f"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "perc", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["g"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "promiseDebounce", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["h"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "safeInterval", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["k"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "stringifyError", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["l"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "stringifyErrorMessage", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["m"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "uniqueID", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["o"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "values", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["p"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "inlineMemoize", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["b"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "max", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["c"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "noop", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["d"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "objFilter", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["e"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "perc", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["f"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "promiseDebounce", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["g"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "safeInterval", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["j"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "stringifyError", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["k"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "stringifyErrorMessage", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["l"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "uniqueID", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["n"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "values", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["o"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__http__ = __webpack_require__("./node_modules/belter/src/http.js");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "request", function() { return __WEBPACK_IMPORTED_MODULE_7__http__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__types__ = __webpack_require__("./node_modules/belter/src/types.js");
@@ -1102,7 +1160,7 @@ function jsxToHTML(element) {
 function jsxRender(template, renderers) {
 
     // eslint-disable-next-line security/detect-unsafe-regex
-    var nodes = Object(__WEBPACK_IMPORTED_MODULE_0__util__["i" /* regexMap */])(template, /\{\s*([a-z]+)(?::\s*([^} ]+))?\s*\}|([^${}]+)/g, function (match, type, value, text) {
+    var nodes = Object(__WEBPACK_IMPORTED_MODULE_0__util__["h" /* regexMap */])(template, /\{\s*([a-z]+)(?::\s*([^} ]+))?\s*\}|([^${}]+)/g, function (match, type, value, text) {
         if (type) {
             if (!renderers[type]) {
                 throw new Error('Can not render type: ' + type);
@@ -1144,11 +1202,11 @@ function SVG(props) {
         throw new TypeError('Expected svg prop to be a string or jsx html node');
     }
 
-    return jsxToHTML('img', _extends({ src: Object(__WEBPACK_IMPORTED_MODULE_0__util__["n" /* svgToBase64 */])(svg.toString()) }, otherProps));
+    return jsxToHTML('img', _extends({ src: Object(__WEBPACK_IMPORTED_MODULE_0__util__["m" /* svgToBase64 */])(svg.toString()) }, otherProps));
 }
 
 function placeholderToJSX(text, placeholders) {
-    return Object(__WEBPACK_IMPORTED_MODULE_0__util__["j" /* regexTokenize */])(text, /(\{[a-z]+\})|([^{}]+)/g).map(function (token) {
+    return Object(__WEBPACK_IMPORTED_MODULE_0__util__["i" /* regexTokenize */])(text, /(\{[a-z]+\})|([^{}]+)/g).map(function (token) {
         var match = token.match(/^{([a-z]+)}$/);
         if (match) {
             return placeholders[match[1]]();
@@ -1168,6 +1226,8 @@ function placeholderToJSX(text, placeholders) {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = getStorage;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__("./node_modules/belter/src/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dom__ = __webpack_require__("./node_modules/belter/src/dom.js");
+
 
 
 function getStorage(_ref) {
@@ -1177,105 +1237,106 @@ function getStorage(_ref) {
         _ref$lifetime = _ref.lifetime,
         lifetime = _ref$lifetime === undefined ? 5 * 60 * 1000 : _ref$lifetime;
 
+    return Object(__WEBPACK_IMPORTED_MODULE_0__util__["b" /* inlineMemoize */])(getStorage, function () {
+        var STORAGE_KEY = '__' + name + '_' + version + '_storage__';
 
-    var STORAGE_KEY = '__' + name + '_' + version + '_storage__';
+        var accessedStorage = void 0;
 
-    var accessedStorage = void 0;
+        function getState(handler) {
 
-    function getState(handler) {
+            var localStorageEnabled = Object(__WEBPACK_IMPORTED_MODULE_1__dom__["d" /* isLocalStorageEnabled */])();
+            var storage = void 0;
 
-        var localStorageEnabled = Object(__WEBPACK_IMPORTED_MODULE_0__util__["c" /* isLocalStorageEnabled */])();
-        var storage = void 0;
-
-        if (accessedStorage) {
-            storage = accessedStorage;
-        }
-
-        if (!storage && localStorageEnabled) {
-            var rawStorage = window.localStorage.getItem(STORAGE_KEY);
-
-            if (rawStorage) {
-                storage = JSON.parse(rawStorage);
-            }
-        }
-
-        if (!storage) {
-            storage = Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* getGlobal */])()[STORAGE_KEY];
-        }
-
-        if (!storage) {
-            storage = {
-                id: Object(__WEBPACK_IMPORTED_MODULE_0__util__["o" /* uniqueID */])()
-            };
-        }
-
-        if (!storage.id) {
-            storage.id = Object(__WEBPACK_IMPORTED_MODULE_0__util__["o" /* uniqueID */])();
-        }
-
-        accessedStorage = storage;
-
-        var result = handler(storage);
-
-        if (localStorageEnabled) {
-            window.localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
-        } else {
-            Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* getGlobal */])()[STORAGE_KEY] = storage;
-        }
-
-        accessedStorage = null;
-
-        return result;
-    }
-
-    function getID() {
-        return getState(function (storage) {
-            return storage.id;
-        });
-    }
-
-    function getSession(handler) {
-        return getState(function (storage) {
-
-            var session = storage.__session__;
-            var now = Date.now();
-
-            if (session && now - session.created > lifetime) {
-                session = null;
+            if (accessedStorage) {
+                storage = accessedStorage;
             }
 
-            if (!session) {
-                session = {
-                    guid: Object(__WEBPACK_IMPORTED_MODULE_0__util__["o" /* uniqueID */])(),
-                    created: now
+            if (!storage && localStorageEnabled) {
+                var rawStorage = window.localStorage.getItem(STORAGE_KEY);
+
+                if (rawStorage) {
+                    storage = JSON.parse(rawStorage);
+                }
+            }
+
+            if (!storage) {
+                storage = Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* getGlobal */])()[STORAGE_KEY];
+            }
+
+            if (!storage) {
+                storage = {
+                    id: Object(__WEBPACK_IMPORTED_MODULE_0__util__["n" /* uniqueID */])()
                 };
             }
 
-            storage.__session__ = session;
+            if (!storage.id) {
+                storage.id = Object(__WEBPACK_IMPORTED_MODULE_0__util__["n" /* uniqueID */])();
+            }
 
-            return handler(session);
-        });
-    }
+            accessedStorage = storage;
 
-    function getSessionState(handler) {
-        return getSession(function (session) {
-            session.state = session.state || {};
-            return handler(session.state);
-        });
-    }
+            var result = handler(storage);
 
-    function getSessionID() {
-        return getSession(function (session) {
-            return session.guid;
-        });
-    }
+            if (localStorageEnabled) {
+                window.localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
+            } else {
+                Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* getGlobal */])()[STORAGE_KEY] = storage;
+            }
 
-    return {
-        getState: getState,
-        getID: getID,
-        getSessionState: getSessionState,
-        getSessionID: getSessionID
-    };
+            accessedStorage = null;
+
+            return result;
+        }
+
+        function getID() {
+            return getState(function (storage) {
+                return storage.id;
+            });
+        }
+
+        function getSession(handler) {
+            return getState(function (storage) {
+
+                var session = storage.__session__;
+                var now = Date.now();
+
+                if (session && now - session.created > lifetime) {
+                    session = null;
+                }
+
+                if (!session) {
+                    session = {
+                        guid: Object(__WEBPACK_IMPORTED_MODULE_0__util__["n" /* uniqueID */])(),
+                        created: now
+                    };
+                }
+
+                storage.__session__ = session;
+
+                return handler(session);
+            });
+        }
+
+        function getSessionState(handler) {
+            return getSession(function (session) {
+                session.state = session.state || {};
+                return handler(session.state);
+            });
+        }
+
+        function getSessionID() {
+            return getSession(function (session) {
+                return session.guid;
+            });
+        }
+
+        return {
+            getState: getState,
+            getID: getID,
+            getSessionState: getSessionState,
+            getSessionID: getSessionID
+        };
+    }, [{ name: name, version: version, lifetime: lifetime }]);
 }
 
 /***/ }),
@@ -1294,34 +1355,33 @@ function getStorage(_ref) {
 /* harmony export (immutable) */ __webpack_exports__["a"] = getGlobal;
 /* unused harmony export memoize */
 /* harmony export (immutable) */ __webpack_exports__["b"] = inlineMemoize;
-/* harmony export (immutable) */ __webpack_exports__["e"] = noop;
+/* harmony export (immutable) */ __webpack_exports__["d"] = noop;
 /* unused harmony export once */
 /* unused harmony export base64encode */
 /* unused harmony export base64decode */
-/* harmony export (immutable) */ __webpack_exports__["o"] = uniqueID;
+/* harmony export (immutable) */ __webpack_exports__["n"] = uniqueID;
 /* unused harmony export hashStr */
 /* unused harmony export strHashStr */
 /* unused harmony export match */
 /* unused harmony export eventEmitter */
 /* unused harmony export awaitKey */
-/* harmony export (immutable) */ __webpack_exports__["l"] = stringifyError;
-/* harmony export (immutable) */ __webpack_exports__["m"] = stringifyErrorMessage;
+/* harmony export (immutable) */ __webpack_exports__["k"] = stringifyError;
+/* harmony export (immutable) */ __webpack_exports__["l"] = stringifyErrorMessage;
 /* unused harmony export stringify */
-/* harmony export (immutable) */ __webpack_exports__["c"] = isLocalStorageEnabled;
 /* unused harmony export domainMatches */
 /* unused harmony export patchMethod */
 /* unused harmony export extend */
-/* harmony export (immutable) */ __webpack_exports__["p"] = values;
-/* harmony export (immutable) */ __webpack_exports__["g"] = perc;
+/* harmony export (immutable) */ __webpack_exports__["o"] = values;
+/* harmony export (immutable) */ __webpack_exports__["f"] = perc;
 /* unused harmony export min */
-/* harmony export (immutable) */ __webpack_exports__["d"] = max;
-/* harmony export (immutable) */ __webpack_exports__["i"] = regexMap;
-/* harmony export (immutable) */ __webpack_exports__["n"] = svgToBase64;
-/* harmony export (immutable) */ __webpack_exports__["f"] = objFilter;
+/* harmony export (immutable) */ __webpack_exports__["c"] = max;
+/* harmony export (immutable) */ __webpack_exports__["h"] = regexMap;
+/* harmony export (immutable) */ __webpack_exports__["m"] = svgToBase64;
+/* harmony export (immutable) */ __webpack_exports__["e"] = objFilter;
 /* unused harmony export identity */
-/* harmony export (immutable) */ __webpack_exports__["j"] = regexTokenize;
-/* harmony export (immutable) */ __webpack_exports__["h"] = promiseDebounce;
-/* harmony export (immutable) */ __webpack_exports__["k"] = safeInterval;
+/* harmony export (immutable) */ __webpack_exports__["i"] = regexTokenize;
+/* harmony export (immutable) */ __webpack_exports__["g"] = promiseDebounce;
+/* harmony export (immutable) */ __webpack_exports__["j"] = safeInterval;
 /* unused harmony export isInteger */
 /* unused harmony export isFloat */
 /* unused harmony export serializePrimitive */
@@ -1338,6 +1398,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 function getGlobal() {
     if (typeof window !== 'undefined') {
         return window;
+    }
+    if (typeof global !== 'undefined') {
+        return global;
     }
     if (typeof global !== 'undefined') {
         return global;
@@ -1368,12 +1431,6 @@ function memoize(method) {
 
         var cacheTime = options.time;
         if (cache[key] && cacheTime && Date.now() - cache[key].time < cacheTime) {
-            delete cache[key];
-        }
-
-        var glob = getGlobal();
-
-        if (glob.__CACHE_START_TIME__ && cache[key] && cache[key].time < glob.__CACHE_START_TIME__) {
             delete cache[key];
         }
 
@@ -1625,29 +1682,6 @@ function stringify(item) {
     return Object.prototype.toString.call(item);
 }
 
-function isLocalStorageEnabled() {
-    return inlineMemoize(isLocalStorageEnabled, function () {
-        try {
-            if (typeof window === 'undefined') {
-                return false;
-            }
-
-            if (window.localStorage) {
-                var _value = Math.random().toString();
-                window.localStorage.setItem('__test__localStorage__', _value);
-                var result = window.localStorage.getItem('__test__localStorage__');
-                window.localStorage.removeItem('__test__localStorage__');
-                if (_value === result) {
-                    return true;
-                }
-            }
-        } catch (err) {
-            // pass
-        }
-        return false;
-    });
-}
-
 function domainMatches(hostname, domain) {
     hostname = hostname.split('://')[1];
     var index = hostname.indexOf(domain);
@@ -1862,13 +1896,13 @@ function undotify(obj) {
             continue;
         }
 
-        var _value2 = obj[_key6];
+        var _value = obj[_key6];
 
         if (_key6.match(/^.+\[\]$/)) {
             _key6 = _key6.slice(0, _key6.length - 2);
-            _value2 = _value2.split(',').map(deserializePrimitive);
+            _value = _value.split(',').map(deserializePrimitive);
         } else {
-            _value2 = deserializePrimitive(_value2);
+            _value = deserializePrimitive(_value);
         }
 
         var keyResult = result;
@@ -1880,7 +1914,7 @@ function undotify(obj) {
 
             if (isLast) {
                 // $FlowFixMe
-                keyResult[part] = _value2;
+                keyResult[part] = _value;
             } else {
                 // $FlowFixMe
                 keyResult = keyResult[part] = keyResult[part] || (isIndex ? [] : {});
@@ -2957,7 +2991,7 @@ function isWindow(obj) {
 }
 
 function isBrowser() {
-    return typeof window !== 'undefined';
+    return typeof window !== 'undefined' && typeof window.location !== 'undefined';
 }
 
 function isCurrentDomain(domain) {
@@ -2993,24 +3027,24 @@ function buildConfigUrl(domain, uri) {
 var DOMAINS = {
     local: {
         get PAYPAL() {
-            return 'http://localhost.paypal.com:' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["f" /* getPort */])();
+            return 'http://localhost.paypal.com:' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["h" /* getPort */])();
         },
         get LOGGER() {
-            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["g" /* getStageHost */])();
+            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["i" /* getStageHost */])();
         },
         get API() {
-            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["g" /* getStageHost */])();
+            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["i" /* getStageHost */])();
         }
     },
     stage: {
         get PAYPAL() {
-            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["g" /* getStageHost */])();
+            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["i" /* getStageHost */])();
         },
         get LOGGER() {
-            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["g" /* getStageHost */])();
+            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["i" /* getStageHost */])();
         },
         get API() {
-            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["g" /* getStageHost */])() + ':12326';
+            return 'https://www.' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["i" /* getStageHost */])() + ':12326';
         }
     },
     sandbox: {
@@ -3050,13 +3084,18 @@ var URLS = {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return ENV; });
 /* unused harmony export GLOBAL_NAMESPACE */
 /* unused harmony export DEFAULT_ENV */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return SDK_SETTINGS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return SDK_SETTINGS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return COUNTRY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return LANG; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return LANG; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return COUNTRY_LANGS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return FPTI_KEY; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return FPTI_DATA_SOURCE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FPTI_FEED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return FPTI_SDK_NAME; });
+/* unused harmony export INTENT */
+/* unused harmony export COMMIT */
+/* unused harmony export VAULT */
+/* unused harmony export CURRENCY */
 var _COUNTRY_LANGS;
 
 /* eslint max-lines: 0 */
@@ -3076,7 +3115,8 @@ var GLOBAL_NAMESPACE = 'paypal';
 var DEFAULT_ENV = ENV.PRODUCTION;
 
 var SDK_SETTINGS = {
-    CLIENT_TOKEN: 'data-client-token'
+    CLIENT_TOKEN: 'data-client-token',
+    PARTNER_ATTRIBUTION_ID: 'data-partner-attribution-id'
 };
 
 var COUNTRY = {
@@ -3341,7 +3381,14 @@ var FPTI_KEY = {
     FUNDING_COUNT: 'eligible_payment_count',
     CHOSEN_FUNDING: 'selected_payment_method',
     BUTTON_LAYOUT: 'button_layout',
-    VERSION: 'checkoutjs_version'
+    VERSION: 'checkoutjs_version',
+    LOCALE: 'locale',
+    BUYER_COUNTRY: 'buyer_cntry',
+    INTEGRATION_IDENTIFIER: 'integration_identifier',
+    PARTNER_ATTRIBUTION_ID: 'bn_code',
+    SDK_NAME: 'sdk_name',
+    SDK_VERSION: 'sdk_version',
+    USER_AGENT: 'user_agent'
 };
 
 var FPTI_DATA_SOURCE = {
@@ -3352,24 +3399,82 @@ var FPTI_FEED = {
     PAYMENTS_SDK: 'payments_sdk'
 };
 
+var FPTI_SDK_NAME = {
+    PAYMENTS_SDK: 'payments_sdk'
+};
+
+var INTENT = {
+    CAPTURE: 'capture',
+    AUTH: 'auth',
+    ORDER: 'order'
+};
+
+var COMMIT = {
+    TRUE: true,
+    FALSE: false
+};
+
+var VAULT = {
+    TRUE: true,
+    FALSE: false
+};
+
+var CURRENCY = {
+    AUD: 'AUD',
+    BRL: 'BRL',
+    CAD: 'CAD',
+    CZK: 'CZK',
+    DKK: 'DKK',
+    EUR: 'EUR',
+    HKD: 'HKD',
+    HUF: 'HUF',
+    INR: 'INR',
+    ILS: 'ILS',
+    JPY: 'JPY',
+    MYR: 'MYR',
+    MXN: 'MXN',
+    TWD: 'TWD',
+    NZD: 'NZD',
+    NOK: 'NOK',
+    PHP: 'PHP',
+    PLN: 'PLN',
+    GBP: 'GBP',
+    RUB: 'RUB',
+    SGD: 'SGD',
+    SEK: 'SEK',
+    CHF: 'CHF',
+    THB: 'THB',
+    USD: 'USD'
+};
+
 /***/ }),
 
 /***/ "./node_modules/paypal-braintree-web-client/src/globals.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["c"] = getHost;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getHost;
 /* unused harmony export getHostName */
-/* harmony export (immutable) */ __webpack_exports__["f"] = getPort;
-/* harmony export (immutable) */ __webpack_exports__["e"] = getPath;
-/* harmony export (immutable) */ __webpack_exports__["b"] = getEnv;
+/* harmony export (immutable) */ __webpack_exports__["h"] = getPort;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getPath;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getEnv;
 /* harmony export (immutable) */ __webpack_exports__["a"] = getClientID;
-/* harmony export (immutable) */ __webpack_exports__["d"] = getMerchantID;
+/* harmony export (immutable) */ __webpack_exports__["f"] = getMerchantID;
+/* harmony export (immutable) */ __webpack_exports__["b"] = getCountry;
+/* harmony export (immutable) */ __webpack_exports__["e"] = getLang;
 /* unused harmony export getLocale */
-/* harmony export (immutable) */ __webpack_exports__["g"] = getStageHost;
+/* harmony export (immutable) */ __webpack_exports__["i"] = getStageHost;
 /* unused harmony export getIntent */
 /* unused harmony export getCommit */
 /* unused harmony export getVault */
+/* unused harmony export getCurrency */
+/* harmony export (immutable) */ __webpack_exports__["j"] = getVersion;
+/* unused harmony export getPartnerAttributionID */
+/* unused harmony export getCorrelationID */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_belter_src__ = __webpack_require__("./node_modules/belter/src/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/constants.js");
+
+
 
 
 function getHost() {
@@ -3400,10 +3505,33 @@ function getMerchantID() {
     return __MERCHANT_ID__;
 }
 
+function getCountry() {
+    return __LOCALE_COUNTRY__;
+}
+
+function getLang() {
+    if (typeof __LOCALE_LANG__ !== 'undefined') {
+        return __LOCALE_LANG__;
+    }
+
+    for (var _i2 = 0, _getBrowserLocales2 = Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__["getBrowserLocales"])(), _length2 = _getBrowserLocales2 == null ? 0 : _getBrowserLocales2.length; _i2 < _length2; _i2++) {
+        var _ref2 = _getBrowserLocales2[_i2];
+        var country = _ref2.country,
+            lang = _ref2.lang;
+
+        if (country && country === __LOCALE_COUNTRY__ && __WEBPACK_IMPORTED_MODULE_1__constants__["b" /* COUNTRY_LANGS */][__LOCALE_COUNTRY__].indexOf(lang) !== -1) {
+            // $FlowFixMe
+            return lang;
+        }
+    }
+
+    return __DEFAULT_LANG__;
+}
+
 function getLocale() {
     return {
-        lang: __LOCALE__.__LANG__,
-        country: __LOCALE__.__COUNTRY__
+        lang: getLang(),
+        country: getCountry()
     };
 }
 
@@ -3423,6 +3551,22 @@ function getVault() {
     return __VAULT__;
 }
 
+function getCurrency() {
+    return __CURRENCY__;
+}
+
+function getVersion() {
+    return __VERSION__;
+}
+
+function getPartnerAttributionID() {
+    return __PARTNER_ATTRIBUTION_ID__;
+}
+
+function getCorrelationID() {
+    return __CORRELATION_ID__;
+}
+
 /***/ }),
 
 /***/ "./node_modules/paypal-braintree-web-client/src/index.js":
@@ -3433,7 +3577,7 @@ function getVault() {
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "COUNTRY", function() { return __WEBPACK_IMPORTED_MODULE_0__constants__["a"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "COUNTRY_LANGS", function() { return __WEBPACK_IMPORTED_MODULE_0__constants__["b"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "ENV", function() { return __WEBPACK_IMPORTED_MODULE_0__constants__["c"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "LANG", function() { return __WEBPACK_IMPORTED_MODULE_0__constants__["g"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "LANG", function() { return __WEBPACK_IMPORTED_MODULE_0__constants__["h"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/config.js");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "DOMAINS", function() { return __WEBPACK_IMPORTED_MODULE_1__config__["a"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "buildConfigUrl", function() { return __WEBPACK_IMPORTED_MODULE_1__config__["c"]; });
@@ -3730,8 +3874,12 @@ var constants = __webpack_require__("./node_modules/paypal-braintree-web-client/
 // EXTERNAL MODULE: ./node_modules/paypal-braintree-web-client/src/globals.js
 var globals = __webpack_require__("./node_modules/paypal-braintree-web-client/src/globals.js");
 
+// EXTERNAL MODULE: ./node_modules/paypal-braintree-web-client/src/script.js
+var script = __webpack_require__("./node_modules/paypal-braintree-web-client/src/script.js");
+
 // CONCATENATED MODULE: ./node_modules/paypal-braintree-web-client/src/logger.js
-/* unused harmony export logger */
+/* unused harmony export getLogger */
+/* unused harmony export getPaymentsSDKStorage */
 /* unused harmony export getSessionID */
 /* unused harmony export setupLogger */
 
@@ -3742,31 +3890,38 @@ var globals = __webpack_require__("./node_modules/paypal-braintree-web-client/sr
 
 
 
-var logger = Logger({
-    url: config["b" /* URLS */].LOGGER
-});
 
-var storage = Object(belter_src["getStorage"])({ name: 'paypal_payments_sdk' });
+function getLogger() {
+    return Object(belter_src["inlineMemoize"])(getLogger, function () {
+        return Logger({
+            url: config["b" /* URLS */].LOGGER
+        });
+    });
+}
+
+function getPaymentsSDKStorage() {
+    return Object(belter_src["getStorage"])({ name: 'paypal_payments_sdk' });
+}
 
 function getSessionID() {
-    return storage.getSessionID();
+    return getPaymentsSDKStorage().getSessionID();
 }
 
 function setupLogger() {
+    var logger = getLogger();
+
     logger.addPayloadBuilder(function () {
         return {
             referer: window.location.host,
             uid: getSessionID(),
-            env: Object(globals["b" /* getEnv */])()
+            env: Object(globals["c" /* getEnv */])()
         };
     });
 
     logger.addTrackingBuilder(function () {
         var _ref;
 
-        var sessionID = getSessionID();
-
-        return _ref = {}, _ref[constants["f" /* FPTI_KEY */].FEED] = constants["e" /* FPTI_FEED */].PAYMENTS_SDK, _ref[constants["f" /* FPTI_KEY */].DATA_SOURCE] = constants["d" /* FPTI_DATA_SOURCE */].PAYMENTS_SDK, _ref[constants["f" /* FPTI_KEY */].CLIENT_ID] = Object(globals["a" /* getClientID */])(), _ref[constants["f" /* FPTI_KEY */].SELLER_ID] = Object(globals["d" /* getMerchantID */])(), _ref[constants["f" /* FPTI_KEY */].SESSION_UID] = sessionID, _ref[constants["f" /* FPTI_KEY */].REFERER] = window.location.host, _ref;
+        return _ref = {}, _ref[constants["f" /* FPTI_KEY */].FEED] = constants["e" /* FPTI_FEED */].PAYMENTS_SDK, _ref[constants["f" /* FPTI_KEY */].DATA_SOURCE] = constants["d" /* FPTI_DATA_SOURCE */].PAYMENTS_SDK, _ref[constants["f" /* FPTI_KEY */].CLIENT_ID] = Object(globals["a" /* getClientID */])(), _ref[constants["f" /* FPTI_KEY */].SELLER_ID] = Object(globals["f" /* getMerchantID */])(), _ref[constants["f" /* FPTI_KEY */].SESSION_UID] = getSessionID(), _ref[constants["f" /* FPTI_KEY */].REFERER] = window.location.host, _ref[constants["f" /* FPTI_KEY */].LOCALE] = Object(globals["e" /* getLang */])() + '_' + Object(globals["b" /* getCountry */])(), _ref[constants["f" /* FPTI_KEY */].BUYER_COUNTRY] = Object(globals["b" /* getCountry */])(), _ref[constants["f" /* FPTI_KEY */].INTEGRATION_IDENTIFIER] = window.location.host, _ref[constants["f" /* FPTI_KEY */].PARTNER_ATTRIBUTION_ID] = Object(script["a" /* getSDKSettings */])().partnerAttributionID, _ref[constants["f" /* FPTI_KEY */].SDK_NAME] = constants["g" /* FPTI_SDK_NAME */].PAYMENTS_SDK, _ref[constants["f" /* FPTI_KEY */].SDK_VERSION] = Object(globals["j" /* getVersion */])(), _ref[constants["f" /* FPTI_KEY */].USER_AGENT] = window.navigator && window.navigator.userAgent, _ref;
     });
 
     src["a" /* ZalgoPromise */].onPossiblyUnhandledException(function (err) {
@@ -3791,7 +3946,7 @@ function setupLogger() {
 
 "use strict";
 /* unused harmony export getSDKScript */
-/* unused harmony export getSDKSettings */
+/* harmony export (immutable) */ __webpack_exports__["a"] = getSDKSettings;
 /* unused harmony export getClientToken */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_belter_src__ = __webpack_require__("./node_modules/belter/src/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/constants.js");
@@ -3802,10 +3957,10 @@ function setupLogger() {
 
 
 function getSDKScript() {
-    var script = Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__["getScript"])({ host: Object(__WEBPACK_IMPORTED_MODULE_2__globals__["c" /* getHost */])(), path: Object(__WEBPACK_IMPORTED_MODULE_2__globals__["e" /* getPath */])() });
+    var script = Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__["getScript"])({ host: Object(__WEBPACK_IMPORTED_MODULE_2__globals__["d" /* getHost */])(), path: Object(__WEBPACK_IMPORTED_MODULE_2__globals__["g" /* getPath */])() });
 
     if (!script) {
-        throw new Error('PayPal Payments SDK script not present on page!');
+        throw new Error('PayPal Payments SDK script not present on page! Excected to find <script src="https://' + Object(__WEBPACK_IMPORTED_MODULE_2__globals__["d" /* getHost */])() + Object(__WEBPACK_IMPORTED_MODULE_2__globals__["g" /* getPath */])() + '">');
     }
 
     return script;
@@ -3815,7 +3970,8 @@ function getSDKSettings() {
     var sdkScript = getSDKScript();
 
     return {
-        clientToken: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1__constants__["h" /* SDK_SETTINGS */].CLIENT_TOKEN)
+        clientToken: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1__constants__["i" /* SDK_SETTINGS */].CLIENT_TOKEN),
+        partnerAttributionID: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1__constants__["i" /* SDK_SETTINGS */].PARTNER_ATTRIBUTION_ID)
     };
 }
 
@@ -4396,7 +4552,7 @@ var promise_ZalgoPromise = function () {
 
 /***/ }),
 
-/***/ "./src/button/template/componentTemplate.jsx":
+/***/ "./src/buttons/template/componentTemplate.jsx":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4477,7 +4633,7 @@ function determineEligibleFunding(_ref2) {
 // CONCATENATED MODULE: ./src/funding/index.js
 
 
-// CONCATENATED MODULE: ./src/button/config.js
+// CONCATENATED MODULE: ./src/buttons/config.js
 var _MINIMUM_SIZE, _MAXIMUM_SIZE, _BUTTON_SIZE_STYLE;
 
 /* eslint no-template-curly-in-string: off, max-lines: off */
@@ -4539,7 +4695,7 @@ var BUTTON_SIZE_STYLE = (_BUTTON_SIZE_STYLE = {}, _BUTTON_SIZE_STYLE[constants["
     allowFunding: true,
     allowTagline: true
 }, _BUTTON_SIZE_STYLE);
-// CONCATENATED MODULE: ./src/button/props.js
+// CONCATENATED MODULE: ./src/buttons/props.js
 
 
 
@@ -4562,7 +4718,7 @@ var DEFAULT_PROPS = {
     },
     COMMIT: constants["l" /* COMMIT */].TRUE,
     VAULT: constants["q" /* VAULT */].FALSE,
-    INTENT: constants["n" /* INTENT */].SALE,
+    INTENT: constants["n" /* INTENT */].CAPTURE,
     ENV: src["ENV"].PRODUCTION,
     PLATFORM: constants["p" /* PLATFORM */].DESKTOP
 };
@@ -4712,24 +4868,24 @@ function normalizeButtonProps(props) {
 
     return { clientID: clientID, style: style, locale: locale, remembered: remembered, env: env, fundingEligibility: fundingEligibility, platform: platform, buttonSessionID: buttonSessionID, commit: commit, sessionID: sessionID };
 }
-// CONCATENATED MODULE: ./src/button/template/componentStyle/page.js
+// CONCATENATED MODULE: ./src/buttons/template/componentStyle/page.js
 var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        touch-callout: none;\n        user-select: none;\n        cursor: default;\n    }\n";
-// CONCATENATED MODULE: ./src/button/template/componentStyle/button.js
+// CONCATENATED MODULE: ./src/buttons/template/componentStyle/button.js
 
 
 
 
 var buttonStyle = '\n\n    .' + constants["k" /* CLASS */].CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + ':not(.' + constants["k" /* CLASS */].CARD + ') {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].TRANSPARENT + ' {\n        cursor: auto;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + ' * {\n        cursor: pointer;\n    }\n\n    .' + constants["k" /* CLASS */].CONTAINER + '.' + constants["k" /* CLASS */].ENV + '-' + src["ENV"].TEST + ' .' + constants["k" /* CLASS */].TEXT + ' {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + ':hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].GOLD + ':hover,\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].SILVER + ':hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].TRANSPARENT + ':hover {\n        box-shadow: none;\n    }\n\n    .' + constants["k" /* CLASS */].CARD + ', .' + constants["k" /* CLASS */].CARD + ' * {\n        cursor: pointer;\n    }\n\n    .' + constants["k" /* CLASS */].CARD + ':hover {\n        filter: brightness(1.2);\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + ':focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].TRANSPARENT + ':focus {\n        box-shadow: none;\n    }\n\n    .' + constants["k" /* CLASS */].LOGO + ' {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    .' + constants["k" /* CLASS */].TEXT + ' {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + ' .' + constants["k" /* CLASS */].LOGO + ',\n    .' + constants["k" /* CLASS */].BUTTON + ' .' + constants["k" /* CLASS */].TEXT + ' {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        text-align: left;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + ' .' + constants["k" /* CLASS */].TEXT + ' {\n        visibility: hidden;\n    }\n\n    .' + constants["k" /* CLASS */].TAGLINE + ' {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    .' + constants["k" /* CLASS */].SEPARATOR + ' {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n';
-// CONCATENATED MODULE: ./src/button/template/componentStyle/layout.js
+// CONCATENATED MODULE: ./src/buttons/template/componentStyle/layout.js
 
 
 var layoutStyle = '\n\n    .' + constants["k" /* CLASS */].CONTAINER + '.' + constants["k" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].VERTICAL + ' .' + constants["k" /* CLASS */].TAGLINE + ' {\n        display: none;\n    }\n';
-// CONCATENATED MODULE: ./src/button/template/componentStyle/labels.js
+// CONCATENATED MODULE: ./src/buttons/template/componentStyle/labels.js
 
 
 
 var labelStyle = '\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LABEL + '-' + constants["c" /* BUTTON_LABEL */].CARD + ' {\n        border-radius: 0 !important;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LABEL + '-' + constants["c" /* BUTTON_LABEL */].CREDIT + ' .' + constants["k" /* CLASS */].TEXT + ' {\n        display: none !important;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["k" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + '.' + constants["k" /* CLASS */].LABEL + '-' + constants["c" /* BUTTON_LABEL */].CREDIT + ' .' + constants["k" /* CLASS */].LOGO + '.' + constants["k" /* CLASS */].LOGO + '-' + constants["e" /* BUTTON_LOGO */].PAYPAL + ' {\n        display: none;\n    }\n\n    @media only screen and (max-width : ' + BUTTON_SIZE_STYLE[constants["h" /* BUTTON_SIZE */].SMALL].minWidth + 'px) {\n\n        .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LABEL + '-' + constants["c" /* BUTTON_LABEL */].CREDIT + ' .' + constants["k" /* CLASS */].LOGO + '.' + constants["k" /* CLASS */].LOGO + '-' + constants["e" /* BUTTON_LOGO */].PAYPAL + ' {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : ' + BUTTON_SIZE_STYLE[constants["h" /* BUTTON_SIZE */].SMALL].minWidth + 'px) {\n\n        .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LABEL + '-' + constants["c" /* BUTTON_LABEL */].CREDIT + ' .' + constants["k" /* CLASS */].LOGO + '.' + constants["k" /* CLASS */].LOGO + '-' + constants["e" /* BUTTON_LOGO */].PAYPAL + ' {\n            display: inline-block;\n        }\n    }\n';
-// CONCATENATED MODULE: ./src/button/template/componentStyle/responsive.js
+// CONCATENATED MODULE: ./src/buttons/template/componentStyle/responsive.js
 
 
 
@@ -4752,11 +4908,11 @@ function buttonResponsiveStyle(_ref) {
         return '\n\n            @media only screen and (min-width: ' + style.minWidth + 'px) {\n\n                .' + constants["k" /* CLASS */].CONTAINER + ' {\n                    min-width: ' + style.minWidth + 'px;\n                    max-width: ' + style.maxWidth + 'px;\n                    font-size: ' + Object(belter_src["max"])(Object(belter_src["perc"])(buttonHeight, 32), 10) + 'px;\n                }\n\n                .' + constants["k" /* CLASS */].BUTTON + ':not(.' + constants["k" /* CLASS */].CARD + ') {\n                    height: ' + buttonHeight + 'px;\n                    min-height: ' + (height || style.minHeight) + 'px;\n                    max-height: ' + (height || style.maxHeight) + 'px;\n                }\n\n                .' + constants["k" /* CLASS */].LOGO + ' {\n                    height: ' + (Object(belter_src["perc"])(buttonHeight, 35) + 5) + 'px;\n                    max-height: ' + Object(belter_src["perc"])(buttonHeight, 60) + 'px;\n                    min-height: ' + Object(belter_src["perc"])(buttonHeight, 40) + 'px;\n                }\n                \n                .' + constants["k" /* CLASS */].LOGO + '.' + constants["k" /* CLASS */].LOGO + '-' + constants["c" /* BUTTON_LABEL */].EPS + ',\n                .' + constants["k" /* CLASS */].LOGO + '.' + constants["k" /* CLASS */].LOGO + '-' + constants["c" /* BUTTON_LABEL */].MYBANK + ' {\n                    height: ' + (Object(belter_src["perc"])(buttonHeight, 50) + 5) + 'px;\n                    max-height: ' + Object(belter_src["perc"])(buttonHeight, 70) + 'px;\n                    min-height: ' + Object(belter_src["perc"])(buttonHeight, 40) + 'px;\n                }\n\n                .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].SHAPE + '-' + constants["g" /* BUTTON_SHAPE */].PILL + ':not(' + constants["k" /* CLASS */].LABEL + '-' + constants["k" /* CLASS */].CARD + ') {\n                    border-radius: ' + Math.ceil(buttonHeight / 2) + 'px;\n                }\n\n                .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].SHAPE + '-' + constants["g" /* BUTTON_SHAPE */].RECT + ' {\n                    border-radius: 4px;\n                }\n\n                .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].VERTICAL + ' {\n                    margin-bottom: ' + Object(belter_src["perc"])(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) + 'px;\n                }\n\n                .' + constants["k" /* CLASS */].SEPARATOR + ' {\n                    margin: 0 ' + Object(belter_src["perc"])(buttonHeight, 5) + 'px;\n                }\n\n                .' + constants["k" /* CLASS */].TAGLINE + ' {\n                    height: ' + Object(belter_src["perc"])(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + 'px;\n                    line-height: ' + Object(belter_src["perc"])(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + 'px;\n                }\n\n                .' + constants["k" /* CLASS */].CARD + ' {\n                    display: inline-block;\n                }\n\n                .' + constants["k" /* CLASS */].BUTTON + ' .' + constants["k" /* CLASS */].CARD + ' {\n                    width: ' + (90 / cardNumber).toFixed(2) + '%;\n                    max-width: ' + Object(belter_src["perc"])(buttonHeight, 160) + 'px;\n                    margin-top: 0;\n                    margin-left: ' + (5 / cardNumber).toFixed(2) + '%;\n                    margin-right: ' + (5 / cardNumber).toFixed(2) + '%;\n                }\n\n                .' + constants["k" /* CLASS */].BUTTON + ' .' + constants["k" /* CLASS */].CARD + ' img {\n                    width: 100%;\n                }\n            }\n\n            @media only screen and (min-width: ' + style.minWidth + 'px) and (max-width: ' + minDualWidth + 'px) {\n\n                .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["k" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + '.' + constants["k" /* CLASS */].NUMBER + '-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["k" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + '.' + constants["k" /* CLASS */].NUMBER + '-1 {\n                    display: none;\n                }\n\n                .' + constants["k" /* CLASS */].CONTAINER + '.' + constants["k" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["k" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + ' .' + constants["k" /* CLASS */].TAGLINE + ' {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: ' + Object(belter_src["max"])(style.minWidth, minDualWidth) + 'px) {\n\n                .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["k" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + '.' + constants["k" /* CLASS */].NUMBER + '-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["k" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + '.' + constants["k" /* CLASS */].NUMBER + '-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                .' + constants["k" /* CLASS */].CONTAINER + '.' + constants["k" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["k" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + ' .' + constants["k" /* CLASS */].TAGLINE + ' {\n                    display: block;\n                }\n            }\n        ';
     }).join('\n');
 }
-// CONCATENATED MODULE: ./src/button/template/componentStyle/color.js
+// CONCATENATED MODULE: ./src/buttons/template/componentStyle/color.js
 
 
 var buttonColorStyle = '\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].GOLD + ' {\n        background: #ffc439;\n        color: #111;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].BLUE + ' {\n        background: #009cde;\n        color: #fff;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].SILVER + ' {\n        background: #eee;\n        color: #111;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].DARKBLUE + ' {\n        background: #003087;\n        color: #fff;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].TRANSPARENT + ' {\n        background: transparent;\n        color: #111;\n    }\n';
-// CONCATENATED MODULE: ./src/button/template/componentStyle/base.js
+// CONCATENATED MODULE: ./src/buttons/template/componentStyle/base.js
 
 
 
@@ -4770,9 +4926,9 @@ function componentStyle(_ref) {
 
     return '\n        ' + pageStyle + '\n        ' + buttonStyle + '\n        ' + buttonColorStyle + '\n        ' + layoutStyle + '\n        ' + labelStyle + '\n        ' + buttonResponsiveStyle({ height: height, cardNumber: cardNumber }) + '\n    ';
 }
-// CONCATENATED MODULE: ./src/button/template/componentStyle/index.js
+// CONCATENATED MODULE: ./src/buttons/template/componentStyle/index.js
 
-// CONCATENATED MODULE: ./src/button/template/componentScript.js
+// CONCATENATED MODULE: ./src/buttons/template/componentScript.js
 function getComponentScript() {
 
     /* istanbul ignore next */
@@ -4920,7 +5076,7 @@ function getComponentScript() {
         });
     };
 }
-// CONCATENATED MODULE: ./src/button/template/componentTemplate.jsx
+// CONCATENATED MODULE: ./src/buttons/template/componentTemplate.jsx
 /* harmony export (immutable) */ __webpack_exports__["Buttons"] = Buttons;
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DEFAULT_PROPS", function() { return DEFAULT_PROPS; });
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -5454,7 +5610,7 @@ var PLATFORM = {
 };
 
 var INTENT = {
-    SALE: 'sale',
+    CAPTURE: 'capture',
     AUTH: 'auth',
     ORDER: 'order'
 };
