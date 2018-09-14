@@ -78,7 +78,7 @@ for (let config of buttonConfigs) {
             }
 
 
-            window.paypal.Button(options.button).render(container);
+            window.paypal.Buttons(options.button).render(container);
 
             let rect = container.querySelector('iframe').getBoundingClientRect();
 

@@ -6,9 +6,9 @@ import { getPageRenderTime, isIEIntranet } from 'belter/src';
 
 import { ATTRIBUTE, FUNDING, FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, BUTTON_LAYOUT } from '../constants';
 
-import typeof { Button } from './component';
+import typeof { Buttons } from './component';
 
-export function setupButtonChild(ButtonComponent : Button) : void {
+export function setupButtonChild(ButtonComponent : Buttons) : void {
 
     if (isIEIntranet()) {
         return window.xchild.error(new Error(`Can not render button in IE Intranet mode`));

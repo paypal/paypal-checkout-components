@@ -4,7 +4,7 @@
 import { jsxToHTML, noop } from 'belter/src'; // eslint-disable-line no-unused-vars
 import { type ZalgoPromise } from 'zalgo-promise/src';
 
-import { Buttons } from '../../../src/button/template';
+import { Buttons as ButtonsTemplate } from '../../../src/buttons/template';
 import { getElement, getElements, errorOnWindowOpen } from '../../tests/common';
 
 let { action, flow = 'popup', authed = false, bridge = false, delay = 0, onRender, checkout, selector, remembered, captureOrder = noop } = window.xprops.test;
@@ -12,7 +12,7 @@ let { action, flow = 'popup', authed = false, bridge = false, delay = 0, onRende
 let body = document.body;
 if (body) {
     body.innerHTML = (
-        <Buttons { ...window.xprops } />
+        <ButtonsTemplate { ...window.xprops } />
     ).toString();
 }
 

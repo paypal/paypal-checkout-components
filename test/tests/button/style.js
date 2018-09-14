@@ -25,7 +25,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button and click and get a black overlay', (done) => {
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: {
                     flow,

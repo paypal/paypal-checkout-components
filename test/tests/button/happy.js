@@ -24,7 +24,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button, then complete the checkout without createOrder', (done) => {
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -40,7 +40,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button, then complete the checkout without onApprove', (done) => {
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout', captureOrder: () => done() },
 
@@ -56,7 +56,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button, then complete the checkout without createOrder or onApprove', (done) => {
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout', captureOrder: () => done() },
 
@@ -68,7 +68,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button, then complete the checkout', (done) => {
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -90,7 +90,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button into a container and click on the button, then cancel the createOrder', (done) => {
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'cancel' },
 
@@ -114,7 +114,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let orderID = generateOrderID();
 
 
-            return window.paypal.Button({
+            return window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -144,7 +144,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let orderID = generateOrderID();
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -170,7 +170,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let orderID = generateOrderID();
 
 
-            return window.paypal.Button({
+            return window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -200,7 +200,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let orderID = generateOrderID();
 
 
-            return window.paypal.Button({
+            return window.paypal.Buttons({
 
                 test: { flow, action: 'cancel' },
 
@@ -230,7 +230,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let orderID = generateOrderID();
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'cancel' },
 
@@ -256,7 +256,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let orderID = generateOrderID();
 
 
-            return window.paypal.Button({
+            return window.paypal.Buttons({
 
                 test: { flow, action: 'cancel' },
 
@@ -284,7 +284,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button into a container and click on the button, call the REST api via actions.order to create an order, then complete the checkout', (done) => {
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -315,7 +315,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button into a container and click on the button, call the REST api via actions.order with an object to create an order, then complete the checkout', (done) => {
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -346,7 +346,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button into a container and click on the button, with an async resolved token passed, then complete the checkout', (done) => {
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -372,7 +372,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button into a container and click on the button, with a promise token passed, then complete the checkout', (done) => {
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -396,7 +396,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button into a container and click on the button, with a non-zalgo promise token passed, then complete the checkout', (done) => {
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -426,7 +426,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let orderID = generateOrderID();
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -452,7 +452,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let orderID = generateOrderID();
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -478,7 +478,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let orderID = generateOrderID().replace('PAY-', 'PAYID-');
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -504,7 +504,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let isRestarted = false;
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -537,7 +537,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let container;
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -585,7 +585,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             it('should render a button into a container and click on the button, then cancel the createOrder by closing the window', (done) => {
 
 
-                window.paypal.Button({
+                window.paypal.Buttons({
 
                     test: {
                         flow,
@@ -616,7 +616,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             it('should render a button into a container and click on the button, block the popup, fallback to iframe, then complete the checkout', (done) => {
 
 
-                window.paypal.Button({
+                window.paypal.Buttons({
 
                     test: {
                         flow,
@@ -647,7 +647,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let createOrderCalls = 0;
 
 
-                window.paypal.Button({
+                window.paypal.Buttons({
 
                     test: { flow, action: 'popout' },
 
@@ -677,7 +677,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let orderID = generateOrderID();
 
 
-                window.paypal.Button({
+                window.paypal.Buttons({
 
                     test: { flow, action: 'popout' },
 
@@ -701,7 +701,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let orderID = generateOrderID();
 
 
-                window.paypal.Button({
+                window.paypal.Buttons({
 
                     test: { flow, action: 'popout' },
 
@@ -727,7 +727,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let isRestarted = false;
 
 
-                window.paypal.Button({
+                window.paypal.Buttons({
 
                     test: { flow, action: 'checkout' },
 

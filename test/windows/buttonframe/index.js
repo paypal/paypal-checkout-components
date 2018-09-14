@@ -5,7 +5,7 @@ import { send } from 'post-robot/src';
 
 import { generateOrderID } from '../../tests/common';
 
-window.paypal.Button({
+window.paypal.Buttons({
 
     createOrder() : ZalgoPromise<string> {
         return ZalgoPromise.resolve(generateOrderID());

@@ -32,7 +32,7 @@ export let WEBPACK_CONFIG_TEST = getWebpackConfig({
 });
 
 export let WEBPACK_CONFIG_BUTTON_RENDER = getWebpackConfig({
-    entry:         './src/button/template/componentTemplate',
+    entry:         './src/buttons/template/componentTemplate',
     filename:      'button.js',
     modulename:    MODULE_NAME,
     web:           false,

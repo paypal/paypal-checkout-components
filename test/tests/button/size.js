@@ -27,7 +27,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 38;
 
 
-        window.paypal.Button({
+        window.paypal.Buttons({
 
             style: {
                 layout: 'horizontal'
@@ -78,7 +78,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 53;
 
 
-        window.paypal.Button({
+        window.paypal.Buttons({
 
             style: {
                 layout: 'horizontal'
@@ -129,7 +129,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 68;
 
 
-        window.paypal.Button({
+        window.paypal.Buttons({
 
             style: {
                 layout: 'horizontal'
@@ -180,7 +180,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 38;
 
 
-        window.paypal.Button({
+        window.paypal.Buttons({
 
             style: {
                 layout: 'horizontal'
@@ -231,7 +231,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 83;
 
 
-        window.paypal.Button({
+        window.paypal.Buttons({
 
             style: {
                 layout: 'horizontal'
@@ -282,7 +282,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 38;
 
 
-        window.paypal.Button({
+        window.paypal.Buttons({
 
             style: {
                 layout: 'horizontal'
@@ -333,7 +333,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 38;
 
 
-        window.paypal.Button({
+        window.paypal.Buttons({
 
             style: {
                 layout: 'horizontal'
@@ -384,7 +384,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 53;
 
 
-        window.paypal.Button({
+        window.paypal.Buttons({
 
             style: {
                 layout: 'horizontal'
@@ -435,7 +435,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 68;
 
 
-        window.paypal.Button({
+        window.paypal.Buttons({
 
             style: {
                 layout: 'horizontal'
@@ -486,7 +486,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 38;
 
 
-        window.paypal.Button({
+        window.paypal.Buttons({
 
             test: {},
 
@@ -538,7 +538,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 53;
 
 
-        window.paypal.Button({
+        window.paypal.Buttons({
 
             test: {},
 
@@ -598,7 +598,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 38;
 
 
-        window.paypal.Button({
+        window.paypal.Buttons({
 
             style: {
                 layout: 'horizontal'
@@ -652,7 +652,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 38;
 
 
-        window.paypal.Button({
+        window.paypal.Buttons({
 
             style: {
                 layout: 'horizontal'
@@ -701,7 +701,7 @@ describe(`paypal button component sizes`, () => {
         });
 
 
-        window.paypal.Button({
+        window.paypal.Buttons({
 
             style: {
                 layout: 'horizontal'
@@ -751,7 +751,7 @@ describe(`paypal button component sizes`, () => {
         let expectedHeight = 54;
 
 
-        window.paypal.Button({
+        window.paypal.Buttons({
 
             test: {},
 

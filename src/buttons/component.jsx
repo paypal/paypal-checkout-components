@@ -15,7 +15,7 @@ import { FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_CONTEXT_TYPE, PLATF
 import { checkRecognizedBrowser, getSessionID, isEligible, getBrowser } from '../lib';
 import { createOrder, type OrderCreateRequest, type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from '../api';
 
-import { containerTemplate, Buttons } from './template';
+import { containerTemplate, Buttons as ButtonsTemplate } from './template';
 import { rememberFunding, findRememberedFunding } from './funding';
 import { setupButtonChild } from './child';
 import { normalizeButtonStyle, type ButtonProps } from './props';
@@ -46,7 +46,7 @@ type OnApproveActions = {
 type OnApprove = (data : OnApproveData, actions : OnApproveActions) =>
     void | ZalgoPromise<void> | ZalgoPromise<OrderCaptureResponse> | ZalgoPromise<OrderGetResponse> | ZalgoPromise<OrderAuthorizeResponse>;
 
-export let Button : Component<ButtonProps> = create({
+export let Buttons : Component<ButtonProps> = create({
 
     tag:  'paypal-button',
     name: 'ppbutton',
@@ -69,7 +69,7 @@ export let Button : Component<ButtonProps> = create({
     prerenderTemplate({ props, jsxDom } : { props : Object, jsxDom : Function }) : HTMLElement {
 
         let template = (
-            <div innerHTML={ <Buttons { ...props } /> }></div>
+            <div innerHTML={ <ButtonsTemplate { ...props } /> }></div>
         );
 
         template.addEventListener('click', () => {
@@ -433,6 +433,6 @@ export let Button : Component<ButtonProps> = create({
     }
 });
 
-if (Button.isChild()) {
-    setupButtonChild(Button);
+if (Buttons.isChild()) {
+    setupButtonChild(Buttons);
 }

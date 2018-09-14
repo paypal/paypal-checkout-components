@@ -24,7 +24,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render button, render checkout, and return a blank string in createOrder', (done) => {
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -51,7 +51,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render button, render checkout, and return a blank string promise in createOrder', (done) => {
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -78,7 +78,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render button, render checkout, and throw an error in createOrder', (done) => {
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -105,7 +105,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render button, render checkout, and return a rejected promise in createOrder', (done) => {
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -132,7 +132,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render button, render checkout, and call reject in createOrder', (done) => {
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -159,7 +159,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render button, render checkout, and call reject with undefined in createOrder', (done) => {
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -186,7 +186,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render button, render checkout, then error out', (done) => {
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'error' },
 
@@ -213,7 +213,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render button, render checkout, then throw an error in onApprove', (done) => {
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -240,7 +240,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render button, render checkout, then return a rejected promise in onApprove', (done) => {
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 
@@ -269,7 +269,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render button, render checkout, then return a rejected promise for undefined in onApprove', (done) => {
 
 
-            window.paypal.Button({
+            window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
 

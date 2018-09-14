@@ -15,7 +15,7 @@ let cache = {};
 async function getButtonScript() : Promise<{ Buttons : (Object) => string, DEFAULT_PROPS : Object }> {
 
     let config = {
-        entry:         './src/button/template/componentTemplate.jsx',
+        entry:         './src/buttons/template/componentTemplate.jsx',
         libraryTarget: 'commonjs',
         web:           false
     };

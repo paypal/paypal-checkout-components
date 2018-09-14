@@ -4,7 +4,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { generateOrderID, createTestContainer, destroyTestContainer } from '../common';
 
-window.angular.module('app', [ window.paypal.Button.driver('angular', window.angular).name ]);
+window.angular.module('app', [ window.paypal.Buttons.driver('angular', window.angular).name ]);
 window.angular.bootstrap(document.body, [ 'app' ]);
 
 for (let flow of [ 'popup', 'iframe' ]) {
@@ -26,7 +26,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container with React and click on the button, then complete the checkout', (done) => {
 
-            let PayPalButton = window.paypal.Button.driver('react', {
+            let PayPalButton = window.paypal.Buttons.driver('react', {
                 React:    window.React,
                 ReactDOM: window.ReactDOM
             });
@@ -71,7 +71,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container with React with a promise in createOrder and click on the button, then complete the checkout', (done) => {
 
-            let PayPalButton = window.paypal.Button.driver('react', {
+            let PayPalButton = window.paypal.Buttons.driver('react', {
                 React:    window.React,
                 ReactDOM: window.ReactDOM
             });
@@ -118,7 +118,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container with React with a non-zalgo promise in createOrder and click on the button, then complete the checkout', (done) => {
 
-            let PayPalButton = window.paypal.Button.driver('react', {
+            let PayPalButton = window.paypal.Buttons.driver('react', {
                 React:    window.React,
                 ReactDOM: window.ReactDOM
             });
