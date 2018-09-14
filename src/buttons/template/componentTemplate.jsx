@@ -179,6 +179,10 @@ export function Buttons(props : ButtonPropsInputs) : JsxHTMLNode {
     let sources  = determineEligibleFunding({ style, remembered, platform, fundingEligibility });
     let multiple = sources.length > 1;
 
+    if (!sources.length) {
+        throw new Error(`No eligible funding sources found to render buttons:\n\n${ JSON.stringify(fundingEligibility, null, 4) }`);
+    }
+
     return (
         <div class={ `${ CLASS.CONTAINER } ${ getCommonClasses({ style, multiple, env }) }` }>
 
