@@ -746,8 +746,8 @@ for (let group of buttonConfigs) {
                 let mockLang;
 
                 if (useCase.locale) {
-                    mockCountry = mockProp(window.__TEST_LOCALE__, '__COUNTRY__', useCase.locale.country);
-                    mockLang = mockProp(window.__TEST_LOCALE__, '__LANG__', useCase.locale.lang);
+                    mockCountry = mockProp(window, '__TEST_LOCALE_COUNTRY__', useCase.locale.country);
+                    mockLang = mockProp(window, '__TEST_LOCALE_LANG__', useCase.locale.lang);
                 }
 
                 return ZalgoPromise.try(() => {

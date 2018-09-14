@@ -1,9 +1,7 @@
 /* @flow */
 
-window.__TEST_LOCALE__ = {
-    __COUNTRY__: 'US',
-    __LANG__:    'en'
-};
+window.__TEST_LOCALE_COUNTRY__ = 'US';
+window.__TEST_LOCALE_LANG__ = 'en';
 
 window.__TEST_FUNDING_ELIGIBILITY__ = {
     bancontact: {

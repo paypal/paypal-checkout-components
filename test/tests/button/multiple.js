@@ -65,7 +65,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let orderID = generateOrderID();
 
                 let mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[source], 'eligible', true);
-                let mockCountry = mockProp(window.__TEST_LOCALE__, '__COUNTRY__', country || 'US');
+                let mockCountry = mockProp(window, '__TEST_LOCALE_COUNTRY__', country || 'US');
 
                 if (source === window.paypal.FUNDING.VENMO) {
                     window.__TEST_REMEMBERED_FUNDING__.push(window.paypal.FUNDING.VENMO);
