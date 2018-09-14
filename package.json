@@ -1,6 +1,6 @@
 {
   "name": "smart-payment-buttons-2",
-  "version": "2.0.20",
+  "version": "2.0.21",
   "publishConfig": {
     "registry": "https://npm.paypal.com"
   },
