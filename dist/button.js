@@ -4833,7 +4833,9 @@ function normalizeButtonProps(props) {
         _props$sessionID = props.sessionID,
         sessionID = _props$sessionID === undefined ? Object(belter_src["uniqueID"])() : _props$sessionID,
         _props$buttonSessionI = props.buttonSessionID,
-        buttonSessionID = _props$buttonSessionI === undefined ? Object(belter_src["uniqueID"])() : _props$buttonSessionI;
+        buttonSessionID = _props$buttonSessionI === undefined ? Object(belter_src["uniqueID"])() : _props$buttonSessionI,
+        _props$nonce = props.nonce,
+        nonce = _props$nonce === undefined ? '' : _props$nonce;
     var country = locale.country,
         lang = locale.lang;
 
@@ -4866,7 +4868,7 @@ function normalizeButtonProps(props) {
 
     style = normalizeButtonStyle(style, { locale: locale });
 
-    return { clientID: clientID, style: style, locale: locale, remembered: remembered, env: env, fundingEligibility: fundingEligibility, platform: platform, buttonSessionID: buttonSessionID, commit: commit, sessionID: sessionID };
+    return { clientID: clientID, style: style, locale: locale, remembered: remembered, env: env, fundingEligibility: fundingEligibility, platform: platform, buttonSessionID: buttonSessionID, commit: commit, sessionID: sessionID, nonce: nonce };
 }
 // CONCATENATED MODULE: ./src/buttons/template/componentStyle/page.js
 var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        touch-callout: none;\n        user-select: none;\n        cursor: default;\n    }\n";
@@ -5150,7 +5152,8 @@ function Button(_ref4) {
         locale = _ref4.locale,
         env = _ref4.env,
         fundingEligibility = _ref4.fundingEligibility,
-        i = _ref4.i;
+        i = _ref4.i,
+        nonce = _ref4.nonce;
     var color = style.color,
         period = style.period;
 
@@ -5180,6 +5183,7 @@ function Button(_ref4) {
             'aria-label': source,
             tabindex: '0' }),
         Object(belter_src["jsxToHTML"])(Label, {
+            nonce: nonce,
             locale: locale,
             color: color,
             logoColor: logoColor,
@@ -5232,23 +5236,32 @@ function TagLine(_ref6) {
     );
 }
 
-function Script() {
+function Script(_ref7) {
+    var nonce = _ref7.nonce;
+
     var script = getComponentScript().toString();
 
     script = script.replace(/\{\s*CLASS\.([A-Z0-9_]+)\s*\}/g, function (match, name) {
         return constants["k" /* CLASS */][name];
     });
 
-    return Object(belter_src["jsxToHTML"])('script', { innerHTML: '(' + script + ')();' });
+    return Object(belter_src["jsxToHTML"])('script', {
+        nonce: nonce,
+        innerHTML: '(' + script + ')();'
+    });
 }
 
-function Style(_ref7) {
-    var style = _ref7.style,
-        cardNumber = _ref7.cardNumber;
+function Style(_ref8) {
+    var style = _ref8.style,
+        cardNumber = _ref8.cardNumber,
+        nonce = _ref8.nonce;
     var height = style.height;
 
 
-    return Object(belter_src["jsxToHTML"])('style', { innerHTML: componentStyle({ height: height, cardNumber: cardNumber }) });
+    return Object(belter_src["jsxToHTML"])('style', {
+        nonce: nonce,
+        innerHTML: componentStyle({ height: height, cardNumber: cardNumber })
+    });
 }
 
 function getCardNumber(locale) {
@@ -5270,7 +5283,8 @@ function Buttons(props) {
         remembered = _normalizeButtonProps.remembered,
         env = _normalizeButtonProps.env,
         fundingEligibility = _normalizeButtonProps.fundingEligibility,
-        platform = _normalizeButtonProps.platform;
+        platform = _normalizeButtonProps.platform,
+        nonce = _normalizeButtonProps.nonce;
 
     var sources = determineEligibleFunding({ style: style, remembered: remembered, platform: platform, fundingEligibility: fundingEligibility });
     var multiple = sources.length > 1;
@@ -5283,6 +5297,7 @@ function Buttons(props) {
         'div',
         { 'class': constants["k" /* CLASS */].CONTAINER + ' ' + getCommonClasses({ style: style, multiple: multiple, env: env }) },
         Object(belter_src["jsxToHTML"])(Style, {
+            nonce: nonce,
             style: style,
             cardNumber: getCardNumber(locale)
         }),
@@ -5294,6 +5309,7 @@ function Buttons(props) {
                 multiple: multiple,
                 env: env,
                 locale: locale,
+                nonce: nonce,
                 fundingEligibility: fundingEligibility
             });
         }),
@@ -5304,7 +5320,9 @@ function Buttons(props) {
             multiple: multiple,
             env: env
         }),
-        Object(belter_src["jsxToHTML"])(Script, null)
+        Object(belter_src["jsxToHTML"])(Script, {
+            nonce: nonce
+        })
     );
 }
 
@@ -5723,10 +5741,12 @@ var common = __webpack_require__("./src/funding/common.jsx");
 
 
 function BancontactLogo(_ref) {
-    var logoColor = _ref.logoColor;
+    var logoColor = _ref.logoColor,
+        nonce = _ref.nonce;
 
 
     return Object(src["jsxToHTML"])(common["b" /* SVGLogo */], {
+        nonce: nonce,
         name: constants["e" /* BUTTON_LOGO */].BANCONTACT,
         logoColor: logoColor,
         render: function render() {
@@ -5813,9 +5833,12 @@ var constants = __webpack_require__("./src/constants/index.js");
 
 
 
-function AmexLogo() {
+function AmexLogo(_ref) {
+    var nonce = _ref.nonce;
+
 
     return Object(src["jsxToHTML"])(common["a" /* SVGCardLogo */], {
+        nonce: nonce,
         name: constants["j" /* CARD */].AMEX,
         render: function render() {
             return Object(src["jsxToHTML"])(
@@ -5859,9 +5882,11 @@ var AMEX_CONFIG = {
 
 function SVGCardLogo(_ref) {
     var render = _ref.render,
-        name = _ref.name;
+        name = _ref.name,
+        nonce = _ref.nonce;
 
     return Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__["jsxToHTML"])(__WEBPACK_IMPORTED_MODULE_0_belter_src__["SVG"], {
+        nonce: nonce,
         svg: render(),
         alt: name,
         'class': __WEBPACK_IMPORTED_MODULE_1__constants__["k" /* CLASS */].CARD + ' ' + __WEBPACK_IMPORTED_MODULE_1__constants__["k" /* CLASS */].CARD + '-' + name + ' ' + __WEBPACK_IMPORTED_MODULE_1__constants__["k" /* CLASS */].BUTTON
@@ -5894,8 +5919,11 @@ var constants = __webpack_require__("./src/constants/index.js");
 
 
 
-function DiscoverLogo() {
+function DiscoverLogo(_ref) {
+    var nonce = _ref.nonce;
+
     return Object(src["jsxToHTML"])(common["a" /* SVGCardLogo */], {
+        nonce: nonce,
         name: constants["j" /* CARD */].DISCOVER,
         render: function render() {
             return Object(src["jsxToHTML"])(
@@ -5982,8 +6010,11 @@ var constants = __webpack_require__("./src/constants/index.js");
 
 
 
-function EloLogo() {
+function EloLogo(_ref) {
+    var nonce = _ref.nonce;
+
     return Object(src["jsxToHTML"])(common["a" /* SVGCardLogo */], {
+        nonce: nonce,
         name: constants["j" /* CARD */].ELO,
         render: function render() {
             return Object(src["jsxToHTML"])(
@@ -6044,8 +6075,11 @@ var constants = __webpack_require__("./src/constants/index.js");
 
 
 
-function HiperLogo() {
+function HiperLogo(_ref) {
+    var nonce = _ref.nonce;
+
     return Object(src["jsxToHTML"])(common["a" /* SVGCardLogo */], {
+        nonce: nonce,
         name: constants["j" /* CARD */].HIPER,
         render: function render() {
             return Object(src["jsxToHTML"])(
@@ -6122,14 +6156,17 @@ var CARD_CONFIG = {
     labels: (_labels = {}, _labels[constants["c" /* BUTTON_LABEL */].CARD] = _extends({}, common["a" /* DEFAULT_LABEL_CONFIG */], {
         Label: function Label(_ref) {
             var fundingEligibility = _ref.fundingEligibility,
-                locale = _ref.locale;
+                locale = _ref.locale,
+                nonce = _ref.nonce;
 
             return CARD_PRIORITY.filter(function (name) {
                 return fundingEligibility[constants["m" /* FUNDING */].CARD].vendors[name].eligible;
             }).map(function (name) {
                 var Logo = CARD_CONFIG.vendors[name].Logo;
 
-                return Object(belter_src["jsxToHTML"])(Logo, null);
+                return Object(belter_src["jsxToHTML"])(Logo, {
+                    nonce: nonce
+                });
             }).slice(0, CARD_CONFIG.maxCards[locale.country] || 4);
         },
 
@@ -6179,8 +6216,11 @@ var constants = __webpack_require__("./src/constants/index.js");
 
 
 
-function JcbLogo() {
+function JcbLogo(_ref) {
+    var nonce = _ref.nonce;
+
     return Object(src["jsxToHTML"])(common["a" /* SVGCardLogo */], {
+        nonce: nonce,
         name: constants["j" /* CARD */].JCB,
         render: function render() {
             return Object(src["jsxToHTML"])(
@@ -6298,8 +6338,11 @@ var constants = __webpack_require__("./src/constants/index.js");
 
 
 
-function MastercardLogo() {
+function MastercardLogo(_ref) {
+    var nonce = _ref.nonce;
+
     return Object(src["jsxToHTML"])(common["a" /* SVGCardLogo */], {
+        nonce: nonce,
         name: constants["j" /* CARD */].MASTERCARD,
         render: function render() {
             return Object(src["jsxToHTML"])(
@@ -6352,8 +6395,11 @@ var constants = __webpack_require__("./src/constants/index.js");
 
 
 
-function VisaLogo() {
+function VisaLogo(_ref) {
+    var nonce = _ref.nonce;
+
     return Object(src["jsxToHTML"])(common["a" /* SVGCardLogo */], {
+        nonce: nonce,
         name: constants["j" /* CARD */].VISA,
         render: function render() {
             return Object(src["jsxToHTML"])(
@@ -6414,11 +6460,13 @@ var DEFAULT_LABEL_CONFIG = {
 function SVGLogo(_ref) {
     var render = _ref.render,
         name = _ref.name,
-        logoColor = _ref.logoColor;
+        logoColor = _ref.logoColor,
+        nonce = _ref.nonce;
 
     return Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__["jsxToHTML"])(__WEBPACK_IMPORTED_MODULE_0_belter_src__["SVG"], {
         svg: render(),
         alt: name,
+        nonce: nonce,
         'class': __WEBPACK_IMPORTED_MODULE_1__constants__["k" /* CLASS */].LOGO + ' ' + __WEBPACK_IMPORTED_MODULE_1__constants__["k" /* CLASS */].LOGO + '-' + name + ' ' + (logoColor ? __WEBPACK_IMPORTED_MODULE_1__constants__["k" /* CLASS */].LOGO_COLOR + '-' + logoColor : '')
     });
 }
@@ -6467,7 +6515,8 @@ var CREDIT_LOGO_COLORS = (_CREDIT_LOGO_COLORS = {}, _CREDIT_LOGO_COLORS[constant
 
 function CreditLogo(_ref) {
     var logoColor = _ref.logoColor,
-        locale = _ref.locale;
+        locale = _ref.locale,
+        nonce = _ref.nonce;
 
 
     if (!CREDIT_LOGO_COLORS[logoColor]) {
@@ -6481,6 +6530,7 @@ function CreditLogo(_ref) {
 
 
     return Object(belter_src["jsxToHTML"])(common["b" /* SVGLogo */], {
+        nonce: nonce,
         name: constants["e" /* BUTTON_LOGO */].CREDIT,
         logoColor: logoColor,
         render: function render() {
@@ -6605,9 +6655,11 @@ var common = __webpack_require__("./src/funding/common.jsx");
 
 
 function EpsLogo(_ref) {
-    var logoColor = _ref.logoColor;
+    var logoColor = _ref.logoColor,
+        nonce = _ref.nonce;
 
     return Object(src["jsxToHTML"])(common["b" /* SVGLogo */], {
+        nonce: nonce,
         name: constants["e" /* BUTTON_LOGO */].EPS,
         logoColor: logoColor,
         render: function render() {
@@ -6755,10 +6807,12 @@ var common = __webpack_require__("./src/funding/common.jsx");
 
 
 function GiropayLogo(_ref) {
-    var logoColor = _ref.logoColor;
+    var logoColor = _ref.logoColor,
+        nonce = _ref.nonce;
 
 
     return Object(src["jsxToHTML"])(common["b" /* SVGLogo */], {
+        nonce: nonce,
         name: constants["e" /* BUTTON_LOGO */].GIROPAY,
         logoColor: logoColor,
         render: function render() {
@@ -6891,8 +6945,11 @@ var common = __webpack_require__("./src/funding/common.jsx");
 
 
 
-function IdealLogo() {
+function IdealLogo(_ref) {
+    var nonce = _ref.nonce;
+
     return Object(src["jsxToHTML"])(common["b" /* SVGLogo */], {
+        nonce: nonce,
         name: constants["e" /* BUTTON_LOGO */].IDEAL,
         render: function render() {
             return Object(src["jsxToHTML"])(
@@ -7007,10 +7064,12 @@ var common = __webpack_require__("./src/funding/common.jsx");
 
 
 function MybankLogo(_ref) {
-    var logoColor = _ref.logoColor;
+    var logoColor = _ref.logoColor,
+        nonce = _ref.nonce;
 
 
     return Object(src["jsxToHTML"])(common["b" /* SVGLogo */], {
+        nonce: nonce,
         name: constants["e" /* BUTTON_LOGO */].MYBANK,
         logoColor: logoColor,
         render: function render() {
@@ -7144,7 +7203,8 @@ var P24_LOGO_COLORS = (_P24_LOGO_COLORS = {}, _P24_LOGO_COLORS[constants["o" /* 
 }, _P24_LOGO_COLORS);
 
 function P24Logo(_ref) {
-    var logoColor = _ref.logoColor;
+    var logoColor = _ref.logoColor,
+        nonce = _ref.nonce;
 
 
     if (!P24_LOGO_COLORS[logoColor]) {
@@ -7157,6 +7217,7 @@ function P24Logo(_ref) {
 
 
     return Object(src["jsxToHTML"])(common["b" /* SVGLogo */], {
+        nonce: nonce,
         name: constants["e" /* BUTTON_LOGO */].P24,
         logoColor: logoColor,
         render: function render() {
@@ -7614,7 +7675,8 @@ var PAYPAL_LOGO_COLORS = (_PAYPAL_LOGO_COLORS = {}, _PAYPAL_LOGO_COLORS[__WEBPAC
 }, _PAYPAL_LOGO_COLORS);
 
 function PayPalLogo(_ref) {
-    var logoColor = _ref.logoColor;
+    var logoColor = _ref.logoColor,
+        nonce = _ref.nonce;
 
 
     if (!PAYPAL_LOGO_COLORS.hasOwnProperty(logoColor)) {
@@ -7627,6 +7689,7 @@ function PayPalLogo(_ref) {
 
 
     return Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__["jsxToHTML"])(__WEBPACK_IMPORTED_MODULE_2__common__["b" /* SVGLogo */], {
+        nonce: nonce,
         name: __WEBPACK_IMPORTED_MODULE_1__constants__["e" /* BUTTON_LOGO */].PAYPAL,
         logoColor: logoColor,
         render: function render() {
@@ -7645,10 +7708,12 @@ function PayPalLogo(_ref) {
 }
 
 function PPLogo(_ref2) {
-    var logoColor = _ref2.logoColor;
+    var logoColor = _ref2.logoColor,
+        nonce = _ref2.nonce;
 
 
     return Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__["jsxToHTML"])(__WEBPACK_IMPORTED_MODULE_2__common__["b" /* SVGLogo */], {
+        nonce: nonce,
         name: __WEBPACK_IMPORTED_MODULE_1__constants__["e" /* BUTTON_LOGO */].PP,
         logoColor: logoColor,
         render: function render() {
@@ -7731,10 +7796,12 @@ var common = __webpack_require__("./src/funding/common.jsx");
 
 
 function SepaLogo(_ref) {
-    var logoColor = _ref.logoColor;
+    var logoColor = _ref.logoColor,
+        nonce = _ref.nonce;
 
 
     return Object(src["jsxToHTML"])(common["b" /* SVGLogo */], {
+        nonce: nonce,
         name: constants["e" /* BUTTON_LOGO */].SEPA,
         logoColor: logoColor,
         render: function render() {
@@ -7841,10 +7908,12 @@ var common = __webpack_require__("./src/funding/common.jsx");
 
 
 function SofortLogo(_ref) {
-    var logoColor = _ref.logoColor;
+    var logoColor = _ref.logoColor,
+        nonce = _ref.nonce;
 
 
     return Object(src["jsxToHTML"])(common["b" /* SVGLogo */], {
+        nonce: nonce,
         name: constants["e" /* BUTTON_LOGO */].SOFORT,
         logoColor: logoColor,
         render: function render() {
@@ -7952,7 +8021,8 @@ var VENMO_LOGO_COLORS = (_VENMO_LOGO_COLORS = {}, _VENMO_LOGO_COLORS[constants["
 }, _VENMO_LOGO_COLORS);
 
 function VenmoLogo(_ref) {
-    var logoColor = _ref.logoColor;
+    var logoColor = _ref.logoColor,
+        nonce = _ref.nonce;
 
 
     if (!VENMO_LOGO_COLORS[logoColor]) {
@@ -7963,6 +8033,7 @@ function VenmoLogo(_ref) {
 
 
     return Object(src["jsxToHTML"])(common["b" /* SVGLogo */], {
+        nonce: nonce,
         name: constants["e" /* BUTTON_LOGO */].VENMO,
         logoColor: logoColor,
         render: function render() {
@@ -8065,7 +8136,8 @@ var WECHATPAY_LOGO_COLORS = (_WECHATPAY_LOGO_COLOR = {}, _WECHATPAY_LOGO_COLOR[c
 }, _WECHATPAY_LOGO_COLOR);
 
 function WechatpayLogo(_ref) {
-    var logoColor = _ref.logoColor;
+    var logoColor = _ref.logoColor,
+        nonce = _ref.nonce;
 
 
     if (!WECHATPAY_LOGO_COLORS[logoColor]) {
@@ -8078,6 +8150,7 @@ function WechatpayLogo(_ref) {
 
 
     return Object(src["jsxToHTML"])(common["b" /* SVGLogo */], {
+        nonce: nonce,
         name: constants["e" /* BUTTON_LOGO */].WECHATPAY,
         logoColor: logoColor,
         render: function render() {
@@ -8188,7 +8261,8 @@ var ZIMPLER_LOGO_COLORS = (_ZIMPLER_LOGO_COLORS = {}, _ZIMPLER_LOGO_COLORS[const
 }, _ZIMPLER_LOGO_COLORS);
 
 function ZimplerLogo(_ref) {
-    var logoColor = _ref.logoColor;
+    var logoColor = _ref.logoColor,
+        nonce = _ref.nonce;
 
 
     if (!ZIMPLER_LOGO_COLORS[logoColor]) {
@@ -8199,6 +8273,7 @@ function ZimplerLogo(_ref) {
 
 
     return Object(src["jsxToHTML"])(common["b" /* SVGLogo */], {
+        nonce: nonce,
         name: constants["e" /* BUTTON_LOGO */].ZIMPLER,
         logoColor: logoColor,
         render: function render() {
