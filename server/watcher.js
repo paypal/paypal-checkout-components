@@ -9,7 +9,7 @@ import { memoize } from 'belter';
 import { NPM_REGISTRY } from './config';
 
 const BUTTON_RENDER_MODULE = 'paypal-checkout-components';
-const BUTTON_CLIENT_MODULE = 'smart-payment-buttons';
+const BUTTON_CLIENT_MODULE = require('../package.json').name;
 
 const BUTTON_RENDER_JS = 'dist/button.js';
 const BUTTON_CLIENT_JS = 'dist/smart-payment-buttons.min.js';
