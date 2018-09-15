@@ -46,11 +46,12 @@ export const DEFAULT_LABEL_CONFIG = {
     }
 };
 
-export function SVGLogo({ render, name, logoColor } : { render : () => JsxHTMLNode, name : string, logoColor? : $Values<typeof LOGO_COLOR> }) : JsxHTMLNode {
+export function SVGLogo({ render, name, logoColor, nonce } : { render : () => JsxHTMLNode, name : string, logoColor? : $Values<typeof LOGO_COLOR>, nonce : string }) : JsxHTMLNode {
     return (
         <SVG
             svg={ render() }
             alt={ name }
+            nonce={ nonce }
             class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ name } ${ logoColor ? `${ CLASS.LOGO_COLOR }-${ logoColor }` : '' }` }
         />
     );

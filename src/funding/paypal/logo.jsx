@@ -21,7 +21,7 @@ const PAYPAL_LOGO_COLORS : LogoColorMap = {
     }
 };
 
-export function PayPalLogo({ logoColor } : { logoColor : $Values<typeof LOGO_COLOR> }) : JsxHTMLNode {
+export function PayPalLogo({ logoColor, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : JsxHTMLNode {
 
     if (!PAYPAL_LOGO_COLORS.hasOwnProperty(logoColor)) {
         throw new Error(`No ${ logoColor } paypal logo available`);
@@ -31,6 +31,7 @@ export function PayPalLogo({ logoColor } : { logoColor : $Values<typeof LOGO_COL
 
     return (
         <SVGLogo
+            nonce={ nonce }
             name={ BUTTON_LOGO.PAYPAL }
             logoColor={ logoColor }
             render={ () => (
@@ -47,10 +48,11 @@ export function PayPalLogo({ logoColor } : { logoColor : $Values<typeof LOGO_COL
     );
 }
 
-export function PPLogo({ logoColor } : { logoColor : $Values<typeof LOGO_COLOR> }) : JsxHTMLNode {
+export function PPLogo({ logoColor, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : JsxHTMLNode {
 
     return (
         <SVGLogo
+            nonce={ nonce }
             name={ BUTTON_LOGO.PP }
             logoColor={ logoColor }
             render={ () => {

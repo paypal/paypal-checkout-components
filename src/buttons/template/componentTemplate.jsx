@@ -61,9 +61,9 @@ function determineLabel({ source, style } :
     throw new Error(`Could not determine label for ${ source }`);
 }
 
-function Button({ source, style, multiple, locale, env, fundingEligibility, i } :
+function Button({ source, style, multiple, locale, env, fundingEligibility, i, nonce } :
     {| style : ButtonStyle, source : $Values<typeof FUNDING>, multiple : boolean, locale : LocaleType,
-      env : $Values<typeof ENV>, fundingEligibility : FundingEligibilityType, i : number |}) : JsxHTMLNode {
+      env : $Values<typeof ENV>, fundingEligibility : FundingEligibilityType, i : number, nonce : string |}) : JsxHTMLNode {
 
     let { color, period } = style;
 
@@ -92,6 +92,7 @@ function Button({ source, style, multiple, locale, env, fundingEligibility, i } 
             tabindex='0'>
 
             <Label
+                nonce={ nonce }
                 locale={ locale }
                 color={ color }
                 logoColor={ logoColor }
@@ -139,7 +140,7 @@ function TagLine({ source, style, locale, multiple } :
     );
 }
 
-function Script() : JsxHTMLNode {
+function Script({ nonce }) : JsxHTMLNode {
     let script = getComponentScript().toString();
 
     script = script.replace(/\{\s*CLASS\.([A-Z0-9_]+)\s*\}/g, (match, name) => {
@@ -147,17 +148,23 @@ function Script() : JsxHTMLNode {
     });
 
     return (
-        <script innerHTML={ `(${ script })();` } />
+        <script
+            nonce={ nonce }
+            innerHTML={ `(${ script })();` }
+        />
     );
 }
 
-function Style({ style, cardNumber } :
-    {| style : ButtonStyle, cardNumber? : number |}) : JsxHTMLNode {
+function Style({ style, cardNumber, nonce } :
+    {| style : ButtonStyle, cardNumber? : number, nonce : string |}) : JsxHTMLNode {
 
     let { height } = style;
 
     return (
-        <style innerHTML={ componentStyle({ height, cardNumber }) } />
+        <style
+            nonce={ nonce }
+            innerHTML={ componentStyle({ height, cardNumber }) }
+        />
     );
 }
 
@@ -174,7 +181,7 @@ function getCardNumber(locale : LocaleType) : number {
 }
 
 export function Buttons(props : ButtonPropsInputs) : JsxHTMLNode {
-    let { style, locale, remembered, env, fundingEligibility, platform } = normalizeButtonProps(props);
+    let { style, locale, remembered, env, fundingEligibility, platform, nonce } = normalizeButtonProps(props);
 
     let sources  = determineEligibleFunding({ style, remembered, platform, fundingEligibility });
     let multiple = sources.length > 1;
@@ -187,6 +194,7 @@ export function Buttons(props : ButtonPropsInputs) : JsxHTMLNode {
         <div class={ `${ CLASS.CONTAINER } ${ getCommonClasses({ style, multiple, env }) }` }>
 
             <Style
+                nonce={ nonce }
                 style={ style }
                 cardNumber={ getCardNumber(locale) }
             />
@@ -200,6 +208,7 @@ export function Buttons(props : ButtonPropsInputs) : JsxHTMLNode {
                         multiple={ multiple }
                         env={ env }
                         locale={ locale }
+                        nonce={ nonce }
                         fundingEligibility={ fundingEligibility }
                     />
                 ))
@@ -213,7 +222,9 @@ export function Buttons(props : ButtonPropsInputs) : JsxHTMLNode {
                 env={ env }
             />
 
-            <Script />
+            <Script
+                nonce={ nonce }
+            />
         </div>
     );
 }

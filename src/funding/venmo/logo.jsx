@@ -16,7 +16,7 @@ const VENMO_LOGO_COLORS : LogoColorMap = {
     }
 };
 
-export function VenmoLogo({ logoColor } : { logoColor : $Values<typeof LOGO_COLOR> }) : JsxHTMLNode {
+export function VenmoLogo({ logoColor, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : JsxHTMLNode {
 
     if (!VENMO_LOGO_COLORS[logoColor]) {
         throw new Error(`No ${ logoColor } venmo logo available`);
@@ -26,6 +26,7 @@ export function VenmoLogo({ logoColor } : { logoColor : $Values<typeof LOGO_COLO
 
     return (
         <SVGLogo
+            nonce={ nonce }
             name={ BUTTON_LOGO.VENMO }
             logoColor={ logoColor }
             render={ () => {

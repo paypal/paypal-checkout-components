@@ -42,7 +42,8 @@ export type ButtonProps = {
     remembered : Array<$Values<typeof FUNDING>>,
     clientID : string,
     sessionID : string,
-    buttonSessionID : string
+    buttonSessionID : string,
+    nonce : string
 };
 
 export type ButtonPropsInputs = {|
@@ -58,7 +59,8 @@ export type ButtonPropsInputs = {|
     fundingEligibility? : $PropertyType<ButtonProps, 'fundingEligibility'> | void,
     remembered? : $PropertyType<ButtonProps, 'remembered'> | void,
     sessionID? : $PropertyType<ButtonProps, 'sessionID'> | void,
-    buttonSessionID? : $PropertyType<ButtonProps, 'buttonSessionID'> | void
+    buttonSessionID? : $PropertyType<ButtonProps, 'buttonSessionID'> | void,
+    nonce? : string
 |};
 
 export const DEFAULT_STYLE = {
@@ -174,7 +176,8 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : ButtonProps {
         commit = DEFAULT_PROPS.COMMIT,
         fundingEligibility,
         sessionID = uniqueID(),
-        buttonSessionID = uniqueID()
+        buttonSessionID = uniqueID(),
+        nonce = ''
     } = props;
 
     let { country, lang } = locale;
@@ -205,5 +208,5 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : ButtonProps {
 
     style = normalizeButtonStyle(style, { locale });
 
-    return { clientID, style, locale, remembered, env, fundingEligibility, platform, buttonSessionID, commit, sessionID };
+    return { clientID, style, locale, remembered, env, fundingEligibility, platform, buttonSessionID, commit, sessionID, nonce };
 }

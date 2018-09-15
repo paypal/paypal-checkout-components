@@ -15,7 +15,8 @@ const CREDIT_LOGO_COLORS : LogoColorMap = {
     }
 };
 
-export function CreditLogo({ logoColor, locale } : { logoColor : $Values<typeof LOGO_COLOR>, locale? : LocaleType }) : JsxHTMLNode {
+export function CreditLogo({ logoColor, locale, nonce } :
+    { logoColor : $Values<typeof LOGO_COLOR>, locale? : LocaleType, nonce : string }) : JsxHTMLNode {
 
     if (!CREDIT_LOGO_COLORS[logoColor]) {
         throw new Error(`No ${ logoColor } credit logo available`);
@@ -26,6 +27,7 @@ export function CreditLogo({ logoColor, locale } : { logoColor : $Values<typeof 
 
     return (
         <SVGLogo
+            nonce={ nonce }
             name={ BUTTON_LOGO.CREDIT }
             logoColor={ logoColor }
             render={ () => {

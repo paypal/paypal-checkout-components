@@ -6,9 +6,10 @@ import { jsxToHTML, JsxHTMLNode } from 'belter/src'; // eslint-disable-line no-u
 import { SVGCardLogo } from '../common';
 import { CARD } from '../../../constants';
 
-export function MastercardLogo() : JsxHTMLNode {
+export function MastercardLogo({ nonce } : { nonce : string }) : JsxHTMLNode {
     return (
         <SVGCardLogo
+            nonce={ nonce }
             name={ CARD.MASTERCARD }
             render={ () => {
                 return (

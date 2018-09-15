@@ -31,12 +31,16 @@ export const CARD_CONFIG = {
         [ BUTTON_LABEL.CARD ]: {
             ...DEFAULT_LABEL_CONFIG,
 
-            Label({ fundingEligibility, locale }) : Array<JsxHTMLNode> {
+            Label({ fundingEligibility, locale, nonce }) : Array<JsxHTMLNode> {
                 return CARD_PRIORITY.filter(name => {
                     return fundingEligibility[FUNDING.CARD].vendors[name].eligible;
                 }).map(name => {
                     let { Logo } = CARD_CONFIG.vendors[name];
-                    return <Logo />;
+                    return (
+                        <Logo
+                            nonce={ nonce }
+                        />
+                    );
                 }).slice(0, CARD_CONFIG.maxCards[locale.country] || 4);
             },
 

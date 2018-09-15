@@ -7,9 +7,10 @@ import { jsxToHTML, JsxHTMLNode } from 'belter/src'; // eslint-disable-line no-u
 import { SVGLogo } from '../common';
 import { BUTTON_LOGO } from '../../constants';
 
-export function IdealLogo() : JsxHTMLNode {
+export function IdealLogo({ nonce } : { nonce : string }) : JsxHTMLNode {
     return (
         <SVGLogo
+            nonce={ nonce }
             name={ BUTTON_LOGO.IDEAL }
             render={ () => {
                 return (

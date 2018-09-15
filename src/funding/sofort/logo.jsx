@@ -6,10 +6,11 @@ import { jsxToHTML, JsxHTMLNode } from 'belter/src'; // eslint-disable-line no-u
 import { SVGLogo } from '../common';
 import { LOGO_COLOR, BUTTON_LOGO } from '../../constants';
 
-export function SofortLogo({ logoColor } : { logoColor : $Values<typeof LOGO_COLOR> }) : JsxHTMLNode {
+export function SofortLogo({ logoColor, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : JsxHTMLNode {
 
     return (
         <SVGLogo
+            nonce={ nonce }
             name={ BUTTON_LOGO.SOFORT }
             logoColor={ logoColor }
             render={ () => {

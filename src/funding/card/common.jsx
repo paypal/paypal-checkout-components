@@ -6,9 +6,10 @@ import { jsxToHTML, SVG, JsxHTMLNode } from 'belter/src'; // eslint-disable-line
 
 import { CLASS } from '../../constants';
 
-export function SVGCardLogo({ render, name } : { render : () => JsxHTMLNode, name : string }) : JsxHTMLNode {
+export function SVGCardLogo({ render, name, nonce } : { render : () => JsxHTMLNode, name : string, nonce : string }) : JsxHTMLNode {
     return (
         <SVG
+            nonce={ nonce }
             svg={ render() }
             alt={ name }
             class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name } ${ CLASS.BUTTON }` }

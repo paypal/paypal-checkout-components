@@ -13,7 +13,7 @@ const P24_LOGO_COLORS : LogoColorMap = {
     }
 };
 
-export function P24Logo({ logoColor } : { logoColor : $Values<typeof LOGO_COLOR> }) : JsxHTMLNode {
+export function P24Logo({ logoColor, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : JsxHTMLNode {
 
     if (!P24_LOGO_COLORS[logoColor]) {
         throw new Error(`No ${ logoColor } zimpler logo available`);
@@ -24,6 +24,7 @@ export function P24Logo({ logoColor } : { logoColor : $Values<typeof LOGO_COLOR>
 
     return (
         <SVGLogo
+            nonce={ nonce }
             name={ BUTTON_LOGO.P24 }
             logoColor={ logoColor }
             render={ () => {
