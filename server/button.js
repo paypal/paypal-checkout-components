@@ -39,8 +39,9 @@ export function getButtonMiddleware() : (req : ExpressRequest, res : ExpressResp
             let { lang, country } = locale;
 
             let fundingEligibility = await getFundingEligibility({ country, intent, commit, vault });
+            let nonce = res.locals && res.locals.nonce;
 
-            let buttonHTML = Buttons({ ...params, fundingEligibility }).toString();
+            let buttonHTML = Buttons({ ...params, nonce, fundingEligibility }).toString();
 
             let pageHTML = `
                 <body>
