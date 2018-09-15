@@ -41,14 +41,18 @@ export function getButtonMiddleware() : (req : ExpressRequest, res : ExpressResp
             let fundingEligibility = await getFundingEligibility({ country, intent, commit, vault });
             let nonce = res.locals && res.locals.nonce;
 
+            if (!nonce || typeof nonce !== 'string') {
+                nonce = '';
+            }
+
             let buttonHTML = Buttons({ ...params, nonce, fundingEligibility }).toString();
 
             let pageHTML = `
                 <body>
                     ${ buttonHTML }
                     <script src="/sdk/js?client-id=${ htmlEncode(clientID) }&locale-country=${ htmlEncode(country) }&locale-lang=${ htmlEncode(lang) }&components=buttons,checkout"></script>
-                    <script>${ buttonScript }</script>
-                    <script>spb.setupButton()</script>
+                    <script nonce="${ nonce }">${ buttonScript }</script>
+                    <script nonce="${ nonce }">spb.setupButton()</script>
                 </body>
             `;
 
