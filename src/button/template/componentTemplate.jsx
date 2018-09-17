@@ -21,7 +21,8 @@ function getCommonButtonClasses({ layout, shape, branding, multiple, env }) : st
         `${ CLASS.SHAPE }-${ shape }`,
         `${ CLASS.BRANDING }-${ branding ? BUTTON_BRANDING.BRANDED : BUTTON_BRANDING.UNBRANDED }`,
         `${ CLASS.NUMBER }-${ multiple ? BUTTON_NUMBER.MULTIPLE : BUTTON_NUMBER.SINGLE }`,
-        `${ CLASS.ENV }-${ env }`
+        `${ CLASS.ENV }-${ env }`,
+        `${ CLASS.SHOULD_FOCUS }`
     ].join(' ');
 }
 

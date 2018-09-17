@@ -132,7 +132,7 @@ export function getComponentScript() : () => void {
         }
 
         function setupTabOutlineEvent() {
-            const buttonsContainer = document.getElementsByClassName('paypal-button-container')[0];
+            const buttonsContainer = document.getElementsByClassName('{ CLASS.CONTAINER }')[0];
             const tabKeyCode = 9;
 
             function handleMouseDownOnce() {
