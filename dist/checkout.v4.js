@@ -5547,7 +5547,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.218",
+            version: "4.0.219",
             cors: !0,
             env: constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -5704,9 +5704,22 @@
                 },
                 "qvc.com": {
                     disable_venmo: !0
+                },
+                "stelladot.com": {
+                    disable_venmo: !0
+                },
+                "keepcollective.com": {
+                    disable_venmo: !0
+                },
+                "everskin.com": {
+                    disable_venmo: !0
+                },
+                "zulily.com": {
+                    disable_venmo: !0
                 }
             },
             creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
+            venmoTestBlacklist: [ "slicelife.com" ],
             customCountry: !1,
             SUPPORTED_BROWSERS: {
                 msie: "11",
@@ -5819,7 +5832,7 @@
             loginUri: "/signin/",
             hermesLoggerUri: "/webapps/hermes/api/logger",
             loggerUri: "/xoplatform/logger/api/logger",
-            loggerThrottlePercentage: .25,
+            loggerThrottlePercentage: .5,
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
                 return config.postBridgeUris[config.env] + "?xcomponent=1";
@@ -9114,7 +9127,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.218"
+                    ver: "4.0.219"
                 };
             });
             Object(beaver_logger_client.a)(function() {
@@ -9396,7 +9409,7 @@
             });
         });
         function getScriptVersion() {
-            return Boolean(getCurrentScript()) ? "4" : "4.0.218";
+            return Boolean(getCurrentScript()) ? "4" : "4.0.219";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -12189,6 +12202,7 @@
             }(style, props.locale);
         }
         var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n        cursor: default;\n    }\n", class_CLASS = {
+            SHOULD_FOCUS: "paypal-should-focus",
             CONTAINER: "paypal-button-container",
             BUTTON: "paypal-button",
             LABEL: "paypal-button-label",
@@ -12206,7 +12220,7 @@
             LOGO: "paypal-button-logo",
             CARD: "paypal-button-card",
             SEPARATOR: "paypal-separator"
-        }, buttonStyle = "\n\n    ." + class_CLASS.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + class_CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.ENV + "-" + src_constants.t.TEST + " ." + class_CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + class_CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.GOLD + ":hover,\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.TRANSPARENT + ":hover {\n        box-shadow: none;\n    }\n\n    ." + class_CLASS.CARD + ", ." + class_CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + class_CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n        outline: auto 2px Highlight;\n        outline: auto 5px -webkit-focus-ring-color;\n        outline-offset: -4px;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.TRANSPARENT + ":focus {\n        box-shadow: none;\n    }\n\n    ." + class_CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + class_CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.LOGO + ",\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        visibility: hidden;\n    }\n\n    .powered-by-paypal > ." + class_CLASS.TEXT + " {\n        vertical-align: top;\n        line-height: 18px;\n    } \n\n    .powered-by-paypal > ." + class_CLASS.LOGO + " {\n        height: 16px;\n        min-height: 16px;\n    } \n\n    ." + class_CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + class_CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.BLACK + " ." + class_CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n", layoutStyle = "\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + src_constants.g.VERTICAL + " ." + class_CLASS.TAGLINE + " {\n        display: none;\n    }\n", brandingStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + src_constants.d.UNBRANDED + "  {\n        min-width: 60%;\n        width: auto;\n        font-weight: 900;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + src_constants.d.UNBRANDED + " ." + class_CLASS.LOGO + " {\n        display: none;\n    }\n", labelStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + src_constants.f.CARD + " {\n        border-radius: 0 !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + src_constants.f.CREDIT + " ." + class_CLASS.TEXT + " {\n        display: none !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.LABEL + "-" + src_constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + src_constants.h.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + BUTTON_STYLE[src_constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + src_constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + src_constants.h.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + BUTTON_STYLE[src_constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + src_constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + src_constants.h.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n", DUAL_BUTTON_MIN_RATIO = 2.8;
+        }, buttonStyle = "\n\n    ." + class_CLASS.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + class_CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.ENV + "-" + src_constants.t.TEST + " ." + class_CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + class_CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.GOLD + ":hover,\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + class_CLASS.CARD + ", ." + class_CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + class_CLASS.BUTTON + ":focus, ." + class_CLASS.CARD + ":focus {\n        outline: none;\n    }\n\n    ." + class_CLASS.SHOULD_FOCUS + " ." + class_CLASS.BUTTON + ":focus,\n    ." + class_CLASS.SHOULD_FOCUS + " ." + class_CLASS.CARD + ":focus {\n        outline: solid 2px Highlight;\n        outline: auto 5px -webkit-focus-ring-color;\n        outline-offset: -3px;\n    }\n\n    ." + class_CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.TRANSPARENT + ":focus {\n        box-shadow: none;\n        outline: none;\n    }\n\n    ." + class_CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + class_CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.LOGO + ",\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        visibility: hidden;\n    }\n\n    .powered-by-paypal > ." + class_CLASS.TEXT + " {\n        vertical-align: top;\n        line-height: 18px;\n    } \n\n    .powered-by-paypal > ." + class_CLASS.LOGO + " {\n        height: 16px;\n        min-height: 16px;\n    } \n\n    ." + class_CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + class_CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.BLACK + " ." + class_CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n", layoutStyle = "\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + src_constants.g.VERTICAL + " ." + class_CLASS.TAGLINE + " {\n        display: none;\n    }\n", brandingStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + src_constants.d.UNBRANDED + "  {\n        min-width: 60%;\n        width: auto;\n        font-weight: 900;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + src_constants.d.UNBRANDED + " ." + class_CLASS.LOGO + " {\n        display: none;\n    }\n", labelStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + src_constants.f.CARD + " {\n        border-radius: 0 !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + src_constants.f.CREDIT + " ." + class_CLASS.TEXT + " {\n        display: none !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.LABEL + "-" + src_constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + src_constants.h.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + BUTTON_STYLE[src_constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + src_constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + src_constants.h.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + BUTTON_STYLE[src_constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + src_constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + src_constants.h.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n", DUAL_BUTTON_MIN_RATIO = 2.8;
         var buttonColorStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.GOLD + " {\n        background: #ffc439;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.BLUE + " {\n        background: #009cde;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.SILVER + " {\n        background: #eee;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.BLACK + " {\n        background: #2C2E2F;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.DARKBLUE + " {\n        background: #003087;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.TRANSPARENT + " {\n        background: transparent;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + src_constants.e.WHITE + " {\n        background: #fff;\n        color: #2C2E2F;\n        border: 1px solid #2C2E2F;\n    }\n";
         function componentStyle(_ref) {
             var height = _ref.height, cardNumber = _ref.cardNumber;
@@ -12289,6 +12303,23 @@
                     }
                 }
                 toggleOptionals();
+                !function() {
+                    var buttonsContainer = document.getElementsByClassName("{ CLASS.CONTAINER }")[0], tabKeyCode = 9;
+                    function handleMouseDownOnce() {
+                        buttonsContainer.classList.remove("{ CLASS.SHOULD_FOCUS }");
+                        window.removeEventListener("mousedown", handleMouseDownOnce);
+                        window.addEventListener("keydown", handleFirstTab);
+                    }
+                    function handleFirstTab(e) {
+                        if (e.keyCode === tabKeyCode) {
+                            buttonsContainer.classList.add("{ CLASS.SHOULD_FOCUS }");
+                            window.removeEventListener("keydown", handleFirstTab);
+                            window.addEventListener("mousedown", handleMouseDownOnce);
+                        }
+                    }
+                    buttonsContainer.classList.add("{ CLASS.SHOULD_FOCUS }");
+                    window.addEventListener("keydown", handleFirstTab);
+                }();
                 !function(elements, method) {
                     if (displayedElementsHaveDimensions(elements)) method(); else var interval = setInterval(function() {
                         if (displayedElementsHaveDimensions(elements)) {
@@ -12320,7 +12351,7 @@
         };
         function getCommonButtonClasses(_ref) {
             var layout = _ref.layout, shape = _ref.shape, branding = _ref.branding, multiple = _ref.multiple, env = _ref.env;
-            return [ class_CLASS.LAYOUT + "-" + layout, class_CLASS.SHAPE + "-" + shape, class_CLASS.BRANDING + "-" + (branding ? src_constants.d.BRANDED : src_constants.d.UNBRANDED), class_CLASS.NUMBER + "-" + (multiple ? src_constants.j.MULTIPLE : src_constants.j.SINGLE), class_CLASS.ENV + "-" + env ].join(" ");
+            return [ class_CLASS.LAYOUT + "-" + layout, class_CLASS.SHAPE + "-" + shape, class_CLASS.BRANDING + "-" + (branding ? src_constants.d.BRANDED : src_constants.d.UNBRANDED), class_CLASS.NUMBER + "-" + (multiple ? src_constants.j.MULTIPLE : src_constants.j.SINGLE), class_CLASS.ENV + "-" + env, "" + class_CLASS.SHOULD_FOCUS ].join(" ");
         }
         function determineLabel(_ref3) {
             var label = _ref3.label, source = _ref3.source, multiple = _ref3.multiple, layout = _ref3.layout, defaultLabel = FUNDING_TO_DEFAULT_LABEL[source];
@@ -12330,14 +12361,16 @@
             var cards = _ref5.cards, button = _ref5.button, layout = _ref5.layout, size = _ref5.size;
             return cards.map(function(name) {
                 var _ref6, _ref7, _ref8, logo = cardLogos[name];
-                return jsxToHTML("img", componentTemplate__extends({}, ((_ref6 = {})[src_constants.c.LAYOUT] = layout || "", 
+                return jsxToHTML("div", {
+                    class: (button ? class_CLASS.BUTTON : "") + " " + class_CLASS.CARD + " " + class_CLASS.CARD + "-" + name,
+                    tabindex: "0"
+                }, jsxToHTML("img", componentTemplate__extends({}, ((_ref6 = {})[src_constants.c.LAYOUT] = layout || "", 
                 _ref6), ((_ref7 = {})[src_constants.c.SIZE] = size || "", _ref7), ((_ref8 = {})[src_constants.c.BUTTON] = button || !1, 
                 _ref8[src_constants.c.FUNDING_SOURCE] = "" + src_constants.v.CARD, _ref8[src_constants.c.CARD] = "" + name, 
                 _ref8), {
-                    class: (button ? class_CLASS.BUTTON : "") + " " + class_CLASS.CARD + " " + class_CLASS.CARD + "-" + name,
                     src: "data:image/svg+xml;base64," + Object(base64.btoa)(logo),
                     alt: name
-                }));
+                })));
             });
         }
         function renderContent(text, _ref10) {
@@ -12443,6 +12476,7 @@
                 layout: layout,
                 size: size
             });
+            var hasTabIndex = -1 === [ src_constants.v.CARD ].indexOf(source);
             return jsxToHTML("div", componentTemplate__extends({}, ((_ref12 = {})[src_constants.c.LAYOUT] = layout || "", 
             _ref12), ((_ref13 = {})[src_constants.c.SIZE] = size || "", _ref13), ((_ref14 = {})[src_constants.c.FUNDING_SOURCE] = source, 
             _ref14[src_constants.c.BUTTON] = !0, _ref14), {
@@ -12462,7 +12496,7 @@
                 }),
                 role: "button",
                 "aria-label": source,
-                tabindex: "0"
+                tabindex: hasTabIndex && 0
             }), contentText);
         }
         function componentTemplate_componentTemplate(_ref17) {
@@ -12570,15 +12604,15 @@
                 }) + ")();"
             }), labelPowerByPayPal = cards.length > 0 ? function(props) {
                 if (!props) return null;
-                var layout = props.layout, size = props.size;
-                return layout !== src_constants.g.VERTICAL || size !== src_constants.l.MEDIUM && size !== src_constants.l.LARGE && size !== src_constants.l.HUGE ? null : jsxToHTML("div", {
+                var layout = props.layout, size = props.size, _props$sources = props.sources, sources = void 0 === _props$sources ? [] : _props$sources;
+                return layout !== src_constants.g.VERTICAL || size !== src_constants.l.MEDIUM && size !== src_constants.l.LARGE && size !== src_constants.l.HUGE ? null : -1 === sources.indexOf(src_constants.v.CARD) ? null : jsxToHTML("div", {
                     class: "powered-by-paypal",
                     style: "\n                text-align: center;\n                margin: 10px auto;\n                height: 14px;\n                font-family: PayPal-Sans, HelveticaNeue, sans-serif;\n                font-size: 11px;\n                font-weight: normal;\n                font-style: italic;\n                font-stretch: normal;\n                color: #7b8388;\n                position: relative;\n                margin-right: 3px;\n                bottom: 3px;\n            "
                 }, renderContent("{ content: poweredBy }", componentTemplate__extends({}, props, {
                     logoColor: "blue"
                 })));
             }(props_normalizeProps(props)) : null;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[src_constants.c.VERSION] = "4.0.218", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[src_constants.c.VERSION] = "4.0.219", 
             _ref18), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -12590,7 +12624,7 @@
             }), styleNode, buttonNodes, taglineNode || fundingiconNode, labelPowerByPayPal, scriptNode).toString();
         }
         function getDimensions(_ref2) {
-            var label = _ref2.label, size = _ref2.size, tagline = _ref2.tagline, fundingicons = _ref2.fundingicons, layout = _ref2.layout, number = _ref2.number, viewport = _ref2.viewport, buttonHeight = _ref2.height, cards = _ref2.cards;
+            var label = _ref2.label, size = _ref2.size, tagline = _ref2.tagline, fundingicons = _ref2.fundingicons, layout = _ref2.layout, number = _ref2.number, viewport = _ref2.viewport, buttonHeight = _ref2.height, cards = _ref2.cards, _ref2$sources = _ref2.sources, sources = void 0 === _ref2$sources ? [] : _ref2$sources;
             size === src_constants.l.RESPONSIVE && (size = function(_ref) {
                 var label = _ref.label, layout = _ref.layout, _ref$width = _ref.width, width = void 0 === _ref$width ? 0 : _ref$width, minimumSize = getButtonConfig(label, layout === src_constants.g.VERTICAL ? "minimumVerticalSize" : "minimumSize"), maximumSize = getButtonConfig(label, layout === src_constants.g.VERTICAL ? "maximumVerticalSize" : "maximumSize");
                 if (width < BUTTON_STYLE[minimumSize].minWidth) return minimumSize;
@@ -12608,7 +12642,7 @@
             }));
             var _BUTTON_STYLE$size2 = BUTTON_STYLE[size], defaultWidth = _BUTTON_STYLE$size2.defaultWidth, defaultHeight = _BUTTON_STYLE$size2.defaultHeight, minHeight = _BUTTON_STYLE$size2.minHeight, maxHeight = _BUTTON_STYLE$size2.maxHeight, allowFunding = _BUTTON_STYLE$size2.allowFunding, allowTagline = _BUTTON_STYLE$size2.allowTagline, width = defaultWidth, height = buttonHeight = buttonHeight || Object(util.k)(Object(util.i)(defaultHeight, minHeight), maxHeight);
             fundingicons && allowFunding ? height += Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) : tagline && allowTagline ? height += Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) : layout === src_constants.g.VERTICAL && (height = buttonHeight * number + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) * (number - 1));
-            cards && cards.length > 0 && layout === src_constants.g.VERTICAL && (height += BUTTON_STYLE[size].byPayPalHeight);
+            sources.indexOf(src_constants.v.CARD) >= 0 && cards && cards.length > 0 && layout === src_constants.g.VERTICAL && (height += BUTTON_STYLE[size].byPayPalHeight);
             return {
                 width: width,
                 height: height
@@ -12649,7 +12683,8 @@
                         fundingicons: fundingicons,
                         tagline: tagline,
                         layout: layout,
-                        cards: cards
+                        cards: cards,
+                        sources: sources
                     });
                 }, _getContainerDimensio = getContainerDimensions(), width = _getContainerDimensio.width, height = _getContainerDimensio.height;
                 size === src_constants.l.RESPONSIVE && on("resize", function() {
@@ -12944,7 +12979,12 @@
                         var remembered = getRememberedFunding(function(sources) {
                             return sources;
                         });
-                        allowed && -1 === allowed.indexOf(src_constants.v.VENMO) && remembered && -1 === remembered.indexOf(src_constants.v.VENMO) && Object(device.b)() && !Object(device.i)() && !Object(device.c)() && !Object(device.d)() && (venmoThrottle = getThrottle("venmo_uncookied_render", 10)).isEnabled() && (allowed = [].concat(allowed, [ src_constants.v.VENMO ]));
+                        (function(props, allowed, remembered) {
+                            var country = props_normalizeProps(props, {
+                                locale: Object(dom.c)()
+                            }).locale.country, domain = Object(cross_domain_utils_src.getDomain)().replace(/^https?:\/\//, "").replace(/^www\./, "");
+                            return !(country !== src_constants.r.US || !Object(device.b)() || Object(device.i)() || Object(device.c)() || Object(device.d)() || allowed && allowed.indexOf(src_constants.v.VENMO) > -1 || remembered && remembered.indexOf(src_constants.v.VENMO) > -1 || config.a.venmoTestBlacklist.indexOf(domain) > -1);
+                        })(allowed, remembered) && (venmoThrottle = getThrottle("venmo_uncookied_render", 10)).isEnabled() && (allowed = [].concat(allowed, [ src_constants.v.VENMO ]));
                         if (!Object(device.b)() || Object(util.e)("disable_venmo")) {
                             remembered && -1 !== remembered.indexOf(src_constants.v.VENMO) && (remembered = remembered.filter(function(source) {
                                 return source !== src_constants.v.VENMO;
@@ -13605,7 +13645,7 @@
             setup__track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.218", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_Card = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
+        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.219", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_Card = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
         if (Object(util.g)()) {
             interface_Checkout = component_Checkout;
             interface_Card = Card;
@@ -13728,7 +13768,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.218";
+                payload.version = "4.0.219";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 payload.appName = APP_NAME;
@@ -14297,18 +14337,18 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         0;
-        if (window.paypal && "4.0.218" === window.paypal.version) {
+        if (window.paypal && "4.0.219" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.218"
+                version: "4.0.219"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.218) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.219) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.218" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.219" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.218"
+                version: "4.0.219"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.218");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.219");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");

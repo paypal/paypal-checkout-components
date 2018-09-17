@@ -293,9 +293,15 @@ function renderPowerByPaypalLogo(props) : ChildType {
         return null;
     }
 
-    const { layout, size } = props;
+    const { layout, size, sources = [] } = props;
 
     if (!(layout === BUTTON_LAYOUT.VERTICAL && (size === BUTTON_SIZE.MEDIUM || size === BUTTON_SIZE.LARGE || size === BUTTON_SIZE.HUGE))) {
+        return null;
+    }
+
+    const isCardDisallowed = sources.indexOf(FUNDING.CARD) === -1;
+
+    if (isCardDisallowed) {
         return null;
     }
 
