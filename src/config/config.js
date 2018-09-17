@@ -172,7 +172,7 @@ export let config = {
         'getcargo.today': {
             disable_venmo: true
         },
-        
+
         'smartdestinations.com': {
             disable_venmo: true
         },
@@ -717,7 +717,7 @@ export let config = {
 
     loggerUri: `/xoplatform/logger/api/logger`,
 
-    loggerThrottlePercentage: 0.25, // 25%
+    loggerThrottlePercentage: 0.50, // 50%
 
     pptmUri: `/tagmanager/pptm.js`,
 
