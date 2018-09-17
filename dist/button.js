@@ -37,9 +37,9 @@ module.exports =
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			console.warn('meep'); Object.defineProperty(exports, name, {
-/******/ 				configurable: true,
-/******/ 				enumerable: false,
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
 /******/ 				get: getter
 /******/ 			});
 /******/ 		}
@@ -5364,7 +5364,7 @@ var URIS = _extends({
     CHECKOUT: '/checkoutnow',
     ALTPAY: '/latinumcheckout',
     GUEST: '/webapps/xoonboarding',
-    BUTTON: '/webapps/hermes/smart-button',
+    BUTTON: '/sdk/js/smart-buttons',
     CARD: '/webapps/hermes/card-fields',
     META: '/webapps/hermes/component-meta',
 
