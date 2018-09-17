@@ -21,6 +21,7 @@ type MockRes = {
     send : (string) => MockRes,
 
     getStatus : () => number,
+    removeHeader : (string) => void,
     getHeader : (string) => ?string,
     getBody : () => ?string
 };
@@ -47,6 +48,9 @@ export function mockRes(opts : Object = {}) : MockRes {
         },
         getHeader(name : string) : ?string {
             return this._headers[name];
+        },
+        removeHeader(name : string) {
+            delete this._headers[name];
         },
         getBody() : ?string {
             return this.body;

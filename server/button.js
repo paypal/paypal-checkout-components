@@ -62,10 +62,11 @@ export function getButtonMiddleware({ logger = console } : { logger? : LoggerTyp
                 </body>
             `;
 
+            res.removeHeader('X-Frame-Options');
+
             res
                 .status(200)
                 .header('content-type', 'text/html')
-                .header('X-Frame-Options', '')
                 .send(pageHTML);
 
         } catch (err) {
