@@ -1,7 +1,6 @@
 /* @flow */
 
 import { undotify, htmlEncode } from 'belter';
-import logger from 'beaver-logger-paypal';
 
 import { getFundingEligibility } from './eligibility';
 import { getSmartButtonClientScript, getSmartButtonRenderScript, startWatchers } from './watcher';
@@ -9,7 +8,14 @@ import { getSmartButtonClientScript, getSmartButtonRenderScript, startWatchers }
 type ExpressRequest = express$Request; // eslint-disable-line no-undef
 type ExpressResponse = express$Response; // eslint-disable-line no-undef
 
-export function getButtonMiddleware() : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
+type LoggerType = {
+    +debug : Function,
+    +info : Function,
+    +warn : Function,
+    +error : Function
+};
+
+export function getButtonMiddleware({ logger = console } : { logger : LoggerType }) : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
     startWatchers();
 
     return async function buttonMiddleware(req : ExpressRequest, res : ExpressResponse) : Promise<void> {
