@@ -77,6 +77,44 @@ function isCreditDualEligible(props) : boolean {
     return true;
 }
 
+function isVenmoWithoutCookieRenderEligible(props, allowed, remembered) : boolean {
+
+    // Uncookied venmo ramp. Even without 'pwv' cookie, we'll be rendering venmo button
+    // for a sample of the mobile population.
+    // Webviews, EdgeIOS, and FirefoxIOS do NOT qualify for this experiment
+
+    let { locale } = normalizeProps(props, { locale: getBrowserLocale() });
+    let { country } = locale;
+
+    let domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
+
+    if (country !== COUNTRY.US) {
+        return false;
+    }
+
+    if (!isDevice()) {
+        return false;
+    }
+
+    if (isWebView() || isEdgeIOS() || isFirefoxIOS()) {
+        return false;
+    }
+
+    if (allowed && allowed.indexOf(FUNDING.VENMO) > -1) {
+        return false;
+    }
+
+    if (remembered && remembered.indexOf(FUNDING.VENMO) > -1) {
+        return false;
+    }
+
+    if (config.venmoTestBlacklist.indexOf(domain) > -1) {
+        return false;
+    }
+
+    return true;
+}
+
 let creditThrottle;
 let venmoThrottle;
 
@@ -441,14 +479,8 @@ export let Button : Component<ButtonOptions> = create({
 
                 let remembered = getRememberedFunding(sources => sources);
 
-                /* Uncookied venmo ramp. Even without 'pwv' cookie, we'll be rendering venmo button
-                    for a sample of the mobile population.
-                    Webviews, EdgeIOS, and FirefoxIOS do NOT qualify for this experiment
-                 */
-                if (allowed && allowed.indexOf(FUNDING.VENMO) === -1 &&
-                    remembered && remembered.indexOf(FUNDING.VENMO) === -1 &&
-                    isDevice() && !isWebView() && !isEdgeIOS() && !isFirefoxIOS()) {
 
+                if (isVenmoWithoutCookieRenderEligible(allowed, remembered)) {
                     venmoThrottle = getThrottle('venmo_uncookied_render', 10);
 
                     if (venmoThrottle.isEnabled()) {

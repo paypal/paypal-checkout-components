@@ -1,7 +1,7 @@
 /* @flow */
 /* @jsx jsxDom */
 
-import { BUTTON_SIZE, BUTTON_LAYOUT } from '../../constants';
+import { BUTTON_SIZE, BUTTON_LAYOUT, FUNDING } from '../../constants';
 import { getButtonConfig, BUTTON_STYLE, BUTTON_RELATIVE_STYLE } from '../config';
 import { normalizeProps } from '../props';
 import { values, min, max, perc } from '../../lib/util';
@@ -43,7 +43,7 @@ function determineResponsiveSize({ label, layout, width = 0 }) : string {
     throw new Error(`Unable to calculate responsive size for width: ${ width }`);
 }
 
-function getDimensions({ label, size, tagline, fundingicons, layout, number, viewport, height: buttonHeight, cards }) : DimensionsType {
+function getDimensions({ label, size, tagline, fundingicons, layout, number, viewport, height: buttonHeight, cards, sources = [] }) : DimensionsType {
 
     if (size === BUTTON_SIZE.RESPONSIVE) {
         size = determineResponsiveSize({ label, layout, width: viewport.width, height: buttonHeight });
@@ -64,7 +64,9 @@ function getDimensions({ label, size, tagline, fundingicons, layout, number, vie
         height = (buttonHeight * number) + (perc(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) * (number - 1));
     }
 
-    if ((cards && cards.length > 0) && layout === BUTTON_LAYOUT.VERTICAL) {
+    const isCardFundingAllowed = sources.indexOf(FUNDING.CARD) >= 0;
+
+    if (isCardFundingAllowed && (cards && cards.length > 0) && layout === BUTTON_LAYOUT.VERTICAL) {
         height += BUTTON_STYLE[size].byPayPalHeight;
     }
 
@@ -93,7 +95,8 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
             fundingicons,
             tagline,
             layout,
-            cards
+            cards,
+            sources
         });
     };
 
