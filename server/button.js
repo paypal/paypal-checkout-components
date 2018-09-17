@@ -15,7 +15,7 @@ type LoggerType = {
     +error : Function
 };
 
-export function getButtonMiddleware({ logger = console } : { logger : LoggerType }) : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
+export function getButtonMiddleware({ logger = console } : { logger? : LoggerType } = {}) : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
     startWatchers();
 
     return async function buttonMiddleware(req : ExpressRequest, res : ExpressResponse) : Promise<void> {

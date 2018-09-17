@@ -6,8 +6,6 @@ import { readFile } from 'fs-extra';
 import { poll } from 'grabthar';
 import { memoize } from 'belter';
 
-import { NPM_REGISTRY } from './config';
-
 const BUTTON_RENDER_MODULE = 'paypal-checkout-components';
 const BUTTON_CLIENT_MODULE = require('../package.json').name;
 
@@ -24,9 +22,6 @@ let getPayPalCheckoutComponentWatcher = memoize(() => {
 let getSmartButtonWatcher = memoize(() => {
     return poll({
         name:       BUTTON_CLIENT_MODULE,
-        npmOptions: {
-            registry: NPM_REGISTRY
-        },
         flat: true
     });
 });
