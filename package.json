@@ -1,5 +1,5 @@
 {
-  "name": "smart-payment-buttons-2",
+  "name": "smart-payment-buttons",
   "version": "2.0.24",
   "publishConfig": {
     "registry": "https://registry.npmjs.com"
