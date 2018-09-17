@@ -7868,7 +7868,7 @@
             if (regmatch) return regmatch[1];
         }
         var onAuthorize = void 0;
-        Object(lib.J)() && Object(post_robot_src.on)("onLegacyPaymentAuthorize", {
+        Object(lib.K)() && Object(post_robot_src.on)("onLegacyPaymentAuthorize", {
             window: window.parent
         }, function(_ref) {
             var data = _ref.data;
@@ -7877,14 +7877,14 @@
         function onLegacyPaymentAuthorize(method) {
             onAuthorize = method;
             return src.a.try(function() {
-                if (post_robot_src.bridge && !Object(lib.J)()) return post_robot_src.bridge.openBridge(Object(lib.i)(config.a.postBridgeUrl, {
-                    version: Object(lib.v)()
+                if (post_robot_src.bridge && !Object(lib.K)()) return post_robot_src.bridge.openBridge(Object(lib.j)(config.a.postBridgeUrl, {
+                    version: Object(lib.w)()
                 }), config.a.postBridgeDomain).then(function(postBridge) {
                     return Object(post_robot_src.send)(postBridge, "onLegacyPaymentAuthorize", {
                         method: method
                     }, {
                         domain: config.a.paypalDomain
-                    }).then(lib.N);
+                    }).then(lib.O);
                 });
             });
         }
@@ -7917,7 +7917,7 @@
                                     win.PAYPAL && win.PAYPAL.Checkout && win.PAYPAL.Checkout.XhrResponse && win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES && Object.defineProperty(win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES, "Redirect", {
                                         value: Math.random().toString()
                                     });
-                                    win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = lib.N);
+                                    win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = lib.O);
                                 }
                             } catch (err) {
                                 return;
@@ -7976,15 +7976,15 @@
                 return config.a.paypalDomains;
             },
             contexts: {
-                iframe: !Object(lib._0)(),
+                iframe: !Object(lib._1)(),
                 popup: !0
             },
             get version() {
-                return Object(lib.v)();
+                return Object(lib.w)();
             },
             validate: function() {
-                if (Object(lib.H)()) throw new Error("Can not render button in IE intranet mode");
-                Object(lib.D)() || Object(beaver_logger_client.q)("checkout_render_ineligible");
+                if (Object(lib.I)()) throw new Error("Can not render button in IE intranet mode");
+                Object(lib.E)() || Object(beaver_logger_client.q)("checkout_render_ineligible");
             },
             prerenderTemplate: template.a,
             containerTemplate: template.b,
@@ -7993,7 +7993,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.w)();
+                        return Object(lib.x)();
                     },
                     queryParam: !0
                 },
@@ -8001,7 +8001,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.l)();
+                        return Object(lib.m)();
                     },
                     queryParam: !0
                 },
@@ -8047,7 +8047,7 @@
                     queryParam: "locale.x",
                     allowDelegate: !0,
                     def: function() {
-                        var _getBrowserLocale = Object(lib.k)();
+                        var _getBrowserLocale = Object(lib.l)();
                         return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
                     }
                 },
@@ -8078,8 +8078,8 @@
                         return payment();
                     },
                     childDecorate: function(payment) {
-                        var token = Object(lib.r)("token");
-                        return token ? Object(lib.M)(function() {
+                        var token = Object(lib.s)("token");
+                        return token ? Object(lib.N)(function() {
                             return src.a.resolve(token);
                         }) : payment;
                     },
@@ -8127,7 +8127,7 @@
                                         Object(beaver_logger_client.q)("child_window_paypal_not_found");
                                         Object(beaver_logger_client.h)();
                                     }
-                                    var AuthModel = window.injector && window.injector.get("$AuthModel"), buyerCountry = AuthModel && AuthModel.instance() && AuthModel.instance().country, geoCountry = window.meta && window.meta.geolocation, browserCountry = Object(lib.k)().country;
+                                    var AuthModel = window.injector && window.injector.get("$AuthModel"), buyerCountry = AuthModel && AuthModel.instance() && AuthModel.instance().country, geoCountry = window.meta && window.meta.geolocation, browserCountry = Object(lib.l)().country;
                                     if (!buyerCountry || !geoCountry || !browserCountry) {
                                         Object(beaver_logger_client.k)("buyer_country_match_data_not_found", {
                                             buyerCountry: buyerCountry,
@@ -8163,12 +8163,12 @@
                                     return _this.closeComponent();
                                 });
                             }, redirect = function(win, url) {
-                                return src.a.all([ Object(lib.T)(win || window.top, url || data.returnUrl), close() ]);
+                                return src.a.all([ Object(lib.U)(win || window.top, url || data.returnUrl), close() ]);
                             };
                             return src.a.try(function() {
                                 try {
                                     var isButton = -1 !== window.location.href.indexOf("/webapps/hermes/button"), isGuest = -1 !== _this.window.location.href.indexOf("/webapps/xoonboarding");
-                                    if (isButton && isGuest) return Object(lib.V)({
+                                    if (isButton && isGuest) return Object(lib.W)({
                                         win: _this.window,
                                         method: "get",
                                         url: "/webapps/xoonboarding/api/auth"
@@ -8226,7 +8226,7 @@
                                     return _this2.closeComponent();
                                 });
                             }, redirect = function(win, url) {
-                                return src.a.all([ Object(lib.T)(win || window.top, url || data.cancelUrl), close() ]);
+                                return src.a.all([ Object(lib.U)(win || window.top, url || data.cancelUrl), close() ]);
                             };
                             return src.a.try(function() {
                                 return original.call(_this2, data, _extends({}, actions, {
@@ -8297,7 +8297,7 @@
                             Object(beaver_logger_client.q)("fallback", {
                                 url: url
                             });
-                            if (Object(lib.n)("allow_full_page_fallback")) {
+                            if (Object(lib.o)("allow_full_page_fallback")) {
                                 window.top.location = url;
                                 return this.close();
                             }
@@ -8334,7 +8334,7 @@
                 height: !1
             },
             get dimensions() {
-                return Object(lib.A)() ? {
+                return Object(lib.B)() ? {
                     width: "100%",
                     height: "535px"
                 } : {
@@ -8344,9 +8344,9 @@
             }
         });
         if (Checkout.isChild() && Checkout.xchild && Checkout.xprops) {
-            Checkout.xprops && Checkout.xprops.logLevel && Object(lib.X)(Checkout.xprops.logLevel);
+            Checkout.xprops && Checkout.xprops.logLevel && Object(lib.Y)(Checkout.xprops.logLevel);
             Checkout.xchild.onProps(function(xprops) {
-                Object(lib.R)(xprops, "onAuthorize", function(_ref) {
+                Object(lib.S)(xprops, "onAuthorize", function(_ref) {
                     var callOriginal = _ref.callOriginal, data = _ref.args[0];
                     if (data && !data.intent) {
                         Object(beaver_logger_client.q)("hermes_authorize_no_intent", {
@@ -8366,14 +8366,14 @@
                     return callOriginal();
                 });
             });
-            lib.f.then(function() {
+            lib.g.then(function() {
                 if (window.injector) {
                     var $event = window.injector.get("$event");
                     if ($event) {
                         var experimentActive = !1, loggedComplete = !1;
                         $event.on("allLoaded", function() {
                             setTimeout(function() {
-                                var _throttle$logStart, payButton = document.querySelector(".buttons.reviewButton"), topPayButton = document.querySelector(".buttons.reviewButton.topReviewButton"), reviewSection = document.querySelector("section.review"), throttle = Object(lib.y)("top_pay_button", 0), hash = window.location.hash, logComplete = function() {
+                                var _throttle$logStart, payButton = document.querySelector(".buttons.reviewButton"), topPayButton = document.querySelector(".buttons.reviewButton.topReviewButton"), reviewSection = document.querySelector("section.review"), throttle = Object(lib.z)("top_pay_button", 0), hash = window.location.hash, logComplete = function() {
                                     if (experimentActive && !loggedComplete && hash && -1 !== hash.indexOf("checkout/review")) {
                                         var _throttle$logComplete;
                                         throttle.logComplete(((_throttle$logComplete = {})[constants.u.KEY.FEED] = "hermesnodeweb", 
@@ -8402,21 +8402,21 @@
                 }
             });
         }
-        Object(lib.R)(Checkout, "init", function(_ref2) {
+        Object(lib.S)(Checkout, "init", function(_ref2) {
             var _ref2$args = _ref2.args, props = _ref2$args[0], _context = _ref2$args[1], original = _ref2.original, context = _ref2.context;
             return original.call(context, props, _context, "body");
         });
-        Object(lib.R)(Checkout, "render", function(_ref3) {
+        Object(lib.S)(Checkout, "render", function(_ref3) {
             var props = _ref3.args[0], original = _ref3.original, context = _ref3.context;
             return original.call(context, props, "body");
         });
-        Object(lib.R)(Checkout, "renderTo", function(_ref4) {
+        Object(lib.S)(Checkout, "renderTo", function(_ref4) {
             var _ref4$args = _ref4.args, win = _ref4$args[0], props = _ref4$args[1], original = _ref4.original, context = _ref4.context, payment = props.payment();
             props.payment = function() {
                 return payment;
             };
             return original.call(context, win, props, "body").catch(function(err) {
-                if (err instanceof xcomponent_src.b && Object(lib.J)()) {
+                if (err instanceof xcomponent_src.b && Object(lib.K)()) {
                     Checkout.contexts.iframe = !0;
                     return original.call(context, win, props, "body");
                 }
@@ -8464,7 +8464,7 @@
             function focus(event) {
                 event.preventDefault();
                 event.stopPropagation();
-                Object(lib.I)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
+                Object(lib.J)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
             }
             var overlayColor = (props.style || {}).overlayColor || constants.q.BLACK, logoColor = LOGO_COLOR[overlayColor], ppLogo = "function" == typeof resources.b.pp ? resources.b.pp({
                 logoColor: logoColor
@@ -8548,9 +8548,9 @@
     "./src/config/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
-            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.218.js",
+            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.219.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.218",
+            version: "4.0.219",
             cors: !0,
             env: constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -8707,9 +8707,25 @@
                 },
                 "qvc.com": {
                     disable_venmo: !0
+                },
+                "stelladot.com": {
+                    disable_venmo: !0
+                },
+                "keepcollective.com": {
+                    disable_venmo: !0
+                },
+                "everskin.com": {
+                    disable_venmo: !0
+                },
+                "zulily.com": {
+                    disable_venmo: !0
                 }
             },
             creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
+            venmoTestBlacklist: [ "slicelife.com" ],
+            bmlCreditTest: {
+                domains: [ "fashionsandthings.com", "medicinal-herb-store.commercehq.com", "medicinalherbstore.com", "yuengling.com", "store14454605.ecwid.com", "moonpod.co", "wbbarber.com", "gadgetblu.com", "gadgetblu.com", "gadgetblu.commercehq.com", "taffytown.com", "elderwoodacademy.com", "twistedroad.com", "personalaircooler.com", "billsienkiewiczart.com", "harmagh.com", "astrograph.com", "astrograph.com", "vktrygear.com", "vktrygear.com", "shalomhealthservices.com", "longhairprettynails.com", "thundrbro.com", "yiiree.com", "yiiree.com", "daltechforce.com", "in.xero.com", "30dollargunbelt.com", "theteachertote.com", "blanktag.co", "jlaruecosmetics.com", "esther-williams.com", "ginalli.com", "orientwatchusa.com", "tbichips.com", "trendjungle.store", "freerangeamerican.us", "simpleandblush.com", "thetrendyvibe.com", "wobies.com", "unknownunicorn.com", "postmygaragesale.com", "gsalr.com", "yardsalesearch.com", "yardsales.net", "gsalr.ca", "garagesalefinder.com", "garagesalestracker.com", "shoptheladiesedge.com", "studyacer.com", "wodndone.com", "cabking.com", "tumble-bee.com", "inlandcraft.com", "hitechdiamond.com", "barcharts.com", "shopsecurelynow.com", "xinnora.commercehq.com", "cosmetictattoosupply.com", "fazeclan.com", "mamabearlegalforms.com", "mamabearlegalforms.com", "ec2-18-191-156-187.us-east-2.compute.amazonaws.com", "summit-hydraulics.com", "full-time-purpose.mykajabi.com", "nopestz.com", "lifehacksco.com", "app.catholicsingles.com", "paulamaxjewelry.com", "sadiesstickers.com", "boomkool.com", "oy-l.com", "m.musely.com", "missamericamag.com", "healthtestingcenters.com", "grab.getcargo.today", "app.getcargo.today", "longlosttees.com", "premiertrendsco.com", "photoshopcafe.com", "dragonhoardyarnco.com", "nickschips.com", "supplyhub.com", "supplyhub.com", "roomify.com", "iq-tester.org", "aa3035c6.ngrok.io", "qlive.divyamherbalcare.com", "iq-testing.me", "iq-tester.org", "60e9fcb8.ngrok.io", "9abde3c3.ngrok.io", "equinat-usa.com", "bellaellaboutique.com", "szul.com", "goodsvine.com", "whiplashdeals.com", "dino-deals.com", "mikimike.com", "geninterlock.com", "nostalgiastyles.com", "thevaultbysacha.com", "theshoptucson.com", "wristbandbros.com", "mike.outlinedepot.com", "outlinedepot.com", "outlinedepot.com", "rmadefense.com", "colorclub.com", "topicaledge.com", "fitnessqueen.co", "vivacoast.co", "thriveisland.co", "vitalityscience.com", "rawpawspetfood.com", "bark.us", "inglenookfibers.com", "psychicsource.com", "illusionsystems.com", "direct.darkhorse.com", "sparksunny.com", "cratetrendy.com", "snobbculture.com", "passionnobby.com", "passionnobby.com", "purehempshop.com", "clipdraw.com", "firevapor.com", "dev.parklanejewelry.com", "parklanejewelry.com", "lucylubaby.com", "motoskiveez.com", "suttonsboutique.com", "dealsaverstore.com", "midwestwheelandtire.com", "relationshiphero.com", "gentlemenhood.com", "modrnpad.com", "puertoricofactory.com", "recordsnv.com", "chicagocopshop.com", "spingo.com", "thebohojane.com", "crazycoolcustomtees.com", "hoodedwarrior.commercehq.com", "hoodedwarrior.com", "death-saves.com", "posterprintshop.com", "gabrielcosmeticsinc.com", "mountainamericajerky.com", "theskirtsociety.com", "austinaquafarms.com", "diedinhouse.com", "lilipubsorders.com", "rcegs.qnryj.servertrust.com", "k12schoolsupplies.net", "houstonhotels.org", "divinebazaar.deals", "thedivinebazaar.com", "cloutcar.tel", "superplastic.co", "janky.backerkit.com", "indianapolis.marketwagon.com", "fortwayne.marketwagon.com", "michiana.marketwagon.com", "evansville.marketwagon.com", "lovevibescrystals.com", "aluminyze.pro", "aluminyze.com", "abdlcompany.com", "ddlgboutique.com", "abdltoys.com", "inktale.com", "nationalhighwaysafetyadministration.com", "propellerdepot.com", "admin.billoreilly.com", "billoreilly.com", "2bsilent.mykajabi.com", "database.castingfrontier.com", "fishandcountry.com", "register.realestatewealthexpo.com", "shoplabeye.com", "lagoldleafus.com", "oldmercs.com", "codynolove.com", "loveonestore.com", "megtronix.com", "computermallshop.com", "gallerr.com", "squishiecats.com", "woopwoo.com", "socksery.com", "ossom.co", "chibi-kingdom.com", "oddlyhomey.com", "es.postermywall.com", "fr.postermywall.com", "pt.postermywall.com", "de.postermywall.com", "nl.postermywall.com", "postermywall.com", "it.postermywall.com", "edashdeals.com", "edashdeals.com", "edashdeals.commercehq.com", "kensingtonproducts.com", "spartanutrition.com", "biovape.co", "unicornclub.us", "livebetterwith.com", "homedna.com", "lightsplanneraction.co", "stickandpoketattookit.com", "pepperhead.com", "stage.crazyhotseeds.com", "ca.bathmatedirect.com", "fi.bathmatedirect.com", "au.bathmatedirect.com", "bathmatedirect.com", "eu.bathmatedirect.com", "nl.bathmatedirect.com", "il.bathmatedirect.com", "int.bathmatedirect.com", "bathmatedirect.com", "is.bathmatedirect.com", "sandmbikes.com", "fitbikeco.com", "magician.org", "skinnymechocolate.com", "elimidrol.com", "fender.com", "israelbiblecenter.com", "cookinpellets.com", "jbsperformance.com", "beverly21.com", "lemonsareblue.com", "cessere.com", "getchoosy.com", "widgetwingman.com", "snottytots.com", "app.willing.com", "theprettyhotmess.com", "egg-baby.com", "viral-click.com", "lizpearls.com", "pupnpaws.com", "tagusup.com", "m.pupnpaws.com", "hashtagme.conversionlab.online", "orlandobrewing.com", "thinksummer.shop", "libmaneducation.com", "mypetprints.co", "leftcoastvibesco.com", "immitranslate.com", "thesocceremporium.com", "giantloopmoto.com", "5oclocksomewherestore.com", "powertoolreplacementparts.com", "thelashprofessional.com", "flashstealsonline.com", "countrykitchensa.com", "prepagent.com", "shineon.com", "bravabuona.com", "bravabuona.com", "draftanalyzer.com", "draftanalyzer.com", "flagstoreusa.com", "youthfootballonline.com", "astromart.com", "astromart.com", "campchesterfield.net", "underdoggames.com", "walletsguy.com", "walletsguy.com", "walletsguy.commercehq.com", "rinsekit.com", "amplifylive.co", "usologytrends.com", "bluecollarbobbers.com", "roddersjournal.com", "nightfallclothing.com", "krakendesignco.com", "jdhirondesigns.com", "secure.cml.oeconnection.com" ]
+            },
             customCountry: !1,
             SUPPORTED_BROWSERS: {
                 msie: "11",
@@ -8822,7 +8838,7 @@
             loginUri: "/signin/",
             hermesLoggerUri: "/webapps/hermes/api/logger",
             loggerUri: "/xoplatform/logger/api/logger",
-            loggerThrottlePercentage: .25,
+            loggerThrottlePercentage: .5,
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
                 return config.postBridgeUris[config.env] + "?xcomponent=1";
@@ -9787,13 +9803,13 @@
             return constants.o;
         });
         __webpack_require__.d(interface_namespaceObject, "request", function() {
-            return lib.V;
+            return lib.W;
         });
         __webpack_require__.d(interface_namespaceObject, "isEligible", function() {
-            return lib.D;
+            return lib.E;
         });
         __webpack_require__.d(interface_namespaceObject, "isFundingRemembered", function() {
-            return lib.F;
+            return lib.G;
         });
         __webpack_require__.d(interface_namespaceObject, "forceIframe", function() {
             return lib.a;
@@ -9860,7 +9876,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.w)();
+                        return Object(lib.x)();
                     },
                     queryParam: !0
                 },
@@ -9873,7 +9889,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.l)();
+                        return Object(lib.m)();
                     },
                     queryParam: !0
                 },
@@ -9899,7 +9915,7 @@
                     queryParam: "locale.x",
                     allowDelegate: !0,
                     def: function() {
-                        var _getBrowserLocale = Object(lib.k)();
+                        var _getBrowserLocale = Object(lib.l)();
                         return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
                     }
                 },
@@ -9964,7 +9980,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.w)();
+                        return Object(lib.x)();
                     },
                     queryParam: !0
                 },
@@ -9977,7 +9993,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.l)();
+                        return Object(lib.m)();
                     },
                     queryParam: !0
                 },
@@ -10003,7 +10019,7 @@
                     queryParam: "locale.x",
                     allowDelegate: !0,
                     def: function() {
-                        var _getBrowserLocale = Object(lib.k)();
+                        var _getBrowserLocale = Object(lib.l)();
                         return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
                     }
                 },
@@ -10043,7 +10059,7 @@
                 function focus(event) {
                     event.preventDefault();
                     event.stopPropagation();
-                    Object(lib.I)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
+                    Object(lib.J)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
                 }
                 var overlayColor = (props.style || {}).overlayColor || constants.q.BLACK, logoColor = LOGO_COLOR[overlayColor], ppLogo = "function" == typeof resources.b.pp ? resources.b.pp({
                     logoColor: logoColor
@@ -10113,8 +10129,8 @@
         function mergePaymentDetails(id, payment) {
             payments[id] = payments[id] || {};
             var details = payments[id].details || {}, result = {};
-            Object(lib.h)(result, payment);
-            Object(lib.e)(result, details);
+            Object(lib.i)(result, payment);
+            Object(lib.f)(result, details);
             return result;
         }
         var rest__extends = Object.assign || function(target) {
@@ -10123,13 +10139,13 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, proxyRest = {}, createAccessToken = Object(lib.M)(function(env, client) {
+        }, proxyRest = {}, createAccessToken = Object(lib.N)(function(env, client) {
             Object(beaver_logger_client.k)("rest_api_create_access_token");
             var clientID = client[env = env || config.a.env];
             if (!clientID) throw new Error("Client ID not found for env: " + env);
             if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) return proxyRest.createAccessToken(env, client);
             var basicAuth = Object(base64.btoa)(clientID + ":");
-            return Object(lib.V)({
+            return Object(lib.W)({
                 method: "post",
                 url: config.a.authApiUrls[env],
                 headers: {
@@ -10145,7 +10161,7 @@
             });
         }, {
             time: 6e5
-        }), createExperienceProfile = Object(lib.M)(function(env, client) {
+        }), createExperienceProfile = Object(lib.N)(function(env, client) {
             var experienceDetails = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
             Object(beaver_logger_client.k)("rest_api_create_experience_profile");
             if (!client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
@@ -10153,7 +10169,7 @@
             experienceDetails.temporary = !0;
             experienceDetails.name = experienceDetails.name ? experienceDetails.name + "_" + Math.random().toString() : Math.random().toString();
             return createAccessToken(env, client).then(function(accessToken) {
-                return Object(lib.V)({
+                return Object(lib.W)({
                     method: "post",
                     url: config.a.experienceApiUrls[env],
                     headers: {
@@ -10228,12 +10244,12 @@
                     return zalgo_promise_src.a.try(function() {
                         if (tracking) return zalgo_promise_src.a.resolve(function(env, client, merchantID, trackingData) {
                             if (!client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
-                            var trackingID = Object(lib._1)();
+                            var trackingID = Object(lib._2)();
                             return createAccessToken(env, client).then(function(accessToken) {
                                 var headers = {
                                     Authorization: "Bearer " + accessToken
                                 };
-                                return Object(lib.V)({
+                                return Object(lib.W)({
                                     method: "put",
                                     url: config.a.trackingApiUrls[env] + "/" + merchantID + "/" + trackingID,
                                     headers: headers,
@@ -10253,7 +10269,7 @@
                         };
                         trackingID && (headers["Paypal-Client-Metadata-Id"] = trackingID);
                         meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
-                        return Object(lib.V)({
+                        return Object(lib.W)({
                             method: "post",
                             url: config.a.paymentApiUrls[env],
                             headers: headers,
@@ -10296,7 +10312,7 @@
                     Authorization: "Bearer " + accessToken
                 };
                 meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
-                return Object(lib.V)({
+                return Object(lib.W)({
                     method: "post",
                     url: config.a.orderApiUrls[env],
                     headers: headers,
@@ -10324,7 +10340,7 @@
                     if (experienceDetails) return zalgo_promise_src.a.resolve(createExperienceProfile(env, client, experienceDetails));
                 }).then(function(experienceID) {
                     experienceID && (billingDetails.experience_profile_id = experienceID);
-                    return Object(lib.V)({
+                    return Object(lib.W)({
                         method: "post",
                         url: config.a.billingApiUrls[env],
                         headers: {
@@ -10358,16 +10374,16 @@
             var data = _ref.data;
             proxyRest = data;
         });
-        parentWin && Object(lib.J)() && !Object(cross_domain_utils_src.isSameDomain)(parentWin) && Object(post_robot_src.send)(parentWin, "proxy_rest", {
+        parentWin && Object(lib.K)() && !Object(cross_domain_utils_src.isSameDomain)(parentWin) && Object(post_robot_src.send)(parentWin, "proxy_rest", {
             createAccessToken: createAccessToken,
             createExperienceProfile: createExperienceProfile,
             createPayment: createPayment,
             createBillingAgreement: createBillingAgreement,
             createOrder: createOrder
         }).catch(function() {});
-        var onAuthorizeListener = Object(lib.g)();
+        var onAuthorizeListener = Object(lib.h)();
         function log(experiment, treatment, token, state) {
-            Object(lib.x)(function(session) {
+            Object(lib.y)(function(session) {
                 var event = experiment + "_" + treatment + "_" + state, loggedEvents = session.loggedExperimentEvents = session.loggedExperimentEvents || [];
                 if (-1 !== loggedEvents.indexOf(event)) Object(beaver_logger_client.k)("duplicate_" + event); else {
                     var _track;
@@ -10387,7 +10403,7 @@
         function logExperimentTreatment(_ref) {
             var experiment = _ref.experiment, treatment = _ref.treatment, state = _ref.state, token = _ref.token;
             if (experiment && treatment) {
-                Object(lib.x)(function(session) {
+                Object(lib.y)(function(session) {
                     session.externalExperiment = experiment;
                     session.externalExperimentTreatment = treatment;
                     token && (session.externalExperimentToken = token);
@@ -10396,7 +10412,7 @@
             }
         }
         function logReturn(token) {
-            var _getSessionState = Object(lib.x)(function(session) {
+            var _getSessionState = Object(lib.y)(function(session) {
                 return session;
             }), externalExperiment = _getSessionState.externalExperiment, externalExperimentTreatment = _getSessionState.externalExperimentTreatment, externalExperimentToken = _getSessionState.externalExperimentToken;
             externalExperiment && externalExperimentTreatment && externalExperimentToken === token ? log(externalExperiment, externalExperimentTreatment, token, "complete") : Object(beaver_logger_client.k)("experiment_mismatch", {
@@ -10406,14 +10422,14 @@
                 externalExperimentToken: externalExperimentToken
             });
         }
-        if (Object(lib.n)("log_authorize")) {
+        if (Object(lib.o)("log_authorize")) {
             onAuthorizeListener.once(function(_ref2) {
                 var paymentToken = _ref2.paymentToken;
                 setTimeout(function() {
                     logReturn(paymentToken);
                 }, 1);
             });
-            var returnToken = Object(lib.u)();
+            var returnToken = Object(lib.v)();
             returnToken && setTimeout(function() {
                 returnToken && logReturn(returnToken);
             }, 1);
@@ -10447,7 +10463,7 @@
                     }).then(function(token) {
                         var _extendUrl;
                         if (!token) throw new Error("Expected props.payment to return a payment id or token");
-                        return Object(lib.i)(Object(integrations_checkout.b)(env, constants.v.PAYPAL, token), ((_extendUrl = {})[Object(integrations_checkout.a)(token)] = token, 
+                        return Object(lib.j)(Object(integrations_checkout.b)(env, constants.v.PAYPAL, token), ((_extendUrl = {})[Object(integrations_checkout.a)(token)] = token, 
                         _extendUrl.useraction = props.commit ? "commit" : "", _extendUrl.native_xo = "1", 
                         _extendUrl));
                     });
@@ -10472,10 +10488,10 @@
                     }, opType = query.opType, return_uri = query.return_uri, cancel_uri = query.cancel_uri;
                     opType === OPTYPE.PAYMENT ? actions.redirect = function() {
                         var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, redirectUrl = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : return_uri;
-                        return Object(lib.T)(win, redirectUrl);
+                        return Object(lib.U)(win, redirectUrl);
                     } : opType === OPTYPE.CANCEL && (actions.redirect = function() {
                         var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, redirectUrl = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : cancel_uri;
-                        return Object(lib.T)(win, redirectUrl);
+                        return Object(lib.U)(win, redirectUrl);
                     });
                     return actions;
                 }(payload.queryItems);
@@ -10503,7 +10519,7 @@
                                     err.code = CONTINGENCY.PAYMENT_CANCELLED;
                                     return reject(err);
                                 };
-                                popupBridge.open(Object(lib.i)(url, {
+                                popupBridge.open(Object(lib.j)(url, {
                                     redirect_uri: popupBridge.getReturnUrlPrefix()
                                 }));
                             });
@@ -11044,7 +11060,7 @@
         }
         var util = __webpack_require__("./src/lib/util.js");
         var normalizeProps = Object(util.j)(function(props) {
-            var defs = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit;
+            var defs = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit, isFundingThrottleEnabled = props.isFundingThrottleEnabled;
             locale = locale ? function(locale) {
                 var _locale$split = locale.split("_"), lang = _locale$split[0];
                 return {
@@ -11103,7 +11119,8 @@
                     funding: funding,
                     locale: locale
                 }),
-                installmentperiod: installmentperiod
+                installmentperiod: installmentperiod,
+                isFundingThrottleEnabled: isFundingThrottleEnabled
             };
         }), jsx = __webpack_require__("./src/lib/jsx.js");
         function validateButtonLocale(locale) {
@@ -11155,6 +11172,7 @@
             }(style, props.locale);
         }
         var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n        cursor: default;\n    }\n", class_CLASS = {
+            SHOULD_FOCUS: "paypal-should-focus",
             CONTAINER: "paypal-button-container",
             BUTTON: "paypal-button",
             LABEL: "paypal-button-label",
@@ -11172,7 +11190,7 @@
             LOGO: "paypal-button-logo",
             CARD: "paypal-button-card",
             SEPARATOR: "paypal-separator"
-        }, buttonStyle = "\n\n    ." + class_CLASS.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + class_CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.ENV + "-" + constants.t.TEST + " ." + class_CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + class_CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.GOLD + ":hover,\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + ":hover {\n        box-shadow: none;\n    }\n\n    ." + class_CLASS.CARD + ", ." + class_CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + class_CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n        outline: auto 2px Highlight;\n        outline: auto 5px -webkit-focus-ring-color;\n        outline-offset: -4px;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + ":focus {\n        box-shadow: none;\n    }\n\n    ." + class_CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + class_CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.LOGO + ",\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        visibility: hidden;\n    }\n\n    .powered-by-paypal > ." + class_CLASS.TEXT + " {\n        vertical-align: top;\n        line-height: 18px;\n    } \n\n    .powered-by-paypal > ." + class_CLASS.LOGO + " {\n        height: 16px;\n        min-height: 16px;\n    } \n\n    ." + class_CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + class_CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.BLACK + " ." + class_CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n", layoutStyle = "\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.g.VERTICAL + " ." + class_CLASS.TAGLINE + " {\n        display: none;\n    }\n", brandingStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.d.UNBRANDED + "  {\n        min-width: 60%;\n        width: auto;\n        font-weight: 900;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.d.UNBRANDED + " ." + class_CLASS.LOGO + " {\n        display: none;\n    }\n", labelStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CARD + " {\n        border-radius: 0 !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.TEXT + " {\n        display: none !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n", DUAL_BUTTON_MIN_RATIO = 2.8;
+        }, buttonStyle = "\n\n    ." + class_CLASS.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + class_CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.ENV + "-" + constants.t.TEST + " ." + class_CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + class_CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.GOLD + ":hover,\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + class_CLASS.CARD + ", ." + class_CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + class_CLASS.BUTTON + ":focus, ." + class_CLASS.CARD + ":focus {\n        outline: none;\n    }\n\n    ." + class_CLASS.SHOULD_FOCUS + " ." + class_CLASS.BUTTON + ":focus,\n    ." + class_CLASS.SHOULD_FOCUS + " ." + class_CLASS.CARD + ":focus {\n        outline: solid 2px Highlight;\n        outline: auto 5px -webkit-focus-ring-color;\n        outline-offset: -3px;\n    }\n\n    ." + class_CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + ":focus {\n        box-shadow: none;\n        outline: none;\n    }\n\n    ." + class_CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + class_CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.LOGO + ",\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        visibility: hidden;\n    }\n\n    .powered-by-paypal > ." + class_CLASS.TEXT + " {\n        vertical-align: top;\n        line-height: 18px;\n    } \n\n    .powered-by-paypal > ." + class_CLASS.LOGO + " {\n        height: 16px;\n        min-height: 16px;\n    } \n\n    ." + class_CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + class_CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.BLACK + " ." + class_CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n", layoutStyle = "\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.g.VERTICAL + " ." + class_CLASS.TAGLINE + " {\n        display: none;\n    }\n", brandingStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.d.UNBRANDED + "  {\n        min-width: 60%;\n        width: auto;\n        font-weight: 900;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.d.UNBRANDED + " ." + class_CLASS.LOGO + " {\n        display: none;\n    }\n", labelStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CARD + " {\n        border-radius: 0 !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.TEXT + " {\n        display: none !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n", DUAL_BUTTON_MIN_RATIO = 2.8;
         var buttonColorStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.GOLD + " {\n        background: #ffc439;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.BLUE + " {\n        background: #009cde;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.SILVER + " {\n        background: #eee;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.BLACK + " {\n        background: #2C2E2F;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.DARKBLUE + " {\n        background: #003087;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        background: transparent;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.WHITE + " {\n        background: #fff;\n        color: #2C2E2F;\n        border: 1px solid #2C2E2F;\n    }\n";
         function componentStyle(_ref) {
             var height = _ref.height, cardNumber = _ref.cardNumber;
@@ -11255,6 +11273,23 @@
                     }
                 }
                 toggleOptionals();
+                !function() {
+                    var buttonsContainer = document.getElementsByClassName("{ CLASS.CONTAINER }")[0], tabKeyCode = 9;
+                    function handleMouseDownOnce() {
+                        buttonsContainer.classList.remove("{ CLASS.SHOULD_FOCUS }");
+                        window.removeEventListener("mousedown", handleMouseDownOnce);
+                        window.addEventListener("keydown", handleFirstTab);
+                    }
+                    function handleFirstTab(e) {
+                        if (e.keyCode === tabKeyCode) {
+                            buttonsContainer.classList.add("{ CLASS.SHOULD_FOCUS }");
+                            window.removeEventListener("keydown", handleFirstTab);
+                            window.addEventListener("mousedown", handleMouseDownOnce);
+                        }
+                    }
+                    buttonsContainer.classList.add("{ CLASS.SHOULD_FOCUS }");
+                    window.addEventListener("keydown", handleFirstTab);
+                }();
                 !function(elements, method) {
                     if (displayedElementsHaveDimensions(elements)) method(); else var interval = setInterval(function() {
                         if (displayedElementsHaveDimensions(elements)) {
@@ -11286,7 +11321,7 @@
         };
         function getCommonButtonClasses(_ref) {
             var layout = _ref.layout, shape = _ref.shape, branding = _ref.branding, multiple = _ref.multiple, env = _ref.env;
-            return [ class_CLASS.LAYOUT + "-" + layout, class_CLASS.SHAPE + "-" + shape, class_CLASS.BRANDING + "-" + (branding ? constants.d.BRANDED : constants.d.UNBRANDED), class_CLASS.NUMBER + "-" + (multiple ? constants.j.MULTIPLE : constants.j.SINGLE), class_CLASS.ENV + "-" + env ].join(" ");
+            return [ class_CLASS.LAYOUT + "-" + layout, class_CLASS.SHAPE + "-" + shape, class_CLASS.BRANDING + "-" + (branding ? constants.d.BRANDED : constants.d.UNBRANDED), class_CLASS.NUMBER + "-" + (multiple ? constants.j.MULTIPLE : constants.j.SINGLE), class_CLASS.ENV + "-" + env, "" + class_CLASS.SHOULD_FOCUS ].join(" ");
         }
         function determineLabel(_ref3) {
             var label = _ref3.label, source = _ref3.source, multiple = _ref3.multiple, layout = _ref3.layout, defaultLabel = FUNDING_TO_DEFAULT_LABEL[source];
@@ -11296,18 +11331,20 @@
             var cards = _ref5.cards, button = _ref5.button, layout = _ref5.layout, size = _ref5.size;
             return cards.map(function(name) {
                 var _ref6, _ref7, _ref8, logo = resources.a[name];
-                return Object(jsx.b)("img", componentTemplate__extends({}, ((_ref6 = {})[constants.c.LAYOUT] = layout || "", 
+                return Object(jsx.b)("div", {
+                    class: (button ? class_CLASS.BUTTON : "") + " " + class_CLASS.CARD + " " + class_CLASS.CARD + "-" + name,
+                    tabindex: "0"
+                }, Object(jsx.b)("img", componentTemplate__extends({}, ((_ref6 = {})[constants.c.LAYOUT] = layout || "", 
                 _ref6), ((_ref7 = {})[constants.c.SIZE] = size || "", _ref7), ((_ref8 = {})[constants.c.BUTTON] = button || !1, 
                 _ref8[constants.c.FUNDING_SOURCE] = "" + constants.v.CARD, _ref8[constants.c.CARD] = "" + name, 
                 _ref8), {
-                    class: (button ? class_CLASS.BUTTON : "") + " " + class_CLASS.CARD + " " + class_CLASS.CARD + "-" + name,
                     src: "data:image/svg+xml;base64," + Object(base64.btoa)(logo),
                     alt: name
-                }));
+                })));
             });
         }
         function renderContent(text, _ref10) {
-            var label = _ref10.label, locale = _ref10.locale, color = _ref10.color, branding = _ref10.branding, logoColor = _ref10.logoColor, funding = _ref10.funding, env = _ref10.env, _cards = _ref10.cards, dynamicContent = _ref10.dynamicContent, layout = _ref10.layout, size = _ref10.size, _content = function(locale) {
+            var label = _ref10.label, locale = _ref10.locale, color = _ref10.color, branding = _ref10.branding, logoColor = _ref10.logoColor, funding = _ref10.funding, env = _ref10.env, _cards = _ref10.cards, dynamicContent = _ref10.dynamicContent, layout = _ref10.layout, size = _ref10.size, isFundingThrottleEnabled = _ref10.isFundingThrottleEnabled, _content = function(locale) {
                 var country = locale.country, lang = locale.lang;
                 return content_componentContent[country][lang];
             }(locale);
@@ -11320,7 +11357,14 @@
                 },
                 logo: function(name) {
                     if (branding) {
-                        if (!logoColor) throw new Error("Can not determine logo without logo color");
+                        if (!logoColor && !isFundingThrottleEnabled) throw new Error("Can not determine logo without logo color");
+                        if (isFundingThrottleEnabled && layout !== constants.g.VERTICAL) {
+                            if (label === constants.f.CREDIT && (name === constants.h.PAYPAL || name === constants.h.PP)) return;
+                            if (name === constants.h.CREDIT) {
+                                color = constants.e.SILVER;
+                                logoColor = constants.e.BLUE;
+                            }
+                        }
                         var logo = "function" == typeof resources.b[name] ? resources.b[name]({
                             label: label,
                             locale: locale,
@@ -11329,7 +11373,8 @@
                             logoColor: logoColor,
                             funding: funding,
                             env: env,
-                            cards: _cards
+                            cards: _cards,
+                            isFundingThrottleEnabled: isFundingThrottleEnabled
                         }) : resources.b[name][logoColor] || resources.b[name][constants.i.ANY];
                         return Object(jsx.b)("img", {
                             class: class_CLASS.LOGO + " " + class_CLASS.LOGO + "-" + name + " " + class_CLASS.LOGO + "-" + color,
@@ -11357,7 +11402,8 @@
                         logoColor: logoColor,
                         funding: funding,
                         env: env,
-                        cards: _cards
+                        cards: _cards,
+                        isFundingThrottleEnabled: isFundingThrottleEnabled
                     });
                 },
                 cards: function() {
@@ -11383,7 +11429,7 @@
             });
         }
         function renderButton(_ref11) {
-            var _ref12, _ref13, _ref14, size = _ref11.size, label = _ref11.label, color = _ref11.color, locale = _ref11.locale, branding = _ref11.branding, multiple = _ref11.multiple, layout = _ref11.layout, shape = _ref11.shape, source = _ref11.source, funding = _ref11.funding, i = _ref11.i, env = _ref11.env, cards = _ref11.cards, installmentperiod = _ref11.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = getButtonConfig(label, determineLabel({
+            var _ref12, _ref13, _ref14, size = _ref11.size, label = _ref11.label, color = _ref11.color, locale = _ref11.locale, branding = _ref11.branding, multiple = _ref11.multiple, layout = _ref11.layout, shape = _ref11.shape, source = _ref11.source, funding = _ref11.funding, i = _ref11.i, env = _ref11.env, cards = _ref11.cards, installmentperiod = _ref11.installmentperiod, isFundingThrottleEnabled = _ref11.isFundingThrottleEnabled, logoColor = getButtonConfig(label, "logoColors")[color], contentText = getButtonConfig(label, determineLabel({
                 label: label,
                 source: source,
                 multiple: multiple,
@@ -11403,8 +11449,10 @@
                 cards: cards,
                 dynamicContent: dynamicContent,
                 layout: layout,
-                size: size
+                size: size,
+                isFundingThrottleEnabled: isFundingThrottleEnabled
             });
+            var hasTabIndex = -1 === [ constants.v.CARD ].indexOf(source);
             return Object(jsx.b)("div", componentTemplate__extends({}, ((_ref12 = {})[constants.c.LAYOUT] = layout || "", 
             _ref12), ((_ref13 = {})[constants.c.SIZE] = size || "", _ref13), ((_ref14 = {})[constants.c.FUNDING_SOURCE] = source, 
             _ref14[constants.c.BUTTON] = !0, _ref14), {
@@ -11416,15 +11464,17 @@
                     env: env
                 }) + " " + function(_ref2) {
                     var label = _ref2.label, color = _ref2.color, logoColor = _ref2.logoColor;
+                    _ref2.isFundingThrottleEnabled && label === constants.f.CREDIT && (color = constants.e.SILVER);
                     return [ class_CLASS.LABEL + "-" + label, class_CLASS.COLOR + "-" + color, class_CLASS.LOGO_COLOR + "-" + logoColor ].join(" ");
                 }({
                     label: label,
                     color: color,
-                    logoColor: logoColor
+                    logoColor: logoColor,
+                    isFundingThrottleEnabled: isFundingThrottleEnabled
                 }),
                 role: "button",
                 "aria-label": source,
-                tabindex: "0"
+                tabindex: hasTabIndex && 0
             }), contentText);
         }
         function componentTemplate(_ref17) {
@@ -11441,7 +11491,7 @@
                 validateButtonLocale(locale);
                 validateButtonStyle(style, props);
             }(props);
-            var _normalizeProps = normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, buttonNodes = function(_ref4) {
+            var _normalizeProps = normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, isFundingThrottleEnabled = _normalizeProps.isFundingThrottleEnabled, buttonNodes = function(_ref4) {
                 var label = _ref4.label, color = _ref4.color, sources = _ref4.sources, multiple = _ref4.multiple, layout = _ref4.layout;
                 return sources.map(function(source, i) {
                     var buttonLabel = determineLabel({
@@ -11477,7 +11527,8 @@
                     shape: shape,
                     cards: cards,
                     installmentperiod: installmentperiod,
-                    size: size
+                    size: size,
+                    isFundingThrottleEnabled: isFundingThrottleEnabled
                 });
             }), taglineNode = function(_ref15) {
                 var label = _ref15.label, tagline = _ref15.tagline, color = _ref15.color, locale = _ref15.locale, multiple = _ref15.multiple, env = _ref15.env, cards = _ref15.cards;
@@ -11539,15 +11590,15 @@
                 });
             }(), labelPowerByPayPal = cards.length > 0 ? function(props) {
                 if (!props) return null;
-                var layout = props.layout, size = props.size;
-                return layout !== constants.g.VERTICAL || size !== constants.l.MEDIUM && size !== constants.l.LARGE && size !== constants.l.HUGE ? null : Object(jsx.b)("div", {
+                var layout = props.layout, size = props.size, _props$sources = props.sources, sources = void 0 === _props$sources ? [] : _props$sources;
+                return layout !== constants.g.VERTICAL || size !== constants.l.MEDIUM && size !== constants.l.LARGE && size !== constants.l.HUGE ? null : -1 === sources.indexOf(constants.v.CARD) ? null : Object(jsx.b)("div", {
                     class: "powered-by-paypal",
                     style: "\n                text-align: center;\n                margin: 10px auto;\n                height: 14px;\n                font-family: PayPal-Sans, HelveticaNeue, sans-serif;\n                font-size: 11px;\n                font-weight: normal;\n                font-style: italic;\n                font-stretch: normal;\n                color: #7b8388;\n                position: relative;\n                margin-right: 3px;\n                bottom: 3px;\n            "
                 }, renderContent("{ content: poweredBy }", componentTemplate__extends({}, props, {
                     logoColor: "blue"
                 })));
             }(normalizeProps(props)) : null;
-            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.218", 
+            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.219", 
             _ref18), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -11559,7 +11610,7 @@
             }), styleNode, buttonNodes, taglineNode || fundingiconNode, labelPowerByPayPal, scriptNode).toString();
         }
         function getDimensions(_ref2) {
-            var label = _ref2.label, size = _ref2.size, tagline = _ref2.tagline, fundingicons = _ref2.fundingicons, layout = _ref2.layout, number = _ref2.number, viewport = _ref2.viewport, buttonHeight = _ref2.height, cards = _ref2.cards;
+            var label = _ref2.label, size = _ref2.size, tagline = _ref2.tagline, fundingicons = _ref2.fundingicons, layout = _ref2.layout, number = _ref2.number, viewport = _ref2.viewport, buttonHeight = _ref2.height, cards = _ref2.cards, _ref2$sources = _ref2.sources, sources = void 0 === _ref2$sources ? [] : _ref2$sources;
             size === constants.l.RESPONSIVE && (size = function(_ref) {
                 var label = _ref.label, layout = _ref.layout, _ref$width = _ref.width, width = void 0 === _ref$width ? 0 : _ref$width, minimumSize = getButtonConfig(label, layout === constants.g.VERTICAL ? "minimumVerticalSize" : "minimumSize"), maximumSize = getButtonConfig(label, layout === constants.g.VERTICAL ? "maximumVerticalSize" : "maximumSize");
                 if (width < BUTTON_STYLE[minimumSize].minWidth) return minimumSize;
@@ -11577,7 +11628,7 @@
             }));
             var _BUTTON_STYLE$size2 = BUTTON_STYLE[size], defaultWidth = _BUTTON_STYLE$size2.defaultWidth, defaultHeight = _BUTTON_STYLE$size2.defaultHeight, minHeight = _BUTTON_STYLE$size2.minHeight, maxHeight = _BUTTON_STYLE$size2.maxHeight, allowFunding = _BUTTON_STYLE$size2.allowFunding, allowTagline = _BUTTON_STYLE$size2.allowTagline, width = defaultWidth, height = buttonHeight = buttonHeight || Object(util.k)(Object(util.i)(defaultHeight, minHeight), maxHeight);
             fundingicons && allowFunding ? height += Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) : tagline && allowTagline ? height += Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) : layout === constants.g.VERTICAL && (height = buttonHeight * number + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) * (number - 1));
-            cards && cards.length > 0 && layout === constants.g.VERTICAL && (height += BUTTON_STYLE[size].byPayPalHeight);
+            sources.indexOf(constants.v.CARD) >= 0 && cards && cards.length > 0 && layout === constants.g.VERTICAL && (height += BUTTON_STYLE[size].byPayPalHeight);
             return {
                 width: width,
                 height: height
@@ -11590,7 +11641,7 @@
             }
             return target;
         };
-        var creditThrottle = void 0, venmoThrottle = void 0, component_Button = Object(src.c)({
+        var creditThrottle = void 0, venmoThrottle = void 0, fundingLogoThrottle = void 0, component_Button = Object(src.c)({
             tag: "paypal-button",
             name: "ppbutton",
             buildUrl: function(props) {
@@ -11618,7 +11669,8 @@
                         fundingicons: fundingicons,
                         tagline: tagline,
                         layout: layout,
-                        cards: cards
+                        cards: cards,
+                        sources: sources
                     });
                 }, _getContainerDimensio = getContainerDimensions(), width = _getContainerDimensio.width, height = _getContainerDimensio.height;
                 size === constants.l.RESPONSIVE && on("resize", function() {
@@ -11648,10 +11700,10 @@
                 });
                 template.addEventListener("click", function() {
                     Object(beaver_logger_client.q)("button_pre_template_click");
-                    if (Object(lib.n)("allow_full_page_fallback")) {
+                    if (Object(lib.o)("allow_full_page_fallback")) {
                         Object(beaver_logger_client.k)("pre_template_force_full_page");
                         _this.props.payment().then(function(token) {
-                            window.top.location = Object(lib.i)(config.a.checkoutUrl, {
+                            window.top.location = Object(lib.j)(config.a.checkoutUrl, {
                                 token: token
                             });
                         });
@@ -11660,7 +11712,7 @@
                 return jsxDom("html", null, jsxDom("body", null, template));
             },
             get version() {
-                return Object(lib.v)();
+                return Object(lib.w)();
             },
             get domain() {
                 return config.a.paypalDomains;
@@ -11671,8 +11723,8 @@
                 }
             },
             validate: function() {
-                Object(lib.D)() || Object(beaver_logger_client.q)("button_render_ineligible");
-                if (Object(lib.H)()) throw new Error("Can not render button in IE intranet mode");
+                Object(lib.E)() || Object(beaver_logger_client.q)("button_render_ineligible");
+                if (Object(lib.I)()) throw new Error("Can not render button in IE intranet mode");
             },
             props: {
                 domain: {
@@ -11683,11 +11735,21 @@
                     },
                     queryParam: !0
                 },
+                isFundingThrottleEnabled: {
+                    type: "boolean",
+                    queryParam: !0,
+                    required: !1,
+                    def: function(props) {
+                        return !(!(fundingLogoThrottle = fundingLogoThrottle || Object(lib.c)(component__extends({}, props, {
+                            browserLocale: Object(lib.l)()
+                        }))) || !fundingLogoThrottle.isEnabled());
+                    }
+                },
                 sessionID: {
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.w)();
+                        return Object(lib.x)();
                     },
                     queryParam: !0
                 },
@@ -11695,7 +11757,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib._1)();
+                        return Object(lib._2)();
                     },
                     queryParam: !0
                 },
@@ -11789,7 +11851,7 @@
                     decorate: function(original) {
                         return function() {
                             var _this2 = this, actions = {
-                                request: lib.V,
+                                request: lib.W,
                                 payment: {
                                     create: function(options) {
                                         return _this2.props.braintree ? _this2.props.braintree.then(function(client) {
@@ -11815,9 +11877,9 @@
                                     }
                                 }
                             };
-                            if (Object(lib.n)("memoize_payment") && this.memoizedToken) return this.memoizedToken;
+                            if (Object(lib.o)("memoize_payment") && this.memoizedToken) return this.memoizedToken;
                             this.memoizedToken = zalgo_promise_src.a.try(original, this, [ {}, actions ]);
-                            this.props.env !== constants.t.PRODUCTION || Object(lib.n)("disable_payment_timeout") || (this.memoizedToken = this.memoizedToken.timeout(1e4, new Error("Timed out waiting 10000ms for payment")));
+                            this.props.env !== constants.t.PRODUCTION || Object(lib.o)("disable_payment_timeout") || (this.memoizedToken = this.memoizedToken.timeout(1e4, new Error("Timed out waiting 10000ms for payment")));
                             this.memoizedToken = this.memoizedToken.then(function(token) {
                                 var _track;
                                 if (!token) {
@@ -11873,12 +11935,20 @@
                     },
                     decorate: function() {
                         var _ref3 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref3$allowed = _ref3.allowed, allowed = void 0 === _ref3$allowed ? [] : _ref3$allowed, _ref3$disallowed = _ref3.disallowed, disallowed = void 0 === _ref3$disallowed ? [] : _ref3$disallowed, props = arguments[1];
-                        allowed && -1 !== allowed.indexOf(constants.v.VENMO) && !Object(lib.A)() && (allowed = allowed.filter(function(source) {
+                        if (fundingLogoThrottle = fundingLogoThrottle || Object(lib.c)(component__extends({}, props, {
+                            browserLocale: Object(lib.l)()
+                        }))) {
+                            allowed = [].concat(allowed, [ constants.v.CREDIT ]);
+                            disallowed = disallowed.filter(function(source) {
+                                return source !== constants.v.CREDIT;
+                            });
+                        }
+                        allowed && -1 !== allowed.indexOf(constants.v.VENMO) && !Object(lib.B)() && (allowed = allowed.filter(function(source) {
                             return source !== constants.v.VENMO;
                         }));
                         (function(props) {
                             var _normalizeProps = normalizeProps(props, {
-                                locale: Object(lib.k)()
+                                locale: Object(lib.l)()
                             }), label = _normalizeProps.label, funding = _normalizeProps.funding, layout = _normalizeProps.layout, locale = _normalizeProps.locale, max = _normalizeProps.max, sources = _normalizeProps.sources, allowed = funding.allowed, country = locale.country;
                             if (allowed && -1 !== allowed.indexOf(constants.v.CREDIT)) return !1;
                             if (layout !== constants.g.HORIZONTAL) return !1;
@@ -11898,12 +11968,17 @@
                             if (-1 !== sources.indexOf(constants.v.CREDIT)) return !1;
                             var domain = Object(cross_domain_utils_src.getDomain)().replace(/^https?:\/\//, "").replace(/^www\./, "");
                             return -1 !== config.a.creditTestDomains.indexOf(domain);
-                        })(props) && (creditThrottle = Object(lib.y)("dual_credit_automatic", 50)).isEnabled() && (allowed = [].concat(allowed, [ constants.v.CREDIT ]));
-                        var remembered = Object(lib.s)(function(sources) {
+                        })(props) && (creditThrottle = Object(lib.z)("dual_credit_automatic", 50)).isEnabled() && (allowed = [].concat(allowed, [ constants.v.CREDIT ]));
+                        var remembered = Object(lib.t)(function(sources) {
                             return sources;
                         });
-                        allowed && -1 === allowed.indexOf(constants.v.VENMO) && remembered && -1 === remembered.indexOf(constants.v.VENMO) && Object(lib.A)() && !Object(lib.K)() && !Object(lib.B)() && !Object(lib.E)() && (venmoThrottle = Object(lib.y)("venmo_uncookied_render", 10)).isEnabled() && (allowed = [].concat(allowed, [ constants.v.VENMO ]));
-                        if (!Object(lib.A)() || Object(lib.n)("disable_venmo")) {
+                        (function(props, allowed, remembered) {
+                            var country = normalizeProps(props, {
+                                locale: Object(lib.l)()
+                            }).locale.country, domain = Object(cross_domain_utils_src.getDomain)().replace(/^https?:\/\//, "").replace(/^www\./, "");
+                            return !(country !== constants.r.US || !Object(lib.B)() || Object(lib.L)() || Object(lib.C)() || Object(lib.F)() || allowed && allowed.indexOf(constants.v.VENMO) > -1 || remembered && remembered.indexOf(constants.v.VENMO) > -1 || config.a.venmoTestBlacklist.indexOf(domain) > -1);
+                        })(allowed, remembered) && (venmoThrottle = Object(lib.z)("venmo_uncookied_render", 10)).isEnabled() && (allowed = [].concat(allowed, [ constants.v.VENMO ]));
+                        if (!Object(lib.B)() || Object(lib.o)("disable_venmo")) {
                             remembered && -1 !== remembered.indexOf(constants.v.VENMO) && (remembered = remembered.filter(function(source) {
                                 return source !== constants.v.VENMO;
                             }));
@@ -11914,7 +11989,7 @@
                             disallowed: disallowed,
                             remembered: remembered,
                             remember: function(sources) {
-                                Object(lib.U)(sources);
+                                Object(lib.V)(sources);
                             }
                         };
                     }
@@ -11931,7 +12006,7 @@
                     noop: !0,
                     decorate: function(original) {
                         return function() {
-                            var _track2, _getBrowser = Object(lib.j)(), _getBrowser$browser = _getBrowser.browser, browser = void 0 === _getBrowser$browser ? "unrecognized" : _getBrowser$browser, _getBrowser$version = _getBrowser.version, version = void 0 === _getBrowser$version ? "unrecognized" : _getBrowser$version;
+                            var _track2, _getBrowser = Object(lib.k)(), _getBrowser$browser = _getBrowser.browser, browser = void 0 === _getBrowser$browser ? "unrecognized" : _getBrowser$browser, _getBrowser$version = _getBrowser.version, version = void 0 === _getBrowser$version ? "unrecognized" : _getBrowser$version;
                             Object(beaver_logger_client.k)("button_render_browser_" + browser + "_" + version);
                             Object(beaver_logger_client.p)(((_track2 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
                             _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_RENDER, _track2[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, 
@@ -11946,6 +12021,11 @@
                                 var _venmoThrottle$logSta;
                                 venmoThrottle.logStart(((_venmoThrottle$logSta = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                                 _venmoThrottle$logSta));
+                            }
+                            if (fundingLogoThrottle) {
+                                var _fundingLogoThrottle$;
+                                fundingLogoThrottle.logStart(((_fundingLogoThrottle$ = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                _fundingLogoThrottle$));
                             }
                             Object(beaver_logger_client.h)();
                             return original.apply(this, arguments);
@@ -11966,8 +12046,8 @@
                             Object(beaver_logger_client.p)(((_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
                             _track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CHECKOUT_AUTHORIZE, 
                             _track3[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track3));
-                            Object(lib.D)() || Object(beaver_logger_client.k)("button_authorize_ineligible");
-                            Object(lib.d)("authorize");
+                            Object(lib.E)() || Object(beaver_logger_client.k)("button_authorize_ineligible");
+                            Object(lib.e)("authorize");
                             Object(beaver_logger_client.h)();
                             var restart = actions.restart;
                             actions.restart = function() {
@@ -11979,10 +12059,10 @@
                                 return zalgo_promise_src.a.try(function() {
                                     return actions.close();
                                 }).then(function() {
-                                    return Object(lib.T)(win || window.top, url || data.returnUrl);
+                                    return Object(lib.U)(win || window.top, url || data.returnUrl);
                                 });
                             };
-                            actions.payment.tokenize = Object(lib.M)(function() {
+                            actions.payment.tokenize = Object(lib.N)(function() {
                                 if (!_this3.props.braintree) throw new Error("Must pass in Braintree client to tokenize payment");
                                 return _this3.props.braintree.then(function(client) {
                                     return client.tokenizePayment(data);
@@ -12008,10 +12088,15 @@
                                     return mergePaymentDetails(result.id, result);
                                 });
                             };
-                            actions.request = lib.V;
+                            actions.request = lib.W;
                             onAuthorizeListener.trigger({
                                 paymentToken: data.paymentToken
                             });
+                            if (fundingLogoThrottle) {
+                                var _fundingLogoThrottle$2;
+                                fundingLogoThrottle.logComplete(((_fundingLogoThrottle$2 = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                _fundingLogoThrottle$2));
+                            }
                             if (creditThrottle) {
                                 var _creditThrottle$logCo;
                                 creditThrottle.logComplete(((_creditThrottle$logCo = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
@@ -12074,7 +12159,7 @@
                             Object(beaver_logger_client.h)();
                             return original.call(this, data, component__extends({}, actions, {
                                 redirect: function(win, url) {
-                                    return zalgo_promise_src.a.all([ Object(lib.T)(win || window.top, url || data.cancelUrl), actions.close() ]);
+                                    return zalgo_promise_src.a.all([ Object(lib.U)(win || window.top, url || data.cancelUrl), actions.close() ]);
                                 }
                             }));
                         };
@@ -12097,6 +12182,12 @@
                                 creditThrottle.log("click", ((_creditThrottle$log = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                                 _creditThrottle$log));
                             }
+                            if (fundingLogoThrottle) {
+                                var _fundingLogoThrottle$3;
+                                fundingLogoThrottle.log("click", ((_fundingLogoThrottle$3 = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                _fundingLogoThrottle$3[constants.u.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
+                                _fundingLogoThrottle$3));
+                            }
                             if (venmoThrottle) {
                                 var _venmoThrottle$log;
                                 venmoThrottle.log("click", ((_venmoThrottle$log = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
@@ -12112,7 +12203,7 @@
                     required: !1,
                     queryParam: "locale.x",
                     def: function() {
-                        var _getBrowserLocale = Object(lib.k)();
+                        var _getBrowserLocale = Object(lib.l)();
                         return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
                     },
                     validate: validateButtonLocale
@@ -12189,7 +12280,7 @@
             }
         });
         component_Button.isChild() && function(ButtonComponent) {
-            if (Object(lib.H)()) return window.xchild.error(new Error("Can not render button in IE Intranet mode"));
+            if (Object(lib.I)()) return window.xchild.error(new Error("Can not render button in IE Intranet mode"));
             !function(Checkout, Button) {
                 var popupBridge = void 0;
                 awaitPopupBridge(Button).then(function(bridge) {
@@ -12198,7 +12289,7 @@
                 function doRender(props, original) {
                     return popupBridge ? renderThroughPopupBridge(props, popupBridge).catch(function(err) {
                         Object(beaver_logger_client.g)("popup_bridge_error", {
-                            err: Object(lib.Y)(err)
+                            err: Object(lib.Z)(err)
                         });
                         return original();
                     }) : original();
@@ -12225,7 +12316,7 @@
                     });
                 };
             }(src_checkout.a, ButtonComponent);
-            Object(lib.q)().then(function(pageRenderTime) {
+            Object(lib.r)().then(function(pageRenderTime) {
                 var _track, fundingSources = Array.prototype.slice.call(document.querySelectorAll("[" + constants.c.FUNDING_SOURCE + "]")).map(function(el) {
                     return el.getAttribute(constants.c.CARD) || el.getAttribute(constants.c.FUNDING_SOURCE);
                 }).filter(function(source) {
@@ -12239,13 +12330,13 @@
                 Object(beaver_logger_client.h)();
             });
             var xprops = ButtonComponent.xprops || src_checkout.a.xprops;
-            xprops && xprops.logLevel && Object(lib.X)(xprops.logLevel);
+            xprops && xprops.logLevel && Object(lib.Y)(xprops.logLevel);
         }(component_Button);
-        Object(lib.G)() && Object(lib.n)("ie_full_page") && (src_checkout.a.renderTo = function(win) {
+        Object(lib.H)() && Object(lib.o)("ie_full_page") && (src_checkout.a.renderTo = function(win) {
             Object(beaver_logger_client.k)("force_ie_full_page");
             Object(beaver_logger_client.h)();
             var checkout = src_checkout.a.init({
-                onAuthorize: lib.N
+                onAuthorize: lib.O
             });
             checkout.delegate(win);
             checkout.openContainer().then(function() {
@@ -12253,7 +12344,7 @@
                 checkout.showContainer();
             });
             component_Button.xprops.payment().then(function(token) {
-                window.top.location = Object(lib.i)(config.a.checkoutUrl, {
+                window.top.location = Object(lib.j)(config.a.checkoutUrl, {
                     token: token
                 });
             }).catch(function(err) {
@@ -12267,22 +12358,22 @@
                 src_checkout.a.canRenderTo(hacks_top).then(function(result) {
                     canRenderTop = result;
                 });
-                Object(lib.R)(src_checkout.a, "renderTo", function(_ref) {
+                Object(lib.S)(src_checkout.a, "renderTo", function(_ref) {
                     var _ref$args = _ref.args, win = _ref$args[0], props = _ref$args[1], el = _ref$args[2], original = _ref.original, context = _ref.context;
                     canRenderTop || (win = Object(cross_domain_utils_src.getParent)(window));
                     return original.call(context, win, props, el);
                 });
             }
         }
-        Object(lib.R)(src_checkout.a, "renderTo", function(_ref2) {
+        Object(lib.S)(src_checkout.a, "renderTo", function(_ref2) {
             var callOriginal = _ref2.callOriginal, props = _ref2.args[1];
-            if (Object(lib.n)("allow_full_page_fallback")) {
-                var handleError = Object(lib.P)(function(err) {
+            if (Object(lib.o)("allow_full_page_fallback")) {
+                var handleError = Object(lib.Q)(function(err) {
                     try {
                         console.error(err && err.stack);
                     } catch (err2) {}
                     return component_Button.xprops.payment().then(function(token) {
-                        window.top.location = Object(lib.i)(config.a.checkoutUrl, {
+                        window.top.location = Object(lib.j)(config.a.checkoutUrl, {
                             token: token
                         });
                     });
@@ -12293,7 +12384,7 @@
             return callOriginal();
         });
         var domain, currentDomainEnv, debounce = !1;
-        Object(lib.R)(src_checkout.a, "renderTo", function(_ref3) {
+        Object(lib.S)(src_checkout.a, "renderTo", function(_ref3) {
             var callOriginal = _ref3.callOriginal, props = _ref3.args[1];
             if (!debounce) {
                 debounce = !0;
@@ -12318,12 +12409,12 @@
                     enabled = !1;
                 }
             });
-            Object(lib.R)(src_checkout.a, "renderTo", function(_ref6) {
+            Object(lib.S)(src_checkout.a, "renderTo", function(_ref6) {
                 var callOriginal = _ref6.callOriginal;
                 return enabled ? callOriginal() : new zalgo_promise_src.a();
             });
         }
-        Object(lib.R)(rest.payment, "create", function(_ref7) {
+        Object(lib.S)(rest.payment, "create", function(_ref7) {
             var createOriginal = _ref7.original, createContext = _ref7.context, _ref7$args = _ref7.args, env = _ref7$args[0], client = _ref7$args[1], options = _ref7$args[2], experience = _ref7$args[3];
             options.payment || (options = {
                 payment: options,
@@ -12331,7 +12422,7 @@
             });
             return createOriginal.call(createContext, env, client, options);
         });
-        Object(lib.R)(component_Button.props.style, "validate", function(_ref8) {
+        Object(lib.S)(component_Button.props.style, "validate", function(_ref8) {
             var callOriginal = _ref8.callOriginal, style = _ref8.args[0];
             if (!style) return callOriginal();
             style && "creditblue" === style.color && (style.color = constants.e.DARKBLUE);
@@ -12342,7 +12433,7 @@
             }
             return callOriginal();
         });
-        Object(lib.R)(component_Button, "render", function(_ref9) {
+        Object(lib.S)(component_Button, "render", function(_ref9) {
             var callOriginal = _ref9.callOriginal, props = _ref9.args[0];
             if (props.billingAgreement) {
                 props.payment = props.billingAgreement;
@@ -12350,12 +12441,12 @@
             }
             return callOriginal();
         });
-        Object(lib.R)(component_Button.props.payment, "decorate", function(_ref10) {
+        Object(lib.S)(component_Button.props.payment, "decorate", function(_ref10) {
             var original = _ref10.original, context = _ref10.context, originalPayment = _ref10.args[0];
             return original.call(context, function(data, actions) {
                 var _this = this;
                 return new zalgo_promise_src.a(function(resolve, reject) {
-                    Object(lib.R)(actions.payment, "create", function(_ref11) {
+                    Object(lib.S)(actions.payment, "create", function(_ref11) {
                         var createOriginal = _ref11.original, createContext = _ref11.context, _ref11$args = _ref11.args, options = _ref11$args[0], experience = _ref11$args[1];
                         options.payment || (options = {
                             payment: options,
@@ -12369,9 +12460,9 @@
                     function rejectActions(err) {
                         reject(err);
                     }
-                    Object(lib.h)(resolveData, data);
-                    Object(lib.h)(resolveData, actions);
-                    Object(lib.h)(rejectActions, actions);
+                    Object(lib.i)(resolveData, data);
+                    Object(lib.i)(resolveData, actions);
+                    Object(lib.i)(rejectActions, actions);
                     var ctx = {
                         props: {
                             env: _this.props.env,
@@ -12397,14 +12488,14 @@
         zalgo_promise_src.a.onPossiblyUnhandledException(function(err) {
             var _track;
             Object(beaver_logger_client.g)("unhandled_error", {
-                stack: Object(lib.Y)(err),
+                stack: Object(lib.Z)(err),
                 errtype: {}.toString.call(err)
             });
             Object(beaver_logger_client.p)(((_track = {})[constants.u.KEY.ERROR_CODE] = "checkoutjs_error", 
-            _track[constants.u.KEY.ERROR_DESC] = Object(lib.Z)(err), _track));
+            _track[constants.u.KEY.ERROR_DESC] = Object(lib._0)(err), _track));
             return Object(beaver_logger_client.h)().catch(function(err2) {
                 if (window.console) try {
-                    window.console.error ? window.console.error("Error flushing:", Object(lib.Y)(err2)) : window.console.log && window.console.log("Error flushing:", Object(lib.Y)(err2));
+                    window.console.error ? window.console.error("Error flushing:", Object(lib.Z)(err2)) : window.console.log && window.console.log("Error flushing:", Object(lib.Z)(err2));
                 } catch (err3) {
                     setTimeout(function() {
                         throw err3;
@@ -12412,23 +12503,23 @@
                 }
             });
         });
-        var currentScript = Object(lib.m)(), currentProtocol = window.location.protocol.split(":")[0];
-        var init = Object(lib.P)(function(_ref2) {
+        var currentScript = Object(lib.n)(), currentProtocol = window.location.protocol.split(":")[0];
+        var init = Object(lib.Q)(function(_ref2) {
             var precacheRemembered = _ref2.precacheRemembered;
-            Object(lib.D)() || Object(beaver_logger_client.q)("ineligible");
-            Object(lib.c)();
-            Object(lib.z)();
-            Object(lib.J)() || function() {
+            Object(lib.E)() || Object(beaver_logger_client.q)("ineligible");
+            Object(lib.d)();
+            Object(lib.A)();
+            Object(lib.K)() || function() {
                 var _track;
-                if (window.location.hostname) if (Boolean(Object(lib.o)(constants.C))) Object(beaver_logger_client.k)("pptm_tried_loading_twice"); else {
+                if (window.location.hostname) if (Boolean(Object(lib.p)(constants.C))) Object(beaver_logger_client.k)("pptm_tried_loading_twice"); else {
                     Object(beaver_logger_client.p)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.PPTM, 
                     _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PPTM_LOAD, _track));
-                    var fullUrl = Object(lib.i)(config.a.pptmUrl, {
+                    var fullUrl = Object(lib.j)(config.a.pptmUrl, {
                         t: "xo",
                         id: window.location.hostname,
                         mrid: config.a.merchantID
                     });
-                    Object(lib.L)(fullUrl, 0, {
+                    Object(lib.M)(fullUrl, 0, {
                         async: !0,
                         id: constants.C
                     }).then(function() {
@@ -12437,13 +12528,13 @@
                         _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PPTM_LOADED, _track2));
                     }).catch(function(err) {
                         Object(beaver_logger_client.k)("pptm_script_error", {
-                            error: Object(lib.Y)(err)
+                            error: Object(lib.Z)(err)
                         });
                     });
                 }
             }();
-            precacheRemembered && Object(lib.S)();
-            Object(lib.n)("force_bridge") && !Object(lib.J)() && Object(lib.Q)(config.a.env);
+            precacheRemembered && Object(lib.T)();
+            Object(lib.o)("force_bridge") && !Object(lib.K)() && Object(lib.R)(config.a.env);
             Object(beaver_logger_client.k)("setup_" + config.a.env);
             Object(beaver_logger_client.f)("current_protocol_" + currentProtocol);
         });
@@ -12485,7 +12576,7 @@
                     config.a.state = state;
                 }
                 merchantID && (config.a.merchantID = merchantID);
-                logLevel ? Object(lib.X)(logLevel) : Object(lib.X)(config.a.logLevel);
+                logLevel ? Object(lib.Y)(logLevel) : Object(lib.Y)(config.a.logLevel);
             }(options);
             init(options);
         }
@@ -12499,8 +12590,8 @@
             merchantID: currentScript.getAttribute("data-merchant-id"),
             precacheRemembered: currentScript.hasAttribute("data-precache-remembered-funding")
         }) : setup();
-        if (!Object(lib.J)()) if (currentScript) {
-            var setup__track2, scriptProtocol = currentScript.src.split(":")[0], loadTime = Object(lib.t)(currentScript.src);
+        if (!Object(lib.K)()) if (currentScript) {
+            var setup__track2, scriptProtocol = currentScript.src.split(":")[0], loadTime = Object(lib.u)(currentScript.src);
             Object(beaver_logger_client.f)("current_script_protocol_" + scriptProtocol);
             Object(beaver_logger_client.f)("current_script_protocol_" + (currentProtocol === scriptProtocol ? "match" : "mismatch"));
             Object(beaver_logger_client.f)("current_script_version_" + config.a.version.replace(/[^0-9a-zA-Z]+/g, "_"));
@@ -12524,11 +12615,11 @@
             setup__track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.218", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.219", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         var interface_Checkout = void 0, interface_Card = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
-        if (Object(lib.J)()) {
+        if (Object(lib.K)()) {
             interface_Checkout = src_checkout.a;
             interface_Card = Card;
             interface_BillingPage = BillingPage;
@@ -12583,13 +12674,13 @@
             return constants.o;
         });
         __webpack_require__.d(__webpack_exports__, "request", function() {
-            return lib.V;
+            return lib.W;
         });
         __webpack_require__.d(__webpack_exports__, "isEligible", function() {
-            return lib.D;
+            return lib.E;
         });
         __webpack_require__.d(__webpack_exports__, "isFundingRemembered", function() {
-            return lib.F;
+            return lib.G;
         });
         __webpack_require__.d(__webpack_exports__, "forceIframe", function() {
             return lib.a;
@@ -12773,7 +12864,7 @@
             HIDDEN_BUTTON: "paypal-button-hidden"
         }, src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), checkout = __webpack_require__("./src/checkout/index.js"), config = __webpack_require__("./src/config/index.js"), post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js");
         function isLegacyEligible() {
-            return !!Object(lib.D)() && (!!Object(lib._0)() && !Object(lib.A)());
+            return !!Object(lib.E)() && (!!Object(lib._1)() && !Object(lib.B)());
         }
         var warn = Object(client.n)(LOG_PREFIX).warn, DEFAULT_COUNTRY = constants.r.US, DEFAULT_LANG = constants.x.EN;
         function normalizeLocale(locale) {
@@ -12800,19 +12891,19 @@
                 lang: lang
             };
         }
-        var button__prefix = Object(client.n)(LOG_PREFIX), info = button__prefix.info, debug = button__prefix.debug, error = button__prefix.error, loadButtonJS = Object(lib.M)(function() {
+        var button__prefix = Object(client.n)(LOG_PREFIX), info = button__prefix.info, debug = button__prefix.debug, error = button__prefix.error, loadButtonJS = Object(lib.N)(function() {
             debug("buttonjs_load");
-            return Object(lib.L)(config.a.buttonJSUrl).catch(function(err) {
+            return Object(lib.M)(config.a.buttonJSUrl).catch(function(err) {
                 info("buttonjs_load_error_retry", {
-                    error: Object(lib.Y)(err)
+                    error: Object(lib.Z)(err)
                 });
-                return Object(lib.L)(config.a.buttonJSUrl);
+                return Object(lib.M)(config.a.buttonJSUrl);
             }).then(function(result) {
                 debug("buttonjs_load_success");
                 return result;
             }).catch(function(err) {
                 error("buttonjs_load_error", {
-                    error: Object(lib.Y)(err)
+                    error: Object(lib.Z)(err)
                 });
                 throw err;
             });
@@ -12848,7 +12939,7 @@
                             }).el;
                             container.appendChild(el);
                             try {
-                                info("in_page_button_" + (Object(lib.C)(el) ? "visible" : "not_visible"));
+                                info("in_page_button_" + (Object(lib.D)(el) ? "visible" : "not_visible"));
                             } catch (err) {}
                             return el.childNodes[0];
                         });
@@ -12897,15 +12988,15 @@
         var util_warn = Object(client.n)(LOG_PREFIX).warn, redirected = !1;
         function logRedirect(location) {
             redirected && util_warn("multiple_redirects");
-            Object(lib._2)(location) && (redirected = !0);
+            Object(lib._3)(location) && (redirected = !0);
             Object(client.h)();
         }
         function redirect(url) {
             return src.a.try(function() {
                 if (!url) throw new Error("Redirect url undefined");
-                if (config.a.env === constants.t.TEST && Object(lib._2)(url)) return Object(lib.T)(window, "#fullpageRedirect?url=" + url);
+                if (config.a.env === constants.t.TEST && Object(lib._3)(url)) return Object(lib.U)(window, "#fullpageRedirect?url=" + url);
                 logRedirect(url);
-                return Object(lib.T)(window, url);
+                return Object(lib.U)(window, url);
             });
         }
         function parseToken(token) {
@@ -12964,7 +13055,7 @@
                     });
                     throw new Error('Could not determine url or token from "' + item + '"');
                 }
-                url = Object(lib.i)(config.a.checkoutUrl, {
+                url = Object(lib.j)(config.a.checkoutUrl, {
                     token: paymentToken
                 });
                 interface_debug("startflow_with_token", {
@@ -12994,7 +13085,7 @@
                 interface_checkout.initXO = function() {
                     interface_warn("gettoken_initxo");
                 };
-                interface_checkout.startFlow = Object(lib.P)(function(item) {
+                interface_checkout.startFlow = Object(lib.Q)(function(item) {
                     interface_debug("gettoken_startflow", {
                         item: item
                     });
@@ -13062,9 +13153,9 @@
                 props.init = function(data) {
                     resolve(data.paymentToken);
                 };
-            }), errorHandler = Object(lib.P)(function(err) {
+            }), errorHandler = Object(lib.Q)(function(err) {
                 interface_error("component_error", {
-                    error: Object(lib.Y)(err)
+                    error: Object(lib.Z)(err)
                 });
                 if (hijackTarget) {
                     interface_warn("render_error_hijack_revert_target");
@@ -13076,7 +13167,7 @@
                 });
                 paymentToken.then(function(token) {
                     interface_warn("render_error_redirect_using_token");
-                    return redirect(Object(lib.i)(config.a.checkoutUrl, {
+                    return redirect(Object(lib.j)(config.a.checkoutUrl, {
                         token: token
                     }));
                 });
@@ -13104,7 +13195,7 @@
             element.addEventListener("click", function(event) {
                 tracker();
                 var eligible = isLegacyEligible();
-                if (Object(lib._0)()) {
+                if (Object(lib._1)()) {
                     interface_debug("click_popups_supported");
                     eligible || interface_debug("click_popups_supported_but_ineligible");
                 } else {
@@ -13123,7 +13214,7 @@
                         clickHandler(event);
                     } catch (err) {
                         interface_error("click_handler_error", {
-                            error: Object(lib.Y)(err)
+                            error: Object(lib.Z)(err)
                         });
                     }
                 }(clickHandler, event) : function(element) {
@@ -13156,7 +13247,7 @@
             interface_info("setup", {
                 id: id = id || "merchant",
                 env: options.environment,
-                options: Object(lib.W)(options)
+                options: Object(lib.X)(options)
             });
             setupCalled && interface_debug("setup_called_multiple_times");
             setupCalled = !0;
@@ -13174,7 +13265,7 @@
                     options_info("options_button_single_button_passed");
                     options.button = [ options.button ];
                 }
-                if (options.buttons && Object(lib.p)(options.buttons).length) {
+                if (options.buttons && Object(lib.q)(options.buttons).length) {
                     options_info("options_buttons_with_elements_passed");
                     options.button = options.buttons;
                     delete options.buttons;
@@ -13192,7 +13283,7 @@
                     delete options.container;
                 }
                 if (options.button) {
-                    var button = Object(lib.p)(options.button);
+                    var button = Object(lib.q)(options.button);
                     if (button.length) options.button = button; else {
                         options_warn("options_button_element_not_found", {
                             element: JSON.stringify(options.button)
@@ -13219,7 +13310,7 @@
                                 options: options.container,
                                 button: button.container
                             });
-                            Object(lib.p)(button.container || button.button).forEach(function(element) {
+                            Object(lib.q)(button.container || button.button).forEach(function(element) {
                                 var _buttons$push;
                                 buttons.push(((_buttons$push = {})[button.container ? "container" : "button"] = element, 
                                 _buttons$push.click = button.click || options.click, _buttons$push.condition = button.condition || options.condition, 
@@ -13241,7 +13332,7 @@
                     buttons.length && (options.buttons = buttons);
                 } else if (options.container && !Array.isArray(options.buttons)) {
                     var _buttons = [];
-                    Object(lib.p)(options.container).forEach(function(container, i) {
+                    Object(lib.q)(options.container).forEach(function(container, i) {
                         _buttons.push({
                             container: container,
                             click: options.click,
@@ -13284,7 +13375,7 @@
                 Object(client.f)("setup_post_bridge", {
                     env: env
                 });
-                return Object(lib.Q)(env).then(lib.N);
+                return Object(lib.R)(env).then(lib.O);
             });
             return src.a.try(function() {
                 return options.buttons.length ? renderButtons(id, options.buttons).then(function(buttons) {
@@ -13375,7 +13466,7 @@
                     }
                 };
                 !function(method) {
-                    Object(lib.O)(function() {
+                    Object(lib.P)(function() {
                         ready_debug("paypal_checkout_ready");
                         setTimeout(function() {
                             window.paypal || ready_error("paypal_checkout_ready_no_window_paypal");
@@ -13386,7 +13477,7 @@
                 return oneTimeReady;
             }
         });
-        Object(lib.O)(function() {
+        Object(lib.P)(function() {
             var buttons = Array.prototype.slice.call(document.querySelectorAll("[" + ATTRIBUTES.BUTTON + "]"));
             if (buttons && buttons.length) {
                 ready_debug("data_paypal_button", {
@@ -13442,7 +13533,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.218";
+                payload.version = "4.0.219";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 payload.appName = APP_NAME;
@@ -13776,7 +13867,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(session.c)(),
-                    ver: "4.0.218"
+                    ver: "4.0.219"
                 };
             });
             Object(client.a)(function() {
@@ -14084,6 +14175,16 @@
             var token = Object(util.h)(window.location.href, /token=((EC-)?[A-Z0-9]+)/), payer = Object(util.h)(window.location.href, /PayerID=([A-Z0-9]+)/);
             if (token && payer) return token;
         }
+        function buildFundingLogoThrottle(props) {
+            var _ref = props.style || {
+                layout: void 0,
+                label: void 0
+            }, layout = _ref.layout, label = _ref.label;
+            if ("en_US" !== (props.locale || props.browserLocale.lang + "_" + props.browserLocale.country)) return null;
+            if (void 0 !== label && label !== constants.f.CHECKOUT && label !== constants.f.PAYPAL && label !== constants.f.PAY && label !== constants.f.BUYNOW) return null;
+            var domain = Object(cross_domain_utils_src.getDomain)().replace(/^https?:\/\//, "").replace(/^www\./, "");
+            return -1 === config.a.bmlCreditTest.domains.indexOf(domain) ? null : void 0 === layout || layout && layout === constants.g.HORIZONTAL ? getThrottle("ppc_rebrand", 50) : null;
+        }
         var namespace = __webpack_require__("./src/lib/namespace.js"), getCurrentScript = Object(util.j)(function() {
             for (var scripts = Array.prototype.slice.call(document.getElementsByTagName("script")), _i2 = 0, _length2 = null == scripts ? 0 : scripts.length; _i2 < _length2; _i2++) {
                 var script = scripts[_i2];
@@ -14098,7 +14199,7 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return "4.0.218";
+            return "4.0.219";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -14115,7 +14216,7 @@
                         domain: metaFrameDomain
                     });
                     return src.bridge.openBridge(Object(dom.b)(metaFrameUrl, {
-                        version: "4.0.218"
+                        version: "4.0.219"
                     }), metaFrameDomain).then(function() {
                         return metaListener;
                     }).then(function(_ref) {
@@ -14207,57 +14308,57 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return device.a;
         });
-        __webpack_require__.d(__webpack_exports__, "A", function() {
+        __webpack_require__.d(__webpack_exports__, "B", function() {
             return device.b;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "E", function() {
+        __webpack_require__.d(__webpack_exports__, "F", function() {
             return device.d;
         });
-        __webpack_require__.d(__webpack_exports__, "B", function() {
+        __webpack_require__.d(__webpack_exports__, "C", function() {
             return device.c;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "I", function() {
+        __webpack_require__.d(__webpack_exports__, "J", function() {
             return device.h;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "K", function() {
+        __webpack_require__.d(__webpack_exports__, "L", function() {
             return device.i;
         });
-        __webpack_require__.d(__webpack_exports__, "G", function() {
+        __webpack_require__.d(__webpack_exports__, "H", function() {
             return device.e;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return device.f;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "H", function() {
+        __webpack_require__.d(__webpack_exports__, "I", function() {
             return device.g;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "_0", function() {
+        __webpack_require__.d(__webpack_exports__, "_1", function() {
             return device.j;
         });
-        __webpack_require__.d(__webpack_exports__, "J", function() {
+        __webpack_require__.d(__webpack_exports__, "K", function() {
             return util.g;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "M", function() {
+        __webpack_require__.d(__webpack_exports__, "N", function() {
             return util.j;
         });
-        __webpack_require__.d(__webpack_exports__, "N", function() {
+        __webpack_require__.d(__webpack_exports__, "O", function() {
             return util.l;
         });
-        __webpack_require__.d(__webpack_exports__, "P", function() {
+        __webpack_require__.d(__webpack_exports__, "Q", function() {
             return util.m;
         });
-        __webpack_require__.d(__webpack_exports__, "_1", function() {
+        __webpack_require__.d(__webpack_exports__, "_2", function() {
             return util.t;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
@@ -14265,19 +14366,19 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return util.h;
         });
-        __webpack_require__.d(__webpack_exports__, "W", function() {
+        __webpack_require__.d(__webpack_exports__, "X", function() {
             return util.q;
         });
-        __webpack_require__.d(__webpack_exports__, "g", function() {
+        __webpack_require__.d(__webpack_exports__, "h", function() {
             return util.c;
         });
         __webpack_require__.d(__webpack_exports__, "b", function() {
             return util.a;
         });
-        __webpack_require__.d(__webpack_exports__, "Y", function() {
+        __webpack_require__.d(__webpack_exports__, "Z", function() {
             return util.r;
         });
-        __webpack_require__.d(__webpack_exports__, "Z", function() {
+        __webpack_require__.d(__webpack_exports__, "_0", function() {
             return util.s;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
@@ -14285,17 +14386,17 @@
             return util.f;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "n", function() {
+        __webpack_require__.d(__webpack_exports__, "o", function() {
             return util.e;
         });
-        __webpack_require__.d(__webpack_exports__, "R", function() {
+        __webpack_require__.d(__webpack_exports__, "S", function() {
             return util.n;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "h", function() {
+        __webpack_require__.d(__webpack_exports__, "i", function() {
             return util.d;
         });
-        __webpack_require__.d(__webpack_exports__, "e", function() {
+        __webpack_require__.d(__webpack_exports__, "f", function() {
             return util.b;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
@@ -14319,74 +14420,74 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return util.p;
         });
-        __webpack_require__.d(__webpack_exports__, "z", function() {
+        __webpack_require__.d(__webpack_exports__, "A", function() {
             return initLogger;
         });
-        __webpack_require__.d(__webpack_exports__, "X", function() {
+        __webpack_require__.d(__webpack_exports__, "Y", function() {
             return setLogLevel;
         });
-        __webpack_require__.d(__webpack_exports__, "j", function() {
+        __webpack_require__.d(__webpack_exports__, "k", function() {
             return getBrowser;
         });
-        __webpack_require__.d(__webpack_exports__, "D", function() {
+        __webpack_require__.d(__webpack_exports__, "E", function() {
             return isEligible;
         });
-        __webpack_require__.d(__webpack_exports__, "d", function() {
+        __webpack_require__.d(__webpack_exports__, "e", function() {
             return checkRecognizedBrowser;
         });
-        __webpack_require__.d(__webpack_exports__, "c", function() {
+        __webpack_require__.d(__webpack_exports__, "d", function() {
             return checkForCommonErrors;
         });
-        __webpack_require__.d(__webpack_exports__, "f", function() {
+        __webpack_require__.d(__webpack_exports__, "g", function() {
             return dom.a;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "L", function() {
+        __webpack_require__.d(__webpack_exports__, "M", function() {
             return dom.j;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "o", function() {
+        __webpack_require__.d(__webpack_exports__, "p", function() {
             return dom.d;
         });
-        __webpack_require__.d(__webpack_exports__, "p", function() {
+        __webpack_require__.d(__webpack_exports__, "q", function() {
             return dom.e;
         });
-        __webpack_require__.d(__webpack_exports__, "O", function() {
+        __webpack_require__.d(__webpack_exports__, "P", function() {
             return dom.k;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "r", function() {
+        __webpack_require__.d(__webpack_exports__, "s", function() {
             return dom.g;
         });
-        __webpack_require__.d(__webpack_exports__, "_2", function() {
+        __webpack_require__.d(__webpack_exports__, "_3", function() {
             return dom.m;
         });
-        __webpack_require__.d(__webpack_exports__, "i", function() {
+        __webpack_require__.d(__webpack_exports__, "j", function() {
             return dom.b;
         });
-        __webpack_require__.d(__webpack_exports__, "T", function() {
+        __webpack_require__.d(__webpack_exports__, "U", function() {
             return dom.l;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "k", function() {
+        __webpack_require__.d(__webpack_exports__, "l", function() {
             return dom.c;
         });
-        __webpack_require__.d(__webpack_exports__, "C", function() {
+        __webpack_require__.d(__webpack_exports__, "D", function() {
             return dom.i;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "q", function() {
+        __webpack_require__.d(__webpack_exports__, "r", function() {
             return dom.f;
         });
-        __webpack_require__.d(__webpack_exports__, "t", function() {
+        __webpack_require__.d(__webpack_exports__, "u", function() {
             return dom.h;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "V", function() {
+        __webpack_require__.d(__webpack_exports__, "W", function() {
             return request;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -14394,11 +14495,14 @@
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "y", function() {
+        __webpack_require__.d(__webpack_exports__, "z", function() {
             return getThrottle;
         });
-        __webpack_require__.d(__webpack_exports__, "u", function() {
+        __webpack_require__.d(__webpack_exports__, "v", function() {
             return getReturnToken;
+        });
+        __webpack_require__.d(__webpack_exports__, "c", function() {
+            return buildFundingLogoThrottle;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return namespace.a;
@@ -14410,13 +14514,13 @@
             return session.e;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "x", function() {
+        __webpack_require__.d(__webpack_exports__, "y", function() {
             return session.d;
         });
-        __webpack_require__.d(__webpack_exports__, "w", function() {
+        __webpack_require__.d(__webpack_exports__, "x", function() {
             return session.c;
         });
-        __webpack_require__.d(__webpack_exports__, "l", function() {
+        __webpack_require__.d(__webpack_exports__, "m", function() {
             return session.a;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -14425,28 +14529,28 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return proxyMethod;
         });
-        __webpack_require__.d(__webpack_exports__, "Q", function() {
+        __webpack_require__.d(__webpack_exports__, "R", function() {
             return openMetaFrame;
         });
-        __webpack_require__.d(__webpack_exports__, "s", function() {
+        __webpack_require__.d(__webpack_exports__, "t", function() {
             return getRememberedFunding;
         });
-        __webpack_require__.d(__webpack_exports__, "U", function() {
+        __webpack_require__.d(__webpack_exports__, "V", function() {
             return rememberFunding;
         });
-        __webpack_require__.d(__webpack_exports__, "F", function() {
+        __webpack_require__.d(__webpack_exports__, "G", function() {
             return isFundingRemembered;
         });
-        __webpack_require__.d(__webpack_exports__, "S", function() {
+        __webpack_require__.d(__webpack_exports__, "T", function() {
             return precacheRememberedFunding;
         });
-        __webpack_require__.d(__webpack_exports__, "m", function() {
+        __webpack_require__.d(__webpack_exports__, "n", function() {
             return getCurrentScript;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return isPayPalObjects;
         });
-        __webpack_require__.d(__webpack_exports__, "v", function() {
+        __webpack_require__.d(__webpack_exports__, "w", function() {
             return getScriptVersion;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
@@ -14851,18 +14955,18 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         if (!Object(__WEBPACK_IMPORTED_MODULE_2__lib_util__.g)()) throw new Error("Do not integrate with versioned script url");
-        if (window.paypal && "4.0.218" === window.paypal.version) {
+        if (window.paypal && "4.0.219" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.218"
+                version: "4.0.219"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.218) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.219) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.218" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.219" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.218"
+                version: "4.0.219"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.218");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.219");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
@@ -15063,7 +15167,7 @@
                 d: "M 95.1 5.417 L 91.9 25.717 C 91.8 26.117 92.1 26.417 92.5 26.417 L 95.7 26.417 C 96.2 26.417 96.7 26.017 96.8 25.517 L 100 5.617 C 100.1 5.217 99.8 4.917 99.4 4.917 L 95.8 4.917 C 95.4 4.917 95.2 5.117 95.1 5.417 Z"
             }));
         }, _fundingLogos[constants.h.CREDIT] = function(_ref) {
-            var logoColor = _ref.logoColor, locale = _ref.locale;
+            var logoColor = _ref.logoColor, locale = _ref.locale, isFundingThrottleEnabled = _ref.isFundingThrottleEnabled;
             if (!CREDIT_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " credit logo available");
             var country = (locale || {}).country, primary = CREDIT_LOGO_COLORS[logoColor].primary;
             switch (country) {
@@ -15084,7 +15188,58 @@
                 }))));
 
               default:
-                return Object(jsx.b)("svg", {
+                return isFundingThrottleEnabled ? Object(jsx.b)("svg", {
+                    width: "482",
+                    height: "100",
+                    preserveAspectRatio: "xMinYMin meet",
+                    xmlns: "http://www.w3.org/2000/svg",
+                    viewBox: "0 0 53 11"
+                }, Object(jsx.b)("title", null, "checkout_bml_text"), Object(jsx.b)("g", {
+                    fill: "#003087",
+                    id: "Bill_Me_Later_orig",
+                    "data-name": "Bill Me Later_orig"
+                }, Object(jsx.b)("path", {
+                    fill: "#009cde",
+                    class: "cls-47",
+                    d: "M21.15,6.17C21.09,5,21,3.58,21,2.54h0c-.29,1-.64,2-1.06,3.2L18.44,9.81h-.82l-1.36-4c-.4-1.19-.74-2.27-1-3.27h0c0,1-.09,2.46-.16,3.72l-.22,3.61h-1l.59-8.41h1.39l1.44,4.07c.35,1,.64,2,.85,2.83h0c.21-.85.51-1.77.89-2.83l1.5-4.07H21.9l.52,8.41H21.36Z"
+                }), Object(jsx.b)("path", {
+                    fill: "#009cde",
+                    class: "cls-47",
+                    d: "M24.11,7a1.94,1.94,0,0,0,2.07,2.1,4,4,0,0,0,1.67-.31l.19.79A4.85,4.85,0,0,1,26,10a2.82,2.82,0,0,1-3-3.06c0-1.82,1.07-3.26,2.83-3.26a2.56,2.56,0,0,1,2.5,2.85,4.17,4.17,0,0,1,0,.51Zm3.22-.79a1.56,1.56,0,0,0-1.52-1.78,1.82,1.82,0,0,0-1.69,1.78Z"
+                }), Object(jsx.b)("path", {
+                    class: "cls-48",
+                    d: "M1,1.56a10.52,10.52,0,0,1,2-.17A3.48,3.48,0,0,1,5.29,2,1.77,1.77,0,0,1,6,3.48,2,2,0,0,1,4.57,5.33v0A2.17,2.17,0,0,1,6.3,7.47a2.27,2.27,0,0,1-.71,1.69,4.23,4.23,0,0,1-2.91.79A12.68,12.68,0,0,1,1,9.84ZM2.09,5h1c1.15,0,1.82-.6,1.82-1.41,0-1-.75-1.37-1.85-1.37a4.68,4.68,0,0,0-1,.07Zm0,4a5.83,5.83,0,0,0,.91,0c1.12,0,2.16-.41,2.16-1.64S4.17,5.83,3,5.83h-.9Z"
+                }), Object(jsx.b)("path", {
+                    class: "cls-48",
+                    d: "M8.34,2.12A.68.68,0,0,1,7,2.12a.67.67,0,0,1,.69-.69.65.65,0,0,1,.67.69M7.12,3.82h1.1v6H7.12Z"
+                }), Object(jsx.b)("rect", {
+                    class: "cls-48",
+                    x: "9.39",
+                    y: "1",
+                    width: "1.1",
+                    height: "8.86"
+                }), Object(jsx.b)("rect", {
+                    class: "cls-48",
+                    x: "11.68",
+                    y: "1",
+                    width: "1.1",
+                    height: "8.86"
+                }), Object(jsx.b)("polygon", {
+                    class: "cls-48",
+                    points: "29.24 1.45 30.33 1.45 30.33 8.95 33.92 8.95 33.92 9.86 29.24 9.86 29.24 1.45"
+                }), Object(jsx.b)("path", {
+                    class: "cls-48",
+                    d: "M38.9,8.41A8.53,8.53,0,0,0,39,9.86H38l-.09-.76h0A2.25,2.25,0,0,1,36,10a1.72,1.72,0,0,1-1.85-1.74C34.18,6.8,35.48,6,37.81,6V5.89a1.25,1.25,0,0,0-1.37-1.4,3,3,0,0,0-1.57.45l-.25-.72a3.75,3.75,0,0,1,2-.54c1.85,0,2.3,1.26,2.3,2.47ZM37.84,6.78c-1.2,0-2.56.19-2.56,1.36a1,1,0,0,0,1,1,1.5,1.5,0,0,0,1.46-1,1.15,1.15,0,0,0,.06-.35Z"
+                }), Object(jsx.b)("path", {
+                    class: "cls-48",
+                    d: "M41.27,2.37V3.82h1.57v.84H41.27V7.92c0,.75.21,1.17.82,1.17A2,2,0,0,0,42.73,9l.05.82a2.65,2.65,0,0,1-1,.16,1.53,1.53,0,0,1-1.19-.47A2.24,2.24,0,0,1,40.2,8V4.66h-.94V3.82h.94V2.71Z"
+                }), Object(jsx.b)("path", {
+                    class: "cls-48",
+                    d: "M43.93,7A1.94,1.94,0,0,0,46,9.14a4,4,0,0,0,1.67-.31l.19.79a4.86,4.86,0,0,1-2,.39,2.82,2.82,0,0,1-3-3.06c0-1.82,1.07-3.26,2.83-3.26a2.56,2.56,0,0,1,2.5,2.85,4.16,4.16,0,0,1,0,.51Zm3.22-.79a1.56,1.56,0,0,0-1.52-1.78,1.82,1.82,0,0,0-1.69,1.78Z"
+                }), Object(jsx.b)("path", {
+                    class: "cls-48",
+                    d: "M49,5.71c0-.71,0-1.32,0-1.88h1l0,1.19h0a1.81,1.81,0,0,1,1.67-1.32,1.18,1.18,0,0,1,.31,0v1a1.63,1.63,0,0,0-.37,0,1.54,1.54,0,0,0-1.47,1.41,3.08,3.08,0,0,0-.05.51V9.86H49Z"
+                }))) : Object(jsx.b)("svg", {
                     width: "100",
                     height: "32",
                     viewBox: "0 0 95 32",
@@ -15504,4 +15659,4 @@
         });
     }
 }));
-//# sourceMappingURL=checkout.4.0.218.js.map
+//# sourceMappingURL=checkout.4.0.219.js.map

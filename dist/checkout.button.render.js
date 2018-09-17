@@ -1353,7 +1353,7 @@
         }
         var util = __webpack_require__("./src/lib/util.js");
         var normalizeProps = Object(util.b)(function(props) {
-            var defs = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit;
+            var defs = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit, isFundingThrottleEnabled = props.isFundingThrottleEnabled;
             locale = locale ? function(locale) {
                 var _locale$split = locale.split("_"), lang = _locale$split[0];
                 return {
@@ -1437,7 +1437,8 @@
                     funding: funding,
                     locale: locale
                 }),
-                installmentperiod: installmentperiod
+                installmentperiod: installmentperiod,
+                isFundingThrottleEnabled: isFundingThrottleEnabled
             };
         });
         function _classCallCheck(instance, Constructor) {
@@ -1647,7 +1648,7 @@
                 d: "M 95.1 5.417 L 91.9 25.717 C 91.8 26.117 92.1 26.417 92.5 26.417 L 95.7 26.417 C 96.2 26.417 96.7 26.017 96.8 25.517 L 100 5.617 C 100.1 5.217 99.8 4.917 99.4 4.917 L 95.8 4.917 C 95.4 4.917 95.2 5.117 95.1 5.417 Z"
             }));
         }, _fundingLogos[constants.h.CREDIT] = function(_ref) {
-            var logoColor = _ref.logoColor, locale = _ref.locale;
+            var logoColor = _ref.logoColor, locale = _ref.locale, isFundingThrottleEnabled = _ref.isFundingThrottleEnabled;
             if (!CREDIT_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " credit logo available");
             var country = (locale || {}).country, primary = CREDIT_LOGO_COLORS[logoColor].primary;
             switch (country) {
@@ -1668,7 +1669,58 @@
                 }))));
 
               default:
-                return jsxToHTML("svg", {
+                return isFundingThrottleEnabled ? jsxToHTML("svg", {
+                    width: "482",
+                    height: "100",
+                    preserveAspectRatio: "xMinYMin meet",
+                    xmlns: "http://www.w3.org/2000/svg",
+                    viewBox: "0 0 53 11"
+                }, jsxToHTML("title", null, "checkout_bml_text"), jsxToHTML("g", {
+                    fill: "#003087",
+                    id: "Bill_Me_Later_orig",
+                    "data-name": "Bill Me Later_orig"
+                }, jsxToHTML("path", {
+                    fill: "#009cde",
+                    class: "cls-47",
+                    d: "M21.15,6.17C21.09,5,21,3.58,21,2.54h0c-.29,1-.64,2-1.06,3.2L18.44,9.81h-.82l-1.36-4c-.4-1.19-.74-2.27-1-3.27h0c0,1-.09,2.46-.16,3.72l-.22,3.61h-1l.59-8.41h1.39l1.44,4.07c.35,1,.64,2,.85,2.83h0c.21-.85.51-1.77.89-2.83l1.5-4.07H21.9l.52,8.41H21.36Z"
+                }), jsxToHTML("path", {
+                    fill: "#009cde",
+                    class: "cls-47",
+                    d: "M24.11,7a1.94,1.94,0,0,0,2.07,2.1,4,4,0,0,0,1.67-.31l.19.79A4.85,4.85,0,0,1,26,10a2.82,2.82,0,0,1-3-3.06c0-1.82,1.07-3.26,2.83-3.26a2.56,2.56,0,0,1,2.5,2.85,4.17,4.17,0,0,1,0,.51Zm3.22-.79a1.56,1.56,0,0,0-1.52-1.78,1.82,1.82,0,0,0-1.69,1.78Z"
+                }), jsxToHTML("path", {
+                    class: "cls-48",
+                    d: "M1,1.56a10.52,10.52,0,0,1,2-.17A3.48,3.48,0,0,1,5.29,2,1.77,1.77,0,0,1,6,3.48,2,2,0,0,1,4.57,5.33v0A2.17,2.17,0,0,1,6.3,7.47a2.27,2.27,0,0,1-.71,1.69,4.23,4.23,0,0,1-2.91.79A12.68,12.68,0,0,1,1,9.84ZM2.09,5h1c1.15,0,1.82-.6,1.82-1.41,0-1-.75-1.37-1.85-1.37a4.68,4.68,0,0,0-1,.07Zm0,4a5.83,5.83,0,0,0,.91,0c1.12,0,2.16-.41,2.16-1.64S4.17,5.83,3,5.83h-.9Z"
+                }), jsxToHTML("path", {
+                    class: "cls-48",
+                    d: "M8.34,2.12A.68.68,0,0,1,7,2.12a.67.67,0,0,1,.69-.69.65.65,0,0,1,.67.69M7.12,3.82h1.1v6H7.12Z"
+                }), jsxToHTML("rect", {
+                    class: "cls-48",
+                    x: "9.39",
+                    y: "1",
+                    width: "1.1",
+                    height: "8.86"
+                }), jsxToHTML("rect", {
+                    class: "cls-48",
+                    x: "11.68",
+                    y: "1",
+                    width: "1.1",
+                    height: "8.86"
+                }), jsxToHTML("polygon", {
+                    class: "cls-48",
+                    points: "29.24 1.45 30.33 1.45 30.33 8.95 33.92 8.95 33.92 9.86 29.24 9.86 29.24 1.45"
+                }), jsxToHTML("path", {
+                    class: "cls-48",
+                    d: "M38.9,8.41A8.53,8.53,0,0,0,39,9.86H38l-.09-.76h0A2.25,2.25,0,0,1,36,10a1.72,1.72,0,0,1-1.85-1.74C34.18,6.8,35.48,6,37.81,6V5.89a1.25,1.25,0,0,0-1.37-1.4,3,3,0,0,0-1.57.45l-.25-.72a3.75,3.75,0,0,1,2-.54c1.85,0,2.3,1.26,2.3,2.47ZM37.84,6.78c-1.2,0-2.56.19-2.56,1.36a1,1,0,0,0,1,1,1.5,1.5,0,0,0,1.46-1,1.15,1.15,0,0,0,.06-.35Z"
+                }), jsxToHTML("path", {
+                    class: "cls-48",
+                    d: "M41.27,2.37V3.82h1.57v.84H41.27V7.92c0,.75.21,1.17.82,1.17A2,2,0,0,0,42.73,9l.05.82a2.65,2.65,0,0,1-1,.16,1.53,1.53,0,0,1-1.19-.47A2.24,2.24,0,0,1,40.2,8V4.66h-.94V3.82h.94V2.71Z"
+                }), jsxToHTML("path", {
+                    class: "cls-48",
+                    d: "M43.93,7A1.94,1.94,0,0,0,46,9.14a4,4,0,0,0,1.67-.31l.19.79a4.86,4.86,0,0,1-2,.39,2.82,2.82,0,0,1-3-3.06c0-1.82,1.07-3.26,2.83-3.26a2.56,2.56,0,0,1,2.5,2.85,4.16,4.16,0,0,1,0,.51Zm3.22-.79a1.56,1.56,0,0,0-1.52-1.78,1.82,1.82,0,0,0-1.69,1.78Z"
+                }), jsxToHTML("path", {
+                    class: "cls-48",
+                    d: "M49,5.71c0-.71,0-1.32,0-1.88h1l0,1.19h0a1.81,1.81,0,0,1,1.67-1.32,1.18,1.18,0,0,1,.31,0v1a1.63,1.63,0,0,0-.37,0,1.54,1.54,0,0,0-1.47,1.41,3.08,3.08,0,0,0-.05.51V9.86H49Z"
+                }))) : jsxToHTML("svg", {
                     width: "100",
                     height: "32",
                     viewBox: "0 0 95 32",
@@ -2133,6 +2185,7 @@
             validateButtonStyle(style, props);
         }
         var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n        cursor: default;\n    }\n", CLASS = {
+            SHOULD_FOCUS: "paypal-should-focus",
             CONTAINER: "paypal-button-container",
             BUTTON: "paypal-button",
             LABEL: "paypal-button-label",
@@ -2150,7 +2203,7 @@
             LOGO: "paypal-button-logo",
             CARD: "paypal-button-card",
             SEPARATOR: "paypal-separator"
-        }, buttonStyle = "\n\n    ." + CLASS.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + CLASS.BUTTON + ":not(." + CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + CLASS.CONTAINER + "." + CLASS.ENV + "-" + constants.s.TEST + " ." + CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.GOLD + ":hover,\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.TRANSPARENT + ":hover {\n        box-shadow: none;\n    }\n\n    ." + CLASS.CARD + ", ." + CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n        outline: auto 2px Highlight;\n        outline: auto 5px -webkit-focus-ring-color;\n        outline-offset: -4px;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.TRANSPARENT + ":focus {\n        box-shadow: none;\n    }\n\n    ." + CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.LOGO + ",\n    ." + CLASS.BUTTON + " ." + CLASS.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.TEXT + " {\n        visibility: hidden;\n    }\n\n    .powered-by-paypal > ." + CLASS.TEXT + " {\n        vertical-align: top;\n        line-height: 18px;\n    } \n\n    .powered-by-paypal > ." + CLASS.LOGO + " {\n        height: 16px;\n        min-height: 16px;\n    } \n\n    ." + CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.BLACK + " ." + CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n", layoutStyle = "\n\n    ." + CLASS.CONTAINER + "." + CLASS.LAYOUT + "-" + constants.g.VERTICAL + " ." + CLASS.TAGLINE + " {\n        display: none;\n    }\n", brandingStyle = "\n\n    ." + CLASS.BUTTON + "." + CLASS.BRANDING + "-" + constants.d.UNBRANDED + "  {\n        min-width: 60%;\n        width: auto;\n        font-weight: 900;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.BRANDING + "-" + constants.d.UNBRANDED + " ." + CLASS.LOGO + " {\n        display: none;\n    }\n", labelStyle = "\n\n    ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CARD + " {\n        border-radius: 0 !important;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.TEXT + " {\n        display: none !important;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n", DUAL_BUTTON_MIN_RATIO = 2.8;
+        }, buttonStyle = "\n\n    ." + CLASS.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + CLASS.BUTTON + ":not(." + CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + CLASS.CONTAINER + "." + CLASS.ENV + "-" + constants.s.TEST + " ." + CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.GOLD + ":hover,\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + CLASS.CARD + ", ." + CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + CLASS.BUTTON + ":focus, ." + CLASS.CARD + ":focus {\n        outline: none;\n    }\n\n    ." + CLASS.SHOULD_FOCUS + " ." + CLASS.BUTTON + ":focus,\n    ." + CLASS.SHOULD_FOCUS + " ." + CLASS.CARD + ":focus {\n        outline: solid 2px Highlight;\n        outline: auto 5px -webkit-focus-ring-color;\n        outline-offset: -3px;\n    }\n\n    ." + CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.TRANSPARENT + ":focus {\n        box-shadow: none;\n        outline: none;\n    }\n\n    ." + CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.LOGO + ",\n    ." + CLASS.BUTTON + " ." + CLASS.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.TEXT + " {\n        visibility: hidden;\n    }\n\n    .powered-by-paypal > ." + CLASS.TEXT + " {\n        vertical-align: top;\n        line-height: 18px;\n    } \n\n    .powered-by-paypal > ." + CLASS.LOGO + " {\n        height: 16px;\n        min-height: 16px;\n    } \n\n    ." + CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.BLACK + " ." + CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n", layoutStyle = "\n\n    ." + CLASS.CONTAINER + "." + CLASS.LAYOUT + "-" + constants.g.VERTICAL + " ." + CLASS.TAGLINE + " {\n        display: none;\n    }\n", brandingStyle = "\n\n    ." + CLASS.BUTTON + "." + CLASS.BRANDING + "-" + constants.d.UNBRANDED + "  {\n        min-width: 60%;\n        width: auto;\n        font-weight: 900;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.BRANDING + "-" + constants.d.UNBRANDED + " ." + CLASS.LOGO + " {\n        display: none;\n    }\n", labelStyle = "\n\n    ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CARD + " {\n        border-radius: 0 !important;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.TEXT + " {\n        display: none !important;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n", DUAL_BUTTON_MIN_RATIO = 2.8;
         var buttonColorStyle = "\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.GOLD + " {\n        background: #ffc439;\n        color: #111;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.BLUE + " {\n        background: #009cde;\n        color: #fff;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.SILVER + " {\n        background: #eee;\n        color: #111;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.BLACK + " {\n        background: #2C2E2F;\n        color: #fff;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.DARKBLUE + " {\n        background: #003087;\n        color: #fff;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        background: transparent;\n        color: #111;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.WHITE + " {\n        background: #fff;\n        color: #2C2E2F;\n        border: 1px solid #2C2E2F;\n    }\n";
         function componentStyle(_ref) {
             var height = _ref.height, cardNumber = _ref.cardNumber;
@@ -2233,6 +2286,23 @@
                     }
                 }
                 toggleOptionals();
+                !function() {
+                    var buttonsContainer = document.getElementsByClassName("{ CLASS.CONTAINER }")[0], tabKeyCode = 9;
+                    function handleMouseDownOnce() {
+                        buttonsContainer.classList.remove("{ CLASS.SHOULD_FOCUS }");
+                        window.removeEventListener("mousedown", handleMouseDownOnce);
+                        window.addEventListener("keydown", handleFirstTab);
+                    }
+                    function handleFirstTab(e) {
+                        if (e.keyCode === tabKeyCode) {
+                            buttonsContainer.classList.add("{ CLASS.SHOULD_FOCUS }");
+                            window.removeEventListener("keydown", handleFirstTab);
+                            window.addEventListener("mousedown", handleMouseDownOnce);
+                        }
+                    }
+                    buttonsContainer.classList.add("{ CLASS.SHOULD_FOCUS }");
+                    window.addEventListener("keydown", handleFirstTab);
+                }();
                 !function(elements, method) {
                     if (displayedElementsHaveDimensions(elements)) method(); else var interval = setInterval(function() {
                         if (displayedElementsHaveDimensions(elements)) {
@@ -2265,7 +2335,7 @@
                 1 !== style.maxbuttons || !1 !== style.tagline || "responsive" !== style.size || "horizontal" !== style.layout || style.height || (style.height = 44);
             }
             validateButtonProps(props);
-            var _normalizeProps = normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, buttonNodes = function(_ref4) {
+            var _normalizeProps = normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, isFundingThrottleEnabled = _normalizeProps.isFundingThrottleEnabled, buttonNodes = function(_ref4) {
                 var label = _ref4.label, color = _ref4.color, sources = _ref4.sources, multiple = _ref4.multiple, layout = _ref4.layout;
                 return sources.map(function(source, i) {
                     var buttonLabel = determineLabel({
@@ -2288,7 +2358,7 @@
                 layout: layout
             }).map(function(button, i) {
                 return function(_ref11) {
-                    var _ref12, _ref13, _ref14, size = _ref11.size, label = _ref11.label, color = _ref11.color, locale = _ref11.locale, branding = _ref11.branding, multiple = _ref11.multiple, layout = _ref11.layout, shape = _ref11.shape, source = _ref11.source, funding = _ref11.funding, i = _ref11.i, env = _ref11.env, cards = _ref11.cards, installmentperiod = _ref11.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = determineLabel({
+                    var _ref12, _ref13, _ref14, size = _ref11.size, label = _ref11.label, color = _ref11.color, locale = _ref11.locale, branding = _ref11.branding, multiple = _ref11.multiple, layout = _ref11.layout, shape = _ref11.shape, source = _ref11.source, funding = _ref11.funding, i = _ref11.i, env = _ref11.env, cards = _ref11.cards, installmentperiod = _ref11.installmentperiod, isFundingThrottleEnabled = _ref11.isFundingThrottleEnabled, logoColor = getButtonConfig(label, "logoColors")[color], contentText = determineLabel({
                         label: label,
                         source: source,
                         multiple: multiple,
@@ -2308,8 +2378,10 @@
                         cards: cards,
                         dynamicContent: dynamicContent,
                         layout: layout,
-                        size: size
+                        size: size,
+                        isFundingThrottleEnabled: isFundingThrottleEnabled
                     });
+                    var hasTabIndex = -1 === [ constants.t.CARD ].indexOf(source);
                     return jsxToHTML("div", _extends({}, ((_ref12 = {})[constants.c.LAYOUT] = layout || "", 
                     _ref12), ((_ref13 = {})[constants.c.SIZE] = size || "", _ref13), ((_ref14 = {})[constants.c.FUNDING_SOURCE] = source, 
                     _ref14[constants.c.BUTTON] = !0, _ref14), {
@@ -2321,15 +2393,17 @@
                             env: env
                         }) + " " + function(_ref2) {
                             var label = _ref2.label, color = _ref2.color, logoColor = _ref2.logoColor;
+                            _ref2.isFundingThrottleEnabled && label === constants.f.CREDIT && (color = constants.e.SILVER);
                             return [ CLASS.LABEL + "-" + label, CLASS.COLOR + "-" + color, CLASS.LOGO_COLOR + "-" + logoColor ].join(" ");
                         }({
                             label: label,
                             color: color,
-                            logoColor: logoColor
+                            logoColor: logoColor,
+                            isFundingThrottleEnabled: isFundingThrottleEnabled
                         }),
                         role: "button",
                         "aria-label": source,
-                        tabindex: "0"
+                        tabindex: hasTabIndex && 0
                     }), contentText);
                 }({
                     label: button.label,
@@ -2345,7 +2419,8 @@
                     shape: shape,
                     cards: cards,
                     installmentperiod: installmentperiod,
-                    size: size
+                    size: size,
+                    isFundingThrottleEnabled: isFundingThrottleEnabled
                 });
             }), taglineNode = function(_ref15) {
                 var label = _ref15.label, tagline = _ref15.tagline, color = _ref15.color, locale = _ref15.locale, multiple = _ref15.multiple, env = _ref15.env, cards = _ref15.cards;
@@ -2402,8 +2477,9 @@
                 })) + ")();"
             })), labelPowerByPayPal = cards.length > 0 ? function(props) {
                 if (!props) return null;
-                var layout = props.layout, size = props.size;
+                var layout = props.layout, size = props.size, _props$sources = props.sources, sources = void 0 === _props$sources ? [] : _props$sources;
                 if (layout !== constants.g.VERTICAL || size !== constants.l.MEDIUM && size !== constants.l.LARGE && size !== constants.l.HUGE) return null;
+                if (-1 === sources.indexOf(constants.t.CARD)) return null;
                 return jsxToHTML("div", {
                     class: "powered-by-paypal",
                     style: "\n                text-align: center;\n                margin: 10px auto;\n                height: 14px;\n                font-family: PayPal-Sans, HelveticaNeue, sans-serif;\n                font-size: 11px;\n                font-weight: normal;\n                font-style: italic;\n                font-stretch: normal;\n                color: #7b8388;\n                position: relative;\n                margin-right: 3px;\n                bottom: 3px;\n            "
@@ -2412,7 +2488,7 @@
                 })));
             }(normalizeProps(props)) : null;
             var script;
-            return jsxToHTML("div", _extends({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.218", 
+            return jsxToHTML("div", _extends({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.219", 
             _ref18), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -2432,7 +2508,7 @@
         };
         function getCommonButtonClasses(_ref) {
             var layout = _ref.layout, shape = _ref.shape, branding = _ref.branding, multiple = _ref.multiple, env = _ref.env;
-            return [ CLASS.LAYOUT + "-" + layout, CLASS.SHAPE + "-" + shape, CLASS.BRANDING + "-" + (branding ? constants.d.BRANDED : constants.d.UNBRANDED), CLASS.NUMBER + "-" + (multiple ? constants.j.MULTIPLE : constants.j.SINGLE), CLASS.ENV + "-" + env ].join(" ");
+            return [ CLASS.LAYOUT + "-" + layout, CLASS.SHAPE + "-" + shape, CLASS.BRANDING + "-" + (branding ? constants.d.BRANDED : constants.d.UNBRANDED), CLASS.NUMBER + "-" + (multiple ? constants.j.MULTIPLE : constants.j.SINGLE), CLASS.ENV + "-" + env, "" + CLASS.SHOULD_FOCUS ].join(" ");
         }
         function determineLabel(_ref3) {
             var label = _ref3.label, source = _ref3.source, multiple = _ref3.multiple, layout = _ref3.layout, defaultLabel = FUNDING_TO_DEFAULT_LABEL[source];
@@ -2442,18 +2518,20 @@
             var cards = _ref5.cards, button = _ref5.button, layout = _ref5.layout, size = _ref5.size;
             return cards.map(function(name) {
                 var _ref6, _ref7, _ref8, logo = cardLogos[name];
-                return jsxToHTML("img", _extends({}, ((_ref6 = {})[constants.c.LAYOUT] = layout || "", 
+                return jsxToHTML("div", {
+                    class: (button ? CLASS.BUTTON : "") + " " + CLASS.CARD + " " + CLASS.CARD + "-" + name,
+                    tabindex: "0"
+                }, jsxToHTML("img", _extends({}, ((_ref6 = {})[constants.c.LAYOUT] = layout || "", 
                 _ref6), ((_ref7 = {})[constants.c.SIZE] = size || "", _ref7), ((_ref8 = {})[constants.c.BUTTON] = button || !1, 
                 _ref8[constants.c.FUNDING_SOURCE] = "" + constants.t.CARD, _ref8[constants.c.CARD] = "" + name, 
                 _ref8), {
-                    class: (button ? CLASS.BUTTON : "") + " " + CLASS.CARD + " " + CLASS.CARD + "-" + name,
                     src: "data:image/svg+xml;base64," + Object(base64.btoa)(logo),
                     alt: name
-                }));
+                })));
             });
         }
         function renderContent(text, _ref10) {
-            var template, renderers, nodes, label = _ref10.label, locale = _ref10.locale, color = _ref10.color, branding = _ref10.branding, logoColor = _ref10.logoColor, funding = _ref10.funding, env = _ref10.env, _cards = _ref10.cards, dynamicContent = _ref10.dynamicContent, layout = _ref10.layout, size = _ref10.size, _content = function(locale) {
+            var template, renderers, nodes, label = _ref10.label, locale = _ref10.locale, color = _ref10.color, branding = _ref10.branding, logoColor = _ref10.logoColor, funding = _ref10.funding, env = _ref10.env, _cards = _ref10.cards, dynamicContent = _ref10.dynamicContent, layout = _ref10.layout, size = _ref10.size, isFundingThrottleEnabled = _ref10.isFundingThrottleEnabled, _content = function(locale) {
                 var country = locale.country, lang = locale.lang;
                 return componentContent[country][lang];
             }(locale);
@@ -2465,7 +2543,14 @@
                 },
                 logo: function(name) {
                     if (branding) {
-                        if (!logoColor) throw new Error("Can not determine logo without logo color");
+                        if (!logoColor && !isFundingThrottleEnabled) throw new Error("Can not determine logo without logo color");
+                        if (isFundingThrottleEnabled && layout !== constants.g.VERTICAL) {
+                            if (label === constants.f.CREDIT && (name === constants.h.PAYPAL || name === constants.h.PP)) return;
+                            if (name === constants.h.CREDIT) {
+                                color = constants.e.SILVER;
+                                logoColor = constants.e.BLUE;
+                            }
+                        }
                         var logo = "function" == typeof fundingLogos[name] ? fundingLogos[name]({
                             label: label,
                             locale: locale,
@@ -2474,7 +2559,8 @@
                             logoColor: logoColor,
                             funding: funding,
                             env: env,
-                            cards: _cards
+                            cards: _cards,
+                            isFundingThrottleEnabled: isFundingThrottleEnabled
                         }) : fundingLogos[name][logoColor] || fundingLogos[name][constants.i.ANY];
                         return jsxToHTML("img", {
                             class: CLASS.LOGO + " " + CLASS.LOGO + "-" + name + " " + CLASS.LOGO + "-" + color,
@@ -2502,7 +2588,8 @@
                         logoColor: logoColor,
                         funding: funding,
                         env: env,
-                        cards: _cards
+                        cards: _cards,
+                        isFundingThrottleEnabled: isFundingThrottleEnabled
                     });
                 },
                 cards: function() {
@@ -2541,7 +2628,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.218",
+            version: "4.0.219",
             cors: !0,
             env: constants.s.PRODUCTION,
             state: "checkoutjs",
@@ -2698,9 +2785,25 @@
                 },
                 "qvc.com": {
                     disable_venmo: !0
+                },
+                "stelladot.com": {
+                    disable_venmo: !0
+                },
+                "keepcollective.com": {
+                    disable_venmo: !0
+                },
+                "everskin.com": {
+                    disable_venmo: !0
+                },
+                "zulily.com": {
+                    disable_venmo: !0
                 }
             },
             creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
+            venmoTestBlacklist: [ "slicelife.com" ],
+            bmlCreditTest: {
+                domains: [ "fashionsandthings.com", "medicinal-herb-store.commercehq.com", "medicinalherbstore.com", "yuengling.com", "store14454605.ecwid.com", "moonpod.co", "wbbarber.com", "gadgetblu.com", "gadgetblu.com", "gadgetblu.commercehq.com", "taffytown.com", "elderwoodacademy.com", "twistedroad.com", "personalaircooler.com", "billsienkiewiczart.com", "harmagh.com", "astrograph.com", "astrograph.com", "vktrygear.com", "vktrygear.com", "shalomhealthservices.com", "longhairprettynails.com", "thundrbro.com", "yiiree.com", "yiiree.com", "daltechforce.com", "in.xero.com", "30dollargunbelt.com", "theteachertote.com", "blanktag.co", "jlaruecosmetics.com", "esther-williams.com", "ginalli.com", "orientwatchusa.com", "tbichips.com", "trendjungle.store", "freerangeamerican.us", "simpleandblush.com", "thetrendyvibe.com", "wobies.com", "unknownunicorn.com", "postmygaragesale.com", "gsalr.com", "yardsalesearch.com", "yardsales.net", "gsalr.ca", "garagesalefinder.com", "garagesalestracker.com", "shoptheladiesedge.com", "studyacer.com", "wodndone.com", "cabking.com", "tumble-bee.com", "inlandcraft.com", "hitechdiamond.com", "barcharts.com", "shopsecurelynow.com", "xinnora.commercehq.com", "cosmetictattoosupply.com", "fazeclan.com", "mamabearlegalforms.com", "mamabearlegalforms.com", "ec2-18-191-156-187.us-east-2.compute.amazonaws.com", "summit-hydraulics.com", "full-time-purpose.mykajabi.com", "nopestz.com", "lifehacksco.com", "app.catholicsingles.com", "paulamaxjewelry.com", "sadiesstickers.com", "boomkool.com", "oy-l.com", "m.musely.com", "missamericamag.com", "healthtestingcenters.com", "grab.getcargo.today", "app.getcargo.today", "longlosttees.com", "premiertrendsco.com", "photoshopcafe.com", "dragonhoardyarnco.com", "nickschips.com", "supplyhub.com", "supplyhub.com", "roomify.com", "iq-tester.org", "aa3035c6.ngrok.io", "qlive.divyamherbalcare.com", "iq-testing.me", "iq-tester.org", "60e9fcb8.ngrok.io", "9abde3c3.ngrok.io", "equinat-usa.com", "bellaellaboutique.com", "szul.com", "goodsvine.com", "whiplashdeals.com", "dino-deals.com", "mikimike.com", "geninterlock.com", "nostalgiastyles.com", "thevaultbysacha.com", "theshoptucson.com", "wristbandbros.com", "mike.outlinedepot.com", "outlinedepot.com", "outlinedepot.com", "rmadefense.com", "colorclub.com", "topicaledge.com", "fitnessqueen.co", "vivacoast.co", "thriveisland.co", "vitalityscience.com", "rawpawspetfood.com", "bark.us", "inglenookfibers.com", "psychicsource.com", "illusionsystems.com", "direct.darkhorse.com", "sparksunny.com", "cratetrendy.com", "snobbculture.com", "passionnobby.com", "passionnobby.com", "purehempshop.com", "clipdraw.com", "firevapor.com", "dev.parklanejewelry.com", "parklanejewelry.com", "lucylubaby.com", "motoskiveez.com", "suttonsboutique.com", "dealsaverstore.com", "midwestwheelandtire.com", "relationshiphero.com", "gentlemenhood.com", "modrnpad.com", "puertoricofactory.com", "recordsnv.com", "chicagocopshop.com", "spingo.com", "thebohojane.com", "crazycoolcustomtees.com", "hoodedwarrior.commercehq.com", "hoodedwarrior.com", "death-saves.com", "posterprintshop.com", "gabrielcosmeticsinc.com", "mountainamericajerky.com", "theskirtsociety.com", "austinaquafarms.com", "diedinhouse.com", "lilipubsorders.com", "rcegs.qnryj.servertrust.com", "k12schoolsupplies.net", "houstonhotels.org", "divinebazaar.deals", "thedivinebazaar.com", "cloutcar.tel", "superplastic.co", "janky.backerkit.com", "indianapolis.marketwagon.com", "fortwayne.marketwagon.com", "michiana.marketwagon.com", "evansville.marketwagon.com", "lovevibescrystals.com", "aluminyze.pro", "aluminyze.com", "abdlcompany.com", "ddlgboutique.com", "abdltoys.com", "inktale.com", "nationalhighwaysafetyadministration.com", "propellerdepot.com", "admin.billoreilly.com", "billoreilly.com", "2bsilent.mykajabi.com", "database.castingfrontier.com", "fishandcountry.com", "register.realestatewealthexpo.com", "shoplabeye.com", "lagoldleafus.com", "oldmercs.com", "codynolove.com", "loveonestore.com", "megtronix.com", "computermallshop.com", "gallerr.com", "squishiecats.com", "woopwoo.com", "socksery.com", "ossom.co", "chibi-kingdom.com", "oddlyhomey.com", "es.postermywall.com", "fr.postermywall.com", "pt.postermywall.com", "de.postermywall.com", "nl.postermywall.com", "postermywall.com", "it.postermywall.com", "edashdeals.com", "edashdeals.com", "edashdeals.commercehq.com", "kensingtonproducts.com", "spartanutrition.com", "biovape.co", "unicornclub.us", "livebetterwith.com", "homedna.com", "lightsplanneraction.co", "stickandpoketattookit.com", "pepperhead.com", "stage.crazyhotseeds.com", "ca.bathmatedirect.com", "fi.bathmatedirect.com", "au.bathmatedirect.com", "bathmatedirect.com", "eu.bathmatedirect.com", "nl.bathmatedirect.com", "il.bathmatedirect.com", "int.bathmatedirect.com", "bathmatedirect.com", "is.bathmatedirect.com", "sandmbikes.com", "fitbikeco.com", "magician.org", "skinnymechocolate.com", "elimidrol.com", "fender.com", "israelbiblecenter.com", "cookinpellets.com", "jbsperformance.com", "beverly21.com", "lemonsareblue.com", "cessere.com", "getchoosy.com", "widgetwingman.com", "snottytots.com", "app.willing.com", "theprettyhotmess.com", "egg-baby.com", "viral-click.com", "lizpearls.com", "pupnpaws.com", "tagusup.com", "m.pupnpaws.com", "hashtagme.conversionlab.online", "orlandobrewing.com", "thinksummer.shop", "libmaneducation.com", "mypetprints.co", "leftcoastvibesco.com", "immitranslate.com", "thesocceremporium.com", "giantloopmoto.com", "5oclocksomewherestore.com", "powertoolreplacementparts.com", "thelashprofessional.com", "flashstealsonline.com", "countrykitchensa.com", "prepagent.com", "shineon.com", "bravabuona.com", "bravabuona.com", "draftanalyzer.com", "draftanalyzer.com", "flagstoreusa.com", "youthfootballonline.com", "astromart.com", "astromart.com", "campchesterfield.net", "underdoggames.com", "walletsguy.com", "walletsguy.com", "walletsguy.commercehq.com", "rinsekit.com", "amplifylive.co", "usologytrends.com", "bluecollarbobbers.com", "roddersjournal.com", "nightfallclothing.com", "krakendesignco.com", "jdhirondesigns.com", "secure.cml.oeconnection.com" ]
+            },
             customCountry: !1,
             SUPPORTED_BROWSERS: {
                 msie: "11",
@@ -2813,7 +2916,7 @@
             loginUri: "/signin/",
             hermesLoggerUri: "/webapps/hermes/api/logger",
             loggerUri: "/xoplatform/logger/api/logger",
-            loggerThrottlePercentage: .25,
+            loggerThrottlePercentage: .5,
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
                 return config.postBridgeUris[config.env] + "?xcomponent=1";
