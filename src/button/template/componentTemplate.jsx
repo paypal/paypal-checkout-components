@@ -21,7 +21,8 @@ function getCommonButtonClasses({ layout, shape, branding, multiple, env }) : st
         `${ CLASS.SHAPE }-${ shape }`,
         `${ CLASS.BRANDING }-${ branding ? BUTTON_BRANDING.BRANDED : BUTTON_BRANDING.UNBRANDED }`,
         `${ CLASS.NUMBER }-${ multiple ? BUTTON_NUMBER.MULTIPLE : BUTTON_NUMBER.SINGLE }`,
-        `${ CLASS.ENV }-${ env }`
+        `${ CLASS.ENV }-${ env }`,
+        `${ CLASS.SHOULD_FOCUS }`
     ].join(' ');
 }
 
@@ -85,13 +86,16 @@ function renderCards({ cards, button, layout, size } :
         let logo = cardLogos[name];
 
         return (
-            <img
-                { ...{ [ATTRIBUTE.LAYOUT]: layout ? layout : '' } }
-                { ...{ [ATTRIBUTE.SIZE]: size ? size : '' } }
-                { ...{ [ATTRIBUTE.BUTTON]: (button || false), [ATTRIBUTE.FUNDING_SOURCE]: `${ FUNDING.CARD }`, [ATTRIBUTE.CARD]: `${ name }` } }
+            <div
                 class={ `${ button ? CLASS.BUTTON : '' } ${ CLASS.CARD } ${ CLASS.CARD }-${ name }` }
-                src={ `data:image/svg+xml;base64,${ btoa(logo) }` }
-                alt={ name } />
+                tabindex='0'>
+                <img
+                    { ...{ [ATTRIBUTE.LAYOUT]: layout ? layout : '' } }
+                    { ...{ [ATTRIBUTE.SIZE]: size ? size : '' } }
+                    { ...{ [ATTRIBUTE.BUTTON]: (button || false), [ATTRIBUTE.FUNDING_SOURCE]: `${ FUNDING.CARD }`, [ATTRIBUTE.CARD]: `${ name }` } }
+                    src={ `data:image/svg+xml;base64,${ btoa(logo) }` }
+                    alt={ name } />
+            </div>
         );
     });
 }
@@ -219,6 +223,11 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     contentText = typeof contentText === 'function' ? contentText(dynamicContent) : contentText;
     contentText = renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size, isFundingThrottleEnabled });
 
+    // Define a list of funding options that will not need a tabindex
+    const hasTabIndex = [
+        FUNDING.CARD
+    ].indexOf(source) === -1;
+
     return (
         <div
             { ...{ [ATTRIBUTE.LAYOUT]: layout ? layout : '' } }
@@ -227,7 +236,7 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
             class={ `${ CLASS.BUTTON } ${ CLASS.NUMBER }-${ i } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) } ${ getButtonClasses({ label, color, logoColor, isFundingThrottleEnabled }) }` }
             role='button'
             aria-label={ source }
-            tabindex='0'>
+            tabindex={ hasTabIndex && 0 }>
             
             { contentText }
         </div>

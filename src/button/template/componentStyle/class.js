@@ -1,6 +1,8 @@
 /* @flow */
 
 export const CLASS = {
+    SHOULD_FOCUS: 'paypal-should-focus',
+
     CONTAINER: 'paypal-button-container',
     BUTTON:    'paypal-button',
 
