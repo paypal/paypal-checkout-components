@@ -65,6 +65,7 @@ export function getButtonMiddleware({ logger = console } : { logger? : LoggerTyp
             res
                 .status(200)
                 .header('content-type', 'text/html')
+                .header('X-Frame-Options', '')
                 .send(pageHTML);
 
         } catch (err) {
