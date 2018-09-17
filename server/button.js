@@ -66,7 +66,7 @@ export function getButtonMiddleware() : (req : ExpressRequest, res : ExpressResp
             logger.error(req, 'smart_button_error', { err: err.stack ? err.stack : err.toString() });
             res.status(500)
                 .header('content-type', 'text/plain')
-                .send('');
+                .send(err.stack ? err.stack : err.toString());
         }
     };
 }
