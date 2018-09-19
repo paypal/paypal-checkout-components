@@ -83,12 +83,12 @@ function renderCards({ cards, button, layout, size } :
 
         return (
             <div
+                { ...{ [ATTRIBUTE.LAYOUT]: layout ? layout : '' } }
+                { ...{ [ATTRIBUTE.SIZE]: size ? size : '' } }
+                { ...{ [ATTRIBUTE.BUTTON]: (button || false), [ATTRIBUTE.FUNDING_SOURCE]: `${ FUNDING.CARD }`, [ATTRIBUTE.CARD]: `${ name }` } }
                 class={ `${ button ? CLASS.BUTTON : '' } ${ CLASS.CARD } ${ CLASS.CARD }-${ name }` }
                 tabindex='0'>
                 <img
-                    { ...{ [ATTRIBUTE.LAYOUT]: layout ? layout : '' } }
-                    { ...{ [ATTRIBUTE.SIZE]: size ? size : '' } }
-                    { ...{ [ATTRIBUTE.BUTTON]: (button || false), [ATTRIBUTE.FUNDING_SOURCE]: `${ FUNDING.CARD }`, [ATTRIBUTE.CARD]: `${ name }` } }
                     src={ `data:image/svg+xml;base64,${ btoa(logo) }` }
                     alt={ name } />
             </div>
