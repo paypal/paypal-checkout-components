@@ -5547,7 +5547,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.220",
+            version: "4.0.221",
             cors: !0,
             env: constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -9126,7 +9126,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.220"
+                    ver: "4.0.221"
                 };
             });
             Object(beaver_logger_client.a)(function() {
@@ -9408,7 +9408,7 @@
             });
         });
         function getScriptVersion() {
-            return Boolean(getCurrentScript()) ? "4" : "4.0.220";
+            return Boolean(getCurrentScript()) ? "4" : "4.0.221";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -12359,21 +12359,25 @@
         function renderCards(_ref5) {
             var cards = _ref5.cards, button = _ref5.button, layout = _ref5.layout, size = _ref5.size;
             return cards.map(function(name) {
-                var _ref6, _ref7, _ref8, logo = cardLogos[name];
+                var _ref6, _ref7, _ref8, _ref9, _ref10, _ref11, logo = cardLogos[name];
                 return jsxToHTML("div", componentTemplate__extends({}, ((_ref6 = {})[src_constants.c.LAYOUT] = layout || "", 
                 _ref6), ((_ref7 = {})[src_constants.c.SIZE] = size || "", _ref7), ((_ref8 = {})[src_constants.c.BUTTON] = button || !1, 
                 _ref8[src_constants.c.FUNDING_SOURCE] = "" + src_constants.v.CARD, _ref8[src_constants.c.CARD] = "" + name, 
                 _ref8), {
                     class: (button ? class_CLASS.BUTTON : "") + " " + class_CLASS.CARD + " " + class_CLASS.CARD + "-" + name,
                     tabindex: "0"
-                }), jsxToHTML("img", {
+                }), jsxToHTML("img", componentTemplate__extends({}, ((_ref9 = {})[src_constants.c.LAYOUT] = layout || "", 
+                _ref9), ((_ref10 = {})[src_constants.c.SIZE] = size || "", _ref10), ((_ref11 = {})[src_constants.c.BUTTON] = button || !1, 
+                _ref11[src_constants.c.FUNDING_SOURCE] = "" + src_constants.v.CARD, _ref11[src_constants.c.CARD] = "" + name, 
+                _ref11), {
+                    style: " display: block; ",
                     src: "data:image/svg+xml;base64," + Object(base64.btoa)(logo),
                     alt: name
-                }));
+                })));
             });
         }
-        function renderContent(text, _ref10) {
-            var template, renderers, nodes, label = _ref10.label, locale = _ref10.locale, color = _ref10.color, branding = _ref10.branding, logoColor = _ref10.logoColor, funding = _ref10.funding, env = _ref10.env, _cards = _ref10.cards, dynamicContent = _ref10.dynamicContent, layout = _ref10.layout, size = _ref10.size, _content = function(locale) {
+        function renderContent(text, _ref13) {
+            var template, renderers, nodes, label = _ref13.label, locale = _ref13.locale, color = _ref13.color, branding = _ref13.branding, logoColor = _ref13.logoColor, funding = _ref13.funding, env = _ref13.env, _cards = _ref13.cards, dynamicContent = _ref13.dynamicContent, layout = _ref13.layout, size = _ref13.size, _content = function(locale) {
                 var country = locale.country, lang = locale.lang;
                 return content_componentContent[country][lang];
             }(locale);
@@ -12452,8 +12456,8 @@
                 return text && text.trim() && renderers.text ? /<br>/.test(text) ? renderers.break(text) : renderers.text(text) : text;
             }), new JsxHTMLNodeContainer(nodes);
         }
-        function renderButton(_ref11) {
-            var _ref12, _ref13, _ref14, size = _ref11.size, label = _ref11.label, color = _ref11.color, locale = _ref11.locale, branding = _ref11.branding, multiple = _ref11.multiple, layout = _ref11.layout, shape = _ref11.shape, source = _ref11.source, funding = _ref11.funding, i = _ref11.i, env = _ref11.env, cards = _ref11.cards, installmentperiod = _ref11.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = getButtonConfig(label, determineLabel({
+        function renderButton(_ref14) {
+            var _ref15, _ref16, _ref17, size = _ref14.size, label = _ref14.label, color = _ref14.color, locale = _ref14.locale, branding = _ref14.branding, multiple = _ref14.multiple, layout = _ref14.layout, shape = _ref14.shape, source = _ref14.source, funding = _ref14.funding, i = _ref14.i, env = _ref14.env, cards = _ref14.cards, installmentperiod = _ref14.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = getButtonConfig(label, determineLabel({
                 label: label,
                 source: source,
                 multiple: multiple,
@@ -12476,9 +12480,9 @@
                 size: size
             });
             var hasTabIndex = -1 === [ src_constants.v.CARD ].indexOf(source);
-            return jsxToHTML("div", componentTemplate__extends({}, ((_ref12 = {})[src_constants.c.LAYOUT] = layout || "", 
-            _ref12), ((_ref13 = {})[src_constants.c.SIZE] = size || "", _ref13), ((_ref14 = {})[src_constants.c.FUNDING_SOURCE] = source, 
-            _ref14[src_constants.c.BUTTON] = !0, _ref14), {
+            return jsxToHTML("div", componentTemplate__extends({}, ((_ref15 = {})[src_constants.c.LAYOUT] = layout || "", 
+            _ref15), ((_ref16 = {})[src_constants.c.SIZE] = size || "", _ref16), ((_ref17 = {})[src_constants.c.FUNDING_SOURCE] = source, 
+            _ref17[src_constants.c.BUTTON] = !0, _ref17), {
                 class: class_CLASS.BUTTON + " " + class_CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -12498,8 +12502,8 @@
                 tabindex: hasTabIndex && 0
             }), contentText);
         }
-        function componentTemplate_componentTemplate(_ref17) {
-            var _ref18, props = _ref17.props;
+        function componentTemplate_componentTemplate(_ref20) {
+            var _ref21, props = _ref20.props;
             if (props && props.style) {
                 var style = props.style;
                 "generic" === style.label && (style.label = "paypal");
@@ -12512,7 +12516,7 @@
                 validateButtonLocale(locale);
                 validateButtonStyle(style, props);
             }(props);
-            var _ref16, _normalizeProps = props_normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, buttonNodes = function(_ref4) {
+            var _ref19, _normalizeProps = props_normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, buttonNodes = function(_ref4) {
                 var label = _ref4.label, color = _ref4.color, sources = _ref4.sources, multiple = _ref4.multiple, layout = _ref4.layout;
                 return sources.map(function(source, i) {
                     var buttonLabel = determineLabel({
@@ -12550,8 +12554,8 @@
                     installmentperiod: installmentperiod,
                     size: size
                 });
-            }), taglineNode = function(_ref15) {
-                var label = _ref15.label, tagline = _ref15.tagline, color = _ref15.color, locale = _ref15.locale, multiple = _ref15.multiple, env = _ref15.env, cards = _ref15.cards;
+            }), taglineNode = function(_ref18) {
+                var label = _ref18.label, tagline = _ref18.tagline, color = _ref18.color, locale = _ref18.locale, multiple = _ref18.multiple, env = _ref18.env, cards = _ref18.cards;
                 if (tagline) {
                     var text = renderContent(multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag"), {
                         locale: locale,
@@ -12574,8 +12578,8 @@
                 multiple: multiple,
                 env: env,
                 cards: cards
-            }), fundingiconNode = function(_ref9) {
-                var cards = _ref9.cards, fundingicons = _ref9.fundingicons, size = _ref9.size, layout = _ref9.layout;
+            }), fundingiconNode = function(_ref12) {
+                var cards = _ref12.cards, fundingicons = _ref12.fundingicons, size = _ref12.size, layout = _ref12.layout;
                 if (fundingicons) return jsxToHTML("div", {
                     class: "" + class_CLASS.FUNDINGICONS
                 }, renderCards({
@@ -12591,11 +12595,11 @@
                 layout: layout
             }), styleNode = jsxToHTML("style", {
                 innerHTML: componentStyle({
-                    height: (_ref16 = {
+                    height: (_ref19 = {
                         height: height,
                         cardNumber: cards.length
                     }).height,
-                    cardNumber: _ref16.cardNumber
+                    cardNumber: _ref19.cardNumber
                 })
             }), scriptNode = jsxToHTML("script", {
                 innerHTML: "(" + getComponentScript().toString().replace(/\{\s*CLASS\.([A-Z0-9_]+)\s*\}/g, function(match, name) {
@@ -12611,8 +12615,8 @@
                     logoColor: "blue"
                 })));
             }(props_normalizeProps(props)) : null;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[src_constants.c.VERSION] = "4.0.220", 
-            _ref18), {
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.221", 
+            _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -13623,7 +13627,7 @@
             setup__track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.220", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_Card = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
+        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.221", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_Card = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
         if (Object(util.g)()) {
             interface_Checkout = component_Checkout;
             interface_Card = Card;
@@ -13746,7 +13750,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.220";
+                payload.version = "4.0.221";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 payload.appName = APP_NAME;
@@ -14308,18 +14312,18 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         0;
-        if (window.paypal && "4.0.220" === window.paypal.version) {
+        if (window.paypal && "4.0.221" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.220"
+                version: "4.0.221"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.220) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.221) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.220" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.221" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.220"
+                version: "4.0.221"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.220");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.221");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");

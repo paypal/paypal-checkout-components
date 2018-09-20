@@ -2274,8 +2274,8 @@
             };
         }
         var template_content = __webpack_require__("./src/button/template/content.json"), content_default = __webpack_require__.n(template_content), componentContent = "string" == typeof content_default.a ? JSON.parse(content_default.a) : content_default.a;
-        __webpack_exports__.componentTemplate = function(_ref17) {
-            var _ref18, props = _ref17.props;
+        __webpack_exports__.componentTemplate = function(_ref20) {
+            var _ref21, props = _ref20.props;
             if (props && props.style) {
                 var style = props.style;
                 "generic" === style.label && (style.label = "paypal");
@@ -2305,8 +2305,8 @@
                 multiple: multiple,
                 layout: layout
             }).map(function(button, i) {
-                return function(_ref11) {
-                    var _ref12, _ref13, _ref14, size = _ref11.size, label = _ref11.label, color = _ref11.color, locale = _ref11.locale, branding = _ref11.branding, multiple = _ref11.multiple, layout = _ref11.layout, shape = _ref11.shape, source = _ref11.source, funding = _ref11.funding, i = _ref11.i, env = _ref11.env, cards = _ref11.cards, installmentperiod = _ref11.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = determineLabel({
+                return function(_ref14) {
+                    var _ref15, _ref16, _ref17, size = _ref14.size, label = _ref14.label, color = _ref14.color, locale = _ref14.locale, branding = _ref14.branding, multiple = _ref14.multiple, layout = _ref14.layout, shape = _ref14.shape, source = _ref14.source, funding = _ref14.funding, i = _ref14.i, env = _ref14.env, cards = _ref14.cards, installmentperiod = _ref14.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = determineLabel({
                         label: label,
                         source: source,
                         multiple: multiple,
@@ -2329,9 +2329,9 @@
                         size: size
                     });
                     var hasTabIndex = -1 === [ constants.t.CARD ].indexOf(source);
-                    return jsxToHTML("div", _extends({}, ((_ref12 = {})[constants.c.LAYOUT] = layout || "", 
-                    _ref12), ((_ref13 = {})[constants.c.SIZE] = size || "", _ref13), ((_ref14 = {})[constants.c.FUNDING_SOURCE] = source, 
-                    _ref14[constants.c.BUTTON] = !0, _ref14), {
+                    return jsxToHTML("div", _extends({}, ((_ref15 = {})[constants.c.LAYOUT] = layout || "", 
+                    _ref15), ((_ref16 = {})[constants.c.SIZE] = size || "", _ref16), ((_ref17 = {})[constants.c.FUNDING_SOURCE] = source, 
+                    _ref17[constants.c.BUTTON] = !0, _ref17), {
                         class: CLASS.BUTTON + " " + CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
                             layout: layout,
                             shape: shape,
@@ -2366,8 +2366,8 @@
                     installmentperiod: installmentperiod,
                     size: size
                 });
-            }), taglineNode = function(_ref15) {
-                var label = _ref15.label, tagline = _ref15.tagline, color = _ref15.color, locale = _ref15.locale, multiple = _ref15.multiple, env = _ref15.env, cards = _ref15.cards;
+            }), taglineNode = function(_ref18) {
+                var label = _ref18.label, tagline = _ref18.tagline, color = _ref18.color, locale = _ref18.locale, multiple = _ref18.multiple, env = _ref18.env, cards = _ref18.cards;
                 if (!tagline) return;
                 var text = renderContent(multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag"), {
                     locale: locale,
@@ -2388,8 +2388,8 @@
                 multiple: multiple,
                 env: env,
                 cards: cards
-            }), fundingiconNode = function(_ref9) {
-                var cards = _ref9.cards, fundingicons = _ref9.fundingicons, size = _ref9.size, layout = _ref9.layout;
+            }), fundingiconNode = function(_ref12) {
+                var cards = _ref12.cards, fundingicons = _ref12.fundingicons, size = _ref12.size, layout = _ref12.layout;
                 if (!fundingicons) return;
                 return jsxToHTML("div", {
                     class: "" + CLASS.FUNDINGICONS
@@ -2404,8 +2404,8 @@
                 fundingicons: fundingicons,
                 size: size,
                 layout: layout
-            }), styleNode = function(_ref16) {
-                var height = _ref16.height, cardNumber = _ref16.cardNumber;
+            }), styleNode = function(_ref19) {
+                var height = _ref19.height, cardNumber = _ref19.cardNumber;
                 return jsxToHTML("style", {
                     innerHTML: componentStyle({
                         height: height,
@@ -2432,8 +2432,8 @@
                 })));
             }(normalizeProps(props)) : null;
             var script;
-            return jsxToHTML("div", _extends({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.220", 
-            _ref18), {
+            return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.221", 
+            _ref21), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -2461,21 +2461,25 @@
         function renderCards(_ref5) {
             var cards = _ref5.cards, button = _ref5.button, layout = _ref5.layout, size = _ref5.size;
             return cards.map(function(name) {
-                var _ref6, _ref7, _ref8, logo = cardLogos[name];
+                var _ref6, _ref7, _ref8, _ref9, _ref10, _ref11, logo = cardLogos[name];
                 return jsxToHTML("div", _extends({}, ((_ref6 = {})[constants.c.LAYOUT] = layout || "", 
                 _ref6), ((_ref7 = {})[constants.c.SIZE] = size || "", _ref7), ((_ref8 = {})[constants.c.BUTTON] = button || !1, 
                 _ref8[constants.c.FUNDING_SOURCE] = "" + constants.t.CARD, _ref8[constants.c.CARD] = "" + name, 
                 _ref8), {
                     class: (button ? CLASS.BUTTON : "") + " " + CLASS.CARD + " " + CLASS.CARD + "-" + name,
                     tabindex: "0"
-                }), jsxToHTML("img", {
+                }), jsxToHTML("img", _extends({}, ((_ref9 = {})[constants.c.LAYOUT] = layout || "", 
+                _ref9), ((_ref10 = {})[constants.c.SIZE] = size || "", _ref10), ((_ref11 = {})[constants.c.BUTTON] = button || !1, 
+                _ref11[constants.c.FUNDING_SOURCE] = "" + constants.t.CARD, _ref11[constants.c.CARD] = "" + name, 
+                _ref11), {
+                    style: " display: block; ",
                     src: "data:image/svg+xml;base64," + Object(base64.btoa)(logo),
                     alt: name
-                }));
+                })));
             });
         }
-        function renderContent(text, _ref10) {
-            var template, renderers, nodes, label = _ref10.label, locale = _ref10.locale, color = _ref10.color, branding = _ref10.branding, logoColor = _ref10.logoColor, funding = _ref10.funding, env = _ref10.env, _cards = _ref10.cards, dynamicContent = _ref10.dynamicContent, layout = _ref10.layout, size = _ref10.size, _content = function(locale) {
+        function renderContent(text, _ref13) {
+            var template, renderers, nodes, label = _ref13.label, locale = _ref13.locale, color = _ref13.color, branding = _ref13.branding, logoColor = _ref13.logoColor, funding = _ref13.funding, env = _ref13.env, _cards = _ref13.cards, dynamicContent = _ref13.dynamicContent, layout = _ref13.layout, size = _ref13.size, _content = function(locale) {
                 var country = locale.country, lang = locale.lang;
                 return componentContent[country][lang];
             }(locale);
@@ -2563,7 +2567,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.220",
+            version: "4.0.221",
             cors: !0,
             env: constants.s.PRODUCTION,
             state: "checkoutjs",
