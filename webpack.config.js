@@ -9,6 +9,7 @@ import globals from './globals';
 const MODULE_NAME = 'paypal';
 
 export let WEBPACK_CONFIG_TEST = getWebpackConfig({
+    entry:         './test/paypal.js',
     libraryTarget: 'window',
 
     test: true,

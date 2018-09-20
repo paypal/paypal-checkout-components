@@ -3,20 +3,22 @@
 
 import { jsxToHTML, SVG, JsxHTMLNode } from 'belter/src'; // eslint-disable-line no-unused-vars
 
-import { URLS } from '../../config';
+import { getCheckoutUrl } from '../../config';
 import { PLATFORM, BUTTON_LABEL, BUTTON_COLOR, LOGO_COLOR } from '../../constants';
-import { DEFAULT_LABEL_CONFIG } from '../common';
+import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
 
 import { VenmoLogo } from './logo';
 
-export const VENMO_CONFIG = {
-    url: URLS.CHECKOUT,
+export const VENMO_CONFIG : FundingSourceConfig = {
+    ...DEFAULT_FUNDING_CONFIG,
+
+    url: getCheckoutUrl,
+
+    defaultLabel: BUTTON_LABEL.VENMO,
 
     platforms: [
         PLATFORM.MOBILE
     ],
-
-    defaultLabel: BUTTON_LABEL.VENMO,
 
     labels: {
         [ BUTTON_LABEL.VENMO ]: {

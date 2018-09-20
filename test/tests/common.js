@@ -5,8 +5,9 @@ import { atob } from 'Base64';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { isWindowClosed, type CrossDomainWindowType, type SameDomainWindowType } from 'cross-domain-utils/src';
+import { getPayPalLoggerUrl } from 'paypal-braintree-web-client/src';
 
-import { URLS } from '../../src/config/config';
+import { getAuthAPIUrl, getOrderAPIUrl } from '../../src/config/config';
 
 for (let level of [ 'log', 'debug', 'info', 'warn', 'error' ]) {
     let original = window.console[level];
@@ -228,13 +229,13 @@ patchXmlHttpRequest();
 
 export let loggerApiMock = $mockEndpoint.register({
     method: 'POST',
-    uri:    URLS.LOGGER,
+    uri:    getPayPalLoggerUrl(),
     data:   {}
 });
 
 export let authApiMock = $mockEndpoint.register({
     method: 'POST',
-    uri:    URLS.AUTH,
+    uri:    getAuthAPIUrl(),
     handler({ headers, data }) : { access_token : string } {
 
         if (!headers.authorization) {
@@ -263,7 +264,7 @@ export let authApiMock = $mockEndpoint.register({
 
 export let orderApiMock = $mockEndpoint.register({
     method: 'POST',
-    uri:    URLS.ORDER,
+    uri:    getOrderAPIUrl(),
     handler({ data, headers }) : { id : string } {
 
         if (!headers.authorization) {

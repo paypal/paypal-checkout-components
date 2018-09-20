@@ -3,25 +3,27 @@
 
 import { jsxToHTML, SVG, JsxHTMLNode } from 'belter/src'; // eslint-disable-line no-unused-vars
 
-import { URLS } from '../../config';
+import { getAltPayUrl } from '../../config';
 import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR, LOGO_COLOR } from '../../constants';
-import { DEFAULT_LABEL_CONFIG } from '../common';
+import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
 
 import { WechatpayLogo } from './logo';
 
-export const WECHATPAY_CONFIG = {
-    url: URLS.ALTPAY,
+export const WECHATPAY_CONFIG : FundingSourceConfig = {
+    ...DEFAULT_FUNDING_CONFIG,
+
+    url: getAltPayUrl,
+
+    defaultLabel: BUTTON_LABEL.WECHATPAY,
 
     layouts: [
         BUTTON_LAYOUT.VERTICAL
     ],
 
-    defaultLabel: BUTTON_LABEL.WECHATPAY,
-
     labels: {
         [ BUTTON_LABEL.WECHATPAY ]: {
             ...DEFAULT_LABEL_CONFIG,
-            
+
             Label: WechatpayLogo,
 
             defaultColor: BUTTON_COLOR.SILVER,

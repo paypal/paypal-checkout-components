@@ -29,6 +29,7 @@ jest.setTimeout(120000);
 
 let setupBrowserPage = (async () => {
     let { browser, page } = await openPage(await webpackCompile(getWebpackConfig({
+        entry:         './test/paypal.js',
         libraryTarget: 'window',
         test:          true,
         vars:          testGlobals

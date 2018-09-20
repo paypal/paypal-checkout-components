@@ -1,7 +1,6 @@
 /* @flow */
 
-import { isCurrentDomain } from 'cross-domain-utils/src';
-import { DOMAINS, buildConfigUrl } from 'paypal-braintree-web-client/src';
+import { buildPayPalUrl, buildPayPalAPIUrl } from 'paypal-braintree-web-client/src';
 
 export const SESSION_LIFETIME = 5 * 60 * 1000;
 
@@ -18,81 +17,68 @@ export const SUPPORTED_BROWSERS = {
     vivaldi:        '1.91'
 };
 
-const URIS = {
-    CHECKOUT: `/checkoutnow`,
-    ALTPAY:   `/latinumcheckout`,
-    GUEST:    `/webapps/xoonboarding`,
-    BUTTON:   `/sdk/js/smart-buttons`,
-    CARD:     `/webapps/hermes/card-fields`,
-    META:     `/webapps/hermes/component-meta`,
+const URI = __TEST__
 
-    AUTH:  `/v1/oauth2/token`,
-    ORDER: `/v2/checkout/orders`,
-
-    ...{
-        local: {
-            CHECKOUT: `/webapps/hermes?ul=0`
-        },
-
-        stage: {
-            CHECKOUT: `/webapps/hermes`
-        },
-
-        sandbox: {},
-
-        production: {},
-
-        test: {
-            CHECKOUT: `/base/test/windows/checkout/index.htm?checkouturl=true`,
-            ALTPAY:   `/base/test/windows/checkout/index.htm?checkouturl=true`,
-            GUEST:    `/base/test/windows/checkout/index.htm?guesturl=true`,
-            BUTTON:   `/base/test/windows/button/index.htm`,
-            CARD:     `/base/test/windows/card-fields/index.htm`,
-            META:     `/base/test/windows/component-meta/index.htm`
-        }
-    }[__ENV__]
-};
-
-export const URLS = {
-    get PAYPAL() : string {
-        return buildConfigUrl(DOMAINS.PAYPAL);
-    },
-
-    get CHECKOUT() : string {
-        return buildConfigUrl(DOMAINS.PAYPAL, URIS.CHECKOUT);
-    },
-
-    get BUTTON() : string {
-        return buildConfigUrl(DOMAINS.PAYPAL, URIS.BUTTON);
-    },
-
-    get GUEST() : string {
-        return buildConfigUrl(DOMAINS.PAYPAL, URIS.GUEST);
-    },
-    
-    get CARD() : string {
-        return buildConfigUrl(DOMAINS.PAYPAL, URIS.CARD);
-    },
-
-    get META() : string {
-        return buildConfigUrl(DOMAINS.PAYPAL, URIS.META);
-    },
-
-    get ALTPAY() : string {
-        return buildConfigUrl(DOMAINS.PAYPAL, URIS.ALTPAY);
-    },
-
-    get LOGGER() : string {
-        return buildConfigUrl(DOMAINS.PAYPAL, URIS.LOGGER);
-    },
-
-    get AUTH() : string {
-        let domain = isCurrentDomain(DOMAINS.PAYPAL) ? DOMAINS.PAYPAL : DOMAINS.API;
-        return buildConfigUrl(domain, URIS.AUTH);
-    },
-
-    get ORDER() : string {
-        let domain = isCurrentDomain(DOMAINS.PAYPAL) ? DOMAINS.PAYPAL : DOMAINS.API;
-        return buildConfigUrl(domain, URIS.ORDER);
+    ? {
+        CHECKOUT: `/base/test/windows/checkout/index.htm?checkouturl=true`,
+        ALTPAY:   `/base/test/windows/checkout/index.htm?checkouturl=true`,
+        GUEST:    `/base/test/windows/checkout/index.htm?guesturl=true`,
+        BUTTON:   `/base/test/windows/button/index.htm`,
+        CARD:     `/base/test/windows/card-fields/index.htm`,
+        META:     `/base/test/windows/component-meta/index.htm`,
+        AUTH:     `/v1/oauth2/token`,
+        ORDER:    `/v2/checkout/orders`
     }
-};
+
+    : {
+        CHECKOUT: {
+            local:      `/webapps/hermes?ul=0`,
+            stage:      `/webapps/hermes`,
+            sandbox:    `/checkoutnow`,
+            production: `/checkoutnow`
+        }[__ENV__],
+
+        ALTPAY: `/latinumcheckout`,
+        GUEST:  `/webapps/xoonboarding`,
+        BUTTON: `/sdk/js/smart-buttons`,
+        CARD:   `/webapps/hermes/card-fields`,
+        META:   `/webapps/hermes/component-meta`,
+        AUTH:   `/v1/oauth2/token`,
+        ORDER:  `/v2/checkout/orders`
+    };
+
+export function getPayPalUrl() : string {
+    return buildPayPalUrl();
+}
+
+export function getCheckoutUrl() : string {
+    return buildPayPalUrl(URI.CHECKOUT);
+}
+
+export function getButtonUrl() : string {
+    return buildPayPalUrl(URI.BUTTON);
+}
+
+export function getGuestUrl() : string {
+    return buildPayPalUrl(URI.GUEST);
+}
+
+export function getCardUrl() : string {
+    return buildPayPalUrl(URI.CARD);
+}
+
+export function getMetaUrl() : string {
+    return buildPayPalUrl(URI.META);
+}
+
+export function getAltPayUrl() : string {
+    return buildPayPalUrl(URI.ALTPAY);
+}
+
+export function getAuthAPIUrl() : string {
+    return buildPayPalAPIUrl(URI.AUTH);
+}
+
+export function getOrderAPIUrl() : string {
+    return buildPayPalAPIUrl(URI.ORDER);
+}

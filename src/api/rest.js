@@ -1,12 +1,12 @@
 /* @flow */
 
-import { getLogger, FPTI_KEY, DOMAINS, getIntent } from 'paypal-braintree-web-client/src';
+import { getLogger, FPTI_KEY, getPayPalDomain, getIntent } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { on, send } from 'post-robot/src';
 import { getAncestor, isSameDomain } from 'cross-domain-utils/src';
 import { memoize, request, base64encode } from 'belter/src';
 
-import { URLS } from '../config';
+import { getOrderAPIUrl, getAuthAPIUrl } from '../config';
 import { FPTI_STATE, FPTI_CONTEXT_TYPE, FPTI_TRANSITION } from '../constants';
 import { isPayPalDomain } from '../lib';
 
@@ -42,7 +42,7 @@ export let createAccessToken = memoize((clientID : string) : ZalgoPromise<string
     return request({
 
         method:  `post`,
-        url:     URLS.AUTH,
+        url:     getAuthAPIUrl(),
         headers: {
             Authorization: `Basic ${ basicAuth }`
         },
@@ -103,7 +103,7 @@ export function createOrder(clientID : string, order : OrderCreateRequest) : Zal
 
         return request({
             method: `post`,
-            url:    URLS.ORDER,
+            url:    getOrderAPIUrl(),
             headers,
             json:   order
         });
@@ -123,7 +123,7 @@ export function createOrder(clientID : string, order : OrderCreateRequest) : Zal
 const PROXY_REST = `proxy_rest`;
 let parentWin = getAncestor();
 
-on(PROXY_REST, { domain: DOMAINS.PAYPAL }, ({ data }) => {
+on(PROXY_REST, { domain: getPayPalDomain() }, ({ data }) => {
     proxyRest = data;
 });
 

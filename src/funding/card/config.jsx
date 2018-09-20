@@ -4,11 +4,11 @@
 import { COUNTRY } from 'paypal-braintree-web-client/src';
 import { jsxToHTML, JsxHTMLNode, svgToBase64, SVG, objFilter } from 'belter/src'; // eslint-disable-line no-unused-vars
 
-import { URLS } from '../../config';
+import { getGuestUrl } from '../../config';
 import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR, LOGO_COLOR, CARD, FUNDING } from '../../constants';
-import { DEFAULT_LABEL_CONFIG } from '../common';
+import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
 
-const CARD_PRIORITY = [
+const CARD_PRIORITY : $ReadOnlyArray<$Values<typeof CARD>> = [
     CARD.VISA,
     CARD.MASTERCARD,
     CARD.AMEX,
@@ -18,8 +18,10 @@ const CARD_PRIORITY = [
     CARD.JCB
 ];
 
-export const CARD_CONFIG = {
-    url: URLS.GUEST,
+export const CARD_CONFIG : FundingSourceConfig = {
+    ...DEFAULT_FUNDING_CONFIG,
+
+    url: getGuestUrl,
 
     layouts: [
         BUTTON_LAYOUT.VERTICAL
@@ -32,16 +34,32 @@ export const CARD_CONFIG = {
             ...DEFAULT_LABEL_CONFIG,
 
             Label({ fundingEligibility, locale, nonce }) : Array<JsxHTMLNode> {
-                return CARD_PRIORITY.filter(name => {
-                    return fundingEligibility[FUNDING.CARD].vendors[name].eligible;
-                }).map(name => {
-                    let { Logo } = CARD_CONFIG.vendors[name];
+                let maxCards = 4;
+
+                if (CARD_CONFIG.maxCards && CARD_CONFIG.maxCards[locale.country]) {
+                    maxCards = CARD_CONFIG.maxCards[locale.country];
+                }
+
+                return CARD_PRIORITY.map(name => {
+
+                    if (!fundingEligibility[FUNDING.CARD].vendors[name].eligible) {
+                        return null;
+                    }
+
+                    let vendorConfig = CARD_CONFIG.vendors && CARD_CONFIG.vendors[name];
+
+                    if (!vendorConfig) {
+                        return null;
+                    }
+
+                    let { Logo } = vendorConfig;
+                    
                     return (
                         <Logo
                             nonce={ nonce }
                         />
                     );
-                }).slice(0, CARD_CONFIG.maxCards[locale.country] || 4);
+                }).filter(Boolean).slice(0, maxCards);
             },
 
             defaultColor: BUTTON_COLOR.SILVER,
@@ -65,7 +83,7 @@ export const CARD_CONFIG = {
         }
     },
 
-    vendors: objFilter({
+    vendors: {
         [ CARD.VISA ]: (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.visa.eligible)
             ? require('./visa').VISA_CONFIG : null,
 
@@ -86,7 +104,7 @@ export const CARD_CONFIG = {
 
         [ CARD.HIPER ]: (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.hiper.eligible)
             ? require('./hiper').HIPER_CONFIG : null
-    }),
+    },
 
     maxCards: {
         [ COUNTRY.BR ]: 5

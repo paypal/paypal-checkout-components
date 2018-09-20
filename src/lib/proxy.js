@@ -1,13 +1,13 @@
 /* @flow */
 
-import { DOMAINS } from 'paypal-braintree-web-client/src';
+import { getPayPalDomain } from 'paypal-braintree-web-client/src';
 import { on, send } from 'post-robot/src';
 import { isWindowClosed, getDomain, isSameDomain, type CrossDomainWindowType } from 'cross-domain-utils/src';
 import { noop } from 'belter/src';
 
 export function proxyMethod(name : string, win : ?CrossDomainWindowType, originalMethod : Function) : Function {
 
-    if (win && getDomain() === DOMAINS.PAYPAL && !isSameDomain(win)) {
+    if (win && getDomain() === getPayPalDomain() && !isSameDomain(win)) {
 
         if (win) {
             send(win, `proxy_${ name }`, { originalMethod }).catch(noop);
@@ -18,7 +18,7 @@ export function proxyMethod(name : string, win : ?CrossDomainWindowType, origina
 
     let methods = [];
 
-    on(`proxy_${ name }`, { domain: DOMAINS.PAYPAL }, ({ data }) => {
+    on(`proxy_${ name }`, { domain: getPayPalDomain() }, ({ data }) => {
         methods.push(data.originalMethod);
     });
 

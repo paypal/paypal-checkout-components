@@ -37,7 +37,7 @@ export default function configKarma(karma : Object) {
         },
 
         {
-            pattern:  'src/index.js',
+            pattern:  'test/paypal.js',
             included: true,
             served:   true
         },

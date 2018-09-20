@@ -70,7 +70,16 @@ function Button({ source, style, multiple, locale, env, fundingEligibility, i, n
     let buttonLabel = determineLabel({ source, style });
     
     let fundingConfig = FUNDING_CONFIG[source];
+
+    if (!fundingConfig) {
+        throw new Error(`Can not find funding config for ${ source }`);
+    }
+
     let labelConfig = fundingConfig.labels[buttonLabel];
+
+    if (!labelConfig) {
+        throw new Error(`Can not find label config for ${ buttonLabel }`);
+    }
 
     let secondaryColors = labelConfig.secondaryColors;
 
@@ -120,8 +129,8 @@ function TagLine({ source, style, locale, multiple } :
 
     let labelConfig = fundingConfig.labels[label];
 
-    if (!labelConfig.tag) {
-        return;
+    if (!labelConfig) {
+        throw new Error(`Can not find label config for ${ label }`);
     }
 
     let tagColors = labelConfig.tagLineColors;
@@ -170,13 +179,18 @@ function Style({ style, cardNumber, nonce } :
 
 function getCardNumber(locale : LocaleType) : number {
     let cardConfig = FUNDING_CONFIG[FUNDING.CARD];
+    let vendors = cardConfig && cardConfig.vendors;
+    let maxCards = 4;
 
-    if (cardConfig) {
-        let numCards = Object.keys(cardConfig.vendors).length;
-        let maxCards = cardConfig.maxCards[locale.country] || 4;
+    if (cardConfig && cardConfig.maxCards && cardConfig.maxCards[locale.country]) {
+        maxCards = cardConfig.maxCards[locale.country];
+    }
+
+    if (vendors) {
+        let numCards = Object.keys(vendors).length;
         return Math.min(numCards, maxCards);
     } else {
-        return 4;
+        return maxCards;
     }
 }
 

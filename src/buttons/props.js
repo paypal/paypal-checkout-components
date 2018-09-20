@@ -101,14 +101,23 @@ export function normalizeButtonStyle(style : ButtonStyleInputs, { locale } : { l
     } = style;
 
     let funding = Object.keys(FUNDING_CONFIG)
-        .find(name => FUNDING_CONFIG[name].labels[label]);
+        .find(name => FUNDING_CONFIG[name] && FUNDING_CONFIG[name].labels[label]);
 
     if (!funding) {
         throw new Error(`Invalid button label: ${ label }`);
     }
 
     let fundingConfig = FUNDING_CONFIG[funding];
+
+    if (!fundingConfig) {
+        throw new Error(`Can not find funding config for ${ funding }`);
+    }
+
     let labelConfig = fundingConfig.labels[label];
+
+    if (!labelConfig) {
+        throw new Error(`Can not find label config for ${ label }`);
+    }
 
     if (!labelConfig.allowPrimary) {
         throw new Error(`Label ${ label } can not be used as primary button label`);
@@ -120,10 +129,6 @@ export function normalizeButtonStyle(style : ButtonStyleInputs, { locale } : { l
 
     if (shape && labelConfig.shapes.indexOf(shape) === -1) {
         throw new Error(`Unexpected style.shape for ${ label } button: ${ shape }, expected ${ labelConfig.shapes.join(', ') }`);
-    }
-
-    if (layout && labelConfig.layouts.indexOf(layout) === -1) {
-        throw new Error(`Unexpected style.layout for ${ label } button: ${ layout }, expected ${ labelConfig.layouts.join(', ') }`);
     }
 
     if (labelConfig.allowedCountries && labelConfig.allowedCountries.indexOf(country) === -1) {

@@ -2,14 +2,14 @@
 /* @jsx jsxDom */
 /* eslint max-lines: 0 */
 
-import { ENV, getLogger, FPTI_KEY, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, DOMAINS } from 'paypal-braintree-web-client/src';
+import { ENV, getLogger, FPTI_KEY, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getPayPalDomain } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
 import { isIEIntranet, isDevice, uniqueID, redirect } from 'belter/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 
-import { URLS } from '../config';
+import { getButtonUrl } from '../config';
 import { getFundingEligibility } from '../globals';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_CONTEXT_TYPE, PLATFORM, INTENT } from '../constants';
 import { checkRecognizedBrowser, getSessionID, isEligible, getBrowser } from '../lib';
@@ -51,8 +51,8 @@ export let Buttons : Component<ButtonProps> = create({
     tag:  'paypal-button',
     name: 'ppbutton',
 
-    url:    URLS.BUTTON,
-    domain: DOMAINS.PAYPAL,
+    url:    getButtonUrl(),
+    domain: getPayPalDomain(),
 
     contexts: {
         iframe: true,

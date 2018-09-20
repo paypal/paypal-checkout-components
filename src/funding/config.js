@@ -1,8 +1,8 @@
 /* @flow */
 
-import { objFilter } from 'belter/src';
-
 import { FUNDING } from '../constants';
+
+import { type FundingSourceConfig } from './common';
 
 export const FUNDING_PRIORITY = [
     FUNDING.PAYPAL,
@@ -21,7 +21,7 @@ export const FUNDING_PRIORITY = [
     FUNDING.CARD
 ];
 
-export let FUNDING_CONFIG = objFilter({
+export let FUNDING_CONFIG : { [$Values<typeof FUNDING>] : ?FundingSourceConfig } = {
     [ FUNDING.PAYPAL ]: (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.paypal.eligible)
         ? require('./paypal').PAYPAL_CONFIG : null,
 
@@ -63,4 +63,4 @@ export let FUNDING_CONFIG = objFilter({
 
     [ FUNDING.WECHATPAY ]: (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.wechatpay.eligible)
         ? require('./wechatpay').WECHATPAY_CONFIG : null
-});
+};

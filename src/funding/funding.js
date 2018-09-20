@@ -15,6 +15,10 @@ export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, pl
 
     let fundingConfig = FUNDING_CONFIG[source];
 
+    if (!fundingConfig) {
+        throw new Error(`Can not find funding config for ${ source }`);
+    }
+
     if (fundingConfig.layouts && fundingConfig.layouts.indexOf(layout) === -1) {
         return false;
     }

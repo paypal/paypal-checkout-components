@@ -4,15 +4,17 @@
 import { COUNTRY } from 'paypal-braintree-web-client/src';
 import { jsxToHTML, JsxHTMLNode, Fragment, SVG } from 'belter/src'; // eslint-disable-line no-unused-vars
 
-import { URLS } from '../../config';
+import { getCheckoutUrl } from '../../config';
 import { BUTTON_LABEL, BUTTON_COLOR, LOGO_COLOR } from '../../constants';
 import { PPLogo, PayPalLogo } from '../paypal/logo';
-import { DEFAULT_LABEL_CONFIG } from '../common';
+import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
 
 import { CreditLogo } from './logo';
 
-export const CREDIT_CONFIG = {
-    url: URLS.CHECKOUT,
+export const CREDIT_CONFIG : FundingSourceConfig = {
+    ...DEFAULT_FUNDING_CONFIG,
+    
+    url: getCheckoutUrl,
 
     defaultLabel: BUTTON_LABEL.CREDIT,
 

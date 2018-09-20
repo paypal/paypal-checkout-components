@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { ENV, DOMAINS, getLogger, getLocale, getEnv, getClientID } from 'paypal-braintree-web-client/src';
+import { ENV, getPayPalDomain, getLogger, getLocale, getEnv, getClientID } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONSTANTS, PopupOpenError } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
@@ -18,8 +18,8 @@ type CheckoutPropsType = {
     payment? : () => ZalgoPromise<string>,
     onAuthorize : ({ returnUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
     onCancel? : ({ cancelUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
-    fundingSource : string,
-    env? : string,
+    fundingSource : $Values<typeof FUNDING>,
+    env? : $Values<typeof ENV>,
     stage? : string,
     stageUrl? : string
 };
@@ -33,14 +33,20 @@ export let Checkout : Component<CheckoutPropsType> = create({
 
     buildUrl(props) : string {
         let { fundingSource } = props;
-        return FUNDING_CONFIG[fundingSource].url;
+        let fundingConfig = FUNDING_CONFIG[fundingSource];
+
+        if (!fundingConfig) {
+            throw new Error(`Can not find funding config for ${ fundingSource }`);
+        }
+
+        return fundingConfig.url();
     },
 
     get unsafeRenderTo() : boolean {
         return getEnv() === ENV.LOCAL;
     },
 
-    domain: DOMAINS.PAYPAL,
+    domain: getPayPalDomain(),
 
     contexts: {
         iframe: !supportsPopups(),
