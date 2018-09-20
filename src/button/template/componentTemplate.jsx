@@ -92,6 +92,7 @@ function renderCards({ cards, button, layout, size } :
                     { ...{ [ATTRIBUTE.LAYOUT]: layout ? layout : '' } }
                     { ...{ [ATTRIBUTE.SIZE]: size ? size : '' } }
                     { ...{ [ATTRIBUTE.BUTTON]: (button || false), [ATTRIBUTE.FUNDING_SOURCE]: `${ FUNDING.CARD }`, [ATTRIBUTE.CARD]: `${ name }` } }
+                    style={ ` display: block; ` }
                     src={ `data:image/svg+xml;base64,${ btoa(logo) }` }
                     alt={ name } />
             </div>
