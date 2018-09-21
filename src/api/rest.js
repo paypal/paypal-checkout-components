@@ -1,6 +1,6 @@
 /* @flow */
 
-import { getLogger, FPTI_KEY, getPayPalDomain, getIntent } from 'paypal-braintree-web-client/src';
+import { getLogger, FPTI_KEY, getPayPalDomain, getIntent, getCurrency } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { on, send } from 'post-robot/src';
 import { getAncestor, isSameDomain } from 'cross-domain-utils/src';
@@ -18,7 +18,7 @@ let proxyRest : ProxyRest = {};
 
 export type OrderCreateRequest = {
     intent? : 'CAPTURE' | 'AUTHORIZE',
-    purchase_units? : Array<{
+    purchase_units : Array<{
         amount : {
             currency_code : string,
             value : string
@@ -90,10 +90,25 @@ export function createOrder(clientID : string, order : OrderCreateRequest) : Zal
         throw new Error(`Expected order details to be passed`);
     }
 
+    let currency = getCurrency();
+    let intent = getIntent();
+
     order = { ...order };
 
+    if (order.intent && order.intent !== intent) {
+        throw new Error(`Unexpected intent: ${ order.intent } passed to order.create. Expected ${ intent }`);
+    }
+
     // $FlowFixMe
-    order.intent = order.intent || getIntent().toUpperCase();
+    order = { ...order, intent: intent.toUpperCase() };
+
+    order.purchase_units = order.purchase_units.map(unit => {
+        if (unit.amount.currency_code && unit.amount.currency_code !== currency) {
+            throw new Error(`Unexpected intent: ${ unit.amount.currency_code } passed to order.create. Expected ${ currency }`);
+        }
+
+        return { ...unit, amount: { ...unit.amount, currency_code: currency } };
+    });
 
     return createAccessToken(clientID).then((accessToken) : ZalgoPromise<Object> => {
 

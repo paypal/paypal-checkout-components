@@ -97,9 +97,10 @@ export const testGlobals = {
     __LOCALE_COUNTRY__: 'US',
     __DEFAULT_LANG__:   'en',
 
-    __INTENT__: 'capture',
-    __COMMIT__: true,
-    __VAULT__:  true,
+    __INTENT__:   'capture',
+    __COMMIT__:   true,
+    __VAULT__:    true,
+    __CURRENCY__: 'USD',
 
     __PORT__:       8000,
     __STAGE_HOST__: 'msmaster.qa.paypal.com',
