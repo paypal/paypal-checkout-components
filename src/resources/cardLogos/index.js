@@ -10,6 +10,7 @@ import discover     from './discover.svg';
 import hiper        from './hiper.svg';
 import elo          from './elo.svg';
 import jcb          from './jcb.svg';
+import cup          from './cup.svg';
 
 export let cardLogos = {
     [ CARD.VISA ]:       visa,
@@ -19,5 +20,6 @@ export let cardLogos = {
     [ CARD.DISCOVER ]:   discover,
     [ CARD.HIPER ]:      hiper,
     [ CARD.ELO ]:        elo,
-    [ CARD.JCB ]:        jcb
+    [ CARD.JCB ]:        jcb,
+    [ CARD.CUP ]:        cup
 };

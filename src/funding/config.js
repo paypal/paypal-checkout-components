@@ -231,6 +231,15 @@ export const CARD_CONFIG = {
             CARD.AMEX,
             CARD.JCB
         ]
+    },
+
+    [ COUNTRY.CN ]: {
+        priority: [
+            CARD.VISA,
+            CARD.MASTERCARD,
+            CARD.AMEX,
+            CARD.CUP
+        ]
     }
 };
 

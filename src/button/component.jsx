@@ -16,7 +16,7 @@ import { redirect as redir, checkRecognizedBrowser,
     isIEIntranet, isEligible,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, getThrottle,
-    getBrowser, isWebView, isEdgeIOS, isFirefoxIOS, buildFundingLogoThrottle } from '../lib';
+    getBrowser, buildFundingLogoThrottle } from '../lib';
 import { rest, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
@@ -78,7 +78,6 @@ function isCreditDualEligible(props) : boolean {
 }
 
 let creditThrottle;
-let venmoThrottle;
 let fundingLogoThrottle;
 
 type ButtonOptions = {
@@ -195,6 +194,9 @@ export let Button : Component<ButtonOptions> = create({
             def(props) : boolean {
                 fundingLogoThrottle = fundingLogoThrottle || buildFundingLogoThrottle({ ...props, browserLocale: getBrowserLocale() });
                 return fundingLogoThrottle && fundingLogoThrottle.isEnabled() ? true : false;
+            },
+            queryValue(val : boolean) : string {
+                return val ? 'true' : 'false';
             }
         },
 
@@ -458,21 +460,6 @@ export let Button : Component<ButtonOptions> = create({
 
                 let remembered = getRememberedFunding(sources => sources);
 
-                /* Uncookied venmo ramp. Even without 'pwv' cookie, we'll be rendering venmo button
-                    for a sample of the mobile population.
-                    Webviews, EdgeIOS, and FirefoxIOS do NOT qualify for this experiment
-                 */
-                if (allowed && allowed.indexOf(FUNDING.VENMO) === -1 &&
-                    remembered && remembered.indexOf(FUNDING.VENMO) === -1 &&
-                    isDevice() && !isWebView() && !isEdgeIOS() && !isFirefoxIOS()) {
-
-                    venmoThrottle = getThrottle('venmo_uncookied_render', 10);
-
-                    if (venmoThrottle.isEnabled()) {
-                        allowed = [ ...allowed, FUNDING.VENMO ];
-                    }
-                }
-
                 if (!isDevice() || getDomainSetting('disable_venmo')) {
                     if (remembered && remembered.indexOf(FUNDING.VENMO) !== -1) {
                         remembered = remembered.filter(source => (source !== FUNDING.VENMO));
@@ -521,12 +508,6 @@ export let Button : Component<ButtonOptions> = create({
 
                     if (creditThrottle) {
                         creditThrottle.logStart({
-                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
-                        });
-                    }
-
-                    if (venmoThrottle) {
-                        venmoThrottle.logStart({
                             [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
                         });
                     }
@@ -635,12 +616,6 @@ export let Button : Component<ButtonOptions> = create({
 
                     if (creditThrottle) {
                         creditThrottle.logComplete({
-                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
-                        });
-                    }
-
-                    if (venmoThrottle) {
-                        venmoThrottle.logComplete({
                             [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
                         });
                     }
@@ -777,12 +752,6 @@ export let Button : Component<ButtonOptions> = create({
                         fundingLogoThrottle.log('click', {
                             [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
                             [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
-                        });
-                    }
-
-                    if (venmoThrottle) {
-                        venmoThrottle.log('click', {
-                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
                         });
                     }
 
