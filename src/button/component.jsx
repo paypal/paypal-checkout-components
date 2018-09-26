@@ -194,6 +194,9 @@ export let Button : Component<ButtonOptions> = create({
             def(props) : boolean {
                 fundingLogoThrottle = fundingLogoThrottle || buildFundingLogoThrottle({ ...props, browserLocale: getBrowserLocale() });
                 return fundingLogoThrottle && fundingLogoThrottle.isEnabled() ? true : false;
+            },
+            queryValue(val : boolean) : string {
+                return val ? 'true' : 'false';
             }
         },
 
