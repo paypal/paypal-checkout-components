@@ -236,7 +236,7 @@ export let config = {
         'everskin.com': {
             disable_venmo: true
         },
-        
+
         'zulily.com': {
             disable_venmo: true
         }
@@ -717,7 +717,7 @@ export let config = {
 
     loggerUri: `/xoplatform/logger/api/logger`,
 
-    loggerThrottlePercentage: 0.50, // 50%
+    loggerThrottlePercentage: 1.0, // 100%
 
     pptmUri: `/tagmanager/pptm.js`,
 
