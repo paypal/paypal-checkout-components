@@ -130,6 +130,90 @@ module.exports =
 
 /***/ }),
 
+/***/ "./node_modules/belter/src/css.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export isPerc */
+/* unused harmony export isPx */
+/* unused harmony export toNum */
+/* unused harmony export toPx */
+/* unused harmony export toCSS */
+/* unused harmony export percOf */
+/* unused harmony export normalizeDimension */
+function isPerc(str) {
+    return typeof str === 'string' && /^[0-9]+%$/.test(str);
+}
+
+function isPx(str) {
+    return typeof str === 'string' && /^[0-9]+px$/.test(str);
+}
+
+function toNum(val) {
+
+    if (typeof val === 'number') {
+        return val;
+    }
+
+    var match = val.match(/^([0-9]+)(px|%)$/);
+
+    if (!match) {
+        throw new Error('Could not match css value from ' + val);
+    }
+
+    return parseInt(match[1], 10);
+}
+
+function toPx(val) {
+    return toNum(val) + 'px';
+}
+
+function toCSS(val) {
+
+    if (typeof val === 'number') {
+        return toPx(val);
+    }
+
+    return isPerc(val) ? val : toPx(val);
+}
+
+function percOf(num, perc) {
+    return parseInt(num * toNum(perc) / 100, 10);
+}
+
+function normalizeDimension(dim, max) {
+    if (typeof dim === 'number') {
+        return dim;
+    } else if (isPerc(dim)) {
+        return percOf(max, dim);
+    } else if (isPx(dim)) {
+        return toNum(dim);
+    } else {
+        throw new Error('Can not normalize dimension: ' + dim);
+    }
+}
+
+/***/ }),
+
+/***/ "./node_modules/belter/src/decorators.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export memoized */
+/* unused harmony export promise */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__("./node_modules/belter/src/util.js");
+
+
+function memoized(target, name, descriptor) {
+    descriptor.value = Object(__WEBPACK_IMPORTED_MODULE_0__util__["g" /* memoize */])(descriptor.value, { name: name, thisNamespace: true });
+}
+
+function promise(target, name, descriptor) {
+    descriptor.value = Object(__WEBPACK_IMPORTED_MODULE_0__util__["m" /* promisify */])(descriptor.value, { name: name });
+}
+
+/***/ }),
+
 /***/ "./node_modules/belter/src/device.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -327,6 +411,12 @@ function supportsPopups() {
 // EXTERNAL MODULE: ./node_modules/zalgo-promise/src/index.js + 4 modules
 var src = __webpack_require__("./node_modules/zalgo-promise/src/index.js");
 
+// EXTERNAL MODULE: ./node_modules/cross-domain-utils/src/index.js
+var cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js");
+
+// EXTERNAL MODULE: ./node_modules/cross-domain-safe-weakmap/src/index.js + 4 modules
+var cross_domain_safe_weakmap_src = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js");
+
 // EXTERNAL MODULE: ./node_modules/belter/src/util.js
 var util = __webpack_require__("./node_modules/belter/src/util.js");
 
@@ -339,12 +429,15 @@ var KEY_CODES = {
 };
 // CONCATENATED MODULE: ./node_modules/belter/src/dom.js
 /* unused harmony export isDocumentReady */
+/* unused harmony export urlEncode */
 /* unused harmony export waitForWindowReady */
 /* unused harmony export waitForDocumentReady */
 /* unused harmony export waitForDocumentBody */
 /* unused harmony export parseQuery */
 /* unused harmony export getQueryParam */
 /* unused harmony export urlWillRedirectPage */
+/* unused harmony export formatQuery */
+/* unused harmony export extendQuery */
 /* unused harmony export extendUrl */
 /* unused harmony export redirect */
 /* unused harmony export hasMetaViewPort */
@@ -352,12 +445,56 @@ var KEY_CODES = {
 /* unused harmony export enablePerformance */
 /* unused harmony export getPageRenderTime */
 /* unused harmony export htmlEncode */
-/* harmony export (immutable) */ __webpack_exports__["c"] = isBrowser;
+/* harmony export (immutable) */ __webpack_exports__["e"] = isBrowser;
 /* unused harmony export querySelectorAll */
 /* unused harmony export onClick */
-/* harmony export (immutable) */ __webpack_exports__["b"] = getScript;
-/* harmony export (immutable) */ __webpack_exports__["d"] = isLocalStorageEnabled;
-/* harmony export (immutable) */ __webpack_exports__["a"] = getBrowserLocales;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getScript;
+/* harmony export (immutable) */ __webpack_exports__["f"] = isLocalStorageEnabled;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getBrowserLocales;
+/* harmony export (immutable) */ __webpack_exports__["a"] = appendChild;
+/* unused harmony export isElement */
+/* unused harmony export getElementSafe */
+/* unused harmony export getElement */
+/* unused harmony export elementReady */
+/* unused harmony export PopupOpenError */
+/* unused harmony export popup */
+/* harmony export (immutable) */ __webpack_exports__["i"] = writeToWindow;
+/* harmony export (immutable) */ __webpack_exports__["h"] = writeElementToWindow;
+/* harmony export (immutable) */ __webpack_exports__["g"] = setStyle;
+/* unused harmony export awaitFrameLoad */
+/* unused harmony export awaitFrameWindow */
+/* unused harmony export createElement */
+/* unused harmony export iframe */
+/* unused harmony export addEventListener */
+/* unused harmony export elementStoppedMoving */
+/* unused harmony export getCurrentDimensions */
+/* unused harmony export setOverflow */
+/* unused harmony export trackDimensions */
+/* unused harmony export onDimensionsChange */
+/* unused harmony export dimensionsMatchViewport */
+/* unused harmony export bindEvents */
+/* unused harmony export setVendorCSS */
+/* unused harmony export animate */
+/* unused harmony export makeElementVisible */
+/* unused harmony export makeElementInvisible */
+/* unused harmony export showElement */
+/* unused harmony export hideElement */
+/* unused harmony export destroyElement */
+/* unused harmony export showAndAnimate */
+/* unused harmony export animateAndHide */
+/* unused harmony export addClass */
+/* unused harmony export removeClass */
+/* unused harmony export isElementClosed */
+/* unused harmony export watchElementForClose */
+/* harmony export (immutable) */ __webpack_exports__["b"] = fixScripts;
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+/* eslint max-lines: off */
+
+
+
 
 
 
@@ -369,8 +506,12 @@ function isDocumentReady() {
     return Boolean(document.body) && document.readyState === 'complete';
 }
 
+function urlEncode(str) {
+    return str.replace(/\?/g, '%3F').replace(/&/g, '%26').replace(/#/g, '%23').replace(/\+/g, '%2B');
+}
+
 function waitForWindowReady() {
-    return Object(util["b" /* inlineMemoize */])(waitForWindowReady, function () {
+    return Object(util["e" /* inlineMemoize */])(waitForWindowReady, function () {
         return new src["a" /* ZalgoPromise */](function (resolve) {
             if (isDocumentReady()) {
                 resolve();
@@ -384,7 +525,7 @@ function waitForWindowReady() {
 }
 
 function waitForDocumentReady() {
-    return Object(util["b" /* inlineMemoize */])(waitForDocumentReady, function () {
+    return Object(util["e" /* inlineMemoize */])(waitForDocumentReady, function () {
         return new src["a" /* ZalgoPromise */](function (resolve) {
 
             if (isDocumentReady()) {
@@ -412,7 +553,7 @@ function waitForDocumentBody() {
 }
 
 function parseQuery(queryString) {
-    return Object(util["b" /* inlineMemoize */])(parseQuery, function () {
+    return Object(util["e" /* inlineMemoize */])(parseQuery, function () {
         var params = {};
 
         if (!queryString) {
@@ -457,53 +598,62 @@ function urlWillRedirectPage(url) {
     return true;
 }
 
-function extendUrl(url) {
-    var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+function formatQuery() {
+    var obj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
 
-    var hasHash = url.indexOf('#') > 0;
-
-    var _url$split = url.split('#'),
-        serverUrl = _url$split[0],
-        hash = _url$split[1];
-
-    if (hash && !serverUrl) {
-        var _ref = ['#' + hash, ''];
-        serverUrl = _ref[0];
-        hash = _ref[1];
-    }
-
-    var _serverUrl$split = serverUrl.split('?'),
-        originalUrl = _serverUrl$split[0],
-        originalQueryString = _serverUrl$split[1];
-
-    if (originalQueryString) {
-        var originalQuery = parseQuery(originalQueryString);
-
-        for (var _key in originalQuery) {
-            if (!params.hasOwnProperty(_key)) {
-                params[_key] = originalQuery[_key];
-            }
-        }
-    }
-
-    var newQueryString = Object.keys(params).filter(function (key) {
-        return key && params[key];
-    }).sort().map(function (key) {
-        return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+    return Object.keys(obj).filter(function (key) {
+        return typeof obj[key] === 'string';
+    }).map(function (key) {
+        return urlEncode(key) + '=' + urlEncode(obj[key]);
     }).join('&');
+}
 
-    var newUrl = originalUrl;
+function extendQuery(originalQuery) {
+    var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-    if (newQueryString) {
-        newUrl = newUrl + '?' + newQueryString;
+
+    if (!props || !Object.keys(props).length) {
+        return originalQuery;
     }
 
-    if (hasHash) {
-        newUrl = newUrl + '#' + (hash || '');
+    return formatQuery(_extends({}, parseQuery(originalQuery), props));
+}
+
+function extendUrl(url) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+
+    var query = options.query || {};
+    var hash = options.hash || {};
+
+    var originalUrl = void 0;
+    var originalQuery = void 0;
+    var originalHash = void 0;
+
+    var _url$split = url.split('#');
+
+    originalUrl = _url$split[0];
+    originalHash = _url$split[1];
+
+    var _originalUrl$split = originalUrl.split('?');
+
+    originalUrl = _originalUrl$split[0];
+    originalQuery = _originalUrl$split[1];
+
+
+    var queryString = extendQuery(originalQuery, query);
+    var hashString = extendQuery(originalHash, hash);
+
+    if (queryString) {
+        originalUrl = originalUrl + '?' + queryString;
     }
 
-    return newUrl;
+    if (hashString) {
+        originalUrl = originalUrl + '#' + hashString;
+    }
+
+    return originalUrl;
 }
 
 function redirect(url) {
@@ -532,7 +682,7 @@ function isElementVisible(el) {
 }
 
 function enablePerformance() {
-    return Object(util["b" /* inlineMemoize */])(enablePerformance, function () {
+    return Object(util["e" /* inlineMemoize */])(enablePerformance, function () {
         /* eslint-disable compat/compat */
         return Boolean(window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1000 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0);
         /* eslint-enable compat/compat */
@@ -571,7 +721,7 @@ function querySelectorAll(selector) {
 }
 
 function onClick(element, handler) {
-    element.addEventListener('touchstart', util["d" /* noop */]);
+    element.addEventListener('touchstart', util["h" /* noop */]);
     element.addEventListener('click', handler);
     element.addEventListener('keypress', function (event) {
         // $FlowFixMe
@@ -581,12 +731,12 @@ function onClick(element, handler) {
     });
 }
 
-function getScript(_ref2) {
-    var _ref2$host = _ref2.host,
-        host = _ref2$host === undefined ? window.location.host : _ref2$host,
-        path = _ref2.path;
+function getScript(_ref) {
+    var _ref$host = _ref.host,
+        host = _ref$host === undefined ? window.location.host : _ref$host,
+        path = _ref.path;
 
-    return Object(util["b" /* inlineMemoize */])(getScript, function () {
+    return Object(util["e" /* inlineMemoize */])(getScript, function () {
 
         var url = '' + host + path;
         var scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
@@ -607,7 +757,7 @@ function getScript(_ref2) {
 }
 
 function isLocalStorageEnabled() {
-    return Object(util["b" /* inlineMemoize */])(isLocalStorageEnabled, function () {
+    return Object(util["e" /* inlineMemoize */])(isLocalStorageEnabled, function () {
         try {
             if (typeof window === 'undefined') {
                 return false;
@@ -660,6 +810,744 @@ function getBrowserLocales() {
     }).filter(Boolean);
 }
 
+function appendChild(container, child) {
+    container.appendChild(child);
+}
+
+function isElement(element) {
+
+    if (element instanceof window.Element) {
+        return true;
+    }
+
+    if (element !== null && (typeof element === 'undefined' ? 'undefined' : _typeof(element)) === 'object' && element.nodeType === 1 && _typeof(element.style) === 'object' && _typeof(element.ownerDocument) === 'object') {
+        return true;
+    }
+
+    return false;
+}
+
+function getElementSafe(id) {
+
+    if (isElement(id)) {
+        // $FlowFixMe
+        return id;
+    }
+
+    if (typeof id === 'string') {
+        var element = document.getElementById(id);
+
+        if (element) {
+            return element;
+        }
+
+        if (document.querySelector) {
+            element = document.querySelector(id);
+        }
+
+        if (element) {
+            return element;
+        }
+    }
+}
+
+function getElement(id) {
+
+    var element = getElementSafe(id);
+
+    if (element) {
+        return element;
+    }
+
+    throw new Error('Can not find element: ' + Object(util["q" /* stringify */])(id));
+}
+
+function elementReady(id) {
+    return new src["a" /* ZalgoPromise */](function (resolve, reject) {
+
+        var name = Object(util["q" /* stringify */])(id);
+        var el = getElementSafe(id);
+
+        if (el) {
+            return resolve(el);
+        }
+
+        if (isDocumentReady()) {
+            return reject(new Error('Document is ready and element ' + name + ' does not exist'));
+        }
+
+        var interval = setInterval(function () {
+
+            el = getElementSafe(id);
+
+            if (el) {
+                clearInterval(interval);
+                return resolve(el);
+            }
+
+            if (isDocumentReady()) {
+                clearInterval(interval);
+                return reject(new Error('Document is ready and element ' + name + ' does not exist'));
+            }
+        }, 10);
+    });
+}
+
+function PopupOpenError(message) {
+    this.message = message;
+}
+
+PopupOpenError.prototype = Object.create(Error.prototype);
+
+function popup(url, options) {
+
+    // eslint-disable-next-line array-callback-return
+    var params = Object.keys(options).map(function (key) {
+        if (options[key]) {
+            return key + '=' + Object(util["q" /* stringify */])(options[key]);
+        }
+    }).filter(Boolean).join(',');
+
+    var win = void 0;
+
+    try {
+        win = window.open(url, options.name, params, true);
+    } catch (err) {
+        throw new PopupOpenError('Can not open popup window - ' + (err.stack || err.message));
+    }
+
+    if (Object(cross_domain_utils_src["isWindowClosed"])(win)) {
+        var err = new PopupOpenError('Can not open popup window - blocked');
+        throw err;
+    }
+
+    return win;
+}
+
+function writeToWindow(win, html) {
+    try {
+        win.document.open();
+        win.document.write(html);
+        win.document.close();
+    } catch (err) {
+        try {
+            win.location = 'javascript: document.open(); document.write(' + JSON.stringify(html) + '); document.close();';
+        } catch (err2) {
+            // pass
+        }
+    }
+}
+
+function writeElementToWindow(win, el) {
+
+    var tag = el.tagName.toLowerCase();
+
+    if (tag !== 'html') {
+        throw new Error('Expected element to be html, got ' + tag);
+    }
+
+    var documentElement = win.document.documentElement;
+
+    while (documentElement.children && documentElement.children.length) {
+        documentElement.removeChild(documentElement.children[0]);
+    }
+
+    while (el.children.length) {
+        documentElement.appendChild(el.children[0]);
+    }
+}
+
+function setStyle(el, styleText) {
+    var doc = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : window.document;
+
+    // $FlowFixMe
+    if (el.styleSheet) {
+        // $FlowFixMe
+        el.styleSheet.cssText = styleText;
+    } else {
+        el.appendChild(doc.createTextNode(styleText));
+    }
+}
+
+var awaitFrameLoadPromises = void 0;
+
+function awaitFrameLoad(frame) {
+    awaitFrameLoadPromises = awaitFrameLoadPromises || new cross_domain_safe_weakmap_src["a" /* WeakMap */]();
+
+    if (awaitFrameLoadPromises.has(frame)) {
+        var _promise = awaitFrameLoadPromises.get(frame);
+        if (_promise) {
+            return _promise;
+        }
+    }
+
+    var promise = new src["a" /* ZalgoPromise */](function (resolve, reject) {
+        frame.addEventListener('load', function () {
+            Object(cross_domain_utils_src["linkFrameWindow"])(frame);
+            resolve(frame);
+        });
+
+        frame.addEventListener('error', function (err) {
+            if (frame.contentWindow) {
+                resolve(frame);
+            } else {
+                reject(err);
+            }
+        });
+    });
+
+    awaitFrameLoadPromises.set(frame, promise);
+
+    return promise;
+}
+
+function awaitFrameWindow(frame) {
+
+    if (frame.contentWindow) {
+        return src["a" /* ZalgoPromise */].resolve(frame.contentWindow);
+    }
+
+    return awaitFrameLoad(frame).then(function (loadedFrame) {
+
+        if (!loadedFrame.contentWindow) {
+            throw new Error('Could not find window in iframe');
+        }
+
+        return loadedFrame.contentWindow;
+    });
+}
+
+function createElement() {
+    var tag = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'div';
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var container = arguments[2];
+
+
+    tag = tag.toLowerCase();
+    var element = document.createElement(tag);
+
+    if (options.style) {
+        Object(util["c" /* extend */])(element.style, options.style);
+    }
+
+    if (options['class']) {
+        element.className = options['class'].join(' ');
+    }
+
+    if (options.attributes) {
+        for (var _i6 = 0, _Object$keys2 = Object.keys(options.attributes), _length6 = _Object$keys2 == null ? 0 : _Object$keys2.length; _i6 < _length6; _i6++) {
+            var key = _Object$keys2[_i6];
+            element.setAttribute(key, options.attributes[key]);
+        }
+    }
+
+    if (options.styleSheet) {
+        setStyle(element, options.styleSheet);
+    }
+
+    if (container) {
+        appendChild(container, element);
+    }
+
+    if (options.html) {
+        if (tag === 'iframe') {
+            // $FlowFixMe
+            if (!container || !element.contentWindow) {
+                throw new Error('Iframe html can not be written unless container provided and iframe in DOM');
+            }
+
+            // $FlowFixMe
+            writeToWindow(element.contentWindow, options.html);
+        } else {
+            element.innerHTML = options.html;
+        }
+    }
+
+    return element;
+}
+
+function iframe() {
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var container = arguments[1];
+
+
+    var el = getElement(container);
+
+    var attributes = options.attributes || {};
+    var style = options.style || {};
+
+    var frame = createElement('iframe', {
+        attributes: _extends({
+            frameBorder: '0',
+            allowTransparency: 'true'
+        }, attributes),
+        style: _extends({
+            backgroundColor: 'transparent'
+        }, style),
+        html: options.html,
+        'class': options['class']
+    });
+
+    // $FlowFixMe
+    awaitFrameLoad(frame);
+
+    el.appendChild(frame);
+
+    if (options.url || window.navigator.userAgent.match(/MSIE|Edge/i)) {
+        frame.setAttribute('src', options.url || 'about:blank');
+    }
+
+    // $FlowFixMe
+    return frame;
+}
+
+function addEventListener(obj, event, handler) {
+    obj.addEventListener(event, handler);
+    return {
+        cancel: function cancel() {
+            obj.removeEventListener(event, handler);
+        }
+    };
+}
+
+function elementStoppedMoving(element) {
+    var timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
+
+    return new src["a" /* ZalgoPromise */](function (resolve, reject) {
+        var el = getElement(element);
+
+        var start = el.getBoundingClientRect();
+
+        var interval = void 0;
+        var timer = void 0;
+
+        interval = setInterval(function () {
+            var end = el.getBoundingClientRect();
+
+            if (start.top === end.top && start.bottom === end.bottom && start.left === end.left && start.right === end.right && start.width === end.width && start.height === end.height) {
+                clearTimeout(timer);
+                clearInterval(interval);
+                return resolve();
+            }
+
+            start = end;
+        }, 50);
+
+        timer = setTimeout(function () {
+            clearInterval(interval);
+            reject(new Error('Timed out waiting for element to stop animating after ' + timeout + 'ms'));
+        }, timeout);
+    });
+}
+
+function getCurrentDimensions(el) {
+    return {
+        width: el.offsetWidth,
+        height: el.offsetHeight
+    };
+}
+
+function setOverflow(el) {
+    var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'auto';
+    var _el$style = el.style,
+        overflow = _el$style.overflow,
+        overflowX = _el$style.overflowX,
+        overflowY = _el$style.overflowY;
+
+
+    el.style.overflow = el.style.overflowX = el.style.overflowY = value;
+
+    return {
+        reset: function reset() {
+            el.style.overflow = overflow;
+            el.style.overflowX = overflowX;
+            el.style.overflowY = overflowY;
+        }
+    };
+}
+
+function dimensionsDiff(one, two, _ref2) {
+    var _ref2$width = _ref2.width,
+        width = _ref2$width === undefined ? true : _ref2$width,
+        _ref2$height = _ref2.height,
+        height = _ref2$height === undefined ? true : _ref2$height,
+        _ref2$threshold = _ref2.threshold,
+        threshold = _ref2$threshold === undefined ? 0 : _ref2$threshold;
+
+
+    if (width && Math.abs(one.width - two.width) > threshold) {
+        return true;
+    }
+
+    if (height && Math.abs(one.height - two.height) > threshold) {
+        return true;
+    }
+
+    return false;
+}
+
+function trackDimensions(el, _ref3) {
+    var _ref3$width = _ref3.width,
+        width = _ref3$width === undefined ? true : _ref3$width,
+        _ref3$height = _ref3.height,
+        height = _ref3$height === undefined ? true : _ref3$height,
+        _ref3$threshold = _ref3.threshold,
+        threshold = _ref3$threshold === undefined ? 0 : _ref3$threshold;
+
+
+    var currentDimensions = getCurrentDimensions(el);
+
+    return {
+        check: function check() {
+            var newDimensions = getCurrentDimensions(el);
+
+            return {
+                changed: dimensionsDiff(currentDimensions, newDimensions, { width: width, height: height, threshold: threshold }),
+                dimensions: newDimensions
+            };
+        },
+        reset: function reset() {
+            currentDimensions = getCurrentDimensions(el);
+        }
+    };
+}
+
+function onDimensionsChange(el, _ref4) {
+    var _ref4$width = _ref4.width,
+        width = _ref4$width === undefined ? true : _ref4$width,
+        _ref4$height = _ref4.height,
+        height = _ref4$height === undefined ? true : _ref4$height,
+        _ref4$delay = _ref4.delay,
+        delay = _ref4$delay === undefined ? 50 : _ref4$delay,
+        _ref4$threshold = _ref4.threshold,
+        threshold = _ref4$threshold === undefined ? 0 : _ref4$threshold;
+
+
+    return new src["a" /* ZalgoPromise */](function (resolve) {
+
+        var tracker = trackDimensions(el, { width: width, height: height, threshold: threshold });
+
+        var interval = void 0;
+
+        var resolver = Object(util["b" /* debounce */])(function (dimensions) {
+            clearInterval(interval);
+            return resolve(dimensions);
+        }, delay * 4);
+
+        interval = setInterval(function () {
+            var _tracker$check = tracker.check(),
+                changed = _tracker$check.changed,
+                dimensions = _tracker$check.dimensions;
+
+            if (changed) {
+                tracker.reset();
+                return resolver(dimensions);
+            }
+        }, delay);
+
+        function onWindowResize() {
+            var _tracker$check2 = tracker.check(),
+                changed = _tracker$check2.changed,
+                dimensions = _tracker$check2.dimensions;
+
+            if (changed) {
+                tracker.reset();
+                window.removeEventListener('resize', onWindowResize);
+                resolver(dimensions);
+            }
+        }
+
+        window.addEventListener('resize', onWindowResize);
+    });
+}
+
+function dimensionsMatchViewport(el, _ref5) {
+    var width = _ref5.width,
+        height = _ref5.height;
+
+
+    var dimensions = getCurrentDimensions(el);
+
+    if (width && dimensions.width !== window.innerWidth) {
+        return false;
+    }
+
+    if (height && dimensions.height !== window.innerHeight) {
+        return false;
+    }
+
+    return true;
+}
+
+function bindEvents(element, eventNames, handler) {
+
+    handler = Object(util["j" /* once */])(handler);
+
+    for (var _i8 = 0, _length8 = eventNames == null ? 0 : eventNames.length; _i8 < _length8; _i8++) {
+        var eventName = eventNames[_i8];
+        element.addEventListener(eventName, handler);
+    }
+
+    return {
+        cancel: Object(util["j" /* once */])(function () {
+            for (var _i10 = 0, _length10 = eventNames == null ? 0 : eventNames.length; _i10 < _length10; _i10++) {
+                var _eventName = eventNames[_i10];
+                element.removeEventListener(_eventName, handler);
+            }
+        })
+    };
+}
+
+var VENDOR_PREFIXES = ['webkit', 'moz', 'ms', 'o'];
+
+function setVendorCSS(element, name, value) {
+
+    // $FlowFixMe
+    element.style[name] = value;
+
+    var capitalizedName = Object(util["a" /* capitalizeFirstLetter */])(name);
+
+    for (var _i12 = 0, _length12 = VENDOR_PREFIXES == null ? 0 : VENDOR_PREFIXES.length; _i12 < _length12; _i12++) {
+        var prefix = VENDOR_PREFIXES[_i12];
+        // $FlowFixMe
+        element.style['' + prefix + capitalizedName] = value;
+    }
+}
+
+function isValidAnimation(element, name) {
+
+    var CSSRule = window.CSSRule;
+
+    var KEYFRAMES_RULE = CSSRule.KEYFRAMES_RULE || CSSRule.WEBKIT_KEYFRAMES_RULE || CSSRule.MOZ_KEYFRAMES_RULE || CSSRule.O_KEYFRAMES_RULE || CSSRule.MS_KEYFRAMES_RULE;
+
+    var stylesheets = element.ownerDocument.styleSheets;
+
+    try {
+        for (var i = 0; i < stylesheets.length; i++) {
+
+            // $FlowFixMe
+            var cssRules = stylesheets[i].cssRules;
+
+            if (!cssRules) {
+                continue;
+            }
+
+            for (var j = 0; j < cssRules.length; j++) {
+
+                var cssRule = cssRules[j];
+
+                if (!cssRule) {
+                    continue;
+                }
+
+                if (cssRule.type === KEYFRAMES_RULE && cssRule.name === name) {
+                    return true;
+                }
+            }
+        }
+    } catch (err) {
+
+        return false;
+    }
+
+    return false;
+}
+
+var ANIMATION_START_EVENTS = ['animationstart', 'webkitAnimationStart', 'oAnimationStart', 'MSAnimationStart'];
+var ANIMATION_END_EVENTS = ['animationend', 'webkitAnimationEnd', 'oAnimationEnd', 'MSAnimationEnd'];
+
+function animate(element, name, clean) {
+    var timeout = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1000;
+
+    return new src["a" /* ZalgoPromise */](function (resolve, reject) {
+
+        var el = getElement(element);
+
+        if (!el || !isValidAnimation(el, name)) {
+            return resolve();
+        }
+
+        var hasStarted = false;
+
+        var startTimeout = void 0;
+        var endTimeout = void 0;
+        var startEvent = void 0;
+        var endEvent = void 0;
+
+        function cleanUp() {
+            setVendorCSS(el, 'animationName', '');
+            clearTimeout(startTimeout);
+            clearTimeout(endTimeout);
+            startEvent.cancel();
+            endEvent.cancel();
+        }
+
+        startEvent = bindEvents(el, ANIMATION_START_EVENTS, function (event) {
+
+            // $FlowFixMe
+            if (event.target !== el || event.animationName !== name) {
+                return;
+            }
+
+            clearTimeout(startTimeout);
+
+            event.stopPropagation();
+
+            startEvent.cancel();
+            hasStarted = true;
+
+            endTimeout = setTimeout(function () {
+                cleanUp();
+                resolve();
+            }, timeout);
+        });
+
+        endEvent = bindEvents(el, ANIMATION_END_EVENTS, function (event) {
+
+            // $FlowFixMe
+            if (event.target !== el || event.animationName !== name) {
+                return;
+            }
+
+            cleanUp();
+
+            // $FlowFixMe
+            if (typeof event.animationName === 'string' && event.animationName !== name) {
+                return reject('Expected animation name to be ' + name + ', found ' + event.animationName);
+            }
+
+            return resolve();
+        });
+
+        setVendorCSS(el, 'animationName', name);
+
+        startTimeout = setTimeout(function () {
+            if (!hasStarted) {
+                cleanUp();
+                return resolve();
+            }
+        }, 200);
+
+        if (clean) {
+            clean(cleanUp);
+        }
+    });
+}
+
+var STYLE = {
+
+    DISPLAY: {
+        NONE: 'none',
+        BLOCK: 'block'
+    },
+
+    VISIBILITY: {
+        VISIBLE: 'visible',
+        HIDDEN: 'hidden'
+    },
+
+    IMPORTANT: 'important'
+};
+
+function makeElementVisible(element) {
+    element.style.setProperty('visibility', '');
+}
+
+function makeElementInvisible(element) {
+    element.style.setProperty('visibility', STYLE.VISIBILITY.HIDDEN, STYLE.IMPORTANT);
+}
+
+function showElement(element) {
+    element.style.setProperty('display', '');
+}
+
+function hideElement(element) {
+    element.style.setProperty('display', STYLE.DISPLAY.NONE, STYLE.IMPORTANT);
+}
+
+function destroyElement(element) {
+    if (element.parentNode) {
+        element.parentNode.removeChild(element);
+    }
+}
+
+function showAndAnimate(element, name, clean) {
+    var animation = animate(element, name, clean);
+    showElement(element);
+    return animation;
+}
+
+function animateAndHide(element, name, clean) {
+    return animate(element, name, clean).then(function () {
+        hideElement(element);
+    });
+}
+
+function addClass(element, name) {
+    if (element.classList) {
+        element.classList.add(name);
+    } else if (element.className.split(/\s+/).indexOf(name) === -1) {
+        element.className += ' ' + name;
+    }
+}
+
+function removeClass(element, name) {
+    if (element.classList) {
+        element.classList.remove(name);
+    } else if (element.className.split(/\s+/).indexOf(name) !== -1) {
+        element.className = element.className.replace(name, '');
+    }
+}
+
+function isElementClosed(el) {
+    if (!el || !el.parentNode) {
+        return true;
+    }
+    return false;
+}
+
+function watchElementForClose(element, handler) {
+    handler = Object(util["j" /* once */])(handler);
+
+    var interval = void 0;
+
+    if (isElementClosed(element)) {
+        handler();
+    } else {
+        interval = Object(util["p" /* safeInterval */])(function () {
+            if (isElementClosed(element)) {
+                interval.cancel();
+                handler();
+            }
+        }, 50);
+    }
+
+    return {
+        cancel: function cancel() {
+            if (interval) {
+                interval.cancel();
+            }
+        }
+    };
+}
+
+function fixScripts(el) {
+    var doc = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : window.document;
+
+    for (var _i14 = 0, _querySelectorAll2 = querySelectorAll('script', el), _length14 = _querySelectorAll2 == null ? 0 : _querySelectorAll2.length; _i14 < _length14; _i14++) {
+        var script = _querySelectorAll2[_i14];
+        var parentNode = script.parentNode;
+
+        if (!parentNode) {
+            continue;
+        }
+
+        var newScript = doc.createElement('script');
+        newScript.text = script.textContent;
+        parentNode.replaceChild(newScript, script);
+    }
+}
+
 /***/ }),
 
 /***/ "./node_modules/belter/src/experiment.js":
@@ -708,9 +1596,9 @@ function experiment(_ref) {
         _ref$sample = _ref.sample,
         sample = _ref$sample === undefined ? 50 : _ref$sample,
         _ref$logTreatment = _ref.logTreatment,
-        logTreatment = _ref$logTreatment === undefined ? __WEBPACK_IMPORTED_MODULE_0__util__["d" /* noop */] : _ref$logTreatment,
+        logTreatment = _ref$logTreatment === undefined ? __WEBPACK_IMPORTED_MODULE_0__util__["h" /* noop */] : _ref$logTreatment,
         _ref$logCheckpoint = _ref.logCheckpoint,
-        logCheckpoint = _ref$logCheckpoint === undefined ? __WEBPACK_IMPORTED_MODULE_0__util__["d" /* noop */] : _ref$logCheckpoint;
+        logCheckpoint = _ref$logCheckpoint === undefined ? __WEBPACK_IMPORTED_MODULE_0__util__["h" /* noop */] : _ref$logCheckpoint;
 
 
     var throttle = getThrottlePercentile(name);
@@ -795,7 +1683,7 @@ function getGlobalNameSpace(_ref) {
         version = _ref$version === undefined ? 'latest' : _ref$version;
 
 
-    var global = Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* getGlobal */])();
+    var global = Object(__WEBPACK_IMPORTED_MODULE_0__util__["d" /* getGlobal */])();
     var globalKey = '__' + name + '__' + version + '_global__';
 
     var namespace = global[globalKey] = global[globalKey] || {};
@@ -965,9 +1853,9 @@ function addHeaderBuilder(method) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__device__ = __webpack_require__("./node_modules/belter/src/device.js");
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dom__ = __webpack_require__("./node_modules/belter/src/dom.js");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "getBrowserLocales", function() { return __WEBPACK_IMPORTED_MODULE_1__dom__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "getScript", function() { return __WEBPACK_IMPORTED_MODULE_1__dom__["b"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "isBrowser", function() { return __WEBPACK_IMPORTED_MODULE_1__dom__["c"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "getBrowserLocales", function() { return __WEBPACK_IMPORTED_MODULE_1__dom__["c"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "getScript", function() { return __WEBPACK_IMPORTED_MODULE_1__dom__["d"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "isBrowser", function() { return __WEBPACK_IMPORTED_MODULE_1__dom__["e"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__experiment__ = __webpack_require__("./node_modules/belter/src/experiment.js");
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__global__ = __webpack_require__("./node_modules/belter/src/global.js");
@@ -980,22 +1868,28 @@ function addHeaderBuilder(method) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__storage__ = __webpack_require__("./node_modules/belter/src/storage.js");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "getStorage", function() { return __WEBPACK_IMPORTED_MODULE_5__storage__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__util__ = __webpack_require__("./node_modules/belter/src/util.js");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "inlineMemoize", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["b"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "max", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["c"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "noop", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["d"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "objFilter", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["e"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "perc", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["f"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "promiseDebounce", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["g"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "safeInterval", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["j"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "stringifyError", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["k"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "stringifyErrorMessage", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["l"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "uniqueID", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["n"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "values", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["o"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "inlineMemoize", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["e"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "max", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["f"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "noop", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["h"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "objFilter", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["i"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "perc", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["k"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "promiseDebounce", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["l"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "safeInterval", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["p"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "stringifyError", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["r"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "stringifyErrorMessage", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["s"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "uniqueID", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["u"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "values", function() { return __WEBPACK_IMPORTED_MODULE_6__util__["v"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__http__ = __webpack_require__("./node_modules/belter/src/http.js");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "request", function() { return __WEBPACK_IMPORTED_MODULE_7__http__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__types__ = __webpack_require__("./node_modules/belter/src/types.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__types__);
 /* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__decorators__ = __webpack_require__("./node_modules/belter/src/decorators.js");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__css__ = __webpack_require__("./node_modules/belter/src/css.js");
+/* unused harmony namespace reexport */
+
+
 
 
 
@@ -1019,7 +1913,11 @@ function addHeaderBuilder(method) {
 /* harmony export (immutable) */ __webpack_exports__["a"] = Fragment;
 /* harmony export (immutable) */ __webpack_exports__["b"] = SVG;
 /* harmony export (immutable) */ __webpack_exports__["d"] = placeholderToJSX;
+/* unused harmony export jsxDom */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__("./node_modules/belter/src/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dom__ = __webpack_require__("./node_modules/belter/src/dom.js");
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -1033,6 +1931,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /* @jsx jsxToHTML */
 
 
+
+
+var JSX_EVENTS = {
+    onClick: 'click'
+};
 
 // eslint-disable-next-line no-use-before-define
 
@@ -1160,7 +2063,7 @@ function jsxToHTML(element) {
 function jsxRender(template, renderers) {
 
     // eslint-disable-next-line security/detect-unsafe-regex
-    var nodes = Object(__WEBPACK_IMPORTED_MODULE_0__util__["h" /* regexMap */])(template, /\{\s*([a-z]+)(?::\s*([^} ]+))?\s*\}|([^${}]+)/g, function (match, type, value, text) {
+    var nodes = Object(__WEBPACK_IMPORTED_MODULE_0__util__["n" /* regexMap */])(template, /\{\s*([a-z]+)(?::\s*([^} ]+))?\s*\}|([^${}]+)/g, function (match, type, value, text) {
         if (type) {
             if (!renderers[type]) {
                 throw new Error('Can not render type: ' + type);
@@ -1202,11 +2105,11 @@ function SVG(props) {
         throw new TypeError('Expected svg prop to be a string or jsx html node');
     }
 
-    return jsxToHTML('img', _extends({ src: Object(__WEBPACK_IMPORTED_MODULE_0__util__["m" /* svgToBase64 */])(svg.toString()) }, otherProps));
+    return jsxToHTML('img', _extends({ src: Object(__WEBPACK_IMPORTED_MODULE_0__util__["t" /* svgToBase64 */])(svg.toString()) }, otherProps));
 }
 
 function placeholderToJSX(text, placeholders) {
-    return Object(__WEBPACK_IMPORTED_MODULE_0__util__["i" /* regexTokenize */])(text, /(\{[a-z]+\})|([^{}]+)/g).map(function (token) {
+    return Object(__WEBPACK_IMPORTED_MODULE_0__util__["o" /* regexTokenize */])(text, /(\{[a-z]+\})|([^{}]+)/g).map(function (token) {
         var match = token.match(/^{([a-z]+)}$/);
         if (match) {
             return placeholders[match[1]]();
@@ -1216,6 +2119,91 @@ function placeholderToJSX(text, placeholders) {
             return token;
         }
     });
+}
+
+function jsxDom(element, props) {
+    for (var _len2 = arguments.length, children = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+        children[_key2 - 2] = arguments[_key2];
+    }
+
+    if (typeof element === 'function') {
+        return element(props, children);
+    }
+
+    var name = element.toLowerCase();
+
+    var doc = this && this.createElement ? this : window.document;
+
+    var el = doc.createElement(name);
+
+    for (var prop in props) {
+        if (prop in JSX_EVENTS) {
+            el.addEventListener(JSX_EVENTS[prop], props[prop]);
+        } else if (prop === 'innerHTML') {
+            el.innerHTML = props[prop];
+            Object(__WEBPACK_IMPORTED_MODULE_1__dom__["b" /* fixScripts */])(el, doc);
+        } else {
+            el.setAttribute(prop, props[prop]);
+        }
+    }
+
+    var content = children[0],
+        remaining = children.slice(1);
+
+
+    if (name === 'style') {
+
+        if (typeof content !== 'string') {
+            throw new TypeError('Expected ' + name + ' tag content to be string, got ' + (typeof content === 'undefined' ? 'undefined' : _typeof(content)));
+        }
+
+        if (remaining.length) {
+            throw new Error('Expected only text content for ' + name + ' tag');
+        }
+
+        Object(__WEBPACK_IMPORTED_MODULE_1__dom__["g" /* setStyle */])(el, content, doc);
+    } else if (name === 'iframe') {
+
+        if (remaining.length) {
+            throw new Error('Expected only single child node for iframe');
+        }
+
+        el.addEventListener('load', function () {
+            var win = el.contentWindow;
+
+            if (!win) {
+                throw new Error('Expected frame to have contentWindow');
+            }
+
+            if (typeof content === 'string') {
+                Object(__WEBPACK_IMPORTED_MODULE_1__dom__["i" /* writeToWindow */])(win, content);
+            } else {
+                Object(__WEBPACK_IMPORTED_MODULE_1__dom__["h" /* writeElementToWindow */])(win, content);
+            }
+        });
+    } else if (name === 'script') {
+
+        if (typeof content !== 'string') {
+            throw new TypeError('Expected ' + name + ' tag content to be string, got ' + (typeof content === 'undefined' ? 'undefined' : _typeof(content)));
+        }
+
+        if (remaining.length) {
+            throw new Error('Expected only text content for ' + name + ' tag');
+        }
+
+        el.text = content;
+    } else {
+        for (var i = 0; i < children.length; i++) {
+            if (typeof children[i] === 'string') {
+                var textNode = doc.createTextNode(children[i]);
+                Object(__WEBPACK_IMPORTED_MODULE_1__dom__["a" /* appendChild */])(el, textNode);
+            } else {
+                Object(__WEBPACK_IMPORTED_MODULE_1__dom__["a" /* appendChild */])(el, children[i]);
+            }
+        }
+    }
+
+    return el;
 }
 
 /***/ }),
@@ -1237,14 +2225,14 @@ function getStorage(_ref) {
         _ref$lifetime = _ref.lifetime,
         lifetime = _ref$lifetime === undefined ? 5 * 60 * 1000 : _ref$lifetime;
 
-    return Object(__WEBPACK_IMPORTED_MODULE_0__util__["b" /* inlineMemoize */])(getStorage, function () {
+    return Object(__WEBPACK_IMPORTED_MODULE_0__util__["e" /* inlineMemoize */])(getStorage, function () {
         var STORAGE_KEY = '__' + name + '_' + version + '_storage__';
 
         var accessedStorage = void 0;
 
         function getState(handler) {
 
-            var localStorageEnabled = Object(__WEBPACK_IMPORTED_MODULE_1__dom__["d" /* isLocalStorageEnabled */])();
+            var localStorageEnabled = Object(__WEBPACK_IMPORTED_MODULE_1__dom__["f" /* isLocalStorageEnabled */])();
             var storage = void 0;
 
             if (accessedStorage) {
@@ -1260,17 +2248,17 @@ function getStorage(_ref) {
             }
 
             if (!storage) {
-                storage = Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* getGlobal */])()[STORAGE_KEY];
+                storage = Object(__WEBPACK_IMPORTED_MODULE_0__util__["d" /* getGlobal */])()[STORAGE_KEY];
             }
 
             if (!storage) {
                 storage = {
-                    id: Object(__WEBPACK_IMPORTED_MODULE_0__util__["n" /* uniqueID */])()
+                    id: Object(__WEBPACK_IMPORTED_MODULE_0__util__["u" /* uniqueID */])()
                 };
             }
 
             if (!storage.id) {
-                storage.id = Object(__WEBPACK_IMPORTED_MODULE_0__util__["n" /* uniqueID */])();
+                storage.id = Object(__WEBPACK_IMPORTED_MODULE_0__util__["u" /* uniqueID */])();
             }
 
             accessedStorage = storage;
@@ -1280,7 +2268,7 @@ function getStorage(_ref) {
             if (localStorageEnabled) {
                 window.localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
             } else {
-                Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* getGlobal */])()[STORAGE_KEY] = storage;
+                Object(__WEBPACK_IMPORTED_MODULE_0__util__["d" /* getGlobal */])()[STORAGE_KEY] = storage;
             }
 
             accessedStorage = null;
@@ -1306,7 +2294,7 @@ function getStorage(_ref) {
 
                 if (!session) {
                     session = {
-                        guid: Object(__WEBPACK_IMPORTED_MODULE_0__util__["n" /* uniqueID */])(),
+                        guid: Object(__WEBPACK_IMPORTED_MODULE_0__util__["u" /* uniqueID */])(),
                         created: now
                     };
                 }
@@ -1352,143 +2340,70 @@ function getStorage(_ref) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = getGlobal;
-/* unused harmony export memoize */
-/* harmony export (immutable) */ __webpack_exports__["b"] = inlineMemoize;
-/* harmony export (immutable) */ __webpack_exports__["d"] = noop;
-/* unused harmony export once */
 /* unused harmony export base64encode */
 /* unused harmony export base64decode */
-/* harmony export (immutable) */ __webpack_exports__["n"] = uniqueID;
+/* harmony export (immutable) */ __webpack_exports__["u"] = uniqueID;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getGlobal;
+/* unused harmony export getObjectID */
+/* harmony export (immutable) */ __webpack_exports__["g"] = memoize;
+/* harmony export (immutable) */ __webpack_exports__["m"] = promisify;
+/* harmony export (immutable) */ __webpack_exports__["e"] = inlineMemoize;
+/* harmony export (immutable) */ __webpack_exports__["h"] = noop;
+/* harmony export (immutable) */ __webpack_exports__["j"] = once;
 /* unused harmony export hashStr */
 /* unused harmony export strHashStr */
 /* unused harmony export match */
-/* unused harmony export eventEmitter */
 /* unused harmony export awaitKey */
-/* harmony export (immutable) */ __webpack_exports__["k"] = stringifyError;
-/* harmony export (immutable) */ __webpack_exports__["l"] = stringifyErrorMessage;
-/* unused harmony export stringify */
+/* harmony export (immutable) */ __webpack_exports__["r"] = stringifyError;
+/* harmony export (immutable) */ __webpack_exports__["s"] = stringifyErrorMessage;
+/* harmony export (immutable) */ __webpack_exports__["q"] = stringify;
 /* unused harmony export domainMatches */
 /* unused harmony export patchMethod */
-/* unused harmony export extend */
-/* harmony export (immutable) */ __webpack_exports__["o"] = values;
-/* harmony export (immutable) */ __webpack_exports__["f"] = perc;
+/* harmony export (immutable) */ __webpack_exports__["c"] = extend;
+/* harmony export (immutable) */ __webpack_exports__["v"] = values;
+/* harmony export (immutable) */ __webpack_exports__["k"] = perc;
 /* unused harmony export min */
-/* harmony export (immutable) */ __webpack_exports__["c"] = max;
-/* harmony export (immutable) */ __webpack_exports__["h"] = regexMap;
-/* harmony export (immutable) */ __webpack_exports__["m"] = svgToBase64;
-/* harmony export (immutable) */ __webpack_exports__["e"] = objFilter;
+/* harmony export (immutable) */ __webpack_exports__["f"] = max;
+/* harmony export (immutable) */ __webpack_exports__["n"] = regexMap;
+/* harmony export (immutable) */ __webpack_exports__["t"] = svgToBase64;
+/* harmony export (immutable) */ __webpack_exports__["i"] = objFilter;
 /* unused harmony export identity */
-/* harmony export (immutable) */ __webpack_exports__["i"] = regexTokenize;
-/* harmony export (immutable) */ __webpack_exports__["g"] = promiseDebounce;
-/* harmony export (immutable) */ __webpack_exports__["j"] = safeInterval;
+/* harmony export (immutable) */ __webpack_exports__["o"] = regexTokenize;
+/* harmony export (immutable) */ __webpack_exports__["l"] = promiseDebounce;
+/* harmony export (immutable) */ __webpack_exports__["p"] = safeInterval;
 /* unused harmony export isInteger */
 /* unused harmony export isFloat */
 /* unused harmony export serializePrimitive */
 /* unused harmony export deserializePrimitive */
 /* unused harmony export dotify */
 /* unused harmony export undotify */
+/* unused harmony export eventEmitter */
+/* unused harmony export camelToDasherize */
+/* unused harmony export dasherizeToCamel */
+/* harmony export (immutable) */ __webpack_exports__["a"] = capitalizeFirstLetter;
+/* unused harmony export get */
+/* unused harmony export safeTimeout */
+/* unused harmony export defineLazyProp */
+/* unused harmony export isObject */
+/* unused harmony export isObjectObject */
+/* unused harmony export isPlainObject */
+/* unused harmony export replaceObject */
+/* unused harmony export copyProp */
+/* unused harmony export regex */
+/* unused harmony export regexAll */
+/* unused harmony export isDefined */
+/* unused harmony export cycle */
+/* harmony export (immutable) */ __webpack_exports__["b"] = debounce;
+/* unused harmony export isRegex */
+/* unused harmony export weakMapMemoize */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__ = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js");
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 /* eslint max-lines: 0 */
 
 
 
-function getGlobal() {
-    if (typeof window !== 'undefined') {
-        return window;
-    }
-    if (typeof global !== 'undefined') {
-        return global;
-    }
-    if (typeof global !== 'undefined') {
-        return global;
-    }
-    throw new Error('No global found');
-}
-
-// eslint-disable-next-line flowtype/no-weak-types
-function memoize(method) {
-    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-
-    var cache = {};
-
-    // eslint-disable-next-line no-unused-vars, flowtype/no-weak-types
-    function memoizedFunction() {
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-        }
-
-        var key = void 0;
-
-        try {
-            key = JSON.stringify(Array.prototype.slice.call(arguments));
-        } catch (err) {
-            throw new Error('Arguments not serializable -- can not be used to memoize');
-        }
-
-        var cacheTime = options.time;
-        if (cache[key] && cacheTime && Date.now() - cache[key].time < cacheTime) {
-            delete cache[key];
-        }
-
-        if (cache[key]) {
-            return cache[key].value;
-        }
-
-        memoizedFunction.__calling__ = true;
-
-        var time = Date.now();
-        var value = method.apply(this, arguments);
-
-        memoizedFunction.__calling__ = false;
-
-        cache[key] = { time: time, value: value };
-
-        return cache[key].value;
-    }
-
-    memoizedFunction.reset = function () {
-        cache = {};
-    };
-
-    return memoizedFunction;
-}
-
-// eslint-disable-next-line flowtype/no-weak-types
-function inlineMemoize(method, logic) {
-    var args = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-
-    if (!method.__memoized__) {
-        // $FlowFixMe
-        method.__memoized__ = memoize(logic);
-    }
-
-    if (method.__memoized__ && method.__memoized__.__calling__) {
-        throw new Error('Can not call memoized method recursively');
-    }
-
-    // $FlowFixMe
-    return method.__memoized__.apply(method, args);
-}
-
-// eslint-disable-next-line no-unused-vars
-function noop() {
-    // pass
-}
-
-function once(method) {
-    var called = false;
-
-    return function onceFunction() {
-        if (!called) {
-            called = true;
-            return method.apply(this, arguments);
-        }
-    };
-}
 
 function base64encode(str) {
     if (true) {
@@ -1515,6 +2430,150 @@ function uniqueID() {
     var timeID = base64encode(new Date().toISOString().slice(11, 19).replace('T', '.')).replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
 
     return randomID + '_' + timeID;
+}
+
+function getGlobal() {
+    if (typeof window !== 'undefined') {
+        return window;
+    }
+    if (typeof global !== 'undefined') {
+        return global;
+    }
+    if (typeof global !== 'undefined') {
+        return global;
+    }
+    throw new Error('No global found');
+}
+
+var objectIDs = void 0;
+
+function getObjectID(obj) {
+
+    objectIDs = objectIDs || new __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__["a" /* WeakMap */]();
+
+    if (obj === null || obj === undefined || (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' && typeof obj !== 'function') {
+        throw new Error('Invalid object');
+    }
+
+    var uid = objectIDs.get(obj);
+
+    if (!uid) {
+        uid = (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) + ':' + uniqueID();
+        objectIDs.set(obj, uid);
+    }
+
+    return uid;
+}
+
+function serializeArgs(args) {
+    try {
+        return JSON.stringify(Array.prototype.slice.call(args), function (subkey, val) {
+            if (typeof val === 'function') {
+                return 'memoize[' + getObjectID(val) + ']';
+            }
+            return val;
+        });
+    } catch (err) {
+        throw new Error('Arguments not serializable -- can not be used to memoize');
+    }
+}
+
+// eslint-disable-next-line flowtype/no-weak-types
+function memoize(method) {
+    var _this = this;
+
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    var cacheMap = new __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__["a" /* WeakMap */]();
+
+    // eslint-disable-next-line flowtype/no-weak-types
+    function memoizedFunction() {
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        var cache = cacheMap.getOrSet(options.thisNamespace ? this : method, function () {
+            return {};
+        });
+
+        var key = serializeArgs(args);
+
+        var cacheTime = options.time;
+        if (cache[key] && cacheTime && Date.now() - cache[key].time < cacheTime) {
+            delete cache[key];
+        }
+
+        if (cache[key]) {
+            return cache[key].value;
+        }
+
+        memoizedFunction.__calling__ = true;
+
+        var time = Date.now();
+        var value = method.apply(this, arguments);
+
+        memoizedFunction.__calling__ = false;
+
+        cache[key] = { time: time, value: value };
+
+        return cache[key].value;
+    }
+
+    memoizedFunction.reset = function () {
+        cacheMap['delete'](options.thisNamespace ? _this : method);
+    };
+
+    if (options.name) {
+        memoizedFunction.displayName = options.name + ':memoized';
+    }
+
+    return memoizedFunction;
+}
+
+// eslint-disable-next-line flowtype/no-weak-types
+function promisify(method) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    function promisifiedFunction() {
+        return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__["a" /* ZalgoPromise */]['try'](method, this, arguments);
+    }
+
+    if (options.name) {
+        promisifiedFunction.displayName = options.name + ':promisified';
+    }
+
+    return promisifiedFunction;
+}
+
+// eslint-disable-next-line flowtype/no-weak-types
+function inlineMemoize(method, logic) {
+    var args = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+
+    var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {};
+    var key = serializeArgs(args);
+
+    if (cache.hasOwnProperty(key)) {
+        return cache[key];
+    }
+
+    var result = cache[key] = logic.apply(undefined, args);
+    return result;
+}
+
+// eslint-disable-next-line no-unused-vars
+function noop() {
+    // pass
+}
+
+function once(method) {
+    var called = false;
+
+    return function onceFunction() {
+        if (!called) {
+            called = true;
+            return method.apply(this, arguments);
+        }
+    };
 }
 
 function hashStr(str) {
@@ -1546,35 +2605,6 @@ function match(str, pattern) {
     if (regmatch) {
         return regmatch[1];
     }
-}
-
-function eventEmitter() {
-
-    var listeners = [];
-
-    return {
-        listen: function listen(method) {
-            listeners.push(method);
-
-            return {
-                cancel: function cancel() {
-                    listeners.splice(listeners.indexOf(method), 1);
-                }
-            };
-        },
-        once: function once(method) {
-            var listener = this.listen(function onceListener() {
-                method.apply(null, arguments);
-                listener.cancel();
-            });
-        },
-        trigger: function trigger() {
-            for (var _i2 = 0, _length2 = listeners == null ? 0 : listeners.length; _i2 < _length2; _i2++) {
-                var listener = listeners[_i2];
-                listener.apply(undefined, arguments);
-            }
-        }
-    };
 }
 
 function awaitKey(obj, key) {
@@ -1692,7 +2722,7 @@ function patchMethod(obj, name, handler) {
     var original = obj[name];
 
     obj[name] = function patchedMethod() {
-        var _this = this,
+        var _this2 = this,
             _arguments = arguments;
 
         return handler({
@@ -1700,7 +2730,7 @@ function patchMethod(obj, name, handler) {
             args: Array.prototype.slice.call(arguments),
             original: original,
             callOriginal: function callOriginal() {
-                return original.apply(_this, _arguments);
+                return original.apply(_this2, _arguments);
             }
         });
     };
@@ -1715,9 +2745,9 @@ function extend(obj, source) {
         return Object.assign(obj, source);
     }
 
-    for (var _key2 in source) {
-        if (source.hasOwnProperty(_key2)) {
-            obj[_key2] = source[_key2];
+    for (var key in source) {
+        if (source.hasOwnProperty(key)) {
+            obj[key] = source[key];
         }
     }
 
@@ -1726,9 +2756,9 @@ function extend(obj, source) {
 
 function values(obj) {
     var result = [];
-    for (var _key3 in obj) {
-        if (obj.hasOwnProperty(_key3)) {
-            result.push(obj[_key3]);
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            result.push(obj[key]);
         }
     }
     return result;
@@ -1746,11 +2776,11 @@ function max() {
     return Math.max.apply(Math, arguments);
 }
 
-function regexMap(str, regex, handler) {
+function regexMap(str, regexp, handler) {
     var results = [];
 
     // $FlowFixMe
-    str.replace(regex, function regexMapMatcher(item) {
+    str.replace(regexp, function regexMapMatcher(item) {
         results.push(handler ? handler.apply(null, arguments) : item);
     });
 
@@ -1767,12 +2797,12 @@ function objFilter(obj) {
 
     var result = {};
 
-    for (var _key4 in obj) {
-        if (!obj.hasOwnProperty(_key4) || !filter(obj[_key4], _key4)) {
+    for (var key in obj) {
+        if (!obj.hasOwnProperty(key) || !filter(obj[key], key)) {
             continue;
         }
 
-        result[_key4] = obj[_key4];
+        result[key] = obj[key];
     }
 
     return result;
@@ -1782,9 +2812,9 @@ function identity(item) {
     return item;
 }
 
-function regexTokenize(text, regex) {
+function regexTokenize(text, regexp) {
     var result = [];
-    text.replace(regex, function (token) {
+    text.replace(regexp, function (token) {
         result.push(token);
         return '';
     });
@@ -1871,17 +2901,17 @@ function dotify(obj) {
     var newobj = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
     prefix = prefix ? prefix + '.' : prefix;
-    for (var _key5 in obj) {
-        if (!obj.hasOwnProperty(_key5) || obj[_key5] === undefined || obj[_key5] === null || typeof obj[_key5] === 'function') {
+    for (var key in obj) {
+        if (!obj.hasOwnProperty(key) || obj[key] === undefined || obj[key] === null || typeof obj[key] === 'function') {
             continue;
-        } else if (obj[_key5] && Array.isArray(obj[_key5]) && obj[_key5].length && obj[_key5].every(function (val) {
+        } else if (obj[key] && Array.isArray(obj[key]) && obj[key].length && obj[key].every(function (val) {
             return (typeof val === 'undefined' ? 'undefined' : _typeof(val)) !== 'object';
         })) {
-            newobj['' + prefix + _key5 + '[]'] = obj[_key5].join(',');
-        } else if (obj[_key5] && _typeof(obj[_key5]) === 'object') {
-            newobj = dotify(obj[_key5], '' + prefix + _key5, newobj);
+            newobj['' + prefix + key + '[]'] = obj[key].join(',');
+        } else if (obj[key] && _typeof(obj[key]) === 'object') {
+            newobj = dotify(obj[key], '' + prefix + key, newobj);
         } else {
-            newobj['' + prefix + _key5] = serializePrimitive(obj[_key5]);
+            newobj['' + prefix + key] = serializePrimitive(obj[key]);
         }
     }
     return newobj;
@@ -1891,22 +2921,22 @@ function undotify(obj) {
 
     var result = {};
 
-    for (var _key6 in obj) {
-        if (!obj.hasOwnProperty(_key6) || typeof obj[_key6] !== 'string') {
+    for (var key in obj) {
+        if (!obj.hasOwnProperty(key) || typeof obj[key] !== 'string') {
             continue;
         }
 
-        var _value = obj[_key6];
+        var value = obj[key];
 
-        if (_key6.match(/^.+\[\]$/)) {
-            _key6 = _key6.slice(0, _key6.length - 2);
-            _value = _value.split(',').map(deserializePrimitive);
+        if (key.match(/^.+\[\]$/)) {
+            key = key.slice(0, key.length - 2);
+            value = value.split(',').map(deserializePrimitive);
         } else {
-            _value = deserializePrimitive(_value);
+            value = deserializePrimitive(value);
         }
 
         var keyResult = result;
-        var parts = _key6.split('.');
+        var parts = key.split('.');
         for (var i = 0; i < parts.length; i++) {
             var part = parts[i];
             var isLast = i + 1 === parts.length;
@@ -1914,7 +2944,7 @@ function undotify(obj) {
 
             if (isLast) {
                 // $FlowFixMe
-                keyResult[part] = _value;
+                keyResult[part] = value;
             } else {
                 // $FlowFixMe
                 keyResult = keyResult[part] = keyResult[part] || (isIndex ? [] : {});
@@ -1925,6 +2955,688 @@ function undotify(obj) {
     return result;
 }
 
+function eventEmitter() {
+
+    var triggered = {};
+    var handlers = {};
+
+    return {
+        on: function on(eventName, handler) {
+
+            var handlerList = handlers[eventName] = handlers[eventName] || [];
+
+            handlerList.push(handler);
+
+            var cancelled = false;
+
+            return {
+                cancel: function cancel() {
+                    if (!cancelled) {
+                        cancelled = true;
+                        handlerList.splice(handlerList.indexOf(handler), 1);
+                    }
+                }
+            };
+        },
+        once: function once(eventName, handler) {
+
+            var listener = this.on(eventName, function () {
+                listener.cancel();
+                handler();
+            });
+
+            return listener;
+        },
+        trigger: function trigger(eventName) {
+
+            var handlerList = handlers[eventName];
+
+            if (handlerList) {
+                for (var _i2 = 0, _length2 = handlerList == null ? 0 : handlerList.length; _i2 < _length2; _i2++) {
+                    var _handler = handlerList[_i2];
+                    _handler();
+                }
+            }
+        },
+        triggerOnce: function triggerOnce(eventName) {
+
+            if (triggered[eventName]) {
+                return;
+            }
+
+            triggered[eventName] = true;
+            this.trigger(eventName);
+        }
+    };
+}
+
+function camelToDasherize(string) {
+    return string.replace(/([A-Z])/g, function (g) {
+        return '-' + g.toLowerCase();
+    });
+}
+
+function dasherizeToCamel(string) {
+    return string.replace(/-([a-z])/g, function (g) {
+        return g[1].toUpperCase();
+    });
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
+function get(item, path, def) {
+
+    if (!path) {
+        return def;
+    }
+
+    var pathParts = path.split('.');
+
+    // Loop through each section of our key path
+
+    for (var i = 0; i < pathParts.length; i++) {
+
+        // If we have an object, we can get the key
+        if ((typeof item === 'undefined' ? 'undefined' : _typeof(item)) === 'object' && item !== null) {
+            item = item[pathParts[i]];
+
+            // Otherwise, we should return the default (undefined if not provided)
+        } else {
+            return def;
+        }
+    }
+
+    // If our final result is undefined, we should return the default
+
+    return item === undefined ? def : item;
+}
+
+function safeTimeout(method, time) {
+
+    var interval = safeInterval(function () {
+        time -= 100;
+        if (time <= 0) {
+            interval.cancel();
+            method();
+        }
+    }, 100);
+}
+
+function defineLazyProp(obj, key, getter) {
+    if (Array.isArray(obj)) {
+        if (typeof key !== 'number') {
+            throw new TypeError('Array key must be number');
+        }
+    } else if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null) {
+        if (typeof key !== 'string') {
+            throw new TypeError('Object key must be string');
+        }
+    }
+
+    Object.defineProperty(obj, key, {
+        configurable: true,
+        enumerable: true,
+        get: function get() {
+            // $FlowFixMe
+            delete obj[key];
+            var value = getter();
+            // $FlowFixMe
+            obj[key] = value;
+            return value;
+        },
+        set: function set(value) {
+            // $FlowFixMe
+            delete obj[key];
+            // $FlowFixMe
+            obj[key] = value;
+        }
+    });
+}
+
+function isObject(item) {
+    return (typeof item === 'undefined' ? 'undefined' : _typeof(item)) === 'object' && item !== null;
+}
+
+function isObjectObject(obj) {
+    return isObject(obj) && Object.prototype.toString.call(obj) === '[object Object]';
+}
+
+function isPlainObject(obj) {
+    if (!isObjectObject(obj)) {
+        return false;
+    }
+
+    // $FlowFixMe
+    var constructor = obj.constructor;
+
+    if (typeof constructor !== 'function') {
+        return false;
+    }
+
+    var prototype = constructor.prototype;
+
+    if (!isObjectObject(prototype)) {
+        return false;
+    }
+
+    if (!prototype.hasOwnProperty('isPrototypeOf')) {
+        return false;
+    }
+
+    return true;
+}
+
+function replaceObject(item, replacer) {
+    var fullKey = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+
+
+    if (Array.isArray(item)) {
+        var _length3 = item.length;
+        var result = [];
+
+        var _loop = function _loop(i) {
+
+            defineLazyProp(result, i, function () {
+                var itemKey = fullKey ? fullKey + '.' + i : '' + i;
+                var el = item[i];
+
+                var child = replacer(el, i, itemKey);
+
+                if (isPlainObject(child) || Array.isArray(child)) {
+                    // $FlowFixMe
+                    child = replaceObject(child, replacer, itemKey);
+                }
+
+                return child;
+            });
+        };
+
+        for (var i = 0; i < _length3; i++) {
+            _loop(i);
+        }
+
+        // $FlowFixMe
+        return result;
+    } else if (isPlainObject(item)) {
+        var _result = {};
+
+        var _loop2 = function _loop2(key) {
+            if (!item.hasOwnProperty(key)) {
+                return 'continue';
+            }
+
+            defineLazyProp(_result, key, function () {
+                var itemKey = fullKey ? fullKey + '.' + key : '' + key;
+                // $FlowFixMe
+                var el = item[key];
+
+                var child = replacer(el, key, itemKey);
+
+                if (isPlainObject(child) || Array.isArray(child)) {
+                    // $FlowFixMe
+                    child = replaceObject(child, replacer, itemKey);
+                }
+
+                return child;
+            });
+        };
+
+        for (var key in item) {
+            var _ret2 = _loop2(key);
+
+            if (_ret2 === 'continue') continue;
+        }
+
+        // $FlowFixMe
+        return _result;
+    } else {
+        throw new Error('Pass an object or array');
+    }
+}
+
+function copyProp(source, target, name, def) {
+    if (source.hasOwnProperty(name)) {
+        var descriptor = Object.getOwnPropertyDescriptor(source, name);
+        // $FlowFixMe
+        Object.defineProperty(target, name, descriptor);
+    } else {
+        target[name] = def;
+    }
+}
+
+function regex(pattern, string) {
+    var start = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+
+
+    if (typeof pattern === 'string') {
+        // eslint-disable-next-line security/detect-non-literal-regexp
+        pattern = new RegExp(pattern);
+    }
+
+    var result = string.slice(start).match(pattern);
+
+    if (!result) {
+        return;
+    }
+
+    // $FlowFixMe
+    var index = result.index;
+    var regmatch = result[0];
+
+    return {
+        text: regmatch,
+        groups: result.slice(1),
+        start: start + index,
+        end: start + index + regmatch.length,
+        length: regmatch.length,
+
+        replace: function replace(text) {
+
+            if (!regmatch) {
+                return '';
+            }
+
+            return '' + regmatch.slice(0, start + index) + text + regmatch.slice(index + regmatch.length);
+        }
+    };
+}
+
+function regexAll(pattern, string) {
+
+    var matches = [];
+    var start = 0;
+
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+        var regmatch = regex(pattern, string, start);
+
+        if (!regmatch) {
+            break;
+        }
+
+        matches.push(regmatch);
+        start = match.end;
+    }
+
+    return matches;
+}
+
+function isDefined(value) {
+    return value !== null && value !== undefined;
+}
+
+function cycle(method) {
+    return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__["a" /* ZalgoPromise */]['try'](method).then(function () {
+        return cycle(method);
+    });
+}
+
+function debounce(method) {
+    var time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
+
+
+    var timeout = void 0;
+
+    return function debounceWrapper() {
+        var _this3 = this,
+            _arguments2 = arguments;
+
+        clearTimeout(timeout);
+
+        timeout = setTimeout(function () {
+            return method.apply(_this3, _arguments2);
+        }, time);
+    };
+}
+
+function isRegex(item) {
+    return Object.prototype.toString.call(item) === '[object RegExp]';
+}
+
+// eslint-disable-next-line flowtype/no-weak-types
+var weakMapMemoize = function weakMapMemoize(method) {
+
+    var weakmap = new __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__["a" /* WeakMap */]();
+
+    // eslint-disable-next-line flowtype/no-weak-types
+    return function weakmapMemoized(arg) {
+        var result = weakmap.get(arg);
+
+        if (typeof result !== 'undefined') {
+            return result;
+        }
+
+        result = method.call(this, arg);
+
+        if (typeof result !== 'undefined') {
+            weakmap.set(arg, result);
+        }
+
+        return result;
+    };
+};
+
+/***/ }),
+
+/***/ "./node_modules/cross-domain-safe-weakmap/src/index.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var interface_namespaceObject = {};
+__webpack_require__.d(interface_namespaceObject, "WeakMap", function() { return weakmap_CrossDomainSafeWeakMap; });
+
+// EXTERNAL MODULE: ./node_modules/cross-domain-utils/src/index.js
+var src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js");
+
+// CONCATENATED MODULE: ./node_modules/cross-domain-safe-weakmap/src/native.js
+function hasNativeWeakMap() {
+
+    if (!window.WeakMap) {
+        return false;
+    }
+
+    if (!window.Object.freeze) {
+        return false;
+    }
+
+    try {
+
+        var testWeakMap = new window.WeakMap();
+        var testKey = {};
+        var testValue = '__testvalue__';
+
+        window.Object.freeze(testKey);
+
+        testWeakMap.set(testKey, testValue);
+
+        if (testWeakMap.get(testKey) === testValue) {
+            return true;
+        }
+
+        return false;
+    } catch (err) {
+
+        return false;
+    }
+}
+// CONCATENATED MODULE: ./node_modules/cross-domain-safe-weakmap/src/util.js
+function safeIndexOf(collection, item) {
+    for (var i = 0; i < collection.length; i++) {
+
+        try {
+            if (collection[i] === item) {
+                return i;
+            }
+        } catch (err) {
+            // pass
+        }
+    }
+
+    return -1;
+}
+
+// eslint-disable-next-line no-unused-vars
+function noop() {
+    // pass
+}
+// CONCATENATED MODULE: ./node_modules/cross-domain-safe-weakmap/src/weakmap.js
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+
+
+
+var defineProperty = Object.defineProperty;
+var counter = Date.now() % 1e9;
+
+var weakmap_CrossDomainSafeWeakMap = function () {
+    function CrossDomainSafeWeakMap() {
+        _classCallCheck(this, CrossDomainSafeWeakMap);
+
+        counter += 1;
+
+        // eslint-disable-next-line no-bitwise
+        this.name = '__weakmap_' + (Math.random() * 1e9 >>> 0) + '__' + counter;
+
+        if (hasNativeWeakMap()) {
+            try {
+                this.weakmap = new window.WeakMap();
+            } catch (err) {
+                // pass
+            }
+        }
+
+        this.keys = [];
+        this.values = [];
+    }
+
+    CrossDomainSafeWeakMap.prototype._cleanupClosedWindows = function _cleanupClosedWindows() {
+
+        var weakmap = this.weakmap;
+        var keys = this.keys;
+
+        for (var i = 0; i < keys.length; i++) {
+            var value = keys[i];
+
+            if (Object(src["isWindow"])(value) && Object(src["isWindowClosed"])(value)) {
+
+                if (weakmap) {
+                    try {
+                        weakmap['delete'](value);
+                    } catch (err) {
+                        // pass
+                    }
+                }
+
+                keys.splice(i, 1);
+                this.values.splice(i, 1);
+
+                i -= 1;
+            }
+        }
+    };
+
+    CrossDomainSafeWeakMap.prototype.isSafeToReadWrite = function isSafeToReadWrite(key) {
+
+        if (Object(src["isWindow"])(key)) {
+            return false;
+        }
+
+        try {
+            noop(key && key.self);
+            noop(key && key[this.name]);
+        } catch (err) {
+            return false;
+        }
+
+        return true;
+    };
+
+    CrossDomainSafeWeakMap.prototype.set = function set(key, value) {
+
+        if (!key) {
+            throw new Error('WeakMap expected key');
+        }
+
+        var weakmap = this.weakmap;
+
+        if (weakmap) {
+            try {
+                weakmap.set(key, value);
+            } catch (err) {
+                delete this.weakmap;
+            }
+        }
+
+        if (!this.isSafeToReadWrite(key)) {
+
+            this._cleanupClosedWindows();
+
+            var keys = this.keys;
+            var values = this.values;
+            var index = safeIndexOf(keys, key);
+
+            if (index === -1) {
+                keys.push(key);
+                values.push(value);
+            } else {
+                values[index] = value;
+            }
+        } else {
+
+            var name = this.name;
+            var entry = key[name];
+
+            if (entry && entry[0] === key) {
+                entry[1] = value;
+            } else {
+                defineProperty(key, name, {
+                    value: [key, value],
+                    writable: true
+                });
+            }
+        }
+    };
+
+    CrossDomainSafeWeakMap.prototype.get = function get(key) {
+
+        if (!key) {
+            throw new Error('WeakMap expected key');
+        }
+
+        var weakmap = this.weakmap;
+
+        if (weakmap) {
+            try {
+                if (weakmap.has(key)) {
+                    return weakmap.get(key);
+                }
+            } catch (err) {
+                delete this.weakmap;
+            }
+        }
+
+        if (!this.isSafeToReadWrite(key)) {
+
+            this._cleanupClosedWindows();
+
+            var keys = this.keys;
+            var index = safeIndexOf(keys, key);
+
+            if (index === -1) {
+                return;
+            }
+
+            return this.values[index];
+        } else {
+
+            var entry = key[this.name];
+
+            if (entry && entry[0] === key) {
+                return entry[1];
+            }
+        }
+    };
+
+    CrossDomainSafeWeakMap.prototype['delete'] = function _delete(key) {
+
+        if (!key) {
+            throw new Error('WeakMap expected key');
+        }
+
+        var weakmap = this.weakmap;
+
+        if (weakmap) {
+            try {
+                weakmap['delete'](key);
+            } catch (err) {
+                delete this.weakmap;
+            }
+        }
+
+        if (!this.isSafeToReadWrite(key)) {
+
+            this._cleanupClosedWindows();
+
+            var keys = this.keys;
+            var index = safeIndexOf(keys, key);
+
+            if (index !== -1) {
+                keys.splice(index, 1);
+                this.values.splice(index, 1);
+            }
+        } else {
+
+            var entry = key[this.name];
+
+            if (entry && entry[0] === key) {
+                entry[0] = entry[1] = undefined;
+            }
+        }
+    };
+
+    CrossDomainSafeWeakMap.prototype.has = function has(key) {
+
+        if (!key) {
+            throw new Error('WeakMap expected key');
+        }
+
+        var weakmap = this.weakmap;
+
+        if (weakmap) {
+            try {
+                return weakmap.has(key);
+            } catch (err) {
+                delete this.weakmap;
+            }
+        }
+
+        if (!this.isSafeToReadWrite(key)) {
+
+            this._cleanupClosedWindows();
+
+            var index = safeIndexOf(this.keys, key);
+            return index !== -1;
+        } else {
+
+            var entry = key[this.name];
+
+            if (entry && entry[0] === key) {
+                return true;
+            }
+
+            return false;
+        }
+    };
+
+    CrossDomainSafeWeakMap.prototype.getOrSet = function getOrSet(key, getter) {
+        if (this.has(key)) {
+            // $FlowFixMe
+            return this.get(key);
+        }
+
+        var value = getter();
+        this.set(key, value);
+        return value;
+    };
+
+    return CrossDomainSafeWeakMap;
+}();
+// CONCATENATED MODULE: ./node_modules/cross-domain-safe-weakmap/src/interface.js
+
+// CONCATENATED MODULE: ./node_modules/cross-domain-safe-weakmap/src/index.js
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "a", function() { return weakmap_CrossDomainSafeWeakMap; });
+
+
+// eslint-disable-next-line import/no-namespace
+
+
+
+/* harmony default export */ var cross_domain_safe_weakmap_src = (interface_namespaceObject);
+
 /***/ }),
 
 /***/ "./node_modules/cross-domain-utils/src/index.js":
@@ -1933,6 +3645,9 @@ function undotify(obj) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__("./node_modules/cross-domain-utils/src/utils.js");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "isCurrentDomain", function() { return __WEBPACK_IMPORTED_MODULE_0__utils__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "isWindow", function() { return __WEBPACK_IMPORTED_MODULE_0__utils__["b"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "isWindowClosed", function() { return __WEBPACK_IMPORTED_MODULE_0__utils__["c"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "linkFrameWindow", function() { return __WEBPACK_IMPORTED_MODULE_0__utils__["d"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__types__ = __webpack_require__("./node_modules/cross-domain-utils/src/types.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__types__);
 /* unused harmony namespace reexport */
@@ -1981,8 +3696,8 @@ function noop() {
 /* unused harmony export getAllFramesInWindow */
 /* unused harmony export isTop */
 /* unused harmony export isFrameWindowClosed */
-/* unused harmony export isWindowClosed */
-/* unused harmony export linkFrameWindow */
+/* harmony export (immutable) */ __webpack_exports__["c"] = isWindowClosed;
+/* harmony export (immutable) */ __webpack_exports__["d"] = linkFrameWindow;
 /* unused harmony export getUserAgent */
 /* unused harmony export getFrameByName */
 /* unused harmony export findChildFrameByName */
@@ -2003,7 +3718,7 @@ function noop() {
 /* unused harmony export stringifyDomainPattern */
 /* unused harmony export getDomainFromUrl */
 /* unused harmony export onCloseWindow */
-/* unused harmony export isWindow */
+/* harmony export (immutable) */ __webpack_exports__["b"] = isWindow;
 /* unused harmony export isBrowser */
 /* harmony export (immutable) */ __webpack_exports__["a"] = isCurrentDomain;
 
