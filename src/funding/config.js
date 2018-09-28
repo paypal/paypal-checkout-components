@@ -31,7 +31,8 @@ export let FUNDING_CONFIG : { [$Values<typeof FUNDING>] : ?FundingSourceConfig }
     [ FUNDING.CREDIT ]: (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.credit.eligible)
         ? require('./credit').CREDIT_CONFIG : null,
 
-    [ FUNDING.CARD ]: (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.card.eligible)
+    [ FUNDING.CARD ]: (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card.eligible
+        && __paypal_checkout__.serverConfig.fundingEligibility.card.branded))
         ? require('./card').CARD_CONFIG : null,
 
     [ FUNDING.IDEAL ]: (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.ideal.eligible)
