@@ -72,7 +72,7 @@
     "cross-domain-utils": "^2.0.1",
     "hi-base32": "^0.5.0",
     "paypal-braintree-web-client": "^4.0.0",
-    "post-robot": "^8.0.0",
+    "post-robot": "^9.0.0",
     "zalgo-promise": "^1.0.10",
     "zoid": "^7.0.0"
   }
