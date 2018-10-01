@@ -4795,15 +4795,15 @@ function getPayPalLoggerUrl() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return ENV; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return SDK_SETTINGS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return COUNTRY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return LANG; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return COUNTRY_LANGS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return FPTI_KEY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return FPTI_DATA_SOURCE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FPTI_FEED; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return FPTI_SDK_NAME; });
+/* unused harmony export ENV */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return SDK_SETTINGS; });
+/* unused harmony export COUNTRY */
+/* unused harmony export LANG */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return COUNTRY_LANGS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return FPTI_KEY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return FPTI_DATA_SOURCE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return FPTI_FEED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FPTI_SDK_NAME; });
 /* unused harmony export INTENT */
 /* unused harmony export COMMIT */
 /* unused harmony export VAULT */
@@ -5227,7 +5227,7 @@ function getLang() {
         var country = _ref2.country,
             lang = _ref2.lang;
 
-        if (country && country === __LOCALE_COUNTRY__ && __WEBPACK_IMPORTED_MODULE_1__constants__["b" /* COUNTRY_LANGS */][__LOCALE_COUNTRY__].indexOf(lang) !== -1) {
+        if (country && country === __LOCALE_COUNTRY__ && __WEBPACK_IMPORTED_MODULE_1__constants__["a" /* COUNTRY_LANGS */][__LOCALE_COUNTRY__].indexOf(lang) !== -1) {
             // $FlowFixMe
             return lang;
         }
@@ -5278,10 +5278,7 @@ function getCorrelationID() {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/constants.js");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "COUNTRY", function() { return __WEBPACK_IMPORTED_MODULE_0__constants__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "COUNTRY_LANGS", function() { return __WEBPACK_IMPORTED_MODULE_0__constants__["b"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "ENV", function() { return __WEBPACK_IMPORTED_MODULE_0__constants__["c"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "LANG", function() { return __WEBPACK_IMPORTED_MODULE_0__constants__["h"]; });
+/* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/config.js");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "buildPayPalAPIUrl", function() { return __WEBPACK_IMPORTED_MODULE_1__config__["a"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "buildPayPalUrl", function() { return __WEBPACK_IMPORTED_MODULE_1__config__["b"]; });
@@ -5625,13 +5622,13 @@ function setupLogger() {
     logger.addTrackingBuilder(function () {
         var _ref;
 
-        return _ref = {}, _ref[constants["f" /* FPTI_KEY */].FEED] = constants["e" /* FPTI_FEED */].PAYMENTS_SDK, _ref[constants["f" /* FPTI_KEY */].DATA_SOURCE] = constants["d" /* FPTI_DATA_SOURCE */].PAYMENTS_SDK, _ref[constants["f" /* FPTI_KEY */].CLIENT_ID] = Object(globals["a" /* getClientID */])(), _ref[constants["f" /* FPTI_KEY */].SELLER_ID] = Object(globals["g" /* getMerchantID */])(), _ref[constants["f" /* FPTI_KEY */].SESSION_UID] = getSessionID(), _ref[constants["f" /* FPTI_KEY */].REFERER] = window.location.host, _ref[constants["f" /* FPTI_KEY */].LOCALE] = Object(globals["f" /* getLang */])() + '_' + Object(globals["b" /* getCountry */])(), _ref[constants["f" /* FPTI_KEY */].BUYER_COUNTRY] = Object(globals["b" /* getCountry */])(), _ref[constants["f" /* FPTI_KEY */].INTEGRATION_IDENTIFIER] = Object(globals["a" /* getClientID */])(), _ref[constants["f" /* FPTI_KEY */].PARTNER_ATTRIBUTION_ID] = Object(script["b" /* getPartnerAttributionID */])(), _ref[constants["f" /* FPTI_KEY */].SDK_NAME] = constants["g" /* FPTI_SDK_NAME */].PAYMENTS_SDK, _ref[constants["f" /* FPTI_KEY */].SDK_VERSION] = Object(globals["j" /* getVersion */])(), _ref[constants["f" /* FPTI_KEY */].USER_AGENT] = window.navigator && window.navigator.userAgent, _ref;
+        return _ref = {}, _ref[constants["d" /* FPTI_KEY */].FEED] = constants["c" /* FPTI_FEED */].PAYMENTS_SDK, _ref[constants["d" /* FPTI_KEY */].DATA_SOURCE] = constants["b" /* FPTI_DATA_SOURCE */].PAYMENTS_SDK, _ref[constants["d" /* FPTI_KEY */].CLIENT_ID] = Object(globals["a" /* getClientID */])(), _ref[constants["d" /* FPTI_KEY */].SELLER_ID] = Object(globals["g" /* getMerchantID */])(), _ref[constants["d" /* FPTI_KEY */].SESSION_UID] = getSessionID(), _ref[constants["d" /* FPTI_KEY */].REFERER] = window.location.host, _ref[constants["d" /* FPTI_KEY */].LOCALE] = Object(globals["f" /* getLang */])() + '_' + Object(globals["b" /* getCountry */])(), _ref[constants["d" /* FPTI_KEY */].BUYER_COUNTRY] = Object(globals["b" /* getCountry */])(), _ref[constants["d" /* FPTI_KEY */].INTEGRATION_IDENTIFIER] = Object(globals["a" /* getClientID */])(), _ref[constants["d" /* FPTI_KEY */].PARTNER_ATTRIBUTION_ID] = Object(script["b" /* getPartnerAttributionID */])(), _ref[constants["d" /* FPTI_KEY */].SDK_NAME] = constants["e" /* FPTI_SDK_NAME */].PAYMENTS_SDK, _ref[constants["d" /* FPTI_KEY */].SDK_VERSION] = Object(globals["j" /* getVersion */])(), _ref[constants["d" /* FPTI_KEY */].USER_AGENT] = window.navigator && window.navigator.userAgent, _ref;
     });
 
     src["a" /* ZalgoPromise */].onPossiblyUnhandledException(function (err) {
         var _logger$track;
 
-        logger.track((_logger$track = {}, _logger$track[constants["f" /* FPTI_KEY */].ERROR_CODE] = 'checkoutjs_error', _logger$track[constants["f" /* FPTI_KEY */].ERROR_DESC] = Object(belter_src["stringifyErrorMessage"])(err), _logger$track));
+        logger.track((_logger$track = {}, _logger$track[constants["d" /* FPTI_KEY */].ERROR_CODE] = 'checkoutjs_error', _logger$track[constants["d" /* FPTI_KEY */].ERROR_DESC] = Object(belter_src["stringifyErrorMessage"])(err), _logger$track));
 
         logger.error('unhandled_error', {
             stack: Object(belter_src["stringifyError"])(err),
@@ -5684,10 +5681,10 @@ function getSDKSettings() {
         var sdkScript = getSDKScript();
 
         return {
-            clientToken: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1__constants__["i" /* SDK_SETTINGS */].CLIENT_TOKEN),
-            partnerAttributionID: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1__constants__["i" /* SDK_SETTINGS */].PARTNER_ATTRIBUTION_ID),
-            stageHost: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1__constants__["i" /* SDK_SETTINGS */].STAGE_HOST),
-            apiStageHost: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1__constants__["i" /* SDK_SETTINGS */].API_STAGE_HOST)
+            clientToken: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1__constants__["f" /* SDK_SETTINGS */].CLIENT_TOKEN),
+            partnerAttributionID: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1__constants__["f" /* SDK_SETTINGS */].PARTNER_ATTRIBUTION_ID),
+            stageHost: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1__constants__["f" /* SDK_SETTINGS */].STAGE_HOST),
+            apiStageHost: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1__constants__["f" /* SDK_SETTINGS */].API_STAGE_HOST)
         };
     });
 }
@@ -5719,6 +5716,450 @@ function getAPIStageHost() {
 
 /***/ "./node_modules/paypal-braintree-web-client/src/types.js":
 /***/ (function(module, exports) {
+
+
+
+/***/ }),
+
+/***/ "./node_modules/paypal-sdk-constants/src/index.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/paypal-sdk-constants/src/locale.js
+var _COUNTRY_LANGS;
+
+/* eslint max-lines: 0 */
+
+var COUNTRY = {
+    AD: 'AD',
+    AE: 'AE',
+    AG: 'AG',
+    AI: 'AI',
+    AL: 'AL',
+    AM: 'AM',
+    AN: 'AN',
+    AO: 'AO',
+    AR: 'AR',
+    AT: 'AT',
+    AU: 'AU',
+    AW: 'AW',
+    AZ: 'AZ',
+    BA: 'BA',
+    BB: 'BB',
+    BE: 'BE',
+    BF: 'BF',
+    BG: 'BG',
+    BH: 'BH',
+    BI: 'BI',
+    BJ: 'BJ',
+    BM: 'BM',
+    BN: 'BN',
+    BO: 'BO',
+    BR: 'BR',
+    BS: 'BS',
+    BT: 'BT',
+    BW: 'BW',
+    BY: 'BY',
+    BZ: 'BZ',
+    CA: 'CA',
+    CD: 'CD',
+    CG: 'CG',
+    CH: 'CH',
+    CI: 'CI',
+    CK: 'CK',
+    CL: 'CL',
+    CM: 'CM',
+    CN: 'CN',
+    CO: 'CO',
+    CR: 'CR',
+    CV: 'CV',
+    CY: 'CY',
+    CZ: 'CZ',
+    DE: 'DE',
+    DJ: 'DJ',
+    DK: 'DK',
+    DM: 'DM',
+    DO: 'DO',
+    DZ: 'DZ',
+    EC: 'EC',
+    EE: 'EE',
+    EG: 'EG',
+    ER: 'ER',
+    ES: 'ES',
+    ET: 'ET',
+    FI: 'FI',
+    FJ: 'FJ',
+    FK: 'FK',
+    FM: 'FM',
+    FO: 'FO',
+    FR: 'FR',
+    GA: 'GA',
+    GB: 'GB',
+    GD: 'GD',
+    GE: 'GE',
+    GF: 'GF',
+    GI: 'GI',
+    GL: 'GL',
+    GM: 'GM',
+    GN: 'GN',
+    GP: 'GP',
+    GR: 'GR',
+    GT: 'GT',
+    GW: 'GW',
+    GY: 'GY',
+    HK: 'HK',
+    HN: 'HN',
+    HR: 'HR',
+    HU: 'HU',
+    ID: 'ID',
+    IE: 'IE',
+    IL: 'IL',
+    IN: 'IN',
+    IS: 'IS',
+    IT: 'IT',
+    JM: 'JM',
+    JO: 'JO',
+    JP: 'JP',
+    KE: 'KE',
+    KG: 'KG',
+    KH: 'KH',
+    KI: 'KI',
+    KM: 'KM',
+    KN: 'KN',
+    KR: 'KR',
+    KW: 'KW',
+    KY: 'KY',
+    KZ: 'KZ',
+    LA: 'LA',
+    LC: 'LC',
+    LI: 'LI',
+    LK: 'LK',
+    LS: 'LS',
+    LT: 'LT',
+    LU: 'LU',
+    LV: 'LV',
+    MA: 'MA',
+    MC: 'MC',
+    MD: 'MD',
+    ME: 'ME',
+    MG: 'MG',
+    MH: 'MH',
+    MK: 'MK',
+    ML: 'ML',
+    MN: 'MN',
+    MQ: 'MQ',
+    MR: 'MR',
+    MS: 'MS',
+    MT: 'MT',
+    MU: 'MU',
+    MV: 'MV',
+    MW: 'MW',
+    MX: 'MX',
+    MY: 'MY',
+    MZ: 'MZ',
+    NA: 'NA',
+    NC: 'NC',
+    NE: 'NE',
+    NF: 'NF',
+    NG: 'NG',
+    NI: 'NI',
+    NL: 'NL',
+    NO: 'NO',
+    NP: 'NP',
+    NR: 'NR',
+    NU: 'NU',
+    NZ: 'NZ',
+    OM: 'OM',
+    PA: 'PA',
+    PE: 'PE',
+    PF: 'PF',
+    PG: 'PG',
+    PH: 'PH',
+    PL: 'PL',
+    PM: 'PM',
+    PN: 'PN',
+    PT: 'PT',
+    PW: 'PW',
+    PY: 'PY',
+    QA: 'QA',
+    RE: 'RE',
+    RO: 'RO',
+    RS: 'RS',
+    RU: 'RU',
+    RW: 'RW',
+    SA: 'SA',
+    SB: 'SB',
+    SC: 'SC',
+    SE: 'SE',
+    SG: 'SG',
+    SH: 'SH',
+    SI: 'SI',
+    SJ: 'SJ',
+    SK: 'SK',
+    SL: 'SL',
+    SM: 'SM',
+    SN: 'SN',
+    SO: 'SO',
+    SR: 'SR',
+    ST: 'ST',
+    SV: 'SV',
+    SZ: 'SZ',
+    TC: 'TC',
+    TD: 'TD',
+    TG: 'TG',
+    TH: 'TH',
+    TJ: 'TJ',
+    TM: 'TM',
+    TN: 'TN',
+    TO: 'TO',
+    TR: 'TR',
+    TT: 'TT',
+    TV: 'TV',
+    TW: 'TW',
+    TZ: 'TZ',
+    UA: 'UA',
+    UG: 'UG',
+    US: 'US',
+    UY: 'UY',
+    VA: 'VA',
+    VC: 'VC',
+    VE: 'VE',
+    VG: 'VG',
+    VN: 'VN',
+    VU: 'VU',
+    WF: 'WF',
+    WS: 'WS',
+    YE: 'YE',
+    YT: 'YT',
+    ZA: 'ZA',
+    ZM: 'ZM',
+    ZW: 'ZW'
+};
+
+var LANG = {
+    AR: 'ar',
+    CS: 'cs',
+    DA: 'da',
+    DE: 'de',
+    EL: 'el',
+    EN: 'en',
+    ES: 'es',
+    FI: 'fi',
+    FR: 'fr',
+    HE: 'he',
+    HU: 'hu',
+    ID: 'id',
+    IT: 'it',
+    JA: 'ja',
+    KO: 'ko',
+    NL: 'nl',
+    NO: 'no',
+    PL: 'pl',
+    PT: 'pt',
+    RU: 'ru',
+    SK: 'sk',
+    SV: 'sv',
+    TH: 'th',
+    TR: 'tr',
+    ZH: 'zh'
+};
+
+var COUNTRY_LANGS = (_COUNTRY_LANGS = {}, _COUNTRY_LANGS[COUNTRY.AD] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.AE] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH, LANG.AR], _COUNTRY_LANGS[COUNTRY.AG] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.AI] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.AL] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.AM] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.AN] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.AO] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.AR] = [LANG.ES, LANG.EN], _COUNTRY_LANGS[COUNTRY.AT] = [LANG.DE, LANG.EN], _COUNTRY_LANGS[COUNTRY.AU] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.AW] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.AZ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BA] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.BB] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BE] = [LANG.EN, LANG.NL, LANG.FR], _COUNTRY_LANGS[COUNTRY.BF] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BG] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.BH] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BI] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BJ] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BM] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BN] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.BO] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BR] = [LANG.PT, LANG.EN], _COUNTRY_LANGS[COUNTRY.BS] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BT] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.BW] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BY] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.BZ] = [LANG.EN, LANG.ES, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.CA] = [LANG.EN, LANG.FR], _COUNTRY_LANGS[COUNTRY.CD] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.CG] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.CH] = [LANG.DE, LANG.FR, LANG.EN], _COUNTRY_LANGS[COUNTRY.CI] = [LANG.FR, LANG.EN], _COUNTRY_LANGS[COUNTRY.CK] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.CL] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.CM] = [LANG.FR, LANG.EN], _COUNTRY_LANGS[COUNTRY.CN] = [LANG.ZH], _COUNTRY_LANGS[COUNTRY.CO] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.CR] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.CV] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.CY] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.CZ] = [LANG.CS, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.DE] = [LANG.DE, LANG.EN], _COUNTRY_LANGS[COUNTRY.DJ] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.DK] = [LANG.DA, LANG.EN], _COUNTRY_LANGS[COUNTRY.DM] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.DO] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.DZ] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.EC] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.EE] = [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.EG] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.ER] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.ES] = [LANG.ES, LANG.EN], _COUNTRY_LANGS[COUNTRY.ET] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.FI] = [LANG.FI, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.FJ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.FK] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.FM] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.FO] = [LANG.DA, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.FR] = [LANG.FR, LANG.EN], _COUNTRY_LANGS[COUNTRY.GA] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GB] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.GD] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GE] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GF] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GI] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GL] = [LANG.DA, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GM] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GN] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GP] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GR] = [LANG.EL, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GT] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GW] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GY] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.HK] = [LANG.EN, LANG.ZH], _COUNTRY_LANGS[COUNTRY.HN] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.HR] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.HU] = [LANG.HU, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.ID] = [LANG.ID, LANG.EN], _COUNTRY_LANGS[COUNTRY.IE] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.IL] = [LANG.HE, LANG.EN], _COUNTRY_LANGS[COUNTRY.IN] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.IS] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.IT] = [LANG.IT, LANG.EN], _COUNTRY_LANGS[COUNTRY.JM] = [LANG.EN, LANG.ES, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.JO] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.JP] = [LANG.JA, LANG.EN], _COUNTRY_LANGS[COUNTRY.KE] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.KG] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.KH] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.KI] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.KM] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.KN] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.KR] = [LANG.KO, LANG.EN], _COUNTRY_LANGS[COUNTRY.KW] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.KY] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.KZ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.LA] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.LC] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.LI] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.LK] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.LS] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.LT] = [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.LU] = [LANG.EN, LANG.DE, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.LV] = [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MA] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MC] = [LANG.FR, LANG.EN], _COUNTRY_LANGS[COUNTRY.MD] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.ME] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.MG] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MH] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MK] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.ML] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MN] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.MQ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MR] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MS] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MT] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.MU] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MV] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.MW] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MX] = [LANG.ES, LANG.EN], _COUNTRY_LANGS[COUNTRY.MY] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.MZ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.NA] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.NC] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.NE] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.NF] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.NG] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.NI] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.NL] = [LANG.NL, LANG.EN], _COUNTRY_LANGS[COUNTRY.NO] = [LANG.NO, LANG.EN], _COUNTRY_LANGS[COUNTRY.NP] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.NR] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.NU] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.NZ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.OM] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.PA] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.PE] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.PF] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.PG] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.PH] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.PL] = [LANG.PL, LANG.EN], _COUNTRY_LANGS[COUNTRY.PM] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.PN] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.PT] = [LANG.PT, LANG.EN], _COUNTRY_LANGS[COUNTRY.PW] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.PY] = [LANG.ES, LANG.EN], _COUNTRY_LANGS[COUNTRY.QA] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH, LANG.AR], _COUNTRY_LANGS[COUNTRY.RE] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.RO] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.RS] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.RU] = [LANG.RU, LANG.EN], _COUNTRY_LANGS[COUNTRY.RW] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SA] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SB] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SC] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SE] = [LANG.SV, LANG.EN], _COUNTRY_LANGS[COUNTRY.SG] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.SH] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SI] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SJ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SK] = [LANG.SK, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SL] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SM] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SN] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SO] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SR] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.ST] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SV] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SZ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.TC] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.TD] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.TG] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.TH] = [LANG.TH, LANG.EN], _COUNTRY_LANGS[COUNTRY.TJ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.TM] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.TN] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.TO] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.TR] = [LANG.TR, LANG.EN], _COUNTRY_LANGS[COUNTRY.TT] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.TV] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.TW] = [LANG.ZH, LANG.EN], _COUNTRY_LANGS[COUNTRY.TZ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.UA] = [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.UG] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.US] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.UY] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.VA] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.VC] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.VE] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.VG] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.VN] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.VU] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.WF] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.WS] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.YE] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.YT] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.ZA] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.ZM] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.ZW] = [LANG.EN], _COUNTRY_LANGS);
+// CONCATENATED MODULE: ./node_modules/paypal-sdk-constants/src/params.js
+var SDK_SETTINGS = {
+    CLIENT_TOKEN: 'data-client-token',
+    PARTNER_ATTRIBUTION_ID: 'data-partner-attribution-id',
+    STAGE_HOST: 'data-stage-host',
+    API_STAGE_HOST: 'data-api-stage-host'
+};
+
+var SDK_QUERY = {
+    CLIENT_ID: 'client-id'
+};
+
+var SDK_QUERY_KEYS = {
+    COMPONENTS: 'components',
+
+    ENV: 'env',
+    DEBUG: 'debug',
+    CACHEBUST: 'cachebust',
+
+    CLIENT_ID: 'client-id',
+    MERCHANT_ID: 'merchant-id',
+
+    LOCALE_COUNTRY: 'locale-country',
+    LOCALE_LANG: 'locale-lang',
+
+    ORDER_CURRENCY: 'order-currency',
+    ORDER_INTENT: 'order-intent',
+    ORDER_COMMIT: 'order-commit',
+    ORDER_VAULT: 'order-vault'
+};
+// CONCATENATED MODULE: ./node_modules/paypal-sdk-constants/src/env.js
+var ENV = {
+    LOCAL: 'local',
+    STAGE: 'stage',
+    SANDBOX: 'sandbox',
+    PRODUCTION: 'production',
+    TEST: 'test'
+};
+// CONCATENATED MODULE: ./node_modules/paypal-sdk-constants/src/fpti.js
+var FPTI_KEY = {
+    FEED: 'feed_name',
+    STATE: 'state_name',
+    TRANSITION: 'transition_name',
+    BUTTON_TYPE: 'button_type',
+    SESSION_UID: 'page_session_id',
+    BUTTON_SESSION_UID: 'button_session_id',
+    TOKEN: 'token',
+    CONTEXT_ID: 'context_id',
+    CONTEXT_TYPE: 'context_type',
+    REFERER: 'referer_url',
+    PAY_ID: 'pay_id',
+    SELLER_ID: 'seller_id',
+    CLIENT_ID: 'client_id',
+    DATA_SOURCE: 'serverside_data_source',
+    BUTTON_SOURCE: 'button_source',
+    ERROR_CODE: 'ext_error_code',
+    ERROR_DESC: 'ext_error_desc',
+    PAGE_LOAD_TIME: 'page_load_time',
+    EXPERIMENT_NAME: 'pxp_exp_id',
+    TREATMENT_NAME: 'pxp_trtmnt_id',
+    TRANSITION_TIME: 'transition_time',
+    FUNDING_LIST: 'eligible_payment_methods',
+    FUNDING_COUNT: 'eligible_payment_count',
+    CHOSEN_FUNDING: 'selected_payment_method',
+    BUTTON_LAYOUT: 'button_layout',
+    VERSION: 'checkoutjs_version',
+    LOCALE: 'locale',
+    BUYER_COUNTRY: 'buyer_cntry',
+    INTEGRATION_IDENTIFIER: 'integration_identifier',
+    PARTNER_ATTRIBUTION_ID: 'bn_code',
+    SDK_NAME: 'sdk_name',
+    SDK_VERSION: 'sdk_version',
+    USER_AGENT: 'user_agent'
+};
+
+var FPTI_DATA_SOURCE = {
+    PAYMENTS_SDK: 'payments_sdk'
+};
+
+var FPTI_FEED = {
+    PAYMENTS_SDK: 'payments_sdk'
+};
+
+var FPTI_SDK_NAME = {
+    PAYMENTS_SDK: 'payments_sdk'
+};
+// CONCATENATED MODULE: ./node_modules/paypal-sdk-constants/src/order.js
+var INTENT = {
+    CAPTURE: 'capture',
+    AUTH: 'auth',
+    ORDER: 'order'
+};
+
+var COMMIT = {
+    TRUE: true,
+    FALSE: false
+};
+
+var VAULT = {
+    TRUE: true,
+    FALSE: false
+};
+
+var CURRENCY = {
+    AUD: 'AUD',
+    BRL: 'BRL',
+    CAD: 'CAD',
+    CZK: 'CZK',
+    DKK: 'DKK',
+    EUR: 'EUR',
+    HKD: 'HKD',
+    HUF: 'HUF',
+    INR: 'INR',
+    ILS: 'ILS',
+    JPY: 'JPY',
+    MYR: 'MYR',
+    MXN: 'MXN',
+    TWD: 'TWD',
+    NZD: 'NZD',
+    NOK: 'NOK',
+    PHP: 'PHP',
+    PLN: 'PLN',
+    GBP: 'GBP',
+    RUB: 'RUB',
+    SGD: 'SGD',
+    SEK: 'SEK',
+    CHF: 'CHF',
+    THB: 'THB',
+    USD: 'USD'
+};
+// CONCATENATED MODULE: ./node_modules/paypal-sdk-constants/src/platform.js
+var PLATFORM = {
+    DESKTOP: 'desktop',
+    MOBILE: 'mobile'
+};
+// CONCATENATED MODULE: ./node_modules/paypal-sdk-constants/src/funding.js
+var FUNDING = {
+    PAYPAL: 'paypal',
+    VENMO: 'venmo',
+    CREDIT: 'credit',
+    CARD: 'card',
+    IDEAL: 'ideal',
+    SEPA: 'sepa',
+    BANCONTACT: 'bancontact',
+    GIROPAY: 'giropay',
+    SOFORT: 'sofort',
+    EPS: 'eps',
+    MYBANK: 'mybank',
+    P24: 'p24',
+    ZIMPLER: 'zimpler',
+    WECHATPAY: 'wechatpay'
+};
+
+var CARD = {
+    VISA: 'visa',
+    MASTERCARD: 'mastercard',
+    AMEX: 'amex',
+    DISCOVER: 'discover',
+    HIPER: 'hiper',
+    ELO: 'elo',
+    JCB: 'jcb'
+};
+// CONCATENATED MODULE: ./node_modules/paypal-sdk-constants/src/index.js
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "c", function() { return COUNTRY; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "h", function() { return LANG; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "d", function() { return COUNTRY_LANGS; });
+/* unused concated harmony import null */
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return SDK_SETTINGS; });
+/* unused concated harmony import null */
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return SDK_QUERY; });
+/* unused concated harmony import null */
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return SDK_QUERY_KEYS; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "e", function() { return ENV; });
+/* unused concated harmony import null */
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return FPTI_KEY; });
+/* unused concated harmony import null */
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return FPTI_DATA_SOURCE; });
+/* unused concated harmony import null */
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return FPTI_FEED; });
+/* unused concated harmony import null */
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return FPTI_SDK_NAME; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "g", function() { return INTENT; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "b", function() { return COMMIT; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "j", function() { return VAULT; });
+/* unused concated harmony import null */
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return CURRENCY; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "i", function() { return PLATFORM; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "f", function() { return FUNDING; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "a", function() { return CARD; });
+
+
+
+
+
 
 
 
@@ -6293,7 +6734,10 @@ var src = __webpack_require__("./node_modules/paypal-braintree-web-client/src/in
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var belter_src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
+
+// EXTERNAL MODULE: ./src/constants/index.js + 4 modules
 var constants = __webpack_require__("./src/constants/index.js");
 
 // EXTERNAL MODULE: ./src/funding/common.jsx
@@ -6306,10 +6750,11 @@ var _FUNDING_CONFIG;
 
 
 
-var FUNDING_PRIORITY = [constants["m" /* FUNDING */].PAYPAL, constants["m" /* FUNDING */].VENMO, constants["m" /* FUNDING */].CREDIT, constants["m" /* FUNDING */].IDEAL, constants["m" /* FUNDING */].SEPA, constants["m" /* FUNDING */].BANCONTACT, constants["m" /* FUNDING */].GIROPAY, constants["m" /* FUNDING */].EPS, constants["m" /* FUNDING */].SOFORT, constants["m" /* FUNDING */].MYBANK, constants["m" /* FUNDING */].P24, constants["m" /* FUNDING */].ZIMPLER, constants["m" /* FUNDING */].WECHATPAY, constants["m" /* FUNDING */].CARD];
+var FUNDING_PRIORITY = [paypal_sdk_constants_src["f" /* FUNDING */].PAYPAL, paypal_sdk_constants_src["f" /* FUNDING */].VENMO, paypal_sdk_constants_src["f" /* FUNDING */].CREDIT, paypal_sdk_constants_src["f" /* FUNDING */].IDEAL, paypal_sdk_constants_src["f" /* FUNDING */].SEPA, paypal_sdk_constants_src["f" /* FUNDING */].BANCONTACT, paypal_sdk_constants_src["f" /* FUNDING */].GIROPAY, paypal_sdk_constants_src["f" /* FUNDING */].EPS, paypal_sdk_constants_src["f" /* FUNDING */].SOFORT, paypal_sdk_constants_src["f" /* FUNDING */].MYBANK, paypal_sdk_constants_src["f" /* FUNDING */].P24, paypal_sdk_constants_src["f" /* FUNDING */].ZIMPLER, paypal_sdk_constants_src["f" /* FUNDING */].WECHATPAY, paypal_sdk_constants_src["f" /* FUNDING */].CARD];
 
-var FUNDING_CONFIG = (_FUNDING_CONFIG = {}, _FUNDING_CONFIG[constants["m" /* FUNDING */].PAYPAL] =  true ? __webpack_require__("./src/funding/paypal/index.js").PAYPAL_CONFIG : null, _FUNDING_CONFIG[constants["m" /* FUNDING */].VENMO] =  true ? __webpack_require__("./src/funding/venmo/index.js").VENMO_CONFIG : null, _FUNDING_CONFIG[constants["m" /* FUNDING */].CREDIT] =  true ? __webpack_require__("./src/funding/credit/index.js").CREDIT_CONFIG : null, _FUNDING_CONFIG[constants["m" /* FUNDING */].CARD] =  true ? __webpack_require__("./src/funding/card/index.js").CARD_CONFIG : null, _FUNDING_CONFIG[constants["m" /* FUNDING */].IDEAL] =  true ? __webpack_require__("./src/funding/ideal/index.js").IDEAL_CONFIG : null, _FUNDING_CONFIG[constants["m" /* FUNDING */].SEPA] =  true ? __webpack_require__("./src/funding/sepa/index.js").SEPA_CONFIG : null, _FUNDING_CONFIG[constants["m" /* FUNDING */].BANCONTACT] =  true ? __webpack_require__("./src/funding/bancontact/index.js").BANCONTACT_CONFIG : null, _FUNDING_CONFIG[constants["m" /* FUNDING */].GIROPAY] =  true ? __webpack_require__("./src/funding/giropay/index.js").GIROPAY_CONFIG : null, _FUNDING_CONFIG[constants["m" /* FUNDING */].SOFORT] =  true ? __webpack_require__("./src/funding/sofort/index.js").SOFORT_CONFIG : null, _FUNDING_CONFIG[constants["m" /* FUNDING */].EPS] =  true ? __webpack_require__("./src/funding/eps/index.js").EPS_CONFIG : null, _FUNDING_CONFIG[constants["m" /* FUNDING */].MYBANK] =  true ? __webpack_require__("./src/funding/mybank/index.js").MYBANK_CONFIG : null, _FUNDING_CONFIG[constants["m" /* FUNDING */].P24] =  true ? __webpack_require__("./src/funding/p24/index.js").P24_CONFIG : null, _FUNDING_CONFIG[constants["m" /* FUNDING */].ZIMPLER] =  true ? __webpack_require__("./src/funding/zimpler/index.js").ZIMPLER_CONFIG : null, _FUNDING_CONFIG[constants["m" /* FUNDING */].WECHATPAY] =  true ? __webpack_require__("./src/funding/wechatpay/index.js").WECHATPAY_CONFIG : null, _FUNDING_CONFIG);
+var FUNDING_CONFIG = (_FUNDING_CONFIG = {}, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].PAYPAL] =  true ? __webpack_require__("./src/funding/paypal/index.js").PAYPAL_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].VENMO] =  true ? __webpack_require__("./src/funding/venmo/index.js").VENMO_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].CREDIT] =  true ? __webpack_require__("./src/funding/credit/index.js").CREDIT_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].CARD] =  true ? __webpack_require__("./src/funding/card/index.js").CARD_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].IDEAL] =  true ? __webpack_require__("./src/funding/ideal/index.js").IDEAL_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].SEPA] =  true ? __webpack_require__("./src/funding/sepa/index.js").SEPA_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].BANCONTACT] =  true ? __webpack_require__("./src/funding/bancontact/index.js").BANCONTACT_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].GIROPAY] =  true ? __webpack_require__("./src/funding/giropay/index.js").GIROPAY_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].SOFORT] =  true ? __webpack_require__("./src/funding/sofort/index.js").SOFORT_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].EPS] =  true ? __webpack_require__("./src/funding/eps/index.js").EPS_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].MYBANK] =  true ? __webpack_require__("./src/funding/mybank/index.js").MYBANK_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].P24] =  true ? __webpack_require__("./src/funding/p24/index.js").P24_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].ZIMPLER] =  true ? __webpack_require__("./src/funding/zimpler/index.js").ZIMPLER_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].WECHATPAY] =  true ? __webpack_require__("./src/funding/wechatpay/index.js").WECHATPAY_CONFIG : null, _FUNDING_CONFIG);
 // CONCATENATED MODULE: ./src/funding/funding.js
+
 
 
 
@@ -6440,6 +6885,7 @@ var BUTTON_SIZE_STYLE = (_BUTTON_SIZE_STYLE = {}, _BUTTON_SIZE_STYLE[constants["
 
 
 
+
 var DEFAULT_STYLE = {
     LABEL: constants["c" /* BUTTON_LABEL */].PAYPAL,
     LAYOUT: constants["d" /* BUTTON_LAYOUT */].VERTICAL,
@@ -6449,14 +6895,14 @@ var DEFAULT_STYLE = {
 
 var DEFAULT_PROPS = {
     LOCALE: {
-        country: src["COUNTRY"].US,
-        lang: src["LANG"].EN
+        country: paypal_sdk_constants_src["c" /* COUNTRY */].US,
+        lang: paypal_sdk_constants_src["h" /* LANG */].EN
     },
-    COMMIT: constants["l" /* COMMIT */].TRUE,
-    VAULT: constants["q" /* VAULT */].FALSE,
-    INTENT: constants["n" /* INTENT */].CAPTURE,
-    ENV: src["ENV"].PRODUCTION,
-    PLATFORM: constants["p" /* PLATFORM */].DESKTOP
+    COMMIT: paypal_sdk_constants_src["b" /* COMMIT */].TRUE,
+    VAULT: paypal_sdk_constants_src["j" /* VAULT */].FALSE,
+    INTENT: paypal_sdk_constants_src["g" /* INTENT */].CAPTURE,
+    ENV: paypal_sdk_constants_src["e" /* ENV */].PRODUCTION,
+    PLATFORM: paypal_sdk_constants_src["i" /* PLATFORM */].DESKTOP
 };
 
 function normalizeButtonStyle(style, _ref) {
@@ -6546,10 +6992,10 @@ function normalizeButtonStyle(style, _ref) {
     return { label: label, layout: layout, color: color, shape: shape, tagline: tagline, height: height, period: period };
 }
 
-var COUNTRIES = Object(belter_src["values"])(src["COUNTRY"]);
-var FUNDING_SOURCES = Object(belter_src["values"])(constants["m" /* FUNDING */]);
-var ENVS = Object(belter_src["values"])(src["ENV"]);
-var PLATFORMS = Object(belter_src["values"])(constants["p" /* PLATFORM */]);
+var COUNTRIES = Object(belter_src["values"])(paypal_sdk_constants_src["c" /* COUNTRY */]);
+var FUNDING_SOURCES = Object(belter_src["values"])(paypal_sdk_constants_src["f" /* FUNDING */]);
+var ENVS = Object(belter_src["values"])(paypal_sdk_constants_src["e" /* ENV */]);
+var PLATFORMS = Object(belter_src["values"])(paypal_sdk_constants_src["i" /* PLATFORM */]);
 
 function normalizeButtonProps(props) {
 
@@ -6585,7 +7031,7 @@ function normalizeButtonProps(props) {
         throw new Error('Expected valid country, got ' + (country || 'undefined'));
     }
 
-    if (!lang || src["COUNTRY_LANGS"][country].indexOf(lang) === -1) {
+    if (!lang || paypal_sdk_constants_src["d" /* COUNTRY_LANGS */][country].indexOf(lang) === -1) {
         throw new Error('Expected valid lang, got ' + (lang || 'undefined'));
     }
 
@@ -6618,16 +7064,16 @@ var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n  
 
 
 
-var buttonStyle = '\n\n    .' + constants["k" /* CLASS */].CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + ':not(.' + constants["k" /* CLASS */].CARD + ') {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].TRANSPARENT + ' {\n        cursor: auto;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + ' * {\n        cursor: pointer;\n    }\n\n    .' + constants["k" /* CLASS */].CONTAINER + '.' + constants["k" /* CLASS */].ENV + '-' + src["ENV"].TEST + ' .' + constants["k" /* CLASS */].TEXT + ' {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + ':hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].GOLD + ':hover,\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].SILVER + ':hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].TRANSPARENT + ':hover {\n        box-shadow: none;\n    }\n\n    .' + constants["k" /* CLASS */].CARD + ', .' + constants["k" /* CLASS */].CARD + ' * {\n        cursor: pointer;\n    }\n\n    .' + constants["k" /* CLASS */].CARD + ':hover {\n        filter: brightness(1.2);\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + ':focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].TRANSPARENT + ':focus {\n        box-shadow: none;\n    }\n\n    .' + constants["k" /* CLASS */].LOGO + ' {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    .' + constants["k" /* CLASS */].TEXT + ' {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + ' .' + constants["k" /* CLASS */].LOGO + ',\n    .' + constants["k" /* CLASS */].BUTTON + ' .' + constants["k" /* CLASS */].TEXT + ' {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        text-align: left;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + ' .' + constants["k" /* CLASS */].TEXT + ' {\n        visibility: hidden;\n    }\n\n    .' + constants["k" /* CLASS */].TAGLINE + ' {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    .' + constants["k" /* CLASS */].SEPARATOR + ' {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n';
+var buttonStyle = '\n\n    .' + constants["j" /* CLASS */].CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + ':not(.' + constants["j" /* CLASS */].CARD + ') {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].TRANSPARENT + ' {\n        cursor: auto;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + ' * {\n        cursor: pointer;\n    }\n\n    .' + constants["j" /* CLASS */].CONTAINER + '.' + constants["j" /* CLASS */].ENV + '-' + paypal_sdk_constants_src["e" /* ENV */].TEST + ' .' + constants["j" /* CLASS */].TEXT + ' {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + ':hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].GOLD + ':hover,\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].SILVER + ':hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].TRANSPARENT + ':hover {\n        box-shadow: none;\n    }\n\n    .' + constants["j" /* CLASS */].CARD + ', .' + constants["j" /* CLASS */].CARD + ' * {\n        cursor: pointer;\n    }\n\n    .' + constants["j" /* CLASS */].CARD + ':hover {\n        filter: brightness(1.2);\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + ':focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].TRANSPARENT + ':focus {\n        box-shadow: none;\n    }\n\n    .' + constants["j" /* CLASS */].LOGO + ' {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    .' + constants["j" /* CLASS */].TEXT + ' {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + ' .' + constants["j" /* CLASS */].LOGO + ',\n    .' + constants["j" /* CLASS */].BUTTON + ' .' + constants["j" /* CLASS */].TEXT + ' {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        text-align: left;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + ' .' + constants["j" /* CLASS */].TEXT + ' {\n        visibility: hidden;\n    }\n\n    .' + constants["j" /* CLASS */].TAGLINE + ' {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    .' + constants["j" /* CLASS */].SEPARATOR + ' {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n';
 // CONCATENATED MODULE: ./src/buttons/template/componentStyle/layout.js
 
 
-var layoutStyle = '\n\n    .' + constants["k" /* CLASS */].CONTAINER + '.' + constants["k" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].VERTICAL + ' .' + constants["k" /* CLASS */].TAGLINE + ' {\n        display: none;\n    }\n';
+var layoutStyle = '\n\n    .' + constants["j" /* CLASS */].CONTAINER + '.' + constants["j" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].VERTICAL + ' .' + constants["j" /* CLASS */].TAGLINE + ' {\n        display: none;\n    }\n';
 // CONCATENATED MODULE: ./src/buttons/template/componentStyle/labels.js
 
 
 
-var labelStyle = '\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LABEL + '-' + constants["c" /* BUTTON_LABEL */].CARD + ' {\n        border-radius: 0 !important;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LABEL + '-' + constants["c" /* BUTTON_LABEL */].CREDIT + ' .' + constants["k" /* CLASS */].TEXT + ' {\n        display: none !important;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["k" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + '.' + constants["k" /* CLASS */].LABEL + '-' + constants["c" /* BUTTON_LABEL */].CREDIT + ' .' + constants["k" /* CLASS */].LOGO + '.' + constants["k" /* CLASS */].LOGO + '-' + constants["e" /* BUTTON_LOGO */].PAYPAL + ' {\n        display: none;\n    }\n\n    @media only screen and (max-width : ' + BUTTON_SIZE_STYLE[constants["h" /* BUTTON_SIZE */].SMALL].minWidth + 'px) {\n\n        .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LABEL + '-' + constants["c" /* BUTTON_LABEL */].CREDIT + ' .' + constants["k" /* CLASS */].LOGO + '.' + constants["k" /* CLASS */].LOGO + '-' + constants["e" /* BUTTON_LOGO */].PAYPAL + ' {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : ' + BUTTON_SIZE_STYLE[constants["h" /* BUTTON_SIZE */].SMALL].minWidth + 'px) {\n\n        .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LABEL + '-' + constants["c" /* BUTTON_LABEL */].CREDIT + ' .' + constants["k" /* CLASS */].LOGO + '.' + constants["k" /* CLASS */].LOGO + '-' + constants["e" /* BUTTON_LOGO */].PAYPAL + ' {\n            display: inline-block;\n        }\n    }\n';
+var labelStyle = '\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].LABEL + '-' + constants["c" /* BUTTON_LABEL */].CARD + ' {\n        border-radius: 0 !important;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].LABEL + '-' + constants["c" /* BUTTON_LABEL */].CREDIT + ' .' + constants["j" /* CLASS */].TEXT + ' {\n        display: none !important;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["j" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + '.' + constants["j" /* CLASS */].LABEL + '-' + constants["c" /* BUTTON_LABEL */].CREDIT + ' .' + constants["j" /* CLASS */].LOGO + '.' + constants["j" /* CLASS */].LOGO + '-' + constants["e" /* BUTTON_LOGO */].PAYPAL + ' {\n        display: none;\n    }\n\n    @media only screen and (max-width : ' + BUTTON_SIZE_STYLE[constants["h" /* BUTTON_SIZE */].SMALL].minWidth + 'px) {\n\n        .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].LABEL + '-' + constants["c" /* BUTTON_LABEL */].CREDIT + ' .' + constants["j" /* CLASS */].LOGO + '.' + constants["j" /* CLASS */].LOGO + '-' + constants["e" /* BUTTON_LOGO */].PAYPAL + ' {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : ' + BUTTON_SIZE_STYLE[constants["h" /* BUTTON_SIZE */].SMALL].minWidth + 'px) {\n\n        .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].LABEL + '-' + constants["c" /* BUTTON_LABEL */].CREDIT + ' .' + constants["j" /* CLASS */].LOGO + '.' + constants["j" /* CLASS */].LOGO + '-' + constants["e" /* BUTTON_LOGO */].PAYPAL + ' {\n            display: inline-block;\n        }\n    }\n';
 // CONCATENATED MODULE: ./src/buttons/template/componentStyle/responsive.js
 
 
@@ -6648,13 +7094,13 @@ function buttonResponsiveStyle(_ref) {
         var buttonHeight = height || style.defaultHeight;
         var minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
 
-        return '\n\n            @media only screen and (min-width: ' + style.minWidth + 'px) {\n\n                .' + constants["k" /* CLASS */].CONTAINER + ' {\n                    min-width: ' + style.minWidth + 'px;\n                    max-width: ' + style.maxWidth + 'px;\n                    font-size: ' + Object(belter_src["max"])(Object(belter_src["perc"])(buttonHeight, 32), 10) + 'px;\n                }\n\n                .' + constants["k" /* CLASS */].BUTTON + ':not(.' + constants["k" /* CLASS */].CARD + ') {\n                    height: ' + buttonHeight + 'px;\n                    min-height: ' + (height || style.minHeight) + 'px;\n                    max-height: ' + (height || style.maxHeight) + 'px;\n                }\n\n                .' + constants["k" /* CLASS */].LOGO + ' {\n                    height: ' + (Object(belter_src["perc"])(buttonHeight, 35) + 5) + 'px;\n                    max-height: ' + Object(belter_src["perc"])(buttonHeight, 60) + 'px;\n                    min-height: ' + Object(belter_src["perc"])(buttonHeight, 40) + 'px;\n                }\n                \n                .' + constants["k" /* CLASS */].LOGO + '.' + constants["k" /* CLASS */].LOGO + '-' + constants["c" /* BUTTON_LABEL */].EPS + ',\n                .' + constants["k" /* CLASS */].LOGO + '.' + constants["k" /* CLASS */].LOGO + '-' + constants["c" /* BUTTON_LABEL */].MYBANK + ' {\n                    height: ' + (Object(belter_src["perc"])(buttonHeight, 50) + 5) + 'px;\n                    max-height: ' + Object(belter_src["perc"])(buttonHeight, 70) + 'px;\n                    min-height: ' + Object(belter_src["perc"])(buttonHeight, 40) + 'px;\n                }\n\n                .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].SHAPE + '-' + constants["g" /* BUTTON_SHAPE */].PILL + ':not(' + constants["k" /* CLASS */].LABEL + '-' + constants["k" /* CLASS */].CARD + ') {\n                    border-radius: ' + Math.ceil(buttonHeight / 2) + 'px;\n                }\n\n                .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].SHAPE + '-' + constants["g" /* BUTTON_SHAPE */].RECT + ' {\n                    border-radius: 4px;\n                }\n\n                .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].VERTICAL + ' {\n                    margin-bottom: ' + Object(belter_src["perc"])(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) + 'px;\n                }\n\n                .' + constants["k" /* CLASS */].SEPARATOR + ' {\n                    margin: 0 ' + Object(belter_src["perc"])(buttonHeight, 5) + 'px;\n                }\n\n                .' + constants["k" /* CLASS */].TAGLINE + ' {\n                    height: ' + Object(belter_src["perc"])(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + 'px;\n                    line-height: ' + Object(belter_src["perc"])(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + 'px;\n                }\n\n                .' + constants["k" /* CLASS */].CARD + ' {\n                    display: inline-block;\n                }\n\n                .' + constants["k" /* CLASS */].BUTTON + ' .' + constants["k" /* CLASS */].CARD + ' {\n                    width: ' + (90 / cardNumber).toFixed(2) + '%;\n                    max-width: ' + Object(belter_src["perc"])(buttonHeight, 160) + 'px;\n                    margin-top: 0;\n                    margin-left: ' + (5 / cardNumber).toFixed(2) + '%;\n                    margin-right: ' + (5 / cardNumber).toFixed(2) + '%;\n                }\n\n                .' + constants["k" /* CLASS */].BUTTON + ' .' + constants["k" /* CLASS */].CARD + ' img {\n                    width: 100%;\n                }\n            }\n\n            @media only screen and (min-width: ' + style.minWidth + 'px) and (max-width: ' + minDualWidth + 'px) {\n\n                .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["k" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + '.' + constants["k" /* CLASS */].NUMBER + '-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["k" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + '.' + constants["k" /* CLASS */].NUMBER + '-1 {\n                    display: none;\n                }\n\n                .' + constants["k" /* CLASS */].CONTAINER + '.' + constants["k" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["k" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + ' .' + constants["k" /* CLASS */].TAGLINE + ' {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: ' + Object(belter_src["max"])(style.minWidth, minDualWidth) + 'px) {\n\n                .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["k" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + '.' + constants["k" /* CLASS */].NUMBER + '-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["k" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + '.' + constants["k" /* CLASS */].NUMBER + '-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                .' + constants["k" /* CLASS */].CONTAINER + '.' + constants["k" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["k" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + ' .' + constants["k" /* CLASS */].TAGLINE + ' {\n                    display: block;\n                }\n            }\n        ';
+        return '\n\n            @media only screen and (min-width: ' + style.minWidth + 'px) {\n\n                .' + constants["j" /* CLASS */].CONTAINER + ' {\n                    min-width: ' + style.minWidth + 'px;\n                    max-width: ' + style.maxWidth + 'px;\n                    font-size: ' + Object(belter_src["max"])(Object(belter_src["perc"])(buttonHeight, 32), 10) + 'px;\n                }\n\n                .' + constants["j" /* CLASS */].BUTTON + ':not(.' + constants["j" /* CLASS */].CARD + ') {\n                    height: ' + buttonHeight + 'px;\n                    min-height: ' + (height || style.minHeight) + 'px;\n                    max-height: ' + (height || style.maxHeight) + 'px;\n                }\n\n                .' + constants["j" /* CLASS */].LOGO + ' {\n                    height: ' + (Object(belter_src["perc"])(buttonHeight, 35) + 5) + 'px;\n                    max-height: ' + Object(belter_src["perc"])(buttonHeight, 60) + 'px;\n                    min-height: ' + Object(belter_src["perc"])(buttonHeight, 40) + 'px;\n                }\n                \n                .' + constants["j" /* CLASS */].LOGO + '.' + constants["j" /* CLASS */].LOGO + '-' + constants["c" /* BUTTON_LABEL */].EPS + ',\n                .' + constants["j" /* CLASS */].LOGO + '.' + constants["j" /* CLASS */].LOGO + '-' + constants["c" /* BUTTON_LABEL */].MYBANK + ' {\n                    height: ' + (Object(belter_src["perc"])(buttonHeight, 50) + 5) + 'px;\n                    max-height: ' + Object(belter_src["perc"])(buttonHeight, 70) + 'px;\n                    min-height: ' + Object(belter_src["perc"])(buttonHeight, 40) + 'px;\n                }\n\n                .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].SHAPE + '-' + constants["g" /* BUTTON_SHAPE */].PILL + ':not(' + constants["j" /* CLASS */].LABEL + '-' + constants["j" /* CLASS */].CARD + ') {\n                    border-radius: ' + Math.ceil(buttonHeight / 2) + 'px;\n                }\n\n                .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].SHAPE + '-' + constants["g" /* BUTTON_SHAPE */].RECT + ' {\n                    border-radius: 4px;\n                }\n\n                .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].VERTICAL + ' {\n                    margin-bottom: ' + Object(belter_src["perc"])(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) + 'px;\n                }\n\n                .' + constants["j" /* CLASS */].SEPARATOR + ' {\n                    margin: 0 ' + Object(belter_src["perc"])(buttonHeight, 5) + 'px;\n                }\n\n                .' + constants["j" /* CLASS */].TAGLINE + ' {\n                    height: ' + Object(belter_src["perc"])(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + 'px;\n                    line-height: ' + Object(belter_src["perc"])(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + 'px;\n                }\n\n                .' + constants["j" /* CLASS */].CARD + ' {\n                    display: inline-block;\n                }\n\n                .' + constants["j" /* CLASS */].BUTTON + ' .' + constants["j" /* CLASS */].CARD + ' {\n                    width: ' + (90 / cardNumber).toFixed(2) + '%;\n                    max-width: ' + Object(belter_src["perc"])(buttonHeight, 160) + 'px;\n                    margin-top: 0;\n                    margin-left: ' + (5 / cardNumber).toFixed(2) + '%;\n                    margin-right: ' + (5 / cardNumber).toFixed(2) + '%;\n                }\n\n                .' + constants["j" /* CLASS */].BUTTON + ' .' + constants["j" /* CLASS */].CARD + ' img {\n                    width: 100%;\n                }\n            }\n\n            @media only screen and (min-width: ' + style.minWidth + 'px) and (max-width: ' + minDualWidth + 'px) {\n\n                .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["j" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + '.' + constants["j" /* CLASS */].NUMBER + '-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["j" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + '.' + constants["j" /* CLASS */].NUMBER + '-1 {\n                    display: none;\n                }\n\n                .' + constants["j" /* CLASS */].CONTAINER + '.' + constants["j" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["j" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + ' .' + constants["j" /* CLASS */].TAGLINE + ' {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: ' + Object(belter_src["max"])(style.minWidth, minDualWidth) + 'px) {\n\n                .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["j" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + '.' + constants["j" /* CLASS */].NUMBER + '-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["j" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + '.' + constants["j" /* CLASS */].NUMBER + '-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                .' + constants["j" /* CLASS */].CONTAINER + '.' + constants["j" /* CLASS */].LAYOUT + '-' + constants["d" /* BUTTON_LAYOUT */].HORIZONTAL + '.' + constants["j" /* CLASS */].NUMBER + '-' + constants["f" /* BUTTON_NUMBER */].MULTIPLE + ' .' + constants["j" /* CLASS */].TAGLINE + ' {\n                    display: block;\n                }\n            }\n        ';
     }).join('\n');
 }
 // CONCATENATED MODULE: ./src/buttons/template/componentStyle/color.js
 
 
-var buttonColorStyle = '\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].GOLD + ' {\n        background: #ffc439;\n        color: #111;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].BLUE + ' {\n        background: #009cde;\n        color: #fff;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].SILVER + ' {\n        background: #eee;\n        color: #111;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].DARKBLUE + ' {\n        background: #003087;\n        color: #fff;\n    }\n\n    .' + constants["k" /* CLASS */].BUTTON + '.' + constants["k" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].TRANSPARENT + ' {\n        background: transparent;\n        color: #111;\n    }\n';
+var buttonColorStyle = '\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].GOLD + ' {\n        background: #ffc439;\n        color: #111;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].BLUE + ' {\n        background: #009cde;\n        color: #fff;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].SILVER + ' {\n        background: #eee;\n        color: #111;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].DARKBLUE + ' {\n        background: #003087;\n        color: #fff;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].TRANSPARENT + ' {\n        background: transparent;\n        color: #111;\n    }\n';
 // CONCATENATED MODULE: ./src/buttons/template/componentStyle/base.js
 
 
@@ -6838,6 +7284,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 
+
 function getCommonClasses(_ref) {
     var style = _ref.style,
         multiple = _ref.multiple,
@@ -6846,7 +7293,7 @@ function getCommonClasses(_ref) {
         shape = style.shape;
 
 
-    return [constants["k" /* CLASS */].LAYOUT + '-' + layout, constants["k" /* CLASS */].SHAPE + '-' + shape, constants["k" /* CLASS */].NUMBER + '-' + (multiple ? constants["f" /* BUTTON_NUMBER */].MULTIPLE : constants["f" /* BUTTON_NUMBER */].SINGLE), constants["k" /* CLASS */].ENV + '-' + env].join(' ');
+    return [constants["j" /* CLASS */].LAYOUT + '-' + layout, constants["j" /* CLASS */].SHAPE + '-' + shape, constants["j" /* CLASS */].NUMBER + '-' + (multiple ? constants["f" /* BUTTON_NUMBER */].MULTIPLE : constants["f" /* BUTTON_NUMBER */].SINGLE), constants["j" /* CLASS */].ENV + '-' + env].join(' ');
 }
 
 function getButtonClasses(_ref2) {
@@ -6855,7 +7302,7 @@ function getButtonClasses(_ref2) {
         logoColor = _ref2.logoColor;
 
 
-    return [constants["k" /* CLASS */].LABEL + '-' + label, constants["k" /* CLASS */].COLOR + '-' + color, constants["k" /* CLASS */].LOGO_COLOR + '-' + logoColor].join(' ');
+    return [constants["j" /* CLASS */].LABEL + '-' + label, constants["j" /* CLASS */].COLOR + '-' + color, constants["j" /* CLASS */].LOGO_COLOR + '-' + logoColor].join(' ');
 }
 
 function determineLabel(_ref3) {
@@ -6928,7 +7375,7 @@ function Button(_ref4) {
     return Object(belter_src["jsxToHTML"])(
         'div',
         _extends({}, (_ref5 = {}, _ref5[constants["a" /* ATTRIBUTE */].FUNDING_SOURCE] = source, _ref5[constants["a" /* ATTRIBUTE */].BUTTON] = true, _ref5), {
-            'class': constants["k" /* CLASS */].BUTTON + ' ' + constants["k" /* CLASS */].NUMBER + '-' + i + ' ' + getCommonClasses({ style: style, multiple: multiple, env: env }) + ' ' + getButtonClasses({ label: buttonLabel, color: color, logoColor: logoColor }),
+            'class': constants["j" /* CLASS */].BUTTON + ' ' + constants["j" /* CLASS */].NUMBER + '-' + i + ' ' + getCommonClasses({ style: style, multiple: multiple, env: env }) + ' ' + getButtonClasses({ label: buttonLabel, color: color, logoColor: logoColor }),
             role: 'button',
             'aria-label': source,
             tabindex: '0' }),
@@ -6981,7 +7428,7 @@ function TagLine(_ref6) {
 
     return Object(belter_src["jsxToHTML"])(
         'div',
-        { 'class': constants["k" /* CLASS */].TAGLINE + ' ' + constants["k" /* CLASS */].TAGLINE_COLOR + '-' + tagColor },
+        { 'class': constants["j" /* CLASS */].TAGLINE + ' ' + constants["j" /* CLASS */].TAGLINE_COLOR + '-' + tagColor },
         Object(belter_src["jsxToHTML"])(Tag, { locale: locale, multiple: multiple })
     );
 }
@@ -6992,7 +7439,7 @@ function Script(_ref7) {
     var script = getComponentScript().toString();
 
     script = script.replace(/\{\s*CLASS\.([A-Z0-9_]+)\s*\}/g, function (match, name) {
-        return constants["k" /* CLASS */][name];
+        return constants["j" /* CLASS */][name];
     });
 
     return Object(belter_src["jsxToHTML"])('script', {
@@ -7015,7 +7462,7 @@ function Style(_ref8) {
 }
 
 function getCardNumber(locale) {
-    var cardConfig = FUNDING_CONFIG[constants["m" /* FUNDING */].CARD];
+    var cardConfig = FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].CARD];
     var vendors = cardConfig && cardConfig.vendors;
     var maxCards = 4;
 
@@ -7050,7 +7497,7 @@ function Buttons(props) {
 
     return Object(belter_src["jsxToHTML"])(
         'div',
-        { 'class': constants["k" /* CLASS */].CONTAINER + ' ' + getCommonClasses({ style: style, multiple: multiple, env: env }) },
+        { 'class': constants["j" /* CLASS */].CONTAINER + ' ' + getCommonClasses({ style: style, multiple: multiple, env: env }) },
         Object(belter_src["jsxToHTML"])(Style, {
             nonce: nonce,
             style: style,
@@ -7281,33 +7728,6 @@ var BUTTON_LOGO = {
     ZIMPLER: 'zimpler',
     WECHATPAY: 'wechatpay'
 };
-// CONCATENATED MODULE: ./src/constants/funding.js
-var FUNDING = {
-    PAYPAL: 'paypal',
-    VENMO: 'venmo',
-    CREDIT: 'credit',
-    CARD: 'card',
-    IDEAL: 'ideal',
-    SEPA: 'sepa',
-    BANCONTACT: 'bancontact',
-    GIROPAY: 'giropay',
-    SOFORT: 'sofort',
-    EPS: 'eps',
-    MYBANK: 'mybank',
-    P24: 'p24',
-    ZIMPLER: 'zimpler',
-    WECHATPAY: 'wechatpay'
-};
-
-var CARD = {
-    VISA: 'visa',
-    MASTERCARD: 'mastercard',
-    AMEX: 'amex',
-    DISCOVER: 'discover',
-    HIPER: 'hiper',
-    ELO: 'elo',
-    JCB: 'jcb'
-};
 // CONCATENATED MODULE: ./src/constants/fpti.js
 var FPTI_BUTTON_TYPE = {
     IFRAME: 'iframe'
@@ -7350,16 +7770,6 @@ var FPTI_TRANSITION = {
     PXP: 'process_pxp_check'
 };
 // CONCATENATED MODULE: ./src/constants/misc.js
-var USERS = {
-    ALL: 'all',
-    REMEMBERED: 'remembered'
-};
-
-var SOURCE = {
-    MANUAL: 'manual',
-    BUTTON_FACTORY: 'button_factory'
-};
-
 var LOG_LEVEL = {
     DEBUG: 'debug',
     INFO: 'info',
@@ -7371,28 +7781,6 @@ var ATTRIBUTE = {
     BUTTON: 'data-button',
     FUNDING_SOURCE: 'data-funding-source',
     CARD: 'data-card'
-};
-
-var PLATFORM = {
-    DESKTOP: 'desktop',
-    MOBILE: 'mobile'
-};
-
-var INTENT = {
-    SALE: 'sale',
-    CAPTURE: 'capture',
-    AUTH: 'auth',
-    ORDER: 'order'
-};
-
-var COMMIT = {
-    TRUE: true,
-    FALSE: false
-};
-
-var VAULT = {
-    TRUE: true,
-    FALSE: false
 };
 
 var DEFAULT = 'default';
@@ -7421,15 +7809,13 @@ var CLASS = {
 // CONCATENATED MODULE: ./src/constants/index.js
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "c", function() { return BUTTON_LABEL; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "b", function() { return BUTTON_COLOR; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "o", function() { return LOGO_COLOR; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "k", function() { return LOGO_COLOR; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "h", function() { return BUTTON_SIZE; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "i", function() { return BUTTON_TAGLINE_COLOR; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "g", function() { return BUTTON_SHAPE; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "d", function() { return BUTTON_LAYOUT; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "f", function() { return BUTTON_NUMBER; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "e", function() { return BUTTON_LOGO; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "m", function() { return FUNDING; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "j", function() { return CARD; });
 /* unused concated harmony import null */
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return FPTI_BUTTON_TYPE; });
 /* unused concated harmony import null */
@@ -7439,20 +7825,11 @@ var CLASS = {
 /* unused concated harmony import null */
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return FPTI_TRANSITION; });
 /* unused concated harmony import null */
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return USERS; });
-/* unused concated harmony import null */
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return SOURCE; });
-/* unused concated harmony import null */
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return LOG_LEVEL; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "a", function() { return ATTRIBUTE; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "p", function() { return PLATFORM; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "n", function() { return INTENT; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "l", function() { return COMMIT; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "q", function() { return VAULT; });
 /* unused concated harmony import null */
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return DEFAULT; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "k", function() { return CLASS; });
-
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "j", function() { return CLASS; });
 
 
 
@@ -7472,7 +7849,7 @@ var src = __webpack_require__("./node_modules/belter/src/index.js");
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
+// EXTERNAL MODULE: ./src/constants/index.js + 4 modules
 var constants = __webpack_require__("./src/constants/index.js");
 
 // EXTERNAL MODULE: ./src/funding/common.jsx
@@ -7542,7 +7919,7 @@ var BANCONTACT_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
         colors: [constants["b" /* BUTTON_COLOR */].SILVER],
 
-        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["o" /* LOGO_COLOR */].BLACK, _logoColors),
+        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["k" /* LOGO_COLOR */].BLACK, _logoColors),
 
         secondaryColors: (_secondaryColors = {}, _secondaryColors[constants["b" /* BUTTON_COLOR */].GOLD] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].BLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].DARKBLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors),
 
@@ -7566,11 +7943,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
+
 // EXTERNAL MODULE: ./src/funding/card/common.jsx
 var common = __webpack_require__("./src/funding/card/common.jsx");
-
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
-var constants = __webpack_require__("./src/constants/index.js");
 
 // CONCATENATED MODULE: ./src/funding/card/amex/logo.jsx
 
@@ -7587,7 +7964,7 @@ function AmexLogo(_ref) {
 
     return Object(src["jsxToHTML"])(common["a" /* SVGCardLogo */], {
         nonce: nonce,
-        name: constants["j" /* CARD */].AMEX,
+        name: paypal_sdk_constants_src["a" /* CARD */].AMEX,
         render: function render() {
             return Object(src["jsxToHTML"])(
                 'svg',
@@ -7637,7 +8014,7 @@ function SVGCardLogo(_ref) {
         nonce: nonce,
         svg: render(),
         alt: name,
-        'class': __WEBPACK_IMPORTED_MODULE_1__constants__["k" /* CLASS */].CARD + ' ' + __WEBPACK_IMPORTED_MODULE_1__constants__["k" /* CLASS */].CARD + '-' + name + ' ' + __WEBPACK_IMPORTED_MODULE_1__constants__["k" /* CLASS */].BUTTON
+        'class': __WEBPACK_IMPORTED_MODULE_1__constants__["j" /* CLASS */].CARD + ' ' + __WEBPACK_IMPORTED_MODULE_1__constants__["j" /* CLASS */].CARD + '-' + name + ' ' + __WEBPACK_IMPORTED_MODULE_1__constants__["j" /* CLASS */].BUTTON
     });
 }
 
@@ -7652,11 +8029,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
+
 // EXTERNAL MODULE: ./src/funding/card/common.jsx
 var common = __webpack_require__("./src/funding/card/common.jsx");
-
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
-var constants = __webpack_require__("./src/constants/index.js");
 
 // CONCATENATED MODULE: ./src/funding/card/discover/logo.jsx
 
@@ -7672,7 +8049,7 @@ function DiscoverLogo(_ref) {
 
     return Object(src["jsxToHTML"])(common["a" /* SVGCardLogo */], {
         nonce: nonce,
-        name: constants["j" /* CARD */].DISCOVER,
+        name: paypal_sdk_constants_src["a" /* CARD */].DISCOVER,
         render: function render() {
             return Object(src["jsxToHTML"])(
                 'svg',
@@ -7743,11 +8120,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
+
 // EXTERNAL MODULE: ./src/funding/card/common.jsx
 var common = __webpack_require__("./src/funding/card/common.jsx");
-
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
-var constants = __webpack_require__("./src/constants/index.js");
 
 // CONCATENATED MODULE: ./src/funding/card/elo/logo.jsx
 
@@ -7763,7 +8140,7 @@ function EloLogo(_ref) {
 
     return Object(src["jsxToHTML"])(common["a" /* SVGCardLogo */], {
         nonce: nonce,
-        name: constants["j" /* CARD */].ELO,
+        name: paypal_sdk_constants_src["a" /* CARD */].ELO,
         render: function render() {
             return Object(src["jsxToHTML"])(
                 'svg',
@@ -7808,11 +8185,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
+
 // EXTERNAL MODULE: ./src/funding/card/common.jsx
 var common = __webpack_require__("./src/funding/card/common.jsx");
-
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
-var constants = __webpack_require__("./src/constants/index.js");
 
 // CONCATENATED MODULE: ./src/funding/card/hiper/logo.jsx
 
@@ -7828,7 +8205,7 @@ function HiperLogo(_ref) {
 
     return Object(src["jsxToHTML"])(common["a" /* SVGCardLogo */], {
         nonce: nonce,
-        name: constants["j" /* CARD */].HIPER,
+        name: paypal_sdk_constants_src["a" /* CARD */].HIPER,
         render: function render() {
             return Object(src["jsxToHTML"])(
                 'svg',
@@ -7863,16 +8240,16 @@ var HIPER_CONFIG = {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
-// EXTERNAL MODULE: ./node_modules/paypal-braintree-web-client/src/index.js
-var src = __webpack_require__("./node_modules/paypal-braintree-web-client/src/index.js");
-
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
-var belter_src = __webpack_require__("./node_modules/belter/src/index.js");
+var src = __webpack_require__("./node_modules/belter/src/index.js");
+
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
+// EXTERNAL MODULE: ./src/constants/index.js + 4 modules
 var constants = __webpack_require__("./src/constants/index.js");
 
 // EXTERNAL MODULE: ./src/funding/common.jsx
@@ -7885,14 +8262,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /* @jsx jsxToHTML */
 
-
  // eslint-disable-line no-unused-vars
 
 
 
 
 
-var CARD_PRIORITY = [constants["j" /* CARD */].VISA, constants["j" /* CARD */].MASTERCARD, constants["j" /* CARD */].AMEX, constants["j" /* CARD */].DISCOVER, constants["j" /* CARD */].HIPER, constants["j" /* CARD */].ELO, constants["j" /* CARD */].JCB];
+
+var CARD_PRIORITY = [paypal_sdk_constants_src["a" /* CARD */].VISA, paypal_sdk_constants_src["a" /* CARD */].MASTERCARD, paypal_sdk_constants_src["a" /* CARD */].AMEX, paypal_sdk_constants_src["a" /* CARD */].DISCOVER, paypal_sdk_constants_src["a" /* CARD */].HIPER, paypal_sdk_constants_src["a" /* CARD */].ELO, paypal_sdk_constants_src["a" /* CARD */].JCB];
 
 var CARD_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
@@ -7916,7 +8293,7 @@ var CARD_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
             return CARD_PRIORITY.map(function (name) {
 
-                if (!fundingEligibility[constants["m" /* FUNDING */].CARD].vendors[name].eligible) {
+                if (!fundingEligibility[paypal_sdk_constants_src["f" /* FUNDING */].CARD].vendors[name].eligible) {
                     return null;
                 }
 
@@ -7929,7 +8306,7 @@ var CARD_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
                 var Logo = vendorConfig.Logo;
 
 
-                return Object(belter_src["jsxToHTML"])(Logo, {
+                return Object(src["jsxToHTML"])(Logo, {
                     nonce: nonce
                 });
             }).filter(Boolean).slice(0, maxCards);
@@ -7940,16 +8317,16 @@ var CARD_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
         colors: [constants["b" /* BUTTON_COLOR */].TRANSPARENT],
 
-        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].TRANSPARENT] = constants["o" /* LOGO_COLOR */].BLACK, _logoColors),
+        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].TRANSPARENT] = constants["k" /* LOGO_COLOR */].BLACK, _logoColors),
 
         secondaryColors: (_secondaryColors = {}, _secondaryColors[constants["b" /* BUTTON_COLOR */].GOLD] = constants["b" /* BUTTON_COLOR */].TRANSPARENT, _secondaryColors[constants["b" /* BUTTON_COLOR */].BLUE] = constants["b" /* BUTTON_COLOR */].TRANSPARENT, _secondaryColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["b" /* BUTTON_COLOR */].TRANSPARENT, _secondaryColors[constants["b" /* BUTTON_COLOR */].DARKBLUE] = constants["b" /* BUTTON_COLOR */].TRANSPARENT, _secondaryColors),
 
         allowPrimary: false
     }), _labels),
 
-    vendors: (_vendors = {}, _vendors[constants["j" /* CARD */].VISA] =  true ? __webpack_require__("./src/funding/card/visa/index.js").VISA_CONFIG : null, _vendors[constants["j" /* CARD */].AMEX] =  true ? __webpack_require__("./src/funding/card/amex/index.js").AMEX_CONFIG : null, _vendors[constants["j" /* CARD */].MASTERCARD] =  true ? __webpack_require__("./src/funding/card/mastercard/index.js").MASTERCARD_CONFIG : null, _vendors[constants["j" /* CARD */].DISCOVER] =  true ? __webpack_require__("./src/funding/card/discover/index.js").DISCOVER_CONFIG : null, _vendors[constants["j" /* CARD */].JCB] =  true ? __webpack_require__("./src/funding/card/jcb/index.js").JCB_CONFIG : null, _vendors[constants["j" /* CARD */].ELO] =  true ? __webpack_require__("./src/funding/card/elo/index.js").ELO_CONFIG : null, _vendors[constants["j" /* CARD */].HIPER] =  true ? __webpack_require__("./src/funding/card/hiper/index.js").HIPER_CONFIG : null, _vendors),
+    vendors: (_vendors = {}, _vendors[paypal_sdk_constants_src["a" /* CARD */].VISA] =  true ? __webpack_require__("./src/funding/card/visa/index.js").VISA_CONFIG : null, _vendors[paypal_sdk_constants_src["a" /* CARD */].AMEX] =  true ? __webpack_require__("./src/funding/card/amex/index.js").AMEX_CONFIG : null, _vendors[paypal_sdk_constants_src["a" /* CARD */].MASTERCARD] =  true ? __webpack_require__("./src/funding/card/mastercard/index.js").MASTERCARD_CONFIG : null, _vendors[paypal_sdk_constants_src["a" /* CARD */].DISCOVER] =  true ? __webpack_require__("./src/funding/card/discover/index.js").DISCOVER_CONFIG : null, _vendors[paypal_sdk_constants_src["a" /* CARD */].JCB] =  true ? __webpack_require__("./src/funding/card/jcb/index.js").JCB_CONFIG : null, _vendors[paypal_sdk_constants_src["a" /* CARD */].ELO] =  true ? __webpack_require__("./src/funding/card/elo/index.js").ELO_CONFIG : null, _vendors[paypal_sdk_constants_src["a" /* CARD */].HIPER] =  true ? __webpack_require__("./src/funding/card/hiper/index.js").HIPER_CONFIG : null, _vendors),
 
-    maxCards: (_maxCards = {}, _maxCards[src["COUNTRY"].BR] = 5, _maxCards)
+    maxCards: (_maxCards = {}, _maxCards[paypal_sdk_constants_src["c" /* COUNTRY */].BR] = 5, _maxCards)
 });
 // CONCATENATED MODULE: ./src/funding/card/index.js
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "CARD_CONFIG", function() { return CARD_CONFIG; });
@@ -7966,11 +8343,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
+
 // EXTERNAL MODULE: ./src/funding/card/common.jsx
 var common = __webpack_require__("./src/funding/card/common.jsx");
-
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
-var constants = __webpack_require__("./src/constants/index.js");
 
 // CONCATENATED MODULE: ./src/funding/card/jcb/logo.jsx
 
@@ -7986,7 +8363,7 @@ function JcbLogo(_ref) {
 
     return Object(src["jsxToHTML"])(common["a" /* SVGCardLogo */], {
         nonce: nonce,
-        name: constants["j" /* CARD */].JCB,
+        name: paypal_sdk_constants_src["a" /* CARD */].JCB,
         render: function render() {
             return Object(src["jsxToHTML"])(
                 'svg',
@@ -8088,11 +8465,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
+
 // EXTERNAL MODULE: ./src/funding/card/common.jsx
 var common = __webpack_require__("./src/funding/card/common.jsx");
-
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
-var constants = __webpack_require__("./src/constants/index.js");
 
 // CONCATENATED MODULE: ./src/funding/card/mastercard/logo.jsx
 
@@ -8108,7 +8485,7 @@ function MastercardLogo(_ref) {
 
     return Object(src["jsxToHTML"])(common["a" /* SVGCardLogo */], {
         nonce: nonce,
-        name: constants["j" /* CARD */].MASTERCARD,
+        name: paypal_sdk_constants_src["a" /* CARD */].MASTERCARD,
         render: function render() {
             return Object(src["jsxToHTML"])(
                 'svg',
@@ -8145,11 +8522,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
+
 // EXTERNAL MODULE: ./src/funding/card/common.jsx
 var common = __webpack_require__("./src/funding/card/common.jsx");
-
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
-var constants = __webpack_require__("./src/constants/index.js");
 
 // CONCATENATED MODULE: ./src/funding/card/visa/logo.jsx
 
@@ -8165,7 +8542,7 @@ function VisaLogo(_ref) {
 
     return Object(src["jsxToHTML"])(common["a" /* SVGCardLogo */], {
         nonce: nonce,
-        name: constants["j" /* CARD */].VISA,
+        name: paypal_sdk_constants_src["a" /* CARD */].VISA,
         render: function render() {
             return Object(src["jsxToHTML"])(
                 'svg',
@@ -8199,7 +8576,8 @@ var VISA_CONFIG = {
 /* harmony export (immutable) */ __webpack_exports__["c"] = SVGLogo;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_paypal_braintree_web_client_src__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_belter_src__ = __webpack_require__("./node_modules/belter/src/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants__ = __webpack_require__("./src/constants/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_paypal_sdk_constants_src__ = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./src/constants/index.js");
 var _logoColors, _tagLineColors, _secondaryColors;
 
 /* eslint no-template-curly-in-string: off, max-lines: off */
@@ -8210,24 +8588,25 @@ var _logoColors, _tagLineColors, _secondaryColors;
 
 
 
+
 var DEFAULT_FUNDING_CONFIG = {
 
-    layouts: [__WEBPACK_IMPORTED_MODULE_2__constants__["d" /* BUTTON_LAYOUT */].HORIZONTAL, __WEBPACK_IMPORTED_MODULE_2__constants__["d" /* BUTTON_LAYOUT */].VERTICAL],
+    layouts: [__WEBPACK_IMPORTED_MODULE_3__constants__["d" /* BUTTON_LAYOUT */].HORIZONTAL, __WEBPACK_IMPORTED_MODULE_3__constants__["d" /* BUTTON_LAYOUT */].VERTICAL],
 
-    platforms: [__WEBPACK_IMPORTED_MODULE_2__constants__["p" /* PLATFORM */].DESKTOP, __WEBPACK_IMPORTED_MODULE_2__constants__["p" /* PLATFORM */].MOBILE]
+    platforms: [__WEBPACK_IMPORTED_MODULE_2_paypal_sdk_constants_src__["i" /* PLATFORM */].DESKTOP, __WEBPACK_IMPORTED_MODULE_2_paypal_sdk_constants_src__["i" /* PLATFORM */].MOBILE]
 };
 
 var DEFAULT_LABEL_CONFIG = {
 
-    colors: [__WEBPACK_IMPORTED_MODULE_2__constants__["b" /* BUTTON_COLOR */].GOLD, __WEBPACK_IMPORTED_MODULE_2__constants__["b" /* BUTTON_COLOR */].BLUE, __WEBPACK_IMPORTED_MODULE_2__constants__["b" /* BUTTON_COLOR */].SILVER],
+    colors: [__WEBPACK_IMPORTED_MODULE_3__constants__["b" /* BUTTON_COLOR */].GOLD, __WEBPACK_IMPORTED_MODULE_3__constants__["b" /* BUTTON_COLOR */].BLUE, __WEBPACK_IMPORTED_MODULE_3__constants__["b" /* BUTTON_COLOR */].SILVER],
 
-    shapes: [__WEBPACK_IMPORTED_MODULE_2__constants__["g" /* BUTTON_SHAPE */].PILL, __WEBPACK_IMPORTED_MODULE_2__constants__["g" /* BUTTON_SHAPE */].RECT],
+    shapes: [__WEBPACK_IMPORTED_MODULE_3__constants__["g" /* BUTTON_SHAPE */].PILL, __WEBPACK_IMPORTED_MODULE_3__constants__["g" /* BUTTON_SHAPE */].RECT],
 
-    logoColors: (_logoColors = {}, _logoColors[__WEBPACK_IMPORTED_MODULE_2__constants__["b" /* BUTTON_COLOR */].GOLD] = __WEBPACK_IMPORTED_MODULE_2__constants__["o" /* LOGO_COLOR */].BLUE, _logoColors[__WEBPACK_IMPORTED_MODULE_2__constants__["b" /* BUTTON_COLOR */].SILVER] = __WEBPACK_IMPORTED_MODULE_2__constants__["o" /* LOGO_COLOR */].BLUE, _logoColors[__WEBPACK_IMPORTED_MODULE_2__constants__["b" /* BUTTON_COLOR */].BLUE] = __WEBPACK_IMPORTED_MODULE_2__constants__["o" /* LOGO_COLOR */].WHITE, _logoColors),
+    logoColors: (_logoColors = {}, _logoColors[__WEBPACK_IMPORTED_MODULE_3__constants__["b" /* BUTTON_COLOR */].GOLD] = __WEBPACK_IMPORTED_MODULE_3__constants__["k" /* LOGO_COLOR */].BLUE, _logoColors[__WEBPACK_IMPORTED_MODULE_3__constants__["b" /* BUTTON_COLOR */].SILVER] = __WEBPACK_IMPORTED_MODULE_3__constants__["k" /* LOGO_COLOR */].BLUE, _logoColors[__WEBPACK_IMPORTED_MODULE_3__constants__["b" /* BUTTON_COLOR */].BLUE] = __WEBPACK_IMPORTED_MODULE_3__constants__["k" /* LOGO_COLOR */].WHITE, _logoColors),
 
-    tagLineColors: (_tagLineColors = {}, _tagLineColors[__WEBPACK_IMPORTED_MODULE_2__constants__["b" /* BUTTON_COLOR */].GOLD] = __WEBPACK_IMPORTED_MODULE_2__constants__["i" /* BUTTON_TAGLINE_COLOR */].BLUE, _tagLineColors[__WEBPACK_IMPORTED_MODULE_2__constants__["b" /* BUTTON_COLOR */].SILVER] = __WEBPACK_IMPORTED_MODULE_2__constants__["i" /* BUTTON_TAGLINE_COLOR */].BLUE, _tagLineColors[__WEBPACK_IMPORTED_MODULE_2__constants__["b" /* BUTTON_COLOR */].BLUE] = __WEBPACK_IMPORTED_MODULE_2__constants__["i" /* BUTTON_TAGLINE_COLOR */].BLUE, _tagLineColors[__WEBPACK_IMPORTED_MODULE_2__constants__["b" /* BUTTON_COLOR */].DARKBLUE] = __WEBPACK_IMPORTED_MODULE_2__constants__["i" /* BUTTON_TAGLINE_COLOR */].BLUE, _tagLineColors),
+    tagLineColors: (_tagLineColors = {}, _tagLineColors[__WEBPACK_IMPORTED_MODULE_3__constants__["b" /* BUTTON_COLOR */].GOLD] = __WEBPACK_IMPORTED_MODULE_3__constants__["i" /* BUTTON_TAGLINE_COLOR */].BLUE, _tagLineColors[__WEBPACK_IMPORTED_MODULE_3__constants__["b" /* BUTTON_COLOR */].SILVER] = __WEBPACK_IMPORTED_MODULE_3__constants__["i" /* BUTTON_TAGLINE_COLOR */].BLUE, _tagLineColors[__WEBPACK_IMPORTED_MODULE_3__constants__["b" /* BUTTON_COLOR */].BLUE] = __WEBPACK_IMPORTED_MODULE_3__constants__["i" /* BUTTON_TAGLINE_COLOR */].BLUE, _tagLineColors[__WEBPACK_IMPORTED_MODULE_3__constants__["b" /* BUTTON_COLOR */].DARKBLUE] = __WEBPACK_IMPORTED_MODULE_3__constants__["i" /* BUTTON_TAGLINE_COLOR */].BLUE, _tagLineColors),
 
-    secondaryColors: (_secondaryColors = {}, _secondaryColors[__WEBPACK_IMPORTED_MODULE_2__constants__["b" /* BUTTON_COLOR */].GOLD] = __WEBPACK_IMPORTED_MODULE_2__constants__["b" /* BUTTON_COLOR */].BLUE, _secondaryColors[__WEBPACK_IMPORTED_MODULE_2__constants__["b" /* BUTTON_COLOR */].SILVER] = __WEBPACK_IMPORTED_MODULE_2__constants__["b" /* BUTTON_COLOR */].BLUE, _secondaryColors[__WEBPACK_IMPORTED_MODULE_2__constants__["b" /* BUTTON_COLOR */].BLUE] = __WEBPACK_IMPORTED_MODULE_2__constants__["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[__WEBPACK_IMPORTED_MODULE_2__constants__["b" /* BUTTON_COLOR */].DARKBLUE] = __WEBPACK_IMPORTED_MODULE_2__constants__["b" /* BUTTON_COLOR */].SILVER, _secondaryColors)
+    secondaryColors: (_secondaryColors = {}, _secondaryColors[__WEBPACK_IMPORTED_MODULE_3__constants__["b" /* BUTTON_COLOR */].GOLD] = __WEBPACK_IMPORTED_MODULE_3__constants__["b" /* BUTTON_COLOR */].BLUE, _secondaryColors[__WEBPACK_IMPORTED_MODULE_3__constants__["b" /* BUTTON_COLOR */].SILVER] = __WEBPACK_IMPORTED_MODULE_3__constants__["b" /* BUTTON_COLOR */].BLUE, _secondaryColors[__WEBPACK_IMPORTED_MODULE_3__constants__["b" /* BUTTON_COLOR */].BLUE] = __WEBPACK_IMPORTED_MODULE_3__constants__["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[__WEBPACK_IMPORTED_MODULE_3__constants__["b" /* BUTTON_COLOR */].DARKBLUE] = __WEBPACK_IMPORTED_MODULE_3__constants__["b" /* BUTTON_COLOR */].SILVER, _secondaryColors)
 };
 
 function SVGLogo(_ref) {
@@ -8240,7 +8619,7 @@ function SVGLogo(_ref) {
         svg: render(),
         alt: name,
         nonce: nonce,
-        'class': __WEBPACK_IMPORTED_MODULE_2__constants__["k" /* CLASS */].LOGO + ' ' + __WEBPACK_IMPORTED_MODULE_2__constants__["k" /* CLASS */].LOGO + '-' + name + ' ' + (logoColor ? __WEBPACK_IMPORTED_MODULE_2__constants__["k" /* CLASS */].LOGO_COLOR + '-' + logoColor : '')
+        'class': __WEBPACK_IMPORTED_MODULE_3__constants__["j" /* CLASS */].LOGO + ' ' + __WEBPACK_IMPORTED_MODULE_3__constants__["j" /* CLASS */].LOGO + '-' + name + ' ' + (logoColor ? __WEBPACK_IMPORTED_MODULE_3__constants__["j" /* CLASS */].LOGO_COLOR + '-' + logoColor : '')
     });
 }
 
@@ -8252,8 +8631,8 @@ function SVGLogo(_ref) {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
-// EXTERNAL MODULE: ./node_modules/paypal-braintree-web-client/src/index.js
-var src = __webpack_require__("./node_modules/paypal-braintree-web-client/src/index.js");
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+var src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var belter_src = __webpack_require__("./node_modules/belter/src/index.js");
@@ -8261,7 +8640,7 @@ var belter_src = __webpack_require__("./node_modules/belter/src/index.js");
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
+// EXTERNAL MODULE: ./src/constants/index.js + 4 modules
 var constants = __webpack_require__("./src/constants/index.js");
 
 // EXTERNAL MODULE: ./src/funding/paypal/logo.jsx
@@ -8281,7 +8660,7 @@ var _CREDIT_LOGO_COLORS;
 
 
 
-var CREDIT_LOGO_COLORS = (_CREDIT_LOGO_COLORS = {}, _CREDIT_LOGO_COLORS[constants["o" /* LOGO_COLOR */].WHITE] = {
+var CREDIT_LOGO_COLORS = (_CREDIT_LOGO_COLORS = {}, _CREDIT_LOGO_COLORS[constants["k" /* LOGO_COLOR */].WHITE] = {
     primary: '#ffffff',
     secondary: '#ffffff'
 }, _CREDIT_LOGO_COLORS);
@@ -8308,7 +8687,7 @@ function CreditLogo(_ref) {
         logoColor: logoColor,
         render: function render() {
             switch (country) {
-                case src["COUNTRY"].DE:
+                case src["c" /* COUNTRY */].DE:
                     return Object(belter_src["jsxToHTML"])(
                         'svg',
                         { width: '135', height: '32', viewBox: '0 0 135 32', preserveAspectRatio: 'xMinYMin meet', xmlns: 'http://www.w3.org/2000/svg' },
@@ -8367,7 +8746,7 @@ var CREDIT_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
             var locale = _ref.locale,
                 logoColor = _ref.logoColor;
 
-            if (locale.country === src["COUNTRY"].DE) {
+            if (locale.country === src["c" /* COUNTRY */].DE) {
                 return Object(belter_src["jsxToHTML"])(CreditLogo, { logoColor: logoColor });
             }
 
@@ -8384,7 +8763,7 @@ var CREDIT_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
         colors: [constants["b" /* BUTTON_COLOR */].DARKBLUE],
 
-        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].DARKBLUE] = constants["o" /* LOGO_COLOR */].WHITE, _logoColors),
+        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].DARKBLUE] = constants["k" /* LOGO_COLOR */].WHITE, _logoColors),
 
         secondaryColors: (_secondaryColors = {}, _secondaryColors[constants["b" /* BUTTON_COLOR */].GOLD] = constants["b" /* BUTTON_COLOR */].DARKBLUE, _secondaryColors[constants["b" /* BUTTON_COLOR */].BLUE] = constants["b" /* BUTTON_COLOR */].DARKBLUE, _secondaryColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["b" /* BUTTON_COLOR */].DARKBLUE, _secondaryColors),
 
@@ -8413,7 +8792,7 @@ var src = __webpack_require__("./node_modules/belter/src/index.js");
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
+// EXTERNAL MODULE: ./src/constants/index.js + 4 modules
 var constants = __webpack_require__("./src/constants/index.js");
 
 // EXTERNAL MODULE: ./src/funding/common.jsx
@@ -8539,7 +8918,7 @@ var EPS_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
         colors: [constants["b" /* BUTTON_COLOR */].SILVER],
 
-        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["o" /* LOGO_COLOR */].BLACK, _logoColors),
+        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["k" /* LOGO_COLOR */].BLACK, _logoColors),
 
         secondaryColors: (_secondaryColors = {}, _secondaryColors[constants["b" /* BUTTON_COLOR */].GOLD] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].BLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].DARKBLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors),
 
@@ -8566,7 +8945,7 @@ var src = __webpack_require__("./node_modules/belter/src/index.js");
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
+// EXTERNAL MODULE: ./src/constants/index.js + 4 modules
 var constants = __webpack_require__("./src/constants/index.js");
 
 // EXTERNAL MODULE: ./src/funding/common.jsx
@@ -8678,7 +9057,7 @@ var GIROPAY_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
         colors: [constants["b" /* BUTTON_COLOR */].SILVER],
 
-        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["o" /* LOGO_COLOR */].BLACK, _logoColors),
+        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["k" /* LOGO_COLOR */].BLACK, _logoColors),
 
         secondaryColors: (_secondaryColors = {}, _secondaryColors[constants["b" /* BUTTON_COLOR */].GOLD] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].BLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].DARKBLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors),
 
@@ -8705,7 +9084,7 @@ var src = __webpack_require__("./node_modules/belter/src/index.js");
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
+// EXTERNAL MODULE: ./src/constants/index.js + 4 modules
 var constants = __webpack_require__("./src/constants/index.js");
 
 // EXTERNAL MODULE: ./src/funding/common.jsx
@@ -8798,7 +9177,7 @@ var IDEAL_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
         colors: [constants["b" /* BUTTON_COLOR */].SILVER],
 
-        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["o" /* LOGO_COLOR */].BLACK, _logoColors),
+        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["k" /* LOGO_COLOR */].BLACK, _logoColors),
 
         secondaryColors: (_secondaryColors = {}, _secondaryColors[constants["b" /* BUTTON_COLOR */].GOLD] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].BLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].DARKBLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors),
 
@@ -8825,7 +9204,7 @@ var src = __webpack_require__("./node_modules/belter/src/index.js");
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
+// EXTERNAL MODULE: ./src/constants/index.js + 4 modules
 var constants = __webpack_require__("./src/constants/index.js");
 
 // EXTERNAL MODULE: ./src/funding/common.jsx
@@ -8932,7 +9311,7 @@ var MYBANK_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
         colors: [constants["b" /* BUTTON_COLOR */].SILVER],
 
-        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["o" /* LOGO_COLOR */].BLACK, _logoColors),
+        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["k" /* LOGO_COLOR */].BLACK, _logoColors),
 
         secondaryColors: (_secondaryColors = {}, _secondaryColors[constants["b" /* BUTTON_COLOR */].GOLD] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].BLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].DARKBLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors),
 
@@ -8959,7 +9338,7 @@ var src = __webpack_require__("./node_modules/belter/src/index.js");
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
+// EXTERNAL MODULE: ./src/constants/index.js + 4 modules
 var constants = __webpack_require__("./src/constants/index.js");
 
 // EXTERNAL MODULE: ./src/funding/common.jsx
@@ -8975,7 +9354,7 @@ var _P24_LOGO_COLORS;
 
 
 
-var P24_LOGO_COLORS = (_P24_LOGO_COLORS = {}, _P24_LOGO_COLORS[constants["o" /* LOGO_COLOR */].BLACK] = {
+var P24_LOGO_COLORS = (_P24_LOGO_COLORS = {}, _P24_LOGO_COLORS[constants["k" /* LOGO_COLOR */].BLACK] = {
     primary: '#d03238',
     secondary: '#b3b1b1'
 }, _P24_LOGO_COLORS);
@@ -9054,7 +9433,7 @@ var P24_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
         colors: [constants["b" /* BUTTON_COLOR */].SILVER],
 
-        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["o" /* LOGO_COLOR */].BLACK, _logoColors),
+        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["k" /* LOGO_COLOR */].BLACK, _logoColors),
 
         secondaryColors: (_secondaryColors = {}, _secondaryColors[constants["b" /* BUTTON_COLOR */].GOLD] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].BLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].DARKBLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors),
 
@@ -9075,8 +9454,8 @@ var P24_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
-// EXTERNAL MODULE: ./node_modules/paypal-braintree-web-client/src/index.js
-var src = __webpack_require__("./node_modules/paypal-braintree-web-client/src/index.js");
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+var src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var belter_src = __webpack_require__("./node_modules/belter/src/index.js");
@@ -9084,7 +9463,7 @@ var belter_src = __webpack_require__("./node_modules/belter/src/index.js");
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
+// EXTERNAL MODULE: ./src/constants/index.js + 4 modules
 var constants = __webpack_require__("./src/constants/index.js");
 
 // EXTERNAL MODULE: ./src/funding/common.jsx
@@ -9259,7 +9638,7 @@ function contentToJSX(key, locale) {
         text: function text(token) {
             return Object(belter_src["jsxToHTML"])(
                 'span',
-                { 'class': constants["k" /* CLASS */].TEXT },
+                { 'class': constants["j" /* CLASS */].TEXT },
                 token
             );
         },
@@ -9403,9 +9782,9 @@ var PAYPAL_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
         defaultColor: constants["b" /* BUTTON_COLOR */].GOLD,
 
-        allowedCountries: [src["COUNTRY"].BR, src["COUNTRY"].MX],
+        allowedCountries: [src["c" /* COUNTRY */].BR, src["c" /* COUNTRY */].MX],
 
-        allowedPeriods: (_allowedPeriods = {}, _allowedPeriods[src["COUNTRY"].BR] = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], _allowedPeriods[src["COUNTRY"].MX] = [3, 6, 9, 12], _allowedPeriods),
+        allowedPeriods: (_allowedPeriods = {}, _allowedPeriods[src["c" /* COUNTRY */].BR] = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], _allowedPeriods[src["c" /* COUNTRY */].MX] = [3, 6, 9, 12], _allowedPeriods),
 
         Label: function Label(_ref7) {
             var locale = _ref7.locale,
@@ -9452,13 +9831,13 @@ var _PAYPAL_LOGO_COLORS;
 
 
 
-var PAYPAL_LOGO_COLORS = (_PAYPAL_LOGO_COLORS = {}, _PAYPAL_LOGO_COLORS[__WEBPACK_IMPORTED_MODULE_1__constants__["o" /* LOGO_COLOR */].BLUE] = {
+var PAYPAL_LOGO_COLORS = (_PAYPAL_LOGO_COLORS = {}, _PAYPAL_LOGO_COLORS[__WEBPACK_IMPORTED_MODULE_1__constants__["k" /* LOGO_COLOR */].BLUE] = {
     primary: '#003087',
     secondary: '#009cde'
-}, _PAYPAL_LOGO_COLORS[__WEBPACK_IMPORTED_MODULE_1__constants__["o" /* LOGO_COLOR */].WHITE] = {
+}, _PAYPAL_LOGO_COLORS[__WEBPACK_IMPORTED_MODULE_1__constants__["k" /* LOGO_COLOR */].WHITE] = {
     primary: '#ffffff',
     secondary: '#ffffff'
-}, _PAYPAL_LOGO_COLORS[__WEBPACK_IMPORTED_MODULE_1__constants__["o" /* LOGO_COLOR */].BLACK] = {
+}, _PAYPAL_LOGO_COLORS[__WEBPACK_IMPORTED_MODULE_1__constants__["k" /* LOGO_COLOR */].BLACK] = {
     primary: '#333030',
     secondary: '#636363'
 }, _PAYPAL_LOGO_COLORS);
@@ -9506,7 +9885,7 @@ function PPLogo(_ref2) {
         name: __WEBPACK_IMPORTED_MODULE_1__constants__["e" /* BUTTON_LOGO */].PP,
         logoColor: logoColor,
         render: function render() {
-            if (logoColor === __WEBPACK_IMPORTED_MODULE_1__constants__["o" /* LOGO_COLOR */].BLUE) {
+            if (logoColor === __WEBPACK_IMPORTED_MODULE_1__constants__["k" /* LOGO_COLOR */].BLUE) {
                 return Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__["jsxToHTML"])(
                     'svg',
                     { width: '24', height: '32', viewBox: '0 0 24 32', xmlns: 'http://www.w3.org/2000/svg', preserveAspectRatio: 'xMinYMin meet' },
@@ -9516,7 +9895,7 @@ function PPLogo(_ref2) {
                 );
             }
 
-            if (logoColor === __WEBPACK_IMPORTED_MODULE_1__constants__["o" /* LOGO_COLOR */].WHITE) {
+            if (logoColor === __WEBPACK_IMPORTED_MODULE_1__constants__["k" /* LOGO_COLOR */].WHITE) {
                 return Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__["jsxToHTML"])(
                     'svg',
                     { width: '24', height: '32', viewBox: '0 0 24 32', xmlns: 'http://www.w3.org/2000/svg', preserveAspectRatio: 'xMinYMin meet' },
@@ -9533,7 +9912,7 @@ function PPLogo(_ref2) {
                 );
             }
 
-            if (logoColor === __WEBPACK_IMPORTED_MODULE_1__constants__["o" /* LOGO_COLOR */].BLACK) {
+            if (logoColor === __WEBPACK_IMPORTED_MODULE_1__constants__["k" /* LOGO_COLOR */].BLACK) {
                 return Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__["jsxToHTML"])(
                     'svg',
                     { width: '24', height: '32', viewBox: '0 0 24 32', preserveAspectRatio: 'xMinYMin meet', xmlns: 'http://www.w3.org/2000/svg' },
@@ -9569,7 +9948,7 @@ var src = __webpack_require__("./node_modules/belter/src/index.js");
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
+// EXTERNAL MODULE: ./src/constants/index.js + 4 modules
 var constants = __webpack_require__("./src/constants/index.js");
 
 // EXTERNAL MODULE: ./src/funding/common.jsx
@@ -9655,7 +10034,7 @@ var SEPA_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
         colors: [constants["b" /* BUTTON_COLOR */].SILVER],
 
-        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["o" /* LOGO_COLOR */].BLACK, _logoColors),
+        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["k" /* LOGO_COLOR */].BLACK, _logoColors),
 
         secondaryColors: (_secondaryColors = {}, _secondaryColors[constants["b" /* BUTTON_COLOR */].GOLD] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].BLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].DARKBLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors),
 
@@ -9682,7 +10061,7 @@ var src = __webpack_require__("./node_modules/belter/src/index.js");
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
+// EXTERNAL MODULE: ./src/constants/index.js + 4 modules
 var constants = __webpack_require__("./src/constants/index.js");
 
 // EXTERNAL MODULE: ./src/funding/common.jsx
@@ -9762,7 +10141,7 @@ var SOFORT_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
         colors: [constants["b" /* BUTTON_COLOR */].SILVER],
 
-        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["o" /* LOGO_COLOR */].BLACK, _logoColors),
+        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["k" /* LOGO_COLOR */].BLACK, _logoColors),
 
         secondaryColors: (_secondaryColors = {}, _secondaryColors[constants["b" /* BUTTON_COLOR */].GOLD] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].BLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].DARKBLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors),
 
@@ -9786,10 +10165,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
+
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
+// EXTERNAL MODULE: ./src/constants/index.js + 4 modules
 var constants = __webpack_require__("./src/constants/index.js");
 
 // EXTERNAL MODULE: ./src/funding/common.jsx
@@ -9805,9 +10187,9 @@ var _VENMO_LOGO_COLORS;
 
 
 
-var VENMO_LOGO_COLORS = (_VENMO_LOGO_COLORS = {}, _VENMO_LOGO_COLORS[constants["o" /* LOGO_COLOR */].BLUE] = {
+var VENMO_LOGO_COLORS = (_VENMO_LOGO_COLORS = {}, _VENMO_LOGO_COLORS[constants["k" /* LOGO_COLOR */].BLUE] = {
     primary: '#3D93CE'
-}, _VENMO_LOGO_COLORS[constants["o" /* LOGO_COLOR */].WHITE] = {
+}, _VENMO_LOGO_COLORS[constants["k" /* LOGO_COLOR */].WHITE] = {
     primary: '#ffffff'
 }, _VENMO_LOGO_COLORS);
 
@@ -9863,13 +10245,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 
+
 var VENMO_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
     url: config["b" /* getCheckoutUrl */],
 
     defaultLabel: constants["c" /* BUTTON_LABEL */].VENMO,
 
-    platforms: [constants["p" /* PLATFORM */].MOBILE],
+    platforms: [paypal_sdk_constants_src["i" /* PLATFORM */].MOBILE],
 
     labels: (_labels = {}, _labels[constants["c" /* BUTTON_LABEL */].VENMO] = _extends({}, common["b" /* DEFAULT_LABEL_CONFIG */], {
 
@@ -9879,7 +10262,7 @@ var VENMO_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
         colors: [constants["b" /* BUTTON_COLOR */].BLUE, constants["b" /* BUTTON_COLOR */].SILVER],
 
-        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].BLUE] = constants["o" /* LOGO_COLOR */].WHITE, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["o" /* LOGO_COLOR */].BLUE, _logoColors),
+        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].BLUE] = constants["k" /* LOGO_COLOR */].WHITE, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["k" /* LOGO_COLOR */].BLUE, _logoColors),
 
         secondaryColors: (_secondaryColors = {}, _secondaryColors[constants["b" /* BUTTON_COLOR */].GOLD] = constants["b" /* BUTTON_COLOR */].BLUE, _secondaryColors[constants["b" /* BUTTON_COLOR */].BLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["b" /* BUTTON_COLOR */].BLUE, _secondaryColors[constants["b" /* BUTTON_COLOR */].DARKBLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors),
 
@@ -9906,7 +10289,7 @@ var src = __webpack_require__("./node_modules/belter/src/index.js");
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
+// EXTERNAL MODULE: ./src/constants/index.js + 4 modules
 var constants = __webpack_require__("./src/constants/index.js");
 
 // EXTERNAL MODULE: ./src/funding/common.jsx
@@ -9922,7 +10305,7 @@ var _WECHATPAY_LOGO_COLOR;
 
 
 
-var WECHATPAY_LOGO_COLORS = (_WECHATPAY_LOGO_COLOR = {}, _WECHATPAY_LOGO_COLOR[constants["o" /* LOGO_COLOR */].BLACK] = {
+var WECHATPAY_LOGO_COLORS = (_WECHATPAY_LOGO_COLOR = {}, _WECHATPAY_LOGO_COLOR[constants["k" /* LOGO_COLOR */].BLACK] = {
     primary: '#1AAD19',
     secondary: '#4D4D4D'
 }, _WECHATPAY_LOGO_COLOR);
@@ -10006,7 +10389,7 @@ var WECHATPAY_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
         colors: [constants["b" /* BUTTON_COLOR */].SILVER],
 
-        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["o" /* LOGO_COLOR */].BLACK, _logoColors),
+        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["k" /* LOGO_COLOR */].BLACK, _logoColors),
 
         secondaryColors: (_secondaryColors = {}, _secondaryColors[constants["b" /* BUTTON_COLOR */].GOLD] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].BLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].DARKBLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors),
 
@@ -10033,7 +10416,7 @@ var src = __webpack_require__("./node_modules/belter/src/index.js");
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
 var config = __webpack_require__("./src/config/index.js");
 
-// EXTERNAL MODULE: ./src/constants/index.js + 5 modules
+// EXTERNAL MODULE: ./src/constants/index.js + 4 modules
 var constants = __webpack_require__("./src/constants/index.js");
 
 // EXTERNAL MODULE: ./src/funding/common.jsx
@@ -10049,7 +10432,7 @@ var _ZIMPLER_LOGO_COLORS;
 
 
 
-var ZIMPLER_LOGO_COLORS = (_ZIMPLER_LOGO_COLORS = {}, _ZIMPLER_LOGO_COLORS[constants["o" /* LOGO_COLOR */].BLACK] = {
+var ZIMPLER_LOGO_COLORS = (_ZIMPLER_LOGO_COLORS = {}, _ZIMPLER_LOGO_COLORS[constants["k" /* LOGO_COLOR */].BLACK] = {
     primary: '#00A599'
 }, _ZIMPLER_LOGO_COLORS);
 
@@ -10118,7 +10501,7 @@ var ZIMPLER_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
         colors: [constants["b" /* BUTTON_COLOR */].SILVER],
 
-        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["o" /* LOGO_COLOR */].BLACK, _logoColors),
+        logoColors: (_logoColors = {}, _logoColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["k" /* LOGO_COLOR */].BLACK, _logoColors),
 
         secondaryColors: (_secondaryColors = {}, _secondaryColors[constants["b" /* BUTTON_COLOR */].GOLD] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].BLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].SILVER] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors[constants["b" /* BUTTON_COLOR */].DARKBLUE] = constants["b" /* BUTTON_COLOR */].SILVER, _secondaryColors),
 
