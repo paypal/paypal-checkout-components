@@ -243,6 +243,14 @@ export let config = {
 
         'freshly.com': {
             disable_venmo: true
+        },
+
+        'buypeticare.com': {
+            disable_venmo: true
+        },
+
+        'getownzone.com': {
+            disable_venmo: true
         }
     },
 
