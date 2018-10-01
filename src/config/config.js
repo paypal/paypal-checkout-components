@@ -239,6 +239,18 @@ export let config = {
 
         'zulily.com': {
             disable_venmo: true
+        },
+
+        'freshly.com': {
+            disable_venmo: true
+        },
+
+        'buypeticare.com': {
+            disable_venmo: true
+        },
+
+        'getownzone.com': {
+            disable_venmo: true
         }
     },
 
