@@ -1,7 +1,8 @@
 /* @flow */
 
 
-import { getLogger, FPTI_KEY } from 'paypal-braintree-web-client/src';
+import { getLogger } from 'paypal-braintree-web-client/src';
+import { FPTI_KEY } from 'paypal-sdk-constants/src';
 
 import { FPTI_STATE, FPTI_CONTEXT_TYPE } from './constants';
 import { getSessionState } from './lib';

@@ -1,11 +1,11 @@
 /* @flow */
 
 import { values, uniqueID } from 'belter/src';
-import { ENV, COUNTRY, LANG, COUNTRY_LANGS,
-    type LocaleType, type FundingEligibilityType } from 'paypal-braintree-web-client/src';
+import { type FundingEligibilityType } from 'paypal-braintree-web-client/src';
+import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
+    ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType } from 'paypal-sdk-constants/src';
 
-import { PLATFORM, FUNDING, BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT,
-    BUTTON_SHAPE, BUTTON_SIZE, INTENT, COMMIT, VAULT } from '../constants';
+import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE } from '../constants';
 import { FUNDING_CONFIG } from '../funding';
 
 import { BUTTON_SIZE_STYLE } from './config';

@@ -1,9 +1,9 @@
 /* @flow */
 
 import { identity } from 'belter/src';
+import { FUNDING } from 'paypal-sdk-constants/src';
 
 import { getStorageState } from '../lib';
-import { FUNDING } from '../constants';
 import { getRememberedFunding } from '../globals';
 
 // $FlowFixMe

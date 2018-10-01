@@ -2,7 +2,7 @@
 /* @jsx jsxToHTML */
 /* eslint max-lines: 0 */
 
-import { type LocaleType } from 'paypal-braintree-web-client/src';
+import { type LocaleType } from 'paypal-sdk-constants/src';
 import { placeholderToJSX, jsxToHTML, Fragment, type JsxHTMLNode, type PropsType, type ChildrenType } from 'belter/src'; // eslint-disable-line no-unused-vars
 
 import { LOGO_COLOR, CLASS } from '../../constants';

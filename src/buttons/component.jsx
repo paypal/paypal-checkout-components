@@ -2,16 +2,17 @@
 /* @jsx jsxDom */
 /* eslint max-lines: 0 */
 
-import { ENV, getLogger, FPTI_KEY, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getPayPalDomain } from 'paypal-braintree-web-client/src';
+import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getPayPalDomain } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
 import { isIEIntranet, isDevice, uniqueID, redirect } from 'belter/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
+import { PLATFORM, INTENT, FPTI_KEY, ENV } from 'paypal-sdk-constants/src';
 
 import { getButtonUrl } from '../config';
 import { getFundingEligibility } from '../globals';
-import { FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_CONTEXT_TYPE, PLATFORM, INTENT } from '../constants';
+import { FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_CONTEXT_TYPE } from '../constants';
 import { checkRecognizedBrowser, getSessionID, isEligible, getBrowser } from '../lib';
 import { createOrder, type OrderCreateRequest, type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from '../api';
 
@@ -412,7 +413,7 @@ export let Buttons : Component<ButtonProps> = create({
             value:      getIntent,
             queryValue: (intent) => {
                 return (intent === INTENT.CAPTURE)
-                    ? INTENT.SALE
+                    ? 'sale'
                     : intent;
             }
         },

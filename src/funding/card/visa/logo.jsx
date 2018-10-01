@@ -2,9 +2,9 @@
 /* @jsx jsxToHTML */
 
 import { jsxToHTML, JsxHTMLNode } from 'belter/src'; // eslint-disable-line no-unused-vars
+import { CARD } from 'paypal-sdk-constants/src';
 
 import { SVGCardLogo } from '../common';
-import { CARD } from '../../../constants';
 
 export function VisaLogo({ nonce } : { nonce : string }) : JsxHTMLNode {
     return (

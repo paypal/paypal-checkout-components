@@ -4,7 +4,7 @@ import { getHost, getPath } from 'paypal-braintree-web-client/src';
 import { destroyAll } from 'zoid/src';
 
 let script = document.createElement('script');
-script.setAttribute('src', `https://${ getHost() }${ getPath() }`);
+script.setAttribute('src', `https://${ getHost() }${ getPath() }?client-id=abcxyz123`);
 script.setAttribute('data-client-token', 'TEST');
 
 let body = document.body;

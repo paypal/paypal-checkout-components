@@ -1,6 +1,6 @@
 /* @flow */
 
-import { FUNDING } from '../constants';
+import { FUNDING } from 'paypal-sdk-constants/src';
 
 import { type FundingSourceConfig } from './common';
 

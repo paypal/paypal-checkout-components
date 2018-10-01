@@ -1,10 +1,11 @@
 
 /* @flow */
 
-import { getLogger, FPTI_KEY } from 'paypal-braintree-web-client/src';
+import { getLogger } from 'paypal-braintree-web-client/src';
 import { getPageRenderTime, isIEIntranet } from 'belter/src';
+import { FUNDING, FPTI_KEY } from 'paypal-sdk-constants/src';
 
-import { ATTRIBUTE, FUNDING, FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, BUTTON_LAYOUT } from '../constants';
+import { ATTRIBUTE, FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, BUTTON_LAYOUT } from '../constants';
 
 import typeof { Buttons } from './component';
 

@@ -1,10 +1,11 @@
 /* @flow */
 
-import { getLogger, FPTI_KEY, getPayPalDomain, getIntent, getCurrency } from 'paypal-braintree-web-client/src';
+import { getLogger, getPayPalDomain, getIntent, getCurrency } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { on, send } from 'post-robot/src';
 import { getAncestor, isSameDomain } from 'cross-domain-utils/src';
 import { memoize, request, base64encode } from 'belter/src';
+import { FPTI_KEY } from 'paypal-sdk-constants/src';
 
 import { getOrderAPIUrl, getAuthAPIUrl } from '../config';
 import { FPTI_STATE, FPTI_CONTEXT_TYPE, FPTI_TRANSITION } from '../constants';

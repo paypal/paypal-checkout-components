@@ -1,10 +1,11 @@
 /* @flow */
 /* @jsx jsxToHTML */
 
-import { ENV, type LocaleType, type FundingEligibilityType } from 'paypal-braintree-web-client/src';
+import { type FundingEligibilityType } from 'paypal-braintree-web-client/src';
 import { jsxToHTML, type JsxHTMLNode, jsxRender, Fragment } from 'belter/src'; // eslint-disable-line no-unused-vars
+import { FUNDING, ENV, type LocaleType } from 'paypal-sdk-constants/src';
 
-import { BUTTON_NUMBER, BUTTON_LABEL, ATTRIBUTE, CLASS, FUNDING,
+import { BUTTON_NUMBER, BUTTON_LABEL, ATTRIBUTE, CLASS,
     BUTTON_COLOR, LOGO_COLOR } from '../../constants';
 import { FUNDING_CONFIG, determineEligibleFunding } from '../../funding';
 import { normalizeButtonProps, type ButtonStyle, type ButtonPropsInputs } from '../props';

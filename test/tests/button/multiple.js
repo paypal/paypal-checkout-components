@@ -2,6 +2,7 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { FUNDING } from 'paypal-sdk-constants/src';
 
 import { generateOrderID, createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, assert, mockProp } from '../common';
 
@@ -24,30 +25,30 @@ for (let flow of [ 'popup', 'iframe' ]) {
         let cases = [
 
             {
-                source:   window.paypal.FUNDING.CARD,
+                source:   FUNDING.CARD,
                 fragment: 'guesturl=true'
             },
 
             {
-                source:    window.paypal.FUNDING.VENMO,
+                source:    FUNDING.VENMO,
                 fragment:  'checkouturl=true',
                 userAgent: IPHONE6_USER_AGENT
             },
 
             {
-                source:   window.paypal.FUNDING.CREDIT,
+                source:   FUNDING.CREDIT,
                 fragment: 'checkouturl=true'
             },
 
             {
-                source:   window.paypal.FUNDING.IDEAL,
+                source:   FUNDING.IDEAL,
                 fragment: 'checkouturl=true',
                 country:   'NL',
                 commit:   true
             },
 
             {
-                source:   window.paypal.FUNDING.SEPA,
+                source:   FUNDING.SEPA,
                 fragment: 'guesturl=true',
                 country:   'DE'
             }
@@ -67,8 +68,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[source], 'eligible', true);
                 let mockCountry = mockProp(window, '__TEST_LOCALE_COUNTRY__', country || 'US');
 
-                if (source === window.paypal.FUNDING.VENMO) {
-                    window.__TEST_REMEMBERED_FUNDING__.push(window.paypal.FUNDING.VENMO);
+                if (source === FUNDING.VENMO) {
+                    window.__TEST_REMEMBERED_FUNDING__.push(FUNDING.VENMO);
                 }
                 
                 window.paypal.Buttons({
@@ -101,8 +102,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 mockEligibility.cancel();
                 mockCountry.cancel();
 
-                if (source === window.paypal.FUNDING.VENMO) {
-                    window.__TEST_REMEMBERED_FUNDING__.splice(window.__TEST_REMEMBERED_FUNDING__.indexOf(window.paypal.FUNDING.VENMO), 1);
+                if (source === FUNDING.VENMO) {
+                    window.__TEST_REMEMBERED_FUNDING__.splice(window.__TEST_REMEMBERED_FUNDING__.indexOf(FUNDING.VENMO), 1);
                 }
             });
         }

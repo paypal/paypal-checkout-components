@@ -1,8 +1,7 @@
 /* @flow */
 
 import type { FundingEligibilityType } from 'paypal-braintree-web-client/src';
-
-import { FUNDING } from './constants';
+import { FUNDING } from 'paypal-sdk-constants/src';
 
 export function getFundingEligibility() : FundingEligibilityType {
     return __paypal_checkout__.serverConfig.fundingEligibility;

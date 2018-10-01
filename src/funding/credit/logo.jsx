@@ -2,7 +2,7 @@
 /* @flow */
 /* @jsx jsxToHTML */
 
-import { COUNTRY, type LocaleType } from 'paypal-braintree-web-client/src';
+import { COUNTRY, type LocaleType } from 'paypal-sdk-constants/src';
 import { jsxToHTML, JsxHTMLNode } from 'belter/src'; // eslint-disable-line no-unused-vars
 
 import { SVGLogo, type LogoColorMap } from '../common';

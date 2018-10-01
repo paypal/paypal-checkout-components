@@ -92,7 +92,7 @@ export const testGlobals = {
         }
     },
     
-    __CLIENT_ID__:      'xyz',
+    __CLIENT_ID__:      'abcxyz123',
     __MERCHANT_ID__:    'abc',
     __LOCALE_COUNTRY__: 'US',
     __DEFAULT_LANG__:   'en',

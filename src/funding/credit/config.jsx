@@ -1,7 +1,7 @@
 /* @flow */
 /* @jsx jsxToHTML */
 
-import { COUNTRY } from 'paypal-braintree-web-client/src';
+import { COUNTRY } from 'paypal-sdk-constants/src';
 import { jsxToHTML, JsxHTMLNode, Fragment, SVG } from 'belter/src'; // eslint-disable-line no-unused-vars
 
 import { getCheckoutUrl } from '../../config';

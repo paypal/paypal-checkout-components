@@ -1,11 +1,11 @@
 /* @flow */
 /* @jsx jsxToHTML */
 
-import { COUNTRY } from 'paypal-braintree-web-client/src';
 import { jsxToHTML, JsxHTMLNode, svgToBase64, SVG, objFilter } from 'belter/src'; // eslint-disable-line no-unused-vars
+import { CARD, FUNDING, COUNTRY } from 'paypal-sdk-constants/src';
 
 import { getGuestUrl } from '../../config';
-import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR, LOGO_COLOR, CARD, FUNDING } from '../../constants';
+import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR, LOGO_COLOR } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
 
 const CARD_PRIORITY : $ReadOnlyArray<$Values<typeof CARD>> = [

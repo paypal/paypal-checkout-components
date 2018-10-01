@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { COUNTRY_LANGS } from 'paypal-braintree-web-client/src';
+import { COUNTRY_LANGS } from 'paypal-sdk-constants/src';
 
 import { mockProp, createTestContainer, destroyTestContainer } from '../common';
 

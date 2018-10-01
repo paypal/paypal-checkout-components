@@ -2,10 +2,11 @@
 /* eslint no-template-curly-in-string: off, max-lines: off */
 /* @jsx jsxToHTML */
 
-import { type LocaleType, COUNTRY, type FundingEligibilityType } from 'paypal-braintree-web-client/src';
+import { type FundingEligibilityType } from 'paypal-braintree-web-client/src';
 import { jsxToHTML, SVG, JsxHTMLNode } from 'belter/src'; // eslint-disable-line no-unused-vars
+import { PLATFORM, CARD, type LocaleType, COUNTRY } from 'paypal-sdk-constants/src';
 
-import { BUTTON_COLOR, LOGO_COLOR, CLASS, PLATFORM, CARD,
+import { BUTTON_COLOR, LOGO_COLOR, CLASS,
     BUTTON_TAGLINE_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LABEL } from '../constants';
 
 export const DEFAULT_FUNDING_CONFIG = {

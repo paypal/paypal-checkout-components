@@ -1,15 +1,15 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { ENV, getPayPalDomain, getLogger, getLocale, getEnv, getClientID } from 'paypal-braintree-web-client/src';
+import { getPayPalDomain, getLogger, getLocale, getEnv, getClientID } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONSTANTS, PopupOpenError } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { patchMethod, isDevice, supportsPopups, memoize, isIEIntranet } from 'belter/src';
+import { FUNDING, ENV } from 'paypal-sdk-constants/src';
 
 import { getSessionID, getButtonSessionID, isEligible } from '../lib';
-import { FUNDING } from '../constants';
 import { FUNDING_CONFIG } from '../funding';
 
 import { containerTemplate, componentTemplate } from './template';

@@ -2,9 +2,10 @@
 /* @jsx jsxToHTML */
 
 import { jsxToHTML, SVG, JsxHTMLNode } from 'belter/src'; // eslint-disable-line no-unused-vars
+import { PLATFORM } from 'paypal-sdk-constants/src';
 
 import { getCheckoutUrl } from '../../config';
-import { PLATFORM, BUTTON_LABEL, BUTTON_COLOR, LOGO_COLOR } from '../../constants';
+import { BUTTON_LABEL, BUTTON_COLOR, LOGO_COLOR } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
 
 import { VenmoLogo } from './logo';

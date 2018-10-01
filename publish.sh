@@ -15,7 +15,7 @@ if ! git diff-index --quiet --cached HEAD; then
     exit 1;
 fi;
 
-modules='zoid post-robot zalgo-promise beaver-logger cross-domain-safe-weakmap cross-domain-utils belter paypal-braintree-web-client grumbler-scripts';
+modules='zoid post-robot zalgo-promise beaver-logger cross-domain-safe-weakmap cross-domain-utils belter paypal-braintree-web-client grumbler-scripts paypal-sdk-constants';
 
 for module in $modules; do
     rm -rf "node_modules/$module";

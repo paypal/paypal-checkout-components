@@ -1,6 +1,6 @@
 /* @flow */
 
-import { ENV } from 'paypal-braintree-web-client/src';
+import { ENV } from 'paypal-sdk-constants/src';
 
 import { BUTTON_COLOR, CLASS } from '../../../constants';
 

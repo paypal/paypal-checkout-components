@@ -11,8 +11,6 @@ import './checkout'; // eslint-disable-line import/no-unassigned-import
 
 import { setup } from './setup';
 
-export { FUNDING } from '../constants';
-
 // $FlowFixMe
 export function Buttons(props : ButtonProps = {}) : { render : (string | HTMLElement) => ZalgoPromise<void> } {
     return {
