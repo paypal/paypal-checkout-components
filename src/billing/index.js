@@ -41,6 +41,8 @@ export const BillingPage : Component<BillingOptions> = create({
         };
     },
 
+    scrolling: true,
+
     props: {
         sessionID: {
             type:     'string',
