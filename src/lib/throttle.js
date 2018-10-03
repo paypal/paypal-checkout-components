@@ -7,21 +7,7 @@ import { FPTI, BUTTON_LABEL, BUTTON_LAYOUT } from '../constants';
 import { config } from '../config';
 
 import { match } from './util';
-import { getStorageState, getStorageID, getSessionState } from './session';
-
-
-function isCheckpointUnique(name : string) : boolean {
-    return getSessionState(state => {
-        state.loggedBeacons = state.loggedBeacons || [];
-
-        if (state.loggedBeacons.indexOf(name) === -1) {
-            state.loggedBeacons.push(name);
-            return true;
-        }
-
-        return false;
-    });
-}
+import { getStorageState, getStorageID } from './session';
 
 type Throttle = {
     isEnabled : () => boolean,
@@ -90,29 +76,20 @@ export function getThrottle(name : string, sample : number) : Throttle {
         },
 
         log(checkpointName : string, payload? : { [string] : ?string } = {}) : Throttle {
-
             if (!started) {
                 return this;
             }
 
-            if (isCheckpointUnique(`${ name }_${ treatment }`)) {
-                track({
-                    [ FPTI.KEY.STATE ]:           FPTI.STATE.PXP,
-                    [ FPTI.KEY.TRANSITION ]:      FPTI.TRANSITION.PXP,
-                    [ FPTI.KEY.EXPERIMENT_NAME ]: name,
-                    [ FPTI.KEY.TREATMENT_NAME ]:  treatment,
-                    ...payload
-                });
-            }
+            let checkpoint = `${ name }_${ treatment }_${ checkpointName }`;
+            info(checkpoint, { ...payload, expuid: uid });
 
-            let event = `${ name }_${ treatment }_${ checkpointName }`;
-
-            if (isCheckpointUnique(event)) {
-                info(event, { ...payload, expuid: uid });
-            }
+            track({
+                [ FPTI.KEY.EXPERIMENT_NAME ]: name,
+                [ FPTI.KEY.TREATMENT_NAME ]:  treatment,
+                ...payload
+            });
 
             flushLogs();
-
             return this;
         },
 
@@ -122,6 +99,10 @@ export function getThrottle(name : string, sample : number) : Throttle {
         },
 
         logComplete(payload? : { [string] : ?string } = {}) : Throttle {
+            if (!started) {
+                return this;
+            }
+
             return this.log(`complete`, payload);
         }
     };

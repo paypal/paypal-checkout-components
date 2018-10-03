@@ -722,12 +722,16 @@ export let Button : Component<ButtonOptions> = create({
 
                     if (creditThrottle) {
                         creditThrottle.log('click', {
-                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
+                            [ FPTI.KEY.STATE ]:              FPTI.STATE.BUTTON,
+                            [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_CLICK,
+                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
                         });
                     }
                     
                     if (fundingLogoThrottle) {
                         fundingLogoThrottle.log('click', {
+                            [ FPTI.KEY.STATE ]:              FPTI.STATE.BUTTON,
+                            [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_CLICK,
                             [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
                             [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                         });
