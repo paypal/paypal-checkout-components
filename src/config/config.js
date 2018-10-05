@@ -251,6 +251,10 @@ export let config = {
 
         'getownzone.com': {
             disable_venmo: true
+        },
+        
+        'uncommongoods.com': {
+            disable_venmo: true
         }
     },
 
