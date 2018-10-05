@@ -46,7 +46,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.paypal.com/paypal/paypal-checkout.git"
+    "url": "git://github.com/paypal/paypal-checkout.git"
   },
   "homepage": "https://developer.paypal.com/",
   "keywords": [
