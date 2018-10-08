@@ -16,13 +16,13 @@ const CREDIT_LOGO_COLORS : LogoColorMap = {
 };
 
 export function CreditLogo({ logoColor, locale, nonce } :
-    { logoColor : $Values<typeof LOGO_COLOR>, locale? : LocaleType, nonce : string }) : JsxHTMLNode {
+    { logoColor : $Values<typeof LOGO_COLOR>, locale : LocaleType, nonce : string }) : JsxHTMLNode {
 
     if (!CREDIT_LOGO_COLORS[logoColor]) {
         throw new Error(`No ${ logoColor } credit logo available`);
     }
 
-    let { country } = locale || {};
+    let { country } = locale;
     let { primary } = CREDIT_LOGO_COLORS[logoColor];
 
     return (
