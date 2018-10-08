@@ -5,7 +5,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { on, send } from 'post-robot/src';
 import { getAncestor, isSameDomain } from 'cross-domain-utils/src';
 import { memoize, request, base64encode } from 'belter/src';
-import { FPTI_KEY } from 'paypal-sdk-constants/src';
+import { FPTI_KEY, SDK_QUERY_KEYS } from 'paypal-sdk-constants/src';
 
 import { getOrderAPIUrl, getAuthAPIUrl } from '../config';
 import { FPTI_STATE, FPTI_CONTEXT_TYPE, FPTI_TRANSITION } from '../constants';
@@ -97,7 +97,7 @@ export function createOrder(clientID : string, order : OrderCreateRequest) : Zal
     order = { ...order };
 
     if (order.intent && order.intent !== intent) {
-        throw new Error(`Unexpected intent: ${ order.intent } passed to order.create. Expected ${ intent }`);
+        throw new Error(`Unexpected intent: ${ order.intent } passed to order.create. Please ensure you are passing /sdk/js?${ SDK_QUERY_KEYS.ORDER_INTENT }=${ order.intent } in the paypal script tag.`);
     }
 
     // $FlowFixMe
@@ -105,7 +105,7 @@ export function createOrder(clientID : string, order : OrderCreateRequest) : Zal
 
     order.purchase_units = order.purchase_units.map(unit => {
         if (unit.amount.currency_code && unit.amount.currency_code !== currency) {
-            throw new Error(`Unexpected intent: ${ unit.amount.currency_code } passed to order.create. Expected ${ currency }`);
+            throw new Error(`Unexpected currency: ${ unit.amount.currency_code } passed to order.create. Please ensure you are passing /sdk/js?${ SDK_QUERY_KEYS.ORDER_CURRENCY }=${ unit.amount.currency_code } in the paypal script tag.`);
         }
 
         return { ...unit, amount: { ...unit.amount, currency_code: currency } };
