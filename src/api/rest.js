@@ -91,8 +91,8 @@ export function createOrder(clientID : string, order : OrderCreateRequest) : Zal
         throw new Error(`Expected order details to be passed`);
     }
 
-    let currency = getCurrency();
-    let intent = getIntent();
+    let currency = window.xprops ? window.xprops.currency : getCurrency();
+    let intent = window.xprops ? window.xprops.intent : getIntent();
 
     order = { ...order };
 

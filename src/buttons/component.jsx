@@ -2,7 +2,7 @@
 /* @jsx jsxDom */
 /* eslint max-lines: 0 */
 
-import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getPayPalDomain } from 'paypal-braintree-web-client/src';
+import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getPayPalDomain, getCurrency } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
@@ -405,6 +405,12 @@ export let Buttons : Component<ButtonProps> = create({
             value() : Function {
                 return rememberFunding;
             }
+        },
+
+        currency: {
+            type:       'string',
+            queryParam: true,
+            value:      getCurrency
         },
 
         intent: {
