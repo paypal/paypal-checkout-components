@@ -433,7 +433,7 @@ var KEY_CODES = {
 /* unused harmony export waitForWindowReady */
 /* unused harmony export waitForDocumentReady */
 /* unused harmony export waitForDocumentBody */
-/* unused harmony export parseQuery */
+/* harmony export (immutable) */ __webpack_exports__["g"] = parseQuery;
 /* unused harmony export getQueryParam */
 /* unused harmony export urlWillRedirectPage */
 /* unused harmony export formatQuery */
@@ -458,9 +458,9 @@ var KEY_CODES = {
 /* unused harmony export elementReady */
 /* unused harmony export PopupOpenError */
 /* unused harmony export popup */
-/* harmony export (immutable) */ __webpack_exports__["i"] = writeToWindow;
-/* harmony export (immutable) */ __webpack_exports__["h"] = writeElementToWindow;
-/* harmony export (immutable) */ __webpack_exports__["g"] = setStyle;
+/* harmony export (immutable) */ __webpack_exports__["j"] = writeToWindow;
+/* harmony export (immutable) */ __webpack_exports__["i"] = writeElementToWindow;
+/* harmony export (immutable) */ __webpack_exports__["h"] = setStyle;
 /* unused harmony export awaitFrameLoad */
 /* unused harmony export awaitFrameWindow */
 /* unused harmony export createElement */
@@ -1856,6 +1856,7 @@ function addHeaderBuilder(method) {
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "getBrowserLocales", function() { return __WEBPACK_IMPORTED_MODULE_1__dom__["c"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "getScript", function() { return __WEBPACK_IMPORTED_MODULE_1__dom__["d"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "isBrowser", function() { return __WEBPACK_IMPORTED_MODULE_1__dom__["e"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "parseQuery", function() { return __WEBPACK_IMPORTED_MODULE_1__dom__["g"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__experiment__ = __webpack_require__("./node_modules/belter/src/experiment.js");
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__global__ = __webpack_require__("./node_modules/belter/src/global.js");
@@ -2161,7 +2162,7 @@ function jsxDom(element, props) {
             throw new Error('Expected only text content for ' + name + ' tag');
         }
 
-        Object(__WEBPACK_IMPORTED_MODULE_1__dom__["g" /* setStyle */])(el, content, doc);
+        Object(__WEBPACK_IMPORTED_MODULE_1__dom__["h" /* setStyle */])(el, content, doc);
     } else if (name === 'iframe') {
 
         if (remaining.length) {
@@ -2176,9 +2177,9 @@ function jsxDom(element, props) {
             }
 
             if (typeof content === 'string') {
-                Object(__WEBPACK_IMPORTED_MODULE_1__dom__["i" /* writeToWindow */])(win, content);
+                Object(__WEBPACK_IMPORTED_MODULE_1__dom__["j" /* writeToWindow */])(win, content);
             } else {
-                Object(__WEBPACK_IMPORTED_MODULE_1__dom__["h" /* writeElementToWindow */])(win, content);
+                Object(__WEBPACK_IMPORTED_MODULE_1__dom__["i" /* writeElementToWindow */])(win, content);
             }
         });
     } else if (name === 'script') {
@@ -3333,21 +3334,21 @@ var src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js");
 // CONCATENATED MODULE: ./node_modules/cross-domain-safe-weakmap/src/native.js
 function hasNativeWeakMap() {
 
-    if (!window.WeakMap) {
+    if (typeof WeakMap === 'undefined') {
         return false;
     }
 
-    if (!window.Object.freeze) {
+    if (typeof Object.freeze === 'undefined') {
         return false;
     }
 
     try {
 
-        var testWeakMap = new window.WeakMap();
+        var testWeakMap = new WeakMap();
         var testKey = {};
         var testValue = '__testvalue__';
 
-        window.Object.freeze(testKey);
+        Object.freeze(testKey);
 
         testWeakMap.set(testKey, testValue);
 
@@ -3403,7 +3404,7 @@ var weakmap_CrossDomainSafeWeakMap = function () {
 
         if (hasNativeWeakMap()) {
             try {
-                this.weakmap = new window.WeakMap();
+                this.weakmap = new WeakMap();
             } catch (err) {
                 // pass
             }
@@ -4739,8 +4740,8 @@ function isCurrentDomain(domain) {
 
 function getPayPalDomain() {
     return {
-        local: 'http://localhost.paypal.com:' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["i" /* getPort */])(),
-        stage: 'https://' + Object(__WEBPACK_IMPORTED_MODULE_2__script__["c" /* getStageHost */])(),
+        local: 'http://localhost.paypal.com:' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["h" /* getPort */])(),
+        stage: 'https://' + Object(__WEBPACK_IMPORTED_MODULE_2__script__["d" /* getStageHost */])(),
         sandbox: 'https://www.sandbox.paypal.com',
         paypal: 'https://www.paypal.com',
         test: 'mock://www.paypal.com'
@@ -4759,7 +4760,7 @@ function getPayPalAPIDomain() {
 
 function getPayPalLoggerDomain() {
     return {
-        local: 'https://' + Object(__WEBPACK_IMPORTED_MODULE_2__script__["c" /* getStageHost */])(),
+        local: 'https://' + Object(__WEBPACK_IMPORTED_MODULE_2__script__["d" /* getStageHost */])(),
         stage: getPayPalDomain(),
         sandbox: getPayPalDomain(),
         paypal: getPayPalDomain(),
@@ -4791,397 +4792,28 @@ function getPayPalLoggerUrl() {
 
 /***/ }),
 
-/***/ "./node_modules/paypal-braintree-web-client/src/constants.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export ENV */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return SDK_SETTINGS; });
-/* unused harmony export COUNTRY */
-/* unused harmony export LANG */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return COUNTRY_LANGS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return FPTI_KEY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return FPTI_DATA_SOURCE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return FPTI_FEED; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FPTI_SDK_NAME; });
-/* unused harmony export INTENT */
-/* unused harmony export COMMIT */
-/* unused harmony export VAULT */
-/* unused harmony export CURRENCY */
-var _COUNTRY_LANGS;
-
-/* eslint max-lines: 0 */
-
-var ENV = {
-    LOCAL: 'local',
-    STAGE: 'stage',
-    SANDBOX: 'sandbox',
-    PRODUCTION: 'production',
-    TEST: 'test',
-    DEMO: 'demo'
-};
-
-var SDK_SETTINGS = {
-    CLIENT_TOKEN: 'data-client-token',
-    PARTNER_ATTRIBUTION_ID: 'data-partner-attribution-id',
-    STAGE_HOST: 'data-stage-host',
-    API_STAGE_HOST: 'data-api-stage-host'
-};
-
-var COUNTRY = {
-    AD: 'AD',
-    AE: 'AE',
-    AG: 'AG',
-    AI: 'AI',
-    AL: 'AL',
-    AM: 'AM',
-    AN: 'AN',
-    AO: 'AO',
-    AR: 'AR',
-    AT: 'AT',
-    AU: 'AU',
-    AW: 'AW',
-    AZ: 'AZ',
-    BA: 'BA',
-    BB: 'BB',
-    BE: 'BE',
-    BF: 'BF',
-    BG: 'BG',
-    BH: 'BH',
-    BI: 'BI',
-    BJ: 'BJ',
-    BM: 'BM',
-    BN: 'BN',
-    BO: 'BO',
-    BR: 'BR',
-    BS: 'BS',
-    BT: 'BT',
-    BW: 'BW',
-    BY: 'BY',
-    BZ: 'BZ',
-    CA: 'CA',
-    CD: 'CD',
-    CG: 'CG',
-    CH: 'CH',
-    CI: 'CI',
-    CK: 'CK',
-    CL: 'CL',
-    CM: 'CM',
-    CN: 'CN',
-    CO: 'CO',
-    CR: 'CR',
-    CV: 'CV',
-    CY: 'CY',
-    CZ: 'CZ',
-    DE: 'DE',
-    DJ: 'DJ',
-    DK: 'DK',
-    DM: 'DM',
-    DO: 'DO',
-    DZ: 'DZ',
-    EC: 'EC',
-    EE: 'EE',
-    EG: 'EG',
-    ER: 'ER',
-    ES: 'ES',
-    ET: 'ET',
-    FI: 'FI',
-    FJ: 'FJ',
-    FK: 'FK',
-    FM: 'FM',
-    FO: 'FO',
-    FR: 'FR',
-    GA: 'GA',
-    GB: 'GB',
-    GD: 'GD',
-    GE: 'GE',
-    GF: 'GF',
-    GI: 'GI',
-    GL: 'GL',
-    GM: 'GM',
-    GN: 'GN',
-    GP: 'GP',
-    GR: 'GR',
-    GT: 'GT',
-    GW: 'GW',
-    GY: 'GY',
-    HK: 'HK',
-    HN: 'HN',
-    HR: 'HR',
-    HU: 'HU',
-    ID: 'ID',
-    IE: 'IE',
-    IL: 'IL',
-    IN: 'IN',
-    IS: 'IS',
-    IT: 'IT',
-    JM: 'JM',
-    JO: 'JO',
-    JP: 'JP',
-    KE: 'KE',
-    KG: 'KG',
-    KH: 'KH',
-    KI: 'KI',
-    KM: 'KM',
-    KN: 'KN',
-    KR: 'KR',
-    KW: 'KW',
-    KY: 'KY',
-    KZ: 'KZ',
-    LA: 'LA',
-    LC: 'LC',
-    LI: 'LI',
-    LK: 'LK',
-    LS: 'LS',
-    LT: 'LT',
-    LU: 'LU',
-    LV: 'LV',
-    MA: 'MA',
-    MC: 'MC',
-    MD: 'MD',
-    ME: 'ME',
-    MG: 'MG',
-    MH: 'MH',
-    MK: 'MK',
-    ML: 'ML',
-    MN: 'MN',
-    MQ: 'MQ',
-    MR: 'MR',
-    MS: 'MS',
-    MT: 'MT',
-    MU: 'MU',
-    MV: 'MV',
-    MW: 'MW',
-    MX: 'MX',
-    MY: 'MY',
-    MZ: 'MZ',
-    NA: 'NA',
-    NC: 'NC',
-    NE: 'NE',
-    NF: 'NF',
-    NG: 'NG',
-    NI: 'NI',
-    NL: 'NL',
-    NO: 'NO',
-    NP: 'NP',
-    NR: 'NR',
-    NU: 'NU',
-    NZ: 'NZ',
-    OM: 'OM',
-    PA: 'PA',
-    PE: 'PE',
-    PF: 'PF',
-    PG: 'PG',
-    PH: 'PH',
-    PL: 'PL',
-    PM: 'PM',
-    PN: 'PN',
-    PT: 'PT',
-    PW: 'PW',
-    PY: 'PY',
-    QA: 'QA',
-    RE: 'RE',
-    RO: 'RO',
-    RS: 'RS',
-    RU: 'RU',
-    RW: 'RW',
-    SA: 'SA',
-    SB: 'SB',
-    SC: 'SC',
-    SE: 'SE',
-    SG: 'SG',
-    SH: 'SH',
-    SI: 'SI',
-    SJ: 'SJ',
-    SK: 'SK',
-    SL: 'SL',
-    SM: 'SM',
-    SN: 'SN',
-    SO: 'SO',
-    SR: 'SR',
-    ST: 'ST',
-    SV: 'SV',
-    SZ: 'SZ',
-    TC: 'TC',
-    TD: 'TD',
-    TG: 'TG',
-    TH: 'TH',
-    TJ: 'TJ',
-    TM: 'TM',
-    TN: 'TN',
-    TO: 'TO',
-    TR: 'TR',
-    TT: 'TT',
-    TV: 'TV',
-    TW: 'TW',
-    TZ: 'TZ',
-    UA: 'UA',
-    UG: 'UG',
-    US: 'US',
-    UY: 'UY',
-    VA: 'VA',
-    VC: 'VC',
-    VE: 'VE',
-    VG: 'VG',
-    VN: 'VN',
-    VU: 'VU',
-    WF: 'WF',
-    WS: 'WS',
-    YE: 'YE',
-    YT: 'YT',
-    ZA: 'ZA',
-    ZM: 'ZM',
-    ZW: 'ZW'
-};
-
-var LANG = {
-    AR: 'ar',
-    CS: 'cs',
-    DA: 'da',
-    DE: 'de',
-    EL: 'el',
-    EN: 'en',
-    ES: 'es',
-    FI: 'fi',
-    FR: 'fr',
-    HE: 'he',
-    HU: 'hu',
-    ID: 'id',
-    IT: 'it',
-    JA: 'ja',
-    KO: 'ko',
-    NL: 'nl',
-    NO: 'no',
-    PL: 'pl',
-    PT: 'pt',
-    RU: 'ru',
-    SK: 'sk',
-    SV: 'sv',
-    TH: 'th',
-    TR: 'tr',
-    ZH: 'zh'
-};
-
-var COUNTRY_LANGS = (_COUNTRY_LANGS = {}, _COUNTRY_LANGS[COUNTRY.AD] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.AE] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH, LANG.AR], _COUNTRY_LANGS[COUNTRY.AG] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.AI] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.AL] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.AM] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.AN] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.AO] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.AR] = [LANG.ES, LANG.EN], _COUNTRY_LANGS[COUNTRY.AT] = [LANG.DE, LANG.EN], _COUNTRY_LANGS[COUNTRY.AU] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.AW] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.AZ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BA] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.BB] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BE] = [LANG.EN, LANG.NL, LANG.FR], _COUNTRY_LANGS[COUNTRY.BF] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BG] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.BH] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BI] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BJ] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BM] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BN] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.BO] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BR] = [LANG.PT, LANG.EN], _COUNTRY_LANGS[COUNTRY.BS] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BT] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.BW] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.BY] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.BZ] = [LANG.EN, LANG.ES, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.CA] = [LANG.EN, LANG.FR], _COUNTRY_LANGS[COUNTRY.CD] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.CG] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.CH] = [LANG.DE, LANG.FR, LANG.EN], _COUNTRY_LANGS[COUNTRY.CI] = [LANG.FR, LANG.EN], _COUNTRY_LANGS[COUNTRY.CK] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.CL] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.CM] = [LANG.FR, LANG.EN], _COUNTRY_LANGS[COUNTRY.CN] = [LANG.ZH], _COUNTRY_LANGS[COUNTRY.CO] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.CR] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.CV] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.CY] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.CZ] = [LANG.CS, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.DE] = [LANG.DE, LANG.EN], _COUNTRY_LANGS[COUNTRY.DJ] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.DK] = [LANG.DA, LANG.EN], _COUNTRY_LANGS[COUNTRY.DM] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.DO] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.DZ] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.EC] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.EE] = [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.EG] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.ER] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.ES] = [LANG.ES, LANG.EN], _COUNTRY_LANGS[COUNTRY.ET] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.FI] = [LANG.FI, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.FJ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.FK] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.FM] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.FO] = [LANG.DA, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.FR] = [LANG.FR, LANG.EN], _COUNTRY_LANGS[COUNTRY.GA] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GB] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.GD] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GE] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GF] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GI] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GL] = [LANG.DA, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GM] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GN] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GP] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GR] = [LANG.EL, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GT] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GW] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.GY] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.HK] = [LANG.EN, LANG.ZH], _COUNTRY_LANGS[COUNTRY.HN] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.HR] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.HU] = [LANG.HU, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.ID] = [LANG.ID, LANG.EN], _COUNTRY_LANGS[COUNTRY.IE] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.IL] = [LANG.HE, LANG.EN], _COUNTRY_LANGS[COUNTRY.IN] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.IS] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.IT] = [LANG.IT, LANG.EN], _COUNTRY_LANGS[COUNTRY.JM] = [LANG.EN, LANG.ES, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.JO] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.JP] = [LANG.JA, LANG.EN], _COUNTRY_LANGS[COUNTRY.KE] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.KG] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.KH] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.KI] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.KM] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.KN] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.KR] = [LANG.KO, LANG.EN], _COUNTRY_LANGS[COUNTRY.KW] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.KY] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.KZ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.LA] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.LC] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.LI] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.LK] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.LS] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.LT] = [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.LU] = [LANG.EN, LANG.DE, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.LV] = [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MA] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MC] = [LANG.FR, LANG.EN], _COUNTRY_LANGS[COUNTRY.MD] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.ME] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.MG] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MH] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MK] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.ML] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MN] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.MQ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MR] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MS] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MT] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.MU] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MV] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.MW] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.MX] = [LANG.ES, LANG.EN], _COUNTRY_LANGS[COUNTRY.MY] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.MZ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.NA] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.NC] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.NE] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.NF] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.NG] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.NI] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.NL] = [LANG.NL, LANG.EN], _COUNTRY_LANGS[COUNTRY.NO] = [LANG.NO, LANG.EN], _COUNTRY_LANGS[COUNTRY.NP] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.NR] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.NU] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.NZ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.OM] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.PA] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.PE] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.PF] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.PG] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.PH] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.PL] = [LANG.PL, LANG.EN], _COUNTRY_LANGS[COUNTRY.PM] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.PN] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.PT] = [LANG.PT, LANG.EN], _COUNTRY_LANGS[COUNTRY.PW] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.PY] = [LANG.ES, LANG.EN], _COUNTRY_LANGS[COUNTRY.QA] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH, LANG.AR], _COUNTRY_LANGS[COUNTRY.RE] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.RO] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.RS] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.RU] = [LANG.RU, LANG.EN], _COUNTRY_LANGS[COUNTRY.RW] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SA] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SB] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SC] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SE] = [LANG.SV, LANG.EN], _COUNTRY_LANGS[COUNTRY.SG] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.SH] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SI] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SJ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SK] = [LANG.SK, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SL] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SM] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SN] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SO] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SR] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.ST] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SV] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.SZ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.TC] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.TD] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.TG] = [LANG.FR, LANG.EN, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.TH] = [LANG.TH, LANG.EN], _COUNTRY_LANGS[COUNTRY.TJ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.TM] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.TN] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.TO] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.TR] = [LANG.TR, LANG.EN], _COUNTRY_LANGS[COUNTRY.TT] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.TV] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.TW] = [LANG.ZH, LANG.EN], _COUNTRY_LANGS[COUNTRY.TZ] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.UA] = [LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.UG] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.US] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.UY] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.VA] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.VC] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.VE] = [LANG.ES, LANG.EN, LANG.FR, LANG.ZH], _COUNTRY_LANGS[COUNTRY.VG] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.VN] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.VU] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.WF] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.WS] = [LANG.EN], _COUNTRY_LANGS[COUNTRY.YE] = [LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.YT] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.ZA] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.ZM] = [LANG.EN, LANG.FR, LANG.ES, LANG.ZH], _COUNTRY_LANGS[COUNTRY.ZW] = [LANG.EN], _COUNTRY_LANGS);
-
-var FPTI_KEY = {
-    FEED: 'feed_name',
-    STATE: 'state_name',
-    TRANSITION: 'transition_name',
-    BUTTON_TYPE: 'button_type',
-    SESSION_UID: 'page_session_id',
-    BUTTON_SESSION_UID: 'button_session_id',
-    TOKEN: 'token',
-    CONTEXT_ID: 'context_id',
-    CONTEXT_TYPE: 'context_type',
-    REFERER: 'referer_url',
-    PAY_ID: 'pay_id',
-    SELLER_ID: 'seller_id',
-    CLIENT_ID: 'client_id',
-    DATA_SOURCE: 'serverside_data_source',
-    BUTTON_SOURCE: 'button_source',
-    ERROR_CODE: 'ext_error_code',
-    ERROR_DESC: 'ext_error_desc',
-    PAGE_LOAD_TIME: 'page_load_time',
-    EXPERIMENT_NAME: 'pxp_exp_id',
-    TREATMENT_NAME: 'pxp_trtmnt_id',
-    TRANSITION_TIME: 'transition_time',
-    FUNDING_LIST: 'eligible_payment_methods',
-    FUNDING_COUNT: 'eligible_payment_count',
-    CHOSEN_FUNDING: 'selected_payment_method',
-    BUTTON_LAYOUT: 'button_layout',
-    VERSION: 'checkoutjs_version',
-    LOCALE: 'locale',
-    BUYER_COUNTRY: 'buyer_cntry',
-    INTEGRATION_IDENTIFIER: 'integration_identifier',
-    PARTNER_ATTRIBUTION_ID: 'bn_code',
-    SDK_NAME: 'sdk_name',
-    SDK_VERSION: 'sdk_version',
-    USER_AGENT: 'user_agent'
-};
-
-var FPTI_DATA_SOURCE = {
-    PAYMENTS_SDK: 'payments_sdk'
-};
-
-var FPTI_FEED = {
-    PAYMENTS_SDK: 'payments_sdk'
-};
-
-var FPTI_SDK_NAME = {
-    PAYMENTS_SDK: 'payments_sdk'
-};
-
-var INTENT = {
-    CAPTURE: 'capture',
-    AUTH: 'auth',
-    ORDER: 'order'
-};
-
-var COMMIT = {
-    TRUE: true,
-    FALSE: false
-};
-
-var VAULT = {
-    TRUE: true,
-    FALSE: false
-};
-
-var CURRENCY = {
-    AUD: 'AUD',
-    BRL: 'BRL',
-    CAD: 'CAD',
-    CZK: 'CZK',
-    DKK: 'DKK',
-    EUR: 'EUR',
-    HKD: 'HKD',
-    HUF: 'HUF',
-    INR: 'INR',
-    ILS: 'ILS',
-    JPY: 'JPY',
-    MYR: 'MYR',
-    MXN: 'MXN',
-    TWD: 'TWD',
-    NZD: 'NZD',
-    NOK: 'NOK',
-    PHP: 'PHP',
-    PLN: 'PLN',
-    GBP: 'GBP',
-    RUB: 'RUB',
-    SGD: 'SGD',
-    SEK: 'SEK',
-    CHF: 'CHF',
-    THB: 'THB',
-    USD: 'USD'
-};
-
-/***/ }),
-
 /***/ "./node_modules/paypal-braintree-web-client/src/globals.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["e"] = getHost;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getHost;
 /* unused harmony export getHostName */
-/* harmony export (immutable) */ __webpack_exports__["i"] = getPort;
-/* harmony export (immutable) */ __webpack_exports__["h"] = getPath;
-/* harmony export (immutable) */ __webpack_exports__["d"] = getEnv;
-/* harmony export (immutable) */ __webpack_exports__["a"] = getClientID;
-/* harmony export (immutable) */ __webpack_exports__["g"] = getMerchantID;
-/* harmony export (immutable) */ __webpack_exports__["b"] = getCountry;
-/* harmony export (immutable) */ __webpack_exports__["f"] = getLang;
+/* harmony export (immutable) */ __webpack_exports__["h"] = getPort;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getPath;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getEnv;
+/* harmony export (immutable) */ __webpack_exports__["f"] = getMerchantID;
+/* harmony export (immutable) */ __webpack_exports__["a"] = getCountry;
+/* harmony export (immutable) */ __webpack_exports__["e"] = getLang;
 /* unused harmony export getLocale */
-/* harmony export (immutable) */ __webpack_exports__["c"] = getDefaultStageHost;
+/* harmony export (immutable) */ __webpack_exports__["b"] = getDefaultStageHost;
 /* unused harmony export getIntent */
 /* unused harmony export getCommit */
 /* unused harmony export getVault */
 /* unused harmony export getCurrency */
-/* harmony export (immutable) */ __webpack_exports__["j"] = getVersion;
+/* harmony export (immutable) */ __webpack_exports__["i"] = getVersion;
 /* unused harmony export getCorrelationID */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_belter_src__ = __webpack_require__("./node_modules/belter/src/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/constants.js");
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__ = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 
 
 
@@ -5205,10 +4837,6 @@ function getEnv() {
     return "production";
 }
 
-function getClientID() {
-    return __CLIENT_ID__;
-}
-
 function getMerchantID() {
     return __MERCHANT_ID__;
 }
@@ -5227,7 +4855,7 @@ function getLang() {
         var country = _ref2.country,
             lang = _ref2.lang;
 
-        if (country && country === __LOCALE_COUNTRY__ && __WEBPACK_IMPORTED_MODULE_1__constants__["a" /* COUNTRY_LANGS */][__LOCALE_COUNTRY__].indexOf(lang) !== -1) {
+        if (country && country === __LOCALE_COUNTRY__ && __WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["d" /* COUNTRY_LANGS */][__LOCALE_COUNTRY__].indexOf(lang) !== -1) {
             // $FlowFixMe
             return lang;
         }
@@ -5277,21 +4905,18 @@ function getCorrelationID() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/constants.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/config.js");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "buildPayPalAPIUrl", function() { return __WEBPACK_IMPORTED_MODULE_0__config__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "buildPayPalUrl", function() { return __WEBPACK_IMPORTED_MODULE_0__config__["b"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__logger__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/logger.js");
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/config.js");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "buildPayPalAPIUrl", function() { return __WEBPACK_IMPORTED_MODULE_1__config__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "buildPayPalUrl", function() { return __WEBPACK_IMPORTED_MODULE_1__config__["b"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__logger__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/logger.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__types__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/types.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__types__);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__types__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/types.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__globals__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/globals.js");
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__globals__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/globals.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__script__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/script.js");
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__script__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/script.js");
-/* unused harmony namespace reexport */
-
 
 
 
@@ -5566,11 +5191,11 @@ function Logger(_ref2) {
 // CONCATENATED MODULE: ./node_modules/beaver-logger/src/index.js
 
 
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
+
 // EXTERNAL MODULE: ./node_modules/paypal-braintree-web-client/src/config.js
 var config = __webpack_require__("./node_modules/paypal-braintree-web-client/src/config.js");
-
-// EXTERNAL MODULE: ./node_modules/paypal-braintree-web-client/src/constants.js
-var constants = __webpack_require__("./node_modules/paypal-braintree-web-client/src/constants.js");
 
 // EXTERNAL MODULE: ./node_modules/paypal-braintree-web-client/src/globals.js
 var globals = __webpack_require__("./node_modules/paypal-braintree-web-client/src/globals.js");
@@ -5615,20 +5240,20 @@ function setupLogger() {
         return {
             referer: window.location.host,
             uid: getSessionID(),
-            env: Object(globals["d" /* getEnv */])()
+            env: Object(globals["c" /* getEnv */])()
         };
     });
 
     logger.addTrackingBuilder(function () {
         var _ref;
 
-        return _ref = {}, _ref[constants["d" /* FPTI_KEY */].FEED] = constants["c" /* FPTI_FEED */].PAYMENTS_SDK, _ref[constants["d" /* FPTI_KEY */].DATA_SOURCE] = constants["b" /* FPTI_DATA_SOURCE */].PAYMENTS_SDK, _ref[constants["d" /* FPTI_KEY */].CLIENT_ID] = Object(globals["a" /* getClientID */])(), _ref[constants["d" /* FPTI_KEY */].SELLER_ID] = Object(globals["g" /* getMerchantID */])(), _ref[constants["d" /* FPTI_KEY */].SESSION_UID] = getSessionID(), _ref[constants["d" /* FPTI_KEY */].REFERER] = window.location.host, _ref[constants["d" /* FPTI_KEY */].LOCALE] = Object(globals["f" /* getLang */])() + '_' + Object(globals["b" /* getCountry */])(), _ref[constants["d" /* FPTI_KEY */].BUYER_COUNTRY] = Object(globals["b" /* getCountry */])(), _ref[constants["d" /* FPTI_KEY */].INTEGRATION_IDENTIFIER] = Object(globals["a" /* getClientID */])(), _ref[constants["d" /* FPTI_KEY */].PARTNER_ATTRIBUTION_ID] = Object(script["b" /* getPartnerAttributionID */])(), _ref[constants["d" /* FPTI_KEY */].SDK_NAME] = constants["e" /* FPTI_SDK_NAME */].PAYMENTS_SDK, _ref[constants["d" /* FPTI_KEY */].SDK_VERSION] = Object(globals["j" /* getVersion */])(), _ref[constants["d" /* FPTI_KEY */].USER_AGENT] = window.navigator && window.navigator.userAgent, _ref;
+        return _ref = {}, _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].FEED] = paypal_sdk_constants_src["g" /* FPTI_FEED */].PAYMENTS_SDK, _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].DATA_SOURCE] = paypal_sdk_constants_src["f" /* FPTI_DATA_SOURCE */].PAYMENTS_SDK, _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].CLIENT_ID] = Object(script["b" /* getClientID */])(), _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].SELLER_ID] = Object(globals["f" /* getMerchantID */])(), _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].SESSION_UID] = getSessionID(), _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].REFERER] = window.location.host, _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].LOCALE] = Object(globals["e" /* getLang */])() + '_' + Object(globals["a" /* getCountry */])(), _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].BUYER_COUNTRY] = Object(globals["a" /* getCountry */])(), _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].INTEGRATION_IDENTIFIER] = Object(script["b" /* getClientID */])(), _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].PARTNER_ATTRIBUTION_ID] = Object(script["c" /* getPartnerAttributionID */])(), _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].SDK_NAME] = paypal_sdk_constants_src["i" /* FPTI_SDK_NAME */].PAYMENTS_SDK, _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].SDK_VERSION] = Object(globals["i" /* getVersion */])(), _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].USER_AGENT] = window.navigator && window.navigator.userAgent, _ref;
     });
 
     src["a" /* ZalgoPromise */].onPossiblyUnhandledException(function (err) {
         var _logger$track;
 
-        logger.track((_logger$track = {}, _logger$track[constants["d" /* FPTI_KEY */].ERROR_CODE] = 'checkoutjs_error', _logger$track[constants["d" /* FPTI_KEY */].ERROR_DESC] = Object(belter_src["stringifyErrorMessage"])(err), _logger$track));
+        logger.track((_logger$track = {}, _logger$track[paypal_sdk_constants_src["h" /* FPTI_KEY */].ERROR_CODE] = 'checkoutjs_error', _logger$track[paypal_sdk_constants_src["h" /* FPTI_KEY */].ERROR_DESC] = Object(belter_src["stringifyErrorMessage"])(err), _logger$track));
 
         logger.error('unhandled_error', {
             stack: Object(belter_src["stringifyError"])(err),
@@ -5649,11 +5274,13 @@ function setupLogger() {
 /* unused harmony export getSDKScript */
 /* unused harmony export getSDKSettings */
 /* unused harmony export getClientToken */
-/* harmony export (immutable) */ __webpack_exports__["b"] = getPartnerAttributionID;
-/* harmony export (immutable) */ __webpack_exports__["c"] = getStageHost;
+/* unused harmony export getScriptQueryParams */
+/* harmony export (immutable) */ __webpack_exports__["b"] = getClientID;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getPartnerAttributionID;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getStageHost;
 /* harmony export (immutable) */ __webpack_exports__["a"] = getAPIStageHost;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_belter_src__ = __webpack_require__("./node_modules/belter/src/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/constants.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__ = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__globals__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/globals.js");
 
 
@@ -5662,7 +5289,7 @@ function setupLogger() {
 
 function getSDKScript() {
     return Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__["inlineMemoize"])(getSDKScript, function () {
-        var _host$path = { host: Object(__WEBPACK_IMPORTED_MODULE_2__globals__["e" /* getHost */])(), path: Object(__WEBPACK_IMPORTED_MODULE_2__globals__["h" /* getPath */])() },
+        var _host$path = { host: Object(__WEBPACK_IMPORTED_MODULE_2__globals__["d" /* getHost */])(), path: Object(__WEBPACK_IMPORTED_MODULE_2__globals__["g" /* getPath */])() },
             host = _host$path.host,
             path = _host$path.path;
 
@@ -5681,10 +5308,10 @@ function getSDKSettings() {
         var sdkScript = getSDKScript();
 
         return {
-            clientToken: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1__constants__["f" /* SDK_SETTINGS */].CLIENT_TOKEN),
-            partnerAttributionID: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1__constants__["f" /* SDK_SETTINGS */].PARTNER_ATTRIBUTION_ID),
-            stageHost: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1__constants__["f" /* SDK_SETTINGS */].STAGE_HOST),
-            apiStageHost: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1__constants__["f" /* SDK_SETTINGS */].API_STAGE_HOST)
+            clientToken: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["o" /* SDK_SETTINGS */].CLIENT_TOKEN),
+            partnerAttributionID: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["o" /* SDK_SETTINGS */].PARTNER_ATTRIBUTION_ID),
+            stageHost: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["o" /* SDK_SETTINGS */].STAGE_HOST),
+            apiStageHost: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["o" /* SDK_SETTINGS */].API_STAGE_HOST)
         };
     });
 }
@@ -5700,12 +5327,21 @@ function getClientToken() {
     return clientToken;
 }
 
+function getScriptQueryParams() {
+    var script = getSDKScript();
+    return Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__["parseQuery"])(script.src.split('?')[1] || '');
+}
+
+function getClientID() {
+    return getScriptQueryParams()[__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["n" /* SDK_QUERY_KEYS */].CLIENT_ID];
+}
+
 function getPartnerAttributionID() {
     return getSDKSettings().partnerAttributionID;
 }
 
 function getStageHost() {
-    return getSDKSettings().stageHost || Object(__WEBPACK_IMPORTED_MODULE_2__globals__["c" /* getDefaultStageHost */])();
+    return getSDKSettings().stageHost || Object(__WEBPACK_IMPORTED_MODULE_2__globals__["b" /* getDefaultStageHost */])();
 }
 
 function getAPIStageHost() {
@@ -5974,10 +5610,6 @@ var SDK_SETTINGS = {
     API_STAGE_HOST: 'data-api-stage-host'
 };
 
-var SDK_QUERY = {
-    CLIENT_ID: 'client-id'
-};
-
 var SDK_QUERY_KEYS = {
     COMPONENTS: 'components',
 
@@ -5994,7 +5626,10 @@ var SDK_QUERY_KEYS = {
     ORDER_CURRENCY: 'order-currency',
     ORDER_INTENT: 'order-intent',
     ORDER_COMMIT: 'order-commit',
-    ORDER_VAULT: 'order-vault'
+    ORDER_VAULT: 'order-vault',
+
+    DISABLE_FUNDING: 'disable-funding',
+    DISABLE_CARD: 'disable-card'
 };
 // CONCATENATED MODULE: ./node_modules/paypal-sdk-constants/src/env.js
 var ENV = {
@@ -6038,7 +5673,13 @@ var FPTI_KEY = {
     PARTNER_ATTRIBUTION_ID: 'bn_code',
     SDK_NAME: 'sdk_name',
     SDK_VERSION: 'sdk_version',
-    USER_AGENT: 'user_agent'
+    USER_AGENT: 'user_agent',
+    USER_ACTION: 'user_action'
+};
+
+var FPTI_USER_ACTION = {
+    COMMIT: 'commit',
+    CONTINUE: 'continue'
 };
 
 var FPTI_DATA_SOURCE = {
@@ -6055,7 +5696,7 @@ var FPTI_SDK_NAME = {
 // CONCATENATED MODULE: ./node_modules/paypal-sdk-constants/src/order.js
 var INTENT = {
     CAPTURE: 'capture',
-    AUTH: 'auth',
+    AUTHORIZE: 'authorize',
     ORDER: 'order'
 };
 
@@ -6130,30 +5771,24 @@ var CARD = {
 };
 // CONCATENATED MODULE: ./node_modules/paypal-sdk-constants/src/index.js
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "c", function() { return COUNTRY; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "h", function() { return LANG; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "l", function() { return LANG; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "d", function() { return COUNTRY_LANGS; });
-/* unused concated harmony import null */
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return SDK_SETTINGS; });
-/* unused concated harmony import null */
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return SDK_QUERY; });
-/* unused concated harmony import null */
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return SDK_QUERY_KEYS; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "o", function() { return SDK_SETTINGS; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "n", function() { return SDK_QUERY_KEYS; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "e", function() { return ENV; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "h", function() { return FPTI_KEY; });
 /* unused concated harmony import null */
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return FPTI_KEY; });
-/* unused concated harmony import null */
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return FPTI_DATA_SOURCE; });
-/* unused concated harmony import null */
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return FPTI_FEED; });
-/* unused concated harmony import null */
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return FPTI_SDK_NAME; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "g", function() { return INTENT; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return FPTI_USER_ACTION; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "f", function() { return FPTI_DATA_SOURCE; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "g", function() { return FPTI_FEED; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "i", function() { return FPTI_SDK_NAME; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "k", function() { return INTENT; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "b", function() { return COMMIT; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "j", function() { return VAULT; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "p", function() { return VAULT; });
 /* unused concated harmony import null */
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return CURRENCY; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "i", function() { return PLATFORM; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "f", function() { return FUNDING; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "m", function() { return PLATFORM; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "j", function() { return FUNDING; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "a", function() { return CARD; });
 
 
@@ -6750,9 +6385,9 @@ var _FUNDING_CONFIG;
 
 
 
-var FUNDING_PRIORITY = [paypal_sdk_constants_src["f" /* FUNDING */].PAYPAL, paypal_sdk_constants_src["f" /* FUNDING */].VENMO, paypal_sdk_constants_src["f" /* FUNDING */].CREDIT, paypal_sdk_constants_src["f" /* FUNDING */].IDEAL, paypal_sdk_constants_src["f" /* FUNDING */].SEPA, paypal_sdk_constants_src["f" /* FUNDING */].BANCONTACT, paypal_sdk_constants_src["f" /* FUNDING */].GIROPAY, paypal_sdk_constants_src["f" /* FUNDING */].EPS, paypal_sdk_constants_src["f" /* FUNDING */].SOFORT, paypal_sdk_constants_src["f" /* FUNDING */].MYBANK, paypal_sdk_constants_src["f" /* FUNDING */].P24, paypal_sdk_constants_src["f" /* FUNDING */].ZIMPLER, paypal_sdk_constants_src["f" /* FUNDING */].WECHATPAY, paypal_sdk_constants_src["f" /* FUNDING */].CARD];
+var FUNDING_PRIORITY = [paypal_sdk_constants_src["j" /* FUNDING */].PAYPAL, paypal_sdk_constants_src["j" /* FUNDING */].VENMO, paypal_sdk_constants_src["j" /* FUNDING */].CREDIT, paypal_sdk_constants_src["j" /* FUNDING */].IDEAL, paypal_sdk_constants_src["j" /* FUNDING */].SEPA, paypal_sdk_constants_src["j" /* FUNDING */].BANCONTACT, paypal_sdk_constants_src["j" /* FUNDING */].GIROPAY, paypal_sdk_constants_src["j" /* FUNDING */].EPS, paypal_sdk_constants_src["j" /* FUNDING */].SOFORT, paypal_sdk_constants_src["j" /* FUNDING */].MYBANK, paypal_sdk_constants_src["j" /* FUNDING */].P24, paypal_sdk_constants_src["j" /* FUNDING */].ZIMPLER, paypal_sdk_constants_src["j" /* FUNDING */].WECHATPAY, paypal_sdk_constants_src["j" /* FUNDING */].CARD];
 
-var FUNDING_CONFIG = (_FUNDING_CONFIG = {}, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].PAYPAL] =  true ? __webpack_require__("./src/funding/paypal/index.js").PAYPAL_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].VENMO] =  true ? __webpack_require__("./src/funding/venmo/index.js").VENMO_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].CREDIT] =  true ? __webpack_require__("./src/funding/credit/index.js").CREDIT_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].CARD] =  true ? __webpack_require__("./src/funding/card/index.js").CARD_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].IDEAL] =  true ? __webpack_require__("./src/funding/ideal/index.js").IDEAL_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].SEPA] =  true ? __webpack_require__("./src/funding/sepa/index.js").SEPA_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].BANCONTACT] =  true ? __webpack_require__("./src/funding/bancontact/index.js").BANCONTACT_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].GIROPAY] =  true ? __webpack_require__("./src/funding/giropay/index.js").GIROPAY_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].SOFORT] =  true ? __webpack_require__("./src/funding/sofort/index.js").SOFORT_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].EPS] =  true ? __webpack_require__("./src/funding/eps/index.js").EPS_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].MYBANK] =  true ? __webpack_require__("./src/funding/mybank/index.js").MYBANK_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].P24] =  true ? __webpack_require__("./src/funding/p24/index.js").P24_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].ZIMPLER] =  true ? __webpack_require__("./src/funding/zimpler/index.js").ZIMPLER_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].WECHATPAY] =  true ? __webpack_require__("./src/funding/wechatpay/index.js").WECHATPAY_CONFIG : null, _FUNDING_CONFIG);
+var FUNDING_CONFIG = (_FUNDING_CONFIG = {}, _FUNDING_CONFIG[paypal_sdk_constants_src["j" /* FUNDING */].PAYPAL] =  true ? __webpack_require__("./src/funding/paypal/index.js").PAYPAL_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["j" /* FUNDING */].VENMO] =  true ? __webpack_require__("./src/funding/venmo/index.js").VENMO_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["j" /* FUNDING */].CREDIT] =  true ? __webpack_require__("./src/funding/credit/index.js").CREDIT_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["j" /* FUNDING */].CARD] =  true ? __webpack_require__("./src/funding/card/index.js").CARD_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["j" /* FUNDING */].IDEAL] =  true ? __webpack_require__("./src/funding/ideal/index.js").IDEAL_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["j" /* FUNDING */].SEPA] =  true ? __webpack_require__("./src/funding/sepa/index.js").SEPA_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["j" /* FUNDING */].BANCONTACT] =  true ? __webpack_require__("./src/funding/bancontact/index.js").BANCONTACT_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["j" /* FUNDING */].GIROPAY] =  true ? __webpack_require__("./src/funding/giropay/index.js").GIROPAY_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["j" /* FUNDING */].SOFORT] =  true ? __webpack_require__("./src/funding/sofort/index.js").SOFORT_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["j" /* FUNDING */].EPS] =  true ? __webpack_require__("./src/funding/eps/index.js").EPS_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["j" /* FUNDING */].MYBANK] =  true ? __webpack_require__("./src/funding/mybank/index.js").MYBANK_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["j" /* FUNDING */].P24] =  true ? __webpack_require__("./src/funding/p24/index.js").P24_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["j" /* FUNDING */].ZIMPLER] =  true ? __webpack_require__("./src/funding/zimpler/index.js").ZIMPLER_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["j" /* FUNDING */].WECHATPAY] =  true ? __webpack_require__("./src/funding/wechatpay/index.js").WECHATPAY_CONFIG : null, _FUNDING_CONFIG);
 // CONCATENATED MODULE: ./src/funding/funding.js
 
 
@@ -6896,13 +6531,13 @@ var DEFAULT_STYLE = {
 var DEFAULT_PROPS = {
     LOCALE: {
         country: paypal_sdk_constants_src["c" /* COUNTRY */].US,
-        lang: paypal_sdk_constants_src["h" /* LANG */].EN
+        lang: paypal_sdk_constants_src["l" /* LANG */].EN
     },
     COMMIT: paypal_sdk_constants_src["b" /* COMMIT */].TRUE,
-    VAULT: paypal_sdk_constants_src["j" /* VAULT */].FALSE,
-    INTENT: paypal_sdk_constants_src["g" /* INTENT */].CAPTURE,
+    VAULT: paypal_sdk_constants_src["p" /* VAULT */].FALSE,
+    INTENT: paypal_sdk_constants_src["k" /* INTENT */].CAPTURE,
     ENV: paypal_sdk_constants_src["e" /* ENV */].PRODUCTION,
-    PLATFORM: paypal_sdk_constants_src["i" /* PLATFORM */].DESKTOP
+    PLATFORM: paypal_sdk_constants_src["m" /* PLATFORM */].DESKTOP
 };
 
 function normalizeButtonStyle(style, _ref) {
@@ -6993,9 +6628,9 @@ function normalizeButtonStyle(style, _ref) {
 }
 
 var COUNTRIES = Object(belter_src["values"])(paypal_sdk_constants_src["c" /* COUNTRY */]);
-var FUNDING_SOURCES = Object(belter_src["values"])(paypal_sdk_constants_src["f" /* FUNDING */]);
+var FUNDING_SOURCES = Object(belter_src["values"])(paypal_sdk_constants_src["j" /* FUNDING */]);
 var ENVS = Object(belter_src["values"])(paypal_sdk_constants_src["e" /* ENV */]);
-var PLATFORMS = Object(belter_src["values"])(paypal_sdk_constants_src["i" /* PLATFORM */]);
+var PLATFORMS = Object(belter_src["values"])(paypal_sdk_constants_src["m" /* PLATFORM */]);
 
 function normalizeButtonProps(props) {
 
@@ -7462,7 +7097,7 @@ function Style(_ref8) {
 }
 
 function getCardNumber(locale) {
-    var cardConfig = FUNDING_CONFIG[paypal_sdk_constants_src["f" /* FUNDING */].CARD];
+    var cardConfig = FUNDING_CONFIG[paypal_sdk_constants_src["j" /* FUNDING */].CARD];
     var vendors = cardConfig && cardConfig.vendors;
     var maxCards = 4;
 
@@ -8293,7 +7928,7 @@ var CARD_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
             return CARD_PRIORITY.map(function (name) {
 
-                if (!fundingEligibility[paypal_sdk_constants_src["f" /* FUNDING */].CARD].vendors[name].eligible) {
+                if (!fundingEligibility[paypal_sdk_constants_src["j" /* FUNDING */].CARD].vendors[name].eligible) {
                     return null;
                 }
 
@@ -8593,7 +8228,7 @@ var DEFAULT_FUNDING_CONFIG = {
 
     layouts: [__WEBPACK_IMPORTED_MODULE_3__constants__["d" /* BUTTON_LAYOUT */].HORIZONTAL, __WEBPACK_IMPORTED_MODULE_3__constants__["d" /* BUTTON_LAYOUT */].VERTICAL],
 
-    platforms: [__WEBPACK_IMPORTED_MODULE_2_paypal_sdk_constants_src__["i" /* PLATFORM */].DESKTOP, __WEBPACK_IMPORTED_MODULE_2_paypal_sdk_constants_src__["i" /* PLATFORM */].MOBILE]
+    platforms: [__WEBPACK_IMPORTED_MODULE_2_paypal_sdk_constants_src__["m" /* PLATFORM */].DESKTOP, __WEBPACK_IMPORTED_MODULE_2_paypal_sdk_constants_src__["m" /* PLATFORM */].MOBILE]
 };
 
 var DEFAULT_LABEL_CONFIG = {
@@ -8675,9 +8310,7 @@ function CreditLogo(_ref) {
         throw new Error('No ' + logoColor + ' credit logo available');
     }
 
-    var _ref2 = locale || {},
-        country = _ref2.country;
-
+    var country = locale.country;
     var primary = CREDIT_LOGO_COLORS[logoColor].primary;
 
 
@@ -8744,10 +8377,11 @@ var CREDIT_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
         Label: function Label(_ref) {
             var locale = _ref.locale,
-                logoColor = _ref.logoColor;
+                logoColor = _ref.logoColor,
+                nonce = _ref.nonce;
 
             if (locale.country === src["c" /* COUNTRY */].DE) {
-                return Object(belter_src["jsxToHTML"])(CreditLogo, { logoColor: logoColor });
+                return Object(belter_src["jsxToHTML"])(CreditLogo, { logoColor: logoColor, locale: locale, nonce: nonce });
             }
 
             return Object(belter_src["jsxToHTML"])(
@@ -8757,7 +8391,7 @@ var CREDIT_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
                 ' ',
                 Object(belter_src["jsxToHTML"])(logo["b" /* PayPalLogo */], { logoColor: logoColor }),
                 ' ',
-                Object(belter_src["jsxToHTML"])(CreditLogo, { logoColor: logoColor })
+                Object(belter_src["jsxToHTML"])(CreditLogo, { logoColor: logoColor, locale: locale, nonce: nonce })
             );
         },
 
@@ -9955,6 +9589,7 @@ var constants = __webpack_require__("./src/constants/index.js");
 var common = __webpack_require__("./src/funding/common.jsx");
 
 // CONCATENATED MODULE: ./src/funding/sepa/logo.jsx
+var _SEPA_LOGO_COLORS;
 
 /* @jsx jsxToHTML */
 
@@ -9963,10 +9598,21 @@ var common = __webpack_require__("./src/funding/common.jsx");
 
 
 
+var SEPA_LOGO_COLORS = (_SEPA_LOGO_COLORS = {}, _SEPA_LOGO_COLORS[constants["k" /* LOGO_COLOR */].ANY] = {
+    main: '#005DA0',
+    card: '#AEB1BC'
+}, _SEPA_LOGO_COLORS[constants["k" /* LOGO_COLOR */].WHITE] = {
+    main: '#FFFFFF',
+    card: '#FFFFFF'
+}, _SEPA_LOGO_COLORS);
+
 function SepaLogo(_ref) {
     var logoColor = _ref.logoColor,
         nonce = _ref.nonce;
 
+    var _ref2 = SEPA_LOGO_COLORS[logoColor] || SEPA_LOGO_COLORS[constants["k" /* LOGO_COLOR */].ANY],
+        main = _ref2.main,
+        card = _ref2.card;
 
     return Object(src["jsxToHTML"])(common["c" /* SVGLogo */], {
         nonce: nonce,
@@ -9976,28 +9622,28 @@ function SepaLogo(_ref) {
             return Object(src["jsxToHTML"])(
                 'svg',
                 { width: '100', height: '32', viewBox: '0 0 100 32', preserveAspectRatio: 'xMinYMin meet', xmlns: 'http://www.w3.org/2000/svg' },
-                Object(src["jsxToHTML"])('path', { d: 'M 39.871 18.772 C 37.78 18.772 35.843 18.278 34.272 17.425 L 34.81 13.935 C 36.409 14.769 38.051 15.263 39.826 15.263 C 41.809 15.263 42.661 14.544 42.661 13.284 C 42.661 10.45 34.34 11.641 34.34 5.59 C 34.34 2.53 36.319 0.055 40.885 0.055 C 42.639 0.055 44.549 0.416 45.946 0.999 L 45.474 4.395 C 43.989 3.926 42.481 3.633 41.108 3.633 C 38.86 3.633 38.275 4.395 38.275 5.364 C 38.275 8.175 46.598 6.895 46.598 13.013 C 46.576 16.569 44.101 18.772 39.871 18.772 Z', style: 'fill: rgb(255, 255, 255);' }),
-                Object(src["jsxToHTML"])('path', { d: 'M 62.233 14.881 L 62.233 18.413 L 49.951 18.413 L 49.951 0.345 L 62.233 0.345 L 62.233 3.946 L 54.022 3.946 L 54.022 7.549 L 60.705 7.549 L 60.705 10.787 L 54.022 10.787 L 54.022 14.905 L 62.233 14.905 Z', style: 'fill: rgb(255, 255, 255);' }),
-                Object(src["jsxToHTML"])('path', { d: 'M 72.313 12.565 L 69.905 12.565 L 69.905 18.437 L 65.834 18.437 L 65.834 0.345 L 72.313 0.345 C 77.328 0.345 79.376 2.328 79.376 6.534 C 79.376 10.361 77.355 12.565 72.313 12.565 Z M 72.313 3.766 L 69.905 3.766 L 69.905 9.302 L 72.313 9.302 C 74.314 9.302 75.194 8.808 75.194 6.534 C 75.194 4.352 74.428 3.766 72.313 3.766 Z', style: 'fill: rgb(255, 255, 255);' }),
-                Object(src["jsxToHTML"])('path', { d: 'M 91.797 14.924 L 85.246 14.924 L 84.234 18.437 L 79.939 18.437 L 86.193 0.345 L 91.031 0.345 L 97.352 18.437 L 92.808 18.437 L 91.797 14.924 Z M 88.04 5.318 L 86.238 11.506 L 90.85 11.506 L 89.118 5.318 L 88.645 3.408 L 88.578 3.408 L 88.04 5.318 Z', style: 'fill: rgb(255, 255, 255);' }),
-                Object(src["jsxToHTML"])('path', { d: 'M 39.736 30.157 L 39.692 31.867 L 34.382 31.867 L 34.382 23.475 L 36.299 23.475 L 36.299 30.157 L 39.736 30.157 Z', style: 'fill: rgb(255, 255, 255);' }),
-                Object(src["jsxToHTML"])('path', { d: 'M 44.798 31.215 L 44.778 31.215 C 44.371 31.71 43.722 31.977 42.931 31.977 C 41.648 31.977 40.818 31.257 40.818 29.727 C 40.818 28.468 41.695 27.613 43.222 27.613 C 43.722 27.613 44.168 27.68 44.527 27.796 L 44.527 27.411 C 44.527 26.736 44.168 26.421 43.244 26.421 C 42.505 26.421 42.007 26.534 41.382 26.782 L 41.245 25.387 C 41.919 25.095 42.707 24.936 43.563 24.936 C 45.563 24.936 46.263 25.792 46.263 27.658 L 46.263 31.867 L 44.933 31.867 L 44.798 31.215 Z M 44.549 28.966 C 44.393 28.896 44.056 28.828 43.583 28.828 C 42.819 28.828 42.46 29.12 42.46 29.727 C 42.46 30.38 42.842 30.63 43.427 30.63 C 44.012 30.63 44.549 30.271 44.549 29.842 L 44.549 28.966 Z', style: 'fill: rgb(255, 255, 255);' }),
-                Object(src["jsxToHTML"])('path', { d: 'M 50.02 32.002 C 49.21 32.002 48.466 31.842 47.883 31.529 L 48.062 30.088 C 48.625 30.405 49.41 30.561 49.996 30.561 C 50.693 30.561 50.986 30.29 50.986 29.887 C 50.986 28.807 47.84 29.436 47.84 27.051 C 47.84 25.838 48.667 24.959 50.403 24.959 C 51.075 24.959 51.752 25.095 52.336 25.32 L 52.201 26.736 C 51.64 26.512 50.897 26.396 50.381 26.396 C 49.816 26.396 49.503 26.625 49.503 26.961 C 49.503 27.995 52.603 27.366 52.603 29.707 C 52.603 31.101 51.862 32.002 50.02 32.002 Z', style: 'fill: rgb(255, 255, 255);' }),
-                Object(src["jsxToHTML"])('path', { d: 'M 56.026 26.375 L 56.026 29.842 C 56.026 30.36 56.295 30.582 56.836 30.582 C 57.014 30.582 57.239 30.561 57.374 30.514 L 57.464 31.776 C 57.239 31.888 56.789 31.956 56.295 31.956 C 54.946 31.956 54.27 31.169 54.27 29.887 L 54.27 26.352 L 53.506 26.352 L 53.506 25.095 L 54.337 25.095 L 54.631 23.562 L 56.002 23.451 L 56.002 25.116 L 57.51 25.116 L 57.51 26.421 L 56.026 26.421 Z', style: 'fill: rgb(255, 255, 255);' }),
-                Object(src["jsxToHTML"])('path', { d: 'M 60.885 32.002 C 60.073 32.002 59.331 31.842 58.748 31.529 L 58.929 30.088 C 59.49 30.405 60.275 30.561 60.862 30.561 C 61.561 30.561 61.851 30.29 61.851 29.887 C 61.851 28.807 58.702 29.436 58.702 27.051 C 58.702 25.838 59.534 24.959 61.269 24.959 C 61.943 24.959 62.615 25.095 63.203 25.32 L 63.069 26.736 C 62.505 26.512 61.764 26.396 61.246 26.396 C 60.681 26.396 60.367 26.625 60.367 26.961 C 60.367 27.995 63.47 27.366 63.47 29.707 C 63.47 31.101 62.729 32.002 60.885 32.002 Z', style: 'fill: rgb(255, 255, 255);' }),
-                Object(src["jsxToHTML"])('path', { d: 'M 69.365 26.736 C 69.028 26.625 68.603 26.534 68.22 26.534 C 66.958 26.534 66.53 27.051 66.53 28.49 C 66.53 29.954 67.116 30.514 68.174 30.514 C 68.623 30.514 69.05 30.425 69.41 30.271 L 69.525 31.616 C 69.119 31.867 68.511 32.002 67.792 32.002 C 65.787 32.002 64.732 30.854 64.732 28.49 C 64.732 26.242 65.653 24.981 67.835 24.981 C 68.397 24.981 69.05 25.095 69.479 25.276 L 69.365 26.736 Z', style: 'fill: rgb(255, 255, 255);' }),
-                Object(src["jsxToHTML"])('path', { d: 'M 75.078 31.867 L 75.078 27.546 C 75.078 26.849 74.743 26.491 74.001 26.491 C 73.508 26.491 73.055 26.714 72.855 27.008 L 72.855 31.867 L 71.122 31.867 L 71.122 23.16 L 72.855 23.069 L 72.855 24.622 L 72.83 25.52 L 72.855 25.545 C 73.348 25.116 73.979 24.959 74.541 24.959 C 75.98 24.959 76.812 25.926 76.812 27.546 L 76.812 31.867 L 75.078 31.867 Z', style: 'fill: rgb(255, 255, 255);' }),
-                Object(src["jsxToHTML"])('path', { d: 'M 78.658 31.867 L 78.658 25.139 L 80.052 25.072 L 80.21 26.199 L 80.231 26.199 C 80.66 25.387 81.313 24.981 82.098 24.981 C 82.39 24.981 82.663 25.028 82.84 25.072 L 82.731 26.782 C 82.528 26.714 82.257 26.667 81.985 26.667 C 81.088 26.667 80.413 27.321 80.413 28.468 L 80.413 31.867 L 78.658 31.867 Z', style: 'fill: rgb(255, 255, 255);' }),
-                Object(src["jsxToHTML"])('path', { d: 'M 85.382 24.35 C 84.708 24.35 84.395 24.172 84.395 23.609 C 84.395 23.136 84.708 22.867 85.382 22.867 C 86.058 22.867 86.375 23.113 86.375 23.609 C 86.354 24.105 86.058 24.35 85.382 24.35 Z M 84.484 31.867 L 84.484 25.139 L 86.259 25.072 L 86.259 31.888 L 84.484 31.888 Z', style: 'fill: rgb(255, 255, 255);' }),
-                Object(src["jsxToHTML"])('path', { d: 'M 88.757 31.867 L 88.757 26.375 L 87.902 26.375 L 87.902 25.095 L 88.757 25.095 L 88.757 24.798 C 88.757 23.79 89.454 22.935 91.076 22.935 C 91.459 22.935 91.885 22.979 92.178 23.069 L 92.063 24.195 C 91.863 24.147 91.636 24.126 91.411 24.126 C 90.738 24.126 90.466 24.399 90.466 24.825 L 90.466 25.072 L 91.907 25.072 L 91.907 26.352 L 90.466 26.352 L 90.466 31.842 L 88.757 31.842 Z', style: 'fill: rgb(255, 255, 255);' }),
-                Object(src["jsxToHTML"])('path', { d: 'M 95.486 26.375 L 95.486 29.842 C 95.486 30.36 95.754 30.582 96.296 30.582 C 96.473 30.582 96.698 30.561 96.834 30.514 L 96.924 31.776 C 96.698 31.888 96.249 31.956 95.754 31.956 C 94.406 31.956 93.729 31.169 93.729 29.887 L 93.729 26.352 L 92.965 26.352 L 92.965 25.095 L 93.798 25.095 L 94.09 23.562 L 95.461 23.451 L 95.461 25.116 L 96.969 25.116 L 96.969 26.421 L 95.486 26.421 Z', style: 'fill: rgb(255, 255, 255);' }),
-                Object(src["jsxToHTML"])('path', { d: 'M 20.357 8.826 L 15.368 5.081 L 10.379 1.334 C 10.033 1.074 9.54 1.146 9.281 1.493 L 4.883 7.322 C 4.811 7.409 4.768 7.51 4.754 7.624 C 4.68 7.93 4.782 8.248 5.043 8.45 L 8.022 10.677 L 12.042 13.698 L 15.021 15.926 C 15.281 16.13 15.629 16.13 15.888 15.97 C 15.991 15.912 16.062 15.854 16.136 15.752 L 20.531 9.91 C 20.763 9.578 20.706 9.087 20.357 8.826 Z M 10.047 1.769 L 13.012 3.995 L 13.012 3.995 L 15.021 5.5 L 17.046 7.017 L 17.046 7.017 L 20.025 9.245 C 20.142 9.332 20.156 9.491 20.082 9.607 L 19.374 10.591 L 16.005 8.058 L 12.36 5.326 L 8.976 2.809 L 9.684 1.826 C 9.772 1.709 9.931 1.682 10.047 1.769 Z M 15.673 15.463 C 15.629 15.507 15.585 15.536 15.528 15.55 C 15.469 15.564 15.398 15.55 15.339 15.507 L 12.345 13.265 L 8.34 10.257 L 5.361 8.001 C 5.302 7.958 5.275 7.9 5.259 7.842 C 5.259 7.785 5.259 7.726 5.302 7.669 L 6.113 6.585 C 6.113 6.585 7.009 5.427 7.791 4.386 L 11.16 6.917 L 14.804 9.65 L 18.173 12.181 C 17.393 13.222 16.496 14.379 16.496 14.379 L 15.673 15.463 Z', style: 'fill: rgb(255, 255, 255);' }),
+                Object(src["jsxToHTML"])('path', { fill: main, d: 'M 39.871 18.772 C 37.78 18.772 35.843 18.278 34.272 17.425 L 34.81 13.935 C 36.409 14.769 38.051 15.263 39.826 15.263 C 41.809 15.263 42.661 14.544 42.661 13.284 C 42.661 10.45 34.34 11.641 34.34 5.59 C 34.34 2.53 36.319 0.055 40.885 0.055 C 42.639 0.055 44.549 0.416 45.946 0.999 L 45.474 4.395 C 43.989 3.926 42.481 3.633 41.108 3.633 C 38.86 3.633 38.275 4.395 38.275 5.364 C 38.275 8.175 46.598 6.895 46.598 13.013 C 46.576 16.569 44.101 18.772 39.871 18.772 Z' }),
+                Object(src["jsxToHTML"])('path', { fill: main, d: 'M 62.233 14.881 L 62.233 18.413 L 49.951 18.413 L 49.951 0.345 L 62.233 0.345 L 62.233 3.946 L 54.022 3.946 L 54.022 7.549 L 60.705 7.549 L 60.705 10.787 L 54.022 10.787 L 54.022 14.905 L 62.233 14.905 Z' }),
+                Object(src["jsxToHTML"])('path', { fill: main, d: 'M 72.313 12.565 L 69.905 12.565 L 69.905 18.437 L 65.834 18.437 L 65.834 0.345 L 72.313 0.345 C 77.328 0.345 79.376 2.328 79.376 6.534 C 79.376 10.361 77.355 12.565 72.313 12.565 Z M 72.313 3.766 L 69.905 3.766 L 69.905 9.302 L 72.313 9.302 C 74.314 9.302 75.194 8.808 75.194 6.534 C 75.194 4.352 74.428 3.766 72.313 3.766 Z' }),
+                Object(src["jsxToHTML"])('path', { fill: main, d: 'M 91.797 14.924 L 85.246 14.924 L 84.234 18.437 L 79.939 18.437 L 86.193 0.345 L 91.031 0.345 L 97.352 18.437 L 92.808 18.437 L 91.797 14.924 Z M 88.04 5.318 L 86.238 11.506 L 90.85 11.506 L 89.118 5.318 L 88.645 3.408 L 88.578 3.408 L 88.04 5.318 Z' }),
+                Object(src["jsxToHTML"])('path', { fill: main, d: 'M 39.736 30.157 L 39.692 31.867 L 34.382 31.867 L 34.382 23.475 L 36.299 23.475 L 36.299 30.157 L 39.736 30.157 Z' }),
+                Object(src["jsxToHTML"])('path', { fill: main, d: 'M 44.798 31.215 L 44.778 31.215 C 44.371 31.71 43.722 31.977 42.931 31.977 C 41.648 31.977 40.818 31.257 40.818 29.727 C 40.818 28.468 41.695 27.613 43.222 27.613 C 43.722 27.613 44.168 27.68 44.527 27.796 L 44.527 27.411 C 44.527 26.736 44.168 26.421 43.244 26.421 C 42.505 26.421 42.007 26.534 41.382 26.782 L 41.245 25.387 C 41.919 25.095 42.707 24.936 43.563 24.936 C 45.563 24.936 46.263 25.792 46.263 27.658 L 46.263 31.867 L 44.933 31.867 L 44.798 31.215 Z M 44.549 28.966 C 44.393 28.896 44.056 28.828 43.583 28.828 C 42.819 28.828 42.46 29.12 42.46 29.727 C 42.46 30.38 42.842 30.63 43.427 30.63 C 44.012 30.63 44.549 30.271 44.549 29.842 L 44.549 28.966 Z' }),
+                Object(src["jsxToHTML"])('path', { fill: main, d: 'M 50.02 32.002 C 49.21 32.002 48.466 31.842 47.883 31.529 L 48.062 30.088 C 48.625 30.405 49.41 30.561 49.996 30.561 C 50.693 30.561 50.986 30.29 50.986 29.887 C 50.986 28.807 47.84 29.436 47.84 27.051 C 47.84 25.838 48.667 24.959 50.403 24.959 C 51.075 24.959 51.752 25.095 52.336 25.32 L 52.201 26.736 C 51.64 26.512 50.897 26.396 50.381 26.396 C 49.816 26.396 49.503 26.625 49.503 26.961 C 49.503 27.995 52.603 27.366 52.603 29.707 C 52.603 31.101 51.862 32.002 50.02 32.002 Z' }),
+                Object(src["jsxToHTML"])('path', { fill: main, d: 'M 56.026 26.375 L 56.026 29.842 C 56.026 30.36 56.295 30.582 56.836 30.582 C 57.014 30.582 57.239 30.561 57.374 30.514 L 57.464 31.776 C 57.239 31.888 56.789 31.956 56.295 31.956 C 54.946 31.956 54.27 31.169 54.27 29.887 L 54.27 26.352 L 53.506 26.352 L 53.506 25.095 L 54.337 25.095 L 54.631 23.562 L 56.002 23.451 L 56.002 25.116 L 57.51 25.116 L 57.51 26.421 L 56.026 26.421 Z' }),
+                Object(src["jsxToHTML"])('path', { fill: main, d: 'M 60.885 32.002 C 60.073 32.002 59.331 31.842 58.748 31.529 L 58.929 30.088 C 59.49 30.405 60.275 30.561 60.862 30.561 C 61.561 30.561 61.851 30.29 61.851 29.887 C 61.851 28.807 58.702 29.436 58.702 27.051 C 58.702 25.838 59.534 24.959 61.269 24.959 C 61.943 24.959 62.615 25.095 63.203 25.32 L 63.069 26.736 C 62.505 26.512 61.764 26.396 61.246 26.396 C 60.681 26.396 60.367 26.625 60.367 26.961 C 60.367 27.995 63.47 27.366 63.47 29.707 C 63.47 31.101 62.729 32.002 60.885 32.002 Z' }),
+                Object(src["jsxToHTML"])('path', { fill: main, d: 'M 69.365 26.736 C 69.028 26.625 68.603 26.534 68.22 26.534 C 66.958 26.534 66.53 27.051 66.53 28.49 C 66.53 29.954 67.116 30.514 68.174 30.514 C 68.623 30.514 69.05 30.425 69.41 30.271 L 69.525 31.616 C 69.119 31.867 68.511 32.002 67.792 32.002 C 65.787 32.002 64.732 30.854 64.732 28.49 C 64.732 26.242 65.653 24.981 67.835 24.981 C 68.397 24.981 69.05 25.095 69.479 25.276 L 69.365 26.736 Z' }),
+                Object(src["jsxToHTML"])('path', { fill: main, d: 'M 75.078 31.867 L 75.078 27.546 C 75.078 26.849 74.743 26.491 74.001 26.491 C 73.508 26.491 73.055 26.714 72.855 27.008 L 72.855 31.867 L 71.122 31.867 L 71.122 23.16 L 72.855 23.069 L 72.855 24.622 L 72.83 25.52 L 72.855 25.545 C 73.348 25.116 73.979 24.959 74.541 24.959 C 75.98 24.959 76.812 25.926 76.812 27.546 L 76.812 31.867 L 75.078 31.867 Z' }),
+                Object(src["jsxToHTML"])('path', { fill: main, d: 'M 78.658 31.867 L 78.658 25.139 L 80.052 25.072 L 80.21 26.199 L 80.231 26.199 C 80.66 25.387 81.313 24.981 82.098 24.981 C 82.39 24.981 82.663 25.028 82.84 25.072 L 82.731 26.782 C 82.528 26.714 82.257 26.667 81.985 26.667 C 81.088 26.667 80.413 27.321 80.413 28.468 L 80.413 31.867 L 78.658 31.867 Z' }),
+                Object(src["jsxToHTML"])('path', { fill: main, d: 'M 85.382 24.35 C 84.708 24.35 84.395 24.172 84.395 23.609 C 84.395 23.136 84.708 22.867 85.382 22.867 C 86.058 22.867 86.375 23.113 86.375 23.609 C 86.354 24.105 86.058 24.35 85.382 24.35 Z M 84.484 31.867 L 84.484 25.139 L 86.259 25.072 L 86.259 31.888 L 84.484 31.888 Z' }),
+                Object(src["jsxToHTML"])('path', { fill: main, d: 'M 88.757 31.867 L 88.757 26.375 L 87.902 26.375 L 87.902 25.095 L 88.757 25.095 L 88.757 24.798 C 88.757 23.79 89.454 22.935 91.076 22.935 C 91.459 22.935 91.885 22.979 92.178 23.069 L 92.063 24.195 C 91.863 24.147 91.636 24.126 91.411 24.126 C 90.738 24.126 90.466 24.399 90.466 24.825 L 90.466 25.072 L 91.907 25.072 L 91.907 26.352 L 90.466 26.352 L 90.466 31.842 L 88.757 31.842 Z' }),
+                Object(src["jsxToHTML"])('path', { fill: main, d: 'M 95.486 26.375 L 95.486 29.842 C 95.486 30.36 95.754 30.582 96.296 30.582 C 96.473 30.582 96.698 30.561 96.834 30.514 L 96.924 31.776 C 96.698 31.888 96.249 31.956 95.754 31.956 C 94.406 31.956 93.729 31.169 93.729 29.887 L 93.729 26.352 L 92.965 26.352 L 92.965 25.095 L 93.798 25.095 L 94.09 23.562 L 95.461 23.451 L 95.461 25.116 L 96.969 25.116 L 96.969 26.421 L 95.486 26.421 Z' }),
+                Object(src["jsxToHTML"])('path', { fill: card, d: 'M 20.357 8.826 L 15.368 5.081 L 10.379 1.334 C 10.033 1.074 9.54 1.146 9.281 1.493 L 4.883 7.322 C 4.811 7.409 4.768 7.51 4.754 7.624 C 4.68 7.93 4.782 8.248 5.043 8.45 L 8.022 10.677 L 12.042 13.698 L 15.021 15.926 C 15.281 16.13 15.629 16.13 15.888 15.97 C 15.991 15.912 16.062 15.854 16.136 15.752 L 20.531 9.91 C 20.763 9.578 20.706 9.087 20.357 8.826 Z M 10.047 1.769 L 13.012 3.995 L 13.012 3.995 L 15.021 5.5 L 17.046 7.017 L 17.046 7.017 L 20.025 9.245 C 20.142 9.332 20.156 9.491 20.082 9.607 L 19.374 10.591 L 16.005 8.058 L 12.36 5.326 L 8.976 2.809 L 9.684 1.826 C 9.772 1.709 9.931 1.682 10.047 1.769 Z M 15.673 15.463 C 15.629 15.507 15.585 15.536 15.528 15.55 C 15.469 15.564 15.398 15.55 15.339 15.507 L 12.345 13.265 L 8.34 10.257 L 5.361 8.001 C 5.302 7.958 5.275 7.9 5.259 7.842 C 5.259 7.785 5.259 7.726 5.302 7.669 L 6.113 6.585 C 6.113 6.585 7.009 5.427 7.791 4.386 L 11.16 6.917 L 14.804 9.65 L 18.173 12.181 C 17.393 13.222 16.496 14.379 16.496 14.379 L 15.673 15.463 Z' }),
                 Object(src["jsxToHTML"])(
                     'g',
                     { transform: 'matrix(0.144619, 0, 0, 0.144619, -7.250457, -3.988513)' },
-                    Object(src["jsxToHTML"])('path', { d: 'M197.1,150.4l52-69.6l5.3-7c0,0,0.1-0.2,0.2-0.2c0.4-0.5,0.3-1.2-0.2-1.6l-14.7-10.7 c-0.5-0.4-1.2-0.2-1.6,0.3c-0.1,0.1-0.2,0.2-0.2,0.2l-2,2.5l-64.3,86l-70.8,0l-26.5,87.4h177.1l-25-87.4L197.1,150.4z M79.1,234.3 l24.2-80.5l65.7,0l-5.7,7.6l-8.1,11.3l-0.9,1.7l-0.9,1.9l-0.9,2.2l-0.9,2.3l-0.9,2.5l-0.9,2.5l-0.8,2.5l-0.8,2.4l-0.7,2.3 l-0.7,2.1l-0.6,1.9l-0.4,1.6l-0.3,1.2l-0.3,0.7c0,0-0.1,0.2-0.2,0.4c-0.2,0.2-1.2,1.1-2,0.5c-0.8-0.6-0.7-2.6-0.6-3.6 c0.2-3,0.5-6,0.7-8.9c0.1-1-1.2-1.6-2-1.2c-3.6,2.1-5.8,4.6-7.8,7.5c0.2-0.7,0.4-1.4,0.6-2c0.8-3.1,2-6.2,2.5-9.4 c0.3-1.8-0.2-3.9-2.3-4.3c-2.4-0.4-3.9,2.1-5.1,3.7c-3.5,5-5.6,11.2-9.9,15.5c-1.6,1.6-3.5,2.8-5.8,2.1c-2.7-0.8-3.8,2.4,1,2.9 c4.7,0.4,8.3-4.6,10.4-8.1c1.6-2.5,2.9-5.2,4.5-7.8c0.7-1.2,1.5-2.4,2.3-3.6c0.4-0.5,1-1.8,1.7-2c0.8-0.2,0.6,0.3,0.6,0.9 c-0.1,1.5-0.7,3-1.1,4.5c-0.4,1.6-0.9,3.2-1.3,4.7c-0.9,3.4-1.8,6.8-2.8,10.1c-0.4,1.5,1.6,2.2,2.5,1c3.4-4.8,5.1-8.9,9.2-12.1 c-0.1,1.1-0.2,2.1-0.3,3.2c-0.1,1.7-0.5,3.6-0.4,5.3c0.2,2.9,2.4,4.8,5.1,3.6c1.4-0.7,2.4-1.7,2.4-1.7l0.2-0.1l0.6-0.4l1-0.7 l1.4-1l1.6-1.2l1.7-1.2l2.1-1.4l2.1-1.5l2.1-1.5l2.1-1.5l2-1.5l1.9-1.4l1.8-1.4l1.5-1.2l1.2-1.1l1-0.9l0-0.1l0,0l6.5-7.6 l16.6-22.1l29.4,0l22.9,80.5H79.1z', style: 'fill: rgb(255, 255, 255);' }),
-                    Object(src["jsxToHTML"])('path', { d: 'M261.1,77.1l-1.9-1.5c-0.4-0.3-0.9-0.2-1.2,0.2l-24.7,32.9c-0.3,0.4-0.2,0.9,0.2,1.2l1.9,1.5 c0.4,0.3,0.9,0.2,1.2-0.2l24.7-32.9C261.5,77.9,261.5,77.4,261.1,77.1z', style: 'fill: rgb(255, 255, 255);' }),
-                    Object(src["jsxToHTML"])('polygon', { points: '161.7,217.2 210.9,217.2 209.9,213.3 161.7,213.3 113.6,213.3 112.5,217.2 \t\t', style: 'fill: rgb(255, 255, 255);' })
+                    Object(src["jsxToHTML"])('path', { fill: main, d: 'M197.1,150.4l52-69.6l5.3-7c0,0,0.1-0.2,0.2-0.2c0.4-0.5,0.3-1.2-0.2-1.6l-14.7-10.7 c-0.5-0.4-1.2-0.2-1.6,0.3c-0.1,0.1-0.2,0.2-0.2,0.2l-2,2.5l-64.3,86l-70.8,0l-26.5,87.4h177.1l-25-87.4L197.1,150.4z M79.1,234.3 l24.2-80.5l65.7,0l-5.7,7.6l-8.1,11.3l-0.9,1.7l-0.9,1.9l-0.9,2.2l-0.9,2.3l-0.9,2.5l-0.9,2.5l-0.8,2.5l-0.8,2.4l-0.7,2.3 l-0.7,2.1l-0.6,1.9l-0.4,1.6l-0.3,1.2l-0.3,0.7c0,0-0.1,0.2-0.2,0.4c-0.2,0.2-1.2,1.1-2,0.5c-0.8-0.6-0.7-2.6-0.6-3.6 c0.2-3,0.5-6,0.7-8.9c0.1-1-1.2-1.6-2-1.2c-3.6,2.1-5.8,4.6-7.8,7.5c0.2-0.7,0.4-1.4,0.6-2c0.8-3.1,2-6.2,2.5-9.4 c0.3-1.8-0.2-3.9-2.3-4.3c-2.4-0.4-3.9,2.1-5.1,3.7c-3.5,5-5.6,11.2-9.9,15.5c-1.6,1.6-3.5,2.8-5.8,2.1c-2.7-0.8-3.8,2.4,1,2.9 c4.7,0.4,8.3-4.6,10.4-8.1c1.6-2.5,2.9-5.2,4.5-7.8c0.7-1.2,1.5-2.4,2.3-3.6c0.4-0.5,1-1.8,1.7-2c0.8-0.2,0.6,0.3,0.6,0.9 c-0.1,1.5-0.7,3-1.1,4.5c-0.4,1.6-0.9,3.2-1.3,4.7c-0.9,3.4-1.8,6.8-2.8,10.1c-0.4,1.5,1.6,2.2,2.5,1c3.4-4.8,5.1-8.9,9.2-12.1 c-0.1,1.1-0.2,2.1-0.3,3.2c-0.1,1.7-0.5,3.6-0.4,5.3c0.2,2.9,2.4,4.8,5.1,3.6c1.4-0.7,2.4-1.7,2.4-1.7l0.2-0.1l0.6-0.4l1-0.7 l1.4-1l1.6-1.2l1.7-1.2l2.1-1.4l2.1-1.5l2.1-1.5l2.1-1.5l2-1.5l1.9-1.4l1.8-1.4l1.5-1.2l1.2-1.1l1-0.9l0-0.1l0,0l6.5-7.6 l16.6-22.1l29.4,0l22.9,80.5H79.1z' }),
+                    Object(src["jsxToHTML"])('path', { fill: main, d: 'M261.1,77.1l-1.9-1.5c-0.4-0.3-0.9-0.2-1.2,0.2l-24.7,32.9c-0.3,0.4-0.2,0.9,0.2,1.2l1.9,1.5 c0.4,0.3,0.9,0.2,1.2-0.2l24.7-32.9C261.5,77.9,261.5,77.4,261.1,77.1z' }),
+                    Object(src["jsxToHTML"])('polygon', { fill: main, points: '161.7,217.2 210.9,217.2 209.9,213.3 161.7,213.3 113.6,213.3 112.5,217.2 \t\t' })
                 )
             );
         }
@@ -10252,7 +9898,7 @@ var VENMO_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
     defaultLabel: constants["c" /* BUTTON_LABEL */].VENMO,
 
-    platforms: [paypal_sdk_constants_src["i" /* PLATFORM */].MOBILE],
+    platforms: [paypal_sdk_constants_src["m" /* PLATFORM */].MOBILE],
 
     labels: (_labels = {}, _labels[constants["c" /* BUTTON_LABEL */].VENMO] = _extends({}, common["b" /* DEFAULT_LABEL_CONFIG */], {
 
