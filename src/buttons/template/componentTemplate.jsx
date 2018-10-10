@@ -104,17 +104,17 @@ function Button({ source, style, multiple, locale, env, fundingEligibility, i, n
             <Label
                 nonce={ nonce }
                 locale={ locale }
-                color={ color }
                 logoColor={ logoColor }
                 period={ period }
+                multiple={ multiple }
                 fundingEligibility={ fundingEligibility }
             />
         </div>
     );
 }
 
-function TagLine({ source, style, locale, multiple } :
-    {| source : $Values<typeof FUNDING>, style : ButtonStyle, locale : LocaleType, multiple : boolean |}) : ?JsxHTMLNode {
+function TagLine({ source, style, locale, multiple, nonce } :
+    {| source : $Values<typeof FUNDING>, style : ButtonStyle, locale : LocaleType, multiple : boolean, nonce : string |}) : ?JsxHTMLNode {
 
     let { tagline, label, color } = style;
 
@@ -145,7 +145,11 @@ function TagLine({ source, style, locale, multiple } :
 
     return (
         <div class={ `${ CLASS.TAGLINE } ${ CLASS.TAGLINE_COLOR }-${ tagColor }` }>
-            <Tag locale={ locale } multiple={ multiple } />
+            <Tag
+                nonce={ nonce }
+                locale={ locale }
+                multiple={ multiple }
+            />
         </div>
     );
 }
@@ -234,7 +238,7 @@ export function Buttons(props : ButtonPropsInputs) : JsxHTMLNode {
                 style={ style }
                 locale={ locale }
                 multiple={ multiple }
-                env={ env }
+                nonce={ nonce }
             />
 
             <Script

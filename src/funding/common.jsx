@@ -3,7 +3,7 @@
 /* @jsx jsxToHTML */
 
 import { type FundingEligibilityType } from 'paypal-braintree-web-client/src';
-import { jsxToHTML, SVG, JsxHTMLNode } from 'belter/src'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, SVG, JsxHTMLNode, type JsxChildType } from 'belter/src'; // eslint-disable-line no-unused-vars
 import { PLATFORM, CARD, type LocaleType, COUNTRY } from 'paypal-sdk-constants/src';
 
 import { BUTTON_COLOR, LOGO_COLOR, CLASS,
@@ -81,13 +81,12 @@ type FundingLabelConfig = {|
         multiple : boolean,
         period? : number,
         fundingEligibility : FundingEligibilityType
-    |}) => JsxHTMLNode | Array<JsxHTMLNode>,
+    |}) => JsxChildType,
     Tag? : ({|
         locale : LocaleType,
-        logoColor : $Values<typeof LOGO_COLOR>,
         nonce : string,
         multiple : boolean
-    |}) => JsxHTMLNode,
+    |}) => JsxChildType,
     colors : $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
     secondaryColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
     logoColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof LOGO_COLOR> },
@@ -102,9 +101,8 @@ type FundingLabelConfig = {|
 type CardConfig = {|
     Logo : ({|
         locale : LocaleType,
-        logoColor : $Values<typeof LOGO_COLOR>,
         nonce : string
-    |}) => JsxHTMLNode
+    |}) => JsxChildType
 |};
 
 export type FundingSourceConfig = {|

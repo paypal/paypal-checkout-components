@@ -29,7 +29,7 @@ export const CREDIT_CONFIG : FundingSourceConfig = {
 
                 return (
                     <Fragment>
-                        <PPLogo logoColor={ logoColor } /> <PayPalLogo logoColor={ logoColor } /> <CreditLogo logoColor={ logoColor } locale={ locale } nonce={ nonce } />
+                        <PPLogo nonce={ nonce } logoColor={ logoColor } /> <PayPalLogo nonce={ nonce } logoColor={ logoColor } /> <CreditLogo logoColor={ logoColor } locale={ locale } nonce={ nonce } />
                     </Fragment>
                 );
             },

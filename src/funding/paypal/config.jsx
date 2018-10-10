@@ -24,10 +24,10 @@ export const PAYPAL_CONFIG : FundingSourceConfig = {
 
             defaultColor: BUTTON_COLOR.GOLD,
 
-            Label({ logoColor } : { logoColor : $Values<typeof LOGO_COLOR> }) : JsxHTMLNode {
+            Label({ logoColor, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : JsxHTMLNode {
                 return (
                     <Fragment>
-                        <PPLogo logoColor={ logoColor } /> <PayPalLogo logoColor={ logoColor } />
+                        <PPLogo nonce={ nonce } logoColor={ logoColor } /> <PayPalLogo nonce={ nonce } logoColor={ logoColor } />
                     </Fragment>
                 );
             },
@@ -46,9 +46,9 @@ export const PAYPAL_CONFIG : FundingSourceConfig = {
 
             defaultColor: BUTTON_COLOR.GOLD,
 
-            Label: ({ locale, logoColor }) => {
+            Label: ({ locale, logoColor, nonce }) => {
                 return (
-                    <Checkout locale={ locale } logoColor={ logoColor } />
+                    <Checkout nonce={ nonce } locale={ locale } logoColor={ logoColor } />
                 );
             },
 
@@ -66,9 +66,9 @@ export const PAYPAL_CONFIG : FundingSourceConfig = {
 
             defaultColor: BUTTON_COLOR.GOLD,
 
-            Label: ({ locale, logoColor }) => {
+            Label: ({ locale, logoColor, nonce }) => {
                 return (
-                    <Pay locale={ locale } logoColor={ logoColor } />
+                    <Pay nonce={ nonce } locale={ locale } logoColor={ logoColor } />
                 );
             },
 
@@ -93,9 +93,9 @@ export const PAYPAL_CONFIG : FundingSourceConfig = {
                 [ COUNTRY.MX ]: [ 3, 6, 9, 12 ]
             },
 
-            Label: ({ locale, logoColor, period }) => {
+            Label: ({ locale, logoColor, period, nonce }) => {
                 return (
-                    <Installment locale={ locale } logoColor={ logoColor } period={ period } />
+                    <Installment nonce={ nonce } locale={ locale } logoColor={ logoColor } period={ period } />
                 );
             },
 

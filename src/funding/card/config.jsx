@@ -33,7 +33,7 @@ export const CARD_CONFIG : FundingSourceConfig = {
         [ BUTTON_LABEL.CARD ]: {
             ...DEFAULT_LABEL_CONFIG,
 
-            Label({ fundingEligibility, locale, nonce }) : Array<JsxHTMLNode> {
+            Label: ({ fundingEligibility, locale, nonce }) => {
                 let maxCards = 4;
 
                 if (CARD_CONFIG.maxCards && CARD_CONFIG.maxCards[locale.country]) {
@@ -56,6 +56,7 @@ export const CARD_CONFIG : FundingSourceConfig = {
                     
                     return (
                         <Logo
+                            locale={ locale }
                             nonce={ nonce }
                         />
                     );
