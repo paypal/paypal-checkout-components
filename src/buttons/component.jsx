@@ -375,8 +375,10 @@ export let Buttons : Component<ButtonProps> = create({
         },
 
         fundingEligibility: {
-            type:       'object',
-            value:       getFundingEligibility
+            type:          'object',
+            value:         getFundingEligibility,
+            queryParam:    true,
+            serialization: 'base64'
         },
 
         meta: {
