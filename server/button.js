@@ -44,7 +44,10 @@ export function getButtonMiddleware({ logger = console } : { logger? : LoggerTyp
 
             let { lang, country } = locale;
 
-            let fundingEligibility = await getFundingEligibility({ country, intent, commit, vault });
+            let fundingEligibility = (req.query.fundingEligibility && typeof req.query.fundingEligibility === 'string')
+                ? JSON.parse(Buffer.from(req.query.fundingEligibility, 'base64').toString('utf8'))
+                : await getFundingEligibility({ country, intent, commit, vault });
+
             let nonce = res.locals && res.locals.nonce;
 
             if (!nonce || typeof nonce !== 'string') {
