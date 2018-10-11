@@ -1909,7 +1909,7 @@ function addHeaderBuilder(method) {
 "use strict";
 /* unused harmony export JsxHTMLNode */
 /* unused harmony export JsxHTMLNodeContainer */
-/* harmony export (immutable) */ __webpack_exports__["c"] = jsxToHTML;
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return jsxToHTML; });
 /* unused harmony export jsxRender */
 /* harmony export (immutable) */ __webpack_exports__["a"] = Fragment;
 /* harmony export (immutable) */ __webpack_exports__["b"] = SVG;
@@ -1944,7 +1944,7 @@ var JSX_EVENTS = {
 function htmlEncode() {
     var html = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
-    return html.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/\//g, '&#x2F;');
+    return html.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/\//g, '&#x2F;');
 }
 
 var JsxHTMLNode = function () {
@@ -2043,23 +2043,26 @@ var JsxHTMLNodeContainer = function (_JsxHTMLNode) {
     return JsxHTMLNodeContainer;
 }(JsxHTMLNode);
 
-function jsxToHTML(element) {
-    var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
+var jsxToHTML = function jsxToHTML(element, props) {
     for (var _len = arguments.length, children = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
         children[_key - 2] = arguments[_key];
     }
 
+    // $FlowFixMe
+    var objProps = props || {};
+
     if (typeof element === 'string') {
-        return new JsxHTMLNode(element, props, children);
+        // $FlowFixMe
+        return new JsxHTMLNode(element, objProps, children);
     }
 
     if (typeof element === 'function') {
-        return element(props, children);
+        // $FlowFixMe
+        return element(objProps, children);
     }
 
     throw new TypeError('Expected jsx Element to be a string or a function');
-}
+};
 
 function jsxRender(template, renderers) {
 
@@ -7017,9 +7020,9 @@ function Button(_ref4) {
         Object(belter_src["jsxToHTML"])(Label, {
             nonce: nonce,
             locale: locale,
-            color: color,
             logoColor: logoColor,
             period: period,
+            multiple: multiple,
             fundingEligibility: fundingEligibility
         })
     );
@@ -7029,7 +7032,8 @@ function TagLine(_ref6) {
     var source = _ref6.source,
         style = _ref6.style,
         locale = _ref6.locale,
-        multiple = _ref6.multiple;
+        multiple = _ref6.multiple,
+        nonce = _ref6.nonce;
     var tagline = style.tagline,
         label = style.label,
         color = style.color;
@@ -7064,7 +7068,11 @@ function TagLine(_ref6) {
     return Object(belter_src["jsxToHTML"])(
         'div',
         { 'class': constants["j" /* CLASS */].TAGLINE + ' ' + constants["j" /* CLASS */].TAGLINE_COLOR + '-' + tagColor },
-        Object(belter_src["jsxToHTML"])(Tag, { locale: locale, multiple: multiple })
+        Object(belter_src["jsxToHTML"])(Tag, {
+            nonce: nonce,
+            locale: locale,
+            multiple: multiple
+        })
     );
 }
 
@@ -7155,7 +7163,7 @@ function Buttons(props) {
             style: style,
             locale: locale,
             multiple: multiple,
-            env: env
+            nonce: nonce
         }),
         Object(belter_src["jsxToHTML"])(Script, {
             nonce: nonce
@@ -7915,6 +7923,7 @@ var CARD_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
     defaultLabel: constants["c" /* BUTTON_LABEL */].CARD,
 
     labels: (_labels = {}, _labels[constants["c" /* BUTTON_LABEL */].CARD] = _extends({}, common["b" /* DEFAULT_LABEL_CONFIG */], {
+
         Label: function Label(_ref) {
             var fundingEligibility = _ref.fundingEligibility,
                 locale = _ref.locale,
@@ -7942,11 +7951,11 @@ var CARD_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
 
                 return Object(src["jsxToHTML"])(Logo, {
+                    locale: locale,
                     nonce: nonce
                 });
             }).filter(Boolean).slice(0, maxCards);
         },
-
 
         defaultColor: constants["b" /* BUTTON_COLOR */].SILVER,
 
@@ -8387,9 +8396,9 @@ var CREDIT_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
             return Object(belter_src["jsxToHTML"])(
                 belter_src["Fragment"],
                 null,
-                Object(belter_src["jsxToHTML"])(logo["a" /* PPLogo */], { logoColor: logoColor }),
+                Object(belter_src["jsxToHTML"])(logo["a" /* PPLogo */], { nonce: nonce, logoColor: logoColor }),
                 ' ',
-                Object(belter_src["jsxToHTML"])(logo["b" /* PayPalLogo */], { logoColor: logoColor }),
+                Object(belter_src["jsxToHTML"])(logo["b" /* PayPalLogo */], { nonce: nonce, logoColor: logoColor }),
                 ' ',
                 Object(belter_src["jsxToHTML"])(CreditLogo, { logoColor: logoColor, locale: locale, nonce: nonce })
             );
@@ -9262,7 +9271,8 @@ var componentContent = {
 function contentToJSX(key, locale) {
     var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
         logoColor = _ref.logoColor,
-        _period = _ref.period;
+        _period = _ref.period,
+        nonce = _ref.nonce;
 
     var lang = locale.lang;
 
@@ -9277,10 +9287,10 @@ function contentToJSX(key, locale) {
             );
         },
         pp: function pp() {
-            return Object(belter_src["jsxToHTML"])(logo["a" /* PPLogo */], { logoColor: logoColor });
+            return Object(belter_src["jsxToHTML"])(logo["a" /* PPLogo */], { nonce: nonce, logoColor: logoColor });
         },
         paypal: function paypal() {
-            return Object(belter_src["jsxToHTML"])(logo["b" /* PayPalLogo */], { logoColor: logoColor });
+            return Object(belter_src["jsxToHTML"])(logo["b" /* PayPalLogo */], { nonce: nonce, logoColor: logoColor });
         },
         br: function br() {
             return Object(belter_src["jsxToHTML"])('br', null);
@@ -9293,24 +9303,27 @@ function contentToJSX(key, locale) {
 
 function Checkout(_ref2) {
     var locale = _ref2.locale,
-        logoColor = _ref2.logoColor;
+        logoColor = _ref2.logoColor,
+        nonce = _ref2.nonce;
 
-    return contentToJSX('checkout', locale, { logoColor: logoColor });
+    return contentToJSX('checkout', locale, { logoColor: logoColor, nonce: nonce });
 }
 
 function Pay(_ref3) {
     var locale = _ref3.locale,
-        logoColor = _ref3.logoColor;
+        logoColor = _ref3.logoColor,
+        nonce = _ref3.nonce;
 
-    return contentToJSX('pay', locale, { logoColor: logoColor });
+    return contentToJSX('pay', locale, { logoColor: logoColor, nonce: nonce });
 }
 
 function Installment(_ref4) {
     var locale = _ref4.locale,
         logoColor = _ref4.logoColor,
-        period = _ref4.period;
+        period = _ref4.period,
+        nonce = _ref4.nonce;
 
-    return contentToJSX(period ? 'installment_period' : 'installment', locale, { logoColor: logoColor, period: period });
+    return contentToJSX(period ? 'installment_period' : 'installment', locale, { logoColor: logoColor, period: period, nonce: nonce });
 }
 
 function SaferTag(_ref5) {
@@ -9354,14 +9367,15 @@ var PAYPAL_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
         defaultColor: constants["b" /* BUTTON_COLOR */].GOLD,
 
         Label: function Label(_ref) {
-            var logoColor = _ref.logoColor;
+            var logoColor = _ref.logoColor,
+                nonce = _ref.nonce;
 
             return Object(belter_src["jsxToHTML"])(
                 belter_src["Fragment"],
                 null,
-                Object(belter_src["jsxToHTML"])(logo["a" /* PPLogo */], { logoColor: logoColor }),
+                Object(belter_src["jsxToHTML"])(logo["a" /* PPLogo */], { nonce: nonce, logoColor: logoColor }),
                 ' ',
-                Object(belter_src["jsxToHTML"])(logo["b" /* PayPalLogo */], { logoColor: logoColor })
+                Object(belter_src["jsxToHTML"])(logo["b" /* PayPalLogo */], { nonce: nonce, logoColor: logoColor })
             );
         },
 
@@ -9380,9 +9394,10 @@ var PAYPAL_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
         Label: function Label(_ref3) {
             var locale = _ref3.locale,
-                logoColor = _ref3.logoColor;
+                logoColor = _ref3.logoColor,
+                nonce = _ref3.nonce;
 
-            return Object(belter_src["jsxToHTML"])(Checkout, { locale: locale, logoColor: logoColor });
+            return Object(belter_src["jsxToHTML"])(Checkout, { nonce: nonce, locale: locale, logoColor: logoColor });
         },
 
         Tag: function Tag(_ref4) {
@@ -9399,9 +9414,10 @@ var PAYPAL_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
         Label: function Label(_ref5) {
             var locale = _ref5.locale,
-                logoColor = _ref5.logoColor;
+                logoColor = _ref5.logoColor,
+                nonce = _ref5.nonce;
 
-            return Object(belter_src["jsxToHTML"])(Pay, { locale: locale, logoColor: logoColor });
+            return Object(belter_src["jsxToHTML"])(Pay, { nonce: nonce, locale: locale, logoColor: logoColor });
         },
 
         Tag: function Tag(_ref6) {
@@ -9423,9 +9439,10 @@ var PAYPAL_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
         Label: function Label(_ref7) {
             var locale = _ref7.locale,
                 logoColor = _ref7.logoColor,
-                period = _ref7.period;
+                period = _ref7.period,
+                nonce = _ref7.nonce;
 
-            return Object(belter_src["jsxToHTML"])(Installment, { locale: locale, logoColor: logoColor, period: period });
+            return Object(belter_src["jsxToHTML"])(Installment, { nonce: nonce, locale: locale, logoColor: logoColor, period: period });
         },
 
         Tag: function Tag(_ref8) {
