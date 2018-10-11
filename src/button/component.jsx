@@ -173,7 +173,7 @@ export let Button : Component<ButtonOptions> = create({
         }
 
         if (isIEIntranet()) {
-            throw new Error(`Can not render button in IE intranet mode`);
+            throw new Error(`Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md`);
         }
     },
 
