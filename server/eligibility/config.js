@@ -1,6 +1,6 @@
 /* @flow */
 
-import { FUNDING, COUNTRY, CARD, INTENT, COMMIT, VAULT } from './constants';
+import { FUNDING, COUNTRY, CARD, INTENT, COMMIT, VAULT } from 'paypal-sdk-constants';
 
 export const FUNDING_CONFIG = {
 
@@ -9,7 +9,7 @@ export const FUNDING_CONFIG = {
 
         allowOptOut: false,
 
-        intent:  [ INTENT.CAPTURE, INTENT.AUTH, INTENT.ORDER ],
+        intent:  [ INTENT.CAPTURE, INTENT.AUTHORIZE, INTENT.ORDER ],
         commit:  [ COMMIT.TRUE, COMMIT.FALSE ],
         vault:   [ VAULT.TRUE, VAULT.FALSE ]
     },
@@ -19,7 +19,7 @@ export const FUNDING_CONFIG = {
 
         allowOptOut: true,
 
-        intent:  [ INTENT.CAPTURE, INTENT.AUTH, INTENT.ORDER ],
+        intent:  [ INTENT.CAPTURE, INTENT.AUTHORIZE, INTENT.ORDER ],
         commit:  [ COMMIT.TRUE, COMMIT.FALSE ],
         vault:   [ VAULT.TRUE, VAULT.FALSE ]
     },
@@ -33,7 +33,7 @@ export const FUNDING_CONFIG = {
 
         allowOptOut: false,
 
-        intent:  [ INTENT.CAPTURE, INTENT.AUTH ],
+        intent:  [ INTENT.CAPTURE, INTENT.AUTHORIZE ],
         commit:  [ COMMIT.TRUE, COMMIT.FALSE ],
         vault:   [ VAULT.FALSE ]
     },
@@ -49,7 +49,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.DE
         ],
 
-        intent:  [ INTENT.CAPTURE, INTENT.AUTH, INTENT.ORDER ],
+        intent:  [ INTENT.CAPTURE, INTENT.AUTHORIZE, INTENT.ORDER ],
         commit:  [ COMMIT.TRUE, COMMIT.FALSE ],
         vault:   [ VAULT.TRUE, VAULT.FALSE ]
     },
@@ -77,7 +77,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.DE
         ],
 
-        intent:  [ INTENT.CAPTURE, INTENT.AUTH, INTENT.ORDER ],
+        intent:  [ INTENT.CAPTURE, INTENT.AUTHORIZE, INTENT.ORDER ],
         commit:  [ COMMIT.TRUE, COMMIT.FALSE ],
         vault:   [ VAULT.FALSE ]
     },

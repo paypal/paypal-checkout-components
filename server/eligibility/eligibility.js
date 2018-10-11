@@ -1,8 +1,8 @@
 /* @flow */
 
 import { values } from 'belter';
+import { FUNDING, CARD, INTENT } from 'paypal-sdk-constants';
 
-import { FUNDING, CARD, INTENT } from './constants';
 import { FUNDING_CONFIG, CARD_CONFIG } from './config';
 
 function isFundingEligible(funding : string, { country, intent, commit, vault } : { country : string, intent : string, commit : boolean, vault : boolean }) : boolean {
@@ -44,7 +44,7 @@ function isCardEligible(card : string, { country }) : boolean {
 export function getFundingEligibility({ country, intent, commit, vault } : { country : string, intent : string, commit : boolean, vault : boolean }) : Object {
     
 
-    if (intent === INTENT.SALE) {
+    if (intent === 'sale') {
         intent = INTENT.CAPTURE;
     }
 
