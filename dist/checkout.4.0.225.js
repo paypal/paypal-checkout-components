@@ -903,18 +903,18 @@
                 counter += 1;
                 this.name = "__weakmap_" + (1e9 * Math.random() >>> 0) + "__" + counter;
                 if (function() {
-                    if (!window.WeakMap) return !1;
-                    if (!window.Object.freeze) return !1;
+                    if ("undefined" == typeof WeakMap) return !1;
+                    if (void 0 === Object.freeze) return !1;
                     try {
-                        var testWeakMap = new window.WeakMap(), testKey = {};
-                        window.Object.freeze(testKey);
+                        var testWeakMap = new WeakMap(), testKey = {};
+                        Object.freeze(testKey);
                         testWeakMap.set(testKey, "__testvalue__");
                         return "__testvalue__" === testWeakMap.get(testKey);
                     } catch (err) {
                         return !1;
                     }
                 }()) try {
-                    this.weakmap = new window.WeakMap();
+                    this.weakmap = new WeakMap();
                 } catch (err) {}
                 this.keys = [];
                 this.values = [];
@@ -7989,7 +7989,7 @@
                 return Object(lib.w)();
             },
             validate: function() {
-                if (Object(lib.G)()) throw new Error("Can not render button in IE intranet mode");
+                if (Object(lib.G)()) throw new Error("Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md");
                 Object(lib.D)() || Object(beaver_logger_client.q)("checkout_render_ineligible");
             },
             prerenderTemplate: template.a,
@@ -8120,6 +8120,16 @@
                     type: "string",
                     required: !1,
                     queryParam: !0
+                },
+                fundingOffered: {
+                    type: "object",
+                    required: !1,
+                    queryParam: !0,
+                    def: function() {
+                        return Array.prototype.slice.call(document.querySelectorAll("[" + constants.c.FUNDING_SOURCE + "]")).map(function(el) {
+                            return el.getAttribute(constants.c.FUNDING_SOURCE);
+                        });
+                    }
                 },
                 onAuthorize: {
                     type: "function",
@@ -8554,9 +8564,9 @@
     "./src/config/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
-            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.224.js",
+            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.225.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.224",
+            version: "4.0.225",
             cors: !0,
             env: constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -8734,11 +8744,14 @@
                 },
                 "getownzone.com": {
                     disable_venmo: !0
+                },
+                "uncommongoods.com": {
+                    disable_venmo: !0
                 }
             },
             creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
             bmlCreditTest: {
-                domains: [ "fashionsandthings.com", "medicinal-herb-store.commercehq.com", "medicinalherbstore.com", "yuengling.com", "store14454605.ecwid.com", "moonpod.co", "wbbarber.com", "gadgetblu.com", "gadgetblu.com", "gadgetblu.commercehq.com", "taffytown.com", "elderwoodacademy.com", "twistedroad.com", "personalaircooler.com", "billsienkiewiczart.com", "harmagh.com", "astrograph.com", "astrograph.com", "vktrygear.com", "vktrygear.com", "shalomhealthservices.com", "longhairprettynails.com", "thundrbro.com", "yiiree.com", "yiiree.com", "daltechforce.com", "in.xero.com", "30dollargunbelt.com", "theteachertote.com", "blanktag.co", "jlaruecosmetics.com", "esther-williams.com", "ginalli.com", "orientwatchusa.com", "tbichips.com", "trendjungle.store", "freerangeamerican.us", "simpleandblush.com", "thetrendyvibe.com", "wobies.com", "unknownunicorn.com", "postmygaragesale.com", "gsalr.com", "yardsalesearch.com", "yardsales.net", "gsalr.ca", "garagesalefinder.com", "garagesalestracker.com", "shoptheladiesedge.com", "studyacer.com", "wodndone.com", "cabking.com", "tumble-bee.com", "inlandcraft.com", "hitechdiamond.com", "barcharts.com", "shopsecurelynow.com", "xinnora.commercehq.com", "cosmetictattoosupply.com", "fazeclan.com", "mamabearlegalforms.com", "mamabearlegalforms.com", "ec2-18-191-156-187.us-east-2.compute.amazonaws.com", "summit-hydraulics.com", "full-time-purpose.mykajabi.com", "nopestz.com", "lifehacksco.com", "app.catholicsingles.com", "paulamaxjewelry.com", "sadiesstickers.com", "boomkool.com", "oy-l.com", "m.musely.com", "missamericamag.com", "healthtestingcenters.com", "grab.getcargo.today", "app.getcargo.today", "longlosttees.com", "premiertrendsco.com", "photoshopcafe.com", "dragonhoardyarnco.com", "nickschips.com", "supplyhub.com", "supplyhub.com", "roomify.com", "iq-tester.org", "aa3035c6.ngrok.io", "qlive.divyamherbalcare.com", "iq-testing.me", "iq-tester.org", "60e9fcb8.ngrok.io", "9abde3c3.ngrok.io", "equinat-usa.com", "bellaellaboutique.com", "szul.com", "goodsvine.com", "whiplashdeals.com", "dino-deals.com", "mikimike.com", "geninterlock.com", "nostalgiastyles.com", "thevaultbysacha.com", "theshoptucson.com", "wristbandbros.com", "mike.outlinedepot.com", "outlinedepot.com", "outlinedepot.com", "rmadefense.com", "colorclub.com", "topicaledge.com", "fitnessqueen.co", "vivacoast.co", "thriveisland.co", "vitalityscience.com", "rawpawspetfood.com", "bark.us", "inglenookfibers.com", "psychicsource.com", "illusionsystems.com", "direct.darkhorse.com", "sparksunny.com", "cratetrendy.com", "snobbculture.com", "passionnobby.com", "passionnobby.com", "purehempshop.com", "clipdraw.com", "firevapor.com", "dev.parklanejewelry.com", "parklanejewelry.com", "lucylubaby.com", "motoskiveez.com", "suttonsboutique.com", "dealsaverstore.com", "midwestwheelandtire.com", "relationshiphero.com", "gentlemenhood.com", "modrnpad.com", "puertoricofactory.com", "recordsnv.com", "chicagocopshop.com", "spingo.com", "thebohojane.com", "crazycoolcustomtees.com", "hoodedwarrior.commercehq.com", "hoodedwarrior.com", "death-saves.com", "posterprintshop.com", "gabrielcosmeticsinc.com", "mountainamericajerky.com", "theskirtsociety.com", "austinaquafarms.com", "diedinhouse.com", "lilipubsorders.com", "rcegs.qnryj.servertrust.com", "k12schoolsupplies.net", "houstonhotels.org", "divinebazaar.deals", "thedivinebazaar.com", "cloutcar.tel", "superplastic.co", "janky.backerkit.com", "indianapolis.marketwagon.com", "fortwayne.marketwagon.com", "michiana.marketwagon.com", "evansville.marketwagon.com", "lovevibescrystals.com", "aluminyze.pro", "aluminyze.com", "abdlcompany.com", "ddlgboutique.com", "abdltoys.com", "inktale.com", "nationalhighwaysafetyadministration.com", "propellerdepot.com", "admin.billoreilly.com", "billoreilly.com", "2bsilent.mykajabi.com", "database.castingfrontier.com", "fishandcountry.com", "register.realestatewealthexpo.com", "shoplabeye.com", "lagoldleafus.com", "oldmercs.com", "codynolove.com", "loveonestore.com", "megtronix.com", "computermallshop.com", "gallerr.com", "squishiecats.com", "woopwoo.com", "socksery.com", "ossom.co", "chibi-kingdom.com", "oddlyhomey.com", "es.postermywall.com", "fr.postermywall.com", "pt.postermywall.com", "de.postermywall.com", "nl.postermywall.com", "postermywall.com", "it.postermywall.com", "edashdeals.com", "edashdeals.com", "edashdeals.commercehq.com", "kensingtonproducts.com", "spartanutrition.com", "biovape.co", "unicornclub.us", "livebetterwith.com", "homedna.com", "lightsplanneraction.co", "stickandpoketattookit.com", "pepperhead.com", "stage.crazyhotseeds.com", "ca.bathmatedirect.com", "fi.bathmatedirect.com", "au.bathmatedirect.com", "bathmatedirect.com", "eu.bathmatedirect.com", "nl.bathmatedirect.com", "il.bathmatedirect.com", "int.bathmatedirect.com", "bathmatedirect.com", "is.bathmatedirect.com", "sandmbikes.com", "fitbikeco.com", "magician.org", "skinnymechocolate.com", "elimidrol.com", "fender.com", "israelbiblecenter.com", "cookinpellets.com", "jbsperformance.com", "beverly21.com", "lemonsareblue.com", "cessere.com", "getchoosy.com", "widgetwingman.com", "snottytots.com", "app.willing.com", "theprettyhotmess.com", "egg-baby.com", "viral-click.com", "lizpearls.com", "pupnpaws.com", "tagusup.com", "m.pupnpaws.com", "hashtagme.conversionlab.online", "orlandobrewing.com", "thinksummer.shop", "libmaneducation.com", "mypetprints.co", "leftcoastvibesco.com", "immitranslate.com", "thesocceremporium.com", "giantloopmoto.com", "5oclocksomewherestore.com", "powertoolreplacementparts.com", "thelashprofessional.com", "flashstealsonline.com", "countrykitchensa.com", "prepagent.com", "shineon.com", "bravabuona.com", "bravabuona.com", "draftanalyzer.com", "draftanalyzer.com", "flagstoreusa.com", "youthfootballonline.com", "astromart.com", "astromart.com", "campchesterfield.net", "underdoggames.com", "walletsguy.com", "walletsguy.com", "walletsguy.commercehq.com", "rinsekit.com", "amplifylive.co", "usologytrends.com", "bluecollarbobbers.com", "roddersjournal.com", "nightfallclothing.com", "krakendesignco.com", "jdhirondesigns.com", "secure.cml.oeconnection.com" ]
+                domains: []
             },
             customCountry: !1,
             SUPPORTED_BROWSERS: {
@@ -9411,8 +9424,7 @@
                 LOAD: "checkoutjs_load",
                 BUTTON: "checkoutjs_button",
                 CHECKOUT: "checkoutjs_checkout",
-                PPTM: "checkoutjs_pptm",
-                PXP: "PXP_CHECK"
+                PPTM: "checkoutjs_pptm"
             },
             TRANSITION: {
                 SCRIPT_LOAD: "process_script_load",
@@ -9429,8 +9441,7 @@
                 EXTERNAL_EXPERIMENT: "process_external_experiment",
                 EXTERNAL_EXPERIMENT_COMPLETE: "process_external_experiment_complete",
                 PPTM_LOAD: "process_pptm_load",
-                PPTM_LOADED: "process_pptm_loaded",
-                PXP: "process_pxp_check"
+                PPTM_LOADED: "process_pptm_loaded"
             }
         }, COUNTRY = {
             AD: "AD",
@@ -10289,7 +10300,8 @@
                             url: config.a.paymentApiUrls[env],
                             headers: headers,
                             json: function(options) {
-                                (options = JSON.parse(JSON.stringify(options))).payer && options.payer.shipping_options && delete options.payer.shipping_options;
+                                var transaction = (options = JSON.parse(JSON.stringify(options))).transactions && options.transactions[0];
+                                transaction && transaction.item_list && transaction.item_list.shipping_options && delete options.transactions[0].item_list.shipping_options;
                                 return options;
                             }(payment)
                         });
@@ -11619,7 +11631,7 @@
                     logoColor: "blue"
                 })));
             }(normalizeProps(props)) : null;
-            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.224", 
+            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.225", 
             _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -11745,7 +11757,7 @@
             },
             validate: function() {
                 Object(lib.D)() || Object(beaver_logger_client.q)("button_render_ineligible");
-                if (Object(lib.G)()) throw new Error("Can not render button in IE intranet mode");
+                if (Object(lib.G)()) throw new Error("Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md");
             },
             props: {
                 domain: {
@@ -12187,12 +12199,16 @@
                             _track6));
                             if (creditThrottle) {
                                 var _creditThrottle$log;
-                                creditThrottle.log("click", ((_creditThrottle$log = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                creditThrottle.log("click", ((_creditThrottle$log = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
+                                _creditThrottle$log[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_CLICK, 
+                                _creditThrottle$log[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                                 _creditThrottle$log));
                             }
                             if (fundingLogoThrottle) {
                                 var _fundingLogoThrottle$3;
-                                fundingLogoThrottle.log("click", ((_fundingLogoThrottle$3 = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                fundingLogoThrottle.log("click", ((_fundingLogoThrottle$3 = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
+                                _fundingLogoThrottle$3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_CLICK, 
+                                _fundingLogoThrottle$3[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                                 _fundingLogoThrottle$3[constants.u.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
                                 _fundingLogoThrottle$3));
                             }
@@ -12283,7 +12299,7 @@
             }
         });
         component_Button.isChild() && function(ButtonComponent) {
-            if (Object(lib.G)()) return window.xchild.error(new Error("Can not render button in IE Intranet mode"));
+            if (Object(lib.G)()) return window.xchild.error(new Error("Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md"));
             !function(Checkout, Button) {
                 var popupBridge = void 0;
                 awaitPopupBridge(Button).then(function(bridge) {
@@ -12618,7 +12634,7 @@
             setup__track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.224", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.225", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         var interface_Checkout = void 0, interface_Card = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
@@ -13536,7 +13552,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.224";
+                payload.version = "4.0.225";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 payload.appName = APP_NAME;
@@ -13863,7 +13879,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(session.c)(),
-                    ver: "4.0.224"
+                    ver: "4.0.225"
                 };
             });
             Object(client.a)(function() {
@@ -14102,16 +14118,6 @@
             }
             return target;
         };
-        function isCheckpointUnique(name) {
-            return Object(session.d)(function(state) {
-                state.loggedBeacons = state.loggedBeacons || [];
-                if (-1 === state.loggedBeacons.indexOf(name)) {
-                    state.loggedBeacons.push(name);
-                    return !0;
-                }
-                return !1;
-            });
-        }
         var THROTTLE_GROUP = {
             TEST: "test",
             CONTROL: "control",
@@ -14141,18 +14147,14 @@
                     return treatment;
                 },
                 log: function(checkpointName) {
-                    var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                    var _extends2, payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                     if (!started) return this;
-                    if (isCheckpointUnique(name + "_" + treatment)) {
-                        var _extends2;
-                        Object(client.p)(throttle__extends(((_extends2 = {})[constants.u.KEY.STATE] = constants.u.STATE.PXP, 
-                        _extends2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PXP, _extends2[constants.u.KEY.EXPERIMENT_NAME] = name, 
-                        _extends2[constants.u.KEY.TREATMENT_NAME] = treatment, _extends2), payload));
-                    }
-                    var event = name + "_" + treatment + "_" + checkpointName;
-                    isCheckpointUnique(event) && Object(client.k)(event, throttle__extends({}, payload, {
+                    var checkpoint = name + "_" + treatment + "_" + checkpointName;
+                    Object(client.k)(checkpoint, throttle__extends({}, payload, {
                         expuid: uid
                     }));
+                    Object(client.p)(throttle__extends(((_extends2 = {})[constants.u.KEY.EXPERIMENT_NAME] = name, 
+                    _extends2[constants.u.KEY.TREATMENT_NAME] = treatment, _extends2), payload));
                     Object(client.h)();
                     return this;
                 },
@@ -14163,7 +14165,7 @@
                 },
                 logComplete: function() {
                     var payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    return this.log("complete", payload);
+                    return started ? this.log("complete", payload) : this;
                 }
             };
         }
@@ -14195,7 +14197,7 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return "4.0.224";
+            return "4.0.225";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -14212,7 +14214,7 @@
                         domain: metaFrameDomain
                     });
                     return src.bridge.openBridge(Object(dom.b)(metaFrameUrl, {
-                        version: "4.0.224"
+                        version: "4.0.225"
                     }), metaFrameDomain).then(function() {
                         return metaListener;
                     }).then(function(_ref) {
@@ -14945,18 +14947,18 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         if (!Object(__WEBPACK_IMPORTED_MODULE_2__lib_util__.g)()) throw new Error("Do not integrate with versioned script url");
-        if (window.paypal && "4.0.224" === window.paypal.version) {
+        if (window.paypal && "4.0.225" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.224"
+                version: "4.0.225"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.224) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.225) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.224" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.225" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.224"
+                version: "4.0.225"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.224");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.225");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
@@ -15653,4 +15655,4 @@
         });
     }
 }));
-//# sourceMappingURL=checkout.4.0.224.js.map
+//# sourceMappingURL=checkout.4.0.225.js.map
