@@ -187,6 +187,15 @@ export let Button : Component<ButtonOptions> = create({
             queryParam: true
         },
 
+        minConfidenceScore: {
+            type:     'string',
+            required: false,
+            def() : string {
+                return '0';
+            },
+            queryParam: true
+        },
+
         isFundingThrottleEnabled: {
             type:       'boolean',
             queryParam: true,
