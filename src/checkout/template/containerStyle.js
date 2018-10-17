@@ -360,6 +360,16 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             z-index: 100;
         }
 
+        @media screen and (-ms-high-contrast: active) {
+            #${ id } .paypal-checkout-close {
+                opacity: 1;
+            }
+
+            #${ id } .paypal-checkout-close:before , .paypal-checkout-close:after {
+                background-color: currentColor;
+            }
+        }
+
         @media screen and (max-width: 470px) {
 
             #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-iframe-container,
