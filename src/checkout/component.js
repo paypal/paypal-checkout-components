@@ -291,6 +291,9 @@ export let Checkout : Component<CheckoutPropsType> = create({
 
                 // $FlowFixMe
                 return fundingSources;
+            },
+            queryValue: (val) => {
+                return val.join(',');
             }
         },
 
