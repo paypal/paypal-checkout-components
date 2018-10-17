@@ -2,7 +2,7 @@
 
 import { getElements } from './dom';
 
-export function getFocusableElements(context : HTMLElement) : Array<HTMLElement> {
+export function getFocusableElements(context : HTMLElement) : $ReadOnlyArray<HTMLElement> {
     return getElements(context.querySelectorAll('button, iframe, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'));
 }
 
