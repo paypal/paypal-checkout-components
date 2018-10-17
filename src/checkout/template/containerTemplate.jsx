@@ -118,7 +118,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
         </html>
     );
 
-    const restrictedFocus = restrictFocus(document);
+    const restrictedFocus = restrictFocus(document.body);
 
     on(EVENT.CLOSE, () => {
         el.className += ` ${ tag }-loading`;

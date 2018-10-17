@@ -12,8 +12,13 @@ export function getFocusableElements(context : HTMLElement) : Array<HTMLElement>
  * to navigate.
  */
 
-export function restrictFocus(context : HTMLElement) : { release : Function } {
+export function restrictFocus(context : ?HTMLElement) : { release : Function } {
     let tabIndexes = [];
+
+    if (!context) {
+        throw new Error('Can not restrict focus on null element');
+    }
+
     const focusableElements = getFocusableElements(context);
 
     if (document.activeElement) {
