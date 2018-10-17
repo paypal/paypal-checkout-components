@@ -6,7 +6,7 @@ import { FUNDING } from 'paypal-sdk-constants/src';
 
 import { generateOrderID, createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, assert, mockProp } from '../common';
 
-for (let flow of [ 'popup', 'iframe' ]) {
+for (const flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal multiple button component happy path on ${ flow }`, () => {
 
@@ -22,7 +22,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             window.paypal.Checkout.contexts.iframe = false;
         });
 
-        let cases = [
+        const cases = [
 
             {
                 source:   FUNDING.CARD,
@@ -56,17 +56,17 @@ for (let flow of [ 'popup', 'iframe' ]) {
         ];
 
         // $FlowFixMe
-        for (let { source, fragment, country, userAgent, commit } of cases) {
+        for (const { source, fragment, country, userAgent, commit } of cases) {
             it(`should render multiple buttons including ${ source }, click on the ${ source } button, and send the correct url params`, (done) => {
 
                 if (userAgent) {
                     window.navigator.mockUserAgent = userAgent;
                 }
 
-                let orderID = generateOrderID();
+                const orderID = generateOrderID();
 
-                let mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[source], 'eligible', true);
-                let mockCountry = mockProp(window, '__TEST_LOCALE_COUNTRY__', country || 'US');
+                const mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[source], 'eligible', true);
+                const mockCountry = mockProp(window, '__TEST_LOCALE_COUNTRY__', country || 'US');
 
                 if (source === FUNDING.VENMO) {
                     window.__TEST_REMEMBERED_FUNDING__.push(FUNDING.VENMO);

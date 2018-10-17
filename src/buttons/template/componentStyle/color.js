@@ -2,7 +2,7 @@
 
 import { BUTTON_COLOR, CLASS } from '../../../constants';
 
-export let buttonColorStyle = `
+export const buttonColorStyle = `
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD } {
         background: #ffc439;

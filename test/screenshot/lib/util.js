@@ -7,14 +7,14 @@ import os from 'os';
 import fs from 'fs-extra';
 
 export async function createTempFile(filename : string, text : string = '') : Promise<string> {
-    let path = `${ os.tmpdir() }/${ filename }`;
+    const path = `${ os.tmpdir() }/${ filename }`;
     await fs.writeFile(path, text);
     return path;
 }
 
 export function dotify(obj : Object, prefix : string = '', newobj : Object = {}) : { [string] : string } {
     prefix = prefix ? `${ prefix }.` : prefix;
-    for (let key in obj) {
+    for (const key in obj) {
         if (!obj.hasOwnProperty(key)) {
             continue;
         } else if (obj[key] === undefined || obj[key] === null || typeof obj[key] === 'function') {
@@ -31,7 +31,7 @@ export function dotify(obj : Object, prefix : string = '', newobj : Object = {})
 }
 
 export function dotifyToString(obj : Object) : string {
-    let dotified = dotify(obj);
+    const dotified = dotify(obj);
     return Object.keys(dotified).map(key => {
         return `${ key }=${ dotified[key] }`;
     }).join('&');

@@ -5,7 +5,6 @@ import { getPayPalDomain, getLogger, getLocale, getEnv, getClientID, getCommit }
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONSTANTS, PopupOpenError } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
-import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { patchMethod, isDevice, supportsPopups, memoize, isIEIntranet } from 'belter/src';
 import { FUNDING, ENV } from 'paypal-sdk-constants/src';
 
@@ -13,18 +12,9 @@ import { getSessionID, getButtonSessionID, isEligible } from '../lib';
 import { FUNDING_CONFIG } from '../funding';
 
 import { containerTemplate, componentTemplate } from './template';
+import type { CheckoutPropsType } from './props';
 
-type CheckoutPropsType = {
-    payment? : () => ZalgoPromise<string>,
-    onAuthorize : ({ returnUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
-    onCancel? : ({ cancelUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
-    fundingSource : $Values<typeof FUNDING>,
-    env? : $Values<typeof ENV>,
-    stage? : string,
-    stageUrl? : string
-};
-
-export let Checkout : Component<CheckoutPropsType> = create({
+export const Checkout : Component<CheckoutPropsType> = create({
 
     tag:  'paypal-checkout',
     name: 'ppcheckout',
@@ -32,8 +22,8 @@ export let Checkout : Component<CheckoutPropsType> = create({
     scrolling: true,
 
     buildUrl(props) : string {
-        let { fundingSource } = props;
-        let fundingConfig = FUNDING_CONFIG[fundingSource];
+        const { fundingSource } = props;
+        const fundingConfig = FUNDING_CONFIG[fundingSource];
 
         if (!fundingConfig) {
             throw new Error(`Can not find funding config for ${ fundingSource }`);
@@ -100,7 +90,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
         meta: {
             type: 'object',
             def() : Object {
-                let meta = window.xprops && window.xprops.meta;
+                const meta = window.xprops && window.xprops.meta;
                 return meta || {};
             }
         },
@@ -110,7 +100,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
             queryParam:    'locale.x',
             allowDelegate: true,
             queryValue(locale) : string {
-                let { lang, country } = locale;
+                const { lang, country } = locale;
                 return `${ lang }_${ country }`;
             },
             value: getLocale
@@ -173,7 +163,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
             decorate(original) : Function {
                 return function decorateOnAuthorize(data, actions = {}) : ZalgoPromise<void> {
 
-                    let close = () => {
+                    const close = () => {
                         return ZalgoPromise.try(() => {
                             if (actions.close) {
                                 return actions.close();
@@ -212,7 +202,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
             decorate(original) : Function {
                 return function decorateOnCancel(data, actions = {}) : ZalgoPromise<void> {
 
-                    let close = () => {
+                    const close = () => {
                         return ZalgoPromise.try(() => {
                             if (actions.close) {
                                 return actions.close();
@@ -240,15 +230,15 @@ export let Checkout : Component<CheckoutPropsType> = create({
             decorate(original) : Function {
                 return function decorateOnClose(reason) : ZalgoPromise<void> {
 
-                    let onClose = ZalgoPromise.try(() => {
+                    const onClose = ZalgoPromise.try(() => {
                         if (original) {
                             return original.apply(this, arguments);
                         }
                     });
 
-                    let CLOSE_REASONS = CONSTANTS.CLOSE_REASONS;
+                    const CLOSE_REASONS = CONSTANTS.CLOSE_REASONS;
 
-                    let shouldCancel =
+                    const shouldCancel =
                         this.props.onCancel &&
                         [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1;
 
@@ -280,7 +270,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
 
 patchMethod(Checkout, 'renderTo', ({ args: [ win, props ], original, context }) => {
 
-    let payment = props.payment();
+    const payment = props.payment();
     props.payment = () => payment;
 
     return original.call(context, win, props, 'body').catch(err => {

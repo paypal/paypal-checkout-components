@@ -1,5 +1,5 @@
 /* @flow */
-/* @jsx jsxDom */
+/** @jsx jsxDom */
 
 import { values, min, max, perc } from 'belter/src';
 
@@ -9,7 +9,7 @@ import type { DimensionsType } from '../../types';
 import { determineEligibleFunding } from '../../funding';
 import type { ButtonProps } from '../props';
 
-type ContainerTemplateOptions = {
+type ContainerTemplateOptions = {|
     id : string,
     props : ButtonProps,
     CLASS : Object,
@@ -19,12 +19,12 @@ type ContainerTemplateOptions = {
     outlet : HTMLElement,
     jsxDom : Function,
     on : Function
-};
+|};
 
 function determineResponsiveSize({ layout, width = 0 }) : $Values<typeof BUTTON_SIZE> {
 
-    let minimumSize = MINIMUM_SIZE[layout];
-    let maximumSize = MAXIMUM_SIZE[layout];
+    const minimumSize = MINIMUM_SIZE[layout];
+    const maximumSize = MAXIMUM_SIZE[layout];
 
     if (width < BUTTON_SIZE_STYLE[minimumSize].minWidth) {
         return minimumSize;
@@ -34,8 +34,8 @@ function determineResponsiveSize({ layout, width = 0 }) : $Values<typeof BUTTON_
         return maximumSize;
     }
 
-    for (let size of Object.keys(BUTTON_SIZE_STYLE)) {
-        let { minWidth, maxWidth } = BUTTON_SIZE_STYLE[size];
+    for (const size of Object.keys(BUTTON_SIZE_STYLE)) {
+        const { minWidth, maxWidth } = BUTTON_SIZE_STYLE[size];
 
         if (width >= minWidth && width < maxWidth) {
             return size;
@@ -51,11 +51,11 @@ function getDimensions({ label, size, tagline, layout, number, viewport, height:
         size = determineResponsiveSize({ label, layout, width: viewport.width, height: buttonHeight });
     }
 
-    let { defaultWidth, defaultHeight, minHeight, maxHeight, allowTagline } = BUTTON_SIZE_STYLE[size];
+    const { defaultWidth, defaultHeight, minHeight, maxHeight, allowTagline } = BUTTON_SIZE_STYLE[size];
 
     buttonHeight = buttonHeight || min(max(defaultHeight, minHeight), maxHeight);
 
-    let width = defaultWidth;
+    const width = defaultWidth;
     let height = buttonHeight;
 
     if (tagline && allowTagline) {
@@ -67,16 +67,15 @@ function getDimensions({ label, size, tagline, layout, number, viewport, height:
     return { width, height };
 }
 
-// eslint-disable-next-line no-unused-vars
 export function containerTemplate({ id, props, CLASS, on, container, tag, context, outlet, jsxDom } : ContainerTemplateOptions) : HTMLElement {
 
-    let { style, remembered, platform, fundingEligibility } = props;
-    let sources = determineEligibleFunding({ style, remembered, platform, fundingEligibility });
-    let { label, tagline, layout, height: buttonHeight } = style;
+    const { style, remembered, platform, fundingEligibility } = props;
+    const sources = determineEligibleFunding({ style, remembered, platform, fundingEligibility });
+    const { label, tagline, layout, height: buttonHeight } = style;
 
-    let size = BUTTON_SIZE.RESPONSIVE;
+    const size = BUTTON_SIZE.RESPONSIVE;
 
-    let getContainerDimensions = () => {
+    const getContainerDimensions = () => {
         let cont = container;
 
         while (cont.offsetWidth === 0 && cont.parentElement && cont.parentElement !== cont) {
@@ -95,7 +94,7 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
         });
     };
 
-    let { width, height } = getContainerDimensions();
+    const { width, height } = getContainerDimensions();
 
     if (size === BUTTON_SIZE.RESPONSIVE) {
         on('resize', () => {
@@ -107,7 +106,7 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
     let maximumSize = MAXIMUM_SIZE[layout];
     
     if (buttonHeight) {
-        let possibleSizes = values(BUTTON_SIZE).filter(possibleSize => {
+        const possibleSizes = values(BUTTON_SIZE).filter(possibleSize => {
             return BUTTON_SIZE_STYLE[possibleSize] && buttonHeight &&
                 BUTTON_SIZE_STYLE[possibleSize].minHeight <= buttonHeight && BUTTON_SIZE_STYLE[possibleSize].maxHeight >= buttonHeight;
         });

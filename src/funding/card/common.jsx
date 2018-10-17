@@ -1,8 +1,8 @@
 /* @flow */
 /* eslint no-template-curly-in-string: off, max-lines: off */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
-import { jsxToHTML, SVG, JsxHTMLNode } from 'belter/src'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, SVG, JsxHTMLNode } from 'belter/src';
 
 import { CLASS } from '../../constants';
 

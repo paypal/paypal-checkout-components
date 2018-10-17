@@ -6,7 +6,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { generateOrderID, createElement, createTestContainer,
     destroyTestContainer, onHashChange, assert } from '../common';
 
-for (let flow of [ 'popup', 'iframe' ]) {
+for (const flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal button component happy path on ${ flow }`, () => {
 
@@ -111,7 +111,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on authorize', () => {
 
-            let orderID = generateOrderID();
+            const orderID = generateOrderID();
 
 
             return window.paypal.Buttons({
@@ -141,7 +141,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on authorize and await the promise', (done) => {
 
-            let orderID = generateOrderID();
+            const orderID = generateOrderID();
 
 
             window.paypal.Buttons({
@@ -167,7 +167,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on authorize with a custom url', () => {
 
-            let orderID = generateOrderID();
+            const orderID = generateOrderID();
 
 
             return window.paypal.Buttons({
@@ -197,7 +197,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on cancel', () => {
 
-            let orderID = generateOrderID();
+            const orderID = generateOrderID();
 
 
             return window.paypal.Buttons({
@@ -227,7 +227,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on cancel and await the promise', (done) => {
 
-            let orderID = generateOrderID();
+            const orderID = generateOrderID();
 
 
             window.paypal.Buttons({
@@ -253,7 +253,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on cancel with a custom url', () => {
 
-            let orderID = generateOrderID();
+            const orderID = generateOrderID();
 
 
             return window.paypal.Buttons({
@@ -423,7 +423,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render button with a checkout token on the correct url, then complete the checkout', (done) => {
 
-            let orderID = generateOrderID();
+            const orderID = generateOrderID();
 
 
             window.paypal.Buttons({
@@ -449,7 +449,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render button with a createOrder id on the correct url, then complete the checkout', (done) => {
 
-            let orderID = generateOrderID();
+            const orderID = generateOrderID();
 
 
             window.paypal.Buttons({
@@ -475,7 +475,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render button with a new-style createOrder id on the correct url, then complete the checkout', (done) => {
 
-            let orderID = generateOrderID().replace('PAY-', 'PAYID-');
+            const orderID = generateOrderID().replace('PAY-', 'PAYID-');
 
 
             window.paypal.Buttons({
@@ -531,11 +531,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container before the container exists, and click on the button, then complete the checkout', (done) => {
 
-            let readyState = document.readyState;
+            const readyState = document.readyState;
             Object.defineProperty(document, 'readyState', { value: 'loading', configurable: true });
 
-            let container;
-
+            let container = null;
 
             window.paypal.Buttons({
 
@@ -546,13 +545,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         throw new Error(`Expected container to be created`);
                     }
 
-                    let frame = container.querySelector('iframe');
+                    const frame = container.querySelector('iframe');
 
                     if (!frame) {
                         throw new Error(`Expected iframe to be created`);
                     }
 
-                    let { width, height } = frame.getBoundingClientRect();
+                    const { width, height } = frame.getBoundingClientRect();
 
                     if (!width || !height) {
                         throw new Error(`Expected button frame to have width and height`);
@@ -674,7 +673,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             it('should render checkout, popout, then redirect', () => {
 
-                let orderID = generateOrderID();
+                const orderID = generateOrderID();
 
 
                 window.paypal.Buttons({
@@ -698,7 +697,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             it('should render checkout, popout, then redirect and await the promise', (done) => {
 
-                let orderID = generateOrderID();
+                const orderID = generateOrderID();
 
 
                 window.paypal.Buttons({

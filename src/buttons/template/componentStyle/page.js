@@ -1,6 +1,6 @@
 /* @flow */
 
-export let pageStyle = `
+export const pageStyle = `
     html, body {
         padding: 0;
         margin: 0;

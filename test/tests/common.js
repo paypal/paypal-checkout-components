@@ -9,13 +9,13 @@ import { getPayPalLoggerUrl } from 'paypal-braintree-web-client/src';
 
 import { getAuthAPIUrl, getOrderAPIUrl } from '../../src/config/config';
 
-for (let level of [ 'log', 'debug', 'info', 'warn', 'error' ]) {
-    let original = window.console[level];
+for (const level of [ 'log', 'debug', 'info', 'warn', 'error' ]) {
+    const original = window.console[level];
 
     window.console[level] = function log() : void {
 
-        let date = new Date();
-        let args = Array.prototype.slice.call(arguments);
+        const date = new Date();
+        const args = Array.prototype.slice.call(arguments);
 
         args.unshift(`${ date.getHours() }:${ date.getMinutes() }:${ date.getSeconds() }:${ date.getMilliseconds() }`);
 
@@ -25,7 +25,7 @@ for (let level of [ 'log', 'debug', 'info', 'warn', 'error' ]) {
 
 export function onHashChange() : ZalgoPromise<string> {
     return new ZalgoPromise(resolve => {
-        let currentHash = window.location.hash;
+        const currentHash = window.location.hash;
 
         function listener() {
             if (window.location.hash !== currentHash) {
@@ -64,26 +64,26 @@ export const MERCHANT_BRAINTREE_AUTH = 'aaabbb456';
 
 export function createElement(options : Object) : HTMLElement {
 
-    let element = document.createElement(options.tag || 'div');
+    const element = document.createElement(options.tag || 'div');
 
     if (options.id) {
         element.setAttribute('id', options.id);
     }
 
     if (options.props) {
-        for (let key of Object.keys(options.props)) {
+        for (const key of Object.keys(options.props)) {
             element.setAttribute(key, options.props[key]);
         }
     }
 
     if (options.style) {
-        for (let key of Object.keys(options.style)) {
+        for (const key of Object.keys(options.style)) {
             element.style[key] = options.style[key];
         }
     }
 
     if (options.children) {
-        for (let child of options.children) {
+        for (const child of options.children) {
             element.appendChild(createElement(child));
         }
     }
@@ -91,7 +91,7 @@ export function createElement(options : Object) : HTMLElement {
     if (options.container) {
 
         let container;
-        let containerName = options.container;
+        const containerName = options.container;
 
         if (typeof containerName === 'string') {
             container = document.getElementById(containerName) || document.querySelector(containerName);
@@ -133,7 +133,7 @@ export function createFrame(options : Object) : HTMLIFrameElement {
         delete options.html;
     }
 
-    let frame = createElement({
+    const frame = createElement({
         tag: 'iframe',
         ...options
     });
@@ -179,13 +179,13 @@ export function getElement(el : string | HTMLElement, container : HTMLElement | 
     return element;
 }
 
-export function getElements(selector : string, container : HTMLElement | Document = document) : Array<HTMLElement> {
+export function getElements(selector : string, container : HTMLElement | Document = document) : $ReadOnlyArray<HTMLElement> {
 
     if (!selector) {
         throw new Error(`No element passed`);
     }
 
-    let elements = Array.prototype.slice.call(container.querySelectorAll(selector));
+    const elements = Array.prototype.slice.call(container.querySelectorAll(selector));
 
     if (!elements) {
         throw new Error(`Can not find element: ${ selector }`);
@@ -227,13 +227,13 @@ export function destroyTestContainer() : void {
 
 patchXmlHttpRequest();
 
-export let loggerApiMock = $mockEndpoint.register({
+export const loggerApiMock = $mockEndpoint.register({
     method: 'POST',
     uri:    getPayPalLoggerUrl(),
     data:   {}
 });
 
-export let authApiMock = $mockEndpoint.register({
+export const authApiMock = $mockEndpoint.register({
     method: 'POST',
     uri:    getAuthAPIUrl(),
     handler({ headers, data }) : { access_token : string } {
@@ -250,7 +250,7 @@ export let authApiMock = $mockEndpoint.register({
             throw new Error(`Expected grant_type to be client_credentials, got "${ data.grant_type }"`);
         }
 
-        let clientID = atob(headers.authorization.replace('Basic ', '')).split(':')[0];
+        const clientID = atob(headers.authorization.replace('Basic ', '')).split(':')[0];
 
         if (clientID !== MERCHANT_CLIENT_ID) {
             throw new Error(`Expected client id to be ${ MERCHANT_CLIENT_ID }, got ${ clientID }`);
@@ -262,7 +262,7 @@ export let authApiMock = $mockEndpoint.register({
     }
 });
 
-export let orderApiMock = $mockEndpoint.register({
+export const orderApiMock = $mockEndpoint.register({
     method: 'POST',
     uri:    getOrderAPIUrl(),
     handler({ data, headers }) : { id : string } {
@@ -337,17 +337,17 @@ function doClick() {
 }
 
 
-let HTMLElementClick = window.HTMLElement.prototype.click;
+const HTMLElementClick = window.HTMLElement.prototype.click;
 window.HTMLElement.prototype.click = function overrideHTMLElementClick() : void {
     doClick();
     return HTMLElementClick.apply(this, arguments);
 };
 
-let windowOpen = window.open;
+const windowOpen = window.open;
 window.open = function patchedWindowOpen() : CrossDomainWindowType {
 
     if (!isClick) {
-        let win : Object = {
+        const win : Object = {
             closed: true,
             close() {
                 // pass
@@ -373,7 +373,7 @@ window.open = function patchedWindowOpen() : CrossDomainWindowType {
 export function preventOpenWindow(flow : string, win : SameDomainWindowType = window) {
 
     if (flow === 'popup') {
-        let winOpen = win.open;
+        const winOpen = win.open;
         win.open = () => {
             win.open = winOpen;
             return {
@@ -385,7 +385,7 @@ export function preventOpenWindow(flow : string, win : SameDomainWindowType = wi
         };
     } else if (flow === 'iframe') {
 
-        let documentCreateElement = win.document.createElement;
+        const documentCreateElement = win.document.createElement;
         // $FlowFixMe
         win.document.createElement = () => { // $FlowFixMe
             win.document.createElement = documentCreateElement;
@@ -401,17 +401,17 @@ export function preventOpenWindow(flow : string, win : SameDomainWindowType = wi
 export function onWindowOpen({ time = 500 } : { time? : number } = {}) : ZalgoPromise<CrossDomainWindowType> {
     return new ZalgoPromise((resolve, reject) => {
 
-        let winOpen = window.open;
-        let documentCreateElement = document.createElement;
+        const winOpen = window.open;
+        const documentCreateElement = document.createElement;
 
-        let reset = () => {
+        const reset = () => {
             window.open = winOpen;
             // $FlowFixMe
             document.createElement = documentCreateElement;
         };
 
         window.open = function patchedWindowOpen() : CrossDomainWindowType {
-            let win = winOpen.apply(this, arguments);
+            const win = winOpen.apply(this, arguments);
             reset();
             resolve(win);
             return win;
@@ -419,26 +419,32 @@ export function onWindowOpen({ time = 500 } : { time? : number } = {}) : ZalgoPr
 
         // $FlowFixMe
         document.createElement = function docCreateElement(tagName) : HTMLElement {
-            let el = documentCreateElement.apply(this, arguments);
+            const el = documentCreateElement.apply(this, arguments);
 
             if (tagName && tagName.toLowerCase() === 'iframe') {
 
-                let interval;
-                let timeout;
+                let interval = null;
+                let timeout = null;
 
                 interval = setInterval(() => {
                     // $FlowFixMe
                     if (el.contentWindow) {
                         reset();
-                        clearTimeout(timeout);
-                        clearInterval(interval);
+                        if (timeout) {
+                            clearTimeout(timeout);
+                        }
+                        if (interval) {
+                            clearInterval(interval);
+                        }
                         // $FlowFixMe
                         resolve(el.contentWindow);
                     }
                 }, 10);
 
                 timeout = setTimeout(() => {
-                    clearInterval(interval);
+                    if (interval) {
+                        clearInterval(interval);
+                    }
                     return reject(new Error(`Window not opened in ${ time }ms`));
                 }, time);
             }
@@ -461,7 +467,7 @@ export function onWindowClose(win : CrossDomainWindowType) : ZalgoPromise<void> 
             return resolve();
         }
 
-        let interval = setInterval(() => {
+        const interval = setInterval(() => {
             if (isWindowClosed(win)) {
                 clearInterval(interval);
                 return resolve();
@@ -476,7 +482,7 @@ export function errorOnWindowOpen(win : CrossDomainWindowType = window) {
         win.open.reset();
     }
 
-    let open = win.open;
+    const open = win.open;
 
     win.open = () => {
         throw new Error(`Can not open window`);
@@ -489,14 +495,14 @@ export function errorOnWindowOpen(win : CrossDomainWindowType = window) {
 
 function parseUrl(url : string) : Object {
 
-    let [ serverUrl, hash ] = url.split('#');
-    let [ , query ] = serverUrl.split('?');
+    const [ serverUrl, hash ] = url.split('#');
+    const [ , query ] = serverUrl.split('?');
 
-    let params = {};
+    const params = {};
 
     if (query) {
-        for (let keypair of query.split('&')) {
-            let [ key, val ] = keypair.split('=');
+        for (const keypair of query.split('&')) {
+            const [ key, val ] = keypair.split('=');
             params[decodeURIComponent(key)] = decodeURIComponent(val);
         }
     }
@@ -525,9 +531,9 @@ export function setupPopupBridge({ win = window, isAuthorize = true } : { win? :
         open(url) {
             setTimeout(() => {
 
-                let { query, hash } = parseUrl(url);
+                const { query, hash } = parseUrl(url);
 
-                let queryItems : Object = {};
+                const queryItems : Object = {};
                 queryItems.token = query.token;
 
                 if (isAuthorize) {
@@ -575,10 +581,10 @@ export function destroyPopupBridge(win : SameDomainWindowType = window) {
 export function onElementResize(el : HTMLElement) : ZalgoPromise<void> {
     return new ZalgoPromise(resolve => {
 
-        let originalWidth = el.offsetWidth;
-        let originalHeight = el.offsetHeight;
+        const originalWidth = el.offsetWidth;
+        const originalHeight = el.offsetHeight;
 
-        let interval = setInterval(() => {
+        const interval = setInterval(() => {
             if (el.offsetWidth !== originalWidth || el.offsetHeight !== originalHeight) {
                 clearInterval(interval);
                 resolve();
@@ -588,7 +594,7 @@ export function onElementResize(el : HTMLElement) : ZalgoPromise<void> {
 }
 
 export function mockProp<T>(namespace : Object, name : string, value : T) : { cancel : () => void } {
-    let descriptor = Object.getOwnPropertyDescriptor(namespace, name);
+    const descriptor = Object.getOwnPropertyDescriptor(namespace, name);
     delete namespace[name];
     namespace[name] = value;
     return {
@@ -612,7 +618,7 @@ export function stringify(item : mixed) : string {
     return Object.prototype.toString.call(item);
 }
 
-export let assert = {
+export const assert = {
     ok(item : mixed, message? : string) {
         if (!item) {
             throw new Error(message || `Expected truthy value, got ${ stringify(item) }`);

@@ -21,7 +21,7 @@ function getOrderID() : ?string {
         return window.root.token;
     }
 
-    let queryToken = getQueryParam('token');
+    const queryToken = getQueryParam('token');
 
     if (queryToken) {
         return queryToken;
@@ -29,14 +29,14 @@ function getOrderID() : ?string {
 }
 
 export function setupLogger() {
-    let logger = getLogger();
+    const logger = getLogger();
     
     useLogger(logger);
 
     logger.addTrackingBuilder(() => {
 
-        let orderID = getOrderID();
-        let buttonSessionID = getButtonSessionID();
+        const orderID = getOrderID();
+        const buttonSessionID = getButtonSessionID();
 
         let contextType;
         let contextID;

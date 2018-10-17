@@ -7,7 +7,7 @@ import { generateOrderID,
     createTestContainer, destroyTestContainer, createElement,
     getElementRecursive, onWindowOpen, once, assert } from '../common';
 
-for (let flow of [ 'popup', 'iframe' ]) {
+for (const flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal checkout component happy path on ${ flow }`, () => {
 
@@ -26,7 +26,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout, then complete the payment', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
 
@@ -53,7 +53,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout, then cancel the payment', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
 
@@ -82,7 +82,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout, with a promise token passed, then complete the payment', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
 
@@ -110,9 +110,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout with a checkout token on the correct url, then complete the payment', (done) => {
 
-            let orderID = generateOrderID();
+            const orderID = generateOrderID();
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
 
@@ -140,9 +140,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout with a payment id on the correct url, then complete the payment', (done) => {
 
-            let orderID = generateOrderID();
+            const orderID = generateOrderID();
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
 
@@ -170,9 +170,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout with a new-style payment id on the correct url, then complete the payment', (done) => {
 
-            let orderID = generateOrderID().replace('PAY-', 'PAYID-');
+            const orderID = generateOrderID().replace('PAY-', 'PAYID-');
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
 
@@ -200,7 +200,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout, and click the close button to close the window', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
 
@@ -238,7 +238,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             it('should render checkout, and click the focus button to focus the popup', (done) => {
                 done = once(done);
 
-                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+                const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 let childWindow;
 
@@ -282,7 +282,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             it('should render checkout, then cancel the payment by closing the window', (done) => {
 
-                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+                const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', () => {
 
@@ -320,7 +320,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             it('should render checkout, popout, then complete the payment', (done) => {
 
-                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+                const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 let paymentCalls = 0;
 

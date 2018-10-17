@@ -16,15 +16,15 @@ export function setupButtonChild(ButtonComponent : Buttons) : void {
     }
 
     getPageRenderTime().then(pageRenderTime => {
-        let logger = getLogger();
+        const logger = getLogger();
 
-        let fundingSources = Array.prototype.slice.call(document.querySelectorAll(`[${ ATTRIBUTE.FUNDING_SOURCE }]`)).map(el => {
+        const fundingSources = Array.prototype.slice.call(document.querySelectorAll(`[${ ATTRIBUTE.FUNDING_SOURCE }]`)).map(el => {
             return el.getAttribute(ATTRIBUTE.CARD) || el.getAttribute(ATTRIBUTE.FUNDING_SOURCE);
         }).filter(source => {
             return source && source !== FUNDING.CARD;
         });
 
-        let xprops = ButtonComponent.xprops;
+        const xprops = ButtonComponent.xprops;
 
         logger.track({
             [FPTI_KEY.STATE]:          FPTI_STATE.BUTTON,

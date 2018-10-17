@@ -9,12 +9,12 @@ export function allowIframe() : boolean {
         return true;
     }
 
-    let parentWindow = getParent(window);
+    const parentWindow = getParent(window);
     if (parentWindow && isSameDomain(parentWindow)) {
         return true;
     }
 
-    let parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
+    const parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
     if (parentComponentWindow && isSameDomain(parentComponentWindow)) {
         return true;
     }

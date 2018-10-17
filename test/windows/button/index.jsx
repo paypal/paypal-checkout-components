@@ -1,7 +1,7 @@
 /* @flow */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
-import { jsxToHTML, noop } from 'belter/src'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, noop } from 'belter/src';
 import { type ZalgoPromise } from 'zalgo-promise/src';
 
 import { Buttons as ButtonsTemplate } from '../../../src/buttons/template';
@@ -9,7 +9,7 @@ import { getElement, getElements, errorOnWindowOpen } from '../../tests/common';
 
 let { action, flow = 'popup', authed = false, bridge = false, delay = 0, onRender, checkout, selector, remembered, captureOrder = noop } = window.xprops.test;
 
-let body = document.body;
+const body = document.body;
 if (body) {
     body.innerHTML = (
         <ButtonsTemplate { ...window.xprops } />
@@ -113,6 +113,7 @@ if (action === 'auth') {
 
 if (onRender) {
     onRender({
+        // eslint-disable-next-line unicorn/prefer-spread
         fundingSources: Array.from(new Set(getElements('[data-funding-source]').map(el => el.getAttribute('data-funding-source')))),
         click() {
             getElement('.paypal-button', document).click();

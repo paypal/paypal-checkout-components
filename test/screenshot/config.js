@@ -4,9 +4,12 @@ import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT } from '../../s
 
 const RESPONSIVE_WIDTHS = [ 144, 222, 465, 670 ];
 
-type ButtonConfig = {
+type ButtonConfig = {|
     filename? : string,
     userAgent? : string,
+    container? : {
+        width : number
+    },
     button : {
         locale? : string,
         style? : {
@@ -17,17 +20,17 @@ type ButtonConfig = {
             period? : number
         }
     }
-};
+|};
 
-export let buttonConfigs : Array<ButtonConfig> = [];
+export const buttonConfigs : Array<ButtonConfig> = [];
 
 buttonConfigs.push({
     button: {}
 });
 
-for (let label of [ BUTTON_LABEL.PAYPAL ]) {
+for (const label of [ BUTTON_LABEL.PAYPAL ]) {
 
-    for (let width of RESPONSIVE_WIDTHS) {
+    for (const width of RESPONSIVE_WIDTHS) {
         buttonConfigs.push({
             container: {
                 width
@@ -40,7 +43,7 @@ for (let label of [ BUTTON_LABEL.PAYPAL ]) {
         });
     }
 
-    for (let color of [ BUTTON_COLOR.GOLD, BUTTON_COLOR.BLUE, BUTTON_COLOR.SILVER ]) {
+    for (const color of [ BUTTON_COLOR.GOLD, BUTTON_COLOR.BLUE, BUTTON_COLOR.SILVER ]) {
         buttonConfigs.push({
             button: {
                 style: {
@@ -51,7 +54,7 @@ for (let label of [ BUTTON_LABEL.PAYPAL ]) {
         });
     }
 
-    for (let shape of [ BUTTON_SHAPE.RECT, BUTTON_SHAPE.PILL ]) {
+    for (const shape of [ BUTTON_SHAPE.RECT, BUTTON_SHAPE.PILL ]) {
         buttonConfigs.push({
             button: {
                 style: {
@@ -72,7 +75,7 @@ for (let label of [ BUTTON_LABEL.PAYPAL ]) {
         });
     }
 
-    for (let layout of [ BUTTON_LAYOUT.VERTICAL, BUTTON_LAYOUT.HORIZONTAL ]) {
+    for (const layout of [ BUTTON_LAYOUT.VERTICAL, BUTTON_LAYOUT.HORIZONTAL ]) {
         buttonConfigs.push({
             button: {
                 style: {

@@ -9,4 +9,3 @@ import './size';
 import './multiple';
 import './layout';
 import './style';
-import './locales';

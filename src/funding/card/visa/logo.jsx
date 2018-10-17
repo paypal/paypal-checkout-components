@@ -1,7 +1,7 @@
 /* @flow */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
-import { jsxToHTML, JsxHTMLNode } from 'belter/src'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, JsxHTMLNode } from 'belter/src';
 import { CARD } from 'paypal-sdk-constants/src';
 
 import { SVGCardLogo } from '../common';

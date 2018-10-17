@@ -6,28 +6,28 @@ import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 import { webpackCompileToString } from '../screenshot/lib/compile';
 import { testGlobals } from '../globals';
 
-let fundingEligibility = testGlobals.__paypal_checkout__.serverConfig.fundingEligibility;
+const fundingEligibility = testGlobals.__paypal_checkout__.serverConfig.fundingEligibility;
 
 jest.setTimeout(120000);
 
-let cache = {};
+const cache = {};
 
 async function getButtonScript() : Promise<{ Buttons : (Object) => string, DEFAULT_PROPS : Object }> {
 
-    let config = {
+    const config = {
         entry:         './src/buttons/template/componentTemplate.jsx',
         libraryTarget: 'commonjs',
         web:           false
     };
 
-    let cacheKey = JSON.stringify(config);
+    const cacheKey = JSON.stringify(config);
     if (cache[cacheKey]) {
         return cache[cacheKey];
     }
 
-    let script = await webpackCompileToString(getWebpackConfig(config));
+    const script = await webpackCompileToString(getWebpackConfig(config));
 
-    let exports : Object = {};
+    const exports : Object = {};
     eval(script); // eslint-disable-line no-eval,security/detect-eval-with-expression
 
     if (typeof exports.Buttons !== 'function') {
@@ -41,9 +41,9 @@ async function getButtonScript() : Promise<{ Buttons : (Object) => string, DEFAU
 
 test(`Button should render with ssr, with minimal options`, async () => {
 
-    let { Buttons } = await getButtonScript();
+    const { Buttons } = await getButtonScript();
 
-    let html = Buttons({
+    const html = Buttons({
         locale:          { country: 'US', lang: 'en' },
         platform:        'desktop',
         sessionID:       'xyz',
@@ -58,7 +58,7 @@ test(`Button should render with ssr, with minimal options`, async () => {
 
 test(`Button should fail to render with ssr, with invalid style option`, async () => {
 
-    let { Buttons } = await getButtonScript();
+    const { Buttons } = await getButtonScript();
 
     let expectedErr;
 
@@ -82,7 +82,7 @@ test(`Button should fail to render with ssr, with invalid style option`, async (
 
 test(`Button should fail to render with ssr, with invalid locale`, async () => {
 
-    let { Buttons } = await getButtonScript();
+    const { Buttons } = await getButtonScript();
 
     let expectedErr;
 
@@ -105,7 +105,7 @@ test(`Button should fail to render with ssr, with invalid locale`, async () => {
 
 test(`Button renderer should export DEFAULT_PROPS`, async () => {
 
-    let { DEFAULT_PROPS } = await getButtonScript();
+    const { DEFAULT_PROPS } = await getButtonScript();
 
     if (!DEFAULT_PROPS) {
         throw new Error(`Expected DEFAULT_PROPS to be exported`);

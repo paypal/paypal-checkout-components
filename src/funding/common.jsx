@@ -1,9 +1,9 @@
 /* @flow */
 /* eslint no-template-curly-in-string: off, max-lines: off */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
 import { type FundingEligibilityType } from 'paypal-braintree-web-client/src';
-import { jsxToHTML, SVG, JsxHTMLNode, type JsxChildType } from 'belter/src'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, SVG, JsxHTMLNode, type JsxChildType } from 'belter/src';
 import { PLATFORM, CARD, type LocaleType, COUNTRY } from 'paypal-sdk-constants/src';
 
 import { BUTTON_COLOR, LOGO_COLOR, CLASS,

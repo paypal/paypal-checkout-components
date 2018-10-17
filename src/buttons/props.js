@@ -20,7 +20,7 @@ export type ButtonStyle = {|
     height? : number
 |};
 
-export type ButtonStyleInputs = {
+export type ButtonStyleInputs = {|
     label? : $PropertyType<ButtonStyle, 'label'> | void,
     color? : $PropertyType<ButtonStyle, 'color'> | void,
     shape? : $PropertyType<ButtonStyle, 'shape'> | void,
@@ -28,9 +28,9 @@ export type ButtonStyleInputs = {
     layout? : $PropertyType<ButtonStyle, 'layout'> | void,
     period? : $PropertyType<ButtonStyle, 'period'> | void,
     height? : $PropertyType<ButtonStyle, 'height'> | void
-};
+|};
 
-export type ButtonProps = {
+export type ButtonProps = {|
     style : ButtonStyle,
     locale : LocaleType,
     commit : boolean,
@@ -39,12 +39,12 @@ export type ButtonProps = {
     stageUrl? : string,
     platform : $Values<typeof PLATFORM>,
     fundingEligibility : FundingEligibilityType,
-    remembered : Array<$Values<typeof FUNDING>>,
+    remembered : $ReadOnlyArray<$Values<typeof FUNDING>>,
     clientID : string,
     sessionID : string,
     buttonSessionID : string,
     nonce : string
-};
+|};
 
 export type ButtonPropsInputs = {|
     clientID : string,
@@ -88,9 +88,9 @@ export function normalizeButtonStyle(style : ButtonStyleInputs, { locale } : { l
         throw new Error(`Expected props.style to be set`);
     }
 
-    let { country } = locale;
+    const { country } = locale;
 
-    let {
+    const {
         label = DEFAULT_STYLE.LABEL,
         layout = DEFAULT_STYLE.LAYOUT,
         color = DEFAULT_STYLE.COLOR,
@@ -100,20 +100,20 @@ export function normalizeButtonStyle(style : ButtonStyleInputs, { locale } : { l
         period
     } = style;
 
-    let funding = Object.keys(FUNDING_CONFIG)
+    const funding = Object.keys(FUNDING_CONFIG)
         .find(name => FUNDING_CONFIG[name] && FUNDING_CONFIG[name].labels[label]);
 
     if (!funding) {
         throw new Error(`Invalid button label: ${ label }`);
     }
 
-    let fundingConfig = FUNDING_CONFIG[funding];
+    const fundingConfig = FUNDING_CONFIG[funding];
 
     if (!fundingConfig) {
         throw new Error(`Can not find funding config for ${ funding }`);
     }
 
-    let labelConfig = fundingConfig.labels[label];
+    const labelConfig = fundingConfig.labels[label];
 
     if (!labelConfig) {
         throw new Error(`Can not find label config for ${ label }`);
@@ -144,7 +144,7 @@ export function normalizeButtonStyle(style : ButtonStyleInputs, { locale } : { l
             throw new TypeError(`Expected style.height to be a number, got: ${ height }`);
         }
         
-        let [ minHeight, maxHeight ] = [ BUTTON_SIZE_STYLE[BUTTON_SIZE.SMALL].minHeight, BUTTON_SIZE_STYLE[BUTTON_SIZE.HUGE].maxHeight ];
+        const [ minHeight, maxHeight ] = [ BUTTON_SIZE_STYLE[BUTTON_SIZE.SMALL].minHeight, BUTTON_SIZE_STYLE[BUTTON_SIZE.HUGE].maxHeight ];
 
         if (height < minHeight || height > maxHeight) {
             throw new Error(`Expected style.height to be between ${ minHeight }px and ${ maxHeight }px - got ${ height }px`);
@@ -173,6 +173,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : ButtonProps {
 
     let {
         clientID,
+        // $FlowFixMe
         style = {},
         remembered = [],
         locale = DEFAULT_PROPS.LOCALE,
@@ -185,7 +186,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : ButtonProps {
         nonce = ''
     } = props;
 
-    let { country, lang } = locale;
+    const { country, lang } = locale;
 
     if (!country || COUNTRIES.indexOf(country) === -1) {
         throw new Error(`Expected valid country, got ${ country || 'undefined' }`);

@@ -6,8 +6,8 @@ import { patchMethod } from 'belter/src';
 
 import { Checkout } from '../checkout';
 
-let parent = getParent(window);
-let top = getTop(window);
+const parent = getParent(window);
+const top = getTop(window);
 
 if (top && parent) {
     let canRenderTop = (top === parent);
@@ -39,8 +39,8 @@ patchMethod(Checkout, 'renderTo', ({ callOriginal, args: [ , props ] }) => {
 
     debounce = true;
 
-    for (let methodName of [ 'onAuthorize', 'onCancel', 'onError', 'onClose' ]) {
-        let original = props[methodName];
+    for (const methodName of [ 'onAuthorize', 'onCancel', 'onError', 'onClose' ]) {
+        const original = props[methodName];
         props[methodName] = function unDebounce() : mixed {
             debounce = false;
             if (original) {

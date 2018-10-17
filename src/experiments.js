@@ -1,6 +1,5 @@
 /* @flow */
 
-
 import { getLogger } from 'paypal-braintree-web-client/src';
 import { FPTI_KEY } from 'paypal-sdk-constants/src';
 
@@ -23,11 +22,11 @@ export function trackExperiment({ experiment, treatment, state, token } : { expe
     });
 
     getSessionState(session => {
-        let logger = getLogger();
+        const logger = getLogger();
 
         let event        = `${ experiment }_${ treatment }_${ state }`;
-        let loggedEvents = session.loggedExperimentEvents = session.loggedExperimentEvents || [];
-        let duplicate    = loggedEvents.indexOf(event) !== -1;
+        const loggedEvents = session.loggedExperimentEvents = session.loggedExperimentEvents || [];
+        const duplicate    = loggedEvents.indexOf(event) !== -1;
 
         if (duplicate) {
             logger.info(`duplicate_${ event }`);
@@ -36,7 +35,7 @@ export function trackExperiment({ experiment, treatment, state, token } : { expe
             logger.info(event);
             loggedEvents.push(event);
 
-            let edge = window.navigator && window.navigator.userAgent && window.navigator.userAgent.match(/Edge\/[0-9]{2}/);
+            const edge = window.navigator && window.navigator.userAgent && window.navigator.userAgent.match(/Edge\/[0-9]{2}/);
 
             if (edge) {
                 event = logger.info(`${ edge[0].toLowerCase().replace('/', '_') }_${ event }`);

@@ -4,7 +4,7 @@ import { ENV } from 'paypal-sdk-constants/src';
 
 import { BUTTON_COLOR, CLASS } from '../../../constants';
 
-export let buttonStyle = `
+export const buttonStyle = `
 
     .${ CLASS.CONTAINER } {
         display: block;

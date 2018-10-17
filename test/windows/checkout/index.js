@@ -2,15 +2,15 @@
 
 import { createTestContainer, createElement } from '../../tests/common';
 
-let { action, onRender, onInit } = window.xprops.test;
+const { action, onRender, onInit } = window.xprops.test;
 
-let actions = {
+const actions = {
     close() {
         window.close();
     }
 };
 
-let hash = window.location.hash ? `&hash=${ window.location.hash.slice(1) }` : '';
+const hash = window.location.hash ? `&hash=${ window.location.hash.slice(1) }` : '';
 
 if (action === 'checkout') {
 
@@ -58,7 +58,7 @@ if (action === 'checkout') {
 
     createTestContainer();
 
-    let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+    const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
     testButton.addEventListener('click', () => {
         window.xchild.hide();

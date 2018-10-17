@@ -1,7 +1,6 @@
 /* @flow */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
-import { jsxToHTML, SVG, JsxHTMLNode } from 'belter/src'; // eslint-disable-line no-unused-vars
 import { PLATFORM } from 'paypal-sdk-constants/src';
 
 import { getCheckoutUrl } from '../../config';

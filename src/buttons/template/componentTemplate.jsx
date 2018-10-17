@@ -1,5 +1,5 @@
 /* @flow */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
 import { type FundingEligibilityType } from 'paypal-braintree-web-client/src';
 import { jsxToHTML, type JsxHTMLNode, jsxRender, Fragment } from 'belter/src'; // eslint-disable-line no-unused-vars
@@ -19,7 +19,7 @@ export { DEFAULT_PROPS } from '../props';
 function getCommonClasses({ style, multiple, env } :
     {| style : ButtonStyle, multiple : boolean, env : $Values<typeof ENV> |}) : string {
 
-    let { layout, shape } = style;
+    const { layout, shape } = style;
     
     return [
         `${ CLASS.LAYOUT }-${ layout }`,
@@ -42,14 +42,14 @@ function getButtonClasses({ label, color, logoColor } :
 function determineLabel({ source, style } :
     {| source : $Values<typeof FUNDING>, style : ButtonStyle |}) : $Values<typeof BUTTON_LABEL> {
 
-    let fundingConfig = FUNDING_CONFIG[source];
+    const fundingConfig = FUNDING_CONFIG[source];
 
     if (!fundingConfig) {
         throw new Error(`Can not find config for ${ source }`);
     }
 
-    let labelsConfig = fundingConfig.labels;
-    let { label } = style;
+    const labelsConfig = fundingConfig.labels;
+    const { label } = style;
 
     if (labelsConfig[label]) {
         return label;
@@ -68,30 +68,30 @@ function Button({ source, style, multiple, locale, env, fundingEligibility, i, n
 
     let { color, period } = style;
 
-    let buttonLabel = determineLabel({ source, style });
+    const buttonLabel = determineLabel({ source, style });
     
-    let fundingConfig = FUNDING_CONFIG[source];
+    const fundingConfig = FUNDING_CONFIG[source];
 
     if (!fundingConfig) {
         throw new Error(`Can not find funding config for ${ source }`);
     }
 
-    let labelConfig = fundingConfig.labels[buttonLabel];
+    const labelConfig = fundingConfig.labels[buttonLabel];
 
     if (!labelConfig) {
         throw new Error(`Can not find label config for ${ buttonLabel }`);
     }
 
-    let secondaryColors = labelConfig.secondaryColors;
+    const secondaryColors = labelConfig.secondaryColors;
 
     if (multiple && i > 0) {
         color = secondaryColors[color];
     }
 
-    let logoColors = labelConfig.logoColors;
-    let logoColor = logoColors[color];
+    const logoColors = labelConfig.logoColors;
+    const logoColor = logoColors[color];
 
-    let { Label } = labelConfig;
+    const { Label } = labelConfig;
 
     return (
         <div
@@ -116,28 +116,28 @@ function Button({ source, style, multiple, locale, env, fundingEligibility, i, n
 function TagLine({ source, style, locale, multiple, nonce } :
     {| source : $Values<typeof FUNDING>, style : ButtonStyle, locale : LocaleType, multiple : boolean, nonce : string |}) : ?JsxHTMLNode {
 
-    let { tagline, label, color } = style;
+    const { tagline, label, color } = style;
 
     if (!tagline) {
         return;
     }
 
-    let fundingConfig = FUNDING_CONFIG[source];
+    const fundingConfig = FUNDING_CONFIG[source];
 
     if (!fundingConfig) {
         throw new Error(`Can not get config for ${ source }`);
     }
 
-    let labelConfig = fundingConfig.labels[label];
+    const labelConfig = fundingConfig.labels[label];
 
     if (!labelConfig) {
         throw new Error(`Can not find label config for ${ label }`);
     }
 
-    let tagColors = labelConfig.tagLineColors;
-    let tagColor = tagColors[color];
+    const tagColors = labelConfig.tagLineColors;
+    const tagColor = tagColors[color];
 
-    let { Tag } = labelConfig;
+    const { Tag } = labelConfig;
 
     if (!Tag) {
         return;
@@ -172,7 +172,7 @@ function Script({ nonce }) : JsxHTMLNode {
 function Style({ style, cardNumber, nonce } :
     {| style : ButtonStyle, cardNumber? : number, nonce : string |}) : JsxHTMLNode {
 
-    let { height } = style;
+    const { height } = style;
 
     return (
         <style
@@ -183,8 +183,8 @@ function Style({ style, cardNumber, nonce } :
 }
 
 function getCardNumber(locale : LocaleType) : number {
-    let cardConfig = FUNDING_CONFIG[FUNDING.CARD];
-    let vendors = cardConfig && cardConfig.vendors;
+    const cardConfig = FUNDING_CONFIG[FUNDING.CARD];
+    const vendors = cardConfig && cardConfig.vendors;
     let maxCards = 4;
 
     if (cardConfig && cardConfig.maxCards && cardConfig.maxCards[locale.country]) {
@@ -192,7 +192,7 @@ function getCardNumber(locale : LocaleType) : number {
     }
 
     if (vendors) {
-        let numCards = Object.keys(vendors).length;
+        const numCards = Object.keys(vendors).length;
         return Math.min(numCards, maxCards);
     } else {
         return maxCards;
@@ -200,10 +200,10 @@ function getCardNumber(locale : LocaleType) : number {
 }
 
 export function Buttons(props : ButtonPropsInputs) : JsxHTMLNode {
-    let { style, locale, remembered, env, fundingEligibility, platform, nonce } = normalizeButtonProps(props);
+    const { style, locale, remembered, env, fundingEligibility, platform, nonce } = normalizeButtonProps(props);
 
-    let sources  = determineEligibleFunding({ style, remembered, platform, fundingEligibility });
-    let multiple = sources.length > 1;
+    const sources  = determineEligibleFunding({ style, remembered, platform, fundingEligibility });
+    const multiple = sources.length > 1;
 
     if (!sources.length) {
         throw new Error(`No eligible funding sources found to render buttons:\n\n${ JSON.stringify(fundingEligibility, null, 4) }`);

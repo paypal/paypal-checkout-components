@@ -4,7 +4,7 @@ import { type ZalgoPromise } from 'zalgo-promise/src';
 
 import { generateOrderID, createElement, createTestContainer, destroyTestContainer, assert } from '../common';
 
-for (let flow of [ 'popup', 'iframe' ]) {
+for (const flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal checkout component error cases on ${ flow }`, () => {
 
@@ -22,7 +22,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout and return a blank token in payment', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
 
@@ -54,7 +54,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout and return a promise for a blank token in payment', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
 
@@ -86,7 +86,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout and throw an error in payment', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
 
@@ -118,7 +118,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout and return a rejected promise in payment', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
 
@@ -150,7 +150,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         
         it('should render checkout, then error out', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
 
@@ -184,7 +184,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout, then throw an error in onAuthorize', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
 
@@ -216,7 +216,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout, then return a rejected promise in onAuthorize', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
 
@@ -250,7 +250,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout, then return an undefined rejected promise in onAuthorize', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
 
@@ -285,7 +285,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         if (flow === 'iframe') {
             it('should render checkout, window.open the iframe name, then complete the payment', (done) => {
 
-                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+                const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', () => {
                     let name;

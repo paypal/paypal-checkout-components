@@ -1,9 +1,9 @@
 /* @flow */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 /* eslint max-lines: 0 */
 
 import { type LocaleType } from 'paypal-sdk-constants/src';
-import { placeholderToJSX, jsxToHTML, Fragment, type JsxHTMLNode, type PropsType, type JsxChildrenType } from 'belter/src'; // eslint-disable-line no-unused-vars
+import { placeholderToJSX, jsxToHTML, type JsxChildrenType } from 'belter/src';
 
 import { LOGO_COLOR, CLASS } from '../../constants';
 
@@ -11,8 +11,8 @@ import { PPLogo, PayPalLogo } from './logo';
 import { componentContent } from './content';
 
 function contentToJSX(key : string, locale : LocaleType, { logoColor, period, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, period? : number, nonce : string } = {}) : JsxChildrenType {
-    let { lang } = locale;
-    let text = componentContent[lang][key];
+    const { lang } = locale;
+    const text = componentContent[lang][key];
 
     return placeholderToJSX(text, {
         text:   (token) => <span class={ CLASS.TEXT }>{ token }</span>,
@@ -40,7 +40,7 @@ export function SaferTag({ locale } : { locale : LocaleType }) : JsxChildrenType
 }
 
 export function DualTag({ locale } : { locale : LocaleType }) : JsxChildrenType {
-    let { lang } = locale;
+    const { lang } = locale;
 
     return componentContent[lang].dual_tag
         ? contentToJSX('dual_tag', locale)

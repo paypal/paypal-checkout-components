@@ -1,5 +1,5 @@
 /* @flow */
-/* @jsx jsxDom */
+/** @jsx jsxDom */
 /* eslint max-lines: 0 */
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getPayPalDomain, getCurrency } from 'paypal-braintree-web-client/src';
@@ -23,31 +23,34 @@ import { normalizeButtonStyle, type ButtonProps } from './props';
 
 const ORDER_CREATE_TIMEOUT = 10 * 1000;
 
-type CreateOrderData = {};
-type CreateOrderActions = {
+type CreateOrderData = {|
+
+|} | {};
+
+type CreateOrderActions = {|
     order : {
         create : (OrderCreateRequest) => ZalgoPromise<string>
     }
-};
+|};
 
 type CreateOrder = (data : CreateOrderData, actions : CreateOrderActions) => ZalgoPromise<string>;
 
-type OnApproveData = {
+type OnApproveData = {|
     orderID : string
-};
+|};
 
-type OnApproveActions = {
+type OnApproveActions = {|
     redirect : (string, CrossDomainWindowType) => ZalgoPromise<void>,
     order : {
         capture : () => ZalgoPromise<OrderCaptureResponse>,
         get : () => ZalgoPromise<OrderGetResponse>
     }
-};
+|};
 
 type OnApprove = (data : OnApproveData, actions : OnApproveActions) =>
     void | ZalgoPromise<void> | ZalgoPromise<OrderCaptureResponse> | ZalgoPromise<OrderGetResponse> | ZalgoPromise<OrderAuthorizeResponse>;
 
-export let Buttons : Component<ButtonProps> = create({
+export const Buttons : Component<ButtonProps> = create({
 
     tag:  'paypal-button',
     name: 'ppbutton',
@@ -66,11 +69,10 @@ export let Buttons : Component<ButtonProps> = create({
     // $FlowFixMe
     containerTemplate,
 
-    // eslint-disable-next-line no-unused-vars
     prerenderTemplate({ props, jsxDom } : { props : Object, jsxDom : Function }) : HTMLElement {
 
-        let template = (
-            <div innerHTML={ <ButtonsTemplate { ...props } /> }></div>
+        const template = (
+            <div innerHTML={ <ButtonsTemplate { ...props } /> } />
         );
 
         template.addEventListener('click', () => {
@@ -109,9 +111,9 @@ export let Buttons : Component<ButtonProps> = create({
             required:   false,
 
             decorate(style = {}, props) : Object {
-                let { label, layout, color, shape, tagline, height, period } = normalizeButtonStyle(style, props);
+                const { label, layout, color, shape, tagline, height, period } = normalizeButtonStyle(style, props);
 
-                let logger = getLogger();
+                const logger = getLogger();
                 logger.info(`button_render_color_${ color }`);
                 logger.info(`button_render_shape_${ shape }`);
                 logger.info(`button_render_label_${ label }`);
@@ -139,9 +141,9 @@ export let Buttons : Component<ButtonProps> = create({
                 return () : ZalgoPromise<string> => {
                     return ZalgoPromise.try(() => {
 
-                        let data = {};
+                        const data : CreateOrderData = {};
 
-                        let actions = {
+                        const actions = {
                             order: {
                                 create: (options) => createOrder(props.clientID, options)
                             }
@@ -163,7 +165,7 @@ export let Buttons : Component<ButtonProps> = create({
 
                     }).then(orderID => {
 
-                        let logger = getLogger();
+                        const logger = getLogger();
 
                         if (!orderID || typeof orderID !== 'string')  {
                             logger.error(`no_orderid_passed_to_createorder`);
@@ -206,7 +208,7 @@ export let Buttons : Component<ButtonProps> = create({
 
             decorate(original : OnApprove, props) : Function {
                 return function decorateOnApprove(data, actions) : void | ZalgoPromise<void> {
-                    let logger = getLogger();
+                    const logger = getLogger();
                     logger.info('button_authorize');
 
                     logger.track({
@@ -262,7 +264,7 @@ export let Buttons : Component<ButtonProps> = create({
 
             decorate(original, props) : Function {
                 return function decorateOnCancel(data, actions = {}) : void | ZalgoPromise<void> {
-                    let logger = getLogger();
+                    const logger = getLogger();
                     logger.info('button_cancel');
 
                     logger.track({
@@ -302,7 +304,7 @@ export let Buttons : Component<ButtonProps> = create({
             required: false,
             decorate(original, props) : Function {
                 return function decorateOnClick(data : ?{ fundingSource : string, card? : string }) : void {
-                    let logger = getLogger();
+                    const logger = getLogger();
                     logger.info('button_click');
 
                     logger.track({
@@ -327,9 +329,9 @@ export let Buttons : Component<ButtonProps> = create({
             required: false,
             decorate(original, props) : Function {
                 return function decorateOnRender() : mixed {
-                    let { browser = 'unrecognized', version = 'unrecognized' } = getBrowser();
+                    const { browser = 'unrecognized', version = 'unrecognized' } = getBrowser();
 
-                    let logger = getLogger();
+                    const logger = getLogger();
                     logger.info(`button_render_browser_${ browser }_${ version }`);
 
                     logger.track({

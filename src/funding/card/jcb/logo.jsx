@@ -1,7 +1,7 @@
 /* @flow */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
-import { jsxToHTML, JsxHTMLNode } from 'belter/src'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, JsxHTMLNode } from 'belter/src';
 import { CARD } from 'paypal-sdk-constants/src';
 
 import { SVGCardLogo } from '../common';
@@ -19,7 +19,7 @@ export function JcbLogo({ nonce } : { nonce : string }) : JsxHTMLNode {
                                 <path d="M 0 0 L 50 0 L 50 100 L 0 100 Z" style="fill: black;" />
                             </pattern>
                         </defs>
-                        <path d="M38.333 24H1.667C.75 24 0 23.28 0 22.4V1.6C0 .72.75 0 1.667 0h36.666C39.25 0 40 .72 40 1.6v20.8c0 .88-.75 1.6-1.667 1.6z" style="fill: rgb(255, 255, 255); stroke: rgb(233, 234, 231);" />
+                        <path d="M38.333 24H1.667C.75 24 0 23.28 0 22.4V1.6C0 .72.75 0 1.667 0h36.666C39.25 0 40 .72 40 1.6v20.8c0 .88-.75 1.6-1.667 1.6z" fill="rgb(255, 255, 255)" style="stroke: rgb(233, 234, 231);" />
                         <g transform="matrix(0.100306, 0, 0, 0.100306, 4.733743, 10.105099)" id="g6321">
                             <g transform="matrix(1.8215159,0,0,1.8215159,-8.5437653,-109.83667)" id="g6323">
                                 <path style="fill:#ffffff" id="path6325" d="m 174,108.3 c 0,14 -11.4,25.4 -25.4,25.4 l -138.2,0 0,-100.6 c 0,-14 11.4,-25.4 25.4,-25.4 l 138.2,0 0,100.6 z" class="st0" />

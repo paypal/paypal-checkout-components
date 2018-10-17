@@ -4,7 +4,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { generateOrderID, createTestContainer, destroyTestContainer, assert } from '../common';
 
-for (let flow of [ 'popup', 'iframe' ]) {
+for (const flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal button component error cases on ${ flow }`, () => {
 

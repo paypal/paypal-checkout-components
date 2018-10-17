@@ -4,7 +4,7 @@ import { sendToParent } from 'post-robot/src';
 
 import '../../tests/common';
 
-let rememberedFunding = localStorage.getItem('rememberedFunding');
+const rememberedFunding = localStorage.getItem('rememberedFunding');
 
 sendToParent('meta', {
     locale:               'en_US',

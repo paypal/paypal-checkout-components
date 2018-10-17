@@ -7,7 +7,7 @@ import { generateOrderID, createTestContainer, destroyTestContainer } from '../c
 window.angular.module('app', [ window.paypal.Buttons.driver('angular', window.angular).name ]);
 window.angular.bootstrap(document.body, [ 'app' ]);
 
-for (let flow of [ 'popup', 'iframe' ]) {
+for (const flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal button framework drivers on ${ flow }`, () => {
 
@@ -26,12 +26,12 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container with React and click on the button, then complete the checkout', (done) => {
 
-            let PayPalButton = window.paypal.Buttons.driver('react', {
+            const PayPalButton = window.paypal.Buttons.driver('react', {
                 React:    window.React,
                 ReactDOM: window.ReactDOM
             });
 
-            let Main = window.React.createClass({
+            const Main = window.React.createClass({
 
                 render() : Object {
 
@@ -58,7 +58,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 }
             });
 
-            let container = document.createElement('div');
+            const container = document.createElement('div');
 
             if (!document.body) {
                 throw new Error('Could not find document body');
@@ -71,12 +71,12 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container with React with a promise in createOrder and click on the button, then complete the checkout', (done) => {
 
-            let PayPalButton = window.paypal.Buttons.driver('react', {
+            const PayPalButton = window.paypal.Buttons.driver('react', {
                 React:    window.React,
                 ReactDOM: window.ReactDOM
             });
 
-            let Main = window.React.createClass({
+            const Main = window.React.createClass({
 
                 render() : Object {
 
@@ -105,7 +105,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 }
             });
 
-            let container = document.createElement('div');
+            const container = document.createElement('div');
 
             if (!document.body) {
                 throw new Error('Could not find document body');
@@ -118,12 +118,12 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container with React with a non-zalgo promise in createOrder and click on the button, then complete the checkout', (done) => {
 
-            let PayPalButton = window.paypal.Buttons.driver('react', {
+            const PayPalButton = window.paypal.Buttons.driver('react', {
                 React:    window.React,
                 ReactDOM: window.ReactDOM
             });
 
-            let Main = window.React.createClass({
+            const Main = window.React.createClass({
 
                 render() : Object {
 
@@ -155,7 +155,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 }
             });
 
-            let container = document.createElement('div');
+            const container = document.createElement('div');
 
             if (!document.body) {
                 throw new Error('Could not find document body');
@@ -168,11 +168,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container with Angular and click on the button, then complete the checkout', done => {
 
-            let injector = window.angular.element(document.body).injector();
-            let $compile = injector.get('$compile');
-            let $rootScope = injector.get('$rootScope');
+            const injector = window.angular.element(document.body).injector();
+            const $compile = injector.get('$compile');
+            const $rootScope = injector.get('$rootScope');
 
-            let $scope = $rootScope.$new();
+            const $scope = $rootScope.$new();
 
             window.__test__ = { flow, action: 'checkout' };
 
@@ -191,7 +191,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 }
             };
 
-            let template = `
+            const template = `
                 <paypal-button on-render="opts.onRender" create-order="opts.createOrder" on-approve="opts.onApprove" on-cancel="opts.onCancel"></test-component>
             `;
 
@@ -207,11 +207,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container with Angular with a promise in createOrder and click on the button, then complete the checkout', done => {
 
-            let injector = window.angular.element(document.body).injector();
-            let $compile = injector.get('$compile');
-            let $rootScope = injector.get('$rootScope');
+            const injector = window.angular.element(document.body).injector();
+            const $compile = injector.get('$compile');
+            const $rootScope = injector.get('$rootScope');
 
-            let $scope = $rootScope.$new();
+            const $scope = $rootScope.$new();
 
             window.__test__ = { flow, action: 'checkout' };
 
@@ -232,7 +232,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 }
             };
 
-            let template = `
+            const template = `
                 <paypal-button on-render="opts.onRender" create-order="opts.createOrder" on-approve="opts.onApprove" on-cancel="opts.onCancel"></test-component>
             `;
 
@@ -248,11 +248,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container with Angular with a non-zalgo promise in createOrder and click on the button, then complete the checkout', done => {
 
-            let injector = window.angular.element(document.body).injector();
-            let $compile = injector.get('$compile');
-            let $rootScope = injector.get('$rootScope');
+            const injector = window.angular.element(document.body).injector();
+            const $compile = injector.get('$compile');
+            const $rootScope = injector.get('$rootScope');
 
-            let $scope = $rootScope.$new();
+            const $scope = $rootScope.$new();
 
             window.__test__ = { flow, action: 'checkout' };
 
@@ -276,7 +276,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 }
             };
 
-            let template = `
+            const template = `
                 <paypal-button on-render="opts.onRender" create-order="opts.createOrder" on-approve="opts.onApprove" on-cancel="opts.onCancel"></test-component>
             `;
 

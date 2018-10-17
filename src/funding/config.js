@@ -21,7 +21,7 @@ export const FUNDING_PRIORITY = [
     FUNDING.CARD
 ];
 
-export let FUNDING_CONFIG : { [$Values<typeof FUNDING>] : ?FundingSourceConfig } = {
+export const FUNDING_CONFIG : { [$Values<typeof FUNDING>] : ?FundingSourceConfig } = {
     [ FUNDING.PAYPAL ]: (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.paypal.eligible)
         ? require('./paypal').PAYPAL_CONFIG : null,
 

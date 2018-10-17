@@ -7,7 +7,7 @@ window.mockDomain = 'mock://www.merchant-site.com';
 const MAX_OVERALL_MEMORY = 800;
 const MAX_TEST_MEMORY = 80;
 
-let memoryReported = (window.performance && window.performance.memory &&
+const memoryReported = (window.performance && window.performance.memory &&
                       window.performance.memory.usedJSHeapSize);
 
 function getMemory() : number {
@@ -22,7 +22,7 @@ beforeEach(() => {
         startMem = getMemory();
     }
 
-    // window.console.clear();
+    // eslint-disable-next-line unicorn/prefer-add-event-listener
     window.onerror = () => {
         // pass
     };
@@ -52,8 +52,8 @@ afterEach(() => {
     }
 
     if (memoryReported) {
-        let mem = getMemory();
-        let diff = mem - startMem;
+        const mem = getMemory();
+        const diff = mem - startMem;
 
         if (mem > MAX_OVERALL_MEMORY) {
             throw new Error(`Overall memory exceeded ${ MAX_OVERALL_MEMORY }mb - ${ mem.toFixed(2) }`);

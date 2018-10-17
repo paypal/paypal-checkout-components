@@ -1,8 +1,8 @@
 
 /* @flow */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
-import { jsxToHTML, JsxHTMLNode } from 'belter/src'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, JsxHTMLNode } from 'belter/src';
 
 import { SVGLogo } from '../common';
 import { BUTTON_LOGO } from '../../constants';

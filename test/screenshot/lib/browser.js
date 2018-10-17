@@ -14,8 +14,8 @@ import { readPNG, type PngType } from './image';
 
 export async function openPage(scriptURL : string, { headless = true } : { headless : boolean }) : Promise<Object> {
 
-    let browser = await puppeteer.launch({ headless });
-    let page    = await browser.newPage();
+    const browser = await puppeteer.launch({ headless });
+    const page    = await browser.newPage();
 
     page.emulate({
         viewport: {
@@ -41,14 +41,14 @@ export async function openPage(scriptURL : string, { headless = true } : { headl
 export async function takeScreenshot(page : Object, { x, y, width, height } : { x : number, y : number, width : number, height : number }) :
     Promise<PngType> {
 
-    let path = `${ os.tmpdir() }/${ Math.random().toString() }.png`;
+    const path = `${ os.tmpdir() }/${ Math.random().toString() }.png`;
 
     await page.screenshot({
         path,
         clip: { x, y, width, height }
     });
 
-    let png = await readPNG(path);
+    const png = await readPNG(path);
 
     return png;
 }

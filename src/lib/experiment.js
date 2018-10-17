@@ -8,7 +8,7 @@ import { FPTI_KEY } from 'paypal-sdk-constants/src';
 import { FPTI_STATE, FPTI_TRANSITION } from '../constants';
 
 export function createExperiment(name : string, sample : number) : Experiment {
-    let logger = getLogger();
+    const logger = getLogger();
     
     return experiment({
         name,

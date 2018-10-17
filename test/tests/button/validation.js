@@ -5,7 +5,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { createTestContainer, destroyTestContainer, noop, assert, mockProp } from '../common';
 
-let buttonConfigs = [
+const buttonConfigs = [
 
     {
         name: 'callbacks',
@@ -728,7 +728,7 @@ let buttonConfigs = [
     }
 ];
 
-for (let group of buttonConfigs) {
+for (const group of buttonConfigs) {
     describe(`paypal button ${ group.name } validation`, () => {
 
         beforeEach(() => {
@@ -739,7 +739,7 @@ for (let group of buttonConfigs) {
             destroyTestContainer();
         });
 
-        for (let useCase of group.cases) {
+        for (const useCase of group.cases) {
             it(`should attempt to render a button with ${ useCase.desc } and ${ useCase.valid ? `succeed` : `fail` }`, () => {
 
                 let mockCountry;

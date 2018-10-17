@@ -8,6 +8,7 @@ import fs from 'fs-extra';
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 
 import { testGlobals } from '../globals';
+import globals from '../../globals';
 
 import { webpackCompile } from './lib/compile';
 import { openPage, takeScreenshot } from './lib/browser';
@@ -27,15 +28,15 @@ const HEADLESS = true;
 
 jest.setTimeout(120000);
 
-let setupBrowserPage = (async () => {
-    let { browser, page } = await openPage(await webpackCompile(getWebpackConfig({
+const setupBrowserPage = (async () => {
+    const { browser, page } = await openPage(await webpackCompile(getWebpackConfig({
         entry:         './test/paypal.js',
         libraryTarget: 'window',
         test:          true,
-        vars:          testGlobals
+        vars:          { ...globals, ...testGlobals }
     })), { headless: HEADLESS });
 
-    for (let filename of await fs.readdir(IMAGE_DIR)) {
+    for (const filename of await fs.readdir(IMAGE_DIR)) {
         if (filename.endsWith('-old.png')) {
             await fs.unlink(`${ IMAGE_DIR }/${ filename }`);
         }
@@ -47,25 +48,25 @@ let setupBrowserPage = (async () => {
 beforeAll(() => setupBrowserPage);
 
 afterAll(async () => {
-    let { browser } = await setupBrowserPage;
+    const { browser } = await setupBrowserPage;
     await browser.close();
 });
 
-for (let config of buttonConfigs) {
-    let filename = config.filename || dotifyToString(config) || 'base';
+for (const config of buttonConfigs) {
+    const filename = config.filename || dotifyToString(config) || 'base';
 
     test(`Render button with ${ filename }`, async () => {
-        let { page } = await setupBrowserPage;
+        const { page } = await setupBrowserPage;
 
-        let filepath = `${ IMAGE_DIR }/${ filename }.png`;
-        let diffpath  = `${ IMAGE_DIR }/${ filename }-old.png`;
+        const filepath = `${ IMAGE_DIR }/${ filename }.png`;
+        const diffpath  = `${ IMAGE_DIR }/${ filename }-old.png`;
 
-        let { x, y, width, height } = await page.evaluate((options, userAgents) => {
+        const { x, y, width, height } = await page.evaluate((options, userAgents) => {
 
             // $FlowFixMe
             document.body.innerHTML = '';
 
-            let container = window.document.createElement('div');
+            const container = window.document.createElement('div');
             window.document.body.appendChild(container);
 
             if (options.container) {
@@ -81,7 +82,7 @@ for (let config of buttonConfigs) {
 
             window.paypal.Buttons(options.button).render(container);
 
-            let rect = container.querySelector('iframe').getBoundingClientRect();
+            const rect = container.querySelector('iframe').getBoundingClientRect();
 
             delete window.navigator.mockUserAgent;
 
@@ -94,15 +95,15 @@ for (let config of buttonConfigs) {
 
         }, config, USER_AGENTS);
 
-        let existingExists = await fs.exists(filepath);
+        const existingExists = await fs.exists(filepath);
 
-        let [ screenshot, existing ] = await Promise.all([
+        const [ screenshot, existing ] = await Promise.all([
             takeScreenshot(page, { x, y, width, height }),
             existingExists ? readPNG(filepath) : null
         ]);
 
         if (existing) {
-            let delta = await diffPNG(screenshot, existing);
+            const delta = await diffPNG(screenshot, existing);
 
             if (delta > DIFF_THRESHOLD) {
                 await existing.write(diffpath);

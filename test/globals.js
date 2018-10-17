@@ -1,10 +1,6 @@
 /* @flow */
 
-import globals from '../globals';
-
 export const testGlobals = {
-    ...globals,
-
     __paypal_checkout__: {
         serverConfig: {
             fundingEligibility: {
@@ -92,15 +88,8 @@ export const testGlobals = {
         }
     },
     
-    __CLIENT_ID__:      'abcxyz123',
-    __MERCHANT_ID__:    'abc',
     __LOCALE_COUNTRY__: 'US',
     __DEFAULT_LANG__:   'en',
-
-    __INTENT__:   'capture',
-    __COMMIT__:   true,
-    __VAULT__:    true,
-    __CURRENCY__: 'USD',
 
     __PORT__:       8000,
     __STAGE_HOST__: 'msmaster.qa.paypal.com',

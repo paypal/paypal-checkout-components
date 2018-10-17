@@ -13,7 +13,7 @@ declare var __PAYPAL_CHECKOUT__ : {
     __MAJOR_VERSION__ : string,
     __MINOR_VERSION__ : string,
     __DEFAULT_LOG_LEVEL__ : string,
-    __REMEMBERED_FUNDING__ : Array<$Values<typeof FUNDING>>
+    __REMEMBERED_FUNDING__ : $ReadOnlyArray<$Values<typeof FUNDING>>
 };
 
 declare var __paypal_checkout__ : {

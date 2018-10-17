@@ -5,8 +5,8 @@ import { once } from 'belter/src';
 
 import { checkForCommonErrors, isEligible, setupLogger } from '../lib';
 
-export let setup = once(() => {
-    let logger = getLogger();
+export const setup = once(() => {
+    const logger = getLogger();
 
     if (!isEligible()) {
         logger.warn('ineligible');

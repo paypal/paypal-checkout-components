@@ -1,8 +1,8 @@
 /* @flow */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
 import { COUNTRY, type LocaleType } from 'paypal-sdk-constants/src';
-import { jsxToHTML, Fragment, type JsxHTMLNode, SVG } from 'belter/src'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, Fragment, type JsxHTMLNode } from 'belter/src';
 
 import { getCheckoutUrl } from '../../config';
 import { BUTTON_LABEL, LOGO_COLOR, BUTTON_COLOR } from '../../constants';

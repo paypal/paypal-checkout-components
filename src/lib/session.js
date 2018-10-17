@@ -4,7 +4,7 @@ import { getStorage, getQueryParam } from 'belter/src';
 
 import { isPayPalDomain } from './paypal';
 
-let storage = getStorage({ name: 'paypal', version: __PAYPAL_CHECKOUT__.__MINOR_VERSION__ });
+const storage = getStorage({ name: 'paypal', version: __PAYPAL_CHECKOUT__.__MINOR_VERSION__ });
 
 export function getStorageState<T>(handler : (storage : Object) => T) : T {
     return storage.getState(handler);
@@ -20,13 +20,13 @@ export function getSessionState<T>(handler : (state : Object) => T) : T {
 
 export function getSessionID() : string {
 
-    let xprops = window.xprops;
+    const xprops = window.xprops;
 
     if (xprops && xprops.sessionID) {
         return xprops.sessionID;
     }
 
-    let querySessionID = getQueryParam('sessionID');
+    const querySessionID = getQueryParam('sessionID');
 
     if (isPayPalDomain() && querySessionID) {
         return querySessionID;
@@ -41,7 +41,7 @@ export function getButtonSessionID() : ?string {
         return window.xprops.buttonSessionID;
     }
 
-    let querySessionID = getQueryParam('buttonSessionID');
+    const querySessionID = getQueryParam('buttonSessionID');
 
     if (isPayPalDomain() && querySessionID) {
         return querySessionID;

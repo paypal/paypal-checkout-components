@@ -7,12 +7,12 @@ import fs from 'fs-extra';
 import pixelmatch from 'pixelmatch';
 import { PNG } from 'pngjs';
 
-export type PngType = {
+export type PngType = {|
     data : Buffer,
     width : number,
     height : number,
     write : (string) => Promise<void>
-};
+|};
 
 export function writePNG(png : Object, path : string) : Promise<void> {
     return new Promise((resolve, reject) => {
@@ -34,7 +34,7 @@ export function writePNG(png : Object, path : string) : Promise<void> {
 
 export function readPNG(path : string) : Promise<PngType> {
     return new Promise((resolve, reject) => {
-        let png = fs.createReadStream(path).pipe(new PNG());
+        const png = fs.createReadStream(path).pipe(new PNG());
 
         png.on('parsed', () => resolve({
             data:   png.data,
@@ -52,7 +52,7 @@ export async function diffPNG(one : PngType, two : PngType) : Promise<number> {
 }
 
 export async function uploadToImgur(path : string) : Promise<?string> {
-    let result = await imgur.uploadFile(path);
+    const result = await imgur.uploadFile(path);
     if (result) {
         return result.data.link;
     }

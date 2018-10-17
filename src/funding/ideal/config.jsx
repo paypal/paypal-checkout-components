@@ -1,7 +1,5 @@
 /* @flow */
-/* @jsx jsxToHTML */
-
-import { jsxToHTML, SVG, JsxHTMLNode } from 'belter/src'; // eslint-disable-line no-unused-vars
+/** @jsx jsxToHTML */
 
 import { getAltPayUrl } from '../../config';
 import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR, LOGO_COLOR } from '../../constants';

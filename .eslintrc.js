@@ -19,8 +19,12 @@ module.exports = {
     },
 
     'rules': {
-        'promise/catch-or-return': 'off',
         'complexity': 'off',
-        'max-nested-callbacks': [ 'error', 5 ]
+        'max-nested-callbacks': [ 'error', 5 ],
+        'react/prop-types': 'off',
+        'react/style-prop-object': 'off',
+        'react/display-name': 'off',
+        'react/require-default-props': 'off',
+        'react/forbid-component-props': 'off'
     }
 };

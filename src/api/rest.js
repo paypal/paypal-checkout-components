@@ -12,33 +12,33 @@ import { FPTI_STATE, FPTI_CONTEXT_TYPE, FPTI_TRANSITION } from '../constants';
 import { isPayPalDomain } from '../lib';
 
 type ProxyRest = {
-    [string] : (...args : Array<mixed>) => ZalgoPromise<*>
+    [string] : (...args : $ReadOnlyArray<mixed>) => ZalgoPromise<*>
 };
 
 let proxyRest : ProxyRest = {};
 
-export type OrderCreateRequest = {
+export type OrderCreateRequest = {|
     intent? : 'CAPTURE' | 'AUTHORIZE',
-    purchase_units : Array<{
+    purchase_units : $ReadOnlyArray<{
         amount : {
             currency_code : string,
             value : string
         }
     }>
-};
+|};
 
-export type OrderCaptureResponse = {};
-export type OrderGetResponse = {};
-export type OrderAuthorizeResponse = {};
+export type OrderCaptureResponse = {||};
+export type OrderGetResponse = {||};
+export type OrderAuthorizeResponse = {||};
 
-export let createAccessToken = memoize((clientID : string) : ZalgoPromise<string> => {
+export const createAccessToken = memoize((clientID : string) : ZalgoPromise<string> => {
     getLogger().info(`rest_api_create_access_token`);
 
     if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) {
         return proxyRest.createAccessToken(clientID);
     }
 
-    let basicAuth : string = base64encode(`${ clientID }:`);
+    const basicAuth : string = base64encode(`${ clientID }:`);
 
     return request({
 
@@ -91,8 +91,8 @@ export function createOrder(clientID : string, order : OrderCreateRequest) : Zal
         throw new Error(`Expected order details to be passed`);
     }
 
-    let currency = window.xprops ? window.xprops.currency : getCurrency();
-    let intent = window.xprops ? window.xprops.intent : getIntent();
+    const currency = window.xprops ? window.xprops.currency : getCurrency();
+    const intent = window.xprops ? window.xprops.intent : getIntent();
 
     order = { ...order };
 
@@ -113,7 +113,7 @@ export function createOrder(clientID : string, order : OrderCreateRequest) : Zal
 
     return createAccessToken(clientID).then((accessToken) : ZalgoPromise<Object> => {
 
-        let headers : Object = {
+        const headers : Object = {
             'Authorization':                 `Bearer ${ accessToken }`,
             'PayPal-Partner-Attribution-Id': getPartnerAttributionID()
         };
@@ -138,7 +138,7 @@ export function createOrder(clientID : string, order : OrderCreateRequest) : Zal
 }
 
 const PROXY_REST = `proxy_rest`;
-let parentWin = getAncestor();
+const parentWin = getAncestor();
 
 on(PROXY_REST, { domain: getPayPalDomain() }, ({ data }) => {
     proxyRest = data;

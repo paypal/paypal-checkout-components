@@ -17,7 +17,7 @@ function logWarn(err) : void {
 
 export function checkForCommonErrors() {
     if (__DEBUG__) {
-        let logger = getLogger();
+        const logger = getLogger();
         
         if (JSON.stringify([]) !== '[]') {
             // $FlowFixMe
@@ -47,7 +47,7 @@ export function checkForCommonErrors() {
         }
 
         // eslint-disable-next-line no-unused-vars
-        let foo = function(bar, baz, zomg) {
+        const foo = function(bar, baz, zomg) {
             // pass;
         };
 
@@ -63,9 +63,9 @@ export function checkForCommonErrors() {
             logger.warn(`prerender_running_checkoutjs`);
         }
 
-        let context = {};
+        const context = {};
 
-        let returnContext = function() : typeof context {
+        const returnContext = function() : typeof context {
             return this;
         };
 
@@ -78,7 +78,7 @@ export function checkForCommonErrors() {
         }
 
         // $FlowFixMe
-        if (Object.assign && JSON.stringify({ a: 1, b: 2, c: 3 }) !== JSON.stringify(Object.assign({ a: 1 }, { b: 2 }, { c: 3 }))) {
+        if (Object.assign && JSON.stringify({ a: 1, b: 2, c: 3 }) !== JSON.stringify({ a: 1, b: 2, c: 3 })) { // eslint-disable-line no-self-compare
             logger.warn(`object_assign_broken`);
         }
     }

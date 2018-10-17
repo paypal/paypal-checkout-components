@@ -1,38 +1,21 @@
 /* @flow */
-/* @jsx jsxDom */
-/* eslint max-lines: 0 */
+/** @jsx jsxDom */
+/* eslint max-lines: off, react/jsx-max-depth: off */
 
 import { isIos } from 'belter/src';
+import type { RenderOptionsType } from 'zoid/src/component/parent';
 
 import { LOGO_COLOR } from '../../constants';
 import { PPLogo, PayPalLogo } from '../../funding/paypal/logo';
+import type { CheckoutPropsType } from '../props';
 
 import { containerContent } from './containerContent';
 import { getContainerStyle, getSandboxStyle } from './containerStyle';
 
-export type ContainerTemplateOptions = {
-    id : string,
-    props : Object,
-    CLASS : Object,
-    ANIMATION : Object,
-    CONTEXT : Object,
-    EVENT : Object,
-    dimensions : {
-        width : number,
-        height : number
-    },
-    actions : Object,
-    tag : string,
-    context : string,
-    outlet : HTMLElement,
-    on : Function,
-    jsxDom : Function
-};
+export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT, on, tag, context, actions, outlet, jsxDom } : RenderOptionsType<CheckoutPropsType>) : HTMLElement {
 
-// eslint-disable-next-line no-unused-vars
-export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT, on, tag, context, actions, outlet, jsxDom } : ContainerTemplateOptions) : HTMLElement {
-
-    let { lang } = props.locale;
+    const { locale } = props;
+    const { lang } = locale;
 
     function close(event) {
         event.preventDefault();
@@ -52,17 +35,17 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
         }
     }
 
-    let style = props.style || {};
+    const { style = {} } = props;
 
-    let content = containerContent[lang];
+    const content = containerContent[lang];
 
-    let el = (
+    const el = (
         <div id={ id } onClick={ focus } class={ `${ tag }-context-${ context } paypal-checkout-overlay` }>
-            <a href='#' class="paypal-checkout-close" onClick={ close } aria-label="close" role="button"></a>
+            <a href='#' class="paypal-checkout-close" onClick={ close } aria-label="close" role="button" />
             <div class="paypal-checkout-modal">
                 <div class="paypal-checkout-logo">
-                    <span innerHTML={ <PPLogo logoColor={ LOGO_COLOR.WHITE } /> } />
-                    <span innerHTML={ <PayPalLogo logoColor={ LOGO_COLOR.WHITE } /> } />
+                    <span innerHTML={ (<PPLogo logoColor={ LOGO_COLOR.WHITE } />).toString() } />
+                    <span innerHTML={ (<PayPalLogo logoColor={ LOGO_COLOR.WHITE } />).toString() } />
                 </div>
                 <div class="paypal-checkout-message">
                     {content.windowMessage}
@@ -71,7 +54,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
                     <a onClick={ focus } href='#'>{content.continueMessage}</a>
                 </div>
                 <div class="paypal-checkout-loader">
-                    <div class="paypal-spinner"></div>
+                    <div class="paypal-spinner" />
                 </div>
             </div>
 
@@ -83,7 +66,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
         </div>
     );
 
-    let container = (
+    const container = (
         <html>
             <body>
                 { el }

@@ -4,7 +4,7 @@ import { once } from 'post-robot/src';
 
 import '../common';
 
-for (let flow of [ 'popup', 'iframe' ]) {
+for (const flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal button component embedded frame on ${ flow }`, () => {
 
@@ -21,7 +21,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then complete the checkout', () => {
 
-            let iframe = document.createElement('iframe');
+            const iframe = document.createElement('iframe');
             iframe.src = `/base/test/windows/buttonframe/index.htm#${ flow }`;
 
             if (!document.body) {

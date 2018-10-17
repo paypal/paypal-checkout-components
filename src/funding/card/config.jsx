@@ -1,7 +1,7 @@
 /* @flow */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
-import { jsxToHTML, JsxHTMLNode, svgToBase64, SVG, objFilter } from 'belter/src'; // eslint-disable-line no-unused-vars
+import { jsxToHTML } from 'belter/src';
 import { CARD, FUNDING, COUNTRY } from 'paypal-sdk-constants/src';
 
 import { getGuestUrl } from '../../config';
@@ -42,17 +42,23 @@ export const CARD_CONFIG : FundingSourceConfig = {
 
                 return CARD_PRIORITY.map(name => {
 
-                    if (!fundingEligibility[FUNDING.CARD].vendors[name].eligible) {
+                    const cardEligibility = fundingEligibility[FUNDING.CARD];
+
+                    if (!cardEligibility) {
                         return null;
                     }
 
-                    let vendorConfig = CARD_CONFIG.vendors && CARD_CONFIG.vendors[name];
+                    if (!cardEligibility.vendors[name].eligible) {
+                        return null;
+                    }
+
+                    const vendorConfig = CARD_CONFIG.vendors && CARD_CONFIG.vendors[name];
 
                     if (!vendorConfig) {
                         return null;
                     }
 
-                    let { Logo } = vendorConfig;
+                    const { Logo } = vendorConfig;
                     
                     return (
                         <Logo

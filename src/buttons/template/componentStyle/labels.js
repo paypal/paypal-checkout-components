@@ -3,7 +3,7 @@
 import { BUTTON_SIZE_STYLE } from '../../config';
 import { BUTTON_LABEL, BUTTON_LOGO, BUTTON_SIZE, BUTTON_LAYOUT, BUTTON_NUMBER, CLASS } from '../../../constants';
 
-export let labelStyle = `
+export const labelStyle = `
 
     .${ CLASS.BUTTON }.${ CLASS.LABEL }-${ BUTTON_LABEL.CARD } {
         border-radius: 0 !important;

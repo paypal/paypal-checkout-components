@@ -1,7 +1,7 @@
 /* @flow */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
-import { jsxToHTML, JsxHTMLNode } from 'belter/src'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, JsxHTMLNode } from 'belter/src';
 
 import { SVGLogo, type LogoColorMap } from '../common';
 import { LOGO_COLOR, BUTTON_LOGO } from '../../constants';
@@ -18,7 +18,7 @@ export function ZimplerLogo({ logoColor, nonce } : { logoColor : $Values<typeof 
         throw new Error(`No ${ logoColor } zimpler logo available`);
     }
 
-    let { primary } = ZIMPLER_LOGO_COLORS[logoColor];
+    const { primary } = ZIMPLER_LOGO_COLORS[logoColor];
 
     return (
         <SVGLogo

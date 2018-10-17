@@ -3,11 +3,12 @@
 import { getHost, getPath } from 'paypal-braintree-web-client/src';
 import { destroyAll } from 'zoid/src';
 
-let script = document.createElement('script');
+const script = document.createElement('script');
+script.setAttribute('type', 'mock');
 script.setAttribute('src', `https://${ getHost() }${ getPath() }?client-id=abcxyz123`);
 script.setAttribute('data-client-token', 'TEST');
 
-let body = document.body;
+const body = document.body;
 
 if (body) {
     body.appendChild(script);
