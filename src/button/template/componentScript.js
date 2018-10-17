@@ -131,7 +131,32 @@ export function getComponentScript() : () => void {
             }
         }
 
+        function setupTabOutlineEvent() {
+            const buttonsContainer = document.getElementsByClassName('{ CLASS.CONTAINER }')[0];
+            const tabKeyCode = 9;
+
+            function handleMouseDownOnce() {
+                buttonsContainer.classList.remove('{ CLASS.SHOULD_FOCUS }');
+
+                window.removeEventListener('mousedown', handleMouseDownOnce);
+                window.addEventListener('keydown', handleFirstTab); // eslint-disable-line no-use-before-define
+            }
+
+            function handleFirstTab(e) {
+                if (e.keyCode === tabKeyCode) {
+                    buttonsContainer.classList.add('{ CLASS.SHOULD_FOCUS }');
+
+                    window.removeEventListener('keydown', handleFirstTab);
+                    window.addEventListener('mousedown', handleMouseDownOnce);
+                }
+            }
+
+            buttonsContainer.classList.add('{ CLASS.SHOULD_FOCUS }');
+            window.addEventListener('keydown', handleFirstTab);
+        }
+
         toggleOptionals();
+        setupTabOutlineEvent();
 
         onDisplay(images, () => {
             images.forEach(makeElementVisible);

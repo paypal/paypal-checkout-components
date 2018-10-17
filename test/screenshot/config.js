@@ -445,6 +445,16 @@ for (let color of getButtonConfig('paypal', 'colors')) {
             }
         }
     });
+
+    // buttonConfigs.push({
+    //     button: {
+    //         locale: 'zh_CN',
+    //         commit: true,
+    //         style:  {
+    //             layout:     'vertical'
+    //         }
+    //     }
+    // });
 }
 
 

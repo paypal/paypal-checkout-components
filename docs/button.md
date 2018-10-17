@@ -27,7 +27,7 @@ This integration lets you specify all of your payment parameters all at once, to
 You'll need:
 
 - Your **Client ID**.
-- Your **Payment Details** (see [developer.paypal.com/docs/api/payments](https://developer.paypal.com/docs/api/payments/#payment_create) for the expected json structure)
+- Your **Payment Details** (see [developer.paypal.com/docs/checkout/integrate](https://developer.paypal.com/docs/checkout/integrate/#2-set-up-a-payment) for the expected json structure)
 - An **HTML Container Element** to render the button into
 
 ```javascript

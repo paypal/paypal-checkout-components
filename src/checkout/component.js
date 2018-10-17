@@ -12,7 +12,7 @@ import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
     getDomainSetting, documentReady, getThrottle, getScriptVersion,
     getButtonSessionID, isPayPalDomain, isIEIntranet, isEligible } from '../lib';
 import { config } from '../config';
-import { ENV, FPTI, PAYMENT_TYPE, CHECKOUT_OVERLAY_COLOR } from '../constants';
+import { ENV, FPTI, PAYMENT_TYPE, CHECKOUT_OVERLAY_COLOR, ATTRIBUTE } from '../constants';
 import { onLegacyPaymentAuthorize } from '../compat';
 import { determineParameterFromToken, determineUrl } from '../integrations';
 
@@ -99,7 +99,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
 
     validate() {
         if (isIEIntranet()) {
-            throw new Error(`Can not render button in IE intranet mode`);
+            throw new Error(`Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md`);
         }
 
         if (!isEligible()) {
@@ -276,6 +276,22 @@ export let Checkout : Component<CheckoutPropsType> = create({
             type:       'string',
             required:   false,
             queryParam: true
+        },
+
+        fundingOffered: {
+            type:       'object',
+            required:   false,
+            queryParam: true,
+            def() : Object {
+                let elements = Array.prototype.slice.call(document.querySelectorAll(`[${ ATTRIBUTE.FUNDING_SOURCE }]`));
+
+                let fundingSources = elements.map(el => {
+                    return el.getAttribute(ATTRIBUTE.FUNDING_SOURCE);
+                });
+
+                // $FlowFixMe
+                return fundingSources;
+            }
         },
 
         onAuthorize: {
