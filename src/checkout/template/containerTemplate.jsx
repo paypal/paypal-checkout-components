@@ -9,7 +9,8 @@ import { BUTTON_LOGO_COLOR, CHECKOUT_OVERLAY_COLOR } from '../../constants';
 import { isIos } from '../../lib';
 
 import componentContentJSON from './containerContent.json';
-import { getContainerStyle, getSandboxStyle } from './containerStyle';
+import { getContainerStyle } from './containerStyle';
+import { getSandboxStyle } from './sandboxStyle';
 
 let componentContent = JSON.parse(componentContentJSON);
 
