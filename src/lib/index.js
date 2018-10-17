@@ -1,5 +1,6 @@
 /* @flow */
 
+export * from './a11y';
 export * from './device';
 export * from './util';
 export * from './logger';
