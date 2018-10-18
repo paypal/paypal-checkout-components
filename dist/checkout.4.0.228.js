@@ -7988,7 +7988,7 @@
                 return config.a.paypalDomains;
             },
             contexts: {
-                iframe: !Object(lib.Y)(),
+                iframe: !Object(lib.Z)(),
                 popup: !0
             },
             get version() {
@@ -8369,7 +8369,7 @@
             }
         });
         if (Checkout.isChild() && Checkout.xchild && Checkout.xprops) {
-            Checkout.xprops && Checkout.xprops.logLevel && Object(lib.V)(Checkout.xprops.logLevel);
+            Checkout.xprops && Checkout.xprops.logLevel && Object(lib.W)(Checkout.xprops.logLevel);
             Checkout.xchild.onProps(function(xprops) {
                 Object(lib.P)(xprops, "onAuthorize", function(_ref) {
                     var callOriginal = _ref.callOriginal, data = _ref.args[0];
@@ -8474,13 +8474,13 @@
             })))));
         }
         var _LOGO_COLOR, base64 = __webpack_require__("./node_modules/Base64/base64.js"), resources = __webpack_require__("./src/resources/index.js"), constants = __webpack_require__("./src/constants/index.js"), lib = __webpack_require__("./src/lib/index.js"), containerContent = __webpack_require__("./src/checkout/template/containerContent.json"), containerContent_default = __webpack_require__.n(containerContent);
+        function getContainerStyle(_ref) {
+            var id = _ref.id, tag = _ref.tag, CONTEXT = _ref.CONTEXT, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION;
+            return "\n        #" + id + " {\n            position: absolute;\n            z-index: 2147483647;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n\n            -webkit-transform: translate3d(0, 0, 0);\n            -moz-transform: translate3d(0, 0, 0);\n            -ms-transform: translate3d(0, 0, 0);\n            -o-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " {\n            background-color: black;\n            background-color: rgba(0, 0, 0, 0.75);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " {\n            background-color: white;\n            background-color: rgba(255, 255, 255, 0.4);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " a {\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " a {\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " .paypal-checkout-close:after {\n            background-color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " .paypal-checkout-close:after {\n            background-color: #111;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + " a {\n            text-decoration: none;\n        }\n\n        #" + id + ' .paypal-checkout-modal {\n            font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n            font-size: 14px;\n            text-align: center;\n\n            -webkit-box-sizing: border-box;\n            -moz-box-sizing: border-box;\n            -ms-box-sizing: border-box;\n            box-sizing: border-box;\n            max-width: 350px;\n            top: 50%;\n            left: 50%;\n            position: absolute;\n            transform: translateX(-50%) translateY(-50%);\n            -webkit-transform: translateX(-50%) translateY(-50%);\n            -moz-transform: translateX(-50%) translateY(-50%);\n            -o-transform: translateX(-50%) translateY(-50%);\n            -ms-transform: translateX(-50%) translateY(-50%);\n            cursor: pointer;\n            text-align: center;\n        }\n\n        #' + id + "." + tag + "-loading .paypal-checkout-message, #" + id + "." + tag + "-loading .paypal-checkout-continue {\n            display: none;\n        }\n\n        .paypal-checkout-loader {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-loader {\n            display: block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo {\n            cursor: pointer;\n            margin-bottom: 30px;\n            display: inline-block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img {\n            height: 36px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img.paypal-checkout-logo-pp {\n            margin-right: 10px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-message {\n            font-size: 15px;\n            line-height: 1.5;\n            padding: 10px 0;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-message, #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-continue {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue {\n            font-size: 15px;\n            line-height: 1.35;\n            padding: 10px 0;\n            font-weight: bold;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue a {\n            border-bottom: 1px solid currentColor;\n        }\n\n        #" + id + " .paypal-checkout-close {\n            position: absolute;\n            right: 16px;\n            top: 16px;\n            width: 16px;\n            height: 16px;\n            opacity: 0.6;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-close {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-close:hover {\n            opacity: 1;\n        }\n\n        #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n            position: absolute;\n            left: 8px;\n            content: ' ';\n            height: 16px;\n            width: 2px;\n        }\n\n        #" + id + " .paypal-checkout-close:before {\n            transform: rotate(45deg);\n            -webkit-transform: rotate(45deg);\n            -moz-transform: rotate(45deg);\n            -o-transform: rotate(45deg);\n            -ms-transform: rotate(45deg);\n        }\n\n        #" + id + " .paypal-checkout-close:after {\n            transform: rotate(-45deg);\n            -webkit-transform: rotate(-45deg);\n            -moz-transform: rotate(-45deg);\n            -o-transform: rotate(-45deg);\n            -ms-transform: rotate(-45deg);\n        }\n\n        #" + id + " .paypal-checkout-iframe-container {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + ",\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + " > iframe {\n            max-height: 95vh;\n            max-width: 95vw;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container {\n\n            display: block;\n\n            position: absolute;\n\n            top: 50%;\n            left: 50%;\n\n            min-width: 450px;\n\n            transform: translate(-50%, -50%);\n            -webkit-transform: translate(-50%, -50%);\n            -moz-transform: translate(-50%, -50%);\n            -o-transform: translate(-50%, -50%);\n            -ms-transform: translate(-50%, -50%);\n\n            transform: translate3d(-50%, -50%, 0);\n            -webkit-transform: translate3d(-50%, -50%, 0);\n            -moz-transform: translate3d(-50%, -50%, 0);\n            -o-transform: translate3d(-50%, -50%, 0);\n            -ms-transform: translate3d(-50%, -50%, 0);\n\n            border-radius: 10px;\n            overflow: hidden;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n\n            position: relative;\n\n            -webkit-transition: all 0.3s ease;\n            -moz-transition: all 0.3s ease;\n            -ms-transition: all 0.3s ease;\n            -o-transition: all 0.3 ease;\n            transition: all 0.3s ease;\n\n            -webkit-animation-duration: 0.3s;\n            animation-duration: 0.3s;\n            -webkit-animation-fill-mode: both;\n            animation-fill-mode: both;\n\n            min-width: 450px;\n            max-width: 450px;\n            width: 450px;\n            height: 535px;\n\n            background-color: white;\n\n            overflow: auto;\n            -webkit-overflow-scrolling: touch;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            transition: opacity .4s ease-in-out;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n            z-index: 100;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n            opacity: 1;\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n            opacity: 0;\n            z-index: 100;\n        }\n\n        @media screen and (-ms-high-contrast: active) {\n            #" + id + " .paypal-checkout-close {\n                opacity: 1;\n            }\n\n            #" + id + " .paypal-checkout-close:before , .paypal-checkout-close:after {\n                background-color: currentColor;\n            }\n        }\n\n        @media screen and (max-width: 470px) {\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                min-width: 100%;\n                min-width: calc(100% - 20px);\n                min-width: -webkit-calc(100% - 20px);\n                min-width: -moz-calc(100% - 20px);\n                min-width: -o-calc(100% - 20px);\n                min-width: -ms-calc(100% - 20px);\n\n                max-width: 100%;\n                max-width: calc(100% - 20px);\n                max-width: -webkit-calc(100% - 20px);\n                max-width: -moz-calc(100% - 20px);\n                max-width: -o-calc(100% - 20px);\n                max-width: -ms-calc(100% - 20px);\n            }\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " iframe {\n            width: 1px;\n            min-width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        .paypal-spinner {\n            height: 30px;\n            width: 30px;\n            display: inline-block;\n            box-sizing: content-box;\n            opacity: 1;\n            filter: alpha(opacity=100);\n            -webkit-animation: rotation .7s infinite linear;\n            -moz-animation: rotation .7s infinite linear;\n            -o-animation: rotation .7s infinite linear;\n            animation: rotation .7s infinite linear;\n            border-left: 8px solid rgba(0, 0, 0, .2);\n            border-right: 8px solid rgba(0, 0, 0, .2);\n            border-bottom: 8px solid rgba(0, 0, 0, .2);\n            border-top: 8px solid #fff;\n            border-radius: 100%\n        }\n\n        @-webkit-keyframes rotation {\n            from {\n                -webkit-transform: rotate(0deg)\n            }\n            to {\n                -webkit-transform: rotate(359deg)\n            }\n        }\n        @-moz-keyframes rotation {\n            from {\n                -moz-transform: rotate(0deg)\n            }\n            to {\n                -moz-transform: rotate(359deg)\n            }\n        }\n        @-o-keyframes rotation {\n            from {\n                -o-transform: rotate(0deg)\n            }\n            to {\n                -o-transform: rotate(359deg)\n            }\n        }\n        @keyframes rotation {\n            from {\n                transform: rotate(0deg)\n            }\n            to {\n                transform: rotate(359deg)\n            }\n        }\n    ";
+        }
         function getSandboxStyle(_ref) {
             var id = _ref.id, ANIMATION = _ref.ANIMATION;
             return "\n        #" + id + ".paypal-checkout-sandbox {\n            display: block;\n            position: fixed;\n            top: 0;\n            left: 0;\n\n            width: 100%;\n            height: 100%;\n            width: 100vw;\n            height: 100vh;\n            max-width: 100%;\n            max-height: 100%;\n            min-width: 100%;\n            min-height: 100%;\n\n            z-index: 2147483647;\n\n            -webkit-animation-duration: 1s;\n            animation-duration: 1s;\n\n            animation-fill-mode:forwards;\n            animation-iteration-count: 1;\n\n            -webkit-animation-fill-mode:forwards;\n            -webkit-animation-iteration-count: 1;\n        }\n\n        #" + id + ".paypal-checkout-sandbox .paypal-checkout-sandbox-iframe {\n            display: block;\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_CONTAINER + " {\n            from {\n                opacity: 0;\n            }\n\n            to {\n                opacity: 1;\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_CONTAINER + " {\n            from {\n                opacity: 0;\n            }\n\n            to {\n                opacity: 1;\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_CONTAINER + " {\n            from {\n                opacity: 1;\n            }\n\n            50% {\n                opacity: 1;\n            }\n\n            to {\n                opacity: 0;\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_CONTAINER + " {\n            from {\n                opacity: 1;\n            }\n\n            50% {\n                opacity: 1;\n            }\n\n            to {\n                opacity: 0;\n            }\n        }\n    ";
-        }
-        function getContainerStyle(_ref2) {
-            var id = _ref2.id, tag = _ref2.tag, CONTEXT = _ref2.CONTEXT, CLASS = _ref2.CLASS, ANIMATION = _ref2.ANIMATION;
-            return "\n        #" + id + " {\n            position: absolute;\n            z-index: 2147483647;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n\n            -webkit-transform: translate3d(0, 0, 0);\n            -moz-transform: translate3d(0, 0, 0);\n            -ms-transform: translate3d(0, 0, 0);\n            -o-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " {\n            background-color: black;\n            background-color: rgba(0, 0, 0, 0.75);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " {\n            background-color: white;\n            background-color: rgba(255, 255, 255, 0.4);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " a {\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " a {\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " .paypal-checkout-close:after {\n            background-color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " .paypal-checkout-close:after {\n            background-color: #111;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + " a {\n            text-decoration: none;\n        }\n\n        #" + id + ' .paypal-checkout-modal {\n            font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n            font-size: 14px;\n            text-align: center;\n\n            -webkit-box-sizing: border-box;\n            -moz-box-sizing: border-box;\n            -ms-box-sizing: border-box;\n            box-sizing: border-box;\n            max-width: 350px;\n            top: 50%;\n            left: 50%;\n            position: absolute;\n            transform: translateX(-50%) translateY(-50%);\n            -webkit-transform: translateX(-50%) translateY(-50%);\n            -moz-transform: translateX(-50%) translateY(-50%);\n            -o-transform: translateX(-50%) translateY(-50%);\n            -ms-transform: translateX(-50%) translateY(-50%);\n            cursor: pointer;\n            text-align: center;\n        }\n\n        #' + id + "." + tag + "-loading .paypal-checkout-message, #" + id + "." + tag + "-loading .paypal-checkout-continue {\n            display: none;\n        }\n\n        .paypal-checkout-loader {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-loader {\n            display: block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo {\n            cursor: pointer;\n            margin-bottom: 30px;\n            display: inline-block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img {\n            height: 36px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img.paypal-checkout-logo-pp {\n            margin-right: 10px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-message {\n            font-size: 15px;\n            line-height: 1.5;\n            padding: 10px 0;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-message, #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-continue {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue {\n            font-size: 15px;\n            line-height: 1.35;\n            padding: 10px 0;\n            font-weight: bold;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue a {\n            border-bottom: 1px solid currentColor;\n        }\n\n        #" + id + " .paypal-checkout-close {\n            position: absolute;\n            right: 16px;\n            top: 16px;\n            width: 16px;\n            height: 16px;\n            opacity: 0.6;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-close {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-close:hover {\n            opacity: 1;\n        }\n\n        #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n            position: absolute;\n            left: 8px;\n            content: ' ';\n            height: 16px;\n            width: 2px;\n        }\n\n        #" + id + " .paypal-checkout-close:before {\n            transform: rotate(45deg);\n            -webkit-transform: rotate(45deg);\n            -moz-transform: rotate(45deg);\n            -o-transform: rotate(45deg);\n            -ms-transform: rotate(45deg);\n        }\n\n        #" + id + " .paypal-checkout-close:after {\n            transform: rotate(-45deg);\n            -webkit-transform: rotate(-45deg);\n            -moz-transform: rotate(-45deg);\n            -o-transform: rotate(-45deg);\n            -ms-transform: rotate(-45deg);\n        }\n\n        #" + id + " .paypal-checkout-iframe-container {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + ",\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + " > iframe {\n            max-height: 95vh;\n            max-width: 95vw;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container {\n\n            display: block;\n\n            position: absolute;\n\n            top: 50%;\n            left: 50%;\n\n            min-width: 450px;\n\n            transform: translate(-50%, -50%);\n            -webkit-transform: translate(-50%, -50%);\n            -moz-transform: translate(-50%, -50%);\n            -o-transform: translate(-50%, -50%);\n            -ms-transform: translate(-50%, -50%);\n\n            transform: translate3d(-50%, -50%, 0);\n            -webkit-transform: translate3d(-50%, -50%, 0);\n            -moz-transform: translate3d(-50%, -50%, 0);\n            -o-transform: translate3d(-50%, -50%, 0);\n            -ms-transform: translate3d(-50%, -50%, 0);\n\n            border-radius: 10px;\n            overflow: hidden;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n\n            position: relative;\n\n            -webkit-transition: all 0.3s ease;\n            -moz-transition: all 0.3s ease;\n            -ms-transition: all 0.3s ease;\n            -o-transition: all 0.3 ease;\n            transition: all 0.3s ease;\n\n            -webkit-animation-duration: 0.3s;\n            animation-duration: 0.3s;\n            -webkit-animation-fill-mode: both;\n            animation-fill-mode: both;\n\n            min-width: 450px;\n            max-width: 450px;\n            width: 450px;\n            height: 535px;\n\n            background-color: white;\n\n            overflow: auto;\n            -webkit-overflow-scrolling: touch;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            transition: opacity .4s ease-in-out;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n            z-index: 100;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n            opacity: 1;\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n            opacity: 0;\n            z-index: 100;\n        }\n\n        @media screen and (max-width: 470px) {\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                min-width: 100%;\n                min-width: calc(100% - 20px);\n                min-width: -webkit-calc(100% - 20px);\n                min-width: -moz-calc(100% - 20px);\n                min-width: -o-calc(100% - 20px);\n                min-width: -ms-calc(100% - 20px);\n\n                max-width: 100%;\n                max-width: calc(100% - 20px);\n                max-width: -webkit-calc(100% - 20px);\n                max-width: -moz-calc(100% - 20px);\n                max-width: -o-calc(100% - 20px);\n                max-width: -ms-calc(100% - 20px);\n            }\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " iframe {\n            width: 1px;\n            min-width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        .paypal-spinner {\n            height: 30px;\n            width: 30px;\n            display: inline-block;\n            box-sizing: content-box;\n            opacity: 1;\n            filter: alpha(opacity=100);\n            -webkit-animation: rotation .7s infinite linear;\n            -moz-animation: rotation .7s infinite linear;\n            -o-animation: rotation .7s infinite linear;\n            animation: rotation .7s infinite linear;\n            border-left: 8px solid rgba(0, 0, 0, .2);\n            border-right: 8px solid rgba(0, 0, 0, .2);\n            border-bottom: 8px solid rgba(0, 0, 0, .2);\n            border-top: 8px solid #fff;\n            border-radius: 100%\n        }\n\n        @-webkit-keyframes rotation {\n            from {\n                -webkit-transform: rotate(0deg)\n            }\n            to {\n                -webkit-transform: rotate(359deg)\n            }\n        }\n        @-moz-keyframes rotation {\n            from {\n                -moz-transform: rotate(0deg)\n            }\n            to {\n                -moz-transform: rotate(359deg)\n            }\n        }\n        @-o-keyframes rotation {\n            from {\n                -o-transform: rotate(0deg)\n            }\n            to {\n                -o-transform: rotate(359deg)\n            }\n        }\n        @keyframes rotation {\n            from {\n                transform: rotate(0deg)\n            }\n            to {\n                transform: rotate(359deg)\n            }\n        }\n    ";
         }
         var componentContent = JSON.parse(containerContent_default.a), LOGO_COLOR = ((_LOGO_COLOR = {})[constants.q.BLACK] = constants.i.WHITE, 
         _LOGO_COLOR[constants.q.WHITE] = constants.i.BLACK, _LOGO_COLOR);
@@ -8540,9 +8540,10 @@
                 CONTEXT: CONTEXT,
                 CLASS: CLASS,
                 ANIMATION: ANIMATION
-            }))), container = jsxDom("html", null, jsxDom("body", null, el));
+            }))), container = jsxDom("html", null, jsxDom("body", null, el)), restrictedFocus = Object(lib.U)(document.body);
             on(EVENT.CLOSE, function() {
                 el.className += " " + tag + "-loading";
+                restrictedFocus.release();
             });
             return jsxDom("div", {
                 id: id,
@@ -8573,9 +8574,9 @@
     "./src/config/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
-            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.227.js",
+            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.228.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.227",
+            version: "4.0.228",
             cors: !0,
             env: constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -10279,7 +10280,7 @@
                     return zalgo_promise_src.a.try(function() {
                         if (tracking) return zalgo_promise_src.a.resolve(function(env, client, merchantID, trackingData) {
                             if (!client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
-                            var trackingID = Object(lib.Z)();
+                            var trackingID = Object(lib._0)();
                             return createAccessToken(env, client).then(function(accessToken) {
                                 var headers = {
                                     Authorization: "Bearer " + accessToken
@@ -11640,7 +11641,7 @@
                     logoColor: "blue"
                 })));
             }(normalizeProps(props)) : null;
-            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.227", 
+            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.228", 
             _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -11802,7 +11803,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.Z)();
+                        return Object(lib._0)();
                     },
                     queryParam: !0
                 },
@@ -12317,7 +12318,7 @@
                 function doRender(props, original) {
                     return popupBridge ? renderThroughPopupBridge(props, popupBridge).catch(function(err) {
                         Object(beaver_logger_client.g)("popup_bridge_error", {
-                            err: Object(lib.W)(err)
+                            err: Object(lib.X)(err)
                         });
                         return original();
                     }) : original();
@@ -12358,7 +12359,7 @@
                 Object(beaver_logger_client.h)();
             });
             var xprops = ButtonComponent.xprops || src_checkout.a.xprops;
-            xprops && xprops.logLevel && Object(lib.V)(xprops.logLevel);
+            xprops && xprops.logLevel && Object(lib.W)(xprops.logLevel);
         }(component_Button);
         Object(lib.F)() && Object(lib.o)("ie_full_page") && (src_checkout.a.renderTo = function(win) {
             Object(beaver_logger_client.k)("force_ie_full_page");
@@ -12516,14 +12517,14 @@
         zalgo_promise_src.a.onPossiblyUnhandledException(function(err) {
             var _track;
             Object(beaver_logger_client.g)("unhandled_error", {
-                stack: Object(lib.W)(err),
+                stack: Object(lib.X)(err),
                 errtype: {}.toString.call(err)
             });
             Object(beaver_logger_client.p)(((_track = {})[constants.u.KEY.ERROR_CODE] = "checkoutjs_error", 
-            _track[constants.u.KEY.ERROR_DESC] = Object(lib.X)(err), _track));
+            _track[constants.u.KEY.ERROR_DESC] = Object(lib.Y)(err), _track));
             return Object(beaver_logger_client.h)().catch(function(err2) {
                 if (window.console) try {
-                    window.console.error ? window.console.error("Error flushing:", Object(lib.W)(err2)) : window.console.log && window.console.log("Error flushing:", Object(lib.W)(err2));
+                    window.console.error ? window.console.error("Error flushing:", Object(lib.X)(err2)) : window.console.log && window.console.log("Error flushing:", Object(lib.X)(err2));
                 } catch (err3) {
                     setTimeout(function() {
                         throw err3;
@@ -12556,7 +12557,7 @@
                         _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PPTM_LOADED, _track2));
                     }).catch(function(err) {
                         Object(beaver_logger_client.k)("pptm_script_error", {
-                            error: Object(lib.W)(err)
+                            error: Object(lib.X)(err)
                         });
                     });
                 }
@@ -12604,7 +12605,7 @@
                     config.a.state = state;
                 }
                 merchantID && (config.a.merchantID = merchantID);
-                logLevel ? Object(lib.V)(logLevel) : Object(lib.V)(config.a.logLevel);
+                logLevel ? Object(lib.W)(logLevel) : Object(lib.W)(config.a.logLevel);
             }(options);
             init(options);
         }
@@ -12643,7 +12644,7 @@
             setup__track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.227", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.228", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         var interface_Checkout = void 0, interface_Card = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
@@ -12892,7 +12893,7 @@
             HIDDEN_BUTTON: "paypal-button-hidden"
         }, src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), checkout = __webpack_require__("./src/checkout/index.js"), config = __webpack_require__("./src/config/index.js"), post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js");
         function isLegacyEligible() {
-            return !!Object(lib.D)() && (!!Object(lib.Y)() && !Object(lib.B)());
+            return !!Object(lib.D)() && (!!Object(lib.Z)() && !Object(lib.B)());
         }
         var warn = Object(client.n)(LOG_PREFIX).warn, DEFAULT_COUNTRY = constants.r.US, DEFAULT_LANG = constants.x.EN;
         function normalizeLocale(locale) {
@@ -12923,7 +12924,7 @@
             debug("buttonjs_load");
             return Object(lib.J)(config.a.buttonJSUrl).catch(function(err) {
                 info("buttonjs_load_error_retry", {
-                    error: Object(lib.W)(err)
+                    error: Object(lib.X)(err)
                 });
                 return Object(lib.J)(config.a.buttonJSUrl);
             }).then(function(result) {
@@ -12931,7 +12932,7 @@
                 return result;
             }).catch(function(err) {
                 error("buttonjs_load_error", {
-                    error: Object(lib.W)(err)
+                    error: Object(lib.X)(err)
                 });
                 throw err;
             });
@@ -13016,13 +13017,13 @@
         var util_warn = Object(client.n)(LOG_PREFIX).warn, redirected = !1;
         function logRedirect(location) {
             redirected && util_warn("multiple_redirects");
-            Object(lib._0)(location) && (redirected = !0);
+            Object(lib._1)(location) && (redirected = !0);
             Object(client.h)();
         }
         function redirect(url) {
             return src.a.try(function() {
                 if (!url) throw new Error("Redirect url undefined");
-                if (config.a.env === constants.t.TEST && Object(lib._0)(url)) return Object(lib.R)(window, "#fullpageRedirect?url=" + url);
+                if (config.a.env === constants.t.TEST && Object(lib._1)(url)) return Object(lib.R)(window, "#fullpageRedirect?url=" + url);
                 logRedirect(url);
                 return Object(lib.R)(window, url);
             });
@@ -13183,7 +13184,7 @@
                 };
             }), errorHandler = Object(lib.N)(function(err) {
                 interface_error("component_error", {
-                    error: Object(lib.W)(err)
+                    error: Object(lib.X)(err)
                 });
                 if (hijackTarget) {
                     interface_warn("render_error_hijack_revert_target");
@@ -13223,7 +13224,7 @@
             element.addEventListener("click", function(event) {
                 tracker();
                 var eligible = isLegacyEligible();
-                if (Object(lib.Y)()) {
+                if (Object(lib.Z)()) {
                     interface_debug("click_popups_supported");
                     eligible || interface_debug("click_popups_supported_but_ineligible");
                 } else {
@@ -13242,7 +13243,7 @@
                         clickHandler(event);
                     } catch (err) {
                         interface_error("click_handler_error", {
-                            error: Object(lib.W)(err)
+                            error: Object(lib.X)(err)
                         });
                     }
                 }(clickHandler, event) : function(element) {
@@ -13275,7 +13276,7 @@
             interface_info("setup", {
                 id: id = id || "merchant",
                 env: options.environment,
-                options: Object(lib.U)(options)
+                options: Object(lib.V)(options)
             });
             setupCalled && interface_debug("setup_called_multiple_times");
             setupCalled = !0;
@@ -13561,7 +13562,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.227";
+                payload.version = "4.0.228";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 payload.appName = APP_NAME;
@@ -13846,6 +13847,27 @@
     },
     "./src/lib/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
+        var dom = __webpack_require__("./src/lib/dom.js");
+        function getFocusableElements(context) {
+            return Object(dom.e)(context.querySelectorAll('button, iframe, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'));
+        }
+        function restrictFocus(context) {
+            var tabIndexes = [];
+            if (!context) throw new Error("Can not restrict focus on null element");
+            var focusableElements = getFocusableElements(context);
+            document.activeElement && document.activeElement.blur();
+            focusableElements.forEach(function(element, i) {
+                tabIndexes[i] = element.hasAttribute("tabIndex") ? element.tabIndex : null;
+                element.tabIndex = -1;
+            });
+            return {
+                release: function() {
+                    focusableElements.forEach(function(element, i) {
+                        null !== tabIndexes[i] ? element.tabIndex = tabIndexes[i] : element.removeAttribute("tabIndex");
+                    });
+                }
+            };
+        }
         var device = __webpack_require__("./src/lib/device.js"), util = __webpack_require__("./src/lib/util.js"), src = __webpack_require__("./node_modules/post-robot/src/index.js"), client = __webpack_require__("./node_modules/beaver-logger/client/index.js"), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), config = __webpack_require__("./src/config/index.js"), constants = __webpack_require__("./src/constants/index.js"), session = __webpack_require__("./src/lib/session.js");
         function proxyMethod(name, win, originalMethod) {
             if (win && Object(cross_domain_utils_src.getDomain)() === config.a.paypalDomain && !Object(cross_domain_utils_src.isSameDomain)(win)) {
@@ -13870,7 +13892,6 @@
                 }) : originalMethod.apply(this, arguments);
             };
         }
-        var dom = __webpack_require__("./src/lib/dom.js");
         function getRefererDomain() {
             return window.xchild && window.xchild.getParentDomain ? window.xchild.getParentDomain() : window.location.host;
         }
@@ -13888,7 +13909,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(session.c)(),
-                    ver: "4.0.227"
+                    ver: "4.0.228"
                 };
             });
             Object(client.a)(function() {
@@ -14206,7 +14227,7 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return "4.0.227";
+            return "4.0.228";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -14223,7 +14244,7 @@
                         domain: metaFrameDomain
                     });
                     return src.bridge.openBridge(Object(dom.b)(metaFrameUrl, {
-                        version: "4.0.227"
+                        version: "4.0.228"
                     }), metaFrameDomain).then(function() {
                         return metaListener;
                     }).then(function(_ref) {
@@ -14313,6 +14334,12 @@
             return !1;
         }
         __webpack_require__.d(__webpack_exports__, !1, function() {
+            return getFocusableElements;
+        });
+        __webpack_require__.d(__webpack_exports__, "U", function() {
+            return restrictFocus;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
             return device.a;
         });
         __webpack_require__.d(__webpack_exports__, "B", function() {
@@ -14343,7 +14370,7 @@
             return device.e;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "Y", function() {
+        __webpack_require__.d(__webpack_exports__, "Z", function() {
             return device.g;
         });
         __webpack_require__.d(__webpack_exports__, "I", function() {
@@ -14359,7 +14386,7 @@
         __webpack_require__.d(__webpack_exports__, "N", function() {
             return util.m;
         });
-        __webpack_require__.d(__webpack_exports__, "Z", function() {
+        __webpack_require__.d(__webpack_exports__, "_0", function() {
             return util.t;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
@@ -14367,7 +14394,7 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return util.h;
         });
-        __webpack_require__.d(__webpack_exports__, "U", function() {
+        __webpack_require__.d(__webpack_exports__, "V", function() {
             return util.q;
         });
         __webpack_require__.d(__webpack_exports__, "h", function() {
@@ -14376,10 +14403,10 @@
         __webpack_require__.d(__webpack_exports__, "b", function() {
             return util.a;
         });
-        __webpack_require__.d(__webpack_exports__, "W", function() {
+        __webpack_require__.d(__webpack_exports__, "X", function() {
             return util.r;
         });
-        __webpack_require__.d(__webpack_exports__, "X", function() {
+        __webpack_require__.d(__webpack_exports__, "Y", function() {
             return util.s;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
@@ -14424,7 +14451,7 @@
         __webpack_require__.d(__webpack_exports__, "A", function() {
             return initLogger;
         });
-        __webpack_require__.d(__webpack_exports__, "V", function() {
+        __webpack_require__.d(__webpack_exports__, "W", function() {
             return setLogLevel;
         });
         __webpack_require__.d(__webpack_exports__, "k", function() {
@@ -14461,7 +14488,7 @@
         __webpack_require__.d(__webpack_exports__, "s", function() {
             return dom.g;
         });
-        __webpack_require__.d(__webpack_exports__, "_0", function() {
+        __webpack_require__.d(__webpack_exports__, "_1", function() {
             return dom.m;
         });
         __webpack_require__.d(__webpack_exports__, "j", function() {
@@ -14956,18 +14983,18 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         if (!Object(__WEBPACK_IMPORTED_MODULE_2__lib_util__.g)()) throw new Error("Do not integrate with versioned script url");
-        if (window.paypal && "4.0.227" === window.paypal.version) {
+        if (window.paypal && "4.0.228" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.227"
+                version: "4.0.228"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.227) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.228) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.227" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.228" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.227"
+                version: "4.0.228"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.227");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.228");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
@@ -15664,4 +15691,4 @@
         });
     }
 }));
-//# sourceMappingURL=checkout.4.0.227.js.map
+//# sourceMappingURL=checkout.4.0.228.js.map
