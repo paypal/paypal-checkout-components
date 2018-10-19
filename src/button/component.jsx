@@ -445,8 +445,7 @@ export let Button : Component<ButtonOptions> = create({
                     disallowed = disallowed.filter(source => (source !== FUNDING.CREDIT));
                 }
 
-                // remove Venmo from our allowed list if the rendering device is not a mobile one
-                if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1 && !isDevice()) {
+                if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1) {
                     allowed = allowed.filter(source => (source !== FUNDING.VENMO));
                 }
 

@@ -77,6 +77,17 @@ for (let config of buttonConfigs) {
                 window.navigator.mockUserAgent = userAgents[options.userAgent];
             }
 
+            let decorate;
+
+            if (options.button.funding && options.button.funding.allowed && options.button.funding.allowed.indexOf(window.paypal.FUNDING.VENMO) !== -1) {
+                decorate = window.paypal.Button.props.funding.decorate;
+                window.paypal.Button.props.funding.decorate = (funding = {}) => {
+                    return Object.assign({}, funding, {
+                        remembered: [ window.paypal.FUNDING.VENMO ]
+                    });
+                };
+            }
+
             window.paypal.Button.render(Object.assign({
                 payment() { /* pass */ },
                 onAuthorize() { /* pass */ }
@@ -85,6 +96,10 @@ for (let config of buttonConfigs) {
             let rect = container.querySelector('iframe').getBoundingClientRect();
 
             delete window.navigator.mockUserAgent;
+
+            if (decorate) {
+                window.paypal.Button.props.funding.decorate = decorate;
+            }
 
             return {
                 x:      rect.left,
