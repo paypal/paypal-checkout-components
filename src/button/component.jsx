@@ -182,7 +182,7 @@ export let Button : Component<ButtonOptions> = create({
             type:     'string',
             required: false,
             def() : string {
-                return escape(window.location.host);
+                return window.location.host;
             },
             queryParam: true
         },
