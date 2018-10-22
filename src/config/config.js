@@ -255,6 +255,10 @@ export let config = {
         
         'uncommongoods.com': {
             disable_venmo: true
+        },
+        
+        'onegold.com': {
+            disable_venmo: true
         }
     },
 
