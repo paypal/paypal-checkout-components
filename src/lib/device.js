@@ -13,8 +13,13 @@ export function isDevice() : boolean {
     return false;
 }
 
+export function isPopup() : boolean {
+    return (window.opener && window.opener !== window);
+}
+
 export function isStandAlone() : boolean {
-    return (window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches);
+    // Chrome interprets pop-up windows as standalone windows
+    return !isPopup() && (window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches);
 }
 
 export function isFacebookWebView(ua? : string = getUserAgent()) : boolean {
