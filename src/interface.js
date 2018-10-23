@@ -24,6 +24,10 @@ export { ENV, USERS, SOURCE, FUNDING, CARD } from './constants';
 export { request, isEligible, isFundingRemembered, allowIframe as forceIframe, allowIframe as isWebView, allowIframe } from './lib';
 export { logExperimentTreatment } from './experiments';
 export { logFundingEligibility } from './funding';
+export { renderFundingIcons } from './button/template';
+export { renderStyle } from './button/template';
+export { determineEligibleCards } from './funding';
+
 
 export let onPossiblyUnhandledException = ZalgoPromise.onPossiblyUnhandledException;
 
