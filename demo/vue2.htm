@@ -1,0 +1,53 @@
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+</head>
+
+<body>
+    <div id="page">
+        <paypal-button
+            :commit="paypal.commit"
+            :env="paypal.env"
+            :client="paypal.client"
+            :payment="payment"
+            :on-authorize.camel="onAuthorize"/>
+    </div>
+
+    <script type="text/babel">
+
+        new Vue({
+            el: '#page',
+            data: {
+                paypal: {
+                    commit: false,
+                    env: 'sandbox',
+                    client: {
+                        sandbox: 'AWi18rxt26-hrueMoPZ0tpGEOJnNT4QkiMQst9pYgaQNAfS1FLFxkxQuiaqRBj1vV5PmgHX_jA_c1ncL'
+                    }
+                }
+            },
+
+            methods: {
+                payment(data, actions) {
+                    return actions.payment.create({
+                        transactions: [
+                            {
+                                amount: { total: '0.01', currency: 'USD' }
+                            }
+                        ]
+                    });
+                },
+                onAuthorize(data, actions) {
+                    return actions.payment.execute().then(paymentData => {
+                        // Show a success page to the buyer
+                    });
+                }
+            },
+
+            components: {
+                paypalButton: paypal.Button.driver('vue')
+            }
+        });
+    </script> 
+</body>
