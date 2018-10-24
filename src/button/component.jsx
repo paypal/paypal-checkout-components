@@ -665,8 +665,10 @@ export let Button : Component<ButtonOptions> = create({
                     flushLogs();
                     let timeout = __TEST__ ? 500 : 10 * 1000;
 
+                    const resolve = () => ZalgoPromise.resolve();
+
                     return ZalgoPromise.try(() => {
-                        return original.call(this, data, actions);
+                        return original.call(this, data, { ...actions, resolve });
                     }).timeout(timeout, new Error(`Timed out waiting ${ timeout }ms for payment`));
                 };
             }
