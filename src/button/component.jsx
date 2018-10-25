@@ -649,9 +649,12 @@ export let Button : Component<ButtonOptions> = create({
         onShippingChange: {
             type:     'function',
             required: false,
-            noop:     true,
+            
+            decorate(original) : void | Function {
+                if (!original) {
+                    return;
+                }
 
-            decorate(original) : Function {
                 return function decorateOnShippingChange(data, actions) : ZalgoPromise<void> {
 
                     info('button_shipping_change');
