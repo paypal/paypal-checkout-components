@@ -649,9 +649,12 @@ export let Button : Component<ButtonOptions> = create({
         onShippingChange: {
             type:     'function',
             required: false,
-            noop:     true,
+            
+            decorate(original) : void | Function {
+                if (!original) {
+                    return;
+                }
 
-            decorate(original) : Function {
                 return function decorateOnShippingChange(data, actions) : ZalgoPromise<void> {
 
                     info('button_shipping_change');
@@ -665,9 +668,18 @@ export let Button : Component<ButtonOptions> = create({
                     flushLogs();
                     let timeout = __TEST__ ? 500 : 10 * 1000;
 
+                    const resolve = () => ZalgoPromise.resolve();
+
                     return ZalgoPromise.try(() => {
-                        return original.call(this, data, actions);
-                    }).timeout(timeout, new Error(`Timed out waiting ${ timeout }ms for payment`));
+                        return original.call(this, data, { ...actions, resolve });
+                    }).timeout(timeout,
+                        new Error(`Timed out waiting ${ timeout }ms for payment`)
+                    ).catch(err => {
+                        if (this.props.onError) {
+                            this.props.onError(err);
+                        }
+                        throw err;
+                    });
                 };
             }
         },

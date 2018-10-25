@@ -1454,7 +1454,7 @@
                 if (!frame.contentWindow) return !0;
                 if (!frame.parentNode) return !0;
                 var doc = frame.ownerDocument;
-                return !(!doc || !doc.body || doc.body.contains(frame));
+                return !(!doc || !doc.documentElement || doc.documentElement.contains(frame));
             }
             var iframeWindows = [], iframeFrames = [];
             function isWindowClosed(win) {
@@ -4855,6 +4855,9 @@
                         });
                     });
                 })).then(function() {
+                    Object.keys(params).forEach(function(key) {
+                        params[key] = escape(params[key]);
+                    });
                     return params;
                 });
             }
@@ -8490,7 +8493,11 @@
                 function focus(event) {
                     event.preventDefault();
                     event.stopPropagation();
-                    Object(lib.H)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
+                    if (Object(lib.H)()) window.alert("Please switch tabs to reactivate the PayPal window"); else try {
+                        actions.focus();
+                    } catch (err) {
+                        actions.close();
+                    }
                 }
                 var overlayColor = (props.style || {}).overlayColor || constants.q.BLACK, logoColor = LOGO_COLOR[overlayColor], ppLogo = "function" == typeof resources.b.pp ? resources.b.pp({
                     logoColor: logoColor
@@ -8577,7 +8584,7 @@
             var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.228",
+                version: "4.0.229",
                 cors: !0,
                 env: constants.t.PRODUCTION,
                 state: "checkoutjs",
@@ -8757,6 +8764,9 @@
                         disable_venmo: !0
                     },
                     "uncommongoods.com": {
+                        disable_venmo: !0
+                    },
+                    "onegold.com": {
                         disable_venmo: !0
                     }
                 },
@@ -11642,7 +11652,7 @@
                         logoColor: "blue"
                     })));
                 }(normalizeProps(props)) : null;
-                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.228", 
+                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.229", 
                 _ref21), {
                     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
@@ -11775,7 +11785,7 @@
                         type: "string",
                         required: !1,
                         def: function() {
-                            return escape(window.location.host);
+                            return window.location.host;
                         },
                         queryParam: !0
                     },
@@ -11990,7 +12000,7 @@
                                     return source !== constants.v.CREDIT;
                                 });
                             }
-                            allowed && -1 !== allowed.indexOf(constants.v.VENMO) && !Object(lib.B)() && (allowed = allowed.filter(function(source) {
+                            allowed && -1 !== allowed.indexOf(constants.v.VENMO) && (allowed = allowed.filter(function(source) {
                                 return source !== constants.v.VENMO;
                             }));
                             (function(props) {
@@ -12161,18 +12171,25 @@
                     onShippingChange: {
                         type: "function",
                         required: !1,
-                        noop: !0,
                         decorate: function(original) {
-                            return function(data, actions) {
+                            if (original) return function(data, actions) {
                                 var _track4, _this4 = this;
                                 Object(beaver_logger_client.k)("button_shipping_change");
                                 Object(beaver_logger_client.p)(((_track4 = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
                                 _track4[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CHECKOUT_SHIPPING_CHANGE, 
                                 _track4[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track4));
                                 Object(beaver_logger_client.h)();
+                                var resolve = function() {
+                                    return zalgo_promise_src.a.resolve();
+                                };
                                 return zalgo_promise_src.a.try(function() {
-                                    return original.call(_this4, data, actions);
-                                }).timeout(1e4, new Error("Timed out waiting 10000ms for payment"));
+                                    return original.call(_this4, data, component__extends({}, actions, {
+                                        resolve: resolve
+                                    }));
+                                }).timeout(1e4, new Error("Timed out waiting 10000ms for payment")).catch(function(err) {
+                                    _this4.props.onError && _this4.props.onError(err);
+                                    throw err;
+                                });
                             };
                         }
                     },
@@ -12424,7 +12441,7 @@
                             debounce = !1;
                             if (original) return original.apply(this, arguments);
                         };
-                    }, _i2 = 0, _ref5 = [ "onAuthorize", "onShippingChange", "onCancel", "onError", "onClose" ], _length2 = null == _ref5 ? 0 : _ref5.length; _i2 < _length2; _i2++) _loop(_i2, _ref5);
+                    }, _i2 = 0, _ref5 = [ "onAuthorize", "onCancel", "onError", "onClose" ], _length2 = null == _ref5 ? 0 : _ref5.length; _i2 < _length2; _i2++) _loop(_i2, _ref5);
                     return callOriginal();
                 }
                 Object(beaver_logger_client.q)("button_mutliple_click_debounce");
@@ -12645,7 +12662,7 @@
                 setup__track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, 
                 setup__track3));
             }
-            var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.228", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.229", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             interface_checkout = legacy.checkout;
             apps = legacy.apps;
             var interface_Checkout = void 0, interface_Card = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
@@ -13600,7 +13617,7 @@
                     }(ua) || function() {
                         if (void 0 !== process && process.versions && process.versions.electron) return !0;
                         return !1;
-                    }() || (userAgent = getUserAgent(), /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent)) || !0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches);
+                    }() || (userAgent = getUserAgent(), /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent)) || (!window.opener || window.opener === window) && (!0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches));
                     var userAgent;
                 };
                 function getUserAgent() {
@@ -13943,7 +13960,7 @@
                         country: config.a.locale.country,
                         lang: config.a.locale.lang,
                         uid: getSessionID(),
-                        ver: "4.0.228"
+                        ver: "4.0.229"
                     };
                 });
                 Object(client.a)(function() {
@@ -14186,7 +14203,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.228";
+                    payload.version = "4.0.229";
                     payload.host = window.location.host;
                     payload.uid = getSessionID();
                     payload.appName = APP_NAME;
@@ -14204,7 +14221,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.228".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.229".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!function(name) {
                         return getSessionState(function(state) {
@@ -14223,7 +14240,7 @@
             function fpti() {
                 var payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, query = [];
                 payload = beacon__extends({}, {
-                    v: "checkout.js.4.0.228",
+                    v: "checkout.js.4.0.229",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -14349,7 +14366,7 @@
                 return Boolean(getCurrentScript());
             }
             function getScriptVersion() {
-                return "4.0.228";
+                return "4.0.229";
             }
             var openMetaFrame = Object(util.j)(function() {
                 var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -14366,7 +14383,7 @@
                             domain: metaFrameDomain
                         });
                         return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                            version: "4.0.228"
+                            version: "4.0.229"
                         }), metaFrameDomain).then(function() {
                             return metaListener;
                         }).then(function(_ref) {
@@ -14467,6 +14484,7 @@
             __webpack_require__.d(__webpack_exports__, "B", function() {
                 return device.b;
             });
+            __webpack_require__.d(__webpack_exports__, !1, function() {});
             __webpack_require__.d(__webpack_exports__, !1, function() {});
             __webpack_require__.d(__webpack_exports__, !1, function() {});
             __webpack_require__.d(__webpack_exports__, !1, function() {});
