@@ -64,12 +64,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
             // eslint-disable-next-line no-alert
             window.alert('Please switch tabs to reactivate the PayPal window');
         } else {
-            try {
-                actions.focus();
-            } catch (err) {
-                // There's no more window to focus on
-                actions.close();
-            }
+            actions.focus().catch(actions.close);
         }
     }
 
