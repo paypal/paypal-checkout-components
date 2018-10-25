@@ -669,7 +669,14 @@ export let Button : Component<ButtonOptions> = create({
 
                     return ZalgoPromise.try(() => {
                         return original.call(this, data, { ...actions, resolve });
-                    }).timeout(timeout, new Error(`Timed out waiting ${ timeout }ms for payment`));
+                    }).timeout(timeout,
+                        new Error(`Timed out waiting ${ timeout }ms for payment`)
+                    ).catch(err => {
+                        if (this.props.onError) {
+                            this.props.onError(err);
+                        }
+                        throw err;
+                    });
                 };
             }
         },
