@@ -1,6 +1,6 @@
 /* @flow */
 
-import { getLogger, getPayPalDomain, getIntent, getCurrency } from 'paypal-braintree-web-client/src';
+import { getLogger, getPayPalDomain, getIntent, getCurrency, getPartnerAttributionID } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { on, send } from 'post-robot/src';
 import { getAncestor, isSameDomain } from 'cross-domain-utils/src';
@@ -114,7 +114,8 @@ export function createOrder(clientID : string, order : OrderCreateRequest) : Zal
     return createAccessToken(clientID).then((accessToken) : ZalgoPromise<Object> => {
 
         let headers : Object = {
-            Authorization: `Bearer ${ accessToken }`
+            'Authorization':                 `Bearer ${ accessToken }`,
+            'PayPal-Partner-Attribution-Id': getPartnerAttributionID()
         };
 
         return request({
