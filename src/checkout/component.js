@@ -410,14 +410,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
 
         onShippingChange: {
             type:     'function',
-            required: false,
-            decorate(original : Function) : ?Function {
-                if (original) {
-                    return function decorateOnShippingChange() : ZalgoPromise<void> {
-                        return original.apply(this, arguments);
-                    };
-                }
-            }
+            required: false
         },
 
         onAuth: {
