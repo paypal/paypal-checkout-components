@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { getPayPalDomain, getLogger, getLocale, getEnv, getClientID } from 'paypal-braintree-web-client/src';
+import { getPayPalDomain, getLogger, getLocale, getEnv, getClientID, getCommit } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONSTANTS, PopupOpenError } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
@@ -156,9 +156,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
         commit: {
             type:       'boolean',
             queryParam: true,
-            value() : boolean {
-                return true;
-            }
+            def:        getCommit
         },
 
         fundingSource: {
