@@ -27,10 +27,10 @@ export function DiscoverLogo({ nonce } : { nonce : string }) : JsxHTMLNode {
                             </linearGradient>
                             <circle fill="url(#SVGID_1_)" cx="207.343" cy="70.866" r="33.307" />
                             <linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="220.7487" y1="44.664" x2="187.0436" y2="110.5426" gradientTransform="matrix(1 0 0 -1 0 141.7323)">
-                                <stop offset="0" stop-color="#F68721;stop-opacity:0" />
-                                <stop offset="0.3587" stop-color="#E27027;stop-opacity:0.2704" />
-                                <stop offset="0.703" stop-color="#D4612C;stop-opacity:0.5299" />
-                                <stop offset="0.9816" stop-color="#D15D2D;stop-opacity:0.74" />
+                                <stop offset="0" stop-color="#F68721" stop-opacity="0" />
+                                <stop offset="0.3587" stop-color="#E27027" stop-opacity="0.2704" />
+                                <stop offset="0.703" stop-color="#D4612C" stop-opacity="0.5299" />
+                                <stop offset="0.9816" stop-color="#D15D2D" stop-opacity="0.74" />
                             </linearGradient>
                             <circle opacity="0.65" fill="url(#SVGID_2_)" cx="207.343" cy="70.866" r="33.307" />
                         </g>
