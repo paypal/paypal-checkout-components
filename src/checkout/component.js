@@ -3,8 +3,8 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { info, track, warn, flush as flushLogs, immediateFlush } from 'beaver-logger/client';
-import { create, CONSTANTS, PopupOpenError } from 'xcomponent/src';
-import { type Component } from 'xcomponent/src/component/component';
+import { create, CONSTANTS, PopupOpenError } from 'zoid/src';
+import { type Component } from 'zoid/src/component/component';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
