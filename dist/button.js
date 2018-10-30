@@ -4730,10 +4730,9 @@ function isCurrentDomain(domain) {
 /* unused harmony export getPayPalDomain */
 /* unused harmony export getPayPalAPIDomain */
 /* unused harmony export getPayPalLoggerDomain */
-/* harmony export (immutable) */ __webpack_exports__["c"] = buildPayPalUrl;
-/* harmony export (immutable) */ __webpack_exports__["b"] = buildPayPalAPIUrl;
-/* harmony export (immutable) */ __webpack_exports__["d"] = getPayPalLoggerUrl;
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CLIENT_ID_ALIAS; });
+/* harmony export (immutable) */ __webpack_exports__["b"] = buildPayPalUrl;
+/* harmony export (immutable) */ __webpack_exports__["a"] = buildPayPalAPIUrl;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getPayPalLoggerUrl;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__globals__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/globals.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__script__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/script.js");
@@ -4744,8 +4743,8 @@ function isCurrentDomain(domain) {
 
 function getPayPalDomain() {
     return {
-        local: 'http://localhost.paypal.com:' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["i" /* getPort */])(),
-        stage: 'https://' + Object(__WEBPACK_IMPORTED_MODULE_2__script__["e" /* getStageHost */])(),
+        local: 'http://localhost.paypal.com:' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["h" /* getPort */])(),
+        stage: 'https://' + Object(__WEBPACK_IMPORTED_MODULE_2__script__["f" /* getStageHost */])(),
         sandbox: 'https://www.sandbox.paypal.com',
         paypal: 'https://www.paypal.com',
         test: 'mock://www.paypal.com'
@@ -4764,7 +4763,7 @@ function getPayPalAPIDomain() {
 
 function getPayPalLoggerDomain() {
     return {
-        local: 'https://' + Object(__WEBPACK_IMPORTED_MODULE_2__script__["e" /* getStageHost */])(),
+        local: 'https://' + Object(__WEBPACK_IMPORTED_MODULE_2__script__["f" /* getStageHost */])(),
         stage: getPayPalDomain(),
         sandbox: getPayPalDomain(),
         paypal: getPayPalDomain(),
@@ -4794,31 +4793,23 @@ function getPayPalLoggerUrl() {
     return buildPayPalUrl(URI.LOGGER);
 }
 
-var CLIENT_ID_ALIAS = {
-    sb: 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R'
-};
-
 /***/ }),
 
 /***/ "./node_modules/paypal-braintree-web-client/src/globals.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["f"] = getHost;
+/* harmony export (immutable) */ __webpack_exports__["e"] = getHost;
 /* unused harmony export getHostName */
-/* harmony export (immutable) */ __webpack_exports__["i"] = getPort;
-/* harmony export (immutable) */ __webpack_exports__["h"] = getPath;
-/* harmony export (immutable) */ __webpack_exports__["e"] = getEnv;
-/* harmony export (immutable) */ __webpack_exports__["c"] = getCountry;
-/* harmony export (immutable) */ __webpack_exports__["g"] = getLang;
+/* harmony export (immutable) */ __webpack_exports__["h"] = getPort;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getPath;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getEnv;
+/* harmony export (immutable) */ __webpack_exports__["b"] = getCountry;
+/* harmony export (immutable) */ __webpack_exports__["f"] = getLang;
 /* unused harmony export getLocale */
-/* harmony export (immutable) */ __webpack_exports__["d"] = getDefaultStageHost;
-/* unused harmony export getIntent */
-/* harmony export (immutable) */ __webpack_exports__["a"] = getCommit;
-/* unused harmony export getVault */
-/* unused harmony export getCurrency */
-/* harmony export (immutable) */ __webpack_exports__["j"] = getVersion;
-/* harmony export (immutable) */ __webpack_exports__["b"] = getCorrelationID;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getDefaultStageHost;
+/* harmony export (immutable) */ __webpack_exports__["i"] = getVersion;
+/* harmony export (immutable) */ __webpack_exports__["a"] = getCorrelationID;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_belter_src__ = __webpack_require__("./node_modules/belter/src/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__ = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 
@@ -4878,22 +4869,6 @@ function getDefaultStageHost() {
     return __STAGE_HOST__;
 }
 
-function getIntent() {
-    return __INTENT__;
-}
-
-function getCommit() {
-    return __COMMIT__;
-}
-
-function getVault() {
-    return __VAULT__;
-}
-
-function getCurrency() {
-    return __CURRENCY__;
-}
-
 function getVersion() {
     return __VERSION__;
 }
@@ -4909,8 +4884,8 @@ function getCorrelationID() {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/config.js");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "buildPayPalAPIUrl", function() { return __WEBPACK_IMPORTED_MODULE_0__config__["b"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "buildPayPalUrl", function() { return __WEBPACK_IMPORTED_MODULE_0__config__["c"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "buildPayPalAPIUrl", function() { return __WEBPACK_IMPORTED_MODULE_0__config__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "buildPayPalUrl", function() { return __WEBPACK_IMPORTED_MODULE_0__config__["b"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__logger__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/logger.js");
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__types__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/types.js");
@@ -5194,7 +5169,7 @@ function Logger(_ref2) {
 // CONCATENATED MODULE: ./node_modules/beaver-logger/src/index.js
 
 
-// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 8 modules
 var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 
 // EXTERNAL MODULE: ./node_modules/paypal-braintree-web-client/src/config.js
@@ -5223,7 +5198,7 @@ var script = __webpack_require__("./node_modules/paypal-braintree-web-client/src
 function getLogger() {
     return Object(belter_src["inlineMemoize"])(getLogger, function () {
         return Logger({
-            url: Object(config["d" /* getPayPalLoggerUrl */])()
+            url: Object(config["c" /* getPayPalLoggerUrl */])()
         });
     });
 }
@@ -5243,20 +5218,20 @@ function setupLogger() {
         return {
             referer: window.location.host,
             uid: getSessionID(),
-            env: Object(globals["e" /* getEnv */])()
+            env: Object(globals["d" /* getEnv */])()
         };
     });
 
     logger.addTrackingBuilder(function () {
         var _ref;
 
-        return _ref = {}, _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].FEED] = paypal_sdk_constants_src["g" /* FPTI_FEED */].PAYMENTS_SDK, _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].DATA_SOURCE] = paypal_sdk_constants_src["f" /* FPTI_DATA_SOURCE */].PAYMENTS_SDK, _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].CLIENT_ID] = Object(script["b" /* getClientID */])(), _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].SELLER_ID] = Object(script["c" /* getMerchantID */])(), _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].SESSION_UID] = getSessionID(), _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].REFERER] = window.location.host, _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].LOCALE] = Object(globals["g" /* getLang */])() + '_' + Object(globals["c" /* getCountry */])(), _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].BUYER_COUNTRY] = Object(globals["c" /* getCountry */])(), _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].INTEGRATION_IDENTIFIER] = Object(script["b" /* getClientID */])(), _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].PARTNER_ATTRIBUTION_ID] = Object(script["d" /* getPartnerAttributionID */])(), _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].SDK_NAME] = paypal_sdk_constants_src["i" /* FPTI_SDK_NAME */].PAYMENTS_SDK, _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].SDK_VERSION] = Object(globals["j" /* getVersion */])(), _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].USER_AGENT] = window.navigator && window.navigator.userAgent, _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].USER_ACTION] = Object(globals["a" /* getCommit */])() ? paypal_sdk_constants_src["j" /* FPTI_USER_ACTION */].COMMIT : paypal_sdk_constants_src["j" /* FPTI_USER_ACTION */].CONTINUE, _ref[paypal_sdk_constants_src["h" /* FPTI_KEY */].CONTEXT_CORRID] = Object(globals["b" /* getCorrelationID */])(), _ref;
+        return _ref = {}, _ref[paypal_sdk_constants_src["l" /* FPTI_KEY */].FEED] = paypal_sdk_constants_src["k" /* FPTI_FEED */].PAYMENTS_SDK, _ref[paypal_sdk_constants_src["l" /* FPTI_KEY */].DATA_SOURCE] = paypal_sdk_constants_src["j" /* FPTI_DATA_SOURCE */].PAYMENTS_SDK, _ref[paypal_sdk_constants_src["l" /* FPTI_KEY */].CLIENT_ID] = Object(script["b" /* getClientID */])(), _ref[paypal_sdk_constants_src["l" /* FPTI_KEY */].SELLER_ID] = Object(script["d" /* getMerchantID */])(), _ref[paypal_sdk_constants_src["l" /* FPTI_KEY */].SESSION_UID] = getSessionID(), _ref[paypal_sdk_constants_src["l" /* FPTI_KEY */].REFERER] = window.location.host, _ref[paypal_sdk_constants_src["l" /* FPTI_KEY */].LOCALE] = Object(globals["f" /* getLang */])() + '_' + Object(globals["b" /* getCountry */])(), _ref[paypal_sdk_constants_src["l" /* FPTI_KEY */].BUYER_COUNTRY] = Object(globals["b" /* getCountry */])(), _ref[paypal_sdk_constants_src["l" /* FPTI_KEY */].INTEGRATION_IDENTIFIER] = Object(script["b" /* getClientID */])(), _ref[paypal_sdk_constants_src["l" /* FPTI_KEY */].PARTNER_ATTRIBUTION_ID] = Object(script["e" /* getPartnerAttributionID */])(), _ref[paypal_sdk_constants_src["l" /* FPTI_KEY */].SDK_NAME] = paypal_sdk_constants_src["m" /* FPTI_SDK_NAME */].PAYMENTS_SDK, _ref[paypal_sdk_constants_src["l" /* FPTI_KEY */].SDK_VERSION] = Object(globals["i" /* getVersion */])(), _ref[paypal_sdk_constants_src["l" /* FPTI_KEY */].USER_AGENT] = window.navigator && window.navigator.userAgent, _ref[paypal_sdk_constants_src["l" /* FPTI_KEY */].USER_ACTION] = Object(script["c" /* getCommit */])() ? paypal_sdk_constants_src["n" /* FPTI_USER_ACTION */].COMMIT : paypal_sdk_constants_src["n" /* FPTI_USER_ACTION */].CONTINUE, _ref[paypal_sdk_constants_src["l" /* FPTI_KEY */].CONTEXT_CORRID] = Object(globals["a" /* getCorrelationID */])(), _ref;
     });
 
     src["a" /* ZalgoPromise */].onPossiblyUnhandledException(function (err) {
         var _logger$track;
 
-        logger.track((_logger$track = {}, _logger$track[paypal_sdk_constants_src["h" /* FPTI_KEY */].ERROR_CODE] = 'checkoutjs_error', _logger$track[paypal_sdk_constants_src["h" /* FPTI_KEY */].ERROR_DESC] = Object(belter_src["stringifyErrorMessage"])(err), _logger$track));
+        logger.track((_logger$track = {}, _logger$track[paypal_sdk_constants_src["l" /* FPTI_KEY */].ERROR_CODE] = 'checkoutjs_error', _logger$track[paypal_sdk_constants_src["l" /* FPTI_KEY */].ERROR_DESC] = Object(belter_src["stringifyErrorMessage"])(err), _logger$track));
 
         logger.error('unhandled_error', {
             stack: Object(belter_src["stringifyError"])(err),
@@ -5274,28 +5249,38 @@ function setupLogger() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export CLIENT_ID_ALIAS */
 /* unused harmony export getSDKScript */
-/* unused harmony export getSDKSettings */
+/* unused harmony export getSDKAttributes */
+/* unused harmony export getSDKAttribute */
+/* unused harmony export getSDKQueryParams */
+/* unused harmony export getSDKQueryParam */
+/* unused harmony export getSDKQueryParamBool */
 /* unused harmony export getClientToken */
-/* unused harmony export getScriptQueryParams */
 /* harmony export (immutable) */ __webpack_exports__["b"] = getClientID;
-/* harmony export (immutable) */ __webpack_exports__["c"] = getMerchantID;
-/* harmony export (immutable) */ __webpack_exports__["d"] = getPartnerAttributionID;
-/* harmony export (immutable) */ __webpack_exports__["e"] = getStageHost;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getMerchantID;
+/* harmony export (immutable) */ __webpack_exports__["e"] = getPartnerAttributionID;
+/* harmony export (immutable) */ __webpack_exports__["f"] = getStageHost;
 /* harmony export (immutable) */ __webpack_exports__["a"] = getAPIStageHost;
+/* unused harmony export getIntent */
+/* harmony export (immutable) */ __webpack_exports__["c"] = getCommit;
+/* unused harmony export getVault */
+/* unused harmony export getCurrency */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_belter_src__ = __webpack_require__("./node_modules/belter/src/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__ = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__globals__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/globals.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__config__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/config.js");
 
 
 
 
 
+var CLIENT_ID_ALIAS = {
+    sb: 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R'
+};
 
 function getSDKScript() {
     return Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__["inlineMemoize"])(getSDKScript, function () {
-        var _host$path = { host: Object(__WEBPACK_IMPORTED_MODULE_2__globals__["f" /* getHost */])(), path: Object(__WEBPACK_IMPORTED_MODULE_2__globals__["h" /* getPath */])() },
+        var _host$path = { host: Object(__WEBPACK_IMPORTED_MODULE_2__globals__["e" /* getHost */])(), path: Object(__WEBPACK_IMPORTED_MODULE_2__globals__["g" /* getPath */])() },
             host = _host$path.host,
             path = _host$path.path;
 
@@ -5309,22 +5294,43 @@ function getSDKScript() {
     });
 }
 
-function getSDKSettings() {
-    return Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__["inlineMemoize"])(getSDKSettings, function () {
+function getSDKAttributes() {
+    return Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__["inlineMemoize"])(getSDKAttributes, function () {
         var sdkScript = getSDKScript();
+        var result = {};
 
-        return {
-            clientToken: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["p" /* SDK_SETTINGS */].CLIENT_TOKEN),
-            partnerAttributionID: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["p" /* SDK_SETTINGS */].PARTNER_ATTRIBUTION_ID),
-            stageHost: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["p" /* SDK_SETTINGS */].STAGE_HOST),
-            apiStageHost: sdkScript.getAttribute(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["p" /* SDK_SETTINGS */].API_STAGE_HOST)
-        };
+        for (var _i2 = 0, _sdkScript$attributes2 = sdkScript.attributes, _length2 = _sdkScript$attributes2 == null ? 0 : _sdkScript$attributes2.length; _i2 < _length2; _i2++) {
+            var attr = _sdkScript$attributes2[_i2];
+            result[attr.name] = attr.value;
+        }
+
+        return result;
     });
 }
 
+function getSDKAttribute(name, def) {
+    // $FlowFixMe
+    return getSDKAttributes()[name] || def;
+}
+
+function getSDKQueryParams() {
+    var script = getSDKScript();
+    return Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__["parseQuery"])(script.src.split('?')[1] || '');
+}
+
+function getSDKQueryParam(name, def) {
+    // $FlowFixMe
+    return getSDKQueryParams()[name] || def;
+}
+
+function getSDKQueryParamBool(name, def) {
+    // $FlowFixMe
+    return getSDKQueryParam(name, def ? def.toString() : __WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["s" /* QUERY_BOOL */].FALSE) === __WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["s" /* QUERY_BOOL */].TRUE;
+}
+
 function getClientToken() {
-    var _getSDKSettings = getSDKSettings(),
-        clientToken = _getSDKSettings.clientToken;
+    var _getSDKAttributes = getSDKAttributes(),
+        clientToken = _getSDKAttributes.clientToken;
 
     if (!clientToken) {
         throw new Error('Expected data-client-token="xyz" to be passed with client token, to ' + getSDKScript().outerHTML);
@@ -5333,35 +5339,50 @@ function getClientToken() {
     return clientToken;
 }
 
-function getScriptQueryParams() {
-    var script = getSDKScript();
-    return Object(__WEBPACK_IMPORTED_MODULE_0_belter_src__["parseQuery"])(script.src.split('?')[1] || '');
-}
-
 function getClientID() {
-    var clientID = getScriptQueryParams()[__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["o" /* SDK_QUERY_KEYS */].CLIENT_ID];
+    var clientID = getSDKQueryParam(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["t" /* SDK_QUERY_KEYS */].CLIENT_ID);
 
-    if (__WEBPACK_IMPORTED_MODULE_3__config__["a" /* CLIENT_ID_ALIAS */][clientID]) {
-        return __WEBPACK_IMPORTED_MODULE_3__config__["a" /* CLIENT_ID_ALIAS */][clientID];
+    if (!clientID) {
+        throw new Error('Expected ' + __WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["t" /* SDK_QUERY_KEYS */].CLIENT_ID + ' parameter in SDK URL');
+    }
+
+    if (CLIENT_ID_ALIAS[clientID]) {
+        return CLIENT_ID_ALIAS[clientID];
     }
 
     return clientID;
 }
 
 function getMerchantID() {
-    return getScriptQueryParams()[__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["o" /* SDK_QUERY_KEYS */].MERCHANT_ID];
+    return getSDKQueryParam(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["t" /* SDK_QUERY_KEYS */].MERCHANT_ID);
 }
 
 function getPartnerAttributionID() {
-    return getSDKSettings().partnerAttributionID;
+    return getSDKAttribute(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["u" /* SDK_SETTINGS */].PARTNER_ATTRIBUTION_ID);
 }
 
 function getStageHost() {
-    return getSDKSettings().stageHost || Object(__WEBPACK_IMPORTED_MODULE_2__globals__["d" /* getDefaultStageHost */])();
+    return getSDKAttribute(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["u" /* SDK_SETTINGS */].STAGE_HOST, Object(__WEBPACK_IMPORTED_MODULE_2__globals__["c" /* getDefaultStageHost */])());
 }
 
 function getAPIStageHost() {
-    return getSDKSettings().apiStageHost || getStageHost();
+    return getSDKAttribute(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["u" /* SDK_SETTINGS */].API_STAGE_HOST, getStageHost());
+}
+
+function getIntent() {
+    return getSDKQueryParam(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["t" /* SDK_QUERY_KEYS */].ORDER_INTENT, __WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["g" /* DEFAULT_INTENT */]);
+}
+
+function getCommit() {
+    return getSDKQueryParamBool(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["t" /* SDK_QUERY_KEYS */].ORDER_COMMIT, __WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["e" /* DEFAULT_COMMIT */]);
+}
+
+function getVault() {
+    return getSDKQueryParamBool(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["t" /* SDK_QUERY_KEYS */].ORDER_VAULT, __WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["h" /* DEFAULT_VAULT */]);
+}
+
+function getCurrency() {
+    return getSDKQueryParam(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["t" /* SDK_QUERY_KEYS */].ORDER_CURRENCY, __WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["f" /* DEFAULT_CURRENCY */]);
 }
 
 /***/ }),
@@ -5647,6 +5668,21 @@ var SDK_QUERY_KEYS = {
     DISABLE_FUNDING: 'disable-funding',
     DISABLE_CARD: 'disable-card'
 };
+
+var COMPONENTS = {
+    BUTTONS: 'buttons',
+    HOSTED_FIELDS: 'hosted-fields'
+};
+
+var DEBUG = {
+    TRUE: true,
+    FALSE: false
+};
+
+var QUERY_BOOL = {
+    TRUE: 'true',
+    FALSE: 'false'
+};
 // CONCATENATED MODULE: ./node_modules/paypal-sdk-constants/src/env.js
 var ENV = {
     LOCAL: 'local',
@@ -5787,26 +5823,54 @@ var CARD = {
     JCB: 'jcb',
     CUP: 'cup'
 };
+// CONCATENATED MODULE: ./node_modules/paypal-sdk-constants/src/defaults.js
+
+
+
+
+var DEFAULT_COUNTRY = COUNTRY.US;
+var DEFAULT_CURRENCY = CURRENCY.USD;
+var DEFAULT_INTENT = INTENT.CAPTURE;
+var DEFAULT_COMMIT = COMMIT.TRUE;
+var DEFAULT_VAULT = VAULT.TRUE;
+var DEFAULT_COMPONENTS = COMPONENTS.BUTTONS;
+var DEFAULT_DEBUG = DEBUG.FALSE;
 // CONCATENATED MODULE: ./node_modules/paypal-sdk-constants/src/index.js
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "c", function() { return COUNTRY; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "m", function() { return LANG; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "q", function() { return LANG; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "d", function() { return COUNTRY_LANGS; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "p", function() { return SDK_SETTINGS; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "o", function() { return SDK_QUERY_KEYS; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "e", function() { return ENV; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "h", function() { return FPTI_KEY; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "j", function() { return FPTI_USER_ACTION; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "f", function() { return FPTI_DATA_SOURCE; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "g", function() { return FPTI_FEED; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "i", function() { return FPTI_SDK_NAME; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "l", function() { return INTENT; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "u", function() { return SDK_SETTINGS; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "t", function() { return SDK_QUERY_KEYS; });
+/* unused concated harmony import null */
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return COMPONENTS; });
+/* unused concated harmony import null */
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return DEBUG; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "s", function() { return QUERY_BOOL; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "i", function() { return ENV; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "l", function() { return FPTI_KEY; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "n", function() { return FPTI_USER_ACTION; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "j", function() { return FPTI_DATA_SOURCE; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "k", function() { return FPTI_FEED; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "m", function() { return FPTI_SDK_NAME; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "p", function() { return INTENT; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "b", function() { return COMMIT; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "q", function() { return VAULT; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "v", function() { return VAULT; });
 /* unused concated harmony import null */
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return CURRENCY; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "n", function() { return PLATFORM; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "k", function() { return FUNDING; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "r", function() { return PLATFORM; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "o", function() { return FUNDING; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "a", function() { return CARD; });
+/* unused concated harmony import null */
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return DEFAULT_COUNTRY; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "f", function() { return DEFAULT_CURRENCY; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "g", function() { return DEFAULT_INTENT; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "e", function() { return DEFAULT_COMMIT; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "h", function() { return DEFAULT_VAULT; });
+/* unused concated harmony import null */
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return DEFAULT_COMPONENTS; });
+/* unused concated harmony import null */
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return DEFAULT_DEBUG; });
+
 
 
 
@@ -6386,7 +6450,7 @@ var src = __webpack_require__("./node_modules/paypal-braintree-web-client/src/in
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var belter_src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 8 modules
 var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 
 // EXTERNAL MODULE: ./src/constants/index.js + 4 modules
@@ -6402,9 +6466,9 @@ var _FUNDING_CONFIG;
 
 
 
-var FUNDING_PRIORITY = [paypal_sdk_constants_src["k" /* FUNDING */].PAYPAL, paypal_sdk_constants_src["k" /* FUNDING */].VENMO, paypal_sdk_constants_src["k" /* FUNDING */].CREDIT, paypal_sdk_constants_src["k" /* FUNDING */].IDEAL, paypal_sdk_constants_src["k" /* FUNDING */].SEPA, paypal_sdk_constants_src["k" /* FUNDING */].BANCONTACT, paypal_sdk_constants_src["k" /* FUNDING */].GIROPAY, paypal_sdk_constants_src["k" /* FUNDING */].EPS, paypal_sdk_constants_src["k" /* FUNDING */].SOFORT, paypal_sdk_constants_src["k" /* FUNDING */].MYBANK, paypal_sdk_constants_src["k" /* FUNDING */].P24, paypal_sdk_constants_src["k" /* FUNDING */].ZIMPLER, paypal_sdk_constants_src["k" /* FUNDING */].WECHATPAY, paypal_sdk_constants_src["k" /* FUNDING */].CARD];
+var FUNDING_PRIORITY = [paypal_sdk_constants_src["o" /* FUNDING */].PAYPAL, paypal_sdk_constants_src["o" /* FUNDING */].VENMO, paypal_sdk_constants_src["o" /* FUNDING */].CREDIT, paypal_sdk_constants_src["o" /* FUNDING */].IDEAL, paypal_sdk_constants_src["o" /* FUNDING */].SEPA, paypal_sdk_constants_src["o" /* FUNDING */].BANCONTACT, paypal_sdk_constants_src["o" /* FUNDING */].GIROPAY, paypal_sdk_constants_src["o" /* FUNDING */].EPS, paypal_sdk_constants_src["o" /* FUNDING */].SOFORT, paypal_sdk_constants_src["o" /* FUNDING */].MYBANK, paypal_sdk_constants_src["o" /* FUNDING */].P24, paypal_sdk_constants_src["o" /* FUNDING */].ZIMPLER, paypal_sdk_constants_src["o" /* FUNDING */].WECHATPAY, paypal_sdk_constants_src["o" /* FUNDING */].CARD];
 
-var FUNDING_CONFIG = (_FUNDING_CONFIG = {}, _FUNDING_CONFIG[paypal_sdk_constants_src["k" /* FUNDING */].PAYPAL] =  true ? __webpack_require__("./src/funding/paypal/index.js").PAYPAL_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["k" /* FUNDING */].VENMO] =  true ? __webpack_require__("./src/funding/venmo/index.js").VENMO_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["k" /* FUNDING */].CREDIT] =  true ? __webpack_require__("./src/funding/credit/index.js").CREDIT_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["k" /* FUNDING */].CARD] =  true ? __webpack_require__("./src/funding/card/index.js").CARD_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["k" /* FUNDING */].IDEAL] =  true ? __webpack_require__("./src/funding/ideal/index.js").IDEAL_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["k" /* FUNDING */].SEPA] =  true ? __webpack_require__("./src/funding/sepa/index.js").SEPA_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["k" /* FUNDING */].BANCONTACT] =  true ? __webpack_require__("./src/funding/bancontact/index.js").BANCONTACT_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["k" /* FUNDING */].GIROPAY] =  true ? __webpack_require__("./src/funding/giropay/index.js").GIROPAY_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["k" /* FUNDING */].SOFORT] =  true ? __webpack_require__("./src/funding/sofort/index.js").SOFORT_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["k" /* FUNDING */].EPS] =  true ? __webpack_require__("./src/funding/eps/index.js").EPS_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["k" /* FUNDING */].MYBANK] =  true ? __webpack_require__("./src/funding/mybank/index.js").MYBANK_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["k" /* FUNDING */].P24] =  true ? __webpack_require__("./src/funding/p24/index.js").P24_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["k" /* FUNDING */].ZIMPLER] =  true ? __webpack_require__("./src/funding/zimpler/index.js").ZIMPLER_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["k" /* FUNDING */].WECHATPAY] =  true ? __webpack_require__("./src/funding/wechatpay/index.js").WECHATPAY_CONFIG : null, _FUNDING_CONFIG);
+var FUNDING_CONFIG = (_FUNDING_CONFIG = {}, _FUNDING_CONFIG[paypal_sdk_constants_src["o" /* FUNDING */].PAYPAL] =  true ? __webpack_require__("./src/funding/paypal/index.js").PAYPAL_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["o" /* FUNDING */].VENMO] =  true ? __webpack_require__("./src/funding/venmo/index.js").VENMO_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["o" /* FUNDING */].CREDIT] =  true ? __webpack_require__("./src/funding/credit/index.js").CREDIT_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["o" /* FUNDING */].CARD] =  true ? __webpack_require__("./src/funding/card/index.js").CARD_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["o" /* FUNDING */].IDEAL] =  true ? __webpack_require__("./src/funding/ideal/index.js").IDEAL_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["o" /* FUNDING */].SEPA] =  true ? __webpack_require__("./src/funding/sepa/index.js").SEPA_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["o" /* FUNDING */].BANCONTACT] =  true ? __webpack_require__("./src/funding/bancontact/index.js").BANCONTACT_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["o" /* FUNDING */].GIROPAY] =  true ? __webpack_require__("./src/funding/giropay/index.js").GIROPAY_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["o" /* FUNDING */].SOFORT] =  true ? __webpack_require__("./src/funding/sofort/index.js").SOFORT_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["o" /* FUNDING */].EPS] =  true ? __webpack_require__("./src/funding/eps/index.js").EPS_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["o" /* FUNDING */].MYBANK] =  true ? __webpack_require__("./src/funding/mybank/index.js").MYBANK_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["o" /* FUNDING */].P24] =  true ? __webpack_require__("./src/funding/p24/index.js").P24_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["o" /* FUNDING */].ZIMPLER] =  true ? __webpack_require__("./src/funding/zimpler/index.js").ZIMPLER_CONFIG : null, _FUNDING_CONFIG[paypal_sdk_constants_src["o" /* FUNDING */].WECHATPAY] =  true ? __webpack_require__("./src/funding/wechatpay/index.js").WECHATPAY_CONFIG : null, _FUNDING_CONFIG);
 // CONCATENATED MODULE: ./src/funding/funding.js
 
 
@@ -6548,13 +6612,13 @@ var DEFAULT_STYLE = {
 var DEFAULT_PROPS = {
     LOCALE: {
         country: paypal_sdk_constants_src["c" /* COUNTRY */].US,
-        lang: paypal_sdk_constants_src["m" /* LANG */].EN
+        lang: paypal_sdk_constants_src["q" /* LANG */].EN
     },
     COMMIT: paypal_sdk_constants_src["b" /* COMMIT */].TRUE,
-    VAULT: paypal_sdk_constants_src["q" /* VAULT */].FALSE,
-    INTENT: paypal_sdk_constants_src["l" /* INTENT */].CAPTURE,
-    ENV: paypal_sdk_constants_src["e" /* ENV */].PRODUCTION,
-    PLATFORM: paypal_sdk_constants_src["n" /* PLATFORM */].DESKTOP
+    VAULT: paypal_sdk_constants_src["v" /* VAULT */].FALSE,
+    INTENT: paypal_sdk_constants_src["p" /* INTENT */].CAPTURE,
+    ENV: paypal_sdk_constants_src["i" /* ENV */].PRODUCTION,
+    PLATFORM: paypal_sdk_constants_src["r" /* PLATFORM */].DESKTOP
 };
 
 function normalizeButtonStyle(style, _ref) {
@@ -6645,9 +6709,9 @@ function normalizeButtonStyle(style, _ref) {
 }
 
 var COUNTRIES = Object(belter_src["values"])(paypal_sdk_constants_src["c" /* COUNTRY */]);
-var FUNDING_SOURCES = Object(belter_src["values"])(paypal_sdk_constants_src["k" /* FUNDING */]);
-var ENVS = Object(belter_src["values"])(paypal_sdk_constants_src["e" /* ENV */]);
-var PLATFORMS = Object(belter_src["values"])(paypal_sdk_constants_src["n" /* PLATFORM */]);
+var FUNDING_SOURCES = Object(belter_src["values"])(paypal_sdk_constants_src["o" /* FUNDING */]);
+var ENVS = Object(belter_src["values"])(paypal_sdk_constants_src["i" /* ENV */]);
+var PLATFORMS = Object(belter_src["values"])(paypal_sdk_constants_src["r" /* PLATFORM */]);
 
 function normalizeButtonProps(props) {
 
@@ -6716,7 +6780,7 @@ var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n  
 
 
 
-var buttonStyle = '\n\n    .' + constants["j" /* CLASS */].CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + ':not(.' + constants["j" /* CLASS */].CARD + ') {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].TRANSPARENT + ' {\n        cursor: auto;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + ' * {\n        cursor: pointer;\n    }\n\n    .' + constants["j" /* CLASS */].CONTAINER + '.' + constants["j" /* CLASS */].ENV + '-' + paypal_sdk_constants_src["e" /* ENV */].TEST + ' .' + constants["j" /* CLASS */].TEXT + ' {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + ':hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].GOLD + ':hover,\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].SILVER + ':hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].TRANSPARENT + ':hover {\n        box-shadow: none;\n    }\n\n    .' + constants["j" /* CLASS */].CARD + ', .' + constants["j" /* CLASS */].CARD + ' * {\n        cursor: pointer;\n    }\n\n    .' + constants["j" /* CLASS */].CARD + ':hover {\n        filter: brightness(1.2);\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + ':focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].TRANSPARENT + ':focus {\n        box-shadow: none;\n    }\n\n    .' + constants["j" /* CLASS */].LOGO + ' {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    .' + constants["j" /* CLASS */].TEXT + ' {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + ' .' + constants["j" /* CLASS */].LOGO + ',\n    .' + constants["j" /* CLASS */].BUTTON + ' .' + constants["j" /* CLASS */].TEXT + ' {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        text-align: left;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + ' .' + constants["j" /* CLASS */].TEXT + ' {\n        visibility: hidden;\n    }\n\n    .' + constants["j" /* CLASS */].TAGLINE + ' {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    .' + constants["j" /* CLASS */].SEPARATOR + ' {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n';
+var buttonStyle = '\n\n    .' + constants["j" /* CLASS */].CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + ':not(.' + constants["j" /* CLASS */].CARD + ') {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].TRANSPARENT + ' {\n        cursor: auto;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + ' * {\n        cursor: pointer;\n    }\n\n    .' + constants["j" /* CLASS */].CONTAINER + '.' + constants["j" /* CLASS */].ENV + '-' + paypal_sdk_constants_src["i" /* ENV */].TEST + ' .' + constants["j" /* CLASS */].TEXT + ' {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + ':hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].GOLD + ':hover,\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].SILVER + ':hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].TRANSPARENT + ':hover {\n        box-shadow: none;\n    }\n\n    .' + constants["j" /* CLASS */].CARD + ', .' + constants["j" /* CLASS */].CARD + ' * {\n        cursor: pointer;\n    }\n\n    .' + constants["j" /* CLASS */].CARD + ':hover {\n        filter: brightness(1.2);\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + ':focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + '.' + constants["j" /* CLASS */].COLOR + '-' + constants["b" /* BUTTON_COLOR */].TRANSPARENT + ':focus {\n        box-shadow: none;\n    }\n\n    .' + constants["j" /* CLASS */].LOGO + ' {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    .' + constants["j" /* CLASS */].TEXT + ' {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + ' .' + constants["j" /* CLASS */].LOGO + ',\n    .' + constants["j" /* CLASS */].BUTTON + ' .' + constants["j" /* CLASS */].TEXT + ' {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        text-align: left;\n    }\n\n    .' + constants["j" /* CLASS */].BUTTON + ' .' + constants["j" /* CLASS */].TEXT + ' {\n        visibility: hidden;\n    }\n\n    .' + constants["j" /* CLASS */].TAGLINE + ' {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    .' + constants["j" /* CLASS */].SEPARATOR + ' {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n';
 // CONCATENATED MODULE: ./src/buttons/template/componentStyle/layout.js
 
 
@@ -7119,7 +7183,7 @@ function Style(_ref8) {
 }
 
 function getCardNumber(locale) {
-    var cardConfig = FUNDING_CONFIG[paypal_sdk_constants_src["k" /* FUNDING */].CARD];
+    var cardConfig = FUNDING_CONFIG[paypal_sdk_constants_src["o" /* FUNDING */].CARD];
     var vendors = cardConfig && cardConfig.vendors;
     var maxCards = 4;
 
@@ -7600,7 +7664,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 8 modules
 var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 
 // EXTERNAL MODULE: ./src/funding/card/common.jsx
@@ -7686,7 +7750,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 8 modules
 var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 
 // EXTERNAL MODULE: ./src/funding/card/common.jsx
@@ -7777,7 +7841,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 8 modules
 var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 
 // EXTERNAL MODULE: ./src/funding/card/common.jsx
@@ -7842,7 +7906,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 8 modules
 var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 
 // EXTERNAL MODULE: ./src/funding/card/common.jsx
@@ -7900,7 +7964,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 8 modules
 var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
@@ -7951,7 +8015,7 @@ var CARD_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
             return CARD_PRIORITY.map(function (name) {
 
-                if (!fundingEligibility[paypal_sdk_constants_src["k" /* FUNDING */].CARD].vendors[name].eligible) {
+                if (!fundingEligibility[paypal_sdk_constants_src["o" /* FUNDING */].CARD].vendors[name].eligible) {
                     return null;
                 }
 
@@ -8001,7 +8065,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 8 modules
 var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 
 // EXTERNAL MODULE: ./src/funding/card/common.jsx
@@ -8123,7 +8187,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 8 modules
 var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 
 // EXTERNAL MODULE: ./src/funding/card/common.jsx
@@ -8180,7 +8244,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 8 modules
 var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 
 // EXTERNAL MODULE: ./src/funding/card/common.jsx
@@ -8251,7 +8315,7 @@ var DEFAULT_FUNDING_CONFIG = {
 
     layouts: [__WEBPACK_IMPORTED_MODULE_3__constants__["d" /* BUTTON_LAYOUT */].HORIZONTAL, __WEBPACK_IMPORTED_MODULE_3__constants__["d" /* BUTTON_LAYOUT */].VERTICAL],
 
-    platforms: [__WEBPACK_IMPORTED_MODULE_2_paypal_sdk_constants_src__["n" /* PLATFORM */].DESKTOP, __WEBPACK_IMPORTED_MODULE_2_paypal_sdk_constants_src__["n" /* PLATFORM */].MOBILE]
+    platforms: [__WEBPACK_IMPORTED_MODULE_2_paypal_sdk_constants_src__["r" /* PLATFORM */].DESKTOP, __WEBPACK_IMPORTED_MODULE_2_paypal_sdk_constants_src__["r" /* PLATFORM */].MOBILE]
 };
 
 var DEFAULT_LABEL_CONFIG = {
@@ -8289,7 +8353,7 @@ function SVGLogo(_ref) {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
-// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 8 modules
 var src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
@@ -9111,7 +9175,7 @@ var P24_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
-// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 8 modules
 var src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
@@ -9842,7 +9906,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/belter/src/index.js
 var src = __webpack_require__("./node_modules/belter/src/index.js");
 
-// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 7 modules
+// EXTERNAL MODULE: ./node_modules/paypal-sdk-constants/src/index.js + 8 modules
 var paypal_sdk_constants_src = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 
 // EXTERNAL MODULE: ./src/config/index.js + 1 modules
@@ -9929,7 +9993,7 @@ var VENMO_CONFIG = _extends({}, common["a" /* DEFAULT_FUNDING_CONFIG */], {
 
     defaultLabel: constants["c" /* BUTTON_LABEL */].VENMO,
 
-    platforms: [paypal_sdk_constants_src["n" /* PLATFORM */].MOBILE],
+    platforms: [paypal_sdk_constants_src["r" /* PLATFORM */].MOBILE],
 
     labels: (_labels = {}, _labels[constants["c" /* BUTTON_LABEL */].VENMO] = _extends({}, common["b" /* DEFAULT_LABEL_CONFIG */], {
 
