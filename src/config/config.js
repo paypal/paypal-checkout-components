@@ -263,6 +263,14 @@ export let config = {
 
         'universitytees.com': {
             disable_venmo: true
+        },
+
+        'revolve.com': {
+            disable_venmo: true
+        },
+        
+        'functionofbeauty.com': {
+            disable_venmo: true
         }
     },
 
