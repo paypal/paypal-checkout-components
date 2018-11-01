@@ -259,6 +259,10 @@ export let config = {
         
         'onegold.com': {
             disable_venmo: true
+        },
+
+        'universitytees.com': {
+            disable_venmo: true
         }
     },
 
