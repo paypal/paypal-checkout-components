@@ -89,7 +89,7 @@ patchMethod(Checkout, 'renderTo', ({ callOriginal, args: [ , props ] }) => {
 
     if (debounce) {
         warn('button_mutliple_click_debounce');
-        return;
+        return new ZalgoPromise(noop);
     }
 
     debounce = true;
