@@ -3,8 +3,8 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { create } from 'xcomponent/src';
-import { type Component } from 'xcomponent/src/component/component';
+import { create } from 'zoid/src';
+import { type Component } from 'zoid/src/component/component';
 import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/client';
 import { getDomain } from 'cross-domain-utils/src';
 
@@ -15,8 +15,7 @@ import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, isEligible,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
-    getRememberedFunding, memoize, uniqueID, getThrottle,
-    getBrowser, buildFundingLogoThrottle } from '../lib';
+    getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
 import { rest, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
@@ -78,7 +77,6 @@ function isCreditDualEligible(props) : boolean {
 }
 
 let creditThrottle;
-let fundingLogoThrottle;
 
 type ButtonOptions = {
     style : {|
@@ -185,19 +183,6 @@ export let Button : Component<ButtonOptions> = create({
                 return window.location.host;
             },
             queryParam: true
-        },
-
-        isFundingThrottleEnabled: {
-            type:       'boolean',
-            queryParam: true,
-            required:   false,
-            def(props) : boolean {
-                fundingLogoThrottle = fundingLogoThrottle || buildFundingLogoThrottle({ ...props, browserLocale: getBrowserLocale() });
-                return fundingLogoThrottle && fundingLogoThrottle.isEnabled() ? true : false;
-            },
-            queryValue(val : boolean) : string {
-                return val ? 'true' : 'false';
-            }
         },
 
         sessionID: {
@@ -438,12 +423,6 @@ export let Button : Component<ButtonOptions> = create({
                 return {};
             },
             decorate({ allowed = [], disallowed = [] } : Object = {}, props : ButtonOptions) : {} {
-                
-                fundingLogoThrottle = fundingLogoThrottle || buildFundingLogoThrottle({ ...props, browserLocale: getBrowserLocale() });
-                if (fundingLogoThrottle) {
-                    allowed = [ ...allowed, FUNDING.CREDIT ];
-                    disallowed = disallowed.filter(source => (source !== FUNDING.CREDIT));
-                }
 
                 if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1) {
                     allowed = allowed.filter(source => (source !== FUNDING.VENMO));
@@ -507,12 +486,6 @@ export let Button : Component<ButtonOptions> = create({
 
                     if (creditThrottle) {
                         creditThrottle.logStart({
-                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
-                        });
-                    }
-
-                    if (fundingLogoThrottle) {
-                        fundingLogoThrottle.logStart({
                             [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
                         });
                     }
@@ -606,12 +579,6 @@ export let Button : Component<ButtonOptions> = create({
                     onAuthorizeListener.trigger({
                         paymentToken: data.paymentToken
                     });
-
-                    if (fundingLogoThrottle) {
-                        fundingLogoThrottle.logComplete({
-                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
-                        });
-                    }
 
                     if (creditThrottle) {
                         creditThrottle.logComplete({
@@ -736,15 +703,6 @@ export let Button : Component<ButtonOptions> = create({
                             [ FPTI.KEY.STATE ]:              FPTI.STATE.BUTTON,
                             [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_CLICK,
                             [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
-                        });
-                    }
-                    
-                    if (fundingLogoThrottle) {
-                        fundingLogoThrottle.log('click', {
-                            [ FPTI.KEY.STATE ]:              FPTI.STATE.BUTTON,
-                            [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_CLICK,
-                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
-                            [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                         });
                     }
 

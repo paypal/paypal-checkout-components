@@ -3,8 +3,8 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { create  } from 'xcomponent/src';
-import { type Component } from 'xcomponent/src/component/component';
+import { create  } from 'zoid/src';
+import { type Component } from 'zoid/src/component/component';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { config } from '../config';

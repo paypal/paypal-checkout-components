@@ -3,14 +3,14 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { info, track, warn, flush as flushLogs, immediateFlush } from 'beaver-logger/client';
-import { create, CONSTANTS, PopupOpenError } from 'xcomponent/src';
-import { type Component } from 'xcomponent/src/component/component';
+import { create, CONSTANTS, PopupOpenError } from 'zoid/src';
+import { type Component } from 'zoid/src/component/component';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
     setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize,
-    getDomainSetting, documentReady, getThrottle, getScriptVersion,
-    getButtonSessionID, isPayPalDomain, isIEIntranet, isEligible } from '../lib';
+    getDomainSetting, getScriptVersion, getButtonSessionID, isPayPalDomain,
+    isIEIntranet, isEligible } from '../lib';
 import { config } from '../config';
 import { ENV, FPTI, PAYMENT_TYPE, CHECKOUT_OVERLAY_COLOR, ATTRIBUTE } from '../constants';
 import { onLegacyPaymentAuthorize } from '../compat';
@@ -625,72 +625,6 @@ if (Checkout.isChild() && Checkout.xchild && Checkout.xprops) {
                 immediateFlush();
             }
             return callOriginal();
-        });
-    });
-
-    documentReady.then(() => {
-
-        if (!window.injector) {
-            return;
-        }
-
-        let $event = window.injector.get('$event');
-
-        if (!$event) {
-            return;
-        }
-
-        let experimentActive = false;
-        let loggedComplete = false;
-
-        $event.on('allLoaded', () => {
-            setTimeout(() => {
-                let payButton = document.querySelector('.buttons.reviewButton');
-                let topPayButton = document.querySelector('.buttons.reviewButton.topReviewButton');
-                let reviewSection = document.querySelector('section.review');
-
-                let throttle = getThrottle('top_pay_button', 0);
-
-                let hash = window.location.hash;
-                
-                let logComplete = () => {
-                    if (experimentActive && !loggedComplete && hash && hash.indexOf('checkout/review') !== -1) {
-                        throttle.logComplete({ [ FPTI.KEY.FEED ]: 'hermesnodeweb' });
-                        loggedComplete = true;
-                    }
-                };
-
-                if (payButton) {
-                    payButton.addEventListener('click', logComplete);
-                }
-
-                if (!reviewSection || !reviewSection.firstChild || !payButton || topPayButton) {
-                    return;
-                }
-
-                if (payButton.getBoundingClientRect().bottom < window.innerHeight) {
-                    return;
-                }
-
-                experimentActive = true;
-                throttle.logStart({ [ FPTI.KEY.FEED ]: 'hermesnodeweb' });
-
-                if (!throttle.isEnabled()) {
-                    return;
-                }
-
-                topPayButton = payButton.cloneNode(true);
-                topPayButton.className += ' topReviewButton';
-                reviewSection.insertBefore(topPayButton, reviewSection.firstChild);
-
-                topPayButton.addEventListener('click', () => {
-                    logComplete();
-                    let button = payButton && payButton.querySelector('button, input');
-                    if (button) {
-                        button.click();
-                    }
-                });
-            }, 200);
         });
     });
 }

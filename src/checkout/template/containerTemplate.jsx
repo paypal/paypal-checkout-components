@@ -6,7 +6,7 @@ import { btoa } from 'Base64';
 
 import { fundingLogos } from '../../resources';
 import { BUTTON_LOGO_COLOR, CHECKOUT_OVERLAY_COLOR } from '../../constants';
-import { isIos, restrictFocus } from '../../lib';
+import { isIos } from '../../lib';
 
 import componentContentJSON from './containerContent.json';
 import { getContainerStyle } from './containerStyle';
@@ -119,11 +119,8 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
         </html>
     );
 
-    const restrictedFocus = restrictFocus(document.body);
-
     on(EVENT.CLOSE, () => {
         el.className += ` ${ tag }-loading`;
-        restrictedFocus.release();
     });
 
     return (

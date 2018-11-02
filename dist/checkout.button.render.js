@@ -1355,7 +1355,7 @@
         }
         var util = __webpack_require__("./src/lib/util.js");
         var normalizeProps = Object(util.b)(function(props) {
-            var defs = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit, isFundingThrottleEnabled = props.isFundingThrottleEnabled;
+            var defs = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit;
             locale = locale ? function(locale) {
                 var _locale$split = locale.split("_"), lang = _locale$split[0];
                 return {
@@ -1439,8 +1439,7 @@
                     funding: funding,
                     locale: locale
                 }),
-                installmentperiod: installmentperiod,
-                isFundingThrottleEnabled: isFundingThrottleEnabled
+                installmentperiod: installmentperiod
             };
         });
         function _classCallCheck(instance, Constructor) {
@@ -1650,7 +1649,7 @@
                 d: "M 95.1 5.417 L 91.9 25.717 C 91.8 26.117 92.1 26.417 92.5 26.417 L 95.7 26.417 C 96.2 26.417 96.7 26.017 96.8 25.517 L 100 5.617 C 100.1 5.217 99.8 4.917 99.4 4.917 L 95.8 4.917 C 95.4 4.917 95.2 5.117 95.1 5.417 Z"
             }));
         }, _fundingLogos[constants.h.CREDIT] = function(_ref) {
-            var logoColor = _ref.logoColor, locale = _ref.locale, isFundingThrottleEnabled = _ref.isFundingThrottleEnabled;
+            var logoColor = _ref.logoColor, locale = _ref.locale;
             if (!CREDIT_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " credit logo available");
             var country = (locale || {}).country, primary = CREDIT_LOGO_COLORS[logoColor].primary;
             switch (country) {
@@ -1671,58 +1670,7 @@
                 }))));
 
               default:
-                return isFundingThrottleEnabled ? jsxToHTML("svg", {
-                    width: "482",
-                    height: "100",
-                    preserveAspectRatio: "xMinYMin meet",
-                    xmlns: "http://www.w3.org/2000/svg",
-                    viewBox: "0 0 53 11"
-                }, jsxToHTML("title", null, "checkout_bml_text"), jsxToHTML("g", {
-                    fill: "#003087",
-                    id: "Bill_Me_Later_orig",
-                    "data-name": "Bill Me Later_orig"
-                }, jsxToHTML("path", {
-                    fill: "#009cde",
-                    class: "cls-47",
-                    d: "M21.15,6.17C21.09,5,21,3.58,21,2.54h0c-.29,1-.64,2-1.06,3.2L18.44,9.81h-.82l-1.36-4c-.4-1.19-.74-2.27-1-3.27h0c0,1-.09,2.46-.16,3.72l-.22,3.61h-1l.59-8.41h1.39l1.44,4.07c.35,1,.64,2,.85,2.83h0c.21-.85.51-1.77.89-2.83l1.5-4.07H21.9l.52,8.41H21.36Z"
-                }), jsxToHTML("path", {
-                    fill: "#009cde",
-                    class: "cls-47",
-                    d: "M24.11,7a1.94,1.94,0,0,0,2.07,2.1,4,4,0,0,0,1.67-.31l.19.79A4.85,4.85,0,0,1,26,10a2.82,2.82,0,0,1-3-3.06c0-1.82,1.07-3.26,2.83-3.26a2.56,2.56,0,0,1,2.5,2.85,4.17,4.17,0,0,1,0,.51Zm3.22-.79a1.56,1.56,0,0,0-1.52-1.78,1.82,1.82,0,0,0-1.69,1.78Z"
-                }), jsxToHTML("path", {
-                    class: "cls-48",
-                    d: "M1,1.56a10.52,10.52,0,0,1,2-.17A3.48,3.48,0,0,1,5.29,2,1.77,1.77,0,0,1,6,3.48,2,2,0,0,1,4.57,5.33v0A2.17,2.17,0,0,1,6.3,7.47a2.27,2.27,0,0,1-.71,1.69,4.23,4.23,0,0,1-2.91.79A12.68,12.68,0,0,1,1,9.84ZM2.09,5h1c1.15,0,1.82-.6,1.82-1.41,0-1-.75-1.37-1.85-1.37a4.68,4.68,0,0,0-1,.07Zm0,4a5.83,5.83,0,0,0,.91,0c1.12,0,2.16-.41,2.16-1.64S4.17,5.83,3,5.83h-.9Z"
-                }), jsxToHTML("path", {
-                    class: "cls-48",
-                    d: "M8.34,2.12A.68.68,0,0,1,7,2.12a.67.67,0,0,1,.69-.69.65.65,0,0,1,.67.69M7.12,3.82h1.1v6H7.12Z"
-                }), jsxToHTML("rect", {
-                    class: "cls-48",
-                    x: "9.39",
-                    y: "1",
-                    width: "1.1",
-                    height: "8.86"
-                }), jsxToHTML("rect", {
-                    class: "cls-48",
-                    x: "11.68",
-                    y: "1",
-                    width: "1.1",
-                    height: "8.86"
-                }), jsxToHTML("polygon", {
-                    class: "cls-48",
-                    points: "29.24 1.45 30.33 1.45 30.33 8.95 33.92 8.95 33.92 9.86 29.24 9.86 29.24 1.45"
-                }), jsxToHTML("path", {
-                    class: "cls-48",
-                    d: "M38.9,8.41A8.53,8.53,0,0,0,39,9.86H38l-.09-.76h0A2.25,2.25,0,0,1,36,10a1.72,1.72,0,0,1-1.85-1.74C34.18,6.8,35.48,6,37.81,6V5.89a1.25,1.25,0,0,0-1.37-1.4,3,3,0,0,0-1.57.45l-.25-.72a3.75,3.75,0,0,1,2-.54c1.85,0,2.3,1.26,2.3,2.47ZM37.84,6.78c-1.2,0-2.56.19-2.56,1.36a1,1,0,0,0,1,1,1.5,1.5,0,0,0,1.46-1,1.15,1.15,0,0,0,.06-.35Z"
-                }), jsxToHTML("path", {
-                    class: "cls-48",
-                    d: "M41.27,2.37V3.82h1.57v.84H41.27V7.92c0,.75.21,1.17.82,1.17A2,2,0,0,0,42.73,9l.05.82a2.65,2.65,0,0,1-1,.16,1.53,1.53,0,0,1-1.19-.47A2.24,2.24,0,0,1,40.2,8V4.66h-.94V3.82h.94V2.71Z"
-                }), jsxToHTML("path", {
-                    class: "cls-48",
-                    d: "M43.93,7A1.94,1.94,0,0,0,46,9.14a4,4,0,0,0,1.67-.31l.19.79a4.86,4.86,0,0,1-2,.39,2.82,2.82,0,0,1-3-3.06c0-1.82,1.07-3.26,2.83-3.26a2.56,2.56,0,0,1,2.5,2.85,4.16,4.16,0,0,1,0,.51Zm3.22-.79a1.56,1.56,0,0,0-1.52-1.78,1.82,1.82,0,0,0-1.69,1.78Z"
-                }), jsxToHTML("path", {
-                    class: "cls-48",
-                    d: "M49,5.71c0-.71,0-1.32,0-1.88h1l0,1.19h0a1.81,1.81,0,0,1,1.67-1.32,1.18,1.18,0,0,1,.31,0v1a1.63,1.63,0,0,0-.37,0,1.54,1.54,0,0,0-1.47,1.41,3.08,3.08,0,0,0-.05.51V9.86H49Z"
-                }))) : jsxToHTML("svg", {
+                return jsxToHTML("svg", {
                     width: "100",
                     height: "32",
                     viewBox: "0 0 95 32",
@@ -2338,7 +2286,7 @@
                 1 !== style.maxbuttons || !1 !== style.tagline || "responsive" !== style.size || "horizontal" !== style.layout || style.height || (style.height = 44);
             }
             validateButtonProps(props);
-            var _normalizeProps = normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, isFundingThrottleEnabled = _normalizeProps.isFundingThrottleEnabled, buttonNodes = function(_ref4) {
+            var _normalizeProps = normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, buttonNodes = function(_ref4) {
                 var label = _ref4.label, color = _ref4.color, sources = _ref4.sources, multiple = _ref4.multiple, layout = _ref4.layout;
                 return sources.map(function(source, i) {
                     var buttonLabel = determineLabel({
@@ -2361,7 +2309,7 @@
                 layout: layout
             }).map(function(button, i) {
                 return function(_ref14) {
-                    var _ref15, _ref16, _ref17, size = _ref14.size, label = _ref14.label, color = _ref14.color, locale = _ref14.locale, branding = _ref14.branding, multiple = _ref14.multiple, layout = _ref14.layout, shape = _ref14.shape, source = _ref14.source, funding = _ref14.funding, i = _ref14.i, env = _ref14.env, cards = _ref14.cards, installmentperiod = _ref14.installmentperiod, isFundingThrottleEnabled = _ref14.isFundingThrottleEnabled, logoColor = getButtonConfig(label, "logoColors")[color], contentText = determineLabel({
+                    var _ref15, _ref16, _ref17, size = _ref14.size, label = _ref14.label, color = _ref14.color, locale = _ref14.locale, branding = _ref14.branding, multiple = _ref14.multiple, layout = _ref14.layout, shape = _ref14.shape, source = _ref14.source, funding = _ref14.funding, i = _ref14.i, env = _ref14.env, cards = _ref14.cards, installmentperiod = _ref14.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = determineLabel({
                         label: label,
                         source: source,
                         multiple: multiple,
@@ -2381,8 +2329,7 @@
                         cards: cards,
                         dynamicContent: dynamicContent,
                         layout: layout,
-                        size: size,
-                        isFundingThrottleEnabled: isFundingThrottleEnabled
+                        size: size
                     });
                     var hasTabIndex = -1 === [ constants.t.CARD ].indexOf(source);
                     return jsxToHTML("div", _extends({}, ((_ref15 = {})[constants.c.LAYOUT] = layout || "", 
@@ -2396,13 +2343,11 @@
                             env: env
                         }) + " " + function(_ref2) {
                             var label = _ref2.label, color = _ref2.color, logoColor = _ref2.logoColor;
-                            _ref2.isFundingThrottleEnabled && label === constants.f.CREDIT && (color = constants.e.SILVER);
                             return [ CLASS.LABEL + "-" + label, CLASS.COLOR + "-" + color, CLASS.LOGO_COLOR + "-" + logoColor ].join(" ");
                         }({
                             label: label,
                             color: color,
-                            logoColor: logoColor,
-                            isFundingThrottleEnabled: isFundingThrottleEnabled
+                            logoColor: logoColor
                         }),
                         role: "button",
                         "aria-label": source,
@@ -2422,8 +2367,7 @@
                     shape: shape,
                     cards: cards,
                     installmentperiod: installmentperiod,
-                    size: size,
-                    isFundingThrottleEnabled: isFundingThrottleEnabled
+                    size: size
                 });
             }), taglineNode = function(_ref18) {
                 var label = _ref18.label, tagline = _ref18.tagline, color = _ref18.color, locale = _ref18.locale, multiple = _ref18.multiple, env = _ref18.env, cards = _ref18.cards;
@@ -2491,7 +2435,7 @@
                 })));
             }(normalizeProps(props)) : null;
             var script;
-            return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.229", 
+            return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.231", 
             _ref21), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -2538,7 +2482,7 @@
             });
         }
         function renderContent(text, _ref13) {
-            var template, renderers, nodes, label = _ref13.label, locale = _ref13.locale, color = _ref13.color, branding = _ref13.branding, logoColor = _ref13.logoColor, funding = _ref13.funding, env = _ref13.env, _cards = _ref13.cards, dynamicContent = _ref13.dynamicContent, layout = _ref13.layout, size = _ref13.size, isFundingThrottleEnabled = _ref13.isFundingThrottleEnabled, _content = function(locale) {
+            var template, renderers, nodes, label = _ref13.label, locale = _ref13.locale, color = _ref13.color, branding = _ref13.branding, logoColor = _ref13.logoColor, funding = _ref13.funding, env = _ref13.env, _cards = _ref13.cards, dynamicContent = _ref13.dynamicContent, layout = _ref13.layout, size = _ref13.size, _content = function(locale) {
                 var country = locale.country, lang = locale.lang;
                 return componentContent[country][lang];
             }(locale);
@@ -2550,14 +2494,7 @@
                 },
                 logo: function(name) {
                     if (branding) {
-                        if (!logoColor && !isFundingThrottleEnabled) throw new Error("Can not determine logo without logo color");
-                        if (isFundingThrottleEnabled && layout !== constants.g.VERTICAL) {
-                            if (label === constants.f.CREDIT && (name === constants.h.PAYPAL || name === constants.h.PP)) return;
-                            if (name === constants.h.CREDIT) {
-                                color = constants.e.SILVER;
-                                logoColor = constants.e.BLUE;
-                            }
-                        }
+                        if (!logoColor) throw new Error("Can not determine logo without logo color");
                         var logo = "function" == typeof fundingLogos[name] ? fundingLogos[name]({
                             label: label,
                             locale: locale,
@@ -2566,8 +2503,7 @@
                             logoColor: logoColor,
                             funding: funding,
                             env: env,
-                            cards: _cards,
-                            isFundingThrottleEnabled: isFundingThrottleEnabled
+                            cards: _cards
                         }) : fundingLogos[name][logoColor] || fundingLogos[name][constants.i.ANY];
                         return jsxToHTML("img", {
                             class: CLASS.LOGO + " " + CLASS.LOGO + "-" + name + " " + CLASS.LOGO + "-" + color,
@@ -2595,8 +2531,7 @@
                         logoColor: logoColor,
                         funding: funding,
                         env: env,
-                        cards: _cards,
-                        isFundingThrottleEnabled: isFundingThrottleEnabled
+                        cards: _cards
                     });
                 },
                 cards: function() {
@@ -2635,7 +2570,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.229",
+            version: "4.0.231",
             cors: !0,
             env: constants.s.PRODUCTION,
             state: "checkoutjs",
@@ -2819,12 +2754,18 @@
                 },
                 "onegold.com": {
                     disable_venmo: !0
+                },
+                "universitytees.com": {
+                    disable_venmo: !0
+                },
+                "revolve.com": {
+                    disable_venmo: !0
+                },
+                "functionofbeauty.com": {
+                    disable_venmo: !0
                 }
             },
             creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
-            bmlCreditTest: {
-                domains: []
-            },
             customCountry: !1,
             SUPPORTED_BROWSERS: {
                 msie: "11",

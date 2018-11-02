@@ -92,7 +92,7 @@
             return !1;
         }
         function getVersion() {
-            if (!isCheckoutXComponent()) throw new Error("Can not get version for non-xcomponent");
+            if (!isCheckoutXComponent()) throw new Error("Can not get version for non-zoid-component");
             return window.name.split(config.name_separator)[2].replace(/_/g, ".");
         }
         function loadScript(url, prop, attrs, callback) {
