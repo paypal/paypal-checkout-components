@@ -31,7 +31,7 @@ describe(`paypal button layouts`, () => {
             },
 
             funding: {
-                allowed: [ window.paypal.FUNDING.CARD, window.paypal.FUNDING.VENMO, window.paypal.FUNDING.CREDIT ]
+                allowed: [ window.paypal.FUNDING.CARD, window.paypal.FUNDING.CREDIT ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -66,7 +66,7 @@ describe(`paypal button layouts`, () => {
             },
 
             funding: {
-                allowed: [ window.paypal.FUNDING.CARD, window.paypal.FUNDING.VENMO, window.paypal.FUNDING.CREDIT, window.paypal.FUNDING.IDEAL, window.paypal.FUNDING.ELV ]
+                allowed: [ window.paypal.FUNDING.CARD, window.paypal.FUNDING.CREDIT, window.paypal.FUNDING.IDEAL, window.paypal.FUNDING.ELV ]
             },
 
             style: {

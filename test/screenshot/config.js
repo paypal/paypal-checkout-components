@@ -198,6 +198,7 @@ for (let label of Object.keys(BUTTON_LABEL)) {
         });
 
         buttonConfigs.push({
+            userAgent: 'iphone6',
             container: {
                 width: 340
             },
@@ -230,7 +231,8 @@ for (let color of getButtonConfig('paypal', 'colors')) {
     });
 
     buttonConfigs.push({
-        button: {
+        userAgent: 'iphone6',
+        button:    {
             style: {
                 color,
                 layout: 'horizontal'
@@ -255,7 +257,8 @@ for (let color of getButtonConfig('paypal', 'colors')) {
     });
 
     buttonConfigs.push({
-        button: {
+        userAgent: 'iphone6',
+        button:    {
             style: {
                 color,
                 layout:     'vertical',

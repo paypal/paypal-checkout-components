@@ -1,7 +1,7 @@
 /* @flow */
 
 import { debug, info, warn, error, track, flush } from 'beaver-logger/client';
-import { destroyAll as _destroyAll } from 'xcomponent/src';
+import { destroyAll as _destroyAll } from 'zoid/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import * as _postRobot from 'post-robot/src'; // eslint-disable-line import/no-namespace
 
@@ -14,7 +14,7 @@ import './hacks'; // eslint-disable-line import/no-unassigned-import
 
 export const postRobot = _postRobot;
 export { ZalgoPromise as Promise } from 'zalgo-promise/src';
-export { PopupOpenError } from 'xcomponent/src';
+export { PopupOpenError } from 'zoid/src';
 
 export { rest } from './api';
 export { Button } from './button';

@@ -1,10 +1,8 @@
 /* @flow */
 
 import { info, track, flush as flushLogs } from 'beaver-logger/client';
-import { getDomain } from 'cross-domain-utils/src';
 
-import { FPTI, BUTTON_LABEL, BUTTON_LAYOUT } from '../constants';
-import { config } from '../config';
+import { FPTI } from '../constants';
 
 import { match } from './util';
 import { getStorageState, getStorageID } from './session';
@@ -116,30 +114,4 @@ export function getReturnToken() : ?string {
     if (token && payer) {
         return token;
     }
-}
-
-export function buildFundingLogoThrottle(props : Object) : ?Throttle {
-
-    let { layout, label } = props.style || { layout: undefined, label: undefined };
-    let locale = props.locale || `${ props.browserLocale.lang }_${ props.browserLocale.country }`;
-
-    if (locale !== 'en_US') {
-        return null;
-    }
-
-    if (label !== undefined && label !== BUTTON_LABEL.CHECKOUT && label !== BUTTON_LABEL.PAYPAL && label !== BUTTON_LABEL.PAY && label !== BUTTON_LABEL.BUYNOW) {
-        return null;
-    }
-
-    let domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
-    if (config.bmlCreditTest.domains.indexOf(domain) === -1) {
-        return null;
-    }
-
-    if (layout === undefined || (layout && layout === BUTTON_LAYOUT.HORIZONTAL)) {
-        return getThrottle('ppc_rebrand', 50);
-    }
-
-    return null;
-
 }

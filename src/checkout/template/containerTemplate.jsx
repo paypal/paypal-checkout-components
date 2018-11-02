@@ -9,7 +9,8 @@ import { BUTTON_LOGO_COLOR, CHECKOUT_OVERLAY_COLOR } from '../../constants';
 import { isIos } from '../../lib';
 
 import componentContentJSON from './containerContent.json';
-import { getContainerStyle, getSandboxStyle } from './containerStyle';
+import { getContainerStyle } from './containerStyle';
+import { getSandboxStyle } from './sandboxStyle';
 
 let componentContent = JSON.parse(componentContentJSON);
 
@@ -63,7 +64,12 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
             // eslint-disable-next-line no-alert
             window.alert('Please switch tabs to reactivate the PayPal window');
         } else {
-            actions.focus();
+            try {
+                actions.focus();
+            } catch (err) {
+                // There's no more window to focus on
+                actions.close();
+            }
         }
     }
 

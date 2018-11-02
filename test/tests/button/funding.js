@@ -18,6 +18,14 @@ describe(`paypal button component funding mix`, () => {
 
     it('should render venmo alongside default button', (done) => {
 
+        let decorate = window.paypal.Button.props.funding.decorate;
+        window.paypal.Button.props.funding.decorate = (funding) => {
+            return {
+                ...funding,
+                remembered: [ window.paypal.FUNDING.VENMO ]
+            };
+        };
+
         window.paypal.Button.render({
 
             test: {
@@ -25,7 +33,7 @@ describe(`paypal button component funding mix`, () => {
                     if (fundingSources.indexOf(window.paypal.FUNDING.VENMO) === -1) {
                         throw new Error(`Expected venmo to be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
-
+                    window.paypal.Button.props.funding.decorate = decorate;
                     done();
                 }
             },
@@ -33,7 +41,7 @@ describe(`paypal button component funding mix`, () => {
             locale: 'en_US',
 
             funding: {
-                allowed: [ window.paypal.FUNDING.CARD, window.paypal.FUNDING.VENMO ]
+                allowed: [ window.paypal.FUNDING.CARD ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -55,6 +63,14 @@ describe(`paypal button component funding mix`, () => {
 
     it('should render venmo alongside checkout button', (done) => {
 
+        let decorate = window.paypal.Button.props.funding.decorate;
+        window.paypal.Button.props.funding.decorate = (funding) => {
+            return {
+                ...funding,
+                remembered: [ window.paypal.FUNDING.VENMO ]
+            };
+        };
+        
         window.paypal.Button.render({
 
             test: {
@@ -62,7 +78,7 @@ describe(`paypal button component funding mix`, () => {
                     if (fundingSources.indexOf(window.paypal.FUNDING.VENMO) === -1) {
                         throw new Error(`Expected venmo to be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
-
+                    window.paypal.Button.props.funding.decorate = decorate;
                     done();
                 }
             },
@@ -74,7 +90,7 @@ describe(`paypal button component funding mix`, () => {
             locale: 'en_US',
 
             funding: {
-                allowed: [ window.paypal.FUNDING.CARD, window.paypal.FUNDING.VENMO ]
+                allowed: [ window.paypal.FUNDING.CARD ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -96,6 +112,14 @@ describe(`paypal button component funding mix`, () => {
 
     it('should render venmo alongside pay button', (done) => {
 
+        let decorate = window.paypal.Button.props.funding.decorate;
+        window.paypal.Button.props.funding.decorate = (funding) => {
+            return {
+                ...funding,
+                remembered: [ window.paypal.FUNDING.VENMO ]
+            };
+        };
+
         window.paypal.Button.render({
 
             test: {
@@ -103,7 +127,7 @@ describe(`paypal button component funding mix`, () => {
                     if (fundingSources.indexOf(window.paypal.FUNDING.VENMO) === -1) {
                         throw new Error(`Expected venmo to be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
-
+                    window.paypal.Button.props.funding.decorate = decorate;
                     done();
                 }
             },
@@ -115,7 +139,7 @@ describe(`paypal button component funding mix`, () => {
             locale: 'en_US',
 
             funding: {
-                allowed: [ window.paypal.FUNDING.CARD, window.paypal.FUNDING.VENMO ]
+                allowed: [ window.paypal.FUNDING.CARD ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -137,6 +161,14 @@ describe(`paypal button component funding mix`, () => {
 
     it('should render venmo alongside paypal button', (done) => {
 
+        let decorate = window.paypal.Button.props.funding.decorate;
+        window.paypal.Button.props.funding.decorate = (funding) => {
+            return {
+                ...funding,
+                remembered: [ window.paypal.FUNDING.VENMO ]
+            };
+        };
+
         window.paypal.Button.render({
 
             test: {
@@ -144,7 +176,7 @@ describe(`paypal button component funding mix`, () => {
                     if (fundingSources.indexOf(window.paypal.FUNDING.VENMO) === -1) {
                         throw new Error(`Expected venmo to be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
-
+                    window.paypal.Button.props.funding.decorate = decorate;
                     done();
                 }
             },
@@ -156,7 +188,7 @@ describe(`paypal button component funding mix`, () => {
             locale: 'en_US',
 
             funding: {
-                allowed: [ window.paypal.FUNDING.CARD, window.paypal.FUNDING.VENMO ]
+                allowed: [ window.paypal.FUNDING.CARD ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -178,6 +210,14 @@ describe(`paypal button component funding mix`, () => {
 
     it('should render venmo alongside buynow button', (done) => {
 
+        let decorate = window.paypal.Button.props.funding.decorate;
+        window.paypal.Button.props.funding.decorate = (funding) => {
+            return {
+                ...funding,
+                remembered: [ window.paypal.FUNDING.VENMO ]
+            };
+        };
+
         window.paypal.Button.render({
 
             test: {
@@ -185,7 +225,7 @@ describe(`paypal button component funding mix`, () => {
                     if (fundingSources.indexOf(window.paypal.FUNDING.VENMO) === -1) {
                         throw new Error(`Expected venmo to be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
-
+                    window.paypal.Button.props.funding.decorate = decorate;
                     done();
                 }
             },
@@ -197,7 +237,7 @@ describe(`paypal button component funding mix`, () => {
             locale: 'en_US',
 
             funding: {
-                allowed: [ window.paypal.FUNDING.CARD, window.paypal.FUNDING.VENMO ]
+                allowed: [ window.paypal.FUNDING.CARD ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -219,6 +259,14 @@ describe(`paypal button component funding mix`, () => {
 
     it('should not render venmo for ineligible country', (done) => {
 
+        let decorate = window.paypal.Button.props.funding.decorate;
+        window.paypal.Button.props.funding.decorate = (funding) => {
+            return {
+                ...funding,
+                remembered: [ window.paypal.FUNDING.VENMO ]
+            };
+        };
+
         window.paypal.Button.render({
 
             test: {
@@ -226,7 +274,7 @@ describe(`paypal button component funding mix`, () => {
                     if (fundingSources.indexOf(window.paypal.FUNDING.VENMO) !== -1) {
                         throw new Error(`Expected venmo to not be offered`);
                     }
-
+                    window.paypal.Button.props.funding.decorate = decorate;
                     done();
                 }
             },
@@ -256,6 +304,14 @@ describe(`paypal button component funding mix`, () => {
 
     it('should not render multiple horizontal buttons alongside credit button', (done) => {
 
+        let decorate = window.paypal.Button.props.funding.decorate;
+        window.paypal.Button.props.funding.decorate = (funding) => {
+            return {
+                ...funding,
+                remembered: [ window.paypal.FUNDING.VENMO ]
+            };
+        };
+
         window.paypal.Button.render({
 
             test: {
@@ -263,7 +319,7 @@ describe(`paypal button component funding mix`, () => {
                     if (fundingSources.length !== 1 && fundingSources[0] !== window.paypal.FUNDING.CREDIT) {
                         throw new Error(`Expected credit to be the sole button, got ${ JSON.stringify(fundingSources) }`);
                     }
-
+                    window.paypal.Button.props.funding.decorate = decorate;
                     done();
                 }
             },
@@ -273,7 +329,7 @@ describe(`paypal button component funding mix`, () => {
             },
 
             funding: {
-                allowed: [ window.paypal.FUNDING.CARD, window.paypal.FUNDING.VENMO ]
+                allowed: [ window.paypal.FUNDING.CARD ]
             },
 
             payment() : string | ZalgoPromise<string> {

@@ -1,7 +1,7 @@
 /* eslint import/no-commonjs: off, flowtype/require-valid-file-annotation: off, flowtype/require-return-type: off */
 
 let postRobotGlobals = require('post-robot/globals');
-let xcomponentGlobals = require('xcomponent/globals');
+let zoidGlobals = require('zoid/globals');
 
 function getNextVersion() {
     let version = require('./package.json').version;
@@ -19,7 +19,7 @@ function getNextMinorVersion() {
     return getNextVersion();
 }
 
-module.exports = Object.assign({}, postRobotGlobals, xcomponentGlobals, {
+module.exports = Object.assign({}, postRobotGlobals, zoidGlobals, {
     __PAYPAL_CHECKOUT__: {
         __LEGACY_SUPPORT__:    true,
         __DEFAULT_LOG_LEVEL__: 'warn',

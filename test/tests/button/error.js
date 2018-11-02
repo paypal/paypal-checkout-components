@@ -330,5 +330,35 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             }, '#testContainer');
         });
+        
+        it('should render button, render checkout, and catch an error from onShippingChange', (done) => {
+
+            window.paypal.Button.render({
+
+                test: { flow, action: 'shippingChange' },
+
+                payment() : string | ZalgoPromise<string> {
+                    return generateECToken();
+                },
+
+                onShippingChange() : string | ZalgoPromise<string> {
+                    throw new Error('error');
+                },
+
+                onError(err) : void {
+                    assert.ok(err instanceof Error);
+                    return done();
+                },
+
+                onAuthorize() : void {
+                    return done(new Error('Expected onAuthorize to not be called'));
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
+        });
     });
 }

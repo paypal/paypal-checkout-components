@@ -1,6 +1,6 @@
 /* @flow */
 
-import { once, noop } from 'xcomponent/src/lib';
+import { once, noop } from 'zoid/src/lib';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { error } from 'beaver-logger/client';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
