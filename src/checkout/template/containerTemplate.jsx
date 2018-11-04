@@ -3,6 +3,7 @@
 /* eslint max-lines: 0 */
 
 import { btoa } from 'Base64';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { fundingLogos } from '../../resources';
 import { BUTTON_LOGO_COLOR, CHECKOUT_OVERLAY_COLOR } from '../../constants';
@@ -64,12 +65,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
             // eslint-disable-next-line no-alert
             window.alert('Please switch tabs to reactivate the PayPal window');
         } else {
-            try {
-                actions.focus();
-            } catch (err) {
-                // There's no more window to focus on
-                actions.close();
-            }
+            ZalgoPromise.try(actions.focus).catch(actions.close);
         }
     }
 
