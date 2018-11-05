@@ -271,6 +271,10 @@ export let config = {
         
         'functionofbeauty.com': {
             disable_venmo: true
+        },
+
+        'givebutter.com': {
+            disable_venmo: true
         }
     },
 
