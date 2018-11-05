@@ -275,6 +275,10 @@ export let config = {
 
         'givebutter.com': {
             disable_venmo: true
+        },
+
+        'hausmart.com': {
+            disable_venmo: true
         }
     },
 
