@@ -1,7 +1,7 @@
 /* @flow */
 
 import { info, warn, flush as flushLogs } from 'beaver-logger/client';
-import { CONSTANTS } from 'xcomponent/src';
+import { CONSTANTS } from 'zoid/src';
 import { getParent, getTop } from 'cross-domain-utils/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
@@ -89,12 +89,12 @@ patchMethod(Checkout, 'renderTo', ({ callOriginal, args: [ , props ] }) => {
 
     if (debounce) {
         warn('button_mutliple_click_debounce');
-        return;
+        return new ZalgoPromise(noop);
     }
 
     debounce = true;
 
-    for (let methodName of [ 'onAuthorize', 'onShippingChange', 'onCancel', 'onError', 'onClose' ]) {
+    for (let methodName of [ 'onAuthorize', 'onCancel', 'onError', 'onClose' ]) {
         let original = props[methodName];
         props[methodName] = function unDebounce() : mixed {
             debounce = false;

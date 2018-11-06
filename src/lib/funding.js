@@ -79,9 +79,9 @@ export function rememberFunding(sources : FundingList) {
             if (rememberedFunding.indexOf(source) === -1) {
                 rememberedFunding.push(source);
             }
-
-            flushRememberedFundingPromises();
         }
+
+        flushRememberedFundingPromises();
     });
 
     getSessionState(session => {

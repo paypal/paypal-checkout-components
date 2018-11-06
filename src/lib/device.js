@@ -1,5 +1,10 @@
 /* @flow */
 
+import {
+    getOpener,
+    getTop
+} from 'cross-domain-utils';
+
 export function getUserAgent() : string {
     return window.navigator.mockUserAgent || window.navigator.userAgent;
 }
@@ -13,13 +18,14 @@ export function isDevice() : boolean {
     return false;
 }
 
-export function isPopup() : boolean {
-    return (window.opener && window.opener !== window);
+export function isInsidePopup() : boolean {
+    // Checks to see if the top-most window is a pop-up
+    return getOpener(getTop(window));
 }
 
 export function isStandAlone() : boolean {
     // Chrome interprets pop-up windows as standalone windows
-    return !isPopup() && (window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches);
+    return !isInsidePopup() && (window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches);
 }
 
 export function isFacebookWebView(ua? : string = getUserAgent()) : boolean {

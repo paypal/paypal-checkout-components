@@ -3,10 +3,11 @@
 /* eslint max-lines: 0 */
 
 import { btoa } from 'Base64';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { fundingLogos } from '../../resources';
 import { BUTTON_LOGO_COLOR, CHECKOUT_OVERLAY_COLOR } from '../../constants';
-import { isIos, restrictFocus } from '../../lib';
+import { isIos } from '../../lib';
 
 import componentContentJSON from './containerContent.json';
 import { getContainerStyle } from './containerStyle';
@@ -64,12 +65,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
             // eslint-disable-next-line no-alert
             window.alert('Please switch tabs to reactivate the PayPal window');
         } else {
-            try {
-                actions.focus();
-            } catch (err) {
-                // There's no more window to focus on
-                actions.close();
-            }
+            ZalgoPromise.try(actions.focus).catch(actions.close);
         }
     }
 
@@ -124,11 +120,8 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
         </html>
     );
 
-    const restrictedFocus = restrictFocus(document.body);
-
     on(EVENT.CLOSE, () => {
         el.className += ` ${ tag }-loading`;
-        restrictedFocus.release();
     });
 
     return (

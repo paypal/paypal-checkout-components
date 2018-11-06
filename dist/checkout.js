@@ -1453,7 +1453,7 @@
             if (!frame.contentWindow) return !0;
             if (!frame.parentNode) return !0;
             var doc = frame.ownerDocument;
-            return !(!doc || !doc.body || doc.body.contains(frame));
+            return !(!doc || !doc.documentElement || doc.documentElement.contains(frame));
         }
         var iframeWindows = [], iframeFrames = [];
         function isWindowClosed(win) {
@@ -3535,13 +3535,299 @@
             return module;
         };
     },
-    "./node_modules/xcomponent/src/component/base.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/zalgo-promise/src/global.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        (function(global) {
+            __webpack_exports__.a = function() {
+                var glob = void 0;
+                if ("undefined" != typeof window) glob = window; else {
+                    if (void 0 === global) throw new TypeError("Can not find global");
+                    glob = global;
+                }
+                var zalgoGlobal = glob.__zalgopromise__ = glob.__zalgopromise__ || {};
+                zalgoGlobal.flushPromises = zalgoGlobal.flushPromises || [];
+                zalgoGlobal.activeCount = zalgoGlobal.activeCount || 0;
+                zalgoGlobal.possiblyUnhandledPromiseHandlers = zalgoGlobal.possiblyUnhandledPromiseHandlers || [];
+                zalgoGlobal.dispatchedErrors = zalgoGlobal.dispatchedErrors || [];
+                return zalgoGlobal;
+            };
+        }).call(__webpack_exports__, __webpack_require__("./node_modules/webpack/buildin/global.js"));
+    },
+    "./node_modules/zalgo-promise/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        function utils_isPromise(item) {
+            try {
+                if (!item) return !1;
+                if ("undefined" != typeof Promise && item instanceof Promise) return !0;
+                if ("undefined" != typeof window && window.Window && item instanceof window.Window) return !1;
+                if ("undefined" != typeof window && window.constructor && item instanceof window.constructor) return !1;
+                var _toString = {}.toString;
+                if (_toString) {
+                    var name = _toString.call(item);
+                    if ("[object Window]" === name || "[object global]" === name || "[object DOMWindow]" === name) return !1;
+                }
+                if ("function" == typeof item.then) return !0;
+            } catch (err) {
+                return !1;
+            }
+            return !1;
+        }
+        var global = __webpack_require__("./node_modules/zalgo-promise/src/global.js");
+        var promise_ZalgoPromise = function() {
+            function ZalgoPromise(handler) {
+                var _this = this;
+                !function(instance, Constructor) {
+                    if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+                }(this, ZalgoPromise);
+                this.resolved = !1;
+                this.rejected = !1;
+                this.errorHandled = !1;
+                this.handlers = [];
+                if (handler) {
+                    var _result = void 0, _error = void 0, resolved = !1, rejected = !1, isAsync = !1;
+                    try {
+                        handler(function(res) {
+                            if (isAsync) _this.resolve(res); else {
+                                resolved = !0;
+                                _result = res;
+                            }
+                        }, function(err) {
+                            if (isAsync) _this.reject(err); else {
+                                rejected = !0;
+                                _error = err;
+                            }
+                        });
+                    } catch (err) {
+                        this.reject(err);
+                        return;
+                    }
+                    isAsync = !0;
+                    resolved ? this.resolve(_result) : rejected && this.reject(_error);
+                }
+                0;
+            }
+            ZalgoPromise.prototype.resolve = function(result) {
+                if (this.resolved || this.rejected) return this;
+                if (utils_isPromise(result)) throw new Error("Can not resolve promise with another promise");
+                this.resolved = !0;
+                this.value = result;
+                this.dispatch();
+                return this;
+            };
+            ZalgoPromise.prototype.reject = function(error) {
+                var _this2 = this;
+                if (this.resolved || this.rejected) return this;
+                if (utils_isPromise(error)) throw new Error("Can not reject promise with another promise");
+                if (!error) {
+                    var _err = error && "function" == typeof error.toString ? error.toString() : Object.prototype.toString.call(error);
+                    error = new Error("Expected reject to be called with Error, got " + _err);
+                }
+                this.rejected = !0;
+                this.error = error;
+                this.errorHandled || setTimeout(function() {
+                    _this2.errorHandled || function(err, promise) {
+                        if (-1 === Object(global.a)().dispatchedErrors.indexOf(err)) {
+                            Object(global.a)().dispatchedErrors.push(err);
+                            setTimeout(function() {
+                                throw err;
+                            }, 1);
+                            for (var j = 0; j < Object(global.a)().possiblyUnhandledPromiseHandlers.length; j++) Object(global.a)().possiblyUnhandledPromiseHandlers[j](err, promise);
+                        }
+                    }(error, _this2);
+                }, 1);
+                this.dispatch();
+                return this;
+            };
+            ZalgoPromise.prototype.asyncReject = function(error) {
+                this.errorHandled = !0;
+                this.reject(error);
+            };
+            ZalgoPromise.prototype.dispatch = function() {
+                var _this3 = this, dispatching = this.dispatching, resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
+                if (!dispatching && (resolved || rejected)) {
+                    this.dispatching = !0;
+                    Object(global.a)().activeCount += 1;
+                    for (var _loop = function(i) {
+                        var _handlers$i = handlers[i], onSuccess = _handlers$i.onSuccess, onError = _handlers$i.onError, promise = _handlers$i.promise, result = void 0;
+                        if (resolved) try {
+                            result = onSuccess ? onSuccess(_this3.value) : _this3.value;
+                        } catch (err) {
+                            promise.reject(err);
+                            return "continue";
+                        } else if (rejected) {
+                            if (!onError) {
+                                promise.reject(_this3.error);
+                                return "continue";
+                            }
+                            try {
+                                result = onError(_this3.error);
+                            } catch (err) {
+                                promise.reject(err);
+                                return "continue";
+                            }
+                        }
+                        if (result instanceof ZalgoPromise && (result.resolved || result.rejected)) {
+                            result.resolved ? promise.resolve(result.value) : promise.reject(result.error);
+                            result.errorHandled = !0;
+                        } else utils_isPromise(result) ? result instanceof ZalgoPromise && (result.resolved || result.rejected) ? result.resolved ? promise.resolve(result.value) : promise.reject(result.error) : result.then(function(res) {
+                            promise.resolve(res);
+                        }, function(err) {
+                            promise.reject(err);
+                        }) : promise.resolve(result);
+                    }, i = 0; i < handlers.length; i++) _loop(i);
+                    handlers.length = 0;
+                    this.dispatching = !1;
+                    Object(global.a)().activeCount -= 1;
+                    0 === Object(global.a)().activeCount && ZalgoPromise.flushQueue();
+                }
+            };
+            ZalgoPromise.prototype.then = function(onSuccess, onError) {
+                if (onSuccess && "function" != typeof onSuccess && !onSuccess.call) throw new Error("Promise.then expected a function for success handler");
+                if (onError && "function" != typeof onError && !onError.call) throw new Error("Promise.then expected a function for error handler");
+                var promise = new ZalgoPromise();
+                this.handlers.push({
+                    promise: promise,
+                    onSuccess: onSuccess,
+                    onError: onError
+                });
+                this.errorHandled = !0;
+                this.dispatch();
+                return promise;
+            };
+            ZalgoPromise.prototype.catch = function(onError) {
+                return this.then(void 0, onError);
+            };
+            ZalgoPromise.prototype.finally = function(onFinally) {
+                if (onFinally && "function" != typeof onFinally && !onFinally.call) throw new Error("Promise.finally expected a function");
+                return this.then(function(result) {
+                    return ZalgoPromise.try(onFinally).then(function() {
+                        return result;
+                    });
+                }, function(err) {
+                    return ZalgoPromise.try(onFinally).then(function() {
+                        throw err;
+                    });
+                });
+            };
+            ZalgoPromise.prototype.timeout = function(time, err) {
+                var _this4 = this;
+                if (this.resolved || this.rejected) return this;
+                var timeout = setTimeout(function() {
+                    _this4.resolved || _this4.rejected || _this4.reject(err || new Error("Promise timed out after " + time + "ms"));
+                }, time);
+                return this.then(function(result) {
+                    clearTimeout(timeout);
+                    return result;
+                });
+            };
+            ZalgoPromise.prototype.toPromise = function() {
+                if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
+                return Promise.resolve(this);
+            };
+            ZalgoPromise.resolve = function(value) {
+                return value instanceof ZalgoPromise ? value : utils_isPromise(value) ? new ZalgoPromise(function(resolve, reject) {
+                    return value.then(resolve, reject);
+                }) : new ZalgoPromise().resolve(value);
+            };
+            ZalgoPromise.reject = function(error) {
+                return new ZalgoPromise().reject(error);
+            };
+            ZalgoPromise.all = function(promises) {
+                var promise = new ZalgoPromise(), count = promises.length, results = [];
+                if (!count) {
+                    promise.resolve(results);
+                    return promise;
+                }
+                for (var _loop2 = function(i) {
+                    var prom = promises[i];
+                    if (prom instanceof ZalgoPromise) {
+                        if (prom.resolved) {
+                            results[i] = prom.value;
+                            count -= 1;
+                            return "continue";
+                        }
+                    } else if (!utils_isPromise(prom)) {
+                        results[i] = prom;
+                        count -= 1;
+                        return "continue";
+                    }
+                    ZalgoPromise.resolve(prom).then(function(result) {
+                        results[i] = result;
+                        0 === (count -= 1) && promise.resolve(results);
+                    }, function(err) {
+                        promise.reject(err);
+                    });
+                }, i = 0; i < promises.length; i++) _loop2(i);
+                0 === count && promise.resolve(results);
+                return promise;
+            };
+            ZalgoPromise.hash = function(promises) {
+                var result = {};
+                return ZalgoPromise.all(Object.keys(promises).map(function(key) {
+                    return ZalgoPromise.resolve(promises[key]).then(function(value) {
+                        result[key] = value;
+                    });
+                })).then(function() {
+                    return result;
+                });
+            };
+            ZalgoPromise.map = function(items, method) {
+                return ZalgoPromise.all(items.map(method));
+            };
+            ZalgoPromise.onPossiblyUnhandledException = function(handler) {
+                return function(handler) {
+                    Object(global.a)().possiblyUnhandledPromiseHandlers.push(handler);
+                    return {
+                        cancel: function() {
+                            Object(global.a)().possiblyUnhandledPromiseHandlers.splice(Object(global.a)().possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
+                        }
+                    };
+                }(handler);
+            };
+            ZalgoPromise.try = function(method, context, args) {
+                if (method && "function" != typeof method && !method.call) throw new Error("Promise.try expected a function");
+                var result = void 0;
+                try {
+                    result = method.apply(context, args || []);
+                } catch (err) {
+                    return ZalgoPromise.reject(err);
+                }
+                return ZalgoPromise.resolve(result);
+            };
+            ZalgoPromise.delay = function(_delay) {
+                return new ZalgoPromise(function(resolve) {
+                    setTimeout(resolve, _delay);
+                });
+            };
+            ZalgoPromise.isPromise = function(value) {
+                return !!(value && value instanceof ZalgoPromise) || utils_isPromise(value);
+            };
+            ZalgoPromise.flush = function() {
+                var promise = new ZalgoPromise();
+                Object(global.a)().flushPromises.push(promise);
+                0 === Object(global.a)().activeCount && ZalgoPromise.flushQueue();
+                return promise;
+            };
+            ZalgoPromise.flushQueue = function() {
+                var promisesToFlush = Object(global.a)().flushPromises;
+                Object(global.a)().flushPromises = [];
+                for (var _i2 = 0, _length2 = null == promisesToFlush ? 0 : promisesToFlush.length; _i2 < _length2; _i2++) {
+                    promisesToFlush[_i2].resolve();
+                }
+            };
+            return ZalgoPromise;
+        }();
+        __webpack_require__.d(__webpack_exports__, "a", function() {
+            return promise_ZalgoPromise;
+        });
+    },
+    "./node_modules/zoid/src/component/base.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return BaseComponent;
         });
         var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__lib__ = (__webpack_require__("./node_modules/cross-domain-utils/src/index.js"), 
-        __webpack_require__("./node_modules/xcomponent/src/lib/index.js"));
+        __webpack_require__("./node_modules/zoid/src/lib/index.js"));
         var BaseComponent = function() {
             function BaseComponent() {
                 !function(instance, Constructor) {
@@ -3612,7 +3898,7 @@
                 if (!win) throw this.component.createError("window to listen to not set");
                 if (!domain) throw new Error("Must pass domain to listen to");
                 if (this.listeners) for (var listeners = this.listeners(), _loop = function(_i4, _Object$keys2, _length4) {
-                    var listenerName = _Object$keys2[_i4], name = listenerName.replace(/^xcomponent_/, ""), errorHandler = function(err) {
+                    var listenerName = _Object$keys2[_i4], name = listenerName.replace(/^zoid_/, ""), errorHandler = function(err) {
                         _this.error(err);
                     }, listener = Object(__WEBPACK_IMPORTED_MODULE_1_post_robot_src__.on)(listenerName, {
                         window: win,
@@ -3642,9 +3928,9 @@
             return BaseComponent;
         }();
     },
-    "./node_modules/xcomponent/src/component/child/index.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/zoid/src/component/child/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var client = __webpack_require__("./node_modules/beaver-logger/client/index.js"), src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), base = __webpack_require__("./node_modules/xcomponent/src/component/base.js"), component_window = __webpack_require__("./node_modules/xcomponent/src/component/window.js"), lib = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), constants = __webpack_require__("./node_modules/xcomponent/src/constants.js"), src_error = __webpack_require__("./node_modules/xcomponent/src/error.js");
+        var client = __webpack_require__("./node_modules/beaver-logger/client/index.js"), src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), base = __webpack_require__("./node_modules/zoid/src/component/base.js"), component_window = __webpack_require__("./node_modules/zoid/src/component/window.js"), lib = __webpack_require__("./node_modules/zoid/src/lib/index.js"), constants = __webpack_require__("./node_modules/zoid/src/constants.js"), src_error = __webpack_require__("./node_modules/zoid/src/error.js");
         function normalizeChildProp(component, props, key, value) {
             var prop = component.getProp(key);
             return prop ? "function" == typeof prop.childDecorate ? prop.childDecorate(value) : value : component.looseProps ? value : void 0;
@@ -3813,8 +4099,8 @@
                 }, options));
             };
             ChildComponent.prototype.setWindows = function() {
-                if (window.__activeXComponent__) throw this.component.createError("Can not attach multiple components to the same window");
-                window.__activeXComponent__ = this;
+                if (window.__activeZoidComponent__) throw this.component.createError("Can not attach multiple components to the same window");
+                window.__activeZoidComponent__ = this;
                 if (!Object(component_window.c)()) throw this.component.createError("Can not find parent window");
                 var componentMeta = Object(component_window.b)();
                 if (componentMeta.tag !== this.component.tag) throw this.component.createError("Parent is " + componentMeta.tag + " - can not attach " + this.component.tag);
@@ -3970,9 +4256,9 @@
             return ChildComponent;
         }(base.a);
     },
-    "./node_modules/xcomponent/src/component/component/index.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/zoid/src/component/component/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var src = __webpack_require__("./node_modules/post-robot/src/index.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), base = __webpack_require__("./node_modules/xcomponent/src/component/base.js"), child = __webpack_require__("./node_modules/xcomponent/src/component/child/index.js"), component_parent = __webpack_require__("./node_modules/xcomponent/src/component/parent/index.js"), drivers = __webpack_require__("./node_modules/xcomponent/src/component/parent/drivers.js"), lib = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), _createClass = function() {
+        var src = __webpack_require__("./node_modules/post-robot/src/index.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), base = __webpack_require__("./node_modules/zoid/src/component/base.js"), child = __webpack_require__("./node_modules/zoid/src/component/child/index.js"), component_parent = __webpack_require__("./node_modules/zoid/src/component/parent/index.js"), drivers = __webpack_require__("./node_modules/zoid/src/component/parent/drivers.js"), lib = __webpack_require__("./node_modules/zoid/src/lib/index.js"), _createClass = function() {
             function defineProperties(target, props) {
                 for (var i = 0; i < props.length; i++) {
                     var descriptor = props[i];
@@ -4067,7 +4353,7 @@
                 }
             } ]);
             return DelegateComponent;
-        }(base.a), component_window = __webpack_require__("./node_modules/xcomponent/src/component/window.js"), constants = __webpack_require__("./node_modules/xcomponent/src/constants.js"), src_drivers = __webpack_require__("./node_modules/xcomponent/src/drivers/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+        }(base.a), component_window = __webpack_require__("./node_modules/zoid/src/component/window.js"), constants = __webpack_require__("./node_modules/zoid/src/constants.js"), src_drivers = __webpack_require__("./node_modules/zoid/src/drivers/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
@@ -4122,7 +4408,7 @@
             var id = _ref.id, tag = _ref.tag, context = _ref.context, CLASS = _ref.CLASS, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _ref$dimensions = _ref.dimensions, width = _ref$dimensions.width, height = _ref$dimensions.height;
             return jsxDom("div", {
                 id: id,
-                class: CLASS.XCOMPONENT + " " + CLASS.XCOMPONENT + "-tag-" + tag + " " + CLASS.XCOMPONENT + "-context-" + context
+                class: CLASS.ZOID + " " + CLASS.ZOID + "-tag-" + tag + " " + CLASS.ZOID + "-context-" + context
             }, jsxDom("style", null, "\n                    #" + id + ", #" + id + " > ." + CLASS.OUTLET + " {\n                        width: " + width + ";\n                        height: " + height + ";\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        position: relative;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        height: 100%;\n                        width: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                        transition: opacity .2s ease-in-out;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                    }\n                "), outlet);
         }
         function defaultPrerenderTemplate(_ref) {
@@ -4134,7 +4420,7 @@
                 class: "loader"
             }))));
         }
-        __webpack_require__("./node_modules/xcomponent/src/types.js");
+        __webpack_require__("./node_modules/zoid/src/types.js");
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return component_Component;
         });
@@ -4427,7 +4713,7 @@
                 if (this.buildUrl) return this.buildUrl(props);
                 throw new Error("Unable to get url");
             };
-            Component.prototype.isXComponent = function() {
+            Component.prototype.isZoidComponent = function() {
                 return Object(component_window.g)();
             };
             Component.prototype.isChild = function() {
@@ -4547,12 +4833,12 @@
         _class);
         component_Component.components = {};
     },
-    "./node_modules/xcomponent/src/component/parent/drivers.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/zoid/src/component/parent/drivers.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return RENDER_DRIVERS;
         });
-        var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_4__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), __WEBPACK_IMPORTED_MODULE_5__window__ = __webpack_require__("./node_modules/xcomponent/src/component/window.js"), _extends = Object.assign || function(target) {
+        var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__lib__ = __webpack_require__("./node_modules/zoid/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_4__constants__ = __webpack_require__("./node_modules/zoid/src/constants.js"), __WEBPACK_IMPORTED_MODULE_5__window__ = __webpack_require__("./node_modules/zoid/src/component/window.js"), _extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
@@ -4758,9 +5044,9 @@
             }
         };
     },
-    "./node_modules/xcomponent/src/component/parent/index.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/zoid/src/component/parent/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var client = __webpack_require__("./node_modules/beaver-logger/client/index.js"), src = __webpack_require__("./node_modules/post-robot/src/index.js"), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), base = __webpack_require__("./node_modules/xcomponent/src/component/base.js"), component_window = __webpack_require__("./node_modules/xcomponent/src/component/window.js"), lib = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), constants = __webpack_require__("./node_modules/xcomponent/src/constants.js"), src_error = __webpack_require__("./node_modules/xcomponent/src/error.js"), drivers = __webpack_require__("./node_modules/xcomponent/src/component/parent/drivers.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+        var client = __webpack_require__("./node_modules/beaver-logger/client/index.js"), src = __webpack_require__("./node_modules/post-robot/src/index.js"), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), base = __webpack_require__("./node_modules/zoid/src/component/base.js"), component_window = __webpack_require__("./node_modules/zoid/src/component/window.js"), lib = __webpack_require__("./node_modules/zoid/src/lib/index.js"), constants = __webpack_require__("./node_modules/zoid/src/constants.js"), src_error = __webpack_require__("./node_modules/zoid/src/error.js"), drivers = __webpack_require__("./node_modules/zoid/src/component/parent/drivers.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
@@ -4854,6 +5140,9 @@
                     });
                 });
             })).then(function() {
+                Object.keys(params).forEach(function(key) {
+                    params[key] = escape(params[key]);
+                });
                 return params;
             });
         }
@@ -5185,13 +5474,13 @@
                 }(this.component, this, props));
             };
             ParentComponent.prototype.buildUrl = function() {
-                var _this7 = this;
-                return zalgo_promise_src.a.all([ this.props.url, propsToQuery(_extends({}, this.component.props, this.component.builtinProps), this.props) ]).then(function(_ref7) {
+                var _this7 = this, propUrl = this.props.url;
+                return zalgo_promise_src.a.all([ propUrl, propsToQuery(_extends({}, this.component.props, this.component.builtinProps), this.props) ]).then(function(_ref7) {
                     var url = _ref7[0], query = _ref7[1];
                     return url && !_this7.component.getValidDomain(url) ? url : zalgo_promise_src.a.try(function() {
                         return url || _this7.component.getUrl(_this7.props.env, _this7.props);
                     }).then(function(finalUrl) {
-                        query[constants.XCOMPONENT] = "1";
+                        query.xcomponent = "1";
                         return Object(lib.u)(finalUrl, {
                             query: query
                         });
@@ -5578,7 +5867,7 @@
             ParentComponent.prototype.renderTemplate = function(renderer) {
                 var _this32 = this, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, _ref11 = this.component.dimensions || {}, _ref11$width = _ref11.width, width = void 0 === _ref11$width ? constants.DEFAULT_DIMENSIONS.WIDTH + "px" : _ref11$width, _ref11$height = _ref11.height, height = void 0 === _ref11$height ? constants.DEFAULT_DIMENSIONS.HEIGHT + "px" : _ref11$height;
                 return renderer.call(this, _extends({
-                    id: constants.CLASS_NAMES.XCOMPONENT + "-" + this.component.tag + "-" + this.props.uid,
+                    id: constants.CLASS_NAMES.ZOID + "-" + this.component.tag + "-" + this.props.uid,
                     props: renderer.__xdomain__ ? null : this.props,
                     tag: this.component.tag,
                     context: this.context,
@@ -5701,7 +5990,7 @@
         _class);
         parent_ParentComponent.activeComponents = [];
     },
-    "./node_modules/xcomponent/src/component/window.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/zoid/src/component/window.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_exports__.a = function(name, version) {
             var options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
@@ -5712,10 +6001,10 @@
             var str;
             if (!encodedName) throw new Error("Invalid name: " + name + " - must contain alphanumeric characters");
             if (!encodedVersion) throw new Error("Invalid version: " + version + " - must contain alphanumeric characters");
-            return [ __WEBPACK_IMPORTED_MODULE_3__constants__.XCOMPONENT, encodedName, encodedVersion, encodedOptions, "" ].join("__");
+            return [ "xcomponent", encodedName, encodedVersion, encodedOptions, "" ].join("__");
         };
         __webpack_require__.d(__webpack_exports__, "g", function() {
-            return isXComponentWindow;
+            return isZoidComponentWindow;
         });
         __webpack_require__.d(__webpack_exports__, "b", function() {
             return getComponentMeta;
@@ -5738,16 +6027,16 @@
                 y: y
             };
         };
-        var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_hi_base32__), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js");
+        var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_hi_base32__), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./node_modules/zoid/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./node_modules/zoid/src/constants.js");
         function normalize(str) {
             return str.replace(/^[^a-z0-9A-Z]+|[^a-z0-9A-Z]+$/g, "").replace(/[^a-z0-9A-Z]+/g, "_");
         }
-        var isXComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
-            return !!window.name && window.name.split("__")[0] === __WEBPACK_IMPORTED_MODULE_3__constants__.XCOMPONENT;
+        var isZoidComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
+            return !!window.name && "xcomponent" === window.name.split("__")[0];
         }), getComponentMeta = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
             if (!window.name) throw new Error("Can not get component meta without window name");
-            var _window$name$split2 = window.name.split("__"), xcomp = _window$name$split2[0], name = _window$name$split2[1], version = _window$name$split2[2], encodedOptions = _window$name$split2[3];
-            if (xcomp !== __WEBPACK_IMPORTED_MODULE_3__constants__.XCOMPONENT) throw new Error("Window not rendered by xcomponent - got " + xcomp);
+            var _window$name$split2 = window.name.split("__"), zoidcomp = _window$name$split2[0], name = _window$name$split2[1], version = _window$name$split2[2], encodedOptions = _window$name$split2[3];
+            if ("xcomponent" !== zoidcomp) throw new Error("Window not rendered by zoid - got " + zoidcomp);
             var str, componentMeta = void 0;
             try {
                 componentMeta = JSON.parse((str = encodedOptions, __WEBPACK_IMPORTED_MODULE_1_hi_base32___default.a.decode(str.toUpperCase())));
@@ -5776,24 +6065,24 @@
         }
         var getParentComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
             var componentMeta = getComponentMeta();
-            if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by xcomponent");
+            if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by zoid");
             return getWindowByRef(componentMeta.componentParent);
         }), getParentRenderWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
             var componentMeta = getComponentMeta();
-            if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by xcomponent");
+            if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by zoid");
             return getWindowByRef(componentMeta.renderParent);
         });
     },
-    "./node_modules/xcomponent/src/constants.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/zoid/src/constants.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         Object.defineProperty(__webpack_exports__, "__esModule", {
             value: !0
         });
-        __webpack_require__.d(__webpack_exports__, "XCOMPONENT", function() {
-            return XCOMPONENT;
+        __webpack_require__.d(__webpack_exports__, "ZOID", function() {
+            return ZOID;
         });
-        __webpack_require__.d(__webpack_exports__, "__XCOMPONENT__", function() {
-            return __XCOMPONENT__;
+        __webpack_require__.d(__webpack_exports__, "__ZOID__", function() {
+            return __ZOID__;
         });
         __webpack_require__.d(__webpack_exports__, "POST_MESSAGE", function() {
             return POST_MESSAGE;
@@ -5843,20 +6132,20 @@
         __webpack_require__.d(__webpack_exports__, "DEFAULT_DIMENSIONS", function() {
             return DEFAULT_DIMENSIONS;
         });
-        var XCOMPONENT = "xcomponent", __XCOMPONENT__ = "__" + XCOMPONENT + "__", POST_MESSAGE = {
-            INIT: XCOMPONENT + "_init",
-            PROPS: XCOMPONENT + "_props",
-            PROP_CALLBACK: XCOMPONENT + "_prop_callback",
-            CLOSE: XCOMPONENT + "_close",
-            CHECK_CLOSE: XCOMPONENT + "_check_close",
-            REDIRECT: XCOMPONENT + "_redirect",
-            RESIZE: XCOMPONENT + "_resize",
-            ONRESIZE: XCOMPONENT + "_onresize",
-            DELEGATE: XCOMPONENT + "_delegate",
-            ALLOW_DELEGATE: XCOMPONENT + "_allow_delegate",
-            ERROR: XCOMPONENT + "_error",
-            HIDE: XCOMPONENT + "_hide",
-            SHOW: XCOMPONENT + "_show"
+        var ZOID = "zoid", __ZOID__ = "__" + ZOID + "__", POST_MESSAGE = {
+            INIT: ZOID + "_init",
+            PROPS: ZOID + "_props",
+            PROP_CALLBACK: ZOID + "_prop_callback",
+            CLOSE: ZOID + "_close",
+            CHECK_CLOSE: ZOID + "_check_close",
+            REDIRECT: ZOID + "_redirect",
+            RESIZE: ZOID + "_resize",
+            ONRESIZE: ZOID + "_onresize",
+            DELEGATE: ZOID + "_delegate",
+            ALLOW_DELEGATE: ZOID + "_allow_delegate",
+            ERROR: ZOID + "_error",
+            HIDE: ZOID + "_hide",
+            SHOW: ZOID + "_show"
         }, PROP_TYPES = {
             STRING: "string",
             OBJECT: "object",
@@ -5877,21 +6166,21 @@
             IFRAME: "iframe",
             POPUP: "popup"
         }, CLASS_NAMES = {
-            XCOMPONENT: "" + XCOMPONENT,
-            OUTLET: XCOMPONENT + "-outlet",
-            COMPONENT_FRAME: XCOMPONENT + "-component-frame",
-            PRERENDER_FRAME: XCOMPONENT + "-prerender-frame",
-            VISIBLE: XCOMPONENT + "-visible",
-            INVISIBLE: XCOMPONENT + "-invisible"
+            ZOID: "" + ZOID,
+            OUTLET: ZOID + "-outlet",
+            COMPONENT_FRAME: ZOID + "-component-frame",
+            PRERENDER_FRAME: ZOID + "-prerender-frame",
+            VISIBLE: ZOID + "-visible",
+            INVISIBLE: ZOID + "-invisible"
         }, EVENTS = {
-            CLOSE: XCOMPONENT + "-close"
+            CLOSE: ZOID + "-close"
         }, ATTRIBUTES = {
-            IFRAME_PLACEHOLDER: "data-xcomponent-" + XCOMPONENT + "-placeholder"
+            IFRAME_PLACEHOLDER: "data-zoid-" + ZOID + "-placeholder"
         }, ANIMATION_NAMES = {
-            SHOW_CONTAINER: XCOMPONENT + "-show-container",
-            SHOW_COMPONENT: XCOMPONENT + "-show-component",
-            HIDE_CONTAINER: XCOMPONENT + "-hide-container",
-            HIDE_COMPONENT: XCOMPONENT + "-hide-component"
+            SHOW_CONTAINER: ZOID + "-show-container",
+            SHOW_COMPONENT: ZOID + "-show-component",
+            HIDE_CONTAINER: ZOID + "-hide-container",
+            HIDE_COMPONENT: ZOID + "-hide-component"
         }, EVENT_NAMES = {
             CLICK: "click"
         }, CLOSE_REASONS = {
@@ -5910,12 +6199,12 @@
             HEIGHT: 150
         };
     },
-    "./node_modules/xcomponent/src/drivers/angular.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/zoid/src/drivers/angular.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return angular;
         });
-        var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), angular = {
+        var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/zoid/src/lib/index.js"), angular = {
             global: function() {
                 return window.angular;
             },
@@ -5930,7 +6219,7 @@
                         scope: scope,
                         restrict: "E",
                         controller: [ "$scope", "$element", function($scope, $element) {
-                            if (component.looseProps && !$scope.props) throw new Error("For angular bindings to work, prop definitions must be passed to xcomponent.create");
+                            if (component.looseProps && !$scope.props) throw new Error("For angular bindings to work, prop definitions must be passed to zoid.create");
                             component.log("instantiate_angular_component");
                             var getProps = function() {
                                 var scopeProps = void 0;
@@ -5965,12 +6254,12 @@
             }
         };
     },
-    "./node_modules/xcomponent/src/drivers/angular2.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/zoid/src/drivers/angular2.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return angular2;
         });
-        var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), _extends = Object.assign || function(target) {
+        var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/zoid/src/lib/index.js"), _extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
@@ -5978,9 +6267,9 @@
             return target;
         }, angular2 = {
             global: function() {},
-            register: function(xcomponent, _ref) {
+            register: function(zoid, _ref) {
                 var AngularComponent = _ref.Component, NgModule = _ref.NgModule, ElementRef = _ref.ElementRef, NgZone = _ref.NgZone;
-                xcomponent.log("initializing angular2 component");
+                zoid.log("initializing angular2 component");
                 var getProps = function(component) {
                     return Object(__WEBPACK_IMPORTED_MODULE_0__lib__.Q)(_extends({}, component.internalProps, component.props), {
                         function: function(value) {
@@ -5993,7 +6282,7 @@
                         }
                     });
                 }, ComponentInstance = AngularComponent({
-                    selector: xcomponent.tag,
+                    selector: zoid.tag,
                     template: "<div></div>",
                     inputs: [ "props" ]
                 }).Class({
@@ -6002,7 +6291,7 @@
                         this.zone = zone;
                     } ],
                     ngOnInit: function() {
-                        var targetElement = this.elementRef.nativeElement, parent = xcomponent.init(getProps(this), null, targetElement);
+                        var targetElement = this.elementRef.nativeElement, parent = zoid.init(getProps(this), null, targetElement);
                         parent.render(targetElement);
                         this.parent = parent;
                     },
@@ -6019,8 +6308,8 @@
             }
         };
     },
-    "./node_modules/xcomponent/src/drivers/ember.js": function(module, exports) {},
-    "./node_modules/xcomponent/src/drivers/glimmer.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/zoid/src/drivers/ember.js": function(module, exports) {},
+    "./node_modules/zoid/src/drivers/glimmer.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return glimmer;
@@ -6065,25 +6354,25 @@
             }
         };
     },
-    "./node_modules/xcomponent/src/drivers/index.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/zoid/src/drivers/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var __WEBPACK_IMPORTED_MODULE_0__script__ = __webpack_require__("./node_modules/xcomponent/src/drivers/script.js");
+        var __WEBPACK_IMPORTED_MODULE_0__script__ = __webpack_require__("./node_modules/zoid/src/drivers/script.js");
         __webpack_require__.d(__webpack_exports__, "script", function() {
             return __WEBPACK_IMPORTED_MODULE_0__script__.a;
         });
-        var __WEBPACK_IMPORTED_MODULE_1__react__ = __webpack_require__("./node_modules/xcomponent/src/drivers/react.js");
+        var __WEBPACK_IMPORTED_MODULE_1__react__ = __webpack_require__("./node_modules/zoid/src/drivers/react.js");
         __webpack_require__.d(__webpack_exports__, "react", function() {
             return __WEBPACK_IMPORTED_MODULE_1__react__.a;
         });
-        var __WEBPACK_IMPORTED_MODULE_2__vue__ = __webpack_require__("./node_modules/xcomponent/src/drivers/vue.js");
+        var __WEBPACK_IMPORTED_MODULE_2__vue__ = __webpack_require__("./node_modules/zoid/src/drivers/vue.js");
         __webpack_require__.d(__webpack_exports__, "vue", function() {
             return __WEBPACK_IMPORTED_MODULE_2__vue__.a;
         });
-        var __WEBPACK_IMPORTED_MODULE_3__angular__ = __webpack_require__("./node_modules/xcomponent/src/drivers/angular.js");
+        var __WEBPACK_IMPORTED_MODULE_3__angular__ = __webpack_require__("./node_modules/zoid/src/drivers/angular.js");
         __webpack_require__.d(__webpack_exports__, "angular", function() {
             return __WEBPACK_IMPORTED_MODULE_3__angular__.a;
         });
-        var __WEBPACK_IMPORTED_MODULE_4__ember__ = __webpack_require__("./node_modules/xcomponent/src/drivers/ember.js");
+        var __WEBPACK_IMPORTED_MODULE_4__ember__ = __webpack_require__("./node_modules/zoid/src/drivers/ember.js");
         __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__ember__);
         __webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__ember__, "angular2") && __webpack_require__.d(__webpack_exports__, "angular2", function() {
             return __WEBPACK_IMPORTED_MODULE_4__ember__.angular2;
@@ -6091,21 +6380,21 @@
         __webpack_require__.o(__WEBPACK_IMPORTED_MODULE_4__ember__, "glimmer") && __webpack_require__.d(__webpack_exports__, "glimmer", function() {
             return __WEBPACK_IMPORTED_MODULE_4__ember__.glimmer;
         });
-        var __WEBPACK_IMPORTED_MODULE_5__glimmer__ = __webpack_require__("./node_modules/xcomponent/src/drivers/glimmer.js");
+        var __WEBPACK_IMPORTED_MODULE_5__glimmer__ = __webpack_require__("./node_modules/zoid/src/drivers/glimmer.js");
         __webpack_require__.d(__webpack_exports__, "glimmer", function() {
             return __WEBPACK_IMPORTED_MODULE_5__glimmer__.a;
         });
-        var __WEBPACK_IMPORTED_MODULE_6__angular2__ = __webpack_require__("./node_modules/xcomponent/src/drivers/angular2.js");
+        var __WEBPACK_IMPORTED_MODULE_6__angular2__ = __webpack_require__("./node_modules/zoid/src/drivers/angular2.js");
         __webpack_require__.d(__webpack_exports__, "angular2", function() {
             return __WEBPACK_IMPORTED_MODULE_6__angular2__.a;
         });
     },
-    "./node_modules/xcomponent/src/drivers/react.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/zoid/src/drivers/react.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return react;
         });
-        var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js");
+        var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/zoid/src/lib/index.js");
         var react = {
             global: function() {
                 if (window.React && window.ReactDOM) return {
@@ -6178,7 +6467,7 @@
             }
         };
     },
-    "./node_modules/xcomponent/src/drivers/script.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/zoid/src/drivers/script.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return script;
@@ -6214,16 +6503,18 @@
             }
         };
     },
-    "./node_modules/xcomponent/src/drivers/vue.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/zoid/src/drivers/vue.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return vue;
         });
-        var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), vue = {
+        var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/zoid/src/lib/index.js"), vue = {
             global: function() {},
             register: function(component) {
                 return {
-                    template: "<div></div>",
+                    render: function(createElement) {
+                        return createElement("div");
+                    },
                     inheritAttrs: !1,
                     mounted: function() {
                         var el = this.$el;
@@ -6237,7 +6528,7 @@
             }
         };
     },
-    "./node_modules/xcomponent/src/error.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/zoid/src/error.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_exports__.b = PopupOpenError;
         __webpack_exports__.a = IntegrationError;
@@ -6255,7 +6546,7 @@
         }
         RenderError.prototype = Object.create(Error.prototype);
     },
-    "./node_modules/xcomponent/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/zoid/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         var interface_namespaceObject = {};
         __webpack_require__.d(interface_namespaceObject, "create", function() {
@@ -6286,8 +6577,8 @@
             return error.c;
         });
         __webpack_require__("./node_modules/zalgo-promise/src/index.js");
-        var post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js"), component = __webpack_require__("./node_modules/xcomponent/src/component/component/index.js"), component_parent = __webpack_require__("./node_modules/xcomponent/src/component/parent/index.js"), constants = (__webpack_require__("./node_modules/xcomponent/src/component/child/index.js"), 
-        __webpack_require__("./node_modules/xcomponent/src/constants.js")), lib = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), error = __webpack_require__("./node_modules/xcomponent/src/error.js");
+        var post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js"), component = __webpack_require__("./node_modules/zoid/src/component/component/index.js"), component_parent = __webpack_require__("./node_modules/zoid/src/component/parent/index.js"), constants = (__webpack_require__("./node_modules/zoid/src/component/child/index.js"), 
+        __webpack_require__("./node_modules/zoid/src/constants.js")), lib = __webpack_require__("./node_modules/zoid/src/lib/index.js"), error = __webpack_require__("./node_modules/zoid/src/error.js");
         function create(options) {
             return new component.a(options);
         }
@@ -6326,9 +6617,9 @@
             return error.c;
         });
     },
-    "./node_modules/xcomponent/src/lib/index.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/zoid/src/lib/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), cross_domain_safe_weakmap_src = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js"), error = __webpack_require__("./node_modules/xcomponent/src/error.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+        var src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), cross_domain_safe_weakmap_src = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js"), error = __webpack_require__("./node_modules/zoid/src/error.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
@@ -6609,7 +6900,7 @@
                 var cacheKey = void 0;
                 try {
                     cacheKey = JSON.stringify(Array.prototype.slice.call(arguments), function(key, val) {
-                        return "function" == typeof val ? "xcomponent:memoize[" + getObjectID(val) + "]" : val;
+                        return "function" == typeof val ? "zoid:memoize[" + getObjectID(val) + "]" : val;
                     });
                 } catch (err) {
                     throw new Error("Arguments not serializable -- can not be used to memoize");
@@ -7079,7 +7370,7 @@
             element.classList ? element.classList.remove(name) : -1 !== element.className.split(/\s+/).indexOf(name) && (element.className = element.className.replace(name, ""));
         }
         function getCurrentScriptDir() {
-            console.warn("Do not use xcomponent.getCurrentScriptDir() in production -- browser support is limited");
+            console.warn("Do not use zoid.getCurrentScriptDir() in production -- browser support is limited");
             return document.currentScript ? document.currentScript.src.split("/").slice(0, -1).join("/") : ".";
         }
         function getElementName(element) {
@@ -7264,11 +7555,11 @@
             var payload = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
             Object(client.g)("xc_" + name + "_" + event, payload);
         }
-        var constants = __webpack_require__("./node_modules/xcomponent/src/constants.js");
+        var constants = __webpack_require__("./node_modules/zoid/src/constants.js");
         function globalFor(win) {
             if (Object(src.isSameDomain)(win)) {
-                win[constants.__XCOMPONENT__] || (win[constants.__XCOMPONENT__] = {});
-                return win[constants.__XCOMPONENT__];
+                win[constants.__ZOID__] || (win[constants.__ZOID__] = {});
+                return win[constants.__ZOID__];
             }
         }
         function localGlobal() {
@@ -7581,306 +7872,20 @@
             return global;
         });
     },
-    "./node_modules/xcomponent/src/types.js": function(module, exports) {},
-    "./node_modules/zalgo-promise/src/global.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        (function(global) {
-            __webpack_exports__.a = function() {
-                var glob = void 0;
-                if ("undefined" != typeof window) glob = window; else {
-                    if (void 0 === global) throw new TypeError("Can not find global");
-                    glob = global;
-                }
-                var zalgoGlobal = glob.__zalgopromise__ = glob.__zalgopromise__ || {};
-                zalgoGlobal.flushPromises = zalgoGlobal.flushPromises || [];
-                zalgoGlobal.activeCount = zalgoGlobal.activeCount || 0;
-                zalgoGlobal.possiblyUnhandledPromiseHandlers = zalgoGlobal.possiblyUnhandledPromiseHandlers || [];
-                zalgoGlobal.dispatchedErrors = zalgoGlobal.dispatchedErrors || [];
-                return zalgoGlobal;
-            };
-        }).call(__webpack_exports__, __webpack_require__("./node_modules/webpack/buildin/global.js"));
-    },
-    "./node_modules/zalgo-promise/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        function utils_isPromise(item) {
-            try {
-                if (!item) return !1;
-                if ("undefined" != typeof Promise && item instanceof Promise) return !0;
-                if ("undefined" != typeof window && window.Window && item instanceof window.Window) return !1;
-                if ("undefined" != typeof window && window.constructor && item instanceof window.constructor) return !1;
-                var _toString = {}.toString;
-                if (_toString) {
-                    var name = _toString.call(item);
-                    if ("[object Window]" === name || "[object global]" === name || "[object DOMWindow]" === name) return !1;
-                }
-                if ("function" == typeof item.then) return !0;
-            } catch (err) {
-                return !1;
-            }
-            return !1;
-        }
-        var global = __webpack_require__("./node_modules/zalgo-promise/src/global.js");
-        var promise_ZalgoPromise = function() {
-            function ZalgoPromise(handler) {
-                var _this = this;
-                !function(instance, Constructor) {
-                    if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-                }(this, ZalgoPromise);
-                this.resolved = !1;
-                this.rejected = !1;
-                this.errorHandled = !1;
-                this.handlers = [];
-                if (handler) {
-                    var _result = void 0, _error = void 0, resolved = !1, rejected = !1, isAsync = !1;
-                    try {
-                        handler(function(res) {
-                            if (isAsync) _this.resolve(res); else {
-                                resolved = !0;
-                                _result = res;
-                            }
-                        }, function(err) {
-                            if (isAsync) _this.reject(err); else {
-                                rejected = !0;
-                                _error = err;
-                            }
-                        });
-                    } catch (err) {
-                        this.reject(err);
-                        return;
-                    }
-                    isAsync = !0;
-                    resolved ? this.resolve(_result) : rejected && this.reject(_error);
-                }
-                0;
-            }
-            ZalgoPromise.prototype.resolve = function(result) {
-                if (this.resolved || this.rejected) return this;
-                if (utils_isPromise(result)) throw new Error("Can not resolve promise with another promise");
-                this.resolved = !0;
-                this.value = result;
-                this.dispatch();
-                return this;
-            };
-            ZalgoPromise.prototype.reject = function(error) {
-                var _this2 = this;
-                if (this.resolved || this.rejected) return this;
-                if (utils_isPromise(error)) throw new Error("Can not reject promise with another promise");
-                if (!error) {
-                    var _err = error && "function" == typeof error.toString ? error.toString() : Object.prototype.toString.call(error);
-                    error = new Error("Expected reject to be called with Error, got " + _err);
-                }
-                this.rejected = !0;
-                this.error = error;
-                this.errorHandled || setTimeout(function() {
-                    _this2.errorHandled || function(err, promise) {
-                        if (-1 === Object(global.a)().dispatchedErrors.indexOf(err)) {
-                            Object(global.a)().dispatchedErrors.push(err);
-                            setTimeout(function() {
-                                throw err;
-                            }, 1);
-                            for (var j = 0; j < Object(global.a)().possiblyUnhandledPromiseHandlers.length; j++) Object(global.a)().possiblyUnhandledPromiseHandlers[j](err, promise);
-                        }
-                    }(error, _this2);
-                }, 1);
-                this.dispatch();
-                return this;
-            };
-            ZalgoPromise.prototype.asyncReject = function(error) {
-                this.errorHandled = !0;
-                this.reject(error);
-            };
-            ZalgoPromise.prototype.dispatch = function() {
-                var _this3 = this, dispatching = this.dispatching, resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
-                if (!dispatching && (resolved || rejected)) {
-                    this.dispatching = !0;
-                    Object(global.a)().activeCount += 1;
-                    for (var _loop = function(i) {
-                        var _handlers$i = handlers[i], onSuccess = _handlers$i.onSuccess, onError = _handlers$i.onError, promise = _handlers$i.promise, result = void 0;
-                        if (resolved) try {
-                            result = onSuccess ? onSuccess(_this3.value) : _this3.value;
-                        } catch (err) {
-                            promise.reject(err);
-                            return "continue";
-                        } else if (rejected) {
-                            if (!onError) {
-                                promise.reject(_this3.error);
-                                return "continue";
-                            }
-                            try {
-                                result = onError(_this3.error);
-                            } catch (err) {
-                                promise.reject(err);
-                                return "continue";
-                            }
-                        }
-                        if (result instanceof ZalgoPromise && (result.resolved || result.rejected)) {
-                            result.resolved ? promise.resolve(result.value) : promise.reject(result.error);
-                            result.errorHandled = !0;
-                        } else utils_isPromise(result) ? result instanceof ZalgoPromise && (result.resolved || result.rejected) ? result.resolved ? promise.resolve(result.value) : promise.reject(result.error) : result.then(function(res) {
-                            promise.resolve(res);
-                        }, function(err) {
-                            promise.reject(err);
-                        }) : promise.resolve(result);
-                    }, i = 0; i < handlers.length; i++) _loop(i);
-                    handlers.length = 0;
-                    this.dispatching = !1;
-                    Object(global.a)().activeCount -= 1;
-                    0 === Object(global.a)().activeCount && ZalgoPromise.flushQueue();
-                }
-            };
-            ZalgoPromise.prototype.then = function(onSuccess, onError) {
-                if (onSuccess && "function" != typeof onSuccess && !onSuccess.call) throw new Error("Promise.then expected a function for success handler");
-                if (onError && "function" != typeof onError && !onError.call) throw new Error("Promise.then expected a function for error handler");
-                var promise = new ZalgoPromise();
-                this.handlers.push({
-                    promise: promise,
-                    onSuccess: onSuccess,
-                    onError: onError
-                });
-                this.errorHandled = !0;
-                this.dispatch();
-                return promise;
-            };
-            ZalgoPromise.prototype.catch = function(onError) {
-                return this.then(void 0, onError);
-            };
-            ZalgoPromise.prototype.finally = function(onFinally) {
-                if (onFinally && "function" != typeof onFinally && !onFinally.call) throw new Error("Promise.finally expected a function");
-                return this.then(function(result) {
-                    return ZalgoPromise.try(onFinally).then(function() {
-                        return result;
-                    });
-                }, function(err) {
-                    return ZalgoPromise.try(onFinally).then(function() {
-                        throw err;
-                    });
-                });
-            };
-            ZalgoPromise.prototype.timeout = function(time, err) {
-                var _this4 = this;
-                if (this.resolved || this.rejected) return this;
-                var timeout = setTimeout(function() {
-                    _this4.resolved || _this4.rejected || _this4.reject(err || new Error("Promise timed out after " + time + "ms"));
-                }, time);
-                return this.then(function(result) {
-                    clearTimeout(timeout);
-                    return result;
-                });
-            };
-            ZalgoPromise.prototype.toPromise = function() {
-                if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
-                return Promise.resolve(this);
-            };
-            ZalgoPromise.resolve = function(value) {
-                return value instanceof ZalgoPromise ? value : utils_isPromise(value) ? new ZalgoPromise(function(resolve, reject) {
-                    return value.then(resolve, reject);
-                }) : new ZalgoPromise().resolve(value);
-            };
-            ZalgoPromise.reject = function(error) {
-                return new ZalgoPromise().reject(error);
-            };
-            ZalgoPromise.all = function(promises) {
-                var promise = new ZalgoPromise(), count = promises.length, results = [];
-                if (!count) {
-                    promise.resolve(results);
-                    return promise;
-                }
-                for (var _loop2 = function(i) {
-                    var prom = promises[i];
-                    if (prom instanceof ZalgoPromise) {
-                        if (prom.resolved) {
-                            results[i] = prom.value;
-                            count -= 1;
-                            return "continue";
-                        }
-                    } else if (!utils_isPromise(prom)) {
-                        results[i] = prom;
-                        count -= 1;
-                        return "continue";
-                    }
-                    ZalgoPromise.resolve(prom).then(function(result) {
-                        results[i] = result;
-                        0 === (count -= 1) && promise.resolve(results);
-                    }, function(err) {
-                        promise.reject(err);
-                    });
-                }, i = 0; i < promises.length; i++) _loop2(i);
-                0 === count && promise.resolve(results);
-                return promise;
-            };
-            ZalgoPromise.hash = function(promises) {
-                var result = {};
-                return ZalgoPromise.all(Object.keys(promises).map(function(key) {
-                    return ZalgoPromise.resolve(promises[key]).then(function(value) {
-                        result[key] = value;
-                    });
-                })).then(function() {
-                    return result;
-                });
-            };
-            ZalgoPromise.map = function(items, method) {
-                return ZalgoPromise.all(items.map(method));
-            };
-            ZalgoPromise.onPossiblyUnhandledException = function(handler) {
-                return function(handler) {
-                    Object(global.a)().possiblyUnhandledPromiseHandlers.push(handler);
-                    return {
-                        cancel: function() {
-                            Object(global.a)().possiblyUnhandledPromiseHandlers.splice(Object(global.a)().possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
-                        }
-                    };
-                }(handler);
-            };
-            ZalgoPromise.try = function(method, context, args) {
-                if (method && "function" != typeof method && !method.call) throw new Error("Promise.try expected a function");
-                var result = void 0;
-                try {
-                    result = method.apply(context, args || []);
-                } catch (err) {
-                    return ZalgoPromise.reject(err);
-                }
-                return ZalgoPromise.resolve(result);
-            };
-            ZalgoPromise.delay = function(_delay) {
-                return new ZalgoPromise(function(resolve) {
-                    setTimeout(resolve, _delay);
-                });
-            };
-            ZalgoPromise.isPromise = function(value) {
-                return !!(value && value instanceof ZalgoPromise) || utils_isPromise(value);
-            };
-            ZalgoPromise.flush = function() {
-                var promise = new ZalgoPromise();
-                Object(global.a)().flushPromises.push(promise);
-                0 === Object(global.a)().activeCount && ZalgoPromise.flushQueue();
-                return promise;
-            };
-            ZalgoPromise.flushQueue = function() {
-                var promisesToFlush = Object(global.a)().flushPromises;
-                Object(global.a)().flushPromises = [];
-                for (var _i2 = 0, _length2 = null == promisesToFlush ? 0 : promisesToFlush.length; _i2 < _length2; _i2++) {
-                    promisesToFlush[_i2].resolve();
-                }
-            };
-            return ZalgoPromise;
-        }();
-        __webpack_require__.d(__webpack_exports__, "a", function() {
-            return promise_ZalgoPromise;
-        });
-    },
+    "./node_modules/zoid/src/types.js": function(module, exports) {},
     "./src/button/template/content.json": function(module, exports) {
         module.exports = '{\n    "AD": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "AE": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        },\n        "ar": {\n            "checkout": "السداد بواسطة {logo:pp} {logo:paypal}",\n            "safer_tag": "الطريقة الأسهل والأكثر أماناً في الدفع",\n            "later_tag": "اشترِ الآن، وسدّد على دفعات",\n            "pay": "دفع بواسطة {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} شراء الآن",\n            "poweredBy": "مدعوم من {logo:paypal}"\n        }\n    },\n    "AG": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "AI": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "AL": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "AM": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "AN": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "AO": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "AR": {\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "AT": {\n        "de": {\n            "checkout": "Direkt zu {logo:pp} {logo:paypal}",\n            "safer_tag": "Einfach schneller und sicherer bezahlen",\n            "later_tag": "Kaufen Sie jetzt und bezahlen Sie nach und nach.",\n            "pay": "Mit {logo:paypal} zahlen",\n            "buynow": "{logo:pp} {logo:paypal} Jetzt kaufen",\n            "poweredBy": "Abgewickelt durch {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "AU": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "AW": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "AZ": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "BA": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "BB": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "BE": {\n        "en": {\n            "checkout": "Pay with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, faster way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "nl": {\n            "checkout": "Betalen met {logo:pp} {logo:paypal}",\n            "safer_tag": "De veiligere en snellere manier om te betalen.",\n            "later_tag": "Koop nu. Betaal later.",\n            "pay": "Betalen met {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Nu kopen",\n            "poweredBy": "Mogelijk gemaakt door {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Le réflexe sécurité pour payer",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        }\n    },\n    "BF": {\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "BG": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "BH": {\n        "ar": {\n            "checkout": "السداد بواسطة {logo:pp} {logo:paypal}",\n            "safer_tag": "الطريقة الأسهل والأكثر أماناً في الدفع",\n            "later_tag": "اشترِ الآن، وسدّد على دفعات",\n            "pay": "دفع بواسطة {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} شراء الآن",\n            "poweredBy": "مدعوم من {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "BI": {\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "BJ": {\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "BM": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "BN": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A safer, faster way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "BO": {\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "BR": {\n        "pt": {\n            "checkout": "{logo:pp} {logo:paypal} Finalizar",\n            "safer_tag": "A maneira fácil e segura de pagar.",\n            "later_tag": "Compre agora e pague depois.",\n            "pay": "Pague com {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar agora",\n            "installment": "{logo:pp} {logo:paypal}  Pagamentos<br>  parcelados",\n            "installment_period": "{logo:pp} {logo:paypal}  Pague em at\\u00e9<br>  [installmentperiod]x sem juros",\n            "poweredBy": "Com tecnologia {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "installment": "{logo:pp} {logo:paypal}  Interest free<br>  payments",\n            "installment_period": "{logo:pp} {logo:paypal}  Pay up to [installmentperiod]x<br>  without interest",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "BS": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "BT": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A safer, faster way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "BW": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "BY": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "BZ": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "C2": {\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式。",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A safer, faster way to pay.",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "CA": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "{logo:pp} {logo:paypal} Payer",\n            "safer_tag": "Votre réflexe sécurité pour payer",\n            "later_tag": "Acheter. Payer plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        }\n    },\n    "CD": {\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "CG": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "CH": {\n        "de": {\n            "checkout": "Direkt zu {logo:pp} {logo:paypal}",\n            "safer_tag": "Einfach schneller und sicherer bezahlen",\n            "later_tag": "Kaufen Sie jetzt und bezahlen Sie nach und nach.",\n            "pay": "Mit {logo:paypal} zahlen",\n            "buynow": "{logo:pp} {logo:paypal} Jetzt kaufen",\n            "poweredBy": "Abgewickelt durch {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Le réflexe sécurité pour payer",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "CI": {\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "CK": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "CL": {\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "CM": {\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "CN": {\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "CO": {\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "CR": {\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "CV": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "CY": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "CZ": {\n        "cs": {\n            "checkout": "Zaplatit přes {logo:pp} {logo:paypal}",\n            "safer_tag": "Jednodušší a bezpečnější způsob placení",\n            "later_tag": "Nakupujte nyní, plaťte později.",\n            "pay": "Zaplatit přes {logo: paypal}",\n            "buynow": "Koupit ihned přes {logo:pp} {logo:paypal}",\n            "poweredBy": "Využívá službu {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "DE": {\n        "de": {\n            "checkout": "Direkt zu {logo:pp} {logo:paypal}",\n            "safer_tag": "Überall schnell und sicher bezahlen.",\n            "later_tag": "Jetzt bei uns bequem in Raten zahlen.",\n            "pay": "Mit {logo:paypal} zahlen",\n            "buynow": "{logo:pp} {logo:paypal} Jetzt kaufen",\n            "poweredBy": "Abgewickelt durch {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "DJ": {\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "DK": {\n        "da": {\n            "checkout": "{logo:pp} {logo:paypal} Betal",\n            "safer_tag": "Betal nemt og sikkert",\n            "later_tag": "Køb nu, betal senere.",\n            "pay": "Betal med {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Køb nu",\n            "poweredBy": "Leveret af {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "DM": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "DO": {\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "DZ": {\n        "ar": {\n            "checkout": "السداد بواسطة {logo:pp} {logo:paypal}",\n            "safer_tag": "الطريقة الأسهل والأكثر أماناً في الدفع",\n            "later_tag": "اشترِ الآن، وسدّد على دفعات",\n            "pay": "دفع بواسطة {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} شراء الآن",\n            "poweredBy": "مدعوم من {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "EC": {\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "EE": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "ru": {\n            "checkout": "Оформить заказ через {logo:pp} {logo:paypal}",\n            "safer_tag": "Более безопасный и простой способ оплаты.",\n            "later_tag": "Покупайте сейчас, платите потом.",\n            "pay": "Оплатить через {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Купить сейчас",\n            "poweredBy": "Обработано {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "EG": {\n        "ar": {\n            "checkout": "السداد بواسطة {logo:pp} {logo:paypal}",\n            "safer_tag": "الطريقة الأسهل والأكثر أماناً في الدفع",\n            "later_tag": "اشترِ الآن، وسدّد على دفعات",\n            "pay": "دفع بواسطة {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} شراء الآن",\n            "poweredBy": "مدعوم من {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "ER": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "ES": {\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Tecnología de {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "ET": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "FI": {\n        "fi": {\n            "checkout": "{logo:pp} {logo:paypal}-maksu",\n            "safer_tag": "Turvallisempi ja helpompi maksutapa",\n            "later_tag": "Osta nyt. Maksa vähitellen.",\n            "pay": "{logo:paypal}-maksu",\n            "buynow": "{logo:pp} {logo:paypal} Osta nyt",\n            "poweredBy": "Palvelun tarjoaa {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "FJ": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "FK": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "FM": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A safer, faster way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "FO": {\n        "da": {\n            "checkout": "Betal med {logo:pp} {logo:paypal}",\n            "safer_tag": "Betal nemt og sikkert",\n            "later_tag": "Køb nu, betal senere.",\n            "pay": "Betal med {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Køb nu",\n            "poweredBy": "Leveret af {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "FR": {\n        "fr": {\n            "checkout": "{logo:pp} {logo:paypal} Payer",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Pay",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "GA": {\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "GB": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "GD": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "GE": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "GF": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "GI": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "GL": {\n        "da": {\n            "checkout": "Betal med {logo:pp} {logo:paypal}",\n            "safer_tag": "Betal nemt og sikkert",\n            "later_tag": "Køb nu, betal senere.",\n            "pay": "Betal med {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Køb nu",\n            "poweredBy": "Leveret af {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "GM": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "GN": {\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "GP": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "GR": {\n        "el": {\n            "checkout": "Ολοκλήρωση αγοράς μέσω {logo:pp} {logo:paypal}",\n            "safer_tag": "Ο ασφαλέστερος και ευκολότερος τρόπος πληρωμής",\n            "later_tag": "Αγοράστε τώρα.  Πληρώστε σε δόσεις.",\n            "pay": "Πληρωμή μέσω {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Αγορά τώρα",\n            "poweredBy": "Με την υποστήριξη του {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "GT": {\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "GW": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "GY": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "HK": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal} 結帳",\n            "safer_tag": "更安全、更方便的付款方式",\n            "later_tag": "先購買，後付款。",\n            "pay": "使用 {logo:paypal} 付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即買",\n            "poweredBy": "支援方： {logo:paypal}"\n        }\n    },\n    "HN": {\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "HR": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "HU": {\n        "hu": {\n            "checkout": "{logo:pp} {logo:paypal}-fizetés",\n            "safer_tag": "Biztonságosabb, könnyebb fizetési mód.",\n            "later_tag": "Vásároljon most. Fizessen később.",\n            "pay": "{logo:paypal}-fizetés",\n            "buynow": "{logo:pp} {logo:paypal} Vásárlás",\n            "poweredBy": "Üzemeltető: {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "ID": {\n        "id": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "Cara yang lebih mudah dan aman untuk membayar.",\n            "later_tag": "Beli Sekarang. Bayar dalam Jangka Waktu Tertentu.",\n            "pay": "Bayar dengan {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Beli Sekarang",\n            "poweredBy": "Ditunjang teknologi {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "IE": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "IL": {\n        "he": {\n            "checkout": "{logo:pp} {logo:paypal} שלם",\n            "safer_tag": ".הדרך הקלה והבטוחה יותר לשלם",\n            "later_tag": "קנה עכשיו. שלם לאורך זמן.",\n            "pay": "שלם באמצעות {logo:paypal}‏",\n            "buynow": "{logo:pp} {logo:paypal} קנה עכשיו",\n            "poweredBy": "מופעל על-ידי {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "IN": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A safer, faster way to pay.",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "IS": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "IT": {\n        "it": {\n            "checkout": "{logo:pp} {logo:paypal} Paga adesso",\n            "safer_tag": "Il modo rapido e sicuro per pagare",\n            "later_tag": "Acquista ora. Paga più tardi.",\n            "pay": "Paga con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Paga adesso",\n            "poweredBy": "Con tecnologia {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "JM": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "JO": {\n        "ar": {\n            "checkout": "السداد بواسطة {logo:pp} {logo:paypal}",\n            "safer_tag": "الطريقة الأسهل والأكثر أماناً في الدفع",\n            "later_tag": "اشترِ الآن، وسدّد على دفعات",\n            "pay": "دفع بواسطة {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} شراء الآن",\n            "poweredBy": "مدعوم من {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "JP": {\n        "ja": {\n            "checkout": "{logo:pp} {logo:paypal}で支払う",\n            "safer_tag": "より安全・簡単にお支払い",\n            "later_tag": "今すぐ購入して、分割してお支払い。",\n            "pay": "{logo:paypal}で支払う",\n            "buynow": "{logo:pp} {logo:paypal} 購入",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "KE": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "KG": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "KH": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A safer, faster way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "KI": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "KM": {\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "KN": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "KR": {\n        "ko": {\n            "checkout": "{logo:pp} {logo:paypal} 체크 아웃",\n            "safer_tag": "더 안전하고 빠른 결제 방법",\n            "later_tag": "지금 구매하고 천천히 결제하세요.",\n            "pay": "{logo:paypal}로 지불하기",\n            "buynow": "{logo:pp} {logo:paypal} 바로 구매",\n            "poweredBy": "제공: {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A safer, faster way to pay.",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "KW": {\n        "ar": {\n            "checkout": "السداد بواسطة {logo:pp} {logo:paypal}",\n            "safer_tag": "الطريقة الأسهل والأكثر أماناً في الدفع",\n            "later_tag": "اشترِ الآن، وسدّد على دفعات",\n            "pay": "دفع بواسطة {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} شراء الآن",\n            "poweredBy": "مدعوم من {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "KY": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "KZ": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "LA": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A safer, faster way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "LC": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "LI": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "LK": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A safer, faster way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "LS": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "LT": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "ru": {\n            "checkout": "Оформить заказ через {logo:pp} {logo:paypal}",\n            "safer_tag": "Более безопасный и простой способ оплаты.",\n            "later_tag": "Покупайте сейчас, платите потом.",\n            "pay": "Оплатить через {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Купить сейчас",\n            "poweredBy": "Обработано {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "LU": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "de": {\n            "checkout": "Direkt zu {logo:pp} {logo:paypal}",\n            "safer_tag": "Einfach schneller und sicherer bezahlen",\n            "later_tag": "Kaufen Sie jetzt und bezahlen Sie nach und nach.",\n            "pay": "Mit {logo:paypal} zahlen",\n            "buynow": "{logo:pp} {logo:paypal} Jetzt kaufen",\n            "poweredBy": "Abgewickelt durch {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "LV": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "ru": {\n            "checkout": "Оформить заказ через {logo:pp} {logo:paypal}",\n            "safer_tag": "Более безопасный и простой способ оплаты.",\n            "later_tag": "Покупайте сейчас, платите потом.",\n            "pay": "Оплатить через {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Купить сейчас",\n            "poweredBy": "Обработано {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "MA": {\n        "ar": {\n            "checkout": "السداد بواسطة {logo:pp} {logo:paypal}",\n            "safer_tag": "الطريقة الأسهل والأكثر أماناً في الدفع",\n            "later_tag": "اشترِ الآن، وسدّد على دفعات",\n            "pay": "دفع بواسطة {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} شراء الآن",\n            "poweredBy": "مدعوم من {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "MC": {\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "MD": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "ME": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "MG": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "MH": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "MK": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "ML": {\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "MN": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A safer, faster way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "MQ": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "MR": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "MS": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "MT": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "MU": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "MV": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A safer, faster way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "MW": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "MX": {\n        "es": {\n            "checkout": "Pagar con {logo:pp} {logo:paypal}",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "installment": "{logo:pp} {logo:paypal}  Pagos en<br>  mensualidades",\n            "installment_period": "{logo:pp} {logo:paypal}  Pague hasta en<br>  [installmentperiod] mensualidades",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, faster way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "installment": "{logo:pp} {logo:paypal}  Interest free<br>  payments",\n            "installment_period": "{logo:pp} {logo:paypal}  Pay up to [installmentperiod]x<br>  without interest",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "MY": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A safer, faster way to pay.",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "MZ": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "NA": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "NC": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "NE": {\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "NF": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "NG": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "NI": {\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "NL": {\n        "nl": {\n            "checkout": "{logo:pp} {logo:paypal} Betalen",\n            "safer_tag": "Een veilige en makkelijke manier om te betalen.",\n            "later_tag": "Koop nu. Betaal later.",\n            "pay": "Betalen met {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Nu kopen",\n            "poweredBy": "Mogelijk gemaakt door {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "NO": {\n        "no": {\n            "checkout": "{logo:pp} {logo:paypal} Betal",\n            "safer_tag": "En trygg og enkel betalingsmetode",\n            "later_tag": "Kjøp nå, betal senere.",\n            "pay": "Betal med {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Kjøp nå",\n            "poweredBy": "Leveres av {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "NP": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A safer, faster way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "NR": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "NU": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "NZ": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A safer, faster way to pay.",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "{logo:pp} {logo:paypal} Payer",\n            "safer_tag": "Un réflexe sécurité.",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar.",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式。",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "OM": {\n        "ar": {\n            "checkout": "السداد بواسطة {logo:pp} {logo:paypal}",\n            "safer_tag": "الطريقة الأسهل والأكثر أماناً في الدفع",\n            "later_tag": "اشترِ الآن، وسدّد على دفعات",\n            "pay": "دفع بواسطة {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} شراء الآن",\n            "poweredBy": "مدعوم من {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "PA": {\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "PE": {\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "PF": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "PG": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "PH": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A safer, faster way to pay.",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "PL": {\n        "pl": {\n            "checkout": "{logo:pp} {logo:paypal} Do kasy",\n            "safer_tag": "Płać wygodnie i bezpiecznie",\n            "later_tag": "Kup teraz. Płać w ratach",\n            "pay": "Zapłać z {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Kup teraz",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "PM": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "PN": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "PT": {\n        "pt": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A forma rápida e segura de pagar",\n            "later_tag": "Compre agora. Vá pagando.",\n            "pay": "Pagar com {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar agora",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "PW": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "PY": {\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "QA": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        },\n        "ar": {\n            "checkout": "السداد بواسطة {logo:pp} {logo:paypal}",\n            "safer_tag": "الطريقة الأسهل والأكثر أماناً في الدفع",\n            "later_tag": "اشترِ الآن، وسدّد على دفعات",\n            "pay": "دفع بواسطة {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} شراء الآن",\n            "poweredBy": "مدعوم من {logo:paypal}"\n        }\n    },\n    "RE": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "RO": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "RS": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "RU": {\n        "ru": {\n            "checkout": "{logo:pp} {logo:paypal} Оформить покупку",\n            "safer_tag": "Более безопасный и простой способ оплаты.",\n            "later_tag": "Покупайте сейчас, платите потом.",\n            "pay": "Оплатить через {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Купить сейчас",\n            "poweredBy": "Обработано {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "RW": {\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "SA": {\n        "ar": {\n            "checkout": "السداد بواسطة {logo:pp} {logo:paypal}",\n            "safer_tag": "الطريقة الأسهل والأكثر أماناً في الدفع",\n            "later_tag": "اشترِ الآن، وسدّد على دفعات",\n            "pay": "دفع بواسطة {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} شراء الآن",\n            "poweredBy": "مدعوم من {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "SB": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "SC": {\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "SE": {\n        "sv": {\n            "checkout": "{logo:pp} {logo:paypal} Betala",\n            "safer_tag": "Ett tryggt och smidigt sätt att betala",\n            "later_tag": "Köp nu, betala senare",\n            "pay": "Betala med {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Köp nu",\n            "poweredBy": "Tillhandahålls av {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "SG": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A safer, faster way to pay.",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "SH": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "SI": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "SJ": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "SK": {\n        "sk": {\n            "checkout": "Zaplatiť cez {logo:pp} {logo:paypal}",\n            "safer_tag": "Jednoduchší a bezpečnejší spôsob platby",\n            "later_tag": "Nakúpte teraz, zaplaťte postupne",\n            "pay": "Zaplatiť cez {logo: paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Kúpiť",\n            "poweredBy": "Používa technológiu {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "SL": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "SM": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "SN": {\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "SO": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "SR": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "ST": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "SV": {\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "SZ": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "TC": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "TD": {\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "TG": {\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "TH": {\n        "th": {\n            "checkout": "{logo:pp} {logo:paypal} ชำระเงิน",\n            "safer_tag": "วิธีชำระเงินที่ปลอดภัยและง่ายกว่า",\n            "later_tag": "ซื้อวันนี้ แล้วค่อยๆ จ่ายทีหลัง",\n            "pay": "ชำระเงินด้วย {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} ซื้อทันที",\n            "poweredBy": "ให้บริการโดย {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "TJ": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "TM": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "TN": {\n        "ar": {\n            "checkout": "السداد بواسطة {logo:pp} {logo:paypal}",\n            "safer_tag": "الطريقة الأسهل والأكثر أماناً في الدفع",\n            "later_tag": "اشترِ الآن، وسدّد على دفعات",\n            "pay": "دفع بواسطة {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} شراء الآن",\n            "poweredBy": "مدعوم من {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "TO": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A safer, faster way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "TR": {\n        "tr": {\n            "checkout": "{logo:pp} {logo:paypal} ile Satın Alın",\n            "safer_tag": "Ödeme yapmanın daha güvenli ve kolay yolu",\n            "later_tag": "Şimdi Alın. Daha Sonra Ödeyin.",\n            "pay": "{logo:paypal} ile Öde",\n            "buynow": "{logo:pp} {logo:paypal} Hemen Satın Alın",\n            "poweredBy": "Çalıştıran {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "TT": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "TV": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "TW": {\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal} 結帳",\n            "safer_tag": "更安全、更方便的付款方式",\n            "later_tag": "先購買，後付款。",\n            "pay": "使用 {logo:paypal} 付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即購",\n            "poweredBy": "服務提供者： {logo:paypal}"\n        },\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "TZ": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "UA": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "ru": {\n            "checkout": "Оформить заказ через {logo:pp} {logo:paypal}",\n            "safer_tag": "Более безопасный и простой способ оплаты.",\n            "later_tag": "Покупайте сейчас, платите потом.",\n            "pay": "Оплатить через {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Купить сейчас",\n            "poweredBy": "Обработано {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "UG": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "US": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "dual_tag": "Two easy ways to pay",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "{logo:pp} {logo:paypal} Payer",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "Pagar con {logo:pp} {logo:paypal}",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "使用{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "UY": {\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "VA": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "VC": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "VE": {\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "VG": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "VN": {\n        "en": {\n            "checkout": "{logo:pp} {logo:paypal} Checkout",\n            "safer_tag": "A safer, faster way to pay.",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "VU": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "WF": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "WS": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    },\n    "YE": {\n        "ar": {\n            "checkout": "السداد بواسطة {logo:pp} {logo:paypal}",\n            "safer_tag": "الطريقة الأسهل والأكثر أماناً في الدفع",\n            "later_tag": "اشترِ الآن، وسدّد على دفعات",\n            "pay": "دفع بواسطة {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} شراء الآن",\n            "poweredBy": "مدعوم من {logo:paypal}"\n        },\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "YT": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "ZA": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "ZM": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        },\n        "fr": {\n            "checkout": "Payer avec {logo:pp} {logo:paypal}",\n            "safer_tag": "Votre réflexe sécurité pour payer en ligne",\n            "later_tag": "Achetez maintenant et payez plus tard.",\n            "pay": "Payer avec {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Acheter",\n            "poweredBy": "Optimisé par {logo:paypal}"\n        },\n        "es": {\n            "checkout": "{logo:pp} {logo:paypal} Pagar",\n            "safer_tag": "La forma rápida y segura de pagar",\n            "later_tag": "Compre ahora y pague más adelante.",\n            "pay": "Pagar con {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",\n            "poweredBy": "Desarrollado por {logo:paypal}"\n        },\n        "zh": {\n            "checkout": "{logo:pp} {logo:paypal}结账",\n            "safer_tag": "更安全、更便捷的付款方式",\n            "later_tag": "立即购买，分期付款。",\n            "pay": "用{logo:paypal}付款",\n            "buynow": "{logo:pp} {logo:paypal} 立即购买",\n            "poweredBy": "技术支持提供方： {logo:paypal}"\n        }\n    },\n    "ZW": {\n        "en": {\n            "checkout": "Check out with {logo:pp} {logo:paypal}",\n            "safer_tag": "The safer, easier way to pay",\n            "later_tag": "Buy Now. Pay Over Time.",\n            "pay": "Pay with {logo:paypal}",\n            "buynow": "{logo:pp} {logo:paypal} Buy Now",\n            "poweredBy": "Powered by {logo:paypal}"\n        }\n    }\n}\n';
     },
     "./src/checkout/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), beaver_logger_client = __webpack_require__("./node_modules/beaver-logger/client/index.js"), xcomponent_src = __webpack_require__("./node_modules/xcomponent/src/index.js"), lib = (__webpack_require__("./node_modules/xcomponent/src/component/component/index.js"), 
+        var src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), beaver_logger_client = __webpack_require__("./node_modules/beaver-logger/client/index.js"), zoid_src = __webpack_require__("./node_modules/zoid/src/index.js"), lib = (__webpack_require__("./node_modules/zoid/src/component/component/index.js"), 
         __webpack_require__("./src/lib/index.js")), config = __webpack_require__("./src/config/index.js"), constants = __webpack_require__("./src/constants/index.js"), post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js");
         function match(str, pattern) {
             var regmatch = str.match(pattern);
             if (regmatch) return regmatch[1];
         }
         var onAuthorize = void 0;
-        Object(lib.I)() && Object(post_robot_src.on)("onLegacyPaymentAuthorize", {
+        Object(lib.G)() && Object(post_robot_src.on)("onLegacyPaymentAuthorize", {
             window: window.parent
         }, function(_ref) {
             var data = _ref.data;
@@ -7889,14 +7894,14 @@
         function onLegacyPaymentAuthorize(method) {
             onAuthorize = method;
             return src.a.try(function() {
-                if (post_robot_src.bridge && !Object(lib.I)()) return post_robot_src.bridge.openBridge(Object(lib.j)(config.a.postBridgeUrl, {
-                    version: Object(lib.w)()
+                if (post_robot_src.bridge && !Object(lib.G)()) return post_robot_src.bridge.openBridge(Object(lib.h)(config.a.postBridgeUrl, {
+                    version: Object(lib.u)()
                 }), config.a.postBridgeDomain).then(function(postBridge) {
                     return Object(post_robot_src.send)(postBridge, "onLegacyPaymentAuthorize", {
                         method: method
                     }, {
                         domain: config.a.paypalDomain
-                    }).then(lib.L);
+                    }).then(lib.J);
                 });
             });
         }
@@ -7929,7 +7934,7 @@
                                     win.PAYPAL && win.PAYPAL.Checkout && win.PAYPAL.Checkout.XhrResponse && win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES && Object.defineProperty(win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES, "Redirect", {
                                         value: Math.random().toString()
                                     });
-                                    win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = lib.L);
+                                    win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = lib.J);
                                 }
                             } catch (err) {
                                 return;
@@ -7961,7 +7966,7 @@
             }
             return target;
         };
-        var Checkout = Object(xcomponent_src.c)({
+        var Checkout = Object(zoid_src.c)({
             tag: "paypal-checkout",
             name: "ppcheckout",
             scrolling: !0,
@@ -7988,15 +7993,15 @@
                 return config.a.paypalDomains;
             },
             contexts: {
-                iframe: !Object(lib.Z)(),
+                iframe: !Object(lib.W)(),
                 popup: !0
             },
             get version() {
-                return Object(lib.w)();
+                return Object(lib.u)();
             },
             validate: function() {
-                if (Object(lib.G)()) throw new Error("Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md");
-                Object(lib.D)() || Object(beaver_logger_client.q)("checkout_render_ineligible");
+                if (Object(lib.E)()) throw new Error("Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md");
+                Object(lib.B)() || Object(beaver_logger_client.q)("checkout_render_ineligible");
             },
             prerenderTemplate: template.a,
             containerTemplate: template.b,
@@ -8005,7 +8010,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.x)();
+                        return Object(lib.v)();
                     },
                     queryParam: !0
                 },
@@ -8013,7 +8018,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.m)();
+                        return Object(lib.k)();
                     },
                     queryParam: !0
                 },
@@ -8059,7 +8064,7 @@
                     queryParam: "locale.x",
                     allowDelegate: !0,
                     def: function() {
-                        var _getBrowserLocale = Object(lib.l)();
+                        var _getBrowserLocale = Object(lib.j)();
                         return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
                     }
                 },
@@ -8090,8 +8095,8 @@
                         return payment();
                     },
                     childDecorate: function(payment) {
-                        var token = Object(lib.s)("token");
-                        return token ? Object(lib.K)(function() {
+                        var token = Object(lib.q)("token");
+                        return token ? Object(lib.I)(function() {
                             return src.a.resolve(token);
                         }) : payment;
                     },
@@ -8152,7 +8157,7 @@
                                         Object(beaver_logger_client.q)("child_window_paypal_not_found");
                                         Object(beaver_logger_client.h)();
                                     }
-                                    var AuthModel = window.injector && window.injector.get("$AuthModel"), buyerCountry = AuthModel && AuthModel.instance() && AuthModel.instance().country, geoCountry = window.meta && window.meta.geolocation, browserCountry = Object(lib.l)().country;
+                                    var AuthModel = window.injector && window.injector.get("$AuthModel"), buyerCountry = AuthModel && AuthModel.instance() && AuthModel.instance().country, geoCountry = window.meta && window.meta.geolocation, browserCountry = Object(lib.j)().country;
                                     if (!buyerCountry || !geoCountry || !browserCountry) {
                                         Object(beaver_logger_client.k)("buyer_country_match_data_not_found", {
                                             buyerCountry: buyerCountry,
@@ -8188,12 +8193,12 @@
                                     return _this.closeComponent();
                                 });
                             }, redirect = function(win, url) {
-                                return src.a.all([ Object(lib.R)(win || window.top, url || data.returnUrl), close() ]);
+                                return src.a.all([ Object(lib.P)(win || window.top, url || data.returnUrl), close() ]);
                             };
                             return src.a.try(function() {
                                 try {
                                     var isButton = -1 !== window.location.href.indexOf("/webapps/hermes/button"), isGuest = -1 !== _this.window.location.href.indexOf("/webapps/xoonboarding");
-                                    if (isButton && isGuest) return Object(lib.T)({
+                                    if (isButton && isGuest) return Object(lib.R)({
                                         win: _this.window,
                                         method: "get",
                                         url: "/webapps/xoonboarding/api/auth"
@@ -8251,7 +8256,7 @@
                                     return _this2.closeComponent();
                                 });
                             }, redirect = function(win, url) {
-                                return src.a.all([ Object(lib.R)(win || window.top, url || data.cancelUrl), close() ]);
+                                return src.a.all([ Object(lib.P)(win || window.top, url || data.cancelUrl), close() ]);
                             };
                             return src.a.try(function() {
                                 return original.call(_this2, data, _extends({}, actions, {
@@ -8292,7 +8297,7 @@
                     noop: !0,
                     decorate: function(original) {
                         return function(reason) {
-                            var onClose = original.apply(this, arguments), CLOSE_REASONS = xcomponent_src.a.CLOSE_REASONS;
+                            var onClose = original.apply(this, arguments), CLOSE_REASONS = zoid_src.a.CLOSE_REASONS;
                             if (this.props.onCancel && -1 !== [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason)) {
                                 Object(beaver_logger_client.k)("close_trigger_cancel");
                                 return this.props.onCancel({
@@ -8322,7 +8327,7 @@
                             Object(beaver_logger_client.q)("fallback", {
                                 url: url
                             });
-                            if (Object(lib.o)("allow_full_page_fallback")) {
+                            if (Object(lib.m)("allow_full_page_fallback")) {
                                 window.top.location = url;
                                 return this.close();
                             }
@@ -8359,7 +8364,7 @@
                 height: !1
             },
             get dimensions() {
-                return Object(lib.B)() ? {
+                return Object(lib.z)() ? {
                     width: "100%",
                     height: "535px"
                 } : {
@@ -8369,9 +8374,9 @@
             }
         });
         if (Checkout.isChild() && Checkout.xchild && Checkout.xprops) {
-            Checkout.xprops && Checkout.xprops.logLevel && Object(lib.W)(Checkout.xprops.logLevel);
+            Checkout.xprops && Checkout.xprops.logLevel && Object(lib.T)(Checkout.xprops.logLevel);
             Checkout.xchild.onProps(function(xprops) {
-                Object(lib.P)(xprops, "onAuthorize", function(_ref) {
+                Object(lib.N)(xprops, "onAuthorize", function(_ref) {
                     var callOriginal = _ref.callOriginal, data = _ref.args[0];
                     if (data && !data.intent) {
                         Object(beaver_logger_client.q)("hermes_authorize_no_intent", {
@@ -8391,57 +8396,22 @@
                     return callOriginal();
                 });
             });
-            lib.g.then(function() {
-                if (window.injector) {
-                    var $event = window.injector.get("$event");
-                    if ($event) {
-                        var experimentActive = !1, loggedComplete = !1;
-                        $event.on("allLoaded", function() {
-                            setTimeout(function() {
-                                var _throttle$logStart, payButton = document.querySelector(".buttons.reviewButton"), topPayButton = document.querySelector(".buttons.reviewButton.topReviewButton"), reviewSection = document.querySelector("section.review"), throttle = Object(lib.z)("top_pay_button", 0), hash = window.location.hash, logComplete = function() {
-                                    if (experimentActive && !loggedComplete && hash && -1 !== hash.indexOf("checkout/review")) {
-                                        var _throttle$logComplete;
-                                        throttle.logComplete(((_throttle$logComplete = {})[constants.u.KEY.FEED] = "hermesnodeweb", 
-                                        _throttle$logComplete));
-                                        loggedComplete = !0;
-                                    }
-                                };
-                                payButton && payButton.addEventListener("click", logComplete);
-                                if (reviewSection && reviewSection.firstChild && payButton && !topPayButton && !(payButton.getBoundingClientRect().bottom < window.innerHeight)) {
-                                    experimentActive = !0;
-                                    throttle.logStart(((_throttle$logStart = {})[constants.u.KEY.FEED] = "hermesnodeweb", 
-                                    _throttle$logStart));
-                                    if (throttle.isEnabled()) {
-                                        (topPayButton = payButton.cloneNode(!0)).className += " topReviewButton";
-                                        reviewSection.insertBefore(topPayButton, reviewSection.firstChild);
-                                        topPayButton.addEventListener("click", function() {
-                                            logComplete();
-                                            var button = payButton && payButton.querySelector("button, input");
-                                            button && button.click();
-                                        });
-                                    }
-                                }
-                            }, 200);
-                        });
-                    }
-                }
-            });
         }
-        Object(lib.P)(Checkout, "init", function(_ref2) {
+        Object(lib.N)(Checkout, "init", function(_ref2) {
             var _ref2$args = _ref2.args, props = _ref2$args[0], _context = _ref2$args[1], original = _ref2.original, context = _ref2.context;
             return original.call(context, props, _context, "body");
         });
-        Object(lib.P)(Checkout, "render", function(_ref3) {
+        Object(lib.N)(Checkout, "render", function(_ref3) {
             var props = _ref3.args[0], original = _ref3.original, context = _ref3.context;
             return original.call(context, props, "body");
         });
-        Object(lib.P)(Checkout, "renderTo", function(_ref4) {
+        Object(lib.N)(Checkout, "renderTo", function(_ref4) {
             var _ref4$args = _ref4.args, win = _ref4$args[0], props = _ref4$args[1], original = _ref4.original, context = _ref4.context, payment = props.payment();
             props.payment = function() {
                 return payment;
             };
             return original.call(context, win, props, "body").catch(function(err) {
-                if (err instanceof xcomponent_src.b && Object(lib.I)()) {
+                if (err instanceof zoid_src.b && Object(lib.G)()) {
                     Checkout.contexts.iframe = !0;
                     return original.call(context, win, props, "body");
                 }
@@ -8489,7 +8459,11 @@
             function focus(event) {
                 event.preventDefault();
                 event.stopPropagation();
-                Object(lib.H)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
+                if (Object(lib.F)()) window.alert("Please switch tabs to reactivate the PayPal window"); else try {
+                    actions.focus();
+                } catch (err) {
+                    actions.close();
+                }
             }
             var overlayColor = (props.style || {}).overlayColor || constants.q.BLACK, logoColor = LOGO_COLOR[overlayColor], ppLogo = "function" == typeof resources.b.pp ? resources.b.pp({
                 logoColor: logoColor
@@ -8540,10 +8514,9 @@
                 CONTEXT: CONTEXT,
                 CLASS: CLASS,
                 ANIMATION: ANIMATION
-            }))), container = jsxDom("html", null, jsxDom("body", null, el)), restrictedFocus = Object(lib.U)(document.body);
+            }))), container = jsxDom("html", null, jsxDom("body", null, el));
             on(EVENT.CLOSE, function() {
                 el.className += " " + tag + "-loading";
-                restrictedFocus.release();
             });
             return jsxDom("div", {
                 id: id,
@@ -8576,7 +8549,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.228",
+            version: "4.0.231",
             cors: !0,
             env: constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -8757,12 +8730,21 @@
                 },
                 "uncommongoods.com": {
                     disable_venmo: !0
+                },
+                "onegold.com": {
+                    disable_venmo: !0
+                },
+                "universitytees.com": {
+                    disable_venmo: !0
+                },
+                "revolve.com": {
+                    disable_venmo: !0
+                },
+                "functionofbeauty.com": {
+                    disable_venmo: !0
                 }
             },
             creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
-            bmlCreditTest: {
-                domains: []
-            },
             customCountry: !1,
             SUPPORTED_BROWSERS: {
                 msie: "11",
@@ -9838,13 +9820,13 @@
             return constants.o;
         });
         __webpack_require__.d(interface_namespaceObject, "request", function() {
-            return lib.T;
+            return lib.R;
         });
         __webpack_require__.d(interface_namespaceObject, "isEligible", function() {
-            return lib.D;
+            return lib.B;
         });
         __webpack_require__.d(interface_namespaceObject, "isFundingRemembered", function() {
-            return lib.E;
+            return lib.C;
         });
         __webpack_require__.d(interface_namespaceObject, "forceIframe", function() {
             return lib.a;
@@ -9894,7 +9876,7 @@
         __webpack_require__.d(interface_namespaceObject, "logger", function() {
             return logger;
         });
-        var _LOGO_COLOR, beaver_logger_client = __webpack_require__("./node_modules/beaver-logger/client/index.js"), src = __webpack_require__("./node_modules/xcomponent/src/index.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js"), lib = __webpack_require__("./src/lib/index.js"), src_checkout = __webpack_require__("./src/checkout/index.js"), config = (__webpack_require__("./node_modules/xcomponent/src/component/component/index.js"), 
+        var _LOGO_COLOR, beaver_logger_client = __webpack_require__("./node_modules/beaver-logger/client/index.js"), src = __webpack_require__("./node_modules/zoid/src/index.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js"), lib = __webpack_require__("./src/lib/index.js"), src_checkout = __webpack_require__("./src/checkout/index.js"), config = (__webpack_require__("./node_modules/zoid/src/component/component/index.js"), 
         __webpack_require__("./src/config/index.js")), Card = Object(src.c)({
             tag: "card-fields",
             name: "ppcard",
@@ -9911,7 +9893,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.x)();
+                        return Object(lib.v)();
                     },
                     queryParam: !0
                 },
@@ -9924,7 +9906,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.m)();
+                        return Object(lib.k)();
                     },
                     queryParam: !0
                 },
@@ -9950,7 +9932,7 @@
                     queryParam: "locale.x",
                     allowDelegate: !0,
                     def: function() {
-                        var _getBrowserLocale = Object(lib.l)();
+                        var _getBrowserLocale = Object(lib.j)();
                         return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
                     }
                 },
@@ -10016,7 +9998,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.x)();
+                        return Object(lib.v)();
                     },
                     queryParam: !0
                 },
@@ -10029,7 +10011,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.m)();
+                        return Object(lib.k)();
                     },
                     queryParam: !0
                 },
@@ -10055,7 +10037,7 @@
                     queryParam: "locale.x",
                     allowDelegate: !0,
                     def: function() {
-                        var _getBrowserLocale = Object(lib.l)();
+                        var _getBrowserLocale = Object(lib.j)();
                         return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
                     }
                 },
@@ -10091,11 +10073,11 @@
                     CONTEXT: CONTEXT,
                     CLASS: CLASS,
                     ANIMATION: ANIMATION
-                }) + "\n        @media screen and (max-width: 470px) {\n            #" + id + " .paypal-checkout-close {\n                position: absolute;\n                right: 20px;\n                width: 40px;\n                height: 40px;\n                opacity: 0.6;\n                top: 20px;\n                opacity: 0.6;\n                z-index: 2;\n            }\n\n            #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n                position: absolute;\n                left: 20px;\n                content: ' ';\n                height: 40px;\n                width: 1px;\n                background-color: #111 !important;\n            }\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                height: 100%;\n                min-height: 100%;\n                max-height: 100%;\n                min-width: 100%;\n                max-width: 100%;\n                border-radius: 0px;\n            }\n            #" + id + " .xcomponent-outlet {\n                height: 100%;\n            }\n        }\n    ", content = componentContent[country][lang];
+                }) + "\n        @media screen and (max-width: 470px) {\n            #" + id + " .paypal-checkout-close {\n                position: absolute;\n                right: 20px;\n                width: 40px;\n                height: 40px;\n                opacity: 0.6;\n                top: 20px;\n                opacity: 0.6;\n                z-index: 2;\n            }\n\n            #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n                position: absolute;\n                left: 20px;\n                content: ' ';\n                height: 40px;\n                width: 1px;\n                background-color: #111 !important;\n            }\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                height: 100%;\n                min-height: 100%;\n                max-height: 100%;\n                min-width: 100%;\n                max-width: 100%;\n                border-radius: 0px;\n            }\n            #" + id + " ." + CLASS.OUTLET + " {\n                height: 100%;\n            }\n        }\n    ", content = componentContent[country][lang];
                 function focus(event) {
                     event.preventDefault();
                     event.stopPropagation();
-                    Object(lib.H)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
+                    Object(lib.F)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
                 }
                 var overlayColor = (props.style || {}).overlayColor || constants.q.BLACK, logoColor = LOGO_COLOR[overlayColor], ppLogo = "function" == typeof resources.b.pp ? resources.b.pp({
                     logoColor: logoColor
@@ -10165,8 +10147,8 @@
         function mergePaymentDetails(id, payment) {
             payments[id] = payments[id] || {};
             var details = payments[id].details || {}, result = {};
-            Object(lib.i)(result, payment);
-            Object(lib.f)(result, details);
+            Object(lib.g)(result, payment);
+            Object(lib.e)(result, details);
             return result;
         }
         var rest__extends = Object.assign || function(target) {
@@ -10175,13 +10157,13 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, proxyRest = {}, createAccessToken = Object(lib.K)(function(env, client) {
+        }, proxyRest = {}, createAccessToken = Object(lib.I)(function(env, client) {
             Object(beaver_logger_client.k)("rest_api_create_access_token");
             var clientID = client[env = env || config.a.env];
             if (!clientID) throw new Error("Client ID not found for env: " + env);
             if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) return proxyRest.createAccessToken(env, client);
             var basicAuth = Object(base64.btoa)(clientID + ":");
-            return Object(lib.T)({
+            return Object(lib.R)({
                 method: "post",
                 url: config.a.authApiUrls[env],
                 headers: {
@@ -10197,7 +10179,7 @@
             });
         }, {
             time: 6e5
-        }), createExperienceProfile = Object(lib.K)(function(env, client) {
+        }), createExperienceProfile = Object(lib.I)(function(env, client) {
             var experienceDetails = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
             Object(beaver_logger_client.k)("rest_api_create_experience_profile");
             if (!client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
@@ -10205,7 +10187,7 @@
             experienceDetails.temporary = !0;
             experienceDetails.name = experienceDetails.name ? experienceDetails.name + "_" + Math.random().toString() : Math.random().toString();
             return createAccessToken(env, client).then(function(accessToken) {
-                return Object(lib.T)({
+                return Object(lib.R)({
                     method: "post",
                     url: config.a.experienceApiUrls[env],
                     headers: {
@@ -10280,12 +10262,12 @@
                     return zalgo_promise_src.a.try(function() {
                         if (tracking) return zalgo_promise_src.a.resolve(function(env, client, merchantID, trackingData) {
                             if (!client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
-                            var trackingID = Object(lib._0)();
+                            var trackingID = Object(lib.X)();
                             return createAccessToken(env, client).then(function(accessToken) {
                                 var headers = {
                                     Authorization: "Bearer " + accessToken
                                 };
-                                return Object(lib.T)({
+                                return Object(lib.R)({
                                     method: "put",
                                     url: config.a.trackingApiUrls[env] + "/" + merchantID + "/" + trackingID,
                                     headers: headers,
@@ -10305,7 +10287,7 @@
                         };
                         trackingID && (headers["Paypal-Client-Metadata-Id"] = trackingID);
                         meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
-                        return Object(lib.T)({
+                        return Object(lib.R)({
                             method: "post",
                             url: config.a.paymentApiUrls[env],
                             headers: headers,
@@ -10349,7 +10331,7 @@
                     Authorization: "Bearer " + accessToken
                 };
                 meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
-                return Object(lib.T)({
+                return Object(lib.R)({
                     method: "post",
                     url: config.a.orderApiUrls[env],
                     headers: headers,
@@ -10377,7 +10359,7 @@
                     if (experienceDetails) return zalgo_promise_src.a.resolve(createExperienceProfile(env, client, experienceDetails));
                 }).then(function(experienceID) {
                     experienceID && (billingDetails.experience_profile_id = experienceID);
-                    return Object(lib.T)({
+                    return Object(lib.R)({
                         method: "post",
                         url: config.a.billingApiUrls[env],
                         headers: {
@@ -10411,16 +10393,16 @@
             var data = _ref.data;
             proxyRest = data;
         });
-        parentWin && Object(lib.I)() && !Object(cross_domain_utils_src.isSameDomain)(parentWin) && Object(post_robot_src.send)(parentWin, "proxy_rest", {
+        parentWin && Object(lib.G)() && !Object(cross_domain_utils_src.isSameDomain)(parentWin) && Object(post_robot_src.send)(parentWin, "proxy_rest", {
             createAccessToken: createAccessToken,
             createExperienceProfile: createExperienceProfile,
             createPayment: createPayment,
             createBillingAgreement: createBillingAgreement,
             createOrder: createOrder
         }).catch(function() {});
-        var onAuthorizeListener = Object(lib.h)();
+        var onAuthorizeListener = Object(lib.f)();
         function log(experiment, treatment, token, state) {
-            Object(lib.y)(function(session) {
+            Object(lib.w)(function(session) {
                 var event = experiment + "_" + treatment + "_" + state, loggedEvents = session.loggedExperimentEvents = session.loggedExperimentEvents || [];
                 if (-1 !== loggedEvents.indexOf(event)) Object(beaver_logger_client.k)("duplicate_" + event); else {
                     var _track;
@@ -10440,7 +10422,7 @@
         function logExperimentTreatment(_ref) {
             var experiment = _ref.experiment, treatment = _ref.treatment, state = _ref.state, token = _ref.token;
             if (experiment && treatment) {
-                Object(lib.y)(function(session) {
+                Object(lib.w)(function(session) {
                     session.externalExperiment = experiment;
                     session.externalExperimentTreatment = treatment;
                     token && (session.externalExperimentToken = token);
@@ -10449,7 +10431,7 @@
             }
         }
         function logReturn(token) {
-            var _getSessionState = Object(lib.y)(function(session) {
+            var _getSessionState = Object(lib.w)(function(session) {
                 return session;
             }), externalExperiment = _getSessionState.externalExperiment, externalExperimentTreatment = _getSessionState.externalExperimentTreatment, externalExperimentToken = _getSessionState.externalExperimentToken;
             externalExperiment && externalExperimentTreatment && externalExperimentToken === token ? log(externalExperiment, externalExperimentTreatment, token, "complete") : Object(beaver_logger_client.k)("experiment_mismatch", {
@@ -10459,19 +10441,19 @@
                 externalExperimentToken: externalExperimentToken
             });
         }
-        if (Object(lib.o)("log_authorize")) {
+        if (Object(lib.m)("log_authorize")) {
             onAuthorizeListener.once(function(_ref2) {
                 var paymentToken = _ref2.paymentToken;
                 setTimeout(function() {
                     logReturn(paymentToken);
                 }, 1);
             });
-            var returnToken = Object(lib.v)();
+            var returnToken = Object(lib.t)();
             returnToken && setTimeout(function() {
                 returnToken && logReturn(returnToken);
             }, 1);
         }
-        var _FUNDING_CONFIG, _CARD_CONFIG, integrations = __webpack_require__("./src/integrations/index.js"), src_lib = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), integrations_checkout = __webpack_require__("./src/integrations/checkout.js"), OPTYPE = {
+        var _FUNDING_CONFIG, _CARD_CONFIG, integrations = __webpack_require__("./src/integrations/index.js"), src_lib = __webpack_require__("./node_modules/zoid/src/lib/index.js"), integrations_checkout = __webpack_require__("./src/integrations/checkout.js"), OPTYPE = {
             PAYMENT: "payment",
             CANCEL: "cancel"
         }, CONTINGENCY = {
@@ -10500,7 +10482,7 @@
                     }).then(function(token) {
                         var _extendUrl;
                         if (!token) throw new Error("Expected props.payment to return a payment id or token");
-                        return Object(lib.j)(Object(integrations_checkout.b)(env, constants.v.PAYPAL, token), ((_extendUrl = {})[Object(integrations_checkout.a)(token)] = token, 
+                        return Object(lib.h)(Object(integrations_checkout.b)(env, constants.v.PAYPAL, token), ((_extendUrl = {})[Object(integrations_checkout.a)(token)] = token, 
                         _extendUrl.useraction = props.commit ? "commit" : "", _extendUrl.native_xo = "1", 
                         _extendUrl));
                     });
@@ -10525,10 +10507,10 @@
                     }, opType = query.opType, return_uri = query.return_uri, cancel_uri = query.cancel_uri;
                     opType === OPTYPE.PAYMENT ? actions.redirect = function() {
                         var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, redirectUrl = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : return_uri;
-                        return Object(lib.R)(win, redirectUrl);
+                        return Object(lib.P)(win, redirectUrl);
                     } : opType === OPTYPE.CANCEL && (actions.redirect = function() {
                         var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, redirectUrl = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : cancel_uri;
-                        return Object(lib.R)(win, redirectUrl);
+                        return Object(lib.P)(win, redirectUrl);
                     });
                     return actions;
                 }(payload.queryItems);
@@ -10556,7 +10538,7 @@
                                     err.code = CONTINGENCY.PAYMENT_CANCELLED;
                                     return reject(err);
                                 };
-                                popupBridge.open(Object(lib.j)(url, {
+                                popupBridge.open(Object(lib.h)(url, {
                                     redirect_uri: popupBridge.getReturnUrlPrefix()
                                 }));
                             });
@@ -11099,7 +11081,7 @@
         }
         var util = __webpack_require__("./src/lib/util.js");
         var normalizeProps = Object(util.j)(function(props) {
-            var defs = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit, isFundingThrottleEnabled = props.isFundingThrottleEnabled;
+            var defs = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit;
             locale = locale ? function(locale) {
                 var _locale$split = locale.split("_"), lang = _locale$split[0];
                 return {
@@ -11158,8 +11140,7 @@
                     funding: funding,
                     locale: locale
                 }),
-                installmentperiod: installmentperiod,
-                isFundingThrottleEnabled: isFundingThrottleEnabled
+                installmentperiod: installmentperiod
             };
         }), jsx = __webpack_require__("./src/lib/jsx.js");
         function validateButtonLocale(locale) {
@@ -11387,7 +11368,7 @@
             });
         }
         function renderContent(text, _ref13) {
-            var label = _ref13.label, locale = _ref13.locale, color = _ref13.color, branding = _ref13.branding, logoColor = _ref13.logoColor, funding = _ref13.funding, env = _ref13.env, _cards = _ref13.cards, dynamicContent = _ref13.dynamicContent, layout = _ref13.layout, size = _ref13.size, isFundingThrottleEnabled = _ref13.isFundingThrottleEnabled, _content = function(locale) {
+            var label = _ref13.label, locale = _ref13.locale, color = _ref13.color, branding = _ref13.branding, logoColor = _ref13.logoColor, funding = _ref13.funding, env = _ref13.env, _cards = _ref13.cards, dynamicContent = _ref13.dynamicContent, layout = _ref13.layout, size = _ref13.size, _content = function(locale) {
                 var country = locale.country, lang = locale.lang;
                 return content_componentContent[country][lang];
             }(locale);
@@ -11400,14 +11381,7 @@
                 },
                 logo: function(name) {
                     if (branding) {
-                        if (!logoColor && !isFundingThrottleEnabled) throw new Error("Can not determine logo without logo color");
-                        if (isFundingThrottleEnabled && layout !== constants.g.VERTICAL) {
-                            if (label === constants.f.CREDIT && (name === constants.h.PAYPAL || name === constants.h.PP)) return;
-                            if (name === constants.h.CREDIT) {
-                                color = constants.e.SILVER;
-                                logoColor = constants.e.BLUE;
-                            }
-                        }
+                        if (!logoColor) throw new Error("Can not determine logo without logo color");
                         var logo = "function" == typeof resources.b[name] ? resources.b[name]({
                             label: label,
                             locale: locale,
@@ -11416,8 +11390,7 @@
                             logoColor: logoColor,
                             funding: funding,
                             env: env,
-                            cards: _cards,
-                            isFundingThrottleEnabled: isFundingThrottleEnabled
+                            cards: _cards
                         }) : resources.b[name][logoColor] || resources.b[name][constants.i.ANY];
                         return Object(jsx.b)("img", {
                             class: class_CLASS.LOGO + " " + class_CLASS.LOGO + "-" + name + " " + class_CLASS.LOGO + "-" + color,
@@ -11445,8 +11418,7 @@
                         logoColor: logoColor,
                         funding: funding,
                         env: env,
-                        cards: _cards,
-                        isFundingThrottleEnabled: isFundingThrottleEnabled
+                        cards: _cards
                     });
                 },
                 cards: function() {
@@ -11472,7 +11444,7 @@
             });
         }
         function renderButton(_ref14) {
-            var _ref15, _ref16, _ref17, size = _ref14.size, label = _ref14.label, color = _ref14.color, locale = _ref14.locale, branding = _ref14.branding, multiple = _ref14.multiple, layout = _ref14.layout, shape = _ref14.shape, source = _ref14.source, funding = _ref14.funding, i = _ref14.i, env = _ref14.env, cards = _ref14.cards, installmentperiod = _ref14.installmentperiod, isFundingThrottleEnabled = _ref14.isFundingThrottleEnabled, logoColor = getButtonConfig(label, "logoColors")[color], contentText = getButtonConfig(label, determineLabel({
+            var _ref15, _ref16, _ref17, size = _ref14.size, label = _ref14.label, color = _ref14.color, locale = _ref14.locale, branding = _ref14.branding, multiple = _ref14.multiple, layout = _ref14.layout, shape = _ref14.shape, source = _ref14.source, funding = _ref14.funding, i = _ref14.i, env = _ref14.env, cards = _ref14.cards, installmentperiod = _ref14.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = getButtonConfig(label, determineLabel({
                 label: label,
                 source: source,
                 multiple: multiple,
@@ -11492,8 +11464,7 @@
                 cards: cards,
                 dynamicContent: dynamicContent,
                 layout: layout,
-                size: size,
-                isFundingThrottleEnabled: isFundingThrottleEnabled
+                size: size
             });
             var hasTabIndex = -1 === [ constants.v.CARD ].indexOf(source);
             return Object(jsx.b)("div", componentTemplate__extends({}, ((_ref15 = {})[constants.c.LAYOUT] = layout || "", 
@@ -11507,13 +11478,11 @@
                     env: env
                 }) + " " + function(_ref2) {
                     var label = _ref2.label, color = _ref2.color, logoColor = _ref2.logoColor;
-                    _ref2.isFundingThrottleEnabled && label === constants.f.CREDIT && (color = constants.e.SILVER);
                     return [ class_CLASS.LABEL + "-" + label, class_CLASS.COLOR + "-" + color, class_CLASS.LOGO_COLOR + "-" + logoColor ].join(" ");
                 }({
                     label: label,
                     color: color,
-                    logoColor: logoColor,
-                    isFundingThrottleEnabled: isFundingThrottleEnabled
+                    logoColor: logoColor
                 }),
                 role: "button",
                 "aria-label": source,
@@ -11534,7 +11503,7 @@
                 validateButtonLocale(locale);
                 validateButtonStyle(style, props);
             }(props);
-            var _normalizeProps = normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, isFundingThrottleEnabled = _normalizeProps.isFundingThrottleEnabled, buttonNodes = function(_ref4) {
+            var _normalizeProps = normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, buttonNodes = function(_ref4) {
                 var label = _ref4.label, color = _ref4.color, sources = _ref4.sources, multiple = _ref4.multiple, layout = _ref4.layout;
                 return sources.map(function(source, i) {
                     var buttonLabel = determineLabel({
@@ -11570,8 +11539,7 @@
                     shape: shape,
                     cards: cards,
                     installmentperiod: installmentperiod,
-                    size: size,
-                    isFundingThrottleEnabled: isFundingThrottleEnabled
+                    size: size
                 });
             }), taglineNode = function(_ref18) {
                 var label = _ref18.label, tagline = _ref18.tagline, color = _ref18.color, locale = _ref18.locale, multiple = _ref18.multiple, env = _ref18.env, cards = _ref18.cards;
@@ -11641,7 +11609,7 @@
                     logoColor: "blue"
                 })));
             }(normalizeProps(props)) : null;
-            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.228", 
+            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.231", 
             _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -11684,7 +11652,7 @@
             }
             return target;
         };
-        var creditThrottle = void 0, fundingLogoThrottle = void 0, component_Button = Object(src.c)({
+        var creditThrottle = void 0, component_Button = Object(src.c)({
             tag: "paypal-button",
             name: "ppbutton",
             buildUrl: function(props) {
@@ -11743,10 +11711,10 @@
                 });
                 template.addEventListener("click", function() {
                     Object(beaver_logger_client.q)("button_pre_template_click");
-                    if (Object(lib.o)("allow_full_page_fallback")) {
+                    if (Object(lib.m)("allow_full_page_fallback")) {
                         Object(beaver_logger_client.k)("pre_template_force_full_page");
                         _this.props.payment().then(function(token) {
-                            window.top.location = Object(lib.j)(config.a.checkoutUrl, {
+                            window.top.location = Object(lib.h)(config.a.checkoutUrl, {
                                 token: token
                             });
                         });
@@ -11755,7 +11723,7 @@
                 return jsxDom("html", null, jsxDom("body", null, template));
             },
             get version() {
-                return Object(lib.w)();
+                return Object(lib.u)();
             },
             get domain() {
                 return config.a.paypalDomains;
@@ -11766,36 +11734,23 @@
                 }
             },
             validate: function() {
-                Object(lib.D)() || Object(beaver_logger_client.q)("button_render_ineligible");
-                if (Object(lib.G)()) throw new Error("Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md");
+                Object(lib.B)() || Object(beaver_logger_client.q)("button_render_ineligible");
+                if (Object(lib.E)()) throw new Error("Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md");
             },
             props: {
                 domain: {
                     type: "string",
                     required: !1,
                     def: function() {
-                        return escape(window.location.host);
+                        return window.location.host;
                     },
                     queryParam: !0
-                },
-                isFundingThrottleEnabled: {
-                    type: "boolean",
-                    queryParam: !0,
-                    required: !1,
-                    def: function(props) {
-                        return !(!(fundingLogoThrottle = fundingLogoThrottle || Object(lib.c)(component__extends({}, props, {
-                            browserLocale: Object(lib.l)()
-                        }))) || !fundingLogoThrottle.isEnabled());
-                    },
-                    queryValue: function(val) {
-                        return val ? "true" : "false";
-                    }
                 },
                 sessionID: {
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib.x)();
+                        return Object(lib.v)();
                     },
                     queryParam: !0
                 },
@@ -11803,7 +11758,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(lib._0)();
+                        return Object(lib.X)();
                     },
                     queryParam: !0
                 },
@@ -11897,7 +11852,7 @@
                     decorate: function(original) {
                         return function() {
                             var _this2 = this, actions = {
-                                request: lib.T,
+                                request: lib.R,
                                 payment: {
                                     create: function(options) {
                                         return _this2.props.braintree ? _this2.props.braintree.then(function(client) {
@@ -11923,9 +11878,9 @@
                                     }
                                 }
                             };
-                            if (Object(lib.o)("memoize_payment") && this.memoizedToken) return this.memoizedToken;
+                            if (Object(lib.m)("memoize_payment") && this.memoizedToken) return this.memoizedToken;
                             this.memoizedToken = zalgo_promise_src.a.try(original, this, [ {}, actions ]);
-                            this.props.env !== constants.t.PRODUCTION || Object(lib.o)("disable_payment_timeout") || (this.memoizedToken = this.memoizedToken.timeout(1e4, new Error("Timed out waiting 10000ms for payment")));
+                            this.props.env !== constants.t.PRODUCTION || Object(lib.m)("disable_payment_timeout") || (this.memoizedToken = this.memoizedToken.timeout(1e4, new Error("Timed out waiting 10000ms for payment")));
                             this.memoizedToken = this.memoizedToken.then(function(token) {
                                 var _track;
                                 if (!token) {
@@ -11981,20 +11936,12 @@
                     },
                     decorate: function() {
                         var _ref3 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref3$allowed = _ref3.allowed, allowed = void 0 === _ref3$allowed ? [] : _ref3$allowed, _ref3$disallowed = _ref3.disallowed, disallowed = void 0 === _ref3$disallowed ? [] : _ref3$disallowed, props = arguments[1];
-                        if (fundingLogoThrottle = fundingLogoThrottle || Object(lib.c)(component__extends({}, props, {
-                            browserLocale: Object(lib.l)()
-                        }))) {
-                            allowed = [].concat(allowed, [ constants.v.CREDIT ]);
-                            disallowed = disallowed.filter(function(source) {
-                                return source !== constants.v.CREDIT;
-                            });
-                        }
-                        allowed && -1 !== allowed.indexOf(constants.v.VENMO) && !Object(lib.B)() && (allowed = allowed.filter(function(source) {
+                        allowed && -1 !== allowed.indexOf(constants.v.VENMO) && (allowed = allowed.filter(function(source) {
                             return source !== constants.v.VENMO;
                         }));
                         (function(props) {
                             var _normalizeProps = normalizeProps(props, {
-                                locale: Object(lib.l)()
+                                locale: Object(lib.j)()
                             }), label = _normalizeProps.label, funding = _normalizeProps.funding, layout = _normalizeProps.layout, locale = _normalizeProps.locale, max = _normalizeProps.max, sources = _normalizeProps.sources, allowed = funding.allowed, country = locale.country;
                             if (allowed && -1 !== allowed.indexOf(constants.v.CREDIT)) return !1;
                             if (layout !== constants.g.HORIZONTAL) return !1;
@@ -12014,11 +11961,11 @@
                             if (-1 !== sources.indexOf(constants.v.CREDIT)) return !1;
                             var domain = Object(cross_domain_utils_src.getDomain)().replace(/^https?:\/\//, "").replace(/^www\./, "");
                             return -1 !== config.a.creditTestDomains.indexOf(domain);
-                        })(props) && (creditThrottle = Object(lib.z)("dual_credit_automatic", 50)).isEnabled() && (allowed = [].concat(allowed, [ constants.v.CREDIT ]));
-                        var remembered = Object(lib.t)(function(sources) {
+                        })(props) && (creditThrottle = Object(lib.x)("dual_credit_automatic", 50)).isEnabled() && (allowed = [].concat(allowed, [ constants.v.CREDIT ]));
+                        var remembered = Object(lib.r)(function(sources) {
                             return sources;
                         });
-                        if (!Object(lib.B)() || Object(lib.o)("disable_venmo")) {
+                        if (!Object(lib.z)() || Object(lib.m)("disable_venmo")) {
                             remembered && -1 !== remembered.indexOf(constants.v.VENMO) && (remembered = remembered.filter(function(source) {
                                 return source !== constants.v.VENMO;
                             }));
@@ -12029,7 +11976,7 @@
                             disallowed: disallowed,
                             remembered: remembered,
                             remember: function(sources) {
-                                Object(lib.S)(sources);
+                                Object(lib.Q)(sources);
                             }
                         };
                     }
@@ -12046,7 +11993,7 @@
                     noop: !0,
                     decorate: function(original) {
                         return function() {
-                            var _track2, _getBrowser = Object(lib.k)(), _getBrowser$browser = _getBrowser.browser, browser = void 0 === _getBrowser$browser ? "unrecognized" : _getBrowser$browser, _getBrowser$version = _getBrowser.version, version = void 0 === _getBrowser$version ? "unrecognized" : _getBrowser$version;
+                            var _track2, _getBrowser = Object(lib.i)(), _getBrowser$browser = _getBrowser.browser, browser = void 0 === _getBrowser$browser ? "unrecognized" : _getBrowser$browser, _getBrowser$version = _getBrowser.version, version = void 0 === _getBrowser$version ? "unrecognized" : _getBrowser$version;
                             Object(beaver_logger_client.k)("button_render_browser_" + browser + "_" + version);
                             Object(beaver_logger_client.p)(((_track2 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
                             _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_RENDER, _track2[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, 
@@ -12056,11 +12003,6 @@
                                 var _creditThrottle$logSt;
                                 creditThrottle.logStart(((_creditThrottle$logSt = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                                 _creditThrottle$logSt));
-                            }
-                            if (fundingLogoThrottle) {
-                                var _fundingLogoThrottle$;
-                                fundingLogoThrottle.logStart(((_fundingLogoThrottle$ = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
-                                _fundingLogoThrottle$));
                             }
                             Object(beaver_logger_client.h)();
                             return original.apply(this, arguments);
@@ -12081,8 +12023,8 @@
                             Object(beaver_logger_client.p)(((_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
                             _track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CHECKOUT_AUTHORIZE, 
                             _track3[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track3));
-                            Object(lib.D)() || Object(beaver_logger_client.k)("button_authorize_ineligible");
-                            Object(lib.e)("authorize");
+                            Object(lib.B)() || Object(beaver_logger_client.k)("button_authorize_ineligible");
+                            Object(lib.d)("authorize");
                             Object(beaver_logger_client.h)();
                             var restart = actions.restart;
                             actions.restart = function() {
@@ -12094,10 +12036,10 @@
                                 return zalgo_promise_src.a.try(function() {
                                     return actions.close();
                                 }).then(function() {
-                                    return Object(lib.R)(win || window.top, url || data.returnUrl);
+                                    return Object(lib.P)(win || window.top, url || data.returnUrl);
                                 });
                             };
-                            actions.payment.tokenize = Object(lib.K)(function() {
+                            actions.payment.tokenize = Object(lib.I)(function() {
                                 if (!_this3.props.braintree) throw new Error("Must pass in Braintree client to tokenize payment");
                                 return _this3.props.braintree.then(function(client) {
                                     return client.tokenizePayment(data);
@@ -12123,15 +12065,10 @@
                                     return mergePaymentDetails(result.id, result);
                                 });
                             };
-                            actions.request = lib.T;
+                            actions.request = lib.R;
                             onAuthorizeListener.trigger({
                                 paymentToken: data.paymentToken
                             });
-                            if (fundingLogoThrottle) {
-                                var _fundingLogoThrottle$2;
-                                fundingLogoThrottle.logComplete(((_fundingLogoThrottle$2 = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
-                                _fundingLogoThrottle$2));
-                            }
                             if (creditThrottle) {
                                 var _creditThrottle$logCo;
                                 creditThrottle.logComplete(((_creditThrottle$logCo = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
@@ -12160,18 +12097,25 @@
                 onShippingChange: {
                     type: "function",
                     required: !1,
-                    noop: !0,
                     decorate: function(original) {
-                        return function(data, actions) {
+                        if (original) return function(data, actions) {
                             var _track4, _this4 = this;
                             Object(beaver_logger_client.k)("button_shipping_change");
                             Object(beaver_logger_client.p)(((_track4 = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
                             _track4[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CHECKOUT_SHIPPING_CHANGE, 
                             _track4[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track4));
                             Object(beaver_logger_client.h)();
+                            var resolve = function() {
+                                return zalgo_promise_src.a.resolve();
+                            };
                             return zalgo_promise_src.a.try(function() {
-                                return original.call(_this4, data, actions);
-                            }).timeout(1e4, new Error("Timed out waiting 10000ms for payment"));
+                                return original.call(_this4, data, component__extends({}, actions, {
+                                    resolve: resolve
+                                }));
+                            }).timeout(1e4, new Error("Timed out waiting 10000ms for payment")).catch(function(err) {
+                                _this4.props.onError && _this4.props.onError(err);
+                                throw err;
+                            });
                         };
                     }
                 },
@@ -12189,7 +12133,7 @@
                             Object(beaver_logger_client.h)();
                             return original.call(this, data, component__extends({}, actions, {
                                 redirect: function(win, url) {
-                                    return zalgo_promise_src.a.all([ Object(lib.R)(win || window.top, url || data.cancelUrl), actions.close() ]);
+                                    return zalgo_promise_src.a.all([ Object(lib.P)(win || window.top, url || data.cancelUrl), actions.close() ]);
                                 }
                             }));
                         };
@@ -12214,14 +12158,6 @@
                                 _creditThrottle$log[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                                 _creditThrottle$log));
                             }
-                            if (fundingLogoThrottle) {
-                                var _fundingLogoThrottle$3;
-                                fundingLogoThrottle.log("click", ((_fundingLogoThrottle$3 = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
-                                _fundingLogoThrottle$3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_CLICK, 
-                                _fundingLogoThrottle$3[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
-                                _fundingLogoThrottle$3[constants.u.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
-                                _fundingLogoThrottle$3));
-                            }
                             Object(beaver_logger_client.h)();
                             return original.apply(this, arguments);
                         };
@@ -12232,7 +12168,7 @@
                     required: !1,
                     queryParam: "locale.x",
                     def: function() {
-                        var _getBrowserLocale = Object(lib.l)();
+                        var _getBrowserLocale = Object(lib.j)();
                         return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
                     },
                     validate: validateButtonLocale
@@ -12309,7 +12245,7 @@
             }
         });
         component_Button.isChild() && function(ButtonComponent) {
-            if (Object(lib.G)()) return window.xchild.error(new Error("Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md"));
+            if (Object(lib.E)()) return window.xchild.error(new Error("Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md"));
             !function(Checkout, Button) {
                 var popupBridge = void 0;
                 awaitPopupBridge(Button).then(function(bridge) {
@@ -12318,7 +12254,7 @@
                 function doRender(props, original) {
                     return popupBridge ? renderThroughPopupBridge(props, popupBridge).catch(function(err) {
                         Object(beaver_logger_client.g)("popup_bridge_error", {
-                            err: Object(lib.X)(err)
+                            err: Object(lib.U)(err)
                         });
                         return original();
                     }) : original();
@@ -12345,7 +12281,7 @@
                     });
                 };
             }(src_checkout.a, ButtonComponent);
-            Object(lib.r)().then(function(pageRenderTime) {
+            Object(lib.p)().then(function(pageRenderTime) {
                 var _track, fundingSources = Array.prototype.slice.call(document.querySelectorAll("[" + constants.c.FUNDING_SOURCE + "]")).map(function(el) {
                     return el.getAttribute(constants.c.CARD) || el.getAttribute(constants.c.FUNDING_SOURCE);
                 }).filter(function(source) {
@@ -12359,13 +12295,13 @@
                 Object(beaver_logger_client.h)();
             });
             var xprops = ButtonComponent.xprops || src_checkout.a.xprops;
-            xprops && xprops.logLevel && Object(lib.W)(xprops.logLevel);
+            xprops && xprops.logLevel && Object(lib.T)(xprops.logLevel);
         }(component_Button);
-        Object(lib.F)() && Object(lib.o)("ie_full_page") && (src_checkout.a.renderTo = function(win) {
+        Object(lib.D)() && Object(lib.m)("ie_full_page") && (src_checkout.a.renderTo = function(win) {
             Object(beaver_logger_client.k)("force_ie_full_page");
             Object(beaver_logger_client.h)();
             var checkout = src_checkout.a.init({
-                onAuthorize: lib.L
+                onAuthorize: lib.J
             });
             checkout.delegate(win);
             checkout.openContainer().then(function() {
@@ -12373,7 +12309,7 @@
                 checkout.showContainer();
             });
             component_Button.xprops.payment().then(function(token) {
-                window.top.location = Object(lib.j)(config.a.checkoutUrl, {
+                window.top.location = Object(lib.h)(config.a.checkoutUrl, {
                     token: token
                 });
             }).catch(function(err) {
@@ -12387,22 +12323,22 @@
                 src_checkout.a.canRenderTo(hacks_top).then(function(result) {
                     canRenderTop = result;
                 });
-                Object(lib.P)(src_checkout.a, "renderTo", function(_ref) {
+                Object(lib.N)(src_checkout.a, "renderTo", function(_ref) {
                     var _ref$args = _ref.args, win = _ref$args[0], props = _ref$args[1], el = _ref$args[2], original = _ref.original, context = _ref.context;
                     canRenderTop || (win = Object(cross_domain_utils_src.getParent)(window));
                     return original.call(context, win, props, el);
                 });
             }
         }
-        Object(lib.P)(src_checkout.a, "renderTo", function(_ref2) {
+        Object(lib.N)(src_checkout.a, "renderTo", function(_ref2) {
             var callOriginal = _ref2.callOriginal, props = _ref2.args[1];
-            if (Object(lib.o)("allow_full_page_fallback")) {
-                var handleError = Object(lib.N)(function(err) {
+            if (Object(lib.m)("allow_full_page_fallback")) {
+                var handleError = Object(lib.L)(function(err) {
                     try {
                         console.error(err && err.stack);
                     } catch (err2) {}
                     return component_Button.xprops.payment().then(function(token) {
-                        window.top.location = Object(lib.j)(config.a.checkoutUrl, {
+                        window.top.location = Object(lib.h)(config.a.checkoutUrl, {
                             token: token
                         });
                     });
@@ -12413,20 +12349,21 @@
             return callOriginal();
         });
         var domain, currentDomainEnv, debounce = !1;
-        Object(lib.P)(src_checkout.a, "renderTo", function(_ref3) {
+        Object(lib.N)(src_checkout.a, "renderTo", function(_ref3) {
             var callOriginal = _ref3.callOriginal, props = _ref3.args[1];
-            if (!debounce) {
-                debounce = !0;
-                for (var _loop = function(_i2, _ref5, _length2) {
-                    var methodName = _ref5[_i2], original = props[methodName];
-                    props[methodName] = function() {
-                        debounce = !1;
-                        if (original) return original.apply(this, arguments);
-                    };
-                }, _i2 = 0, _ref5 = [ "onAuthorize", "onShippingChange", "onCancel", "onError", "onClose" ], _length2 = null == _ref5 ? 0 : _ref5.length; _i2 < _length2; _i2++) _loop(_i2, _ref5);
-                return callOriginal();
+            if (debounce) {
+                Object(beaver_logger_client.q)("button_mutliple_click_debounce");
+                return new zalgo_promise_src.a(lib.J);
             }
-            Object(beaver_logger_client.q)("button_mutliple_click_debounce");
+            debounce = !0;
+            for (var _loop = function(_i2, _ref5, _length2) {
+                var methodName = _ref5[_i2], original = props[methodName];
+                props[methodName] = function() {
+                    debounce = !1;
+                    if (original) return original.apply(this, arguments);
+                };
+            }, _i2 = 0, _ref5 = [ "onAuthorize", "onCancel", "onError", "onClose" ], _length2 = null == _ref5 ? 0 : _ref5.length; _i2 < _length2; _i2++) _loop(_i2, _ref5);
+            return callOriginal();
         });
         if (component_Button.xprops && component_Button.xprops.validate) {
             var enabled = !0;
@@ -12438,12 +12375,12 @@
                     enabled = !1;
                 }
             });
-            Object(lib.P)(src_checkout.a, "renderTo", function(_ref6) {
+            Object(lib.N)(src_checkout.a, "renderTo", function(_ref6) {
                 var callOriginal = _ref6.callOriginal;
                 return enabled ? callOriginal() : new zalgo_promise_src.a();
             });
         }
-        Object(lib.P)(rest.payment, "create", function(_ref7) {
+        Object(lib.N)(rest.payment, "create", function(_ref7) {
             var createOriginal = _ref7.original, createContext = _ref7.context, _ref7$args = _ref7.args, env = _ref7$args[0], client = _ref7$args[1], options = _ref7$args[2], experience = _ref7$args[3];
             options.payment || (options = {
                 payment: options,
@@ -12451,7 +12388,7 @@
             });
             return createOriginal.call(createContext, env, client, options);
         });
-        Object(lib.P)(component_Button.props.style, "validate", function(_ref8) {
+        Object(lib.N)(component_Button.props.style, "validate", function(_ref8) {
             var callOriginal = _ref8.callOriginal, style = _ref8.args[0];
             if (!style) return callOriginal();
             style && "creditblue" === style.color && (style.color = constants.e.DARKBLUE);
@@ -12462,7 +12399,7 @@
             }
             return callOriginal();
         });
-        Object(lib.P)(component_Button, "render", function(_ref9) {
+        Object(lib.N)(component_Button, "render", function(_ref9) {
             var callOriginal = _ref9.callOriginal, props = _ref9.args[0];
             if (props.billingAgreement) {
                 props.payment = props.billingAgreement;
@@ -12470,12 +12407,12 @@
             }
             return callOriginal();
         });
-        Object(lib.P)(component_Button.props.payment, "decorate", function(_ref10) {
+        Object(lib.N)(component_Button.props.payment, "decorate", function(_ref10) {
             var original = _ref10.original, context = _ref10.context, originalPayment = _ref10.args[0];
             return original.call(context, function(data, actions) {
                 var _this = this;
                 return new zalgo_promise_src.a(function(resolve, reject) {
-                    Object(lib.P)(actions.payment, "create", function(_ref11) {
+                    Object(lib.N)(actions.payment, "create", function(_ref11) {
                         var createOriginal = _ref11.original, createContext = _ref11.context, _ref11$args = _ref11.args, options = _ref11$args[0], experience = _ref11$args[1];
                         options.payment || (options = {
                             payment: options,
@@ -12489,9 +12426,9 @@
                     function rejectActions(err) {
                         reject(err);
                     }
-                    Object(lib.i)(resolveData, data);
-                    Object(lib.i)(resolveData, actions);
-                    Object(lib.i)(rejectActions, actions);
+                    Object(lib.g)(resolveData, data);
+                    Object(lib.g)(resolveData, actions);
+                    Object(lib.g)(rejectActions, actions);
                     var ctx = {
                         props: {
                             env: _this.props.env,
@@ -12517,14 +12454,14 @@
         zalgo_promise_src.a.onPossiblyUnhandledException(function(err) {
             var _track;
             Object(beaver_logger_client.g)("unhandled_error", {
-                stack: Object(lib.X)(err),
+                stack: Object(lib.U)(err),
                 errtype: {}.toString.call(err)
             });
             Object(beaver_logger_client.p)(((_track = {})[constants.u.KEY.ERROR_CODE] = "checkoutjs_error", 
-            _track[constants.u.KEY.ERROR_DESC] = Object(lib.Y)(err), _track));
+            _track[constants.u.KEY.ERROR_DESC] = Object(lib.V)(err), _track));
             return Object(beaver_logger_client.h)().catch(function(err2) {
                 if (window.console) try {
-                    window.console.error ? window.console.error("Error flushing:", Object(lib.X)(err2)) : window.console.log && window.console.log("Error flushing:", Object(lib.X)(err2));
+                    window.console.error ? window.console.error("Error flushing:", Object(lib.U)(err2)) : window.console.log && window.console.log("Error flushing:", Object(lib.U)(err2));
                 } catch (err3) {
                     setTimeout(function() {
                         throw err3;
@@ -12532,23 +12469,23 @@
                 }
             });
         });
-        var currentScript = Object(lib.n)(), currentProtocol = window.location.protocol.split(":")[0];
-        var init = Object(lib.N)(function(_ref2) {
+        var currentScript = Object(lib.l)(), currentProtocol = window.location.protocol.split(":")[0];
+        var init = Object(lib.L)(function(_ref2) {
             var precacheRemembered = _ref2.precacheRemembered;
-            Object(lib.D)() || Object(beaver_logger_client.q)("ineligible");
-            Object(lib.d)();
-            Object(lib.A)();
-            Object(lib.I)() || function() {
+            Object(lib.B)() || Object(beaver_logger_client.q)("ineligible");
+            Object(lib.c)();
+            Object(lib.y)();
+            Object(lib.G)() || function() {
                 var _track;
-                if (window.location.hostname) if (Boolean(Object(lib.p)(constants.C))) Object(beaver_logger_client.k)("pptm_tried_loading_twice"); else {
+                if (window.location.hostname) if (Boolean(Object(lib.n)(constants.C))) Object(beaver_logger_client.k)("pptm_tried_loading_twice"); else {
                     Object(beaver_logger_client.p)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.PPTM, 
                     _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PPTM_LOAD, _track));
-                    var fullUrl = Object(lib.j)(config.a.pptmUrl, {
+                    var fullUrl = Object(lib.h)(config.a.pptmUrl, {
                         t: "xo",
                         id: window.location.hostname,
                         mrid: config.a.merchantID
                     });
-                    Object(lib.J)(fullUrl, 0, {
+                    Object(lib.H)(fullUrl, 0, {
                         async: !0,
                         id: constants.C
                     }).then(function() {
@@ -12557,13 +12494,13 @@
                         _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PPTM_LOADED, _track2));
                     }).catch(function(err) {
                         Object(beaver_logger_client.k)("pptm_script_error", {
-                            error: Object(lib.X)(err)
+                            error: Object(lib.U)(err)
                         });
                     });
                 }
             }();
-            precacheRemembered && Object(lib.Q)();
-            Object(lib.o)("force_bridge") && !Object(lib.I)() && Object(lib.O)(config.a.env);
+            precacheRemembered && Object(lib.O)();
+            Object(lib.m)("force_bridge") && !Object(lib.G)() && Object(lib.M)(config.a.env);
             Object(beaver_logger_client.k)("setup_" + config.a.env);
             Object(beaver_logger_client.f)("current_protocol_" + currentProtocol);
         });
@@ -12605,7 +12542,7 @@
                     config.a.state = state;
                 }
                 merchantID && (config.a.merchantID = merchantID);
-                logLevel ? Object(lib.W)(logLevel) : Object(lib.W)(config.a.logLevel);
+                logLevel ? Object(lib.T)(logLevel) : Object(lib.T)(config.a.logLevel);
             }(options);
             init(options);
         }
@@ -12619,8 +12556,8 @@
             merchantID: currentScript.getAttribute("data-merchant-id"),
             precacheRemembered: currentScript.hasAttribute("data-precache-remembered-funding")
         }) : setup();
-        if (!Object(lib.I)()) if (currentScript) {
-            var setup__track2, scriptProtocol = currentScript.src.split(":")[0], loadTime = Object(lib.u)(currentScript.src);
+        if (!Object(lib.G)()) if (currentScript) {
+            var setup__track2, scriptProtocol = currentScript.src.split(":")[0], loadTime = Object(lib.s)(currentScript.src);
             Object(beaver_logger_client.f)("current_script_protocol_" + scriptProtocol);
             Object(beaver_logger_client.f)("current_script_protocol_" + (currentProtocol === scriptProtocol ? "match" : "mismatch"));
             Object(beaver_logger_client.f)("current_script_version_" + config.a.version.replace(/[^0-9a-zA-Z]+/g, "_"));
@@ -12644,11 +12581,11 @@
             setup__track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.228", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.231", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         var interface_Checkout = void 0, interface_Card = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
-        if (Object(lib.I)()) {
+        if (Object(lib.G)()) {
             interface_Checkout = src_checkout.a;
             interface_Card = Card;
             interface_BillingPage = BillingPage;
@@ -12703,13 +12640,13 @@
             return constants.o;
         });
         __webpack_require__.d(__webpack_exports__, "request", function() {
-            return lib.T;
+            return lib.R;
         });
         __webpack_require__.d(__webpack_exports__, "isEligible", function() {
-            return lib.D;
+            return lib.B;
         });
         __webpack_require__.d(__webpack_exports__, "isFundingRemembered", function() {
-            return lib.E;
+            return lib.C;
         });
         __webpack_require__.d(__webpack_exports__, "forceIframe", function() {
             return lib.a;
@@ -12893,7 +12830,7 @@
             HIDDEN_BUTTON: "paypal-button-hidden"
         }, src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), checkout = __webpack_require__("./src/checkout/index.js"), config = __webpack_require__("./src/config/index.js"), post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js");
         function isLegacyEligible() {
-            return !!Object(lib.D)() && (!!Object(lib.Z)() && !Object(lib.B)());
+            return !!Object(lib.B)() && (!!Object(lib.W)() && !Object(lib.z)());
         }
         var warn = Object(client.n)(LOG_PREFIX).warn, DEFAULT_COUNTRY = constants.r.US, DEFAULT_LANG = constants.x.EN;
         function normalizeLocale(locale) {
@@ -12920,19 +12857,19 @@
                 lang: lang
             };
         }
-        var button__prefix = Object(client.n)(LOG_PREFIX), info = button__prefix.info, debug = button__prefix.debug, error = button__prefix.error, loadButtonJS = Object(lib.K)(function() {
+        var button__prefix = Object(client.n)(LOG_PREFIX), info = button__prefix.info, debug = button__prefix.debug, error = button__prefix.error, loadButtonJS = Object(lib.I)(function() {
             debug("buttonjs_load");
-            return Object(lib.J)(config.a.buttonJSUrl).catch(function(err) {
+            return Object(lib.H)(config.a.buttonJSUrl).catch(function(err) {
                 info("buttonjs_load_error_retry", {
-                    error: Object(lib.X)(err)
+                    error: Object(lib.U)(err)
                 });
-                return Object(lib.J)(config.a.buttonJSUrl);
+                return Object(lib.H)(config.a.buttonJSUrl);
             }).then(function(result) {
                 debug("buttonjs_load_success");
                 return result;
             }).catch(function(err) {
                 error("buttonjs_load_error", {
-                    error: Object(lib.X)(err)
+                    error: Object(lib.U)(err)
                 });
                 throw err;
             });
@@ -12968,7 +12905,7 @@
                             }).el;
                             container.appendChild(el);
                             try {
-                                info("in_page_button_" + (Object(lib.C)(el) ? "visible" : "not_visible"));
+                                info("in_page_button_" + (Object(lib.A)(el) ? "visible" : "not_visible"));
                             } catch (err) {}
                             return el.childNodes[0];
                         });
@@ -13017,15 +12954,15 @@
         var util_warn = Object(client.n)(LOG_PREFIX).warn, redirected = !1;
         function logRedirect(location) {
             redirected && util_warn("multiple_redirects");
-            Object(lib._1)(location) && (redirected = !0);
+            Object(lib.Y)(location) && (redirected = !0);
             Object(client.h)();
         }
         function redirect(url) {
             return src.a.try(function() {
                 if (!url) throw new Error("Redirect url undefined");
-                if (config.a.env === constants.t.TEST && Object(lib._1)(url)) return Object(lib.R)(window, "#fullpageRedirect?url=" + url);
+                if (config.a.env === constants.t.TEST && Object(lib.Y)(url)) return Object(lib.P)(window, "#fullpageRedirect?url=" + url);
                 logRedirect(url);
-                return Object(lib.R)(window, url);
+                return Object(lib.P)(window, url);
             });
         }
         function parseToken(token) {
@@ -13084,7 +13021,7 @@
                     });
                     throw new Error('Could not determine url or token from "' + item + '"');
                 }
-                url = Object(lib.j)(config.a.checkoutUrl, {
+                url = Object(lib.h)(config.a.checkoutUrl, {
                     token: paymentToken
                 });
                 interface_debug("startflow_with_token", {
@@ -13114,7 +13051,7 @@
                 interface_checkout.initXO = function() {
                     interface_warn("gettoken_initxo");
                 };
-                interface_checkout.startFlow = Object(lib.N)(function(item) {
+                interface_checkout.startFlow = Object(lib.L)(function(item) {
                     interface_debug("gettoken_startflow", {
                         item: item
                     });
@@ -13182,9 +13119,9 @@
                 props.init = function(data) {
                     resolve(data.paymentToken);
                 };
-            }), errorHandler = Object(lib.N)(function(err) {
+            }), errorHandler = Object(lib.L)(function(err) {
                 interface_error("component_error", {
-                    error: Object(lib.X)(err)
+                    error: Object(lib.U)(err)
                 });
                 if (hijackTarget) {
                     interface_warn("render_error_hijack_revert_target");
@@ -13196,7 +13133,7 @@
                 });
                 paymentToken.then(function(token) {
                     interface_warn("render_error_redirect_using_token");
-                    return redirect(Object(lib.j)(config.a.checkoutUrl, {
+                    return redirect(Object(lib.h)(config.a.checkoutUrl, {
                         token: token
                     }));
                 });
@@ -13224,7 +13161,7 @@
             element.addEventListener("click", function(event) {
                 tracker();
                 var eligible = isLegacyEligible();
-                if (Object(lib.Z)()) {
+                if (Object(lib.W)()) {
                     interface_debug("click_popups_supported");
                     eligible || interface_debug("click_popups_supported_but_ineligible");
                 } else {
@@ -13243,7 +13180,7 @@
                         clickHandler(event);
                     } catch (err) {
                         interface_error("click_handler_error", {
-                            error: Object(lib.X)(err)
+                            error: Object(lib.U)(err)
                         });
                     }
                 }(clickHandler, event) : function(element) {
@@ -13276,7 +13213,7 @@
             interface_info("setup", {
                 id: id = id || "merchant",
                 env: options.environment,
-                options: Object(lib.V)(options)
+                options: Object(lib.S)(options)
             });
             setupCalled && interface_debug("setup_called_multiple_times");
             setupCalled = !0;
@@ -13294,7 +13231,7 @@
                     options_info("options_button_single_button_passed");
                     options.button = [ options.button ];
                 }
-                if (options.buttons && Object(lib.q)(options.buttons).length) {
+                if (options.buttons && Object(lib.o)(options.buttons).length) {
                     options_info("options_buttons_with_elements_passed");
                     options.button = options.buttons;
                     delete options.buttons;
@@ -13312,7 +13249,7 @@
                     delete options.container;
                 }
                 if (options.button) {
-                    var button = Object(lib.q)(options.button);
+                    var button = Object(lib.o)(options.button);
                     if (button.length) options.button = button; else {
                         options_warn("options_button_element_not_found", {
                             element: JSON.stringify(options.button)
@@ -13339,7 +13276,7 @@
                                 options: options.container,
                                 button: button.container
                             });
-                            Object(lib.q)(button.container || button.button).forEach(function(element) {
+                            Object(lib.o)(button.container || button.button).forEach(function(element) {
                                 var _buttons$push;
                                 buttons.push(((_buttons$push = {})[button.container ? "container" : "button"] = element, 
                                 _buttons$push.click = button.click || options.click, _buttons$push.condition = button.condition || options.condition, 
@@ -13361,7 +13298,7 @@
                     buttons.length && (options.buttons = buttons);
                 } else if (options.container && !Array.isArray(options.buttons)) {
                     var _buttons = [];
-                    Object(lib.q)(options.container).forEach(function(container, i) {
+                    Object(lib.o)(options.container).forEach(function(container, i) {
                         _buttons.push({
                             container: container,
                             click: options.click,
@@ -13404,7 +13341,7 @@
                 Object(client.f)("setup_post_bridge", {
                     env: env
                 });
-                return Object(lib.O)(env).then(lib.L);
+                return Object(lib.M)(env).then(lib.J);
             });
             return src.a.try(function() {
                 return options.buttons.length ? renderButtons(id, options.buttons).then(function(buttons) {
@@ -13495,7 +13432,7 @@
                     }
                 };
                 !function(method) {
-                    Object(lib.M)(function() {
+                    Object(lib.K)(function() {
                         ready_debug("paypal_checkout_ready");
                         setTimeout(function() {
                             window.paypal || ready_error("paypal_checkout_ready_no_window_paypal");
@@ -13506,7 +13443,7 @@
                 return oneTimeReady;
             }
         });
-        Object(lib.M)(function() {
+        Object(lib.K)(function() {
             var buttons = Array.prototype.slice.call(document.querySelectorAll("[" + ATTRIBUTES.BUTTON + "]"));
             if (buttons && buttons.length) {
                 ready_debug("data_paypal_button", {
@@ -13562,7 +13499,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.228";
+                payload.version = "4.0.231";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 payload.appName = APP_NAME;
@@ -13622,7 +13559,7 @@
                 }(ua) || function() {
                     if (void 0 !== process && process.versions && process.versions.electron) return !0;
                     return !1;
-                }() || (userAgent = getUserAgent(), /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent)) || !0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches);
+                }() || (userAgent = getUserAgent(), /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent)) || (!window.opener || window.opener === window) && (!0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches));
                 var userAgent;
             };
             function getUserAgent() {
@@ -13657,10 +13594,7 @@
     },
     "./src/lib/dom.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        __webpack_require__.d(__webpack_exports__, "a", function() {
-            return documentReady;
-        });
-        __webpack_exports__.j = function(src) {
+        __webpack_exports__.i = function(src) {
             var timeout = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0, attrs = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
             return new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve, reject) {
                 var script = document.createElement("script");
@@ -13686,8 +13620,8 @@
                 head.appendChild(script);
             });
         };
-        __webpack_exports__.d = getElement;
-        __webpack_exports__.e = function(collection) {
+        __webpack_exports__.c = getElement;
+        __webpack_exports__.d = function(collection) {
             if (!collection) return [];
             if (collection instanceof HTMLElement || "string" == typeof collection) {
                 var element = getElement(collection);
@@ -13702,14 +13636,14 @@
             }
             return [];
         };
-        __webpack_exports__.k = function(method) {
+        __webpack_exports__.j = function(method) {
             return documentReady.then(method);
         };
-        __webpack_exports__.g = function(name) {
+        __webpack_exports__.f = function(name) {
             return parseQuery(window.location.search.slice(1))[name];
         };
-        __webpack_exports__.m = urlWillRedirectPage;
-        __webpack_exports__.b = function(url) {
+        __webpack_exports__.l = urlWillRedirectPage;
+        __webpack_exports__.a = function(url) {
             var params = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, hasHash = url.indexOf("#") > 0, _url$split = url.split("#"), serverUrl = _url$split[0], hash = _url$split[1];
             if (hash && !serverUrl) {
                 var _ref = [ "#" + hash, "" ];
@@ -13730,7 +13664,7 @@
             hasHash && (newUrl = newUrl + "#" + (hash || ""));
             return newUrl;
         };
-        __webpack_exports__.l = function() {
+        __webpack_exports__.k = function() {
             var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, url = arguments[1];
             return new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve) {
                 Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.k)("redirect", {
@@ -13742,13 +13676,13 @@
                 }, 1);
             });
         };
-        __webpack_require__.d(__webpack_exports__, "c", function() {
+        __webpack_require__.d(__webpack_exports__, "b", function() {
             return getBrowserLocale;
         });
-        __webpack_exports__.i = function(el) {
+        __webpack_exports__.h = function(el) {
             return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
         };
-        __webpack_exports__.f = function() {
+        __webpack_exports__.e = function() {
             return documentReady.then(function() {
                 if (enablePerformance()) {
                     var timing = window.performance.timing;
@@ -13756,7 +13690,7 @@
                 }
             });
         };
-        __webpack_exports__.h = function(url) {
+        __webpack_exports__.g = function(url) {
             if (!enablePerformance()) return;
             if (!window.performance || "function" != typeof window.performance.getEntries) return;
             for (var entries = window.performance.getEntries(), i = 0; i < entries.length; i++) {
@@ -13847,27 +13781,6 @@
     },
     "./src/lib/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var dom = __webpack_require__("./src/lib/dom.js");
-        function getFocusableElements(context) {
-            return Object(dom.e)(context.querySelectorAll('button, iframe, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'));
-        }
-        function restrictFocus(context) {
-            var tabIndexes = [];
-            if (!context) throw new Error("Can not restrict focus on null element");
-            var focusableElements = getFocusableElements(context);
-            document.activeElement && document.activeElement.blur();
-            focusableElements.forEach(function(element, i) {
-                tabIndexes[i] = element.hasAttribute("tabIndex") ? element.tabIndex : null;
-                element.tabIndex = -1;
-            });
-            return {
-                release: function() {
-                    focusableElements.forEach(function(element, i) {
-                        null !== tabIndexes[i] ? element.tabIndex = tabIndexes[i] : element.removeAttribute("tabIndex");
-                    });
-                }
-            };
-        }
         var device = __webpack_require__("./src/lib/device.js"), util = __webpack_require__("./src/lib/util.js"), src = __webpack_require__("./node_modules/post-robot/src/index.js"), client = __webpack_require__("./node_modules/beaver-logger/client/index.js"), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), config = __webpack_require__("./src/config/index.js"), constants = __webpack_require__("./src/constants/index.js"), session = __webpack_require__("./src/lib/session.js");
         function proxyMethod(name, win, originalMethod) {
             if (win && Object(cross_domain_utils_src.getDomain)() === config.a.paypalDomain && !Object(cross_domain_utils_src.isSameDomain)(win)) {
@@ -13892,6 +13805,7 @@
                 }) : originalMethod.apply(this, arguments);
             };
         }
+        var dom = __webpack_require__("./src/lib/dom.js");
         function getRefererDomain() {
             return window.xchild && window.xchild.getParentDomain ? window.xchild.getParentDomain() : window.location.host;
         }
@@ -13909,7 +13823,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(session.c)(),
-                    ver: "4.0.228"
+                    ver: "4.0.231"
                 };
             });
             Object(client.a)(function() {
@@ -13925,7 +13839,7 @@
             Object(client.d)(function() {
                 var _ref, payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, sessionID = Object(session.c)(), paymentToken = function() {
                     if (window.root && window.root.token) return window.root.token;
-                    var queryToken = Object(dom.g)("token");
+                    var queryToken = Object(dom.f)("token");
                     return queryToken || void 0;
                 }(), buttonSessionID = payload[constants.u.KEY.BUTTON_SESSION_UID] || Object(session.a)(), contextType = void 0, contextID = void 0;
                 if (paymentToken) {
@@ -14203,16 +14117,6 @@
             var token = Object(util.h)(window.location.href, /token=((EC-)?[A-Z0-9]+)/), payer = Object(util.h)(window.location.href, /PayerID=([A-Z0-9]+)/);
             if (token && payer) return token;
         }
-        function buildFundingLogoThrottle(props) {
-            var _ref = props.style || {
-                layout: void 0,
-                label: void 0
-            }, layout = _ref.layout, label = _ref.label;
-            if ("en_US" !== (props.locale || props.browserLocale.lang + "_" + props.browserLocale.country)) return null;
-            if (void 0 !== label && label !== constants.f.CHECKOUT && label !== constants.f.PAYPAL && label !== constants.f.PAY && label !== constants.f.BUYNOW) return null;
-            var domain = Object(cross_domain_utils_src.getDomain)().replace(/^https?:\/\//, "").replace(/^www\./, "");
-            return -1 === config.a.bmlCreditTest.domains.indexOf(domain) ? null : void 0 === layout || layout && layout === constants.g.HORIZONTAL ? getThrottle("ppc_rebrand", 50) : null;
-        }
         var namespace = __webpack_require__("./src/lib/namespace.js"), getCurrentScript = Object(util.j)(function() {
             for (var scripts = Array.prototype.slice.call(document.getElementsByTagName("script")), _i2 = 0, _length2 = null == scripts ? 0 : scripts.length; _i2 < _length2; _i2++) {
                 var script = scripts[_i2];
@@ -14227,7 +14131,7 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return isPayPalObjects() ? "4" : "4.0.228";
+            return isPayPalObjects() ? "4" : "4.0.231";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -14243,7 +14147,7 @@
                     var metaListener = Object(src.once)("meta", {
                         domain: metaFrameDomain
                     });
-                    return src.bridge.openBridge(Object(dom.b)(metaFrameUrl, {
+                    return src.bridge.openBridge(Object(dom.a)(metaFrameUrl, {
                         version: getScriptVersion()
                     }), metaFrameDomain).then(function() {
                         return metaListener;
@@ -14285,23 +14189,20 @@
             }(source));
             return promise;
         }
-        function flushRememberedFundingPromises() {
-            for (var promises = getRememberedFundingPromises(), rememberedFunding = getRememberedFunding(function(sources) {
-                return sources;
-            }), _i2 = 0, _Object$keys2 = Object.keys(promises), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
-                var source = _Object$keys2[_i2];
-                promises[source].resolve(-1 !== rememberedFunding.indexOf(source));
-            }
-        }
         function rememberFunding(sources) {
             getRememberedFunding(function(rememberedFunding) {
                 for (var _i4 = 0, _length4 = null == sources ? 0 : sources.length; _i4 < _length4; _i4++) {
                     var source = sources[_i4];
-                    if (source !== constants.v.VENMO || Object(device.b)()) {
-                        -1 === rememberedFunding.indexOf(source) && rememberedFunding.push(source);
-                        flushRememberedFundingPromises();
-                    }
+                    (source !== constants.v.VENMO || Object(device.b)()) && (-1 === rememberedFunding.indexOf(source) && rememberedFunding.push(source));
                 }
+                !function() {
+                    for (var promises = getRememberedFundingPromises(), rememberedFunding = getRememberedFunding(function(sources) {
+                        return sources;
+                    }), _i2 = 0, _Object$keys2 = Object.keys(promises), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
+                        var source = _Object$keys2[_i2];
+                        promises[source].resolve(-1 !== rememberedFunding.indexOf(source));
+                    }
+                }();
             });
             Object(session.d)(function(session) {
                 session.recentlyCheckedRemembered = !0;
@@ -14334,15 +14235,9 @@
             return !1;
         }
         __webpack_require__.d(__webpack_exports__, !1, function() {
-            return getFocusableElements;
-        });
-        __webpack_require__.d(__webpack_exports__, "U", function() {
-            return restrictFocus;
-        });
-        __webpack_require__.d(__webpack_exports__, !1, function() {
             return device.a;
         });
-        __webpack_require__.d(__webpack_exports__, "B", function() {
+        __webpack_require__.d(__webpack_exports__, "z", function() {
             return device.b;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
@@ -14351,7 +14246,8 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "H", function() {
+        __webpack_require__.d(__webpack_exports__, !1, function() {});
+        __webpack_require__.d(__webpack_exports__, "F", function() {
             return device.f;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
@@ -14359,34 +14255,34 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "F", function() {
+        __webpack_require__.d(__webpack_exports__, "D", function() {
             return device.c;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return device.d;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "G", function() {
+        __webpack_require__.d(__webpack_exports__, "E", function() {
             return device.e;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "Z", function() {
+        __webpack_require__.d(__webpack_exports__, "W", function() {
             return device.g;
         });
-        __webpack_require__.d(__webpack_exports__, "I", function() {
+        __webpack_require__.d(__webpack_exports__, "G", function() {
             return util.g;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "K", function() {
+        __webpack_require__.d(__webpack_exports__, "I", function() {
             return util.j;
         });
-        __webpack_require__.d(__webpack_exports__, "L", function() {
+        __webpack_require__.d(__webpack_exports__, "J", function() {
             return util.l;
         });
-        __webpack_require__.d(__webpack_exports__, "N", function() {
+        __webpack_require__.d(__webpack_exports__, "L", function() {
             return util.m;
         });
-        __webpack_require__.d(__webpack_exports__, "_0", function() {
+        __webpack_require__.d(__webpack_exports__, "X", function() {
             return util.t;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
@@ -14394,19 +14290,19 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return util.h;
         });
-        __webpack_require__.d(__webpack_exports__, "V", function() {
+        __webpack_require__.d(__webpack_exports__, "S", function() {
             return util.q;
         });
-        __webpack_require__.d(__webpack_exports__, "h", function() {
+        __webpack_require__.d(__webpack_exports__, "f", function() {
             return util.c;
         });
         __webpack_require__.d(__webpack_exports__, "b", function() {
             return util.a;
         });
-        __webpack_require__.d(__webpack_exports__, "X", function() {
+        __webpack_require__.d(__webpack_exports__, "U", function() {
             return util.r;
         });
-        __webpack_require__.d(__webpack_exports__, "Y", function() {
+        __webpack_require__.d(__webpack_exports__, "V", function() {
             return util.s;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
@@ -14414,17 +14310,17 @@
             return util.f;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "o", function() {
+        __webpack_require__.d(__webpack_exports__, "m", function() {
             return util.e;
         });
-        __webpack_require__.d(__webpack_exports__, "P", function() {
+        __webpack_require__.d(__webpack_exports__, "N", function() {
             return util.n;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "i", function() {
+        __webpack_require__.d(__webpack_exports__, "g", function() {
             return util.d;
         });
-        __webpack_require__.d(__webpack_exports__, "f", function() {
+        __webpack_require__.d(__webpack_exports__, "e", function() {
             return util.b;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
@@ -14448,74 +14344,72 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return util.p;
         });
-        __webpack_require__.d(__webpack_exports__, "A", function() {
+        __webpack_require__.d(__webpack_exports__, "y", function() {
             return initLogger;
         });
-        __webpack_require__.d(__webpack_exports__, "W", function() {
+        __webpack_require__.d(__webpack_exports__, "T", function() {
             return setLogLevel;
         });
-        __webpack_require__.d(__webpack_exports__, "k", function() {
+        __webpack_require__.d(__webpack_exports__, "i", function() {
             return getBrowser;
         });
-        __webpack_require__.d(__webpack_exports__, "D", function() {
+        __webpack_require__.d(__webpack_exports__, "B", function() {
             return isEligible;
         });
-        __webpack_require__.d(__webpack_exports__, "e", function() {
+        __webpack_require__.d(__webpack_exports__, "d", function() {
             return checkRecognizedBrowser;
         });
-        __webpack_require__.d(__webpack_exports__, "d", function() {
+        __webpack_require__.d(__webpack_exports__, "c", function() {
             return checkForCommonErrors;
         });
-        __webpack_require__.d(__webpack_exports__, "g", function() {
-            return dom.a;
-        });
-        __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "J", function() {
-            return dom.j;
-        });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "p", function() {
-            return dom.d;
-        });
-        __webpack_require__.d(__webpack_exports__, "q", function() {
-            return dom.e;
-        });
-        __webpack_require__.d(__webpack_exports__, "M", function() {
-            return dom.k;
-        });
-        __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "s", function() {
-            return dom.g;
-        });
-        __webpack_require__.d(__webpack_exports__, "_1", function() {
-            return dom.m;
-        });
-        __webpack_require__.d(__webpack_exports__, "j", function() {
-            return dom.b;
-        });
-        __webpack_require__.d(__webpack_exports__, "R", function() {
-            return dom.l;
-        });
-        __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "l", function() {
-            return dom.c;
-        });
-        __webpack_require__.d(__webpack_exports__, "C", function() {
+        __webpack_require__.d(__webpack_exports__, "H", function() {
             return dom.i;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "r", function() {
+        __webpack_require__.d(__webpack_exports__, !1, function() {});
+        __webpack_require__.d(__webpack_exports__, "n", function() {
+            return dom.c;
+        });
+        __webpack_require__.d(__webpack_exports__, "o", function() {
+            return dom.d;
+        });
+        __webpack_require__.d(__webpack_exports__, "K", function() {
+            return dom.j;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {});
+        __webpack_require__.d(__webpack_exports__, "q", function() {
             return dom.f;
         });
-        __webpack_require__.d(__webpack_exports__, "u", function() {
+        __webpack_require__.d(__webpack_exports__, "Y", function() {
+            return dom.l;
+        });
+        __webpack_require__.d(__webpack_exports__, "h", function() {
+            return dom.a;
+        });
+        __webpack_require__.d(__webpack_exports__, "P", function() {
+            return dom.k;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {});
+        __webpack_require__.d(__webpack_exports__, !1, function() {});
+        __webpack_require__.d(__webpack_exports__, !1, function() {});
+        __webpack_require__.d(__webpack_exports__, !1, function() {});
+        __webpack_require__.d(__webpack_exports__, "j", function() {
+            return dom.b;
+        });
+        __webpack_require__.d(__webpack_exports__, "A", function() {
             return dom.h;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "T", function() {
+        __webpack_require__.d(__webpack_exports__, "p", function() {
+            return dom.e;
+        });
+        __webpack_require__.d(__webpack_exports__, "s", function() {
+            return dom.g;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {});
+        __webpack_require__.d(__webpack_exports__, "R", function() {
             return request;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -14523,14 +14417,11 @@
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "z", function() {
+        __webpack_require__.d(__webpack_exports__, "x", function() {
             return getThrottle;
         });
-        __webpack_require__.d(__webpack_exports__, "v", function() {
+        __webpack_require__.d(__webpack_exports__, "t", function() {
             return getReturnToken;
-        });
-        __webpack_require__.d(__webpack_exports__, "c", function() {
-            return buildFundingLogoThrottle;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return namespace.a;
@@ -14542,13 +14433,13 @@
             return session.e;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, "y", function() {
+        __webpack_require__.d(__webpack_exports__, "w", function() {
             return session.d;
         });
-        __webpack_require__.d(__webpack_exports__, "x", function() {
+        __webpack_require__.d(__webpack_exports__, "v", function() {
             return session.c;
         });
-        __webpack_require__.d(__webpack_exports__, "m", function() {
+        __webpack_require__.d(__webpack_exports__, "k", function() {
             return session.a;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -14557,28 +14448,28 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return proxyMethod;
         });
-        __webpack_require__.d(__webpack_exports__, "O", function() {
+        __webpack_require__.d(__webpack_exports__, "M", function() {
             return openMetaFrame;
         });
-        __webpack_require__.d(__webpack_exports__, "t", function() {
+        __webpack_require__.d(__webpack_exports__, "r", function() {
             return getRememberedFunding;
         });
-        __webpack_require__.d(__webpack_exports__, "S", function() {
+        __webpack_require__.d(__webpack_exports__, "Q", function() {
             return rememberFunding;
         });
-        __webpack_require__.d(__webpack_exports__, "E", function() {
+        __webpack_require__.d(__webpack_exports__, "C", function() {
             return isFundingRemembered;
         });
-        __webpack_require__.d(__webpack_exports__, "Q", function() {
+        __webpack_require__.d(__webpack_exports__, "O", function() {
             return precacheRememberedFunding;
         });
-        __webpack_require__.d(__webpack_exports__, "n", function() {
+        __webpack_require__.d(__webpack_exports__, "l", function() {
             return getCurrentScript;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return isPayPalObjects;
         });
-        __webpack_require__.d(__webpack_exports__, "w", function() {
+        __webpack_require__.d(__webpack_exports__, "u", function() {
             return getScriptVersion;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
@@ -14716,7 +14607,7 @@
         __webpack_exports__.c = function() {
             var xprops = window.xprops;
             if (xprops && xprops.sessionID) return xprops.sessionID;
-            var querySessionID = Object(__WEBPACK_IMPORTED_MODULE_2__dom__.g)("sessionID");
+            var querySessionID = Object(__WEBPACK_IMPORTED_MODULE_2__dom__.f)("sessionID");
             if (Object(__WEBPACK_IMPORTED_MODULE_1__util__.g)() && querySessionID) return querySessionID;
             return getSession(function(session) {
                 return session.guid;
@@ -14724,7 +14615,7 @@
         };
         __webpack_exports__.a = function() {
             if (window.xprops && window.xprops.buttonSessionID) return window.xprops.buttonSessionID;
-            var querySessionID = Object(__WEBPACK_IMPORTED_MODULE_2__dom__.g)("buttonSessionID");
+            var querySessionID = Object(__WEBPACK_IMPORTED_MODULE_2__dom__.f)("buttonSessionID");
             if (Object(__WEBPACK_IMPORTED_MODULE_1__util__.g)() && querySessionID) return querySessionID;
         };
         __webpack_exports__.b = function(handler) {
@@ -14983,18 +14874,18 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         0;
-        if (window.paypal && "4.0.228" === window.paypal.version) {
+        if (window.paypal && "4.0.231" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.228"
+                version: "4.0.231"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.228) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.231) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.228" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.231" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.228"
+                version: "4.0.231"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.228");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.231");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
@@ -15198,7 +15089,7 @@
                 d: "M 95.1 5.417 L 91.9 25.717 C 91.8 26.117 92.1 26.417 92.5 26.417 L 95.7 26.417 C 96.2 26.417 96.7 26.017 96.8 25.517 L 100 5.617 C 100.1 5.217 99.8 4.917 99.4 4.917 L 95.8 4.917 C 95.4 4.917 95.2 5.117 95.1 5.417 Z"
             }));
         }, _fundingLogos[constants.h.CREDIT] = function(_ref) {
-            var logoColor = _ref.logoColor, locale = _ref.locale, isFundingThrottleEnabled = _ref.isFundingThrottleEnabled;
+            var logoColor = _ref.logoColor, locale = _ref.locale;
             if (!CREDIT_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " credit logo available");
             var country = (locale || {}).country, primary = CREDIT_LOGO_COLORS[logoColor].primary;
             switch (country) {
@@ -15219,58 +15110,7 @@
                 }))));
 
               default:
-                return isFundingThrottleEnabled ? Object(jsx.b)("svg", {
-                    width: "482",
-                    height: "100",
-                    preserveAspectRatio: "xMinYMin meet",
-                    xmlns: "http://www.w3.org/2000/svg",
-                    viewBox: "0 0 53 11"
-                }, Object(jsx.b)("title", null, "checkout_bml_text"), Object(jsx.b)("g", {
-                    fill: "#003087",
-                    id: "Bill_Me_Later_orig",
-                    "data-name": "Bill Me Later_orig"
-                }, Object(jsx.b)("path", {
-                    fill: "#009cde",
-                    class: "cls-47",
-                    d: "M21.15,6.17C21.09,5,21,3.58,21,2.54h0c-.29,1-.64,2-1.06,3.2L18.44,9.81h-.82l-1.36-4c-.4-1.19-.74-2.27-1-3.27h0c0,1-.09,2.46-.16,3.72l-.22,3.61h-1l.59-8.41h1.39l1.44,4.07c.35,1,.64,2,.85,2.83h0c.21-.85.51-1.77.89-2.83l1.5-4.07H21.9l.52,8.41H21.36Z"
-                }), Object(jsx.b)("path", {
-                    fill: "#009cde",
-                    class: "cls-47",
-                    d: "M24.11,7a1.94,1.94,0,0,0,2.07,2.1,4,4,0,0,0,1.67-.31l.19.79A4.85,4.85,0,0,1,26,10a2.82,2.82,0,0,1-3-3.06c0-1.82,1.07-3.26,2.83-3.26a2.56,2.56,0,0,1,2.5,2.85,4.17,4.17,0,0,1,0,.51Zm3.22-.79a1.56,1.56,0,0,0-1.52-1.78,1.82,1.82,0,0,0-1.69,1.78Z"
-                }), Object(jsx.b)("path", {
-                    class: "cls-48",
-                    d: "M1,1.56a10.52,10.52,0,0,1,2-.17A3.48,3.48,0,0,1,5.29,2,1.77,1.77,0,0,1,6,3.48,2,2,0,0,1,4.57,5.33v0A2.17,2.17,0,0,1,6.3,7.47a2.27,2.27,0,0,1-.71,1.69,4.23,4.23,0,0,1-2.91.79A12.68,12.68,0,0,1,1,9.84ZM2.09,5h1c1.15,0,1.82-.6,1.82-1.41,0-1-.75-1.37-1.85-1.37a4.68,4.68,0,0,0-1,.07Zm0,4a5.83,5.83,0,0,0,.91,0c1.12,0,2.16-.41,2.16-1.64S4.17,5.83,3,5.83h-.9Z"
-                }), Object(jsx.b)("path", {
-                    class: "cls-48",
-                    d: "M8.34,2.12A.68.68,0,0,1,7,2.12a.67.67,0,0,1,.69-.69.65.65,0,0,1,.67.69M7.12,3.82h1.1v6H7.12Z"
-                }), Object(jsx.b)("rect", {
-                    class: "cls-48",
-                    x: "9.39",
-                    y: "1",
-                    width: "1.1",
-                    height: "8.86"
-                }), Object(jsx.b)("rect", {
-                    class: "cls-48",
-                    x: "11.68",
-                    y: "1",
-                    width: "1.1",
-                    height: "8.86"
-                }), Object(jsx.b)("polygon", {
-                    class: "cls-48",
-                    points: "29.24 1.45 30.33 1.45 30.33 8.95 33.92 8.95 33.92 9.86 29.24 9.86 29.24 1.45"
-                }), Object(jsx.b)("path", {
-                    class: "cls-48",
-                    d: "M38.9,8.41A8.53,8.53,0,0,0,39,9.86H38l-.09-.76h0A2.25,2.25,0,0,1,36,10a1.72,1.72,0,0,1-1.85-1.74C34.18,6.8,35.48,6,37.81,6V5.89a1.25,1.25,0,0,0-1.37-1.4,3,3,0,0,0-1.57.45l-.25-.72a3.75,3.75,0,0,1,2-.54c1.85,0,2.3,1.26,2.3,2.47ZM37.84,6.78c-1.2,0-2.56.19-2.56,1.36a1,1,0,0,0,1,1,1.5,1.5,0,0,0,1.46-1,1.15,1.15,0,0,0,.06-.35Z"
-                }), Object(jsx.b)("path", {
-                    class: "cls-48",
-                    d: "M41.27,2.37V3.82h1.57v.84H41.27V7.92c0,.75.21,1.17.82,1.17A2,2,0,0,0,42.73,9l.05.82a2.65,2.65,0,0,1-1,.16,1.53,1.53,0,0,1-1.19-.47A2.24,2.24,0,0,1,40.2,8V4.66h-.94V3.82h.94V2.71Z"
-                }), Object(jsx.b)("path", {
-                    class: "cls-48",
-                    d: "M43.93,7A1.94,1.94,0,0,0,46,9.14a4,4,0,0,0,1.67-.31l.19.79a4.86,4.86,0,0,1-2,.39,2.82,2.82,0,0,1-3-3.06c0-1.82,1.07-3.26,2.83-3.26a2.56,2.56,0,0,1,2.5,2.85,4.16,4.16,0,0,1,0,.51Zm3.22-.79a1.56,1.56,0,0,0-1.52-1.78,1.82,1.82,0,0,0-1.69,1.78Z"
-                }), Object(jsx.b)("path", {
-                    class: "cls-48",
-                    d: "M49,5.71c0-.71,0-1.32,0-1.88h1l0,1.19h0a1.81,1.81,0,0,1,1.67-1.32,1.18,1.18,0,0,1,.31,0v1a1.63,1.63,0,0,0-.37,0,1.54,1.54,0,0,0-1.47,1.41,3.08,3.08,0,0,0-.05.51V9.86H49Z"
-                }))) : Object(jsx.b)("svg", {
+                return Object(jsx.b)("svg", {
                     width: "100",
                     height: "32",
                     viewBox: "0 0 95 32",

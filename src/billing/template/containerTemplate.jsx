@@ -72,7 +72,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
                 max-width: 100%;
                 border-radius: 0px;
             }
-            #${ id } .xcomponent-outlet {
+            #${ id } .${ CLASS.OUTLET } {
                 height: 100%;
             }
         }

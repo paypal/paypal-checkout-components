@@ -18,8 +18,8 @@ if ! git diff-index --quiet --cached HEAD; then
 fi;
 
 # Re-install just the basics
-rm -rf node_modules/xcomponent node_modules/post-robot node_modules/zalgo-promise node_modules/beaver-logger node_modules/cross-domain-safe-weakmap node_modules/cross-domain-utils node_modules/grumbler-scripts
-npm install xcomponent post-robot zalgo-promise beaver-logger cross-domain-safe-weakmap cross-domain-utils grumbler-scripts
+rm -rf node_modules/zoid node_modules/post-robot node_modules/zalgo-promise node_modules/beaver-logger node_modules/cross-domain-safe-weakmap node_modules/cross-domain-utils node_modules/grumbler-scripts
+npm install zoid post-robot zalgo-promise beaver-logger cross-domain-safe-weakmap cross-domain-utils grumbler-scripts
 
 rm dist/*;
 npm run build;
