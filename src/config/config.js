@@ -279,6 +279,10 @@ export let config = {
 
         'hausmart.com': {
             disable_venmo: true
+        },
+
+        'derbyjackpot.com': {
+            disable_venmo: true
         }
     },
 
