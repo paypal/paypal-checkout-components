@@ -152,6 +152,8 @@ export let Buttons : Component<ButtonProps> = create({
                         if (!ZalgoPromise.isPromise(order)) {
                             throw new Error(`Expected createOrder to return a promise for an order id`);
                         }
+                        
+                        order = ZalgoPromise.resolve(order);
 
                         if (getEnv() === ENV.PRODUCTION) {
                             return order.timeout(ORDER_CREATE_TIMEOUT, new Error(`Timed out waiting ${ ORDER_CREATE_TIMEOUT }ms for order to be created`));
