@@ -4746,7 +4746,7 @@ function getPayPalDomain() {
         local: 'http://localhost.paypal.com:' + Object(__WEBPACK_IMPORTED_MODULE_1__globals__["h" /* getPort */])(),
         stage: 'https://' + Object(__WEBPACK_IMPORTED_MODULE_2__script__["f" /* getStageHost */])(),
         sandbox: 'https://www.sandbox.paypal.com',
-        paypal: 'https://www.paypal.com',
+        production: 'https://www.paypal.com',
         test: 'mock://www.paypal.com'
     }["production"];
 }
@@ -4755,8 +4755,8 @@ function getPayPalAPIDomain() {
     return {
         local: 'https://' + Object(__WEBPACK_IMPORTED_MODULE_2__script__["a" /* getAPIStageHost */])() + ':12326',
         stage: 'https://' + Object(__WEBPACK_IMPORTED_MODULE_2__script__["a" /* getAPIStageHost */])() + ':12326',
-        sandbox: 'https://cors.api.sandbox.paypal.com',
-        paypal: 'https://www.cors.api.paypal.com',
+        sandbox: 'https://api.sandbox.paypal.com',
+        production: 'https://api.paypal.com',
         test: 'mock://api.paypal.com'
     }["production"];
 }
@@ -4766,7 +4766,7 @@ function getPayPalLoggerDomain() {
         local: 'https://' + Object(__WEBPACK_IMPORTED_MODULE_2__script__["f" /* getStageHost */])(),
         stage: getPayPalDomain(),
         sandbox: getPayPalDomain(),
-        paypal: getPayPalDomain(),
+        production: getPayPalDomain(),
         test: getPayPalDomain()
     }["production"];
 }
@@ -5256,16 +5256,16 @@ function setupLogger() {
 /* unused harmony export getSDKQueryParams */
 /* unused harmony export getSDKQueryParam */
 /* unused harmony export getSDKQueryParamBool */
-/* unused harmony export getClientToken */
 /* harmony export (immutable) */ __webpack_exports__["b"] = getClientID;
 /* harmony export (immutable) */ __webpack_exports__["d"] = getMerchantID;
-/* harmony export (immutable) */ __webpack_exports__["e"] = getPartnerAttributionID;
-/* harmony export (immutable) */ __webpack_exports__["f"] = getStageHost;
-/* harmony export (immutable) */ __webpack_exports__["a"] = getAPIStageHost;
 /* unused harmony export getIntent */
 /* harmony export (immutable) */ __webpack_exports__["c"] = getCommit;
 /* unused harmony export getVault */
 /* unused harmony export getCurrency */
+/* unused harmony export getClientToken */
+/* harmony export (immutable) */ __webpack_exports__["e"] = getPartnerAttributionID;
+/* harmony export (immutable) */ __webpack_exports__["f"] = getStageHost;
+/* harmony export (immutable) */ __webpack_exports__["a"] = getAPIStageHost;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_belter_src__ = __webpack_require__("./node_modules/belter/src/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__ = __webpack_require__("./node_modules/paypal-sdk-constants/src/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__globals__ = __webpack_require__("./node_modules/paypal-braintree-web-client/src/globals.js");
@@ -5328,17 +5328,6 @@ function getSDKQueryParamBool(name, def) {
     return getSDKQueryParam(name, def ? def.toString() : __WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["s" /* QUERY_BOOL */].FALSE) === __WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["s" /* QUERY_BOOL */].TRUE;
 }
 
-function getClientToken() {
-    var _getSDKAttributes = getSDKAttributes(),
-        clientToken = _getSDKAttributes.clientToken;
-
-    if (!clientToken) {
-        throw new Error('Expected data-client-token="xyz" to be passed with client token, to ' + getSDKScript().outerHTML);
-    }
-
-    return clientToken;
-}
-
 function getClientID() {
     var clientID = getSDKQueryParam(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["t" /* SDK_QUERY_KEYS */].CLIENT_ID);
 
@@ -5357,18 +5346,6 @@ function getMerchantID() {
     return getSDKQueryParam(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["t" /* SDK_QUERY_KEYS */].MERCHANT_ID);
 }
 
-function getPartnerAttributionID() {
-    return getSDKAttribute(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["u" /* SDK_SETTINGS */].PARTNER_ATTRIBUTION_ID);
-}
-
-function getStageHost() {
-    return getSDKAttribute(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["u" /* SDK_SETTINGS */].STAGE_HOST, Object(__WEBPACK_IMPORTED_MODULE_2__globals__["c" /* getDefaultStageHost */])());
-}
-
-function getAPIStageHost() {
-    return getSDKAttribute(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["u" /* SDK_SETTINGS */].API_STAGE_HOST, getStageHost());
-}
-
 function getIntent() {
     return getSDKQueryParam(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["t" /* SDK_QUERY_KEYS */].ORDER_INTENT, __WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["g" /* DEFAULT_INTENT */]);
 }
@@ -5383,6 +5360,28 @@ function getVault() {
 
 function getCurrency() {
     return getSDKQueryParam(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["t" /* SDK_QUERY_KEYS */].ORDER_CURRENCY, __WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["f" /* DEFAULT_CURRENCY */]);
+}
+
+function getClientToken() {
+    var clientToken = getSDKAttribute(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["u" /* SDK_SETTINGS */].CLIENT_TOKEN);
+
+    if (!clientToken) {
+        throw new Error('Expected data-client-token="xyz" to be passed with client token, to ' + getSDKScript().outerHTML);
+    }
+
+    return clientToken;
+}
+
+function getPartnerAttributionID() {
+    return getSDKAttribute(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["u" /* SDK_SETTINGS */].PARTNER_ATTRIBUTION_ID);
+}
+
+function getStageHost() {
+    return getSDKAttribute(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["u" /* SDK_SETTINGS */].STAGE_HOST, Object(__WEBPACK_IMPORTED_MODULE_2__globals__["c" /* getDefaultStageHost */])());
+}
+
+function getAPIStageHost() {
+    return getSDKAttribute(__WEBPACK_IMPORTED_MODULE_1_paypal_sdk_constants_src__["u" /* SDK_SETTINGS */].API_STAGE_HOST, getStageHost());
 }
 
 /***/ }),
