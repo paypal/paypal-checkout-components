@@ -1,6 +1,7 @@
 /* @flow */
 
 import { undotify, htmlEncode } from 'belter';
+import { html } from 'jsx-pragmatic';
 
 import { getFundingEligibility } from './eligibility';
 import { getSmartButtonClientScript, getSmartButtonRenderScript, startWatchers } from './watcher';
@@ -54,7 +55,7 @@ export function getButtonMiddleware({ logger = console } : { logger? : LoggerTyp
                 nonce = '';
             }
 
-            let buttonHTML = Buttons({ ...params, nonce, fundingEligibility }).toString();
+            let buttonHTML = Buttons({ ...params, nonce, fundingEligibility }).render(html());
 
             let pageHTML = `
                 <body>
