@@ -2435,7 +2435,7 @@
                 })));
             }(normalizeProps(props)) : null;
             var script;
-            return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.232", 
+            return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.233", 
             _ref21), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -2570,7 +2570,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.232",
+            version: "4.0.233",
             cors: !0,
             env: constants.s.PRODUCTION,
             state: "checkoutjs",
