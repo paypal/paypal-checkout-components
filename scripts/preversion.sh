@@ -2,9 +2,11 @@
 
 set -e;
 
+# Remove the `dist/` folder; we will re-generate later on
 rm dist/*;
 git checkout dist/;
 
+# Make sure the HEAD is clean
 if ! git diff-files --quiet; then
     echo "Can not publish with unstaged uncommited changes";
     exit 1;
@@ -15,20 +17,9 @@ if ! git diff-index --quiet --cached HEAD; then
     exit 1;
 fi;
 
+# Re-install just the basics
 rm -rf node_modules/zoid node_modules/post-robot node_modules/zalgo-promise node_modules/beaver-logger node_modules/cross-domain-safe-weakmap node_modules/cross-domain-utils node_modules/grumbler-scripts
 npm install zoid post-robot zalgo-promise beaver-logger cross-domain-safe-weakmap cross-domain-utils grumbler-scripts
 
 rm dist/*;
-
 npm run build;
-
-git add ./dist --all;
-git add ./test/screenshot/images --all;
-
-git commit -m "Dist" || echo "Nothing to distribute";
-
-npm version ${1-patch};
-
-git push;
-git push --tags;
-npm publish;
