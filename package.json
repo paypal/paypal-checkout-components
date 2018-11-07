@@ -1,6 +1,6 @@
 {
   "name": "paypal-checkout",
-  "version": "4.0.231",
+  "version": "4.0.232",
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "webpack-button": "babel-node ./node_modules/.bin/webpack --progress --config webpack.button.config.js",
     "test": "npm run lint && npm run flow && npm run test-ssr && npm run karma && npm run buttondiff",
     "build": "npm run test && npm run webpack",
-    "release": "./publish.sh", 
+    "release": "./publish.sh",
     "release:patch": "./scripts/publish.sh patch",
     "release:minor": "./scripts/publish.sh minor",
     "release:major": "./scripts/publish.sh major",
