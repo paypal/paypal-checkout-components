@@ -1,8 +1,8 @@
 /* @flow */
-/** @jsx jsxToHTML */
+/** @jsx node */
 
 import { COUNTRY, type LocaleType } from 'paypal-sdk-constants/src';
-import { jsxToHTML, Fragment, type JsxHTMLNode } from 'belter/src';
+import { node, Fragment, type ElementNode } from 'jsx-pragmatic/src';
 
 import { getCheckoutUrl } from '../../config';
 import { BUTTON_LABEL, LOGO_COLOR, BUTTON_COLOR } from '../../constants';
@@ -24,7 +24,7 @@ export const PAYPAL_CONFIG : FundingSourceConfig = {
 
             defaultColor: BUTTON_COLOR.GOLD,
 
-            Label({ logoColor, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : JsxHTMLNode {
+            Label({ logoColor, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : ElementNode {
                 return (
                     <Fragment>
                         <PPLogo nonce={ nonce } logoColor={ logoColor } /> <PayPalLogo nonce={ nonce } logoColor={ logoColor } />

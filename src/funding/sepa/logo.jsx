@@ -1,7 +1,7 @@
 /* @flow */
-/** @jsx jsxToHTML */
+/** @jsx node */
 
-import { jsxToHTML, JsxHTMLNode } from 'belter/src';
+import { node, type ElementNode } from 'jsx-pragmatic/src';
 
 import { SVGLogo, type LogoColorMap } from '../common';
 import { LOGO_COLOR, BUTTON_LOGO } from '../../constants';
@@ -17,7 +17,7 @@ const SEPA_LOGO_COLORS : LogoColorMap = {
     }
 };
 
-export function SepaLogo({ logoColor, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : JsxHTMLNode {
+export function SepaLogo({ logoColor, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : ElementNode {
 
     const { main, card } = SEPA_LOGO_COLORS[logoColor] || SEPA_LOGO_COLORS[LOGO_COLOR.ANY];
 

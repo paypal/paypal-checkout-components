@@ -1,12 +1,13 @@
 /* @flow */
 /* eslint no-template-curly-in-string: off, max-lines: off */
-/** @jsx jsxToHTML */
+/** @jsx node */
 
-import { jsxToHTML, SVG, JsxHTMLNode } from 'belter/src';
+import { node, type ElementNode } from 'jsx-pragmatic/src';
 
 import { CLASS } from '../../constants';
+import { SVG } from '../common';
 
-export function SVGCardLogo({ render, name, nonce } : { render : () => JsxHTMLNode, name : string, nonce : string }) : JsxHTMLNode {
+export function SVGCardLogo({ render, name, nonce } : { render : () => ElementNode, name : string, nonce : string }) : ElementNode {
     return (
         <SVG
             nonce={ nonce }

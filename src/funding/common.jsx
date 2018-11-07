@@ -1,10 +1,11 @@
 /* @flow */
 /* eslint no-template-curly-in-string: off, max-lines: off */
-/** @jsx jsxToHTML */
+/** @jsx node */
 
 import { type FundingEligibilityType } from 'paypal-braintree-web-client/src';
-import { jsxToHTML, SVG, JsxHTMLNode, type JsxChildType } from 'belter/src';
+import { svgToBase64 } from 'belter/src';
 import { PLATFORM, CARD, type LocaleType, COUNTRY } from 'paypal-sdk-constants/src';
+import { node, html, ElementNode } from 'jsx-pragmatic/src';
 
 import { BUTTON_COLOR, LOGO_COLOR, CLASS,
     BUTTON_TAGLINE_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LABEL } from '../constants';
@@ -56,7 +57,23 @@ export const DEFAULT_LABEL_CONFIG = {
     }
 };
 
-export function SVGLogo({ render, name, logoColor, nonce } : { render : () => JsxHTMLNode, name : string, logoColor? : $Values<typeof LOGO_COLOR>, nonce : string }) : JsxHTMLNode {
+export function SVG(props : Object) : ElementNode {
+    const { svg, ...otherProps } = props;
+
+    if (!svg) {
+        throw new TypeError(`Expected svg prop`);
+    }
+
+    if (typeof svg !== 'string' && !(svg instanceof ElementNode)) {
+        throw new TypeError(`Expected svg prop to be a string or jsx html node`);
+    }
+
+    return (
+        <img src={ svgToBase64(svg.render(html())) } { ...otherProps } />
+    );
+}
+
+export function SVGLogo({ render, name, logoColor, nonce } : { render : () => ElementNode, name : string, logoColor? : $Values<typeof LOGO_COLOR>, nonce : string }) : ElementNode {
     return (
         <SVG
             svg={ render() }
@@ -81,12 +98,12 @@ type FundingLabelConfig = {|
         multiple : boolean,
         period? : number,
         fundingEligibility : FundingEligibilityType
-    |}) => JsxChildType,
+    |}) => ElementNode | $ReadOnlyArray<ElementNode>,
     Tag? : ({|
         locale : LocaleType,
         nonce : string,
         multiple : boolean
-    |}) => JsxChildType,
+    |}) => ElementNode,
     colors : $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
     secondaryColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
     logoColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof LOGO_COLOR> },
@@ -102,7 +119,7 @@ type CardConfig = {|
     Logo : ({|
         locale : LocaleType,
         nonce : string
-    |}) => JsxChildType
+    |}) => ElementNode
 |};
 
 export type FundingSourceConfig = {|

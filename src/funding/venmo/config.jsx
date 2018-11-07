@@ -1,5 +1,5 @@
 /* @flow */
-/** @jsx jsxToHTML */
+/** @jsx node */
 
 import { PLATFORM } from 'paypal-sdk-constants/src';
 

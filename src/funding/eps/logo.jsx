@@ -1,12 +1,12 @@
 /* @flow */
-/** @jsx jsxToHTML */
+/** @jsx node */
 
-import { jsxToHTML, JsxHTMLNode } from 'belter/src';
+import { node, type ElementNode } from 'jsx-pragmatic/src';
 
 import { SVGLogo } from '../common';
 import { LOGO_COLOR, BUTTON_LOGO } from '../../constants';
 
-export function EpsLogo({ logoColor, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : JsxHTMLNode {
+export function EpsLogo({ logoColor, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : ElementNode {
     return (
         <SVGLogo
             nonce={ nonce }

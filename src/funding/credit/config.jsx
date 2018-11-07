@@ -1,8 +1,8 @@
 /* @flow */
-/** @jsx jsxToHTML */
+/** @jsx node */
 
 import { COUNTRY } from 'paypal-sdk-constants/src';
-import { jsxToHTML, Fragment } from 'belter/src';
+import { node, Fragment } from 'jsx-pragmatic/src';
 
 import { getCheckoutUrl } from '../../config';
 import { BUTTON_LABEL, BUTTON_COLOR, LOGO_COLOR } from '../../constants';

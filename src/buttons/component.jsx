@@ -1,5 +1,5 @@
 /* @flow */
-/** @jsx jsxDom */
+/** @jsx node */
 /* eslint max-lines: 0 */
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getPayPalDomain, getCurrency } from 'paypal-braintree-web-client/src';
@@ -9,6 +9,7 @@ import { type Component } from 'zoid/src/component/component';
 import { isIEIntranet, isDevice, uniqueID, redirect } from 'belter/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 import { PLATFORM, INTENT, FPTI_KEY, ENV } from 'paypal-sdk-constants/src';
+import { node, dom } from 'jsx-pragmatic/src';
 
 import { getButtonUrl } from '../config';
 import { getFundingEligibility } from '../globals';
@@ -69,23 +70,16 @@ export const Buttons : Component<ButtonProps> = create({
     // $FlowFixMe
     containerTemplate,
 
-    prerenderTemplate({ props, jsxDom } : { props : Object, jsxDom : Function }) : HTMLElement {
-
-        const template = (
-            <div innerHTML={ <ButtonsTemplate { ...props } /> } />
-        );
-
-        template.addEventListener('click', () => {
-            getLogger().warn('button_pre_template_click');
-        });
-
+    prerenderTemplate({ props, document } : { props : Object, document : Document }) : HTMLElement {
         return (
             <html>
                 <body>
-                    { template }
+                    <div onClick={ () => getLogger().warn('button_pre_template_click') } >
+                        <ButtonsTemplate { ...props } />
+                    </div>
                 </body>
             </html>
-        );
+        ).render(dom({ doc: document }));
     },
 
     attributes: {

@@ -1,9 +1,9 @@
 
 /* @flow */
-/** @jsx jsxToHTML */
+/** @jsx node */
 
 import { COUNTRY, type LocaleType } from 'paypal-sdk-constants/src';
-import { jsxToHTML, JsxHTMLNode } from 'belter/src';
+import { node, type ElementNode } from 'jsx-pragmatic/src';
 
 import { SVGLogo, type LogoColorMap } from '../common';
 import { LOGO_COLOR, BUTTON_LOGO } from '../../constants';
@@ -16,7 +16,7 @@ const CREDIT_LOGO_COLORS : LogoColorMap = {
 };
 
 export function CreditLogo({ logoColor, locale, nonce } :
-    { logoColor : $Values<typeof LOGO_COLOR>, locale : LocaleType, nonce : string }) : JsxHTMLNode {
+    { logoColor : $Values<typeof LOGO_COLOR>, locale : LocaleType, nonce : string }) : ElementNode {
 
     if (!CREDIT_LOGO_COLORS[logoColor]) {
         throw new Error(`No ${ logoColor } credit logo available`);

@@ -1,7 +1,7 @@
 /* @flow */
-/** @jsx jsxToHTML */
+/** @jsx node */
 
-import { jsxToHTML } from 'belter/src';
+import { node } from 'jsx-pragmatic/src';
 import { CARD, FUNDING, COUNTRY } from 'paypal-sdk-constants/src';
 
 import { getGuestUrl } from '../../config';

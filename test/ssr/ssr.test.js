@@ -2,6 +2,7 @@
 /* eslint no-restricted-globals: 0, promise/no-native: 0 */
 
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
+import { html, type ElementNode } from 'jsx-pragmatic';
 
 import { webpackCompileToString } from '../screenshot/lib/compile';
 import { testGlobals } from '../globals';
@@ -12,7 +13,7 @@ jest.setTimeout(120000);
 
 const cache = {};
 
-async function getButtonScript() : Promise<{ Buttons : (Object) => string, DEFAULT_PROPS : Object }> {
+async function getButtonScript() : Promise<{ Buttons : (Object) => ElementNode, DEFAULT_PROPS : Object }> {
 
     const config = {
         entry:         './src/buttons/template/componentTemplate.jsx',
@@ -43,15 +44,15 @@ test(`Button should render with ssr, with minimal options`, async () => {
 
     const { Buttons } = await getButtonScript();
 
-    const html = Buttons({
+    const buttonHTML = Buttons({
         locale:          { country: 'US', lang: 'en' },
         platform:        'desktop',
         sessionID:       'xyz',
         buttonSessionID: 'abc',
         fundingEligibility
-    }).toString();
+    }).render(html());
 
-    if (!html || typeof html !== 'string') {
+    if (!buttonHTML || typeof buttonHTML !== 'string') {
         throw new Error(`Expected html to be a non-empty string`);
     }
 });
@@ -70,7 +71,7 @@ test(`Button should fail to render with ssr, with invalid style option`, async (
             sessionID:       'xyz',
             buttonSessionID: 'abc',
             fundingEligibility
-        }).toString();
+        }).render(html());
     } catch (err) {
         expectedErr = err;
     }
@@ -93,7 +94,7 @@ test(`Button should fail to render with ssr, with invalid locale`, async () => {
             sessionID:       'xyz',
             buttonSessionID: 'abc',
             fundingEligibility
-        }).toString();
+        }).render(html());
     } catch (err) {
         expectedErr = err;
     }

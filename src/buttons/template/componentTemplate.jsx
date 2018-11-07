@@ -1,9 +1,9 @@
 /* @flow */
-/** @jsx jsxToHTML */
+/** @jsx node */
 
 import { type FundingEligibilityType } from 'paypal-braintree-web-client/src';
-import { jsxToHTML, type JsxHTMLNode, jsxRender, Fragment } from 'belter/src'; // eslint-disable-line no-unused-vars
 import { FUNDING, ENV, type LocaleType } from 'paypal-sdk-constants/src';
+import { node, html, type ElementNode } from 'jsx-pragmatic/src';
 
 import { BUTTON_NUMBER, BUTTON_LABEL, ATTRIBUTE, CLASS,
     BUTTON_COLOR, LOGO_COLOR } from '../../constants';
@@ -64,7 +64,7 @@ function determineLabel({ source, style } :
 
 function Button({ source, style, multiple, locale, env, fundingEligibility, i, nonce } :
     {| style : ButtonStyle, source : $Values<typeof FUNDING>, multiple : boolean, locale : LocaleType,
-      env : $Values<typeof ENV>, fundingEligibility : FundingEligibilityType, i : number, nonce : string |}) : JsxHTMLNode {
+      env : $Values<typeof ENV>, fundingEligibility : FundingEligibilityType, i : number, nonce : string |}) : ElementNode {
 
     let { color, period } = style;
 
@@ -114,7 +114,7 @@ function Button({ source, style, multiple, locale, env, fundingEligibility, i, n
 }
 
 function TagLine({ source, style, locale, multiple, nonce } :
-    {| source : $Values<typeof FUNDING>, style : ButtonStyle, locale : LocaleType, multiple : boolean, nonce : string |}) : ?JsxHTMLNode {
+    {| source : $Values<typeof FUNDING>, style : ButtonStyle, locale : LocaleType, multiple : boolean, nonce : string |}) : ?ElementNode {
 
     const { tagline, label, color } = style;
 
@@ -154,7 +154,7 @@ function TagLine({ source, style, locale, multiple, nonce } :
     );
 }
 
-function Script({ nonce }) : JsxHTMLNode {
+function Script({ nonce }) : ElementNode {
     let script = getComponentScript().toString();
 
     script = script.replace(/\{\s*CLASS\.([A-Z0-9_]+)\s*\}/g, (match, name) => {
@@ -162,23 +162,21 @@ function Script({ nonce }) : JsxHTMLNode {
     });
 
     return (
-        <script
-            nonce={ nonce }
-            innerHTML={ `(${ script })();` }
-        />
+        <script nonce={ nonce }>
+            { `(${ script })();` }
+        </script>
     );
 }
 
 function Style({ style, cardNumber, nonce } :
-    {| style : ButtonStyle, cardNumber? : number, nonce : string |}) : JsxHTMLNode {
+    {| style : ButtonStyle, cardNumber? : number, nonce : string |}) : ElementNode {
 
     const { height } = style;
 
     return (
-        <style
-            nonce={ nonce }
-            innerHTML={ componentStyle({ height, cardNumber }) }
-        />
+        <style nonce={ nonce }>
+            { componentStyle({ height, cardNumber }) }
+        </style>
     );
 }
 
@@ -199,7 +197,7 @@ function getCardNumber(locale : LocaleType) : number {
     }
 }
 
-export function Buttons(props : ButtonPropsInputs) : JsxHTMLNode {
+export function Buttons(props : ButtonPropsInputs) : ElementNode {
     const { style, locale, remembered, env, fundingEligibility, platform, nonce } = normalizeButtonProps(props);
 
     const sources  = determineEligibleFunding({ style, remembered, platform, fundingEligibility });
@@ -209,7 +207,7 @@ export function Buttons(props : ButtonPropsInputs) : JsxHTMLNode {
         throw new Error(`No eligible funding sources found to render buttons:\n\n${ JSON.stringify(fundingEligibility, null, 4) }`);
     }
 
-    return (
+    const buttonsNode = (
         <div class={ `${ CLASS.CONTAINER } ${ getCommonClasses({ style, multiple, env }) }` }>
 
             <Style
@@ -246,4 +244,8 @@ export function Buttons(props : ButtonPropsInputs) : JsxHTMLNode {
             />
         </div>
     );
+
+    buttonsNode.toString = () => buttonsNode.render(html());
+
+    return buttonsNode;
 }

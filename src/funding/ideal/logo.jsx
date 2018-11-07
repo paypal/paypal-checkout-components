@@ -1,13 +1,13 @@
 
 /* @flow */
-/** @jsx jsxToHTML */
+/** @jsx node */
 
-import { jsxToHTML, JsxHTMLNode } from 'belter/src';
+import { node, type ElementNode } from 'jsx-pragmatic/src';
 
 import { SVGLogo } from '../common';
 import { BUTTON_LOGO } from '../../constants';
 
-export function IdealLogo({ nonce } : { nonce : string }) : JsxHTMLNode {
+export function IdealLogo({ nonce } : { nonce : string }) : ElementNode {
     return (
         <SVGLogo
             nonce={ nonce }

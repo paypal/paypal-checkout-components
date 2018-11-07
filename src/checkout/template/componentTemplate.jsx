@@ -1,5 +1,10 @@
 /* @flow */
-/** @jsx jsxDom */
+/** @jsx node */
+
+import { node, dom } from 'jsx-pragmatic/src';
+import type { RenderOptionsType } from 'zoid/src/component/parent';
+
+import type { CheckoutPropsType } from '../props';
 
 const checkoutComponentStyle = `
 
@@ -67,8 +72,7 @@ const checkoutComponentStyle = `
     }
 `;
 
-export function componentTemplate({ jsxDom } : { jsxDom : Function }) : HTMLElement {
-
+export function componentTemplate({ document } : RenderOptionsType<CheckoutPropsType>) : HTMLElement {
     return (
         <html>
             <head>
@@ -88,5 +92,5 @@ export function componentTemplate({ jsxDom } : { jsxDom : Function }) : HTMLElem
                 </div>
             </body>
         </html>
-    );
+    ).render(dom({ doc: document }));
 }

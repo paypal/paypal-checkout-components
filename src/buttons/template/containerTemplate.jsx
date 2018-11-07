@@ -1,25 +1,15 @@
 /* @flow */
-/** @jsx jsxDom */
+/** @jsx node */
 
 import { values, min, max, perc } from 'belter/src';
+import { node, dom } from 'jsx-pragmatic/src';
+import type { RenderOptionsType } from 'zoid/src/component/parent';
 
 import { BUTTON_SIZE, BUTTON_LAYOUT } from '../../constants';
 import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE, MINIMUM_SIZE, MAXIMUM_SIZE } from '../config';
 import type { DimensionsType } from '../../types';
 import { determineEligibleFunding } from '../../funding';
 import type { ButtonProps } from '../props';
-
-type ContainerTemplateOptions = {|
-    id : string,
-    props : ButtonProps,
-    CLASS : Object,
-    container : HTMLElement,
-    tag : string,
-    context : string,
-    outlet : HTMLElement,
-    jsxDom : Function,
-    on : Function
-|};
 
 function determineResponsiveSize({ layout, width = 0 }) : $Values<typeof BUTTON_SIZE> {
 
@@ -67,7 +57,7 @@ function getDimensions({ label, size, tagline, layout, number, viewport, height:
     return { width, height };
 }
 
-export function containerTemplate({ id, props, CLASS, on, container, tag, context, outlet, jsxDom } : ContainerTemplateOptions) : HTMLElement {
+export function containerTemplate({ id, props, CLASS, on, container, tag, context, outlet, document } : RenderOptionsType<ButtonProps>) : HTMLElement {
 
     const { style, remembered, platform, fundingEligibility } = props;
     const sources = determineEligibleFunding({ style, remembered, platform, fundingEligibility });
@@ -183,7 +173,7 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
                 `}
             </style>
 
-            {outlet}
+            <node el={ outlet } />
         </div>
-    );
+    ).render(dom({ doc: document }));
 }

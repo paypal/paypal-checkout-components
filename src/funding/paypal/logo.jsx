@@ -1,7 +1,7 @@
 /* @flow */
-/** @jsx jsxToHTML */
+/** @jsx node */
 
-import { jsxToHTML, JsxHTMLNode } from 'belter/src';
+import { node, type ElementNode } from 'jsx-pragmatic/src';
 
 import { BUTTON_LOGO, LOGO_COLOR } from '../../constants';
 import { SVGLogo, type LogoColorMap } from '../common';
@@ -21,7 +21,7 @@ const PAYPAL_LOGO_COLORS : LogoColorMap = {
     }
 };
 
-export function PayPalLogo({ logoColor, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : JsxHTMLNode {
+export function PayPalLogo({ logoColor, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : ElementNode {
 
     if (!PAYPAL_LOGO_COLORS.hasOwnProperty(logoColor)) {
         throw new Error(`No ${ logoColor } paypal logo available`);
@@ -48,7 +48,7 @@ export function PayPalLogo({ logoColor, nonce } : { logoColor : $Values<typeof L
     );
 }
 
-export function PPLogo({ logoColor, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : JsxHTMLNode {
+export function PPLogo({ logoColor, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : ElementNode {
 
     return (
         <SVGLogo

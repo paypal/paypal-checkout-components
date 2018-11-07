@@ -1,12 +1,12 @@
 /* @flow */
-/** @jsx jsxToHTML */
+/** @jsx node */
 
-import { jsxToHTML, JsxHTMLNode } from 'belter/src';
+import { node, type ElementNode } from 'jsx-pragmatic/src';
 import { CARD } from 'paypal-sdk-constants/src';
 
 import { SVGCardLogo } from '../common';
 
-export function VisaLogo({ nonce } : { nonce : string }) : JsxHTMLNode {
+export function VisaLogo({ nonce } : { nonce : string }) : ElementNode {
     return (
         <SVGCardLogo
             nonce={ nonce }

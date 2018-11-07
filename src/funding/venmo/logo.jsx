@@ -1,8 +1,8 @@
 
 /* @flow */
-/** @jsx jsxToHTML */
+/** @jsx node */
 
-import { jsxToHTML, JsxHTMLNode } from 'belter/src';
+import { node, type ElementNode } from 'jsx-pragmatic/src';
 
 import { SVGLogo, type LogoColorMap } from '../common';
 import { LOGO_COLOR, BUTTON_LOGO } from '../../constants';
@@ -16,7 +16,7 @@ const VENMO_LOGO_COLORS : LogoColorMap = {
     }
 };
 
-export function VenmoLogo({ logoColor, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : JsxHTMLNode {
+export function VenmoLogo({ logoColor, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : ElementNode {
 
     if (!VENMO_LOGO_COLORS[logoColor]) {
         throw new Error(`No ${ logoColor } venmo logo available`);

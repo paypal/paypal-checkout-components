@@ -1,5 +1,5 @@
 /* @flow */
-/** @jsx jsxToHTML */
+/** @jsx node */
 
 import { getGuestUrl } from '../../config';
 import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR, LOGO_COLOR } from '../../constants';

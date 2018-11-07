@@ -1,8 +1,9 @@
 /* @flow */
-/** @jsx jsxToHTML */
+/** @jsx node */
 
-import { jsxToHTML, noop } from 'belter/src';
+import { noop } from 'belter/src';
 import { type ZalgoPromise } from 'zalgo-promise/src';
+import { node, html } from 'jsx-pragmatic/src';
 
 import { Buttons as ButtonsTemplate } from '../../../src/buttons/template';
 import { getElement, getElements, errorOnWindowOpen } from '../../tests/common';
@@ -13,7 +14,7 @@ const body = document.body;
 if (body) {
     body.innerHTML = (
         <ButtonsTemplate { ...window.xprops } />
-    ).toString();
+    ).render(html());
 }
 
 if (flow === 'iframe') {
