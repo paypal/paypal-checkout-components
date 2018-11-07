@@ -3,7 +3,7 @@
 import {
     getOpener,
     getTop
-} from 'cross-domain-utils';
+} from 'cross-domain-utils/src';
 
 export function getUserAgent() : string {
     return window.navigator.mockUserAgent || window.navigator.userAgent;
@@ -20,7 +20,7 @@ export function isDevice() : boolean {
 
 export function isInsidePopup() : boolean {
     // Checks to see if the top-most window is a pop-up
-    return getOpener(getTop(window));
+    return Boolean(getOpener(getTop(window)));
 }
 
 export function isStandAlone() : boolean {
