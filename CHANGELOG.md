@@ -1,3 +1,16 @@
+## <small>4.0.232 (2018-11-07)</small>
+
+* chore(package): Updating zoid (#938) ([a1ff39d](https://github.com/paypal/paypal-checkout/commit/a1ff39d)), closes [#938](https://github.com/paypal/paypal-checkout/issues/938)
+* refactor(publishing): Splitting up publish/version logic and automating changelog (#913) ([de898c8](https://github.com/paypal/paypal-checkout/commit/de898c8)), closes [#913](https://github.com/paypal/paypal-checkout/issues/913)
+* fix(error-focus-closed): Catching the error from the promise (#919) ([d71800e](https://github.com/paypal/paypal-checkout/commit/d71800e)), closes [#919](https://github.com/paypal/paypal-checkout/issues/919)
+* fix(resp-container-height): Removing extra space from vertical responsive (#937) ([f51f29f](https://github.com/paypal/paypal-checkout/commit/f51f29f)), closes [#937](https://github.com/paypal/paypal-checkout/issues/937)
+*  fix(iframe-standalone): Leveraging cross-domain-utils... Catching use-case for nested iframe inside ([46b6fe8](https://github.com/paypal/paypal-checkout/commit/46b6fe8)), closes [#929](https://github.com/paypal/paypal-checkout/issues/929)
+* Add to venmo blacklist ([747fea8](https://github.com/paypal/paypal-checkout/commit/747fea8))
+* Add to venmo blacklist ([c2f9913](https://github.com/paypal/paypal-checkout/commit/c2f9913))
+* Add to venmo blacklist ([7683935](https://github.com/paypal/paypal-checkout/commit/7683935))
+
+
+
 ## <small>4.0.228 (2018-10-18)</small>
 
 * feat(a11y-trap-tab): Trapping tab gestures in parent window while popup is enabled (#896) ([41b11f4](https://github.com/paypal/paypal-checkout/commit/41b11f4)), closes [#896](https://github.com/paypal/paypal-checkout/issues/896)
