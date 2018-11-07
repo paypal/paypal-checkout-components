@@ -1,3 +1,10 @@
+## <small>4.0.233 (2018-11-07)</small>
+
+* refactor(device-x-domain-utils): Importing the source for `cross-domain-utils` to preserve flow type ([702c8b7](https://github.com/paypal/paypal-checkout/commit/702c8b7)), closes [#939](https://github.com/paypal/paypal-checkout/issues/939)
+* refactor(publishing): post-version script will push to paypal repo (#940) ([b8a932d](https://github.com/paypal/paypal-checkout/commit/b8a932d)), closes [#940](https://github.com/paypal/paypal-checkout/issues/940)
+
+
+
 ## <small>4.0.232 (2018-11-07)</small>
 
 * chore(package): Updating zoid (#938) ([a1ff39d](https://github.com/paypal/paypal-checkout/commit/a1ff39d)), closes [#938](https://github.com/paypal/paypal-checkout/issues/938)
