@@ -283,6 +283,10 @@ export let config = {
 
         'derbyjackpot.com': {
             disable_venmo: true
+        },
+
+        'ancestry.com': {
+            disable_venmo: true
         }
     },
 
