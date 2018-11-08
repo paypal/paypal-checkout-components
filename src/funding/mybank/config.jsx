@@ -1,11 +1,12 @@
 /* @flow */
 /** @jsx node */
 
+import { MybankLogo, LOGO_COLOR } from 'paypal-sdk-logos/src';
+
 import { getAltPayUrl } from '../../config';
-import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR, LOGO_COLOR } from '../../constants';
+import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
 
-import { MybankLogo } from './logo';
 
 export const MYBANK_CONFIG : FundingSourceConfig = {
     ...DEFAULT_FUNDING_CONFIG,

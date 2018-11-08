@@ -3,13 +3,12 @@
 
 import { COUNTRY } from 'paypal-sdk-constants/src';
 import { node, Fragment } from 'jsx-pragmatic/src';
+import { CreditLogo, LOGO_COLOR, PPLogo, PayPalLogo } from 'paypal-sdk-logos/src';
 
 import { getCheckoutUrl } from '../../config';
-import { BUTTON_LABEL, BUTTON_COLOR, LOGO_COLOR } from '../../constants';
-import { PPLogo, PayPalLogo } from '../paypal/logo';
+import { BUTTON_LABEL, BUTTON_COLOR } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
 
-import { CreditLogo } from './logo';
 
 export const CREDIT_CONFIG : FundingSourceConfig = {
     ...DEFAULT_FUNDING_CONFIG,

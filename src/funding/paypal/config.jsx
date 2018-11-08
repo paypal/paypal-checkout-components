@@ -3,13 +3,13 @@
 
 import { COUNTRY, type LocaleType } from 'paypal-sdk-constants/src';
 import { node, Fragment, type ElementNode } from 'jsx-pragmatic/src';
+import { PPLogo, PayPalLogo, LOGO_COLOR } from 'paypal-sdk-logos/src';
 
 import { getCheckoutUrl } from '../../config';
-import { BUTTON_LABEL, LOGO_COLOR, BUTTON_COLOR } from '../../constants';
+import { BUTTON_LABEL, BUTTON_COLOR } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
 
 import { Checkout, Pay, Installment, SaferTag, DualTag } from './labels';
-import { PPLogo, PayPalLogo } from './logo';
 
 export const PAYPAL_CONFIG : FundingSourceConfig = {
     ...DEFAULT_FUNDING_CONFIG,

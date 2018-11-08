@@ -73,6 +73,7 @@
     "jsx-pragmatic": "^1.0.4",
     "paypal-braintree-web-client": "^4.0.0",
     "paypal-sdk-constants": "^1.0.1",
+    "paypal-sdk-logos": "^1.0.1",
     "post-robot": "^9.0.0",
     "zalgo-promise": "^1.0.10",
     "zoid": "^7.0.0"

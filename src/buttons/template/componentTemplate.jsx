@@ -4,9 +4,9 @@
 import { type FundingEligibilityType } from 'paypal-braintree-web-client/src';
 import { FUNDING, ENV, type LocaleType } from 'paypal-sdk-constants/src';
 import { node, html, type ElementNode } from 'jsx-pragmatic/src';
+import { LOGO_COLOR, LOGO_CLASS } from 'paypal-sdk-logos/src';
 
-import { BUTTON_NUMBER, BUTTON_LABEL, ATTRIBUTE, CLASS,
-    BUTTON_COLOR, LOGO_COLOR } from '../../constants';
+import { BUTTON_NUMBER, BUTTON_LABEL, ATTRIBUTE, CLASS, BUTTON_COLOR } from '../../constants';
 import { FUNDING_CONFIG, determineEligibleFunding } from '../../funding';
 import { normalizeButtonProps, type ButtonStyle, type ButtonPropsInputs } from '../props';
 
@@ -35,7 +35,7 @@ function getButtonClasses({ label, color, logoColor } :
     return [
         `${ CLASS.LABEL }-${ label }`,
         `${ CLASS.COLOR }-${ color }`,
-        `${ CLASS.LOGO_COLOR }-${ logoColor }`
+        `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`
     ].join(' ');
 }
 
@@ -159,6 +159,10 @@ function Script({ nonce }) : ElementNode {
 
     script = script.replace(/\{\s*CLASS\.([A-Z0-9_]+)\s*\}/g, (match, name) => {
         return CLASS[name];
+    });
+
+    script = script.replace(/\{\s*LOGO_CLASS\.([A-Z0-9_]+)\s*\}/g, (match, name) => {
+        return LOGO_CLASS[name];
     });
 
     return (

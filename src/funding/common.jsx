@@ -3,12 +3,11 @@
 /** @jsx node */
 
 import { type FundingEligibilityType } from 'paypal-braintree-web-client/src';
-import { svgToBase64 } from 'belter/src';
 import { PLATFORM, CARD, type LocaleType, COUNTRY } from 'paypal-sdk-constants/src';
-import { node, html, ElementNode } from 'jsx-pragmatic/src';
+import { ElementNode } from 'jsx-pragmatic/src';
+import { LOGO_COLOR } from 'paypal-sdk-logos/src';
 
-import { BUTTON_COLOR, LOGO_COLOR, CLASS,
-    BUTTON_TAGLINE_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LABEL } from '../constants';
+import { BUTTON_COLOR, BUTTON_TAGLINE_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LABEL } from '../constants';
 
 export const DEFAULT_FUNDING_CONFIG = {
 
@@ -54,39 +53,6 @@ export const DEFAULT_LABEL_CONFIG = {
         [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.BLUE,
         [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
         [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER
-    }
-};
-
-export function SVG(props : Object) : ElementNode {
-    const { svg, ...otherProps } = props;
-
-    if (!svg) {
-        throw new TypeError(`Expected svg prop`);
-    }
-
-    if (typeof svg !== 'string' && !(svg instanceof ElementNode)) {
-        throw new TypeError(`Expected svg prop to be a string or jsx html node`);
-    }
-
-    return (
-        <img src={ svgToBase64(svg.render(html())) } { ...otherProps } />
-    );
-}
-
-export function SVGLogo({ render, name, logoColor, nonce } : { render : () => ElementNode, name : string, logoColor? : $Values<typeof LOGO_COLOR>, nonce : string }) : ElementNode {
-    return (
-        <SVG
-            svg={ render() }
-            alt={ name }
-            nonce={ nonce }
-            class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ name } ${ logoColor ? `${ CLASS.LOGO_COLOR }-${ logoColor }` : '' }` }
-        />
-    );
-}
-
-export type LogoColorMap = {
-    [ $Values<typeof LOGO_COLOR> ] : {
-        [string] : string
     }
 };
 

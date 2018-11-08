@@ -5,10 +5,10 @@
 import { type LocaleType } from 'paypal-sdk-constants/src';
 import { node, type ElementNode } from 'jsx-pragmatic/src';
 import { regexTokenize } from 'belter/src';
+import { PPLogo, PayPalLogo, LOGO_COLOR } from 'paypal-sdk-logos/src';
 
-import { LOGO_COLOR, CLASS } from '../../constants';
+import { CLASS } from '../../constants';
 
-import { PPLogo, PayPalLogo } from './logo';
 import { componentContent } from './content';
 
 function placeholderToJSX(text : string, placeholders : { [string] : (?string) => ElementNode | string | null | void }) : $ReadOnlyArray<ElementNode | string> {

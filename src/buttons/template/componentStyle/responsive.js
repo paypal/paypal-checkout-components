@@ -1,6 +1,7 @@
 /* @flow */
 
 import { max, perc } from 'belter/src';
+import { LOGO_CLASS } from 'paypal-sdk-logos/src';
 
 import { BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER, BUTTON_LABEL, CLASS } from '../../../constants';
 import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from '../../config';
@@ -25,26 +26,26 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                     font-size: ${ max(perc(buttonHeight, 32), 10) }px;
                 }
 
-                .${ CLASS.BUTTON }:not(.${ CLASS.CARD }) {
+                .${ CLASS.BUTTON }:not(.${ LOGO_CLASS.CARD }) {
                     height: ${ buttonHeight }px;
                     min-height: ${ height || style.minHeight }px;
                     max-height: ${ height || style.maxHeight }px;
                 }
 
-                .${ CLASS.LOGO } {
+                .${ LOGO_CLASS.LOGO } {
                     height: ${ perc(buttonHeight, 35) + 5 }px;
                     max-height: ${ perc(buttonHeight, 60) }px;
                     min-height: ${ perc(buttonHeight, 40) }px;
                 }
                 
-                .${ CLASS.LOGO }.${ CLASS.LOGO }-${ BUTTON_LABEL.EPS },
-                .${ CLASS.LOGO }.${ CLASS.LOGO }-${ BUTTON_LABEL.MYBANK } {
+                .${ LOGO_CLASS.LOGO }.${ LOGO_CLASS.LOGO }-${ BUTTON_LABEL.EPS },
+                .${ LOGO_CLASS.LOGO }.${ LOGO_CLASS.LOGO }-${ BUTTON_LABEL.MYBANK } {
                     height: ${ perc(buttonHeight, 50) + 5 }px;
                     max-height: ${ perc(buttonHeight, 70) }px;
                     min-height: ${ perc(buttonHeight, 40) }px;
                 }
 
-                .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.PILL }:not(${ CLASS.LABEL }-${ CLASS.CARD }) {
+                .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.PILL }:not(${ CLASS.LABEL }-${ LOGO_CLASS.CARD }) {
                     border-radius: ${ Math.ceil(buttonHeight / 2) }px;
                 }
 
@@ -65,11 +66,11 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                     line-height: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) }px;
                 }
 
-                .${ CLASS.CARD } {
+                .${ LOGO_CLASS.CARD } {
                     display: inline-block;
                 }
 
-                .${ CLASS.BUTTON } .${ CLASS.CARD } {
+                .${ CLASS.BUTTON } .${ LOGO_CLASS.CARD } {
                     width: ${ (90 / cardNumber).toFixed(2) }%;
                     max-width: ${ perc(buttonHeight, 160) }px;
                     margin-top: 0;
@@ -77,7 +78,7 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                     margin-right: ${ (5 / cardNumber).toFixed(2) }%;
                 }
 
-                .${ CLASS.BUTTON } .${ CLASS.CARD } img {
+                .${ CLASS.BUTTON } .${ LOGO_CLASS.CARD } img {
                     width: 100%;
                 }
             }

@@ -101,7 +101,7 @@ export function getComponentScript() : () => void {
             return false;
         }
 
-        const images    = getElements('.{ CLASS.BUTTON } .{ CLASS.LOGO }');
+        const images    = getElements('.{ CLASS.BUTTON } .{ LOGO_CLASS.LOGO }');
         const text      = getElements('.{ CLASS.BUTTON } .{ CLASS.TEXT }');
         const tagline   = getElements('.{ CLASS.TAGLINE }');
         const optionals = getElements('.{ CLASS.BUTTON }-label-credit .{ CLASS.BUTTON }-logo-paypal');

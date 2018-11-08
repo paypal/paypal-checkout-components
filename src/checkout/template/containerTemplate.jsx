@@ -5,9 +5,8 @@
 import { isIos } from 'belter/src';
 import type { RenderOptionsType } from 'zoid/src/component/parent';
 import { node, dom } from 'jsx-pragmatic/src';
+import { LOGO_COLOR, PPLogo, PayPalLogo } from 'paypal-sdk-logos/src';
 
-import { LOGO_COLOR } from '../../constants';
-import { PPLogo, PayPalLogo } from '../../funding/paypal/logo';
 import type { CheckoutPropsType } from '../props';
 
 import { containerContent } from './containerContent';

@@ -1,6 +1,7 @@
 /* @flow */
 
 import { ENV } from 'paypal-sdk-constants/src';
+import { LOGO_CLASS } from 'paypal-sdk-logos/src';
 
 import { BUTTON_COLOR, CLASS } from '../../../constants';
 
@@ -22,7 +23,7 @@ export const buttonStyle = `
         box-sizing: border-box;
     }
 
-    .${ CLASS.BUTTON }:not(.${ CLASS.CARD }) {
+    .${ CLASS.BUTTON }:not(.${ LOGO_CLASS.CARD }) {
         border: 1px solid transparent;
         border-radius: 0 3px 3px 0;
         position: relative;
@@ -63,11 +64,11 @@ export const buttonStyle = `
         box-shadow: none;
     }
 
-    .${ CLASS.CARD }, .${ CLASS.CARD } * {
+    .${ LOGO_CLASS.CARD }, .${ LOGO_CLASS.CARD } * {
         cursor: pointer;
     }
 
-    .${ CLASS.CARD }:hover {
+    .${ LOGO_CLASS.CARD }:hover {
         filter: brightness(1.2);
     }
 
@@ -79,7 +80,7 @@ export const buttonStyle = `
         box-shadow: none;
     }
 
-    .${ CLASS.LOGO } {
+    .${ LOGO_CLASS.LOGO } {
         padding: 0;
         display: inline-block;
         background: none;
@@ -92,7 +93,7 @@ export const buttonStyle = `
         white-space: pre-wrap;
     }
 
-    .${ CLASS.BUTTON } .${ CLASS.LOGO },
+    .${ CLASS.BUTTON } .${ LOGO_CLASS.LOGO },
     .${ CLASS.BUTTON } .${ CLASS.TEXT } {
         vertical-align: top;
         position: relative;

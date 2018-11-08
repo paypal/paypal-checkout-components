@@ -28,13 +28,6 @@ export const BUTTON_COLOR = {
     TRANSPARENT: ('transparent' : 'transparent')
 };
 
-export const LOGO_COLOR = {
-    BLUE:  ('blue' : 'blue'),
-    BLACK: ('black' : 'black'),
-    WHITE: ('white' : 'white'),
-    ANY:   ('any' : 'any')
-};
-
 export const BUTTON_SIZE = {
     TINY:       ('tiny' : 'tiny'),
     SMALL:      ('small' : 'small'),
@@ -62,22 +55,4 @@ export const BUTTON_LAYOUT = {
 export const BUTTON_NUMBER = {
     SINGLE:   ('single' : 'single'),
     MULTIPLE: ('multiple' : 'multiple')
-};
-
-export const BUTTON_LOGO = {
-    PP:         ('pp' : 'pp'),
-    PAYPAL:     ('paypal' : 'paypal'),
-    VENMO:      ('venmo' : 'venmo'),
-    CREDIT:     ('credit' : 'credit'),
-    IDEAL:      ('ideal' : 'ideal'),
-    ELV:        ('elv' : 'elv'),
-    SEPA:       ('sepa' : 'sepa'),
-    BANCONTACT: ('bancontact' : 'bancontact'),
-    GIROPAY:    ('giropay' : 'giropay'),
-    SOFORT:     ('sofort' : 'sofort'),
-    EPS:        ('eps' : 'eps'),
-    MYBANK:     ('mybank' : 'mybank'),
-    P24:        ('p24' : 'p24'),
-    ZIMPLER:    ('zimpler' : 'zimpler'),
-    WECHATPAY:  ('wechatpay' : 'wechatpay')
 };
