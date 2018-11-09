@@ -416,12 +416,7 @@ export const Buttons : Component<ButtonProps> = create({
         intent: {
             type:       'string',
             queryParam: true,
-            value:      getIntent,
-            queryValue: (intent) => {
-                return (intent === INTENT.CAPTURE)
-                    ? 'sale'
-                    : intent;
-            }
+            value:      getIntent
         },
 
         commit: {
