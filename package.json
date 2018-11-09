@@ -43,7 +43,7 @@
     "belter": "^1.0.19",
     "grabthar": "^2.0.1",
     "jsx-pragmatic": "^1.0.7",
-    "paypal-sdk-constants": "^1.0.6",
+    "paypal-sdk-constants": "^1.0.11",
     "zalgo-promise": "^1.0.28"
   },
   "devDependencies": {

@@ -17,11 +17,95 @@ afterAll(cancelWatchers);
 
 let buttonMiddleware = getButtonMiddleware();
 
+const FUNDING_ELIGIBILITY = {
+    bancontact: {
+        eligible: false,
+        branded:  true
+    },
+    card: {
+        eligible: true,
+        branded:  true,
+
+        vendors: {
+            visa: {
+                eligible: true
+            },
+            mastercard: {
+                eligible: true
+            },
+            amex: {
+                eligible: true
+            },
+            discover: {
+                eligible: true
+            },
+            hiper: {
+                eligible: false
+            },
+            elo: {
+                eligible: false
+            },
+            jcb: {
+                eligible: false
+            }
+        }
+    },
+    credit: {
+        eligible: false,
+        branded:  true
+    },
+    sepa: {
+        eligible: false,
+        branded:  true
+    },
+    eps: {
+        eligible: false,
+        branded:  true
+    },
+    giropay: {
+        eligible: false,
+        branded:  true
+    },
+    ideal: {
+        eligible: false,
+        branded:  true
+    },
+    mybank: {
+        eligible: false,
+        branded:  true
+    },
+    p24: {
+        eligible: false,
+        branded:  true
+    },
+    paypal: {
+        eligible: true,
+        branded:  true
+    },
+    sofort: {
+        eligible: false,
+        branded:  true
+    },
+    venmo: {
+        eligible: false,
+        branded:  true
+    },
+    wechatpay: {
+        eligible: false,
+        branded:  true
+    },
+    zimpler: {
+        eligible: false,
+        branded:  true
+    }
+};
+
 test('should do a basic button render and succeed', async () => {
 
     let req = mockReq({
         query: {
-            clientID: 'xyz'
+            clientID:           'xyz',
+            fundingEligibility: Buffer.from(JSON.stringify(FUNDING_ELIGIBILITY)).toString('base64')
         }
     });
     let res = mockRes();
@@ -56,13 +140,19 @@ test('should do a basic button render and succeed', async () => {
     }
 });
 
-test('should render ideal button when locale is nl_NL', async () => {
+test('should render ideal button when eligible and locale is nl_NL', async () => {
 
     let req = mockReq({
         query: {
-            'clientID':       'xyz',
-            'locale.country': 'NL',
-            'locale.lang':    'nl'
+            'clientID':           'xyz',
+            'locale.country':     'NL',
+            'locale.lang':        'nl',
+            'fundingEligibility': Buffer.from(JSON.stringify({
+                ...FUNDING_ELIGIBILITY,
+                ideal: {
+                    eligible: true
+                }
+            })).toString('base64')
         }
     });
     let res = mockRes();

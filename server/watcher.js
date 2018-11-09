@@ -30,7 +30,7 @@ let fileRead = memoize(async (path : string) : Promise<string> => {
     return await readFile(path);
 });
 
-export async function getSmartButtonRenderScript() : Object {
+export async function getSmartButtonRenderScript() : Promise<Object> {
     return await getPayPalCheckoutComponentWatcher().import(BUTTON_RENDER_JS);
 }
 
