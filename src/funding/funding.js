@@ -10,7 +10,7 @@ import { FUNDING_PRIORITY, FUNDING_CONFIG } from './config';
 export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, platform, remembered, fundingEligibility } :
     { layout : $Values<typeof BUTTON_LAYOUT>, platform : $Values<typeof PLATFORM>, remembered : $ReadOnlyArray<$Values<typeof FUNDING>>, fundingEligibility : FundingEligibilityType }) : boolean {
 
-    if (!fundingEligibility[source].eligible) {
+    if (!fundingEligibility[source] || !fundingEligibility[source].eligible) {
         return false;
     }
 

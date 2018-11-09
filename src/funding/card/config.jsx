@@ -49,7 +49,7 @@ export const CARD_CONFIG : FundingSourceConfig = {
                         return null;
                     }
 
-                    if (!cardEligibility.vendors[name].eligible) {
+                    if (!cardEligibility.vendors[name] || !cardEligibility.vendors[name].eligible) {
                         return null;
                     }
 
