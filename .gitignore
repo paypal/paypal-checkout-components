@@ -27,3 +27,4 @@ server.key.org
 slipper-cache.json
 flow-typed
 server-coverage
+package-lock.json
