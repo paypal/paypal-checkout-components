@@ -17,13 +17,13 @@ export function getButtonMiddleware({ logger = console } : { logger? : LoggerTyp
         try {
             logger.info(EVENT.RENDER);
 
-            let [ buttonScript, { Buttons } ] = await Promise.all([
+            const [ buttonScript, { Buttons } ] = await Promise.all([
                 getSmartButtonClientScript(),
                 getSmartButtonRenderScript()
             ]);
 
-            let params = undotify(req.query);
-            let { clientID, country, lang, fundingEligibility, nonce } = getParams(params, req, res);
+            const params = undotify(req.query);
+            const { clientID, country, lang, fundingEligibility, nonce } = getParams(params, req, res);
 
             if (!clientID) {
                 return clientErrorResponse(res, 'Please provide a clientID query parameter');
@@ -33,9 +33,9 @@ export function getButtonMiddleware({ logger = console } : { logger? : LoggerTyp
                 return clientErrorResponse(res, 'Please provide a fundingEligibility query parameter');
             }
 
-            let buttonHTML = Buttons({ ...params, nonce, fundingEligibility }).render(html());
+            const buttonHTML = Buttons({ ...params, nonce, fundingEligibility }).render(html());
 
-            let pageHTML = `
+            const pageHTML = `
                 <body>
                     ${ buttonHTML }
                     <script src="/sdk/js?client-id=${ htmlEncode(clientID) }&${ SDK_QUERY_KEYS.LOCALE_COUNTRY }=${ htmlEncode(country) }&${ SDK_QUERY_KEYS.LOCALE_LANG }=${ htmlEncode(lang) }&${ SDK_QUERY_KEYS.COMPONENTS }=buttons,checkout"></script>

@@ -12,7 +12,7 @@ describe('error cases', () => {
         let onApprove;
         let onApproveCalled = false;
         let errorCalled = false;
-        let error = new Error(`Something went wrong`);
+        const error = new Error(`Something went wrong`);
 
         window.xchild.error = (err) => {
             if (err !== error) {
@@ -53,7 +53,7 @@ describe('error cases', () => {
         let onCancel;
         let onCancelCalled = false;
         let errorCalled = false;
-        let error = new Error(`Something went wrong`);
+        const error = new Error(`Something went wrong`);
 
         window.xchild.error = (err) => {
             if (err !== error) {

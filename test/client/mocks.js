@@ -2,8 +2,7 @@
 
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { ZalgoPromise } from 'zalgo-promise';
-
-import { FUNDING } from '../../constants';
+import { FUNDING } from 'paypal-sdk-constants';
 
 const PAYPAL_BUTTON_CLASS = 'paypal-button';
 
@@ -35,11 +34,11 @@ export function setupMocks() {
                 popup:    true,
                 lightbox: false
             },
-            renderTo: async () => {
-                // pass
+            renderTo: () => {
+                return ZalgoPromise.resolve();
             },
-            onClick: async () => {
-                // pass
+            onClick: () => {
+                return ZalgoPromise.resolve();
             }
         }
     };
@@ -51,14 +50,14 @@ export function setupMocks() {
         style: {
 
         },
-        onClick: async () => {
-            // pass
+        onClick: () => {
+            return ZalgoPromise.resolve();
         },
-        onApprove: async () => {
-            // pass
+        onApprove: () => {
+            return ZalgoPromise.resolve();
         },
-        onCancel: async () => {
-            // pass
+        onCancel: () => {
+            return ZalgoPromise.resolve();
         },
         funding: {
             allowed:    [],
@@ -95,7 +94,7 @@ export function getMockCheckoutInstance() : { closeComponent : () => ZalgoPromis
     };
 }
 
-export function createButtonHTML(sources : Array<string> = [ FUNDING.PAYPAL ]) : Array<string> {
+export function createButtonHTML(sources : $ReadOnlyArray<string> = [ FUNDING.PAYPAL ]) : $ReadOnlyArray<string> {
     return sources.map(source => {
         return `
             <div class="${ PAYPAL_BUTTON_CLASS }" data-funding-source="${ source }"></div>
@@ -103,11 +102,11 @@ export function createButtonHTML(sources : Array<string> = [ FUNDING.PAYPAL ]) :
     });
 }
 
-type MockEndpoint = {
+type MockEndpoint = {|
     listen : () => void,
     expectCalls : () => void,
     done : () => void
-};
+|};
 
 export function getAuthApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({

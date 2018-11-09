@@ -1,8 +1,8 @@
 /* @flow */
 
-type MockReq = {
+type MockReq = {|
     query : { [string] : string }
-};
+|};
 
 export function mockReq(opts : Object = {}) : MockReq {
     return {
@@ -11,7 +11,7 @@ export function mockReq(opts : Object = {}) : MockReq {
     };
 }
 
-type MockRes = {
+type MockRes = {|
     _status : number,
     _headers : { [string] : string },
     _body? : string,
@@ -24,7 +24,7 @@ type MockRes = {
     removeHeader : (string) => void,
     getHeader : (string) => ?string,
     getBody : () => ?string
-};
+|};
 
 export function mockRes(opts : Object = {}) : MockRes {
     return {

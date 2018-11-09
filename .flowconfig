@@ -3,6 +3,8 @@
 .*/node_modules/flow-runtime
 .*/node_modules/npm
 .*/node_modules/eslint-plugin-compat
+.*/node_modules/jsonlint
+.*/dist/module
 [include]
 [libs]
 flow-typed

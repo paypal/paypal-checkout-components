@@ -4,7 +4,7 @@ import express from 'express';
 
 import { getButtonMiddleware } from './button';
 
-let app = express();
+const app = express();
 
 app.get('/webapps/hermes/smart-button', getButtonMiddleware());
 

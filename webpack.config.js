@@ -1,18 +1,18 @@
 /* @flow */
-/* eslint import/no-nodejs-modules: off */
+/* eslint import/no-nodejs-modules: off, import/no-default-export: off */
 
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 
 const FILE_NAME = 'smart-payment-buttons';
 const MODULE_NAME = 'spb';
 
-export let WEBPACK_CONFIG = getWebpackConfig({
+export const WEBPACK_CONFIG = getWebpackConfig({
     filename:      `${ FILE_NAME }.js`,
     modulename:    MODULE_NAME,
     libraryTarget: 'window'
 });
 
-export let WEBPACK_CONFIG_MIN = getWebpackConfig({
+export const WEBPACK_CONFIG_MIN = getWebpackConfig({
     filename:      `${ FILE_NAME }.min.js`,
     modulename:    MODULE_NAME,
     minify:        true,
@@ -22,9 +22,9 @@ export let WEBPACK_CONFIG_MIN = getWebpackConfig({
     }
 });
 
-export let WEBPACK_CONFIG_TEST = getWebpackConfig({
-    filename:   `${ FILE_NAME }.js`,
+export const WEBPACK_CONFIG_TEST = getWebpackConfig({
     modulename: MODULE_NAME,
+    test:       true,
     options:    {
         devtool: 'inline-source-map'
     },

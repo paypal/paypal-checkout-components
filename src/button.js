@@ -11,8 +11,8 @@ export function setupButton() {
     }
 
     querySelectorAll('.paypal-button').forEach(button => {
-        let fundingSource = button.getAttribute('data-funding-source');
-        let card = button.getAttribute('data-card');
+        const fundingSource = button.getAttribute('data-funding-source');
+        const card = button.getAttribute('data-card');
 
         onClick(button, event => {
             event.preventDefault();

@@ -139,8 +139,8 @@ describe('happy cases', () => {
 
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with the correct data', async () => {
     
-        let orderID = 'XXXXXXXXXX';
-        let payerID = 'YYYYYYYYYY';
+        const orderID = 'XXXXXXXXXX';
+        const payerID = 'YYYYYYYYYY';
 
         let onApprove;
         let onApproveCalled = false;
@@ -177,8 +177,8 @@ describe('happy cases', () => {
 
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.restart', async () => {
     
-        let orderID = 'XXXXXXX';
-        let payerID = 'YYYYYYYYYY';
+        const orderID = 'XXXXXXX';
+        const payerID = 'YYYYYYYYYY';
 
         let onApprove;
         let onApproveCalled = false;
@@ -213,15 +213,15 @@ describe('happy cases', () => {
 
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.get', async () => {
 
-        let orderID = 'XXXXXXXXXX';
-        let payerID = 'YYYYYYYYYY';
+        const orderID = 'XXXXXXXXXX';
+        const payerID = 'YYYYYYYYYY';
 
         let onApprove;
         let onApproveCalled = false;
 
         window.xprops.onApprove = async (data, actions) => {
 
-            let getOrderMock = getOrderApiMock();
+            const getOrderMock = getOrderApiMock();
             getOrderMock.expectCalls();
             await actions.order.get();
             getOrderMock.done();
@@ -248,15 +248,15 @@ describe('happy cases', () => {
 
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture', async () => {
 
-        let orderID = 'XXXXXXXXXX';
-        let payerID = 'YYYYYYYYYY';
+        const orderID = 'XXXXXXXXXX';
+        const payerID = 'YYYYYYYYYY';
 
         let onApprove;
         let onApproveCalled = false;
 
         window.xprops.onApprove = async (data, actions) => {
 
-            let captureOrderMock = captureOrderApiMock();
+            const captureOrderMock = captureOrderApiMock();
             captureOrderMock.expectCalls();
             await actions.order.capture();
             captureOrderMock.done();
@@ -283,15 +283,15 @@ describe('happy cases', () => {
 
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.authorize', async () => {
 
-        let orderID = 'XXXXXXXXXX';
-        let payerID = 'YYYYYYYYYY';
+        const orderID = 'XXXXXXXXXX';
+        const payerID = 'YYYYYYYYYY';
 
         let onApprove;
         let onApproveCalled = false;
 
         window.xprops.onApprove = async (data, actions) => {
 
-            let authorizeOrderMock = authorizeOrderApiMock();
+            const authorizeOrderMock = authorizeOrderApiMock();
             authorizeOrderMock.expectCalls();
             await actions.order.authorize();
             authorizeOrderMock.done();
@@ -318,8 +318,8 @@ describe('happy cases', () => {
 
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture call and automatic restart on CC_PROCESSOR_DECLINED', async () => {
 
-        let orderID = 'XXXXXXXXXX';
-        let payerID = 'YYYYYYYYYY';
+        const orderID = 'XXXXXXXXXX';
+        const payerID = 'YYYYYYYYYY';
 
         let onApprove;
         let onApproveCalled = false;
@@ -332,7 +332,7 @@ describe('happy cases', () => {
                 didRestart = true;
                 onApprove = null;
 
-                let captureOrderMock = captureOrderApiMock({
+                const captureOrderMock = captureOrderApiMock({
                     data: {
                         ack:         'contingency',
                         contingency: 'CC_PROCESSOR_DECLINED'
@@ -364,8 +364,8 @@ describe('happy cases', () => {
 
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture call and automatic restart on INSTRUMENT_DECLINED', async () => {
 
-        let orderID = 'XXXXXXXXXX';
-        let payerID = 'YYYYYYYYYY';
+        const orderID = 'XXXXXXXXXX';
+        const payerID = 'YYYYYYYYYY';
 
         let onApprove;
         let onApproveCalled = false;
@@ -378,7 +378,7 @@ describe('happy cases', () => {
                 didRestart = true;
                 onApprove = null;
 
-                let captureOrderMock = captureOrderApiMock({
+                const captureOrderMock = captureOrderApiMock({
                     data: {
                         ack:         'contingency',
                         contingency: 'INSTRUMENT_DECLINED'
@@ -411,8 +411,8 @@ describe('happy cases', () => {
 
 it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.authorize call and automatic restart on CC_PROCESSOR_DECLINED', async () => {
 
-    let orderID = 'XXXXXXXXXX';
-    let payerID = 'YYYYYYYYYY';
+    const orderID = 'XXXXXXXXXX';
+    const payerID = 'YYYYYYYYYY';
 
     let onApprove;
     let onApproveCalled = false;
@@ -425,7 +425,7 @@ it('should render a button, click the button, and render checkout, then pass onA
             didRestart = true;
             onApprove = null;
 
-            let authorizeOrderMock = authorizeOrderApiMock({
+            const authorizeOrderMock = authorizeOrderApiMock({
                 data: {
                     ack:         'contingency',
                     contingency: 'CC_PROCESSOR_DECLINED'

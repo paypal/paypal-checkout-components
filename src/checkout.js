@@ -5,26 +5,26 @@ import { memoize, noop } from 'belter';
 
 import { getOrder, captureOrder, authorizeOrder, persistAccessToken, type OrderResponse } from './api';
 
-type ActionsType = {
+type ActionsType = {|
     order : {
         capture : () => ZalgoPromise<OrderResponse>,
         authorize : () => ZalgoPromise<OrderResponse>,
         get : () => ZalgoPromise<OrderResponse>
     },
     restart : () => ZalgoPromise<void>
-};
+|};
 
 function enableLightbox() {
     window.paypal.Checkout.contexts.iframe = true;
 }
 
-type CheckoutComponent = {
+type CheckoutComponent = {|
     close : () => ZalgoPromise<void>
-};
+|};
 
 function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : ActionsType {
 
-    let restartFlow = memoize(() =>
+    const restartFlow = memoize(() =>
         checkout.close().then(() => {
             enableLightbox();
             // eslint-disable-next-line no-use-before-define
@@ -32,11 +32,9 @@ function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : A
                 payment: () => ZalgoPromise.resolve(orderID)
             });
         }).then(() =>
-            new ZalgoPromise(noop)
-        )
-    );
+            new ZalgoPromise(noop)));
 
-    let handleCaptureError = (err) => {
+    const handleCaptureError = (err) => {
         if (err && err.message === 'CC_PROCESSOR_DECLINED') {
             return restartFlow();
         }
@@ -48,21 +46,18 @@ function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : A
         throw new Error('Order could not be captured');
     };
 
-    let orderGet = memoize(() =>
-        getOrder(orderID)
-    );
+    const orderGet = memoize(() =>
+        getOrder(orderID));
 
-    let orderCapture = memoize(() =>
+    const orderCapture = memoize(() =>
         captureOrder(orderID)
             .catch(handleCaptureError)
-            .finally(orderGet.reset)
-    );
+            .finally(orderGet.reset));
 
-    let orderAuthorize = memoize(() =>
+    const orderAuthorize = memoize(() =>
         authorizeOrder(orderID)
             .catch(handleCaptureError)
-            .finally(orderGet.reset)
-    );
+            .finally(orderGet.reset));
 
     return {
         order: {
@@ -76,7 +71,7 @@ function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : A
 
 export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
 
-    let createOrder = memoize(window.xprops.createOrder);
+    const createOrder = memoize(window.xprops.createOrder);
 
     return window.paypal.Checkout.renderTo(window.top, {
 
@@ -88,7 +83,7 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
         onError: window.xprops.onError,
 
         onAuthorize({ orderID, payerID }) : ZalgoPromise<void> {
-            let actions = buildExecuteActions(this, orderID);
+            const actions = buildExecuteActions(this, orderID);
 
             return window.xprops.onApprove({ orderID, payerID }, actions).catch(err => {
                 return window.xchild.error(err);

@@ -6,18 +6,18 @@ import { memoize, request, noop } from 'belter/src';
 import { API_URI } from './config';
 import { ACCESS_TOKEN_HEADER, HEADERS } from './constants';
 
-let defaultHeaders = {};
+const defaultHeaders = {};
 let csrfToken = '';
 
-type APIRequest = {
+type APIRequest = {|
     url : string,
     method? : string,
     json? : Object
-};
+|};
 
 function callAPI({ url, method = 'get', json } : APIRequest) : ZalgoPromise<Object> {
 
-    let reqHeaders = {
+    const reqHeaders = {
         ...defaultHeaders,
         [ HEADERS.CSRF_TOKEN ]: csrfToken
     };
@@ -42,9 +42,9 @@ function callAPI({ url, method = 'get', json } : APIRequest) : ZalgoPromise<Obje
         });
 }
 
-export type AuthResponse = {
+export type AuthResponse = {|
 
-};
+|};
 
 export function getAuth() : ZalgoPromise<AuthResponse> {
     return callAPI({
@@ -52,9 +52,9 @@ export function getAuth() : ZalgoPromise<AuthResponse> {
     });
 }
 
-export type OrderResponse = {
+export type OrderResponse = {|
 
-};
+|};
 
 export function getOrder(orderID : string) : ZalgoPromise<OrderResponse> {
     return callAPI({
@@ -76,7 +76,7 @@ export function authorizeOrder(orderID : string) : ZalgoPromise<OrderResponse> {
     });
 }
 
-export let persistAccessToken = memoize((accessToken) : ZalgoPromise<void> => {
+export const persistAccessToken = memoize((accessToken) : ZalgoPromise<void> => {
     defaultHeaders[ACCESS_TOKEN_HEADER] = accessToken;
     return getAuth().then(noop);
 });

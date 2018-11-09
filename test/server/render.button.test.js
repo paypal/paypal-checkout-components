@@ -1,13 +1,13 @@
 /* @flow */
 
 import { regexMap } from 'belter';
+import { FUNDING } from 'paypal-sdk-constants';
 
-import { FUNDING } from '../../constants';
 import { getButtonMiddleware, cancelWatchers } from '../../server';
 
 import { mockReq, mockRes } from './mock';
 
-function getRenderedFundingSources(template) : Array<string> {
+function getRenderedFundingSources(template) : $ReadOnlyArray<string> {
     return regexMap(template, /data-funding-source="([^"]+)"/g, (result, group1) => group1);
 }
 
@@ -15,7 +15,7 @@ jest.setTimeout(300000);
 
 afterAll(cancelWatchers);
 
-let buttonMiddleware = getButtonMiddleware();
+const buttonMiddleware = getButtonMiddleware();
 
 const FUNDING_ELIGIBILITY = {
     bancontact: {
@@ -102,20 +102,20 @@ const FUNDING_ELIGIBILITY = {
 
 test('should do a basic button render and succeed', async () => {
 
-    let req = mockReq({
+    const req = mockReq({
         query: {
             clientID:           'xyz',
             fundingEligibility: Buffer.from(JSON.stringify(FUNDING_ELIGIBILITY)).toString('base64')
         }
     });
-    let res = mockRes();
+    const res = mockRes();
 
     // $FlowFixMe
     await buttonMiddleware(req, res);
 
-    let status = res.getStatus();
-    let contentType = res.getHeader('content-type');
-    let html = res.getBody();
+    const status = res.getStatus();
+    const contentType = res.getHeader('content-type');
+    const html = res.getBody();
 
     if (status !== 200) {
         throw new Error(`Expected response status to be 200, got ${ status }`);
@@ -133,7 +133,7 @@ test('should do a basic button render and succeed', async () => {
         throw new Error(`Expected button template to be rendered`);
     }
 
-    let fundingSources = getRenderedFundingSources(html);
+    const fundingSources = getRenderedFundingSources(html);
 
     if (fundingSources.indexOf(FUNDING.PAYPAL) === -1) {
         throw new Error(`Expected paypal button to be rendered, got: ${ fundingSources.join(', ') }`);
@@ -142,7 +142,7 @@ test('should do a basic button render and succeed', async () => {
 
 test('should render ideal button when eligible and locale is nl_NL', async () => {
 
-    let req = mockReq({
+    const req = mockReq({
         query: {
             'clientID':           'xyz',
             'locale.country':     'NL',
@@ -155,14 +155,14 @@ test('should render ideal button when eligible and locale is nl_NL', async () =>
             })).toString('base64')
         }
     });
-    let res = mockRes();
+    const res = mockRes();
 
     // $FlowFixMe
     await buttonMiddleware(req, res);
 
-    let html = res.getBody();
+    const html = res.getBody();
 
-    let fundingSources = getRenderedFundingSources(html);
+    const fundingSources = getRenderedFundingSources(html);
     
     if (fundingSources.indexOf(FUNDING.IDEAL) === -1) {
         throw new Error(`Expected ideal button to be rendered, got: ${ fundingSources.join(', ') }`);
@@ -171,13 +171,13 @@ test('should render ideal button when eligible and locale is nl_NL', async () =>
 
 test('should give a 400 error with no clientID passed', async () => {
 
-    let req = mockReq();
-    let res = mockRes();
+    const req = mockReq();
+    const res = mockRes();
 
     // $FlowFixMe
     await buttonMiddleware(req, res);
 
-    let status = res.getStatus();
+    const status = res.getStatus();
 
     if (status !== 400) {
         throw new Error(`Expected status code to be 400, gor ${ status }`);

@@ -1,6 +1,7 @@
 /* @flow */
 
-import { FUNDING } from '../../constants';
+import { FUNDING } from 'paypal-sdk-constants';
+
 import { setupButton } from '../../src';
 
 import { createButtonHTML } from './mocks';

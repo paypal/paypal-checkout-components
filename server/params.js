@@ -9,7 +9,7 @@ type FundingEligibility = {|
 |};
 
 function getFundingEligibility(req : ExpressRequest) : ?FundingEligibility {
-    let encodedFundingEligibility = req.query.fundingEligibility;
+    const encodedFundingEligibility = req.query.fundingEligibility;
 
     if (!encodedFundingEligibility || typeof encodedFundingEligibility !== 'string') {
         return;
@@ -38,28 +38,28 @@ type ParamsType = {|
     }
 |};
 
-type RequestParams = {
+type RequestParams = {|
     clientID : ?string,
     country : $Values<typeof COUNTRY>,
     lang : $Values<typeof LANG>,
     fundingEligibility : ?FundingEligibility,
     nonce : string
-};
+|};
 
 export function getParams(params : ParamsType, req : ExpressRequest, res : ExpressResponse) : RequestParams {
-    let {
+    const {
         clientID,
         locale = {}
     } = params;
 
-    let {
+    const {
         country = DEFAULT_COUNTRY,
         lang = COUNTRY_LANGS[country][0]
     } = locale;
 
-    let fundingEligibility = getFundingEligibility(req);
+    const fundingEligibility = getFundingEligibility(req);
 
-    let nonce = getNonce(res);
+    const nonce = getNonce(res);
 
     return {
         clientID,

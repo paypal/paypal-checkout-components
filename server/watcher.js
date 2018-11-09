@@ -12,21 +12,21 @@ const BUTTON_CLIENT_MODULE = require('../package.json').name;
 const BUTTON_RENDER_JS = 'dist/button.js';
 const BUTTON_CLIENT_JS = 'dist/smart-payment-buttons.min.js';
 
-let getPayPalCheckoutComponentWatcher = memoize(() => {
+const getPayPalCheckoutComponentWatcher = memoize(() => {
     return poll({
         name: BUTTON_RENDER_MODULE,
         flat: true
     });
 });
 
-let getSmartButtonWatcher = memoize(() => {
+const getSmartButtonWatcher = memoize(() => {
     return poll({
         name:       BUTTON_CLIENT_MODULE,
         flat: true
     });
 });
 
-let fileRead = memoize(async (path : string) : Promise<string> => {
+const fileRead = memoize(async (path : string) : Promise<string> => {
     return await readFile(path);
 });
 
@@ -35,7 +35,7 @@ export async function getSmartButtonRenderScript() : Promise<Object> {
 }
 
 export async function getSmartButtonClientScript() : Promise<string> {
-    let { modulePath } = await getSmartButtonWatcher().get();
+    const { modulePath } = await getSmartButtonWatcher().get();
     return await fileRead(join(modulePath, BUTTON_CLIENT_JS));
 }
 
