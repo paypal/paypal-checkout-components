@@ -9,6 +9,7 @@ const MODULE_NAME = 'spb';
 export const WEBPACK_CONFIG = getWebpackConfig({
     filename:      `${ FILE_NAME }.js`,
     modulename:    MODULE_NAME,
+    minify:        false,
     libraryTarget: 'window'
 });
 

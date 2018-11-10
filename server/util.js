@@ -1,5 +1,7 @@
 /* @flow */
 
+import { ENV } from 'paypal-sdk-constants';
+
 import { HTTP_HEADER, HTTP_CONTENT_TYPE, HTTP_STATUS_CODE } from './constants';
 import type { ExpressResponse } from './types';
 
@@ -23,4 +25,8 @@ export function htmlResponse(res : ExpressResponse, html : string) {
 
 export function allowFrame(res : ExpressResponse) {
     res.removeHeader(HTTP_HEADER.X_FRAME_OPTIONS);
+}
+
+export function isProduction() : boolean {
+    return process.env.NODE_ENV === ENV.PRODUCTION;
 }
