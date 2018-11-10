@@ -5,14 +5,20 @@ import { COUNTRY, LANG, DEFAULT_COUNTRY, COUNTRY_LANGS } from 'paypal-sdk-consta
 import type { ExpressRequest, ExpressResponse } from './types';
 
 type FundingEligibility = {|
-    
+    paypal : {
+        eligible : boolean
+    }
 |};
 
 function getFundingEligibility(req : ExpressRequest) : ?FundingEligibility {
     const encodedFundingEligibility = req.query.fundingEligibility;
 
     if (!encodedFundingEligibility || typeof encodedFundingEligibility !== 'string') {
-        return;
+        return {
+            paypal: {
+                eligible: true
+            }
+        };
     }
 
     return JSON.parse(
