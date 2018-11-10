@@ -166,9 +166,7 @@ function Script({ nonce }) : ElementNode {
     });
 
     return (
-        <script nonce={ nonce }>
-            { `(${ script })();` }
-        </script>
+        <script nonce={ nonce } innerHTML={ `(${ script })()` } />
     );
 }
 
