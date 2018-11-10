@@ -42,6 +42,22 @@ function callAPI({ url, method = 'get', json } : APIRequest) : ZalgoPromise<Obje
         });
 }
 
+export function callGraphQL<T>(query : string) : ZalgoPromise<T> {
+    return request({
+        url:     API_URI.GRAPHQL,
+        method:  'POST',
+        json:    {
+            query: `
+                query {
+                    ${ query }
+                }
+            `
+        }
+    }).then(({ body }) => {
+        return body;
+    });
+}
+
 export type AuthResponse = {|
 
 |};

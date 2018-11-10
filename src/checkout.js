@@ -1,9 +1,10 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { memoize, noop } from 'belter';
+import { memoize, noop } from 'belter/src';
+import { INTENT } from 'paypal-sdk-constants/src';
 
-import { getOrder, captureOrder, authorizeOrder, persistAccessToken, type OrderResponse } from './api';
+import { getOrder, captureOrder, authorizeOrder, persistAccessToken, callGraphQL, type OrderResponse } from './api';
 
 type ActionsType = {|
     order : {
@@ -69,41 +70,84 @@ function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : A
     };
 }
 
+function validateOrder(orderID : string) : ZalgoPromise<void> {
+    return callGraphQL(`
+        checkout {
+            checkoutSession(token : "${ orderID }") {
+                cart {
+                    intent
+                    amounts {
+                        total {
+                            currencyCode
+                        }
+                    }
+                }
+            }
+        }
+    `).then(res => {
+        let intent = res.data.checkout.checkoutSession.cart.intent.toLowerCase();
+        const currency = res.data.checkout.checkoutSession.cart.amounts.total.currencyCode;
+
+        const expectedIntent = window.xprops.intent;
+        const expectedCurrency = window.xprops.currency;
+
+        if (intent === 'sale') {
+            intent = INTENT.CAPTURE;
+        }
+
+        if (intent !== expectedIntent) {
+            throw new Error(`Expected intent from order api call to be ${ expectedIntent }, got ${ intent }`);
+        }
+
+        if (currency !== expectedCurrency) {
+            throw new Error(`Expected currency from order api call to be ${ expectedCurrency }, got ${ currency }`);
+        }
+    });
+}
+
 export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
 
     const createOrder = memoize(window.xprops.createOrder);
 
-    return window.paypal.Checkout.renderTo(window.top, {
+    return ZalgoPromise.all([
 
-        payment: createOrder,
+        createOrder().then(validateOrder).catch(err => {
+            window.xchild.error(err);
+            throw err;
+        }),
 
-        locale: window.xprops.locale,
-        commit: window.xprops.commit,
+        window.paypal.Checkout.renderTo(window.top, {
 
-        onError: window.xprops.onError,
+            payment: createOrder,
 
-        onAuthorize({ orderID, payerID }) : ZalgoPromise<void> {
-            const actions = buildExecuteActions(this, orderID);
+            locale: window.xprops.locale,
+            commit: window.xprops.commit,
 
-            return window.xprops.onApprove({ orderID, payerID }, actions).catch(err => {
-                return window.xchild.error(err);
-            });
-        },
+            onError: window.xprops.onError,
 
-        onCancel: () : ZalgoPromise<void> => {
-            return ZalgoPromise.try(() => {
-                return createOrder();
-            }).then(orderID => {
-                return window.xprops.onCancel({ orderID });
-            }).catch(err => {
-                return window.xchild.error(err);
-            });
-        },
+            onAuthorize({ orderID, payerID }) : ZalgoPromise<void> {
+                const actions = buildExecuteActions(this, orderID);
 
-        onAuth: ({ accessToken }) : ZalgoPromise<void> => {
-            return persistAccessToken(accessToken);
-        },
+                return window.xprops.onApprove({ orderID, payerID }, actions).catch(err => {
+                    return window.xchild.error(err);
+                });
+            },
 
-        ...props
-    });
+            onCancel: () : ZalgoPromise<void> => {
+                return ZalgoPromise.try(() => {
+                    return createOrder();
+                }).then(orderID => {
+                    return window.xprops.onCancel({ orderID });
+                }).catch(err => {
+                    return window.xchild.error(err);
+                });
+            },
+
+            onAuth: ({ accessToken }) : ZalgoPromise<void> => {
+                return persistAccessToken(accessToken);
+            },
+
+            ...props
+        })
+    ]);
 }
