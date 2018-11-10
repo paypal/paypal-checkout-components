@@ -5,9 +5,11 @@ import express from 'express';
 import { getButtonMiddleware } from './button';
 
 const app = express();
+const PORT = process.env.PORT || 8003;
+const URI = '/sdk/js/smart-buttons';
 
-app.get('/webapps/hermes/smart-button', getButtonMiddleware());
+app.get(URI, getButtonMiddleware());
 
-app.listen(8000, () => {
-    console.log('Smart Button server listening on http://localhost:8000/webapps/hermes/smart-button?clientID=alc_client1'); // eslint-disable-line no-console
+app.listen(PORT, () => {
+    console.log(`Smart Button server listening on http://localhost.paypal.com:${ PORT }${ URI }?clientID=alc_client1`); // eslint-disable-line no-console
 });
