@@ -287,6 +287,19 @@ export let config = {
 
         'ancestry.com': {
             disable_venmo: true
+        },
+
+        'boats.net': {
+            disable_venmo: true
+        },
+
+        'partzilla.com': {
+            disable_venmo: true
+        },
+
+
+        'firedog.com': {
+            disable_venmo: true
         }
     },
 
