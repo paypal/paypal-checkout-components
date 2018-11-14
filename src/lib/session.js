@@ -1,8 +1,7 @@
 /* @flow */
 
+import { isPayPalDomain } from 'paypal-braintree-web-client/src';
 import { getStorage, getQueryParam } from 'belter/src';
-
-import { isPayPalDomain } from './paypal';
 
 const storage = getStorage({ name: 'paypal', version: __PAYPAL_CHECKOUT__.__MINOR_VERSION__ });
 

@@ -1,6 +1,6 @@
 /* @flow */
 
-import { getLogger, getPayPalDomain, getIntent, getCurrency, getPartnerAttributionID } from 'paypal-braintree-web-client/src';
+import { getLogger, getPayPalDomain, getIntent, getCurrency, getPartnerAttributionID, isPayPalDomain } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { on, send } from 'post-robot/src';
 import { getAncestor, isSameDomain } from 'cross-domain-utils/src';
@@ -9,7 +9,6 @@ import { FPTI_KEY, SDK_QUERY_KEYS } from 'paypal-sdk-constants/src';
 
 import { getOrderAPIUrl, getAuthAPIUrl } from '../config';
 import { FPTI_STATE, FPTI_CONTEXT_TYPE, FPTI_TRANSITION } from '../constants';
-import { isPayPalDomain } from '../lib';
 
 type ProxyRest = {
     [string] : (...args : $ReadOnlyArray<mixed>) => ZalgoPromise<*>
