@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { getPayPalDomain, getLogger, getLocale, getEnv, getClientID, getCommit } from 'paypal-braintree-web-client/src';
+import { getPayPalDomain, getLogger, getLocale, getEnv, getClientID, getCommit, getSDKMeta } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONSTANTS, PopupOpenError } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
@@ -85,6 +85,12 @@ export const Checkout : Component<CheckoutPropsType> = create({
             type:       'string',
             queryParam: true,
             value:      getEnv
+        },
+
+        sdkMeta: {
+            type:       'string',
+            queryParam: true,
+            value:      getSDKMeta
         },
 
         meta: {

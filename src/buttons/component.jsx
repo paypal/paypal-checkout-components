@@ -2,7 +2,7 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
-import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getPayPalDomain, getCurrency } from 'paypal-braintree-web-client/src';
+import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getPayPalDomain, getCurrency, getSDKMeta } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
@@ -126,6 +126,12 @@ export const Buttons : Component<ButtonProps> = create({
             type:       'object',
             queryParam: true,
             value:      getLocale
+        },
+
+        sdkMeta: {
+            type:       'string',
+            queryParam: true,
+            value:      getSDKMeta
         },
 
         createOrder: {
