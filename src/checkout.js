@@ -12,7 +12,7 @@ type ActionsType = {|
         authorize : () => ZalgoPromise<OrderResponse>,
         get : () => ZalgoPromise<OrderResponse>
     },
-    restart : () => ZalgoPromise<void>
+    restart : () => ZalgoPromise<OrderResponse>
 |};
 
 function enableLightbox() {
@@ -25,17 +25,16 @@ type CheckoutComponent = {|
 
 function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : ActionsType {
 
-    const restartFlow = memoize(() =>
+    const restartFlow = memoize(() : ZalgoPromise<OrderResponse> =>
         checkout.close().then(() => {
             enableLightbox();
             // eslint-disable-next-line no-use-before-define
             return renderCheckout({
                 payment: () => ZalgoPromise.resolve(orderID)
             });
-        }).then(() =>
-            new ZalgoPromise(noop)));
+        }).then(() => new ZalgoPromise(noop)));
 
-    const handleCaptureError = (err) => {
+    const handleProcessorError = (err : mixed) : ZalgoPromise<OrderResponse> => {
         if (err && err.message === 'CC_PROCESSOR_DECLINED') {
             return restartFlow();
         }
@@ -52,12 +51,12 @@ function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : A
 
     const orderCapture = memoize(() =>
         captureOrder(orderID)
-            .catch(handleCaptureError)
+            .catch(handleProcessorError)
             .finally(orderGet.reset));
 
     const orderAuthorize = memoize(() =>
         authorizeOrder(orderID)
-            .catch(handleCaptureError)
+            .catch(handleProcessorError)
             .finally(orderGet.reset));
 
     return {
