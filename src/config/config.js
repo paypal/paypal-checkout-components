@@ -303,6 +303,10 @@ export let config = {
 
         'chick-fil-a.com': {
             disable_venmo: true
+        },
+
+        'roku.com': {
+            disable_venmo: true
         }
     },
 
