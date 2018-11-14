@@ -1,3 +1,13 @@
+## <small>4.0.234 (2018-11-14)</small>
+
+* chore(commitizen): Add commitizen packages for commit message convention (#943) ([42b2709](https://github.com/paypal/paypal-checkout/commit/42b2709)), closes [#943](https://github.com/paypal/paypal-checkout/issues/943)
+* chore(venmo-blacklist): Blacklisting chick-fil-a from venmo (#947) ([3bdad5f](https://github.com/paypal/paypal-checkout/commit/3bdad5f)), closes [#947](https://github.com/paypal/paypal-checkout/issues/947)
+* Add ancestry.com to venmo blacklist ([ae45ef9](https://github.com/paypal/paypal-checkout/commit/ae45ef9))
+* Add to venmo blacklist ([57e6060](https://github.com/paypal/paypal-checkout/commit/57e6060))
+* refactor(publishing): fixing postversion script to push both tags and release commit (#941) ([a528d3d](https://github.com/paypal/paypal-checkout/commit/a528d3d)), closes [#941](https://github.com/paypal/paypal-checkout/issues/941)
+
+
+
 ## <small>4.0.233 (2018-11-07)</small>
 
 * refactor(device-x-domain-utils): Importing the source for `cross-domain-utils` to preserve flow type ([702c8b7](https://github.com/paypal/paypal-checkout/commit/702c8b7)), closes [#939](https://github.com/paypal/paypal-checkout/issues/939)
