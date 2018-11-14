@@ -297,8 +297,11 @@ export let config = {
             disable_venmo: true
         },
 
-
         'firedog.com': {
+            disable_venmo: true
+        },
+
+        'chick-fil-a.com': {
             disable_venmo: true
         }
     },
