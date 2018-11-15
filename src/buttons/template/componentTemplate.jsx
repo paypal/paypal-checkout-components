@@ -1,7 +1,6 @@
 /* @flow */
 /** @jsx node */
 
-import { type FundingEligibilityType } from 'paypal-braintree-web-client/src';
 import { FUNDING, ENV, type LocaleType } from 'paypal-sdk-constants/src';
 import { node, html, type ElementNode } from 'jsx-pragmatic/src';
 import { LOGO_COLOR, LOGO_CLASS } from 'paypal-sdk-logos/src';
@@ -9,6 +8,7 @@ import { LOGO_COLOR, LOGO_CLASS } from 'paypal-sdk-logos/src';
 import { BUTTON_NUMBER, BUTTON_LABEL, ATTRIBUTE, CLASS, BUTTON_COLOR } from '../../constants';
 import { FUNDING_CONFIG, determineEligibleFunding } from '../../funding';
 import { normalizeButtonProps, type ButtonStyle, type ButtonPropsInputs } from '../props';
+import type { FundingEligibilityType } from '../../types';
 
 import { componentStyle } from './componentStyle';
 import { getComponentScript } from './componentScript';
