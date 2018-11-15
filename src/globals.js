@@ -10,11 +10,3 @@ export function getFundingEligibility() : FundingEligibilityType {
 export function getRememberedFunding() : $ReadOnlyArray<$Values<typeof FUNDING>> {
     return __PAYPAL_CHECKOUT__.__REMEMBERED_FUNDING__;
 }
-
-export function getVersion() : string {
-    return __PAYPAL_CHECKOUT__.__MINOR_VERSION__;
-}
-
-export function getLogLevel() : string {
-    return __PAYPAL_CHECKOUT__.__DEFAULT_LOG_LEVEL__;
-}

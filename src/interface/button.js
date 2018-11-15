@@ -6,7 +6,6 @@ import type { ZalgoPromise } from 'zalgo-promise/src';
 import { Buttons as ButtonsComponent } from '../buttons';
 import type { ButtonProps } from '../buttons/props';
 
-import './hacks'; // eslint-disable-line import/no-unassigned-import
 import './checkout'; // eslint-disable-line import/no-unassigned-import
 
 import { setup } from './setup';

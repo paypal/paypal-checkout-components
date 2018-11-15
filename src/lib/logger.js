@@ -5,7 +5,6 @@ import { getLogger } from 'paypal-braintree-web-client/src';
 import { getQueryParam } from 'belter/src';
 import { FPTI_KEY } from 'paypal-sdk-constants/src';
 
-import { getVersion } from '../globals';
 import { FPTI_CONTEXT_TYPE } from '../constants';
 
 import { getButtonSessionID } from './session';
@@ -53,7 +52,6 @@ export function setupLogger() {
             [FPTI_KEY.CONTEXT_TYPE]:       contextType,
             [FPTI_KEY.CONTEXT_ID]:         contextID,
             [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
-            [FPTI_KEY.VERSION]:            getVersion(),
             [FPTI_KEY.TOKEN]:              orderID,
             [FPTI_KEY.REFERER]:            getRefererDomain()
         };
