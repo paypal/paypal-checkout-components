@@ -2,7 +2,9 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
-import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getPayPalDomain, getCurrency, getSDKMeta } from 'paypal-braintree-web-client/src';
+import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit,
+    getVault, getPayPalDomain, getCurrency, getSDKMeta, isEligible, getBrowser,
+    createOrder, type OrderCreateRequest, type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
@@ -14,13 +16,14 @@ import { node, dom } from 'jsx-pragmatic/src';
 import { getButtonUrl } from '../config';
 import { getFundingEligibility } from '../globals';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_CONTEXT_TYPE } from '../constants';
-import { checkRecognizedBrowser, getSessionID, isEligible, getBrowser } from '../lib';
-import { createOrder, type OrderCreateRequest, type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from '../api';
+import { getSessionID } from '../lib';
 
 import { containerTemplate, Buttons as ButtonsTemplate } from './template';
 import { rememberFunding, findRememberedFunding } from './funding';
 import { setupButtonChild } from './child';
 import { normalizeButtonStyle, type ButtonProps } from './props';
+
+let remoteCreateOrder;
 
 const ORDER_CREATE_TIMEOUT = 10 * 1000;
 
@@ -145,23 +148,26 @@ export const Buttons : Component<ButtonProps> = create({
 
                         const actions = {
                             order: {
-                                create: (options) => createOrder(props.clientID, options)
+                                create: (options) =>
+                                    (remoteCreateOrder || createOrder)(
+                                        props.clientID, options, { fptiState: FPTI_STATE.BUTTON }
+                                    )
                             }
                         };
 
-                        let order = original(data, actions);
+                        const orderPromise = original(data, actions);
 
-                        if (!ZalgoPromise.isPromise(order)) {
+                        if (!ZalgoPromise.isPromise(orderPromise)) {
                             throw new Error(`Expected createOrder to return a promise for an order id`);
                         }
-                        
-                        order = ZalgoPromise.resolve(order);
 
                         if (getEnv() === ENV.PRODUCTION) {
-                            return order.timeout(ORDER_CREATE_TIMEOUT, new Error(`Timed out waiting ${ ORDER_CREATE_TIMEOUT }ms for order to be created`));
+                            return ZalgoPromise.resolve(orderPromise)
+                                .timeout(ORDER_CREATE_TIMEOUT,
+                                    new Error(`Timed out waiting ${ ORDER_CREATE_TIMEOUT }ms for order to be created`));
                         }
 
-                        return order;
+                        return orderPromise;
 
                     }).then(orderID => {
 
@@ -220,8 +226,6 @@ export const Buttons : Component<ButtonProps> = create({
                     if (!isEligible()) {
                         logger.info('button_authorize_ineligible');
                     }
-
-                    checkRecognizedBrowser('authorize');
 
                     logger.flush();
 
@@ -346,6 +350,15 @@ export const Buttons : Component<ButtonProps> = create({
                     if (original) {
                         return original.apply(this, arguments);
                     }
+                };
+            }
+        },
+
+        proxyRest: {
+            type: 'function',
+            value() : ({ createOrder : typeof createOrder }) => void {
+                return (rest) => {
+                    remoteCreateOrder = rest.createOrder;
                 };
             }
         },

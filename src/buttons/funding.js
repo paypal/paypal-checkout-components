@@ -2,8 +2,8 @@
 
 import { identity } from 'belter/src';
 import { FUNDING } from 'paypal-sdk-constants/src';
+import { getStorageState } from 'paypal-braintree-web-client/src';
 
-import { getStorageState } from '../lib';
 import { getRememberedFunding } from '../globals';
 
 // $FlowFixMe

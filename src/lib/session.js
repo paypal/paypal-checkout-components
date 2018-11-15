@@ -1,21 +1,7 @@
 /* @flow */
 
-import { isPayPalDomain } from 'paypal-braintree-web-client/src';
-import { getStorage, getQueryParam } from 'belter/src';
-
-const storage = getStorage({ name: 'paypal', version: __PAYPAL_CHECKOUT__.__MINOR_VERSION__ });
-
-export function getStorageState<T>(handler : (storage : Object) => T) : T {
-    return storage.getState(handler);
-}
-
-export function getStorageID() : string {
-    return storage.getID();
-}
-
-export function getSessionState<T>(handler : (state : Object) => T) : T {
-    return storage.getSessionState(handler);
-}
+import { isPayPalDomain, getSessionID as getSDKSessionID } from 'paypal-braintree-web-client/src';
+import { getQueryParam } from 'belter/src';
 
 export function getSessionID() : string {
 
@@ -31,7 +17,7 @@ export function getSessionID() : string {
         return querySessionID;
     }
 
-    return storage.getSessionID();
+    return getSDKSessionID();
 }
 
 export function getButtonSessionID() : ?string {

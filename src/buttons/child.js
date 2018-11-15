@@ -1,7 +1,7 @@
 
 /* @flow */
 
-import { getLogger } from 'paypal-braintree-web-client/src';
+import { getLogger, createOrder } from 'paypal-braintree-web-client/src';
 import { getPageRenderTime, isIEIntranet } from 'belter/src';
 import { FUNDING, FPTI_KEY } from 'paypal-sdk-constants/src';
 
@@ -38,4 +38,6 @@ export function setupButtonChild(ButtonComponent : Buttons) : void {
 
         logger.flush();
     });
+
+    window.xprops.proxyRest({ createOrder });
 }
