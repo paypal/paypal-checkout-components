@@ -25,29 +25,29 @@ function placeholderToJSX(text : string, placeholders : { [string] : (?string) =
         }).filter(Boolean);
 }
 
-function contentToJSX(key : string, locale : LocaleType, { logoColor, period, nonce } : { logoColor : $Values<typeof LOGO_COLOR>, period? : number, nonce : string } = {}) : $ReadOnlyArray<ElementNode | string> {
+function contentToJSX(key : string, locale : LocaleType, { logoColor, period } : { logoColor : $Values<typeof LOGO_COLOR>, period? : number } = {}) : $ReadOnlyArray<ElementNode | string> {
     const { lang } = locale;
     const text = componentContent[lang][key];
 
     return placeholderToJSX(text, {
         text:   (token) => <span class={ CLASS.TEXT }>{ token }</span>,
-        pp:     ()      => <PPLogo nonce={ nonce } logoColor={ logoColor } />,
-        paypal: ()      => <PayPalLogo nonce={ nonce } logoColor={ logoColor } />,
+        pp:     ()      => <PPLogo logoColor={ logoColor } />,
+        paypal: ()      => <PayPalLogo logoColor={ logoColor } />,
         br:     ()      => <br />,
         period: ()      => { return period ? period.toString() : null; }
     });
 }
 
-export function Checkout({ locale, logoColor, nonce } : { locale : LocaleType, logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : $ReadOnlyArray<ElementNode | string> {
-    return contentToJSX('checkout', locale, { logoColor, nonce });
+export function Checkout({ locale, logoColor } : { locale : LocaleType, logoColor : $Values<typeof LOGO_COLOR> }) : $ReadOnlyArray<ElementNode | string> {
+    return contentToJSX('checkout', locale, { logoColor });
 }
 
-export function Pay({ locale, logoColor, nonce } : { locale : LocaleType, logoColor : $Values<typeof LOGO_COLOR>, nonce : string }) : $ReadOnlyArray<ElementNode | string> {
-    return contentToJSX('pay', locale, { logoColor, nonce });
+export function Pay({ locale, logoColor } : { locale : LocaleType, logoColor : $Values<typeof LOGO_COLOR> }) : $ReadOnlyArray<ElementNode | string> {
+    return contentToJSX('pay', locale, { logoColor });
 }
 
-export function Installment({ locale, logoColor, period, nonce } : { locale : LocaleType, logoColor : $Values<typeof LOGO_COLOR>, period? : number, nonce : string }) : $ReadOnlyArray<ElementNode | string> {
-    return contentToJSX(period ? 'installment_period' : 'installment', locale, { logoColor, period, nonce });
+export function Installment({ locale, logoColor, period } : { locale : LocaleType, logoColor : $Values<typeof LOGO_COLOR>, period? : number }) : $ReadOnlyArray<ElementNode | string> {
+    return contentToJSX(period ? 'installment_period' : 'installment', locale, { logoColor, period });
 }
 
 export function SaferTag({ locale } : { locale : LocaleType }) : $ReadOnlyArray<ElementNode | string> {

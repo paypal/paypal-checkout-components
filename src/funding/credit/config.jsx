@@ -21,14 +21,14 @@ export const CREDIT_CONFIG : FundingSourceConfig = {
         [BUTTON_LABEL.CREDIT]: {
             ...DEFAULT_LABEL_CONFIG,
 
-            Label: ({ locale, logoColor, nonce }) => {
+            Label: ({ locale, logoColor }) => {
                 if (locale.country === COUNTRY.DE) {
-                    return <CreditLogo logoColor={ logoColor } locale={ locale } nonce={ nonce } />;
+                    return <CreditLogo logoColor={ logoColor } locale={ locale } />;
                 }
 
                 return (
                     <Fragment>
-                        <PPLogo nonce={ nonce } logoColor={ logoColor } /> <PayPalLogo nonce={ nonce } logoColor={ logoColor } /> <CreditLogo logoColor={ logoColor } locale={ locale } nonce={ nonce } />
+                        <PPLogo logoColor={ logoColor } /> <PayPalLogo logoColor={ logoColor } /> <CreditLogo logoColor={ logoColor } locale={ locale } />
                     </Fragment>
                 );
             },

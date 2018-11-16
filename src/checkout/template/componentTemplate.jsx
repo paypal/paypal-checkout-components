@@ -72,7 +72,9 @@ const checkoutComponentStyle = `
     }
 `;
 
-export function componentTemplate({ document } : RenderOptionsType<CheckoutPropsType>) : HTMLElement {
+export function componentTemplate({ document, props } : RenderOptionsType<CheckoutPropsType>) : HTMLElement {
+    const { nonce } = props;
+
     return (
         <html>
             <head>
@@ -81,7 +83,7 @@ export function componentTemplate({ document } : RenderOptionsType<CheckoutProps
             </head>
             <body>
                 <div class="preloader spinner">
-                    <style>
+                    <style nonce={ nonce }>
                         { checkoutComponentStyle }
                     </style>
 

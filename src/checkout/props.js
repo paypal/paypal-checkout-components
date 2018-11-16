@@ -15,5 +15,6 @@ export type CheckoutPropsType = {|
     locale : LocaleType,
     style : {|
     
-    |}
+    |},
+    nonce? : string
 |};

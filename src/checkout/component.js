@@ -93,6 +93,11 @@ export const Checkout : Component<CheckoutPropsType> = create({
             value:      getSDKMeta
         },
 
+        nonce: {
+            type:     'string',
+            required: false
+        },
+
         meta: {
             type: 'object',
             def() : Object {
