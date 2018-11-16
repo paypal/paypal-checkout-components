@@ -44,6 +44,7 @@
     "cross-domain-utils": "^2.0.16",
     "grabthar": "^2.0.1",
     "jsx-pragmatic": "^1.0.7",
+    "paypal-braintree-web-client": "^4.0.27",
     "paypal-sdk-constants": "^1.0.11",
     "webpack-mem-compile": "^1.0.2",
     "zalgo-promise": "^1.0.28"
