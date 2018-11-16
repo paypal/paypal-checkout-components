@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint max-depth: off */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { on, send } from 'post-robot/src';
@@ -262,6 +263,30 @@ function createPayment(env : string, client : { [key : string] : string }, payme
     }).then((res) : string => {
 
         logPaymentResponse(res);
+
+        try {
+            if (window.pre &&
+                window.pre.inlineGuest.res.data.treatments &&
+                window.pre.inlineGuest.res.data.treatments.find(t => (t.treatment_name === 'xo_hermesnodeweb_inline_guest_treatment'))) {
+
+                if (res && res.links && res.links.length) {
+                    for (let link of res.links) {
+                        if (link && link.method === 'REDIRECT' && link.rel === 'approval_url') {
+                            let match = link.href.match(/token=((EC-)?[A-Z0-9]{17})/);
+                            if (match) {
+                                return match[1];
+                            } else {
+                                throw new Error(`Could not find token in approval url: ${ link.href }`);
+                            }
+                        }
+                    }
+
+                    throw new Error(`Could not find approval url`);
+                }
+            }
+        } catch (err) {
+            // pass
+        }
 
         if (res && res.id) {
             return res.id;

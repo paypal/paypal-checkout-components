@@ -1,6 +1,6 @@
 {
   "name": "paypal-checkout",
-  "version": "4.0.233",
+  "version": "4.0.235",
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
@@ -29,7 +29,8 @@
     "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin",
     "buttondiff": "jest test/screenshot/screenshot.test.js --env=node",
     "dev": "babel-node ./node_modules/.bin/webpack-dev-server --config webpack-dev-server.config.js --port 9000",
-    "test-ssr": "jest test/ssr/ssr.test.js --env=node"
+    "test-ssr": "jest test/ssr/ssr.test.js --env=node",
+    "commit": "npx git-cz"
   },
   "files": [
     "dist/checkout.lib.js",
@@ -63,6 +64,8 @@
   "license": "Apache-2.0",
   "readmeFilename": "README.md",
   "devDependencies": {
+    "commitizen": "^3.0.4",
+    "cz-conventional-changelog": "^2.1.0",
     "flow-bin": "^0.70.0",
     "fs-extra": "^4.0.2",
     "grumbler-scripts": "^2.0.24",
@@ -86,5 +89,10 @@
     "post-robot": "^8.0.0",
     "zalgo-promise": "^1.0.10",
     "zoid": "^6.0.67"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   }
 }

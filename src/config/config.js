@@ -283,6 +283,30 @@ export let config = {
 
         'derbyjackpot.com': {
             disable_venmo: true
+        },
+
+        'ancestry.com': {
+            disable_venmo: true
+        },
+
+        'boats.net': {
+            disable_venmo: true
+        },
+
+        'partzilla.com': {
+            disable_venmo: true
+        },
+
+        'firedog.com': {
+            disable_venmo: true
+        },
+
+        'chick-fil-a.com': {
+            disable_venmo: true
+        },
+
+        'roku.com': {
+            disable_venmo: true
         }
     },
 
