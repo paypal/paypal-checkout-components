@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "belter": "^1.0.19",
+    "cross-domain-utils": "^2.0.16",
     "grabthar": "^2.0.1",
     "jsx-pragmatic": "^1.0.7",
     "paypal-sdk-constants": "^1.0.11",

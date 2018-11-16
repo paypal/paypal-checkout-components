@@ -3,6 +3,7 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, noop } from 'belter/src';
 import { INTENT } from 'paypal-sdk-constants/src';
+import { getParent, getTop } from 'cross-domain-utils/src';
 
 import { getOrder, captureOrder, authorizeOrder, persistAccessToken, callGraphQL, type OrderResponse } from './api';
 
@@ -104,9 +105,29 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
     });
 }
 
+let checkoutOpen = false;
+let canRenderTop = true;
+
+export function setupCheckout() {
+    const [ parent, top ] = [ getTop(window), getParent() ];
+
+    if (top && parent && parent !== top) {
+        window.paypal.Checkout.canRenderTo(top).then(result => {
+            canRenderTop = result;
+        });
+    }
+}
+
 export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
 
+    if (checkoutOpen) {
+        throw new Error(`Checkout already rendered`);
+    }
+
+    const [ parent, top ] = [ getTop(window), getParent() ];
+
     const createOrder = memoize(window.xprops.createOrder);
+    const renderWindow = (canRenderTop && top) ? top : parent;
 
     return ZalgoPromise.all([
 
@@ -114,8 +135,8 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
             window.xchild.error(err);
             throw err;
         }),
-
-        window.paypal.Checkout.renderTo(window.top, {
+        
+        window.paypal.Checkout.renderTo(renderWindow, {
 
             payment: createOrder,
 
@@ -144,6 +165,10 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
 
             onAuth: ({ accessToken }) : ZalgoPromise<void> => {
                 return persistAccessToken(accessToken);
+            },
+
+            onClose: () => {
+                checkoutOpen = false;
             },
 
             ...props

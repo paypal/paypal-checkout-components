@@ -3,6 +3,7 @@
 import { undotify, htmlEncode } from 'belter';
 import { html } from 'jsx-pragmatic';
 import { SDK_QUERY_KEYS } from 'paypal-sdk-constants';
+import { unpackSDKMeta } from 'paypal-braintree-web-client';
 
 import { getSmartButtonClientScript, getSmartButtonRenderScript, startWatchers } from './watcher';
 import { getParams } from './params';
@@ -16,6 +17,8 @@ export function getButtonMiddleware({ logger = console } : { logger? : LoggerTyp
     return async function buttonMiddleware(req : ExpressRequest, res : ExpressResponse) : Promise<void> {
         try {
             logger.info(EVENT.RENDER);
+
+            const { getSDKLoader } = unpackSDKMeta(req.query.sdkMeta);
 
             const [ buttonScript, { Buttons } ] = await Promise.all([
                 getSmartButtonClientScript(),
@@ -38,6 +41,7 @@ export function getButtonMiddleware({ logger = console } : { logger? : LoggerTyp
             const pageHTML = `
                 <body>
                     ${ buttonHTML }
+                    ${ getSDKLoader() }
                     <script src="/sdk/js?client-id=${ htmlEncode(clientID) }&${ SDK_QUERY_KEYS.LOCALE_COUNTRY }=${ htmlEncode(country) }&${ SDK_QUERY_KEYS.LOCALE_LANG }=${ htmlEncode(lang) }&${ SDK_QUERY_KEYS.COMPONENTS }=buttons,checkout"></script>
                     <script nonce="${ nonce }">${ buttonScript }</script>
                     <script nonce="${ nonce }">spb.setupButton()</script>
