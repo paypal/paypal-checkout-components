@@ -38,7 +38,7 @@ export function getButtonMiddleware({ logger = console } : { logger? : LoggerTyp
             const buttonHTML = Buttons({ ...params, nonce, fundingEligibility }).render(html());
 
             const pageHTML = `
-                <body>
+                <body data-nonce="${ nonce }">
                     ${ buttonHTML }
                     ${ getSDKLoader({ nonce }) }
                     <script nonce="${ nonce }">${ buttonScript }</script>

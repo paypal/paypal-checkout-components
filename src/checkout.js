@@ -118,6 +118,14 @@ export function setupCheckout() {
     }
 }
 
+function getNonce() : string {
+    let nonce = '';
+    if (document.body) {
+        nonce = document.body.getAttribute('data-nonce') || '';
+    }
+    return nonce;
+}
+
 export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
 
     if (checkoutOpen) {
@@ -170,6 +178,8 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
             onClose: () => {
                 checkoutOpen = false;
             },
+
+            nonce: getNonce(),
 
             ...props
         })
