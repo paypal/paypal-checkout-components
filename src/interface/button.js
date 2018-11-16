@@ -2,13 +2,17 @@
 
 import { noop } from 'belter/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
+import { isPayPalDomain } from 'paypal-braintree-web-client/src';
 
+import { setupLogger } from '../lib';
 import { Buttons as ButtonsComponent } from '../buttons';
 import type { ButtonProps } from '../buttons/props';
+import { Checkout as _Checkout } from '../checkout';
 
-import './checkout'; // eslint-disable-line import/no-unassigned-import
-
-import { setup } from './setup';
+export let Checkout;
+if (isPayPalDomain()) {
+    Checkout = _Checkout;
+}
 
 // $FlowFixMe
 export function Buttons(props : ButtonProps = {}) : { render : (string | HTMLElement) => ZalgoPromise<void> } {
@@ -25,5 +29,5 @@ export function setupButtons() {
         Buttons.driver = (name, deps) => ButtonsComponent.driver(name, deps);
     }
 
-    setup();
+    setupLogger();
 }

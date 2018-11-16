@@ -5,11 +5,6 @@ const globals = require('./globals');
 
 module.exports = {
 
-    '__paypal-checkout-components-common__': {
-        entry:     './src/interface/common',
-        automatic: true
-    },
-    
     'buttons': {
         entry:           './src/interface/button',
         setupHandler:    'setupButtons',
@@ -27,18 +22,6 @@ module.exports = {
     },
 
     'checkout': {
-        entry:           './src/interface/checkout',
-        setupHandler:    'setupCheckout',
-        staticNamespace: '__paypal_checkout__',
-        configQuery:     `
-            clientConfiguration {
-                paypalMerchantConfiguration(merchantId: $clientID, locale: $country) {
-                    creditCard {                                                             
-                        isPayPalBranded                                                    
-                        supportedCardBrands                                                    
-                    }    
-                }
-            }`,
-        globals
+        entry: './src/interface/checkout'
     }
 };

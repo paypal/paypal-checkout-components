@@ -1,5 +1,7 @@
 /* @flow */
 
+import { ZalgoPromise } from 'zalgo-promise/src';
+
 import { createTestContainer, createElement } from '../../tests/common';
 
 const { action, onRender, onInit } = window.xprops.test;
@@ -16,7 +18,7 @@ if (action === 'checkout') {
 
     window.xprops.payment().then(orderID => {
 
-        return window.paypal.Promise.try(() => {
+        return ZalgoPromise.try(() => {
 
             if (window.xprops.init) {
                 return window.xprops.init({

@@ -56,7 +56,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                 test: { flow, action: 'checkout' },
 
                 createOrder() : string | ZalgoPromise<string> {
-                    return window.paypal.Promise.resolve('');
+                    return ZalgoPromise.resolve('');
                 },
 
                 onError(err) : void {
@@ -110,7 +110,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                 test: { flow, action: 'checkout' },
 
                 createOrder() : string | ZalgoPromise<string> {
-                    return window.paypal.Promise.reject(new Error('error'));
+                    return ZalgoPromise.reject(new Error('error'));
                 },
 
                 onError(err) : void {
@@ -254,7 +254,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onApprove() : void {
-                    return new window.paypal.Promise((resolve, reject) => {
+                    return new ZalgoPromise((resolve, reject) => {
                         return reject(new Error('error'));
                     });
                 },
@@ -283,7 +283,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onApprove() : void {
-                    return new window.paypal.Promise((resolve, reject) => {
+                    return new ZalgoPromise((resolve, reject) => {
                         return reject();
                     });
                 },

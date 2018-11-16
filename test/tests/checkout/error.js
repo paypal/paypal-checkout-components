@@ -1,6 +1,6 @@
 /* @flow */
 
-import { type ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { generateOrderID, createElement, createTestContainer, destroyTestContainer, assert } from '../common';
 
@@ -62,7 +62,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                 return window.paypal.Checkout.render({
 
                     payment() : ZalgoPromise<string> {
-                        return window.paypal.Promise.resolve('');
+                        return ZalgoPromise.resolve('');
                     },
 
                     onError(err) : void {
@@ -126,7 +126,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                 return window.paypal.Checkout.render({
 
                     payment() : string | ZalgoPromise<string> {
-                        return window.paypal.Promise.reject(new Error('error'));
+                        return ZalgoPromise.reject(new Error('error'));
                     },
 
                     onError(err) : void {
@@ -233,7 +233,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onAuthorize() : ZalgoPromise<void> {
-                        return new window.paypal.Promise((resolve, reject) => {
+                        return new ZalgoPromise((resolve, reject) => {
                             return reject(new Error('error'));
                         });
                     },
@@ -267,7 +267,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onAuthorize() : ZalgoPromise<void> {
-                        return new window.paypal.Promise((resolve, reject) => {
+                        return new ZalgoPromise((resolve, reject) => {
                             return reject();
                         });
                     },
