@@ -12,16 +12,27 @@ module.exports = {
         configQuery:     `
             clientConfiguration {
                 paypalMerchantConfiguration(merchantId: $clientID, locale: $country) {
-                    creditCard {                                                             
-                        isPayPalBranded                                                    
-                        supportedCardBrands                                                    
-                    }    
+                    creditCard {
+                        isPayPalBranded
+                        supportedCardBrands
+                    }
                 }
             }`,
         globals
     },
 
     'checkout': {
-        entry: './src/interface/checkout'
+        entry:           './src/interface/checkout',
+        staticNamespace: '__paypal_checkout__',
+        configQuery:     `
+            clientConfiguration {
+                paypalMerchantConfiguration(merchantId: $clientID, locale: $country) {
+                    creditCard {
+                        isPayPalBranded
+                        supportedCardBrands
+                    }
+                }
+            }`,
+        globals
     }
 };
