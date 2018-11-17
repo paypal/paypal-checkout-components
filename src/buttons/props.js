@@ -101,7 +101,7 @@ export function normalizeButtonStyle(style : ButtonStyleInputs, { locale } : { l
     } = style;
 
     const funding = Object.keys(FUNDING_CONFIG)
-        .find(name => FUNDING_CONFIG[name] && FUNDING_CONFIG[name].labels[label]);
+        .filter(name => FUNDING_CONFIG[name] && FUNDING_CONFIG[name].labels[label])[0];
 
     if (!funding) {
         throw new Error(`Invalid button label: ${ label }`);
@@ -196,7 +196,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : ButtonProps {
         throw new Error(`Expected valid lang, got ${ lang || 'undefined' }`);
     }
 
-    if (remembered.find(source => FUNDING_SOURCES.indexOf(source) === -1)) {
+    if (remembered.some(source => FUNDING_SOURCES.indexOf(source) === -1)) {
         throw new Error(`Expected valid funding sources, got ${ JSON.stringify(remembered) }`);
     }
 
