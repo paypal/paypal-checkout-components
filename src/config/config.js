@@ -307,6 +307,10 @@ export let config = {
 
         'roku.com': {
             disable_venmo: true
+        },
+
+        'barkbox.com': {
+            disable_venmo: true
         }
     },
 
