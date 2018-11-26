@@ -111,15 +111,15 @@ getElements('.paypal-button', document).forEach(el => {
     });
 });
 
+if (remembered) {
+    window.xprops.funding.remember([ remembered ]);
+}
+
 if (action === 'auth') {
 
     if (authed && window.xprops.onAuth) {
         window.xprops.onAuth();
     }
-
-} else if (action === 'remember') {
-
-    window.xprops.funding.remember([ remembered ]);
 
 } else if (action === 'checkout' || action === 'shippingChange' || action === 'cancel' || action === 'fallback' || action === 'error' || action === 'popout') {
 

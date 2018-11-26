@@ -64,11 +64,26 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     window.navigator.mockUserAgent = userAgent;
                 }
 
+                let allowed;
+                let remembered;
+                let decorate;
+
+                if (source === window.paypal.FUNDING.VENMO) {
+                    decorate = window.paypal.Button.props.funding.decorate;
+                    window.paypal.Button.props.funding.decorate = () => {
+                        return {
+                            remembered: [ source ]
+                        };
+                    };
+                } else {
+                    allowed = [ source ];
+                }
+
                 let checkoutToken = generateECToken();
 
                 window.paypal.Button.render({
 
-                    test: { flow, action: 'checkout', selector: `[data-funding-source="${ source }"]` },
+                    test: { flow, action: 'checkout', remembered, selector: `[data-funding-source="${ source }"]` },
 
                     locale,
 
@@ -79,7 +94,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     funding: {
-                        allowed: [ source ]
+                        allowed
                     },
 
                     payment() : string | ZalgoPromise<string> {
@@ -93,6 +108,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         assert.ok(data.currentUrl.indexOf(`&ba_token=`) === -1);
                         assert.ok(data.currentUrl.indexOf(`?ba_token=`) === -1);
                         assert.ok(data.currentUrl.indexOf(`billingurl`) === -1);
+                        window.paypal.Button.props.funding.decorate = decorate;
                         return done();
                     },
 

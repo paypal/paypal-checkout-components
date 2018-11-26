@@ -3,8 +3,8 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { create } from 'xcomponent/src';
-import { type Component } from 'xcomponent/src/component/component';
+import { create } from 'zoid/src';
+import { type Component } from 'zoid/src/component/component';
 
 import { ENV } from '../constants';
 import { getButtonSessionID, getBrowserLocale, getSessionID } from '../lib';
@@ -40,6 +40,8 @@ export const BillingPage : Component<BillingOptions> = create({
             [ ENV.LOCAL ]: /^http:\/\/localhost.paypal.com:\d+$/
         };
     },
+
+    scrolling: true,
 
     props: {
         sessionID: {

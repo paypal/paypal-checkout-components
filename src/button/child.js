@@ -13,7 +13,7 @@ import typeof { Button } from './component';
 export function setupButtonChild(ButtonComponent : Button) : void {
 
     if (isIEIntranet()) {
-        return window.xchild.error(new Error(`Can not render button in IE Intranet mode`));
+        return window.xchild.error(new Error(`Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md`));
     }
 
     setupPopupBridgeProxy(Checkout, ButtonComponent);

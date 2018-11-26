@@ -3,16 +3,16 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { info, track, warn, flush as flushLogs, immediateFlush } from 'beaver-logger/client';
-import { create, CONSTANTS, PopupOpenError } from 'xcomponent/src';
-import { type Component } from 'xcomponent/src/component/component';
+import { create, CONSTANTS, PopupOpenError } from 'zoid/src';
+import { type Component } from 'zoid/src/component/component';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
     setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize,
-    getDomainSetting, documentReady, getThrottle, getScriptVersion,
-    getButtonSessionID, isPayPalDomain, isIEIntranet, isEligible } from '../lib';
+    getDomainSetting, getScriptVersion, getButtonSessionID, isPayPalDomain,
+    isIEIntranet, isEligible } from '../lib';
 import { config } from '../config';
-import { ENV, FPTI, PAYMENT_TYPE, CHECKOUT_OVERLAY_COLOR } from '../constants';
+import { ENV, FPTI, PAYMENT_TYPE, CHECKOUT_OVERLAY_COLOR, ATTRIBUTE } from '../constants';
 import { onLegacyPaymentAuthorize } from '../compat';
 import { determineParameterFromToken, determineUrl } from '../integrations';
 
@@ -99,7 +99,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
 
     validate() {
         if (isIEIntranet()) {
-            throw new Error(`Can not render button in IE intranet mode`);
+            throw new Error(`Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md`);
         }
 
         if (!isEligible()) {
@@ -276,6 +276,25 @@ export let Checkout : Component<CheckoutPropsType> = create({
             type:       'string',
             required:   false,
             queryParam: true
+        },
+
+        fundingOffered: {
+            type:       'object',
+            required:   false,
+            queryParam: true,
+            def() : Object {
+                let elements = Array.prototype.slice.call(document.querySelectorAll(`[${ ATTRIBUTE.FUNDING_SOURCE }]`));
+
+                let fundingSources = elements.map(el => {
+                    return el.getAttribute(ATTRIBUTE.FUNDING_SOURCE);
+                });
+
+                // $FlowFixMe
+                return fundingSources;
+            },
+            queryValue: (val) => {
+                return val.join(',');
+            }
         },
 
         onAuthorize: {
@@ -606,72 +625,6 @@ if (Checkout.isChild() && Checkout.xchild && Checkout.xprops) {
                 immediateFlush();
             }
             return callOriginal();
-        });
-    });
-
-    documentReady.then(() => {
-
-        if (!window.injector) {
-            return;
-        }
-
-        let $event = window.injector.get('$event');
-
-        if (!$event) {
-            return;
-        }
-
-        let experimentActive = false;
-        let loggedComplete = false;
-
-        $event.on('allLoaded', () => {
-            setTimeout(() => {
-                let payButton = document.querySelector('.buttons.reviewButton');
-                let topPayButton = document.querySelector('.buttons.reviewButton.topReviewButton');
-                let reviewSection = document.querySelector('section.review');
-
-                let throttle = getThrottle('top_pay_button', 0);
-
-                let hash = window.location.hash;
-                
-                let logComplete = () => {
-                    if (experimentActive && !loggedComplete && hash && hash.indexOf('checkout/review') !== -1) {
-                        throttle.logComplete({ [ FPTI.KEY.FEED ]: 'hermesnodeweb' });
-                        loggedComplete = true;
-                    }
-                };
-
-                if (payButton) {
-                    payButton.addEventListener('click', logComplete);
-                }
-
-                if (!reviewSection || !reviewSection.firstChild || !payButton || topPayButton) {
-                    return;
-                }
-
-                if (payButton.getBoundingClientRect().bottom < window.innerHeight) {
-                    return;
-                }
-
-                experimentActive = true;
-                throttle.logStart({ [ FPTI.KEY.FEED ]: 'hermesnodeweb' });
-
-                if (!throttle.isEnabled()) {
-                    return;
-                }
-
-                topPayButton = payButton.cloneNode(true);
-                topPayButton.className += ' topReviewButton';
-                reviewSection.insertBefore(topPayButton, reviewSection.firstChild);
-
-                topPayButton.addEventListener('click', () => {
-                    logComplete();
-                    let button = payButton && payButton.querySelector('button, input');
-                    if (button) {
-                        button.click();
-                    }
-                });
-            }, 200);
         });
     });
 }

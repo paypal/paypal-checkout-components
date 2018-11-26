@@ -45,7 +45,12 @@ function determineResponsiveSize({ label, layout, width = 0 }) : string {
 
 function getDimensions({ label, size, tagline, fundingicons, layout, number, viewport, height: buttonHeight, cards, sources = [] }) : DimensionsType {
 
-    if (size === BUTTON_SIZE.RESPONSIVE) {
+    const isResponsive = size === BUTTON_SIZE.RESPONSIVE;
+    const isVertical = layout === BUTTON_LAYOUT.VERTICAL;
+    const isCardFundingAllowed = sources.indexOf(FUNDING.CARD) >= 0;
+    const hasCards = (cards && cards.length > 0);
+
+    if (isResponsive) {
         size = determineResponsiveSize({ label, layout, width: viewport.width, height: buttonHeight });
     }
 
@@ -60,13 +65,11 @@ function getDimensions({ label, size, tagline, fundingicons, layout, number, vie
         height += perc(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS);
     } else if (tagline && allowTagline) {
         height += perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE);
-    } else if (layout === BUTTON_LAYOUT.VERTICAL) {
+    } else if (isVertical) {
         height = (buttonHeight * number) + (perc(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) * (number - 1));
     }
 
-    const isCardFundingAllowed = sources.indexOf(FUNDING.CARD) >= 0;
-
-    if (isCardFundingAllowed && (cards && cards.length > 0) && layout === BUTTON_LAYOUT.VERTICAL) {
+    if (hasCards && isCardFundingAllowed && isVertical && !isResponsive) {
         height += BUTTON_STYLE[size].byPayPalHeight;
     }
 

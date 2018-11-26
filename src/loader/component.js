@@ -17,7 +17,7 @@ export function isCheckoutXComponent() : boolean {
 export function getVersion() : string {
 
     if (!isCheckoutXComponent()) {
-        throw new Error(`Can not get version for non-xcomponent`);
+        throw new Error(`Can not get version for non-zoid-component`);
     }
 
     return window.name.split(config.name_separator)[2].replace(/_/g, '.');

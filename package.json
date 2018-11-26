@@ -1,6 +1,6 @@
 {
   "name": "paypal-checkout",
-  "version": "4.0.223",
+  "version": "4.0.235",
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
@@ -16,9 +16,12 @@
     "test": "npm run lint && npm run flow && npm run test-ssr && npm run karma && npm run buttondiff",
     "build": "npm run test && npm run webpack",
     "release": "./publish.sh",
-    "release:patch": "./publish.sh patch",
-    "release:minor": "./publish.sh minor",
-    "release:major": "./publish.sh major",
+    "release:patch": "./scripts/publish.sh patch",
+    "release:minor": "./scripts/publish.sh minor",
+    "release:major": "./scripts/publish.sh major",
+    "preversion": "./scripts/preversion.sh",
+    "version": "./scripts/version.sh",
+    "postversion": "./scripts/postversion.sh",
     "clean": "rimraf dist coverage",
     "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && flow-typed install",
     "debug": "cross-env NODE_ENV=debug",
@@ -26,7 +29,8 @@
     "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin",
     "buttondiff": "jest test/screenshot/screenshot.test.js --env=node",
     "dev": "babel-node ./node_modules/.bin/webpack-dev-server --config webpack-dev-server.config.js --port 9000",
-    "test-ssr": "jest test/ssr/ssr.test.js --env=node"
+    "test-ssr": "jest test/ssr/ssr.test.js --env=node",
+    "commit": "npx git-cz"
   },
   "files": [
     "dist/checkout.lib.js",
@@ -46,7 +50,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.paypal.com/paypal/paypal-checkout.git"
+    "url": "git://github.com/paypal/paypal-checkout.git"
   },
   "homepage": "https://developer.paypal.com/",
   "keywords": [
@@ -60,6 +64,8 @@
   "license": "Apache-2.0",
   "readmeFilename": "README.md",
   "devDependencies": {
+    "commitizen": "^3.0.4",
+    "cz-conventional-changelog": "^2.1.0",
     "flow-bin": "^0.70.0",
     "fs-extra": "^4.0.2",
     "grumbler-scripts": "^2.0.24",
@@ -81,7 +87,12 @@
     "cross-domain-utils": "^2.0.1",
     "hi-base32": "^0.5.0",
     "post-robot": "^8.0.0",
-    "xcomponent": "^6.0.0",
-    "zalgo-promise": "^1.0.10"
+    "zalgo-promise": "^1.0.10",
+    "zoid": "^6.0.67"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   }
 }
