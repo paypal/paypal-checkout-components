@@ -30,7 +30,7 @@ if (bridge) {
 function renderCheckout(props = {}) {
 
 
-    window.paypal.Checkout.renderTo(window.xchild.getParentRenderWindow(), {
+    window.paypal.Checkout.renderTo(window.parent, {
 
         payment: window.xprops.createOrder,
         onAuthorize(data, actions) : void | ZalgoPromise<void> {

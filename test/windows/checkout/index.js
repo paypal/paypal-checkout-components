@@ -65,7 +65,7 @@ if (action === 'checkout') {
     testButton.addEventListener('click', () => {
         window.xchild.hide();
 
-        window.paypal.Checkout.renderPopupTo(window.xchild.getParentRenderWindow(), {
+        window.paypal.Checkout.renderPopupTo(window.opener ? window.opener.parent : window.parent, {
             payment:          window.xprops.payment,
             onAuthorize:      window.xprops.onAuthorize,
             onCancel:         window.xprops.onCancel,

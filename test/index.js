@@ -4,8 +4,7 @@ import './tests';
 
 window.mockDomain = 'mock://www.merchant-site.com';
 
-const MAX_OVERALL_MEMORY = 800;
-const MAX_TEST_MEMORY = 80;
+const MEM_PER_TEST = 2;
 
 const memoryReported = (window.performance && window.performance.memory &&
                       window.performance.memory.usedJSHeapSize);
@@ -14,12 +13,12 @@ function getMemory() : number {
     return window.performance.memory.usedJSHeapSize / Math.pow(2, 20);
 }
 
-let startMem;
+let maxMem = getMemory();
 let originalUserAgent;
 
 beforeEach(() => {
     if (memoryReported) {
-        startMem = getMemory();
+        maxMem += MEM_PER_TEST;
     }
 
     // eslint-disable-next-line unicorn/prefer-add-event-listener
@@ -35,7 +34,6 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-
     window.localStorage.clear();
     delete window.__paypal_storage__;
     delete window.__paypal_global__;
@@ -47,22 +45,19 @@ afterEach(() => {
 
     delete window.document.documentMode;
 
-    if (window.gc) {
-        window.gc();
-    }
-
-    if (memoryReported) {
-        const mem = getMemory();
-        const diff = mem - startMem;
-
-        if (mem > MAX_OVERALL_MEMORY) {
-            throw new Error(`Overall memory exceeded ${ MAX_OVERALL_MEMORY }mb - ${ mem.toFixed(2) }`);
-        }
-
-        if (diff > MAX_TEST_MEMORY) {
-            throw new Error(`Test memory exceeded ${ MAX_TEST_MEMORY }mb - ${ diff.toFixed(2) }`);
-        }
-    }
-
     return window.paypal.destroyAll();
+});
+
+after(() => {
+    if (memoryReported) {
+        if (window.gc) {
+            window.gc();
+        }
+
+        const mem = getMemory();
+
+        if (mem > maxMem) {
+            throw new Error(`Overall memory exceeded ${ parseInt(maxMem, 10) }mb - ${ mem.toFixed(2) }mb used`);
+        }
+    }
 });

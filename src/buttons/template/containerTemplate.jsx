@@ -65,6 +65,10 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
 
     const size = BUTTON_SIZE.RESPONSIVE;
 
+    if (!container) {
+        throw new Error(`Expected container`);
+    }
+
     const getContainerDimensions = () => {
         let cont = container;
 

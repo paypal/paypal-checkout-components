@@ -14,7 +14,7 @@ import { readPNG, type PngType } from './image';
 
 export async function openPage(scriptURL : string, { headless = true } : { headless : boolean }) : Promise<Object> {
 
-    const browser = await puppeteer.launch({ headless });
+    const browser = await puppeteer.launch({ headless, args: [ '--no-sandbox' ] });
     const page    = await browser.newPage();
 
     page.emulate({
