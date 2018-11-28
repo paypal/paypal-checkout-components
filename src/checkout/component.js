@@ -19,7 +19,11 @@ export const Checkout : Component<CheckoutPropsType> = create({
     tag:  'paypal-checkout',
     name: 'ppcheckout',
 
-    scrolling: true,
+    attributes: {
+        iframe: {
+            scrolling: 'yes'
+        }
+    },
 
     url(props) : string {
         const { fundingSource } = props;

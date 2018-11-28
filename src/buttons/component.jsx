@@ -66,8 +66,7 @@ export const Buttons : Component<ButtonProps> = create({
         iframe: true,
         popup:  false
     },
-
-    scrolling:       false,
+    
     listenForResize: true,
 
     // $FlowFixMe
@@ -87,7 +86,8 @@ export const Buttons : Component<ButtonProps> = create({
 
     attributes: {
         iframe: {
-            allowpaymentrequest: 'allowpaymentrequest'
+            allowpaymentrequest: 'allowpaymentrequest',
+            scrolling:           'no'
         }
     },
 
