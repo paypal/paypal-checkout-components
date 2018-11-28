@@ -3,7 +3,7 @@
 /* eslint max-lines: 0 */
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit,
-    getVault, getPayPalDomain, getCurrency, getSDKMeta, isEligible, getBrowser,
+    getVault, getPayPalDomainRegex, getCurrency, getSDKMeta, isEligible, getBrowser,
     createOrder, type OrderCreateRequest, type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'zoid/src';
@@ -60,7 +60,7 @@ export const Buttons : Component<ButtonProps> = create({
     name: 'ppbutton',
 
     url:    getButtonUrl(),
-    domain: getPayPalDomain(),
+    domain: getPayPalDomainRegex(),
 
     contexts: {
         iframe: true,

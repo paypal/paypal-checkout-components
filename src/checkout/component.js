@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { getPayPalDomain, getLogger, getLocale, getEnv, getClientID, getCommit, getSDKMeta, isEligible } from 'paypal-braintree-web-client/src';
+import { getPayPalDomainRegex, getLogger, getLocale, getEnv, getClientID, getCommit, getSDKMeta, isEligible } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONSTANTS, PopupOpenError } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
@@ -21,7 +21,7 @@ export const Checkout : Component<CheckoutPropsType> = create({
 
     scrolling: true,
 
-    buildUrl(props) : string {
+    url(props) : string {
         const { fundingSource } = props;
         const fundingConfig = FUNDING_CONFIG[fundingSource];
 
@@ -36,7 +36,7 @@ export const Checkout : Component<CheckoutPropsType> = create({
         return getEnv() === ENV.LOCAL;
     },
 
-    domain: getPayPalDomain(),
+    domain: getPayPalDomainRegex(),
 
     contexts: {
         iframe: !supportsPopups(),
