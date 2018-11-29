@@ -1,6 +1,6 @@
 /* @flow */
 
-import { buildPayPalUrl } from 'paypal-braintree-web-client/src';
+import { getPayPalDomain } from 'paypal-braintree-web-client/src';
 
 export const SESSION_LIFETIME = 5 * 60 * 1000;
 
@@ -30,25 +30,25 @@ const URI = __TEST__
     };
 
 export function getPayPalUrl() : string {
-    return buildPayPalUrl();
+    return getPayPalDomain();
 }
 
 export function getCheckoutUrl() : string {
-    return buildPayPalUrl(URI.CHECKOUT);
+    return `${ getPayPalDomain() }${ URI.CHECKOUT }`;
 }
 
 export function getButtonUrl() : string {
-    return buildPayPalUrl(URI.BUTTON);
+    return `${ getPayPalDomain() }${ URI.BUTTON }`;
 }
 
 export function getGuestUrl() : string {
-    return buildPayPalUrl(URI.GUEST);
+    return `${ getPayPalDomain() }${ URI.GUEST }`;
 }
 
 export function getCardUrl() : string {
-    return buildPayPalUrl(URI.CARD);
+    return `${ getPayPalDomain() }${ URI.CARD }`;
 }
 
 export function getAltPayUrl() : string {
-    return buildPayPalUrl(URI.ALTPAY);
+    return `${ getPayPalDomain() }${ URI.ALTPAY }`;
 }
