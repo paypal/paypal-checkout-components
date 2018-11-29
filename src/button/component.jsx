@@ -133,6 +133,19 @@ export let Button : Component<ButtonOptions> = create({
         template.addEventListener('click', () => {
             warn('button_pre_template_click');
 
+            if (isIEIntranet()) {
+                warn(`button_pre_template_click_intranet_mode`);
+
+                track({
+                    [ FPTI.KEY.STATE ]:              FPTI.STATE.BUTTON,
+                    [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_CLICK_INTRANET_MODE,
+                    [ FPTI.KEY.BUTTON_TYPE ]:        FPTI.BUTTON_TYPE.IFRAME,
+                    [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                });
+
+                flushLogs();
+            }
+
             if (getDomainSetting('allow_full_page_fallback')) {
                 info('pre_template_force_full_page');
 
@@ -168,10 +181,6 @@ export let Button : Component<ButtonOptions> = create({
     validate() {
         if (!isEligible()) {
             warn('button_render_ineligible');
-        }
-
-        if (isIEIntranet()) {
-            throw new Error(`Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md`);
         }
     },
 
@@ -476,6 +485,17 @@ export let Button : Component<ButtonOptions> = create({
                     let { browser = 'unrecognized', version = 'unrecognized' } = getBrowser();
                     info(`button_render_browser_${ browser }_${ version }`);
 
+                    let style = this.props.style || {};
+
+                    info(`button_render`);
+                    info(`button_render_color_${ style.color || 'default' }`);
+                    info(`button_render_shape_${ style.shape || 'default' }`);
+                    info(`button_render_size_${ style.size || 'default' }`);
+                    info(`button_render_label_${ style.label || 'default' }`);
+                    info(`button_render_branding_${ style.branding || 'default' }`);
+                    info(`button_render_fundingicons_${ style.fundingicons || 'default' }`);
+                    info(`button_render_tagline_${ style.tagline || 'default' }`);
+
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.LOAD,
                         [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_RENDER,
@@ -483,6 +503,18 @@ export let Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
                         [ FPTI.KEY.BUTTON_SOURCE ]:      this.props.source
                     });
+
+                    if (isIEIntranet()) {
+                        warn(`button_render_intranet_mode`);
+
+                        track({
+                            [ FPTI.KEY.STATE ]:              FPTI.STATE.LOAD,
+                            [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_RENDER_INTRANET_MODE,
+                            [ FPTI.KEY.BUTTON_TYPE ]:        FPTI.BUTTON_TYPE.IFRAME,
+                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
+                            [ FPTI.KEY.BUTTON_SOURCE ]:      this.props.source
+                        });
+                    }
 
                     if (creditThrottle) {
                         creditThrottle.logStart({
@@ -651,6 +683,29 @@ export let Button : Component<ButtonOptions> = create({
             }
         },
 
+        onError: {
+            type:        'function',
+            required:    false,
+            promisify:   true,
+            sendToChild: true,
+            once:        true,
+            def() : (() => void) {
+                return function onError(err : mixed) {
+                    if (isIEIntranet()) {
+                        warn(`button_error_intranet_mode`);
+                        flushLogs();
+
+                        // eslint-disable-next-line no-alert
+                        alert(`IE Intranet mode is not supported by PayPal. Please disable intranet mode, or continue in an alternate browser.`);
+                    }
+
+                    setTimeout(() => {
+                        throw err;
+                    });
+                };
+            }
+        },
+
         onCancel: {
             type:     'function',
             required: false,
@@ -698,6 +753,16 @@ export let Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                     });
 
+                    if (isIEIntranet()) {
+                        track({
+                            [ FPTI.KEY.STATE ]:              FPTI.STATE.BUTTON,
+                            [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_CLICK_INTRANET_MODE,
+                            [ FPTI.KEY.BUTTON_TYPE ]:        FPTI.BUTTON_TYPE.IFRAME,
+                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
+                            [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
+                        });
+                    }
+
                     if (creditThrottle) {
                         creditThrottle.log('click', {
                             [ FPTI.KEY.STATE ]:              FPTI.STATE.BUTTON,
@@ -743,15 +808,8 @@ export let Button : Component<ButtonOptions> = create({
             },
 
             validate(style = {}, props) {
-                info(`button_render_color_${ style.color || 'default' }`);
-                info(`button_render_shape_${ style.shape || 'default' }`);
-                info(`button_render_size_${ style.size || 'default' }`);
-                info(`button_render_label_${ style.label || 'default' }`);
-                info(`button_render_branding_${ style.branding || 'default' }`);
-                info(`button_render_fundingicons_${ style.fundingicons || 'default' }`);
-                info(`button_render_tagline_${ style.tagline || 'default' }`);
-
                 validateButtonStyle(style, props);
+                flushLogs();
             }
         },
 

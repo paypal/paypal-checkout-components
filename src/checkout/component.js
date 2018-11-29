@@ -10,7 +10,7 @@ import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
     setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize,
     getDomainSetting, getScriptVersion, getButtonSessionID, isPayPalDomain,
-    isIEIntranet, isEligible } from '../lib';
+    isEligible } from '../lib';
 import { config } from '../config';
 import { ENV, FPTI, PAYMENT_TYPE, CHECKOUT_OVERLAY_COLOR, ATTRIBUTE } from '../constants';
 import { onLegacyPaymentAuthorize } from '../compat';
@@ -98,10 +98,6 @@ export let Checkout : Component<CheckoutPropsType> = create({
     },
 
     validate() {
-        if (isIEIntranet()) {
-            throw new Error(`Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md`);
-        }
-
         if (!isEligible()) {
             warn('checkout_render_ineligible');
         }

@@ -89,11 +89,32 @@ export function isIE() : boolean {
         return true;
     }
 
-    return Boolean(
-        window.navigator &&
-        window.navigator.userAgent &&
-        (/Edge|MSIE/i).test(window.navigator.userAgent)
-    );
+    if (window.navigator && typeof window.navigator.userAgent === 'string') {
+        if ((/Edge|MSIE/i).test(window.navigator.userAgent)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+export function isIE11() : boolean {
+    if (!isIE()) {
+        return false;
+    }
+
+    if (window.navigator && typeof window.navigator.userAgent === 'string') {
+        if ((/MSIE 11\.0/i).test(window.navigator.userAgent)) {
+            return true;
+        }
+
+        if ((/Trident/i).test(window.navigator.userAgent) && (/rv:11\.0/i).test(window.navigator.userAgent)) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 export function isIECompHeader() : boolean {
@@ -113,6 +134,9 @@ export function isElectron() : boolean {
 }
 
 export function isIEIntranet() : boolean {
+    if (!isIE11()) {
+        return false;
+    }
 
     // This status check only works for older versions of IE with document.documentMode set
 
