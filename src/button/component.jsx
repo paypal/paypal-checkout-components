@@ -144,6 +144,9 @@ export let Button : Component<ButtonOptions> = create({
                 });
 
                 flushLogs();
+
+                // eslint-disable-next-line no-alert
+                alert(`IE Intranet mode is not supported by PayPal. Please disable intranet mode, or continue in an alternate browser.`);
             }
 
             if (getDomainSetting('allow_full_page_fallback')) {
