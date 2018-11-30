@@ -551,6 +551,10 @@ export let Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
                     });
 
+                    if (isIEIntranet()) {
+                        warn(`button_authorize_intranet_mode`);
+                    }
+
                     if (!isEligible()) {
                         info('button_authorize_ineligible');
                     }
@@ -757,7 +761,7 @@ export let Button : Component<ButtonOptions> = create({
                     });
 
                     if (isIEIntranet()) {
-                        info('button_click_intranet_mode');
+                        warn('button_click_intranet_mode');
 
                         track({
                             [ FPTI.KEY.STATE ]:              FPTI.STATE.BUTTON,
