@@ -757,6 +757,8 @@ export let Button : Component<ButtonOptions> = create({
                     });
 
                     if (isIEIntranet()) {
+                        info('button_click_intranet_mode');
+
                         track({
                             [ FPTI.KEY.STATE ]:              FPTI.STATE.BUTTON,
                             [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_CLICK_INTRANET_MODE,
