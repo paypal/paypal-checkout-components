@@ -27,6 +27,6 @@ export function allowFrame(res : ExpressResponse) {
     res.removeHeader(HTTP_HEADER.X_FRAME_OPTIONS);
 }
 
-export function isProduction() : boolean {
-    return process.env.NODE_ENV === ENV.PRODUCTION;
+export function isLocal() : boolean {
+    return (!process.env.NODE_ENV || process.env.NODE_ENV === 'development');
 }

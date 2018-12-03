@@ -8,9 +8,7 @@ import { readFile } from 'fs-extra';
 import { poll } from 'grabthar';
 import { memoize } from 'belter';
 
-import { WEBPACK_CONFIG } from '../webpack.config';
-
-import { isProduction } from './util';
+import { isLocal } from './util';
 
 const BUTTON_RENDER_MODULE = 'paypal-checkout-components';
 const BUTTON_CLIENT_MODULE = require('../package.json').name;
@@ -41,7 +39,8 @@ export async function getSmartButtonRenderScript() : Promise<Object> {
 }
 
 export async function getSmartButtonClientScript() : Promise<string> {
-    if (!isProduction()) {
+    if (isLocal()) {
+        const { WEBPACK_CONFIG } = require('../webpack.config');
         return await webpackCompile({ webpack, config: WEBPACK_CONFIG });
     }
     const { modulePath } = await getSmartButtonWatcher().get();
