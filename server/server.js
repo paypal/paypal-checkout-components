@@ -5,6 +5,7 @@ import { randomBytes } from 'crypto';
 import express from 'express';
 
 import { getButtonMiddleware } from './button';
+import type { ExpressRequest, ExpressResponse } from './types';
 
 const app = express();
 const PORT = process.env.PORT || 8003;
@@ -12,7 +13,7 @@ const URI = '/sdk/js/smart-buttons';
 
 const buttonMiddleware = getButtonMiddleware();
 
-app.get(URI, (req, res) => {
+app.get(URI, (req : ExpressRequest, res : ExpressResponse) => {
     const nonce = randomBytes(16).toString('base64').replace(/[^a-zA-Z0-9_]/g, '');
 
     res.locals = res.locals || {};
