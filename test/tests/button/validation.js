@@ -50,11 +50,6 @@ const buttonConfigs = [
             },
 
             {
-                label:  `installment`,
-                valid:  false
-            },
-
-            {
                 label: `venmo`,
                 valid: false
             },
@@ -125,12 +120,6 @@ const buttonConfigs = [
                 period: 6,
                 locale: { country: 'MX', lang: 'en' },
                 valid:  true
-            },
-
-            {
-                period: 6,
-                locale: { country: 'US', lang: 'en' },
-                valid:  false
             }
 
         ].map(({ period, locale, valid }) => ({

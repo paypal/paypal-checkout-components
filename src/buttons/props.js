@@ -82,13 +82,11 @@ export const DEFAULT_PROPS = {
     PLATFORM: PLATFORM.DESKTOP
 };
 
-export function normalizeButtonStyle(style : ButtonStyleInputs, { locale } : { locale : LocaleType }) : ButtonStyle {
+export function normalizeButtonStyle(style : ButtonStyleInputs) : ButtonStyle {
 
     if (!style) {
         throw new Error(`Expected props.style to be set`);
     }
-
-    const { country } = locale;
 
     const {
         label = DEFAULT_STYLE.LABEL,
@@ -129,14 +127,6 @@ export function normalizeButtonStyle(style : ButtonStyleInputs, { locale } : { l
 
     if (shape && labelConfig.shapes.indexOf(shape) === -1) {
         throw new Error(`Unexpected style.shape for ${ label } button: ${ shape }, expected ${ labelConfig.shapes.join(', ') }`);
-    }
-
-    if (labelConfig.allowedCountries && labelConfig.allowedCountries.indexOf(country) === -1) {
-        throw new Error(`Label ${ label } invalid for country ${ country }`);
-    }
-
-    if (period && labelConfig.allowedPeriods && labelConfig.allowedPeriods[country].indexOf(period) === -1) {
-        throw new Error(`Period ${ period } invalid for country ${ country }`);
     }
 
     if (height !== undefined) {
@@ -212,7 +202,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : ButtonProps {
         throw new Error(`Expected valid platform, got ${ platform || 'undefined' }`);
     }
 
-    style = normalizeButtonStyle(style, { locale });
+    style = normalizeButtonStyle(style);
 
     return { clientID, style, locale, remembered, env, fundingEligibility, platform, buttonSessionID, commit, sessionID, nonce };
 }

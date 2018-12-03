@@ -107,8 +107,8 @@ export const Buttons : Component<ButtonProps> = create({
             queryParam: true,
             required:   false,
 
-            decorate(style = {}, props) : Object {
-                const { label, layout, color, shape, tagline, height, period } = normalizeButtonStyle(style, props);
+            decorate(style = {}) : Object {
+                const { label, layout, color, shape, tagline, height, period } = normalizeButtonStyle(style);
 
                 const logger = getLogger();
                 logger.info(`button_render_color_${ color }`);
@@ -120,8 +120,8 @@ export const Buttons : Component<ButtonProps> = create({
                 return { label, layout, color, shape, tagline, height, period };
             },
 
-            validate(style = {}, props) {
-                normalizeButtonStyle(style, props);
+            validate(style = {}) {
+                normalizeButtonStyle(style);
             }
         },
 

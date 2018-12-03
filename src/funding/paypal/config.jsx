@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { COUNTRY, type LocaleType } from 'paypal-sdk-constants/src';
+import { type LocaleType } from 'paypal-sdk-constants/src';
 import { node, Fragment, type ElementNode } from 'jsx-pragmatic/src';
 import { PPLogo, PayPalLogo, LOGO_COLOR } from 'paypal-sdk-logos/src';
 
@@ -84,14 +84,7 @@ export const PAYPAL_CONFIG : FundingSourceConfig = {
         [ BUTTON_LABEL.INSTALLMENT ]: {
             ...DEFAULT_LABEL_CONFIG,
 
-            defaultColor: BUTTON_COLOR.GOLD,
-
-            allowedCountries: [ COUNTRY.BR, COUNTRY.MX ],
-
-            allowedPeriods: {
-                [ COUNTRY.BR ]: [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
-                [ COUNTRY.MX ]: [ 3, 6, 9, 12 ]
-            },
+            defaultColor:   BUTTON_COLOR.GOLD,
 
             Label: ({ locale, logoColor, period }) => {
                 return (
