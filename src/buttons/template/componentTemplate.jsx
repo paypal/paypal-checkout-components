@@ -176,9 +176,7 @@ function Style({ style, cardNumber, nonce } :
     const { height } = style;
 
     return (
-        <style nonce={ nonce }>
-            { componentStyle({ height, cardNumber }) }
-        </style>
+        <style nonce={ nonce } innerHTML={ componentStyle({ height, cardNumber }) } />
     );
 }
 
