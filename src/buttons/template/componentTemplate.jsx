@@ -174,9 +174,16 @@ function Style({ style, cardNumber, nonce } :
     {| style : ButtonStyle, cardNumber? : number, nonce : string |}) : ElementNode {
 
     const { height } = style;
+    const css = componentStyle({ height, cardNumber });
+
+    if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+        return (
+            <style nonce={ nonce } innerHTML={ css } />
+        );
+    }
 
     return (
-        <style nonce={ nonce } innerHTML={ componentStyle({ height, cardNumber }) } />
+        <style nonce={ nonce }>{ css }</style>
     );
 }
 
