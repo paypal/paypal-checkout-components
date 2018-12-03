@@ -1,7 +1,5 @@
 /* @flow */
 
-import { ENV } from 'paypal-sdk-constants';
-
 import { HTTP_HEADER, HTTP_CONTENT_TYPE, HTTP_STATUS_CODE } from './constants';
 import type { ExpressResponse } from './types';
 
