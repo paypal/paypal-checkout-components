@@ -21,8 +21,6 @@ export function setupMocks() {
     };
 
     window.paypal = {
-        client:  () => window.paypal,
-        Promise: ZalgoPromise,
         config:  {
             locale: {
                 country: 'US',
@@ -45,7 +43,7 @@ export function setupMocks() {
 
     window.xprops = {
         createOrder: () => {
-            return ZalgoPromise.resolve('PAY-XXXXXXXXXX');
+            return ZalgoPromise.resolve('XXXXXXXXXX');
         },
         style: {
 
@@ -65,7 +63,8 @@ export function setupMocks() {
             remember:   () => {
                 // pass
             }
-        }
+        },
+        getPrerenderDetails: () => ZalgoPromise.resolve()
     };
 
     window.xchild = {

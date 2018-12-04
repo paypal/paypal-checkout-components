@@ -28,7 +28,7 @@ describe('error cases', () => {
         };
 
         window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onAuthorize.call(getMockCheckoutInstance(), { orderID: 'XXXXX', payerID: 'YYYYY' });
+            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID: 'XXXXX', payerID: 'YYYYY' });
         };
 
         window.document.body.innerHTML = createButtonHTML();

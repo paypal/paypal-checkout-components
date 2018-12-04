@@ -25,4 +25,16 @@ export function setupButton() {
             renderCheckout({ fundingSource });
         });
     });
+
+    window.xprops.getPrerenderDetails().then((prerenderDetails) => {
+        if (prerenderDetails) {
+            const { win, order, fundingSource } = prerenderDetails;
+
+            renderCheckout({
+                window:      win,
+                createOrder: () => order,
+                fundingSource
+            });
+        }
+    });
 }

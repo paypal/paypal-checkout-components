@@ -85,7 +85,7 @@ describe('happy cases', () => {
         }
     });
 
-    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent', async () => {
+    it.only('should render a button, click the button, and render checkout, then pass onApprove callback to the parent', async () => {
     
         let onApprove;
         let onApproveCalled = false;
@@ -95,7 +95,7 @@ describe('happy cases', () => {
         };
 
         window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onAuthorize.call(getMockCheckoutInstance(), { orderID: 'xxx', payerID: 'yyy' });
+            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID: 'xxx', payerID: 'yyy' });
         };
     
         window.document.body.innerHTML = createButtonHTML();
@@ -159,7 +159,7 @@ describe('happy cases', () => {
         };
     
         window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onAuthorize.call(getMockCheckoutInstance(), { orderID, payerID });
+            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
         };
     
         window.document.body.innerHTML = createButtonHTML();
@@ -195,7 +195,7 @@ describe('happy cases', () => {
         };
     
         window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onAuthorize.call(getMockCheckoutInstance(), { orderID, payerID });
+            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
         };
     
         window.document.body.innerHTML = createButtonHTML();
@@ -230,7 +230,7 @@ describe('happy cases', () => {
         };
 
         window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onAuthorize.call(getMockCheckoutInstance(), { orderID, payerID });
+            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
         };
 
         window.document.body.innerHTML = createButtonHTML();
@@ -265,7 +265,7 @@ describe('happy cases', () => {
         };
 
         window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onAuthorize.call(getMockCheckoutInstance(), { orderID, payerID });
+            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
         };
 
         window.document.body.innerHTML = createButtonHTML();
@@ -300,7 +300,7 @@ describe('happy cases', () => {
         };
 
         window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onAuthorize.call(getMockCheckoutInstance(), { orderID, payerID });
+            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
         };
 
         window.document.body.innerHTML = createButtonHTML();
@@ -346,7 +346,7 @@ describe('happy cases', () => {
         };
 
         window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onAuthorize.call(getMockCheckoutInstance(), { orderID, payerID });
+            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
         };
 
         window.document.body.innerHTML = createButtonHTML();
@@ -392,7 +392,7 @@ describe('happy cases', () => {
         };
 
         window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onAuthorize.call(getMockCheckoutInstance(), { orderID, payerID });
+            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
         };
 
         window.document.body.innerHTML = createButtonHTML();
@@ -407,50 +407,50 @@ describe('happy cases', () => {
             throw new Error(`Expected onApprove to have been called`);
         }
     });
-});
 
-it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.authorize call and automatic restart on CC_PROCESSOR_DECLINED', async () => {
+    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.authorize call and automatic restart on CC_PROCESSOR_DECLINED', async () => {
 
-    const orderID = 'XXXXXXXXXX';
-    const payerID = 'YYYYYYYYYY';
+        const orderID = 'XXXXXXXXXX';
+        const payerID = 'YYYYYYYYYY';
 
-    let onApprove;
-    let onApproveCalled = false;
-    let didRestart = false;
+        let onApprove;
+        let onApproveCalled = false;
+        let didRestart = false;
 
-    window.xprops.onApprove = async (data, actions) => {
-        if (didRestart) {
-            onApproveCalled = true;
-        } else {
-            didRestart = true;
-            onApprove = null;
+        window.xprops.onApprove = async (data, actions) => {
+            if (didRestart) {
+                onApproveCalled = true;
+            } else {
+                didRestart = true;
+                onApprove = null;
 
-            const authorizeOrderMock = authorizeOrderApiMock({
-                data: {
-                    ack:         'contingency',
-                    contingency: 'CC_PROCESSOR_DECLINED'
-                }
-            });
+                const authorizeOrderMock = authorizeOrderApiMock({
+                    data: {
+                        ack:         'contingency',
+                        contingency: 'CC_PROCESSOR_DECLINED'
+                    }
+                });
 
-            authorizeOrderMock.expectCalls();
-            actions.order.authorize();
-            authorizeOrderMock.done();
+                authorizeOrderMock.expectCalls();
+                actions.order.authorize();
+                authorizeOrderMock.done();
+            }
+        };
+
+        window.paypal.Checkout.renderTo = async (win, props) => {
+            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+        };
+
+        window.document.body.innerHTML = createButtonHTML();
+
+        await setupButton();
+
+        window.document.querySelector('.paypal-button').click();
+
+        await onApprove;
+
+        if (!onApprove || !onApproveCalled) {
+            throw new Error(`Expected onApprove to have been called`);
         }
-    };
-
-    window.paypal.Checkout.renderTo = async (win, props) => {
-        onApprove = props.onAuthorize.call(getMockCheckoutInstance(), { orderID, payerID });
-    };
-
-    window.document.body.innerHTML = createButtonHTML();
-
-    await setupButton();
-
-    window.document.querySelector('.paypal-button').click();
-
-    await onApprove;
-
-    if (!onApprove || !onApproveCalled) {
-        throw new Error(`Expected onApprove to have been called`);
-    }
+    });
 });

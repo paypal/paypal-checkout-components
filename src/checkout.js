@@ -31,7 +31,7 @@ function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : A
             enableLightbox();
             // eslint-disable-next-line no-use-before-define
             return renderCheckout({
-                payment: () => ZalgoPromise.resolve(orderID)
+                createOrder: () => ZalgoPromise.resolve(orderID)
             });
         }).then(() => new ZalgoPromise(noop)));
 
@@ -134,26 +134,25 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
 
     const [ parent, top ] = [ getTop(window), getParent() ];
 
-    const createOrder = memoize(window.xprops.createOrder);
+    const createOrder = memoize(props.createOrder || window.xprops.createOrder);
     const renderWindow = (canRenderTop && top) ? top : parent;
 
     return ZalgoPromise.all([
 
-        createOrder().then(validateOrder).catch(err => {
-            window.xchild.error(err);
-            throw err;
-        }),
+        createOrder().then(validateOrder)
+            .catch(err => window.xchild.error(err)),
         
         window.paypal.Checkout.renderTo(renderWindow, {
+            ...props,
 
-            payment: createOrder,
+            createOrder,
 
             locale: window.xprops.locale,
             commit: window.xprops.commit,
 
             onError: window.xprops.onError,
 
-            onAuthorize({ orderID, payerID }) : ZalgoPromise<void> {
+            onApprove({ orderID, payerID }) : ZalgoPromise<void> {
                 const actions = buildExecuteActions(this, orderID);
 
                 return window.xprops.onApprove({ orderID, payerID }, actions).catch(err => {
@@ -179,9 +178,7 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
                 checkoutOpen = false;
             },
 
-            nonce: getNonce(),
-
-            ...props
+            nonce: getNonce()
         })
     ]);
 }
