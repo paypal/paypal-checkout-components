@@ -121,9 +121,10 @@ export const Checkout : Component<CheckoutPropsType> = create({
             value: getLocale
         },
         
-        payment: {
+        createOrder: {
             type:       'function',
             queryParam: 'token',
+            alias:      'payment',
             queryValue(payment) : ZalgoPromise<string> {
                 return payment();
             },
@@ -172,8 +173,9 @@ export const Checkout : Component<CheckoutPropsType> = create({
             }
         },
 
-        onAuthorize: {
+        onApprove: {
             type:     'function',
+            alias:    'onAuthorize',
 
             decorate(original) : Function {
                 return function decorateOnAuthorize(data, actions = {}) : ZalgoPromise<void> {
