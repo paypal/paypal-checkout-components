@@ -4,6 +4,7 @@
 import { FUNDING, ENV, type LocaleType } from 'paypal-sdk-constants/src';
 import { node, html, type ElementNode } from 'jsx-pragmatic/src';
 import { LOGO_COLOR, LOGO_CLASS } from 'paypal-sdk-logos/src';
+import { noop } from 'belter/src';
 
 import { BUTTON_NUMBER, BUTTON_LABEL, ATTRIBUTE, CLASS, BUTTON_COLOR } from '../../constants';
 import { FUNDING_CONFIG, determineEligibleFunding } from '../../funding';
@@ -39,13 +40,13 @@ function getButtonClasses({ label, color, logoColor } :
     ].join(' ');
 }
 
-function determineLabel({ source, style } :
-    {| source : $Values<typeof FUNDING>, style : ButtonStyle |}) : $Values<typeof BUTTON_LABEL> {
+function determineLabel({ fundingSource, style } :
+    {| fundingSource : $Values<typeof FUNDING>, style : ButtonStyle |}) : $Values<typeof BUTTON_LABEL> {
 
-    const fundingConfig = FUNDING_CONFIG[source];
+    const fundingConfig = FUNDING_CONFIG[fundingSource];
 
     if (!fundingConfig) {
-        throw new Error(`Can not find config for ${ source }`);
+        throw new Error(`Can not find config for ${ fundingSource }`);
     }
 
     const labelsConfig = fundingConfig.labels;
@@ -59,21 +60,21 @@ function determineLabel({ source, style } :
         return fundingConfig.defaultLabel;
     }
 
-    throw new Error(`Could not determine label for ${ source }`);
+    throw new Error(`Could not determine label for ${ fundingSource }`);
 }
 
-function Button({ source, style, multiple, locale, env, fundingEligibility, i, nonce } :
-    {| style : ButtonStyle, source : $Values<typeof FUNDING>, multiple : boolean, locale : LocaleType,
+function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, onClick = noop } :
+    {| style : ButtonStyle, fundingSource : $Values<typeof FUNDING>, multiple : boolean, locale : LocaleType, onClick? : Function,
       env : $Values<typeof ENV>, fundingEligibility : FundingEligibilityType, i : number, nonce : string |}) : ElementNode {
 
     let { color, period } = style;
 
-    const buttonLabel = determineLabel({ source, style });
+    const buttonLabel = determineLabel({ fundingSource, style });
     
-    const fundingConfig = FUNDING_CONFIG[source];
+    const fundingConfig = FUNDING_CONFIG[fundingSource];
 
     if (!fundingConfig) {
-        throw new Error(`Can not find funding config for ${ source }`);
+        throw new Error(`Can not find funding config for ${ fundingSource }`);
     }
 
     const labelConfig = fundingConfig.labels[buttonLabel];
@@ -95,10 +96,11 @@ function Button({ source, style, multiple, locale, env, fundingEligibility, i, n
 
     return (
         <div
-            { ...{ [ATTRIBUTE.FUNDING_SOURCE]: source, [ATTRIBUTE.BUTTON]: true } }
+            { ...{ [ATTRIBUTE.FUNDING_SOURCE]: fundingSource, [ATTRIBUTE.BUTTON]: true } }
             class={ `${ CLASS.BUTTON } ${ CLASS.NUMBER }-${ i } ${ getCommonClasses({ style, multiple, env }) } ${ getButtonClasses({ label: buttonLabel, color, logoColor }) }` }
             role='button'
-            aria-label={ source }
+            aria-label={ fundingSource }
+            onClick={ () => onClick({ fundingSource }) }
             tabindex='0'>
 
             <Label
@@ -113,8 +115,8 @@ function Button({ source, style, multiple, locale, env, fundingEligibility, i, n
     );
 }
 
-function TagLine({ source, style, locale, multiple, nonce } :
-    {| source : $Values<typeof FUNDING>, style : ButtonStyle, locale : LocaleType, multiple : boolean, nonce : string |}) : ?ElementNode {
+function TagLine({ fundingSource, style, locale, multiple, nonce } :
+    {| fundingSource : $Values<typeof FUNDING>, style : ButtonStyle, locale : LocaleType, multiple : boolean, nonce : string |}) : ?ElementNode {
 
     const { tagline, label, color } = style;
 
@@ -122,10 +124,10 @@ function TagLine({ source, style, locale, multiple, nonce } :
         return;
     }
 
-    const fundingConfig = FUNDING_CONFIG[source];
+    const fundingConfig = FUNDING_CONFIG[fundingSource];
 
     if (!fundingConfig) {
-        throw new Error(`Can not get config for ${ source }`);
+        throw new Error(`Can not get config for ${ fundingSource }`);
     }
 
     const labelConfig = fundingConfig.labels[label];
@@ -204,14 +206,15 @@ function getCardNumber(locale : LocaleType) : number {
     }
 }
 
-export function Buttons(props : ButtonPropsInputs) : ElementNode {
+export function Buttons(props : ButtonPropsInputs & {| onClick? : Function |}) : ElementNode {
+    const { onClick } = props;
     const { style, locale, remembered, env, fundingEligibility, platform, nonce } = normalizeButtonProps(props);
 
-    const sources  = determineEligibleFunding({ style, remembered, platform, fundingEligibility });
-    const multiple = sources.length > 1;
+    const fundingSources = determineEligibleFunding({ style, remembered, platform, fundingEligibility });
+    const multiple = fundingSources.length > 1;
 
-    if (!sources.length) {
-        throw new Error(`No eligible funding sources found to render buttons:\n\n${ JSON.stringify(fundingEligibility, null, 4) }`);
+    if (!fundingSources.length) {
+        throw new Error(`No eligible funding fundingSources found to render buttons:\n\n${ JSON.stringify(fundingEligibility, null, 4) }`);
     }
 
     const buttonsNode = (
@@ -224,22 +227,23 @@ export function Buttons(props : ButtonPropsInputs) : ElementNode {
             />
 
             {
-                sources.map((source, i) => (
+                fundingSources.map((fundingSource, i) => (
                     <Button
                         i={ i }
                         style={ style }
-                        source={ source }
+                        fundingSource={ fundingSource }
                         multiple={ multiple }
                         env={ env }
                         locale={ locale }
                         nonce={ nonce }
                         fundingEligibility={ fundingEligibility }
+                        onClick={ onClick }
                     />
                 ))
             }
             
             <TagLine
-                source={ sources[0] }
+                fundingSource={ fundingSources[0] }
                 style={ style }
                 locale={ locale }
                 multiple={ multiple }

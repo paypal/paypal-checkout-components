@@ -13,7 +13,7 @@ function getMemory() : number {
     return window.performance.memory.usedJSHeapSize / Math.pow(2, 20);
 }
 
-let maxMem = getMemory();
+let maxMem = getMemory() * 2;
 let originalUserAgent;
 
 beforeEach(() => {

@@ -8,15 +8,17 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit,
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
-import { isIEIntranet, isDevice, uniqueID, redirect } from 'belter/src';
+import { isIEIntranet, isDevice, uniqueID, redirect, supportsPopups, popup, writeElementToWindow } from 'belter/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
-import { PLATFORM, INTENT, FPTI_KEY, ENV } from 'paypal-sdk-constants/src';
+import { FUNDING, PLATFORM, INTENT, FPTI_KEY, ENV } from 'paypal-sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
 import { getButtonUrl } from '../config';
 import { getFundingEligibility } from '../globals';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_CONTEXT_TYPE } from '../constants';
 import { getSessionID } from '../lib';
+import { Checkout } from '../checkout';
+import { componentTemplate } from '../checkout/template';
 
 import { containerTemplate, Buttons as ButtonsTemplate } from './template';
 import { rememberFunding, findRememberedFunding } from './funding';
@@ -54,6 +56,14 @@ type OnApproveActions = {|
 type OnApprove = (data : OnApproveData, actions : OnApproveActions) =>
     void | ZalgoPromise<void> | ZalgoPromise<OrderCaptureResponse> | ZalgoPromise<OrderGetResponse> | ZalgoPromise<OrderAuthorizeResponse>;
 
+type PrerenderDetails = {|
+    win : ?CrossDomainWindowType,
+    order : ZalgoPromise<string>,
+    fundingSource : $Values<typeof FUNDING>
+|};
+
+let prerenderDetails : PrerenderDetails;
+
 export const Buttons : Component<ButtonProps> = create({
 
     tag:  'paypal-button',
@@ -73,11 +83,30 @@ export const Buttons : Component<ButtonProps> = create({
     containerTemplate,
 
     prerenderTemplate({ props, document } : { props : Object, document : Document }) : HTMLElement {
+
+        const prerenderCheckout = ({ fundingSource } : {| fundingSource : $Values<typeof FUNDING> |}) => {
+            const order    = props.createOrder();
+            let win;
+
+            if (!Checkout.contexts.iframe || !supportsPopups()) {
+                win = popup('', { width: 450, height: 535 });
+
+                // $FlowFixMe
+                writeElementToWindow(win, componentTemplate({
+                    // $FlowFixMe
+                    document: win.document,
+                    props:    { nonce: props.nonce }
+                }));
+            }
+
+            prerenderDetails = { win, order, fundingSource };
+        };
+
         return (
             <html>
                 <body>
-                    <div onClick={ () => getLogger().warn('button_pre_template_click') } >
-                        <ButtonsTemplate { ...props } />
+                    <div>
+                        <ButtonsTemplate { ...props } onClick={ prerenderCheckout } />
                     </div>
                 </body>
             </html>
@@ -346,6 +375,13 @@ export const Buttons : Component<ButtonProps> = create({
                         return original.apply(this, arguments);
                     }
                 };
+            }
+        },
+
+        getPrerenderDetails: {
+            type: 'function',
+            value() : () => PrerenderDetails {
+                return () => prerenderDetails;
             }
         },
 

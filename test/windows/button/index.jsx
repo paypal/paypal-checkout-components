@@ -110,6 +110,22 @@ if (action === 'auth') {
     } else {
         getElement(selector || '.paypal-button', document).click();
     }
+} else {
+    window.xprops.getPrerenderDetails().then(({ win, order, fundingSource }) => {
+        if (!order) {
+            throw new Error(`Expected order to be passed`);
+        }
+
+        if (!fundingSource) {
+            throw new Error(`Expected fundingSource to be passed`);
+        }
+
+        return renderCheckout({
+            window:      win,
+            createOrder: () => order,
+            fundingSource
+        });
+    });
 }
 
 if (onRender) {
