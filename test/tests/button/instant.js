@@ -7,7 +7,7 @@ import { createTestContainer, destroyTestContainer } from '../common';
 
 for (const flow of [ 'popup', 'iframe' ]) {
 
-    describe(`paypal button component happy path on ${ flow }`, () => {
+    describe(`paypal button component instant click path on ${ flow }`, () => {
 
         beforeEach(() => {
             createTestContainer();

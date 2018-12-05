@@ -25,8 +25,6 @@ import { rememberFunding, findRememberedFunding } from './funding';
 import { setupButtonChild } from './child';
 import { normalizeButtonStyle, type ButtonProps } from './props';
 
-let remoteCreateOrder;
-
 const ORDER_CREATE_TIMEOUT = 10 * 1000;
 
 type CreateOrderData = {|
@@ -61,8 +59,6 @@ type PrerenderDetails = {|
     order : ZalgoPromise<string>,
     fundingSource : $Values<typeof FUNDING>
 |};
-
-let prerenderDetails : PrerenderDetails;
 
 export const Buttons : Component<ButtonProps> = create({
 
@@ -99,7 +95,7 @@ export const Buttons : Component<ButtonProps> = create({
                 }));
             }
 
-            prerenderDetails = { win, order, fundingSource };
+            this.prerenderDetails = { win, order, fundingSource };
         };
 
         return (
@@ -170,7 +166,7 @@ export const Buttons : Component<ButtonProps> = create({
             type:     'function',
             required: false,
             decorate(original : CreateOrder, props) : Function {
-                return () : ZalgoPromise<string> => {
+                return function decoratedCreateOrder() : ZalgoPromise<string> {
                     return ZalgoPromise.try(() => {
 
                         const data : CreateOrderData = {};
@@ -178,7 +174,7 @@ export const Buttons : Component<ButtonProps> = create({
                         const actions = {
                             order: {
                                 create: (options) =>
-                                    (remoteCreateOrder || createOrder)(
+                                    (this.remoteCreateOrder || createOrder)(
                                         props.clientID, options, { fptiState: FPTI_STATE.BUTTON }
                                     )
                             }
@@ -381,7 +377,9 @@ export const Buttons : Component<ButtonProps> = create({
         getPrerenderDetails: {
             type: 'function',
             value() : () => PrerenderDetails {
-                return () => prerenderDetails;
+                return function getPrerenderDetails() : PrerenderDetails {
+                    return this.prerenderDetails;
+                };
             }
         },
 
@@ -389,7 +387,7 @@ export const Buttons : Component<ButtonProps> = create({
             type: 'function',
             value() : ({ createOrder : typeof createOrder }) => void {
                 return (rest) => {
-                    remoteCreateOrder = rest.createOrder;
+                    this.remoteCreateOrder = rest.createOrder;
                 };
             }
         },
