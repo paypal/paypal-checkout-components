@@ -1379,7 +1379,13 @@ window.spb = function(modules) {
                 document.body && (nonce = document.body.getAttribute("data-nonce") || "");
                 return nonce;
             }()
-        })) ]);
+        })) ]).catch(function(err) {
+            if (err instanceof window.paypal.PopupOpenError) {
+                window.paypal.Checkout.contexts.iframe = !0;
+                return renderCheckout(props);
+            }
+            throw err;
+        });
     }
     function setupButton() {
         if (!window.paypal) throw new Error("PayPal library not loaded");
