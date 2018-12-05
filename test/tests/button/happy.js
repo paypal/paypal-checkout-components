@@ -946,22 +946,58 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render a button into a container and click on the button then call resolve on shipping change', (done) => {
-
+        it('should render a button into a container and click on the button using shipping options then pass those shipping options on shipping change', (done) => {
             window.paypal.Button.render({
 
                 test: { flow, action: 'shippingChange' },
 
-                payment() : string | ZalgoPromise<string> {
-                    return generateECToken();
+                client: {
+                    test: MERCHANT_CLIENT_ID
+                },
+
+                payment(data) : string | ZalgoPromise<string> {
+                    return data.payment.create({
+                        transactions: [
+                            {
+                                amount:    { total: '1.00', currency: 'INR' },
+                                item_list: {
+                                    shipping_options: [
+                                        {
+                                            id:     'TEST123',
+                                            label:  'Free Pickup',
+                                            type:   'PICKUP',
+                                            amount: {
+                                                currency_code: 'USD',
+                                                value:         '0.00'
+                                            }
+                                        },
+                                        {
+                                            id:     'TEST456',
+                                            label:  'Premium Shipping',
+                                            type:   'SHIP_TO_HOME',
+                                            amount: {
+                                                currency_code: 'USD',
+                                                value:         '5.00'
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    });
                 },
 
                 onAuthorize() : void {
                     return done(new Error('Expected onAuthorize to not be called'));
                 },
 
-                onShippingChange(data, actions) : void {
-                    return actions.resolve().then(done);
+                onShippingChange(data) : void {
+                    assert.ok(data.shipping_options);
+                    return done();
+                },
+
+                onError(err) : void {
+                    return done(new Error(`Expected onError to not be called, got ${ err }`));
                 },
 
                 onCancel() : void {
@@ -969,6 +1005,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 }
 
             }, '#testContainer');
+
         });
 
         if (flow === 'popup') {

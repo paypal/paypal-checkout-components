@@ -251,4 +251,43 @@ describe(`paypal checkout auth api`, () => {
             }
         });
     });
+
+    it('should call the payment api and strip out any shipping_options added to the transaction item list', () => {
+
+        let paymentApi = getPaymentApiMock({
+            headers: {
+                'content-type': 'text/html'
+            }
+        }).expectCalls();
+
+        return window.paypal.rest.payment.create('test', { test: MERCHANT_CLIENT_ID }, {
+            transactions: [
+                {
+                    amount:    { total: '1.00', currency: 'USD' },
+                    item_list: {
+                        shipping_options: [
+                            {
+                                id:     'TEST123',
+                                label:  'Premium Shipping',
+                                type:   'SHIP_TO_HOME',
+                                amount: {
+                                    currency_code: 'USD',
+                                    value:         '5.00'
+                                }
+                            }
+
+                        ]
+                    }
+                }
+            ]
+
+        }).then(paymentID => {
+
+            paymentApi.done();
+
+            if (!paymentID.match(/^PAY-[A-Z0-9]+$/)) {
+                throw new Error(`Expected valid payment ID, got ${ paymentID }`);
+            }
+        });
+    });
 });

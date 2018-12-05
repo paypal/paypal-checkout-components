@@ -325,6 +325,11 @@ export function getPaymentApiMock(options : Object = {}) : Object {
                 throw new Error(`Expected data.payer.payment_method to be passed`);
             }
 
+            const shippingOptionsFilter = so => (so.item_list && so.item_list.shipping_options);
+            if (data.transactions && data.transactions.filter(shippingOptionsFilter).length) {
+                throw new Error(`Expected transactions to have no shipping options`);
+            }
+
             return {
                 id: generatePaymentID()
             };
