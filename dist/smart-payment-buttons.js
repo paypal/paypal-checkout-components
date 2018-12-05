@@ -1291,6 +1291,96 @@ window.spb = function(modules) {
         var query;
     }
     var checkoutOpen = !1, canRenderTop = !0;
+    function renderCheckout(props) {
+        void 0 === props && (props = {});
+        if (checkoutOpen) throw new Error("Checkout already rendered");
+        var _ref2 = [ Object(cross_domain_utils_src.getTop)(window), Object(cross_domain_utils_src.getParent)() ], parent = _ref2[0], top = _ref2[1], createOrder = Object(src.memoize)(props.createOrder || window.xprops.createOrder), renderWindow = canRenderTop && top ? top : parent;
+        return zalgo_promise_src.a.all([ createOrder().then(validateOrder).catch(function(err) {
+            return window.xchild.error(err);
+        }), window.paypal.Checkout.renderTo(renderWindow, Object(esm_extends.a)({}, props, {
+            createOrder: createOrder,
+            locale: window.xprops.locale,
+            commit: window.xprops.commit,
+            onError: window.xprops.onError,
+            onApprove: function(_ref3) {
+                var orderID = _ref3.orderID, payerID = _ref3.payerID, actions = function(checkout, orderID) {
+                    var restartFlow = Object(src.memoize)(function() {
+                        return checkout.close().then(function() {
+                            window.paypal.Checkout.contexts.iframe = !0;
+                            return renderCheckout({
+                                createOrder: function() {
+                                    return zalgo_promise_src.a.resolve(orderID);
+                                }
+                            });
+                        }).then(function() {
+                            return new zalgo_promise_src.a(src.noop);
+                        });
+                    }), handleProcessorError = function(err) {
+                        if (err && "CC_PROCESSOR_DECLINED" === err.message) return restartFlow();
+                        if (err && "INSTRUMENT_DECLINED" === err.message) return restartFlow();
+                        throw new Error("Order could not be captured");
+                    }, orderGet = Object(src.memoize)(function() {
+                        return function(orderID) {
+                            return callAPI({
+                                url: API_URI.ORDER + "/" + orderID
+                            });
+                        }(orderID);
+                    });
+                    return {
+                        order: {
+                            capture: Object(src.memoize)(function() {
+                                return function(orderID) {
+                                    return callAPI({
+                                        method: "post",
+                                        url: API_URI.ORDER + "/" + orderID + "/capture"
+                                    });
+                                }(orderID).catch(handleProcessorError).finally(orderGet.reset);
+                            }),
+                            authorize: Object(src.memoize)(function() {
+                                return function(orderID) {
+                                    return callAPI({
+                                        method: "post",
+                                        url: API_URI.ORDER + "/" + orderID + "/authorize"
+                                    });
+                                }(orderID).catch(handleProcessorError).finally(orderGet.reset);
+                            }),
+                            get: orderGet
+                        },
+                        restart: restartFlow
+                    };
+                }(this, orderID);
+                return window.xprops.onApprove({
+                    orderID: orderID,
+                    payerID: payerID
+                }, actions).catch(function(err) {
+                    return window.xchild.error(err);
+                });
+            },
+            onCancel: function() {
+                return zalgo_promise_src.a.try(function() {
+                    return createOrder();
+                }).then(function(orderID) {
+                    return window.xprops.onCancel({
+                        orderID: orderID
+                    });
+                }).catch(function(err) {
+                    return window.xchild.error(err);
+                });
+            },
+            onAuth: function(_ref4) {
+                var accessToken = _ref4.accessToken;
+                return persistAccessToken(accessToken);
+            },
+            onClose: function() {
+                checkoutOpen = !1;
+            },
+            nonce: function() {
+                var nonce = "";
+                document.body && (nonce = document.body.getAttribute("data-nonce") || "");
+                return nonce;
+            }()
+        })) ]);
+    }
     function setupButton() {
         if (!window.paypal) throw new Error("PayPal library not loaded");
         Object(src.querySelectorAll)(".paypal-button").forEach(function(button) {
@@ -1302,100 +1392,22 @@ window.spb = function(modules) {
                     fundingSource: fundingSource,
                     card: card
                 });
-                !function renderCheckout(props) {
-                    void 0 === props && (props = {});
-                    if (checkoutOpen) throw new Error("Checkout already rendered");
-                    var _ref2 = [ Object(cross_domain_utils_src.getTop)(window), Object(cross_domain_utils_src.getParent)() ], parent = _ref2[0], top = _ref2[1], createOrder = Object(src.memoize)(window.xprops.createOrder), renderWindow = canRenderTop && top ? top : parent;
-                    return zalgo_promise_src.a.all([ createOrder().then(validateOrder).catch(function(err) {
-                        window.xchild.error(err);
-                        throw err;
-                    }), window.paypal.Checkout.renderTo(renderWindow, Object(esm_extends.a)({
-                        payment: createOrder,
-                        locale: window.xprops.locale,
-                        commit: window.xprops.commit,
-                        onError: window.xprops.onError,
-                        onAuthorize: function(_ref3) {
-                            var orderID = _ref3.orderID, payerID = _ref3.payerID, actions = function(checkout, orderID) {
-                                var restartFlow = Object(src.memoize)(function() {
-                                    return checkout.close().then(function() {
-                                        window.paypal.Checkout.contexts.iframe = !0;
-                                        return renderCheckout({
-                                            payment: function() {
-                                                return zalgo_promise_src.a.resolve(orderID);
-                                            }
-                                        });
-                                    }).then(function() {
-                                        return new zalgo_promise_src.a(src.noop);
-                                    });
-                                }), handleProcessorError = function(err) {
-                                    if (err && "CC_PROCESSOR_DECLINED" === err.message) return restartFlow();
-                                    if (err && "INSTRUMENT_DECLINED" === err.message) return restartFlow();
-                                    throw new Error("Order could not be captured");
-                                }, orderGet = Object(src.memoize)(function() {
-                                    return function(orderID) {
-                                        return callAPI({
-                                            url: API_URI.ORDER + "/" + orderID
-                                        });
-                                    }(orderID);
-                                });
-                                return {
-                                    order: {
-                                        capture: Object(src.memoize)(function() {
-                                            return function(orderID) {
-                                                return callAPI({
-                                                    method: "post",
-                                                    url: API_URI.ORDER + "/" + orderID + "/capture"
-                                                });
-                                            }(orderID).catch(handleProcessorError).finally(orderGet.reset);
-                                        }),
-                                        authorize: Object(src.memoize)(function() {
-                                            return function(orderID) {
-                                                return callAPI({
-                                                    method: "post",
-                                                    url: API_URI.ORDER + "/" + orderID + "/authorize"
-                                                });
-                                            }(orderID).catch(handleProcessorError).finally(orderGet.reset);
-                                        }),
-                                        get: orderGet
-                                    },
-                                    restart: restartFlow
-                                };
-                            }(this, orderID);
-                            return window.xprops.onApprove({
-                                orderID: orderID,
-                                payerID: payerID
-                            }, actions).catch(function(err) {
-                                return window.xchild.error(err);
-                            });
-                        },
-                        onCancel: function() {
-                            return zalgo_promise_src.a.try(function() {
-                                return createOrder();
-                            }).then(function(orderID) {
-                                return window.xprops.onCancel({
-                                    orderID: orderID
-                                });
-                            }).catch(function(err) {
-                                return window.xchild.error(err);
-                            });
-                        },
-                        onAuth: function(_ref4) {
-                            var accessToken = _ref4.accessToken;
-                            return persistAccessToken(accessToken);
-                        },
-                        onClose: function() {
-                            checkoutOpen = !1;
-                        },
-                        nonce: function() {
-                            var nonce = "";
-                            document.body && (nonce = document.body.getAttribute("data-nonce") || "");
-                            return nonce;
-                        }()
-                    }, props)) ]);
-                }({
+                renderCheckout({
                     fundingSource: fundingSource
                 });
             });
+        });
+        window.xprops.getPrerenderDetails().then(function(prerenderDetails) {
+            if (prerenderDetails) {
+                var win = prerenderDetails.win, order = prerenderDetails.order;
+                renderCheckout({
+                    window: win,
+                    createOrder: function() {
+                        return order;
+                    },
+                    fundingSource: prerenderDetails.fundingSource
+                });
+            }
         });
     }
     __webpack_require__.d(__webpack_exports__, "setupButton", function() {
