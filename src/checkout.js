@@ -180,5 +180,14 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
 
             nonce: getNonce()
         })
-    ]);
+        
+    ]).catch(err => {
+        
+        if (err instanceof window.paypal.PopupOpenError) {
+            window.paypal.Checkout.contexts.iframe = true;
+            return renderCheckout(props);
+        }
+
+        throw err;
+    });
 }
