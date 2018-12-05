@@ -3,9 +3,9 @@
 
 import { getPayPalDomainRegex, getLogger, getLocale, getEnv, getClientID, getCommit, getSDKMeta, isEligible } from 'paypal-braintree-web-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { create, CONSTANTS, PopupOpenError } from 'zoid/src';
+import { create, CONSTANTS } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
-import { patchMethod, isDevice, supportsPopups, memoize, isIEIntranet } from 'belter/src';
+import { isDevice, supportsPopups, memoize, isIEIntranet } from 'belter/src';
 import { FUNDING, ENV } from 'paypal-sdk-constants/src';
 
 import { getSessionID, getButtonSessionID } from '../lib';
@@ -283,18 +283,4 @@ export const Checkout : Component<CheckoutPropsType> = create({
             ? { width:  '100%', height: '535px' }
             : { width:  '450px', height: '535px' };
     }
-});
-
-patchMethod(Checkout, 'renderTo', ({ args: [ win, props ], original, context }) => {
-
-    const payment = props.payment();
-    props.payment = () => payment;
-
-    return original.call(context, win, props, 'body').catch(err => {
-        if (err instanceof PopupOpenError) {
-            Checkout.contexts.iframe = true;
-            return original.call(context, win, props, 'body');
-        }
-        throw err;
-    });
 });

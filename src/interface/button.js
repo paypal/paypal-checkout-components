@@ -3,6 +3,7 @@
 import { noop } from 'belter/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
 import { isPayPalDomain } from 'paypal-braintree-web-client/src';
+import { PopupOpenError as _PopupOpenError } from 'zoid/src';
 
 import { setupLogger } from '../lib';
 import { Buttons as ButtonsComponent } from '../buttons';
@@ -10,8 +11,11 @@ import type { ButtonProps } from '../buttons/props';
 import { Checkout as _Checkout } from '../checkout';
 
 export let Checkout;
+export let PopupOpenError;
+
 if (isPayPalDomain()) {
     Checkout = _Checkout;
+    PopupOpenError = _PopupOpenError;
 }
 
 // $FlowFixMe

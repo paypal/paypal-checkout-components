@@ -75,7 +75,15 @@ function renderCheckout(props = {}) {
         },
 
         ...props
-    }, 'body');
+    }, 'body').catch(err => {
+
+        if (err instanceof window.paypal.PopupOpenError) {
+            window.paypal.Checkout.contexts.iframe = true;
+            return renderCheckout(props);
+        }
+
+        throw err;
+    });
 }
 
 getElements('.paypal-button', document).forEach(el => {
