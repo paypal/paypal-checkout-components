@@ -67,7 +67,7 @@ if (action === 'checkout') {
         };
 
         return window.xprops.supplement.getPaymentOptions(paymentToken)
-            .then(options => { 
+            .then(options => {
 
                 if (!options || !options.transactions) {
                     return shippingChangePayload;
@@ -86,7 +86,20 @@ if (action === 'checkout') {
                 };
             })
             .then(payload => {
-                window.xprops.onShippingChange(payload, { reject: () => { /* pass */ } });
+                window.xprops.onShippingChange(payload, {
+                    reject:  () => { /* pass */ },
+                    payment: {
+                        patch: (data) => {
+                            const shippingOptions = data.filter(op => {
+                                return op.path.match(/\/(transactions)\/(\d)\/(item_list)\/(shipping_options)/);
+                            });
+
+                            if (shippingOptions.length) {
+                                throw new Error('Expecting shipping_options to be stripped from payment patch');
+                            }
+                        }
+                    }
+                });
             });
     });
 

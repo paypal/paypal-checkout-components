@@ -69,16 +69,7 @@ function renderCheckout(props = {}) {
         },
 
         onShippingChange(data, actions) : void | ZalgoPromise<void> {
-            return window.xprops.onShippingChange(data, {
-                ...actions,
-
-                payment: {
-                    update() {
-                        // pass
-                    }
-                }
-
-            });
+            return window.xprops.onShippingChange(data, { ...actions });
         },
 
         style: {
