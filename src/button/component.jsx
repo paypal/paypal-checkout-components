@@ -22,7 +22,7 @@ import { getPaymentType, awaitBraintreeClient,
     mapPaymentToBraintree, type BraintreePayPalClient } from '../integrations';
 import { awaitPopupBridge } from '../integrations/popupBridge';
 import { validateFunding, isFundingIneligible, isFundingAutoEligible } from '../funding';
-import { mergePaymentDetails } from '../api/hacks';
+import { mergePaymentDetails, patchPaymentOptions } from '../api/hacks';
 
 import { containerTemplate, componentTemplate } from './template';
 import { validateButtonLocale, validateButtonStyle } from './validate';
@@ -674,6 +674,26 @@ export let Button : Component<ButtonOptions> = create({
                     flushLogs();
                     let timeout = __TEST__ ? 500 : 10 * 1000;
 
+                    let patch = actions.payment.patch;
+                    actions.payment.patch = (patchObject) => {
+                        
+                        const itemListPatches = patchObject.filter((op, index) => {
+                            if (op.path.match(/\/(transactions)\/(\d)\/(item_list)\/(shipping_options)/)) {
+                                return patchObject.splice(index, 1);
+                            }
+
+                            return false;
+                        });
+
+                        return ZalgoPromise.try(() => {
+                            if (itemListPatches.length) {
+                                return patchPaymentOptions(data.paymentID, itemListPatches);
+                            }
+                        }).then(() => {
+                            return patch(patchObject);
+                        });
+                    };
+                   
                     const resolve = () => ZalgoPromise.resolve();
 
                     return ZalgoPromise.try(() => {
