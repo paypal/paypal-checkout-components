@@ -386,7 +386,7 @@ export const Buttons : Component<ButtonProps> = create({
         proxyRest: {
             type: 'function',
             value() : ({ createOrder : typeof createOrder }) => void {
-                return (rest) => {
+                return function proxyRest(rest) {
                     this.remoteCreateOrder = rest.createOrder;
                 };
             }
