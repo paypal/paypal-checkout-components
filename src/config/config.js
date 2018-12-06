@@ -6,7 +6,7 @@ export const SESSION_LIFETIME = 5 * 60 * 1000;
 
 const CHECKOUT_URI = {
     local:      `/webapps/hermes?ul=0`,
-    stage:      `/webapps/hermes`,
+    stage:      `/checkoutnow`,
     sandbox:    `/checkoutnow`,
     production: `/checkoutnow`
 }[__ENV__];
