@@ -23,13 +23,10 @@ export const WEBPACK_CONFIG_TEST = getWebpackConfig({
             }
         },
         __PAYPAL_CHECKOUT__: {
-            ...globals.__PAYPAL_CHECKOUT__,
             __REMEMBERED_FUNDING__: () => 'window.__TEST_REMEMBERED_FUNDING__'
         },
         __CLIENT_ID__:      'abcxyz123',
-        __MERCHANT_ID__:    'abc',
-        __LOCALE_COUNTRY__: () => 'window.__TEST_LOCALE_COUNTRY__',
-        __LOCALE_LANG__:    () => 'window.__TEST_LOCALE_LANG__'
+        __MERCHANT_ID__:    'abc'
     }
 });
 
