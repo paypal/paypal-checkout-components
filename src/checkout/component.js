@@ -297,52 +297,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
             type:     'function',
             required: true,
             once:     true,
-
-            childDecorate(original) : Function {
-                return function childDecorateOnAuthorize() : ZalgoPromise<void> {
-
-                    (() => {
-                        try {
-                            if (!window.paypal) {
-                                warn(`child_window_paypal_not_found`);
-                                flushLogs();
-                            }
-
-                            let AuthModel = window.injector && window.injector.get('$AuthModel');
-                            let buyerCountry = AuthModel && AuthModel.instance() && AuthModel.instance().country;
-                            let geoCountry = window.meta && window.meta.geolocation;
-                            let { country: browserCountry } = getBrowserLocale();
-
-                            if (!buyerCountry || !geoCountry || !browserCountry) {
-                                info(`buyer_country_match_data_not_found`, { buyerCountry, geoCountry, browserCountry });
-                                return;
-                            }
-
-                            info(`buyer_country_data`, { buyerCountry, geoCountry, browserCountry });
-                            
-                            if (buyerCountry === geoCountry) {
-                                info(`buyer_country_geo_country_match`);
-                            } else {
-                                info(`buyer_country_geo_country_mismatch`);
-                            }
-
-                            if (buyerCountry === browserCountry) {
-                                info(`buyer_country_browser_country_match`);
-                            } else {
-                                info(`buyer_country_browser_country_mismatch`);
-                            }
-
-                            flushLogs();
-
-                        } catch (err) {
-                            // pass
-                        }
-                    })();
-                    
-                    return original.apply(this, arguments);
-                };
-            },
-
+            
             decorate(original) : Function | void {
                 if (original) {
                     return function decorateOnAuthorize(data, actions = {}) : ZalgoPromise<void> {
