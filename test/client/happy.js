@@ -1,5 +1,5 @@
 /* @flow */
-/* eslint require-await: off */
+/* eslint require-await: off, max-lines: off */
 
 import { setupButton } from '../../src';
 
@@ -85,23 +85,68 @@ describe('happy cases', () => {
         }
     });
 
-    it.only('should render a button, click the button, and render checkout, then pass onApprove callback to the parent', async () => {
+    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent', async () => {
+
+        const orderID = 'XXXXXX';
+        const payerID = 'YYYYYY';
     
         let onApprove;
         let onApproveCalled = false;
 
-        window.xprops.onApprove = async () => {
+        window.xprops.onApprove = async (data) => {
+            if (data.orderID !== orderID) {
+                throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+            }
+
+            if (data.payerID !== payerID) {
+                throw new Error(`Expected orderID to be ${ payerID }, got ${ data.payerID }`);
+            }
+
             onApproveCalled = true;
         };
 
         window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID: 'xxx', payerID: 'yyy' });
+            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
         };
     
         window.document.body.innerHTML = createButtonHTML();
     
         await setupButton();
     
+        window.document.querySelector('.paypal-button').click();
+
+        await onApprove;
+
+        if (!onApprove || !onApproveCalled) {
+            throw new Error(`Expected onApprove to have been called`);
+        }
+    });
+
+    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with a paymentID', async () => {
+
+        const orderID = 'XXXXXX';
+        const payerID = 'YYYYYY';
+        const paymentID = 'ZZZZZZ';
+
+        let onApprove;
+        let onApproveCalled = false;
+
+        window.xprops.onApprove = async (data) => {
+            if (data.paymentID !== paymentID) {
+                throw new Error(`Expected paymentID to be ${ paymentID }, got ${ data.paymentID }`);
+            }
+
+            onApproveCalled = true;
+        };
+
+        window.paypal.Checkout.renderTo = async (win, props) => {
+            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID, paymentID });
+        };
+
+        window.document.body.innerHTML = createButtonHTML();
+
+        await setupButton();
+
         window.document.querySelector('.paypal-button').click();
 
         await onApprove;

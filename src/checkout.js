@@ -152,10 +152,10 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
 
             onError: window.xprops.onError,
 
-            onApprove({ orderID, payerID }) : ZalgoPromise<void> {
+            onApprove({ orderID, payerID, paymentID }) : ZalgoPromise<void> {
                 const actions = buildExecuteActions(this, orderID);
 
-                return window.xprops.onApprove({ orderID, payerID }, actions).catch(err => {
+                return window.xprops.onApprove({ orderID, payerID, paymentID }, actions).catch(err => {
                     return window.xchild.error(err);
                 });
             },
