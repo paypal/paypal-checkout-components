@@ -1,10 +1,11 @@
 /* @flow */
 
+import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING } from 'paypal-sdk-constants';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML } from './mocks';
+import { createButtonHTML, getMockCheckoutInstance } from './mocks';
 
 describe('funding source cases', () => {
 
@@ -15,6 +16,7 @@ describe('funding source cases', () => {
         window.paypal.Checkout = {
             renderTo: (win, { fundingSource }) => {
                 selectedFundingSource = fundingSource;
+                return ZalgoPromise.resolve(getMockCheckoutInstance());
             }
         };
     
@@ -36,6 +38,7 @@ describe('funding source cases', () => {
         window.paypal.Checkout = {
             renderTo: (win, { fundingSource }) => {
                 selectedFundingSource = fundingSource;
+                return ZalgoPromise.resolve(getMockCheckoutInstance());
             }
         };
     

@@ -137,57 +137,51 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
     const createOrder = memoize(props.createOrder || window.xprops.createOrder);
     const renderWindow = (canRenderTop && top) ? top : parent;
 
-    return ZalgoPromise.all([
+    const validateOrderPromise = createOrder().then(validateOrder);
 
-        createOrder().then(validateOrder)
-            .catch(err => window.xchild.error(err)),
+    return window.paypal.Checkout.renderTo(renderWindow, {
+        ...props,
+
+        createOrder,
+
+        locale: window.xprops.locale,
+        commit: window.xprops.commit,
+
+        onError: window.xprops.onError,
+
+        onApprove({ orderID, payerID, paymentID }) : ZalgoPromise<void> {
+            const actions = buildExecuteActions(this, orderID);
+
+            return window.xprops.onApprove({ orderID, payerID, paymentID }, actions).catch(err => {
+                return window.xchild.error(err);
+            });
+        },
+
+        onCancel: () : ZalgoPromise<void> => {
+            return ZalgoPromise.try(() => {
+                return createOrder();
+            }).then(orderID => {
+                return window.xprops.onCancel({ orderID });
+            }).catch(err => {
+                return window.xchild.error(err);
+            });
+        },
+
+        onAuth: ({ accessToken }) : ZalgoPromise<void> => {
+            return persistAccessToken(accessToken);
+        },
+
+        onClose: () => {
+            checkoutOpen = false;
+        },
+
+        nonce: getNonce()
+
+    }).then(checkout => {
         
-        window.paypal.Checkout.renderTo(renderWindow, {
-            ...props,
-
-            createOrder,
-
-            locale: window.xprops.locale,
-            commit: window.xprops.commit,
-
-            onError: window.xprops.onError,
-
-            onApprove({ orderID, payerID, paymentID }) : ZalgoPromise<void> {
-                const actions = buildExecuteActions(this, orderID);
-
-                return window.xprops.onApprove({ orderID, payerID, paymentID }, actions).catch(err => {
-                    return window.xchild.error(err);
-                });
-            },
-
-            onCancel: () : ZalgoPromise<void> => {
-                return ZalgoPromise.try(() => {
-                    return createOrder();
-                }).then(orderID => {
-                    return window.xprops.onCancel({ orderID });
-                }).catch(err => {
-                    return window.xchild.error(err);
-                });
-            },
-
-            onAuth: ({ accessToken }) : ZalgoPromise<void> => {
-                return persistAccessToken(accessToken);
-            },
-
-            onClose: () => {
-                checkoutOpen = false;
-            },
-
-            nonce: getNonce()
-        })
-        
-    ]).catch(err => {
-        
-        if (err instanceof window.paypal.PopupOpenError) {
-            window.paypal.Checkout.contexts.iframe = true;
-            return renderCheckout(props);
-        }
-
-        throw err;
+        return validateOrderPromise.catch(err => {
+            checkout.destroy();
+            throw err;
+        });
     });
 }

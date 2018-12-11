@@ -55,6 +55,11 @@ export function callGraphQL<T>(query : string) : ZalgoPromise<T> {
             `
         }
     }).then(({ body }) => {
+        if (body.errors && body.errors.length) {
+            const message = body.errors[0].message || JSON.stringify(body.errors[0]);
+            throw new Error(message);
+        }
+
         return body;
     });
 }
