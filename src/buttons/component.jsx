@@ -4,13 +4,13 @@
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit,
     getVault, getPayPalDomainRegex, getCurrency, getSDKMeta, isEligible, getBrowser,
-    createOrder, type OrderCreateRequest, type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from 'paypal-braintree-web-client/src';
+    createOrder, type OrderCreateRequest, type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from '@paypal/sdk-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
 import { isIEIntranet, isDevice, uniqueID, redirect, supportsPopups, popup, writeElementToWindow } from 'belter/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
-import { FUNDING, PLATFORM, INTENT, FPTI_KEY, ENV } from 'paypal-sdk-constants/src';
+import { FUNDING, PLATFORM, INTENT, FPTI_KEY, ENV } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
 import { getButtonUrl } from '../config';

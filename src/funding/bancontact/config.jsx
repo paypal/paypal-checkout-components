@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { BancontactLogo, LOGO_COLOR } from 'paypal-sdk-logos/src';
+import { BancontactLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { getAltPayUrl } from '../../config';
 import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR } from '../../constants';

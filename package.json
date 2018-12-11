@@ -1,5 +1,5 @@
 {
-  "name": "paypal-checkout-components",
+  "name": "@paypal/checkout-components",
   "version": "4.1.36",
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
@@ -66,12 +66,12 @@
     "sync-browser-mocks": "^2.0.0"
   },
   "dependencies": {
+    "@paypal/sdk-client": "^4.0.0",
+    "@paypal/sdk-constants": "^1.0.1",
+    "@paypal/sdk-logos": "^1.0.1",
     "belter": "^1.0.2",
     "cross-domain-utils": "^2.0.1",
     "jsx-pragmatic": "^1.0.4",
-    "paypal-braintree-web-client": "^4.0.0",
-    "paypal-sdk-constants": "^1.0.1",
-    "paypal-sdk-logos": "^1.0.1",
     "post-robot": "^9.0.0",
     "zalgo-promise": "^1.0.10",
     "zoid": "^7.0.0"

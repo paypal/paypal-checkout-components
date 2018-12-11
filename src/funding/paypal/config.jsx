@@ -1,9 +1,9 @@
 /* @flow */
 /** @jsx node */
 
-import { type LocaleType } from 'paypal-sdk-constants/src';
+import { type LocaleType } from '@paypal/sdk-constants/src';
 import { node, Fragment, type ElementNode } from 'jsx-pragmatic/src';
-import { PPLogo, PayPalLogo, LOGO_COLOR } from 'paypal-sdk-logos/src';
+import { PPLogo, PayPalLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { getCheckoutUrl } from '../../config';
 import { BUTTON_LABEL, BUTTON_COLOR } from '../../constants';

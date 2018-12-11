@@ -1,8 +1,8 @@
 /* @flow */
 /** @jsx node */
 
-import { PLATFORM } from 'paypal-sdk-constants/src';
-import { VenmoLogo, LOGO_COLOR } from 'paypal-sdk-logos/src';
+import { PLATFORM } from '@paypal/sdk-constants/src';
+import { VenmoLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { getCheckoutUrl } from '../../config';
 import { BUTTON_LABEL, BUTTON_COLOR } from '../../constants';

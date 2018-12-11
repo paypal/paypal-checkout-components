@@ -2,10 +2,10 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
-import { type LocaleType } from 'paypal-sdk-constants/src';
+import { type LocaleType } from '@paypal/sdk-constants/src';
 import { node, type ElementNode } from 'jsx-pragmatic/src';
 import { regexTokenize } from 'belter/src';
-import { PPLogo, PayPalLogo, LOGO_COLOR } from 'paypal-sdk-logos/src';
+import { PPLogo, PayPalLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { CLASS } from '../../constants';
 

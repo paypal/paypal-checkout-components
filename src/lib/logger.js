@@ -1,9 +1,9 @@
 /* @flow */
 
 import { useLogger } from 'zoid/src';
-import { getLogger } from 'paypal-braintree-web-client/src';
+import { getLogger } from '@paypal/sdk-client/src';
 import { getQueryParam } from 'belter/src';
-import { FPTI_KEY } from 'paypal-sdk-constants/src';
+import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { FPTI_CONTEXT_TYPE } from '../constants';
 

@@ -1,9 +1,9 @@
 /* @flow */
 /** @jsx node */
 
-import { FUNDING, ENV, type LocaleType } from 'paypal-sdk-constants/src';
+import { FUNDING, ENV, type LocaleType } from '@paypal/sdk-constants/src';
 import { node, html, type ElementNode } from 'jsx-pragmatic/src';
-import { LOGO_COLOR, LOGO_CLASS } from 'paypal-sdk-logos/src';
+import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { noop } from 'belter/src';
 
 import { BUTTON_NUMBER, BUTTON_LABEL, ATTRIBUTE, CLASS, BUTTON_COLOR } from '../../constants';

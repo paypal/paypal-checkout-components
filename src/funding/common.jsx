@@ -2,9 +2,9 @@
 /* eslint no-template-curly-in-string: off, max-lines: off */
 /** @jsx node */
 
-import { PLATFORM, CARD, type LocaleType, COUNTRY } from 'paypal-sdk-constants/src';
+import { PLATFORM, CARD, type LocaleType, COUNTRY } from '@paypal/sdk-constants/src';
 import { ElementNode } from 'jsx-pragmatic/src';
-import { LOGO_COLOR } from 'paypal-sdk-logos/src';
+import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_TAGLINE_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LABEL } from '../constants';
 import type { FundingEligibilityType } from '../types';

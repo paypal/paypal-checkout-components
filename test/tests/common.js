@@ -4,7 +4,7 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { isWindowClosed, type CrossDomainWindowType, type SameDomainWindowType } from 'cross-domain-utils/src';
-import { getPayPalLoggerUrl, getAuthAPIUrl, getOrderAPIUrl } from 'paypal-braintree-web-client/src';
+import { getPayPalLoggerUrl, getAuthAPIUrl, getOrderAPIUrl } from '@paypal/sdk-client/src';
 
 for (const level of [ 'log', 'debug', 'info', 'warn', 'error' ]) {
     const original = window.console[level];

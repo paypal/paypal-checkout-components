@@ -2,7 +2,7 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { FUNDING } from 'paypal-sdk-constants/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { generateOrderID, createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, assert, mockProp } from '../common';
 

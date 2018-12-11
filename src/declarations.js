@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint import/unambiguous: 0 */
 
-import { FUNDING } from 'paypal-sdk-constants/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 
 import type { FundingEligibilityType } from './types';
 

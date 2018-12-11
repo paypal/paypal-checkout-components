@@ -1,6 +1,6 @@
 /* @flow */
 
-import { getPayPalDomain } from 'paypal-braintree-web-client/src';
+import { getPayPalDomain } from '@paypal/sdk-client/src';
 
 export const SESSION_LIFETIME = 5 * 60 * 1000;
 

@@ -2,7 +2,7 @@
 
 import { values, uniqueID } from 'belter/src';
 import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
-    ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType } from 'paypal-sdk-constants/src';
+    ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType } from '@paypal/sdk-constants/src';
 
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE } from '../constants';
 import { FUNDING_CONFIG } from '../funding';

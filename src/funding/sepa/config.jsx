@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { SepaLogo, LOGO_COLOR } from 'paypal-sdk-logos/src';
+import { SepaLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { getGuestUrl } from '../../config';
 import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR } from '../../constants';

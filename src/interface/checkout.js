@@ -1,6 +1,6 @@
 /* @flow */
 
-import { isPayPalDomain } from 'paypal-braintree-web-client/src';
+import { isPayPalDomain } from '@paypal/sdk-client/src';
 
 import { Checkout as _Checkout } from '../checkout';
 

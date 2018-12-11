@@ -1,7 +1,7 @@
 /* @flow */
 
 import { max, perc } from 'belter/src';
-import { LOGO_CLASS } from 'paypal-sdk-logos/src';
+import { LOGO_CLASS } from '@paypal/sdk-logos/src';
 
 import { BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER, BUTTON_LABEL, CLASS } from '../../../constants';
 import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from '../../config';

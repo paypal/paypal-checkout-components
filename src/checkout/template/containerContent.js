@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { LANG } from 'paypal-sdk-constants/src';
+import { LANG } from '@paypal/sdk-constants/src';
 
 type ContentMap = {
     [ $Values<typeof LANG> ] : {

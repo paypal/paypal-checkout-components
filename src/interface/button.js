@@ -2,7 +2,7 @@
 
 import { noop } from 'belter/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
-import { isPayPalDomain } from 'paypal-braintree-web-client/src';
+import { isPayPalDomain } from '@paypal/sdk-client/src';
 import { PopupOpenError as _PopupOpenError } from 'zoid/src';
 
 import { setupLogger } from '../lib';

@@ -1,6 +1,6 @@
 /* @flow */
 
-import { LOGO, LOGO_CLASS } from 'paypal-sdk-logos/src';
+import { LOGO, LOGO_CLASS } from '@paypal/sdk-logos/src';
 
 import { BUTTON_SIZE_STYLE } from '../../config';
 import { BUTTON_LABEL, BUTTON_SIZE, BUTTON_LAYOUT, BUTTON_NUMBER, CLASS } from '../../../constants';

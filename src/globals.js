@@ -1,6 +1,6 @@
 /* @flow */
 
-import { FUNDING } from 'paypal-sdk-constants/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 
 import type { FundingEligibilityType } from './types';
 

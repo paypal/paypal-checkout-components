@@ -1,7 +1,7 @@
 /* @flow */
 
 import { destroyAll } from 'zoid/src';
-import { getHost, getPath } from 'paypal-braintree-web-client/src';
+import { getHost, getPath } from '@paypal/sdk-client/src';
 
 const script = document.createElement('script');
 script.setAttribute('type', 'mock/javascript');

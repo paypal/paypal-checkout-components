@@ -1,7 +1,7 @@
 /* @flow */
 
-import { ENV } from 'paypal-sdk-constants/src';
-import { LOGO_CLASS } from 'paypal-sdk-logos/src';
+import { ENV } from '@paypal/sdk-constants/src';
+import { LOGO_CLASS } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, CLASS } from '../../../constants';
 
