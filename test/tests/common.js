@@ -1,7 +1,6 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { atob } from 'Base64';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { isWindowClosed, type CrossDomainWindowType, type SameDomainWindowType } from 'cross-domain-utils/src';
@@ -248,7 +247,7 @@ export const authApiMock = $mockEndpoint.register({
             throw new Error(`Expected grant_type to be client_credentials, got "${ data.grant_type }"`);
         }
 
-        const clientID = atob(headers.authorization.replace('Basic ', '')).split(':')[0];
+        const clientID = window.atob(headers.authorization.replace('Basic ', '')).split(':')[0];
 
         if (clientID !== MERCHANT_CLIENT_ID) {
             throw new Error(`Expected client id to be ${ MERCHANT_CLIENT_ID }, got ${ clientID }`);
