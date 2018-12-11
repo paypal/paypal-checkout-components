@@ -1246,12 +1246,13 @@ window.spb = function(modules) {
         AUTH: "/webapps/hermes/api/auth",
         ORDER: "/webapps/hermes/api/order",
         GRAPHQL: "/graphql"
-    }, HEADERS = {
-        CSRF_TOKEN: "x-csrf-jwt"
+    }, SMART_BUTTONS = "smart_buttons", HEADERS = {
+        CSRF_TOKEN: "x-csrf-jwt",
+        SOURCE: "x-source"
     }, defaultHeaders = {}, csrfToken = "";
     function callAPI(_ref) {
         var _extends2, url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, json = _ref.json, reqHeaders = Object(esm_extends.a)({}, defaultHeaders, ((_extends2 = {})[HEADERS.CSRF_TOKEN] = csrfToken, 
-        _extends2));
+        _extends2[HEADERS.SOURCE] = SMART_BUTTONS, _extends2));
         return Object(src.request)({
             url: url,
             method: method,
@@ -1281,7 +1282,12 @@ window.spb = function(modules) {
                 query: "\n                query {\n                    " + query + "\n                }\n            "
             }
         }).then(function(_ref3) {
-            return _ref3.body;
+            var body = _ref3.body;
+            if (body.errors && body.errors.length) {
+                var message = body.errors[0].message || JSON.stringify(body.errors[0]);
+                throw new Error(message);
+            }
+            return body;
         })).then(function(res) {
             var intent = res.data.checkout.checkoutSession.cart.intent.toLowerCase(), currency = res.data.checkout.checkoutSession.cart.amounts.total.currencyCode, expectedIntent = window.xprops.intent, expectedCurrency = window.xprops.currency;
             "sale" === intent && (intent = INTENT.CAPTURE);
@@ -1294,16 +1300,14 @@ window.spb = function(modules) {
     function renderCheckout(props) {
         void 0 === props && (props = {});
         if (checkoutOpen) throw new Error("Checkout already rendered");
-        var _ref2 = [ Object(cross_domain_utils_src.getTop)(window), Object(cross_domain_utils_src.getParent)() ], parent = _ref2[0], top = _ref2[1], createOrder = Object(src.memoize)(props.createOrder || window.xprops.createOrder), renderWindow = canRenderTop && top ? top : parent;
-        return zalgo_promise_src.a.all([ createOrder().then(validateOrder).catch(function(err) {
-            return window.xchild.error(err);
-        }), window.paypal.Checkout.renderTo(renderWindow, Object(esm_extends.a)({}, props, {
+        var _ref2 = [ Object(cross_domain_utils_src.getTop)(window), Object(cross_domain_utils_src.getParent)() ], parent = _ref2[0], top = _ref2[1], createOrder = Object(src.memoize)(props.createOrder || window.xprops.createOrder), renderWindow = canRenderTop && top ? top : parent, validateOrderPromise = createOrder().then(validateOrder);
+        return window.paypal.Checkout.renderTo(renderWindow, Object(esm_extends.a)({}, props, {
             createOrder: createOrder,
             locale: window.xprops.locale,
             commit: window.xprops.commit,
             onError: window.xprops.onError,
             onApprove: function(_ref3) {
-                var orderID = _ref3.orderID, payerID = _ref3.payerID, actions = function(checkout, orderID) {
+                var orderID = _ref3.orderID, payerID = _ref3.payerID, paymentID = _ref3.paymentID, actions = function(checkout, orderID) {
                     var restartFlow = Object(src.memoize)(function() {
                         return checkout.close().then(function() {
                             window.paypal.Checkout.contexts.iframe = !0;
@@ -1351,7 +1355,8 @@ window.spb = function(modules) {
                 }(this, orderID);
                 return window.xprops.onApprove({
                     orderID: orderID,
-                    payerID: payerID
+                    payerID: payerID,
+                    paymentID: paymentID
                 }, actions).catch(function(err) {
                     return window.xchild.error(err);
                 });
@@ -1379,12 +1384,11 @@ window.spb = function(modules) {
                 document.body && (nonce = document.body.getAttribute("data-nonce") || "");
                 return nonce;
             }()
-        })) ]).catch(function(err) {
-            if (err instanceof window.paypal.PopupOpenError) {
-                window.paypal.Checkout.contexts.iframe = !0;
-                return renderCheckout(props);
-            }
-            throw err;
+        })).then(function(checkout) {
+            return validateOrderPromise.catch(function(err) {
+                checkout.destroy();
+                throw err;
+            });
         });
     }
     function setupButton() {
@@ -1400,6 +1404,8 @@ window.spb = function(modules) {
                 });
                 renderCheckout({
                     fundingSource: fundingSource
+                }).catch(function(err) {
+                    window.xprops.onError(err);
                 });
             });
         });
@@ -1412,6 +1418,8 @@ window.spb = function(modules) {
                         return order;
                     },
                     fundingSource: prerenderDetails.fundingSource
+                }).catch(function(err) {
+                    window.xprops.onError(err);
                 });
             }
         });
