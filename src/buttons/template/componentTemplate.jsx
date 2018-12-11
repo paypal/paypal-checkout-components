@@ -178,15 +178,19 @@ function Style({ style, cardNumber, nonce } :
     const { height } = style;
     const css = componentStyle({ height, cardNumber });
 
-    if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+    const styleTag = (
+        <style nonce={ nonce } innerHTML={ css } />
+    );
+
+    try {
+        styleTag.render(html());
+        return styleTag;
+
+    } catch (err) {
         return (
-            <style nonce={ nonce } innerHTML={ css } />
+            <style nonce={ nonce }>{ css }</style>
         );
     }
-
-    return (
-        <style nonce={ nonce }>{ css }</style>
-    );
 }
 
 function getCardNumber(locale : LocaleType) : number {
