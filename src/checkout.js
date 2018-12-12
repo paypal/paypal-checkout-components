@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, noop } from 'belter/src';
-import { INTENT } from 'paypal-sdk-constants/src';
+import { INTENT } from '@paypal/sdk-constants/src';
 import { getParent, getTop } from 'cross-domain-utils/src';
 
 import { getOrder, captureOrder, authorizeOrder, persistAccessToken, callGraphQL, type OrderResponse } from './api';
@@ -178,7 +178,7 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
         nonce: getNonce()
 
     }).then(checkout => {
-        
+
         return validateOrderPromise.catch(err => {
             checkout.destroy();
             throw err;

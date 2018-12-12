@@ -2,7 +2,7 @@
 
 import { undotify } from 'belter';
 import { html } from 'jsx-pragmatic';
-import { unpackSDKMeta } from 'paypal-braintree-web-client';
+import { unpackSDKMeta } from '@paypal/sdk-client';
 
 import { getSmartButtonClientScript, getSmartButtonRenderScript, startWatchers } from './watcher';
 import { getParams } from './params';

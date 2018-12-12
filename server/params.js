@@ -1,6 +1,6 @@
 /* @flow */
 
-import { COUNTRY, LANG, DEFAULT_COUNTRY, COUNTRY_LANGS } from 'paypal-sdk-constants';
+import { COUNTRY, LANG, DEFAULT_COUNTRY, COUNTRY_LANGS } from '@paypal/sdk-constants';
 
 import type { ExpressRequest, ExpressResponse } from './types';
 

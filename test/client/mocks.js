@@ -2,7 +2,7 @@
 
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { ZalgoPromise } from 'zalgo-promise';
-import { FUNDING } from 'paypal-sdk-constants';
+import { FUNDING } from '@paypal/sdk-constants';
 
 const PAYPAL_BUTTON_CLASS = 'paypal-button';
 

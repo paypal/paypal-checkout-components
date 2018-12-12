@@ -1,7 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { FUNDING } from 'paypal-sdk-constants';
+import { FUNDING } from '@paypal/sdk-constants';
 
 import { setupButton } from '../../src';
 

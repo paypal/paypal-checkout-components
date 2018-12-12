@@ -1,5 +1,5 @@
 {
-  "name": "paypal-smart-payment-buttons",
+  "name": "@paypal/smart-payment-buttons",
   "version": "2.0.35",
   "publishConfig": {
     "registry": "https://registry.npmjs.com"
@@ -40,12 +40,12 @@
     "express": "^4.16.3"
   },
   "dependencies": {
+    "@paypal/sdk-client": "^4.0.27",
+    "@paypal/sdk-constants": "^1.0.11",
     "belter": "^1.0.19",
     "cross-domain-utils": "^2.0.16",
-    "grabthar": "^2.0.1",
+    "grabthar": "^3",
     "jsx-pragmatic": "^1.0.7",
-    "paypal-braintree-web-client": "^4.0.27",
-    "paypal-sdk-constants": "^1.0.11",
     "webpack-mem-compile": "^1.0.2",
     "zalgo-promise": "^1.0.28"
   },

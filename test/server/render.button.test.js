@@ -1,7 +1,7 @@
 /* @flow */
 
 import { regexMap } from 'belter';
-import { FUNDING } from 'paypal-sdk-constants';
+import { FUNDING } from '@paypal/sdk-constants';
 
 import { getButtonMiddleware, cancelWatchers } from '../../server';
 

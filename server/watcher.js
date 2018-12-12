@@ -10,7 +10,7 @@ import { memoize } from 'belter';
 
 import { isLocal } from './util';
 
-const BUTTON_RENDER_MODULE = 'paypal-checkout-components';
+const BUTTON_RENDER_MODULE = '@paypal/checkout-components';
 const BUTTON_CLIENT_MODULE = require('../package.json').name;
 
 const BUTTON_RENDER_JS = 'dist/button.js';
