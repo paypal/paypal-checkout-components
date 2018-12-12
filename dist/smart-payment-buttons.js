@@ -96,10 +96,14 @@ window.spb = function(modules) {
     });
     var objectIDs, zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1), cross_domain_safe_weakmap_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
     function uniqueID() {
-        var str, chars = "0123456789abcdef";
+        var chars = "0123456789abcdef";
         return "xxxxxxxxxx".replace(/./g, function() {
             return chars.charAt(Math.floor(Math.random() * chars.length));
-        }) + "_" + (str = new Date().toISOString().slice(11, 19).replace("T", "."), window.btoa(str)).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+        }) + "_" + function(str) {
+            if ("undefined" != typeof window && "function" == typeof window.btoa) return window.btoa(str);
+            if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
+            throw new Error("Can not find window.btoa or Buffer");
+        }(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
     }
     function getGlobal() {
         if ("undefined" != typeof window) return window;
@@ -687,7 +691,7 @@ window.spb = function(modules) {
             if (!key) throw new Error("WeakMap expected key");
             var weakmap = this.weakmap;
             if (weakmap) try {
-                return weakmap.has(key);
+                if (weakmap.has(key)) return !0;
             } catch (err) {
                 delete this.weakmap;
             }
@@ -895,7 +899,7 @@ window.spb = function(modules) {
     __webpack_require__(0);
 }, function(module, __webpack_exports__, __webpack_require__) {}, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__(1);
+    __webpack_require__(1), __webpack_require__(0);
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     var constants = __webpack_require__(4);
@@ -1028,12 +1032,6 @@ window.spb = function(modules) {
             }
         }
     }
-    function isFrameWindowClosed(frame) {
-        if (!frame.contentWindow) return !0;
-        if (!frame.parentNode) return !0;
-        var doc = frame.ownerDocument;
-        return !(!doc || !doc.documentElement || doc.documentElement.contains(frame));
-    }
     var iframeWindows = [], iframeFrames = [];
     function isWindowClosed(win, allowMock) {
         void 0 === allowMock && (allowMock = !0);
@@ -1089,19 +1087,20 @@ window.spb = function(modules) {
         }(iframeWindows, win);
         if (-1 !== iframeIndex) {
             var frame = iframeFrames[iframeIndex];
-            if (frame && isFrameWindowClosed(frame)) return !0;
+            if (frame && function(frame) {
+                if (!frame.contentWindow) return !0;
+                if (!frame.parentNode) return !0;
+                var doc = frame.ownerDocument;
+                return !(!doc || !doc.documentElement || doc.documentElement.contains(frame));
+            }(frame)) return !0;
         }
         return !1;
     }
     function linkFrameWindow(frame) {
         !function() {
-            for (var i = 0; i < iframeFrames.length; i++) if (isFrameWindowClosed(iframeFrames[i])) {
+            for (var i = 0; i < iframeWindows.length; i++) if (isWindowClosed(iframeWindows[i])) {
                 iframeFrames.splice(i, 1);
                 iframeWindows.splice(i, 1);
-            }
-            for (var _i8 = 0; _i8 < iframeWindows.length; _i8++) if (isWindowClosed(iframeWindows[_i8])) {
-                iframeFrames.splice(_i8, 1);
-                iframeWindows.splice(_i8, 1);
             }
         }();
         if (frame && frame.contentWindow) try {
