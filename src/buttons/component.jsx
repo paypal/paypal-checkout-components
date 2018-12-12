@@ -157,9 +157,10 @@ export const Buttons : Component<ButtonProps> = create({
         },
 
         sdkMeta: {
-            type:       'string',
-            queryParam: true,
-            value:      getSDKMeta
+            type:        'string',
+            queryParam:  true,
+            sendToChild: false,
+            value:       getSDKMeta
         },
 
         createOrder: {
