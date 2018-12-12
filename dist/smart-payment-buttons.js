@@ -1248,7 +1248,10 @@ window.spb = function(modules) {
     }, SMART_BUTTONS = "smart_buttons", HEADERS = {
         CSRF_TOKEN: "x-csrf-jwt",
         SOURCE: "x-source"
-    }, defaultHeaders = {}, csrfToken = "";
+    }, ORDER_API_ERROR = {
+        CC_PROCESSOR_DECLINED: "CC_PROCESSOR_DECLINED",
+        INSTRUMENT_DECLINED: "INSTRUMENT_DECLINED"
+    }, ORDER_ID_PATTERN = /^(EC-)?[A-Z0-9]+$/, ERROR_URL = "https://www.paypal.com/checkoutnow/error", defaultHeaders = {}, csrfToken = "";
     function callAPI(_ref) {
         var _extends2, url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, json = _ref.json, reqHeaders = Object(esm_extends.a)({}, defaultHeaders, ((_extends2 = {})[HEADERS.CSRF_TOKEN] = csrfToken, 
         _extends2[HEADERS.SOURCE] = SMART_BUTTONS, _extends2));
@@ -1273,7 +1276,8 @@ window.spb = function(modules) {
         }).then(src.noop);
     });
     function validateOrder(orderID) {
-        return (query = '\n        checkout {\n            checkoutSession(token : "' + orderID + '") {\n                cart {\n                    intent\n                    amounts {\n                        total {\n                            currencyCode\n                        }\n                    }\n                }\n            }\n        }\n    ', 
+        if (!orderID.match(ORDER_ID_PATTERN)) throw new Error(orderID + " does not match pattern for order-id, ec-token or cart-id");
+        return (query = '\n        checkout {\n            checkoutSession(token : "' + orderID + '") {\n                cart {\n                    intent\n                    returnUrl\n                    cancelUrl\n                    amounts {\n                        total {\n                            currencyCode\n                        }\n                    }\n                }\n            }\n        }\n    ', 
         Object(src.request)({
             url: API_URI.GRAPHQL,
             method: "POST",
@@ -1288,10 +1292,11 @@ window.spb = function(modules) {
             }
             return body;
         })).then(function(res) {
-            var intent = res.data.checkout.checkoutSession.cart.intent.toLowerCase(), currency = res.data.checkout.checkoutSession.cart.amounts.total.currencyCode, expectedIntent = window.xprops.intent, expectedCurrency = window.xprops.currency;
-            "sale" === intent && (intent = INTENT.CAPTURE);
+            var cart = res.data.checkout.checkoutSession.cart, intent = "sale" === cart.intent.toLowerCase() ? INTENT.CAPTURE : cart.intent.toLowerCase(), currency = cart.amounts.total.currencyCode, returnUrl = cart.returnUrl, cancelUrl = cart.cancelUrl, expectedIntent = window.xprops.intent, expectedCurrency = window.xprops.currency;
             if (intent !== expectedIntent) throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent);
             if (currency !== expectedCurrency) throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency);
+            if (returnUrl && returnUrl !== ERROR_URL) throw new Error('Expected return url to be either blank, or "' + ERROR_URL + '". Return url is not needed or used by smart payment button integration.');
+            if (cancelUrl && cancelUrl !== ERROR_URL) throw new Error('Expected cancel url to be either blank, or "' + ERROR_URL + '". Cancel url is not needed or used by smart payment button integration.');
         });
         var query;
     }
@@ -1319,8 +1324,8 @@ window.spb = function(modules) {
                             return new zalgo_promise_src.a(src.noop);
                         });
                     }), handleProcessorError = function(err) {
-                        if (err && "CC_PROCESSOR_DECLINED" === err.message) return restartFlow();
-                        if (err && "INSTRUMENT_DECLINED" === err.message) return restartFlow();
+                        if (err && err.message === ORDER_API_ERROR.CC_PROCESSOR_DECLINED) return restartFlow();
+                        if (err && err.message === ORDER_API_ERROR.INSTRUMENT_DECLINED) return restartFlow();
                         throw new Error("Order could not be captured");
                     }, orderGet = Object(src.memoize)(function() {
                         return function(orderID) {
