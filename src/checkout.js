@@ -6,7 +6,7 @@ import { INTENT } from '@paypal/sdk-constants/src';
 import { getParent, getTop } from 'cross-domain-utils/src';
 
 import { getOrder, captureOrder, authorizeOrder, persistAccessToken, callGraphQL, type OrderResponse } from './api';
-import { ORDER_API_ERROR, ORDER_ID_PATTERN } from './constants';
+import { ORDER_API_ERROR, ORDER_ID_PATTERN, ERROR_URL } from './constants';
 
 type ActionsType = {|
     order : {
@@ -81,6 +81,8 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
             checkoutSession(token : "${ orderID }") {
                 cart {
                     intent
+                    returnUrl
+                    cancelUrl
                     amounts {
                         total {
                             currencyCode
@@ -90,15 +92,15 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
             }
         }
     `).then(res => {
-        let intent = res.data.checkout.checkoutSession.cart.intent.toLowerCase();
-        const currency = res.data.checkout.checkoutSession.cart.amounts.total.currencyCode;
+        const cart = res.data.checkout.checkoutSession.cart;
+
+        const intent = (cart.intent.toLowerCase() === 'sale') ? INTENT.CAPTURE : cart.intent.toLowerCase();
+        const currency = cart.amounts.total.currencyCode;
+        const returnUrl = cart.returnUrl;
+        const cancelUrl = cart.cancelUrl;
 
         const expectedIntent = window.xprops.intent;
         const expectedCurrency = window.xprops.currency;
-
-        if (intent === 'sale') {
-            intent = INTENT.CAPTURE;
-        }
 
         if (intent !== expectedIntent) {
             throw new Error(`Expected intent from order api call to be ${ expectedIntent }, got ${ intent }`);
@@ -106,6 +108,14 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
 
         if (currency !== expectedCurrency) {
             throw new Error(`Expected currency from order api call to be ${ expectedCurrency }, got ${ currency }`);
+        }
+
+        if (returnUrl && returnUrl !== ERROR_URL) {
+            throw new Error(`Expected return url to be either blank, or "${ ERROR_URL }". Return url is not needed or used by smart payment button integration.`);
+        }
+
+        if (cancelUrl && cancelUrl !== ERROR_URL) {
+            throw new Error(`Expected cancel url to be either blank, or "${ ERROR_URL }". Cancel url is not needed or used by smart payment button integration.`);
         }
     });
 }

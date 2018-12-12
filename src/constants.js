@@ -15,3 +15,5 @@ export const ORDER_API_ERROR = {
 };
 
 export const ORDER_ID_PATTERN = /^(EC-)?[A-Z0-9]+$/;
+
+export const ERROR_URL = 'https://www.paypal.com/checkoutnow/error';
