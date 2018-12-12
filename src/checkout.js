@@ -6,7 +6,7 @@ import { INTENT } from '@paypal/sdk-constants/src';
 import { getParent, getTop } from 'cross-domain-utils/src';
 
 import { getOrder, captureOrder, authorizeOrder, persistAccessToken, callGraphQL, type OrderResponse } from './api';
-import { ORDER_API_ERROR } from './constants';
+import { ORDER_API_ERROR, ORDER_ID_PATTERN } from './constants';
 
 type ActionsType = {|
     order : {
@@ -72,6 +72,10 @@ function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : A
 }
 
 function validateOrder(orderID : string) : ZalgoPromise<void> {
+    if (!orderID.match(ORDER_ID_PATTERN)) {
+        throw new Error(`${ orderID } does not match pattern for order-id, ec-token or cart-id`);
+    }
+
     return callGraphQL(`
         checkout {
             checkoutSession(token : "${ orderID }") {
