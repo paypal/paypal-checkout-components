@@ -6,6 +6,7 @@ import { INTENT } from '@paypal/sdk-constants/src';
 import { getParent, getTop } from 'cross-domain-utils/src';
 
 import { getOrder, captureOrder, authorizeOrder, persistAccessToken, callGraphQL, type OrderResponse } from './api';
+import { ORDER_API_ERROR } from './constants';
 
 type ActionsType = {|
     order : {
@@ -36,11 +37,11 @@ function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : A
         }).then(() => new ZalgoPromise(noop)));
 
     const handleProcessorError = (err : mixed) : ZalgoPromise<OrderResponse> => {
-        if (err && err.message === 'CC_PROCESSOR_DECLINED') {
+        if (err && err.message === ORDER_API_ERROR.CC_PROCESSOR_DECLINED) {
             return restartFlow();
         }
 
-        if (err && err.message === 'INSTRUMENT_DECLINED') {
+        if (err && err.message === ORDER_API_ERROR.INSTRUMENT_DECLINED) {
             return restartFlow();
         }
 
