@@ -8,7 +8,7 @@ import { type Component } from 'zoid/src/component/component';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { config } from '../config';
-import { getButtonSessionID, getBrowserLocale, getSessionID } from '../lib';
+import { getButtonSessionID, getBrowserLocale, getSessionID, getCurrentScript } from '../lib';
 
 type CardOptions = {
     client : {
@@ -141,6 +141,17 @@ export const Card : Component<CardOptions> = create({
             required: false,
             once:     true,
             noop:     true
+        },
+
+        sdkMeta: {
+            type:        'string',
+            queryParam:  true,
+            sendToChild: false,
+            def:         () => {
+                return btoa(JSON.stringify({
+                    url: getCurrentScript()
+                }));
+            }
         }
     }
 });

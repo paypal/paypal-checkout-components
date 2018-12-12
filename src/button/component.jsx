@@ -13,7 +13,7 @@ import { SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
     BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY } from '../constants';
 import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, getScriptVersion,
-    isIEIntranet, isEligible,
+    isIEIntranet, isEligible, getCurrentScript,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
 import { rest, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
@@ -852,6 +852,17 @@ export let Button : Component<ButtonOptions> = create({
             required: false,
             get value() : string {
                 return config.logLevel;
+            }
+        },
+
+        sdkMeta: {
+            type:        'string',
+            queryParam:  true,
+            sendToChild: false,
+            def:         () => {
+                return btoa(JSON.stringify({
+                    url: getCurrentScript()
+                }));
             }
         },
 

@@ -10,7 +10,7 @@ import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
     setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize,
     getDomainSetting, getScriptVersion, getButtonSessionID, isPayPalDomain,
-    isEligible } from '../lib';
+    isEligible, getCurrentScript } from '../lib';
 import { config } from '../config';
 import { ENV, FPTI, PAYMENT_TYPE, CHECKOUT_OVERLAY_COLOR, ATTRIBUTE } from '../constants';
 import { onLegacyPaymentAuthorize } from '../compat';
@@ -530,6 +530,17 @@ export let Checkout : Component<CheckoutPropsType> = create({
             required: false,
             def() : Object {
                 return window.__test__ || { action: 'checkout' };
+            }
+        },
+
+        sdkMeta: {
+            type:        'string',
+            queryParam:  true,
+            sendToChild: false,
+            def:         () => {
+                return btoa(JSON.stringify({
+                    url: getCurrentScript()
+                }));
             }
         }
     },
