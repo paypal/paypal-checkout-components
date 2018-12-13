@@ -81,8 +81,12 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
             checkoutSession(token : "${ orderID }") {
                 cart {
                     intent
-                    returnUrl
-                    cancelUrl
+                    returnUrl {
+                        href
+                    }
+                    cancelUrl {
+                        href
+                    }
                     amounts {
                         total {
                             currencyCode
@@ -96,8 +100,8 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
 
         const intent = (cart.intent.toLowerCase() === 'sale') ? INTENT.CAPTURE : cart.intent.toLowerCase();
         const currency = cart.amounts.total.currencyCode;
-        const returnUrl = cart.returnUrl;
-        const cancelUrl = cart.cancelUrl;
+        const returnUrl = cart.returnUrl && cart.returnUrl.href;
+        const cancelUrl = cart.cancelUrl && cart.cancelUrl.href;
 
         const expectedIntent = window.xprops.intent;
         const expectedCurrency = window.xprops.currency;
