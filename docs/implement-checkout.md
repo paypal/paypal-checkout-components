@@ -119,4 +119,25 @@ Please see https://github.com/paypal/paypal-sdk-constants for the full list of c
 
 #### `onShippingChange`
 
-TBD
+`window.xprops.onShippingChange({ ...data }, { ...actions })` should be called any time the buyer's address or shipping options change. This callback provides the merchant with a window to patch the cart with new amount or shipping option values through the Payments API. With this in mind, the cart and shipping options should be refreshed after this callback is resolved.
+
+`data` should contain the following:
+
+- `payerID` - [required] the payer ID for the buyer making the transaction
+- `token` - [required] the EC- token for the transaction
+- `city` - [optional] the selected shipping city
+- `state` - [optional] the selected shipping state/province
+- `country` - [optional] the selected shipping country
+- `postal_code` - [optional] the selected shipping zip/postal code
+- `shipping_options` - [optional] an array of shipping options for the transaction
+- `selected_shipping_method` - [optional] the shipping option selected by the buyer
+- `amounts` - [optional] an object containing shipping/tax/total amount values for the transaction
+
+---
+
+- `paymentID` - [optional] the payment ID for the transaction, if the transaction was created using the payments api 
+- `billingToken` - [optional] the BA- token for the transaction, if a billing-agreement flow
+
+`actions` should contain the following:
+
+- `reject` - [optional] a function that the merchant will call if they do not support the address or selected shipping option.
