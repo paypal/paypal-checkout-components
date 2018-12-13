@@ -1285,9 +1285,11 @@ window.spb = function(modules) {
                 query: "\n                query {\n                    " + query + "\n                }\n            "
             }
         }).then(function(_ref3) {
-            var body = _ref3.body;
-            if (body.errors && body.errors.length) {
-                var message = body.errors[0].message || JSON.stringify(body.errors[0]);
+            var body = _ref3.body, errors = (body.errors || []).filter(function(error) {
+                return "ACCOUNT_CANNOT_BE_FETCHED" !== error.message;
+            });
+            if (errors.length) {
+                var message = errors[0].message || JSON.stringify(errors[0]);
                 throw new Error(message);
             }
             return body;
