@@ -67,6 +67,9 @@ export const FPTI = {
         BUTTON_LOAD:     'process_button_load',
         BUTTON_CLICK:    'process_button_click',
 
+        BUTTON_RENDER_INTRANET_MODE: 'process_button_render_intranet_mode',
+        BUTTON_CLICK_INTRANET_MODE:  'process_button_click_intranet_mode',
+
         CREATE_PAYMENT:  'process_create_payment',
         RECIEVE_PAYMENT: 'process_recieve_payment',
 

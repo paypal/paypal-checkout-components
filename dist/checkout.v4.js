@@ -1029,6 +1029,20 @@
             return weakmap_CrossDomainSafeWeakMap;
         });
     },
+    "./node_modules/cross-domain-utils/src/constants.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_require__.d(__webpack_exports__, "a", function() {
+            return PROTOCOL;
+        });
+        __webpack_require__.d(__webpack_exports__, "b", function() {
+            return WILDCARD;
+        });
+        var PROTOCOL = {
+            MOCK: "mock:",
+            FILE: "file:",
+            ABOUT: "about:"
+        }, WILDCARD = "*";
+    },
     "./node_modules/cross-domain-utils/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__("./node_modules/cross-domain-utils/src/utils.js");
@@ -1120,7 +1134,7 @@
             return __WEBPACK_IMPORTED_MODULE_0__utils__.C;
         });
         var __WEBPACK_IMPORTED_MODULE_1__types__ = __webpack_require__("./node_modules/cross-domain-utils/src/types.js");
-        __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__types__);
+        __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__types__), __webpack_require__("./node_modules/cross-domain-utils/src/constants.js");
     },
     "./node_modules/cross-domain-utils/src/types.js": function(module, exports) {},
     "./node_modules/cross-domain-utils/src/utils.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -1128,8 +1142,9 @@
         function isRegex(item) {
             return "[object RegExp]" === Object.prototype.toString.call(item);
         }
+        var constants = __webpack_require__("./node_modules/cross-domain-utils/src/constants.js");
         __webpack_exports__.q = function() {
-            return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window).location.protocol === CONSTANTS.FILE_PROTOCOL;
+            return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window).location.protocol === constants.a.FILE;
         };
         __webpack_exports__.l = getParent;
         __webpack_exports__.k = getOpener;
@@ -1218,7 +1233,7 @@
         };
         __webpack_exports__.A = function matchDomain(pattern, origin) {
             if ("string" == typeof pattern) {
-                if ("string" == typeof origin) return pattern === CONSTANTS.WILDCARD || origin === pattern;
+                if ("string" == typeof origin) return pattern === constants.b || origin === pattern;
                 if (isRegex(origin)) return !1;
                 if (Array.isArray(origin)) return !1;
             }
@@ -1231,12 +1246,7 @@
         __webpack_exports__.C = function(pattern) {
             return Array.isArray(pattern) ? "(" + pattern.join(" | ") + ")" : isRegex(pattern) ? "RegExp(" + pattern.toString() : pattern.toString();
         };
-        __webpack_exports__.g = function(url) {
-            var domain = void 0;
-            if (!url.match(/^(https?|mock|file):\/\//)) return getDomain();
-            domain = url;
-            return domain = domain.split("/").slice(0, 3).join("/");
-        };
+        __webpack_exports__.g = getDomainFromUrl;
         __webpack_exports__.B = function(win, callback) {
             var delay = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : 1e3, maxtime = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : 1 / 0, timeout = void 0;
             !function check() {
@@ -1293,14 +1303,9 @@
             }
             return !1;
         };
-        var CONSTANTS = {
-            MOCK_PROTOCOL: "mock:",
-            FILE_PROTOCOL: "file:",
-            ABOUT_PROTOCOL: "about:",
-            WILDCARD: "*"
-        }, IE_WIN_ACCESS_ERROR = "Call was rejected by callee.\r\n";
+        var IE_WIN_ACCESS_ERROR = "Call was rejected by callee.\r\n";
         function isAboutProtocol() {
-            return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window).location.protocol === CONSTANTS.ABOUT_PROTOCOL;
+            return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window).location.protocol === constants.a.ABOUT;
         }
         function getParent(win) {
             if (win) try {
@@ -1324,10 +1329,10 @@
             if (!location) throw new Error("Can not read window location");
             var protocol = location.protocol;
             if (!protocol) throw new Error("Can not read window protocol");
-            if (protocol === CONSTANTS.FILE_PROTOCOL) return CONSTANTS.FILE_PROTOCOL + "//";
-            if (protocol === CONSTANTS.ABOUT_PROTOCOL) {
+            if (protocol === constants.a.FILE) return constants.a.FILE + "//";
+            if (protocol === constants.a.ABOUT) {
                 var parent = getParent(win);
-                return parent && canReadFromWindow(parent) ? getActualDomain(parent) : CONSTANTS.ABOUT_PROTOCOL + "//";
+                return parent && canReadFromWindow(parent) ? getActualDomain(parent) : constants.a.ABOUT + "//";
             }
             var host = location.host;
             if (!host) throw new Error("Can not read window host");
@@ -1335,7 +1340,7 @@
         }
         function getDomain(win) {
             var domain = getActualDomain(win = win || window);
-            return domain && win.mockDomain && 0 === win.mockDomain.indexOf(CONSTANTS.MOCK_PROTOCOL) ? win.mockDomain : domain;
+            return domain && win.mockDomain && 0 === win.mockDomain.indexOf(constants.a.MOCK) ? win.mockDomain : domain;
         }
         function isActuallySameDomain(win) {
             try {
@@ -1526,6 +1531,9 @@
         function getDistanceFromTop() {
             for (var distance = 0, parent = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window; parent; ) (parent = getParent(parent)) && (distance += 1);
             return distance;
+        }
+        function getDomainFromUrl(url) {
+            return url.match(/^(https?|mock|file):\/\//) ? url.split("/").slice(0, 3).join("/") : getDomain();
         }
     },
     "./node_modules/hi-base32/src/base32.js": function(module, exports, __webpack_require__) {
@@ -5561,7 +5569,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.235",
+            version: "4.0.239",
             cors: !0,
             env: constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -5780,6 +5788,9 @@
                     disable_venmo: !0
                 },
                 "roku.com": {
+                    disable_venmo: !0
+                },
+                "barkbox.com": {
                     disable_venmo: !0
                 }
             },
@@ -6462,6 +6473,8 @@
                 BUTTON_RENDER: "process_button_render",
                 BUTTON_LOAD: "process_button_load",
                 BUTTON_CLICK: "process_button_click",
+                BUTTON_RENDER_INTRANET_MODE: "process_button_render_intranet_mode",
+                BUTTON_CLICK_INTRANET_MODE: "process_button_click_intranet_mode",
                 CREATE_PAYMENT: "process_create_payment",
                 RECIEVE_PAYMENT: "process_recieve_payment",
                 CHECKOUT_INIT: "process_checkout_init",
@@ -9197,7 +9210,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.235"
+                    ver: "4.0.239"
                 };
             });
             Object(beaver_logger_client.a)(function() {
@@ -9465,7 +9478,7 @@
             });
         });
         function getScriptVersion() {
-            return Boolean(getCurrentScript()) ? "4" : "4.0.235";
+            return Boolean(getCurrentScript()) ? "4" : "4.0.239";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -10415,7 +10428,6 @@
                 return getScriptVersion();
             },
             validate: function() {
-                if (Object(device.e)()) throw new Error("Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md");
                 isEligible() || Object(beaver_logger_client.p)("checkout_render_ineligible");
             },
             prerenderTemplate: function(_ref) {
@@ -11521,6 +11533,9 @@
         }, CONTINGENCY = {
             PAYMENT_CANCELLED: "PAYMENT_CANCELLED"
         };
+        function isBraintree() {
+            return Boolean("undefined" != typeof braintree || window.braintree);
+        }
         function normalizeCheckoutProps(props) {
             return {
                 env: props.env = props.env || config.a.env,
@@ -11637,7 +11652,8 @@
             defaultVerticalCountries: [ src_constants.r.US ],
             platforms: [ src_constants.B.MOBILE ],
             allowHorizontal: !0,
-            allowVertical: !0
+            allowVertical: !0,
+            allowRemember: !1
         }, _FUNDING_CONFIG[src_constants.v.IDEAL] = {
             allowedCountries: [ src_constants.r.NL ],
             allowHorizontal: !1,
@@ -12667,7 +12683,7 @@
                     logoColor: "blue"
                 })));
             }(props_normalizeProps(props)) : null;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.235", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.239", 
             _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -12769,6 +12785,16 @@
                 });
                 template.addEventListener("click", function() {
                     Object(beaver_logger_client.p)("button_pre_template_click");
+                    if (Object(device.e)()) {
+                        var _track;
+                        Object(beaver_logger_client.p)("button_pre_template_click_intranet_mode");
+                        Object(beaver_logger_client.o)(((_track = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.BUTTON, 
+                        _track[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.BUTTON_CLICK_INTRANET_MODE, 
+                        _track[src_constants.u.KEY.BUTTON_TYPE] = src_constants.u.BUTTON_TYPE.IFRAME, _track[src_constants.u.KEY.BUTTON_SESSION_UID] = _this.props.buttonSessionID, 
+                        _track));
+                        Object(beaver_logger_client.h)();
+                        alert("IE Intranet mode is not supported by PayPal. Please disable intranet mode, or continue in an alternate browser.");
+                    }
                     if (Object(util.e)("allow_full_page_fallback")) {
                         Object(beaver_logger_client.k)("pre_template_force_full_page");
                         _this.props.payment().then(function(token) {
@@ -12793,7 +12819,6 @@
             },
             validate: function() {
                 isEligible() || Object(beaver_logger_client.p)("button_render_ineligible");
-                if (Object(device.e)()) throw new Error("Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md");
             },
             props: {
                 domain: {
@@ -12950,16 +12975,16 @@
                             this.memoizedToken = src.a.try(original, this, [ {}, actions ]);
                             this.props.env !== src_constants.t.PRODUCTION || Object(util.e)("disable_payment_timeout") || (this.memoizedToken = this.memoizedToken.timeout(1e4, new Error("Timed out waiting 10000ms for payment")));
                             this.memoizedToken = this.memoizedToken.then(function(token) {
-                                var _track;
+                                var _track2;
                                 if (!token) {
                                     Object(beaver_logger_client.g)("no_token_passed_to_payment");
                                     throw new Error("No value passed to payment");
                                 }
-                                Object(beaver_logger_client.o)(((_track = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
-                                _track[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.RECIEVE_PAYMENT, 
-                                _track[src_constants.u.KEY.CONTEXT_TYPE] = src_constants.u.CONTEXT_TYPE[getPaymentType(token)], 
-                                _track[src_constants.u.KEY.CONTEXT_ID] = token, _track[src_constants.u.KEY.BUTTON_SESSION_UID] = _this2.props.buttonSessionID, 
-                                _track));
+                                Object(beaver_logger_client.o)(((_track2 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
+                                _track2[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.RECIEVE_PAYMENT, 
+                                _track2[src_constants.u.KEY.CONTEXT_TYPE] = src_constants.u.CONTEXT_TYPE[getPaymentType(token)], 
+                                _track2[src_constants.u.KEY.CONTEXT_ID] = token, _track2[src_constants.u.KEY.BUTTON_SESSION_UID] = _this2.props.buttonSessionID, 
+                                _track2));
                                 Object(beaver_logger_client.h)();
                                 return token;
                             });
@@ -13062,12 +13087,29 @@
                     noop: !0,
                     decorate: function(original) {
                         return function() {
-                            var _track2, _getBrowser = getBrowser(), _getBrowser$browser = _getBrowser.browser, browser = void 0 === _getBrowser$browser ? "unrecognized" : _getBrowser$browser, _getBrowser$version = _getBrowser.version, version = void 0 === _getBrowser$version ? "unrecognized" : _getBrowser$version;
+                            var _track3, _getBrowser = getBrowser(), _getBrowser$browser = _getBrowser.browser, browser = void 0 === _getBrowser$browser ? "unrecognized" : _getBrowser$browser, _getBrowser$version = _getBrowser.version, version = void 0 === _getBrowser$version ? "unrecognized" : _getBrowser$version;
                             Object(beaver_logger_client.k)("button_render_browser_" + browser + "_" + version);
-                            Object(beaver_logger_client.o)(((_track2 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.LOAD, 
-                            _track2[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.BUTTON_RENDER, 
-                            _track2[src_constants.u.KEY.BUTTON_TYPE] = src_constants.u.BUTTON_TYPE.IFRAME, _track2[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
-                            _track2[src_constants.u.KEY.BUTTON_SOURCE] = this.props.source, _track2));
+                            var style = this.props.style || {};
+                            Object(beaver_logger_client.k)("button_render");
+                            Object(beaver_logger_client.k)("button_render_color_" + (style.color || "default"));
+                            Object(beaver_logger_client.k)("button_render_shape_" + (style.shape || "default"));
+                            Object(beaver_logger_client.k)("button_render_size_" + (style.size || "default"));
+                            Object(beaver_logger_client.k)("button_render_label_" + (style.label || "default"));
+                            Object(beaver_logger_client.k)("button_render_branding_" + (style.branding || "default"));
+                            Object(beaver_logger_client.k)("button_render_fundingicons_" + (style.fundingicons || "default"));
+                            Object(beaver_logger_client.k)("button_render_tagline_" + (style.tagline || "default"));
+                            Object(beaver_logger_client.o)(((_track3 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.LOAD, 
+                            _track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.BUTTON_RENDER, 
+                            _track3[src_constants.u.KEY.BUTTON_TYPE] = src_constants.u.BUTTON_TYPE.IFRAME, _track3[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                            _track3[src_constants.u.KEY.BUTTON_SOURCE] = this.props.source, _track3));
+                            if (Object(device.e)()) {
+                                var _track4;
+                                Object(beaver_logger_client.p)("button_render_intranet_mode");
+                                Object(beaver_logger_client.o)(((_track4 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.LOAD, 
+                                _track4[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.BUTTON_RENDER_INTRANET_MODE, 
+                                _track4[src_constants.u.KEY.BUTTON_TYPE] = src_constants.u.BUTTON_TYPE.IFRAME, _track4[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                _track4[src_constants.u.KEY.BUTTON_SOURCE] = this.props.source, _track4));
+                            }
                             if (creditThrottle) {
                                 var _creditThrottle$logSt;
                                 creditThrottle.logStart(((_creditThrottle$logSt = {})[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
@@ -13083,15 +13125,16 @@
                     required: !0,
                     decorate: function(original) {
                         return function(data, actions) {
-                            var _track3, _this3 = this;
+                            var _track5, _this3 = this;
                             data && !data.intent && Object(beaver_logger_client.p)("button_authorize_no_intent", {
                                 paymentID: data.paymentID,
                                 token: data.paymentToken
                             });
                             Object(beaver_logger_client.k)("button_authorize");
-                            Object(beaver_logger_client.o)(((_track3 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
-                            _track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.CHECKOUT_AUTHORIZE, 
-                            _track3[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track3));
+                            Object(beaver_logger_client.o)(((_track5 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
+                            _track5[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.CHECKOUT_AUTHORIZE, 
+                            _track5[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track5));
+                            Object(device.e)() && Object(beaver_logger_client.p)("button_authorize_intranet_mode");
                             isEligible() || Object(beaver_logger_client.k)("button_authorize_ineligible");
                             checkRecognizedBrowser("authorize");
                             Object(beaver_logger_client.h)();
@@ -13168,11 +13211,11 @@
                     required: !1,
                     decorate: function(original) {
                         if (original) return function(data, actions) {
-                            var _track4, _this4 = this;
+                            var _track6, _this4 = this;
                             Object(beaver_logger_client.k)("button_shipping_change");
-                            Object(beaver_logger_client.o)(((_track4 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
-                            _track4[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.CHECKOUT_SHIPPING_CHANGE, 
-                            _track4[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track4));
+                            Object(beaver_logger_client.o)(((_track6 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
+                            _track6[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.CHECKOUT_SHIPPING_CHANGE, 
+                            _track6[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track6));
                             Object(beaver_logger_client.h)();
                             var resolve = function() {
                                 return src.a.resolve();
@@ -13188,17 +13231,36 @@
                         };
                     }
                 },
+                onError: {
+                    type: "function",
+                    required: !1,
+                    promisify: !0,
+                    sendToChild: !0,
+                    once: !0,
+                    def: function() {
+                        return function(err) {
+                            if (Object(device.e)()) {
+                                Object(beaver_logger_client.p)("button_error_intranet_mode");
+                                Object(beaver_logger_client.h)();
+                                alert("IE Intranet mode is not supported by PayPal. Please disable intranet mode, or continue in an alternate browser.");
+                            }
+                            setTimeout(function() {
+                                throw err;
+                            });
+                        };
+                    }
+                },
                 onCancel: {
                     type: "function",
                     required: !1,
                     noop: !0,
                     decorate: function(original) {
                         return function(data, actions) {
-                            var _track5;
+                            var _track7;
                             Object(beaver_logger_client.k)("button_cancel");
-                            Object(beaver_logger_client.o)(((_track5 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
-                            _track5[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.CHECKOUT_CANCEL, 
-                            _track5[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track5));
+                            Object(beaver_logger_client.o)(((_track7 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.CHECKOUT, 
+                            _track7[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.CHECKOUT_CANCEL, 
+                            _track7[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track7));
                             Object(beaver_logger_client.h)();
                             return original.call(this, data, button_component__extends({}, actions, {
                                 redirect: function(win, url) {
@@ -13214,13 +13276,22 @@
                     noop: !0,
                     decorate: function(original) {
                         return function(data) {
-                            var _track6;
+                            var _track8;
                             Object(beaver_logger_client.k)("button_click");
-                            Object(beaver_logger_client.o)(((_track6 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.BUTTON, 
-                            _track6[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.BUTTON_CLICK, 
-                            _track6[src_constants.u.KEY.BUTTON_TYPE] = src_constants.u.BUTTON_TYPE.IFRAME, _track6[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
-                            _track6[src_constants.u.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
-                            _track6));
+                            Object(beaver_logger_client.o)(((_track8 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.BUTTON, 
+                            _track8[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.BUTTON_CLICK, 
+                            _track8[src_constants.u.KEY.BUTTON_TYPE] = src_constants.u.BUTTON_TYPE.IFRAME, _track8[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                            _track8[src_constants.u.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
+                            _track8));
+                            if (Object(device.e)()) {
+                                var _track9;
+                                Object(beaver_logger_client.p)("button_click_intranet_mode");
+                                Object(beaver_logger_client.o)(((_track9 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.BUTTON, 
+                                _track9[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.BUTTON_CLICK_INTRANET_MODE, 
+                                _track9[src_constants.u.KEY.BUTTON_TYPE] = src_constants.u.BUTTON_TYPE.IFRAME, _track9[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                _track9[src_constants.u.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
+                                _track9));
+                            }
                             if (creditThrottle) {
                                 var _creditThrottle$log;
                                 creditThrottle.log("click", ((_creditThrottle$log = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.BUTTON, 
@@ -13258,15 +13329,8 @@
                         };
                     },
                     validate: function() {
-                        var style = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, props = arguments[1];
-                        Object(beaver_logger_client.k)("button_render_color_" + (style.color || "default"));
-                        Object(beaver_logger_client.k)("button_render_shape_" + (style.shape || "default"));
-                        Object(beaver_logger_client.k)("button_render_size_" + (style.size || "default"));
-                        Object(beaver_logger_client.k)("button_render_label_" + (style.label || "default"));
-                        Object(beaver_logger_client.k)("button_render_branding_" + (style.branding || "default"));
-                        Object(beaver_logger_client.k)("button_render_fundingicons_" + (style.fundingicons || "default"));
-                        Object(beaver_logger_client.k)("button_render_tagline_" + (style.tagline || "default"));
-                        validateButtonStyle(style, props);
+                        validateButtonStyle(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, arguments[1]);
+                        Object(beaver_logger_client.h)();
                     }
                 },
                 validate: {
@@ -13315,19 +13379,22 @@
             }
         });
         component_Button.isChild() && function(ButtonComponent) {
-            if (Object(device.e)()) return window.xchild.error(new Error("Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md"));
             !function(Checkout, Button) {
                 var popupBridge = void 0;
-                awaitPopupBridge(Button).then(function(bridge) {
+                isBraintree() || awaitPopupBridge(Button).then(function(bridge) {
+                    Object(beaver_logger_client.k)("popup_bridge_popuplate");
                     popupBridge = bridge;
                 });
                 function doRender(props, original) {
-                    return popupBridge ? renderThroughPopupBridge(props, popupBridge).catch(function(err) {
+                    if (!isBraintree()) return original();
+                    if (!popupBridge) return original();
+                    Object(beaver_logger_client.k)("popup_bridge_render");
+                    return renderThroughPopupBridge(props, popupBridge).catch(function(err) {
                         Object(beaver_logger_client.g)("popup_bridge_error", {
                             err: Object(util.q)(err)
                         });
                         return original();
-                    }) : original();
+                    });
                 }
                 var render = Checkout.render;
                 Checkout.render = function(props) {
@@ -13422,18 +13489,19 @@
         var domain, currentDomainEnv, debounce = !1;
         Object(util.n)(component_Checkout, "renderTo", function(_ref3) {
             var callOriginal = _ref3.callOriginal, props = _ref3.args[1];
-            if (!debounce) {
-                debounce = !0;
-                for (var _loop = function(_i2, _ref5, _length2) {
-                    var methodName = _ref5[_i2], original = props[methodName];
-                    props[methodName] = function() {
-                        debounce = !1;
-                        if (original) return original.apply(this, arguments);
-                    };
-                }, _i2 = 0, _ref5 = [ "onAuthorize", "onCancel", "onError", "onClose" ], _length2 = null == _ref5 ? 0 : _ref5.length; _i2 < _length2; _i2++) _loop(_i2, _ref5);
-                return callOriginal();
+            if (debounce) {
+                Object(beaver_logger_client.p)("button_mutliple_click_debounce");
+                return new src.a(util.l);
             }
-            Object(beaver_logger_client.p)("button_multiple_click_debounce");
+            debounce = !0;
+            for (var _loop = function(_i2, _ref5, _length2) {
+                var methodName = _ref5[_i2], original = props[methodName];
+                props[methodName] = function() {
+                    debounce = !1;
+                    if (original) return original.apply(this, arguments);
+                };
+            }, _i2 = 0, _ref5 = [ "onAuthorize", "onCancel", "onError", "onClose" ], _length2 = null == _ref5 ? 0 : _ref5.length; _i2 < _length2; _i2++) _loop(_i2, _ref5);
+            return callOriginal();
         });
         if (component_Button.xprops && component_Button.xprops.validate) {
             var enabled = !0;
@@ -13688,7 +13756,7 @@
             setup__track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.235", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_Card = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
+        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.239", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_Card = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
         if (Object(util.g)()) {
             interface_Checkout = component_Checkout;
             interface_Card = Card;
@@ -13811,7 +13879,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.235";
+                payload.version = "4.0.239";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 payload.appName = APP_NAME;
@@ -13834,16 +13902,21 @@
                 return !1;
             };
             __webpack_exports__.f = isIos;
-            __webpack_exports__.c = function() {
-                if (window.document.documentMode) return !0;
-                return Boolean(window.navigator && window.navigator.userAgent && /Edge|MSIE/i.test(window.navigator.userAgent));
-            };
+            __webpack_exports__.c = isIE;
             __webpack_exports__.d = function() {
                 var mHttp = window.document.querySelector('meta[http-equiv="X-UA-Compatible"]'), mContent = window.document.querySelector('meta[content="IE=edge"]');
                 if (mHttp && mContent) return !0;
                 return !1;
             };
             __webpack_exports__.e = function() {
+                if (!function() {
+                    if (!isIE()) return !1;
+                    if (window.navigator && "string" == typeof window.navigator.userAgent) {
+                        if (/MSIE 11\.0/i.test(window.navigator.userAgent)) return !0;
+                        if (/Trident/i.test(window.navigator.userAgent) && /rv:11\.0/i.test(window.navigator.userAgent)) return !0;
+                    }
+                    return !1;
+                }()) return !1;
                 if (window.document.documentMode) try {
                     var status = window.status;
                     window.status = "testIntranetMode";
@@ -13902,6 +13975,9 @@
                     var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
                     return /Android/.test(ua);
                 }(ua) && (/Version\/[\d.]+/.test(ua) && !isOperaMini(ua));
+            }
+            function isIE() {
+                return !!window.document.documentMode || !(!window.navigator || "string" != typeof window.navigator.userAgent || !/Edge|MSIE/i.test(window.navigator.userAgent));
             }
         }).call(__webpack_exports__, __webpack_require__("./node_modules/process/browser.js"));
     },
@@ -14371,18 +14447,18 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         0;
-        if (window.paypal && "4.0.235" === window.paypal.version) {
+        if (window.paypal && "4.0.239" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.235"
+                version: "4.0.239"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.235) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.239) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.235" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.239" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.235"
+                version: "4.0.239"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.235");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.239");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");

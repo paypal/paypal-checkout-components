@@ -9,7 +9,7 @@ import { generateECToken, createTestContainer, destroyTestContainer,
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
-    describe(`paypal button component popup bridge happy path on ${ flow }`, () => {
+    describe.skip(`paypal button component popup bridge happy path on ${ flow }`, () => {
 
         beforeEach(() => {
             createTestContainer();

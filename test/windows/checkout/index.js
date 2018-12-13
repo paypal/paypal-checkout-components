@@ -58,8 +58,17 @@ if (action === 'checkout') {
 } else if (action === 'shippingChange') {
 
     let callbackActions = {
-        reject: () => {
-            // pass
+        reject:  () => { /* pass */ },
+        payment: {
+            patch: (data) => {
+                const shippingOptions = data.filter(op => {
+                    return op.path.match(/\/(transactions)\/(\d)\/(item_list)\/(shipping_options)/);
+                });
+
+                if (shippingOptions.length) {
+                    throw new Error('Expecting shipping_options to be stripped from payment patch');
+                }
+            }
         }
     };
 
@@ -68,16 +77,38 @@ if (action === 'checkout') {
     }
 
     window.xprops.payment().then(paymentToken => {
-
-        window.xprops.onShippingChange({
+        const shippingChangePayload = {
             paymentID:    paymentToken,
             city:         'XXXXX',
             state:        'YY',
             postal_code:  '11111',
             country_code: 'YY'
-        }, callbackActions);
+        };
+
+        return window.xprops.supplement.getPaymentOptions(paymentToken)
+            .then(options => {
+
+                if (!options || !options.transactions) {
+                    return shippingChangePayload;
+                }
+
+                const shippingOptions = options.transactions.map(t => {
+                    if (t.item_list && t.item_list.shipping_options) {
+                        return t.item_list.shipping_options;
+                    }
+                    return t;
+                });
+
+                return {
+                    ...shippingChangePayload,
+                    shipping_options: shippingOptions.length === 1 ? shippingOptions[0] : shippingOptions
+                };
+            })
+            .then(payload => {
+                window.xprops.onShippingChange(payload, callbackActions);
+            });
     });
-    
+
 } else if (action === 'cancel') {
 
     window.xprops.payment().then(paymentToken => {

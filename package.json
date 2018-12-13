@@ -1,6 +1,6 @@
 {
   "name": "paypal-checkout",
-  "version": "4.0.235",
+  "version": "4.0.239",
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "webpack-button": "babel-node ./node_modules/.bin/webpack --progress --config webpack.button.config.js",
     "test": "npm run lint && npm run flow && npm run test-ssr && npm run karma && npm run buttondiff",
     "build": "npm run test && npm run webpack",
-    "release": "./publish.sh",
+    "release": "./scripts/publish.sh",
     "release:patch": "./scripts/publish.sh patch",
     "release:minor": "./scripts/publish.sh minor",
     "release:major": "./scripts/publish.sh major",
@@ -25,7 +25,7 @@
     "clean": "rimraf dist coverage",
     "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && flow-typed install",
     "debug": "cross-env NODE_ENV=debug",
-    "demo": "serve ./demo --port 1337",
+    "demo": "serve . -l 1337",
     "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin",
     "buttondiff": "jest test/screenshot/screenshot.test.js --env=node",
     "dev": "babel-node ./node_modules/.bin/webpack-dev-server --config webpack-dev-server.config.js --port 9000",
@@ -76,6 +76,7 @@
     "pixelmatch": "^4.0.2",
     "pngjs": "^3.3.0",
     "puppeteer": "^0.11.0",
+    "serve": "^10.1.1",
     "sync-browser-mocks": "^1.0.43",
     "webpack-cli": "^1.5.3",
     "webpack-dev-server": "^2.11.2"

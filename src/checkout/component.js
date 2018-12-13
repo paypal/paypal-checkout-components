@@ -10,7 +10,7 @@ import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
     setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize,
     getDomainSetting, getScriptVersion, getButtonSessionID, isPayPalDomain,
-    isIEIntranet, isEligible } from '../lib';
+    isEligible, getCurrentScript } from '../lib';
 import { config } from '../config';
 import { ENV, FPTI, PAYMENT_TYPE, CHECKOUT_OVERLAY_COLOR, ATTRIBUTE } from '../constants';
 import { onLegacyPaymentAuthorize } from '../compat';
@@ -98,10 +98,6 @@ export let Checkout : Component<CheckoutPropsType> = create({
     },
 
     validate() {
-        if (isIEIntranet()) {
-            throw new Error(`Can not render button in IE Intranet mode.  https://github.com/paypal/paypal-checkout/blob/master/docs/debugging/ie-intranet.md`);
-        }
-
         if (!isEligible()) {
             warn('checkout_render_ineligible');
         }
@@ -301,52 +297,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
             type:     'function',
             required: true,
             once:     true,
-
-            childDecorate(original) : Function {
-                return function childDecorateOnAuthorize() : ZalgoPromise<void> {
-
-                    (() => {
-                        try {
-                            if (!window.paypal) {
-                                warn(`child_window_paypal_not_found`);
-                                flushLogs();
-                            }
-
-                            let AuthModel = window.injector && window.injector.get('$AuthModel');
-                            let buyerCountry = AuthModel && AuthModel.instance() && AuthModel.instance().country;
-                            let geoCountry = window.meta && window.meta.geolocation;
-                            let { country: browserCountry } = getBrowserLocale();
-
-                            if (!buyerCountry || !geoCountry || !browserCountry) {
-                                info(`buyer_country_match_data_not_found`, { buyerCountry, geoCountry, browserCountry });
-                                return;
-                            }
-
-                            info(`buyer_country_data`, { buyerCountry, geoCountry, browserCountry });
-                            
-                            if (buyerCountry === geoCountry) {
-                                info(`buyer_country_geo_country_match`);
-                            } else {
-                                info(`buyer_country_geo_country_mismatch`);
-                            }
-
-                            if (buyerCountry === browserCountry) {
-                                info(`buyer_country_browser_country_match`);
-                            } else {
-                                info(`buyer_country_browser_country_mismatch`);
-                            }
-
-                            flushLogs();
-
-                        } catch (err) {
-                            // pass
-                        }
-                    })();
-                    
-                    return original.apply(this, arguments);
-                };
-            },
-
+            
             decorate(original) : Function | void {
                 if (original) {
                     return function decorateOnAuthorize(data, actions = {}) : ZalgoPromise<void> {
@@ -579,6 +530,17 @@ export let Checkout : Component<CheckoutPropsType> = create({
             required: false,
             def() : Object {
                 return window.__test__ || { action: 'checkout' };
+            }
+        },
+
+        sdkMeta: {
+            type:        'string',
+            queryParam:  true,
+            sendToChild: false,
+            def:         () => {
+                return btoa(JSON.stringify({
+                    url: getCurrentScript()
+                }));
             }
         }
     },

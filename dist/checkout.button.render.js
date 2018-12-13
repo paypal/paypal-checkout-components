@@ -62,6 +62,20 @@
             });
         }();
     },
+    "./node_modules/cross-domain-utils/src/constants.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_require__.d(__webpack_exports__, "a", function() {
+            return PROTOCOL;
+        });
+        __webpack_require__.d(__webpack_exports__, "b", function() {
+            return WILDCARD;
+        });
+        var PROTOCOL = {
+            MOCK: "mock:",
+            FILE: "file:",
+            ABOUT: "about:"
+        }, WILDCARD = "*";
+    },
     "./node_modules/cross-domain-utils/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__("./node_modules/cross-domain-utils/src/utils.js");
@@ -69,18 +83,13 @@
             return __WEBPACK_IMPORTED_MODULE_0__utils__.a;
         });
         var __WEBPACK_IMPORTED_MODULE_1__types__ = __webpack_require__("./node_modules/cross-domain-utils/src/types.js");
-        __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__types__);
+        __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__types__), __webpack_require__("./node_modules/cross-domain-utils/src/constants.js");
     },
     "./node_modules/cross-domain-utils/src/types.js": function(module, exports) {},
     "./node_modules/cross-domain-utils/src/utils.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
+        var constants = __webpack_require__("./node_modules/cross-domain-utils/src/constants.js");
         __webpack_exports__.a = getDomain;
-        var CONSTANTS = {
-            MOCK_PROTOCOL: "mock:",
-            FILE_PROTOCOL: "file:",
-            ABOUT_PROTOCOL: "about:",
-            WILDCARD: "*"
-        };
         function getParent(win) {
             if (win) try {
                 if (win.parent && win.parent !== win) return win.parent;
@@ -98,10 +107,10 @@
             if (!location) throw new Error("Can not read window location");
             var protocol = location.protocol;
             if (!protocol) throw new Error("Can not read window protocol");
-            if (protocol === CONSTANTS.FILE_PROTOCOL) return CONSTANTS.FILE_PROTOCOL + "//";
-            if (protocol === CONSTANTS.ABOUT_PROTOCOL) {
+            if (protocol === constants.a.FILE) return constants.a.FILE + "//";
+            if (protocol === constants.a.ABOUT) {
                 var parent = getParent(win);
-                return parent && canReadFromWindow(parent) ? getActualDomain(parent) : CONSTANTS.ABOUT_PROTOCOL + "//";
+                return parent && canReadFromWindow(parent) ? getActualDomain(parent) : constants.a.ABOUT + "//";
             }
             var host = location.host;
             if (!host) throw new Error("Can not read window host");
@@ -109,7 +118,7 @@
         }
         function getDomain(win) {
             var domain = getActualDomain(win = win || window);
-            return domain && win.mockDomain && 0 === win.mockDomain.indexOf(CONSTANTS.MOCK_PROTOCOL) ? win.mockDomain : domain;
+            return domain && win.mockDomain && 0 === win.mockDomain.indexOf(constants.a.MOCK) ? win.mockDomain : domain;
         }
     },
     "./node_modules/hi-base32/src/base32.js": function(module, exports, __webpack_require__) {
@@ -1238,7 +1247,8 @@
             defaultVerticalCountries: [ constants.q.US ],
             platforms: [ constants.w.MOBILE ],
             allowHorizontal: !0,
-            allowVertical: !0
+            allowVertical: !0,
+            allowRemember: !1
         }, _FUNDING_CONFIG[constants.t.IDEAL] = {
             allowedCountries: [ constants.q.NL ],
             allowHorizontal: !1,
@@ -2435,7 +2445,7 @@
                 })));
             }(normalizeProps(props)) : null;
             var script;
-            return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.235", 
+            return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.239", 
             _ref21), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -2570,7 +2580,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.235",
+            version: "4.0.239",
             cors: !0,
             env: constants.s.PRODUCTION,
             state: "checkoutjs",
@@ -2789,6 +2799,9 @@
                     disable_venmo: !0
                 },
                 "roku.com": {
+                    disable_venmo: !0
+                },
+                "barkbox.com": {
                     disable_venmo: !0
                 }
             },
@@ -3471,6 +3484,8 @@
                 BUTTON_RENDER: "process_button_render",
                 BUTTON_LOAD: "process_button_load",
                 BUTTON_CLICK: "process_button_click",
+                BUTTON_RENDER_INTRANET_MODE: "process_button_render_intranet_mode",
+                BUTTON_CLICK_INTRANET_MODE: "process_button_click_intranet_mode",
                 CREATE_PAYMENT: "process_create_payment",
                 RECIEVE_PAYMENT: "process_recieve_payment",
                 CHECKOUT_INIT: "process_checkout_init",
