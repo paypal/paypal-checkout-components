@@ -946,6 +946,31 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
+        it('should render a button into a container and click on the button then call reject on shipping change without reject action being passed', (done) => {
+
+            window.paypal.Button.render({
+
+                test: { flow, type: 'noActions', action: 'shippingChange' },
+
+                payment() : string | ZalgoPromise<string> {
+                    return generateECToken();
+                },
+
+                onAuthorize() : void {
+                    return done(new Error('Expected onAuthorize to not be called'));
+                },
+
+                onShippingChange(data, actions) : void {
+                    return actions.reject().then(done);
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
+        });
+
         it('should render a button into a container and click on the button then call resolve on shipping change', (done) => {
 
             window.paypal.Button.render({

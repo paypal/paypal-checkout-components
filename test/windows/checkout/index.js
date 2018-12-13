@@ -12,7 +12,7 @@ if (window.name.split('__')[2] !== 'test_minor') {
     throw new Error(`Expected window name to have version`);
 }
 
-let { action, onRender, onInit } = window.xprops.test;
+let { action, type, onRender, onInit } = window.xprops.test;
 
 let actions = {
     close() {
@@ -57,6 +57,16 @@ if (action === 'checkout') {
 
 } else if (action === 'shippingChange') {
 
+    let callbackActions = {
+        reject: () => {
+            // pass
+        }
+    };
+
+    if (type === 'noActions') {
+        callbackActions = {};
+    }
+
     window.xprops.payment().then(paymentToken => {
 
         window.xprops.onShippingChange({
@@ -65,11 +75,7 @@ if (action === 'checkout') {
             state:        'YY',
             postal_code:  '11111',
             country_code: 'YY'
-        }, {
-            reject: () => {
-                // pass
-            }
-        });
+        }, callbackActions);
     });
     
 } else if (action === 'cancel') {
