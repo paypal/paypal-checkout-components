@@ -73,7 +73,10 @@ export const Buttons : Component<ButtonProps> = create({
         popup:  false
     },
     
-    listenForResize: true,
+    autoResize: {
+        width:  false,
+        height: true
+    },
 
     // $FlowFixMe
     containerTemplate,

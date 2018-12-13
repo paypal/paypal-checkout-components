@@ -2,11 +2,11 @@
 /* eslint max-lines: 0 */
 
 import { getPayPalDomainRegex, getLogger, getLocale, getEnv, getClientID, getCommit, getSDKMeta, isEligible } from '@paypal/sdk-client/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONSTANTS } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
 import { isDevice, supportsPopups, memoize, isIEIntranet } from 'belter/src';
-import { FUNDING, ENV } from '@paypal/sdk-constants/src';
 
 import { getSessionID, getButtonSessionID } from '../lib';
 import { FUNDING_CONFIG } from '../funding';
@@ -34,10 +34,6 @@ export const Checkout : Component<CheckoutPropsType> = create({
         }
 
         return fundingConfig.url();
-    },
-
-    get unsafeRenderTo() : boolean {
-        return getEnv() === ENV.LOCAL;
     },
 
     domain: getPayPalDomainRegex(),
@@ -278,9 +274,7 @@ export const Checkout : Component<CheckoutPropsType> = create({
         }
     },
 
-    get dimensions() : { width : string, height : string } {
-        return isDevice()
-            ? { width:  '100%', height: '535px' }
-            : { width:  '450px', height: '535px' };
-    }
+    dimensions: isDevice()
+        ? { width:  '100%', height: '535px' }
+        : { width:  '450px', height: '535px' }
 });

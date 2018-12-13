@@ -1,100 +1,18 @@
 /* @flow */
 /** @jsx node */
 
-import { values, min, max, perc } from 'belter/src';
+import { values } from 'belter/src';
 import { node, dom } from 'jsx-pragmatic/src';
 import type { RenderOptionsType } from 'zoid/src/component/parent';
 
 import { BUTTON_SIZE, BUTTON_LAYOUT } from '../../constants';
-import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE, MINIMUM_SIZE, MAXIMUM_SIZE } from '../config';
-import type { DimensionsType } from '../../types';
-import { determineEligibleFunding } from '../../funding';
+import { BUTTON_SIZE_STYLE, MINIMUM_SIZE, MAXIMUM_SIZE } from '../config';
 import type { ButtonProps } from '../props';
 
-function determineResponsiveSize({ layout, width = 0 }) : $Values<typeof BUTTON_SIZE> {
+export function containerTemplate({ id, props, CLASS, tag, context, outlet, document } : RenderOptionsType<ButtonProps>) : HTMLElement {
 
-    const minimumSize = MINIMUM_SIZE[layout];
-    const maximumSize = MAXIMUM_SIZE[layout];
-
-    if (width < BUTTON_SIZE_STYLE[minimumSize].minWidth) {
-        return minimumSize;
-    }
-
-    if (width >= BUTTON_SIZE_STYLE[maximumSize].maxWidth) {
-        return maximumSize;
-    }
-
-    for (const size of Object.keys(BUTTON_SIZE_STYLE)) {
-        const { minWidth, maxWidth } = BUTTON_SIZE_STYLE[size];
-
-        if (width >= minWidth && width < maxWidth) {
-            return size;
-        }
-    }
-
-    throw new Error(`Unable to calculate responsive size for width: ${ width }`);
-}
-
-function getDimensions({ label, size, tagline, layout, number, viewport, height: buttonHeight }) : DimensionsType {
-
-    if (size === BUTTON_SIZE.RESPONSIVE) {
-        size = determineResponsiveSize({ label, layout, width: viewport.width, height: buttonHeight });
-    }
-
-    const { defaultWidth, defaultHeight, minHeight, maxHeight, allowTagline } = BUTTON_SIZE_STYLE[size];
-
-    buttonHeight = buttonHeight || min(max(defaultHeight, minHeight), maxHeight);
-
-    const width = defaultWidth;
-    let height = buttonHeight;
-
-    if (tagline && allowTagline) {
-        height += perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE);
-    } else if (layout === BUTTON_LAYOUT.VERTICAL) {
-        height = (buttonHeight * number) + (perc(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) * (number - 1));
-    }
-
-    return { width, height };
-}
-
-export function containerTemplate({ id, props, CLASS, on, container, tag, context, outlet, document } : RenderOptionsType<ButtonProps>) : HTMLElement {
-
-    const { style, remembered, platform, fundingEligibility } = props;
-    const sources = determineEligibleFunding({ style, remembered, platform, fundingEligibility });
-    const { label, tagline, layout, height: buttonHeight } = style;
-
-    const size = BUTTON_SIZE.RESPONSIVE;
-
-    if (!container) {
-        throw new Error(`Expected container`);
-    }
-
-    const getContainerDimensions = () => {
-        let cont = container;
-
-        while (cont.offsetWidth === 0 && cont.parentElement && cont.parentElement !== cont) {
-            cont = cont.parentElement;
-        }
-
-        return getDimensions({
-            // $FlowFixMe
-            viewport: { width: cont.offsetWidth, height: cont.offsetHeight },
-            number:   sources.length,
-            height:   buttonHeight,
-            label,
-            size,
-            tagline,
-            layout
-        });
-    };
-
-    const { width, height } = getContainerDimensions();
-
-    if (size === BUTTON_SIZE.RESPONSIVE) {
-        on('resize', () => {
-            outlet.style.height = `${ getContainerDimensions().height }px`;
-        });
-    }
+    const { style } = props;
+    const { label, layout, height: buttonHeight } = style;
 
     let minimumSize = MINIMUM_SIZE[layout];
     let maximumSize = MAXIMUM_SIZE[layout];
@@ -114,7 +32,7 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
     }
 
     return (
-        <div id={ id } class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-size-${ size } ${ tag }-layout-${ layout }` }>
+        <div id={ id } class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-layout-${ layout }` }>
 
             <style>
                 {`
@@ -139,8 +57,7 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
                     }
 
                     #${ id } > .${ CLASS.OUTLET } {
-                        width:  ${ width }px;
-                        height: ${ height }px;
+                        width: 100%;
                     }
 
                      #${ id }.${ tag }-size-${ BUTTON_SIZE.RESPONSIVE } > .${ CLASS.OUTLET } {

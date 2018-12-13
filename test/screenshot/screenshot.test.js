@@ -61,7 +61,7 @@ for (const config of buttonConfigs) {
         const filepath = `${ IMAGE_DIR }/${ filename }.png`;
         const diffpath  = `${ IMAGE_DIR }/${ filename }-old.png`;
 
-        const { x, y, width, height } = await page.evaluate((options, userAgents) => {
+        const { x, y, width, height } = await page.evaluate(async (options, userAgents) => {
 
             // $FlowFixMe
             document.body.innerHTML = '';
@@ -79,8 +79,9 @@ for (const config of buttonConfigs) {
                 window.navigator.mockUserAgent = userAgents[options.userAgent];
             }
 
-
             window.paypal.Buttons(options.button).render(container);
+
+            await new Promise(resolve => setTimeout(resolve, 100));
 
             const rect = container.querySelector('iframe').getBoundingClientRect();
 
@@ -94,6 +95,14 @@ for (const config of buttonConfigs) {
             };
 
         }, config, USER_AGENTS);
+
+        if (width === 0) {
+            throw new Error(`Button width is 0`);
+        }
+
+        if (height === 0) {
+            throw new Error(`Button height is 0`);
+        }
 
         const existingExists = await fs.exists(filepath);
 
