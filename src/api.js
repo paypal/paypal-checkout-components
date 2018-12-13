@@ -55,8 +55,10 @@ export function callGraphQL<T>(query : string) : ZalgoPromise<T> {
             `
         }
     }).then(({ body }) => {
-        if (body.errors && body.errors.length) {
-            const message = body.errors[0].message || JSON.stringify(body.errors[0]);
+        const errors = (body.errors || []).filter(error => (error.message !== 'ACCOUNT_CANNOT_BE_FETCHED'));
+
+        if (errors.length) {
+            const message = errors[0].message || JSON.stringify(errors[0]);
             throw new Error(message);
         }
 
