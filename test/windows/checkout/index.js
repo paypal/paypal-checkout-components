@@ -59,6 +59,7 @@ if (action === 'checkout') {
 
     let callbackActions = {
         reject:  () => { /* pass */ },
+        type,
         payment: {
             patch: (data) => {
                 const shippingOptions = data.filter(op => {
@@ -72,8 +73,8 @@ if (action === 'checkout') {
         }
     };
 
-    if (type === 'noActions') {
-        callbackActions = {};
+    if (type === 'noReject') {
+        delete callbackActions.reject;
     }
 
     window.xprops.payment().then(paymentToken => {

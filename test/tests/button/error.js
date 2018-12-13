@@ -360,5 +360,36 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             }, '#testContainer');
         });
+
+        it('should render a button into a container and click on the button then call reject on shipping change, with no reject passed and hit an error', (done) => {
+
+            window.paypal.Button.render({
+
+                test: { flow, action: 'shippingChange', type: 'noReject' },
+
+                payment() : string | ZalgoPromise<string> {
+                    return generateECToken();
+                },
+
+                onAuthorize() : void {
+                    return done(new Error('Expected onAuthorize to not be called'));
+                },
+
+                onShippingChange(data, actions) : void {
+                    return actions.reject();
+                },
+
+                onError(err) : void {
+                    assert.ok(err instanceof Error);
+                    assert.ok(err.message === 'Missing reject action callback');
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
+        });
     });
 }

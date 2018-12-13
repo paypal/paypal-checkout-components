@@ -15,7 +15,7 @@ import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, isEligible, getCurrentScript,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
-    getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser, noop } from '../lib';
+    getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
 import { rest, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
@@ -693,10 +693,12 @@ export let Button : Component<ButtonOptions> = create({
                             return patch(patchObject);
                         });
                     };
-                   
-                    const resolve = () => ZalgoPromise.resolve();
-                    const reject = actions.reject || noop;
 
+                    const resolve = () => ZalgoPromise.resolve();
+                    const reject = actions.reject || function reject() {
+                        throw new Error(`Missing reject action callback`);
+                    };
+                    
                     return ZalgoPromise.try(() => {
                         return original.call(this, data, { ...actions, resolve, reject });
                     }).timeout(timeout,
