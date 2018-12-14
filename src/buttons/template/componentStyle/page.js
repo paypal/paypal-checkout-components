@@ -9,6 +9,10 @@ export const pageStyle = `
         text-align: center;
     }
 
+    body {
+        display: inline-block;
+    }
+
     * {
         touch-callout: none;
         user-select: none;

@@ -57,6 +57,10 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                     margin-bottom: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) }px;
                 }
 
+                .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.VERTICAL }:last-of-type {
+                    margin-bottom: 0;
+                }
+
                 .${ CLASS.SEPARATOR } {
                     margin: 0 ${ perc(buttonHeight, 5) }px;
                 }
