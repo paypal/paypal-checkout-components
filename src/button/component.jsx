@@ -693,11 +693,14 @@ export let Button : Component<ButtonOptions> = create({
                             return patch(patchObject);
                         });
                     };
-                   
-                    const resolve = () => ZalgoPromise.resolve();
 
+                    const resolve = () => ZalgoPromise.resolve();
+                    const reject = actions.reject || function reject() {
+                        throw new Error(`Missing reject action callback`);
+                    };
+                    
                     return ZalgoPromise.try(() => {
-                        return original.call(this, data, { ...actions, resolve });
+                        return original.call(this, data, { ...actions, resolve, reject });
                     }).timeout(timeout,
                         new Error(`Timed out waiting ${ timeout }ms for payment`)
                     ).catch(err => {

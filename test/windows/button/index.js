@@ -5,7 +5,7 @@ import { type ZalgoPromise } from 'zalgo-promise/src';
 import { componentTemplate } from '../../../src/button/template';
 import { getElement, getElements, errorOnWindowOpen } from '../../tests/common';
 
-let { action, flow = 'popup', authed = false, bridge = false, delay = 0, onRender, checkout, selector, remembered } = window.xprops.test;
+let { action, type, flow = 'popup', authed = false, bridge = false, delay = 0, onRender, checkout, selector, remembered } = window.xprops.test;
 
 let button = componentTemplate({ props: window.xprops });
 
@@ -82,6 +82,7 @@ function renderCheckout(props = {}) {
         locale:   window.xprops.locale,
         test:     {
             action: action || 'checkout',
+            type,
             ...checkout
         },
 
