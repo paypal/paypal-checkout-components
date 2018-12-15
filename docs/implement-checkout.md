@@ -119,4 +119,27 @@ Please see https://github.com/paypal/paypal-sdk-constants for the full list of c
 
 #### `onShippingChange`
 
-TBD
+`window.xprops.onShippingChange({ ...data }, { ...actions })` should be called any time the buyer's address or shipping options change, which for member checkout should include the first load. This callback provides the merchant with a window to patch the cart with new amount or shipping option values through the Payments API. With this in mind, the cart and shipping options should be refreshed after this callback is resolved.
+
+`data` should contain the following:
+
+- `paymentToken`: [required] the EC- token for the transaction
+- `shipping_address`: [required] Shipping address fields
+	- `state`: Shipping address state or province
+	- `postal_code`: Shipping address ZIP code or postal code
+	- `country`: Shipping address country
+
+---
+
+- `paymentID` - [optional] the payment ID for the transaction, if the transaction was created using the payments api 
+- `billingToken` - [optional] the BA- token for the transaction, if a billing-agreement flow 
+- `selected_shipping_method`: [optional] the shipping option selected by the buyer
+	- `label`: Custom shipping method label
+	- `type`: Shipping method type (`SHIPPING` or `PICKUP`)
+	- `amount`: Additional cost for this method
+		- `currency_code`: ISO currency code (e.g `USD`)
+		- `value`: String-formatted decimal format (e.g '1.00')
+
+`actions` should contain the following:
+
+- `reject` - [required] a function that the merchant will call if they do not support the address or selected shipping option.
