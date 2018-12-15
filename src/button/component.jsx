@@ -803,6 +803,9 @@ export let Button : Component<ButtonOptions> = create({
                         });
                     }
 
+                    let { color = 'default' } = this.props.style || {};
+                    info(`button_click_color_${ color }`);
+
                     flushLogs();
 
                     return original.apply(this, arguments);

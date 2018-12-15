@@ -1,6 +1,8 @@
 /* @flow */
 /* @jsx jsxDom */
 
+import { info, flush as flushLogs } from 'beaver-logger/client';
+
 import { BUTTON_SIZE, BUTTON_LAYOUT, FUNDING } from '../../constants';
 import { getButtonConfig, BUTTON_STYLE, BUTTON_RELATIVE_STYLE } from '../config';
 import { normalizeProps } from '../props';
@@ -106,7 +108,20 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
     let { width, height } = getContainerDimensions();
 
     if (size === BUTTON_SIZE.RESPONSIVE) {
+        let loggedResize = false;
         on('resize', () => {
+            if (!loggedResize) {
+                loggedResize = true;
+                let cont = container;
+
+                while (cont.offsetWidth === 0 && cont.parentElement && cont.parentElement !== cont) {
+                    cont = cont.parentElement;
+                }
+
+                // $FlowFixMe
+                info(`button_responsive_size_${ cont.offsetWidth ? cont.offsetWidth.toString() : 'unknown' }`);
+                flushLogs();
+            }
             outlet.style.height = `${ getContainerDimensions().height }px`;
         });
     }
