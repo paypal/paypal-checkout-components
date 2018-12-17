@@ -129,7 +129,7 @@ export function isIECompHeader() : boolean {
 export function isElectron() : boolean {
     let userAgent = getUserAgent();
     // here we want a case-insensitive full word boundary
-    return /\belectron\b/i.test(userAgent);
+    return (/\belectron\b/i).test(userAgent);
 }
 
 export function isIEIntranet() : boolean {
