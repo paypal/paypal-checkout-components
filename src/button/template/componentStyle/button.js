@@ -122,6 +122,16 @@ export let buttonStyle = `
         visibility: hidden;
     }
 
+    .powered-by-paypal {
+        display: none;
+    }
+
+    @media (min-width: 35rem) {
+        .powered-by-paypal {
+            display: block;
+        }
+    }
+
     .powered-by-paypal > .${ CLASS.TEXT } {
         vertical-align: top;
         line-height: 18px;
