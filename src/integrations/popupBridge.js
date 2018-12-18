@@ -2,7 +2,7 @@
 
 import { once, noop } from 'zoid/src/lib';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { error, info } from 'beaver-logger/client';
+import { error } from 'beaver-logger/client';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { extendUrl, redirect, awaitKey, stringifyError } from '../lib';
@@ -23,11 +23,6 @@ const CONTINGENCY = {
 type PopupBridge = {
     open : (string) => ZalgoPromise<Object>
 };
-
-function isBraintree() : boolean {
-    // $FlowFixMe
-    return Boolean(typeof braintree !== 'undefined' || window.braintree);
-}
 
 function wrapPopupBridge(popupBridge : Object) : PopupBridge {
     return {
@@ -198,23 +193,14 @@ export function setupPopupBridgeProxy(Checkout : Object, Button : Object) {
 
     let popupBridge;
 
-    if (!isBraintree()) {
-        awaitPopupBridge(Button).then(bridge => {
-            info('popup_bridge_popuplate');
-            popupBridge = bridge;
-        });
-    }
+    awaitPopupBridge(Button).then(bridge => {
+        popupBridge = bridge;
+    });
 
     function doRender(props, original) : ZalgoPromise<void> {
-        if (!isBraintree()) {
-            return original();
-        }
-
         if (!popupBridge) {
             return original();
         }
-
-        info('popup_bridge_render');
         
         return renderThroughPopupBridge(props, popupBridge)
             .catch(err => {
