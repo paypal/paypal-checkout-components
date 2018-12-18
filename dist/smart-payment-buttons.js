@@ -1297,8 +1297,8 @@ window.spb = function(modules) {
             var cart = res.data.checkout.checkoutSession.cart, intent = "sale" === cart.intent.toLowerCase() ? INTENT.CAPTURE : cart.intent.toLowerCase(), currency = cart.amounts.total.currencyCode, returnUrl = cart.returnUrl && cart.returnUrl.href, cancelUrl = cart.cancelUrl && cart.cancelUrl.href, expectedIntent = window.xprops.intent, expectedCurrency = window.xprops.currency;
             if (intent !== expectedIntent) throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent);
             if (currency !== expectedCurrency) throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency);
-            if (returnUrl && returnUrl !== ERROR_URL) throw new Error('Expected return url to be either blank, or "' + ERROR_URL + '". Return url is not needed or used by smart payment button integration.');
-            if (cancelUrl && cancelUrl !== ERROR_URL) throw new Error('Expected cancel url to be either blank, or "' + ERROR_URL + '". Cancel url is not needed or used by smart payment button integration.');
+            if (returnUrl && 0 !== returnUrl.indexOf(ERROR_URL)) throw new Error('Expected return url to be either blank, or "' + ERROR_URL + '". Return url is not needed or used by smart payment button integration.');
+            if (cancelUrl && 0 !== cancelUrl.indexOf(ERROR_URL)) throw new Error('Expected cancel url to be either blank, or "' + ERROR_URL + '". Cancel url is not needed or used by smart payment button integration.');
         });
         var query;
     }
@@ -1390,7 +1390,7 @@ window.spb = function(modules) {
                 document.body && (nonce = document.body.getAttribute("data-nonce") || "");
                 return nonce;
             }()
-        })).then(function(checkout) {
+        }), "body").then(function(checkout) {
             return validateOrderPromise.catch(function(err) {
                 checkout.destroy();
                 throw err;
