@@ -114,11 +114,11 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
             throw new Error(`Expected currency from order api call to be ${ expectedCurrency }, got ${ currency }`);
         }
 
-        if (returnUrl && returnUrl !== ERROR_URL) {
+        if (returnUrl && returnUrl.indexOf(ERROR_URL) !== 0) {
             throw new Error(`Expected return url to be either blank, or "${ ERROR_URL }". Return url is not needed or used by smart payment button integration.`);
         }
 
-        if (cancelUrl && cancelUrl !== ERROR_URL) {
+        if (cancelUrl && cancelUrl.indexOf(ERROR_URL) !== 0) {
             throw new Error(`Expected cancel url to be either blank, or "${ ERROR_URL }". Cancel url is not needed or used by smart payment button integration.`);
         }
     });
