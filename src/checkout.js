@@ -196,7 +196,7 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
 
         nonce: getNonce()
 
-    }).then(checkout => {
+    }, 'body').then(checkout => {
 
         return validateOrderPromise.catch(err => {
             checkout.destroy();
