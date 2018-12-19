@@ -311,6 +311,26 @@ export let config = {
 
         'barkbox.com': {
             disable_venmo: true
+        },
+
+        'neimanmarcus.com': {
+            disable_venmo: true
+        },
+
+        'lastcall.com': {
+            disable_venmo: true
+        },
+
+        'horchow.com': {
+            disable_venmo: true
+        },
+
+        'bergdorfgoodman.com': {
+            disable_venmo: true
+        },
+
+        'fwrd.com': {
+            disable_venmo: true
         }
     },
 
