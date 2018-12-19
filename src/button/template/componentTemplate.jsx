@@ -281,9 +281,9 @@ function renderPowerByPaypalLogo(props) : ChildType {
         return null;
     }
 
-    const { layout, size, sources = [] } = props;
+    const { layout, sources = [] } = props;
 
-    if (!(layout === BUTTON_LAYOUT.VERTICAL && (size === BUTTON_SIZE.MEDIUM || size === BUTTON_SIZE.LARGE || size === BUTTON_SIZE.HUGE))) {
+    if (!(layout === BUTTON_LAYOUT.VERTICAL)) {
         return null;
     }
 
