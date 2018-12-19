@@ -69,9 +69,15 @@ function getDimensions({ label, size, tagline, fundingicons, layout, number, vie
         height = (buttonHeight * number) + (perc(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) * (number - 1));
     }
 
-    if (hasCards && isCardFundingAllowed && isVertical) {
+    if (hasCards && isCardFundingAllowed && isVertical && width >= 250) {
         height += BUTTON_STYLE[size].byPayPalHeight;
     }
+
+    // const paypalContainers = document.querySelectorAll('.paypal-button');
+    // if (paypalContainers.length > 0) {
+    //     const paypalContainer = paypalContainers[0];
+    //     return { width, height: paypalContainer.clientHeight };
+    // }
 
     return { width, height };
 }
@@ -137,6 +143,7 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
                         font-size: 0;
                         width: 100%;
                         overflow: hidden;
+                        margin: 0 auto;
                     }
 
                     #${ id }.${ tag }-size-${ BUTTON_SIZE.RESPONSIVE } {

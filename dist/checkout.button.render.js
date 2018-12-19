@@ -62,20 +62,6 @@
             });
         }();
     },
-    "./node_modules/cross-domain-utils/src/constants.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__.d(__webpack_exports__, "a", function() {
-            return PROTOCOL;
-        });
-        __webpack_require__.d(__webpack_exports__, "b", function() {
-            return WILDCARD;
-        });
-        var PROTOCOL = {
-            MOCK: "mock:",
-            FILE: "file:",
-            ABOUT: "about:"
-        }, WILDCARD = "*";
-    },
     "./node_modules/cross-domain-utils/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__("./node_modules/cross-domain-utils/src/utils.js");
@@ -83,13 +69,18 @@
             return __WEBPACK_IMPORTED_MODULE_0__utils__.a;
         });
         var __WEBPACK_IMPORTED_MODULE_1__types__ = __webpack_require__("./node_modules/cross-domain-utils/src/types.js");
-        __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__types__), __webpack_require__("./node_modules/cross-domain-utils/src/constants.js");
+        __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__types__);
     },
     "./node_modules/cross-domain-utils/src/types.js": function(module, exports) {},
     "./node_modules/cross-domain-utils/src/utils.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var constants = __webpack_require__("./node_modules/cross-domain-utils/src/constants.js");
         __webpack_exports__.a = getDomain;
+        var CONSTANTS = {
+            MOCK_PROTOCOL: "mock:",
+            FILE_PROTOCOL: "file:",
+            ABOUT_PROTOCOL: "about:",
+            WILDCARD: "*"
+        };
         function getParent(win) {
             if (win) try {
                 if (win.parent && win.parent !== win) return win.parent;
@@ -107,10 +98,10 @@
             if (!location) throw new Error("Can not read window location");
             var protocol = location.protocol;
             if (!protocol) throw new Error("Can not read window protocol");
-            if (protocol === constants.a.FILE) return constants.a.FILE + "//";
-            if (protocol === constants.a.ABOUT) {
+            if (protocol === CONSTANTS.FILE_PROTOCOL) return CONSTANTS.FILE_PROTOCOL + "//";
+            if (protocol === CONSTANTS.ABOUT_PROTOCOL) {
                 var parent = getParent(win);
-                return parent && canReadFromWindow(parent) ? getActualDomain(parent) : constants.a.ABOUT + "//";
+                return parent && canReadFromWindow(parent) ? getActualDomain(parent) : CONSTANTS.ABOUT_PROTOCOL + "//";
             }
             var host = location.host;
             if (!host) throw new Error("Can not read window host");
@@ -118,7 +109,7 @@
         }
         function getDomain(win) {
             var domain = getActualDomain(win = win || window);
-            return domain && win.mockDomain && 0 === win.mockDomain.indexOf(constants.a.MOCK) ? win.mockDomain : domain;
+            return domain && win.mockDomain && 0 === win.mockDomain.indexOf(CONSTANTS.MOCK_PROTOCOL) ? win.mockDomain : domain;
         }
     },
     "./node_modules/hi-base32/src/base32.js": function(module, exports, __webpack_require__) {
@@ -2164,7 +2155,7 @@
             LOGO: "paypal-button-logo",
             CARD: "paypal-button-card",
             SEPARATOR: "paypal-separator"
-        }, buttonStyle = "\n\n    ." + CLASS.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + CLASS.BUTTON + ":not(." + CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + CLASS.CONTAINER + "." + CLASS.ENV + "-" + constants.s.TEST + " ." + CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.GOLD + ":hover,\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + CLASS.CARD + ", ." + CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + CLASS.BUTTON + ":focus, ." + CLASS.CARD + ":focus {\n        outline: none;\n    }\n\n    ." + CLASS.SHOULD_FOCUS + " ." + CLASS.BUTTON + ":focus,\n    ." + CLASS.SHOULD_FOCUS + " ." + CLASS.CARD + ":focus {\n        outline: solid 2px Highlight;\n        outline: auto 5px -webkit-focus-ring-color;\n        outline-offset: -3px;\n    }\n\n    ." + CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.TRANSPARENT + ":focus {\n        box-shadow: none;\n        outline: none;\n    }\n\n    ." + CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.LOGO + ",\n    ." + CLASS.BUTTON + " ." + CLASS.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.TEXT + " {\n        visibility: hidden;\n    }\n\n    .powered-by-paypal > ." + CLASS.TEXT + " {\n        vertical-align: top;\n        line-height: 18px;\n    } \n\n    .powered-by-paypal > ." + CLASS.LOGO + " {\n        height: 16px;\n        min-height: 16px;\n    } \n\n    ." + CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.BLACK + " ." + CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n", layoutStyle = "\n\n    ." + CLASS.CONTAINER + "." + CLASS.LAYOUT + "-" + constants.g.VERTICAL + " ." + CLASS.TAGLINE + " {\n        display: none;\n    }\n", brandingStyle = "\n\n    ." + CLASS.BUTTON + "." + CLASS.BRANDING + "-" + constants.d.UNBRANDED + "  {\n        min-width: 60%;\n        width: auto;\n        font-weight: 900;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.BRANDING + "-" + constants.d.UNBRANDED + " ." + CLASS.LOGO + " {\n        display: none;\n    }\n", labelStyle = "\n\n    ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CARD + " {\n        border-radius: 0 !important;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.TEXT + " {\n        display: none !important;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n", DUAL_BUTTON_MIN_RATIO = 2.8;
+        }, buttonStyle = "\n\n    ." + CLASS.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + CLASS.BUTTON + ":not(." + CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + CLASS.CONTAINER + "." + CLASS.ENV + "-" + constants.s.TEST + " ." + CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.GOLD + ":hover,\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + CLASS.CARD + ", ." + CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + CLASS.BUTTON + ":focus, ." + CLASS.CARD + ":focus {\n        outline: none;\n    }\n\n    ." + CLASS.SHOULD_FOCUS + " ." + CLASS.BUTTON + ":focus,\n    ." + CLASS.SHOULD_FOCUS + " ." + CLASS.CARD + ":focus {\n        outline: solid 2px Highlight;\n        outline: auto 5px -webkit-focus-ring-color;\n        outline-offset: -3px;\n    }\n\n    ." + CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.TRANSPARENT + ":focus {\n        box-shadow: none;\n        outline: none;\n    }\n\n    ." + CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.LOGO + ",\n    ." + CLASS.BUTTON + " ." + CLASS.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.TEXT + " {\n        visibility: hidden;\n    }\n\n    @media only screen and (max-width: 249px) {\n        .powered-by-paypal {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width: 250px) {\n        .powered-by-paypal {\n            display: block;\n        }\n    }\n\n    .powered-by-paypal > ." + CLASS.TEXT + " {\n        vertical-align: top;\n        line-height: 18px;\n    } \n\n    .powered-by-paypal > ." + CLASS.LOGO + " {\n        height: 16px;\n        min-height: 16px;\n    } \n\n    ." + CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.BLACK + " ." + CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n", layoutStyle = "\n\n    ." + CLASS.CONTAINER + "." + CLASS.LAYOUT + "-" + constants.g.VERTICAL + " ." + CLASS.TAGLINE + " {\n        display: none;\n    }\n", brandingStyle = "\n\n    ." + CLASS.BUTTON + "." + CLASS.BRANDING + "-" + constants.d.UNBRANDED + "  {\n        min-width: 60%;\n        width: auto;\n        font-weight: 900;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.BRANDING + "-" + constants.d.UNBRANDED + " ." + CLASS.LOGO + " {\n        display: none;\n    }\n", labelStyle = "\n\n    ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CARD + " {\n        border-radius: 0 !important;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.TEXT + " {\n        display: none !important;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n", DUAL_BUTTON_MIN_RATIO = 2.8;
         var buttonColorStyle = "\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.GOLD + " {\n        background: #ffc439;\n        color: #111;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.BLUE + " {\n        background: #009cde;\n        color: #fff;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.SILVER + " {\n        background: #eee;\n        color: #111;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.BLACK + " {\n        background: #2C2E2F;\n        color: #fff;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.DARKBLUE + " {\n        background: #003087;\n        color: #fff;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        background: transparent;\n        color: #111;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.WHITE + " {\n        background: #fff;\n        color: #2C2E2F;\n        border: 1px solid #2C2E2F;\n    }\n";
         function componentStyle(_ref) {
             var height = _ref.height, cardNumber = _ref.cardNumber;
@@ -2434,8 +2425,8 @@
                 })) + ")();"
             })), labelPowerByPayPal = cards.length > 0 ? function(props) {
                 if (!props) return null;
-                var layout = props.layout, size = props.size, _props$sources = props.sources, sources = void 0 === _props$sources ? [] : _props$sources;
-                if (layout !== constants.g.VERTICAL || size !== constants.l.MEDIUM && size !== constants.l.LARGE && size !== constants.l.HUGE) return null;
+                var layout = props.layout, _props$sources = props.sources, sources = void 0 === _props$sources ? [] : _props$sources;
+                if (layout !== constants.g.VERTICAL) return null;
                 if (-1 === sources.indexOf(constants.t.CARD)) return null;
                 return jsxToHTML("div", {
                     class: "powered-by-paypal",
@@ -2445,7 +2436,7 @@
                 })));
             }(normalizeProps(props)) : null;
             var script;
-            return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.239", 
+            return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.240", 
             _ref21), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -2580,7 +2571,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.239",
+            version: "4.0.240",
             cors: !0,
             env: constants.s.PRODUCTION,
             state: "checkoutjs",
@@ -3860,7 +3851,7 @@
             var __WEBPACK_IMPORTED_MODULE_0_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js");
             __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_hi_base32__), __webpack_require__("./node_modules/zalgo-promise/src/index.js"), 
             __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __webpack_require__("./src/config/index.js"), 
-            "function" == typeof Symbol && Symbol.iterator;
+            Object.assign, "function" == typeof Symbol && Symbol.iterator;
             function memoize(method) {
                 var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, cache = {};
                 return function() {
