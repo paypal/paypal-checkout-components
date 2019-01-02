@@ -152,6 +152,22 @@ export const Card : Component<CardOptions> = create({
                     url: getCurrentScript()
                 }));
             }
+        },
+            
+        style: {
+            type:   'object',
+            required: false,
+            queryParam: true,
+            def() : Object {
+                return {
+                    cardIcons: {
+                        display: false
+                    },
+                    submitButton: {
+                        display: true
+                    }
+                };
+            }    
         }
     }
 });
