@@ -18,6 +18,7 @@ export { PopupOpenError } from 'zoid/src';
 
 export { rest } from './api';
 export { Button } from './button';
+export { Card } from './card';
 export { setup } from './setup';
 export { config } from './config';
 export { ENV, USERS, SOURCE, FUNDING, CARD } from './constants';
@@ -41,7 +42,6 @@ if (__PAYPAL_CHECKOUT__.__LEGACY_SUPPORT__) {
 // -------------------------------------------------------------
 
 export let Checkout;
-export let Card;
 export let BillingPage;
 export let PayPalCheckout;
 export let destroyAll;
@@ -54,7 +54,6 @@ function _enableCheckoutIframe() {
 
 if (isPayPalDomain() || __TEST__) {
     Checkout = _Checkout;
-    Card = _Card;
     BillingPage = _BillingPage;
     PayPalCheckout = _Checkout;
     enableCheckoutIframe = _enableCheckoutIframe;
