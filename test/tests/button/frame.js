@@ -2,21 +2,16 @@
 
 import { once } from 'post-robot/src';
 
-import '../common';
+import { WEBVIEW_USER_AGENT } from '../common';
 
 for (const flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal button component embedded frame on ${ flow }`, () => {
 
         beforeEach(() => {
-
-            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
-        });
-
-        afterEach(() => {
-            window.location.hash = '';
-
-            window.paypal.Checkout.contexts.iframe = false;
+            if (flow === 'iframe') {
+                window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
+            }
         });
 
         it('should render a button into a container and click on the button, then complete the checkout', () => {

@@ -1,14 +1,64 @@
 /* @flow */
 
+import { ZalgoPromise } from 'zalgo-promise/src';
 import { values, uniqueID } from 'belter/src';
+import { createOrder, type OrderCreateRequest,
+    type OrderGetResponse, type OrderCaptureResponse } from '@paypal/sdk-client';
 import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
-    ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType } from '@paypal/sdk-constants/src';
+    ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD } from '@paypal/sdk-constants/src';
+import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE } from '../constants';
 import { FUNDING_CONFIG } from '../funding';
 import type { FundingEligibilityType } from '../types';
 
 import { BUTTON_SIZE_STYLE } from './config';
+
+export type CreateOrderData = {|
+
+|} | {};
+
+export type CreateOrderActions = {|
+    order : {
+        create : (OrderCreateRequest) => ZalgoPromise<string>
+    }
+|};
+
+export type CreateOrder = (CreateOrderData, CreateOrderActions) => ZalgoPromise<string> | string;
+
+export type OnApproveData = {|
+    orderID : string,
+    payerID : string,
+    paymentID? : string
+|};
+
+export type OnApproveActions = {|
+    redirect : (string, CrossDomainWindowType) => ZalgoPromise<void>,
+    order : {
+        capture : () => ZalgoPromise<OrderCaptureResponse>,
+        get : () => ZalgoPromise<OrderGetResponse>
+    }
+|};
+
+export type OnApprove = (data : OnApproveData, actions : OnApproveActions) => ZalgoPromise<void> | void;
+
+export type OnCancelData = {|
+    orderID : string,
+    paymentID? : string
+|};
+
+export type OnCancelActions = {|
+    redirect : (string, CrossDomainWindowType) => ZalgoPromise<void>
+|};
+
+export type OnCancel = (OnCancelData, OnCancelActions) => ZalgoPromise<void> | void;
+
+export type OnClickData = {|
+    fundingSource : $Values<typeof FUNDING>,
+    card? : $Values<typeof CARD>
+|};
+
+export type OnClick = (OnClickData) => void;
 
 export type ButtonStyle = {|
     label : $Values<typeof BUTTON_LABEL>,
@@ -30,7 +80,7 @@ export type ButtonStyleInputs = {|
     height? : $PropertyType<ButtonStyle, 'height'> | void
 |};
 
-export type ButtonProps = {|
+export type RenderButtonProps = {|
     style : ButtonStyle,
     locale : LocaleType,
     commit : boolean,
@@ -44,6 +94,42 @@ export type ButtonProps = {|
     sessionID : string,
     buttonSessionID : string,
     nonce : string
+|};
+
+export type PrerenderDetails = {|
+    win : ?CrossDomainWindowType,
+    order : ZalgoPromise<string>,
+    fundingSource : $Values<typeof FUNDING>
+|};
+
+export type GetPrerenderDetails = () => PrerenderDetails | void;
+
+export type ProxyRest = {|
+    createOrder : typeof createOrder
+|};
+
+export type ButtonProps = {|
+    intent : $Values<typeof INTENT>,
+    createOrder : CreateOrder,
+    oncancel : OnCancel,
+    onApprove : OnApprove,
+    onClick : OnClick,
+    getPrerenderDetails : GetPrerenderDetails,
+    proxyRest : ProxyRest,
+    style : ButtonStyle,
+    locale : LocaleType,
+    commit : boolean,
+    env : $Values<typeof ENV>,
+    stage? : string,
+    stageUrl? : string,
+    platform : $Values<typeof PLATFORM>,
+    fundingEligibility : FundingEligibilityType,
+    remembered : $ReadOnlyArray<$Values<typeof FUNDING>>,
+    clientID : string,
+    sessionID : string,
+    buttonSessionID : string,
+    nonce : string,
+    proxyRest : ({ createOrder : typeof createOrder }) => ZalgoPromise<void>
 |};
 
 export type ButtonPropsInputs = {|
@@ -82,6 +168,7 @@ export const DEFAULT_PROPS = {
     PLATFORM: PLATFORM.DESKTOP
 };
 
+// $FlowFixMe
 export function normalizeButtonStyle(style : ButtonStyleInputs) : ButtonStyle {
 
     if (!style) {
@@ -97,6 +184,10 @@ export function normalizeButtonStyle(style : ButtonStyleInputs) : ButtonStyle {
         height,
         period
     } = style;
+
+    if (values(BUTTON_LAYOUT).indexOf(layout) === -1) {
+        throw new Error(`Invalid layout: ${ layout }`);
+    }
 
     const funding = Object.keys(FUNDING_CONFIG)
         .filter(name => FUNDING_CONFIG[name] && FUNDING_CONFIG[name].labels[label])[0];
@@ -155,7 +246,7 @@ const FUNDING_SOURCES = values(FUNDING);
 const ENVS = values(ENV);
 const PLATFORMS = values(PLATFORM);
 
-export function normalizeButtonProps(props : ?ButtonPropsInputs) : ButtonProps {
+export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonProps {
 
     if (!props) {
         throw new Error(`Expected props`);

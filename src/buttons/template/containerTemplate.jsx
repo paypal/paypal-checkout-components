@@ -1,15 +1,16 @@
 /* @flow */
 /** @jsx node */
 
+import { CLASS } from 'zoid/src';
 import { values } from 'belter/src';
 import { node, dom } from 'jsx-pragmatic/src';
-import type { RenderOptionsType } from 'zoid/src/component/parent';
+import type { RenderOptionsType } from 'zoid/src/parent';
 
 import { BUTTON_SIZE, BUTTON_LAYOUT } from '../../constants';
 import { BUTTON_SIZE_STYLE, MINIMUM_SIZE, MAXIMUM_SIZE } from '../config';
 import type { ButtonProps } from '../props';
 
-export function containerTemplate({ id, props, CLASS, tag, context, outlet, document } : RenderOptionsType<ButtonProps>) : HTMLElement {
+export function containerTemplate({ uid, props, tag, context, outlet, doc } : RenderOptionsType<ButtonProps>) : HTMLElement {
 
     const { style } = props;
     const { label, layout, height: buttonHeight } = style;
@@ -32,39 +33,39 @@ export function containerTemplate({ id, props, CLASS, tag, context, outlet, docu
     }
 
     return (
-        <div id={ id } class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-layout-${ layout }` }>
+        <div id={ uid } class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-layout-${ layout }` }>
 
             <style>
                 {`
-                    #${ id } {
+                    #${ uid } {
                         font-size: 0;
                         width: 100%;
                     }
 
-                    #${ id }.${ tag }-size-${ BUTTON_SIZE.RESPONSIVE } {
+                    #${ uid }.${ tag }-size-${ BUTTON_SIZE.RESPONSIVE } {
                         text-align: center;
                     }
 
-                    #${ id } > .${ CLASS.OUTLET } {
+                    #${ uid } > .${ CLASS.OUTLET } {
                         display: inline-block;
                         min-width: ${ BUTTON_SIZE_STYLE[minimumSize].minWidth }px;
                         max-width: ${ BUTTON_SIZE_STYLE[maximumSize].maxWidth }px;
                         position: relative;
                     }
 
-                    #${ id }.${ tag }-layout-${ BUTTON_LAYOUT.VERTICAL } > .${ CLASS.OUTLET } {
+                    #${ uid }.${ tag }-layout-${ BUTTON_LAYOUT.VERTICAL } > .${ CLASS.OUTLET } {
                         min-width: ${ BUTTON_SIZE_STYLE[minimumSize].minWidth }px;
                     }
 
-                    #${ id } > .${ CLASS.OUTLET } {
+                    #${ uid } > .${ CLASS.OUTLET } {
                         width: 100%;
                     }
 
-                     #${ id }.${ tag }-size-${ BUTTON_SIZE.RESPONSIVE } > .${ CLASS.OUTLET } {
+                     #${ uid }.${ tag }-size-${ BUTTON_SIZE.RESPONSIVE } > .${ CLASS.OUTLET } {
                         width: 100%;
                     }
 
-                    #${ id } > .${ CLASS.OUTLET } > iframe {
+                    #${ uid } > .${ CLASS.OUTLET } > iframe {
                         min-width: 100%;
                         max-width: 100%;
                         width: ${ BUTTON_SIZE_STYLE[minimumSize].minWidth }px;
@@ -74,20 +75,20 @@ export function containerTemplate({ id, props, CLASS, tag, context, outlet, docu
                         left: 0;
                     }
 
-                    #${ id } > .${ CLASS.OUTLET } > iframe.${ CLASS.COMPONENT_FRAME } {
+                    #${ uid } > .${ CLASS.OUTLET } > iframe.${ CLASS.COMPONENT_FRAME } {
                         z-index: 100;
                     }
 
-                    #${ id } > .${ CLASS.OUTLET } > iframe.${ CLASS.PRERENDER_FRAME } {
+                    #${ uid } > .${ CLASS.OUTLET } > iframe.${ CLASS.PRERENDER_FRAME } {
                         transition: opacity .2s linear;
                         z-index: 200;
                     }
 
-                    #${ id } > .${ CLASS.OUTLET } > iframe.${ CLASS.VISIBLE } {
+                    #${ uid } > .${ CLASS.OUTLET } > iframe.${ CLASS.VISIBLE } {
                         opacity: 1;
                     }
 
-                    #${ id } > .${ CLASS.OUTLET } > iframe.${ CLASS.INVISIBLE } {
+                    #${ uid } > .${ CLASS.OUTLET } > iframe.${ CLASS.INVISIBLE } {
                         opacity: 0;
                         pointer-events: none;
                     }
@@ -96,5 +97,5 @@ export function containerTemplate({ id, props, CLASS, tag, context, outlet, docu
 
             <node el={ outlet } />
         </div>
-    ).render(dom({ doc: document }));
+    ).render(dom({ doc }));
 }

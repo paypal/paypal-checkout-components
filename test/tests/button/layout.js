@@ -13,12 +13,9 @@ describe(`paypal button layouts`, () => {
 
     afterEach(() => {
         destroyTestContainer();
-        window.location.hash = '';
     });
 
     it('should render a maximum of 2 buttons horizontally', (done) => {
-
-
         window.paypal.Buttons({
 
             style: {

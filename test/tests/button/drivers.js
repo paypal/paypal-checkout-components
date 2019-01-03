@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { generateOrderID, createTestContainer, destroyTestContainer } from '../common';
+import { generateOrderID, createTestContainer, destroyTestContainer, WEBVIEW_USER_AGENT } from '../common';
 
 window.angular.module('app', [ window.paypal.Buttons.driver('angular', window.angular).name ]);
 window.angular.bootstrap(document.body, [ 'app' ]);
@@ -14,14 +14,13 @@ for (const flow of [ 'popup', 'iframe' ]) {
         beforeEach(() => {
             createTestContainer();
 
-            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
+            if (flow === 'iframe') {
+                window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
+            }
         });
 
         afterEach(() => {
             destroyTestContainer();
-            window.location.hash = '';
-
-            window.paypal.Checkout.contexts.iframe = false;
         });
 
         it('should render a button into a container with React and click on the button, then complete the checkout', (done) => {
@@ -192,7 +191,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
             };
 
             const template = `
-                <paypal-button on-render="opts.onRender" create-order="opts.createOrder" on-approve="opts.onApprove" on-cancel="opts.onCancel"></test-component>
+                <paypal-button props="opts"></test-component>
             `;
 
             $compile(template)($scope, element => {
@@ -233,7 +232,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
             };
 
             const template = `
-                <paypal-button on-render="opts.onRender" create-order="opts.createOrder" on-approve="opts.onApprove" on-cancel="opts.onCancel"></test-component>
+                <paypal-button props="opts"></test-component>
             `;
 
             $compile(template)($scope, element => {
@@ -277,7 +276,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
             };
 
             const template = `
-                <paypal-button on-render="opts.onRender" create-order="opts.createOrder" on-approve="opts.onApprove" on-cancel="opts.onCancel"></test-component>
+                <paypal-button props="opts"></test-component>
             `;
 
             $compile(template)($scope, element => {

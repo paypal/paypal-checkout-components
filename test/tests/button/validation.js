@@ -3,7 +3,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { createTestContainer, destroyTestContainer, noop, assert, mockProp } from '../common';
+import { createTestContainer, destroyTestContainer, noop, mockProp } from '../common';
 
 const buttonConfigs = [
 
@@ -750,11 +750,17 @@ for (const group of buttonConfigs) {
                             ...useCase.conf
                         }).render(`body`);
                     } else {
-                        return window.paypal.Buttons(useCase.conf).render(`body`).then(() => {
+                        let error;
+
+                        try {
+                            window.paypal.Buttons(useCase.conf);
+                        } catch (err) {
+                            error = err;
+                        }
+
+                        if (!error) {
                             throw new Error(`Expected error to be thrown`);
-                        }, err => {
-                            assert.ok(err instanceof Error, `Expected error object to be thrown`);
-                        });
+                        }
                     }
 
                 }).then(() => {

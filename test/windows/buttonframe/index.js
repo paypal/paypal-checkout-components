@@ -16,7 +16,5 @@ window.paypal.Buttons({
     }
 
 }).render(document.body).then(button => {
-
-    button.window.paypal.Checkout.contexts.iframe = (window.location.hash === '#iframe');
     button.window.document.querySelector('button').click();
 });

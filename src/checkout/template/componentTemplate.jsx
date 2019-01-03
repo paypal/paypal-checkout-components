@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import { node, dom } from 'jsx-pragmatic/src';
-import type { RenderOptionsType } from 'zoid/src/component/parent';
+import type { RenderOptionsType } from 'zoid/src/parent';
 
 import type { CheckoutPropsType } from '../props';
 
@@ -72,7 +72,7 @@ const checkoutComponentStyle = `
     }
 `;
 
-export function componentTemplate({ document, props } : RenderOptionsType<CheckoutPropsType>) : HTMLElement {
+export function componentTemplate({ doc, props } : RenderOptionsType<CheckoutPropsType>) : HTMLElement {
     const { nonce } = props;
 
     return (
@@ -94,5 +94,5 @@ export function componentTemplate({ document, props } : RenderOptionsType<Checko
                 </div>
             </body>
         </html>
-    ).render(dom({ doc: document }));
+    ).render(dom({ doc }));
 }

@@ -4,90 +4,49 @@
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit,
     getVault, getPayPalDomainRegex, getCurrency, getSDKMeta, isEligible, getBrowser,
-    createOrder, type OrderCreateRequest, type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from '@paypal/sdk-client/src';
+    createOrder } from '@paypal/sdk-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { create } from 'zoid/src';
-import { type Component } from 'zoid/src/component/component';
-import { isIEIntranet, isDevice, uniqueID, redirect, supportsPopups, popup, writeElementToWindow } from 'belter/src';
-import { type CrossDomainWindowType } from 'cross-domain-utils/src';
-import { FUNDING, PLATFORM, INTENT, FPTI_KEY, ENV } from '@paypal/sdk-constants/src';
+import { create, type ZoidComponent } from 'zoid/src';
+import { isIEIntranet, isDevice, uniqueID, redirect, supportsPopups, popup, writeElementToWindow, noop } from 'belter/src';
+import { FUNDING, PLATFORM, INTENT, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
 import { getButtonUrl } from '../config';
 import { getFundingEligibility } from '../globals';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_CONTEXT_TYPE } from '../constants';
 import { getSessionID } from '../lib';
-import { Checkout } from '../checkout';
 import { componentTemplate } from '../checkout/template';
 
 import { containerTemplate, Buttons as ButtonsTemplate } from './template';
 import { rememberFunding, findRememberedFunding } from './funding';
 import { setupButtonChild } from './child';
-import { normalizeButtonStyle, type ButtonProps } from './props';
+import { normalizeButtonStyle, type ButtonProps, type PrerenderDetails, type ButtonStyle, type ProxyRest, type CreateOrder, type OnCancel, type OnClick,
+    type CreateOrderData, type CreateOrderActions, type OnApprove, type OnApproveActions, type OnApproveData, type GetPrerenderDetails, type OnClickData } from './props';
 
-const ORDER_CREATE_TIMEOUT = 10 * 1000;
-
-type CreateOrderData = {|
-
-|} | {};
-
-type CreateOrderActions = {|
-    order : {
-        create : (OrderCreateRequest) => ZalgoPromise<string>
-    }
-|};
-
-type CreateOrder = (data : CreateOrderData, actions : CreateOrderActions) => ZalgoPromise<string>;
-
-type OnApproveData = {|
-    orderID : string
-|};
-
-type OnApproveActions = {|
-    redirect : (string, CrossDomainWindowType) => ZalgoPromise<void>,
-    order : {
-        capture : () => ZalgoPromise<OrderCaptureResponse>,
-        get : () => ZalgoPromise<OrderGetResponse>
-    }
-|};
-
-type OnApprove = (data : OnApproveData, actions : OnApproveActions) =>
-    void | ZalgoPromise<void> | ZalgoPromise<OrderCaptureResponse> | ZalgoPromise<OrderGetResponse> | ZalgoPromise<OrderAuthorizeResponse>;
-
-type PrerenderDetails = {|
-    win : ?CrossDomainWindowType,
-    order : ZalgoPromise<string>,
-    fundingSource : $Values<typeof FUNDING>
-|};
-
-export const Buttons : Component<ButtonProps> = create({
+export const Buttons : ZoidComponent<ButtonProps> = create({
 
     tag:  'paypal-button',
-    name: 'ppbutton',
 
     url:    getButtonUrl(),
     domain: getPayPalDomainRegex(),
-
-    contexts: {
-        iframe: true,
-        popup:  false
-    },
     
     autoResize: {
         width:  false,
         height: true
     },
 
-    // $FlowFixMe
     containerTemplate,
 
-    prerenderTemplate({ props, document } : { props : Object, document : Document }) : HTMLElement {
+    logger: getLogger(),
+
+    prerenderTemplate({ state, props, doc }) : HTMLElement {
 
         const prerenderCheckout = ({ fundingSource } : {| fundingSource : $Values<typeof FUNDING> |}) => {
-            const order    = props.createOrder();
+            // $FlowFixMe
+            const order = props.createOrder();
             let win;
 
-            if (!Checkout.contexts.iframe || !supportsPopups()) {
+            if (supportsPopups()) {
                 win = popup('', { width: 450, height: 535 });
 
                 // $FlowFixMe
@@ -98,7 +57,7 @@ export const Buttons : Component<ButtonProps> = create({
                 }));
             }
 
-            this.prerenderDetails = { win, order, fundingSource };
+            state.prerenderDetails = { win, order, fundingSource };
         };
 
         return (
@@ -109,7 +68,7 @@ export const Buttons : Component<ButtonProps> = create({
                     </div>
                 </body>
             </html>
-        ).render(dom({ doc: document }));
+        ).render(dom({ doc }));
     },
 
     attributes: {
@@ -135,8 +94,9 @@ export const Buttons : Component<ButtonProps> = create({
             queryParam: true,
             required:   false,
 
-            decorate(style = {}) : Object {
-                const { label, layout, color, shape, tagline, height, period } = normalizeButtonStyle(style);
+            decorate({ value }) : ButtonStyle {
+                // $FlowFixMe
+                const { label, layout, color, shape, tagline, height, period } = normalizeButtonStyle(value);
 
                 const logger = getLogger();
                 logger.info(`button_render_color_${ color }`);
@@ -148,28 +108,32 @@ export const Buttons : Component<ButtonProps> = create({
                 return { label, layout, color, shape, tagline, height, period };
             },
 
-            validate(style = {}) {
-                normalizeButtonStyle(style);
+            validate({ value = {} }) {
+                normalizeButtonStyle(value);
+            },
+
+            default: () => {
+                return {};
             }
         },
 
         locale: {
             type:       'object',
             queryParam: true,
-            value:      getLocale
+            value:      () => getLocale()
         },
 
         sdkMeta: {
             type:        'string',
             queryParam:  true,
             sendToChild: false,
-            value:       getSDKMeta
+            value:       () => getSDKMeta()
         },
 
         createOrder: {
             type:     'function',
             required: false,
-            decorate(original : CreateOrder, props) : Function {
+            decorate({ value, props, state }) : Function {
                 return function decoratedCreateOrder() : ZalgoPromise<string> {
                     return ZalgoPromise.try(() => {
 
@@ -178,20 +142,12 @@ export const Buttons : Component<ButtonProps> = create({
                         const actions = {
                             order: {
                                 create: (options) =>
-                                    (this.remoteCreateOrder || createOrder)(
-                                        props.clientID, options, { fptiState: FPTI_STATE.BUTTON }
-                                    )
+                                    (state.remoteCreateOrder || createOrder)(props.clientID, options, { fptiState: FPTI_STATE.BUTTON })
                             }
                         };
 
-                        const orderPromise = ZalgoPromise.resolve(original(data, actions));
-
-                        if (getEnv() === ENV.PRODUCTION) {
-                            return orderPromise.timeout(ORDER_CREATE_TIMEOUT,
-                                new Error(`Timed out waiting ${ ORDER_CREATE_TIMEOUT }ms for order to be created`));
-                        }
-
-                        return orderPromise;
+                        // $FlowFixMe
+                        return value(data, actions);
 
                     }).then(orderID => {
 
@@ -216,8 +172,8 @@ export const Buttons : Component<ButtonProps> = create({
                     });
                 };
             },
-            def() : CreateOrder {
-                return (data, actions) => {
+            default() : CreateOrder {
+                return (data : CreateOrderData, actions : CreateOrderActions) => {
                     return actions.order.create({
                         purchase_units: [
                             {
@@ -236,8 +192,8 @@ export const Buttons : Component<ButtonProps> = create({
             type:     'function',
             required: false,
 
-            decorate(original : OnApprove, props) : Function {
-                return function decorateOnApprove(data, actions) : void | ZalgoPromise<void> {
+            decorate({ value, props, close }) : OnApprove {
+                return function decorateOnApprove(data : OnApproveData, actions : OnApproveActions) : ZalgoPromise<void> {
                     const logger = getLogger();
                     logger.info('button_authorize');
 
@@ -257,15 +213,15 @@ export const Buttons : Component<ButtonProps> = create({
                         ...actions,
                         redirect: (url, win) => {
                             return ZalgoPromise.try(() => {
-                                return this.close();
+                                return close();
                             }).then(() => {
-                                return redirect(url || data.returnUrl, win || window.top);
+                                return redirect(url, win || window.top);
                             });
                         }
                     };
 
                     return ZalgoPromise.try(() => {
-                        return original.call(this, data, actions);
+                        return value.call(this, data, actions);
                     }).catch(err => {
                         if (props.onError) {
                             return props.onError(err);
@@ -275,10 +231,10 @@ export const Buttons : Component<ButtonProps> = create({
                 };
             },
 
-            def() : OnApprove {
-                return function onApproveDefault(data : OnApproveData, actions : OnApproveActions) : ZalgoPromise<OrderCaptureResponse> {
-                    if (this.props.intent === INTENT.CAPTURE && this.props.commit) {
-                        return actions.order.capture();
+            default({ props } : { props : ButtonProps }) : OnApprove {
+                return function onApproveDefault(data : OnApproveData, actions : OnApproveActions) : ZalgoPromise<void> {
+                    if (props.intent === INTENT.CAPTURE && props.commit) {
+                        return actions.order.capture().then(noop);
                     } else {
                         throw new Error(`Please specify onApprove callback to handle buyer approval success`);
                     }
@@ -290,7 +246,7 @@ export const Buttons : Component<ButtonProps> = create({
             type:     'function',
             required: false,
 
-            decorate(original, props) : Function {
+            decorate({ value, props, close }) : OnCancel {
                 return function decorateOnCancel(data, actions = {}) : void | ZalgoPromise<void> {
                     const logger = getLogger();
                     logger.info('button_cancel');
@@ -308,30 +264,30 @@ export const Buttons : Component<ButtonProps> = create({
                         redirect: (url, win) => {
                             return ZalgoPromise.all([
                                 redirect(url, win || window.top),
-                                this.close()
+                                close()
                             ]);
                         }
                     };
 
-                    if (original) {
-                        return ZalgoPromise.try(() => {
-                            return original.call(this, data, actions);
-                        }).catch(err => {
-                            if (props.onError) {
-                                return props.onError(err);
-                            }
-                            throw err;
-                        });
-                    }
+                    return ZalgoPromise.try(() => {
+                        return value.call(this, data, actions);
+                    }).catch(err => {
+                        if (props.onError) {
+                            return props.onError(err);
+                        }
+                        throw err;
+                    });
                 };
-            }
+            },
+
+            default: () => noop
         },
 
         onClick: {
             type:     'function',
             required: false,
-            decorate(original, props) : Function {
-                return function decorateOnClick(data : ?{ fundingSource : string, card? : string }) : void {
+            decorate({ value, props }) : OnClick {
+                return function decorateOnClick(data : OnClickData) : void {
                     const logger = getLogger();
                     logger.info('button_click');
 
@@ -345,17 +301,17 @@ export const Buttons : Component<ButtonProps> = create({
 
                     logger.flush();
 
-                    if (original) {
-                        return original.call(this, data);
-                    }
+                    return value.call(this, data);
                 };
-            }
+            },
+
+            default: () => noop
         },
 
         onRender: {
             type:     'function',
             required: false,
-            decorate(original, props) : Function {
+            decorate({ value, props }) : Function {
                 return function decorateOnRender() : mixed {
                     const { browser = 'unrecognized', version = 'unrecognized' } = getBrowser();
 
@@ -371,42 +327,39 @@ export const Buttons : Component<ButtonProps> = create({
 
                     logger.flush();
 
-                    if (original) {
-                        return original.apply(this, arguments);
-                    }
+                    return value.apply(this, arguments);
                 };
-            }
+            },
+            default: () => noop
         },
 
         getPrerenderDetails: {
             type: 'function',
-            value() : () => PrerenderDetails {
-                return function getPrerenderDetails() : PrerenderDetails {
-                    return this.prerenderDetails;
+            value({ state } : { state : Object }) : GetPrerenderDetails {
+                return () : PrerenderDetails => {
+                    return state.prerenderDetails;
                 };
             }
         },
 
         proxyRest: {
             type: 'function',
-            value() : ({ createOrder : typeof createOrder }) => void {
+            value({ state }) : (ProxyRest) => void {
                 return function proxyRest(rest) {
-                    this.remoteCreateOrder = rest.createOrder;
+                    state.remoteCreateOrder = rest.createOrder;
                 };
             }
         },
 
         clientID: {
             type:       'string',
-            value:      getClientID,
+            value:      () => getClientID(),
             queryParam: true
         },
 
         sessionID: {
-            type: 'string',
-            value() : string {
-                return getSessionID();
-            },
+            type:       'string',
+            value:      () => getSessionID(),
             queryParam: true
         },
 
@@ -421,21 +374,14 @@ export const Buttons : Component<ButtonProps> = create({
         env: {
             type:       'string',
             queryParam: true,
-            value:      getEnv
+            value:      () => getEnv()
         },
 
         fundingEligibility: {
             type:          'object',
-            value:         getFundingEligibility,
+            value:         () => getFundingEligibility(),
             queryParam:    true,
             serialization: 'base64'
-        },
-
-        meta: {
-            type:   'object',
-            def() : Object {
-                return {};
-            }
         },
 
         platform: {
@@ -449,7 +395,7 @@ export const Buttons : Component<ButtonProps> = create({
         remembered: {
             type:       'array',
             queryParam: true,
-            value:      findRememberedFunding
+            value:      () => findRememberedFunding()
         },
 
         remember: {
@@ -462,30 +408,30 @@ export const Buttons : Component<ButtonProps> = create({
         currency: {
             type:       'string',
             queryParam: true,
-            value:      getCurrency
+            value:      () => getCurrency()
         },
 
         intent: {
             type:       'string',
             queryParam: true,
-            value:      getIntent
+            value:      () => getIntent()
         },
 
         commit: {
             type:       'boolean',
             queryParam: true,
-            value:      getCommit
+            value:      () => getCommit()
         },
 
         vault: {
             type:       'boolean',
             queryParam: true,
-            value:      getVault
+            value:      () => getVault()
         },
 
         test: {
             type: 'object',
-            def() : Object {
+            default() : Object {
                 return { action: 'checkout' };
             }
         }

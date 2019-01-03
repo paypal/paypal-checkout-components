@@ -54,6 +54,7 @@ export function generateOrderID() : string {
 export const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
 export const IE11_USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
 export const IPHONE6_USER_AGENT = 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
+export const WEBVIEW_USER_AGENT = 'Mozilla/5.0 (Linux; Android 5.1.1; Nexus 5 Build/LMY48B; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/43.0.2357.65 Mobile Safari/537.36';
 
 export const MERCHANT_CLIENT_ID = 'abcxyz123';
 export const MERCHANT_ACCESS_TOKEN = 'xxxyyy987';
@@ -118,6 +119,28 @@ export function destroyElement(element : string | ?HTMLElement) {
 
     if (element && element.parentNode) {
         element.parentNode.removeChild(element);
+    }
+}
+
+export function doOnClick<T>(handler : () => T) : T {
+    const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+    let didError = false;
+    let result;
+    let error;
+    testButton.addEventListener('click', () => {
+        try {
+            result = handler();
+        } catch (err) {
+            didError = true;
+            error = err;
+        }
+    });
+    testButton.click();
+    if (didError) {
+        throw error;
+    } else {
+        // $FlowFixMe
+        return result;
     }
 }
 

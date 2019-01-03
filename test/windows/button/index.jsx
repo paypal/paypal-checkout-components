@@ -1,14 +1,15 @@
 /* @flow */
 /** @jsx node */
 
-import { noop } from 'belter/src';
+import { noop, supportsPopups } from 'belter/src';
 import { type ZalgoPromise } from 'zalgo-promise/src';
 import { node, html } from 'jsx-pragmatic/src';
+import { CONTEXT } from 'zoid/src';
 
 import { Buttons as ButtonsTemplate } from '../../../src/buttons/template';
 import { getElement, getElements, errorOnWindowOpen } from '../../tests/common';
 
-let { action, flow = 'popup', authed = false, bridge = false, delay = 0, onRender, checkout, selector, remembered, captureOrder = noop } = window.xprops.test;
+let { action, authed = false, bridge = false, delay = 0, onRender, checkout, selector, remembered, captureOrder = noop } = window.xprops.test;
 
 const body = document.body;
 if (body) {
@@ -17,20 +18,15 @@ if (body) {
     ).render(html());
 }
 
-if (flow === 'iframe') {
-
-    window.paypal.Checkout.contexts.iframe = true;
-}
-
 if (bridge) {
     errorOnWindowOpen();
     delay = 100;
 }
 
-function renderCheckout(props = {}) {
+function renderCheckout(props = {}, context = CONTEXT.POPUP) {
 
 
-    window.paypal.Checkout.renderTo(window.parent, {
+    window.paypal.Checkout({
 
         payment: window.xprops.createOrder,
         onAuthorize(data, actions) : void | ZalgoPromise<void> {
@@ -52,12 +48,11 @@ function renderCheckout(props = {}) {
                 },
 
                 restart() {
-                    window.paypal.Checkout.contexts.iframe = true;
-                    renderCheckout();
+                    renderCheckout(props, CONTEXT.IFRAME);
                 }
 
             }).catch(err => {
-                return window.xchild.error(err);
+                return window.props.onError(err);
             });
         },
 
@@ -75,10 +70,9 @@ function renderCheckout(props = {}) {
         },
 
         ...props
-    }, 'body').catch(err => {
+    }).renderTo(window.parent, 'body', supportsPopups() ? context : CONTEXT.IFRAME).catch(err => {
 
         if (err instanceof window.paypal.PopupOpenError) {
-            window.paypal.Checkout.contexts.iframe = true;
             return renderCheckout(props);
         }
 
@@ -119,7 +113,13 @@ if (action === 'auth') {
         getElement(selector || '.paypal-button', document).click();
     }
 } else {
-    window.xprops.getPrerenderDetails().then(({ win, order, fundingSource }) => {
+    window.xprops.getPrerenderDetails().then(prerenderDetails => {
+        if (!prerenderDetails) {
+            return;
+        }
+
+        const { win, order, fundingSource } = prerenderDetails;
+
         if (!order) {
             throw new Error(`Expected order to be passed`);
         }

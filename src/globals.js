@@ -8,6 +8,6 @@ export function getFundingEligibility() : FundingEligibilityType {
     return __paypal_checkout__.serverConfig.fundingEligibility;
 }
 
-export function getRememberedFunding() : $ReadOnlyArray<$Values<typeof FUNDING>> {
+export function getRememberedFunding() : Array<$Values<typeof FUNDING>> { // eslint-disable-line flowtype/no-mutable-array
     return __PAYPAL_CHECKOUT__.__REMEMBERED_FUNDING__;
 }

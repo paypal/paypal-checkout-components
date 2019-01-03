@@ -2,9 +2,10 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { wrapPromise } from 'belter/src';
 
 import { generateOrderID, createElement, createTestContainer,
-    destroyTestContainer, onHashChange, assert } from '../common';
+    destroyTestContainer, onHashChange, assert, WEBVIEW_USER_AGENT } from '../common';
 
 for (const flow of [ 'popup', 'iframe' ]) {
 
@@ -13,14 +14,13 @@ for (const flow of [ 'popup', 'iframe' ]) {
         beforeEach(() => {
             createTestContainer();
 
-            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
+            if (flow === 'iframe') {
+                window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
+            }
         });
 
         afterEach(() => {
             destroyTestContainer();
-            window.location.hash = '';
-
-            window.paypal.Checkout.contexts.iframe = false;
         });
 
         it('should render a button into a container and click on the button, then complete the checkout without createOrder', (done) => {
@@ -581,61 +581,27 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         if (flow === 'popup') {
-            it('should render a button into a container and click on the button, then cancel the createOrder by closing the window', (done) => {
+            it('should render a button into a container and click on the button, then cancel the createOrder by closing the window', () => {
+                return wrapPromise(({ expect, error }) => {
+                    return window.paypal.Buttons({
 
-
-                window.paypal.Buttons({
-
-                    test: {
-                        flow,
-                        action:   'checkout',
-                        checkout: {
-                            action: 'init',
-                            onInit(actions) {
-                                actions.close();
+                        test: {
+                            flow,
+                            action:   'checkout',
+                            checkout: {
+                                action: 'init',
+                                onInit(actions) {
+                                    actions.close();
+                                }
                             }
-                        }
-                    },
+                        },
 
-                    createOrder() : string | ZalgoPromise<string> {
-                        return ZalgoPromise.resolve(generateOrderID());
-                    },
+                        createOrder: expect('createOrder', generateOrderID),
+                        onApprove:   error('onApprove'),
+                        onCancel:    expect('onCancel')
 
-                    onApprove() : void {
-                        return done(new Error('Expected onApprove to not be called'));
-                    },
-
-                    onCancel() : void {
-                        return done();
-                    }
-
-                }).render('#testContainer');
-            });
-
-            it('should render a button into a container and click on the button, block the popup, fallback to iframe, then complete the checkout', (done) => {
-
-
-                window.paypal.Buttons({
-
-                    test: {
-                        flow,
-                        action: 'checkout',
-                        bridge: true
-                    },
-
-                    createOrder() : string | ZalgoPromise<string> {
-                        return ZalgoPromise.resolve(generateOrderID());
-                    },
-
-                    onApprove() : void {
-                        return done();
-                    },
-
-                    onCancel() : void {
-                        return done(new Error('Expected onCancel to not be called'));
-                    }
-
-                }).render('#testContainer');
+                    }).render('#testContainer');
+                }, { timeout: 5000 });
             });
         }
 
@@ -721,40 +687,27 @@ for (const flow of [ 'popup', 'iframe' ]) {
                 }).render('#testContainer');
             });
 
-            it('should render a button into a container and click on the button, restart the createOrder, popout, then complete the checkout', (done) => {
-
-                let isRestarted = false;
-
-
-                window.paypal.Buttons({
-
-                    test: { flow, action: 'checkout' },
-
-                    createOrder() : string | ZalgoPromise<string> {
-                        return ZalgoPromise.resolve(generateOrderID());
-                    },
-
-                    onApprove(data, actions) : void | ZalgoPromise<void> {
-
-                        if (isRestarted) {
-                            return done();
-                        }
-
-                        isRestarted = true;
-
-                        return this.updateProps({
-                            test: { action: 'popout' }
-
-                        }).then(() => {
-                            return actions.restart();
-                        });
-                    },
-
-                    onCancel() : void {
-                        return done(new Error('Expected onCancel to not be called'));
-                    }
-
-                }).render('#testContainer');
+            it('should render a button into a container and click on the button, restart the createOrder, popout, then complete the checkout', () => {
+                return wrapPromise(({ expect, avoid }) => {
+                    const instance = window.paypal.Buttons({
+                        test:        { flow, action: 'checkout' },
+                        createOrder: expect('createOrder', generateOrderID),
+                        onApprove:   expect('onApprove', (data, actions) => {
+                            return instance.updateProps({
+                                test: {
+                                    action:    'popout'
+                                },
+                                onApprove: expect('reApprove')
+                            }).then(() => {
+                                return actions.restart();
+                            });
+                        }),
+                        onCancel: avoid('onCancel')
+    
+                    });
+                    
+                    return instance.render('#testContainer');
+                });
             });
         }
     });

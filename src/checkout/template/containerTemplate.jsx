@@ -2,28 +2,29 @@
 /** @jsx node */
 /* eslint max-lines: off, react/jsx-max-depth: off */
 
-import { isIos } from 'belter/src';
-import type { RenderOptionsType } from 'zoid/src/component/parent';
+import { isIos, animate, noop } from 'belter/src';
+import type { RenderOptionsType } from 'zoid/src/parent';
 import { node, dom } from 'jsx-pragmatic/src';
 import { LOGO_COLOR, PPLogo, PayPalLogo } from '@paypal/sdk-logos/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { CheckoutPropsType } from '../props';
 
 import { containerContent } from './containerContent';
 import { getContainerStyle, getSandboxStyle } from './containerStyle';
 
-export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT, on, tag, context, actions, outlet, document } : RenderOptionsType<CheckoutPropsType>) : HTMLElement {
+export function containerTemplate({ uid, tag, props, context, close, focus, outlet, doc } : RenderOptionsType<CheckoutPropsType>) : HTMLElement {
 
     const { locale } = props;
     const { lang } = locale;
 
-    function close(event) {
+    function closeCheckout(event) {
         event.preventDefault();
         event.stopPropagation();
-        actions.close();
+        close();
     }
 
-    function focus(event) {
+    function focusCheckout(event) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -31,7 +32,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
             // eslint-disable-next-line no-alert
             window.alert('Please switch tabs to reactivate the PayPal window');
         } else {
-            actions.focus();
+            focus();
         }
     }
 
@@ -39,21 +40,31 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
 
     const content = containerContent[lang];
 
-    const addLoadingClass = (el) => {
-        on(EVENT.CLOSE, () => {
-            el.classList.add(`${ tag }-loading`);
+    const setupContainerAnimations = (el) => {
+        props.addOnDisplay(() => {
+            return ZalgoPromise.all([
+                animate(el, 'show-container', noop),
+                animate(outlet, 'show-component', noop)
+            ]).then(noop);
+        });
+
+        props.addOnClose(() => {
+            return ZalgoPromise.all([
+                animate(el, 'hide-container', noop),
+                animate(outlet, 'hide-component', noop)
+            ]).then(noop);
         });
     };
 
     return (
-        <div id={ id } class="paypal-checkout-sandbox">
-            <style>{ getSandboxStyle({ id, ANIMATION }) }</style>
+        <div id={ uid } onRender={ setupContainerAnimations } class="paypal-checkout-sandbox">
+            <style>{ getSandboxStyle({ uid }) }</style>
 
-            <iframe title="PayPal Checkout Overlay" name={ `__paypal_checkout_sandbox_${ id }__` } scrolling="no" class="paypal-checkout-sandbox-iframe">
+            <iframe title="PayPal Checkout Overlay" name={ `__paypal_checkout_sandbox_${ uid }__` } scrolling="no" class="paypal-checkout-sandbox-iframe">
                 <html>
                     <body>
-                        <div onRender={ addLoadingClass } id={ id } onClick={ focus } class={ `${ tag }-context-${ context } paypal-checkout-overlay` }>
-                            <a href='#' class="paypal-checkout-close" onClick={ close } aria-label="close" role="button" />
+                        <div id={ uid } onClick={ focusCheckout } class={ `${ tag }-context-${ context } paypal-checkout-overlay` }>
+                            <a href='#' class="paypal-checkout-close" onClick={ closeCheckout } aria-label="close" role="button" />
                             <div class="paypal-checkout-modal">
                                 <div class="paypal-checkout-logo">
                                     <PPLogo logoColor={ LOGO_COLOR.WHITE } />
@@ -74,11 +85,11 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
                                 <node el={ outlet } />
                             </div>
 
-                            <style>{getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION })}</style>
+                            <style>{ getContainerStyle({ uid, tag }) }</style>
                         </div>
                     </body>
                 </html>
             </iframe>
         </div>
-    ).render(dom({ doc: document }));
+    ).render(dom({ doc }));
 }

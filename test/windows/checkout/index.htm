@@ -3,6 +3,7 @@
         window.mockDomain = 'mock://www.paypal.com';
         var parentWindow = (window.opener || window.parent);
         window.__coverage__ = parentWindow.__coverage__;
+        window.navigator.mockUserAgent = parentWindow.navigator.mockUserAgent;
     </script>
 
     <script src="/base/test/tests/globals.js"></script>

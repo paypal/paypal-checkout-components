@@ -4,9 +4,8 @@
 import { getPayPalDomainRegex, getLogger, getLocale, getEnv, getClientID, getCommit, getSDKMeta, isEligible } from '@paypal/sdk-client/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { create, CONSTANTS } from 'zoid/src';
-import { type Component } from 'zoid/src/component/component';
-import { isDevice, supportsPopups, memoize, isIEIntranet } from 'belter/src';
+import { create, CONTEXT, type ZoidComponent } from 'zoid/src';
+import { isDevice, memoize, isIEIntranet, noop, once } from 'belter/src';
 
 import { getSessionID, getButtonSessionID } from '../lib';
 import { FUNDING_CONFIG } from '../funding';
@@ -14,10 +13,9 @@ import { FUNDING_CONFIG } from '../funding';
 import { containerTemplate, componentTemplate } from './template';
 import type { CheckoutPropsType } from './props';
 
-export const Checkout : Component<CheckoutPropsType> = create({
+export const Checkout : ZoidComponent<CheckoutPropsType> = create({
 
     tag:  'paypal-checkout',
-    name: 'ppcheckout',
 
     attributes: {
         iframe: {
@@ -25,7 +23,9 @@ export const Checkout : Component<CheckoutPropsType> = create({
         }
     },
 
-    url(props) : string {
+    defaultContext: CONTEXT.POPUP,
+
+    url({ props }) : string {
         const { fundingSource } = props;
         const fundingConfig = FUNDING_CONFIG[fundingSource];
 
@@ -38,10 +38,7 @@ export const Checkout : Component<CheckoutPropsType> = create({
 
     domain: getPayPalDomainRegex(),
 
-    contexts: {
-        iframe: !supportsPopups(),
-        popup:  supportsPopups()
-    },
+    logger: getLogger(),
 
     validate() {
         if (isIEIntranet()) {
@@ -60,12 +57,13 @@ export const Checkout : Component<CheckoutPropsType> = create({
 
         clientID: {
             type:       'string',
-            value:      getClientID,
+            value:      () => getClientID(),
             queryParam: true
         },
 
         sessionID: {
             type: 'string',
+            // $FlowFixMe
             value() : string {
                 return getSessionID();
             },
@@ -75,7 +73,7 @@ export const Checkout : Component<CheckoutPropsType> = create({
         buttonSessionID: {
             type:     'string',
             required: false,
-            def() : ?string {
+            default() : ?string {
                 return getButtonSessionID();
             },
             queryParam: true
@@ -84,13 +82,15 @@ export const Checkout : Component<CheckoutPropsType> = create({
         env: {
             type:       'string',
             queryParam: true,
-            value:      getEnv
+            // $FlowFixMe
+            value:      () => getEnv()
         },
 
         sdkMeta: {
             type:       'string',
             queryParam: true,
-            value:      getSDKMeta
+            // $FlowFixMe
+            value:      () => getSDKMeta()
         },
 
         nonce: {
@@ -99,8 +99,8 @@ export const Checkout : Component<CheckoutPropsType> = create({
         },
 
         meta: {
-            type: 'object',
-            def() : Object {
+            type:    'object',
+            default:  () => {
                 const meta = window.xprops && window.xprops.meta;
                 return meta || {};
             }
@@ -110,21 +110,23 @@ export const Checkout : Component<CheckoutPropsType> = create({
             type:          'object',
             queryParam:    'locale.x',
             allowDelegate: true,
-            queryValue(locale) : string {
-                const { lang, country } = locale;
+            queryValue({ value }) : string {
+                const { lang, country } = value;
                 return `${ lang }_${ country }`;
             },
-            value: getLocale
+            // $FlowFixMe
+            value: () => getLocale()
         },
         
+        // $FlowFixMe
         createOrder: {
             type:       'function',
             queryParam: 'token',
             alias:      'payment',
-            queryValue(payment) : ZalgoPromise<string> {
-                return payment();
+            queryValue: ({ value }) => {
+                return ZalgoPromise.try(value);
             },
-            decorate(payment) : () => ZalgoPromise<string> {
+            decorate: ({ value: payment }) => {
                 return memoize(() => {
                     return ZalgoPromise.try(payment)
                         .then(orderID => {
@@ -142,6 +144,7 @@ export const Checkout : Component<CheckoutPropsType> = create({
         xcomponent: {
             type:       'string',
             queryParam: true,
+            // $FlowFixMe
             value() : string {
                 return '1';
             }
@@ -150,6 +153,7 @@ export const Checkout : Component<CheckoutPropsType> = create({
         version: {
             type:       'string',
             queryParam: true,
+            // $FlowFixMe
             value() : string {
                 return '5';
             }
@@ -158,40 +162,34 @@ export const Checkout : Component<CheckoutPropsType> = create({
         commit: {
             type:       'boolean',
             queryParam: true,
-            def:        getCommit
+            default:        getCommit
         },
 
+        // $FlowFixMe
         fundingSource: {
             type:       'string',
             queryParam: true,
-            def() : string {
+            default() : $Values<typeof FUNDING> {
                 return FUNDING.PAYPAL;
             }
         },
 
+        // $FlowFixMe
         onApprove: {
             type:     'function',
             alias:    'onAuthorize',
 
-            decorate(original) : Function {
-                return function decorateOnAuthorize(data, actions = {}) : ZalgoPromise<void> {
-
-                    const close = () => {
-                        return ZalgoPromise.try(() => {
-                            if (actions.close) {
-                                return actions.close();
-                            }
-                        }).then(() => {
-                            return this.closeComponent();
-                        });
-                    };
-
+            decorate: ({ value, state, close, onError }) => {
+                return function decorateOnApprove(data, actions) : ZalgoPromise<void> {
                     return ZalgoPromise.try(() => {
-                        return original.call(this, data, { ...actions, close });
+                        state.approved = true;
+
+                        // $FlowFixMe
+                        return value(data, actions);
                     }).catch(err => {
-                        return this.error(err);
+                        return onError(err);
                     }).finally(() => {
-                        return this.close();
+                        return close();
                     });
                 };
             }
@@ -212,63 +210,92 @@ export const Checkout : Component<CheckoutPropsType> = create({
             type:     'function',
             required: false,
 
-            decorate(original) : Function {
+            decorate: ({ value, close, onError }) => {
                 return function decorateOnCancel(data, actions = {}) : ZalgoPromise<void> {
-
-                    const close = () => {
-                        return ZalgoPromise.try(() => {
-                            if (actions.close) {
-                                return actions.close();
-                            }
-                        }).then(() => {
-                            return this.closeComponent();
-                        });
-                    };
-
                     return ZalgoPromise.try(() => {
-                        if (original) {
-                            return original.call(this, data, { ...actions, close });
-                        }
+                        // $FlowFixMe
+                        return value(data, actions);
+                    }).catch(err => {
+                        return onError(err);
                     }).finally(() => {
-                        this.close();
+                        close();
                     });
+                };
+            },
+
+            // $FlowFixMe
+            default: () => noop
+        },
+
+        onClose: {
+            type:          'function',
+            required:      false,
+            allowDelegate: true,
+
+            decorate: ({ value, props, state }) => {
+                return once((reason, ...args) : ZalgoPromise<void> => {
+                    return ZalgoPromise.try(() => {
+                        return ZalgoPromise.all((state.onCloseHandlers || []).map(handler => handler()));
+
+                    }).then(() => {
+                        if (!state.approved) {
+                            // $FlowFixMe
+                            return ZalgoPromise.try(() => props.onCancel())
+                                .then(() => value(...args));
+                        }
+
+                        return value(...args);
+                    });
+                });
+            },
+
+            default: () => noop
+        },
+
+        addOnClose: {
+            type:          'function',
+            allowDelegate: true,
+            value:         ({ state }) => {
+                return (handler) => {
+                    state.onCloseHandlers = state.onCloseHandlers || [];
+                    state.onCloseHandlers.push(handler);
                 };
             }
         },
 
-        onClose: {
-            type:      'function',
-            required:  false,
+        onDisplay: {
+            type:          'function',
+            required:      false,
+            allowDelegate: true,
 
-            decorate(original) : Function {
-                return function decorateOnClose(reason) : ZalgoPromise<void> {
+            decorate: ({ value, state }) => {
+                return once(function decorateOnDisplay() : ZalgoPromise<void> {
+                    return ZalgoPromise.try(() => {
+                        return ZalgoPromise.all((state.onDisplayHandlers || []).map(handler => handler()));
 
-                    const onClose = ZalgoPromise.try(() => {
-                        if (original) {
-                            return original.apply(this, arguments);
-                        }
+                    }).then(() => {
+                        return value.apply(this, arguments);
                     });
+                });
+            },
 
-                    const CLOSE_REASONS = CONSTANTS.CLOSE_REASONS;
+            default: () => noop
+        },
 
-                    const shouldCancel =
-                        this.props.onCancel &&
-                        [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1;
-
-                    if (shouldCancel) {
-                        getLogger().info(`close_trigger_cancel`);
-                        return this.props.onCancel()
-                            .then(() => onClose);
-                    }
-
-                    return onClose;
+        addOnDisplay: {
+            type:          'function',
+            allowDelegate: true,
+            value:         ({ state }) => {
+                return (handler) => {
+                    state.onDisplayHandlers = state.onDisplayHandlers || [];
+                    state.onDisplayHandlers.push(handler);
                 };
             }
         },
 
         test: {
             type: 'object',
-            def() : Object {
+            default() : Object {
                 return window.__test__ || { action: 'checkout' };
             }
         }

@@ -43,7 +43,7 @@ describe(`paypal button component sizes`, () => {
                 done(new Error('Expected onApprove() to not be called'));
             },
 
-            onEnter() {
+            onRendered() {
                 setTimeout(() => {
                     const frame = getElement('#testContainer iframe');
                     const width = frame.offsetWidth;
@@ -94,7 +94,7 @@ describe(`paypal button component sizes`, () => {
                 done(new Error('Expected onApprove() to not be called'));
             },
 
-            onEnter() {
+            onRendered() {
                 setTimeout(() => {
                     const frame = getElement('#testContainer iframe');
                     const width = frame.offsetWidth;
@@ -145,7 +145,7 @@ describe(`paypal button component sizes`, () => {
                 done(new Error('Expected onApprove() to not be called'));
             },
 
-            onEnter() {
+            onRendered() {
                 setTimeout(() => {
                     const frame = getElement('#testContainer iframe');
                     const width = frame.offsetWidth;
@@ -196,7 +196,7 @@ describe(`paypal button component sizes`, () => {
                 done(new Error('Expected onApprove() to not be called'));
             },
 
-            onEnter() {
+            onRendered() {
                 setTimeout(() => {
                     const frame = getElement('#testContainer iframe');
                     const width = frame.offsetWidth;
@@ -247,7 +247,7 @@ describe(`paypal button component sizes`, () => {
                 done(new Error('Expected onApprove() to not be called'));
             },
 
-            onEnter() {
+            onRendered() {
                 setTimeout(() => {
                     const frame = getElement('#testContainer iframe');
                     const width = frame.offsetWidth;
@@ -298,7 +298,7 @@ describe(`paypal button component sizes`, () => {
                 done(new Error('Expected onApprove() to not be called'));
             },
 
-            onEnter() {
+            onRendered() {
                 setTimeout(() => {
                     const frame = getElement('#testContainer iframe');
                     const width = frame.offsetWidth;
@@ -349,7 +349,7 @@ describe(`paypal button component sizes`, () => {
                 done(new Error('Expected onApprove() to not be called'));
             },
 
-            onEnter() {
+            onRendered() {
                 setTimeout(() => {
                     const frame = getElement('#testContainer iframe');
                     const width = frame.offsetWidth;
@@ -400,7 +400,7 @@ describe(`paypal button component sizes`, () => {
                 done(new Error('Expected onApprove() to not be called'));
             },
 
-            onEnter() {
+            onRendered() {
                 setTimeout(() => {
                     const frame = getElement('#testContainer iframe');
                     const width = frame.offsetWidth;
@@ -451,7 +451,7 @@ describe(`paypal button component sizes`, () => {
                 done(new Error('Expected onApprove() to not be called'));
             },
 
-            onEnter() {
+            onRendered() {
                 setTimeout(() => {
                     const frame = getElement('#testContainer iframe');
                     const width = frame.offsetWidth;
@@ -503,7 +503,7 @@ describe(`paypal button component sizes`, () => {
                 done(new Error('Expected onApprove() to not be called'));
             },
 
-            onEnter() {
+            onRendered() {
                 setTimeout(() => {
                     const frame = getElement('#testContainer iframe');
                     const width = frame.offsetWidth;
@@ -550,7 +550,7 @@ describe(`paypal button component sizes`, () => {
                 done(new Error('Expected onApprove() to not be called'));
             },
 
-            onEnter() {
+            onRendered() {
                 const frame = getElement('#testContainer iframe');
 
                 onElementResize(frame).then(() => {
@@ -614,7 +614,7 @@ describe(`paypal button component sizes`, () => {
                 done(new Error('Expected onApprove() to not be called'));
             },
 
-            onEnter() {
+            onRendered() {
                 container.style.display = 'block';
 
                 const frame = getElement('#testContainer iframe');
@@ -668,7 +668,7 @@ describe(`paypal button component sizes`, () => {
                 done(new Error('Expected onApprove() to not be called'));
             },
 
-            onEnter() {
+            onRendered() {
                 setTimeout(() => {
                     const frame = getElement('#testContainer iframe');
                     const width = frame.offsetWidth;
@@ -717,7 +717,7 @@ describe(`paypal button component sizes`, () => {
                 done(new Error('Expected onApprove() to not be called'));
             },
 
-            onEnter() {
+            onRendered() {
                 setTimeout(() => {
 
                     const c = container.getBoundingClientRect();
@@ -768,7 +768,7 @@ describe(`paypal button component sizes`, () => {
                 done(new Error('Expected onApprove() to not be called'));
             },
 
-            onEnter() {
+            onRendered() {
                 setTimeout(() => {
                     const frame = getElement('#testContainer iframe');
                     const width = frame.offsetWidth;

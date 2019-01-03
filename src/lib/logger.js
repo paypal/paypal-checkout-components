@@ -1,6 +1,5 @@
 /* @flow */
 
-import { useLogger } from 'zoid/src';
 import { getLogger } from '@paypal/sdk-client/src';
 import { getQueryParam } from 'belter/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
@@ -28,12 +27,7 @@ function getOrderID() : ?string {
 }
 
 export function setupLogger() {
-    const logger = getLogger();
-    
-    useLogger(logger);
-
-    logger.addTrackingBuilder(() => {
-
+    getLogger().addTrackingBuilder(() => {
         const orderID = getOrderID();
         const buttonSessionID = getButtonSessionID();
 

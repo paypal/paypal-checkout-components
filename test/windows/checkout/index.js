@@ -1,6 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { CONTEXT } from 'zoid/src';
 
 import { createTestContainer, createElement } from '../../tests/common';
 
@@ -63,14 +64,12 @@ if (action === 'checkout') {
     const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
     testButton.addEventListener('click', () => {
-        window.xchild.hide();
-
-        window.paypal.Checkout.renderPopupTo(window.opener ? window.opener.parent : window.parent, {
+        window.paypal.Checkout({
             payment:          window.xprops.payment,
             onAuthorize:      window.xprops.onAuthorize,
             onCancel:         window.xprops.onCancel,
             onError:          window.xprops.onError
-        }, 'body');
+        }).renderTo(window.opener ? window.opener.parent : window.parent, 'body', CONTEXT.POPUP);
     });
 
     testButton.click();
@@ -78,7 +77,7 @@ if (action === 'checkout') {
 } else if (action === 'error') {
 
     window.xprops.payment().then(() => {
-        window.xchild.error(new Error('something went wrong'));
+        window.xprops.onError(new Error('something went wrong'));
     });
 
 } else if (action === 'init') {

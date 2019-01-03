@@ -1,48 +1,26 @@
 /* @flow */
 
-import { type ZalgoPromise } from 'zalgo-promise/src';
-
-import { generateOrderID, assert } from '../common';
+import { ZalgoPromise } from 'zalgo-promise/src';
+import { wrapPromise } from 'belter/src';
 
 describe(`paypal checkout component validation`, () => {
-
-    it('should attempt to render checkout with invalid env and error out', () => {
-
-
-        return window.paypal.Checkout.render({
-            env: 'moo'
-        }, 'body').then(() => {
-            throw new Error('Expected error to be thrown');
-        }, err => {
-            return assert.ok(err instanceof Error, 'Expected error object to be thrown');
+    it('should attempt to render checkout with createOrder and no onApprove, and error out', () => {
+        return wrapPromise(({ expect, avoid }) => {
+            return ZalgoPromise.try(() => {
+                window.paypal.Checkout({
+                    createOrder: avoid('createOrder')
+                });
+            }).catch(expect('catch'));
         });
     });
 
-    it('should attempt to render checkout with payment and no onAuthorize, and error out', () => {
-
-
-        return window.paypal.Checkout.render({
-            payment() : string | ZalgoPromise<string> {
-                return generateOrderID();
-            }
-        }, 'body').then(() => {
-            throw new Error('Expected error to be thrown');
-        }, err => {
-            return assert.ok(err instanceof Error, 'Expected error object to be thrown');
-        });
-    });
-
-    it('should attempt to render checkout with no payment and error out', () => {
-
-
-        return window.paypal.Checkout.render({
-            onAuthorize() {
-                // pass
-            }
-        }, 'body').then(() => {
-            throw new Error('Expected error to be thrown');
-        }, err => {
-            return assert.ok(err instanceof Error, 'Expected error object to be thrown');
+    it('should attempt to render checkout with no createOrder and error out', () => {
+        return wrapPromise(({ expect, avoid }) => {
+            return ZalgoPromise.try(() => {
+                window.paypal.Checkout({
+                    onApprove: avoid('onApprove')
+                });
+            }).catch(expect('catch'));
         });
     });
 });

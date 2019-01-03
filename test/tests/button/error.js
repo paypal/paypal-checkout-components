@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { generateOrderID, createTestContainer, destroyTestContainer, assert } from '../common';
+import { generateOrderID, createTestContainer, destroyTestContainer, assert, WEBVIEW_USER_AGENT } from '../common';
 
 for (const flow of [ 'popup', 'iframe' ]) {
 
@@ -11,14 +11,13 @@ for (const flow of [ 'popup', 'iframe' ]) {
         beforeEach(() => {
             createTestContainer();
 
-            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
+            if (flow === 'iframe') {
+                window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
+            }
         });
 
         afterEach(() => {
             destroyTestContainer();
-            window.location.hash = '';
-
-            window.paypal.Checkout.contexts.iframe = false;
         });
 
         it('should render button, render checkout, and return a blank string in createOrder', (done) => {

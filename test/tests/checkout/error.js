@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { generateOrderID, createElement, createTestContainer, destroyTestContainer, assert } from '../common';
+import { generateOrderID, createElement, createTestContainer, destroyTestContainer, assert, WEBVIEW_USER_AGENT } from '../common';
 
 for (const flow of [ 'popup', 'iframe' ]) {
 
@@ -11,13 +11,13 @@ for (const flow of [ 'popup', 'iframe' ]) {
         beforeEach(() => {
             createTestContainer();
 
-            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
+            if (flow === 'iframe') {
+                window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
+            }
         });
 
         afterEach(() => {
             destroyTestContainer();
-
-            window.paypal.Checkout.contexts.iframe = false;
         });
 
         it('should render checkout and return a blank token in payment', (done) => {
@@ -27,7 +27,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', () => {
 
 
-                return window.paypal.Checkout.render({
+                return window.paypal.Checkout({
 
                     payment() : string {
                         return '';
@@ -46,7 +46,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, 'body');
+                }).render('body');
             });
 
             testButton.click();
@@ -59,7 +59,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', () => {
 
 
-                return window.paypal.Checkout.render({
+                return window.paypal.Checkout({
 
                     payment() : ZalgoPromise<string> {
                         return ZalgoPromise.resolve('');
@@ -78,7 +78,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, 'body');
+                }).render('body');
             });
 
             testButton.click();
@@ -91,7 +91,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', () => {
 
 
-                return window.paypal.Checkout.render({
+                return window.paypal.Checkout({
 
                     payment() {
                         throw new Error('error');
@@ -110,7 +110,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, 'body');
+                }).render('body');
             });
 
             testButton.click();
@@ -123,7 +123,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', () => {
 
 
-                return window.paypal.Checkout.render({
+                return window.paypal.Checkout({
 
                     payment() : string | ZalgoPromise<string> {
                         return ZalgoPromise.reject(new Error('error'));
@@ -142,7 +142,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, 'body');
+                }).render('body');
             });
 
             testButton.click();
@@ -155,7 +155,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', () => {
 
 
-                return window.paypal.Checkout.render({
+                return window.paypal.Checkout({
 
                     test: { action: 'error' },
 
@@ -176,7 +176,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, 'body');
+                }).render('body');
             });
 
             testButton.click();
@@ -189,7 +189,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', () => {
 
 
-                return window.paypal.Checkout.render({
+                return window.paypal.Checkout({
 
                     payment() : string | ZalgoPromise<string> {
                         return generateOrderID();
@@ -208,7 +208,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, 'body');
+                }).render('body');
             });
 
             testButton.click();
@@ -221,7 +221,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', () => {
 
 
-                return window.paypal.Checkout.render({
+                return window.paypal.Checkout({
 
                     payment() : string | ZalgoPromise<string> {
                         return generateOrderID();
@@ -242,7 +242,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, 'body');
+                }).render('body');
             });
 
             testButton.click();
@@ -255,7 +255,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', () => {
 
 
-                return window.paypal.Checkout.render({
+                return window.paypal.Checkout({
 
                     payment() : string | ZalgoPromise<string> {
                         return generateOrderID();
@@ -276,7 +276,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, 'body');
+                }).render('body');
             });
 
             testButton.click();
@@ -291,7 +291,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                     let name;
 
 
-                    window.paypal.Checkout.render({
+                    window.paypal.Checkout({
 
                         onRender() {
                             name = this.childWindowName;
@@ -308,7 +308,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                         onCancel() : void {
                             return done(new Error('Expected onCancel to not be called'));
                         }
-                    }, 'body');
+                    }).render('body');
 
                     window.open('', name);
                 });
@@ -321,7 +321,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
             it('should render checkout without a click event and error out', (done) => {
 
 
-                window.paypal.Checkout.render({
+                window.paypal.Checkout({
                     payment() : string | ZalgoPromise<string> {
                         return generateOrderID();
                     },
@@ -339,7 +339,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, 'body');
+                }).render('body');
             });
         }
     });

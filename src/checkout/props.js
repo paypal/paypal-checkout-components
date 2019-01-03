@@ -1,20 +1,41 @@
 /* @flow */
 
 import type { ZalgoPromise } from 'zalgo-promise/src';
-import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { FUNDING, ENV, type LocaleType } from '@paypal/sdk-constants/src';
 
+export type OnApproveData = {|
+    orderID : string,
+    payerID : string,
+    paymentID? : string
+|};
+
+export type OnApproveActions = {|
+    
+|};
+
+export type OnCancelData = {|
+    orderID : string,
+    paymentID? : string
+|};
+
+export type OnCancelActions = {|
+    
+|};
+
+
 export type CheckoutPropsType = {|
-    payment? : () => ZalgoPromise<string>,
-    onAuthorize : ({ returnUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
-    onCancel? : ({ cancelUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
+    createOrder : () => ZalgoPromise<string>,
+    onApprove : (OnApproveData, OnApproveActions) => ?ZalgoPromise<void>,
+    onCancel? : (OnCancelData, OnCancelActions) => ?ZalgoPromise<void>,
     fundingSource : $Values<typeof FUNDING>,
-    env? : $Values<typeof ENV>,
+    env : $Values<typeof ENV>,
     stage? : string,
     stageUrl? : string,
     locale : LocaleType,
     style : {|
     
     |},
-    nonce? : string
+    nonce? : string,
+    addOnDisplay : (() => (void | ZalgoPromise<void>)) => void,
+    addOnClose : (() => (void | ZalgoPromise<void>)) => void
 |};

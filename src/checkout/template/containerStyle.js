@@ -1,8 +1,10 @@
 /* @flow */
 
-export function getSandboxStyle({ id, ANIMATION } : { id : string, ANIMATION : Object }) : string {
+import { CONTEXT, CLASS } from 'zoid/src';
+
+export function getSandboxStyle({ uid } : { uid : string }) : string {
     return `
-        #${ id }.paypal-checkout-sandbox {
+        #${ uid }.paypal-checkout-sandbox {
             display: block;
             position: fixed;
             top: 0;
@@ -19,13 +21,13 @@ export function getSandboxStyle({ id, ANIMATION } : { id : string, ANIMATION : O
 
             z-index: 2147483647;
 
-            animation-duration: 1s;
-
-            animation-fill-mode:forwards;
+            animation-duration: 0.3s;
             animation-iteration-count: 1;
+            animation-fill-mode: forwards !important;
+            opacity: 0;
         }
 
-        #${ id }.paypal-checkout-sandbox .paypal-checkout-sandbox-iframe {
+        #${ uid }.paypal-checkout-sandbox .paypal-checkout-sandbox-iframe {
             display: block;
             position: absolute;
             top: 0;
@@ -34,7 +36,7 @@ export function getSandboxStyle({ id, ANIMATION } : { id : string, ANIMATION : O
             height: 100%;
         }
 
-        @keyframes ${ ANIMATION.SHOW_CONTAINER } {
+        @keyframes show-container {
             from {
                 opacity: 0;
             }
@@ -44,7 +46,7 @@ export function getSandboxStyle({ id, ANIMATION } : { id : string, ANIMATION : O
             }
         }
 
-        @keyframes ${ ANIMATION.HIDE_CONTAINER } {
+        @keyframes hide-container {
             from {
                 opacity: 1;
             }
@@ -60,9 +62,9 @@ export function getSandboxStyle({ id, ANIMATION } : { id : string, ANIMATION : O
     `;
 }
 
-export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id : string, tag : string, CONTEXT : Object, CLASS : Object, ANIMATION : Object }) : string {
+export function getContainerStyle({ uid, tag } : { uid : string, tag : string }) : string {
     return `
-        #${ id } {
+        #${ uid } {
             position: absolute;
             z-index: 2147483647;
             top: 0;
@@ -79,24 +81,24 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             color: #fff;
         }
 
-        #${ id } a {
+        #${ uid } a {
             color: #fff;
         }
 
-        #${ id } .paypal-checkout-close:before,
-        #${ id } .paypal-checkout-close:after {
+        #${ uid } .paypal-checkout-close:before,
+        #${ uid } .paypal-checkout-close:after {
             background-color: #fff;
         }
 
-        #${ id }.${ tag }-context-${ CONTEXT.POPUP } {
+        #${ uid }.${ tag }-context-${ CONTEXT.POPUP } {
             cursor: pointer;
         }
 
-        #${ id } a {
+        #${ uid } a {
             text-decoration: none;
         }
 
-        #${ id } .paypal-checkout-modal {
+        #${ uid } .paypal-checkout-modal {
             font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;
             font-size: 14px;
             text-align: center;
@@ -111,7 +113,7 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             text-align: center;
         }
 
-        #${ id }.${ tag }-loading .paypal-checkout-message, #${ id }.${ tag }-loading .paypal-checkout-continue {
+        #${ uid }.${ tag }-loading .paypal-checkout-message, #${ uid }.${ tag }-loading .paypal-checkout-continue {
             display: none;
         }
 
@@ -119,46 +121,46 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             display: none;
         }
 
-        #${ id }.${ tag }-loading .paypal-checkout-loader {
+        #${ uid }.${ tag }-loading .paypal-checkout-loader {
             display: block;
         }
 
-        #${ id } .paypal-checkout-modal .paypal-checkout-logo {
+        #${ uid } .paypal-checkout-modal .paypal-checkout-logo {
             cursor: pointer;
             margin-bottom: 30px;
             display: inline-block;
         }
 
-        #${ id } .paypal-checkout-modal .paypal-checkout-logo img {
+        #${ uid } .paypal-checkout-modal .paypal-checkout-logo img {
             height: 36px;
         }
 
-        #${ id } .paypal-checkout-modal .paypal-checkout-logo img.paypal-checkout-logo-pp {
+        #${ uid } .paypal-checkout-modal .paypal-checkout-logo img.paypal-checkout-logo-pp {
             margin-right: 10px;
         }
 
-        #${ id } .paypal-checkout-modal .paypal-checkout-message {
+        #${ uid } .paypal-checkout-modal .paypal-checkout-message {
             font-size: 15px;
             line-height: 1.5;
             padding: 10px 0;
         }
 
-        #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-message, #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-continue {
+        #${ uid }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-message, #${ uid }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-continue {
             display: none;
         }
 
-        #${ id } .paypal-checkout-modal .paypal-checkout-continue {
+        #${ uid } .paypal-checkout-modal .paypal-checkout-continue {
             font-size: 15px;
             line-height: 1.35;
             padding: 10px 0;
             font-weight: bold;
         }
 
-        #${ id } .paypal-checkout-modal .paypal-checkout-continue a {
+        #${ uid } .paypal-checkout-modal .paypal-checkout-continue a {
             border-bottom: 1px solid white;
         }
 
-        #${ id } .paypal-checkout-close {
+        #${ uid } .paypal-checkout-close {
             position: absolute;
             right: 16px;
             top: 16px;
@@ -167,15 +169,15 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             opacity: 0.6;
         }
 
-        #${ id }.${ tag }-loading .paypal-checkout-close {
+        #${ uid }.${ tag }-loading .paypal-checkout-close {
             display: none;
         }
 
-        #${ id } .paypal-checkout-close:hover {
+        #${ uid } .paypal-checkout-close:hover {
             opacity: 1;
         }
 
-        #${ id } .paypal-checkout-close:before, .paypal-checkout-close:after {
+        #${ uid } .paypal-checkout-close:before, .paypal-checkout-close:after {
             position: absolute;
             left: 8px;
             content: ' ';
@@ -183,26 +185,26 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             width: 2px;
         }
 
-        #${ id } .paypal-checkout-close:before {
+        #${ uid } .paypal-checkout-close:before {
             transform: rotate(45deg);
         }
 
-        #${ id } .paypal-checkout-close:after {
+        #${ uid } .paypal-checkout-close:after {
             transform: rotate(-45deg);
         }
 
-        #${ id } .paypal-checkout-iframe-container {
+        #${ uid } .paypal-checkout-iframe-container {
             display: none;
         }
 
-        #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-iframe-container,
-        #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-iframe-container > .${ CLASS.OUTLET },
-        #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-iframe-container > .${ CLASS.OUTLET } > iframe {
+        #${ uid }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-iframe-container,
+        #${ uid }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-iframe-container > .${ CLASS.OUTLET },
+        #${ uid }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-iframe-container > .${ CLASS.OUTLET } > iframe {
             max-height: 95vh;
             max-width: 95vw;
         }
 
-        #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-iframe-container {
+        #${ uid }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-iframe-container {
 
             display: block;
 
@@ -220,13 +222,13 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             overflow: hidden;
         }
 
-        #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } {
+        #${ uid }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } {
 
             position: relative;
 
             transition: all 0.3s ease;
             animation-duration: 0.3s;
-            animation-fill-mode: both;
+            animation-fill-mode: forwards !important;
 
             min-width: 450px;
             max-width: 450px;
@@ -236,37 +238,40 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             background-color: white;
 
             overflow: auto;
+
+            opacity: 0;
+            transform: scale3d(.3, .3, .3);
         }
 
-        #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } > iframe {
+        #${ uid }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } > iframe {
             position: absolute;
             top: 0;
             left: 0;
             transition: opacity .4s ease-in-out;
         }
 
-        #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } > iframe.${ CLASS.COMPONENT_FRAME } {
+        #${ uid }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } > iframe.${ CLASS.COMPONENT_FRAME } {
             z-index: 100;
         }
 
-        #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } > iframe.${ CLASS.PRERENDER_FRAME } {
+        #${ uid }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } > iframe.${ CLASS.PRERENDER_FRAME } {
             z-index: 200;
         }
 
-        #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } > iframe.${ CLASS.VISIBLE } {
+        #${ uid }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } > iframe.${ CLASS.VISIBLE } {
             opacity: 1;
             z-index: 200;
         }
 
-        #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } > iframe.${ CLASS.INVISIBLE } {
+        #${ uid }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } > iframe.${ CLASS.INVISIBLE } {
             opacity: 0;
             z-index: 100;
         }
 
         @media screen and (max-width: 470px) {
 
-            #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-iframe-container,
-            #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } {
+            #${ uid }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-iframe-container,
+            #${ uid }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } {
                 min-width: 100%;
                 min-width: calc(100% - 20px);
 
@@ -275,13 +280,13 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             }
         }
 
-        #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } iframe {
+        #${ uid }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } iframe {
             width: 1px;
             min-width: 100%;
             height: 100%;
         }
 
-        @keyframes ${ ANIMATION.SHOW_COMPONENT } {
+        @keyframes show-component {
             from {
                 opacity: 0;
                 transform: scale3d(.3, .3, .3);
@@ -293,8 +298,9 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             }
         }
 
-        @keyframes ${ ANIMATION.HIDE_COMPONENT } {
+        @keyframes hide-component {
             from {
+                opacity: 1;
                 transform: scale3d(1, 1, 1);
             }
 
