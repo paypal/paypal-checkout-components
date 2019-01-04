@@ -376,7 +376,7 @@ export function patchWithOps(obj : ?Object, patch : Array<Patch>) : Object {
 }
 
 export function patchMethod(obj : Object, name : string, handler : Function) {
-    let original = obj[name];
+    let original = obj[name] || noop;
 
     obj[name] = function patchedMethod() : mixed {
         return handler({

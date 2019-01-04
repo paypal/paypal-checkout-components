@@ -1,0 +1,106 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<div id="paypal-button"></div>
+
+<script src="http://localhost.paypal.com:9000/checkout.js"></script>
+<!-- <script src="https://www.paypalobjects.com/api/checkout.js"></script> -->
+
+<script>
+    var container = document.createElement('div');
+    var input = document.createElement('input');
+    var label = document.createElement('label');
+
+    input.type = 'checkbox';
+    label.innerHTML = 'check here to enable the buttons';
+
+    container.appendChild(input);
+    container.appendChild(label);
+
+    document.getElementById('paypal-button').appendChild(container);
+
+    let clicks = 0;
+
+    paypal.Button.render({
+
+        env: 'local', // Optional: specify 'sandbox' environment
+
+        locale: 'en_US',
+
+        commit: true, // Optional: show a 'Pay Now' button in the checkout flow
+
+        style: {
+            branding: true, // optional
+            layout: 'vertical',
+            size:  'responsive', // small | medium | large | responsive
+            shape: 'rect',   // pill | rect
+            color: 'gold'   // gold | blue | silve | black
+        },
+
+        client: {
+            sandbox: 'AWi18rxt26-hrueMoPZ0tpGEOJnNT4QkiMQst9pYgaQNAfS1FLFxkxQuiaqRBj1vV5PmgHX_jA_c1ncL',
+            stage: 'alc_client1',
+            local: 'alc_client1'
+        },
+
+        test: {
+          onRender(actions) {
+            actions.click();
+
+            input.addEventListener('change', () => {
+              setTimeout(() => {
+                actions.click();
+              }, 200);
+            });
+          }
+        },
+
+        onClick() {
+          console.log('on click');
+        },
+
+        validate(actions) {
+          actions.disable();
+
+          input.addEventListener('change', () => {
+            if (input.checked) {
+              actions.enable();
+            } else {
+              actions.disable();
+            }
+          });
+        },
+
+        payment(data, actions) { 
+            const transactions = [
+                {
+                    amount: {
+                        total: '3.00',
+                        currency: 'USD'
+                    },
+                    item_list: {
+                        items: [
+                            {
+                                name: 'Hat',
+                                description: 'A stylish brown hat.',
+                                quantity: '1',
+                                price: '3.00',
+                                sku: '12345',
+                                currency: 'USD'
+                            },
+                        ]
+                    }
+                }
+            ];
+
+            return actions.payment.create({
+                payment: { transactions }
+            });
+        },
+
+        onAuthorize(data, actions) { 
+            actions.payment.execute().then(data => {
+                // Show a success page to the buyer
+            });
+        }
+
+    }, '#paypal-button');
+</script>

@@ -122,11 +122,19 @@ if (Button.xprops && Button.xprops.validate) {
         }
     });
 
+    // @TODO: this function will be redundant after checkoutjs v4.1.4x
+    // because we will change the way we enable/disable the buttons. We
+    // keep this only for the backward compatible and will remove it
+    // afterward
     patchMethod(Checkout, 'renderTo', ({ callOriginal }) => {
         if (enabled) {
             return callOriginal();
         }
         return new ZalgoPromise();
+    });
+
+    patchMethod(Button, 'isEnabled', () => {
+        return enabled;
     });
 }
 
