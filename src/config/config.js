@@ -331,6 +331,14 @@ export let config = {
 
         'fwrd.com': {
             disable_venmo: true
+        },
+
+        'plunderdesign.com': {
+            disable_venmo: true
+        },
+
+        'stitchfix.com': {
+            disable_venmo: true
         }
     },
 
