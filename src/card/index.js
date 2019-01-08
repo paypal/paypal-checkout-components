@@ -165,6 +165,9 @@ export const Card : Component<CardOptions> = create({
                     },
                     submitButton: {
                         display: true
+                    },
+                    currencyConversion: {
+                        display: true
                     }
                 };
             }    
