@@ -155,8 +155,8 @@ export const Card : Component<CardOptions> = create({
         },
             
         style: {
-            type:   'object',
-            required: false,
+            type:        'object',
+            required:   false,
             queryParam: true,
             def() : Object {
                 return {
@@ -170,7 +170,7 @@ export const Card : Component<CardOptions> = create({
                         display: true
                     }
                 };
-            }    
+            }
         }
     }
 });

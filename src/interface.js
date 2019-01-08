@@ -7,7 +7,6 @@ import * as _postRobot from 'post-robot/src'; // eslint-disable-line import/no-n
 
 import { isPayPalDomain } from './lib';
 import { Checkout as _Checkout } from './checkout';
-import { Card as _Card } from './card';
 import { BillingPage as _BillingPage } from './billing';
 
 import './hacks'; // eslint-disable-line import/no-unassigned-import
