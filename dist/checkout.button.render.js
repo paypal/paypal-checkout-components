@@ -686,6 +686,7 @@
             ZalgoPromise.prototype.asyncReject = function(error) {
                 this.errorHandled = !0;
                 this.reject(error);
+                return this;
             };
             ZalgoPromise.prototype.dispatch = function() {
                 var _this3 = this, dispatching = this.dispatching, resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
@@ -776,6 +777,9 @@
             };
             ZalgoPromise.reject = function(error) {
                 return new ZalgoPromise().reject(error);
+            };
+            ZalgoPromise.asyncReject = function(error) {
+                return new ZalgoPromise().asyncReject(error);
             };
             ZalgoPromise.all = function(promises) {
                 var promise = new ZalgoPromise(), count = promises.length, results = [];
@@ -2445,7 +2449,7 @@
                 })));
             }(normalizeProps(props)) : null;
             var script;
-            return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.239", 
+            return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.240", 
             _ref21), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -2580,7 +2584,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.239",
+            version: "4.0.240",
             cors: !0,
             env: constants.s.PRODUCTION,
             state: "checkoutjs",
@@ -2802,6 +2806,27 @@
                     disable_venmo: !0
                 },
                 "barkbox.com": {
+                    disable_venmo: !0
+                },
+                "neimanmarcus.com": {
+                    disable_venmo: !0
+                },
+                "lastcall.com": {
+                    disable_venmo: !0
+                },
+                "horchow.com": {
+                    disable_venmo: !0
+                },
+                "bergdorfgoodman.com": {
+                    disable_venmo: !0
+                },
+                "fwrd.com": {
+                    disable_venmo: !0
+                },
+                "plunderdesign.com": {
+                    disable_venmo: !0
+                },
+                "stitchfix.com": {
                     disable_venmo: !0
                 }
             },
@@ -3860,7 +3885,7 @@
             var __WEBPACK_IMPORTED_MODULE_0_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js");
             __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_hi_base32__), __webpack_require__("./node_modules/zalgo-promise/src/index.js"), 
             __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __webpack_require__("./src/config/index.js"), 
-            "function" == typeof Symbol && Symbol.iterator;
+            Object.assign, "function" == typeof Symbol && Symbol.iterator;
             function memoize(method) {
                 var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, cache = {};
                 return function() {
