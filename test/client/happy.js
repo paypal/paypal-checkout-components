@@ -13,8 +13,12 @@ describe('happy cases', () => {
     
         let renderToCalled = false;
 
-        window.paypal.Checkout.renderTo = async () => {
-            renderToCalled = true;
+        window.paypal.Checkout = () => {
+            return {
+                renderTo: async () => {
+                    renderToCalled = true;
+                }
+            };
         };
 
         window.document.body.innerHTML = createButtonHTML();
@@ -32,8 +36,12 @@ describe('happy cases', () => {
     
         let renderToCalled = false;
     
-        window.paypal.Checkout.renderTo = async () => {
-            renderToCalled = true;
+        window.paypal.Checkout = () => {
+            return {
+                renderTo: async () => {
+                    renderToCalled = true;
+                }
+            };
         };
     
         window.document.body.innerHTML = createButtonHTML();
@@ -105,8 +113,12 @@ describe('happy cases', () => {
             onApproveCalled = true;
         };
 
-        window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+        window.paypal.Checkout = (props) => {
+            return {
+                renderTo: async () => {
+                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+                }
+            };
         };
     
         window.document.body.innerHTML = createButtonHTML();
@@ -139,8 +151,12 @@ describe('happy cases', () => {
             onApproveCalled = true;
         };
 
-        window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID, paymentID });
+        window.paypal.Checkout = (props) => {
+            return {
+                renderTo: async () => {
+                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID, paymentID });
+                }
+            };
         };
 
         window.document.body.innerHTML = createButtonHTML();
@@ -165,8 +181,12 @@ describe('happy cases', () => {
             onCancelCalled = true;
         };
 
-        window.paypal.Checkout.renderTo = async (win, props) => {
-            onCancel = props.onCancel.call(getMockCheckoutInstance(), {});
+        window.paypal.Checkout = (props) => {
+            return {
+                renderTo: async () => {
+                    onCancel = props.onCancel.call(getMockCheckoutInstance(), {});
+                }
+            };
         };
 
         window.document.body.innerHTML = createButtonHTML();
@@ -202,9 +222,13 @@ describe('happy cases', () => {
 
             onApproveCalled = true;
         };
-    
-        window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+
+        window.paypal.Checkout = (props) => {
+            return {
+                renderTo: async () => {
+                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+                }
+            };
         };
     
         window.document.body.innerHTML = createButtonHTML();
@@ -238,9 +262,13 @@ describe('happy cases', () => {
                 actions.restart();
             }
         };
-    
-        window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+
+        window.paypal.Checkout = (props) => {
+            return {
+                renderTo: async () => {
+                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+                }
+            };
         };
     
         window.document.body.innerHTML = createButtonHTML();
@@ -274,8 +302,12 @@ describe('happy cases', () => {
             onApproveCalled = true;
         };
 
-        window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+        window.paypal.Checkout = (props) => {
+            return {
+                renderTo: async () => {
+                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+                }
+            };
         };
 
         window.document.body.innerHTML = createButtonHTML();
@@ -309,8 +341,12 @@ describe('happy cases', () => {
             onApproveCalled = true;
         };
 
-        window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+        window.paypal.Checkout = (props) => {
+            return {
+                renderTo: async () => {
+                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+                }
+            };
         };
 
         window.document.body.innerHTML = createButtonHTML();
@@ -344,8 +380,12 @@ describe('happy cases', () => {
             onApproveCalled = true;
         };
 
-        window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+        window.paypal.Checkout = (props) => {
+            return {
+                renderTo: async () => {
+                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+                }
+            };
         };
 
         window.document.body.innerHTML = createButtonHTML();
@@ -390,8 +430,12 @@ describe('happy cases', () => {
             }
         };
 
-        window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+        window.paypal.Checkout = (props) => {
+            return {
+                renderTo: async () => {
+                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+                }
+            };
         };
 
         window.document.body.innerHTML = createButtonHTML();
@@ -436,8 +480,12 @@ describe('happy cases', () => {
             }
         };
 
-        window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+        window.paypal.Checkout = (props) => {
+            return {
+                renderTo: async () => {
+                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+                }
+            };
         };
 
         window.document.body.innerHTML = createButtonHTML();
@@ -481,9 +529,13 @@ describe('happy cases', () => {
                 authorizeOrderMock.done();
             }
         };
-
-        window.paypal.Checkout.renderTo = async (win, props) => {
-            onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+        
+        window.paypal.Checkout = (props) => {
+            return {
+                renderTo: async () => {
+                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+                }
+            };
         };
 
         window.document.body.innerHTML = createButtonHTML();

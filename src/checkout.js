@@ -1,7 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { memoize, noop } from 'belter/src';
+import { memoize, noop, supportsPopups } from 'belter/src';
 import { INTENT } from '@paypal/sdk-constants/src';
 import { getParent, getTop } from 'cross-domain-utils/src';
 
@@ -17,10 +17,6 @@ type ActionsType = {|
     restart : () => ZalgoPromise<OrderResponse>
 |};
 
-function enableLightbox() {
-    window.paypal.Checkout.contexts.iframe = true;
-}
-
 type CheckoutComponent = {|
     close : () => ZalgoPromise<void>
 |};
@@ -29,11 +25,10 @@ function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : A
 
     const restartFlow = memoize(() : ZalgoPromise<OrderResponse> =>
         checkout.close().then(() => {
-            enableLightbox();
             // eslint-disable-next-line no-use-before-define
             return renderCheckout({
                 createOrder: () => ZalgoPromise.resolve(orderID)
-            });
+            }, 'iframe');
         }).then(() => new ZalgoPromise(noop)));
 
     const handleProcessorError = (err : mixed) : ZalgoPromise<OrderResponse> => {
@@ -145,7 +140,11 @@ function getNonce() : string {
     return nonce;
 }
 
-export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
+function getDefaultContext() : string {
+    return supportsPopups() ? 'popup' : 'iframe';
+}
+
+export function renderCheckout(props : Object = {}, context : string = getDefaultContext()) : ZalgoPromise<mixed> {
 
     if (checkoutOpen) {
         throw new Error(`Checkout already rendered`);
@@ -158,7 +157,7 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
 
     const validateOrderPromise = createOrder().then(validateOrder);
 
-    return window.paypal.Checkout.renderTo(renderWindow, {
+    return window.paypal.Checkout({
         ...props,
 
         createOrder,
@@ -172,7 +171,7 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
             const actions = buildExecuteActions(this, orderID);
 
             return window.xprops.onApprove({ orderID, payerID, paymentID }, actions).catch(err => {
-                return window.xchild.error(err);
+                return window.xprops.onError(err);
             });
         },
 
@@ -182,7 +181,7 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
             }).then(orderID => {
                 return window.xprops.onCancel({ orderID });
             }).catch(err => {
-                return window.xchild.error(err);
+                return window.xprops.onError(err);
             });
         },
 
@@ -196,11 +195,10 @@ export function renderCheckout(props : Object = {}) : ZalgoPromise<mixed> {
 
         nonce: getNonce()
 
-    }, 'body').then(checkout => {
+    }).renderTo(renderWindow, 'body', context).then(checkout => {
 
         return validateOrderPromise.catch(err => {
-            checkout.destroy();
-            throw err;
+            return checkout.error(err);
         });
     });
 }

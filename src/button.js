@@ -36,7 +36,6 @@ export function setupButton() {
                 window:      win,
                 createOrder: () => order,
                 fundingSource
-
             }).catch(err => {
                 window.xprops.onError(err);
             });

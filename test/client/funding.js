@@ -13,11 +13,13 @@ describe('funding source cases', () => {
     
         let selectedFundingSource = '';
     
-        window.paypal.Checkout = {
-            renderTo: (win, { fundingSource }) => {
-                selectedFundingSource = fundingSource;
-                return ZalgoPromise.resolve(getMockCheckoutInstance());
-            }
+        window.paypal.Checkout = ({ fundingSource }) => {
+            return {
+                renderTo: () => {
+                    selectedFundingSource = fundingSource;
+                    return ZalgoPromise.resolve(getMockCheckoutInstance());
+                }
+            };
         };
     
         window.document.body.innerHTML = createButtonHTML();
@@ -35,11 +37,13 @@ describe('funding source cases', () => {
     
         let selectedFundingSource = '';
     
-        window.paypal.Checkout = {
-            renderTo: (win, { fundingSource }) => {
-                selectedFundingSource = fundingSource;
-                return ZalgoPromise.resolve(getMockCheckoutInstance());
-            }
+        window.paypal.Checkout = ({ fundingSource }) => {
+            return {
+                renderTo: () => {
+                    selectedFundingSource = fundingSource;
+                    return ZalgoPromise.resolve(getMockCheckoutInstance());
+                }
+            };
         };
     
         window.document.body.innerHTML = createButtonHTML([ FUNDING.VENMO ]);

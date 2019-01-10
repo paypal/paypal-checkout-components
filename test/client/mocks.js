@@ -27,17 +27,12 @@ export function setupMocks() {
                 lang:    'en'
             }
         },
-        Checkout: {
-            contexts: {
-                popup:    true,
-                lightbox: false
-            },
-            renderTo: () => {
-                return ZalgoPromise.resolve();
-            },
-            onClick: () => {
-                return ZalgoPromise.resolve();
-            }
+        Checkout: () => {
+            return {
+                renderTo: () => {
+                    return ZalgoPromise.resolve();
+                }
+            };
         }
     };
 
@@ -65,13 +60,6 @@ export function setupMocks() {
             }
         },
         getPrerenderDetails: () => ZalgoPromise.resolve()
-    };
-
-    window.xchild = {
-        xprops: window.xprops,
-        error(err) {
-            throw err;
-        }
     };
 
     window.Promise.try = (method) => {
