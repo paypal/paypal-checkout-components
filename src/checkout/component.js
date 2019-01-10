@@ -5,7 +5,7 @@ import { getPayPalDomainRegex, getLogger, getLocale, getEnv, getClientID, getCom
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONTEXT, type ZoidComponent } from 'zoid/src';
-import { isDevice, memoize, isIEIntranet, noop, once } from 'belter/src';
+import { isDevice, memoize, isIEIntranet, noop, once, supportsPopups } from 'belter/src';
 
 import { getSessionID, getButtonSessionID } from '../lib';
 import { FUNDING_CONFIG } from '../funding';
@@ -23,7 +23,7 @@ export const Checkout : ZoidComponent<CheckoutPropsType> = create({
         }
     },
 
-    defaultContext: CONTEXT.POPUP,
+    defaultContext: supportsPopups() ? CONTEXT.POPUP : CONTEXT.IFRAME,
 
     url({ props }) : string {
         const { fundingSource } = props;
