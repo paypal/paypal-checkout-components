@@ -157,7 +157,7 @@ export function renderCheckout(props : Object = {}, context : string = getDefaul
 
     const validateOrderPromise = createOrder().then(validateOrder);
 
-    return window.paypal.Checkout({
+    const instance = window.paypal.Checkout({
         ...props,
 
         createOrder,
@@ -195,10 +195,14 @@ export function renderCheckout(props : Object = {}, context : string = getDefaul
 
         nonce: getNonce()
 
-    }).renderTo(renderWindow, 'body', context).then(checkout => {
-
+    });
+    
+    return instance.renderTo(renderWindow, 'body', context).then(() => {
         return validateOrderPromise.catch(err => {
-            return checkout.error(err);
+            return ZalgoPromise.all([
+                instance.close(),
+                instance.onError(err)
+            ]);
         });
     });
 }
