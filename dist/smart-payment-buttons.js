@@ -497,7 +497,10 @@ window.spb = function(modules) {
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__(7);
+    var _device__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
+    __webpack_require__.d(__webpack_exports__, "supportsPopups", function() {
+        return _device__WEBPACK_IMPORTED_MODULE_0__.b;
+    });
     var _dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
     __webpack_require__.d(__webpack_exports__, "onClick", function() {
         return _dom__WEBPACK_IMPORTED_MODULE_1__.b;
@@ -718,8 +721,51 @@ window.spb = function(modules) {
     __webpack_require__.d(__webpack_exports__, "a", function() {
         return isDevice;
     });
+    __webpack_require__.d(__webpack_exports__, "b", function() {
+        return supportsPopups;
+    });
+    function getUserAgent() {
+        return window.navigator.mockUserAgent || window.navigator.userAgent;
+    }
     function isDevice() {
-        return !!(window.navigator.mockUserAgent || window.navigator.userAgent).match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i);
+        return !!getUserAgent().match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i);
+    }
+    function isOperaMini(ua) {
+        void 0 === ua && (ua = getUserAgent());
+        return -1 < ua.indexOf("Opera Mini");
+    }
+    function supportsPopups(ua) {
+        void 0 === ua && (ua = getUserAgent());
+        return !(function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return !!function(ua) {
+                void 0 === ua && (ua = getUserAgent());
+                return /iPhone|iPod|iPad/.test(ua);
+            }(ua) && (!!function(ua) {
+                void 0 === ua && (ua = getUserAgent());
+                return /\bGSA\b/.test(ua);
+            }(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
+        }(ua) || function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return !!function(ua) {
+                void 0 === ua && (ua = getUserAgent());
+                return /Android/.test(ua);
+            }(ua) && /Version\/[\d.]+/.test(ua) && !isOperaMini(ua);
+        }(ua) || isOperaMini(ua) || function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return /FxiOS/i.test(ua);
+        }(ua) || function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return /EdgiOS/i.test(ua);
+        }(ua) || function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
+        }(ua) || function(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return /QQBrowser/.test(ua);
+        }(ua) || "undefined" != typeof process && process.versions && process.versions.electron || (userAgent = getUserAgent(), 
+        /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent)) || !0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches);
+        var userAgent;
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
@@ -1303,11 +1349,12 @@ window.spb = function(modules) {
         var query;
     }
     var checkoutOpen = !1, canRenderTop = !0;
-    function renderCheckout(props) {
+    function renderCheckout(props, context) {
         void 0 === props && (props = {});
+        void 0 === context && (context = Object(src.supportsPopups)() ? "popup" : "iframe");
         if (checkoutOpen) throw new Error("Checkout already rendered");
         var _ref2 = [ Object(cross_domain_utils_src.getTop)(window), Object(cross_domain_utils_src.getParent)() ], parent = _ref2[0], top = _ref2[1], createOrder = Object(src.memoize)(props.createOrder || window.xprops.createOrder), renderWindow = canRenderTop && top ? top : parent, validateOrderPromise = createOrder().then(validateOrder);
-        return window.paypal.Checkout.renderTo(renderWindow, Object(esm_extends.a)({}, props, {
+        return window.paypal.Checkout(Object(esm_extends.a)({}, props, {
             createOrder: createOrder,
             locale: window.xprops.locale,
             commit: window.xprops.commit,
@@ -1316,12 +1363,11 @@ window.spb = function(modules) {
                 var orderID = _ref3.orderID, payerID = _ref3.payerID, paymentID = _ref3.paymentID, actions = function(checkout, orderID) {
                     var restartFlow = Object(src.memoize)(function() {
                         return checkout.close().then(function() {
-                            window.paypal.Checkout.contexts.iframe = !0;
                             return renderCheckout({
                                 createOrder: function() {
                                     return zalgo_promise_src.a.resolve(orderID);
                                 }
-                            });
+                            }, "iframe");
                         }).then(function() {
                             return new zalgo_promise_src.a(src.noop);
                         });
@@ -1364,7 +1410,7 @@ window.spb = function(modules) {
                     payerID: payerID,
                     paymentID: paymentID
                 }, actions).catch(function(err) {
-                    return window.xchild.error(err);
+                    return window.xprops.onError(err);
                 });
             },
             onCancel: function() {
@@ -1375,7 +1421,7 @@ window.spb = function(modules) {
                         orderID: orderID
                     });
                 }).catch(function(err) {
-                    return window.xchild.error(err);
+                    return window.xprops.onError(err);
                 });
             },
             onAuth: function(_ref4) {
@@ -1390,10 +1436,9 @@ window.spb = function(modules) {
                 document.body && (nonce = document.body.getAttribute("data-nonce") || "");
                 return nonce;
             }()
-        }), "body").then(function(checkout) {
+        })).renderTo(renderWindow, "body", context).then(function(checkout) {
             return validateOrderPromise.catch(function(err) {
-                checkout.destroy();
-                throw err;
+                return checkout.error(err);
             });
         });
     }
