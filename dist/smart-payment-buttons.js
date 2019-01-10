@@ -1353,8 +1353,7 @@ window.spb = function(modules) {
         void 0 === props && (props = {});
         void 0 === context && (context = Object(src.supportsPopups)() ? "popup" : "iframe");
         if (checkoutOpen) throw new Error("Checkout already rendered");
-        var _ref2 = [ Object(cross_domain_utils_src.getTop)(window), Object(cross_domain_utils_src.getParent)() ], parent = _ref2[0], top = _ref2[1], createOrder = Object(src.memoize)(props.createOrder || window.xprops.createOrder), renderWindow = canRenderTop && top ? top : parent, validateOrderPromise = createOrder().then(validateOrder);
-        return window.paypal.Checkout(Object(esm_extends.a)({}, props, {
+        var _ref2 = [ Object(cross_domain_utils_src.getTop)(window), Object(cross_domain_utils_src.getParent)() ], parent = _ref2[0], top = _ref2[1], createOrder = Object(src.memoize)(props.createOrder || window.xprops.createOrder), renderWindow = canRenderTop && top ? top : parent, validateOrderPromise = createOrder().then(validateOrder), instance = window.paypal.Checkout(Object(esm_extends.a)({}, props, {
             createOrder: createOrder,
             locale: window.xprops.locale,
             commit: window.xprops.commit,
@@ -1436,9 +1435,10 @@ window.spb = function(modules) {
                 document.body && (nonce = document.body.getAttribute("data-nonce") || "");
                 return nonce;
             }()
-        })).renderTo(renderWindow, "body", context).then(function(checkout) {
+        }));
+        return instance.renderTo(renderWindow, "body", context).then(function() {
             return validateOrderPromise.catch(function(err) {
-                return checkout.error(err);
+                return zalgo_promise_src.a.all([ instance.close(), instance.onError(err) ]);
             });
         });
     }
