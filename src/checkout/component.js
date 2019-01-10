@@ -308,7 +308,8 @@ export const Checkout : ZoidComponent<CheckoutPropsType> = create({
 
 if (Checkout.isChild()) {
     window.xchild = {
-        show: noop,
-        hide: noop
+        props: Checkout.xprops,
+        show:  noop,
+        hide:  noop
     };
 }
