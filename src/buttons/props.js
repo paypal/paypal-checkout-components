@@ -3,7 +3,7 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { values, uniqueID } from 'belter/src';
 import { createOrder, type OrderCreateRequest,
-    type OrderGetResponse, type OrderCaptureResponse } from '@paypal/sdk-client';
+    type OrderGetResponse, type OrderCaptureResponse } from '@paypal/sdk-client/src';
 import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
     ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
