@@ -305,3 +305,10 @@ export const Checkout : ZoidComponent<CheckoutPropsType> = create({
         ? { width:  '100%', height: '535px' }
         : { width:  '450px', height: '535px' }
 });
+
+if (Checkout.isChild()) {
+    window.xchild = {
+        show: noop,
+        hide: noop
+    };
+}
