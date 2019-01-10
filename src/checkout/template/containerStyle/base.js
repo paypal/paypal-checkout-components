@@ -190,7 +190,7 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
         #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-iframe-container,
         #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-iframe-container > .${ CLASS.OUTLET },
         #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-iframe-container > .${ CLASS.OUTLET } > iframe {
-            max-height: 95vh;
+            max-height: calc(95vh - 60px);
             max-width: 95vw;
         }
 
