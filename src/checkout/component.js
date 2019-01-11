@@ -545,11 +545,6 @@ export let Checkout : Component<CheckoutPropsType> = create({
         }
     },
 
-    autoResize: {
-        width:  false,
-        height: false
-    },
-
     get dimensions() : { width : string, height : string } {
 
         if (isDevice()) {

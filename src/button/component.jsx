@@ -123,6 +123,11 @@ export let Button : Component<ButtonOptions> = create({
 
     containerTemplate,
 
+    autoResize: {
+        height: true,
+        width:  false
+    },
+
     // eslint-disable-next-line no-unused-vars
     prerenderTemplate({ props, jsxDom } : { props : Object, jsxDom : Function }) : HTMLElement {
 

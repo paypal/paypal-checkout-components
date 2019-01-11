@@ -66,11 +66,13 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                 }
 
                 .${ CLASS.TAGLINE } {
+                    display: ${ style.allowTagline ? 'block' : 'none' };
                     height: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) }px;
                     line-height: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) }px;
                 }
 
                 .${ CLASS.FUNDINGICONS } {
+                    display: ${ style.allowFunding ? 'block' : 'none' };
                     height: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) }px;
                 }
 
