@@ -1,6 +1,6 @@
 /* @flow */
 
-import { querySelectorAll, onClick } from 'belter/src';
+import { querySelectorAll, onClick, noop } from 'belter/src';
 
 import { renderCheckout } from './checkout';
 
@@ -22,9 +22,7 @@ export function setupButton() {
                 window.xprops.onClick({ fundingSource, card });
             }
 
-            renderCheckout({ fundingSource }).catch(err => {
-                window.xprops.onError(err);
-            });
+            renderCheckout({ fundingSource }).catch(noop);
         });
     });
 
@@ -36,9 +34,7 @@ export function setupButton() {
                 window:      win,
                 createOrder: () => order,
                 fundingSource
-            }).catch(err => {
-                window.xprops.onError(err);
-            });
+            }).catch(noop);
         }
     });
 }

@@ -29,7 +29,7 @@ function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : A
             return renderCheckout({
                 createOrder: () => ZalgoPromise.resolve(orderID)
             }, 'iframe');
-        }).then(() => new ZalgoPromise(noop)));
+        }).catch(noop).then(() => new ZalgoPromise(noop)));
 
     const handleProcessorError = (err : mixed) : ZalgoPromise<OrderResponse> => {
         if (err && err.message === ORDER_API_ERROR.CC_PROCESSOR_DECLINED) {
