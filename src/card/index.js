@@ -40,6 +40,11 @@ export const Card : Component<CardOptions> = create({
         popup:  false
     },
 
+    autoResize: {
+        height: true,
+        width:  false
+    },
+
     props: {
         sessionID: {
             type:     'string',
