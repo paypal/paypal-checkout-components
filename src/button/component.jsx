@@ -855,7 +855,8 @@ export let Button : Component<ButtonOptions> = create({
 
         validate: {
             type:     'function',
-            required: false
+            required: false,
+            once:     true
         },
 
         logLevel: {
