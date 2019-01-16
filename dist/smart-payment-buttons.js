@@ -1367,7 +1367,7 @@ window.spb = function(modules) {
                                     return zalgo_promise_src.a.resolve(orderID);
                                 }
                             }, "iframe");
-                        }).then(function() {
+                        }).catch(src.noop).then(function() {
                             return new zalgo_promise_src.a(src.noop);
                         });
                     }), handleProcessorError = function(err) {
@@ -1455,9 +1455,7 @@ window.spb = function(modules) {
                 });
                 renderCheckout({
                     fundingSource: fundingSource
-                }).catch(function(err) {
-                    window.xprops.onError(err);
-                });
+                }).catch(src.noop);
             });
         });
         window.xprops.getPrerenderDetails().then(function(prerenderDetails) {
@@ -1469,9 +1467,7 @@ window.spb = function(modules) {
                         return order;
                     },
                     fundingSource: prerenderDetails.fundingSource
-                }).catch(function(err) {
-                    window.xprops.onError(err);
-                });
+                }).catch(src.noop);
             }
         });
     }
