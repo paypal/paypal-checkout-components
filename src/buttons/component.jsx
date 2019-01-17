@@ -188,6 +188,37 @@ export const Buttons : ZoidComponent<ButtonProps> = create({
             }
         },
 
+        createBillingAgreement: {
+            type:     'function',
+            required: false,
+            validate: ({ props }) => {
+                if (props.createOrder) {
+                    throw new Error(`Do not pass both createOrder and createBillingAgreement`);
+                }
+            },
+            decorate({ value }) : Function {
+                return function decoratedCreateBillingAgreement() : ZalgoPromise<string> {
+                    return ZalgoPromise.try(() => {
+                        // $FlowFixMe
+                        return value();
+
+                    }).then(billingToken => {
+
+                        const logger = getLogger();
+
+                        if (!billingToken || typeof billingToken !== 'string') {
+                            logger.error(`no_billing_token_passed_to_createbillingagreement`);
+                            throw new Error(`Expected a promise for a string billing token to be passed to createBillingAgreement`);
+                        }
+
+                        logger.flush();
+
+                        return billingToken;
+                    });
+                };
+            }
+        },
+
         onApprove: {
             type:     'function',
             required: false,

@@ -32,6 +32,8 @@ export type OnApproveData = {|
     paymentID? : string
 |};
 
+export type CreateBillingAgreement = () => ZalgoPromise<string> | string;
+
 export type OnApproveActions = {|
     redirect : (string, CrossDomainWindowType) => ZalgoPromise<void>,
     order : {
@@ -111,6 +113,7 @@ export type ProxyRest = {|
 export type ButtonProps = {|
     intent : $Values<typeof INTENT>,
     createOrder : CreateOrder,
+    createBillingAgreement : CreateBillingAgreement,
     oncancel : OnCancel,
     onApprove : OnApprove,
     onClick : OnClick,
