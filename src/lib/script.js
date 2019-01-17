@@ -25,6 +25,14 @@ export let getCurrentScript = memoize(() : ?HTMLScriptElement => {
     }
 });
 
+export function getCurrentScriptUrl() : ?string {
+    let script = getCurrentScript();
+
+    if (script && typeof script.src === 'string') {
+        return script.src;
+    }
+}
+
 export function isPayPalObjects() : boolean {
     return Boolean(getCurrentScript());
 }

@@ -13,7 +13,7 @@ import { SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
     BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY } from '../constants';
 import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, getScriptVersion,
-    isIEIntranet, isEligible, getCurrentScript,
+    isIEIntranet, isEligible, getCurrentScriptUrl,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
 import { rest, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
@@ -122,6 +122,11 @@ export let Button : Component<ButtonOptions> = create({
     listenForResize: true,
 
     containerTemplate,
+
+    autoResize: {
+        height: true,
+        width:  false
+    },
 
     // eslint-disable-next-line no-unused-vars
     prerenderTemplate({ props, jsxDom } : { props : Object, jsxDom : Function }) : HTMLElement {
@@ -693,11 +698,14 @@ export let Button : Component<ButtonOptions> = create({
                             return patch(patchObject);
                         });
                     };
-                   
-                    const resolve = () => ZalgoPromise.resolve();
 
+                    const resolve = () => ZalgoPromise.resolve();
+                    const reject = actions.reject || function reject() {
+                        throw new Error(`Missing reject action callback`);
+                    };
+                    
                     return ZalgoPromise.try(() => {
-                        return original.call(this, data, { ...actions, resolve });
+                        return original.call(this, data, { ...actions, resolve, reject });
                     }).timeout(timeout,
                         new Error(`Timed out waiting ${ timeout }ms for payment`)
                     ).catch(err => {
@@ -800,6 +808,9 @@ export let Button : Component<ButtonOptions> = create({
                         });
                     }
 
+                    let { color = 'default' } = this.props.style || {};
+                    info(`button_click_color_${ color }`);
+
                     flushLogs();
 
                     return original.apply(this, arguments);
@@ -844,7 +855,8 @@ export let Button : Component<ButtonOptions> = create({
 
         validate: {
             type:     'function',
-            required: false
+            required: false,
+            once:     true
         },
 
         logLevel: {
@@ -861,7 +873,7 @@ export let Button : Component<ButtonOptions> = create({
             sendToChild: false,
             def:         () => {
                 return btoa(JSON.stringify({
-                    url: getCurrentScript()
+                    url: getCurrentScriptUrl()
                 }));
             }
         },

@@ -625,6 +625,331 @@
             return logLevels;
         });
     },
+    "./node_modules/belter/src/css.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+    },
+    "./node_modules/belter/src/decorators.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_require__("./node_modules/belter/src/util.js");
+    },
+    "./node_modules/belter/src/device.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_exports__.a = function() {
+            if (getUserAgent().match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) return !0;
+            return !1;
+        };
+        function getUserAgent() {
+            return window.navigator.mockUserAgent || window.navigator.userAgent;
+        }
+    },
+    "./node_modules/belter/src/dom.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), 
+        __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js");
+        var util = __webpack_require__("./node_modules/belter/src/util.js");
+        __webpack_require__("./node_modules/belter/src/device.js");
+        __webpack_exports__.b = function isLocalStorageEnabled() {
+            return Object(util.d)(isLocalStorageEnabled, function() {
+                try {
+                    if ("undefined" == typeof window) return !1;
+                    if (window.localStorage) {
+                        var value = Math.random().toString();
+                        window.localStorage.setItem("__test__localStorage__", value);
+                        var result = window.localStorage.getItem("__test__localStorage__");
+                        window.localStorage.removeItem("__test__localStorage__");
+                        if (value === result) return !0;
+                    }
+                } catch (err) {}
+                return !1;
+            });
+        };
+        __webpack_exports__.a = getElementSafe;
+        __webpack_exports__.c = function(el, handler) {
+            var _ref2 = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$interval = _ref2.interval, interval = void 0 === _ref2$interval ? 100 : _ref2$interval, _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win, currentWidth = el.offsetWidth, currentHeight = el.offsetHeight;
+            handler({
+                width: currentWidth,
+                height: currentHeight
+            });
+            var check = function() {
+                var newWidth = el.offsetWidth, newHeight = el.offsetHeight;
+                (width && newWidth !== currentWidth || height && newHeight !== currentHeight) && handler({
+                    width: newWidth,
+                    height: newHeight
+                });
+                currentWidth = newWidth;
+                currentHeight = newHeight;
+            }, observer = void 0, timeout = void 0;
+            if (void 0 !== win.ResizeObserver) (observer = new win.ResizeObserver(check)).observe(el); else if (void 0 !== win.MutationObserver) {
+                (observer = new win.MutationObserver(check)).observe(el, {
+                    attributes: !0,
+                    childList: !0,
+                    subtree: !0,
+                    characterData: !1
+                });
+                win.addEventListener("resize", check);
+            } else {
+                !function loop() {
+                    check();
+                    timeout = setTimeout(loop, interval);
+                }();
+            }
+            return {
+                cancel: function() {
+                    observer.disconnect();
+                    window.removeEventListener("resize", check);
+                    clearTimeout(timeout);
+                }
+            };
+        };
+        var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+        Object.assign;
+        function getElementSafe(id) {
+            var element, doc = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : document;
+            return (element = id) instanceof window.Element || null !== element && "object" === (void 0 === element ? "undefined" : _typeof(element)) && 1 === element.nodeType && "object" === _typeof(element.style) && "object" === _typeof(element.ownerDocument) ? id : "string" == typeof id ? doc.querySelector(id) : void 0;
+        }
+        function PopupOpenError(message) {
+            this.message = message;
+        }
+        PopupOpenError.prototype = Object.create(Error.prototype);
+    },
+    "./node_modules/belter/src/experiment.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_require__("./node_modules/belter/src/util.js"), __webpack_require__("./node_modules/belter/src/storage.js");
+    },
+    "./node_modules/belter/src/global.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_require__("./node_modules/belter/src/util.js");
+    },
+    "./node_modules/belter/src/http.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __webpack_require__("./node_modules/cross-domain-utils/src/index.js");
+    },
+    "./node_modules/belter/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_require__("./node_modules/belter/src/device.js");
+        var __WEBPACK_IMPORTED_MODULE_1__dom__ = __webpack_require__("./node_modules/belter/src/dom.js");
+        __webpack_require__.d(__webpack_exports__, "getElementSafe", function() {
+            return __WEBPACK_IMPORTED_MODULE_1__dom__.a;
+        });
+        __webpack_require__.d(__webpack_exports__, "onResize", function() {
+            return __WEBPACK_IMPORTED_MODULE_1__dom__.c;
+        });
+        __webpack_require__("./node_modules/belter/src/experiment.js"), __webpack_require__("./node_modules/belter/src/global.js"), 
+        __webpack_require__("./node_modules/belter/src/storage.js"), __webpack_require__("./node_modules/belter/src/util.js"), 
+        __webpack_require__("./node_modules/belter/src/http.js");
+        var __WEBPACK_IMPORTED_MODULE_7__types__ = __webpack_require__("./node_modules/belter/src/types.js");
+        __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__types__), __webpack_require__("./node_modules/belter/src/decorators.js"), 
+        __webpack_require__("./node_modules/belter/src/css.js"), __webpack_require__("./node_modules/belter/src/test.js");
+    },
+    "./node_modules/belter/src/storage.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_exports__.a = function getStorage(_ref) {
+            var name = _ref.name, _ref$version = _ref.version, version = void 0 === _ref$version ? "latest" : _ref$version, _ref$lifetime = _ref.lifetime, lifetime = void 0 === _ref$lifetime ? 3e5 : _ref$lifetime;
+            return Object(__WEBPACK_IMPORTED_MODULE_0__util__.d)(getStorage, function() {
+                var STORAGE_KEY = "__" + name + "_" + version + "_storage__", accessedStorage = void 0;
+                function getState(handler) {
+                    var localStorageEnabled = Object(__WEBPACK_IMPORTED_MODULE_1__dom__.b)(), storage = void 0;
+                    accessedStorage && (storage = accessedStorage);
+                    if (!storage && localStorageEnabled) {
+                        var rawStorage = window.localStorage.getItem(STORAGE_KEY);
+                        rawStorage && (storage = JSON.parse(rawStorage));
+                    }
+                    storage || (storage = Object(__WEBPACK_IMPORTED_MODULE_0__util__.c)()[STORAGE_KEY]);
+                    storage || (storage = {
+                        id: Object(__WEBPACK_IMPORTED_MODULE_0__util__.m)()
+                    });
+                    storage.id || (storage.id = Object(__WEBPACK_IMPORTED_MODULE_0__util__.m)());
+                    accessedStorage = storage;
+                    var result = handler(storage);
+                    localStorageEnabled ? window.localStorage.setItem(STORAGE_KEY, JSON.stringify(storage)) : Object(__WEBPACK_IMPORTED_MODULE_0__util__.c)()[STORAGE_KEY] = storage;
+                    accessedStorage = null;
+                    return result;
+                }
+                function getSession(handler) {
+                    return getState(function(storage) {
+                        var session = storage.__session__, now = Date.now();
+                        session && now - session.created > lifetime && (session = null);
+                        session || (session = {
+                            guid: Object(__WEBPACK_IMPORTED_MODULE_0__util__.m)(),
+                            created: now
+                        });
+                        storage.__session__ = session;
+                        return handler(session);
+                    });
+                }
+                return {
+                    getState: getState,
+                    getID: function() {
+                        return getState(function(storage) {
+                            return storage.id;
+                        });
+                    },
+                    getSessionState: function(handler) {
+                        return getSession(function(session) {
+                            session.state = session.state || {};
+                            return handler(session.state);
+                        });
+                    },
+                    getSessionID: function() {
+                        return getSession(function(session) {
+                            return session.guid;
+                        });
+                    }
+                };
+            }, [ {
+                name: name,
+                version: version,
+                lifetime: lifetime
+            } ]);
+        };
+        var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__("./node_modules/belter/src/util.js"), __WEBPACK_IMPORTED_MODULE_1__dom__ = __webpack_require__("./node_modules/belter/src/dom.js");
+    },
+    "./node_modules/belter/src/test.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __webpack_require__("./node_modules/belter/src/util.js");
+    },
+    "./node_modules/belter/src/types.js": function(module, exports) {},
+    "./node_modules/belter/src/util.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_exports__.m = uniqueID;
+        __webpack_exports__.c = function() {
+            if ("undefined" != typeof window) return window;
+            if ("undefined" != typeof global) return global;
+            if ("undefined" != typeof __GLOBAL__) return __GLOBAL__;
+            throw new Error("No global found");
+        };
+        __webpack_exports__.e = function(method) {
+            var _this = this, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, cacheMap = new __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__.a();
+            function memoizedFunction() {
+                for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+                var cache = cacheMap.getOrSet(options.thisNamespace ? this : method, function() {
+                    return {};
+                }), key = serializeArgs(args), cacheTime = options.time;
+                cache[key] && cacheTime && Date.now() - cache[key].time < cacheTime && delete cache[key];
+                if (cache[key]) return cache[key].value;
+                var time = Date.now(), value = method.apply(this, arguments);
+                cache[key] = {
+                    time: time,
+                    value: value
+                };
+                return cache[key].value;
+            }
+            memoizedFunction.reset = function() {
+                cacheMap.delete(options.thisNamespace ? _this : method);
+            };
+            options.name && (memoizedFunction.displayName = options.name + ":memoized");
+            return memoizedFunction;
+        };
+        __webpack_exports__.h = function(method) {
+            var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+            function promisifiedFunction() {
+                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(method, this, arguments);
+            }
+            options.name && (promisifiedFunction.displayName = options.name + ":promisified");
+            return promisifiedFunction;
+        };
+        __webpack_exports__.d = function(method, logic) {
+            var args = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [], cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {}, key = serializeArgs(args);
+            if (cache.hasOwnProperty(key)) return cache[key];
+            return cache[key] = logic.apply(void 0, args);
+        };
+        __webpack_exports__.f = noop;
+        __webpack_exports__.g = once;
+        __webpack_exports__.k = function(item) {
+            if ("string" == typeof item) return item;
+            if (item && "function" == typeof item.toString) return item.toString();
+            return Object.prototype.toString.call(item);
+        };
+        __webpack_exports__.b = function(obj, source) {
+            if (!source) return obj;
+            if (Object.assign) return Object.assign(obj, source);
+            for (var key in source) source.hasOwnProperty(key) && (obj[key] = source[key]);
+            return obj;
+        };
+        __webpack_exports__.j = safeInterval;
+        __webpack_exports__.a = function(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+        };
+        __webpack_exports__.l = function(fn) {
+            var result = void 0, error = void 0;
+            try {
+                result = fn();
+            } catch (err) {
+                error = err;
+            }
+            return {
+                result: result,
+                error: error
+            };
+        };
+        __webpack_exports__.i = function(arr, item) {
+            var index = arr.indexOf(item);
+            -1 !== index && arr.splice(index, 1);
+        };
+        var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__ = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+        function base64encode(str) {
+            if ("function" == typeof btoa) return btoa(str);
+            if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
+            throw new Error("Can not find window.btoa or Buffer");
+        }
+        function uniqueID() {
+            var chars = "0123456789abcdef";
+            return "xxxxxxxxxx".replace(/./g, function() {
+                return chars.charAt(Math.floor(Math.random() * chars.length));
+            }) + "_" + base64encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+        }
+        var objectIDs = void 0;
+        function serializeArgs(args) {
+            try {
+                return JSON.stringify(Array.prototype.slice.call(args), function(subkey, val) {
+                    return "function" == typeof val ? "memoize[" + function(obj) {
+                        objectIDs = objectIDs || new __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__.a();
+                        if (null === obj || void 0 === obj || "object" !== (void 0 === obj ? "undefined" : _typeof(obj)) && "function" != typeof obj) throw new Error("Invalid object");
+                        var uid = objectIDs.get(obj);
+                        if (!uid) {
+                            uid = (void 0 === obj ? "undefined" : _typeof(obj)) + ":" + uniqueID();
+                            objectIDs.set(obj, uid);
+                        }
+                        return uid;
+                    }(val) + "]" : val;
+                });
+            } catch (err) {
+                throw new Error("Arguments not serializable -- can not be used to memoize");
+            }
+        }
+        function noop() {}
+        function once(method) {
+            var called = !1;
+            return function() {
+                if (!called) {
+                    called = !0;
+                    return method.apply(this, arguments);
+                }
+            };
+        }
+        function safeInterval(method, time) {
+            var timeout = void 0;
+            !function loop() {
+                timeout = setTimeout(function() {
+                    method();
+                    loop();
+                }, time);
+            }();
+            return {
+                cancel: function() {
+                    clearTimeout(timeout);
+                }
+            };
+        }
+    },
     "./node_modules/bowser/bowser.min.js": function(module, exports, __webpack_require__) {
         t = "bowser", n = function() {
             function t(t) {
@@ -1006,7 +1331,7 @@
                 if (!key) throw new Error("WeakMap expected key");
                 var weakmap = this.weakmap;
                 if (weakmap) try {
-                    return weakmap.has(key);
+                    if (weakmap.has(key)) return !0;
                 } catch (err) {
                     delete this.weakmap;
                 }
@@ -1161,13 +1486,15 @@
         __webpack_exports__.y = isWindowClosed;
         __webpack_exports__.z = function(frame) {
             !function() {
-                for (var i = 0; i < iframeFrames.length; i++) if (isFrameWindowClosed(iframeFrames[i])) {
-                    iframeFrames.splice(i, 1);
-                    iframeWindows.splice(i, 1);
-                }
-                for (var _i8 = 0; _i8 < iframeWindows.length; _i8++) if (isWindowClosed(iframeWindows[_i8])) {
-                    iframeFrames.splice(_i8, 1);
-                    iframeWindows.splice(_i8, 1);
+                for (var i = 0; i < iframeWindows.length; i++) {
+                    var closed = !1;
+                    try {
+                        closed = iframeWindows[i].closed;
+                    } catch (err) {}
+                    if (closed) {
+                        iframeFrames.splice(i, 1);
+                        iframeWindows.splice(i, 1);
+                    }
                 }
             }();
             if (frame && frame.contentWindow) try {
@@ -1185,8 +1512,8 @@
             return function findChildFrameByName(win, name) {
                 var frame = getFrameByName(win, name);
                 if (frame) return frame;
-                for (var _i12 = 0, _getFrames4 = getFrames(win), _length10 = null == _getFrames4 ? 0 : _getFrames4.length; _i12 < _length10; _i12++) {
-                    var childFrame = _getFrames4[_i12], namedFrame = findChildFrameByName(childFrame, name);
+                for (var _i11 = 0, _getFrames4 = getFrames(win), _length10 = null == _getFrames4 ? 0 : _getFrames4.length; _i11 < _length10; _i11++) {
+                    var childFrame = _getFrames4[_i11], namedFrame = findChildFrameByName(childFrame, name);
                     if (namedFrame) return namedFrame;
                 }
             }(getTop(win) || win, name);
@@ -1200,8 +1527,8 @@
             if (actualParent) return actualParent === parent;
             if (child === parent) return !1;
             if (getTop(child) === child) return !1;
-            for (var _i16 = 0, _getFrames8 = getFrames(parent), _length14 = null == _getFrames8 ? 0 : _getFrames8.length; _i16 < _length14; _i16++) {
-                var frame = _getFrames8[_i16];
+            for (var _i15 = 0, _getFrames8 = getFrames(parent), _length14 = null == _getFrames8 ? 0 : _getFrames8.length; _i15 < _length14; _i15++) {
+                var frame = _getFrames8[_i15];
                 if (frame === child) return !0;
             }
             return !1;
@@ -1454,12 +1781,6 @@
             if (!top) throw new Error("Can not determine top window");
             return [].concat(getAllChildFrames(top), [ top ]);
         }
-        function isFrameWindowClosed(frame) {
-            if (!frame.contentWindow) return !0;
-            if (!frame.parentNode) return !0;
-            var doc = frame.ownerDocument;
-            return !(!doc || !doc.documentElement || doc.documentElement.contains(frame));
-        }
         var iframeWindows = [], iframeFrames = [];
         function isWindowClosed(win) {
             var allowMock = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
@@ -1492,13 +1813,18 @@
             }(iframeWindows, win);
             if (-1 !== iframeIndex) {
                 var frame = iframeFrames[iframeIndex];
-                if (frame && isFrameWindowClosed(frame)) return !0;
+                if (frame && function(frame) {
+                    if (!frame.contentWindow) return !0;
+                    if (!frame.parentNode) return !0;
+                    var doc = frame.ownerDocument;
+                    return !(!doc || !doc.documentElement || doc.documentElement.contains(frame));
+                }(frame)) return !0;
             }
             return !1;
         }
         function getFrameByName(win, name) {
-            for (var winFrames = getFrames(win), _i10 = 0, _length8 = null == winFrames ? 0 : winFrames.length; _i10 < _length8; _i10++) {
-                var childFrame = winFrames[_i10];
+            for (var winFrames = getFrames(win), _i9 = 0, _length8 = null == winFrames ? 0 : winFrames.length; _i9 < _length8; _i9++) {
+                var childFrame = winFrames[_i9];
                 try {
                     if (isSameDomain(childFrame) && childFrame.name === name && -1 !== winFrames.indexOf(childFrame)) return childFrame;
                 } catch (err) {}
@@ -1523,8 +1849,8 @@
             return Boolean(getParent(window));
         }
         function anyMatch(collection1, collection2) {
-            for (var _i18 = 0, _length16 = null == collection1 ? 0 : collection1.length; _i18 < _length16; _i18++) for (var item1 = collection1[_i18], _i20 = 0, _length18 = null == collection2 ? 0 : collection2.length; _i20 < _length18; _i20++) {
-                if (item1 === collection2[_i20]) return !0;
+            for (var _i17 = 0, _length16 = null == collection1 ? 0 : collection1.length; _i17 < _length16; _i17++) for (var item1 = collection1[_i17], _i19 = 0, _length18 = null == collection2 ? 0 : collection2.length; _i19 < _length18; _i19++) {
+                if (item1 === collection2[_i19]) return !0;
             }
             return !1;
         }
@@ -1537,7 +1863,7 @@
         }
     },
     "./node_modules/hi-base32/src/base32.js": function(module, exports, __webpack_require__) {
-        (function(process, global, module) {
+        (function(module) {
             var __WEBPACK_AMD_DEFINE_RESULT__, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
                 return typeof obj;
             } : function(obj) {
@@ -1546,7 +1872,7 @@
             !function() {
                 "use strict";
                 var root = "object" === ("undefined" == typeof window ? "undefined" : _typeof(window)) ? window : {};
-                !root.HI_BASE32_NO_NODE_JS && "object" === (void 0 === process ? "undefined" : _typeof(process)) && process.versions && process.versions.node && (root = global);
+                !root.HI_BASE32_NO_NODE_JS && "object" === ("undefined" == typeof process ? "undefined" : _typeof(process)) && process.versions && process.versions.node && (root = global);
                 var COMMON_JS = !root.HI_BASE32_NO_COMMON_JS && "object" === _typeof(module) && module.exports, AMD = __webpack_require__("./node_modules/webpack/buildin/amd-options.js"), BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split(""), BASE32_DECODE_CHAR = {
                     A: 0,
                     B: 1,
@@ -1829,7 +2155,7 @@
                     }.call(exports, __webpack_require__, exports, module)) && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__);
                 }
             }();
-        }).call(exports, __webpack_require__("./node_modules/process/browser.js"), __webpack_require__("./node_modules/webpack/buildin/global.js"), __webpack_require__("./node_modules/webpack/buildin/module.js")(module));
+        }).call(exports, __webpack_require__("./node_modules/webpack/buildin/module.js")(module));
     },
     "./node_modules/post-robot/src/bridge/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -2312,7 +2638,7 @@
             ALLOW_POSTMESSAGE_POPUP: !("__ALLOW_POSTMESSAGE_POPUP__" in window) || window.__ALLOW_POSTMESSAGE_POPUP__,
             BRIDGE_TIMEOUT: 5e3,
             CHILD_WINDOW_TIMEOUT: 5e3,
-            ACK_TIMEOUT: -1 !== window.navigator.userAgent.match(/MSIE/i) ? 2e3 : 1e3,
+            ACK_TIMEOUT: -1 !== window.navigator.userAgent.match(/MSIE/i) ? 1e4 : 2e3,
             RES_TIMEOUT: -1,
             ALLOWED_POST_MESSAGE_METHODS: (_ALLOWED_POST_MESSAGE = {}, _ALLOWED_POST_MESSAGE[CONSTANTS.SEND_STRATEGIES.POST_MESSAGE] = !0, 
             _ALLOWED_POST_MESSAGE[CONSTANTS.SEND_STRATEGIES.BRIDGE] = !0, _ALLOWED_POST_MESSAGE[CONSTANTS.SEND_STRATEGIES.GLOBAL] = !0, 
@@ -3374,126 +3700,6 @@
             return onChildWindowReady;
         });
     },
-    "./node_modules/process/browser.js": function(module, exports) {
-        var cachedSetTimeout, cachedClearTimeout, process = module.exports = {};
-        function defaultSetTimout() {
-            throw new Error("setTimeout has not been defined");
-        }
-        function defaultClearTimeout() {
-            throw new Error("clearTimeout has not been defined");
-        }
-        !function() {
-            try {
-                cachedSetTimeout = "function" == typeof setTimeout ? setTimeout : defaultSetTimout;
-            } catch (e) {
-                cachedSetTimeout = defaultSetTimout;
-            }
-            try {
-                cachedClearTimeout = "function" == typeof clearTimeout ? clearTimeout : defaultClearTimeout;
-            } catch (e) {
-                cachedClearTimeout = defaultClearTimeout;
-            }
-        }();
-        function runTimeout(fun) {
-            if (cachedSetTimeout === setTimeout) return setTimeout(fun, 0);
-            if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-                cachedSetTimeout = setTimeout;
-                return setTimeout(fun, 0);
-            }
-            try {
-                return cachedSetTimeout(fun, 0);
-            } catch (e) {
-                try {
-                    return cachedSetTimeout.call(null, fun, 0);
-                } catch (e) {
-                    return cachedSetTimeout.call(this, fun, 0);
-                }
-            }
-        }
-        var currentQueue, queue = [], draining = !1, queueIndex = -1;
-        function cleanUpNextTick() {
-            if (draining && currentQueue) {
-                draining = !1;
-                currentQueue.length ? queue = currentQueue.concat(queue) : queueIndex = -1;
-                queue.length && drainQueue();
-            }
-        }
-        function drainQueue() {
-            if (!draining) {
-                var timeout = runTimeout(cleanUpNextTick);
-                draining = !0;
-                for (var len = queue.length; len; ) {
-                    currentQueue = queue;
-                    queue = [];
-                    for (;++queueIndex < len; ) currentQueue && currentQueue[queueIndex].run();
-                    queueIndex = -1;
-                    len = queue.length;
-                }
-                currentQueue = null;
-                draining = !1;
-                !function(marker) {
-                    if (cachedClearTimeout === clearTimeout) return clearTimeout(marker);
-                    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-                        cachedClearTimeout = clearTimeout;
-                        return clearTimeout(marker);
-                    }
-                    try {
-                        cachedClearTimeout(marker);
-                    } catch (e) {
-                        try {
-                            return cachedClearTimeout.call(null, marker);
-                        } catch (e) {
-                            return cachedClearTimeout.call(this, marker);
-                        }
-                    }
-                }(timeout);
-            }
-        }
-        process.nextTick = function(fun) {
-            var args = new Array(arguments.length - 1);
-            if (arguments.length > 1) for (var i = 1; i < arguments.length; i++) args[i - 1] = arguments[i];
-            queue.push(new Item(fun, args));
-            1 !== queue.length || draining || runTimeout(drainQueue);
-        };
-        function Item(fun, array) {
-            this.fun = fun;
-            this.array = array;
-        }
-        Item.prototype.run = function() {
-            this.fun.apply(null, this.array);
-        };
-        process.title = "browser";
-        process.browser = !0;
-        process.env = {};
-        process.argv = [];
-        process.version = "";
-        process.versions = {};
-        function noop() {}
-        process.on = noop;
-        process.addListener = noop;
-        process.once = noop;
-        process.off = noop;
-        process.removeListener = noop;
-        process.removeAllListeners = noop;
-        process.emit = noop;
-        process.prependListener = noop;
-        process.prependOnceListener = noop;
-        process.listeners = function(name) {
-            return [];
-        };
-        process.binding = function(name) {
-            throw new Error("process.binding is not supported");
-        };
-        process.cwd = function() {
-            return "/";
-        };
-        process.chdir = function(dir) {
-            throw new Error("process.chdir is not supported");
-        };
-        process.umask = function() {
-            return 0;
-        };
-    },
     "./node_modules/webpack/buildin/amd-define.js": function(module, exports) {
         module.exports = function() {
             throw new Error("define cannot be used indirect");
@@ -3503,22 +3709,6 @@
         (function(__webpack_amd_options__) {
             module.exports = __webpack_amd_options__;
         }).call(exports, {});
-    },
-    "./node_modules/webpack/buildin/global.js": function(module, exports) {
-        var g, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-            return typeof obj;
-        } : function(obj) {
-            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        };
-        g = function() {
-            return this;
-        }();
-        try {
-            g = g || Function("return this")() || (0, eval)("this");
-        } catch (e) {
-            "object" === ("undefined" == typeof window ? "undefined" : _typeof(window)) && (g = window);
-        }
-        module.exports = g;
     },
     "./node_modules/webpack/buildin/module.js": function(module, exports) {
         module.exports = function(module) {
@@ -3543,24 +3733,6 @@
             return module;
         };
     },
-    "./node_modules/zalgo-promise/src/global.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        (function(global) {
-            __webpack_exports__.a = function() {
-                var glob = void 0;
-                if ("undefined" != typeof window) glob = window; else {
-                    if (void 0 === global) throw new TypeError("Can not find global");
-                    glob = global;
-                }
-                var zalgoGlobal = glob.__zalgopromise__ = glob.__zalgopromise__ || {};
-                zalgoGlobal.flushPromises = zalgoGlobal.flushPromises || [];
-                zalgoGlobal.activeCount = zalgoGlobal.activeCount || 0;
-                zalgoGlobal.possiblyUnhandledPromiseHandlers = zalgoGlobal.possiblyUnhandledPromiseHandlers || [];
-                zalgoGlobal.dispatchedErrors = zalgoGlobal.dispatchedErrors || [];
-                return zalgoGlobal;
-            };
-        }).call(__webpack_exports__, __webpack_require__("./node_modules/webpack/buildin/global.js"));
-    },
     "./node_modules/zalgo-promise/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function utils_isPromise(item) {
@@ -3580,7 +3752,19 @@
             }
             return !1;
         }
-        var global = __webpack_require__("./node_modules/zalgo-promise/src/global.js");
+        function getGlobal() {
+            var glob = void 0;
+            if ("undefined" != typeof window) glob = window; else {
+                if ("undefined" == typeof global) throw new TypeError("Can not find global");
+                glob = global;
+            }
+            var zalgoGlobal = glob.__zalgopromise__ = glob.__zalgopromise__ || {};
+            zalgoGlobal.flushPromises = zalgoGlobal.flushPromises || [];
+            zalgoGlobal.activeCount = zalgoGlobal.activeCount || 0;
+            zalgoGlobal.possiblyUnhandledPromiseHandlers = zalgoGlobal.possiblyUnhandledPromiseHandlers || [];
+            zalgoGlobal.dispatchedErrors = zalgoGlobal.dispatchedErrors || [];
+            return zalgoGlobal;
+        }
         var promise_ZalgoPromise = function() {
             function ZalgoPromise(handler) {
                 var _this = this;
@@ -3634,12 +3818,12 @@
                 this.error = error;
                 this.errorHandled || setTimeout(function() {
                     _this2.errorHandled || function(err, promise) {
-                        if (-1 === Object(global.a)().dispatchedErrors.indexOf(err)) {
-                            Object(global.a)().dispatchedErrors.push(err);
+                        if (-1 === getGlobal().dispatchedErrors.indexOf(err)) {
+                            getGlobal().dispatchedErrors.push(err);
                             setTimeout(function() {
                                 throw err;
                             }, 1);
-                            for (var j = 0; j < Object(global.a)().possiblyUnhandledPromiseHandlers.length; j++) Object(global.a)().possiblyUnhandledPromiseHandlers[j](err, promise);
+                            for (var j = 0; j < getGlobal().possiblyUnhandledPromiseHandlers.length; j++) getGlobal().possiblyUnhandledPromiseHandlers[j](err, promise);
                         }
                     }(error, _this2);
                 }, 1);
@@ -3649,12 +3833,13 @@
             ZalgoPromise.prototype.asyncReject = function(error) {
                 this.errorHandled = !0;
                 this.reject(error);
+                return this;
             };
             ZalgoPromise.prototype.dispatch = function() {
                 var _this3 = this, dispatching = this.dispatching, resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
                 if (!dispatching && (resolved || rejected)) {
                     this.dispatching = !0;
-                    Object(global.a)().activeCount += 1;
+                    getGlobal().activeCount += 1;
                     for (var _loop = function(i) {
                         var _handlers$i = handlers[i], onSuccess = _handlers$i.onSuccess, onError = _handlers$i.onError, promise = _handlers$i.promise, result = void 0;
                         if (resolved) try {
@@ -3685,8 +3870,8 @@
                     }, i = 0; i < handlers.length; i++) _loop(i);
                     handlers.length = 0;
                     this.dispatching = !1;
-                    Object(global.a)().activeCount -= 1;
-                    0 === Object(global.a)().activeCount && ZalgoPromise.flushQueue();
+                    getGlobal().activeCount -= 1;
+                    0 === getGlobal().activeCount && ZalgoPromise.flushQueue();
                 }
             };
             ZalgoPromise.prototype.then = function(onSuccess, onError) {
@@ -3740,6 +3925,9 @@
             ZalgoPromise.reject = function(error) {
                 return new ZalgoPromise().reject(error);
             };
+            ZalgoPromise.asyncReject = function(error) {
+                return new ZalgoPromise().asyncReject(error);
+            };
             ZalgoPromise.all = function(promises) {
                 var promise = new ZalgoPromise(), count = promises.length, results = [];
                 if (!count) {
@@ -3784,10 +3972,10 @@
             };
             ZalgoPromise.onPossiblyUnhandledException = function(handler) {
                 return function(handler) {
-                    Object(global.a)().possiblyUnhandledPromiseHandlers.push(handler);
+                    getGlobal().possiblyUnhandledPromiseHandlers.push(handler);
                     return {
                         cancel: function() {
-                            Object(global.a)().possiblyUnhandledPromiseHandlers.splice(Object(global.a)().possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
+                            getGlobal().possiblyUnhandledPromiseHandlers.splice(getGlobal().possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
                         }
                     };
                 }(handler);
@@ -3812,13 +4000,13 @@
             };
             ZalgoPromise.flush = function() {
                 var promise = new ZalgoPromise();
-                Object(global.a)().flushPromises.push(promise);
-                0 === Object(global.a)().activeCount && ZalgoPromise.flushQueue();
+                getGlobal().flushPromises.push(promise);
+                0 === getGlobal().activeCount && ZalgoPromise.flushQueue();
                 return promise;
             };
             ZalgoPromise.flushQueue = function() {
-                var promisesToFlush = Object(global.a)().flushPromises;
-                Object(global.a)().flushPromises = [];
+                var promisesToFlush = getGlobal().flushPromises;
+                getGlobal().flushPromises = [];
                 for (var _i2 = 0, _length2 = null == promisesToFlush ? 0 : promisesToFlush.length; _i2 < _length2; _i2++) {
                     promisesToFlush[_i2].resolve();
                 }
@@ -3896,7 +4084,6 @@
             CHECK_CLOSE: ZOID + "_check_close",
             REDIRECT: ZOID + "_redirect",
             RESIZE: ZOID + "_resize",
-            ONRESIZE: ZOID + "_onresize",
             DELEGATE: ZOID + "_delegate",
             ALLOW_DELEGATE: ZOID + "_allow_delegate",
             ERROR: ZOID + "_error",
@@ -3965,7 +4152,7 @@
                 return window.angular;
             },
             register: function(component, ng) {
-                return ng.module(component.tag, []).directive(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.i)(component.tag), function() {
+                return ng.module(component.tag, []).directive(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.h)(component.tag), function() {
                     for (var scope = {}, _i2 = 0, _component$getPropNam2 = component.getPropNames(), _length2 = null == _component$getPropNam2 ? 0 : _component$getPropNam2.length; _i2 < _length2; _i2++) {
                         var key = _component$getPropNam2[_i2];
                         scope[key] = "=";
@@ -3986,7 +4173,7 @@
                                         void 0 !== $scope[_key] && (scopeProps[_key] = $scope[_key]);
                                     }
                                 }
-                                return scopeProps = Object(__WEBPACK_IMPORTED_MODULE_0__lib__.Q)(scopeProps, {
+                                return scopeProps = Object(__WEBPACK_IMPORTED_MODULE_0__lib__.L)(scopeProps, {
                                     function: function(value) {
                                         return function() {
                                             var result = value.apply(this, arguments);
@@ -4027,7 +4214,7 @@
                 var AngularComponent = _ref.Component, NgModule = _ref.NgModule, ElementRef = _ref.ElementRef, NgZone = _ref.NgZone;
                 zoid.log("initializing angular2 component");
                 var getProps = function(component) {
-                    return Object(__WEBPACK_IMPORTED_MODULE_0__lib__.Q)(_extends({}, component.internalProps, component.props), {
+                    return Object(__WEBPACK_IMPORTED_MODULE_0__lib__.L)(_extends({}, component.internalProps, component.props), {
                         function: function(value) {
                             if ("function" == typeof value) return function() {
                                 var _this = this, _arguments = arguments;
@@ -4166,14 +4353,14 @@
                     },
                     componentDidMount: function() {
                         component.log("instantiate_react_component");
-                        var el = ReactDOM.findDOMNode(this), parent = component.init(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.t)({}, this.props), null, el);
+                        var el = ReactDOM.findDOMNode(this), parent = component.init(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.p)({}, this.props), null, el);
                         this.setState({
                             parent: parent
                         });
                         parent.render(el);
                     },
                     componentDidUpdate: function() {
-                        this.state && this.state.parent && this.state.parent.updateProps(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.t)({}, this.props));
+                        this.state && this.state.parent && this.state.parent.updateProps(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.p)({}, this.props));
                     },
                     componentWillUnmount: function() {
                         this.state && this.state.parent && this.state.parent.destroy();
@@ -4205,14 +4392,14 @@
                     };
                     _class.prototype.componentDidMount = function() {
                         component.log("instantiate_react_component");
-                        var el = ReactDOM.findDOMNode(this), parent = component.init(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.t)({}, this.props), null, el);
+                        var el = ReactDOM.findDOMNode(this), parent = component.init(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.p)({}, this.props), null, el);
                         this.setState({
                             parent: parent
                         });
                         parent.render(el);
                     };
                     _class.prototype.componentDidUpdate = function() {
-                        this.state && this.state.parent && this.state.parent.updateProps(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.t)({}, this.props));
+                        this.state && this.state.parent && this.state.parent.updateProps(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.p)({}, this.props));
                     };
                     _class.prototype.componentWillUnmount = function() {
                         this.state && this.state.parent && this.state.parent.destroy();
@@ -4274,11 +4461,11 @@
                     inheritAttrs: !1,
                     mounted: function() {
                         var el = this.$el;
-                        this.parent = component.init(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.t)({}, this.$attrs), null, el);
+                        this.parent = component.init(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.p)({}, this.$attrs), null, el);
                         this.parent.render(el);
                     },
                     beforeUpdate: function() {
-                        this.parent && this.$attrs && this.parent.updateProps(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.t)({}, this.$attrs));
+                        this.parent && this.$attrs && this.parent.updateProps(Object(__WEBPACK_IMPORTED_MODULE_0__lib__.p)({}, this.$attrs));
                     }
                 };
             }
@@ -5262,25 +5449,25 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return getElementSafe;
         });
-        __webpack_require__.d(__webpack_exports__, "x", function() {
+        __webpack_require__.d(__webpack_exports__, "t", function() {
             return getElement;
         });
-        __webpack_require__.d(__webpack_exports__, "n", function() {
+        __webpack_require__.d(__webpack_exports__, !1, function() {
             return documentReady;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return isDocumentReady;
         });
-        __webpack_require__.d(__webpack_exports__, "p", function() {
+        __webpack_require__.d(__webpack_exports__, "m", function() {
             return elementReady;
         });
-        __webpack_require__.d(__webpack_exports__, "M", function() {
+        __webpack_require__.d(__webpack_exports__, "H", function() {
             return popup;
         });
-        __webpack_require__.d(__webpack_exports__, "_4", function() {
+        __webpack_require__.d(__webpack_exports__, "X", function() {
             return writeToWindow;
         });
-        __webpack_require__.d(__webpack_exports__, "_3", function() {
+        __webpack_require__.d(__webpack_exports__, "W", function() {
             return writeElementToWindow;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -5295,7 +5482,7 @@
         __webpack_require__.d(__webpack_exports__, "f", function() {
             return awaitFrameWindow;
         });
-        __webpack_require__.d(__webpack_exports__, "B", function() {
+        __webpack_require__.d(__webpack_exports__, "x", function() {
             return iframe;
         });
         __webpack_require__.d(__webpack_exports__, "b", function() {
@@ -5316,10 +5503,10 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return extendQuery;
         });
-        __webpack_require__.d(__webpack_exports__, "u", function() {
+        __webpack_require__.d(__webpack_exports__, "q", function() {
             return extendUrl;
         });
-        __webpack_require__.d(__webpack_exports__, "q", function() {
+        __webpack_require__.d(__webpack_exports__, !1, function() {
             return elementStoppedMoving;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -5328,16 +5515,16 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return changeStyle;
         });
-        __webpack_require__.d(__webpack_exports__, "T", function() {
+        __webpack_require__.d(__webpack_exports__, !1, function() {
             return setOverflow;
         });
-        __webpack_require__.d(__webpack_exports__, "Z", function() {
+        __webpack_require__.d(__webpack_exports__, !1, function() {
             return trackDimensions;
         });
-        __webpack_require__.d(__webpack_exports__, "K", function() {
+        __webpack_require__.d(__webpack_exports__, !1, function() {
             return onDimensionsChange;
         });
-        __webpack_require__.d(__webpack_exports__, "m", function() {
+        __webpack_require__.d(__webpack_exports__, !1, function() {
             return dimensionsMatchViewport;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -5355,16 +5542,16 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return makeElementInvisible;
         });
-        __webpack_require__.d(__webpack_exports__, "V", function() {
+        __webpack_require__.d(__webpack_exports__, "P", function() {
             return showElement;
         });
-        __webpack_require__.d(__webpack_exports__, "A", function() {
+        __webpack_require__.d(__webpack_exports__, "w", function() {
             return hideElement;
         });
-        __webpack_require__.d(__webpack_exports__, "l", function() {
+        __webpack_require__.d(__webpack_exports__, "k", function() {
             return destroyElement;
         });
-        __webpack_require__.d(__webpack_exports__, "U", function() {
+        __webpack_require__.d(__webpack_exports__, "O", function() {
             return showAndAnimate;
         });
         __webpack_require__.d(__webpack_exports__, "c", function() {
@@ -5373,10 +5560,10 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return addClass;
         });
-        __webpack_require__.d(__webpack_exports__, "P", function() {
+        __webpack_require__.d(__webpack_exports__, "K", function() {
             return removeClass;
         });
-        __webpack_require__.d(__webpack_exports__, "w", function() {
+        __webpack_require__.d(__webpack_exports__, "s", function() {
             return getCurrentScriptDir;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -5385,7 +5572,7 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return isElementClosed;
         });
-        __webpack_require__.d(__webpack_exports__, "_2", function() {
+        __webpack_require__.d(__webpack_exports__, "V", function() {
             return watchElementForClose;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -5400,43 +5587,43 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return getScript;
         });
-        __webpack_require__.d(__webpack_exports__, "N", function() {
+        __webpack_require__.d(__webpack_exports__, "I", function() {
             return prefetchPage;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return fixScripts;
         });
-        __webpack_require__.d(__webpack_exports__, "F", function() {
+        __webpack_require__.d(__webpack_exports__, "B", function() {
             return jsxDom;
         });
-        __webpack_require__.d(__webpack_exports__, "I", function() {
+        __webpack_require__.d(__webpack_exports__, "E", function() {
             return noop;
         });
-        __webpack_require__.d(__webpack_exports__, "L", function() {
+        __webpack_require__.d(__webpack_exports__, "G", function() {
             return once;
         });
-        __webpack_require__.d(__webpack_exports__, "G", function() {
+        __webpack_require__.d(__webpack_exports__, "C", function() {
             return memoize;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return debounce;
         });
-        __webpack_require__.d(__webpack_exports__, "R", function() {
+        __webpack_require__.d(__webpack_exports__, "M", function() {
             return serializeFunctions;
         });
-        __webpack_require__.d(__webpack_exports__, "k", function() {
+        __webpack_require__.d(__webpack_exports__, "j", function() {
             return deserializeFunctions;
         });
-        __webpack_require__.d(__webpack_exports__, "j", function() {
+        __webpack_require__.d(__webpack_exports__, "i", function() {
             return denodeify;
         });
-        __webpack_require__.d(__webpack_exports__, "O", function() {
+        __webpack_require__.d(__webpack_exports__, "J", function() {
             return promisify;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return promise_delay;
         });
-        __webpack_require__.d(__webpack_exports__, "h", function() {
+        __webpack_require__.d(__webpack_exports__, !1, function() {
             return cycle;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -5445,16 +5632,16 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return camelToDasherize;
         });
-        __webpack_require__.d(__webpack_exports__, "i", function() {
+        __webpack_require__.d(__webpack_exports__, "h", function() {
             return dasherizeToCamel;
         });
-        __webpack_require__.d(__webpack_exports__, "t", function() {
+        __webpack_require__.d(__webpack_exports__, "p", function() {
             return extend;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return values;
         });
-        __webpack_require__.d(__webpack_exports__, "_0", function() {
+        __webpack_require__.d(__webpack_exports__, "T", function() {
             return uniqueID;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -5466,7 +5653,7 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return capitalizeFirstLetter;
         });
-        __webpack_require__.d(__webpack_exports__, "v", function() {
+        __webpack_require__.d(__webpack_exports__, "r", function() {
             return get;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -5478,13 +5665,13 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return each;
         });
-        __webpack_require__.d(__webpack_exports__, "Q", function() {
+        __webpack_require__.d(__webpack_exports__, "L", function() {
             return replaceObject;
         });
         __webpack_require__.d(__webpack_exports__, "g", function() {
             return copyProp;
         });
-        __webpack_require__.d(__webpack_exports__, "o", function() {
+        __webpack_require__.d(__webpack_exports__, "l", function() {
             return dotify;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -5499,19 +5686,19 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return count;
         });
-        __webpack_require__.d(__webpack_exports__, "W", function() {
+        __webpack_require__.d(__webpack_exports__, "Q", function() {
             return stringify;
         });
-        __webpack_require__.d(__webpack_exports__, "X", function() {
+        __webpack_require__.d(__webpack_exports__, "R", function() {
             return stringifyError;
         });
-        __webpack_require__.d(__webpack_exports__, "s", function() {
+        __webpack_require__.d(__webpack_exports__, "o", function() {
             return eventEmitter;
         });
-        __webpack_require__.d(__webpack_exports__, "D", function() {
+        __webpack_require__.d(__webpack_exports__, "z", function() {
             return isPerc;
         });
-        __webpack_require__.d(__webpack_exports__, "E", function() {
+        __webpack_require__.d(__webpack_exports__, "A", function() {
             return isPx;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -5520,40 +5707,40 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return toPx;
         });
-        __webpack_require__.d(__webpack_exports__, "Y", function() {
+        __webpack_require__.d(__webpack_exports__, "S", function() {
             return toCSS;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return percOf;
         });
-        __webpack_require__.d(__webpack_exports__, "J", function() {
+        __webpack_require__.d(__webpack_exports__, "F", function() {
             return normalizeDimension;
         });
-        __webpack_require__.d(__webpack_exports__, "H", function() {
+        __webpack_require__.d(__webpack_exports__, "D", function() {
             return memoized;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return decorators_promise;
         });
-        __webpack_require__.d(__webpack_exports__, "S", function() {
+        __webpack_require__.d(__webpack_exports__, "N", function() {
             return setLogLevel;
         });
-        __webpack_require__.d(__webpack_exports__, "C", function() {
+        __webpack_require__.d(__webpack_exports__, "y", function() {
             return info;
         });
-        __webpack_require__.d(__webpack_exports__, "_1", function() {
+        __webpack_require__.d(__webpack_exports__, "U", function() {
             return warn;
         });
-        __webpack_require__.d(__webpack_exports__, "r", function() {
+        __webpack_require__.d(__webpack_exports__, "n", function() {
             return logger_error;
         });
-        __webpack_require__.d(__webpack_exports__, "z", function() {
+        __webpack_require__.d(__webpack_exports__, "v", function() {
             return globalFor;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return localGlobal;
         });
-        __webpack_require__.d(__webpack_exports__, "y", function() {
+        __webpack_require__.d(__webpack_exports__, "u", function() {
             return global;
         });
     },
@@ -5569,7 +5756,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.239",
+            version: "4.0.245",
             cors: !0,
             env: constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -5791,6 +5978,27 @@
                     disable_venmo: !0
                 },
                 "barkbox.com": {
+                    disable_venmo: !0
+                },
+                "neimanmarcus.com": {
+                    disable_venmo: !0
+                },
+                "lastcall.com": {
+                    disable_venmo: !0
+                },
+                "horchow.com": {
+                    disable_venmo: !0
+                },
+                "bergdorfgoodman.com": {
+                    disable_venmo: !0
+                },
+                "fwrd.com": {
+                    disable_venmo: !0
+                },
+                "plunderdesign.com": {
+                    disable_venmo: !0
+                },
+                "stitchfix.com": {
                     disable_venmo: !0
                 }
             },
@@ -6842,7 +7050,7 @@
             return getByTag;
         });
         __webpack_require__.d(interface_namespaceObject, "getCurrentScriptDir", function() {
-            return lib.w;
+            return lib.s;
         });
         __webpack_require__.d(interface_namespaceObject, "destroyAll", function() {
             return interface_destroyAll;
@@ -6877,6 +7085,9 @@
         });
         __webpack_require__.d(src_interface_namespaceObject, "Button", function() {
             return component_Button;
+        });
+        __webpack_require__.d(src_interface_namespaceObject, "Card", function() {
+            return Card;
         });
         __webpack_require__.d(src_interface_namespaceObject, "setup", function() {
             return setup;
@@ -6937,9 +7148,6 @@
         });
         __webpack_require__.d(src_interface_namespaceObject, "Checkout", function() {
             return interface_Checkout;
-        });
-        __webpack_require__.d(src_interface_namespaceObject, "Card", function() {
-            return interface_Card;
         });
         __webpack_require__.d(src_interface_namespaceObject, "BillingPage", function() {
             return interface_BillingPage;
@@ -7004,11 +7212,11 @@
                             var item = tasks[_i2];
                             item.name === name && results.push(item.run());
                         }
-                        return src.a.all(results).then(lib.I);
+                        return src.a.all(results).then(lib.E);
                     }
                 });
                 var obj, tasks, cleaned;
-                this.event = Object(lib.s)();
+                this.event = Object(lib.o)();
             }
             BaseComponent.prototype.addProp = function(options, name, def) {
                 Object(lib.g)(options, this, name, def);
@@ -7020,7 +7228,7 @@
                 throw new Error("Expected listeners to be implemented");
             };
             BaseComponent.prototype.error = function(err) {
-                throw new Error("Expected error to be implemented - got " + Object(lib.X)(err));
+                throw new Error("Expected error to be implemented - got " + Object(lib.R)(err));
             };
             BaseComponent.prototype.listen = function(win, domain) {
                 var _this = this;
@@ -7055,13 +7263,13 @@
                 }, _i4 = 0, _Object$keys2 = Object.keys(listeners), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) _loop(_i4, _Object$keys2);
             };
             return BaseComponent;
-        }(), base32 = __webpack_require__("./node_modules/hi-base32/src/base32.js"), base32_default = __webpack_require__.n(base32), constants = __webpack_require__("./node_modules/zoid/src/constants.js");
+        }(), belter_src = __webpack_require__("./node_modules/belter/src/index.js"), base32 = __webpack_require__("./node_modules/hi-base32/src/base32.js"), base32_default = __webpack_require__.n(base32), constants = __webpack_require__("./node_modules/zoid/src/constants.js");
         function normalize(str) {
             return str.replace(/^[^a-z0-9A-Z]+|[^a-z0-9A-Z]+$/g, "").replace(/[^a-z0-9A-Z]+/g, "_");
         }
         function window_buildChildWindowName(name, version) {
             var options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-            options.id = Object(lib._0)();
+            options.id = Object(lib.T)();
             options.domain = Object(cross_domain_utils_src.getDomain)(window);
             var str, encodedName = normalize(name), encodedVersion = normalize(version), encodedOptions = (str = JSON.stringify(options), 
             base32_default.a.encode(str).replace(/\=/g, "").toLowerCase());
@@ -7069,9 +7277,9 @@
             if (!encodedVersion) throw new Error("Invalid version: " + version + " - must contain alphanumeric characters");
             return [ "xcomponent", encodedName, encodedVersion, encodedOptions, "" ].join("__");
         }
-        var isZoidComponentWindow = Object(lib.G)(function() {
+        var isZoidComponentWindow = Object(lib.C)(function() {
             return !!window.name && "xcomponent" === window.name.split("__")[0];
-        }), getComponentMeta = Object(lib.G)(function() {
+        }), getComponentMeta = Object(lib.C)(function() {
             if (!window.name) throw new Error("Can not get component meta without window name");
             var _window$name$split2 = window.name.split("__"), zoidcomp = _window$name$split2[0], name = _window$name$split2[1], version = _window$name$split2[2], encodedOptions = _window$name$split2[3];
             if ("xcomponent" !== zoidcomp) throw new Error("Window not rendered by zoid - got " + zoidcomp);
@@ -7079,7 +7287,7 @@
             try {
                 componentMeta = JSON.parse((str = encodedOptions, base32_default.a.decode(str.toUpperCase())));
             } catch (err) {
-                throw new Error("Can not decode component-meta: " + encodedOptions + " " + Object(lib.X)(err));
+                throw new Error("Can not decode component-meta: " + encodedOptions + " " + Object(lib.R)(err));
             }
             componentMeta.name = name;
             componentMeta.version = version.replace(/_/g, ".");
@@ -7094,7 +7302,7 @@
             if (ref === constants.WINDOW_REFERENCES.GLOBAL) {
                 var ancestor = Object(cross_domain_utils_src.getAncestor)(window);
                 if (ancestor) for (var _i2 = 0, _getAllFramesInWindow2 = Object(cross_domain_utils_src.getAllFramesInWindow)(ancestor), _length2 = null == _getAllFramesInWindow2 ? 0 : _getAllFramesInWindow2.length; _i2 < _length2; _i2++) {
-                    var frame = _getAllFramesInWindow2[_i2], global = Object(lib.z)(frame);
+                    var frame = _getAllFramesInWindow2[_i2], global = Object(lib.v)(frame);
                     if (global && global.windows && global.windows[uid]) {
                         result = global.windows[uid];
                         break;
@@ -7104,11 +7312,11 @@
             if (!result) throw new Error("Unable to find window by ref");
             return result;
         }
-        var window_getParentComponentWindow = Object(lib.G)(function() {
+        var window_getParentComponentWindow = Object(lib.C)(function() {
             var componentMeta = getComponentMeta();
             if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by zoid");
             return getWindowByRef(componentMeta.componentParent);
-        }), window_getParentRenderWindow = Object(lib.G)(function() {
+        }), window_getParentRenderWindow = Object(lib.C)(function() {
             var componentMeta = getComponentMeta();
             if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by zoid");
             return getWindowByRef(componentMeta.renderParent);
@@ -7178,7 +7386,6 @@
                 }, _i2 = 0, _ref2 = [ _this.component, window ], _length2 = null == _ref2 ? 0 : _ref2.length; _i2 < _length2; _i2++) _loop(_i2, _ref2);
                 _this.component.log("init_child");
                 _this.setWindows();
-                _this.listenForResize();
                 _this.onInit = _this.sendToParent(constants.POST_MESSAGE.INIT, {
                     exports: _this.exports()
                 }).then(function(_ref5) {
@@ -7193,19 +7400,6 @@
                 });
                 return _this;
             }
-            ChildComponent.prototype.listenForResize = function() {
-                var _this2 = this;
-                if (this.component.listenForResize) {
-                    this.sendToParent(constants.POST_MESSAGE.ONRESIZE, {}, {
-                        fireAndForget: !0
-                    });
-                    window.addEventListener("resize", function() {
-                        _this2.sendToParent(constants.POST_MESSAGE.ONRESIZE, {}, {
-                            fireAndForget: !0
-                        });
-                    });
-                }
-            };
             ChildComponent.prototype.hasValidParentDomain = function() {
                 return Object(cross_domain_utils_src.matchDomain)(this.component.allowedParentDomains, this.getParentDomain());
             };
@@ -7225,7 +7419,7 @@
                 return window_getParentRenderWindow();
             };
             ChildComponent.prototype.getInitialProps = function() {
-                var _this3 = this, componentMeta = getComponentMeta(), props = componentMeta.props;
+                var _this2 = this, componentMeta = getComponentMeta(), props = componentMeta.props;
                 if (props.type === constants.INITIAL_PROPS.RAW) props = props.value; else {
                     if (props.type !== constants.INITIAL_PROPS.UID) throw new Error("Unrecognized props type: " + props.type);
                     var parentComponentWindow = window_getParentComponentWindow();
@@ -7233,15 +7427,15 @@
                         if ("file:" === window.location.protocol) throw new Error("Can not get props from file:// domain");
                         throw new Error("Parent component window is on a different domain - expected " + Object(cross_domain_utils_src.getDomain)() + " - can not retrieve props");
                     }
-                    var global = Object(lib.z)(parentComponentWindow);
+                    var global = Object(lib.v)(parentComponentWindow);
                     if (!global) throw new Error("Can not find global for parent component - can not retrieve props");
                     props = JSON.parse(global.props[componentMeta.uid]);
                 }
                 if (!props) throw new Error("Initial props not found");
-                return Object(lib.k)(props, function(_ref6) {
+                return Object(lib.j)(props, function(_ref6) {
                     var fullKey = _ref6.fullKey, self = _ref6.self, args = _ref6.args;
-                    return _this3.onInit.then(function() {
-                        var func = Object(lib.v)(_this3.props, fullKey);
+                    return _this2.onInit.then(function() {
+                        var func = Object(lib.r)(_this2.props, fullKey);
                         if ("function" != typeof func) throw new TypeError("Expected " + fullKey + " to be function, got " + (void 0 === func ? "undefined" : _typeof(func)));
                         return func.apply(self, args);
                     });
@@ -7264,8 +7458,8 @@
                     }
                     return result;
                 }(this.component, props, origin, required);
-                Object(lib.t)(this.props, normalizedProps);
-                this.props.logLevel && Object(lib.S)(this.props.logLevel);
+                Object(lib.p)(this.props, normalizedProps);
+                this.props.logLevel && Object(lib.N)(this.props.logLevel);
                 for (var _i6 = 0, _onPropHandlers2 = this.onPropHandlers, _length6 = null == _onPropHandlers2 ? 0 : _onPropHandlers2.length; _i6 < _length6; _i6++) {
                     _onPropHandlers2[_i6].call(this, this.props);
                 }
@@ -7287,9 +7481,9 @@
                 this.watchForClose();
             };
             ChildComponent.prototype.watchForClose = function() {
-                var _this4 = this;
+                var _this3 = this;
                 window.addEventListener("unload", function() {
-                    return _this4.checkClose();
+                    return _this3.checkClose();
                 });
             };
             ChildComponent.prototype.enableAutoResize = function() {
@@ -7312,35 +7506,19 @@
                 return {
                     width: width,
                     height: height,
-                    element: autoResize.element ? Object(lib.x)(autoResize.element) : window.navigator.userAgent.match(/MSIE (9|10)\./) ? document.body : document.documentElement
+                    element: autoResize.element ? Object(lib.t)(autoResize.element) : document.body
                 };
             };
             ChildComponent.prototype.watchForResize = function() {
-                var _this5 = this, _getAutoResize = this.getAutoResize(), width = _getAutoResize.width, height = _getAutoResize.height, element = _getAutoResize.element;
+                var _this4 = this, _getAutoResize = this.getAutoResize(), width = _getAutoResize.width, height = _getAutoResize.height, element = _getAutoResize.element;
                 if ((width || height) && this.context !== constants.CONTEXT_TYPES.POPUP && !this.watchingForResize) {
                     this.watchingForResize = !0;
-                    return src.a.try(function() {
-                        return lib.n;
-                    }).then(function() {
-                        if (!Object(lib.m)(element, {
-                            width: width,
-                            height: height
-                        })) return _this5.resizeToElement(element, {
-                            width: width,
-                            height: height
-                        });
-                    }).then(function() {
-                        return Object(lib.h)(function() {
-                            return Object(lib.K)(element, {
-                                width: width,
-                                height: height
-                            }).then(function() {
-                                return _this5.resizeToElement(element, {
-                                    width: width,
-                                    height: height
-                                });
-                            });
-                        });
+                    Object(belter_src.onResize)(element, function(_ref8) {
+                        var newWidth = _ref8.width, newHeight = _ref8.height;
+                        _this4.resize(width ? newWidth : void 0, height ? newHeight : void 0);
+                    }, {
+                        width: width,
+                        height: height
                     });
                 }
             };
@@ -7348,9 +7526,9 @@
                 var self = this;
                 return {
                     updateProps: function(props) {
-                        var _this6 = this;
+                        var _this5 = this;
                         return src.a.try(function() {
-                            return self.setProps(props, _this6.origin, !1);
+                            return self.setProps(props, _this5.origin, !1);
                         });
                     },
                     close: function() {
@@ -7361,44 +7539,23 @@
                 };
             };
             ChildComponent.prototype.resize = function(width, height) {
-                var _this7 = this;
+                var _this6 = this;
                 return src.a.resolve().then(function() {
-                    _this7.component.log("resize", {
-                        width: Object(lib.W)(width),
-                        height: Object(lib.W)(height)
+                    _this6.component.log("resize", {
+                        width: Object(lib.Q)(width),
+                        height: Object(lib.Q)(height)
                     });
-                    if (_this7.context !== constants.CONTEXT_TYPES.POPUP) return _this7.sendToParent(constants.POST_MESSAGE.RESIZE, {
+                    if (_this6.context !== constants.CONTEXT_TYPES.POPUP) return _this6.sendToParent(constants.POST_MESSAGE.RESIZE, {
                         width: width,
                         height: height
-                    }).then(lib.I);
+                    }).then(lib.E);
                 });
             };
-            ChildComponent.prototype.resizeToElement = function(el, _ref8) {
-                var _this8 = this, width = _ref8.width, height = _ref8.height, history = [];
-                return function resize() {
-                    return src.a.try(function() {
-                        for (var tracker = Object(lib.Z)(el, {
-                            width: width,
-                            height: height
-                        }), dimensions = tracker.check().dimensions, _i8 = 0, _length8 = null == history ? 0 : history.length; _i8 < _length8; _i8++) {
-                            var size = history[_i8], widthMatch = !width || size.width === dimensions.width, heightMatch = !height || size.height === dimensions.height;
-                            if (widthMatch && heightMatch) return;
-                        }
-                        history.push({
-                            width: dimensions.width,
-                            height: dimensions.height
-                        });
-                        return _this8.resize(width ? dimensions.width : null, height ? dimensions.height : null).then(function() {
-                            if (tracker.check().changed) return resize();
-                        });
-                    });
-                }();
-            };
             ChildComponent.prototype.hide = function() {
-                return this.sendToParent(constants.POST_MESSAGE.HIDE).then(lib.I);
+                return this.sendToParent(constants.POST_MESSAGE.HIDE).then(lib.E);
             };
             ChildComponent.prototype.show = function() {
-                return this.sendToParent(constants.POST_MESSAGE.SHOW).then(lib.I);
+                return this.sendToParent(constants.POST_MESSAGE.SHOW).then(lib.E);
             };
             ChildComponent.prototype.userClose = function() {
                 return this.close(constants.CLOSE_REASONS.USER_CLOSED);
@@ -7425,13 +7582,13 @@
                 window.focus();
             };
             ChildComponent.prototype.error = function(err) {
-                var stringifiedError = Object(lib.X)(err);
+                var stringifiedError = Object(lib.R)(err);
                 this.component.logError("error", {
                     error: stringifiedError
                 });
                 return this.sendToParent(constants.POST_MESSAGE.ERROR, {
                     error: stringifiedError
-                }).then(lib.I);
+                }).then(lib.E);
             };
             return ChildComponent;
         }(base_BaseComponent), drivers__extends = Object.assign || function(target) {
@@ -7449,7 +7606,7 @@
             needsBridge: !1,
             open: function(url) {
                 var _this = this, attributes = this.component.attributes.iframe || {};
-                this.iframe = Object(lib.B)({
+                this.iframe = Object(lib.x)({
                     url: url,
                     attributes: drivers__extends({
                         name: this.childWindowName,
@@ -7466,14 +7623,14 @@
                         }).finally(function() {
                             return _this.destroy();
                         });
-                    }, iframeWatcher = Object(lib._2)(_this.iframe, detectClose), elementWatcher = Object(lib._2)(_this.element, detectClose);
+                    }, iframeWatcher = Object(lib.V)(_this.iframe, detectClose), elementWatcher = Object(lib.V)(_this.element, detectClose);
                     _this.clean.register("destroyWindow", function() {
                         iframeWatcher.cancel();
                         elementWatcher.cancel();
                         Object(post_robot_src.cleanUpWindow)(_this.window);
                         delete _this.window;
                         if (_this.iframe) {
-                            Object(lib.l)(_this.iframe);
+                            Object(lib.k)(_this.iframe);
                             delete _this.iframe;
                         }
                     });
@@ -7481,7 +7638,7 @@
             },
             openPrerender: function() {
                 var _this2 = this, attributes = this.component.attributes.iframe || {};
-                this.prerenderIframe = Object(lib.B)({
+                this.prerenderIframe = Object(lib.x)({
                     attributes: drivers__extends({
                         name: "__prerender__" + this.childWindowName,
                         scrolling: this.component.scrolling ? "yes" : "no"
@@ -7492,7 +7649,7 @@
                     _this2.prerenderWindow = prerenderFrameWindow;
                     _this2.clean.register("destroyPrerender", function() {
                         if (_this2.prerenderIframe) {
-                            Object(lib.l)(_this2.prerenderIframe);
+                            Object(lib.k)(_this2.prerenderIframe);
                             delete _this2.prerenderIframe;
                         }
                     });
@@ -7501,11 +7658,11 @@
             switchPrerender: function() {
                 var _this3 = this;
                 Object(lib.a)(this.prerenderIframe, constants.CLASS_NAMES.INVISIBLE);
-                Object(lib.P)(this.prerenderIframe, constants.CLASS_NAMES.VISIBLE);
+                Object(lib.K)(this.prerenderIframe, constants.CLASS_NAMES.VISIBLE);
                 Object(lib.a)(this.iframe, constants.CLASS_NAMES.VISIBLE);
-                Object(lib.P)(this.iframe, constants.CLASS_NAMES.INVISIBLE);
+                Object(lib.K)(this.iframe, constants.CLASS_NAMES.INVISIBLE);
                 setTimeout(function() {
-                    _this3.prerenderIframe && Object(lib.l)(_this3.prerenderIframe);
+                    _this3.prerenderIframe && Object(lib.k)(_this3.prerenderIframe);
                 }, 1e3);
             },
             delegateOverrides: {
@@ -7541,19 +7698,19 @@
             },
             resize: function(width, height) {
                 if (width) {
-                    this.container.style.width = Object(lib.Y)(width);
-                    this.element.style.width = Object(lib.Y)(width);
+                    this.container.style.width = Object(lib.S)(width);
+                    this.element.style.width = Object(lib.S)(width);
                 }
                 if (height) {
-                    this.container.style.height = Object(lib.Y)(height);
-                    this.element.style.height = Object(lib.Y)(height);
+                    this.container.style.height = Object(lib.S)(height);
+                    this.element.style.height = Object(lib.S)(height);
                 }
             },
             show: function() {
-                Object(lib.V)(this.element);
+                Object(lib.P)(this.element);
             },
             hide: function() {
-                Object(lib.A)(this.element);
+                Object(lib.w)(this.element);
             },
             loadUrl: function(url) {
                 this.iframe.setAttribute("src", url);
@@ -7577,10 +7734,10 @@
                             y: y
                         };
                     }({
-                        width: width = Object(lib.J)(width, window.outerWidth),
-                        height: height = Object(lib.J)(height, window.outerWidth)
+                        width: width = Object(lib.F)(width, window.outerWidth),
+                        height: height = Object(lib.F)(height, window.outerWidth)
                     }), x = _getPosition.x, y = _getPosition.y, attributes = _this5.component.attributes.popup || {};
-                    _this5.window = Object(lib.M)(url || "", drivers__extends({
+                    _this5.window = Object(lib.H)(url || "", drivers__extends({
                         name: _this5.childWindowName,
                         width: width,
                         height: height,
@@ -7605,7 +7762,7 @@
                 });
             },
             openPrerender: function() {
-                return src.a.try(lib.I);
+                return src.a.try(lib.E);
             },
             resize: function() {},
             hide: function() {
@@ -7684,20 +7841,20 @@
             var type = prop.type;
             if ("boolean" === type) resultValue = Boolean(resultValue); else if ("function" === type) {
                 if (!resultValue && prop.noop) {
-                    resultValue = lib.I;
-                    !decorated && prop.decorate && (resultValue = prop.decorate.call(instance, lib.I, props));
+                    resultValue = lib.E;
+                    !decorated && prop.decorate && (resultValue = prop.decorate.call(instance, lib.E, props));
                 }
                 if (resultValue && "function" == typeof resultValue) {
                     resultValue = resultValue.bind(instance);
-                    prop.denodeify && (resultValue = Object(lib.j)(resultValue));
-                    prop.promisify && (resultValue = Object(lib.O)(resultValue));
+                    prop.denodeify && (resultValue = Object(lib.i)(resultValue));
+                    prop.promisify && (resultValue = Object(lib.J)(resultValue));
                     var original = resultValue;
                     resultValue = function() {
                         component.log("call_prop_" + key);
                         return original.apply(this, arguments);
                     };
-                    prop.once && (resultValue = Object(lib.L)(resultValue));
-                    prop.memoize && (resultValue = Object(lib.G)(resultValue));
+                    prop.once && (resultValue = Object(lib.G)(resultValue));
+                    prop.memoize && (resultValue = Object(lib.C)(resultValue));
                 }
             } else "string" === type || "object" === type || "number" === type && void 0 !== resultValue && (resultValue = parseInt(resultValue, 10));
             return resultValue;
@@ -7724,7 +7881,7 @@
                             if ("function" == typeof queryValue) return;
                             if ("object" === (void 0 === queryValue ? "undefined" : props__typeof(queryValue)) && null !== queryValue) {
                                 if ("json" !== prop.serialization) {
-                                    result = Object(lib.o)(queryValue, key);
+                                    result = Object(lib.l)(queryValue, key);
                                     for (var _i6 = 0, _Object$keys4 = Object.keys(result), _length6 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i6 < _length6; _i6++) {
                                         var dotkey = _Object$keys4[_i6];
                                         params[dotkey] = result[dotkey];
@@ -7791,8 +7948,8 @@
             }
             return desc;
         }
-        lib.y.props = lib.y.props || {};
-        lib.y.windows = lib.y.windows || {};
+        lib.u.props = lib.u.props || {};
+        lib.u.windows = lib.u.windows || {};
         var parent_ParentComponent = (_applyDecoratedDescriptor((_class = function(_BaseComponent) {
             !function(subClass, superClass) {
                 if ("function" != typeof superClass && null !== superClass) throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
@@ -7824,7 +7981,7 @@
                     props.onError && props.onError(err);
                     throw err;
                 }
-                _this.props.logLevel && Object(lib.S)(_this.props.logLevel);
+                _this.props.logLevel && Object(lib.N)(_this.props.logLevel);
                 _this.childWindowName = _this.buildChildWindowName({
                     renderTo: window
                 });
@@ -7843,7 +8000,7 @@
                     _this2.component.log("render_" + _this2.context, {
                         context: _this2.context,
                         element: element,
-                        loadUrl: Object(lib.W)(loadUrl)
+                        loadUrl: Object(lib.Q)(loadUrl)
                     });
                     var tasks = {};
                     tasks.onRender = _this2.props.onRender();
@@ -7925,7 +8082,7 @@
                     if (element && "string" != typeof element) throw new Error("Element passed to renderTo must be a string selector, got " + (void 0 === element ? "undefined" : parent__typeof(element)) + " " + element);
                     _this3.checkAllowRenderTo(win);
                     _this3.component.log("render_" + _this3.context + "_to_win", {
-                        element: Object(lib.W)(element),
+                        element: Object(lib.Q)(element),
                         context: _this3.context
                     });
                     _this3.childWindowName = _this3.buildChildWindowName({
@@ -7939,7 +8096,7 @@
                 var _this4 = this;
                 return src.a.try(function() {
                     _this4.html = _this4.buildUrl().then(function(url) {
-                        return Object(lib.N)(url).then(function(html) {
+                        return Object(lib.I)(url).then(function(html) {
                             return '\n                        <base href="' + ("" + url.split("/").slice(0, 3).join("/")) + '">\n\n                        ' + html + "\n\n                        <script>\n                            if (window.history && window.history.pushState) {\n                                window.history.pushState({}, '', '" + ("/" + url.split("/").slice(3).join("/")) + "');\n                            }\n                        <\/script>\n                    ";
                         });
                     });
@@ -7950,7 +8107,7 @@
                 return src.a.try(function() {
                     if (!_this5.html) throw new Error("Html not prefetched");
                     return _this5.html.then(function(html) {
-                        return Object(lib._4)(_this5.window, html);
+                        return Object(lib.X)(_this5.window, html);
                     });
                 });
             };
@@ -7980,10 +8137,10 @@
                     ref: constants.WINDOW_REFERENCES.PARENT,
                     distance: Object(cross_domain_utils_src.getDistanceFromTop)(window)
                 };
-                var uid = Object(lib._0)();
-                lib.y.windows[uid] = window;
+                var uid = Object(lib.T)();
+                lib.u.windows[uid] = window;
                 this.clean.register(function() {
-                    delete lib.y.windows[uid];
+                    delete lib.u.windows[uid];
                 });
                 return {
                     ref: constants.WINDOW_REFERENCES.GLOBAL,
@@ -7993,10 +8150,10 @@
             ParentComponent.prototype.getRenderParentRef = function() {
                 var renderToWindow = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window;
                 if (renderToWindow === window) return this.getComponentParentRef(renderToWindow);
-                var uid = Object(lib._0)();
-                lib.y.windows[uid] = renderToWindow;
+                var uid = Object(lib.T)();
+                lib.u.windows[uid] = renderToWindow;
                 this.clean.register(function() {
-                    delete lib.y.windows[uid];
+                    delete lib.u.windows[uid];
                 });
                 return {
                     ref: constants.WINDOW_REFERENCES.GLOBAL,
@@ -8004,7 +8161,7 @@
                 };
             };
             ParentComponent.prototype.buildChildWindowName = function() {
-                var _ref6$renderTo = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}).renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, sameDomain = Object(cross_domain_utils_src.isSameDomain)(renderTo), uid = Object(lib._0)(), tag = this.component.tag, sProps = Object(lib.R)(this.getPropsForChild()), componentParent = this.getComponentParentRef(renderTo), renderParent = this.getRenderParentRef(renderTo), props = !sameDomain && !this.component.unsafeRenderTo ? {
+                var _ref6$renderTo = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}).renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, sameDomain = Object(cross_domain_utils_src.isSameDomain)(renderTo), uid = Object(lib.T)(), tag = this.component.tag, sProps = Object(lib.M)(this.getPropsForChild()), componentParent = this.getComponentParentRef(renderTo), renderParent = this.getRenderParentRef(renderTo), props = !sameDomain && !this.component.unsafeRenderTo ? {
                     type: constants.INITIAL_PROPS.UID,
                     uid: uid
                 } : {
@@ -8012,9 +8169,9 @@
                     value: sProps
                 };
                 if (props.type === constants.INITIAL_PROPS.UID) {
-                    lib.y.props[uid] = JSON.stringify(sProps);
+                    lib.u.props[uid] = JSON.stringify(sProps);
                     this.clean.register(function() {
-                        delete lib.y.props[uid];
+                        delete lib.u.props[uid];
                     });
                 }
                 return window_buildChildWindowName(this.component.name, this.component.version, {
@@ -8056,7 +8213,7 @@
                 }(this.component, props, required);
                 this.component.validate && this.component.validate(this.component, props);
                 this.props = this.props || {};
-                Object(lib.t)(this.props, function(component, instance, props) {
+                Object(lib.p)(this.props, function(component, instance, props) {
                     var result = {};
                     props = props || {};
                     for (var _i2 = 0, _Object$keys2 = Object.keys(props), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
@@ -8081,7 +8238,7 @@
                         return url || _this7.component.getUrl(_this7.props.env, _this7.props);
                     }).then(function(finalUrl) {
                         query.xcomponent = "1";
-                        return Object(lib.u)(finalUrl, {
+                        return Object(lib.q)(finalUrl, {
                             query: query
                         });
                     });
@@ -8128,7 +8285,7 @@
                         domain && (needsBridgeParams.domain = domain);
                         var needsBridge = post_robot_src.bridge.needsBridge(needsBridgeParams), bridgeUrl = _this10.component.getBridgeUrl(_this10.props.env);
                         if (bridgeUrl) {
-                            bridgeUrl = Object(lib.u)(bridgeUrl, {
+                            bridgeUrl = Object(lib.q)(bridgeUrl, {
                                 query: {
                                     version: _this10.component.version
                                 }
@@ -8165,7 +8322,7 @@
                 });
             };
             ParentComponent.prototype.elementReady = function(element) {
-                return Object(lib.p)(element).then(lib.I);
+                return Object(lib.m)(element).then(lib.E);
             };
             ParentComponent.prototype.delegate = function(win) {
                 var _this14 = this;
@@ -8209,7 +8366,7 @@
                     _this14.clean.register(data.destroy);
                     return data;
                 }).catch(function(err) {
-                    throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.X)(err));
+                    throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.R)(err));
                 }), overrides = this.driver.delegateOverrides, _loop = function(_i6, _Object$keys4, _length6) {
                     var key = _Object$keys4[_i6], val = overrides[key];
                     if (val === constants.DELEGATE.CALL_ORIGINAL) return "continue";
@@ -8237,7 +8394,7 @@
                 this.clean.register("destroyCloseWindowListener", closeWindowListener.cancel);
             };
             ParentComponent.prototype.watchForUnload = function() {
-                var _this17 = this, onunload = Object(lib.L)(function() {
+                var _this17 = this, onunload = Object(lib.G)(function() {
                     _this17.component.log("navigate_away");
                     Object(beaver_logger_client.h)();
                     _this17.destroyComponent();
@@ -8250,8 +8407,8 @@
                     _this18.component.log("load_url");
                     if (window.location.href.split("#")[0] === url.split("#")[0]) {
                         var _query;
-                        url = Object(lib.u)(url, {
-                            query: (_query = {}, _query[Object(lib._0)()] = "1", _query)
+                        url = Object(lib.q)(url, {
+                            query: (_query = {}, _query[Object(lib.T)()] = "1", _query)
                         });
                     }
                     return _this18.driver.loadUrl.call(_this18, url);
@@ -8296,8 +8453,6 @@
                     return src.a.try(function() {
                         if (_this20.driver.allowResize) return _this20.resize(data.width, data.height);
                     });
-                }, _ref9[constants.POST_MESSAGE.ONRESIZE] = function() {
-                    this.event.trigger("resize");
                 }, _ref9[constants.POST_MESSAGE.HIDE] = function() {
                     this.hide();
                 }, _ref9[constants.POST_MESSAGE.SHOW] = function() {
@@ -8307,28 +8462,21 @@
                 }, _ref9;
             };
             ParentComponent.prototype.resize = function(width, height) {
-                var _this21 = this, _ref10$waitForTransit = (arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}).waitForTransition, waitForTransition = void 0 === _ref10$waitForTransit || _ref10$waitForTransit;
+                var _this21 = this;
                 return src.a.try(function() {
                     _this21.component.log("resize", {
-                        height: Object(lib.W)(height),
-                        width: Object(lib.W)(width)
+                        height: Object(lib.Q)(height),
+                        width: Object(lib.Q)(width)
                     });
                     _this21.driver.resize.call(_this21, width, height);
-                    if (waitForTransition && (_this21.element || _this21.iframe)) {
-                        var overflow = void 0;
-                        _this21.element && (overflow = Object(lib.T)(_this21.element, "hidden"));
-                        return Object(lib.q)(_this21.element || _this21.iframe).then(function() {
-                            overflow && overflow.reset();
-                        });
-                    }
                 });
             };
             ParentComponent.prototype.hide = function() {
-                this.container && Object(lib.A)(this.container);
+                this.container && Object(lib.w)(this.container);
                 return this.driver.hide.call(this);
             };
             ParentComponent.prototype.show = function() {
-                this.container && Object(lib.V)(this.container);
+                this.container && Object(lib.P)(this.container);
                 return this.driver.show.call(this);
             };
             ParentComponent.prototype.checkClose = function() {
@@ -8384,7 +8532,7 @@
                 }).then(function() {
                     return _this26.destroyComponent();
                 }).then(function() {
-                    _this26.childExports && _this26.context === constants.CONTEXT_TYPES.POPUP && !Object(cross_domain_utils_src.isWindowClosed)(win) && _this26.childExports.close().catch(lib.I);
+                    _this26.childExports && _this26.context === constants.CONTEXT_TYPES.POPUP && !Object(cross_domain_utils_src.isWindowClosed)(win) && _this26.childExports.close().catch(lib.E);
                 });
             };
             ParentComponent.prototype.destroyComponent = function() {
@@ -8398,7 +8546,7 @@
                 return src.a.try(function() {
                     if (_this27.props.onDisplay) return _this27.props.onDisplay();
                 }).then(function() {
-                    if (_this27.container) return Object(lib.U)(_this27.container, constants.ANIMATION_NAMES.SHOW_CONTAINER, _this27.clean.register);
+                    if (_this27.container) return Object(lib.O)(_this27.container, constants.ANIMATION_NAMES.SHOW_CONTAINER, _this27.clean.register);
                 });
             };
             ParentComponent.prototype.showComponent = function() {
@@ -8406,7 +8554,7 @@
                 return src.a.try(function() {
                     if (_this28.props.onDisplay) return _this28.props.onDisplay();
                 }).then(function() {
-                    if (_this28.element) return Object(lib.U)(_this28.element, constants.ANIMATION_NAMES.SHOW_COMPONENT, _this28.clean.register);
+                    if (_this28.element) return Object(lib.O)(_this28.element, constants.ANIMATION_NAMES.SHOW_COMPONENT, _this28.clean.register);
                 });
             };
             ParentComponent.prototype.hideContainer = function() {
@@ -8443,7 +8591,7 @@
                         var el = void 0;
                         try {
                             el = _this31.renderTemplate(_this31.component.prerenderTemplate, {
-                                jsxDom: lib.F.bind(doc),
+                                jsxDom: lib.B.bind(doc),
                                 document: doc
                             });
                         } catch (err) {
@@ -8454,18 +8602,27 @@
                             return;
                         }
                         try {
-                            Object(lib._3)(win, el);
+                            Object(lib.W)(win, el);
                         } catch (err) {
                             _this31.component.logError("preprender_error", {
                                 err: err.stack ? err.stack : err.toString()
                             });
                             console.error(err.stack ? err.stack : err);
                         }
+                        var _ref10 = "object" === parent__typeof(_this31.component.autoResize) && null !== _this31.component.autoResize ? _this31.component.autoResize : {}, _ref10$width = _ref10.width, width = void 0 !== _ref10$width && _ref10$width, _ref10$height = _ref10.height, height = void 0 !== _ref10$height && _ref10$height, _ref10$element = _ref10.element, element = void 0 === _ref10$element ? "body" : _ref10$element;
+                        (element = Object(belter_src.getElementSafe)(element, doc)) && (width || height) && Object(belter_src.onResize)(element, function(_ref11) {
+                            var newWidth = _ref11.width, newHeight = _ref11.height;
+                            _this31.resize(width ? newWidth : void 0, height ? newHeight : void 0);
+                        }, {
+                            width: width,
+                            height: height,
+                            win: win
+                        });
                     }) : src.a.resolve();
                 });
             };
             ParentComponent.prototype.renderTemplate = function(renderer) {
-                var _this32 = this, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, _ref11 = this.component.dimensions || {}, _ref11$width = _ref11.width, width = void 0 === _ref11$width ? constants.DEFAULT_DIMENSIONS.WIDTH + "px" : _ref11$width, _ref11$height = _ref11.height, height = void 0 === _ref11$height ? constants.DEFAULT_DIMENSIONS.HEIGHT + "px" : _ref11$height;
+                var _this32 = this, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, _ref12 = this.component.dimensions || {}, _ref12$width = _ref12.width, width = void 0 === _ref12$width ? constants.DEFAULT_DIMENSIONS.WIDTH + "px" : _ref12$width, _ref12$height = _ref12.height, height = void 0 === _ref12$height ? constants.DEFAULT_DIMENSIONS.HEIGHT + "px" : _ref12$height;
                 return renderer.call(this, parent__extends({
                     id: constants.CLASS_NAMES.ZOID + "-" + this.component.tag + "-" + this.props.uid,
                     props: renderer.__xdomain__ ? null : this.props,
@@ -8487,7 +8644,7 @@
                     on: function(eventName, handler) {
                         return _this32.on(eventName, handler);
                     },
-                    jsxDom: lib.F,
+                    jsxDom: lib.B,
                     document: document,
                     dimensions: {
                         width: width,
@@ -8499,19 +8656,19 @@
                 var _this33 = this;
                 return src.a.try(function() {
                     var el = void 0;
-                    if (!(el = element ? Object(lib.x)(element) : document.body)) throw new Error("Could not find element to open container into");
+                    if (!(el = element ? Object(lib.t)(element) : document.body)) throw new Error("Could not find element to open container into");
                     if (_this33.component.containerTemplate) {
                         var container = _this33.renderTemplate(_this33.component.containerTemplate, {
                             container: el
                         });
                         _this33.container = container;
-                        Object(lib.A)(_this33.container);
+                        Object(lib.w)(_this33.container);
                         Object(lib.d)(el, _this33.container);
                         if (_this33.driver.renderedIntoContainerTemplate) {
                             _this33.element = _this33.getOutlet();
-                            Object(lib.A)(_this33.element);
+                            Object(lib.w)(_this33.element);
                             if (!_this33.element) throw new Error("Could not find element to render component into");
-                            Object(lib.A)(_this33.element);
+                            Object(lib.w)(_this33.element);
                         }
                         _this33.clean.register("destroyContainerTemplate", function() {
                             _this33.container && _this33.container.parentNode && _this33.container.parentNode.removeChild(_this33.container);
@@ -8553,14 +8710,14 @@
                 }).then(function() {
                     if (_this36.props.onError) return _this36.props.onError(err);
                 }).catch(function(errErr) {
-                    throw new Error("An error was encountered while handling error:\n\n " + Object(lib.X)(err) + "\n\n" + Object(lib.X)(errErr));
+                    throw new Error("An error was encountered while handling error:\n\n " + Object(lib.R)(err) + "\n\n" + Object(lib.R)(errErr));
                 }).then(function() {
                     if (!_this36.props.onError) throw err;
                 });
             };
             ParentComponent.destroyAll = function() {
                 for (var results = []; ParentComponent.activeComponents.length; ) results.push(ParentComponent.activeComponents[0].destroy());
-                return src.a.all(results).then(lib.I);
+                return src.a.all(results).then(lib.E);
             };
             _createClass(ParentComponent, [ {
                 key: "driver",
@@ -8570,23 +8727,23 @@
                 }
             } ]);
             return ParentComponent;
-        }(base_BaseComponent)).prototype, "getOutlet", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "getOutlet"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "prefetch", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "prefetch"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "loadHTML", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "loadHTML"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "buildUrl", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "buildUrl"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "open", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "open"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "openPrerender", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "openPrerender"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "switchPrerender", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "switchPrerender"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "close", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "close"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "closeContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "closeContainer"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "destroyContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "destroyContainer"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "closeComponent", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "closeComponent"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "showContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "showContainer"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "showComponent", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "showComponent"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "hideContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "hideContainer"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "hideComponent", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "hideComponent"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "createPrerenderTemplate", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "createPrerenderTemplate"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "openContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "openContainer"), _class.prototype), 
+        }(base_BaseComponent)).prototype, "getOutlet", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "getOutlet"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "prefetch", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "prefetch"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "loadHTML", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "loadHTML"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "buildUrl", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "buildUrl"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "open", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "open"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "openPrerender", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "openPrerender"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "switchPrerender", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "switchPrerender"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "close", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "close"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "closeContainer", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "closeContainer"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "destroyContainer", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "destroyContainer"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "closeComponent", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "closeComponent"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "showContainer", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "showContainer"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "showComponent", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "showComponent"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "hideContainer", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "hideContainer"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "hideComponent", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "hideComponent"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "createPrerenderTemplate", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "createPrerenderTemplate"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "openContainer", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "openContainer"), _class.prototype), 
         _class);
         parent_ParentComponent.activeComponents = [];
         var delegate__createClass = function() {
@@ -8643,7 +8800,7 @@
                     return options.overrides.focus.call(_this);
                 };
                 _this.clean.register("destroyFocusOverride", function() {
-                    _this.focus = lib.I;
+                    _this.focus = lib.E;
                 });
                 _this.userClose = options.overrides.userClose;
                 _this.getDomain = options.overrides.getDomain;
@@ -8703,8 +8860,8 @@
                 }
             }(options);
             if (options.dimensions) {
-                if (options.dimensions && !Object(lib.E)(options.dimensions.width) && !Object(lib.D)(options.dimensions.width)) throw new Error("Expected options.dimensions.width to be a px or % string value");
-                if (options.dimensions && !Object(lib.E)(options.dimensions.height) && !Object(lib.D)(options.dimensions.height)) throw new Error("Expected options.dimensions.height to be a px or % string value");
+                if (options.dimensions && !Object(lib.A)(options.dimensions.width) && !Object(lib.z)(options.dimensions.width)) throw new Error("Expected options.dimensions.width to be a px or % string value");
+                if (options.dimensions && !Object(lib.A)(options.dimensions.height) && !Object(lib.z)(options.dimensions.height)) throw new Error("Expected options.dimensions.height to be a px or % string value");
             }
             if (options.contexts) {
                 options.contexts.popup, 0;
@@ -8808,7 +8965,7 @@
                 _this.addProp(options, "tag");
                 _this.addProp(options, "defaultLogLevel", "info");
                 _this.addProp(options, "allowedParentDomains", constants.WILDCARD);
-                Object(lib.S)(_this.defaultLogLevel);
+                Object(lib.N)(_this.defaultLogLevel);
                 if (Component.components[_this.tag]) throw new Error("Can not register multiple components with the same tag");
                 _this.addProp(options, "name", _this.tag.replace(/-/g, "_"));
                 _this.builtinProps = {
@@ -8823,7 +8980,7 @@
                     uid: {
                         type: "string",
                         def: function() {
-                            return Object(lib._0)();
+                            return Object(lib.T)();
                         },
                         queryParam: !0
                     },
@@ -9145,19 +9302,19 @@
             };
             Component.prototype.log = function(event) {
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                Object(lib.C)(this.name, event, payload);
+                Object(lib.y)(this.name, event, payload);
             };
             Component.prototype.logWarning = function(event, payload) {
-                Object(lib._1)(this.name, event, payload);
+                Object(lib.U)(this.name, event, payload);
             };
             Component.prototype.logError = function(event, payload) {
-                Object(lib.r)(this.name, event, payload);
+                Object(lib.n)(this.name, event, payload);
             };
             Component.getByTag = function(tag) {
                 return Component.components[tag];
             };
             return Component;
-        }(base_BaseComponent)).prototype, "getPropNames", [ lib.G ], Object.getOwnPropertyDescriptor(component__class.prototype, "getPropNames"), component__class.prototype), 
+        }(base_BaseComponent)).prototype, "getPropNames", [ lib.C ], Object.getOwnPropertyDescriptor(component__class.prototype, "getPropNames"), component__class.prototype), 
         component__class);
         component_Component.components = {};
         function interface_create(options) {
@@ -9174,12 +9331,12 @@
         function getRefererDomain() {
             return window.xchild && window.xchild.getParentDomain ? window.xchild.getParentDomain() : window.location.host;
         }
-        var setupProxyLogTransport = Object(util.m)(function() {
+        var setupProxyLogTransport = Object(util.l)(function() {
             Object(beaver_logger_client.n)(function(name, win, originalMethod) {
                 if (win && Object(cross_domain_utils_src.getDomain)() === config.a.paypalDomain && !Object(cross_domain_utils_src.isSameDomain)(win)) {
                     win && Object(post_robot_src.send)(win, "proxy_" + name, {
                         originalMethod: originalMethod
-                    }).catch(util.l);
+                    }).catch(util.k);
                     return originalMethod;
                 }
                 var methods = [];
@@ -9210,7 +9367,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.239"
+                    ver: "4.0.245"
                 };
             });
             Object(beaver_logger_client.a)(function() {
@@ -9293,7 +9450,7 @@
             eligibilityResults[userAgent] = result;
             return result;
         }
-        var checkRecognizedBrowser = Object(util.m)(function(state) {
+        var checkRecognizedBrowser = Object(util.l)(function(state) {
             if (!getBrowser().browser) {
                 var _getBowser = getBowser(), name = _getBowser.name, _version = _getBowser.version, mobile = _getBowser.mobile, android = _getBowser.android, ios = _getBowser.ios;
                 Object(beaver_logger_client.k)("unrecognized_browser_" + state, {
@@ -9477,8 +9634,12 @@
                 src: document.currentScript.src
             });
         });
+        function getCurrentScriptUrl() {
+            var script = getCurrentScript();
+            if (script && "string" == typeof script.src) return script.src;
+        }
         function getScriptVersion() {
-            return Boolean(getCurrentScript()) ? "4" : "4.0.239";
+            return Boolean(getCurrentScript()) ? "4" : "4.0.245";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -9662,7 +9823,7 @@
                         method: method
                     }, {
                         domain: config.a.paypalDomain
-                    }).then(util.l);
+                    }).then(util.k);
                 });
             });
         }
@@ -9695,7 +9856,7 @@
                                     win.PAYPAL && win.PAYPAL.Checkout && win.PAYPAL.Checkout.XhrResponse && win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES && Object.defineProperty(win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES, "Redirect", {
                                         value: Math.random().toString()
                                     });
-                                    win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = util.l);
+                                    win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = util.k);
                                 }
                             } catch (err) {
                                 return;
@@ -10379,7 +10540,7 @@
         _cardLogos), containerContent = __webpack_require__("./src/checkout/template/containerContent.json"), containerContent_default = __webpack_require__.n(containerContent);
         function getContainerStyle(_ref) {
             var id = _ref.id, tag = _ref.tag, CONTEXT = _ref.CONTEXT, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION;
-            return "\n        #" + id + " {\n            position: absolute;\n            z-index: 2147483647;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n\n            -webkit-transform: translate3d(0, 0, 0);\n            -moz-transform: translate3d(0, 0, 0);\n            -ms-transform: translate3d(0, 0, 0);\n            -o-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n\n        #" + id + "." + tag + "-background-color-" + src_constants.q.BLACK + " {\n            background-color: black;\n            background-color: rgba(0, 0, 0, 0.75);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + src_constants.q.WHITE + " {\n            background-color: white;\n            background-color: rgba(255, 255, 255, 0.4);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + src_constants.q.BLACK + " a {\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + src_constants.q.WHITE + " a {\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + src_constants.q.BLACK + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + src_constants.q.BLACK + " .paypal-checkout-close:after {\n            background-color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + src_constants.q.WHITE + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + src_constants.q.WHITE + " .paypal-checkout-close:after {\n            background-color: #111;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + " a {\n            text-decoration: none;\n        }\n\n        #" + id + ' .paypal-checkout-modal {\n            font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n            font-size: 14px;\n            text-align: center;\n\n            -webkit-box-sizing: border-box;\n            -moz-box-sizing: border-box;\n            -ms-box-sizing: border-box;\n            box-sizing: border-box;\n            max-width: 350px;\n            top: 50%;\n            left: 50%;\n            position: absolute;\n            transform: translateX(-50%) translateY(-50%);\n            -webkit-transform: translateX(-50%) translateY(-50%);\n            -moz-transform: translateX(-50%) translateY(-50%);\n            -o-transform: translateX(-50%) translateY(-50%);\n            -ms-transform: translateX(-50%) translateY(-50%);\n            cursor: pointer;\n            text-align: center;\n        }\n\n        #' + id + "." + tag + "-loading .paypal-checkout-message, #" + id + "." + tag + "-loading .paypal-checkout-continue {\n            display: none;\n        }\n\n        .paypal-checkout-loader {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-loader {\n            display: block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo {\n            cursor: pointer;\n            margin-bottom: 30px;\n            display: inline-block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img {\n            height: 36px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img.paypal-checkout-logo-pp {\n            margin-right: 10px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-message {\n            font-size: 15px;\n            line-height: 1.5;\n            padding: 10px 0;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-message, #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-continue {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue {\n            font-size: 15px;\n            line-height: 1.35;\n            padding: 10px 0;\n            font-weight: bold;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue a {\n            border-bottom: 1px solid currentColor;\n        }\n\n        #" + id + " .paypal-checkout-close {\n            position: absolute;\n            right: 16px;\n            top: 16px;\n            width: 16px;\n            height: 16px;\n            opacity: 0.6;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-close {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-close:hover {\n            opacity: 1;\n        }\n\n        #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n            position: absolute;\n            left: 8px;\n            content: ' ';\n            height: 16px;\n            width: 2px;\n        }\n\n        #" + id + " .paypal-checkout-close:before {\n            transform: rotate(45deg);\n            -webkit-transform: rotate(45deg);\n            -moz-transform: rotate(45deg);\n            -o-transform: rotate(45deg);\n            -ms-transform: rotate(45deg);\n        }\n\n        #" + id + " .paypal-checkout-close:after {\n            transform: rotate(-45deg);\n            -webkit-transform: rotate(-45deg);\n            -moz-transform: rotate(-45deg);\n            -o-transform: rotate(-45deg);\n            -ms-transform: rotate(-45deg);\n        }\n\n        #" + id + " .paypal-checkout-iframe-container {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + ",\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + " > iframe {\n            max-height: 95vh;\n            max-width: 95vw;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container {\n\n            display: block;\n\n            position: absolute;\n\n            top: 50%;\n            left: 50%;\n\n            min-width: 450px;\n\n            transform: translate(-50%, -50%);\n            -webkit-transform: translate(-50%, -50%);\n            -moz-transform: translate(-50%, -50%);\n            -o-transform: translate(-50%, -50%);\n            -ms-transform: translate(-50%, -50%);\n\n            transform: translate3d(-50%, -50%, 0);\n            -webkit-transform: translate3d(-50%, -50%, 0);\n            -moz-transform: translate3d(-50%, -50%, 0);\n            -o-transform: translate3d(-50%, -50%, 0);\n            -ms-transform: translate3d(-50%, -50%, 0);\n\n            border-radius: 10px;\n            overflow: hidden;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n\n            position: relative;\n\n            -webkit-transition: all 0.3s ease;\n            -moz-transition: all 0.3s ease;\n            -ms-transition: all 0.3s ease;\n            -o-transition: all 0.3 ease;\n            transition: all 0.3s ease;\n\n            -webkit-animation-duration: 0.3s;\n            animation-duration: 0.3s;\n            -webkit-animation-fill-mode: both;\n            animation-fill-mode: both;\n\n            min-width: 450px;\n            max-width: 450px;\n            width: 450px;\n            height: 535px;\n\n            background-color: white;\n\n            overflow: auto;\n            -webkit-overflow-scrolling: touch;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            transition: opacity .4s ease-in-out;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n            z-index: 100;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n            opacity: 1;\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n            opacity: 0;\n            z-index: 100;\n        }\n\n        @media screen and (-ms-high-contrast: active) {\n            #" + id + " .paypal-checkout-close {\n                opacity: 1;\n            }\n\n            #" + id + " .paypal-checkout-close:before , .paypal-checkout-close:after {\n                background-color: currentColor;\n            }\n        }\n\n        @media screen and (max-width: 470px) {\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                min-width: 100%;\n                min-width: calc(100% - 20px);\n                min-width: -webkit-calc(100% - 20px);\n                min-width: -moz-calc(100% - 20px);\n                min-width: -o-calc(100% - 20px);\n                min-width: -ms-calc(100% - 20px);\n\n                max-width: 100%;\n                max-width: calc(100% - 20px);\n                max-width: -webkit-calc(100% - 20px);\n                max-width: -moz-calc(100% - 20px);\n                max-width: -o-calc(100% - 20px);\n                max-width: -ms-calc(100% - 20px);\n            }\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " iframe {\n            width: 1px;\n            min-width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        .paypal-spinner {\n            height: 30px;\n            width: 30px;\n            display: inline-block;\n            box-sizing: content-box;\n            opacity: 1;\n            filter: alpha(opacity=100);\n            -webkit-animation: rotation .7s infinite linear;\n            -moz-animation: rotation .7s infinite linear;\n            -o-animation: rotation .7s infinite linear;\n            animation: rotation .7s infinite linear;\n            border-left: 8px solid rgba(0, 0, 0, .2);\n            border-right: 8px solid rgba(0, 0, 0, .2);\n            border-bottom: 8px solid rgba(0, 0, 0, .2);\n            border-top: 8px solid #fff;\n            border-radius: 100%\n        }\n\n        @-webkit-keyframes rotation {\n            from {\n                -webkit-transform: rotate(0deg)\n            }\n            to {\n                -webkit-transform: rotate(359deg)\n            }\n        }\n        @-moz-keyframes rotation {\n            from {\n                -moz-transform: rotate(0deg)\n            }\n            to {\n                -moz-transform: rotate(359deg)\n            }\n        }\n        @-o-keyframes rotation {\n            from {\n                -o-transform: rotate(0deg)\n            }\n            to {\n                -o-transform: rotate(359deg)\n            }\n        }\n        @keyframes rotation {\n            from {\n                transform: rotate(0deg)\n            }\n            to {\n                transform: rotate(359deg)\n            }\n        }\n    ";
+            return "\n        #" + id + " {\n            position: absolute;\n            z-index: 2147483647;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n\n            -webkit-transform: translate3d(0, 0, 0);\n            -moz-transform: translate3d(0, 0, 0);\n            -ms-transform: translate3d(0, 0, 0);\n            -o-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n\n        #" + id + "." + tag + "-background-color-" + src_constants.q.BLACK + " {\n            background-color: black;\n            background-color: rgba(0, 0, 0, 0.75);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + src_constants.q.WHITE + " {\n            background-color: white;\n            background-color: rgba(255, 255, 255, 0.4);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + src_constants.q.BLACK + " a {\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + src_constants.q.WHITE + " a {\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + src_constants.q.BLACK + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + src_constants.q.BLACK + " .paypal-checkout-close:after {\n            background-color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + src_constants.q.WHITE + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + src_constants.q.WHITE + " .paypal-checkout-close:after {\n            background-color: #111;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + " a {\n            text-decoration: none;\n        }\n\n        #" + id + ' .paypal-checkout-modal {\n            font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n            font-size: 14px;\n            text-align: center;\n\n            -webkit-box-sizing: border-box;\n            -moz-box-sizing: border-box;\n            -ms-box-sizing: border-box;\n            box-sizing: border-box;\n            max-width: 350px;\n            top: 50%;\n            left: 50%;\n            position: absolute;\n            transform: translateX(-50%) translateY(-50%);\n            -webkit-transform: translateX(-50%) translateY(-50%);\n            -moz-transform: translateX(-50%) translateY(-50%);\n            -o-transform: translateX(-50%) translateY(-50%);\n            -ms-transform: translateX(-50%) translateY(-50%);\n            cursor: pointer;\n            text-align: center;\n        }\n\n        #' + id + "." + tag + "-loading .paypal-checkout-message, #" + id + "." + tag + "-loading .paypal-checkout-continue {\n            display: none;\n        }\n\n        .paypal-checkout-loader {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-loader {\n            display: block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo {\n            cursor: pointer;\n            margin-bottom: 30px;\n            display: inline-block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img {\n            height: 36px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img.paypal-checkout-logo-pp {\n            margin-right: 10px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-message {\n            font-size: 15px;\n            line-height: 1.5;\n            padding: 10px 0;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-message, #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-continue {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue {\n            font-size: 15px;\n            line-height: 1.35;\n            padding: 10px 0;\n            font-weight: bold;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue a {\n            border-bottom: 1px solid currentColor;\n        }\n\n        #" + id + " .paypal-checkout-close {\n            position: absolute;\n            right: 16px;\n            top: 16px;\n            width: 16px;\n            height: 16px;\n            opacity: 0.6;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-close {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-close:hover {\n            opacity: 1;\n        }\n\n        #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n            position: absolute;\n            left: 8px;\n            content: ' ';\n            height: 16px;\n            width: 2px;\n        }\n\n        #" + id + " .paypal-checkout-close:before {\n            transform: rotate(45deg);\n            -webkit-transform: rotate(45deg);\n            -moz-transform: rotate(45deg);\n            -o-transform: rotate(45deg);\n            -ms-transform: rotate(45deg);\n        }\n\n        #" + id + " .paypal-checkout-close:after {\n            transform: rotate(-45deg);\n            -webkit-transform: rotate(-45deg);\n            -moz-transform: rotate(-45deg);\n            -o-transform: rotate(-45deg);\n            -ms-transform: rotate(-45deg);\n        }\n\n        #" + id + " .paypal-checkout-iframe-container {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + ",\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + " > iframe {\n            max-height: calc(95vh - 60px);\n            max-width: 95vw;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container {\n\n            display: block;\n\n            position: absolute;\n\n            top: 50%;\n            left: 50%;\n\n            min-width: 450px;\n\n            transform: translate(-50%, -50%);\n            -webkit-transform: translate(-50%, -50%);\n            -moz-transform: translate(-50%, -50%);\n            -o-transform: translate(-50%, -50%);\n            -ms-transform: translate(-50%, -50%);\n\n            transform: translate3d(-50%, -50%, 0);\n            -webkit-transform: translate3d(-50%, -50%, 0);\n            -moz-transform: translate3d(-50%, -50%, 0);\n            -o-transform: translate3d(-50%, -50%, 0);\n            -ms-transform: translate3d(-50%, -50%, 0);\n\n            border-radius: 10px;\n            overflow: hidden;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n\n            position: relative;\n\n            -webkit-transition: all 0.3s ease;\n            -moz-transition: all 0.3s ease;\n            -ms-transition: all 0.3s ease;\n            -o-transition: all 0.3 ease;\n            transition: all 0.3s ease;\n\n            -webkit-animation-duration: 0.3s;\n            animation-duration: 0.3s;\n            -webkit-animation-fill-mode: both;\n            animation-fill-mode: both;\n\n            min-width: 450px;\n            max-width: 450px;\n            width: 450px;\n            height: 535px;\n\n            background-color: white;\n\n            overflow: auto;\n            -webkit-overflow-scrolling: touch;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            transition: opacity .4s ease-in-out;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n            z-index: 100;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n            opacity: 1;\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n            opacity: 0;\n            z-index: 100;\n        }\n\n        @media screen and (-ms-high-contrast: active) {\n            #" + id + " .paypal-checkout-close {\n                opacity: 1;\n            }\n\n            #" + id + " .paypal-checkout-close:before , .paypal-checkout-close:after {\n                background-color: currentColor;\n            }\n        }\n\n        @media screen and (max-width: 470px) {\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                min-width: 100%;\n                min-width: calc(100% - 20px);\n                min-width: -webkit-calc(100% - 20px);\n                min-width: -moz-calc(100% - 20px);\n                min-width: -o-calc(100% - 20px);\n                min-width: -ms-calc(100% - 20px);\n\n                max-width: 100%;\n                max-width: calc(100% - 20px);\n                max-width: -webkit-calc(100% - 20px);\n                max-width: -moz-calc(100% - 20px);\n                max-width: -o-calc(100% - 20px);\n                max-width: -ms-calc(100% - 20px);\n            }\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " iframe {\n            width: 1px;\n            min-width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        .paypal-spinner {\n            height: 30px;\n            width: 30px;\n            display: inline-block;\n            box-sizing: content-box;\n            opacity: 1;\n            filter: alpha(opacity=100);\n            -webkit-animation: rotation .7s infinite linear;\n            -moz-animation: rotation .7s infinite linear;\n            -o-animation: rotation .7s infinite linear;\n            animation: rotation .7s infinite linear;\n            border-left: 8px solid rgba(0, 0, 0, .2);\n            border-right: 8px solid rgba(0, 0, 0, .2);\n            border-bottom: 8px solid rgba(0, 0, 0, .2);\n            border-top: 8px solid #fff;\n            border-radius: 100%\n        }\n\n        @-webkit-keyframes rotation {\n            from {\n                -webkit-transform: rotate(0deg)\n            }\n            to {\n                -webkit-transform: rotate(359deg)\n            }\n        }\n        @-moz-keyframes rotation {\n            from {\n                -moz-transform: rotate(0deg)\n            }\n            to {\n                -moz-transform: rotate(359deg)\n            }\n        }\n        @-o-keyframes rotation {\n            from {\n                -o-transform: rotate(0deg)\n            }\n            to {\n                -o-transform: rotate(359deg)\n            }\n        }\n        @keyframes rotation {\n            from {\n                transform: rotate(0deg)\n            }\n            to {\n                transform: rotate(359deg)\n            }\n        }\n    ";
         }
         function getSandboxStyle(_ref) {
             var id = _ref.id, ANIMATION = _ref.ANIMATION;
@@ -10394,7 +10555,7 @@
             }
             return target;
         };
-        var component_Checkout = interface_create({
+        var containerTemplate__LOGO_COLOR, component_Checkout = interface_create({
             tag: "paypal-checkout",
             name: "ppcheckout",
             scrolling: !0,
@@ -10662,36 +10823,6 @@
                     type: "function",
                     required: !0,
                     once: !0,
-                    childDecorate: function(original) {
-                        return function() {
-                            !function() {
-                                try {
-                                    if (!window.paypal) {
-                                        Object(beaver_logger_client.p)("child_window_paypal_not_found");
-                                        Object(beaver_logger_client.h)();
-                                    }
-                                    var AuthModel = window.injector && window.injector.get("$AuthModel"), buyerCountry = AuthModel && AuthModel.instance() && AuthModel.instance().country, geoCountry = window.meta && window.meta.geolocation, browserCountry = Object(dom.b)().country;
-                                    if (!buyerCountry || !geoCountry || !browserCountry) {
-                                        Object(beaver_logger_client.k)("buyer_country_match_data_not_found", {
-                                            buyerCountry: buyerCountry,
-                                            geoCountry: geoCountry,
-                                            browserCountry: browserCountry
-                                        });
-                                        return;
-                                    }
-                                    Object(beaver_logger_client.k)("buyer_country_data", {
-                                        buyerCountry: buyerCountry,
-                                        geoCountry: geoCountry,
-                                        browserCountry: browserCountry
-                                    });
-                                    buyerCountry === geoCountry ? Object(beaver_logger_client.k)("buyer_country_geo_country_match") : Object(beaver_logger_client.k)("buyer_country_geo_country_mismatch");
-                                    buyerCountry === browserCountry ? Object(beaver_logger_client.k)("buyer_country_browser_country_match") : Object(beaver_logger_client.k)("buyer_country_browser_country_mismatch");
-                                    Object(beaver_logger_client.h)();
-                                } catch (err) {}
-                            }();
-                            return original.apply(this, arguments);
-                        };
-                    },
                     decorate: function(original) {
                         if (original) return function(data) {
                             var _this = this, actions = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
@@ -10871,11 +11002,17 @@
                             action: "checkout"
                         };
                     }
+                },
+                sdkMeta: {
+                    type: "string",
+                    queryParam: !0,
+                    sendToChild: !1,
+                    def: function() {
+                        return btoa(JSON.stringify({
+                            url: getCurrentScriptUrl()
+                        }));
+                    }
                 }
-            },
-            autoResize: {
-                width: !1,
-                height: !1
             },
             get dimensions() {
                 return Object(device.b)() ? {
@@ -10890,7 +11027,7 @@
         if (component_Checkout.isChild() && component_Checkout.xchild && component_Checkout.xprops) {
             component_Checkout.xprops && component_Checkout.xprops.logLevel && setLogLevel(component_Checkout.xprops.logLevel);
             component_Checkout.xchild.onProps(function(xprops) {
-                Object(util.n)(xprops, "onAuthorize", function(_ref) {
+                Object(util.m)(xprops, "onAuthorize", function(_ref) {
                     var callOriginal = _ref.callOriginal, data = _ref.args[0];
                     if (data && !data.intent) {
                         Object(beaver_logger_client.p)("hermes_authorize_no_intent", {
@@ -10911,15 +11048,15 @@
                 });
             });
         }
-        Object(util.n)(component_Checkout, "init", function(_ref2) {
+        Object(util.m)(component_Checkout, "init", function(_ref2) {
             var _ref2$args = _ref2.args, props = _ref2$args[0], _context = _ref2$args[1], original = _ref2.original, context = _ref2.context;
             return original.call(context, props, _context, "body");
         });
-        Object(util.n)(component_Checkout, "render", function(_ref3) {
+        Object(util.m)(component_Checkout, "render", function(_ref3) {
             var props = _ref3.args[0], original = _ref3.original, context = _ref3.context;
             return original.call(context, props, "body");
         });
-        Object(util.n)(component_Checkout, "renderTo", function(_ref4) {
+        Object(util.m)(component_Checkout, "renderTo", function(_ref4) {
             var _ref4$args = _ref4.args, win = _ref4$args[0], props = _ref4$args[1], original = _ref4.original, context = _ref4.context, payment = props.payment();
             props.payment = function() {
                 return payment;
@@ -10932,102 +11069,7 @@
                 throw err;
             });
         });
-        var containerTemplate__LOGO_COLOR, Card = interface_create({
-            tag: "card-fields",
-            name: "ppcard",
-            buildUrl: function(props) {
-                var env = props.env || config.a.env;
-                return config.a.inlinedCardFieldUrls[env];
-            },
-            contexts: {
-                iframe: !0,
-                popup: !1
-            },
-            props: {
-                sessionID: {
-                    type: "string",
-                    required: !1,
-                    def: function() {
-                        return Object(lib_session.c)();
-                    },
-                    queryParam: !0
-                },
-                token: {
-                    type: "string",
-                    required: !0,
-                    queryParam: !0
-                },
-                buttonSessionID: {
-                    type: "string",
-                    required: !1,
-                    def: function() {
-                        return Object(lib_session.a)();
-                    },
-                    queryParam: !0
-                },
-                commit: {
-                    type: "boolean",
-                    required: !1,
-                    queryParam: !0
-                },
-                env: {
-                    type: "string",
-                    required: !1,
-                    queryParam: !0,
-                    def: function() {
-                        return config.a.env;
-                    },
-                    validate: function(env) {
-                        if (!config.a.paypalUrls[env]) throw new Error("Invalid env: " + env);
-                    }
-                },
-                locale: {
-                    type: "string",
-                    required: !1,
-                    queryParam: "locale.x",
-                    allowDelegate: !0,
-                    def: function() {
-                        var _getBrowserLocale = Object(dom.b)();
-                        return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
-                    }
-                },
-                initialFormValues: {
-                    type: "object",
-                    required: !1
-                },
-                onAuthorize: {
-                    type: "function",
-                    required: !0,
-                    once: !0
-                },
-                onAuth: {
-                    type: "function",
-                    required: !1,
-                    sameDomain: !0
-                },
-                onEvent: {
-                    type: "function",
-                    required: !1,
-                    sameDomain: !0
-                },
-                getState: {
-                    type: "function",
-                    required: !1,
-                    sameDomain: !0
-                },
-                dispatch: {
-                    type: "object",
-                    required: !1,
-                    sameDomain: !0
-                },
-                onCancel: {
-                    type: "function",
-                    required: !1,
-                    once: !0,
-                    noop: !0
-                }
-            }
-        }), containerTemplate_componentContent = JSON.parse(containerContent_default.a), containerTemplate_LOGO_COLOR = ((containerTemplate__LOGO_COLOR = {})[src_constants.q.BLACK] = src_constants.i.WHITE, 
+        var containerTemplate_componentContent = JSON.parse(containerContent_default.a), containerTemplate_LOGO_COLOR = ((containerTemplate__LOGO_COLOR = {})[src_constants.q.BLACK] = src_constants.i.WHITE, 
         containerTemplate__LOGO_COLOR[src_constants.q.WHITE] = src_constants.i.BLACK, containerTemplate__LOGO_COLOR);
         var billing__extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
@@ -11119,6 +11161,16 @@
                     required: !1,
                     once: !0,
                     noop: !0
+                },
+                sdkMeta: {
+                    type: "string",
+                    queryParam: !0,
+                    sendToChild: !1,
+                    def: function() {
+                        return btoa(JSON.stringify({
+                            url: getCurrentScriptUrl()
+                        }));
+                    }
                 }
             },
             containerTemplate: function(_ref) {
@@ -11141,7 +11193,10 @@
                 }) : fundingLogos.paypal[logoColor], el = jsxDom("div", {
                     id: id,
                     onClick: focus,
-                    class: tag + "-context-" + context + " paypal-checkout-overlay " + tag + "-background-color-" + overlayColor + " " + tag + "-logo-color-" + logoColor
+                    class: tag + "-context-" + context + " paypal-checkout-overlay " + tag + "-background-color-" + overlayColor + " " + tag + "-logo-color-" + logoColor,
+                    role: "dialog",
+                    "aria-modal": "true",
+                    "aria-label": "PayPal Checkout Overlay"
                 }, jsxDom("a", {
                     href: "#",
                     class: "paypal-checkout-close",
@@ -11198,6 +11253,9 @@
         function addPaymentOptions(id, options) {
             payments[id] = payments[id] || {};
             payments[id].options = options;
+        }
+        function getPaymentOptions(id) {
+            return payments[id] && payments[id].options;
         }
         function mergePaymentDetails(id, payment) {
             payments[id] = payments[id] || {};
@@ -11284,10 +11342,11 @@
             var payment = paymentDetails.payment, experience = paymentDetails.experience, meta = paymentDetails.meta, tracking = paymentDetails.tracking;
             if (!payment) throw new Error("Expected payment details to be passed");
             !function(options) {
-                if (options.payer && options.payer.shipping_options) {
-                    if (!Array.isArray(options.payer.shipping_options)) throw new TypeError("Expected shipping_options to be an array");
-                    for (var uniqueIdCheck = {}, _i2 = 0, _options$payer$shippi2 = options.payer.shipping_options, _length2 = null == _options$payer$shippi2 ? 0 : _options$payer$shippi2.length; _i2 < _length2; _i2++) {
-                        var option = _options$payer$shippi2[_i2];
+                var transaction = options.transactions && options.transactions[0];
+                if (transaction && transaction.item_list && transaction.item_list.shipping_options) {
+                    if (!Array.isArray(transaction.item_list.shipping_options)) throw new TypeError("Expected shipping_options to be an array");
+                    for (var uniqueIdCheck = {}, _i2 = 0, _transaction$item_lis2 = transaction.item_list.shipping_options, _length2 = null == _transaction$item_lis2 ? 0 : _transaction$item_lis2.length; _i2 < _length2; _i2++) {
+                        var option = _transaction$item_lis2[_i2];
                         if (!option.id) throw new Error("Expected option.id for shipping_options");
                         if (uniqueIdCheck.hasOwnProperty(option.id)) throw new Error("Expected unique option.id for shipping_options");
                         uniqueIdCheck[option.id] = "seen";
@@ -11533,15 +11592,12 @@
         }, CONTINGENCY = {
             PAYMENT_CANCELLED: "PAYMENT_CANCELLED"
         };
-        function isBraintree() {
-            return Boolean("undefined" != typeof braintree || window.braintree);
-        }
         function normalizeCheckoutProps(props) {
             return {
                 env: props.env = props.env || config.a.env,
                 payment: props.payment,
-                onAuthorize: Object(lib.L)(props.onAuthorize),
-                onCancel: Object(lib.L)(props.onCancel || lib.I)
+                onAuthorize: Object(lib.G)(props.onAuthorize),
+                onCancel: Object(lib.G)(props.onCancel || lib.E)
             };
         }
         function renderThroughPopupBridge(props, popupBridge) {
@@ -11579,8 +11635,8 @@
                     return data;
                 }(payload.queryItems), actions = function(query) {
                     var actions = {
-                        close: lib.I,
-                        closeComponent: lib.I
+                        close: lib.E,
+                        closeComponent: lib.E
                     }, opType = query.opType, return_uri = query.return_uri, cancel_uri = query.cancel_uri;
                     opType === OPTYPE.PAYMENT ? actions.redirect = function() {
                         var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, redirectUrl = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : return_uri;
@@ -12268,7 +12324,7 @@
                 if (isInstallmentAllowedCountry && style.label === src_constants.f.INSTALLMENT && style[src_constants.m.INSTALLMENTPERIOD] && -1 === src_constants.b[country].indexOf(style[src_constants.m.INSTALLMENTPERIOD])) throw new Error("style." + src_constants.m.INSTALLMENTPERIOD + ": " + style[src_constants.m.INSTALLMENTPERIOD] + " is not a valid installment number for " + style.label);
             }(style, props.locale);
         }
-        var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n        cursor: default;\n    }\n", class_CLASS = {
+        var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    body {\n        display: inline-block;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n        cursor: default;\n    }\n", class_CLASS = {
             SHOULD_FOCUS: "paypal-should-focus",
             CONTAINER: "paypal-button-container",
             BUTTON: "paypal-button",
@@ -12295,7 +12351,7 @@
                 var height = _ref.height, _ref$cardNumber = _ref.cardNumber, cardNumber = void 0 === _ref$cardNumber ? 4 : _ref$cardNumber;
                 return Object.keys(BUTTON_STYLE).map(function(size) {
                     var style = BUTTON_STYLE[size], buttonHeight = height || style.defaultHeight, minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
-                    return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + class_CLASS.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(util.i)(Object(util.o)(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + (height || style.minHeight) + "px;\n                    max-height: " + (height || style.maxHeight) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + src_constants.d.UNBRANDED + " {\n                    font-size: " + Object(util.i)(Object(util.o)(buttonHeight, 45), 10) + "px;\n                }\n\n                ." + class_CLASS.LOGO + " {\n                    height: " + (Object(util.o)(buttonHeight, 35) + 5) + "px;\n                    max-height: " + Object(util.o)(buttonHeight, 60) + "px;\n                    min-height: " + Object(util.o)(buttonHeight, 40) + "px;\n                }\n                \n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + src_constants.f.EPS + ",\n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + src_constants.f.MYBANK + " {\n                    height: " + (Object(util.o)(buttonHeight, 50) + 5) + "px;\n                    max-height: " + Object(util.o)(buttonHeight, 70) + "px;\n                    min-height: " + Object(util.o)(buttonHeight, 40) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + src_constants.k.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + src_constants.k.RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.VERTICAL + " {\n                    margin-bottom: " + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + class_CLASS.SEPARATOR + " {\n                    margin: 0 " + Object(util.o)(buttonHeight, 5) + "px;\n                }\n\n                ." + class_CLASS.TAGLINE + " {\n                    height: " + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                    line-height: " + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " {\n                    height: " + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) + "px;\n                }\n\n                ." + class_CLASS.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n                    width: " + (90 / cardNumber).toFixed(2) + "%;\n                    max-width: " + Object(util.o)(buttonHeight, 160) + "px;\n                    margin-top: 0;\n                    margin-left: " + (5 / cardNumber).toFixed(2) + "%;\n                    margin-right: " + (5 / cardNumber).toFixed(2) + "%;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " {\n                    height: " + Object(util.o)(buttonHeight, 70) + "px;\n                    margin-top: " + Object(util.o)(buttonHeight, 15) + "px;\n                    margin-left: " + Object(util.o)(buttonHeight, 7) + "px;\n                    margin-right: " + Object(util.o)(buttonHeight, 7) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(util.i)(style.minWidth, minDualWidth) + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
+                    return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + class_CLASS.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(util.i)(Object(util.o)(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + (height || style.minHeight) + "px;\n                    max-height: " + (height || style.maxHeight) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + src_constants.d.UNBRANDED + " {\n                    font-size: " + Object(util.i)(Object(util.o)(buttonHeight, 45), 10) + "px;\n                }\n\n                ." + class_CLASS.LOGO + " {\n                    height: " + (Object(util.o)(buttonHeight, 35) + 5) + "px;\n                    max-height: " + Object(util.o)(buttonHeight, 60) + "px;\n                    min-height: " + Object(util.o)(buttonHeight, 40) + "px;\n                }\n                \n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + src_constants.f.EPS + ",\n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + src_constants.f.MYBANK + " {\n                    height: " + (Object(util.o)(buttonHeight, 50) + 5) + "px;\n                    max-height: " + Object(util.o)(buttonHeight, 70) + "px;\n                    min-height: " + Object(util.o)(buttonHeight, 40) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + src_constants.k.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + src_constants.k.RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.VERTICAL + " {\n                    margin-bottom: " + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + class_CLASS.SEPARATOR + " {\n                    margin: 0 " + Object(util.o)(buttonHeight, 5) + "px;\n                }\n\n                ." + class_CLASS.TAGLINE + " {\n                    display: " + (style.allowTagline ? "block" : "none") + ";\n                    height: " + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                    line-height: " + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " {\n                    display: " + (style.allowFunding ? "block" : "none") + ";\n                    height: " + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) + "px;\n                }\n\n                ." + class_CLASS.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n                    width: " + (90 / cardNumber).toFixed(2) + "%;\n                    max-width: " + Object(util.o)(buttonHeight, 160) + "px;\n                    margin-top: 0;\n                    margin-left: " + (5 / cardNumber).toFixed(2) + "%;\n                    margin-right: " + (5 / cardNumber).toFixed(2) + "%;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " {\n                    height: " + Object(util.o)(buttonHeight, 70) + "px;\n                    margin-top: " + Object(util.o)(buttonHeight, 15) + "px;\n                    margin-left: " + Object(util.o)(buttonHeight, 7) + "px;\n                    margin-right: " + Object(util.o)(buttonHeight, 7) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(util.i)(style.minWidth, minDualWidth) + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
                 }).join("\n");
             }({
                 height: height,
@@ -12683,7 +12739,7 @@
                     logoColor: "blue"
                 })));
             }(props_normalizeProps(props)) : null;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.239", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.245", 
             _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -12693,31 +12749,6 @@
                     env: env
                 })
             }), styleNode, buttonNodes, taglineNode || fundingiconNode, labelPowerByPayPal, scriptNode).toString();
-        }
-        function getDimensions(_ref2) {
-            var label = _ref2.label, size = _ref2.size, tagline = _ref2.tagline, fundingicons = _ref2.fundingicons, layout = _ref2.layout, number = _ref2.number, viewport = _ref2.viewport, buttonHeight = _ref2.height, cards = _ref2.cards, _ref2$sources = _ref2.sources, sources = void 0 === _ref2$sources ? [] : _ref2$sources, isResponsive = size === src_constants.l.RESPONSIVE, isVertical = layout === src_constants.g.VERTICAL, isCardFundingAllowed = sources.indexOf(src_constants.v.CARD) >= 0, hasCards = cards && cards.length > 0;
-            isResponsive && (size = function(_ref) {
-                var label = _ref.label, layout = _ref.layout, _ref$width = _ref.width, width = void 0 === _ref$width ? 0 : _ref$width, minimumSize = getButtonConfig(label, layout === src_constants.g.VERTICAL ? "minimumVerticalSize" : "minimumSize"), maximumSize = getButtonConfig(label, layout === src_constants.g.VERTICAL ? "maximumVerticalSize" : "maximumSize");
-                if (width < BUTTON_STYLE[minimumSize].minWidth) return minimumSize;
-                if (width >= BUTTON_STYLE[maximumSize].maxWidth) return maximumSize;
-                for (var _i2 = 0, _Object$keys2 = Object.keys(BUTTON_STYLE), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
-                    var size = _Object$keys2[_i2], _BUTTON_STYLE$size = BUTTON_STYLE[size], minWidth = _BUTTON_STYLE$size.minWidth, maxWidth = _BUTTON_STYLE$size.maxWidth;
-                    if (width >= minWidth && width < maxWidth) return size;
-                }
-                throw new Error("Unable to calculate responsive size for width: " + width);
-            }({
-                label: label,
-                layout: layout,
-                width: viewport.width,
-                height: buttonHeight
-            }));
-            var _BUTTON_STYLE$size2 = BUTTON_STYLE[size], defaultWidth = _BUTTON_STYLE$size2.defaultWidth, defaultHeight = _BUTTON_STYLE$size2.defaultHeight, minHeight = _BUTTON_STYLE$size2.minHeight, maxHeight = _BUTTON_STYLE$size2.maxHeight, allowFunding = _BUTTON_STYLE$size2.allowFunding, allowTagline = _BUTTON_STYLE$size2.allowTagline, width = defaultWidth, height = buttonHeight = buttonHeight || Object(util.k)(Object(util.i)(defaultHeight, minHeight), maxHeight);
-            fundingicons && allowFunding ? height += Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) : tagline && allowTagline ? height += Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) : isVertical && (height = buttonHeight * number + Object(util.o)(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) * (number - 1));
-            hasCards && isCardFundingAllowed && isVertical && !isResponsive && (height += BUTTON_STYLE[size].byPayPalHeight);
-            return {
-                width: width,
-                height: height
-            };
         }
         var button_component__extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
@@ -12739,29 +12770,9 @@
             },
             scrolling: !1,
             listenForResize: !0,
-            containerTemplate: function(_ref3) {
-                var id = _ref3.id, props = _ref3.props, CLASS = _ref3.CLASS, on = _ref3.on, container = _ref3.container, tag = _ref3.tag, context = _ref3.context, outlet = _ref3.outlet, jsxDom = _ref3.jsxDom, _normalizeProps = props_normalizeProps(props), size = _normalizeProps.size, label = _normalizeProps.label, fundingicons = _normalizeProps.fundingicons, tagline = _normalizeProps.tagline, layout = _normalizeProps.layout, sources = _normalizeProps.sources, buttonHeight = _normalizeProps.height, cards = _normalizeProps.cards, getContainerDimensions = function() {
-                    for (var cont = container; 0 === cont.offsetWidth && cont.parentElement && cont.parentElement !== cont; ) cont = cont.parentElement;
-                    return getDimensions({
-                        viewport: {
-                            width: cont.offsetWidth,
-                            height: cont.offsetHeight
-                        },
-                        number: sources.length,
-                        height: buttonHeight,
-                        label: label,
-                        size: size,
-                        fundingicons: fundingicons,
-                        tagline: tagline,
-                        layout: layout,
-                        cards: cards,
-                        sources: sources
-                    });
-                }, _getContainerDimensio = getContainerDimensions(), width = _getContainerDimensio.width, height = _getContainerDimensio.height;
-                size === src_constants.l.RESPONSIVE && on("resize", function() {
-                    outlet.style.height = getContainerDimensions().height + "px";
-                });
-                var minimumSize = getButtonConfig(label, layout === src_constants.g.VERTICAL ? "minimumVerticalSize" : "minimumSize"), maximumSize = getButtonConfig(label, layout === src_constants.g.VERTICAL ? "maximumVerticalSize" : "maximumSize");
+            containerTemplate: function(_ref) {
+                var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, tag = (_ref.on, _ref.container, 
+                _ref.tag), context = _ref.context, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _normalizeProps = props_normalizeProps(props), size = _normalizeProps.size, label = _normalizeProps.label, layout = _normalizeProps.layout, buttonHeight = _normalizeProps.height, minimumSize = getButtonConfig(label, layout === src_constants.g.VERTICAL ? "minimumVerticalSize" : "minimumSize"), maximumSize = getButtonConfig(label, layout === src_constants.g.VERTICAL ? "maximumVerticalSize" : "maximumSize");
                 if (buttonHeight) {
                     var possibleSizes = Object(util.t)(src_constants.l).filter(function(possibleSize) {
                         return BUTTON_STYLE[possibleSize] && buttonHeight && BUTTON_STYLE[possibleSize].minHeight <= buttonHeight && BUTTON_STYLE[possibleSize].maxHeight >= buttonHeight;
@@ -12772,10 +12783,22 @@
                     minimumSize = possibleSizes[0];
                     maximumSize = possibleSizes[possibleSizes.length - 1];
                 }
+                var _ref2 = BUTTON_STYLE[size] || BUTTON_STYLE[src_constants.l.SMALL], defaultWidth = _ref2.defaultWidth, defaultHeight = _ref2.defaultHeight, innerContainer = void 0;
+                setTimeout(function() {
+                    outlet.style.transition = "all 0.5s ease-in-out 0.3s";
+                    innerContainer && (innerContainer.style.transition = "all 0.5s ease-in-out 0.3s");
+                }, 3e3);
                 return jsxDom("div", {
                     id: id,
+                    onRender: function(el) {
+                        innerContainer = el;
+                    },
                     class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-                }, jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                    }\n\n                    #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + src_constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + width + "px;\n                        height: " + height + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+                }, jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + src_constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+            },
+            autoResize: {
+                height: !0,
+                width: !1
             },
             prerenderTemplate: function(_ref) {
                 var _this = this, props = _ref.props, jsxDom = _ref.jsxDom, template = jsxDom("div", {
@@ -13217,12 +13240,28 @@
                             _track6[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.CHECKOUT_SHIPPING_CHANGE, 
                             _track6[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track6));
                             Object(beaver_logger_client.h)();
+                            var patch = actions.payment.patch;
+                            actions.payment.patch = function(patchObject) {
+                                var itemListPatches = patchObject.filter(function(op, index) {
+                                    return !!op.path.match(/\/(transactions)\/(\d)\/(item_list)\/(shipping_options)/) && patchObject.splice(index, 1);
+                                });
+                                return src.a.try(function() {
+                                    if (itemListPatches.length) return id = data.paymentID, patch = itemListPatches, 
+                                    options = getPaymentOptions(id), void addPaymentOptions(id, Object(util.n)(options, patch));
+                                    var id, patch, options;
+                                }).then(function() {
+                                    return patch(patchObject);
+                                });
+                            };
                             var resolve = function() {
                                 return src.a.resolve();
+                            }, reject = actions.reject || function() {
+                                throw new Error("Missing reject action callback");
                             };
                             return src.a.try(function() {
                                 return original.call(_this4, data, button_component__extends({}, actions, {
-                                    resolve: resolve
+                                    resolve: resolve,
+                                    reject: reject
                                 }));
                             }).timeout(1e4, new Error("Timed out waiting 10000ms for payment")).catch(function(err) {
                                 _this4.props.onError && _this4.props.onError(err);
@@ -13299,6 +13338,8 @@
                                 _creditThrottle$log[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                                 _creditThrottle$log));
                             }
+                            var _ref5$color = (this.props.style || {}).color, color = void 0 === _ref5$color ? "default" : _ref5$color;
+                            Object(beaver_logger_client.k)("button_click_color_" + color);
                             Object(beaver_logger_client.h)();
                             return original.apply(this, arguments);
                         };
@@ -13335,13 +13376,24 @@
                 },
                 validate: {
                     type: "function",
-                    required: !1
+                    required: !1,
+                    once: !0
                 },
                 logLevel: {
                     type: "string",
                     required: !1,
                     get value() {
                         return config.a.logLevel;
+                    }
+                },
+                sdkMeta: {
+                    type: "string",
+                    queryParam: !0,
+                    sendToChild: !1,
+                    def: function() {
+                        return btoa(JSON.stringify({
+                            url: getCurrentScriptUrl()
+                        }));
                     }
                 },
                 awaitPopupBridge: {
@@ -13355,9 +13407,7 @@
                     type: "object",
                     required: !1,
                     value: {
-                        getPaymentOptions: function(id) {
-                            return payments[id] && payments[id].options;
-                        },
+                        getPaymentOptions: getPaymentOptions,
                         addPaymentDetails: function(id, details) {
                             payments[id] = payments[id] || {};
                             payments[id].details = details;
@@ -13381,20 +13431,16 @@
         component_Button.isChild() && function(ButtonComponent) {
             !function(Checkout, Button) {
                 var popupBridge = void 0;
-                isBraintree() || awaitPopupBridge(Button).then(function(bridge) {
-                    Object(beaver_logger_client.k)("popup_bridge_popuplate");
+                awaitPopupBridge(Button).then(function(bridge) {
                     popupBridge = bridge;
                 });
                 function doRender(props, original) {
-                    if (!isBraintree()) return original();
-                    if (!popupBridge) return original();
-                    Object(beaver_logger_client.k)("popup_bridge_render");
-                    return renderThroughPopupBridge(props, popupBridge).catch(function(err) {
+                    return popupBridge ? renderThroughPopupBridge(props, popupBridge).catch(function(err) {
                         Object(beaver_logger_client.g)("popup_bridge_error", {
                             err: Object(util.q)(err)
                         });
                         return original();
-                    });
+                    }) : original();
                 }
                 var render = Checkout.render;
                 Checkout.render = function(props) {
@@ -13439,7 +13485,7 @@
             Object(beaver_logger_client.k)("force_ie_full_page");
             Object(beaver_logger_client.h)();
             var checkout = component_Checkout.init({
-                onAuthorize: util.l
+                onAuthorize: util.k
             });
             checkout.delegate(win);
             checkout.openContainer().then(function() {
@@ -13461,17 +13507,17 @@
                 component_Checkout.canRenderTo(hacks_top).then(function(result) {
                     canRenderTop = result;
                 });
-                Object(util.n)(component_Checkout, "renderTo", function(_ref) {
+                Object(util.m)(component_Checkout, "renderTo", function(_ref) {
                     var _ref$args = _ref.args, win = _ref$args[0], props = _ref$args[1], el = _ref$args[2], original = _ref.original, context = _ref.context;
                     canRenderTop || (win = Object(cross_domain_utils_src.getParent)(window));
                     return original.call(context, win, props, el);
                 });
             }
         }
-        Object(util.n)(component_Checkout, "renderTo", function(_ref2) {
+        Object(util.m)(component_Checkout, "renderTo", function(_ref2) {
             var callOriginal = _ref2.callOriginal, props = _ref2.args[1];
             if (Object(util.e)("allow_full_page_fallback")) {
-                var handleError = Object(util.m)(function(err) {
+                var handleError = Object(util.l)(function(err) {
                     try {
                         console.error(err && err.stack);
                     } catch (err2) {}
@@ -13486,12 +13532,12 @@
             }
             return callOriginal();
         });
-        var domain, currentDomainEnv, debounce = !1;
-        Object(util.n)(component_Checkout, "renderTo", function(_ref3) {
+        var debounce = !1;
+        Object(util.m)(component_Checkout, "renderTo", function(_ref3) {
             var callOriginal = _ref3.callOriginal, props = _ref3.args[1];
             if (debounce) {
                 Object(beaver_logger_client.p)("button_mutliple_click_debounce");
-                return new src.a(util.l);
+                return new src.a(util.k);
             }
             debounce = !0;
             for (var _loop = function(_i2, _ref5, _length2) {
@@ -13513,12 +13559,12 @@
                     enabled = !1;
                 }
             });
-            Object(util.n)(component_Checkout, "renderTo", function(_ref6) {
+            Object(util.m)(component_Checkout, "renderTo", function(_ref6) {
                 var callOriginal = _ref6.callOriginal;
                 return enabled ? callOriginal() : new src.a();
             });
         }
-        Object(util.n)(rest.payment, "create", function(_ref7) {
+        Object(util.m)(rest.payment, "create", function(_ref7) {
             var createOriginal = _ref7.original, createContext = _ref7.context, _ref7$args = _ref7.args, env = _ref7$args[0], client = _ref7$args[1], options = _ref7$args[2], experience = _ref7$args[3];
             options.payment || (options = {
                 payment: options,
@@ -13526,7 +13572,7 @@
             });
             return createOriginal.call(createContext, env, client, options);
         });
-        Object(util.n)(component_Button.props.style, "validate", function(_ref8) {
+        Object(util.m)(component_Button.props.style, "validate", function(_ref8) {
             var callOriginal = _ref8.callOriginal, style = _ref8.args[0];
             if (!style) return callOriginal();
             style && "creditblue" === style.color && (style.color = src_constants.e.DARKBLUE);
@@ -13537,7 +13583,7 @@
             }
             return callOriginal();
         });
-        Object(util.n)(component_Button, "render", function(_ref9) {
+        Object(util.m)(component_Button, "render", function(_ref9) {
             var callOriginal = _ref9.callOriginal, props = _ref9.args[0];
             if (props.billingAgreement) {
                 props.payment = props.billingAgreement;
@@ -13545,12 +13591,12 @@
             }
             return callOriginal();
         });
-        Object(util.n)(component_Button.props.payment, "decorate", function(_ref10) {
+        Object(util.m)(component_Button.props.payment, "decorate", function(_ref10) {
             var original = _ref10.original, context = _ref10.context, originalPayment = _ref10.args[0];
             return original.call(context, function(data, actions) {
                 var _this = this;
                 return new src.a(function(resolve, reject) {
-                    Object(util.n)(actions.payment, "create", function(_ref11) {
+                    Object(util.m)(actions.payment, "create", function(_ref11) {
                         var createOriginal = _ref11.original, createContext = _ref11.context, _ref11$args = _ref11.args, options = _ref11$args[0], experience = _ref11$args[1];
                         options.payment || (options = {
                             payment: options,
@@ -13583,6 +13629,134 @@
             });
         });
         component_Button.isChild() && (window.Promise || (window.Promise = src.a));
+        var domain, currentDomainEnv, Card = interface_create({
+            tag: "card-fields",
+            name: "ppcard",
+            buildUrl: function(props) {
+                var env = props.env || config.a.env;
+                return config.a.inlinedCardFieldUrls[env];
+            },
+            contexts: {
+                iframe: !0,
+                popup: !1
+            },
+            autoResize: {
+                height: !0,
+                width: !1
+            },
+            props: {
+                sessionID: {
+                    type: "string",
+                    required: !1,
+                    def: function() {
+                        return Object(lib_session.c)();
+                    },
+                    queryParam: !0
+                },
+                token: {
+                    type: "string",
+                    required: !0,
+                    queryParam: !0
+                },
+                buttonSessionID: {
+                    type: "string",
+                    required: !1,
+                    def: function() {
+                        return Object(lib_session.a)();
+                    },
+                    queryParam: !0
+                },
+                commit: {
+                    type: "boolean",
+                    required: !1,
+                    queryParam: !0
+                },
+                env: {
+                    type: "string",
+                    required: !1,
+                    queryParam: !0,
+                    def: function() {
+                        return config.a.env;
+                    },
+                    validate: function(env) {
+                        if (!config.a.paypalUrls[env]) throw new Error("Invalid env: " + env);
+                    }
+                },
+                locale: {
+                    type: "string",
+                    required: !1,
+                    queryParam: "locale.x",
+                    allowDelegate: !0,
+                    def: function() {
+                        var _getBrowserLocale = Object(dom.b)();
+                        return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
+                    }
+                },
+                initialFormValues: {
+                    type: "object",
+                    required: !1
+                },
+                onAuthorize: {
+                    type: "function",
+                    required: !0,
+                    once: !0
+                },
+                onAuth: {
+                    type: "function",
+                    required: !1,
+                    sameDomain: !0
+                },
+                onEvent: {
+                    type: "function",
+                    required: !1,
+                    sameDomain: !0
+                },
+                getState: {
+                    type: "function",
+                    required: !1,
+                    sameDomain: !0
+                },
+                dispatch: {
+                    type: "object",
+                    required: !1,
+                    sameDomain: !0
+                },
+                onCancel: {
+                    type: "function",
+                    required: !1,
+                    once: !0,
+                    noop: !0
+                },
+                sdkMeta: {
+                    type: "string",
+                    queryParam: !0,
+                    sendToChild: !1,
+                    def: function() {
+                        return btoa(JSON.stringify({
+                            url: getCurrentScriptUrl()
+                        }));
+                    }
+                },
+                style: {
+                    type: "object",
+                    required: !1,
+                    queryParam: !0,
+                    def: function() {
+                        return {
+                            cardIcons: {
+                                display: !1
+                            },
+                            submitButton: {
+                                display: !0
+                            },
+                            currencyConversion: {
+                                display: !0
+                            }
+                        };
+                    }
+                }
+            }
+        });
         domain = window.location.protocol + "//" + window.location.host, (currentDomainEnv = function(domain) {
             for (var _i2 = 0, _Object$keys2 = Object.keys(config.a.paypalUrls), _length2 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i2 < _length2; _i2++) {
                 var _env = _Object$keys2[_i2];
@@ -13608,7 +13782,7 @@
             });
         });
         var currentScript = getCurrentScript(), currentProtocol = window.location.protocol.split(":")[0];
-        var setup_init = Object(util.m)(function(_ref2) {
+        var setup_init = Object(util.l)(function(_ref2) {
             var precacheRemembered = _ref2.precacheRemembered;
             isEligible() || Object(beaver_logger_client.p)("ineligible");
             !function() {
@@ -13756,10 +13930,9 @@
             setup__track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.239", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_Card = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
+        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.245", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
         if (Object(util.g)()) {
             interface_Checkout = component_Checkout;
-            interface_Card = Card;
             interface_BillingPage = BillingPage;
             PayPalCheckout = component_Checkout;
             enableCheckoutIframe = function() {
@@ -13789,6 +13962,9 @@
         });
         __webpack_require__.d(__webpack_exports__, "Button", function() {
             return component_Button;
+        });
+        __webpack_require__.d(__webpack_exports__, "Card", function() {
+            return Card;
         });
         __webpack_require__.d(__webpack_exports__, "setup", function() {
             return setup;
@@ -13850,9 +14026,6 @@
         __webpack_require__.d(__webpack_exports__, "Checkout", function() {
             return interface_Checkout;
         });
-        __webpack_require__.d(__webpack_exports__, "Card", function() {
-            return interface_Card;
-        });
         __webpack_require__.d(__webpack_exports__, "BillingPage", function() {
             return interface_BillingPage;
         });
@@ -13879,7 +14052,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.239";
+                payload.version = "4.0.245";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 payload.appName = APP_NAME;
@@ -13895,91 +14068,89 @@
     },
     "./src/lib/device.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        (function(process) {
-            __webpack_exports__.a = getUserAgent;
-            __webpack_exports__.b = function() {
-                if (getUserAgent().match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) return !0;
-                return !1;
-            };
-            __webpack_exports__.f = isIos;
-            __webpack_exports__.c = isIE;
-            __webpack_exports__.d = function() {
-                var mHttp = window.document.querySelector('meta[http-equiv="X-UA-Compatible"]'), mContent = window.document.querySelector('meta[content="IE=edge"]');
-                if (mHttp && mContent) return !0;
-                return !1;
-            };
-            __webpack_exports__.e = function() {
-                if (!function() {
-                    if (!isIE()) return !1;
-                    if (window.navigator && "string" == typeof window.navigator.userAgent) {
-                        if (/MSIE 11\.0/i.test(window.navigator.userAgent)) return !0;
-                        if (/Trident/i.test(window.navigator.userAgent) && /rv:11\.0/i.test(window.navigator.userAgent)) return !0;
-                    }
-                    return !1;
-                }()) return !1;
-                if (window.document.documentMode) try {
-                    var status = window.status;
-                    window.status = "testIntranetMode";
-                    if ("testIntranetMode" === window.status) {
-                        window.status = status;
-                        return !0;
-                    }
-                    return !1;
-                } catch (err) {
-                    return !1;
+        __webpack_exports__.a = getUserAgent;
+        __webpack_exports__.b = function() {
+            if (getUserAgent().match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) return !0;
+            return !1;
+        };
+        __webpack_exports__.f = isIos;
+        __webpack_exports__.c = isIE;
+        __webpack_exports__.d = function() {
+            var mHttp = window.document.querySelector('meta[http-equiv="X-UA-Compatible"]'), mContent = window.document.querySelector('meta[content="IE=edge"]');
+            if (mHttp && mContent) return !0;
+            return !1;
+        };
+        __webpack_exports__.e = function() {
+            if (!function() {
+                if (!isIE()) return !1;
+                if (window.navigator && "string" == typeof window.navigator.userAgent) {
+                    if (/MSIE 11\.0/i.test(window.navigator.userAgent)) return !0;
+                    if (/Trident/i.test(window.navigator.userAgent) && /rv:11\.0/i.test(window.navigator.userAgent)) return !0;
                 }
                 return !1;
-            };
-            __webpack_exports__.g = function() {
+            }()) return !1;
+            if (window.document.documentMode) try {
+                var status = window.status;
+                window.status = "testIntranetMode";
+                if ("testIntranetMode" === window.status) {
+                    window.status = status;
+                    return !0;
+                }
+                return !1;
+            } catch (err) {
+                return !1;
+            }
+            return !1;
+        };
+        __webpack_exports__.g = function() {
+            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+            return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || function() {
                 var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || function() {
-                    var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                    return /FxiOS/i.test(ua);
-                }(ua) || function() {
-                    var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                    return /EdgiOS/i.test(ua);
-                }(ua) || isFacebookWebView(ua) || function() {
-                    var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                    return /QQBrowser/.test(ua);
-                }(ua) || function() {
-                    if (void 0 !== process && process.versions && process.versions.electron) return !0;
-                    return !1;
-                }() || (userAgent = getUserAgent(), /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent)) || !Boolean(Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.getOpener)(Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.getTop)(window))) && (!0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches));
-                var userAgent;
-            };
-            var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js");
-            function getUserAgent() {
-                return window.navigator.mockUserAgent || window.navigator.userAgent;
-            }
-            function isFacebookWebView() {
+                return /FxiOS/i.test(ua);
+            }(ua) || function() {
                 var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                return -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
-            }
-            function isOperaMini() {
-                return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent()).indexOf("Opera Mini") > -1;
-            }
-            function isIos() {
+                return /EdgiOS/i.test(ua);
+            }(ua) || isFacebookWebView(ua) || function() {
                 var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                return /iPhone|iPod|iPad/.test(ua);
-            }
-            function isIosWebview() {
+                return /QQBrowser/.test(ua);
+            }(ua) || (userAgent = getUserAgent(), /\belectron\b/i.test(userAgent)) || function() {
+                var userAgent = getUserAgent();
+                return /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent);
+            }() || !Boolean(Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.getOpener)(Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.getTop)(window))) && (!0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches));
+            var userAgent;
+        };
+        var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js");
+        function getUserAgent() {
+            return window.navigator.mockUserAgent || window.navigator.userAgent;
+        }
+        function isFacebookWebView() {
+            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+            return -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
+        }
+        function isOperaMini() {
+            return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent()).indexOf("Opera Mini") > -1;
+        }
+        function isIos() {
+            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+            return /iPhone|iPod|iPad/.test(ua);
+        }
+        function isIosWebview() {
+            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+            return !!isIos(ua) && (!!function() {
                 var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                return !!isIos(ua) && (!!function() {
-                    var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                    return /\bGSA\b/.test(ua);
-                }(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
-            }
-            function isAndroidWebview() {
+                return /\bGSA\b/.test(ua);
+            }(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
+        }
+        function isAndroidWebview() {
+            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+            return !!function() {
                 var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                return !!function() {
-                    var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                    return /Android/.test(ua);
-                }(ua) && (/Version\/[\d.]+/.test(ua) && !isOperaMini(ua));
-            }
-            function isIE() {
-                return !!window.document.documentMode || !(!window.navigator || "string" != typeof window.navigator.userAgent || !/Edge|MSIE/i.test(window.navigator.userAgent));
-            }
-        }).call(__webpack_exports__, __webpack_require__("./node_modules/process/browser.js"));
+                return /Android/.test(ua);
+            }(ua) && (/Version\/[\d.]+/.test(ua) && !isOperaMini(ua));
+        }
+        function isIE() {
+            return !!window.document.documentMode || !(!window.navigator || "string" != typeof window.navigator.userAgent || !/Edge|MSIE/i.test(window.navigator.userAgent));
+        }
     },
     "./src/lib/dom.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -14240,205 +14411,241 @@
     },
     "./src/lib/util.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        (function(global) {
-            __webpack_exports__.g = function() {
-                return Boolean((window.location.protocol + "//" + window.location.host).match(__WEBPACK_IMPORTED_MODULE_3__config__.a.paypal_domain_regex)) || "mock://www.paypal.com" === window.mockDomain;
-            };
-            __webpack_exports__.j = memoize;
-            __webpack_exports__.l = function() {};
-            __webpack_exports__.m = function(method) {
-                var called = !1;
-                return function() {
-                    if (!called) {
-                        called = !0;
-                        return method.apply(this, arguments);
-                    }
-                };
-            };
-            __webpack_exports__.s = function() {
-                var chars = "0123456789abcdef", randomID = "xxxxxxxxxx".replace(/./g, function() {
-                    return chars.charAt(Math.floor(Math.random() * chars.length));
-                }), timeID = __WEBPACK_IMPORTED_MODULE_0_hi_base32___default.a.encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
-                return randomID + "_" + timeID;
-            };
-            __webpack_exports__.h = function(str, pattern) {
-                var regmatch = str.match(pattern);
-                if (regmatch) return regmatch[1];
-            };
-            __webpack_exports__.c = function() {
-                var listeners = [];
-                return {
-                    listen: function(method) {
-                        listeners.push(method);
-                        return {
-                            cancel: function() {
-                                listeners.splice(listeners.indexOf(method), 1);
-                            }
-                        };
-                    },
-                    once: function(method) {
-                        var listener = this.listen(function() {
-                            method.apply(null, arguments);
-                            listener.cancel();
-                        });
-                    },
-                    trigger: function() {
-                        for (var _i2 = 0, _length2 = null == listeners ? 0 : listeners.length; _i2 < _length2; _i2++) {
-                            var listener = listeners[_i2];
-                            listener.apply(void 0, arguments);
-                        }
-                    }
-                };
-            };
-            __webpack_exports__.a = function(obj, key) {
-                return new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve) {
-                    var value = obj[key];
-                    if (value) return resolve(value);
-                    delete obj[key];
-                    Object.defineProperty(obj, key, {
-                        configurable: !0,
-                        set: function(item) {
-                            (value = item) && resolve(value);
-                        },
-                        get: function() {
-                            return value;
-                        }
-                    });
-                });
-            };
-            __webpack_exports__.q = function stringifyError(err) {
-                var level = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1;
-                if (level >= 3) return "stringifyError stack overflow";
-                try {
-                    if (!err) return "<unknown error: " + Object.prototype.toString.call(err) + ">";
-                    if ("string" == typeof err) return err;
-                    if (err instanceof Error) {
-                        var stack = err && err.stack, message = err && err.message;
-                        if (stack && message) return -1 !== stack.indexOf(message) ? stack : message + "\n" + stack;
-                        if (stack) return stack;
-                        if (message) return message;
-                    }
-                    return "function" == typeof err.toString ? err.toString() : Object.prototype.toString.call(err);
-                } catch (newErr) {
-                    return "Error while stringifying error: " + stringifyError(newErr, level + 1);
+        __webpack_exports__.g = function() {
+            return Boolean((window.location.protocol + "//" + window.location.host).match(__WEBPACK_IMPORTED_MODULE_3__config__.a.paypal_domain_regex)) || "mock://www.paypal.com" === window.mockDomain;
+        };
+        __webpack_exports__.j = memoize;
+        __webpack_exports__.k = function() {};
+        __webpack_exports__.l = function(method) {
+            var called = !1;
+            return function() {
+                if (!called) {
+                    called = !0;
+                    return method.apply(this, arguments);
                 }
             };
-            __webpack_exports__.r = function(err) {
-                var defaultMessage = "<unknown error: " + Object.prototype.toString.call(err) + ">";
-                if (!err) return defaultMessage;
-                if (err instanceof Error) return err.message || defaultMessage;
-                if ("string" == typeof err.message) return err.message || defaultMessage;
-                return defaultMessage;
-            };
-            __webpack_require__.d(__webpack_exports__, "f", function() {
-                return isLocalStorageEnabled;
-            });
-            __webpack_exports__.e = function(name, def) {
-                var hostname = window.xchild ? window.xchild.getParentDomain() : Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.getDomain)();
-                if (__WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings) for (var _i4 = 0, _Object$keys2 = Object.keys(__WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) {
-                    var domain = _Object$keys2[_i4];
-                    if (domainMatches(hostname, domain)) return __WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings[domain][name];
-                }
-                return def;
-            };
-            __webpack_exports__.n = function(obj, name, handler) {
-                var original = obj[name];
-                obj[name] = function() {
-                    var _this = this, _arguments = arguments;
-                    return handler({
-                        context: this,
-                        args: Array.prototype.slice.call(arguments),
-                        original: original,
-                        callOriginal: function() {
-                            return original.apply(_this, _arguments);
+        };
+        __webpack_exports__.s = function() {
+            var chars = "0123456789abcdef", randomID = "xxxxxxxxxx".replace(/./g, function() {
+                return chars.charAt(Math.floor(Math.random() * chars.length));
+            }), timeID = __WEBPACK_IMPORTED_MODULE_0_hi_base32___default.a.encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+            return randomID + "_" + timeID;
+        };
+        __webpack_exports__.h = function(str, pattern) {
+            var regmatch = str.match(pattern);
+            if (regmatch) return regmatch[1];
+        };
+        __webpack_exports__.c = function() {
+            var listeners = [];
+            return {
+                listen: function(method) {
+                    listeners.push(method);
+                    return {
+                        cancel: function() {
+                            listeners.splice(listeners.indexOf(method), 1);
                         }
-                    });
-                };
-            };
-            __webpack_exports__.d = function(obj, source) {
-                if (!source) return obj;
-                if (Object.assign) return Object.assign(obj, source);
-                for (var _key2 in source) source.hasOwnProperty(_key2) && (obj[_key2] = source[_key2]);
-                return obj;
-            };
-            __webpack_exports__.b = function deepExtend(obj, source) {
-                if (!source) return obj;
-                for (var _key3 in source) source.hasOwnProperty(_key3) && (isObject(obj[_key3]) && isObject(source[_key3]) ? deepExtend(obj[_key3], source[_key3]) : obj[_key3] = source[_key3]);
-                return obj;
-            };
-            __webpack_exports__.t = function(obj) {
-                var result = [];
-                for (var _key6 in obj) obj.hasOwnProperty(_key6) && result.push(obj[_key6]);
-                return result;
-            };
-            __webpack_exports__.o = function(pixels, percentage) {
-                return Math.round(pixels * percentage / 100);
-            };
-            __webpack_exports__.k = function() {
-                return Math.min.apply(Math, arguments);
-            };
-            __webpack_exports__.i = function() {
-                return Math.max.apply(Math, arguments);
-            };
-            __webpack_exports__.p = function(str, regex, handler) {
-                var results = [];
-                str.replace(regex, function() {
-                    results.push(handler.apply(null, arguments));
-                });
-                return results;
-            };
-            var __WEBPACK_IMPORTED_MODULE_0_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_0_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_hi_base32__), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__config__ = __webpack_require__("./src/config/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-                return typeof obj;
-            } : function(obj) {
-                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-            };
-            function memoize(method) {
-                var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, cache = {};
-                return function() {
-                    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-                    var key = void 0;
-                    try {
-                        key = JSON.stringify(Array.prototype.slice.call(arguments));
-                    } catch (err) {
-                        throw new Error("Arguments not serializable -- can not be used to memoize");
-                    }
-                    var time = options.time;
-                    cache[key] && time && Date.now() - cache[key].time < time && delete cache[key];
-                    var glob = function() {
-                        if ("undefined" != typeof window) return window;
-                        if (void 0 !== global) return global;
-                        throw new Error("No global found");
-                    }();
-                    glob.__CACHE_START_TIME__ && cache[key] && cache[key].time < glob.__CACHE_START_TIME__ && delete cache[key];
-                    if (cache[key]) return cache[key].value;
-                    cache[key] = {
-                        time: Date.now(),
-                        value: method.apply(this, arguments)
                     };
-                    return cache[key].value;
-                };
-            }
-            var isLocalStorageEnabled = memoize(function() {
-                try {
-                    if ("undefined" == typeof window) return !1;
-                    if (window.localStorage) {
-                        var _value = Math.random().toString();
-                        window.localStorage.setItem("__test__localStorage__", _value);
-                        var result = window.localStorage.getItem("__test__localStorage__");
-                        window.localStorage.removeItem("__test__localStorage__");
-                        if (_value === result) return !0;
+                },
+                once: function(method) {
+                    var listener = this.listen(function() {
+                        method.apply(null, arguments);
+                        listener.cancel();
+                    });
+                },
+                trigger: function() {
+                    for (var _i2 = 0, _length2 = null == listeners ? 0 : listeners.length; _i2 < _length2; _i2++) {
+                        var listener = listeners[_i2];
+                        listener.apply(void 0, arguments);
                     }
-                } catch (err) {}
-                return !1;
+                }
+            };
+        };
+        __webpack_exports__.a = function(obj, key) {
+            return new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve) {
+                var value = obj[key];
+                if (value) return resolve(value);
+                delete obj[key];
+                Object.defineProperty(obj, key, {
+                    configurable: !0,
+                    set: function(item) {
+                        (value = item) && resolve(value);
+                    },
+                    get: function() {
+                        return value;
+                    }
+                });
             });
-            function domainMatches(hostname, domain) {
-                var index = (hostname = hostname.split("://")[1]).indexOf(domain);
-                return -1 !== index && hostname.slice(index) === domain;
+        };
+        __webpack_exports__.q = function stringifyError(err) {
+            var level = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1;
+            if (level >= 3) return "stringifyError stack overflow";
+            try {
+                if (!err) return "<unknown error: " + Object.prototype.toString.call(err) + ">";
+                if ("string" == typeof err) return err;
+                if (err instanceof Error) {
+                    var stack = err && err.stack, message = err && err.message;
+                    if (stack && message) return -1 !== stack.indexOf(message) ? stack : message + "\n" + stack;
+                    if (stack) return stack;
+                    if (message) return message;
+                }
+                return "function" == typeof err.toString ? err.toString() : Object.prototype.toString.call(err);
+            } catch (newErr) {
+                return "Error while stringifying error: " + stringifyError(newErr, level + 1);
             }
-            function isObject(obj) {
-                return "object" === (void 0 === obj ? "undefined" : _typeof(obj)) && null !== obj;
+        };
+        __webpack_exports__.r = function(err) {
+            var defaultMessage = "<unknown error: " + Object.prototype.toString.call(err) + ">";
+            if (!err) return defaultMessage;
+            if (err instanceof Error) return err.message || defaultMessage;
+            if ("string" == typeof err.message) return err.message || defaultMessage;
+            return defaultMessage;
+        };
+        __webpack_require__.d(__webpack_exports__, "f", function() {
+            return isLocalStorageEnabled;
+        });
+        __webpack_exports__.e = function(name, def) {
+            var hostname = window.xchild ? window.xchild.getParentDomain() : Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.getDomain)();
+            if (__WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings) for (var _i4 = 0, _Object$keys2 = Object.keys(__WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) {
+                var domain = _Object$keys2[_i4];
+                if (domainMatches(hostname, domain)) return __WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings[domain][name];
             }
-        }).call(__webpack_exports__, __webpack_require__("./node_modules/webpack/buildin/global.js"));
+            return def;
+        };
+        __webpack_exports__.n = function(obj, patch) {
+            var patchedObj = _extends({}, obj);
+            try {
+                patch.map(function(op) {
+                    return function(target, path, value, op) {
+                        for (var props = path.split("/").filter(function(p) {
+                            return p;
+                        }), length = props.length - 1, i = 0; i < length; i++) {
+                            void 0 === target[props[i]] && (target[props[i]] = {});
+                            target = target[props[i]];
+                        }
+                        var targetProp = target[props[length]];
+                        switch (op) {
+                          case PATCH_OPS.add:
+                            Array.isArray(target[props[length]]) ? targetProp = [].concat(targetProp, [ value ]) : "object" === (void 0 === targetProp ? "undefined" : _typeof(targetProp)) && (targetProp = _extends({}, targetProp, {
+                                value: value
+                            }));
+                            break;
+
+                          case PATCH_OPS.replace:
+                          default:
+                            target[props[length]] = value;
+                        }
+                    }(patchedObj, op.path, op.value, op.op);
+                });
+            } catch (err) {
+                throw new Error("Invalid patch syntax");
+            }
+            return patchedObj;
+        };
+        __webpack_exports__.m = function(obj, name, handler) {
+            var original = obj[name];
+            obj[name] = function() {
+                var _this = this, _arguments = arguments;
+                return handler({
+                    context: this,
+                    args: Array.prototype.slice.call(arguments),
+                    original: original,
+                    callOriginal: function() {
+                        return original.apply(_this, _arguments);
+                    }
+                });
+            };
+        };
+        __webpack_exports__.d = function(obj, source) {
+            if (!source) return obj;
+            if (Object.assign) return Object.assign(obj, source);
+            for (var _key2 in source) source.hasOwnProperty(_key2) && (obj[_key2] = source[_key2]);
+            return obj;
+        };
+        __webpack_exports__.b = function deepExtend(obj, source) {
+            if (!source) return obj;
+            for (var _key3 in source) source.hasOwnProperty(_key3) && (isObject(obj[_key3]) && isObject(source[_key3]) ? deepExtend(obj[_key3], source[_key3]) : obj[_key3] = source[_key3]);
+            return obj;
+        };
+        __webpack_exports__.t = function(obj) {
+            var result = [];
+            for (var _key6 in obj) obj.hasOwnProperty(_key6) && result.push(obj[_key6]);
+            return result;
+        };
+        __webpack_exports__.o = function(pixels, percentage) {
+            return Math.round(pixels * percentage / 100);
+        };
+        __webpack_exports__.i = function() {
+            return Math.max.apply(Math, arguments);
+        };
+        __webpack_exports__.p = function(str, regex, handler) {
+            var results = [];
+            str.replace(regex, function() {
+                results.push(handler.apply(null, arguments));
+            });
+            return results;
+        };
+        var __WEBPACK_IMPORTED_MODULE_0_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_0_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_hi_base32__), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__config__ = __webpack_require__("./src/config/index.js"), _extends = Object.assign || function(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
+            }
+            return target;
+        }, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+        function memoize(method) {
+            var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, cache = {};
+            return function() {
+                for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+                var key = void 0;
+                try {
+                    key = JSON.stringify(Array.prototype.slice.call(arguments));
+                } catch (err) {
+                    throw new Error("Arguments not serializable -- can not be used to memoize");
+                }
+                var time = options.time;
+                cache[key] && time && Date.now() - cache[key].time < time && delete cache[key];
+                var glob = function() {
+                    if ("undefined" != typeof window) return window;
+                    if ("undefined" != typeof global) return global;
+                    throw new Error("No global found");
+                }();
+                glob.__CACHE_START_TIME__ && cache[key] && cache[key].time < glob.__CACHE_START_TIME__ && delete cache[key];
+                if (cache[key]) return cache[key].value;
+                cache[key] = {
+                    time: Date.now(),
+                    value: method.apply(this, arguments)
+                };
+                return cache[key].value;
+            };
+        }
+        var isLocalStorageEnabled = memoize(function() {
+            try {
+                if ("undefined" == typeof window) return !1;
+                if (window.localStorage) {
+                    var _value = Math.random().toString();
+                    window.localStorage.setItem("__test__localStorage__", _value);
+                    var result = window.localStorage.getItem("__test__localStorage__");
+                    window.localStorage.removeItem("__test__localStorage__");
+                    if (_value === result) return !0;
+                }
+            } catch (err) {}
+            return !1;
+        });
+        function domainMatches(hostname, domain) {
+            var index = (hostname = hostname.split("://")[1]).indexOf(domain);
+            return -1 !== index && hostname.slice(index) === domain;
+        }
+        var PATCH_OPS = {
+            add: "add",
+            remove: "remove",
+            replace: "replace"
+        };
+        function isObject(obj) {
+            return "object" === (void 0 === obj ? "undefined" : _typeof(obj)) && null !== obj;
+        }
     },
     "./src/load.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -14447,18 +14654,18 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         0;
-        if (window.paypal && "4.0.239" === window.paypal.version) {
+        if (window.paypal && "4.0.245" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.239"
+                version: "4.0.245"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.239) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.245) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.239" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.245" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.239"
+                version: "4.0.245"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.239");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.245");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");

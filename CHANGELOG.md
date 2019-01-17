@@ -1,3 +1,20 @@
+## <small>4.0.240 (2019-01-09)</small>
+
+*  fix(callback-default-reject): Adding default noop function for `actions.reject` for the onShippingC ([36cbdd9](https://github.com/paypal/paypal-checkout/commit/36cbdd9)), closes [#967](https://github.com/paypal/paypal-checkout/issues/967)
+* Add logs for click color and responsive width ([1c5bea2](https://github.com/paypal/paypal-checkout/commit/1c5bea2))
+* Add sdkMeta param to each component ([74d4038](https://github.com/paypal/paypal-checkout/commit/74d4038))
+* Card interface changes for standalone inline-guest (#977) ([a4160ee](https://github.com/paypal/paypal-checkout/commit/a4160ee)), closes [#977](https://github.com/paypal/paypal-checkout/issues/977)
+* Clean up child window logging ([290ae3d](https://github.com/paypal/paypal-checkout/commit/290ae3d))
+* Delete implement-checkout.md ([9c63764](https://github.com/paypal/paypal-checkout/commit/9c63764))
+* Revert "Enable iframe for bt popup bridge" ([ca28454](https://github.com/paypal/paypal-checkout/commit/ca28454))
+* chore(venmo-blacklist): New venmo blacklist items for December (#973) ([473aca8](https://github.com/paypal/paypal-checkout/commit/473aca8)), closes [#973](https://github.com/paypal/paypal-checkout/issues/973)
+* chore(venmo): Adding stitchfix and plunderdesign to blacklist (#979) ([a73e4e4](https://github.com/paypal/paypal-checkout/commit/a73e4e4)), closes [#979](https://github.com/paypal/paypal-checkout/issues/979)
+* a11y(overlay-dialog): Adding a11y attributes to the overlay (#971) ([1a504dd](https://github.com/paypal/paypal-checkout/commit/1a504dd)), closes [#971](https://github.com/paypal/paypal-checkout/issues/971)
+* fix(electron): more robust way of detection (#969) ([4f9a07f](https://github.com/paypal/paypal-checkout/commit/4f9a07f)), closes [#969](https://github.com/paypal/paypal-checkout/issues/969)
+* feat(callback-api): moving shipping options patch into payment patch (#852) ([94ce3ab](https://github.com/paypal/paypal-checkout/commit/94ce3ab)), closes [#852](https://github.com/paypal/paypal-checkout/issues/852)
+
+
+
 ## <small>4.0.234 (2018-11-14)</small>
 
 * chore(commitizen): Add commitizen packages for commit message convention (#943) ([42b2709](https://github.com/paypal/paypal-checkout/commit/42b2709)), closes [#943](https://github.com/paypal/paypal-checkout/issues/943)

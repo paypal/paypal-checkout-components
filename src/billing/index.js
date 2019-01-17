@@ -7,7 +7,7 @@ import { create } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
 
 import { ENV } from '../constants';
-import { getButtonSessionID, getBrowserLocale, getSessionID, getCurrentScript } from '../lib';
+import { getButtonSessionID, getBrowserLocale, getSessionID, getCurrentScriptUrl } from '../lib';
 import { config } from '../config';
 
 import { containerTemplate } from './template';
@@ -137,7 +137,7 @@ export const BillingPage : Component<BillingOptions> = create({
             sendToChild: false,
             def:         () => {
                 return btoa(JSON.stringify({
-                    url: getCurrentScript()
+                    url: getCurrentScriptUrl()
                 }));
             }
         }

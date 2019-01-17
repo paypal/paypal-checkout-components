@@ -945,7 +945,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             }, '#testContainer');
         });
-
+        
         it('should render a button into a container and click on the button using shipping options then pass those shipping options on shipping change', (done) => {
             window.paypal.Button.render({
 

@@ -1,11 +1,10 @@
 /* @flow */
 /* @jsx jsxDom */
 
-import { BUTTON_SIZE, BUTTON_LAYOUT, FUNDING } from '../../constants';
-import { getButtonConfig, BUTTON_STYLE, BUTTON_RELATIVE_STYLE } from '../config';
+import { BUTTON_SIZE, BUTTON_LAYOUT } from '../../constants';
+import { getButtonConfig, BUTTON_STYLE } from '../config';
 import { normalizeProps } from '../props';
-import { values, min, max, perc } from '../../lib/util';
-import type { DimensionsType } from '../../types';
+import { values } from '../../lib/util';
 
 type ContainerTemplateOptions = {
     id : string,
@@ -19,97 +18,10 @@ type ContainerTemplateOptions = {
     on : Function
 };
 
-function determineResponsiveSize({ label, layout, width = 0 }) : string {
-
-    let minimumSize = getButtonConfig(label, (layout === BUTTON_LAYOUT.VERTICAL) ? 'minimumVerticalSize' : 'minimumSize');
-    let maximumSize = getButtonConfig(label, (layout === BUTTON_LAYOUT.VERTICAL) ? 'maximumVerticalSize' : 'maximumSize');
-
-    if (width < BUTTON_STYLE[minimumSize].minWidth) {
-        return minimumSize;
-    }
-
-    if (width >= BUTTON_STYLE[maximumSize].maxWidth) {
-        return maximumSize;
-    }
-
-    for (let size of Object.keys(BUTTON_STYLE)) {
-        let { minWidth, maxWidth } = BUTTON_STYLE[size];
-
-        if (width >= minWidth && width < maxWidth) {
-            return size;
-        }
-    }
-
-    throw new Error(`Unable to calculate responsive size for width: ${ width }`);
-}
-
-function getDimensions({ label, size, tagline, fundingicons, layout, number, viewport, height: buttonHeight, cards, sources = [] }) : DimensionsType {
-
-    const isResponsive = size === BUTTON_SIZE.RESPONSIVE;
-    const isVertical = layout === BUTTON_LAYOUT.VERTICAL;
-    const isCardFundingAllowed = sources.indexOf(FUNDING.CARD) >= 0;
-    const hasCards = (cards && cards.length > 0);
-
-    if (isResponsive) {
-        size = determineResponsiveSize({ label, layout, width: viewport.width, height: buttonHeight });
-    }
-
-    let { defaultWidth, defaultHeight, minHeight, maxHeight, allowFunding, allowTagline } = BUTTON_STYLE[size];
-
-    buttonHeight = buttonHeight || min(max(defaultHeight, minHeight), maxHeight);
-
-    let width = defaultWidth;
-    let height = buttonHeight;
-
-    if (fundingicons && allowFunding) {
-        height += perc(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS);
-    } else if (tagline && allowTagline) {
-        height += perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE);
-    } else if (isVertical) {
-        height = (buttonHeight * number) + (perc(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) * (number - 1));
-    }
-
-    if (hasCards && isCardFundingAllowed && isVertical && width >= 250) {
-        height += BUTTON_STYLE[size].byPayPalHeight;
-    }
-
-    return { width, height };
-}
-
 // eslint-disable-next-line no-unused-vars
 export function containerTemplate({ id, props, CLASS, on, container, tag, context, outlet, jsxDom } : ContainerTemplateOptions) : HTMLElement {
 
-    let { size, label, fundingicons, tagline, layout, sources, height: buttonHeight, cards } = normalizeProps(props);
-
-    let getContainerDimensions = () => {
-        let cont = container;
-
-        while (cont.offsetWidth === 0 && cont.parentElement && cont.parentElement !== cont) {
-            cont = cont.parentElement;
-        }
-
-        return getDimensions({
-            // $FlowFixMe
-            viewport: { width: cont.offsetWidth, height: cont.offsetHeight },
-            number:   sources.length,
-            height:   buttonHeight,
-            label,
-            size,
-            fundingicons,
-            tagline,
-            layout,
-            cards,
-            sources
-        });
-    };
-
-    let { width, height } = getContainerDimensions();
-
-    if (size === BUTTON_SIZE.RESPONSIVE) {
-        on('resize', () => {
-            outlet.style.height = `${ getContainerDimensions().height }px`;
-        });
-    }
+    let { size, label, layout, height: buttonHeight } = normalizeProps(props);
 
     let minimumSize = getButtonConfig(label, (layout === BUTTON_LAYOUT.VERTICAL) ? 'minimumVerticalSize' : 'minimumSize');
     let maximumSize = getButtonConfig(label, (layout === BUTTON_LAYOUT.VERTICAL) ? 'maximumVerticalSize' : 'maximumSize');
@@ -128,16 +40,29 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
         maximumSize = possibleSizes[possibleSizes.length - 1];
     }
 
-    return (
-        <div id={ id } class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-size-${ size } ${ tag }-layout-${ layout }` }>
+    let { defaultWidth, defaultHeight } = BUTTON_STYLE[size] || BUTTON_STYLE[BUTTON_SIZE.SMALL];
 
+    let innerContainer;
+    setTimeout(() => {
+        outlet.style.transition = 'all 0.5s ease-in-out 0.3s';
+        if (innerContainer) {
+            innerContainer.style.transition = 'all 0.5s ease-in-out 0.3s';
+        }
+    }, 3000);
+
+    return (
+        <div id={ id } onRender={ (el) => { innerContainer = el; } } class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-size-${ size } ${ tag }-layout-${ layout }` }>
             <style>
                 {`
                     #${ id } {
                         font-size: 0;
                         width: 100%;
                         overflow: hidden;
+<<<<<<< HEAD
                         margin: 0 auto;
+=======
+                        min-width: ${ BUTTON_STYLE[minimumSize].minWidth }px;
+>>>>>>> upstream/master
                     }
 
                     #${ id }.${ tag }-size-${ BUTTON_SIZE.RESPONSIVE } {
@@ -156,8 +81,8 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
                     }
 
                     #${ id } > .${ CLASS.OUTLET } {
-                        width:  ${ width }px;
-                        height: ${ height }px;
+                        width:  ${ defaultWidth }px;
+                        height: ${ defaultHeight }px;
                     }
 
                      #${ id }.${ tag }-size-${ BUTTON_SIZE.RESPONSIVE } > .${ CLASS.OUTLET } {

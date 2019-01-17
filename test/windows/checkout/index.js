@@ -12,7 +12,7 @@ if (window.name.split('__')[2] !== 'test_minor') {
     throw new Error(`Expected window name to have version`);
 }
 
-let { action, onRender, onInit } = window.xprops.test;
+let { action, type, onRender, onInit } = window.xprops.test;
 
 let actions = {
     close() {
@@ -57,6 +57,26 @@ if (action === 'checkout') {
 
 } else if (action === 'shippingChange') {
 
+    let callbackActions = {
+        reject:  () => { /* pass */ },
+        type,
+        payment: {
+            patch: (data) => {
+                const shippingOptions = data.filter(op => {
+                    return op.path.match(/\/(transactions)\/(\d)\/(item_list)\/(shipping_options)/);
+                });
+
+                if (shippingOptions.length) {
+                    throw new Error('Expecting shipping_options to be stripped from payment patch');
+                }
+            }
+        }
+    };
+
+    if (type === 'noReject') {
+        delete callbackActions.reject;
+    }
+
     window.xprops.payment().then(paymentToken => {
         const shippingChangePayload = {
             paymentID:    paymentToken,
@@ -86,20 +106,7 @@ if (action === 'checkout') {
                 };
             })
             .then(payload => {
-                window.xprops.onShippingChange(payload, {
-                    reject:  () => { /* pass */ },
-                    payment: {
-                        patch: (data) => {
-                            const shippingOptions = data.filter(op => {
-                                return op.path.match(/\/(transactions)\/(\d)\/(item_list)\/(shipping_options)/);
-                            });
-
-                            if (shippingOptions.length) {
-                                throw new Error('Expecting shipping_options to be stripped from payment patch');
-                            }
-                        }
-                    }
-                });
+                window.xprops.onShippingChange(payload, callbackActions);
             });
     });
 

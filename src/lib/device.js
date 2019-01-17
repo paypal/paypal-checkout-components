@@ -127,10 +127,9 @@ export function isIECompHeader() : boolean {
 }
 
 export function isElectron() : boolean {
-    if (typeof process !== 'undefined' && process.versions && process.versions.electron) {
-        return true;
-    }
-    return false;
+    let userAgent = getUserAgent();
+    // here we want a case-insensitive full word boundary
+    return (/\belectron\b/i).test(userAgent);
 }
 
 export function isIEIntranet() : boolean {
