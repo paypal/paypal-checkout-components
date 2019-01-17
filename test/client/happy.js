@@ -1,6 +1,8 @@
 /* @flow */
 /* eslint require-await: off, max-lines: off */
 
+import { wrapPromise } from 'belter/src';
+
 import { setupButton } from '../../src';
 
 import { createButtonHTML, getMockCheckoutInstance,
@@ -9,27 +11,92 @@ import { triggerKeyPress } from './util';
 
 describe('happy cases', () => {
 
-    it('should render a button, click the button, and render checkout', async () => {
-    
-        let renderToCalled = false;
+    it('should render a button with createOrder, click the button, and render checkout', async () => {
+        return await wrapPromise(async ({ expect }) => {
 
-        window.paypal.Checkout = () => {
-            return {
-                renderTo: async () => {
-                    renderToCalled = true;
+            const orderID = 'XXXXXXXXXX';
+            const payerID = 'YYYYYYYYYY';
+
+            window.xprops.createOrder = expect('createOrder', async () => {
+                return orderID;
+            });
+
+            window.xprops.onApprove = expect('onApprove', async (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
-            };
-        };
 
-        window.document.body.innerHTML = createButtonHTML();
-    
-        await setupButton();
-    
-        window.document.querySelector('.paypal-button').click();
-    
-        if (!renderToCalled) {
-            throw new Error(`Expected renderTo to be called`);
-        }
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+            });
+
+            window.paypal.Checkout = (props) => {
+                return {
+                    renderTo: expect('renderTo', async () => {
+                        // eslint-disable-next-line max-nested-callbacks
+                        return props.createOrder().then(id => {
+                            if (id !== orderID) {
+                                throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                            }
+
+                            return props.onApprove({ orderID, payerID }, {});
+                        });
+                    })
+                };
+            };
+
+            window.document.body.innerHTML = createButtonHTML();
+
+            await setupButton();
+
+            window.document.querySelector('.paypal-button').click();
+        });
+    });
+
+    it('should render a button with createBillingAgreement, click the button, and render checkout', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+
+            const orderID = 'ABCDEFG12345';
+            const billingToken = 'BA-ZZZZZZZZZZZ';
+            const payerID = 'YYYYYYYYYY';
+
+            window.xprops.createOrder = avoid('createOrder');
+
+            window.xprops.createBillingAgreement = expect('createBillingAgreement', async () => {
+                return billingToken;
+            });
+
+            window.xprops.onApprove = expect('onApprove', async (data) => {
+                if (data.billingToken !== billingToken) {
+                    throw new Error(`Expected billingToken to be ${ billingToken }, got ${ data.billingToken }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+            });
+
+            window.paypal.Checkout = (props) => {
+                return {
+                    renderTo: expect('renderTo', async () => {
+                        return props.createOrder().then(id => {
+                            if (id !== orderID) {
+                                throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                            }
+
+                            return props.onApprove({ billingToken, payerID }, {});
+                        });
+                    })
+                };
+            };
+
+            window.document.body.innerHTML = createButtonHTML();
+
+            await setupButton();
+
+            window.document.querySelector('.paypal-button').click();
+        });
     });
     
     it('should render a button, press enter on the button, and render checkout', async () => {

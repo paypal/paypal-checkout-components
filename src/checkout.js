@@ -5,7 +5,7 @@ import { memoize, noop, supportsPopups } from 'belter/src';
 import { INTENT } from '@paypal/sdk-constants/src';
 import { getParent, getTop } from 'cross-domain-utils/src';
 
-import { getOrder, captureOrder, authorizeOrder, persistAccessToken, callGraphQL, type OrderResponse } from './api';
+import { getOrder, captureOrder, authorizeOrder, persistAccessToken, billingTokenToOrderID, callGraphQL, type OrderResponse } from './api';
 import { ORDER_API_ERROR, ORDER_ID_PATTERN, ERROR_URL } from './constants';
 
 type ActionsType = {|
@@ -132,6 +132,24 @@ export function setupCheckout() {
     }
 }
 
+function getCreateOrder(props : Object = {}) : () => ZalgoPromise<string> {
+    return memoize(() => {
+        return ZalgoPromise.try(() => {
+            if (props.createOrder) {
+                return props.createOrder();
+            } else if (window.xprops.createBillingAgreement) {
+                return window.xprops.createBillingAgreement().then(billingToken => {
+                    return billingTokenToOrderID(billingToken);
+                });
+            } else if (window.xprops.createOrder) {
+                return window.xprops.createOrder();
+            } else {
+                throw new Error(`No mechanism to create order`);
+            }
+        });
+    });
+}
+
 function getNonce() : string {
     let nonce = '';
     if (document.body) {
@@ -152,7 +170,7 @@ export function renderCheckout(props : Object = {}, context : string = getDefaul
 
     const [ parent, top ] = [ getTop(window), getParent() ];
 
-    const createOrder = memoize(props.createOrder || window.xprops.createOrder);
+    const createOrder = getCreateOrder(props);
     const renderWindow = (canRenderTop && top) ? top : parent;
 
     const validateOrderPromise = createOrder().then(validateOrder);
@@ -167,10 +185,10 @@ export function renderCheckout(props : Object = {}, context : string = getDefaul
 
         onError: window.xprops.onError,
 
-        onApprove({ orderID, payerID, paymentID }) : ZalgoPromise<void> {
+        onApprove({ orderID, payerID, paymentID, billingToken }) : ZalgoPromise<void> {
             const actions = buildExecuteActions(this, orderID);
 
-            return window.xprops.onApprove({ orderID, payerID, paymentID }, actions).catch(err => {
+            return window.xprops.onApprove({ orderID, payerID, paymentID, billingToken }, actions).catch(err => {
                 return window.xprops.onError(err);
             });
         },
@@ -194,7 +212,6 @@ export function renderCheckout(props : Object = {}, context : string = getDefaul
         },
 
         nonce: getNonce()
-
     });
     
     return instance.renderTo(renderWindow, 'body', context).then(() => {

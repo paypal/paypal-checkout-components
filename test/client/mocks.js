@@ -52,6 +52,9 @@ export function setupMocks() {
         onCancel: () => {
             return ZalgoPromise.resolve();
         },
+        onError: (err) => {
+            throw err;
+        },
         funding: {
             allowed:    [],
             disallowed: [],
@@ -163,7 +166,25 @@ export function authorizeOrderApiMock(options : Object = {}) : MockEndpoint {
     });
 }
 
+export function mapBillingTokenApiMock(options : Object = {}) : MockEndpoint {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri:    new RegExp('/webapps/hermes/api/payment/[^/]+/ectoken'),
+        data:   {
+            ack:  'success',
+            data: {
+                token: 'ABCDEFG12345'
+            }
+        },
+        headers: {
+            'x-csrf-jwt': 'xxxxxx'
+        },
+        ...options
+    });
+}
+
 getAuthApiMock().listen();
 getOrderApiMock().listen();
 captureOrderApiMock().listen();
 authorizeOrderApiMock().listen();
+mapBillingTokenApiMock().listen();

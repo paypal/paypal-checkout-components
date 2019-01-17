@@ -3,6 +3,7 @@
 import { querySelectorAll, onClick, noop } from 'belter/src';
 
 import { renderCheckout } from './checkout';
+import { getAuth } from './api';
 
 export function setupButton() {
 
@@ -25,6 +26,8 @@ export function setupButton() {
             renderCheckout({ fundingSource }).catch(noop);
         });
     });
+
+    getAuth().then(noop);
 
     window.xprops.getPrerenderDetails().then((prerenderDetails) => {
         if (prerenderDetails) {

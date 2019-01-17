@@ -100,6 +100,15 @@ export function authorizeOrder(orderID : string) : ZalgoPromise<OrderResponse> {
     });
 }
 
+export function billingTokenToOrderID(billingToken : string) : ZalgoPromise<string> {
+    return callAPI({
+        method: 'post',
+        url:    `${ API_URI.PAYMENT }/${ billingToken }/ectoken`
+    }).then(data => {
+        return data.token;
+    });
+}
+
 export const persistAccessToken = memoize((accessToken) : ZalgoPromise<void> => {
     defaultHeaders[ACCESS_TOKEN_HEADER] = accessToken;
     return getAuth().then(noop);
