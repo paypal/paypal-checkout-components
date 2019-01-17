@@ -339,6 +339,14 @@ export let config = {
 
         'stitchfix.com': {
             disable_venmo: true
+        },
+
+        'revzilla.com': {
+            disable_venmo: true
+        },
+
+        'cyclegear.com': {
+            disable_venmo: true
         }
     },
 
