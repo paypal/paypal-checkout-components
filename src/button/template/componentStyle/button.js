@@ -122,18 +122,6 @@ export let buttonStyle = `
         visibility: hidden;
     }
 
-    @media only screen and (max-width: 249px) {
-        .powered-by-paypal {
-            display: none;
-        }
-    }
-
-    @media only screen and (min-width: 250px) {
-        .powered-by-paypal {
-            display: block;
-        }
-    }
-
     .powered-by-paypal > .${ CLASS.TEXT } {
         vertical-align: top;
         line-height: 18px;
