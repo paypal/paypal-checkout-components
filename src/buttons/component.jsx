@@ -199,6 +199,10 @@ export const Buttons : ZoidComponent<ButtonProps> = create({
             decorate({ value }) : Function {
                 return function decoratedCreateBillingAgreement() : ZalgoPromise<string> {
                     return ZalgoPromise.try(() => {
+                        if (!getVault()) {
+                            throw new Error(`Must pass vault=true to sdk to use billing agreement flow`);
+                        }
+
                         // $FlowFixMe
                         return value();
 
