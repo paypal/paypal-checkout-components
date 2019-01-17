@@ -73,12 +73,6 @@ function getDimensions({ label, size, tagline, fundingicons, layout, number, vie
         height += BUTTON_STYLE[size].byPayPalHeight;
     }
 
-    // const paypalContainers = document.querySelectorAll('.paypal-button');
-    // if (paypalContainers.length > 0) {
-    //     const paypalContainer = paypalContainers[0];
-    //     return { width, height: paypalContainer.clientHeight };
-    // }
-
     return { width, height };
 }
 

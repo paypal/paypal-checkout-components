@@ -31,6 +31,3 @@ flow-typed
 **/.idea/*
 
 .DS_Store
-
-tags
-tags.lock
