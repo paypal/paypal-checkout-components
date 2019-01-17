@@ -41,7 +41,7 @@ export const Card : Component<CardOptions> = create({
     },
 
     dimensions: {
-        height: '100%',
+        height: '300px',
         width:  '100%'
     },
 
