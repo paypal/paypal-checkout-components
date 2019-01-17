@@ -62,64 +62,6 @@
             });
         }();
     },
-    "./node_modules/base64-js/index.js": function(module, exports, __webpack_require__) {
-        "use strict";
-        exports.byteLength = function(b64) {
-            var lens = getLens(b64), validLen = lens[0], placeHoldersLen = lens[1];
-            return 3 * (validLen + placeHoldersLen) / 4 - placeHoldersLen;
-        };
-        exports.toByteArray = function(b64) {
-            for (var tmp, lens = getLens(b64), validLen = lens[0], placeHoldersLen = lens[1], arr = new Arr(function(b64, validLen, placeHoldersLen) {
-                return 3 * (validLen + placeHoldersLen) / 4 - placeHoldersLen;
-            }(0, validLen, placeHoldersLen)), curByte = 0, len = placeHoldersLen > 0 ? validLen - 4 : validLen, i = 0; i < len; i += 4) {
-                tmp = revLookup[b64.charCodeAt(i)] << 18 | revLookup[b64.charCodeAt(i + 1)] << 12 | revLookup[b64.charCodeAt(i + 2)] << 6 | revLookup[b64.charCodeAt(i + 3)];
-                arr[curByte++] = tmp >> 16 & 255;
-                arr[curByte++] = tmp >> 8 & 255;
-                arr[curByte++] = 255 & tmp;
-            }
-            if (2 === placeHoldersLen) {
-                tmp = revLookup[b64.charCodeAt(i)] << 2 | revLookup[b64.charCodeAt(i + 1)] >> 4;
-                arr[curByte++] = 255 & tmp;
-            }
-            if (1 === placeHoldersLen) {
-                tmp = revLookup[b64.charCodeAt(i)] << 10 | revLookup[b64.charCodeAt(i + 1)] << 4 | revLookup[b64.charCodeAt(i + 2)] >> 2;
-                arr[curByte++] = tmp >> 8 & 255;
-                arr[curByte++] = 255 & tmp;
-            }
-            return arr;
-        };
-        exports.fromByteArray = function(uint8) {
-            for (var tmp, len = uint8.length, extraBytes = len % 3, parts = [], i = 0, len2 = len - extraBytes; i < len2; i += 16383) parts.push(encodeChunk(uint8, i, i + 16383 > len2 ? len2 : i + 16383));
-            if (1 === extraBytes) {
-                tmp = uint8[len - 1];
-                parts.push(lookup[tmp >> 2] + lookup[tmp << 4 & 63] + "==");
-            } else if (2 === extraBytes) {
-                tmp = (uint8[len - 2] << 8) + uint8[len - 1];
-                parts.push(lookup[tmp >> 10] + lookup[tmp >> 4 & 63] + lookup[tmp << 2 & 63] + "=");
-            }
-            return parts.join("");
-        };
-        for (var lookup = [], revLookup = [], Arr = "undefined" != typeof Uint8Array ? Uint8Array : Array, code = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", i = 0, len = code.length; i < len; ++i) {
-            lookup[i] = code[i];
-            revLookup[code.charCodeAt(i)] = i;
-        }
-        revLookup["-".charCodeAt(0)] = 62;
-        revLookup["_".charCodeAt(0)] = 63;
-        function getLens(b64) {
-            var len = b64.length;
-            if (len % 4 > 0) throw new Error("Invalid string. Length must be a multiple of 4");
-            var validLen = b64.indexOf("=");
-            -1 === validLen && (validLen = len);
-            return [ validLen, validLen === len ? 0 : 4 - validLen % 4 ];
-        }
-        function encodeChunk(uint8, start, end) {
-            for (var tmp, num, output = [], i = start; i < end; i += 3) {
-                tmp = (uint8[i] << 16 & 16711680) + (uint8[i + 1] << 8 & 65280) + (255 & uint8[i + 2]);
-                output.push(lookup[(num = tmp) >> 18 & 63] + lookup[num >> 12 & 63] + lookup[num >> 6 & 63] + lookup[63 & num]);
-            }
-            return output.join("");
-        }
-    },
     "./node_modules/beaver-logger/client/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         var interface_namespaceObject = {};
@@ -692,15 +634,13 @@
     },
     "./node_modules/belter/src/device.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        (function(process) {
-            __webpack_exports__.a = function() {
-                if (getUserAgent().match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) return !0;
-                return !1;
-            };
-            function getUserAgent() {
-                return window.navigator.mockUserAgent || window.navigator.userAgent;
-            }
-        }).call(__webpack_exports__, __webpack_require__("./node_modules/process/browser.js"));
+        __webpack_exports__.a = function() {
+            if (getUserAgent().match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) return !0;
+            return !1;
+        };
+        function getUserAgent() {
+            return window.navigator.mockUserAgent || window.navigator.userAgent;
+        }
     },
     "./node_modules/belter/src/dom.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -875,142 +815,140 @@
     "./node_modules/belter/src/types.js": function(module, exports) {},
     "./node_modules/belter/src/util.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        (function(Buffer, global) {
-            __webpack_exports__.m = uniqueID;
-            __webpack_exports__.c = function() {
-                if ("undefined" != typeof window) return window;
-                if (void 0 !== global) return global;
-                if ("undefined" != typeof __GLOBAL__) return __GLOBAL__;
-                throw new Error("No global found");
-            };
-            __webpack_exports__.e = function(method) {
-                var _this = this, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, cacheMap = new __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__.a();
-                function memoizedFunction() {
-                    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-                    var cache = cacheMap.getOrSet(options.thisNamespace ? this : method, function() {
-                        return {};
-                    }), key = serializeArgs(args), cacheTime = options.time;
-                    cache[key] && cacheTime && Date.now() - cache[key].time < cacheTime && delete cache[key];
-                    if (cache[key]) return cache[key].value;
-                    var time = Date.now(), value = method.apply(this, arguments);
-                    cache[key] = {
-                        time: time,
-                        value: value
-                    };
-                    return cache[key].value;
-                }
-                memoizedFunction.reset = function() {
-                    cacheMap.delete(options.thisNamespace ? _this : method);
+        __webpack_exports__.m = uniqueID;
+        __webpack_exports__.c = function() {
+            if ("undefined" != typeof window) return window;
+            if ("undefined" != typeof global) return global;
+            if ("undefined" != typeof __GLOBAL__) return __GLOBAL__;
+            throw new Error("No global found");
+        };
+        __webpack_exports__.e = function(method) {
+            var _this = this, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, cacheMap = new __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__.a();
+            function memoizedFunction() {
+                for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+                var cache = cacheMap.getOrSet(options.thisNamespace ? this : method, function() {
+                    return {};
+                }), key = serializeArgs(args), cacheTime = options.time;
+                cache[key] && cacheTime && Date.now() - cache[key].time < cacheTime && delete cache[key];
+                if (cache[key]) return cache[key].value;
+                var time = Date.now(), value = method.apply(this, arguments);
+                cache[key] = {
+                    time: time,
+                    value: value
                 };
-                options.name && (memoizedFunction.displayName = options.name + ":memoized");
-                return memoizedFunction;
+                return cache[key].value;
+            }
+            memoizedFunction.reset = function() {
+                cacheMap.delete(options.thisNamespace ? _this : method);
             };
-            __webpack_exports__.h = function(method) {
-                var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                function promisifiedFunction() {
-                    return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(method, this, arguments);
+            options.name && (memoizedFunction.displayName = options.name + ":memoized");
+            return memoizedFunction;
+        };
+        __webpack_exports__.h = function(method) {
+            var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+            function promisifiedFunction() {
+                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(method, this, arguments);
+            }
+            options.name && (promisifiedFunction.displayName = options.name + ":promisified");
+            return promisifiedFunction;
+        };
+        __webpack_exports__.d = function(method, logic) {
+            var args = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [], cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {}, key = serializeArgs(args);
+            if (cache.hasOwnProperty(key)) return cache[key];
+            return cache[key] = logic.apply(void 0, args);
+        };
+        __webpack_exports__.f = noop;
+        __webpack_exports__.g = once;
+        __webpack_exports__.k = function(item) {
+            if ("string" == typeof item) return item;
+            if (item && "function" == typeof item.toString) return item.toString();
+            return Object.prototype.toString.call(item);
+        };
+        __webpack_exports__.b = function(obj, source) {
+            if (!source) return obj;
+            if (Object.assign) return Object.assign(obj, source);
+            for (var key in source) source.hasOwnProperty(key) && (obj[key] = source[key]);
+            return obj;
+        };
+        __webpack_exports__.j = safeInterval;
+        __webpack_exports__.a = function(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+        };
+        __webpack_exports__.l = function(fn) {
+            var result = void 0, error = void 0;
+            try {
+                result = fn();
+            } catch (err) {
+                error = err;
+            }
+            return {
+                result: result,
+                error: error
+            };
+        };
+        __webpack_exports__.i = function(arr, item) {
+            var index = arr.indexOf(item);
+            -1 !== index && arr.splice(index, 1);
+        };
+        var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__ = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+        function base64encode(str) {
+            if ("function" == typeof btoa) return btoa(str);
+            if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
+            throw new Error("Can not find window.btoa or Buffer");
+        }
+        function uniqueID() {
+            var chars = "0123456789abcdef";
+            return "xxxxxxxxxx".replace(/./g, function() {
+                return chars.charAt(Math.floor(Math.random() * chars.length));
+            }) + "_" + base64encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+        }
+        var objectIDs = void 0;
+        function serializeArgs(args) {
+            try {
+                return JSON.stringify(Array.prototype.slice.call(args), function(subkey, val) {
+                    return "function" == typeof val ? "memoize[" + function(obj) {
+                        objectIDs = objectIDs || new __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__.a();
+                        if (null === obj || void 0 === obj || "object" !== (void 0 === obj ? "undefined" : _typeof(obj)) && "function" != typeof obj) throw new Error("Invalid object");
+                        var uid = objectIDs.get(obj);
+                        if (!uid) {
+                            uid = (void 0 === obj ? "undefined" : _typeof(obj)) + ":" + uniqueID();
+                            objectIDs.set(obj, uid);
+                        }
+                        return uid;
+                    }(val) + "]" : val;
+                });
+            } catch (err) {
+                throw new Error("Arguments not serializable -- can not be used to memoize");
+            }
+        }
+        function noop() {}
+        function once(method) {
+            var called = !1;
+            return function() {
+                if (!called) {
+                    called = !0;
+                    return method.apply(this, arguments);
                 }
-                options.name && (promisifiedFunction.displayName = options.name + ":promisified");
-                return promisifiedFunction;
             };
-            __webpack_exports__.d = function(method, logic) {
-                var args = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [], cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {}, key = serializeArgs(args);
-                if (cache.hasOwnProperty(key)) return cache[key];
-                return cache[key] = logic.apply(void 0, args);
-            };
-            __webpack_exports__.f = noop;
-            __webpack_exports__.g = once;
-            __webpack_exports__.k = function(item) {
-                if ("string" == typeof item) return item;
-                if (item && "function" == typeof item.toString) return item.toString();
-                return Object.prototype.toString.call(item);
-            };
-            __webpack_exports__.b = function(obj, source) {
-                if (!source) return obj;
-                if (Object.assign) return Object.assign(obj, source);
-                for (var key in source) source.hasOwnProperty(key) && (obj[key] = source[key]);
-                return obj;
-            };
-            __webpack_exports__.j = safeInterval;
-            __webpack_exports__.a = function(string) {
-                return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-            };
-            __webpack_exports__.l = function(fn) {
-                var result = void 0, error = void 0;
-                try {
-                    result = fn();
-                } catch (err) {
-                    error = err;
+        }
+        function safeInterval(method, time) {
+            var timeout = void 0;
+            !function loop() {
+                timeout = setTimeout(function() {
+                    method();
+                    loop();
+                }, time);
+            }();
+            return {
+                cancel: function() {
+                    clearTimeout(timeout);
                 }
-                return {
-                    result: result,
-                    error: error
-                };
             };
-            __webpack_exports__.i = function(arr, item) {
-                var index = arr.indexOf(item);
-                -1 !== index && arr.splice(index, 1);
-            };
-            var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__ = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-                return typeof obj;
-            } : function(obj) {
-                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-            };
-            function base64encode(str) {
-                if ("function" == typeof btoa) return btoa(str);
-                if (void 0 !== Buffer) return Buffer.from(str, "utf8").toString("base64");
-                throw new Error("Can not find window.btoa or Buffer");
-            }
-            function uniqueID() {
-                var chars = "0123456789abcdef";
-                return "xxxxxxxxxx".replace(/./g, function() {
-                    return chars.charAt(Math.floor(Math.random() * chars.length));
-                }) + "_" + base64encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
-            }
-            var objectIDs = void 0;
-            function serializeArgs(args) {
-                try {
-                    return JSON.stringify(Array.prototype.slice.call(args), function(subkey, val) {
-                        return "function" == typeof val ? "memoize[" + function(obj) {
-                            objectIDs = objectIDs || new __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__.a();
-                            if (null === obj || void 0 === obj || "object" !== (void 0 === obj ? "undefined" : _typeof(obj)) && "function" != typeof obj) throw new Error("Invalid object");
-                            var uid = objectIDs.get(obj);
-                            if (!uid) {
-                                uid = (void 0 === obj ? "undefined" : _typeof(obj)) + ":" + uniqueID();
-                                objectIDs.set(obj, uid);
-                            }
-                            return uid;
-                        }(val) + "]" : val;
-                    });
-                } catch (err) {
-                    throw new Error("Arguments not serializable -- can not be used to memoize");
-                }
-            }
-            function noop() {}
-            function once(method) {
-                var called = !1;
-                return function() {
-                    if (!called) {
-                        called = !0;
-                        return method.apply(this, arguments);
-                    }
-                };
-            }
-            function safeInterval(method, time) {
-                var timeout = void 0;
-                !function loop() {
-                    timeout = setTimeout(function() {
-                        method();
-                        loop();
-                    }, time);
-                }();
-                return {
-                    cancel: function() {
-                        clearTimeout(timeout);
-                    }
-                };
-            }
-        }).call(__webpack_exports__, __webpack_require__("./node_modules/buffer/index.js").Buffer, __webpack_require__("./node_modules/webpack/buildin/global.js"));
+        }
     },
     "./node_modules/bowser/bowser.min.js": function(module, exports, __webpack_require__) {
         t = "bowser", n = function() {
@@ -1268,972 +1206,6 @@
             }, n._detect = t, n.detect = t, n;
         }, void 0 !== module && module.exports ? module.exports = n() : __webpack_require__("./node_modules/webpack/buildin/amd-define.js")(t, n);
         var t, n;
-    },
-    "./node_modules/buffer/index.js": function(module, exports, __webpack_require__) {
-        "use strict";
-        (function(global) {
-            var base64 = __webpack_require__("./node_modules/base64-js/index.js"), ieee754 = __webpack_require__("./node_modules/ieee754/index.js"), isArray = __webpack_require__("./node_modules/isarray/index.js");
-            exports.Buffer = Buffer;
-            exports.SlowBuffer = function(length) {
-                +length != length && (length = 0);
-                return Buffer.alloc(+length);
-            };
-            exports.INSPECT_MAX_BYTES = 50;
-            Buffer.TYPED_ARRAY_SUPPORT = void 0 !== global.TYPED_ARRAY_SUPPORT ? global.TYPED_ARRAY_SUPPORT : function() {
-                try {
-                    var arr = new Uint8Array(1);
-                    arr.__proto__ = {
-                        __proto__: Uint8Array.prototype,
-                        foo: function() {
-                            return 42;
-                        }
-                    };
-                    return 42 === arr.foo() && "function" == typeof arr.subarray && 0 === arr.subarray(1, 1).byteLength;
-                } catch (e) {
-                    return !1;
-                }
-            }();
-            exports.kMaxLength = kMaxLength();
-            function kMaxLength() {
-                return Buffer.TYPED_ARRAY_SUPPORT ? 2147483647 : 1073741823;
-            }
-            function createBuffer(that, length) {
-                if (kMaxLength() < length) throw new RangeError("Invalid typed array length");
-                if (Buffer.TYPED_ARRAY_SUPPORT) (that = new Uint8Array(length)).__proto__ = Buffer.prototype; else {
-                    null === that && (that = new Buffer(length));
-                    that.length = length;
-                }
-                return that;
-            }
-            function Buffer(arg, encodingOrOffset, length) {
-                if (!(Buffer.TYPED_ARRAY_SUPPORT || this instanceof Buffer)) return new Buffer(arg, encodingOrOffset, length);
-                if ("number" == typeof arg) {
-                    if ("string" == typeof encodingOrOffset) throw new Error("If encoding is specified then the first argument must be a string");
-                    return allocUnsafe(this, arg);
-                }
-                return from(this, arg, encodingOrOffset, length);
-            }
-            Buffer.poolSize = 8192;
-            Buffer._augment = function(arr) {
-                arr.__proto__ = Buffer.prototype;
-                return arr;
-            };
-            function from(that, value, encodingOrOffset, length) {
-                if ("number" == typeof value) throw new TypeError('"value" argument must not be a number');
-                return "undefined" != typeof ArrayBuffer && value instanceof ArrayBuffer ? function(that, array, byteOffset, length) {
-                    array.byteLength;
-                    if (byteOffset < 0 || array.byteLength < byteOffset) throw new RangeError("'offset' is out of bounds");
-                    if (array.byteLength < byteOffset + (length || 0)) throw new RangeError("'length' is out of bounds");
-                    array = void 0 === byteOffset && void 0 === length ? new Uint8Array(array) : void 0 === length ? new Uint8Array(array, byteOffset) : new Uint8Array(array, byteOffset, length);
-                    Buffer.TYPED_ARRAY_SUPPORT ? (that = array).__proto__ = Buffer.prototype : that = fromArrayLike(that, array);
-                    return that;
-                }(that, value, encodingOrOffset, length) : "string" == typeof value ? function(that, string, encoding) {
-                    "string" == typeof encoding && "" !== encoding || (encoding = "utf8");
-                    if (!Buffer.isEncoding(encoding)) throw new TypeError('"encoding" must be a valid string encoding');
-                    var length = 0 | byteLength(string, encoding), actual = (that = createBuffer(that, length)).write(string, encoding);
-                    actual !== length && (that = that.slice(0, actual));
-                    return that;
-                }(that, value, encodingOrOffset) : function(that, obj) {
-                    if (Buffer.isBuffer(obj)) {
-                        var len = 0 | checked(obj.length);
-                        if (0 === (that = createBuffer(that, len)).length) return that;
-                        obj.copy(that, 0, 0, len);
-                        return that;
-                    }
-                    if (obj) {
-                        if ("undefined" != typeof ArrayBuffer && obj.buffer instanceof ArrayBuffer || "length" in obj) return "number" != typeof obj.length || (val = obj.length) != val ? createBuffer(that, 0) : fromArrayLike(that, obj);
-                        if ("Buffer" === obj.type && isArray(obj.data)) return fromArrayLike(that, obj.data);
-                    }
-                    var val;
-                    throw new TypeError("First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.");
-                }(that, value);
-            }
-            Buffer.from = function(value, encodingOrOffset, length) {
-                return from(null, value, encodingOrOffset, length);
-            };
-            if (Buffer.TYPED_ARRAY_SUPPORT) {
-                Buffer.prototype.__proto__ = Uint8Array.prototype;
-                Buffer.__proto__ = Uint8Array;
-                "undefined" != typeof Symbol && Symbol.species && Buffer[Symbol.species] === Buffer && Object.defineProperty(Buffer, Symbol.species, {
-                    value: null,
-                    configurable: !0
-                });
-            }
-            function assertSize(size) {
-                if ("number" != typeof size) throw new TypeError('"size" argument must be a number');
-                if (size < 0) throw new RangeError('"size" argument must not be negative');
-            }
-            Buffer.alloc = function(size, fill, encoding) {
-                return function(that, size, fill, encoding) {
-                    assertSize(size);
-                    return size <= 0 ? createBuffer(that, size) : void 0 !== fill ? "string" == typeof encoding ? createBuffer(that, size).fill(fill, encoding) : createBuffer(that, size).fill(fill) : createBuffer(that, size);
-                }(null, size, fill, encoding);
-            };
-            function allocUnsafe(that, size) {
-                assertSize(size);
-                that = createBuffer(that, size < 0 ? 0 : 0 | checked(size));
-                if (!Buffer.TYPED_ARRAY_SUPPORT) for (var i = 0; i < size; ++i) that[i] = 0;
-                return that;
-            }
-            Buffer.allocUnsafe = function(size) {
-                return allocUnsafe(null, size);
-            };
-            Buffer.allocUnsafeSlow = function(size) {
-                return allocUnsafe(null, size);
-            };
-            function fromArrayLike(that, array) {
-                var length = array.length < 0 ? 0 : 0 | checked(array.length);
-                that = createBuffer(that, length);
-                for (var i = 0; i < length; i += 1) that[i] = 255 & array[i];
-                return that;
-            }
-            function checked(length) {
-                if (length >= kMaxLength()) throw new RangeError("Attempt to allocate Buffer larger than maximum size: 0x" + kMaxLength().toString(16) + " bytes");
-                return 0 | length;
-            }
-            Buffer.isBuffer = function(b) {
-                return !(null == b || !b._isBuffer);
-            };
-            Buffer.compare = function(a, b) {
-                if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) throw new TypeError("Arguments must be Buffers");
-                if (a === b) return 0;
-                for (var x = a.length, y = b.length, i = 0, len = Math.min(x, y); i < len; ++i) if (a[i] !== b[i]) {
-                    x = a[i];
-                    y = b[i];
-                    break;
-                }
-                return x < y ? -1 : y < x ? 1 : 0;
-            };
-            Buffer.isEncoding = function(encoding) {
-                switch (String(encoding).toLowerCase()) {
-                  case "hex":
-                  case "utf8":
-                  case "utf-8":
-                  case "ascii":
-                  case "latin1":
-                  case "binary":
-                  case "base64":
-                  case "ucs2":
-                  case "ucs-2":
-                  case "utf16le":
-                  case "utf-16le":
-                    return !0;
-
-                  default:
-                    return !1;
-                }
-            };
-            Buffer.concat = function(list, length) {
-                if (!isArray(list)) throw new TypeError('"list" argument must be an Array of Buffers');
-                if (0 === list.length) return Buffer.alloc(0);
-                var i;
-                if (void 0 === length) {
-                    length = 0;
-                    for (i = 0; i < list.length; ++i) length += list[i].length;
-                }
-                var buffer = Buffer.allocUnsafe(length), pos = 0;
-                for (i = 0; i < list.length; ++i) {
-                    var buf = list[i];
-                    if (!Buffer.isBuffer(buf)) throw new TypeError('"list" argument must be an Array of Buffers');
-                    buf.copy(buffer, pos);
-                    pos += buf.length;
-                }
-                return buffer;
-            };
-            function byteLength(string, encoding) {
-                if (Buffer.isBuffer(string)) return string.length;
-                if ("undefined" != typeof ArrayBuffer && "function" == typeof ArrayBuffer.isView && (ArrayBuffer.isView(string) || string instanceof ArrayBuffer)) return string.byteLength;
-                "string" != typeof string && (string = "" + string);
-                var len = string.length;
-                if (0 === len) return 0;
-                for (var loweredCase = !1; ;) switch (encoding) {
-                  case "ascii":
-                  case "latin1":
-                  case "binary":
-                    return len;
-
-                  case "utf8":
-                  case "utf-8":
-                  case void 0:
-                    return utf8ToBytes(string).length;
-
-                  case "ucs2":
-                  case "ucs-2":
-                  case "utf16le":
-                  case "utf-16le":
-                    return 2 * len;
-
-                  case "hex":
-                    return len >>> 1;
-
-                  case "base64":
-                    return base64ToBytes(string).length;
-
-                  default:
-                    if (loweredCase) return utf8ToBytes(string).length;
-                    encoding = ("" + encoding).toLowerCase();
-                    loweredCase = !0;
-                }
-            }
-            Buffer.byteLength = byteLength;
-            Buffer.prototype._isBuffer = !0;
-            function swap(b, n, m) {
-                var i = b[n];
-                b[n] = b[m];
-                b[m] = i;
-            }
-            Buffer.prototype.swap16 = function() {
-                var len = this.length;
-                if (len % 2 != 0) throw new RangeError("Buffer size must be a multiple of 16-bits");
-                for (var i = 0; i < len; i += 2) swap(this, i, i + 1);
-                return this;
-            };
-            Buffer.prototype.swap32 = function() {
-                var len = this.length;
-                if (len % 4 != 0) throw new RangeError("Buffer size must be a multiple of 32-bits");
-                for (var i = 0; i < len; i += 4) {
-                    swap(this, i, i + 3);
-                    swap(this, i + 1, i + 2);
-                }
-                return this;
-            };
-            Buffer.prototype.swap64 = function() {
-                var len = this.length;
-                if (len % 8 != 0) throw new RangeError("Buffer size must be a multiple of 64-bits");
-                for (var i = 0; i < len; i += 8) {
-                    swap(this, i, i + 7);
-                    swap(this, i + 1, i + 6);
-                    swap(this, i + 2, i + 5);
-                    swap(this, i + 3, i + 4);
-                }
-                return this;
-            };
-            Buffer.prototype.toString = function() {
-                var length = 0 | this.length;
-                return 0 === length ? "" : 0 === arguments.length ? utf8Slice(this, 0, length) : function(encoding, start, end) {
-                    var loweredCase = !1;
-                    (void 0 === start || start < 0) && (start = 0);
-                    if (start > this.length) return "";
-                    (void 0 === end || end > this.length) && (end = this.length);
-                    if (end <= 0) return "";
-                    if ((end >>>= 0) <= (start >>>= 0)) return "";
-                    encoding || (encoding = "utf8");
-                    for (;;) switch (encoding) {
-                      case "hex":
-                        return hexSlice(this, start, end);
-
-                      case "utf8":
-                      case "utf-8":
-                        return utf8Slice(this, start, end);
-
-                      case "ascii":
-                        return asciiSlice(this, start, end);
-
-                      case "latin1":
-                      case "binary":
-                        return latin1Slice(this, start, end);
-
-                      case "base64":
-                        return base64Slice(this, start, end);
-
-                      case "ucs2":
-                      case "ucs-2":
-                      case "utf16le":
-                      case "utf-16le":
-                        return utf16leSlice(this, start, end);
-
-                      default:
-                        if (loweredCase) throw new TypeError("Unknown encoding: " + encoding);
-                        encoding = (encoding + "").toLowerCase();
-                        loweredCase = !0;
-                    }
-                }.apply(this, arguments);
-            };
-            Buffer.prototype.equals = function(b) {
-                if (!Buffer.isBuffer(b)) throw new TypeError("Argument must be a Buffer");
-                return this === b || 0 === Buffer.compare(this, b);
-            };
-            Buffer.prototype.inspect = function() {
-                var str = "", max = exports.INSPECT_MAX_BYTES;
-                if (this.length > 0) {
-                    str = this.toString("hex", 0, max).match(/.{2}/g).join(" ");
-                    this.length > max && (str += " ... ");
-                }
-                return "<Buffer " + str + ">";
-            };
-            Buffer.prototype.compare = function(target, start, end, thisStart, thisEnd) {
-                if (!Buffer.isBuffer(target)) throw new TypeError("Argument must be a Buffer");
-                void 0 === start && (start = 0);
-                void 0 === end && (end = target ? target.length : 0);
-                void 0 === thisStart && (thisStart = 0);
-                void 0 === thisEnd && (thisEnd = this.length);
-                if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) throw new RangeError("out of range index");
-                if (thisStart >= thisEnd && start >= end) return 0;
-                if (thisStart >= thisEnd) return -1;
-                if (start >= end) return 1;
-                start >>>= 0;
-                end >>>= 0;
-                thisStart >>>= 0;
-                thisEnd >>>= 0;
-                if (this === target) return 0;
-                for (var x = thisEnd - thisStart, y = end - start, len = Math.min(x, y), thisCopy = this.slice(thisStart, thisEnd), targetCopy = target.slice(start, end), i = 0; i < len; ++i) if (thisCopy[i] !== targetCopy[i]) {
-                    x = thisCopy[i];
-                    y = targetCopy[i];
-                    break;
-                }
-                return x < y ? -1 : y < x ? 1 : 0;
-            };
-            function bidirectionalIndexOf(buffer, val, byteOffset, encoding, dir) {
-                if (0 === buffer.length) return -1;
-                if ("string" == typeof byteOffset) {
-                    encoding = byteOffset;
-                    byteOffset = 0;
-                } else byteOffset > 2147483647 ? byteOffset = 2147483647 : byteOffset < -2147483648 && (byteOffset = -2147483648);
-                byteOffset = +byteOffset;
-                isNaN(byteOffset) && (byteOffset = dir ? 0 : buffer.length - 1);
-                byteOffset < 0 && (byteOffset = buffer.length + byteOffset);
-                if (byteOffset >= buffer.length) {
-                    if (dir) return -1;
-                    byteOffset = buffer.length - 1;
-                } else if (byteOffset < 0) {
-                    if (!dir) return -1;
-                    byteOffset = 0;
-                }
-                "string" == typeof val && (val = Buffer.from(val, encoding));
-                if (Buffer.isBuffer(val)) return 0 === val.length ? -1 : arrayIndexOf(buffer, val, byteOffset, encoding, dir);
-                if ("number" == typeof val) {
-                    val &= 255;
-                    return Buffer.TYPED_ARRAY_SUPPORT && "function" == typeof Uint8Array.prototype.indexOf ? dir ? Uint8Array.prototype.indexOf.call(buffer, val, byteOffset) : Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset) : arrayIndexOf(buffer, [ val ], byteOffset, encoding, dir);
-                }
-                throw new TypeError("val must be string, number or Buffer");
-            }
-            function arrayIndexOf(arr, val, byteOffset, encoding, dir) {
-                var i, indexSize = 1, arrLength = arr.length, valLength = val.length;
-                if (void 0 !== encoding && ("ucs2" === (encoding = String(encoding).toLowerCase()) || "ucs-2" === encoding || "utf16le" === encoding || "utf-16le" === encoding)) {
-                    if (arr.length < 2 || val.length < 2) return -1;
-                    indexSize = 2;
-                    arrLength /= 2;
-                    valLength /= 2;
-                    byteOffset /= 2;
-                }
-                function read(buf, i) {
-                    return 1 === indexSize ? buf[i] : buf.readUInt16BE(i * indexSize);
-                }
-                if (dir) {
-                    var foundIndex = -1;
-                    for (i = byteOffset; i < arrLength; i++) if (read(arr, i) === read(val, -1 === foundIndex ? 0 : i - foundIndex)) {
-                        -1 === foundIndex && (foundIndex = i);
-                        if (i - foundIndex + 1 === valLength) return foundIndex * indexSize;
-                    } else {
-                        -1 !== foundIndex && (i -= i - foundIndex);
-                        foundIndex = -1;
-                    }
-                } else {
-                    byteOffset + valLength > arrLength && (byteOffset = arrLength - valLength);
-                    for (i = byteOffset; i >= 0; i--) {
-                        for (var found = !0, j = 0; j < valLength; j++) if (read(arr, i + j) !== read(val, j)) {
-                            found = !1;
-                            break;
-                        }
-                        if (found) return i;
-                    }
-                }
-                return -1;
-            }
-            Buffer.prototype.includes = function(val, byteOffset, encoding) {
-                return -1 !== this.indexOf(val, byteOffset, encoding);
-            };
-            Buffer.prototype.indexOf = function(val, byteOffset, encoding) {
-                return bidirectionalIndexOf(this, val, byteOffset, encoding, !0);
-            };
-            Buffer.prototype.lastIndexOf = function(val, byteOffset, encoding) {
-                return bidirectionalIndexOf(this, val, byteOffset, encoding, !1);
-            };
-            function hexWrite(buf, string, offset, length) {
-                offset = Number(offset) || 0;
-                var remaining = buf.length - offset;
-                length ? (length = Number(length)) > remaining && (length = remaining) : length = remaining;
-                var strLen = string.length;
-                if (strLen % 2 != 0) throw new TypeError("Invalid hex string");
-                length > strLen / 2 && (length = strLen / 2);
-                for (var i = 0; i < length; ++i) {
-                    var parsed = parseInt(string.substr(2 * i, 2), 16);
-                    if (isNaN(parsed)) return i;
-                    buf[offset + i] = parsed;
-                }
-                return i;
-            }
-            function utf8Write(buf, string, offset, length) {
-                return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length);
-            }
-            function asciiWrite(buf, string, offset, length) {
-                return blitBuffer(function(str) {
-                    for (var byteArray = [], i = 0; i < str.length; ++i) byteArray.push(255 & str.charCodeAt(i));
-                    return byteArray;
-                }(string), buf, offset, length);
-            }
-            function latin1Write(buf, string, offset, length) {
-                return asciiWrite(buf, string, offset, length);
-            }
-            function base64Write(buf, string, offset, length) {
-                return blitBuffer(base64ToBytes(string), buf, offset, length);
-            }
-            function ucs2Write(buf, string, offset, length) {
-                return blitBuffer(function(str, units) {
-                    for (var c, hi, lo, byteArray = [], i = 0; i < str.length && !((units -= 2) < 0); ++i) {
-                        c = str.charCodeAt(i);
-                        hi = c >> 8;
-                        lo = c % 256;
-                        byteArray.push(lo);
-                        byteArray.push(hi);
-                    }
-                    return byteArray;
-                }(string, buf.length - offset), buf, offset, length);
-            }
-            Buffer.prototype.write = function(string, offset, length, encoding) {
-                if (void 0 === offset) {
-                    encoding = "utf8";
-                    length = this.length;
-                    offset = 0;
-                } else if (void 0 === length && "string" == typeof offset) {
-                    encoding = offset;
-                    length = this.length;
-                    offset = 0;
-                } else {
-                    if (!isFinite(offset)) throw new Error("Buffer.write(string, encoding, offset[, length]) is no longer supported");
-                    offset |= 0;
-                    if (isFinite(length)) {
-                        length |= 0;
-                        void 0 === encoding && (encoding = "utf8");
-                    } else {
-                        encoding = length;
-                        length = void 0;
-                    }
-                }
-                var remaining = this.length - offset;
-                (void 0 === length || length > remaining) && (length = remaining);
-                if (string.length > 0 && (length < 0 || offset < 0) || offset > this.length) throw new RangeError("Attempt to write outside buffer bounds");
-                encoding || (encoding = "utf8");
-                for (var loweredCase = !1; ;) switch (encoding) {
-                  case "hex":
-                    return hexWrite(this, string, offset, length);
-
-                  case "utf8":
-                  case "utf-8":
-                    return utf8Write(this, string, offset, length);
-
-                  case "ascii":
-                    return asciiWrite(this, string, offset, length);
-
-                  case "latin1":
-                  case "binary":
-                    return latin1Write(this, string, offset, length);
-
-                  case "base64":
-                    return base64Write(this, string, offset, length);
-
-                  case "ucs2":
-                  case "ucs-2":
-                  case "utf16le":
-                  case "utf-16le":
-                    return ucs2Write(this, string, offset, length);
-
-                  default:
-                    if (loweredCase) throw new TypeError("Unknown encoding: " + encoding);
-                    encoding = ("" + encoding).toLowerCase();
-                    loweredCase = !0;
-                }
-            };
-            Buffer.prototype.toJSON = function() {
-                return {
-                    type: "Buffer",
-                    data: Array.prototype.slice.call(this._arr || this, 0)
-                };
-            };
-            function base64Slice(buf, start, end) {
-                return 0 === start && end === buf.length ? base64.fromByteArray(buf) : base64.fromByteArray(buf.slice(start, end));
-            }
-            function utf8Slice(buf, start, end) {
-                end = Math.min(buf.length, end);
-                for (var res = [], i = start; i < end; ) {
-                    var firstByte = buf[i], codePoint = null, bytesPerSequence = firstByte > 239 ? 4 : firstByte > 223 ? 3 : firstByte > 191 ? 2 : 1;
-                    if (i + bytesPerSequence <= end) {
-                        var secondByte, thirdByte, fourthByte, tempCodePoint;
-                        switch (bytesPerSequence) {
-                          case 1:
-                            firstByte < 128 && (codePoint = firstByte);
-                            break;
-
-                          case 2:
-                            128 == (192 & (secondByte = buf[i + 1])) && (tempCodePoint = (31 & firstByte) << 6 | 63 & secondByte) > 127 && (codePoint = tempCodePoint);
-                            break;
-
-                          case 3:
-                            secondByte = buf[i + 1];
-                            thirdByte = buf[i + 2];
-                            128 == (192 & secondByte) && 128 == (192 & thirdByte) && (tempCodePoint = (15 & firstByte) << 12 | (63 & secondByte) << 6 | 63 & thirdByte) > 2047 && (tempCodePoint < 55296 || tempCodePoint > 57343) && (codePoint = tempCodePoint);
-                            break;
-
-                          case 4:
-                            secondByte = buf[i + 1];
-                            thirdByte = buf[i + 2];
-                            fourthByte = buf[i + 3];
-                            128 == (192 & secondByte) && 128 == (192 & thirdByte) && 128 == (192 & fourthByte) && (tempCodePoint = (15 & firstByte) << 18 | (63 & secondByte) << 12 | (63 & thirdByte) << 6 | 63 & fourthByte) > 65535 && tempCodePoint < 1114112 && (codePoint = tempCodePoint);
-                        }
-                    }
-                    if (null === codePoint) {
-                        codePoint = 65533;
-                        bytesPerSequence = 1;
-                    } else if (codePoint > 65535) {
-                        codePoint -= 65536;
-                        res.push(codePoint >>> 10 & 1023 | 55296);
-                        codePoint = 56320 | 1023 & codePoint;
-                    }
-                    res.push(codePoint);
-                    i += bytesPerSequence;
-                }
-                return function(codePoints) {
-                    var len = codePoints.length;
-                    if (len <= MAX_ARGUMENTS_LENGTH) return String.fromCharCode.apply(String, codePoints);
-                    var res = "", i = 0;
-                    for (;i < len; ) res += String.fromCharCode.apply(String, codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH));
-                    return res;
-                }(res);
-            }
-            var MAX_ARGUMENTS_LENGTH = 4096;
-            function asciiSlice(buf, start, end) {
-                var ret = "";
-                end = Math.min(buf.length, end);
-                for (var i = start; i < end; ++i) ret += String.fromCharCode(127 & buf[i]);
-                return ret;
-            }
-            function latin1Slice(buf, start, end) {
-                var ret = "";
-                end = Math.min(buf.length, end);
-                for (var i = start; i < end; ++i) ret += String.fromCharCode(buf[i]);
-                return ret;
-            }
-            function hexSlice(buf, start, end) {
-                var len = buf.length;
-                (!start || start < 0) && (start = 0);
-                (!end || end < 0 || end > len) && (end = len);
-                for (var out = "", i = start; i < end; ++i) out += toHex(buf[i]);
-                return out;
-            }
-            function utf16leSlice(buf, start, end) {
-                for (var bytes = buf.slice(start, end), res = "", i = 0; i < bytes.length; i += 2) res += String.fromCharCode(bytes[i] + 256 * bytes[i + 1]);
-                return res;
-            }
-            Buffer.prototype.slice = function(start, end) {
-                var newBuf, len = this.length;
-                start = ~~start;
-                end = void 0 === end ? len : ~~end;
-                start < 0 ? (start += len) < 0 && (start = 0) : start > len && (start = len);
-                end < 0 ? (end += len) < 0 && (end = 0) : end > len && (end = len);
-                end < start && (end = start);
-                if (Buffer.TYPED_ARRAY_SUPPORT) (newBuf = this.subarray(start, end)).__proto__ = Buffer.prototype; else {
-                    var sliceLen = end - start;
-                    newBuf = new Buffer(sliceLen, void 0);
-                    for (var i = 0; i < sliceLen; ++i) newBuf[i] = this[i + start];
-                }
-                return newBuf;
-            };
-            function checkOffset(offset, ext, length) {
-                if (offset % 1 != 0 || offset < 0) throw new RangeError("offset is not uint");
-                if (offset + ext > length) throw new RangeError("Trying to access beyond buffer length");
-            }
-            Buffer.prototype.readUIntLE = function(offset, byteLength, noAssert) {
-                offset |= 0;
-                byteLength |= 0;
-                noAssert || checkOffset(offset, byteLength, this.length);
-                for (var val = this[offset], mul = 1, i = 0; ++i < byteLength && (mul *= 256); ) val += this[offset + i] * mul;
-                return val;
-            };
-            Buffer.prototype.readUIntBE = function(offset, byteLength, noAssert) {
-                offset |= 0;
-                byteLength |= 0;
-                noAssert || checkOffset(offset, byteLength, this.length);
-                for (var val = this[offset + --byteLength], mul = 1; byteLength > 0 && (mul *= 256); ) val += this[offset + --byteLength] * mul;
-                return val;
-            };
-            Buffer.prototype.readUInt8 = function(offset, noAssert) {
-                noAssert || checkOffset(offset, 1, this.length);
-                return this[offset];
-            };
-            Buffer.prototype.readUInt16LE = function(offset, noAssert) {
-                noAssert || checkOffset(offset, 2, this.length);
-                return this[offset] | this[offset + 1] << 8;
-            };
-            Buffer.prototype.readUInt16BE = function(offset, noAssert) {
-                noAssert || checkOffset(offset, 2, this.length);
-                return this[offset] << 8 | this[offset + 1];
-            };
-            Buffer.prototype.readUInt32LE = function(offset, noAssert) {
-                noAssert || checkOffset(offset, 4, this.length);
-                return (this[offset] | this[offset + 1] << 8 | this[offset + 2] << 16) + 16777216 * this[offset + 3];
-            };
-            Buffer.prototype.readUInt32BE = function(offset, noAssert) {
-                noAssert || checkOffset(offset, 4, this.length);
-                return 16777216 * this[offset] + (this[offset + 1] << 16 | this[offset + 2] << 8 | this[offset + 3]);
-            };
-            Buffer.prototype.readIntLE = function(offset, byteLength, noAssert) {
-                offset |= 0;
-                byteLength |= 0;
-                noAssert || checkOffset(offset, byteLength, this.length);
-                for (var val = this[offset], mul = 1, i = 0; ++i < byteLength && (mul *= 256); ) val += this[offset + i] * mul;
-                val >= (mul *= 128) && (val -= Math.pow(2, 8 * byteLength));
-                return val;
-            };
-            Buffer.prototype.readIntBE = function(offset, byteLength, noAssert) {
-                offset |= 0;
-                byteLength |= 0;
-                noAssert || checkOffset(offset, byteLength, this.length);
-                for (var i = byteLength, mul = 1, val = this[offset + --i]; i > 0 && (mul *= 256); ) val += this[offset + --i] * mul;
-                val >= (mul *= 128) && (val -= Math.pow(2, 8 * byteLength));
-                return val;
-            };
-            Buffer.prototype.readInt8 = function(offset, noAssert) {
-                noAssert || checkOffset(offset, 1, this.length);
-                return 128 & this[offset] ? -1 * (255 - this[offset] + 1) : this[offset];
-            };
-            Buffer.prototype.readInt16LE = function(offset, noAssert) {
-                noAssert || checkOffset(offset, 2, this.length);
-                var val = this[offset] | this[offset + 1] << 8;
-                return 32768 & val ? 4294901760 | val : val;
-            };
-            Buffer.prototype.readInt16BE = function(offset, noAssert) {
-                noAssert || checkOffset(offset, 2, this.length);
-                var val = this[offset + 1] | this[offset] << 8;
-                return 32768 & val ? 4294901760 | val : val;
-            };
-            Buffer.prototype.readInt32LE = function(offset, noAssert) {
-                noAssert || checkOffset(offset, 4, this.length);
-                return this[offset] | this[offset + 1] << 8 | this[offset + 2] << 16 | this[offset + 3] << 24;
-            };
-            Buffer.prototype.readInt32BE = function(offset, noAssert) {
-                noAssert || checkOffset(offset, 4, this.length);
-                return this[offset] << 24 | this[offset + 1] << 16 | this[offset + 2] << 8 | this[offset + 3];
-            };
-            Buffer.prototype.readFloatLE = function(offset, noAssert) {
-                noAssert || checkOffset(offset, 4, this.length);
-                return ieee754.read(this, offset, !0, 23, 4);
-            };
-            Buffer.prototype.readFloatBE = function(offset, noAssert) {
-                noAssert || checkOffset(offset, 4, this.length);
-                return ieee754.read(this, offset, !1, 23, 4);
-            };
-            Buffer.prototype.readDoubleLE = function(offset, noAssert) {
-                noAssert || checkOffset(offset, 8, this.length);
-                return ieee754.read(this, offset, !0, 52, 8);
-            };
-            Buffer.prototype.readDoubleBE = function(offset, noAssert) {
-                noAssert || checkOffset(offset, 8, this.length);
-                return ieee754.read(this, offset, !1, 52, 8);
-            };
-            function checkInt(buf, value, offset, ext, max, min) {
-                if (!Buffer.isBuffer(buf)) throw new TypeError('"buffer" argument must be a Buffer instance');
-                if (value > max || value < min) throw new RangeError('"value" argument is out of bounds');
-                if (offset + ext > buf.length) throw new RangeError("Index out of range");
-            }
-            Buffer.prototype.writeUIntLE = function(value, offset, byteLength, noAssert) {
-                value = +value;
-                offset |= 0;
-                byteLength |= 0;
-                if (!noAssert) {
-                    checkInt(this, value, offset, byteLength, Math.pow(2, 8 * byteLength) - 1, 0);
-                }
-                var mul = 1, i = 0;
-                this[offset] = 255 & value;
-                for (;++i < byteLength && (mul *= 256); ) this[offset + i] = value / mul & 255;
-                return offset + byteLength;
-            };
-            Buffer.prototype.writeUIntBE = function(value, offset, byteLength, noAssert) {
-                value = +value;
-                offset |= 0;
-                byteLength |= 0;
-                if (!noAssert) {
-                    checkInt(this, value, offset, byteLength, Math.pow(2, 8 * byteLength) - 1, 0);
-                }
-                var i = byteLength - 1, mul = 1;
-                this[offset + i] = 255 & value;
-                for (;--i >= 0 && (mul *= 256); ) this[offset + i] = value / mul & 255;
-                return offset + byteLength;
-            };
-            Buffer.prototype.writeUInt8 = function(value, offset, noAssert) {
-                value = +value;
-                offset |= 0;
-                noAssert || checkInt(this, value, offset, 1, 255, 0);
-                Buffer.TYPED_ARRAY_SUPPORT || (value = Math.floor(value));
-                this[offset] = 255 & value;
-                return offset + 1;
-            };
-            function objectWriteUInt16(buf, value, offset, littleEndian) {
-                value < 0 && (value = 65535 + value + 1);
-                for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; ++i) buf[offset + i] = (value & 255 << 8 * (littleEndian ? i : 1 - i)) >>> 8 * (littleEndian ? i : 1 - i);
-            }
-            Buffer.prototype.writeUInt16LE = function(value, offset, noAssert) {
-                value = +value;
-                offset |= 0;
-                noAssert || checkInt(this, value, offset, 2, 65535, 0);
-                if (Buffer.TYPED_ARRAY_SUPPORT) {
-                    this[offset] = 255 & value;
-                    this[offset + 1] = value >>> 8;
-                } else objectWriteUInt16(this, value, offset, !0);
-                return offset + 2;
-            };
-            Buffer.prototype.writeUInt16BE = function(value, offset, noAssert) {
-                value = +value;
-                offset |= 0;
-                noAssert || checkInt(this, value, offset, 2, 65535, 0);
-                if (Buffer.TYPED_ARRAY_SUPPORT) {
-                    this[offset] = value >>> 8;
-                    this[offset + 1] = 255 & value;
-                } else objectWriteUInt16(this, value, offset, !1);
-                return offset + 2;
-            };
-            function objectWriteUInt32(buf, value, offset, littleEndian) {
-                value < 0 && (value = 4294967295 + value + 1);
-                for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; ++i) buf[offset + i] = value >>> 8 * (littleEndian ? i : 3 - i) & 255;
-            }
-            Buffer.prototype.writeUInt32LE = function(value, offset, noAssert) {
-                value = +value;
-                offset |= 0;
-                noAssert || checkInt(this, value, offset, 4, 4294967295, 0);
-                if (Buffer.TYPED_ARRAY_SUPPORT) {
-                    this[offset + 3] = value >>> 24;
-                    this[offset + 2] = value >>> 16;
-                    this[offset + 1] = value >>> 8;
-                    this[offset] = 255 & value;
-                } else objectWriteUInt32(this, value, offset, !0);
-                return offset + 4;
-            };
-            Buffer.prototype.writeUInt32BE = function(value, offset, noAssert) {
-                value = +value;
-                offset |= 0;
-                noAssert || checkInt(this, value, offset, 4, 4294967295, 0);
-                if (Buffer.TYPED_ARRAY_SUPPORT) {
-                    this[offset] = value >>> 24;
-                    this[offset + 1] = value >>> 16;
-                    this[offset + 2] = value >>> 8;
-                    this[offset + 3] = 255 & value;
-                } else objectWriteUInt32(this, value, offset, !1);
-                return offset + 4;
-            };
-            Buffer.prototype.writeIntLE = function(value, offset, byteLength, noAssert) {
-                value = +value;
-                offset |= 0;
-                if (!noAssert) {
-                    var limit = Math.pow(2, 8 * byteLength - 1);
-                    checkInt(this, value, offset, byteLength, limit - 1, -limit);
-                }
-                var i = 0, mul = 1, sub = 0;
-                this[offset] = 255 & value;
-                for (;++i < byteLength && (mul *= 256); ) {
-                    value < 0 && 0 === sub && 0 !== this[offset + i - 1] && (sub = 1);
-                    this[offset + i] = (value / mul >> 0) - sub & 255;
-                }
-                return offset + byteLength;
-            };
-            Buffer.prototype.writeIntBE = function(value, offset, byteLength, noAssert) {
-                value = +value;
-                offset |= 0;
-                if (!noAssert) {
-                    var limit = Math.pow(2, 8 * byteLength - 1);
-                    checkInt(this, value, offset, byteLength, limit - 1, -limit);
-                }
-                var i = byteLength - 1, mul = 1, sub = 0;
-                this[offset + i] = 255 & value;
-                for (;--i >= 0 && (mul *= 256); ) {
-                    value < 0 && 0 === sub && 0 !== this[offset + i + 1] && (sub = 1);
-                    this[offset + i] = (value / mul >> 0) - sub & 255;
-                }
-                return offset + byteLength;
-            };
-            Buffer.prototype.writeInt8 = function(value, offset, noAssert) {
-                value = +value;
-                offset |= 0;
-                noAssert || checkInt(this, value, offset, 1, 127, -128);
-                Buffer.TYPED_ARRAY_SUPPORT || (value = Math.floor(value));
-                value < 0 && (value = 255 + value + 1);
-                this[offset] = 255 & value;
-                return offset + 1;
-            };
-            Buffer.prototype.writeInt16LE = function(value, offset, noAssert) {
-                value = +value;
-                offset |= 0;
-                noAssert || checkInt(this, value, offset, 2, 32767, -32768);
-                if (Buffer.TYPED_ARRAY_SUPPORT) {
-                    this[offset] = 255 & value;
-                    this[offset + 1] = value >>> 8;
-                } else objectWriteUInt16(this, value, offset, !0);
-                return offset + 2;
-            };
-            Buffer.prototype.writeInt16BE = function(value, offset, noAssert) {
-                value = +value;
-                offset |= 0;
-                noAssert || checkInt(this, value, offset, 2, 32767, -32768);
-                if (Buffer.TYPED_ARRAY_SUPPORT) {
-                    this[offset] = value >>> 8;
-                    this[offset + 1] = 255 & value;
-                } else objectWriteUInt16(this, value, offset, !1);
-                return offset + 2;
-            };
-            Buffer.prototype.writeInt32LE = function(value, offset, noAssert) {
-                value = +value;
-                offset |= 0;
-                noAssert || checkInt(this, value, offset, 4, 2147483647, -2147483648);
-                if (Buffer.TYPED_ARRAY_SUPPORT) {
-                    this[offset] = 255 & value;
-                    this[offset + 1] = value >>> 8;
-                    this[offset + 2] = value >>> 16;
-                    this[offset + 3] = value >>> 24;
-                } else objectWriteUInt32(this, value, offset, !0);
-                return offset + 4;
-            };
-            Buffer.prototype.writeInt32BE = function(value, offset, noAssert) {
-                value = +value;
-                offset |= 0;
-                noAssert || checkInt(this, value, offset, 4, 2147483647, -2147483648);
-                value < 0 && (value = 4294967295 + value + 1);
-                if (Buffer.TYPED_ARRAY_SUPPORT) {
-                    this[offset] = value >>> 24;
-                    this[offset + 1] = value >>> 16;
-                    this[offset + 2] = value >>> 8;
-                    this[offset + 3] = 255 & value;
-                } else objectWriteUInt32(this, value, offset, !1);
-                return offset + 4;
-            };
-            function checkIEEE754(buf, value, offset, ext, max, min) {
-                if (offset + ext > buf.length) throw new RangeError("Index out of range");
-                if (offset < 0) throw new RangeError("Index out of range");
-            }
-            function writeFloat(buf, value, offset, littleEndian, noAssert) {
-                noAssert || checkIEEE754(buf, 0, offset, 4);
-                ieee754.write(buf, value, offset, littleEndian, 23, 4);
-                return offset + 4;
-            }
-            Buffer.prototype.writeFloatLE = function(value, offset, noAssert) {
-                return writeFloat(this, value, offset, !0, noAssert);
-            };
-            Buffer.prototype.writeFloatBE = function(value, offset, noAssert) {
-                return writeFloat(this, value, offset, !1, noAssert);
-            };
-            function writeDouble(buf, value, offset, littleEndian, noAssert) {
-                noAssert || checkIEEE754(buf, 0, offset, 8);
-                ieee754.write(buf, value, offset, littleEndian, 52, 8);
-                return offset + 8;
-            }
-            Buffer.prototype.writeDoubleLE = function(value, offset, noAssert) {
-                return writeDouble(this, value, offset, !0, noAssert);
-            };
-            Buffer.prototype.writeDoubleBE = function(value, offset, noAssert) {
-                return writeDouble(this, value, offset, !1, noAssert);
-            };
-            Buffer.prototype.copy = function(target, targetStart, start, end) {
-                start || (start = 0);
-                end || 0 === end || (end = this.length);
-                targetStart >= target.length && (targetStart = target.length);
-                targetStart || (targetStart = 0);
-                end > 0 && end < start && (end = start);
-                if (end === start) return 0;
-                if (0 === target.length || 0 === this.length) return 0;
-                if (targetStart < 0) throw new RangeError("targetStart out of bounds");
-                if (start < 0 || start >= this.length) throw new RangeError("sourceStart out of bounds");
-                if (end < 0) throw new RangeError("sourceEnd out of bounds");
-                end > this.length && (end = this.length);
-                target.length - targetStart < end - start && (end = target.length - targetStart + start);
-                var i, len = end - start;
-                if (this === target && start < targetStart && targetStart < end) for (i = len - 1; i >= 0; --i) target[i + targetStart] = this[i + start]; else if (len < 1e3 || !Buffer.TYPED_ARRAY_SUPPORT) for (i = 0; i < len; ++i) target[i + targetStart] = this[i + start]; else Uint8Array.prototype.set.call(target, this.subarray(start, start + len), targetStart);
-                return len;
-            };
-            Buffer.prototype.fill = function(val, start, end, encoding) {
-                if ("string" == typeof val) {
-                    if ("string" == typeof start) {
-                        encoding = start;
-                        start = 0;
-                        end = this.length;
-                    } else if ("string" == typeof end) {
-                        encoding = end;
-                        end = this.length;
-                    }
-                    if (1 === val.length) {
-                        var code = val.charCodeAt(0);
-                        code < 256 && (val = code);
-                    }
-                    if (void 0 !== encoding && "string" != typeof encoding) throw new TypeError("encoding must be a string");
-                    if ("string" == typeof encoding && !Buffer.isEncoding(encoding)) throw new TypeError("Unknown encoding: " + encoding);
-                } else "number" == typeof val && (val &= 255);
-                if (start < 0 || this.length < start || this.length < end) throw new RangeError("Out of range index");
-                if (end <= start) return this;
-                start >>>= 0;
-                end = void 0 === end ? this.length : end >>> 0;
-                val || (val = 0);
-                var i;
-                if ("number" == typeof val) for (i = start; i < end; ++i) this[i] = val; else {
-                    var bytes = Buffer.isBuffer(val) ? val : utf8ToBytes(new Buffer(val, encoding).toString()), len = bytes.length;
-                    for (i = 0; i < end - start; ++i) this[i + start] = bytes[i % len];
-                }
-                return this;
-            };
-            var INVALID_BASE64_RE = /[^+\/0-9A-Za-z-_]/g;
-            function toHex(n) {
-                return n < 16 ? "0" + n.toString(16) : n.toString(16);
-            }
-            function utf8ToBytes(string, units) {
-                units = units || 1 / 0;
-                for (var codePoint, length = string.length, leadSurrogate = null, bytes = [], i = 0; i < length; ++i) {
-                    if ((codePoint = string.charCodeAt(i)) > 55295 && codePoint < 57344) {
-                        if (!leadSurrogate) {
-                            if (codePoint > 56319) {
-                                (units -= 3) > -1 && bytes.push(239, 191, 189);
-                                continue;
-                            }
-                            if (i + 1 === length) {
-                                (units -= 3) > -1 && bytes.push(239, 191, 189);
-                                continue;
-                            }
-                            leadSurrogate = codePoint;
-                            continue;
-                        }
-                        if (codePoint < 56320) {
-                            (units -= 3) > -1 && bytes.push(239, 191, 189);
-                            leadSurrogate = codePoint;
-                            continue;
-                        }
-                        codePoint = 65536 + (leadSurrogate - 55296 << 10 | codePoint - 56320);
-                    } else leadSurrogate && (units -= 3) > -1 && bytes.push(239, 191, 189);
-                    leadSurrogate = null;
-                    if (codePoint < 128) {
-                        if ((units -= 1) < 0) break;
-                        bytes.push(codePoint);
-                    } else if (codePoint < 2048) {
-                        if ((units -= 2) < 0) break;
-                        bytes.push(codePoint >> 6 | 192, 63 & codePoint | 128);
-                    } else if (codePoint < 65536) {
-                        if ((units -= 3) < 0) break;
-                        bytes.push(codePoint >> 12 | 224, codePoint >> 6 & 63 | 128, 63 & codePoint | 128);
-                    } else {
-                        if (!(codePoint < 1114112)) throw new Error("Invalid code point");
-                        if ((units -= 4) < 0) break;
-                        bytes.push(codePoint >> 18 | 240, codePoint >> 12 & 63 | 128, codePoint >> 6 & 63 | 128, 63 & codePoint | 128);
-                    }
-                }
-                return bytes;
-            }
-            function base64ToBytes(str) {
-                return base64.toByteArray(function(str) {
-                    if ((str = function(str) {
-                        return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, "");
-                    }(str).replace(INVALID_BASE64_RE, "")).length < 2) return "";
-                    for (;str.length % 4 != 0; ) str += "=";
-                    return str;
-                }(str));
-            }
-            function blitBuffer(src, dst, offset, length) {
-                for (var i = 0; i < length && !(i + offset >= dst.length || i >= src.length); ++i) dst[i + offset] = src[i];
-                return i;
-            }
-        }).call(exports, __webpack_require__("./node_modules/webpack/buildin/global.js"));
     },
     "./node_modules/cross-domain-safe-weakmap/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -2891,7 +1863,7 @@
         }
     },
     "./node_modules/hi-base32/src/base32.js": function(module, exports, __webpack_require__) {
-        (function(process, global, module) {
+        (function(module) {
             var __WEBPACK_AMD_DEFINE_RESULT__, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
                 return typeof obj;
             } : function(obj) {
@@ -2900,7 +1872,7 @@
             !function() {
                 "use strict";
                 var root = "object" === ("undefined" == typeof window ? "undefined" : _typeof(window)) ? window : {};
-                !root.HI_BASE32_NO_NODE_JS && "object" === (void 0 === process ? "undefined" : _typeof(process)) && process.versions && process.versions.node && (root = global);
+                !root.HI_BASE32_NO_NODE_JS && "object" === ("undefined" == typeof process ? "undefined" : _typeof(process)) && process.versions && process.versions.node && (root = global);
                 var COMMON_JS = !root.HI_BASE32_NO_COMMON_JS && "object" === _typeof(module) && module.exports, AMD = __webpack_require__("./node_modules/webpack/buildin/amd-options.js"), BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split(""), BASE32_DECODE_CHAR = {
                     A: 0,
                     B: 1,
@@ -3183,66 +2155,7 @@
                     }.call(exports, __webpack_require__, exports, module)) && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__);
                 }
             }();
-        }).call(exports, __webpack_require__("./node_modules/process/browser.js"), __webpack_require__("./node_modules/webpack/buildin/global.js"), __webpack_require__("./node_modules/webpack/buildin/module.js")(module));
-    },
-    "./node_modules/ieee754/index.js": function(module, exports) {
-        exports.read = function(buffer, offset, isLE, mLen, nBytes) {
-            var e, m, eLen = 8 * nBytes - mLen - 1, eMax = (1 << eLen) - 1, eBias = eMax >> 1, nBits = -7, i = isLE ? nBytes - 1 : 0, d = isLE ? -1 : 1, s = buffer[offset + i];
-            i += d;
-            e = s & (1 << -nBits) - 1;
-            s >>= -nBits;
-            nBits += eLen;
-            for (;nBits > 0; e = 256 * e + buffer[offset + i], i += d, nBits -= 8) ;
-            m = e & (1 << -nBits) - 1;
-            e >>= -nBits;
-            nBits += mLen;
-            for (;nBits > 0; m = 256 * m + buffer[offset + i], i += d, nBits -= 8) ;
-            if (0 === e) e = 1 - eBias; else {
-                if (e === eMax) return m ? NaN : 1 / 0 * (s ? -1 : 1);
-                m += Math.pow(2, mLen);
-                e -= eBias;
-            }
-            return (s ? -1 : 1) * m * Math.pow(2, e - mLen);
-        };
-        exports.write = function(buffer, value, offset, isLE, mLen, nBytes) {
-            var e, m, c, eLen = 8 * nBytes - mLen - 1, eMax = (1 << eLen) - 1, eBias = eMax >> 1, rt = 23 === mLen ? Math.pow(2, -24) - Math.pow(2, -77) : 0, i = isLE ? 0 : nBytes - 1, d = isLE ? 1 : -1, s = value < 0 || 0 === value && 1 / value < 0 ? 1 : 0;
-            value = Math.abs(value);
-            if (isNaN(value) || value === 1 / 0) {
-                m = isNaN(value) ? 1 : 0;
-                e = eMax;
-            } else {
-                e = Math.floor(Math.log(value) / Math.LN2);
-                if (value * (c = Math.pow(2, -e)) < 1) {
-                    e--;
-                    c *= 2;
-                }
-                if ((value += e + eBias >= 1 ? rt / c : rt * Math.pow(2, 1 - eBias)) * c >= 2) {
-                    e++;
-                    c /= 2;
-                }
-                if (e + eBias >= eMax) {
-                    m = 0;
-                    e = eMax;
-                } else if (e + eBias >= 1) {
-                    m = (value * c - 1) * Math.pow(2, mLen);
-                    e += eBias;
-                } else {
-                    m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen);
-                    e = 0;
-                }
-            }
-            for (;mLen >= 8; buffer[offset + i] = 255 & m, i += d, m /= 256, mLen -= 8) ;
-            e = e << mLen | m;
-            eLen += mLen;
-            for (;eLen > 0; buffer[offset + i] = 255 & e, i += d, e /= 256, eLen -= 8) ;
-            buffer[offset + i - d] |= 128 * s;
-        };
-    },
-    "./node_modules/isarray/index.js": function(module, exports) {
-        var toString = {}.toString;
-        module.exports = Array.isArray || function(arr) {
-            return "[object Array]" == toString.call(arr);
-        };
+        }).call(exports, __webpack_require__("./node_modules/webpack/buildin/module.js")(module));
     },
     "./node_modules/post-robot/src/bridge/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -4787,126 +3700,6 @@
             return onChildWindowReady;
         });
     },
-    "./node_modules/process/browser.js": function(module, exports) {
-        var cachedSetTimeout, cachedClearTimeout, process = module.exports = {};
-        function defaultSetTimout() {
-            throw new Error("setTimeout has not been defined");
-        }
-        function defaultClearTimeout() {
-            throw new Error("clearTimeout has not been defined");
-        }
-        !function() {
-            try {
-                cachedSetTimeout = "function" == typeof setTimeout ? setTimeout : defaultSetTimout;
-            } catch (e) {
-                cachedSetTimeout = defaultSetTimout;
-            }
-            try {
-                cachedClearTimeout = "function" == typeof clearTimeout ? clearTimeout : defaultClearTimeout;
-            } catch (e) {
-                cachedClearTimeout = defaultClearTimeout;
-            }
-        }();
-        function runTimeout(fun) {
-            if (cachedSetTimeout === setTimeout) return setTimeout(fun, 0);
-            if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-                cachedSetTimeout = setTimeout;
-                return setTimeout(fun, 0);
-            }
-            try {
-                return cachedSetTimeout(fun, 0);
-            } catch (e) {
-                try {
-                    return cachedSetTimeout.call(null, fun, 0);
-                } catch (e) {
-                    return cachedSetTimeout.call(this, fun, 0);
-                }
-            }
-        }
-        var currentQueue, queue = [], draining = !1, queueIndex = -1;
-        function cleanUpNextTick() {
-            if (draining && currentQueue) {
-                draining = !1;
-                currentQueue.length ? queue = currentQueue.concat(queue) : queueIndex = -1;
-                queue.length && drainQueue();
-            }
-        }
-        function drainQueue() {
-            if (!draining) {
-                var timeout = runTimeout(cleanUpNextTick);
-                draining = !0;
-                for (var len = queue.length; len; ) {
-                    currentQueue = queue;
-                    queue = [];
-                    for (;++queueIndex < len; ) currentQueue && currentQueue[queueIndex].run();
-                    queueIndex = -1;
-                    len = queue.length;
-                }
-                currentQueue = null;
-                draining = !1;
-                !function(marker) {
-                    if (cachedClearTimeout === clearTimeout) return clearTimeout(marker);
-                    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-                        cachedClearTimeout = clearTimeout;
-                        return clearTimeout(marker);
-                    }
-                    try {
-                        cachedClearTimeout(marker);
-                    } catch (e) {
-                        try {
-                            return cachedClearTimeout.call(null, marker);
-                        } catch (e) {
-                            return cachedClearTimeout.call(this, marker);
-                        }
-                    }
-                }(timeout);
-            }
-        }
-        process.nextTick = function(fun) {
-            var args = new Array(arguments.length - 1);
-            if (arguments.length > 1) for (var i = 1; i < arguments.length; i++) args[i - 1] = arguments[i];
-            queue.push(new Item(fun, args));
-            1 !== queue.length || draining || runTimeout(drainQueue);
-        };
-        function Item(fun, array) {
-            this.fun = fun;
-            this.array = array;
-        }
-        Item.prototype.run = function() {
-            this.fun.apply(null, this.array);
-        };
-        process.title = "browser";
-        process.browser = !0;
-        process.env = {};
-        process.argv = [];
-        process.version = "";
-        process.versions = {};
-        function noop() {}
-        process.on = noop;
-        process.addListener = noop;
-        process.once = noop;
-        process.off = noop;
-        process.removeListener = noop;
-        process.removeAllListeners = noop;
-        process.emit = noop;
-        process.prependListener = noop;
-        process.prependOnceListener = noop;
-        process.listeners = function(name) {
-            return [];
-        };
-        process.binding = function(name) {
-            throw new Error("process.binding is not supported");
-        };
-        process.cwd = function() {
-            return "/";
-        };
-        process.chdir = function(dir) {
-            throw new Error("process.chdir is not supported");
-        };
-        process.umask = function() {
-            return 0;
-        };
-    },
     "./node_modules/webpack/buildin/amd-define.js": function(module, exports) {
         module.exports = function() {
             throw new Error("define cannot be used indirect");
@@ -4916,22 +3709,6 @@
         (function(__webpack_amd_options__) {
             module.exports = __webpack_amd_options__;
         }).call(exports, {});
-    },
-    "./node_modules/webpack/buildin/global.js": function(module, exports) {
-        var g, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-            return typeof obj;
-        } : function(obj) {
-            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        };
-        g = function() {
-            return this;
-        }();
-        try {
-            g = g || Function("return this")() || (0, eval)("this");
-        } catch (e) {
-            "object" === ("undefined" == typeof window ? "undefined" : _typeof(window)) && (g = window);
-        }
-        module.exports = g;
     },
     "./node_modules/webpack/buildin/module.js": function(module, exports) {
         module.exports = function(module) {
@@ -4956,24 +3733,6 @@
             return module;
         };
     },
-    "./node_modules/zalgo-promise/src/global.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        (function(global) {
-            __webpack_exports__.a = function() {
-                var glob = void 0;
-                if ("undefined" != typeof window) glob = window; else {
-                    if (void 0 === global) throw new TypeError("Can not find global");
-                    glob = global;
-                }
-                var zalgoGlobal = glob.__zalgopromise__ = glob.__zalgopromise__ || {};
-                zalgoGlobal.flushPromises = zalgoGlobal.flushPromises || [];
-                zalgoGlobal.activeCount = zalgoGlobal.activeCount || 0;
-                zalgoGlobal.possiblyUnhandledPromiseHandlers = zalgoGlobal.possiblyUnhandledPromiseHandlers || [];
-                zalgoGlobal.dispatchedErrors = zalgoGlobal.dispatchedErrors || [];
-                return zalgoGlobal;
-            };
-        }).call(__webpack_exports__, __webpack_require__("./node_modules/webpack/buildin/global.js"));
-    },
     "./node_modules/zalgo-promise/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function utils_isPromise(item) {
@@ -4993,7 +3752,19 @@
             }
             return !1;
         }
-        var global = __webpack_require__("./node_modules/zalgo-promise/src/global.js");
+        function getGlobal() {
+            var glob = void 0;
+            if ("undefined" != typeof window) glob = window; else {
+                if ("undefined" == typeof global) throw new TypeError("Can not find global");
+                glob = global;
+            }
+            var zalgoGlobal = glob.__zalgopromise__ = glob.__zalgopromise__ || {};
+            zalgoGlobal.flushPromises = zalgoGlobal.flushPromises || [];
+            zalgoGlobal.activeCount = zalgoGlobal.activeCount || 0;
+            zalgoGlobal.possiblyUnhandledPromiseHandlers = zalgoGlobal.possiblyUnhandledPromiseHandlers || [];
+            zalgoGlobal.dispatchedErrors = zalgoGlobal.dispatchedErrors || [];
+            return zalgoGlobal;
+        }
         var promise_ZalgoPromise = function() {
             function ZalgoPromise(handler) {
                 var _this = this;
@@ -5047,12 +3818,12 @@
                 this.error = error;
                 this.errorHandled || setTimeout(function() {
                     _this2.errorHandled || function(err, promise) {
-                        if (-1 === Object(global.a)().dispatchedErrors.indexOf(err)) {
-                            Object(global.a)().dispatchedErrors.push(err);
+                        if (-1 === getGlobal().dispatchedErrors.indexOf(err)) {
+                            getGlobal().dispatchedErrors.push(err);
                             setTimeout(function() {
                                 throw err;
                             }, 1);
-                            for (var j = 0; j < Object(global.a)().possiblyUnhandledPromiseHandlers.length; j++) Object(global.a)().possiblyUnhandledPromiseHandlers[j](err, promise);
+                            for (var j = 0; j < getGlobal().possiblyUnhandledPromiseHandlers.length; j++) getGlobal().possiblyUnhandledPromiseHandlers[j](err, promise);
                         }
                     }(error, _this2);
                 }, 1);
@@ -5068,7 +3839,7 @@
                 var _this3 = this, dispatching = this.dispatching, resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
                 if (!dispatching && (resolved || rejected)) {
                     this.dispatching = !0;
-                    Object(global.a)().activeCount += 1;
+                    getGlobal().activeCount += 1;
                     for (var _loop = function(i) {
                         var _handlers$i = handlers[i], onSuccess = _handlers$i.onSuccess, onError = _handlers$i.onError, promise = _handlers$i.promise, result = void 0;
                         if (resolved) try {
@@ -5099,8 +3870,8 @@
                     }, i = 0; i < handlers.length; i++) _loop(i);
                     handlers.length = 0;
                     this.dispatching = !1;
-                    Object(global.a)().activeCount -= 1;
-                    0 === Object(global.a)().activeCount && ZalgoPromise.flushQueue();
+                    getGlobal().activeCount -= 1;
+                    0 === getGlobal().activeCount && ZalgoPromise.flushQueue();
                 }
             };
             ZalgoPromise.prototype.then = function(onSuccess, onError) {
@@ -5201,10 +3972,10 @@
             };
             ZalgoPromise.onPossiblyUnhandledException = function(handler) {
                 return function(handler) {
-                    Object(global.a)().possiblyUnhandledPromiseHandlers.push(handler);
+                    getGlobal().possiblyUnhandledPromiseHandlers.push(handler);
                     return {
                         cancel: function() {
-                            Object(global.a)().possiblyUnhandledPromiseHandlers.splice(Object(global.a)().possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
+                            getGlobal().possiblyUnhandledPromiseHandlers.splice(getGlobal().possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
                         }
                     };
                 }(handler);
@@ -5229,13 +4000,13 @@
             };
             ZalgoPromise.flush = function() {
                 var promise = new ZalgoPromise();
-                Object(global.a)().flushPromises.push(promise);
-                0 === Object(global.a)().activeCount && ZalgoPromise.flushQueue();
+                getGlobal().flushPromises.push(promise);
+                0 === getGlobal().activeCount && ZalgoPromise.flushQueue();
                 return promise;
             };
             ZalgoPromise.flushQueue = function() {
-                var promisesToFlush = Object(global.a)().flushPromises;
-                Object(global.a)().flushPromises = [];
+                var promisesToFlush = getGlobal().flushPromises;
+                getGlobal().flushPromises = [];
                 for (var _i2 = 0, _length2 = null == promisesToFlush ? 0 : promisesToFlush.length; _i2 < _length2; _i2++) {
                     promisesToFlush[_i2].resolve();
                 }
@@ -6985,7 +5756,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.244",
+            version: "4.0.245",
             cors: !0,
             env: constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -10596,7 +9367,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.244"
+                    ver: "4.0.245"
                 };
             });
             Object(beaver_logger_client.a)(function() {
@@ -10868,7 +9639,7 @@
             if (script && "string" == typeof script.src) return script.src;
         }
         function getScriptVersion() {
-            return Boolean(getCurrentScript()) ? "4" : "4.0.244";
+            return Boolean(getCurrentScript()) ? "4" : "4.0.245";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -13968,7 +12739,7 @@
                     logoColor: "blue"
                 })));
             }(props_normalizeProps(props)) : null;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.244", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.245", 
             _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -14605,7 +13376,8 @@
                 },
                 validate: {
                     type: "function",
-                    required: !1
+                    required: !1,
+                    once: !0
                 },
                 logLevel: {
                     type: "string",
@@ -15158,7 +13930,7 @@
             setup__track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.244", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
+        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.245", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
         if (Object(util.g)()) {
             interface_Checkout = component_Checkout;
             interface_BillingPage = BillingPage;
@@ -15280,7 +14052,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.244";
+                payload.version = "4.0.245";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 payload.appName = APP_NAME;
@@ -15639,243 +14411,241 @@
     },
     "./src/lib/util.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        (function(global) {
-            __webpack_exports__.g = function() {
-                return Boolean((window.location.protocol + "//" + window.location.host).match(__WEBPACK_IMPORTED_MODULE_3__config__.a.paypal_domain_regex)) || "mock://www.paypal.com" === window.mockDomain;
+        __webpack_exports__.g = function() {
+            return Boolean((window.location.protocol + "//" + window.location.host).match(__WEBPACK_IMPORTED_MODULE_3__config__.a.paypal_domain_regex)) || "mock://www.paypal.com" === window.mockDomain;
+        };
+        __webpack_exports__.j = memoize;
+        __webpack_exports__.k = function() {};
+        __webpack_exports__.l = function(method) {
+            var called = !1;
+            return function() {
+                if (!called) {
+                    called = !0;
+                    return method.apply(this, arguments);
+                }
             };
-            __webpack_exports__.j = memoize;
-            __webpack_exports__.k = function() {};
-            __webpack_exports__.l = function(method) {
-                var called = !1;
-                return function() {
-                    if (!called) {
-                        called = !0;
-                        return method.apply(this, arguments);
-                    }
-                };
-            };
-            __webpack_exports__.s = function() {
-                var chars = "0123456789abcdef", randomID = "xxxxxxxxxx".replace(/./g, function() {
-                    return chars.charAt(Math.floor(Math.random() * chars.length));
-                }), timeID = __WEBPACK_IMPORTED_MODULE_0_hi_base32___default.a.encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
-                return randomID + "_" + timeID;
-            };
-            __webpack_exports__.h = function(str, pattern) {
-                var regmatch = str.match(pattern);
-                if (regmatch) return regmatch[1];
-            };
-            __webpack_exports__.c = function() {
-                var listeners = [];
-                return {
-                    listen: function(method) {
-                        listeners.push(method);
-                        return {
-                            cancel: function() {
-                                listeners.splice(listeners.indexOf(method), 1);
-                            }
-                        };
-                    },
-                    once: function(method) {
-                        var listener = this.listen(function() {
-                            method.apply(null, arguments);
-                            listener.cancel();
-                        });
-                    },
-                    trigger: function() {
-                        for (var _i2 = 0, _length2 = null == listeners ? 0 : listeners.length; _i2 < _length2; _i2++) {
-                            var listener = listeners[_i2];
-                            listener.apply(void 0, arguments);
+        };
+        __webpack_exports__.s = function() {
+            var chars = "0123456789abcdef", randomID = "xxxxxxxxxx".replace(/./g, function() {
+                return chars.charAt(Math.floor(Math.random() * chars.length));
+            }), timeID = __WEBPACK_IMPORTED_MODULE_0_hi_base32___default.a.encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+            return randomID + "_" + timeID;
+        };
+        __webpack_exports__.h = function(str, pattern) {
+            var regmatch = str.match(pattern);
+            if (regmatch) return regmatch[1];
+        };
+        __webpack_exports__.c = function() {
+            var listeners = [];
+            return {
+                listen: function(method) {
+                    listeners.push(method);
+                    return {
+                        cancel: function() {
+                            listeners.splice(listeners.indexOf(method), 1);
                         }
-                    }
-                };
-            };
-            __webpack_exports__.a = function(obj, key) {
-                return new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve) {
-                    var value = obj[key];
-                    if (value) return resolve(value);
-                    delete obj[key];
-                    Object.defineProperty(obj, key, {
-                        configurable: !0,
-                        set: function(item) {
-                            (value = item) && resolve(value);
-                        },
-                        get: function() {
-                            return value;
-                        }
-                    });
-                });
-            };
-            __webpack_exports__.q = function stringifyError(err) {
-                var level = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1;
-                if (level >= 3) return "stringifyError stack overflow";
-                try {
-                    if (!err) return "<unknown error: " + Object.prototype.toString.call(err) + ">";
-                    if ("string" == typeof err) return err;
-                    if (err instanceof Error) {
-                        var stack = err && err.stack, message = err && err.message;
-                        if (stack && message) return -1 !== stack.indexOf(message) ? stack : message + "\n" + stack;
-                        if (stack) return stack;
-                        if (message) return message;
-                    }
-                    return "function" == typeof err.toString ? err.toString() : Object.prototype.toString.call(err);
-                } catch (newErr) {
-                    return "Error while stringifying error: " + stringifyError(newErr, level + 1);
-                }
-            };
-            __webpack_exports__.r = function(err) {
-                var defaultMessage = "<unknown error: " + Object.prototype.toString.call(err) + ">";
-                if (!err) return defaultMessage;
-                if (err instanceof Error) return err.message || defaultMessage;
-                if ("string" == typeof err.message) return err.message || defaultMessage;
-                return defaultMessage;
-            };
-            __webpack_require__.d(__webpack_exports__, "f", function() {
-                return isLocalStorageEnabled;
-            });
-            __webpack_exports__.e = function(name, def) {
-                var hostname = window.xchild ? window.xchild.getParentDomain() : Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.getDomain)();
-                if (__WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings) for (var _i4 = 0, _Object$keys2 = Object.keys(__WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) {
-                    var domain = _Object$keys2[_i4];
-                    if (domainMatches(hostname, domain)) return __WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings[domain][name];
-                }
-                return def;
-            };
-            __webpack_exports__.n = function(obj, patch) {
-                var patchedObj = _extends({}, obj);
-                try {
-                    patch.map(function(op) {
-                        return function(target, path, value, op) {
-                            for (var props = path.split("/").filter(function(p) {
-                                return p;
-                            }), length = props.length - 1, i = 0; i < length; i++) {
-                                void 0 === target[props[i]] && (target[props[i]] = {});
-                                target = target[props[i]];
-                            }
-                            var targetProp = target[props[length]];
-                            switch (op) {
-                              case PATCH_OPS.add:
-                                Array.isArray(target[props[length]]) ? targetProp = [].concat(targetProp, [ value ]) : "object" === (void 0 === targetProp ? "undefined" : _typeof(targetProp)) && (targetProp = _extends({}, targetProp, {
-                                    value: value
-                                }));
-                                break;
-
-                              case PATCH_OPS.replace:
-                              default:
-                                target[props[length]] = value;
-                            }
-                        }(patchedObj, op.path, op.value, op.op);
-                    });
-                } catch (err) {
-                    throw new Error("Invalid patch syntax");
-                }
-                return patchedObj;
-            };
-            __webpack_exports__.m = function(obj, name, handler) {
-                var original = obj[name];
-                obj[name] = function() {
-                    var _this = this, _arguments = arguments;
-                    return handler({
-                        context: this,
-                        args: Array.prototype.slice.call(arguments),
-                        original: original,
-                        callOriginal: function() {
-                            return original.apply(_this, _arguments);
-                        }
-                    });
-                };
-            };
-            __webpack_exports__.d = function(obj, source) {
-                if (!source) return obj;
-                if (Object.assign) return Object.assign(obj, source);
-                for (var _key2 in source) source.hasOwnProperty(_key2) && (obj[_key2] = source[_key2]);
-                return obj;
-            };
-            __webpack_exports__.b = function deepExtend(obj, source) {
-                if (!source) return obj;
-                for (var _key3 in source) source.hasOwnProperty(_key3) && (isObject(obj[_key3]) && isObject(source[_key3]) ? deepExtend(obj[_key3], source[_key3]) : obj[_key3] = source[_key3]);
-                return obj;
-            };
-            __webpack_exports__.t = function(obj) {
-                var result = [];
-                for (var _key6 in obj) obj.hasOwnProperty(_key6) && result.push(obj[_key6]);
-                return result;
-            };
-            __webpack_exports__.o = function(pixels, percentage) {
-                return Math.round(pixels * percentage / 100);
-            };
-            __webpack_exports__.i = function() {
-                return Math.max.apply(Math, arguments);
-            };
-            __webpack_exports__.p = function(str, regex, handler) {
-                var results = [];
-                str.replace(regex, function() {
-                    results.push(handler.apply(null, arguments));
-                });
-                return results;
-            };
-            var __WEBPACK_IMPORTED_MODULE_0_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_0_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_hi_base32__), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__config__ = __webpack_require__("./src/config/index.js"), _extends = Object.assign || function(target) {
-                for (var i = 1; i < arguments.length; i++) {
-                    var source = arguments[i];
-                    for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
-                }
-                return target;
-            }, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-                return typeof obj;
-            } : function(obj) {
-                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-            };
-            function memoize(method) {
-                var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, cache = {};
-                return function() {
-                    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-                    var key = void 0;
-                    try {
-                        key = JSON.stringify(Array.prototype.slice.call(arguments));
-                    } catch (err) {
-                        throw new Error("Arguments not serializable -- can not be used to memoize");
-                    }
-                    var time = options.time;
-                    cache[key] && time && Date.now() - cache[key].time < time && delete cache[key];
-                    var glob = function() {
-                        if ("undefined" != typeof window) return window;
-                        if (void 0 !== global) return global;
-                        throw new Error("No global found");
-                    }();
-                    glob.__CACHE_START_TIME__ && cache[key] && cache[key].time < glob.__CACHE_START_TIME__ && delete cache[key];
-                    if (cache[key]) return cache[key].value;
-                    cache[key] = {
-                        time: Date.now(),
-                        value: method.apply(this, arguments)
                     };
-                    return cache[key].value;
-                };
-            }
-            var isLocalStorageEnabled = memoize(function() {
-                try {
-                    if ("undefined" == typeof window) return !1;
-                    if (window.localStorage) {
-                        var _value = Math.random().toString();
-                        window.localStorage.setItem("__test__localStorage__", _value);
-                        var result = window.localStorage.getItem("__test__localStorage__");
-                        window.localStorage.removeItem("__test__localStorage__");
-                        if (_value === result) return !0;
+                },
+                once: function(method) {
+                    var listener = this.listen(function() {
+                        method.apply(null, arguments);
+                        listener.cancel();
+                    });
+                },
+                trigger: function() {
+                    for (var _i2 = 0, _length2 = null == listeners ? 0 : listeners.length; _i2 < _length2; _i2++) {
+                        var listener = listeners[_i2];
+                        listener.apply(void 0, arguments);
                     }
-                } catch (err) {}
-                return !1;
-            });
-            function domainMatches(hostname, domain) {
-                var index = (hostname = hostname.split("://")[1]).indexOf(domain);
-                return -1 !== index && hostname.slice(index) === domain;
-            }
-            var PATCH_OPS = {
-                add: "add",
-                remove: "remove",
-                replace: "replace"
+                }
             };
-            function isObject(obj) {
-                return "object" === (void 0 === obj ? "undefined" : _typeof(obj)) && null !== obj;
+        };
+        __webpack_exports__.a = function(obj, key) {
+            return new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve) {
+                var value = obj[key];
+                if (value) return resolve(value);
+                delete obj[key];
+                Object.defineProperty(obj, key, {
+                    configurable: !0,
+                    set: function(item) {
+                        (value = item) && resolve(value);
+                    },
+                    get: function() {
+                        return value;
+                    }
+                });
+            });
+        };
+        __webpack_exports__.q = function stringifyError(err) {
+            var level = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1;
+            if (level >= 3) return "stringifyError stack overflow";
+            try {
+                if (!err) return "<unknown error: " + Object.prototype.toString.call(err) + ">";
+                if ("string" == typeof err) return err;
+                if (err instanceof Error) {
+                    var stack = err && err.stack, message = err && err.message;
+                    if (stack && message) return -1 !== stack.indexOf(message) ? stack : message + "\n" + stack;
+                    if (stack) return stack;
+                    if (message) return message;
+                }
+                return "function" == typeof err.toString ? err.toString() : Object.prototype.toString.call(err);
+            } catch (newErr) {
+                return "Error while stringifying error: " + stringifyError(newErr, level + 1);
             }
-        }).call(__webpack_exports__, __webpack_require__("./node_modules/webpack/buildin/global.js"));
+        };
+        __webpack_exports__.r = function(err) {
+            var defaultMessage = "<unknown error: " + Object.prototype.toString.call(err) + ">";
+            if (!err) return defaultMessage;
+            if (err instanceof Error) return err.message || defaultMessage;
+            if ("string" == typeof err.message) return err.message || defaultMessage;
+            return defaultMessage;
+        };
+        __webpack_require__.d(__webpack_exports__, "f", function() {
+            return isLocalStorageEnabled;
+        });
+        __webpack_exports__.e = function(name, def) {
+            var hostname = window.xchild ? window.xchild.getParentDomain() : Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.getDomain)();
+            if (__WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings) for (var _i4 = 0, _Object$keys2 = Object.keys(__WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) {
+                var domain = _Object$keys2[_i4];
+                if (domainMatches(hostname, domain)) return __WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings[domain][name];
+            }
+            return def;
+        };
+        __webpack_exports__.n = function(obj, patch) {
+            var patchedObj = _extends({}, obj);
+            try {
+                patch.map(function(op) {
+                    return function(target, path, value, op) {
+                        for (var props = path.split("/").filter(function(p) {
+                            return p;
+                        }), length = props.length - 1, i = 0; i < length; i++) {
+                            void 0 === target[props[i]] && (target[props[i]] = {});
+                            target = target[props[i]];
+                        }
+                        var targetProp = target[props[length]];
+                        switch (op) {
+                          case PATCH_OPS.add:
+                            Array.isArray(target[props[length]]) ? targetProp = [].concat(targetProp, [ value ]) : "object" === (void 0 === targetProp ? "undefined" : _typeof(targetProp)) && (targetProp = _extends({}, targetProp, {
+                                value: value
+                            }));
+                            break;
+
+                          case PATCH_OPS.replace:
+                          default:
+                            target[props[length]] = value;
+                        }
+                    }(patchedObj, op.path, op.value, op.op);
+                });
+            } catch (err) {
+                throw new Error("Invalid patch syntax");
+            }
+            return patchedObj;
+        };
+        __webpack_exports__.m = function(obj, name, handler) {
+            var original = obj[name];
+            obj[name] = function() {
+                var _this = this, _arguments = arguments;
+                return handler({
+                    context: this,
+                    args: Array.prototype.slice.call(arguments),
+                    original: original,
+                    callOriginal: function() {
+                        return original.apply(_this, _arguments);
+                    }
+                });
+            };
+        };
+        __webpack_exports__.d = function(obj, source) {
+            if (!source) return obj;
+            if (Object.assign) return Object.assign(obj, source);
+            for (var _key2 in source) source.hasOwnProperty(_key2) && (obj[_key2] = source[_key2]);
+            return obj;
+        };
+        __webpack_exports__.b = function deepExtend(obj, source) {
+            if (!source) return obj;
+            for (var _key3 in source) source.hasOwnProperty(_key3) && (isObject(obj[_key3]) && isObject(source[_key3]) ? deepExtend(obj[_key3], source[_key3]) : obj[_key3] = source[_key3]);
+            return obj;
+        };
+        __webpack_exports__.t = function(obj) {
+            var result = [];
+            for (var _key6 in obj) obj.hasOwnProperty(_key6) && result.push(obj[_key6]);
+            return result;
+        };
+        __webpack_exports__.o = function(pixels, percentage) {
+            return Math.round(pixels * percentage / 100);
+        };
+        __webpack_exports__.i = function() {
+            return Math.max.apply(Math, arguments);
+        };
+        __webpack_exports__.p = function(str, regex, handler) {
+            var results = [];
+            str.replace(regex, function() {
+                results.push(handler.apply(null, arguments));
+            });
+            return results;
+        };
+        var __WEBPACK_IMPORTED_MODULE_0_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_0_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_hi_base32__), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__config__ = __webpack_require__("./src/config/index.js"), _extends = Object.assign || function(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
+            }
+            return target;
+        }, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+        function memoize(method) {
+            var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, cache = {};
+            return function() {
+                for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+                var key = void 0;
+                try {
+                    key = JSON.stringify(Array.prototype.slice.call(arguments));
+                } catch (err) {
+                    throw new Error("Arguments not serializable -- can not be used to memoize");
+                }
+                var time = options.time;
+                cache[key] && time && Date.now() - cache[key].time < time && delete cache[key];
+                var glob = function() {
+                    if ("undefined" != typeof window) return window;
+                    if ("undefined" != typeof global) return global;
+                    throw new Error("No global found");
+                }();
+                glob.__CACHE_START_TIME__ && cache[key] && cache[key].time < glob.__CACHE_START_TIME__ && delete cache[key];
+                if (cache[key]) return cache[key].value;
+                cache[key] = {
+                    time: Date.now(),
+                    value: method.apply(this, arguments)
+                };
+                return cache[key].value;
+            };
+        }
+        var isLocalStorageEnabled = memoize(function() {
+            try {
+                if ("undefined" == typeof window) return !1;
+                if (window.localStorage) {
+                    var _value = Math.random().toString();
+                    window.localStorage.setItem("__test__localStorage__", _value);
+                    var result = window.localStorage.getItem("__test__localStorage__");
+                    window.localStorage.removeItem("__test__localStorage__");
+                    if (_value === result) return !0;
+                }
+            } catch (err) {}
+            return !1;
+        });
+        function domainMatches(hostname, domain) {
+            var index = (hostname = hostname.split("://")[1]).indexOf(domain);
+            return -1 !== index && hostname.slice(index) === domain;
+        }
+        var PATCH_OPS = {
+            add: "add",
+            remove: "remove",
+            replace: "replace"
+        };
+        function isObject(obj) {
+            return "object" === (void 0 === obj ? "undefined" : _typeof(obj)) && null !== obj;
+        }
     },
     "./src/load.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -15884,18 +14654,18 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         0;
-        if (window.paypal && "4.0.244" === window.paypal.version) {
+        if (window.paypal && "4.0.245" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.244"
+                version: "4.0.245"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.244) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.245) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.244" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.245" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.244"
+                version: "4.0.245"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.244");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.245");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
