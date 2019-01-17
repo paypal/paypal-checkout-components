@@ -58,31 +58,31 @@ window.spb = function(modules) {
     return __webpack_require__(__webpack_require__.s = 19);
 }([ function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "l", function() {
+    __webpack_require__.d(__webpack_exports__, "m", function() {
         return uniqueID;
     });
-    __webpack_require__.d(__webpack_exports__, "d", function() {
+    __webpack_require__.d(__webpack_exports__, "c", function() {
         return getGlobal;
     });
-    __webpack_require__.d(__webpack_exports__, "f", function() {
+    __webpack_require__.d(__webpack_exports__, "e", function() {
         return memoize;
     });
-    __webpack_require__.d(__webpack_exports__, "i", function() {
+    __webpack_require__.d(__webpack_exports__, "h", function() {
         return promisify;
     });
-    __webpack_require__.d(__webpack_exports__, "e", function() {
+    __webpack_require__.d(__webpack_exports__, "d", function() {
         return inlineMemoize;
     });
-    __webpack_require__.d(__webpack_exports__, "g", function() {
+    __webpack_require__.d(__webpack_exports__, "f", function() {
         return noop;
     });
-    __webpack_require__.d(__webpack_exports__, "h", function() {
+    __webpack_require__.d(__webpack_exports__, "g", function() {
         return once;
     });
     __webpack_require__.d(__webpack_exports__, "k", function() {
         return stringify;
     });
-    __webpack_require__.d(__webpack_exports__, "c", function() {
+    __webpack_require__.d(__webpack_exports__, "b", function() {
         return extend;
     });
     __webpack_require__.d(__webpack_exports__, "j", function() {
@@ -91,8 +91,11 @@ window.spb = function(modules) {
     __webpack_require__.d(__webpack_exports__, "a", function() {
         return capitalizeFirstLetter;
     });
-    __webpack_require__.d(__webpack_exports__, "b", function() {
-        return debounce;
+    __webpack_require__.d(__webpack_exports__, "l", function() {
+        return tryCatch;
+    });
+    __webpack_require__.d(__webpack_exports__, "i", function() {
+        return removeFromArray;
     });
     var objectIDs, zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1), cross_domain_safe_weakmap_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
     function uniqueID() {
@@ -100,7 +103,7 @@ window.spb = function(modules) {
         return "xxxxxxxxxx".replace(/./g, function() {
             return chars.charAt(Math.floor(Math.random() * chars.length));
         }) + "_" + function(str) {
-            if ("undefined" != typeof window && "function" == typeof window.btoa) return window.btoa(str);
+            if ("function" == typeof btoa) return btoa(str);
             if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
             throw new Error("Can not find window.btoa or Buffer");
         }(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
@@ -202,16 +205,21 @@ window.spb = function(modules) {
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
-    function debounce(method, time) {
-        void 0 === time && (time = 100);
-        var timeout;
-        return function() {
-            var _this3 = this, _arguments2 = arguments;
-            clearTimeout(timeout);
-            timeout = setTimeout(function() {
-                return method.apply(_this3, _arguments2);
-            }, time);
+    function tryCatch(fn) {
+        var result, error;
+        try {
+            result = fn();
+        } catch (err) {
+            error = err;
+        }
+        return {
+            result: result,
+            error: error
         };
+    }
+    function removeFromArray(arr, item) {
+        var index = arr.indexOf(item);
+        -1 !== index && arr.splice(index, 1);
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
@@ -318,6 +326,7 @@ window.spb = function(modules) {
         _proto.asyncReject = function(error) {
             this.errorHandled = !0;
             this.reject(error);
+            return this;
         };
         _proto.dispatch = function() {
             var _this3 = this, dispatching = this.dispatching, resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
@@ -408,6 +417,9 @@ window.spb = function(modules) {
         };
         ZalgoPromise.reject = function(error) {
             return new ZalgoPromise().reject(error);
+        };
+        ZalgoPromise.asyncReject = function(error) {
+            return new ZalgoPromise().asyncReject(error);
         };
         ZalgoPromise.all = function(promises) {
             var promise = new ZalgoPromise(), count = promises.length, results = [];
@@ -511,10 +523,10 @@ window.spb = function(modules) {
     __webpack_require__(11), __webpack_require__(12), __webpack_require__(8);
     var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(0);
     __webpack_require__.d(__webpack_exports__, "memoize", function() {
-        return _util__WEBPACK_IMPORTED_MODULE_5__.f;
+        return _util__WEBPACK_IMPORTED_MODULE_5__.e;
     });
     __webpack_require__.d(__webpack_exports__, "noop", function() {
-        return _util__WEBPACK_IMPORTED_MODULE_5__.g;
+        return _util__WEBPACK_IMPORTED_MODULE_5__.f;
     });
     var _http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(13);
     __webpack_require__.d(__webpack_exports__, "request", function() {
@@ -775,7 +787,7 @@ window.spb = function(modules) {
     var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0), _dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
     function getStorage(_ref) {
         var name = _ref.name, _ref$version = _ref.version, version = void 0 === _ref$version ? "latest" : _ref$version, _ref$lifetime = _ref.lifetime, lifetime = void 0 === _ref$lifetime ? 3e5 : _ref$lifetime;
-        return Object(_util__WEBPACK_IMPORTED_MODULE_0__.e)(getStorage, function() {
+        return Object(_util__WEBPACK_IMPORTED_MODULE_0__.d)(getStorage, function() {
             var accessedStorage, STORAGE_KEY = "__" + name + "_" + version + "_storage__";
             function getState(handler) {
                 var storage, localStorageEnabled = Object(_dom__WEBPACK_IMPORTED_MODULE_1__.a)();
@@ -784,13 +796,13 @@ window.spb = function(modules) {
                     var rawStorage = window.localStorage.getItem(STORAGE_KEY);
                     rawStorage && (storage = JSON.parse(rawStorage));
                 }
-                storage || (storage = Object(_util__WEBPACK_IMPORTED_MODULE_0__.d)()[STORAGE_KEY]);
+                storage || (storage = Object(_util__WEBPACK_IMPORTED_MODULE_0__.c)()[STORAGE_KEY]);
                 storage || (storage = {
-                    id: Object(_util__WEBPACK_IMPORTED_MODULE_0__.l)()
+                    id: Object(_util__WEBPACK_IMPORTED_MODULE_0__.m)()
                 });
-                storage.id || (storage.id = Object(_util__WEBPACK_IMPORTED_MODULE_0__.l)());
+                storage.id || (storage.id = Object(_util__WEBPACK_IMPORTED_MODULE_0__.m)());
                 var result = handler(accessedStorage = storage);
-                localStorageEnabled ? window.localStorage.setItem(STORAGE_KEY, JSON.stringify(storage)) : Object(_util__WEBPACK_IMPORTED_MODULE_0__.d)()[STORAGE_KEY] = storage;
+                localStorageEnabled ? window.localStorage.setItem(STORAGE_KEY, JSON.stringify(storage)) : Object(_util__WEBPACK_IMPORTED_MODULE_0__.c)()[STORAGE_KEY] = storage;
                 accessedStorage = null;
                 return result;
             }
@@ -799,7 +811,7 @@ window.spb = function(modules) {
                     var session = storage.__session__, now = Date.now();
                     session && now - session.created > lifetime && (session = null);
                     session || (session = {
-                        guid: Object(_util__WEBPACK_IMPORTED_MODULE_0__.l)(),
+                        guid: Object(_util__WEBPACK_IMPORTED_MODULE_0__.m)(),
                         created: now
                     });
                     storage.__session__ = session;
@@ -849,14 +861,14 @@ window.spb = function(modules) {
         return Array.prototype.slice.call(doc.querySelectorAll(selector));
     }
     function onClick(element, handler) {
-        element.addEventListener("touchstart", util.g);
+        element.addEventListener("touchstart", util.f);
         element.addEventListener("click", handler);
         element.addEventListener("keypress", function(event) {
             if (event.keyCode === KEY_CODES_ENTER) return handler(event);
         });
     }
     function isLocalStorageEnabled() {
-        return Object(util.e)(isLocalStorageEnabled, function() {
+        return Object(util.d)(isLocalStorageEnabled, function() {
             try {
                 if ("undefined" == typeof window) return !1;
                 if (window.localStorage) {
@@ -1290,6 +1302,7 @@ window.spb = function(modules) {
     }), cross_domain_utils_src = (INTENT.CAPTURE, __webpack_require__(3)), API_URI = {
         AUTH: "/webapps/hermes/api/auth",
         ORDER: "/webapps/hermes/api/order",
+        PAYMENT: "/webapps/hermes/api/payment",
         GRAPHQL: "/graphql"
     }, SMART_BUTTONS = "smart_buttons", HEADERS = {
         CSRF_TOKEN: "x-csrf-jwt",
@@ -1315,11 +1328,14 @@ window.spb = function(modules) {
             return body.data;
         });
     }
-    var persistAccessToken = Object(src.memoize)(function(accessToken) {
-        defaultHeaders["x-paypal-internal-euat"] = accessToken;
+    function getAuth() {
         return callAPI({
             url: API_URI.AUTH
-        }).then(src.noop);
+        });
+    }
+    var persistAccessToken = Object(src.memoize)(function(accessToken) {
+        defaultHeaders["x-paypal-internal-euat"] = accessToken;
+        return getAuth().then(src.noop);
     });
     function validateOrder(orderID) {
         if (!orderID.match(ORDER_ID_PATTERN)) throw new Error(orderID + " does not match pattern for order-id, ec-token or cart-id");
@@ -1353,13 +1369,32 @@ window.spb = function(modules) {
         void 0 === props && (props = {});
         void 0 === context && (context = Object(src.supportsPopups)() ? "popup" : "iframe");
         if (checkoutOpen) throw new Error("Checkout already rendered");
-        var _ref2 = [ Object(cross_domain_utils_src.getTop)(window), Object(cross_domain_utils_src.getParent)() ], parent = _ref2[0], top = _ref2[1], createOrder = Object(src.memoize)(props.createOrder || window.xprops.createOrder), renderWindow = canRenderTop && top ? top : parent, validateOrderPromise = createOrder().then(validateOrder), instance = window.paypal.Checkout(Object(esm_extends.a)({}, props, {
+        var _ref2 = [ Object(cross_domain_utils_src.getTop)(window), Object(cross_domain_utils_src.getParent)() ], parent = _ref2[0], top = _ref2[1], createOrder = function(props) {
+            void 0 === props && (props = {});
+            return Object(src.memoize)(function() {
+                return zalgo_promise_src.a.try(function() {
+                    if (props.createOrder) return props.createOrder();
+                    if (window.xprops.createBillingAgreement) return window.xprops.createBillingAgreement().then(function(billingToken) {
+                        return function(billingToken) {
+                            return callAPI({
+                                method: "post",
+                                url: API_URI.PAYMENT + "/" + billingToken + "/ectoken"
+                            }).then(function(data) {
+                                return data.token;
+                            });
+                        }(billingToken);
+                    });
+                    if (window.xprops.createOrder) return window.xprops.createOrder();
+                    throw new Error("No mechanism to create order");
+                });
+            });
+        }(props), renderWindow = canRenderTop && top ? top : parent, validateOrderPromise = createOrder().then(validateOrder), instance = window.paypal.Checkout(Object(esm_extends.a)({}, props, {
             createOrder: createOrder,
             locale: window.xprops.locale,
             commit: window.xprops.commit,
             onError: window.xprops.onError,
             onApprove: function(_ref3) {
-                var orderID = _ref3.orderID, payerID = _ref3.payerID, paymentID = _ref3.paymentID, actions = function(checkout, orderID) {
+                var orderID = _ref3.orderID, payerID = _ref3.payerID, paymentID = _ref3.paymentID, billingToken = _ref3.billingToken, actions = function(checkout, orderID) {
                     var restartFlow = Object(src.memoize)(function() {
                         return checkout.close().then(function() {
                             return renderCheckout({
@@ -1407,7 +1442,8 @@ window.spb = function(modules) {
                 return window.xprops.onApprove({
                     orderID: orderID,
                     payerID: payerID,
-                    paymentID: paymentID
+                    paymentID: paymentID,
+                    billingToken: billingToken
                 }, actions).catch(function(err) {
                     return window.xprops.onError(err);
                 });
@@ -1458,6 +1494,7 @@ window.spb = function(modules) {
                 }).catch(src.noop);
             });
         });
+        getAuth().then(src.noop);
         window.xprops.getPrerenderDetails().then(function(prerenderDetails) {
             if (prerenderDetails) {
                 var win = prerenderDetails.win, order = prerenderDetails.order;
