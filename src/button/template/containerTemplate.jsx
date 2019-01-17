@@ -58,11 +58,7 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
                         font-size: 0;
                         width: 100%;
                         overflow: hidden;
-<<<<<<< HEAD
-                        margin: 0 auto;
-=======
                         min-width: ${ BUTTON_STYLE[minimumSize].minWidth }px;
->>>>>>> upstream/master
                     }
 
                     #${ id }.${ tag }-size-${ BUTTON_SIZE.RESPONSIVE } {
