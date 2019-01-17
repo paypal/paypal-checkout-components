@@ -94,7 +94,7 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
         const cart = res.data.checkout.checkoutSession.cart;
 
         const intent = (cart.intent.toLowerCase() === 'sale') ? INTENT.CAPTURE : cart.intent.toLowerCase();
-        const currency = cart.amounts.total.currencyCode;
+        const currency = cart.amounts && cart.amounts.total.currencyCode;
         const returnUrl = cart.returnUrl && cart.returnUrl.href;
         const cancelUrl = cart.cancelUrl && cart.cancelUrl.href;
 
@@ -105,7 +105,7 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
             throw new Error(`Expected intent from order api call to be ${ expectedIntent }, got ${ intent }`);
         }
 
-        if (currency !== expectedCurrency) {
+        if (currency && currency !== expectedCurrency) {
             throw new Error(`Expected currency from order api call to be ${ expectedCurrency }, got ${ currency }`);
         }
 
