@@ -8667,12 +8667,15 @@
         },
         "./src/config/index.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
-            var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
+            var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js");
+            var config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.245",
+                version: "4.0.246",
                 cors: !0,
-                env: constants.t.PRODUCTION,
+                env: function() {
+                    return "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION;
+                }(),
                 state: "checkoutjs",
                 locale: {
                     country: constants.r.US,
@@ -8913,6 +8916,12 @@
                         disable_venmo: !0
                     },
                     "stitchfix.com": {
+                        disable_venmo: !0
+                    },
+                    "revzilla.com": {
+                        disable_venmo: !0
+                    },
+                    "cyclegear.com": {
                         disable_venmo: !0
                     }
                 },
@@ -11303,7 +11312,7 @@
                     if (isInstallmentAllowedCountry && style.label === constants.f.INSTALLMENT && style[constants.m.INSTALLMENTPERIOD] && -1 === constants.b[country].indexOf(style[constants.m.INSTALLMENTPERIOD])) throw new Error("style." + constants.m.INSTALLMENTPERIOD + ": " + style[constants.m.INSTALLMENTPERIOD] + " is not a valid installment number for " + style.label);
                 }(style, props.locale);
             }
-            var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    body {\n        display: inline-block;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n        cursor: default;\n    }\n", class_CLASS = {
+            var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    body {\n        display: inline-block;\n        vertical-align: top;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n        cursor: default;\n    }\n", class_CLASS = {
                 SHOULD_FOCUS: "paypal-should-focus",
                 CONTAINER: "paypal-button-container",
                 BUTTON: "paypal-button",
@@ -11713,15 +11722,15 @@
                     });
                 }(), labelPowerByPayPal = cards.length > 0 ? function(props) {
                     if (!props) return null;
-                    var layout = props.layout, size = props.size, _props$sources = props.sources, sources = void 0 === _props$sources ? [] : _props$sources;
-                    return layout !== constants.g.VERTICAL || size !== constants.l.MEDIUM && size !== constants.l.LARGE && size !== constants.l.HUGE ? null : -1 === sources.indexOf(constants.v.CARD) ? null : Object(jsx.b)("div", {
+                    var layout = props.layout, _props$sources = props.sources, sources = void 0 === _props$sources ? [] : _props$sources;
+                    return layout !== constants.g.VERTICAL ? null : -1 === sources.indexOf(constants.v.CARD) ? null : Object(jsx.b)("div", {
                         class: "powered-by-paypal",
                         style: "\n                text-align: center;\n                margin: 10px auto;\n                height: 14px;\n                font-family: PayPal-Sans, HelveticaNeue, sans-serif;\n                font-size: 11px;\n                font-weight: normal;\n                font-style: italic;\n                font-stretch: normal;\n                color: #7b8388;\n                position: relative;\n                margin-right: 3px;\n                bottom: 3px;\n            "
                     }, renderContent("{ content: poweredBy }", componentTemplate__extends({}, props, {
                         logoColor: "blue"
                     })));
                 }(normalizeProps(props)) : null;
-                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.245", 
+                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.246", 
                 _ref21), {
                     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
@@ -12609,6 +12618,10 @@
                     iframe: !0,
                     popup: !1
                 },
+                dimensions: {
+                    height: "300px",
+                    width: "100%"
+                },
                 autoResize: {
                     height: !0,
                     width: !1
@@ -12862,7 +12875,7 @@
                 setup__track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, 
                 setup__track3));
             }
-            var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.245", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.246", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             interface_checkout = legacy.checkout;
             apps = legacy.apps;
             var interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
@@ -14157,7 +14170,7 @@
                         country: config.a.locale.country,
                         lang: config.a.locale.lang,
                         uid: getSessionID(),
-                        ver: "4.0.245"
+                        ver: "4.0.246"
                     };
                 });
                 Object(client.a)(function() {
@@ -14400,7 +14413,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.245";
+                    payload.version = "4.0.246";
                     payload.host = window.location.host;
                     payload.uid = getSessionID();
                     payload.appName = APP_NAME;
@@ -14418,7 +14431,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.245".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.246".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!function(name) {
                         return getSessionState(function(state) {
@@ -14437,7 +14450,7 @@
             function fpti() {
                 var payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, query = [];
                 payload = beacon__extends({}, {
-                    v: "checkout.js.4.0.245",
+                    v: "checkout.js.4.0.246",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -14557,7 +14570,7 @@
                 return Boolean(getCurrentScript());
             }
             function getScriptVersion() {
-                return "4.0.245";
+                return "4.0.246";
             }
             var openMetaFrame = Object(util.j)(function() {
                 var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -14574,7 +14587,7 @@
                             domain: metaFrameDomain
                         });
                         return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                            version: "4.0.245"
+                            version: "4.0.246"
                         }), metaFrameDomain).then(function() {
                             return metaListener;
                         }).then(function(_ref) {

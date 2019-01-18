@@ -1290,6 +1290,7 @@
             zalgoGlobal.dispatchedErrors = zalgoGlobal.dispatchedErrors || [];
             return zalgoGlobal;
         }
+        var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales;
         (function() {
             function ZalgoPromise(handler) {
                 var _this = this;
@@ -1537,12 +1538,14 @@
                 }
             };
         })(), __webpack_require__("./node_modules/cross-domain-utils/src/index.js");
-        var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, config = {
+        var config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.245",
+            version: "4.0.246",
             cors: !0,
-            env: misc_ENV.PRODUCTION,
+            env: function() {
+                return "undefined" == typeof window || void 0 === window.location ? misc_ENV.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? misc_ENV.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? misc_ENV.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? misc_ENV.SANDBOX : misc_ENV.PRODUCTION;
+            }(),
             state: "checkoutjs",
             locale: {
                 country: COUNTRY.US,
@@ -1783,6 +1786,12 @@
                     disable_venmo: !0
                 },
                 "stitchfix.com": {
+                    disable_venmo: !0
+                },
+                "revzilla.com": {
+                    disable_venmo: !0
+                },
+                "cyclegear.com": {
                     disable_venmo: !0
                 }
             },
@@ -3022,7 +3031,7 @@
             }(locale);
             validateButtonStyle(style, props);
         }
-        var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    body {\n        display: inline-block;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n        cursor: default;\n    }\n", CLASS = {
+        var pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    body {\n        display: inline-block;\n        vertical-align: top;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n        cursor: default;\n    }\n", CLASS = {
             SHOULD_FOCUS: "paypal-should-focus",
             CONTAINER: "paypal-button-container",
             BUTTON: "paypal-button",
@@ -3311,8 +3320,8 @@
                 })) + ")();"
             })), labelPowerByPayPal = cards.length > 0 ? function(props) {
                 if (!props) return null;
-                var layout = props.layout, size = props.size, _props$sources = props.sources, sources = void 0 === _props$sources ? [] : _props$sources;
-                if (layout !== BUTTON_LAYOUT.VERTICAL || size !== BUTTON_SIZE.MEDIUM && size !== BUTTON_SIZE.LARGE && size !== BUTTON_SIZE.HUGE) return null;
+                var layout = props.layout, _props$sources = props.sources, sources = void 0 === _props$sources ? [] : _props$sources;
+                if (layout !== BUTTON_LAYOUT.VERTICAL) return null;
                 if (-1 === sources.indexOf(FUNDING.CARD)) return null;
                 return jsxToHTML("div", {
                     class: "powered-by-paypal",
@@ -3322,7 +3331,7 @@
                 })));
             }(normalizeProps(props)) : null;
             var script;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[ATTRIBUTE.VERSION] = "4.0.245", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[ATTRIBUTE.VERSION] = "4.0.246", 
             _ref21), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
