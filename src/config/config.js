@@ -3,6 +3,30 @@
 
 import { ENV, COUNTRY, LANG } from '../constants';
 
+function getDefaultEnv() : $Values<typeof ENV> {
+    if (__TEST__) {
+        return ENV.TEST;
+    }
+
+    if (typeof window === 'undefined' || typeof window.location === 'undefined') {
+        return ENV.PRODUCTION;
+    }
+
+    if (window.location.host.indexOf('localhost.paypal.com') !== -1) {
+        return ENV.LOCAL;
+    }
+
+    if (window.location.host.indexOf('qa.paypal.com') !== -1) {
+        return ENV.STAGE;
+    }
+
+    if (window.location.host.indexOf('sandbox.paypal.com') !== -1) {
+        return ENV.SANDBOX;
+    }
+
+    return ENV.PRODUCTION;
+}
+
 export let config = {
 
     scriptUrl: __TEST__
@@ -16,9 +40,7 @@ export let config = {
 
     cors: true,
 
-    env: __TEST__
-        ? ENV.TEST
-        : ENV.PRODUCTION,
+    env: getDefaultEnv(),
 
     state: 'checkoutjs',
 
