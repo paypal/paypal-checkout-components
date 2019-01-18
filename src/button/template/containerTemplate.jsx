@@ -41,17 +41,13 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
     }
 
     let { defaultWidth, defaultHeight } = BUTTON_STYLE[size] || BUTTON_STYLE[BUTTON_SIZE.SMALL];
-
-    let innerContainer;
+    
     setTimeout(() => {
         outlet.style.transition = 'all 0.5s ease-in-out 0.3s';
-        if (innerContainer) {
-            innerContainer.style.transition = 'all 0.5s ease-in-out 0.3s';
-        }
     }, 3000);
 
     return (
-        <div id={ id } onRender={ (el) => { innerContainer = el; } } class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-size-${ size } ${ tag }-layout-${ layout }` }>
+        <div id={ id } class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-size-${ size } ${ tag }-layout-${ layout }` }>
             <style>
                 {`
                     #${ id } {

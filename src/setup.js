@@ -83,6 +83,14 @@ function configure({ env, stage, stageUrl, apiStage, state, logLevel, merchantID
 
         delete config.env;
         config.env = env;
+    } else if (Button.xprops && Button.xprops.env) {
+        delete config.env;
+        // $FlowFixMe
+        config.env = Button.xprops.env;
+    } else if (Checkout.xprops && Checkout.xprops.env) {
+        delete config.env;
+        // $FlowFixMe
+        config.env = Checkout.xprops.env;
     }
 
     if (stage) {
