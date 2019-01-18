@@ -11,6 +11,7 @@ export let pageStyle = `
 
     body {
         display: inline-block;
+        vertical-align: top;
     }
 
     * {
