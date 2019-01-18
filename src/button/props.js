@@ -2,8 +2,9 @@
 
 import { BUTTON_LAYOUT, BUTTON_STYLE_OPTIONS, BUTTON_LABEL, BUTTON_COLOR, BUTTON_SIZE, BUTTON_SHAPE } from '../constants';
 import { determineEligibleFunding, determineEligibleCards } from '../funding';
-import { memoize } from '../lib/util';
+import { memoize, sortBy } from '../lib/util';
 import type { LocaleType, FundingSelection, FundingList } from '../types';
+import { FUNDING_ORDER } from '../funding/config';
 
 import { getButtonConfig, labelToFunding } from './config';
 
@@ -90,7 +91,8 @@ export let normalizeProps = memoize((props : Object, defs? : { locale? : LocaleT
     max = determineMaxButtons({ label, layout, max });
 
     let selected = labelToFunding(label);
-    let sources  = determineEligibleFunding({ funding, selected, locale, env, layout, commit }).slice(0, max);
+    let sources  = determineEligibleFunding({ funding, selected, locale, env, layout, commit });
+    sources = sortBy(sources.slice(0, max), FUNDING_ORDER);
     let multiple = sources.length > 1;
 
     if (multiple) {

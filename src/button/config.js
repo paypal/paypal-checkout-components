@@ -93,7 +93,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
         minVerticalButtons:   1,
 
         maxHorizontalButtons: 2,
-        maxVerticalButtons:   4,
+        maxVerticalButtons:   6,
 
         allowUnbranded:       false,
         allowFundingIcons:    true,
