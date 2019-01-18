@@ -40,6 +40,11 @@ export const Card : Component<CardOptions> = create({
         popup:  false
     },
 
+    dimensions: {
+        height: '300px',
+        width:  '100%'
+    },
+
     autoResize: {
         height: true,
         width:  false
