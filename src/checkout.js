@@ -102,19 +102,19 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
         const expectedCurrency = window.xprops.currency;
 
         if (intent !== expectedIntent) {
-            throw new Error(`Expected intent from order api call to be ${ expectedIntent }, got ${ intent }`);
+            throw new Error(`Expected intent from order api call to be ${ expectedIntent }, got ${ intent }. Please ensure you are passing intent=${ expectedIntent } to the sdk`);
         }
 
         if (currency && currency !== expectedCurrency) {
-            throw new Error(`Expected currency from order api call to be ${ expectedCurrency }, got ${ currency }`);
+            throw new Error(`Expected currency from order api call to be ${ expectedCurrency }, got ${ currency }. Please ensure you are passing intent=${ expectedIntent } to the sdk`);
         }
 
         if (returnUrl && returnUrl.indexOf(ERROR_URL) !== 0) {
-            throw new Error(`Expected return url to be either blank, or "${ ERROR_URL }". Return url is not needed or used by smart payment button integration.`);
+            throw new Error(`Expected return url to be either blank, or "${ ERROR_URL }". Return url is forbidden for smart payment button integration.`);
         }
 
         if (cancelUrl && cancelUrl.indexOf(ERROR_URL) !== 0) {
-            throw new Error(`Expected cancel url to be either blank, or "${ ERROR_URL }". Cancel url is not needed or used by smart payment button integration.`);
+            throw new Error(`Expected cancel url to be either blank, or "${ ERROR_URL }". Cancel url is forbidden for smart payment button integration.`);
         }
     });
 }
