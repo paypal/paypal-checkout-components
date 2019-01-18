@@ -9,7 +9,7 @@ import { CONTEXT } from 'zoid/src';
 import { Buttons as ButtonsTemplate } from '../../../src/buttons/template';
 import { getElement, getElements, errorOnWindowOpen } from '../../tests/common';
 
-let { action, authed = false, bridge = false, delay = 0, onRender, checkout, selector, remembered, captureOrder = noop } = window.xprops.test;
+let { action, type, authed = false, bridge = false, delay = 0, onRender, checkout, selector, remembered, captureOrder = noop } = window.xprops.test;
 
 const body = document.body;
 if (body) {
@@ -60,12 +60,17 @@ function renderCheckout(props = {}, context = CONTEXT.POPUP) {
             // pass
         },
 
+        onShippingChange(data, actions) : ZalgoPromise<void> {
+            return window.xprops.onShippingChange(data, actions);
+        },
+
         onCancel: window.xprops.onCancel,
         onError:  window.xprops.onError,
         commit:   window.xprops.commit,
         locale:   window.xprops.locale,
         test:     {
             action: action || 'checkout',
+            type,
             ...checkout
         },
 
@@ -103,7 +108,7 @@ if (action === 'auth') {
 
     window.xprops.remember([ remembered ]);
 
-} else if (action === 'checkout' || action === 'cancel' || action === 'error' || action === 'popout') {
+} else if (action === 'checkout' || action === 'shippingChange' ||  action === 'cancel' || action === 'error' || action === 'popout') {
 
     if (delay) {
         setTimeout(() => {

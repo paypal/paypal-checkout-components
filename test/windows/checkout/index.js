@@ -5,7 +5,7 @@ import { CONTEXT } from 'zoid/src';
 
 import { createTestContainer, createElement } from '../../tests/common';
 
-const { action, onRender, onInit } = window.xprops.test;
+const { action, type, onRender, onInit } = window.xprops.test;
 
 const actions = {
     close() {
@@ -45,6 +45,33 @@ if (action === 'checkout') {
                 currentUrl: window.location.href
             });
         });
+    });
+
+} else if (action === 'shippingChange') {
+
+    const callbackActions = {
+        reject:  () => { /* pass */ },
+        resolve: () => ZalgoPromise.resolve(),
+        order:   { patch: () => ZalgoPromise.resolve() }
+    };
+
+
+    if (type === 'noReject') {
+        delete callbackActions.reject;
+    }
+
+    window.xprops.payment().then(orderID => {
+
+        return window.xprops.onShippingChange({
+            orderID,
+            shipping_address: {
+                city:         'XXXXX',
+                state:        'YY',
+                postal_code:  '11111',
+                country_code: 'YY'
+            }
+        }, callbackActions);
+
     });
 
 } else if (action === 'cancel') {
