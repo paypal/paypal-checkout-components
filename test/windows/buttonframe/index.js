@@ -13,6 +13,10 @@ window.paypal.Buttons({
 
     onApprove() {
         send(window.top.frames[0], 'onApprove');
+    },
+
+    onShippingChange() {
+        send(window.top.frames[0], 'onShippingChange');
     }
 
 }).render(document.body).then(button => {

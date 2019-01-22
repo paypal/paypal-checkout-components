@@ -44,6 +44,38 @@ export type OnApproveActions = {|
 
 export type OnApprove = (data : OnApproveData, actions : OnApproveActions) => ZalgoPromise<void> | void;
 
+type OnShippingChangeAddress = {|
+    city : string,
+    state : string,
+    country_code : string,
+    postal_code : string
+|};
+
+type OnShippingChangeMethod = {|
+    label : string,
+    type : string,
+    amount : {
+        currency_code : string,
+        value : string
+    }
+|};
+
+export type OnShippingChangeData = {|
+    orderID : string,
+    payerID : string,
+    paymentID? : string,
+    shipping_address : OnShippingChangeAddress,
+    selected_shipping_method : OnShippingChangeMethod
+|};
+
+export type OnShippingChangeActions = {|
+    order : {
+        patch : () => ZalgoPromise<OrderGetResponse>
+    }
+|};
+
+export type OnShippingChange = (data : OnShippingChangeData, actions : OnShippingChangeActions) => ZalgoPromise<void> | void;
+
 export type OnCancelData = {|
     orderID : string,
     paymentID? : string

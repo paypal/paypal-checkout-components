@@ -580,6 +580,74 @@ for (const flow of [ 'popup', 'iframe' ]) {
             Object.defineProperty(document, 'readyState', { value: readyState, configurable: true });
         });
 
+        it('should render a button into a container and click on the button, call the REST api via actions.order with an object to create an order, then call onShippingChange', (done) => {
+
+            window.paypal.Buttons({
+
+                test: { flow, action: 'shippingChange' },
+
+                createOrder(data, actions) : string | ZalgoPromise<string> {
+                    return actions.order.create({
+                        purchase_units: [
+                            {
+                                amount: {
+                                    currency_code: 'USD',
+                                    value:         '0.01'
+                                }
+                            }
+                        ]
+                    });
+                },
+
+                onShippingChange() : void {
+                    return done();
+                },
+
+                onApprove() : void {
+                    return done(new Error('Expected onApprove to not be called'));
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }).render('#testContainer');
+        });
+
+        it('should render a button into a container and click on the button, call the REST api via actions.order with an object to create an order, then call onShippingChange and call actions.reject', (done) => {
+
+            window.paypal.Buttons({
+
+                test: { flow, action: 'shippingChange' },
+
+                createOrder(data, actions) : string | ZalgoPromise<string> {
+                    return actions.order.create({
+                        purchase_units: [
+                            {
+                                amount: {
+                                    currency_code: 'USD',
+                                    value:         '0.01'
+                                }
+                            }
+                        ]
+                    });
+                },
+
+                onShippingChange(data, actions) : void {
+                    return actions.reject().then(done);
+                },
+
+                onApprove() : void {
+                    return done(new Error('Expected onApprove to not be called'));
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }).render('#testContainer');
+        });
+
         if (flow === 'popup') {
             it('should render a button into a container and click on the button, then cancel the createOrder by closing the window', () => {
                 return wrapPromise(({ expect, error }) => {

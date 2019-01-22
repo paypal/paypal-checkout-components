@@ -195,6 +195,11 @@ export const Checkout : ZoidComponent<CheckoutPropsType> = create({
             }
         },
 
+        onShippingChange: {
+            type:     'function',
+            required: false
+        },
+
         onAuth: {
             type:       'function',
             required:   false,

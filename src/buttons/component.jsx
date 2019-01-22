@@ -21,7 +21,7 @@ import { containerTemplate, Buttons as ButtonsTemplate } from './template';
 import { rememberFunding, findRememberedFunding } from './funding';
 import { setupButtonChild } from './child';
 import { normalizeButtonStyle, type ButtonProps, type PrerenderDetails, type ButtonStyle, type ProxyRest, type CreateOrder, type OnCancel, type OnClick,
-    type CreateOrderData, type CreateOrderActions, type OnApprove, type OnApproveActions, type OnApproveData, type GetPrerenderDetails, type OnClickData } from './props';
+    type CreateOrderData, type CreateOrderActions, type OnApprove, type OnApproveActions, type OnApproveData, type OnShippingChange, type GetPrerenderDetails, type OnClickData } from './props';
 
 export const Buttons : ZoidComponent<ButtonProps> = create({
 
@@ -273,6 +273,40 @@ export const Buttons : ZoidComponent<ButtonProps> = create({
                     } else {
                         throw new Error(`Please specify onApprove callback to handle buyer approval success`);
                     }
+                };
+            }
+        },
+
+        onShippingChange: {
+            type:     'function',
+            required: false,
+
+            decorate({ value, props, onError }) : OnShippingChange {
+                return function decorateOnShippingChange(data, actions = {}) : void | ZalgoPromise<void> {
+                    const logger = getLogger();
+                    logger.info('button_shipping_change');
+
+                    logger.track({
+                        [ FPTI_KEY.STATE ]:              FPTI_STATE.CHECKOUT,
+                        [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.CHECKOUT_SHIPPING_CHANGE,
+                        [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
+                    });
+
+                    logger.flush();
+
+                    const resolve = () => ZalgoPromise.resolve();
+                    const reject = actions.reject || function reject() {
+                        throw new Error(`Missing reject action callback`);
+                    };
+
+                    return ZalgoPromise.try(() => {
+                        return value.call(this, data, { ...actions, resolve, reject });
+                    }).catch(err => {
+                        if (onError) {
+                            onError(err);
+                        }
+                        throw err;
+                    });
                 };
             }
         },
