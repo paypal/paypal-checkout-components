@@ -246,7 +246,7 @@ export const Buttons : ZoidComponent<ButtonProps> = create({
             type:     'function',
             required: false,
 
-            decorate({ value, props }) : OnShippingChange {
+            decorate({ value, props, onError }) : OnShippingChange {
                 return function decorateOnShippingChange(data, actions = {}) : void | ZalgoPromise<void> {
                     const logger = getLogger();
                     logger.info('button_shipping_change');
@@ -267,8 +267,8 @@ export const Buttons : ZoidComponent<ButtonProps> = create({
                     return ZalgoPromise.try(() => {
                         return value.call(this, data, { ...actions, resolve, reject });
                     }).catch(err => {
-                        if (props.onError) {
-                            props.onError(err);
+                        if (onError) {
+                            onError(err);
                         }
                         throw err;
                     });
