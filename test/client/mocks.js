@@ -3,6 +3,7 @@
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { ZalgoPromise } from 'zalgo-promise';
 import { FUNDING } from '@paypal/sdk-constants';
+import { INTENT, CURRENCY } from '@paypal/sdk-constants/src';
 
 const PAYPAL_BUTTON_CLASS = 'paypal-button';
 
@@ -37,6 +38,8 @@ export function setupMocks() {
     };
 
     window.xprops = {
+        intent:      INTENT.CAPTURE,
+        currency:    CURRENCY.USD,
         createOrder: () => {
             return ZalgoPromise.resolve('XXXXXXXXXX');
         },

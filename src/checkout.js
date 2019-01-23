@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, noop, supportsPopups } from 'belter/src';
-import { INTENT } from '@paypal/sdk-constants/src';
+import { INTENT, SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
 import { getParent, getTop } from 'cross-domain-utils/src';
 
 import { getOrder, captureOrder, authorizeOrder, persistAccessToken, billingTokenToOrderID, callGraphQL, type OrderResponse } from './api';
@@ -46,10 +46,15 @@ function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : A
     const orderGet = memoize(() =>
         getOrder(orderID));
 
-    const orderCapture = memoize(() =>
-        captureOrder(orderID)
+    const orderCapture = memoize(() => {
+        if (window.xprops.intent !== INTENT.CAPTURE) {
+            throw new Error(`Use ${ SDK_QUERY_KEYS.INTENT }=${ INTENT.CAPTURE } to use client-side capture`);
+        }
+
+        return captureOrder(orderID)
             .catch(handleProcessorError)
-            .finally(orderGet.reset));
+            .finally(orderGet.reset);
+    });
 
     const orderAuthorize = memoize(() =>
         authorizeOrder(orderID)
