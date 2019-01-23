@@ -1207,7 +1207,7 @@ window.spb = function(modules) {
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
-    var _COUNTRY_LANGS, src = __webpack_require__(2), esm_extends = __webpack_require__(5), zalgo_promise_src = __webpack_require__(1), INTENT = ((_COUNTRY_LANGS = {}).AD = [ "en", "fr", "es", "zh" ], 
+    var _COUNTRY_LANGS, src = __webpack_require__(2), esm_extends = __webpack_require__(5), zalgo_promise_src = __webpack_require__(1), SDK_QUERY_KEYS = ((_COUNTRY_LANGS = {}).AD = [ "en", "fr", "es", "zh" ], 
     _COUNTRY_LANGS.AE = [ "en", "fr", "es", "zh", "ar" ], _COUNTRY_LANGS.AG = [ "en", "fr", "es", "zh" ], 
     _COUNTRY_LANGS.AI = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.AL = [ "en" ], _COUNTRY_LANGS.AM = [ "en", "fr", "es", "zh" ], 
     _COUNTRY_LANGS.AN = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.AO = [ "en", "fr", "es", "zh" ], 
@@ -1296,10 +1296,31 @@ window.spb = function(modules) {
     _COUNTRY_LANGS.WF = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.WS = [ "en" ], _COUNTRY_LANGS.YE = [ "ar", "en", "fr", "es", "zh" ], 
     _COUNTRY_LANGS.YT = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.ZA = [ "en", "fr", "es", "zh" ], 
     _COUNTRY_LANGS.ZM = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.ZW = [ "en" ], {
+        COMPONENTS: "components",
+        ENV: "env",
+        DEBUG: "debug",
+        CACHEBUST: "cachebust",
+        CLIENT_ID: "client-id",
+        MERCHANT_ID: "merchant-id",
+        LOCALE: "locale",
+        CURRENCY: "currency",
+        INTENT: "intent",
+        COMMIT: "commit",
+        VAULT: "vault",
+        BUYER_COUNTRY: "buyer-country",
+        DISABLE_FUNDING: "disable-funding",
+        DISABLE_CARD: "disable-card",
+        LOCALE_COUNTRY: "locale-country",
+        LOCALE_LANG: "locale-lang",
+        ORDER_CURRENCY: "order-currency",
+        ORDER_INTENT: "order-intent",
+        ORDER_COMMIT: "order-commit",
+        ORDER_VAULT: "order-vault"
+    }), INTENT = {
         CAPTURE: "capture",
         AUTHORIZE: "authorize",
         ORDER: "order"
-    }), cross_domain_utils_src = (INTENT.CAPTURE, __webpack_require__(3)), API_URI = {
+    }, cross_domain_utils_src = (INTENT.CAPTURE, __webpack_require__(3)), API_URI = {
         AUTH: "/webapps/hermes/api/auth",
         ORDER: "/webapps/hermes/api/order",
         PAYMENT: "/webapps/hermes/api/payment",
@@ -1419,6 +1440,7 @@ window.spb = function(modules) {
                     return {
                         order: {
                             capture: Object(src.memoize)(function() {
+                                if (window.xprops.intent !== INTENT.CAPTURE) throw new Error("Use " + SDK_QUERY_KEYS.INTENT + "=" + INTENT.CAPTURE + " to use client-side capture");
                                 return function(orderID) {
                                     return callAPI({
                                         method: "post",
