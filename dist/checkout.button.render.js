@@ -806,7 +806,7 @@
             minHorizontalButtons: 1,
             minVerticalButtons: 1,
             maxHorizontalButtons: 2,
-            maxVerticalButtons: 4,
+            maxVerticalButtons: 6,
             allowUnbranded: !1,
             allowFundingIcons: !0,
             allowPrimary: !1,
@@ -1115,7 +1115,7 @@
                 throw new Error("No value found for " + category + ":" + key);
             }(BUTTON_CONFIG, label, key, def);
         }
-        var FUNDING_PRIORITY = [ FUNDING.PAYPAL, FUNDING.VENMO, FUNDING.CREDIT, FUNDING.IDEAL, FUNDING.ELV, FUNDING.BANCONTACT, FUNDING.GIROPAY, FUNDING.EPS, FUNDING.SOFORT, FUNDING.MYBANK, FUNDING.P24, FUNDING.ZIMPLER, FUNDING.CARD ], FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[DEFAULT] = {
+        var FUNDING_PRIORITY = [ FUNDING.PAYPAL, FUNDING.VENMO, FUNDING.CREDIT, FUNDING.CARD, FUNDING.IDEAL, FUNDING.ELV, FUNDING.BANCONTACT, FUNDING.GIROPAY, FUNDING.EPS, FUNDING.SOFORT, FUNDING.MYBANK, FUNDING.P24, FUNDING.ZIMPLER ], FUNDING_ORDER = [ FUNDING.PAYPAL, FUNDING.VENMO, FUNDING.CREDIT, FUNDING.IDEAL, FUNDING.ELV, FUNDING.BANCONTACT, FUNDING.GIROPAY, FUNDING.EPS, FUNDING.SOFORT, FUNDING.MYBANK, FUNDING.P24, FUNDING.ZIMPLER, FUNDING.CARD ], FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[DEFAULT] = {
             enabled: !0,
             allowOptIn: !0,
             allowOptOut: !0,
@@ -1541,7 +1541,7 @@
         var config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.247",
+            version: "4.0.248",
             cors: !0,
             env: function() {
                 return "undefined" == typeof window || void 0 === window.location ? misc_ENV.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? misc_ENV.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? misc_ENV.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? misc_ENV.SANDBOX : misc_ENV.PRODUCTION;
@@ -2273,7 +2273,7 @@
                 layout: layout,
                 max: max
             });
-            var sources = function(_ref4) {
+            var arr, order, sources = function(_ref4) {
                 var funding = _ref4.funding, selected = _ref4.selected, locale = _ref4.locale, env = _ref4.env, layout = _ref4.layout, commit = _ref4.commit, reasons = {}, eligibleFunding = FUNDING_PRIORITY.filter(function(source) {
                     var _isFundingEligible = isFundingEligible(source, {
                         selected: selected,
@@ -2305,7 +2305,9 @@
                 env: env,
                 layout: layout,
                 commit: commit
-            }).slice(0, max), multiple = sources.length > 1;
+            }), multiple = (sources = (arr = sources.slice(0, max), order = FUNDING_ORDER, arr.sort(function(a, b) {
+                return order.indexOf(a) - order.indexOf(b);
+            }))).length > 1;
             multiple && (branding = !0);
             return {
                 size: size,
@@ -3331,7 +3333,7 @@
                 })));
             }(normalizeProps(props)) : null;
             var script;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[ATTRIBUTE.VERSION] = "4.0.247", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[ATTRIBUTE.VERSION] = "4.0.248", 
             _ref21), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,

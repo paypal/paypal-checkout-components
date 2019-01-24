@@ -5757,7 +5757,7 @@
         var config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.247",
+            version: "4.0.248",
             cors: !0,
             env: function() {
                 return "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION;
@@ -9376,7 +9376,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.247"
+                    ver: "4.0.248"
                 };
             });
             Object(beaver_logger_client.a)(function() {
@@ -9644,11 +9644,11 @@
             });
         });
         function getScriptVersion() {
-            return Boolean(getCurrentScript()) ? "4" : "4.0.247";
+            return Boolean(getCurrentScript()) ? "4" : "4.0.248";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
-            return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.247.js";
+            return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.248.js";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -11386,7 +11386,7 @@
                     return src.a.try(function() {
                         if (tracking) return src.a.resolve(function(env, client, merchantID, trackingData) {
                             if (!client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
-                            var trackingID = Object(util.s)();
+                            var trackingID = Object(util.t)();
                             return createAccessToken(env, client).then(function(accessToken) {
                                 var headers = {
                                     Authorization: "Bearer " + accessToken
@@ -11689,7 +11689,7 @@
                 }(popupBridge);
             });
         }
-        var FUNDING_PRIORITY = [ src_constants.v.PAYPAL, src_constants.v.VENMO, src_constants.v.CREDIT, src_constants.v.IDEAL, src_constants.v.ELV, src_constants.v.BANCONTACT, src_constants.v.GIROPAY, src_constants.v.EPS, src_constants.v.SOFORT, src_constants.v.MYBANK, src_constants.v.P24, src_constants.v.ZIMPLER, src_constants.v.CARD ], FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[src_constants.s] = {
+        var FUNDING_PRIORITY = [ src_constants.v.PAYPAL, src_constants.v.VENMO, src_constants.v.CREDIT, src_constants.v.CARD, src_constants.v.IDEAL, src_constants.v.ELV, src_constants.v.BANCONTACT, src_constants.v.GIROPAY, src_constants.v.EPS, src_constants.v.SOFORT, src_constants.v.MYBANK, src_constants.v.P24, src_constants.v.ZIMPLER ], FUNDING_ORDER = [ src_constants.v.PAYPAL, src_constants.v.VENMO, src_constants.v.CREDIT, src_constants.v.IDEAL, src_constants.v.ELV, src_constants.v.BANCONTACT, src_constants.v.GIROPAY, src_constants.v.EPS, src_constants.v.SOFORT, src_constants.v.MYBANK, src_constants.v.P24, src_constants.v.ZIMPLER, src_constants.v.CARD ], FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[src_constants.s] = {
             enabled: !0,
             allowOptIn: !0,
             allowOptOut: !0,
@@ -11913,7 +11913,7 @@
             minHorizontalButtons: 1,
             minVerticalButtons: 1,
             maxHorizontalButtons: 2,
-            maxVerticalButtons: 4,
+            maxVerticalButtons: 6,
             allowUnbranded: !1,
             allowFundingIcons: !0,
             allowPrimary: !1,
@@ -12252,7 +12252,7 @@
                 env: env,
                 layout: layout,
                 commit: commit
-            }).slice(0, max), multiple = sources.length > 1;
+            }), multiple = (sources = Object(util.q)(sources.slice(0, max), FUNDING_ORDER)).length > 1;
             multiple && (branding = !0);
             return {
                 size: size,
@@ -12748,7 +12748,7 @@
                     logoColor: "blue"
                 })));
             }(props_normalizeProps(props)) : null;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.247", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.248", 
             _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -12783,7 +12783,7 @@
                 var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, tag = (_ref.on, _ref.container, 
                 _ref.tag), context = _ref.context, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _normalizeProps = props_normalizeProps(props), size = _normalizeProps.size, label = _normalizeProps.label, layout = _normalizeProps.layout, buttonHeight = _normalizeProps.height, minimumSize = getButtonConfig(label, layout === src_constants.g.VERTICAL ? "minimumVerticalSize" : "minimumSize"), maximumSize = getButtonConfig(label, layout === src_constants.g.VERTICAL ? "maximumVerticalSize" : "maximumSize");
                 if (buttonHeight) {
-                    var possibleSizes = Object(util.t)(src_constants.l).filter(function(possibleSize) {
+                    var possibleSizes = Object(util.u)(src_constants.l).filter(function(possibleSize) {
                         return BUTTON_STYLE[possibleSize] && buttonHeight && BUTTON_STYLE[possibleSize].minHeight <= buttonHeight && BUTTON_STYLE[possibleSize].maxHeight >= buttonHeight;
                     });
                     possibleSizes.sort(function(sizeA, sizeB) {
@@ -12795,6 +12795,8 @@
                 var _ref2 = BUTTON_STYLE[size] || BUTTON_STYLE[src_constants.l.SMALL], defaultWidth = _ref2.defaultWidth, defaultHeight = _ref2.defaultHeight;
                 setTimeout(function() {
                     outlet.style.transition = "all 0.5s ease-in-out 0.3s";
+                    Object(beaver_logger_client.k)("button_outlet_size_" + (outlet.offsetWidth ? outlet.offsetWidth.toString() : "unknown"));
+                    Object(beaver_logger_client.h)();
                 }, 3e3);
                 return jsxDom("div", {
                     id: id,
@@ -12869,7 +12871,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(util.s)();
+                        return Object(util.t)();
                     },
                     queryParam: !0
                 },
@@ -13442,7 +13444,7 @@
                 function doRender(props, original) {
                     return popupBridge ? renderThroughPopupBridge(props, popupBridge).catch(function(err) {
                         Object(beaver_logger_client.g)("popup_bridge_error", {
-                            err: Object(util.q)(err)
+                            err: Object(util.r)(err)
                         });
                         return original();
                     }) : original();
@@ -13775,14 +13777,14 @@
         src.a.onPossiblyUnhandledException(function(err) {
             var _track;
             Object(beaver_logger_client.g)("unhandled_error", {
-                stack: Object(util.q)(err),
+                stack: Object(util.r)(err),
                 errtype: {}.toString.call(err)
             });
             Object(beaver_logger_client.o)(((_track = {})[src_constants.u.KEY.ERROR_CODE] = "checkoutjs_error", 
-            _track[src_constants.u.KEY.ERROR_DESC] = Object(util.r)(err), _track));
+            _track[src_constants.u.KEY.ERROR_DESC] = Object(util.s)(err), _track));
             return Object(beaver_logger_client.h)().catch(function(err2) {
                 if (window.console) try {
-                    window.console.error ? window.console.error("Error flushing:", Object(util.q)(err2)) : window.console.log && window.console.log("Error flushing:", Object(util.q)(err2));
+                    window.console.error ? window.console.error("Error flushing:", Object(util.r)(err2)) : window.console.log && window.console.log("Error flushing:", Object(util.r)(err2));
                 } catch (err3) {
                     setTimeout(function() {
                         throw err3;
@@ -13850,7 +13852,7 @@
                         _track2));
                     }).catch(function(err) {
                         Object(beaver_logger_client.k)("pptm_script_error", {
-                            error: Object(util.q)(err)
+                            error: Object(util.r)(err)
                         });
                     });
                 }
@@ -13945,7 +13947,7 @@
             setup__track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.247", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
+        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.248", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
         if (Object(util.g)()) {
             interface_Checkout = component_Checkout;
             interface_BillingPage = BillingPage;
@@ -14067,7 +14069,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.247";
+                payload.version = "4.0.248";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 payload.appName = APP_NAME;
@@ -14402,9 +14404,9 @@
             }
             storage || (storage = window[LOCAL_STORAGE_KEY]);
             storage || (storage = {
-                id: Object(__WEBPACK_IMPORTED_MODULE_1__util__.s)()
+                id: Object(__WEBPACK_IMPORTED_MODULE_1__util__.t)()
             });
-            storage.id || (storage.id = Object(__WEBPACK_IMPORTED_MODULE_1__util__.s)());
+            storage.id || (storage.id = Object(__WEBPACK_IMPORTED_MODULE_1__util__.t)());
             accessedStorage = storage;
             var result = handler(storage);
             localStorageEnabled ? window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storage)) : window[LOCAL_STORAGE_KEY] = storage;
@@ -14416,7 +14418,7 @@
                 var session = storage[SESSION_KEY], now = Date.now();
                 session && now - session.created > __WEBPACK_IMPORTED_MODULE_0__config__.a.session_uid_lifetime && (session = null);
                 session || (session = {
-                    guid: Object(__WEBPACK_IMPORTED_MODULE_1__util__.s)(),
+                    guid: Object(__WEBPACK_IMPORTED_MODULE_1__util__.t)(),
                     created: now
                 });
                 storage[SESSION_KEY] = session;
@@ -14440,7 +14442,7 @@
                 }
             };
         };
-        __webpack_exports__.s = function() {
+        __webpack_exports__.t = function() {
             var chars = "0123456789abcdef", randomID = "xxxxxxxxxx".replace(/./g, function() {
                 return chars.charAt(Math.floor(Math.random() * chars.length));
             }), timeID = __WEBPACK_IMPORTED_MODULE_0_hi_base32___default.a.encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
@@ -14491,7 +14493,7 @@
                 });
             });
         };
-        __webpack_exports__.q = function stringifyError(err) {
+        __webpack_exports__.r = function stringifyError(err) {
             var level = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1;
             if (level >= 3) return "stringifyError stack overflow";
             try {
@@ -14508,7 +14510,7 @@
                 return "Error while stringifying error: " + stringifyError(newErr, level + 1);
             }
         };
-        __webpack_exports__.r = function(err) {
+        __webpack_exports__.s = function(err) {
             var defaultMessage = "<unknown error: " + Object.prototype.toString.call(err) + ">";
             if (!err) return defaultMessage;
             if (err instanceof Error) return err.message || defaultMessage;
@@ -14581,7 +14583,12 @@
             for (var _key3 in source) source.hasOwnProperty(_key3) && (isObject(obj[_key3]) && isObject(source[_key3]) ? deepExtend(obj[_key3], source[_key3]) : obj[_key3] = source[_key3]);
             return obj;
         };
-        __webpack_exports__.t = function(obj) {
+        __webpack_exports__.q = function(arr, order) {
+            return arr.sort(function(a, b) {
+                return order.indexOf(a) - order.indexOf(b);
+            });
+        };
+        __webpack_exports__.u = function(obj) {
             var result = [];
             for (var _key6 in obj) obj.hasOwnProperty(_key6) && result.push(obj[_key6]);
             return result;
@@ -14669,25 +14676,25 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         0;
-        if (window.paypal && "4.0.247" === window.paypal.version) {
+        if (window.paypal && "4.0.248" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.247"
+                version: "4.0.248"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.247) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.248) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.247" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.248" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.247"
+                version: "4.0.248"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.247");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.248");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
             Object(__WEBPACK_IMPORTED_MODULE_1__lib_namespace__.a)(_interface, [ "paypal", "PAYPAL", "ppxo" ], [ "apps" ]);
         } catch (err) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_error", {
-                error: Object(__WEBPACK_IMPORTED_MODULE_2__lib_util__.q)(err),
+                error: Object(__WEBPACK_IMPORTED_MODULE_2__lib_util__.r)(err),
                 errtype: {}.toString.call(err)
             });
             throw err;

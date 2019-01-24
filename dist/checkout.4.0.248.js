@@ -8668,9 +8668,9 @@
         "use strict";
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js");
         var config = {
-            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.247.js",
+            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.248.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.247",
+            version: "4.0.248",
             cors: !0,
             env: function() {
                 return "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION;
@@ -10666,7 +10666,7 @@
                 }(popupBridge);
             });
         }
-        var FUNDING_PRIORITY = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.CREDIT, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.SOFORT, constants.v.MYBANK, constants.v.P24, constants.v.ZIMPLER, constants.v.CARD ], FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[constants.s] = {
+        var FUNDING_PRIORITY = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.CREDIT, constants.v.CARD, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.SOFORT, constants.v.MYBANK, constants.v.P24, constants.v.ZIMPLER ], FUNDING_ORDER = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.CREDIT, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.SOFORT, constants.v.MYBANK, constants.v.P24, constants.v.ZIMPLER, constants.v.CARD ], FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[constants.s] = {
             enabled: !0,
             allowOptIn: !0,
             allowOptOut: !0,
@@ -10890,7 +10890,7 @@
             minHorizontalButtons: 1,
             minVerticalButtons: 1,
             maxHorizontalButtons: 2,
-            maxVerticalButtons: 4,
+            maxVerticalButtons: 6,
             allowUnbranded: !1,
             allowFundingIcons: !0,
             allowPrimary: !1,
@@ -11230,7 +11230,7 @@
                 env: env,
                 layout: layout,
                 commit: commit
-            }).slice(0, max), multiple = sources.length > 1;
+            }), multiple = (sources = Object(util.r)(sources.slice(0, max), FUNDING_ORDER)).length > 1;
             multiple && (branding = !0);
             return {
                 size: size,
@@ -11729,7 +11729,7 @@
                     logoColor: "blue"
                 })));
             }(normalizeProps(props)) : null;
-            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.247", 
+            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.248", 
             _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -11764,7 +11764,7 @@
                 var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, tag = (_ref.on, _ref.container, 
                 _ref.tag), context = _ref.context, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _normalizeProps = normalizeProps(props), size = _normalizeProps.size, label = _normalizeProps.label, layout = _normalizeProps.layout, buttonHeight = _normalizeProps.height, minimumSize = getButtonConfig(label, layout === constants.g.VERTICAL ? "minimumVerticalSize" : "minimumSize"), maximumSize = getButtonConfig(label, layout === constants.g.VERTICAL ? "maximumVerticalSize" : "maximumSize");
                 if (buttonHeight) {
-                    var possibleSizes = Object(util.u)(constants.l).filter(function(possibleSize) {
+                    var possibleSizes = Object(util.v)(constants.l).filter(function(possibleSize) {
                         return BUTTON_STYLE[possibleSize] && buttonHeight && BUTTON_STYLE[possibleSize].minHeight <= buttonHeight && BUTTON_STYLE[possibleSize].maxHeight >= buttonHeight;
                     });
                     possibleSizes.sort(function(sizeA, sizeB) {
@@ -11776,6 +11776,8 @@
                 var _ref2 = BUTTON_STYLE[size] || BUTTON_STYLE[constants.l.SMALL], defaultWidth = _ref2.defaultWidth, defaultHeight = _ref2.defaultHeight;
                 setTimeout(function() {
                     outlet.style.transition = "all 0.5s ease-in-out 0.3s";
+                    Object(beaver_logger_client.k)("button_outlet_size_" + (outlet.offsetWidth ? outlet.offsetWidth.toString() : "unknown"));
+                    Object(beaver_logger_client.h)();
                 }, 3e3);
                 return jsxDom("div", {
                     id: id,
@@ -12876,7 +12878,7 @@
             setup__track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.247", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.248", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         var interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
@@ -13793,7 +13795,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.247";
+                payload.version = "4.0.248";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 payload.appName = APP_NAME;
@@ -14124,7 +14126,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(session.c)(),
-                    ver: "4.0.247"
+                    ver: "4.0.248"
                 };
             });
             Object(client.a)(function() {
@@ -14432,11 +14434,11 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return "4.0.247";
+            return "4.0.248";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
-            return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.247.js";
+            return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.248.js";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -14453,7 +14455,7 @@
                         domain: metaFrameDomain
                     });
                     return src.bridge.openBridge(Object(dom.a)(metaFrameUrl, {
-                        version: "4.0.247"
+                        version: "4.0.248"
                     }), metaFrameDomain).then(function() {
                         return metaListener;
                     }).then(function(_ref) {
@@ -14589,7 +14591,7 @@
             return util.l;
         });
         __webpack_require__.d(__webpack_exports__, "Z", function() {
-            return util.t;
+            return util.u;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
@@ -14606,10 +14608,10 @@
             return util.a;
         });
         __webpack_require__.d(__webpack_exports__, "W", function() {
-            return util.r;
+            return util.s;
         });
         __webpack_require__.d(__webpack_exports__, "X", function() {
-            return util.s;
+            return util.t;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -14634,12 +14636,14 @@
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
-        __webpack_require__.d(__webpack_exports__, !1, function() {});
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return util.r;
+        });
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, !1, function() {
-            return util.u;
+            return util.v;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return util.o;
@@ -14942,9 +14946,9 @@
             }
             storage || (storage = window[LOCAL_STORAGE_KEY]);
             storage || (storage = {
-                id: Object(__WEBPACK_IMPORTED_MODULE_1__util__.t)()
+                id: Object(__WEBPACK_IMPORTED_MODULE_1__util__.u)()
             });
-            storage.id || (storage.id = Object(__WEBPACK_IMPORTED_MODULE_1__util__.t)());
+            storage.id || (storage.id = Object(__WEBPACK_IMPORTED_MODULE_1__util__.u)());
             accessedStorage = storage;
             var result = handler(storage);
             localStorageEnabled ? window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storage)) : window[LOCAL_STORAGE_KEY] = storage;
@@ -14956,7 +14960,7 @@
                 var session = storage[SESSION_KEY], now = Date.now();
                 session && now - session.created > __WEBPACK_IMPORTED_MODULE_0__config__.a.session_uid_lifetime && (session = null);
                 session || (session = {
-                    guid: Object(__WEBPACK_IMPORTED_MODULE_1__util__.t)(),
+                    guid: Object(__WEBPACK_IMPORTED_MODULE_1__util__.u)(),
                     created: now
                 });
                 storage[SESSION_KEY] = session;
@@ -14980,7 +14984,7 @@
                 }
             };
         };
-        __webpack_exports__.t = function() {
+        __webpack_exports__.u = function() {
             var chars = "0123456789abcdef", randomID = "xxxxxxxxxx".replace(/./g, function() {
                 return chars.charAt(Math.floor(Math.random() * chars.length));
             }), timeID = __WEBPACK_IMPORTED_MODULE_0_hi_base32___default.a.encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
@@ -15042,7 +15046,7 @@
                 });
             });
         };
-        __webpack_exports__.r = function stringifyError(err) {
+        __webpack_exports__.s = function stringifyError(err) {
             var level = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1;
             if (level >= 3) return "stringifyError stack overflow";
             try {
@@ -15059,7 +15063,7 @@
                 return "Error while stringifying error: " + stringifyError(newErr, level + 1);
             }
         };
-        __webpack_exports__.s = function(err) {
+        __webpack_exports__.t = function(err) {
             var defaultMessage = "<unknown error: " + Object.prototype.toString.call(err) + ">";
             if (!err) return defaultMessage;
             if (err instanceof Error) return err.message || defaultMessage;
@@ -15132,7 +15136,12 @@
             for (var _key3 in source) source.hasOwnProperty(_key3) && (isObject(obj[_key3]) && isObject(source[_key3]) ? deepExtend(obj[_key3], source[_key3]) : obj[_key3] = source[_key3]);
             return obj;
         };
-        __webpack_exports__.u = function(obj) {
+        __webpack_exports__.r = function(arr, order) {
+            return arr.sort(function(a, b) {
+                return order.indexOf(a) - order.indexOf(b);
+            });
+        };
+        __webpack_exports__.v = function(obj) {
             var result = [];
             for (var _key6 in obj) obj.hasOwnProperty(_key6) && result.push(obj[_key6]);
             return result;
@@ -15220,25 +15229,25 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         if (!Object(__WEBPACK_IMPORTED_MODULE_2__lib_util__.g)()) throw new Error("Do not integrate with versioned script url");
-        if (window.paypal && "4.0.247" === window.paypal.version) {
+        if (window.paypal && "4.0.248" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.247"
+                version: "4.0.248"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.247) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.248) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.247" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.248" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.247"
+                version: "4.0.248"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.247");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.248");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
             Object(__WEBPACK_IMPORTED_MODULE_1__lib_namespace__.a)(_interface, [ "paypal", "PAYPAL", "ppxo" ], [ "apps" ]);
         } catch (err) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_error", {
-                error: Object(__WEBPACK_IMPORTED_MODULE_2__lib_util__.r)(err),
+                error: Object(__WEBPACK_IMPORTED_MODULE_2__lib_util__.s)(err),
                 errtype: {}.toString.call(err)
             });
             throw err;
@@ -15877,4 +15886,4 @@
         });
     }
 }));
-//# sourceMappingURL=checkout.4.0.247.js.map
+//# sourceMappingURL=checkout.4.0.248.js.map
