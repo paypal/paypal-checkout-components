@@ -1,7 +1,9 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { createTestContainer, destroyTestContainer, getElement, createElement, onElementResize } from '../common';
+import { getElement } from 'belter/src';
+
+import { createTestContainer, destroyTestContainer, createElement, onElementResize } from '../common';
 
 describe(`paypal button component sizes`, () => {
 

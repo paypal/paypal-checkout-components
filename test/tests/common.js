@@ -5,6 +5,8 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { isWindowClosed, type CrossDomainWindowType, type SameDomainWindowType } from 'cross-domain-utils/src';
 import { getPayPalLoggerUrl, getAuthAPIUrl, getOrderAPIUrl } from '@paypal/sdk-client/src';
+import { extendUrl, getElement } from 'belter/src';
+import { SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
 
 for (const level of [ 'log', 'debug', 'info', 'warn', 'error' ]) {
     const original = window.console[level];
@@ -35,6 +37,20 @@ export function onHashChange() : ZalgoPromise<string> {
     });
 }
 
+export function buildSDKScriptUrl(query? : Object = {}) : string {
+    return extendUrl(`https://${ __HOST__ }${ __PATH__ }`, {
+        query: {
+            [ SDK_QUERY_KEYS.CLIENT_ID ]: 'abcxyz123',
+            ...query
+        }
+    });
+}
+
+export function setSDKScriptUrl(query? : Object = {}) {
+    const script = getElement('#test-sdk-script');
+    script.setAttribute('src', buildSDKScriptUrl(query));
+}
+
 export function delay(time : number) : ZalgoPromise<void> {
     return new ZalgoPromise(resolve => {
         setTimeout(resolve, time);
@@ -49,6 +65,10 @@ export function uniqueID(length : number = 8, chars : string = '0123456789abcdef
 
 export function generateOrderID() : string {
     return `${ uniqueID(20).toUpperCase() }`;
+}
+
+export function generateBillingAgreementToken() : string {
+    return `BA-${ uniqueID(20).toUpperCase() }`;
 }
 
 export const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
@@ -176,27 +196,6 @@ export function once<T : Function>(method : T) : T {
             return method.apply(this, arguments);
         }
     };
-}
-
-export function getElement(el : string | HTMLElement, container : HTMLElement | Document = document) : HTMLElement {
-
-    if (!el) {
-        throw new Error(`No element passed`);
-    }
-
-    let element;
-
-    if (typeof el === 'string') {
-        element = container.querySelector(el);
-
-        if (!element) {
-            throw new Error(`Can not find element: ${ el }`);
-        }
-    } else {
-        element = el;
-    }
-
-    return element;
 }
 
 export function getElements(selector : string, container : HTMLElement | Document = document) : $ReadOnlyArray<HTMLElement> {

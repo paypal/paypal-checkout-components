@@ -3,9 +3,10 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { wrapPromise } from 'belter/src';
+import { SDK_QUERY_KEYS, QUERY_BOOL } from '@paypal/sdk-constants/src';
 
-import { generateOrderID, createElement, createTestContainer,
-    destroyTestContainer, onHashChange, assert, WEBVIEW_USER_AGENT } from '../common';
+import { generateOrderID, createElement, createTestContainer, generateBillingAgreementToken,
+    destroyTestContainer, onHashChange, assert, WEBVIEW_USER_AGENT, setSDKScriptUrl } from '../common';
 
 for (const flow of [ 'popup', 'iframe' ]) {
 
@@ -39,7 +40,19 @@ for (const flow of [ 'popup', 'iframe' ]) {
             }).render('#testContainer');
         });
 
-        it('should render a button into a container and click on the button, then complete the checkout without onApprove', (done) => {
+        it('should render a button into a container and click on the button, then complete the checkout with createBillingAgreement', () => {
+            return wrapPromise(({ expect, avoid }) => {
+                setSDKScriptUrl({ [ SDK_QUERY_KEYS.VAULT ]: QUERY_BOOL.TRUE });
+
+                return window.paypal.Buttons({
+                    test:                   { flow, action: 'checkout', captureOrder: expect('captureOrder') },
+                    createBillingAgreement: expect('createBillingAgreement', generateBillingAgreementToken),
+                    onCancel:               avoid('onCancel')
+                }).render('#testContainer');
+            });
+        });
+
+        it('should render a button into a container and click on the button, then complete the checkout with a billing agreement', (done) => {
             window.paypal.Buttons({
 
                 test: { flow, action: 'checkout', captureOrder: () => done() },

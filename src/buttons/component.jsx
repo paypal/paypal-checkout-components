@@ -172,7 +172,11 @@ export const Buttons : ZoidComponent<ButtonProps> = create({
                     });
                 };
             },
-            default() : CreateOrder {
+            default({ props }) : ?CreateOrder {
+                if (props.createBillingAgreement) {
+                    return;
+                }
+
                 return (data : CreateOrderData, actions : CreateOrderActions) => {
                     return actions.order.create({
                         purchase_units: [

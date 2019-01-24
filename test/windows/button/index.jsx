@@ -1,13 +1,13 @@
 /* @flow */
 /** @jsx node */
 
-import { noop, supportsPopups } from 'belter/src';
+import { noop, supportsPopups, getElement } from 'belter/src';
 import { type ZalgoPromise } from 'zalgo-promise/src';
 import { node, html } from 'jsx-pragmatic/src';
 import { CONTEXT } from 'zoid/src';
 
 import { Buttons as ButtonsTemplate } from '../../../src/buttons/template';
-import { getElement, getElements, errorOnWindowOpen } from '../../tests/common';
+import { getElements, errorOnWindowOpen, generateOrderID } from '../../tests/common';
 
 let { action, type, authed = false, bridge = false, delay = 0, onRender, checkout, selector, remembered, captureOrder = noop } = window.xprops.test;
 
@@ -28,7 +28,14 @@ function renderCheckout(props = {}, context = CONTEXT.POPUP) {
 
     window.paypal.Checkout({
 
-        payment: window.xprops.createOrder,
+        payment: window.xprops.createBillingAgreement
+            ? () => {
+                return window.xprops.createBillingAgreement().then(() => {
+                    return generateOrderID();
+                });
+            }
+            : window.xprops.createOrder,
+        
         onAuthorize(data, actions) : void | ZalgoPromise<void> {
 
             return window.xprops.onApprove({

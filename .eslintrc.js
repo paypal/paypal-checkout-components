@@ -15,7 +15,9 @@ module.exports = {
         '__COMMIT__': true,
         '__VAULT__': true,
         '__PORT__': true,
-        '__STAGE_HOST__': true
+        '__STAGE_HOST__': true,
+        '__HOST__': true,
+        '__PATH__': true
     },
 
     'rules': {

@@ -1,6 +1,7 @@
 /* @flow */
 
 import './tests';
+import { setSDKScriptUrl } from './tests/common';
 
 window.mockDomain = 'mock://www.merchant-site.com';
 
@@ -28,6 +29,8 @@ beforeEach(() => {
 
     window.__CACHE_START_TIME__ = Date.now();
     originalUserAgent = window.navigator.userAgent;
+
+    setSDKScriptUrl();
 
     delete window.__test__;
 });
