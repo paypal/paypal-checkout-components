@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { generateOrderID, createElement, createTestContainer, destroyTestContainer, assert, WEBVIEW_USER_AGENT } from '../common';
+import { generateOrderID, createTestContainer, destroyTestContainer, assert, WEBVIEW_USER_AGENT, runOnClick } from '../common';
 
 for (const flow of [ 'popup', 'iframe' ]) {
 
@@ -21,12 +21,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render checkout and return a blank token in payment', (done) => {
-
-            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-
-            testButton.addEventListener('click', () => {
-
-
+            runOnClick(() => {
                 return window.paypal.Checkout({
 
                     payment() : string {
@@ -48,17 +43,10 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
                 }).render('body');
             });
-
-            testButton.click();
         });
 
         it('should render checkout and return a promise for a blank token in payment', (done) => {
-
-            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-
-            testButton.addEventListener('click', () => {
-
-
+            runOnClick(() => {
                 return window.paypal.Checkout({
 
                     payment() : ZalgoPromise<string> {
@@ -80,17 +68,10 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
                 }).render('body');
             });
-
-            testButton.click();
         });
 
         it('should render checkout and throw an error in payment', (done) => {
-
-            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-
-            testButton.addEventListener('click', () => {
-
-
+            runOnClick(() => {
                 return window.paypal.Checkout({
 
                     payment() {
@@ -112,17 +93,10 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
                 }).render('body');
             });
-
-            testButton.click();
         });
 
         it('should render checkout and return a rejected promise in payment', (done) => {
-
-            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-
-            testButton.addEventListener('click', () => {
-
-
+            runOnClick(() => {
                 return window.paypal.Checkout({
 
                     payment() : string | ZalgoPromise<string> {
@@ -144,17 +118,10 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
                 }).render('body');
             });
-
-            testButton.click();
         });
         
         it('should render checkout, then error out', (done) => {
-
-            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-
-            testButton.addEventListener('click', () => {
-
-
+            runOnClick(() => {
                 return window.paypal.Checkout({
 
                     test: { action: 'error' },
@@ -178,17 +145,10 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
                 }).render('body');
             });
-
-            testButton.click();
         });
 
         it('should render checkout, then throw an error in onAuthorize', (done) => {
-
-            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-
-            testButton.addEventListener('click', () => {
-
-
+            runOnClick(() => {
                 return window.paypal.Checkout({
 
                     payment() : string | ZalgoPromise<string> {
@@ -210,17 +170,10 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
                 }).render('body');
             });
-
-            testButton.click();
         });
 
         it('should render checkout, then return a rejected promise in onAuthorize', (done) => {
-
-            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-
-            testButton.addEventListener('click', () => {
-
-
+            runOnClick(() => {
                 return window.paypal.Checkout({
 
                     payment() : string | ZalgoPromise<string> {
@@ -244,17 +197,10 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
                 }).render('body');
             });
-
-            testButton.click();
         });
 
         it('should render checkout, then return an undefined rejected promise in onAuthorize', (done) => {
-
-            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-
-            testButton.addEventListener('click', () => {
-
-
+            runOnClick(() => {
                 return window.paypal.Checkout({
 
                     payment() : string | ZalgoPromise<string> {
@@ -278,16 +224,11 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
                 }).render('body');
             });
-
-            testButton.click();
         });
 
         if (flow === 'iframe') {
             it('should render checkout, window.open the iframe name, then complete the payment', (done) => {
-
-                const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-
-                testButton.addEventListener('click', () => {
+                runOnClick(() => {
                     let name;
 
 
@@ -312,15 +253,11 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
                     window.open('', name);
                 });
-
-                testButton.click();
             });
         }
 
         if (flow === 'popup') {
             it('should render checkout without a click event and error out', (done) => {
-
-
                 window.paypal.Checkout({
                     payment() : string | ZalgoPromise<string> {
                         return generateOrderID();

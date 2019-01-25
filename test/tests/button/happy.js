@@ -2,10 +2,10 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { wrapPromise } from 'belter/src';
+import { wrapPromise, createElement, getElement } from 'belter/src';
 import { SDK_QUERY_KEYS, QUERY_BOOL } from '@paypal/sdk-constants/src';
 
-import { generateOrderID, createElement, createTestContainer, generateBillingAgreementToken,
+import { generateOrderID, createTestContainer, generateBillingAgreementToken,
     destroyTestContainer, onHashChange, assert, WEBVIEW_USER_AGENT, setSDKScriptUrl } from '../common';
 
 for (const flow of [ 'popup', 'iframe' ]) {
@@ -585,10 +585,9 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
             }).render('#lateContainer');
 
-            container = createElement({
-                id:        'lateContainer',
-                container: '#testContainer'
-            });
+            container = createElement('div', {
+                id: 'lateContainer'
+            }, getElement('#testContainer'));
 
             Object.defineProperty(document, 'readyState', { value: readyState, configurable: true });
         });

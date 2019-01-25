@@ -3,7 +3,7 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { CONTEXT } from 'zoid/src';
 
-import { createTestContainer, createElement } from '../../tests/common';
+import { runOnClick } from '../../tests/common';
 
 const { action, type, onRender, onInit } = window.xprops.test;
 
@@ -85,21 +85,14 @@ if (action === 'checkout') {
     });
 
 } else if (action === 'popout') {
-
-    createTestContainer();
-
-    const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-
-    testButton.addEventListener('click', () => {
-        window.paypal.Checkout({
-            payment:          window.xprops.payment,
-            onAuthorize:      window.xprops.onAuthorize,
-            onCancel:         window.xprops.onCancel,
-            onError:          window.xprops.onError
+    runOnClick(() => {
+        return window.paypal.Checkout({
+            payment:     window.xprops.payment,
+            onAuthorize: window.xprops.onAuthorize,
+            onCancel:    window.xprops.onCancel,
+            onError:     window.xprops.onError
         }).renderTo(window.opener ? window.opener.parent : window.parent, 'body', CONTEXT.POPUP);
     });
-
-    testButton.click();
 
 } else if (action === 'error') {
 

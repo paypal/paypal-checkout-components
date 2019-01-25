@@ -4,7 +4,7 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { wrapPromise } from 'belter/src';
 
-import { generateOrderID, doOnClick,
+import { generateOrderID, runOnClick,
     createTestContainer, destroyTestContainer,
     getElementRecursive, onWindowOpen, WEBVIEW_USER_AGENT } from '../common';
 
@@ -20,7 +20,7 @@ describe(`paypal checkout component happy path`, () => {
 
     it('should render checkout, then complete the payment', () => {
         return wrapPromise(({ expect, error }) => {
-            return doOnClick(() => {
+            return runOnClick(() => {
                 return window.paypal.Checkout({
                     createOrder: expect('createOrder', generateOrderID),
                     onApprove:   expect('onApprove'),
@@ -32,7 +32,7 @@ describe(`paypal checkout component happy path`, () => {
 
     it('should render checkout, then cancel the payment', () => {
         return wrapPromise(({ expect, error }) => {
-            return doOnClick(() => {
+            return runOnClick(() => {
                 return window.paypal.Checkout({
                     test:        { action: 'cancel' },
                     createOrder: expect('createOrder', generateOrderID),
@@ -45,7 +45,7 @@ describe(`paypal checkout component happy path`, () => {
 
     it('should render checkout, with a promise token passed, then complete the payment', () => {
         return wrapPromise(({ expect, error }) => {
-            return doOnClick(() => {
+            return runOnClick(() => {
                 return window.paypal.Checkout({
                     createOrder: expect('createOrder', () => ZalgoPromise.try(generateOrderID)),
                     onApprove:   expect('onApprove'),
@@ -57,7 +57,7 @@ describe(`paypal checkout component happy path`, () => {
 
     it('should render checkout with a checkout token on the correct url, then complete the payment', () => {
         return wrapPromise(({ expect, error }) => {
-            return doOnClick(() => {
+            return runOnClick(() => {
                 const orderID = generateOrderID();
 
                 return window.paypal.Checkout({
@@ -79,7 +79,7 @@ describe(`paypal checkout component happy path`, () => {
 
     it('should render checkout, and click the close button to close the window', () => {
         return wrapPromise(({ expect, error }) => {
-            return doOnClick(() => {
+            return runOnClick(() => {
                 return window.paypal.Checkout({
                     test:        { action: 'init' },
                     createOrder: expect('createOrder', generateOrderID),
@@ -98,7 +98,7 @@ describe(`paypal checkout component happy path`, () => {
 
     it('should render checkout, and click the focus button to focus the popup', () => {
         return wrapPromise(({ expect, error }) => {
-            return doOnClick(() => {
+            return runOnClick(() => {
                 let childWindow;
                 onWindowOpen().then(expect('windowOpen', win => {
                     childWindow = win;
@@ -124,7 +124,7 @@ describe(`paypal checkout component happy path`, () => {
 
     it('should render checkout, then cancel the payment by closing the window', () => {
         return wrapPromise(({ expect, error }) => {
-            return doOnClick(() => {
+            return runOnClick(() => {
                 return window.paypal.Checkout({
                     test: {
                         action: 'init',
@@ -142,7 +142,7 @@ describe(`paypal checkout component happy path`, () => {
 
     it('should render checkout to an iframe, popout, then complete the payment', () => {
         return wrapPromise(({ expect, error }) => {
-            return doOnClick(() => {
+            return runOnClick(() => {
                 let createOrderCalls = 0;
                 window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
 

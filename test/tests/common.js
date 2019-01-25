@@ -5,22 +5,8 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { isWindowClosed, type CrossDomainWindowType, type SameDomainWindowType } from 'cross-domain-utils/src';
 import { getPayPalLoggerUrl, getAuthAPIUrl, getOrderAPIUrl } from '@paypal/sdk-client/src';
-import { extendUrl, getElement } from 'belter/src';
+import { extendUrl, getElement, uniqueID, createElement, destroyElement } from 'belter/src';
 import { SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
-
-for (const level of [ 'log', 'debug', 'info', 'warn', 'error' ]) {
-    const original = window.console[level];
-
-    window.console[level] = function log() : void {
-
-        const date = new Date();
-        const args = Array.prototype.slice.call(arguments);
-
-        args.unshift(`${ date.getHours() }:${ date.getMinutes() }:${ date.getSeconds() }:${ date.getMilliseconds() }`);
-
-        return original.apply(this, args);
-    };
-}
 
 export function onHashChange() : ZalgoPromise<string> {
     return new ZalgoPromise(resolve => {
@@ -51,24 +37,12 @@ export function setSDKScriptUrl(query? : Object = {}) {
     script.setAttribute('src', buildSDKScriptUrl(query));
 }
 
-export function delay(time : number) : ZalgoPromise<void> {
-    return new ZalgoPromise(resolve => {
-        setTimeout(resolve, time);
-    });
-}
-
-export function uniqueID(length : number = 8, chars : string = '0123456789abcdefhijklmnopqrstuvwxyz') : string {
-    return new Array(length + 1).join('x').replace(/x/g, () => {
-        return chars.charAt(Math.floor(Math.random() * chars.length));
-    });
-}
-
 export function generateOrderID() : string {
-    return `${ uniqueID(20).toUpperCase() }`;
+    return `${ uniqueID().toUpperCase() }`;
 }
 
 export function generateBillingAgreementToken() : string {
-    return `BA-${ uniqueID(20).toUpperCase() }`;
+    return `BA-${ uniqueID().toUpperCase() }`;
 }
 
 export const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
@@ -80,70 +54,8 @@ export const MERCHANT_CLIENT_ID = 'abcxyz123';
 export const MERCHANT_ACCESS_TOKEN = 'xxxyyy987';
 export const MERCHANT_BRAINTREE_AUTH = 'aaabbb456';
 
-export function createElement(options : Object) : HTMLElement {
-
-    const element = document.createElement(options.tag || 'div');
-
-    if (options.id) {
-        element.setAttribute('id', options.id);
-    }
-
-    if (options.props) {
-        for (const key of Object.keys(options.props)) {
-            element.setAttribute(key, options.props[key]);
-        }
-    }
-
-    if (options.style) {
-        for (const key of Object.keys(options.style)) {
-            element.style[key] = options.style[key];
-        }
-    }
-
-    if (options.children) {
-        for (const child of options.children) {
-            element.appendChild(createElement(child));
-        }
-    }
-
-    if (options.container) {
-
-        let container;
-        const containerName = options.container;
-
-        if (typeof containerName === 'string') {
-            container = document.getElementById(containerName) || document.querySelector(containerName);
-        } else {
-            container = containerName;
-        }
-
-        if (!container) {
-            throw new Error(`Could not find container: ${ containerName }`);
-        }
-
-        container.appendChild(element);
-    }
-
-    if (options.html) {
-        element.innerHTML = options.html;
-    }
-
-    return element;
-}
-
-export function destroyElement(element : string | ?HTMLElement) {
-
-    if (typeof element === 'string') {
-        element = document.getElementById(element) || document.querySelector(element);
-    }
-
-    if (element && element.parentNode) {
-        element.parentNode.removeChild(element);
-    }
-}
-
-export function doOnClick<T>(handler : () => T) : T {
-    const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+export function runOnClick<T>(handler : () => T) : T {
+    const testButton = createElement('button', { id: 'testButton' }, document.body);
     let didError = false;
     let result;
     let error;
@@ -156,46 +68,13 @@ export function doOnClick<T>(handler : () => T) : T {
         }
     });
     testButton.click();
+    destroyElement(testButton);
     if (didError) {
         throw error;
     } else {
         // $FlowFixMe
         return result;
     }
-}
-
-export function createFrame(options : Object) : HTMLIFrameElement {
-
-    let html;
-
-    if (options.html) {
-        html = options.html;
-        delete options.html;
-    }
-
-    const frame = createElement({
-        tag: 'iframe',
-        ...options
-    });
-
-    if (html) {
-        // $FlowFixMe
-        frame.contentWindow.document.write(html);
-    }
-
-    // $FlowFixMe
-    return frame;
-}
-
-export function once<T : Function>(method : T) : T {
-    let called = false;
-    // $FlowFixMe
-    return function onceWrapper() : mixed {
-        if (!called) {
-            called = true;
-            return method.apply(this, arguments);
-        }
-    };
 }
 
 export function getElements(selector : string, container : HTMLElement | Document = document) : $ReadOnlyArray<HTMLElement> {
@@ -234,14 +113,16 @@ export function getElementRecursive(selector : string, win : SameDomainWindowTyp
 
 
 export function createTestContainer() : HTMLElement {
-    return createElement({
-        id:        'testContainer',
-        container: document.body
-    });
+    return createElement('div', {
+        id: 'testContainer'
+    }, getElement('body'));
 }
 
-export function destroyTestContainer() : void {
-    return destroyElement('testContainer');
+export function destroyTestContainer() {
+    const container = document.querySelector('#testContainer');
+    if (container) {
+        destroyElement(container);
+    }
 }
 
 patchXmlHttpRequest();
@@ -389,34 +270,6 @@ window.open = function patchedWindowOpen() : CrossDomainWindowType {
     return windowOpen.apply(this, arguments);
 };
 
-export function preventOpenWindow(flow : string, win : SameDomainWindowType = window) {
-
-    if (flow === 'popup') {
-        const winOpen = win.open;
-        win.open = () => {
-            win.open = winOpen;
-            return {
-                closed: true,
-                close() {
-                    // pass
-                }
-            };
-        };
-    } else if (flow === 'iframe') {
-
-        const documentCreateElement = win.document.createElement;
-        // $FlowFixMe
-        win.document.createElement = () => { // $FlowFixMe
-            win.document.createElement = documentCreateElement;
-            throw new Error('Can not create element');
-        };
-
-    } else {
-
-        throw new Error(`Flow not recognized: ${ flow }`);
-    }
-}
-
 export function onWindowOpen({ time = 500 } : { time? : number } = {}) : ZalgoPromise<CrossDomainWindowType> {
     return new ZalgoPromise((resolve, reject) => {
 
@@ -480,21 +333,6 @@ export function onWindowOpen({ time = 500 } : { time? : number } = {}) : ZalgoPr
     });
 }
 
-export function onWindowClose(win : CrossDomainWindowType) : ZalgoPromise<void> {
-    return new ZalgoPromise(resolve => {
-        if (isWindowClosed(win)) {
-            return resolve();
-        }
-
-        const interval = setInterval(() => {
-            if (isWindowClosed(win)) {
-                clearInterval(interval);
-                return resolve();
-            }
-        }, 50);
-    });
-}
-
 export function errorOnWindowOpen(win : CrossDomainWindowType = window) {
 
     if (win.open.reset) {
@@ -510,91 +348,6 @@ export function errorOnWindowOpen(win : CrossDomainWindowType = window) {
     win.open.reset = () => {
         win.open = open;
     };
-}
-
-function parseUrl(url : string) : Object {
-
-    const [ serverUrl, hash ] = url.split('#');
-    const [ , query ] = serverUrl.split('?');
-
-    const params = {};
-
-    if (query) {
-        for (const keypair of query.split('&')) {
-            const [ key, val ] = keypair.split('=');
-            params[decodeURIComponent(key)] = decodeURIComponent(val);
-        }
-    }
-
-    return {
-        url:   serverUrl,
-        query: params,
-        hash
-    };
-}
-
-export function noop() {
-    // pass
-}
-
-export function setupPopupBridge({ win = window, isAuthorize = true } : { win? : window, isAuthorize? : boolean } = {}) {
-
-    errorOnWindowOpen(win);
-
-    win.popupBridge = {
-
-        getReturnUrlPrefix() : string {
-            return 'app://foobar';
-        },
-
-        open(url) {
-            setTimeout(() => {
-
-                const { query, hash } = parseUrl(url);
-
-                const queryItems : Object = {};
-                queryItems.token = query.token;
-
-                if (isAuthorize) {
-                    queryItems.opType = 'payment';
-                    queryItems.PayerID = 'YYYYYYYYYYYYY';
-                    queryItems.return_uri = `#return?token=${ queryItems.token }&PayerID=YYYYYYYYYYYYY`;
-                    queryItems.intent = 'commit';
-                    if (hash) {
-                        queryItems.return_uri = `${ queryItems.return_uri }&hash=${ hash }`;
-                    }
-
-                } else {
-                    queryItems.opType = 'cancel';
-                    queryItems.cancel_uri = `#cancel?token=${ queryItems.token }`;
-                    if (hash) {
-                        queryItems.cancel_uri = `${ queryItems.cancel_uri }&hash=${ hash }`;
-                    }
-                }
-
-                if (win.popupBridge.action === 'cancel') {
-                    win.popupBridge.onCancel();
-                } else {
-                    return win.popupBridge.onComplete(null, {
-                        queryItems
-                    });
-                }
-
-            }, 200);
-        }
-    };
-}
-
-export function destroyPopupBridge(win : SameDomainWindowType = window) {
-    delete win.popupBridge;
-
-    if (window.popupBridge) {
-        delete window.popupBridge;
-    }
-
-    if (win.open.reset) {
-        win.open.reset();
-    }
 }
 
 export function onElementResize(el : HTMLElement) : ZalgoPromise<void> {

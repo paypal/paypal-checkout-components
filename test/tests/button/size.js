@@ -1,9 +1,9 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { getElement } from 'belter/src';
+import { getElement, createElement } from 'belter/src';
 
-import { createTestContainer, destroyTestContainer, createElement, onElementResize } from '../common';
+import { createTestContainer, destroyTestContainer, onElementResize } from '../common';
 
 describe(`paypal button component sizes`, () => {
 
@@ -17,13 +17,12 @@ describe(`paypal button component sizes`, () => {
 
     it('should render a responsive button in the small spectrum', (done) => {
 
-        const container = createElement({
+        const container = createElement('div', {
             style: {
                 width:  '162px',
                 height: '100px'
-            },
-            container: '#testContainer'
-        });
+            }
+        }, getElement('#testContainer'));
 
         const expectedWidth = 162;
         const expectedHeight = 38;
@@ -68,13 +67,12 @@ describe(`paypal button component sizes`, () => {
 
     it('should render a responsive button in the medium spectrum', (done) => {
 
-        const container = createElement({
+        const container = createElement('div', {
             style: {
                 width:  '250px',
                 height: '100px'
-            },
-            container: '#testContainer'
-        });
+            }
+        }, getElement('#testContainer'));
 
         const expectedWidth = 250;
         const expectedHeight = 53;
@@ -119,13 +117,12 @@ describe(`paypal button component sizes`, () => {
 
     it('should render a responsive button in the large spectrum', (done) => {
 
-        const container = createElement({
+        const container = createElement('div', {
             style: {
                 width:  '350px',
                 height: '100px'
-            },
-            container: '#testContainer'
-        });
+            }
+        }, getElement('#testContainer'));
 
         const expectedWidth = 350;
         const expectedHeight = 68;
@@ -170,13 +167,12 @@ describe(`paypal button component sizes`, () => {
 
     it('should render a responsive button below the tiny spectrum', (done) => {
 
-        const container = createElement({
+        const container = createElement('div', {
             style: {
                 width:  '30px',
                 height: '100px'
-            },
-            container: '#testContainer'
-        });
+            }
+        }, getElement('#testContainer'));
 
         const expectedWidth = 150;
         const expectedHeight = 38;
@@ -221,13 +217,12 @@ describe(`paypal button component sizes`, () => {
 
     it('should render a responsive button above the large spectrum', (done) => {
 
-        const container = createElement({
+        const container = createElement('div', {
             style: {
                 width:  '800px',
                 height: '100px'
-            },
-            container: '#testContainer'
-        });
+            }
+        }, getElement('#testContainer'));
 
         const expectedWidth = 750;
         const expectedHeight = 83;
@@ -272,13 +267,12 @@ describe(`paypal button component sizes`, () => {
 
     it('should render a responsive button in the tiny spectrum into an element below the minimum height', (done) => {
 
-        const container = createElement({
+        const container = createElement('div', {
             style: {
                 width:  '68px',
                 height: '5px'
-            },
-            container: '#testContainer'
-        });
+            }
+        }, getElement('#testContainer'));
 
         const expectedWidth = 150;
         const expectedHeight = 38;
@@ -323,13 +317,12 @@ describe(`paypal button component sizes`, () => {
 
     it('should render a responsive button in the small spectrum into an element below the minimum height', (done) => {
 
-        const container = createElement({
+        const container = createElement('div', {
             style: {
                 width:  '155px',
                 height: '22px'
-            },
-            container: '#testContainer'
-        });
+            }
+        }, getElement('#testContainer'));
 
         const expectedWidth = 155;
         const expectedHeight = 38;
@@ -374,13 +367,12 @@ describe(`paypal button component sizes`, () => {
 
     it('should render a responsive button in the medium spectrum into an element below the minimum height', (done) => {
 
-        const container = createElement({
+        const container = createElement('div', {
             style: {
                 width:  '235px',
                 height: '27px'
-            },
-            container: '#testContainer'
-        });
+            }
+        }, getElement('#testContainer'));
 
         const expectedWidth = 235;
         const expectedHeight = 53;
@@ -425,13 +417,12 @@ describe(`paypal button component sizes`, () => {
 
     it('should render a responsive button in the large spectrum into an element below the minimum height', (done) => {
 
-        const container = createElement({
+        const container = createElement('div', {
             style: {
                 width:  '370px',
                 height: '40px'
-            },
-            container: '#testContainer'
-        });
+            }
+        }, getElement('#testContainer'));
 
         const expectedWidth = 370;
         const expectedHeight = 68;
@@ -476,13 +467,12 @@ describe(`paypal button component sizes`, () => {
 
     it('should render a responsive pay button below the small spectrum', (done) => {
 
-        const container = createElement({
+        const container = createElement('div', {
             style: {
                 width:  '40px',
                 height: '100px'
-            },
-            container: '#testContainer'
-        });
+            }
+        }, getElement('#testContainer'));
 
         const expectedWidth = 150;
         const expectedHeight = 38;
@@ -528,13 +518,12 @@ describe(`paypal button component sizes`, () => {
 
     it.skip('should render a responsive button and resize it', (done) => {
 
-        const container = createElement({
+        const container = createElement('div', {
             style: {
                 width:  '162px',
                 height: '100px'
-            },
-            container: '#testContainer'
-        });
+            }
+        }, getElement('#testContainer'));
 
         const expectedWidth = 255;
         const expectedHeight = 53;
@@ -587,14 +576,13 @@ describe(`paypal button component sizes`, () => {
 
     it('should render a responsive button in a hidden element then display it', (done) => {
 
-        const container = createElement({
+        const container = createElement('div', {
             style: {
                 width:   '172px',
                 height:  '100px',
                 display: 'none'
-            },
-            container: '#testContainer'
-        });
+            }
+        }, getElement('#testContainer'));
 
         const expectedWidth = 172;
         const expectedHeight = 38;
@@ -642,13 +630,12 @@ describe(`paypal button component sizes`, () => {
 
     it('should render a responsive button in a floated div without a width', (done) => {
 
-        const container = createElement({
+        const container = createElement('div', {
             style: {
                 height: '100px',
                 float:  'right'
-            },
-            container: '#testContainer'
-        });
+            }
+        }, getElement('#testContainer'));
 
         const expectedWidth = 150;
         const expectedHeight = 38;
@@ -693,14 +680,13 @@ describe(`paypal button component sizes`, () => {
 
     it('should render a responsive button centered', (done) => {
 
-        const container = createElement({
+        const container = createElement('div', {
             style: {
                 height:    '100px',
                 width:     '800px',
                 textAlign: 'center'
-            },
-            container: '#testContainer'
-        });
+            }
+        }, getElement('#testContainer'));
 
 
         window.paypal.Buttons({
@@ -741,13 +727,12 @@ describe(`paypal button component sizes`, () => {
 
     it('should render a responsive button with a custon height', (done) => {
 
-        const container = createElement({
+        const container = createElement('div', {
             style: {
                 width:  '162px',
                 height: '100px'
-            },
-            container: '#testContainer'
-        });
+            }
+        }, getElement('#testContainer'));
 
         const expectedWidth = 162;
         const expectedHeight = 54;

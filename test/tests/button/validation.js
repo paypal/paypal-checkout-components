@@ -2,8 +2,9 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { noop } from 'belter/src';
 
-import { createTestContainer, destroyTestContainer, noop, mockProp } from '../common';
+import { createTestContainer, destroyTestContainer, mockProp } from '../common';
 
 const buttonConfigs = [
 
