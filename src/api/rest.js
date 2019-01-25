@@ -5,7 +5,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { on, send } from 'post-robot/src';
 import { btoa } from 'Base64';
 import { info, track } from 'beaver-logger/client';
-import { getAncestor, isSameDomain, isFileProtocol } from 'cross-domain-utils/src';
+import { getAncestor, isSameDomain } from 'cross-domain-utils/src';
 
 import { config } from '../config';
 import { FPTI, PAYMENT_TYPE } from '../constants';
@@ -143,9 +143,7 @@ function logPaymentResponse(res) {
 }
 
 function getDefaultReturnUrl() : string {
-    return isFileProtocol()
-        ? `https://www.paypal.com`
-        : `${ window.location.protocol }//${ window.location.host }`;
+    return `https://www.paypal.com/checkoutnow/error`;
 }
 
 function createTracking(env : string, client : { [key : string] : string }, merchantID, trackingData) : Object {
