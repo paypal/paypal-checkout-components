@@ -107,11 +107,11 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
         const expectedCurrency = window.xprops.currency;
 
         if (intent !== expectedIntent) {
-            throw new Error(`Expected intent from order api call to be ${ expectedIntent }, got ${ intent }. Please ensure you are passing intent=${ expectedIntent } to the sdk`);
+            throw new Error(`Expected intent from order api call to be ${ expectedIntent }, got ${ intent }. Please ensure you are passing ${ SDK_QUERY_KEYS.INTENT }=${ intent } to the sdk`);
         }
 
         if (currency && currency !== expectedCurrency) {
-            throw new Error(`Expected currency from order api call to be ${ expectedCurrency }, got ${ currency }. Please ensure you are passing intent=${ expectedIntent } to the sdk`);
+            throw new Error(`Expected currency from order api call to be ${ expectedCurrency }, got ${ currency }. Please ensure you are passing ${ SDK_QUERY_KEYS.CURRENCY }=${ currency } to the sdk`);
         }
 
         if (returnUrl && returnUrl.indexOf(ERROR_URL) !== 0) {
