@@ -479,7 +479,10 @@ export let Button : Component<ButtonOptions> = create({
         commit: {
             type:       'boolean',
             required:   false,
-            queryParam: true
+            queryParam: true,
+            queryValue: (val) => {
+                return val ? 'true' : 'false';
+            }
         },
 
         onRender: {
