@@ -39,7 +39,7 @@ When `req.query.xcomponent` is passed, do not send `X-FRAME-OPTIONS` header
 On the client side check:
 
 ```javascript
-if (!paypal.allowIframe()) {
+if (window !== window.parent && !paypal.allowIframe()) {
     // Show an error page
 }
 ```
