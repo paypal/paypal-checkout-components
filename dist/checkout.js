@@ -1419,44 +1419,41 @@
         __webpack_require__.d(__webpack_exports__, "isAncestor", function() {
             return __WEBPACK_IMPORTED_MODULE_0__utils__.p;
         });
-        __webpack_require__.d(__webpack_exports__, "isFileProtocol", function() {
+        __webpack_require__.d(__webpack_exports__, "isIframe", function() {
             return __WEBPACK_IMPORTED_MODULE_0__utils__.q;
         });
-        __webpack_require__.d(__webpack_exports__, "isIframe", function() {
+        __webpack_require__.d(__webpack_exports__, "isOpener", function() {
             return __WEBPACK_IMPORTED_MODULE_0__utils__.r;
         });
-        __webpack_require__.d(__webpack_exports__, "isOpener", function() {
+        __webpack_require__.d(__webpack_exports__, "isPopup", function() {
             return __WEBPACK_IMPORTED_MODULE_0__utils__.s;
         });
-        __webpack_require__.d(__webpack_exports__, "isPopup", function() {
+        __webpack_require__.d(__webpack_exports__, "isSameDomain", function() {
             return __WEBPACK_IMPORTED_MODULE_0__utils__.t;
         });
-        __webpack_require__.d(__webpack_exports__, "isSameDomain", function() {
+        __webpack_require__.d(__webpack_exports__, "isSameTopWindow", function() {
             return __WEBPACK_IMPORTED_MODULE_0__utils__.u;
         });
-        __webpack_require__.d(__webpack_exports__, "isSameTopWindow", function() {
+        __webpack_require__.d(__webpack_exports__, "isTop", function() {
             return __WEBPACK_IMPORTED_MODULE_0__utils__.v;
         });
-        __webpack_require__.d(__webpack_exports__, "isTop", function() {
+        __webpack_require__.d(__webpack_exports__, "isWindow", function() {
             return __WEBPACK_IMPORTED_MODULE_0__utils__.w;
         });
-        __webpack_require__.d(__webpack_exports__, "isWindow", function() {
+        __webpack_require__.d(__webpack_exports__, "isWindowClosed", function() {
             return __WEBPACK_IMPORTED_MODULE_0__utils__.x;
         });
-        __webpack_require__.d(__webpack_exports__, "isWindowClosed", function() {
+        __webpack_require__.d(__webpack_exports__, "linkFrameWindow", function() {
             return __WEBPACK_IMPORTED_MODULE_0__utils__.y;
         });
-        __webpack_require__.d(__webpack_exports__, "linkFrameWindow", function() {
+        __webpack_require__.d(__webpack_exports__, "matchDomain", function() {
             return __WEBPACK_IMPORTED_MODULE_0__utils__.z;
         });
-        __webpack_require__.d(__webpack_exports__, "matchDomain", function() {
+        __webpack_require__.d(__webpack_exports__, "onCloseWindow", function() {
             return __WEBPACK_IMPORTED_MODULE_0__utils__.A;
         });
-        __webpack_require__.d(__webpack_exports__, "onCloseWindow", function() {
-            return __WEBPACK_IMPORTED_MODULE_0__utils__.B;
-        });
         __webpack_require__.d(__webpack_exports__, "stringifyDomainPattern", function() {
-            return __WEBPACK_IMPORTED_MODULE_0__utils__.C;
+            return __WEBPACK_IMPORTED_MODULE_0__utils__.B;
         });
         var __WEBPACK_IMPORTED_MODULE_1__types__ = __webpack_require__("./node_modules/cross-domain-utils/src/types.js");
         __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__types__), __webpack_require__("./node_modules/cross-domain-utils/src/constants.js");
@@ -1468,23 +1465,20 @@
             return "[object RegExp]" === Object.prototype.toString.call(item);
         }
         var constants = __webpack_require__("./node_modules/cross-domain-utils/src/constants.js");
-        __webpack_exports__.q = function() {
-            return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window).location.protocol === constants.a.FILE;
-        };
         __webpack_exports__.l = getParent;
         __webpack_exports__.k = getOpener;
         __webpack_exports__.b = getActualDomain;
         __webpack_exports__.f = getDomain;
         __webpack_exports__.o = isActuallySameDomain;
-        __webpack_exports__.u = isSameDomain;
+        __webpack_exports__.t = isSameDomain;
         __webpack_exports__.i = getFrames;
         __webpack_exports__.m = getTop;
         __webpack_exports__.c = getAllFramesInWindow;
-        __webpack_exports__.w = function(win) {
+        __webpack_exports__.v = function(win) {
             return win === getTop(win);
         };
-        __webpack_exports__.y = isWindowClosed;
-        __webpack_exports__.z = function(frame) {
+        __webpack_exports__.x = isWindowClosed;
+        __webpack_exports__.y = function(frame) {
             !function() {
                 for (var i = 0; i < iframeWindows.length; i++) {
                     var closed = !1;
@@ -1518,7 +1512,7 @@
                 }
             }(getTop(win) || win, name);
         };
-        __webpack_exports__.s = function(parent, child) {
+        __webpack_exports__.r = function(parent, child) {
             return parent === getOpener(child);
         };
         __webpack_exports__.d = getAncestor;
@@ -1533,8 +1527,8 @@
             }
             return !1;
         };
-        __webpack_exports__.t = isPopup;
-        __webpack_exports__.r = isIframe;
+        __webpack_exports__.s = isPopup;
+        __webpack_exports__.q = isIframe;
         __webpack_exports__.e = getDistanceFromTop;
         __webpack_exports__.j = function(win) {
             var n = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1;
@@ -1546,7 +1540,7 @@
                 return parent;
             }(win, getDistanceFromTop(win) - n);
         };
-        __webpack_exports__.v = function(win1, win2) {
+        __webpack_exports__.u = function(win1, win2) {
             var top1 = getTop(win1) || win1, top2 = getTop(win2) || win2;
             try {
                 if (top1 && top2) return top1 === top2;
@@ -1558,7 +1552,7 @@
             if (opener2 && anyMatch(getAllFramesInWindow(opener2), allFrames1)) return !1;
             return !1;
         };
-        __webpack_exports__.A = function matchDomain(pattern, origin) {
+        __webpack_exports__.z = function matchDomain(pattern, origin) {
             if ("string" == typeof pattern) {
                 if ("string" == typeof origin) return pattern === constants.b || origin === pattern;
                 if (isRegex(origin)) return !1;
@@ -1570,11 +1564,11 @@
             });
             return !1;
         };
-        __webpack_exports__.C = function(pattern) {
+        __webpack_exports__.B = function(pattern) {
             return Array.isArray(pattern) ? "(" + pattern.join(" | ") + ")" : isRegex(pattern) ? "RegExp(" + pattern.toString() : pattern.toString();
         };
         __webpack_exports__.g = getDomainFromUrl;
-        __webpack_exports__.B = function(win, callback) {
+        __webpack_exports__.A = function(win, callback) {
             var delay = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : 1e3, maxtime = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : 1 / 0, timeout = void 0;
             !function check() {
                 if (isWindowClosed(win)) {
@@ -1592,7 +1586,7 @@
                 }
             };
         };
-        __webpack_exports__.x = function(obj) {
+        __webpack_exports__.w = function(obj) {
             try {
                 if (obj === window) return !0;
             } catch (err) {
@@ -8670,7 +8664,7 @@
         var config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.248",
+            version: "4.0.249",
             cors: !0,
             env: function() {
                 return "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION;
@@ -10321,9 +10315,6 @@
                 _track[constants.u.KEY.CONTEXT_ID] = paymentID, _track));
             }
         }
-        function getDefaultReturnUrl() {
-            return Object(cross_domain_utils_src.isFileProtocol)() ? "https://www.paypal.com" : window.location.protocol + "//" + window.location.host;
-        }
         function createPayment(env, client, paymentDetails) {
             Object(beaver_logger_client.k)("rest_api_create_checkout_token");
             env = env || config.a.env;
@@ -10355,8 +10346,8 @@
             });
             (payment = rest__extends({}, payment)).intent = payment.intent || "sale";
             payment.redirect_urls = payment.redirect_urls || {};
-            payment.redirect_urls.return_url = payment.redirect_urls.return_url || getDefaultReturnUrl();
-            payment.redirect_urls.cancel_url = payment.redirect_urls.cancel_url || getDefaultReturnUrl();
+            payment.redirect_urls.return_url = payment.redirect_urls.return_url || "https://www.paypal.com/checkoutnow/error";
+            payment.redirect_urls.cancel_url = payment.redirect_urls.cancel_url || "https://www.paypal.com/checkoutnow/error";
             payment.payer = payment.payer || {};
             payment.payer.payment_method = payment.payer.payment_method || "paypal";
             return createAccessToken(env, client).then(function(accessToken) {
@@ -10438,8 +10429,8 @@
             });
             (order = rest__extends({}, order)).intent = order.intent || "CAPTURE";
             order.application_context = order.application_context || {};
-            order.application_context.return_url = order.application_context.return_url || getDefaultReturnUrl();
-            order.application_context.cancel_url = order.application_context.cancel_url || getDefaultReturnUrl();
+            order.application_context.return_url = order.application_context.return_url || "https://www.paypal.com/checkoutnow/error";
+            order.application_context.cancel_url = order.application_context.cancel_url || "https://www.paypal.com/checkoutnow/error";
             order.purchase_units = order.purchase_units || [];
             order.purchase_units[0] = order.purchase_units[0] || {};
             order.purchase_units.forEach(function(unit) {
@@ -10469,8 +10460,8 @@
             if (proxyRest.createBillingAgreement && !proxyRest.createBillingAgreement.source.closed) return proxyRest.createBillingAgreement(env, client, billingDetails, experienceDetails);
             (billingDetails = rest__extends({}, billingDetails)).plan = billingDetails.plan || {};
             billingDetails.plan.merchant_preferences = billingDetails.plan.merchant_preferences || {};
-            billingDetails.plan.merchant_preferences.return_url = billingDetails.plan.merchant_preferences.return_url || getDefaultReturnUrl();
-            billingDetails.plan.merchant_preferences.cancel_url = billingDetails.plan.merchant_preferences.cancel_url || getDefaultReturnUrl();
+            billingDetails.plan.merchant_preferences.return_url = billingDetails.plan.merchant_preferences.return_url || "https://www.paypal.com/checkoutnow/error";
+            billingDetails.plan.merchant_preferences.cancel_url = billingDetails.plan.merchant_preferences.cancel_url || "https://www.paypal.com/checkoutnow/error";
             billingDetails.payer = billingDetails.payer || {};
             billingDetails.payer.payment_method = billingDetails.payer.payment_method || "paypal";
             return createAccessToken(env, client).then(function(accessToken) {
@@ -11729,7 +11720,7 @@
                     logoColor: "blue"
                 })));
             }(normalizeProps(props)) : null;
-            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.248", 
+            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.249", 
             _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -12078,7 +12069,10 @@
                 commit: {
                     type: "boolean",
                     required: !1,
-                    queryParam: !0
+                    queryParam: !0,
+                    queryValue: function(val) {
+                        return val ? "true" : "false";
+                    }
                 },
                 onRender: {
                     type: "function",
@@ -12878,7 +12872,7 @@
             setup__track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.248", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.249", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         var interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
@@ -13795,7 +13789,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.248";
+                payload.version = "4.0.249";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 payload.appName = APP_NAME;
@@ -14126,7 +14120,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(session.c)(),
-                    ver: "4.0.248"
+                    ver: "4.0.249"
                 };
             });
             Object(client.a)(function() {
@@ -14434,11 +14428,11 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return isPayPalObjects() ? "4" : "4.0.248";
+            return isPayPalObjects() ? "4" : "4.0.249";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
-            return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.248.js";
+            return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.249.js";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -15229,18 +15223,18 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         0;
-        if (window.paypal && "4.0.248" === window.paypal.version) {
+        if (window.paypal && "4.0.249" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.248"
+                version: "4.0.249"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.248) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.249) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.248" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.249" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.248"
+                version: "4.0.249"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.248");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.249");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
