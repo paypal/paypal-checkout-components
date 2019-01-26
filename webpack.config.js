@@ -7,6 +7,7 @@ const FILE_NAME = 'smart-payment-buttons';
 const MODULE_NAME = 'spb';
 
 export const WEBPACK_CONFIG = getWebpackConfig({
+    entry:         `${ __dirname  }/src/index.js`,
     filename:      `${ FILE_NAME }.js`,
     modulename:    MODULE_NAME,
     minify:        false,
@@ -14,6 +15,7 @@ export const WEBPACK_CONFIG = getWebpackConfig({
 });
 
 export const WEBPACK_CONFIG_MIN = getWebpackConfig({
+    entry:         `${ __dirname }/src/index.js`,
     filename:      `${ FILE_NAME }.min.js`,
     modulename:    MODULE_NAME,
     minify:        true,
