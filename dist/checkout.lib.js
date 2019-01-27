@@ -8665,7 +8665,7 @@
             var config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.250",
+                version: "4.0.251",
                 cors: !0,
                 env: function() {
                     return "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION;
@@ -11721,7 +11721,7 @@
                         logoColor: "blue"
                     })));
                 }(normalizeProps(props)) : null;
-                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.250", 
+                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.251", 
                 _ref21), {
                     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
@@ -12519,16 +12519,31 @@
                 }, _i2 = 0, _ref5 = [ "onAuthorize", "onCancel", "onError", "onClose" ], _length2 = null == _ref5 ? 0 : _ref5.length; _i2 < _length2; _i2++) _loop(_i2, _ref5);
                 return callOriginal();
             });
-            Object(lib.O)(rest.payment, "create", function(_ref6) {
-                var createOriginal = _ref6.original, createContext = _ref6.context, _ref6$args = _ref6.args, env = _ref6$args[0], client = _ref6$args[1], options = _ref6$args[2], experience = _ref6$args[3];
+            if (component_Button.xprops && component_Button.xprops.validate) {
+                var enabled = !0;
+                component_Button.xprops.validate({
+                    enable: function() {
+                        enabled = !0;
+                    },
+                    disable: function() {
+                        enabled = !1;
+                    }
+                });
+                Object(lib.O)(src_checkout.a, "renderTo", function(_ref6) {
+                    var callOriginal = _ref6.callOriginal;
+                    return enabled ? callOriginal() : new zalgo_promise_src.a();
+                });
+            }
+            Object(lib.O)(rest.payment, "create", function(_ref7) {
+                var createOriginal = _ref7.original, createContext = _ref7.context, _ref7$args = _ref7.args, env = _ref7$args[0], client = _ref7$args[1], options = _ref7$args[2], experience = _ref7$args[3];
                 options.payment || (options = {
                     payment: options,
                     experience: experience
                 });
                 return createOriginal.call(createContext, env, client, options);
             });
-            Object(lib.O)(component_Button.props.style, "validate", function(_ref7) {
-                var callOriginal = _ref7.callOriginal, style = _ref7.args[0];
+            Object(lib.O)(component_Button.props.style, "validate", function(_ref8) {
+                var callOriginal = _ref8.callOriginal, style = _ref8.args[0];
                 if (!style) return callOriginal();
                 style && "creditblue" === style.color && (style.color = constants.e.DARKBLUE);
                 style && "generic" === style.label && (style.label = constants.f.PAYPAL);
@@ -12538,21 +12553,21 @@
                 }
                 return callOriginal();
             });
-            Object(lib.O)(component_Button, "render", function(_ref8) {
-                var callOriginal = _ref8.callOriginal, props = _ref8.args[0];
+            Object(lib.O)(component_Button, "render", function(_ref9) {
+                var callOriginal = _ref9.callOriginal, props = _ref9.args[0];
                 if (props.billingAgreement) {
                     props.payment = props.billingAgreement;
                     delete props.billingAgreement;
                 }
                 return callOriginal();
             });
-            Object(lib.O)(component_Button.props.payment, "decorate", function(_ref9) {
-                var original = _ref9.original, context = _ref9.context, originalPayment = _ref9.args[0];
+            Object(lib.O)(component_Button.props.payment, "decorate", function(_ref10) {
+                var original = _ref10.original, context = _ref10.context, originalPayment = _ref10.args[0];
                 return original.call(context, function(data, actions) {
                     var _this = this;
                     return new zalgo_promise_src.a(function(resolve, reject) {
-                        Object(lib.O)(actions.payment, "create", function(_ref10) {
-                            var createOriginal = _ref10.original, createContext = _ref10.context, _ref10$args = _ref10.args, options = _ref10$args[0], experience = _ref10$args[1];
+                        Object(lib.O)(actions.payment, "create", function(_ref11) {
+                            var createOriginal = _ref11.original, createContext = _ref11.context, _ref11$args = _ref11.args, options = _ref11$args[0], experience = _ref11$args[1];
                             options.payment || (options = {
                                 payment: options,
                                 experience: experience
@@ -12858,7 +12873,7 @@
                 setup__track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, 
                 setup__track3));
             }
-            var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.250", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.251", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             interface_checkout = legacy.checkout;
             apps = legacy.apps;
             var interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
@@ -14153,7 +14168,7 @@
                         country: config.a.locale.country,
                         lang: config.a.locale.lang,
                         uid: getSessionID(),
-                        ver: "4.0.250"
+                        ver: "4.0.251"
                     };
                 });
                 Object(client.a)(function() {
@@ -14396,7 +14411,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.250";
+                    payload.version = "4.0.251";
                     payload.host = window.location.host;
                     payload.uid = getSessionID();
                     payload.appName = APP_NAME;
@@ -14414,7 +14429,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.250".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.251".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!function(name) {
                         return getSessionState(function(state) {
@@ -14433,7 +14448,7 @@
             function fpti() {
                 var payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, query = [];
                 payload = beacon__extends({}, {
-                    v: "checkout.js.4.0.250",
+                    v: "checkout.js.4.0.251",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -14549,11 +14564,11 @@
                 return Boolean(getCurrentScript());
             }
             function getScriptVersion() {
-                return "4.0.250";
+                return "4.0.251";
             }
             function getCurrentScriptUrl() {
                 var script = getCurrentScript();
-                return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.250.js";
+                return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.251.js";
             }
             var openMetaFrame = Object(util.j)(function() {
                 var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -14570,7 +14585,7 @@
                             domain: metaFrameDomain
                         });
                         return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                            version: "4.0.250"
+                            version: "4.0.251"
                         }), metaFrameDomain).then(function() {
                             return metaListener;
                         }).then(function(_ref) {
