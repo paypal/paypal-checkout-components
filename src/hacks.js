@@ -107,6 +107,30 @@ patchMethod(Checkout, 'renderTo', ({ callOriginal, args: [ , props ] }) => {
     return callOriginal();
 });
 
+if (Button.xprops && Button.xprops.validate) {
+
+    let enabled = true;
+
+    // $FlowFixMe
+    Button.xprops.validate({
+        enable() {
+            enabled = true;
+        },
+
+        disable() {
+            enabled = false;
+        }
+    });
+
+    patchMethod(Checkout, 'renderTo', ({ callOriginal }) => {
+        if (enabled) {
+            return callOriginal();
+        }
+        return new ZalgoPromise();
+    });
+}
+
+
 patchMethod(rest.payment, 'create', ({ original: createOriginal, context: createContext, args: [ env, client, options, experience ] }) => {
     if (!options.payment) {
         options = { payment: options, experience };
