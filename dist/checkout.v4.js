@@ -3746,18 +3746,21 @@
             }
             return !1;
         }
-        function getGlobal() {
-            var glob = void 0;
-            if ("undefined" != typeof window) glob = window; else {
-                if ("undefined" == typeof global) throw new TypeError("Can not find global");
-                glob = global;
+        var dispatchedErrors = [], possiblyUnhandledPromiseHandlers = [];
+        var activeCount = 0, flushPromise = void 0;
+        function flushActive() {
+            if (!activeCount && flushPromise) {
+                var promise = flushPromise;
+                flushPromise = null;
+                promise.resolve();
             }
-            var zalgoGlobal = glob.__zalgopromise__ = glob.__zalgopromise__ || {};
-            zalgoGlobal.flushPromises = zalgoGlobal.flushPromises || [];
-            zalgoGlobal.activeCount = zalgoGlobal.activeCount || 0;
-            zalgoGlobal.possiblyUnhandledPromiseHandlers = zalgoGlobal.possiblyUnhandledPromiseHandlers || [];
-            zalgoGlobal.dispatchedErrors = zalgoGlobal.dispatchedErrors || [];
-            return zalgoGlobal;
+        }
+        function startActive() {
+            activeCount += 1;
+        }
+        function endActive() {
+            activeCount -= 1;
+            flushActive();
         }
         var promise_ZalgoPromise = function() {
             function ZalgoPromise(handler) {
@@ -3771,6 +3774,7 @@
                 this.handlers = [];
                 if (handler) {
                     var _result = void 0, _error = void 0, resolved = !1, rejected = !1, isAsync = !1;
+                    startActive();
                     try {
                         handler(function(res) {
                             if (isAsync) _this.resolve(res); else {
@@ -3784,9 +3788,11 @@
                             }
                         });
                     } catch (err) {
+                        endActive();
                         this.reject(err);
                         return;
                     }
+                    endActive();
                     isAsync = !0;
                     resolved ? this.resolve(_result) : rejected && this.reject(_error);
                 }
@@ -3812,12 +3818,12 @@
                 this.error = error;
                 this.errorHandled || setTimeout(function() {
                     _this2.errorHandled || function(err, promise) {
-                        if (-1 === getGlobal().dispatchedErrors.indexOf(err)) {
-                            getGlobal().dispatchedErrors.push(err);
+                        if (-1 === dispatchedErrors.indexOf(err)) {
+                            dispatchedErrors.push(err);
                             setTimeout(function() {
                                 throw err;
                             }, 1);
-                            for (var j = 0; j < getGlobal().possiblyUnhandledPromiseHandlers.length; j++) getGlobal().possiblyUnhandledPromiseHandlers[j](err, promise);
+                            for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) possiblyUnhandledPromiseHandlers[j](err, promise);
                         }
                     }(error, _this2);
                 }, 1);
@@ -3833,7 +3839,7 @@
                 var _this3 = this, dispatching = this.dispatching, resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
                 if (!dispatching && (resolved || rejected)) {
                     this.dispatching = !0;
-                    getGlobal().activeCount += 1;
+                    startActive();
                     for (var _loop = function(i) {
                         var _handlers$i = handlers[i], onSuccess = _handlers$i.onSuccess, onError = _handlers$i.onError, promise = _handlers$i.promise, result = void 0;
                         if (resolved) try {
@@ -3864,8 +3870,7 @@
                     }, i = 0; i < handlers.length; i++) _loop(i);
                     handlers.length = 0;
                     this.dispatching = !1;
-                    getGlobal().activeCount -= 1;
-                    0 === getGlobal().activeCount && ZalgoPromise.flushQueue();
+                    endActive();
                 }
             };
             ZalgoPromise.prototype.then = function(onSuccess, onError) {
@@ -3966,10 +3971,10 @@
             };
             ZalgoPromise.onPossiblyUnhandledException = function(handler) {
                 return function(handler) {
-                    getGlobal().possiblyUnhandledPromiseHandlers.push(handler);
+                    possiblyUnhandledPromiseHandlers.push(handler);
                     return {
                         cancel: function() {
-                            getGlobal().possiblyUnhandledPromiseHandlers.splice(getGlobal().possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
+                            possiblyUnhandledPromiseHandlers.splice(possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
                         }
                     };
                 }(handler);
@@ -3977,11 +3982,14 @@
             ZalgoPromise.try = function(method, context, args) {
                 if (method && "function" != typeof method && !method.call) throw new Error("Promise.try expected a function");
                 var result = void 0;
+                startActive();
                 try {
                     result = method.apply(context, args || []);
                 } catch (err) {
+                    endActive();
                     return ZalgoPromise.reject(err);
                 }
+                endActive();
                 return ZalgoPromise.resolve(result);
             };
             ZalgoPromise.delay = function(_delay) {
@@ -3993,17 +4001,11 @@
                 return !!(value && value instanceof ZalgoPromise) || utils_isPromise(value);
             };
             ZalgoPromise.flush = function() {
-                var promise = new ZalgoPromise();
-                getGlobal().flushPromises.push(promise);
-                0 === getGlobal().activeCount && ZalgoPromise.flushQueue();
-                return promise;
-            };
-            ZalgoPromise.flushQueue = function() {
-                var promisesToFlush = getGlobal().flushPromises;
-                getGlobal().flushPromises = [];
-                for (var _i2 = 0, _length2 = null == promisesToFlush ? 0 : promisesToFlush.length; _i2 < _length2; _i2++) {
-                    promisesToFlush[_i2].resolve();
-                }
+                return function(Zalgo) {
+                    var promise = flushPromise = flushPromise || new Zalgo();
+                    flushActive();
+                    return promise;
+                }(ZalgoPromise);
             };
             return ZalgoPromise;
         }();
@@ -5751,7 +5753,7 @@
         var config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.251",
+            version: "4.0.252",
             cors: !0,
             env: function() {
                 return "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION;
@@ -9370,7 +9372,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.251"
+                    ver: "4.0.252"
                 };
             });
             Object(beaver_logger_client.a)(function() {
@@ -9638,11 +9640,11 @@
             });
         });
         function getScriptVersion() {
-            return Boolean(getCurrentScript()) ? "4" : "4.0.251";
+            return Boolean(getCurrentScript()) ? "4" : "4.0.252";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
-            return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.251.js";
+            return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.252.js";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -12739,7 +12741,7 @@
                     logoColor: "blue"
                 })));
             }(props_normalizeProps(props)) : null;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.251", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.252", 
             _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -13560,6 +13562,10 @@
                     enabled = !1;
                 }
             });
+            delete component_Button.xprops.validate;
+            component_Button.xchild.onProps(function(props) {
+                delete props.validate;
+            });
             Object(util.m)(component_Checkout, "renderTo", function(_ref6) {
                 var callOriginal = _ref6.callOriginal;
                 return enabled ? callOriginal() : new src.a();
@@ -13941,7 +13947,7 @@
             setup__track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.251", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
+        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.252", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
         if (Object(util.g)()) {
             interface_Checkout = component_Checkout;
             interface_BillingPage = BillingPage;
@@ -14063,7 +14069,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.251";
+                payload.version = "4.0.252";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 payload.appName = APP_NAME;
@@ -14670,18 +14676,18 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         0;
-        if (window.paypal && "4.0.251" === window.paypal.version) {
+        if (window.paypal && "4.0.252" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.251"
+                version: "4.0.252"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.251) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.252) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.251" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.252" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.251"
+                version: "4.0.252"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.251");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.252");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");

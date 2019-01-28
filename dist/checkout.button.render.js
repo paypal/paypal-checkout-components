@@ -1277,18 +1277,21 @@
             }
             return !1;
         }
-        function getGlobal() {
-            var glob = void 0;
-            if ("undefined" != typeof window) glob = window; else {
-                if ("undefined" == typeof global) throw new TypeError("Can not find global");
-                glob = global;
+        var dispatchedErrors = [], possiblyUnhandledPromiseHandlers = [];
+        var activeCount = 0, flushPromise = void 0;
+        function flushActive() {
+            if (!activeCount && flushPromise) {
+                var promise = flushPromise;
+                flushPromise = null;
+                promise.resolve();
             }
-            var zalgoGlobal = glob.__zalgopromise__ = glob.__zalgopromise__ || {};
-            zalgoGlobal.flushPromises = zalgoGlobal.flushPromises || [];
-            zalgoGlobal.activeCount = zalgoGlobal.activeCount || 0;
-            zalgoGlobal.possiblyUnhandledPromiseHandlers = zalgoGlobal.possiblyUnhandledPromiseHandlers || [];
-            zalgoGlobal.dispatchedErrors = zalgoGlobal.dispatchedErrors || [];
-            return zalgoGlobal;
+        }
+        function startActive() {
+            activeCount += 1;
+        }
+        function endActive() {
+            activeCount -= 1;
+            flushActive();
         }
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales;
         (function() {
@@ -1303,6 +1306,7 @@
                 this.handlers = [];
                 if (handler) {
                     var _result = void 0, _error = void 0, resolved = !1, rejected = !1, isAsync = !1;
+                    startActive();
                     try {
                         handler(function(res) {
                             if (isAsync) _this.resolve(res); else {
@@ -1316,9 +1320,11 @@
                             }
                         });
                     } catch (err) {
+                        endActive();
                         this.reject(err);
                         return;
                     }
+                    endActive();
                     isAsync = !0;
                     resolved ? this.resolve(_result) : rejected && this.reject(_error);
                 }
@@ -1344,12 +1350,12 @@
                 this.error = error;
                 this.errorHandled || setTimeout(function() {
                     _this2.errorHandled || function(err, promise) {
-                        if (-1 === getGlobal().dispatchedErrors.indexOf(err)) {
-                            getGlobal().dispatchedErrors.push(err);
+                        if (-1 === dispatchedErrors.indexOf(err)) {
+                            dispatchedErrors.push(err);
                             setTimeout(function() {
                                 throw err;
                             }, 1);
-                            for (var j = 0; j < getGlobal().possiblyUnhandledPromiseHandlers.length; j++) getGlobal().possiblyUnhandledPromiseHandlers[j](err, promise);
+                            for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) possiblyUnhandledPromiseHandlers[j](err, promise);
                         }
                     }(error, _this2);
                 }, 1);
@@ -1365,7 +1371,7 @@
                 var _this3 = this, dispatching = this.dispatching, resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
                 if (!dispatching && (resolved || rejected)) {
                     this.dispatching = !0;
-                    getGlobal().activeCount += 1;
+                    startActive();
                     for (var _loop = function(i) {
                         var _handlers$i = handlers[i], onSuccess = _handlers$i.onSuccess, onError = _handlers$i.onError, promise = _handlers$i.promise, result = void 0;
                         if (resolved) try {
@@ -1396,8 +1402,7 @@
                     }, i = 0; i < handlers.length; i++) _loop(i);
                     handlers.length = 0;
                     this.dispatching = !1;
-                    getGlobal().activeCount -= 1;
-                    0 === getGlobal().activeCount && ZalgoPromise.flushQueue();
+                    endActive();
                 }
             };
             ZalgoPromise.prototype.then = function(onSuccess, onError) {
@@ -1498,10 +1503,10 @@
             };
             ZalgoPromise.onPossiblyUnhandledException = function(handler) {
                 return function(handler) {
-                    getGlobal().possiblyUnhandledPromiseHandlers.push(handler);
+                    possiblyUnhandledPromiseHandlers.push(handler);
                     return {
                         cancel: function() {
-                            getGlobal().possiblyUnhandledPromiseHandlers.splice(getGlobal().possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
+                            possiblyUnhandledPromiseHandlers.splice(possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
                         }
                     };
                 }(handler);
@@ -1509,11 +1514,14 @@
             ZalgoPromise.try = function(method, context, args) {
                 if (method && "function" != typeof method && !method.call) throw new Error("Promise.try expected a function");
                 var result = void 0;
+                startActive();
                 try {
                     result = method.apply(context, args || []);
                 } catch (err) {
+                    endActive();
                     return ZalgoPromise.reject(err);
                 }
+                endActive();
                 return ZalgoPromise.resolve(result);
             };
             ZalgoPromise.delay = function(_delay) {
@@ -1525,23 +1533,17 @@
                 return !!(value && value instanceof ZalgoPromise) || utils_isPromise(value);
             };
             ZalgoPromise.flush = function() {
-                var promise = new ZalgoPromise();
-                getGlobal().flushPromises.push(promise);
-                0 === getGlobal().activeCount && ZalgoPromise.flushQueue();
-                return promise;
-            };
-            ZalgoPromise.flushQueue = function() {
-                var promisesToFlush = getGlobal().flushPromises;
-                getGlobal().flushPromises = [];
-                for (var _i2 = 0, _length2 = null == promisesToFlush ? 0 : promisesToFlush.length; _i2 < _length2; _i2++) {
-                    promisesToFlush[_i2].resolve();
-                }
+                return function(Zalgo) {
+                    var promise = flushPromise = flushPromise || new Zalgo();
+                    flushActive();
+                    return promise;
+                }(ZalgoPromise);
             };
         })(), __webpack_require__("./node_modules/cross-domain-utils/src/index.js");
         var config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.251",
+            version: "4.0.252",
             cors: !0,
             env: function() {
                 return "undefined" == typeof window || void 0 === window.location ? misc_ENV.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? misc_ENV.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? misc_ENV.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? misc_ENV.SANDBOX : misc_ENV.PRODUCTION;
@@ -3333,7 +3335,7 @@
                 })));
             }(normalizeProps(props)) : null;
             var script;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[ATTRIBUTE.VERSION] = "4.0.251", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[ATTRIBUTE.VERSION] = "4.0.252", 
             _ref21), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
