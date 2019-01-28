@@ -122,14 +122,6 @@ if (Button.xprops && Button.xprops.validate) {
         }
     });
 
-    // $FlowFixMe
-    Button.xprops.validate = noop;
-
-    // $FlowFixMe
-    Button.xchild.onProps(props => {
-        props.validate = noop;
-    });
-
     patchMethod(Checkout, 'renderTo', ({ callOriginal }) => {
         if (enabled) {
             return callOriginal();

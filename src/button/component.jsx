@@ -859,7 +859,15 @@ export let Button : Component<ButtonOptions> = create({
         validate: {
             type:     'function',
             required: false,
-            once:     true
+            decorate(validate) : Function {
+                // $FlowFixMe
+                return function decorateValidate(actions) : mixed {
+                    if (!this.validateCalled) {
+                        this.validateCalled = true;
+                        return validate(actions);
+                    }
+                };
+            }
         },
 
         logLevel: {
