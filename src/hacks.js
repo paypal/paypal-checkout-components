@@ -123,11 +123,11 @@ if (Button.xprops && Button.xprops.validate) {
     });
 
     // $FlowFixMe
-    delete Button.xprops.validate;
+    Button.xprops.validate = noop;
 
     // $FlowFixMe
     Button.xchild.onProps(props => {
-        delete props.validate;
+        props.validate = noop;
     });
 
     patchMethod(Checkout, 'renderTo', ({ callOriginal }) => {
