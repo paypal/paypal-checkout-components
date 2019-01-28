@@ -122,6 +122,14 @@ if (Button.xprops && Button.xprops.validate) {
         }
     });
 
+    // $FlowFixMe
+    delete Button.xprops.validate;
+
+    // $FlowFixMe
+    Button.xchild.onProps(props => {
+        delete props.validate;
+    });
+
     patchMethod(Checkout, 'renderTo', ({ callOriginal }) => {
         if (enabled) {
             return callOriginal();
