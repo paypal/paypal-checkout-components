@@ -94,13 +94,6 @@ function isApmEligible(source, props) : boolean {
     return true;
 }
 
-function getApmFunding(props) : Object {
-
-    const APM_FUNDING = [ FUNDING.IDEAL, FUNDING.SOFORT, FUNDING.GIROPAY, FUNDING.BANCONTACT, FUNDING.P24, FUNDING.MYBANK, FUNDING.ZIMPLER, FUNDING.EPS ];
-
-    return APM_FUNDING.filter(source => (isApmEligible(source, props)));
-}
-
 let creditThrottle;
 
 type ButtonOptions = {
@@ -478,8 +471,12 @@ export let Button : Component<ButtonOptions> = create({
                     }
                 }
 
-                allowed = allowed.concat(getApmFunding(props));
-                
+                const APM_FUNDING = [ FUNDING.IDEAL, FUNDING.SOFORT, FUNDING.GIROPAY, FUNDING.BANCONTACT, FUNDING.P24, FUNDING.MYBANK, FUNDING.ZIMPLER, FUNDING.EPS ];
+
+                let apmFunding = APM_FUNDING.filter(source => (isApmEligible(source, props)));
+
+                allowed = allowed.concat(apmFunding);
+
                 let remembered = getRememberedFunding(sources => sources);
 
                 if (!isDevice() || getDomainSetting('disable_venmo')) {
