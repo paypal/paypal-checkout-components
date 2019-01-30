@@ -23,6 +23,7 @@ import { getPaymentType, awaitBraintreeClient,
 import { awaitPopupBridge } from '../integrations/popupBridge';
 import { validateFunding, isFundingIneligible, isFundingAutoEligible } from '../funding';
 import { mergePaymentDetails, patchPaymentOptions } from '../api/hacks';
+import { getFundingConfig } from '../funding/config';
 
 import { containerTemplate, componentTemplate } from './template';
 import { validateButtonLocale, validateButtonStyle } from './validate';
@@ -74,6 +75,30 @@ function isCreditDualEligible(props) : boolean {
     }
 
     return true;
+}
+
+function isApmEligible(source, props) : boolean {
+
+    let { locale } = normalizeProps(props, { locale: getBrowserLocale() });
+
+    if (getFundingConfig(source, 'allowedCountries', [ locale.country ]).indexOf(locale.country) === -1) {
+        return false;
+    }
+
+    let domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
+
+    if (config.apmTestDomains.indexOf(domain) === -1) {
+        return false;
+    }
+
+    return true;
+}
+
+function getApmFunding(props) : Object {
+
+    const APM_FUNDING = [ FUNDING.IDEAL, FUNDING.SOFORT, FUNDING.GIROPAY, FUNDING.BANCONTACT, FUNDING.P24, FUNDING.MYBANK, FUNDING.ZIMPLER, FUNDING.EPS ];
+
+    return APM_FUNDING.filter(source => (isApmEligible(source, props)));
 }
 
 let creditThrottle;
@@ -403,7 +428,7 @@ export let Button : Component<ButtonOptions> = create({
                     if (this.props.env === ENV.PRODUCTION && !getDomainSetting('disable_payment_timeout')) {
                         this.memoizedToken = this.memoizedToken.timeout(timeout, new Error(`Timed out waiting ${ timeout }ms for payment`));
                     }
-                        
+
                     this.memoizedToken = this.memoizedToken.then(token => {
 
                         if (!token) {
@@ -453,6 +478,8 @@ export let Button : Component<ButtonOptions> = create({
                     }
                 }
 
+                allowed = allowed.concat(getApmFunding(props));
+                
                 let remembered = getRememberedFunding(sources => sources);
 
                 if (!isDevice() || getDomainSetting('disable_venmo')) {
@@ -663,7 +690,7 @@ export let Button : Component<ButtonOptions> = create({
         onShippingChange: {
             type:     'function',
             required: false,
-            
+
             decorate(original) : void | Function {
                 if (!original) {
                     return;
@@ -684,7 +711,7 @@ export let Button : Component<ButtonOptions> = create({
 
                     let patch = actions.payment.patch;
                     actions.payment.patch = (patchObject) => {
-                        
+
                         const itemListPatches = patchObject.filter((op, index) => {
                             if (op.path.match(/\/(transactions)\/(\d)\/(item_list)\/(shipping_options)/)) {
                                 return patchObject.splice(index, 1);
@@ -706,7 +733,7 @@ export let Button : Component<ButtonOptions> = create({
                     const reject = actions.reject || function reject() {
                         throw new Error(`Missing reject action callback`);
                     };
-                    
+
                     return ZalgoPromise.try(() => {
                         return original.call(this, data, { ...actions, resolve, reject });
                     }).timeout(timeout,
