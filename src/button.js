@@ -2,7 +2,7 @@
 
 import { querySelectorAll, onClick, noop } from 'belter/src';
 
-import { renderCheckout } from './checkout';
+import { renderCheckout, setupCheckout } from './checkout';
 import { getAuth } from './api';
 
 export function setupButton() {
@@ -40,4 +40,6 @@ export function setupButton() {
             }).catch(noop);
         }
     });
+
+    setupCheckout();
 }
