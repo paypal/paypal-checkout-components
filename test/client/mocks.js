@@ -185,9 +185,24 @@ export function mapBillingTokenApiMock(options : Object = {}) : MockEndpoint {
         ...options
     });
 }
+export function patchOrderApiMock(options : Object = {}) : MockEndpoint {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri:    new RegExp('/webapps/hermes/api/order/[^/]+/patch'),
+        data:   {
+            ack:  'success',
+            data: {}
+        },
+        headers: {
+            'x-csrf-jwt': 'xxxxxx'
+        },
+        ...options
+    });
+}
 
 getAuthApiMock().listen();
 getOrderApiMock().listen();
 captureOrderApiMock().listen();
 authorizeOrderApiMock().listen();
 mapBillingTokenApiMock().listen();
+patchOrderApiMock().listen();
