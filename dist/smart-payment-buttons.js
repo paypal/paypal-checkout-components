@@ -1529,6 +1529,11 @@ window.spb = function(modules) {
                 }).catch(src.noop);
             }
         });
+        parent = (_ref = [ Object(cross_domain_utils_src.getTop)(window), Object(cross_domain_utils_src.getParent)() ])[0], 
+        (top = _ref[1]) && parent && parent !== top && window.paypal.Checkout.canRenderTo(top).then(function(result) {
+            canRenderTop = result;
+        });
+        var _ref, parent, top;
     }
     __webpack_require__.d(__webpack_exports__, "setupButton", function() {
         return setupButton;
