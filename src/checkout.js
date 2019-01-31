@@ -125,7 +125,7 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
 }
 
 let checkoutOpen = false;
-let canRenderTop = true;
+let canRenderTop = false;
 
 export function setupCheckout() {
     const [ parent, top ] = [ getTop(window), getParent() ];
