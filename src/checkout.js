@@ -173,7 +173,7 @@ export function renderCheckout(props : Object = {}, context : string = getDefaul
         throw new Error(`Checkout already rendered`);
     }
 
-    const [ parent, top ] = [ getTop(window), getParent() ];
+    const [ parent, top ] = [ getParent(), getTop(window) ];
 
     const createOrder = getCreateOrder(props);
     const renderWindow = (canRenderTop && top) ? top : parent;
