@@ -1529,7 +1529,7 @@ window.spb = function(modules) {
                 }).catch(src.noop);
             }
         });
-        parent = (_ref = [ Object(cross_domain_utils_src.getTop)(window), Object(cross_domain_utils_src.getParent)(window) ])[0], 
+        parent = (_ref = [ Object(cross_domain_utils_src.getParent)(window), Object(cross_domain_utils_src.getTop)(window) ])[0], 
         (top = _ref[1]) && parent && parent !== top && window.paypal.Checkout.canRenderTo(top).then(function(result) {
             canRenderTop = result;
         });
