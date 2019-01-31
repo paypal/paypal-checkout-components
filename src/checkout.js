@@ -128,7 +128,7 @@ let checkoutOpen = false;
 let canRenderTop = false;
 
 export function setupCheckout() {
-    const [ parent, top ] = [ getTop(window), getParent() ];
+    const [ parent, top ] = [ getTop(window), getParent(window) ];
 
     if (top && parent && parent !== top) {
         window.paypal.Checkout.canRenderTo(top).then(result => {
@@ -173,7 +173,7 @@ export function renderCheckout(props : Object = {}, context : string = getDefaul
         throw new Error(`Checkout already rendered`);
     }
 
-    const [ parent, top ] = [ getParent(), getTop(window) ];
+    const [ parent, top ] = [ getParent(window), getTop(window) ];
 
     const createOrder = getCreateOrder(props);
     const renderWindow = (canRenderTop && top) ? top : parent;
