@@ -6,7 +6,7 @@ import { wrapPromise } from 'belter/src';
 import { setupButton } from '../../src';
 
 import { createButtonHTML, getMockCheckoutInstance,
-    getOrderApiMock, captureOrderApiMock, authorizeOrderApiMock } from './mocks';
+    getOrderApiMock, captureOrderApiMock, authorizeOrderApiMock, patchOrderApiMock } from './mocks';
 import { triggerKeyPress } from './util';
 
 describe('happy cases', () => {
@@ -426,6 +426,44 @@ describe('happy cases', () => {
 
         if (!onApprove || !onApproveCalled) {
             throw new Error(`Expected onApprove to have been called`);
+        }
+    });
+
+    it('should render a button, click the button, and render checkout, then pass onShippingChange callback to the parent with actions.order.patch', async () => {
+
+        const orderID = 'XXXXXXXXXX';
+
+        let onShippingChange;
+        let onShippingChangeCalled = false;
+
+        window.xprops.onShippingChange = async (data, actions) => {
+
+            const patchOrderMock = patchOrderApiMock();
+            patchOrderMock.expectCalls();
+            await actions.order.patch();
+            patchOrderMock.done();
+
+            onShippingChangeCalled = true;
+        };
+
+        window.paypal.Checkout = (props) => {
+            return {
+                renderTo: async () => {
+                    onShippingChange = props.onShippingChange.call(getMockCheckoutInstance(), { orderID });
+                }
+            };
+        };
+
+        window.document.body.innerHTML = createButtonHTML();
+
+        await setupButton();
+
+        window.document.querySelector('.paypal-button').click();
+
+        await onShippingChange;
+
+        if (!onShippingChange || !onShippingChangeCalled) {
+            throw new Error(`Expected onShippingChange to have been called`);
         }
     });
 

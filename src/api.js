@@ -12,7 +12,7 @@ let csrfToken = '';
 type APIRequest = {|
     url : string,
     method? : string,
-    json? : Object
+    json? : $ReadOnlyArray<mixed> | Object
 |};
 
 function callAPI({ url, method = 'get', json } : APIRequest) : ZalgoPromise<Object> {
@@ -106,6 +106,14 @@ export function billingTokenToOrderID(billingToken : string) : ZalgoPromise<stri
         url:    `${ API_URI.PAYMENT }/${ billingToken }/ectoken`
     }).then(data => {
         return data.token;
+    });
+}
+
+export function patchOrder(orderID : string, patch : []) : ZalgoPromise<OrderResponse> {
+    return callAPI({
+        method: 'post',
+        url:    `${ API_URI.ORDER }/${ orderID }/patch`,
+        json:   { data: { patch } }
     });
 }
 

@@ -5,7 +5,7 @@ import { memoize, noop, supportsPopups } from 'belter/src';
 import { INTENT, SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
 import { getParent, getTop } from 'cross-domain-utils/src';
 
-import { getOrder, captureOrder, authorizeOrder, persistAccessToken, billingTokenToOrderID, callGraphQL, type OrderResponse } from './api';
+import { getOrder, captureOrder, authorizeOrder, patchOrder, persistAccessToken, billingTokenToOrderID, callGraphQL, type OrderResponse } from './api';
 import { ORDER_API_ERROR, ORDER_ID_PATTERN, ERROR_URL } from './constants';
 
 type ActionsType = {|
@@ -15,6 +15,12 @@ type ActionsType = {|
         get : () => ZalgoPromise<OrderResponse>
     },
     restart : () => ZalgoPromise<OrderResponse>
+|};
+
+type ShippingChangeActionsType = {|
+    order : {
+        patch : () => ZalgoPromise<OrderResponse>
+    }
 |};
 
 type CheckoutComponent = {|
@@ -68,6 +74,24 @@ function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : A
             get:        orderGet
         },
         restart: restartFlow
+    };
+}
+
+function buildShippingChangeActions(checkout : CheckoutComponent, orderID : string, actions : {}) : ShippingChangeActionsType {
+
+    const handleProcessorError = () : ZalgoPromise<OrderResponse> => {
+        throw new Error('Order could not be patched');
+    };
+
+    const orderPatch = (patch = []) =>
+        patchOrder(orderID, patch)
+            .catch(handleProcessorError);
+
+    return {
+        ...actions,
+        order: {
+            patch: orderPatch
+        }
     };
 }
 
@@ -180,8 +204,17 @@ export function renderCheckout(props : Object = {}, context : string = getDefaul
 
     const validateOrderPromise = createOrder().then(validateOrder);
 
+    const addOnProps = {};
+
+    if (window.xprops.onShippingChange) {
+        addOnProps.onShippingChange = function onShippingChange(data, actions) : ZalgoPromise<void> {
+            return window.xprops.onShippingChange(data, buildShippingChangeActions(this, data.orderID, actions));
+        };
+    }
+
     const instance = window.paypal.Checkout({
         ...props,
+        ...addOnProps,
 
         createOrder,
 
