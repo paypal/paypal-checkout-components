@@ -128,7 +128,7 @@ let checkoutOpen = false;
 let canRenderTop = false;
 
 export function setupCheckout() {
-    const [ parent, top ] = [ getTop(window), getParent(window) ];
+    const [ parent, top ] = [ getParent(window), getTop(window) ];
 
     if (top && parent && parent !== top) {
         window.paypal.Checkout.canRenderTo(top).then(result => {
