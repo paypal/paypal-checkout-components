@@ -1385,7 +1385,7 @@ window.spb = function(modules) {
         });
         var query;
     }
-    var checkoutOpen = !1, canRenderTop = !0;
+    var checkoutOpen = !1, canRenderTop = !1;
     function renderCheckout(props, context) {
         void 0 === props && (props = {});
         void 0 === context && (context = Object(src.supportsPopups)() ? "popup" : "iframe");
