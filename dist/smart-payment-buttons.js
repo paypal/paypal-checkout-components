@@ -240,18 +240,20 @@ window.spb = function(modules) {
         }
         return !1;
     }
-    function getGlobal() {
-        var glob;
-        if ("undefined" != typeof window) glob = window; else {
-            if ("undefined" == typeof window) throw new TypeError("Can not find global");
-            glob = window;
+    var flushPromise, dispatchedErrors = [], possiblyUnhandledPromiseHandlers = [], activeCount = 0;
+    function flushActive() {
+        if (!activeCount && flushPromise) {
+            var promise = flushPromise;
+            flushPromise = null;
+            promise.resolve();
         }
-        var zalgoGlobal = glob.__zalgopromise__ = glob.__zalgopromise__ || {};
-        zalgoGlobal.flushPromises = zalgoGlobal.flushPromises || [];
-        zalgoGlobal.activeCount = zalgoGlobal.activeCount || 0;
-        zalgoGlobal.possiblyUnhandledPromiseHandlers = zalgoGlobal.possiblyUnhandledPromiseHandlers || [];
-        zalgoGlobal.dispatchedErrors = zalgoGlobal.dispatchedErrors || [];
-        return zalgoGlobal;
+    }
+    function startActive() {
+        activeCount += 1;
+    }
+    function endActive() {
+        activeCount -= 1;
+        flushActive();
     }
     var promise_ZalgoPromise = function() {
         function ZalgoPromise(handler) {
@@ -270,6 +272,7 @@ window.spb = function(modules) {
             this.handlers = [];
             if (handler) {
                 var _result, _error, resolved = !1, rejected = !1, isAsync = !1;
+                startActive();
                 try {
                     handler(function(res) {
                         if (isAsync) _this.resolve(res); else {
@@ -283,9 +286,11 @@ window.spb = function(modules) {
                         }
                     });
                 } catch (err) {
+                    endActive();
                     this.reject(err);
                     return;
                 }
+                endActive();
                 isAsync = !0;
                 resolved ? this.resolve(_result) : rejected && this.reject(_error);
             }
@@ -311,12 +316,12 @@ window.spb = function(modules) {
             this.error = error;
             this.errorHandled || setTimeout(function() {
                 _this2.errorHandled || function(err, promise) {
-                    if (-1 === getGlobal().dispatchedErrors.indexOf(err)) {
-                        getGlobal().dispatchedErrors.push(err);
+                    if (-1 === dispatchedErrors.indexOf(err)) {
+                        dispatchedErrors.push(err);
                         setTimeout(function() {
                             throw err;
                         }, 1);
-                        for (var j = 0; j < getGlobal().possiblyUnhandledPromiseHandlers.length; j++) getGlobal().possiblyUnhandledPromiseHandlers[j](err, promise);
+                        for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) possiblyUnhandledPromiseHandlers[j](err, promise);
                     }
                 }(error, _this2);
             }, 1);
@@ -332,7 +337,7 @@ window.spb = function(modules) {
             var _this3 = this, dispatching = this.dispatching, resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
             if (!dispatching && (resolved || rejected)) {
                 this.dispatching = !0;
-                getGlobal().activeCount += 1;
+                startActive();
                 for (var _loop = function(i) {
                     var _handlers$i = handlers[i], onSuccess = _handlers$i.onSuccess, onError = _handlers$i.onError, promise = _handlers$i.promise, result = void 0;
                     if (resolved) try {
@@ -363,8 +368,7 @@ window.spb = function(modules) {
                 }, i = 0; i < handlers.length; i++) _loop(i);
                 handlers.length = 0;
                 this.dispatching = !1;
-                getGlobal().activeCount -= 1;
-                0 === getGlobal().activeCount && ZalgoPromise.flushQueue();
+                endActive();
             }
         };
         _proto.then = function(onSuccess, onError) {
@@ -465,10 +469,10 @@ window.spb = function(modules) {
         };
         ZalgoPromise.onPossiblyUnhandledException = function(handler) {
             return function(handler) {
-                getGlobal().possiblyUnhandledPromiseHandlers.push(handler);
+                possiblyUnhandledPromiseHandlers.push(handler);
                 return {
                     cancel: function() {
-                        getGlobal().possiblyUnhandledPromiseHandlers.splice(getGlobal().possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
+                        possiblyUnhandledPromiseHandlers.splice(possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
                     }
                 };
             }(handler);
@@ -476,11 +480,14 @@ window.spb = function(modules) {
         ZalgoPromise.try = function(method, context, args) {
             if (method && "function" != typeof method && !method.call) throw new Error("Promise.try expected a function");
             var result;
+            startActive();
             try {
                 result = method.apply(context, args || []);
             } catch (err) {
+                endActive();
                 return ZalgoPromise.reject(err);
             }
+            endActive();
             return ZalgoPromise.resolve(result);
         };
         ZalgoPromise.delay = function(_delay) {
@@ -492,15 +499,11 @@ window.spb = function(modules) {
             return !!(value && value instanceof ZalgoPromise) || utils_isPromise(value);
         };
         ZalgoPromise.flush = function() {
-            var promise = new ZalgoPromise();
-            getGlobal().flushPromises.push(promise);
-            0 === getGlobal().activeCount && ZalgoPromise.flushQueue();
-            return promise;
-        };
-        ZalgoPromise.flushQueue = function() {
-            var promisesToFlush = getGlobal().flushPromises;
-            getGlobal().flushPromises = [];
-            for (var _i2 = 0; _i2 < promisesToFlush.length; _i2++) promisesToFlush[_i2].resolve();
+            return function(Zalgo) {
+                var promise = flushPromise = flushPromise || new ZalgoPromise();
+                flushActive();
+                return promise;
+            }();
         };
         return ZalgoPromise;
     }();
@@ -744,7 +747,7 @@ window.spb = function(modules) {
     }
     function isOperaMini(ua) {
         void 0 === ua && (ua = getUserAgent());
-        return -1 < ua.indexOf("Opera Mini");
+        return ua.indexOf("Opera Mini") > -1;
     }
     function supportsPopups(ua) {
         void 0 === ua && (ua = getUserAgent());
@@ -801,7 +804,8 @@ window.spb = function(modules) {
                     id: Object(_util__WEBPACK_IMPORTED_MODULE_0__.m)()
                 });
                 storage.id || (storage.id = Object(_util__WEBPACK_IMPORTED_MODULE_0__.m)());
-                var result = handler(accessedStorage = storage);
+                accessedStorage = storage;
+                var result = handler(storage);
                 localStorageEnabled ? window.localStorage.setItem(STORAGE_KEY, JSON.stringify(storage)) : Object(_util__WEBPACK_IMPORTED_MODULE_0__.c)()[STORAGE_KEY] = storage;
                 accessedStorage = null;
                 return result;
@@ -846,7 +850,9 @@ window.spb = function(modules) {
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__(5), __webpack_require__(1), __webpack_require__(3), __webpack_require__(6);
-    var util = __webpack_require__(0), KEY_CODES_ENTER = (__webpack_require__(7), 13);
+    var util = __webpack_require__(0), KEY_CODES = (__webpack_require__(7), {
+        ENTER: 13
+    });
     __webpack_require__.d(__webpack_exports__, "c", function() {
         return querySelectorAll;
     });
@@ -864,7 +870,7 @@ window.spb = function(modules) {
         element.addEventListener("touchstart", util.f);
         element.addEventListener("click", handler);
         element.addEventListener("keypress", function(event) {
-            if (event.keyCode === KEY_CODES_ENTER) return handler(event);
+            if (event.keyCode === KEY_CODES.ENTER) return handler(event);
         });
     }
     function isLocalStorageEnabled() {
@@ -1156,9 +1162,15 @@ window.spb = function(modules) {
     }
     function linkFrameWindow(frame) {
         !function() {
-            for (var i = 0; i < iframeWindows.length; i++) if (isWindowClosed(iframeWindows[i])) {
-                iframeFrames.splice(i, 1);
-                iframeWindows.splice(i, 1);
+            for (var i = 0; i < iframeWindows.length; i++) {
+                var closed = !1;
+                try {
+                    closed = iframeWindows[i].closed;
+                } catch (err) {}
+                if (closed) {
+                    iframeFrames.splice(i, 1);
+                    iframeWindows.splice(i, 1);
+                }
             }
         }();
         if (frame && frame.contentWindow) try {
@@ -1344,7 +1356,7 @@ window.spb = function(modules) {
             var status = _ref2.status, resHeaders = _ref2.headers, body = _ref2.body;
             csrfToken = resHeaders[HEADERS.CSRF_TOKEN];
             if ("contingency" === body.ack) throw new Error(body.contingency);
-            if (400 < status) throw new Error("Api: " + url + " returned status code: " + status);
+            if (status > 400) throw new Error("Api: " + url + " returned status code: " + status);
             if ("success" !== body.ack) throw new Error("Api: " + url + " returned ack: " + body.ack);
             return body.data;
         });
@@ -1386,6 +1398,11 @@ window.spb = function(modules) {
         var query;
     }
     var checkoutOpen = !1, canRenderTop = !1;
+    function getNonce() {
+        var nonce = "";
+        document.body && (nonce = document.body.getAttribute("data-nonce") || "");
+        return nonce;
+    }
     function renderCheckout(props, context) {
         void 0 === props && (props = {});
         void 0 === context && (context = Object(src.supportsPopups)() ? "popup" : "iframe");
@@ -1409,7 +1426,33 @@ window.spb = function(modules) {
                     throw new Error("No mechanism to create order");
                 });
             });
-        }(props), renderWindow = canRenderTop && top ? top : parent, validateOrderPromise = createOrder().then(validateOrder), instance = window.paypal.Checkout(Object(esm_extends.a)({}, props, {
+        }(props), renderWindow = canRenderTop && top ? top : parent, validateOrderPromise = createOrder().then(validateOrder), addOnProps = {};
+        window.xprops.onShippingChange && (addOnProps.onShippingChange = function(data, actions) {
+            return window.xprops.onShippingChange(data, function(checkout, orderID, actions) {
+                var handleProcessorError = function() {
+                    throw new Error("Order could not be patched");
+                };
+                return Object(esm_extends.a)({}, actions, {
+                    order: {
+                        patch: function(patch) {
+                            void 0 === patch && (patch = []);
+                            return function(orderID, patch) {
+                                return callAPI({
+                                    method: "post",
+                                    url: API_URI.ORDER + "/" + orderID + "/patch",
+                                    json: {
+                                        data: {
+                                            patch: patch
+                                        }
+                                    }
+                                });
+                            }(orderID, patch).catch(handleProcessorError);
+                        }
+                    }
+                });
+            }(0, data.orderID, actions));
+        });
+        var instance = window.paypal.Checkout(Object(esm_extends.a)({}, props, addOnProps, {
             createOrder: createOrder,
             locale: window.xprops.locale,
             commit: window.xprops.commit,
@@ -1488,11 +1531,7 @@ window.spb = function(modules) {
             onClose: function() {
                 checkoutOpen = !1;
             },
-            nonce: function() {
-                var nonce = "";
-                document.body && (nonce = document.body.getAttribute("data-nonce") || "");
-                return nonce;
-            }()
+            nonce: getNonce()
         }));
         return instance.renderTo(renderWindow, "body", context).then(function() {
             return validateOrderPromise.catch(function(err) {
