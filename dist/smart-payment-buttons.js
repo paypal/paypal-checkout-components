@@ -1390,7 +1390,7 @@ window.spb = function(modules) {
         void 0 === props && (props = {});
         void 0 === context && (context = Object(src.supportsPopups)() ? "popup" : "iframe");
         if (checkoutOpen) throw new Error("Checkout already rendered");
-        var _ref2 = [ Object(cross_domain_utils_src.getParent)(), Object(cross_domain_utils_src.getTop)(window) ], parent = _ref2[0], top = _ref2[1], createOrder = function(props) {
+        var _ref2 = [ Object(cross_domain_utils_src.getParent)(window), Object(cross_domain_utils_src.getTop)(window) ], parent = _ref2[0], top = _ref2[1], createOrder = function(props) {
             void 0 === props && (props = {});
             return Object(src.memoize)(function() {
                 return zalgo_promise_src.a.try(function() {
@@ -1529,7 +1529,7 @@ window.spb = function(modules) {
                 }).catch(src.noop);
             }
         });
-        parent = (_ref = [ Object(cross_domain_utils_src.getTop)(window), Object(cross_domain_utils_src.getParent)() ])[0], 
+        parent = (_ref = [ Object(cross_domain_utils_src.getTop)(window), Object(cross_domain_utils_src.getParent)(window) ])[0], 
         (top = _ref[1]) && parent && parent !== top && window.paypal.Checkout.canRenderTo(top).then(function(result) {
             canRenderTop = result;
         });
