@@ -47,8 +47,9 @@ const mapLegacyPaymentOptions = (options : Object) : Object => {
                 ...transaction,
                 item_list: {
                     ...transaction.item_list,
-                    shipping_options: [ ...transaction.item_list.shipping_options ].map(option => (
+                    shipping_options: [ ...transaction.item_list.shipping_options ].map((option, index) => (
                         {
+                            id:     option.id || index.toString(),
                             label:  legacyLabelMap[option.label],
                             type:   legacyTypeMap[option.type],
                             amount: {
