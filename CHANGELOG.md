@@ -1,3 +1,13 @@
+## <small>4.0.254 (2019-02-01)</small>
+
+* fix(inline-guest): Removing hack which always returned an EC token for IG treatments (#1005) ([ee3ab5e](https://github.com/paypal/paypal-checkout/commit/ee3ab5e)), closes [#1005](https://github.com/paypal/paypal-checkout/issues/1005)
+* fix(shipping-options): Adding stop-gap for legacy integrated merchants (#1004) ([1f4db0f](https://github.com/paypal/paypal-checkout/commit/1f4db0f)), closes [#1004](https://github.com/paypal/paypal-checkout/issues/1004)
+* Only get token from url for fpti when on paypal domain ([b77724d](https://github.com/paypal/paypal-checkout/commit/b77724d))
+* Remove demo client id ([234a4de](https://github.com/paypal/paypal-checkout/commit/234a4de))
+* chore(whitelist-apm): Enable apm for whitelisted merchants (#1001) ([0647d2c](https://github.com/paypal/paypal-checkout/commit/0647d2c)), closes [#1001](https://github.com/paypal/paypal-checkout/issues/1001)
+
+
+
 ## <small>4.0.240 (2019-01-09)</small>
 
 *  fix(callback-default-reject): Adding default noop function for `actions.reject` for the onShippingC ([36cbdd9](https://github.com/paypal/paypal-checkout/commit/36cbdd9)), closes [#967](https://github.com/paypal/paypal-checkout/issues/967)
