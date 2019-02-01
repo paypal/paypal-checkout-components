@@ -14,6 +14,56 @@ type PaymentSupplementType = {
 
 let payments : { [string] : PaymentSupplementType } = {};
 
+const mapLegacyPaymentOptions = (options : Object) : Object => {
+    const transaction = options.transactions && options.transactions[0];
+    const transactionAmount = transaction.amount || {};
+
+    const legacyLabelMap = {
+        'STORE_PICKUP':                 'In-store pick up',
+        'PICKUP_OPTION':                'Pick it up',
+        'COLLECTION':                   'Collection',
+        'SHIP_TO_STORE':                'Ship to store',
+        'COLLECT_PLUS':                 'Collect via Collect+',
+        'PICKUP_FROM_STORE':            'Pick up from store',
+        'FREE_NEXT_DAY_STORE_DELIVERY': 'Free next day store delivery',
+        'BUY_AND_COLLECT':              'Buy and collect',
+        'SHIP_TO_LOCKER':               'Ship to locker',
+        'SHIP_TO_HOME':                 'Ship to your address'
+    };
+
+    const legacyTypeMap = {
+        'SHIP_TO_HOME':  'SHIPPING',
+        'SHIP_TO_STORE': 'PICKUP'
+    };
+
+    if (!transaction || !transaction.item_list || !transaction.item_list.shipping_options) {
+        return { ...options };
+    }
+
+    return {
+        ...options,
+        transactions: [
+            {
+                ...transaction,
+                item_list: {
+                    ...transaction.item_list,
+                    shipping_options: [ ...transaction.item_list.shipping_options ].map((option, index) => (
+                        {
+                            id:     option.id || index.toString(),
+                            label:  legacyLabelMap[option.label],
+                            type:   legacyTypeMap[option.type],
+                            amount: {
+                                value:    '0.00',
+                                currency: transactionAmount.currency
+                            }
+                        }
+                    ))
+                }
+            }
+        ]
+    };
+};
+
 export function validateExtraPaymentOptions(options : Object) {
     const transaction = options.transactions && options.transactions[0];
 
@@ -57,7 +107,7 @@ export function removeExtraPaymentOptions(options : Object) : Object {
 
 export function addPaymentOptions(id : string, options : Object) {
     payments[id] = payments[id] || {};
-    payments[id].options = options;
+    payments[id].options = mapLegacyPaymentOptions(options);
 }
 
 export function getPaymentOptions(id : string) : ?Object {
