@@ -293,10 +293,6 @@ export let Button : Component<ButtonOptions> = create({
                     client.sandbox = 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R';
                 }
 
-                if (client && client.production === 'demo_production_client_id') {
-                    client.production = 'Aco85QiB9jk8Q3GdsidqKVCXuPAAVbnqm0agscHCL2-K2Lu2L6MxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ';
-                }
-
                 return client;
             }
         },
