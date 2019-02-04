@@ -46,21 +46,21 @@ if (window !== window.parent && !paypal.allowIframe()) {
 
 ### Handle props
 
-#### `createOrder`
+#### `payment`
 
 The token will be available in the url as the `token` query param, e.g. `/checkoutnow?token=EC-XYZ`.
 
 Alternatively, the client can call:
 
 ```javascript
-window.xprops.createOrder().then(token => {
+window.xprops.payment().then(token => {
     ...
 });
 ```
 
 Calling from the client-side is recommended if the token is not needed for a server-side render. This way additional optimizations can be done to pre-render the checkout flow in parallel with (or before) calling the merchant to generate a token.
 
-`createOrder` may be called multiple times and will yield the same memoized result. By the time the checkout page renders, it is likely that a token will already be pre-cached/memoized.
+`payment` may be called multiple times and will yield the same memoized result. By the time the checkout page renders, it is likely that a token will already be pre-cached/memoized.
 
 #### `fundingSource`
 
@@ -72,9 +72,9 @@ The value should be read to determine which flow to direct the user to.
 
 Please see https://github.com/paypal/paypal-sdk-constants for the full list of constants
 
-#### `onApprove`
+#### `onAuthorize`
 
-`window.xprops.onApprove({ ...data })` should be called when the buyer approves the payment.
+`window.xprops.onAuthorize({ ...data })` should be called when the buyer approves the payment.
 
 `data` should contain the following:
 
