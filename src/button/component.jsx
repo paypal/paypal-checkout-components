@@ -455,6 +455,9 @@ export let Button : Component<ButtonOptions> = create({
             },
             decorate({ allowed = [], disallowed = [] } : Object = {}, props : ButtonOptions) : {} {
 
+                allowed = Array.isArray(allowed) ? allowed : [];
+                disallowed = Array.isArray(disallowed) ? disallowed : [];
+
                 if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1) {
                     allowed = allowed.filter(source => (source !== FUNDING.VENMO));
                 }
