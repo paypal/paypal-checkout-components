@@ -10,9 +10,9 @@ The following guide details out how to implement the [zoid](https://github.com/k
 4. The buyer clicks on the button
 5. The button calls `paypal.Checkout({ ...props }).render('body')`
 6. The checkout flow is loaded in the popup window.
-7. The checkout app calls `window.xprops.createOrder()` to get an order id (or ec token)
+7. The checkout app calls `window.xprops.payment()` to get an order id (or ec token)
 8. The buyer completes the checkout flow
-9. The child window calls `window.xprops.onApprove()` to return control to the merchant
+9. The child window calls `window.xprops.onAuthorize()` to return control to the merchant
 10. The merchant calls paypal to capture the payment
 
 After the checkout flow is loaded, it is responsible for accepting props from the parent page, and sending callbacks on key events, including when the buyer cancels or approves the transaction.
