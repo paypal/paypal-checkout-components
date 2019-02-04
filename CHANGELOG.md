@@ -1,3 +1,9 @@
+## <small>4.0.255 (2019-02-04)</small>
+
+* fix(funding-prop): Addressing bug when null value passed through funding prop (#1008) ([6152323](https://github.com/paypal/paypal-checkout/commit/6152323)), closes [#1008](https://github.com/paypal/paypal-checkout/issues/1008)
+
+
+
 ## <small>4.0.254 (2019-02-01)</small>
 
 * fix(inline-guest): Removing hack which always returned an EC token for IG treatments (#1005) ([ee3ab5e](https://github.com/paypal/paypal-checkout/commit/ee3ab5e)), closes [#1005](https://github.com/paypal/paypal-checkout/issues/1005)

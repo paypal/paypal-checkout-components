@@ -62,65 +62,6 @@
             });
         }();
     },
-    "./node_modules/cross-domain-utils/src/constants.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__.d(__webpack_exports__, "a", function() {
-            return PROTOCOL;
-        });
-        __webpack_require__.d(__webpack_exports__, "b", function() {
-            return WILDCARD;
-        });
-        var PROTOCOL = {
-            MOCK: "mock:",
-            FILE: "file:",
-            ABOUT: "about:"
-        }, WILDCARD = "*";
-    },
-    "./node_modules/cross-domain-utils/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__("./node_modules/cross-domain-utils/src/utils.js");
-        __webpack_require__.d(__webpack_exports__, "getDomain", function() {
-            return __WEBPACK_IMPORTED_MODULE_0__utils__.a;
-        });
-        var __WEBPACK_IMPORTED_MODULE_1__types__ = __webpack_require__("./node_modules/cross-domain-utils/src/types.js");
-        __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__types__), __webpack_require__("./node_modules/cross-domain-utils/src/constants.js");
-    },
-    "./node_modules/cross-domain-utils/src/types.js": function(module, exports) {},
-    "./node_modules/cross-domain-utils/src/utils.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        var constants = __webpack_require__("./node_modules/cross-domain-utils/src/constants.js");
-        __webpack_exports__.a = getDomain;
-        function getParent(win) {
-            if (win) try {
-                if (win.parent && win.parent !== win) return win.parent;
-            } catch (err) {}
-        }
-        function canReadFromWindow(win) {
-            try {
-                win && win.location && win.location.href;
-                return !0;
-            } catch (err) {}
-            return !1;
-        }
-        function getActualDomain(win) {
-            var location = (win = win || window).location;
-            if (!location) throw new Error("Can not read window location");
-            var protocol = location.protocol;
-            if (!protocol) throw new Error("Can not read window protocol");
-            if (protocol === constants.a.FILE) return constants.a.FILE + "//";
-            if (protocol === constants.a.ABOUT) {
-                var parent = getParent(win);
-                return parent && canReadFromWindow(parent) ? getActualDomain(parent) : constants.a.ABOUT + "//";
-            }
-            var host = location.host;
-            if (!host) throw new Error("Can not read window host");
-            return protocol + "//" + host;
-        }
-        function getDomain(win) {
-            var domain = getActualDomain(win = win || window);
-            return domain && win.mockDomain && 0 === win.mockDomain.indexOf(constants.a.MOCK) ? win.mockDomain : domain;
-        }
-    },
     "./node_modules/hi-base32/src/base32.js": function(module, exports, __webpack_require__) {
         (function(module) {
             var __WEBPACK_AMD_DEFINE_RESULT__, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
@@ -1293,8 +1234,7 @@
             activeCount -= 1;
             flushActive();
         }
-        var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales;
-        (function() {
+        !function() {
             function ZalgoPromise(handler) {
                 var _this = this;
                 !function(instance, Constructor) {
@@ -1539,11 +1479,12 @@
                     return promise;
                 }(ZalgoPromise);
             };
-        })(), __webpack_require__("./node_modules/cross-domain-utils/src/index.js");
+        }();
+        var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales;
         var config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.254",
+            version: "4.0.255",
             cors: !0,
             env: function() {
                 return "undefined" == typeof window || void 0 === window.location ? misc_ENV.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? misc_ENV.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? misc_ENV.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? misc_ENV.SANDBOX : misc_ENV.PRODUCTION;
@@ -3336,7 +3277,7 @@
                 })));
             }(normalizeProps(props)) : null;
             var script;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[ATTRIBUTE.VERSION] = "4.0.254", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[ATTRIBUTE.VERSION] = "4.0.255", 
             _ref21), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
