@@ -10,7 +10,7 @@ import { FPTI, PAYMENT_TYPE } from '../constants';
 
 import { getSessionID, getButtonSessionID } from './session';
 import { proxyMethod } from './proxy';
-import { once } from './util';
+import { once, isPayPalDomain } from './util';
 import { getQueryParam } from './dom';
 
 function getRefererDomain() : string {
@@ -28,10 +28,12 @@ function getToken() : ?string {
         return window.root.token;
     }
 
-    let queryToken = getQueryParam('token');
+    if (isPayPalDomain()) {
+        let queryToken = getQueryParam('token');
 
-    if (queryToken) {
-        return queryToken;
+        if (queryToken) {
+            return queryToken;
+        }
     }
 }
 

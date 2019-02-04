@@ -62,65 +62,6 @@
             });
         }();
     },
-    "./node_modules/cross-domain-utils/src/constants.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__.d(__webpack_exports__, "a", function() {
-            return PROTOCOL;
-        });
-        __webpack_require__.d(__webpack_exports__, "b", function() {
-            return WILDCARD;
-        });
-        var PROTOCOL = {
-            MOCK: "mock:",
-            FILE: "file:",
-            ABOUT: "about:"
-        }, WILDCARD = "*";
-    },
-    "./node_modules/cross-domain-utils/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__("./node_modules/cross-domain-utils/src/utils.js");
-        __webpack_require__.d(__webpack_exports__, "getDomain", function() {
-            return __WEBPACK_IMPORTED_MODULE_0__utils__.a;
-        });
-        var __WEBPACK_IMPORTED_MODULE_1__types__ = __webpack_require__("./node_modules/cross-domain-utils/src/types.js");
-        __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__types__), __webpack_require__("./node_modules/cross-domain-utils/src/constants.js");
-    },
-    "./node_modules/cross-domain-utils/src/types.js": function(module, exports) {},
-    "./node_modules/cross-domain-utils/src/utils.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        var constants = __webpack_require__("./node_modules/cross-domain-utils/src/constants.js");
-        __webpack_exports__.a = getDomain;
-        function getParent(win) {
-            if (win) try {
-                if (win.parent && win.parent !== win) return win.parent;
-            } catch (err) {}
-        }
-        function canReadFromWindow(win) {
-            try {
-                win && win.location && win.location.href;
-                return !0;
-            } catch (err) {}
-            return !1;
-        }
-        function getActualDomain(win) {
-            var location = (win = win || window).location;
-            if (!location) throw new Error("Can not read window location");
-            var protocol = location.protocol;
-            if (!protocol) throw new Error("Can not read window protocol");
-            if (protocol === constants.a.FILE) return constants.a.FILE + "//";
-            if (protocol === constants.a.ABOUT) {
-                var parent = getParent(win);
-                return parent && canReadFromWindow(parent) ? getActualDomain(parent) : constants.a.ABOUT + "//";
-            }
-            var host = location.host;
-            if (!host) throw new Error("Can not read window host");
-            return protocol + "//" + host;
-        }
-        function getDomain(win) {
-            var domain = getActualDomain(win = win || window);
-            return domain && win.mockDomain && 0 === win.mockDomain.indexOf(constants.a.MOCK) ? win.mockDomain : domain;
-        }
-    },
     "./node_modules/hi-base32/src/base32.js": function(module, exports, __webpack_require__) {
         (function(module) {
             var __WEBPACK_AMD_DEFINE_RESULT__, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
@@ -1293,8 +1234,7 @@
             activeCount -= 1;
             flushActive();
         }
-        var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales;
-        (function() {
+        !function() {
             function ZalgoPromise(handler) {
                 var _this = this;
                 !function(instance, Constructor) {
@@ -1539,11 +1479,12 @@
                     return promise;
                 }(ZalgoPromise);
             };
-        })(), __webpack_require__("./node_modules/cross-domain-utils/src/index.js");
+        }();
+        var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales;
         var config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.253",
+            version: "4.0.255",
             cors: !0,
             env: function() {
                 return "undefined" == typeof window || void 0 === window.location ? misc_ENV.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? misc_ENV.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? misc_ENV.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? misc_ENV.SANDBOX : misc_ENV.PRODUCTION;
@@ -1798,6 +1739,7 @@
                 }
             },
             creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
+            apmTestDomains: [ "agsm.it", "ls-felgendesign.de", "domecgo.com", "raffaeleinghilterra.it", "hills4me.com", "anastasis.it", "liberidallavoro.org", "lgancce.com", "fiat.com", "amnesty.de", "raftingcenter.it", "myrabona.it", "firabarcelona.com", "elidentsrl.it", "sprayplanet.es", "cutipol.pt", "newslist.it", "bamboomt2.eu", "gisa.net", "italialaser.org", "hydeofficialstore.com", "huber-verlag.de", "joomlacontenteditor.net", "kletterzentrum-innsbruck.at", "knobmusiciandesign.com", "shipstage.com", "whatsmonitor.com", "napoleonx.ai", "activitiesbookingsystem.com", "spider-slacklines.com", "sononato.it", "alpi4000.it", "penimaster.de", "sportbionier.com", "bioseme.it", "ilpaninotondo.it", "h10hotels.com", "meyer-menue.de", "uni-heidelberg.de", "meyer-menue.de", "cameo.it", "pasteleriabuenavista.com", "wuv.de", "papacheck.de", "traderlink.com", "smatchfe.club", "sarastro-stauden.com", "vandenberg-berlin.com", "t-shirtprinting.it", "raftingrepublic.com", "cityspeeddating.at", "euroval.com", "albero-dellavita.it", "mediumelisa.it", "inkmaster.it", "run-healthy.com", "herokuapp.com", "localhost:5000" ],
             customCountry: !1,
             SUPPORTED_BROWSERS: {
                 msie: "11",
@@ -3335,7 +3277,7 @@
                 })));
             }(normalizeProps(props)) : null;
             var script;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[ATTRIBUTE.VERSION] = "4.0.253", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[ATTRIBUTE.VERSION] = "4.0.255", 
             _ref21), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
