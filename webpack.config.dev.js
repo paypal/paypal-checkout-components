@@ -14,15 +14,12 @@ export default getWebpackConfig({
     filename:      `${ FILE_NAME }.js`,
     modulename:    MODULE_NAME,
     debug:         true,
+    minify:        true,
     env:           'sandbox',
     libraryTarget: 'window',
     vars:          {
         ...globals,
         ...testGlobals,
-        __ZOID__:        {
-            ...globals.__ZOID__,
-            __FRAMEWORK_SUPPORT__: true
-        },
         __HOST__: 'localhost.paypal.com:9000',
         __PATH__: `/${ FILE_NAME }.js`
     }

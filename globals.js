@@ -8,7 +8,8 @@ module.exports = {
     __ZOID__: {
         ...zoidGlobals.__ZOID__,
         __DEFAULT_CONTAINER__: false,
-        __DEFAULT_PRERENDER__: false
+        __DEFAULT_PRERENDER__: false,
+        __FRAMEWORK_SUPPORT__: true
     },
     
     __POST_ROBOT__: {

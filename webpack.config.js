@@ -12,9 +12,11 @@ export const WEBPACK_CONFIG_TEST = getWebpackConfig({
     entry:         './test/paypal.js',
     libraryTarget: 'window',
 
-    test:  true,
-    debug: true,
-    vars:  {
+    test:   true,
+    debug:  true,
+    minify: true,
+
+    vars: {
         ...globals,
         ...testGlobals,
         __paypal_checkout__: {
@@ -27,11 +29,7 @@ export const WEBPACK_CONFIG_TEST = getWebpackConfig({
             __REMEMBERED_FUNDING__: () => 'window.__TEST_REMEMBERED_FUNDING__'
         },
         __CLIENT_ID__:   'abcxyz123',
-        __MERCHANT_ID__: 'abc',
-        __ZOID__:        {
-            ...globals.__ZOID__,
-            __FRAMEWORK_SUPPORT__: true
-        }
+        __MERCHANT_ID__: 'abc'
     }
 });
 

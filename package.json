@@ -22,7 +22,8 @@
     "demo": "serve ./demo --port 1337",
     "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin",
     "jest-screenshot": "jest test/screenshot/screenshot.test.js --env=node --no-cache",
-    "jest-ssr": "jest test/ssr/ssr.test.js --env=node --no-cache"
+    "jest-ssr": "jest test/ssr/ssr.test.js --env=node --no-cache",
+    "check-size": "babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/webpack --progress --config webpack.config.size && cat dist/size.js | gzip -9 | wc && rm dist/size.js"
   },
   "files": [
     "src/",
