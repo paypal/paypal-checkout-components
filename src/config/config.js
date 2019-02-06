@@ -462,7 +462,7 @@ export let config = {
 
     get paypalDomains() : Object {
         return {
-            [ ENV.LOCAL ]:      `http://localhost.paypal.com:${ config.ports.default }`,
+            [ ENV.LOCAL ]:      /^https?:\/\/.*\.paypal\.com:?\d*$/,
             [ ENV.STAGE ]:      `https://www.${ config.stageUrl }`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,

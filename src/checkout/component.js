@@ -65,6 +65,10 @@ export let Checkout : Component<CheckoutPropsType> = create({
                 throw new Error(`Expected payment id or token to be passed, got ${ token }`);
             }
 
+            if (isPayPalDomain() && window.xprops && window.xprops.checkoutUri) {
+                return window.xprops.checkoutUri;
+            }
+
             return determineUrl(env, props.fundingSource, token);
         });
     },
@@ -75,8 +79,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
 
     get domain() : Object {
         return {
-            ...config.paypalDomains,
-            [ ENV.LOCAL ]: /^http:\/\/localhost.paypal.com:\d+$/
+            ...config.paypalDomains
         };
     },
 

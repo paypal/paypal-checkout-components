@@ -14,7 +14,7 @@ import { SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
     BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY } from '../constants';
 import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, getScriptVersion,
-    isIEIntranet, isEligible, getCurrentScriptUrl,
+    isIEIntranet, isEligible, isPayPalDomain, getCurrentScriptUrl,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
 import { rest, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
@@ -132,7 +132,9 @@ type ButtonOptions = {
     meta : Object,
     validate? : ({ enable : () => ZalgoPromise<void>, disable : () => ZalgoPromise<void> }) => void,
     stage? : string,
-    stageUrl? : string
+    stageUrl? : string,
+    localhostUrl? : string,
+    checkoutUri? : string
 };
 
 export let Button : Component<ButtonOptions> = create({
@@ -142,6 +144,10 @@ export let Button : Component<ButtonOptions> = create({
 
     buildUrl(props) : string {
         let env = props.env || config.env;
+
+        if (props.localhostUrl) {
+            return `${ props.localhostUrl }${ config.buttonUris.local }`;
+        }
 
         return config.buttonUrls[env];
     },
@@ -325,6 +331,18 @@ export let Button : Component<ButtonOptions> = create({
             required: false
         },
 
+        localhostUrl: {
+            type:       'string',
+            required:   false,
+            decorate(original, props) : void | string {
+                if (!isPayPalDomain() || props.env !== ENV.LOCAL) {
+                    return;
+                }
+
+                return original;
+            }
+        },
+
         stage: {
             type:       'string',
             required:   false,
@@ -350,6 +368,24 @@ export let Button : Component<ButtonOptions> = create({
                 if (env === ENV.STAGE || env === ENV.LOCAL) {
                     return config.stageUrl;
                 }
+            }
+        },
+
+        checkoutUri: {
+            type:       'string',
+            required:   false,
+            decorate(original, props) : void | string {
+                if (!isPayPalDomain()) {
+                    return;
+                }
+
+                const urls = {
+                    ...config.paypalUrls,
+                    [ ENV.LOCAL ]: props.localhostUrl || config.paypalUrls[ENV.LOCAL]
+                };
+                const env = props.env || config.env;
+
+                return `${ urls[env] }${ original }`;
             }
         },
 
