@@ -5850,7 +5850,7 @@
         var config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.255",
+            version: "4.0.256",
             cors: !0,
             env: function() {
                 return "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION;
@@ -6105,7 +6105,7 @@
                 }
             },
             creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
-            apmTestDomains: [ "agsm.it", "ls-felgendesign.de", "domecgo.com", "raffaeleinghilterra.it", "hills4me.com", "anastasis.it", "liberidallavoro.org", "lgancce.com", "fiat.com", "amnesty.de", "raftingcenter.it", "myrabona.it", "firabarcelona.com", "elidentsrl.it", "sprayplanet.es", "cutipol.pt", "newslist.it", "bamboomt2.eu", "gisa.net", "italialaser.org", "hydeofficialstore.com", "huber-verlag.de", "joomlacontenteditor.net", "kletterzentrum-innsbruck.at", "knobmusiciandesign.com", "shipstage.com", "whatsmonitor.com", "napoleonx.ai", "activitiesbookingsystem.com", "spider-slacklines.com", "sononato.it", "alpi4000.it", "penimaster.de", "sportbionier.com", "bioseme.it", "ilpaninotondo.it", "h10hotels.com", "meyer-menue.de", "uni-heidelberg.de", "meyer-menue.de", "cameo.it", "pasteleriabuenavista.com", "wuv.de", "papacheck.de", "traderlink.com", "smatchfe.club", "sarastro-stauden.com", "vandenberg-berlin.com", "t-shirtprinting.it", "raftingrepublic.com", "cityspeeddating.at", "euroval.com", "albero-dellavita.it", "mediumelisa.it", "inkmaster.it", "run-healthy.com", "herokuapp.com", "localhost:5000" ],
+            apmTestDomains: [ "agsm.it", "ls-felgendesign.de", "domecgo.com", "raffaeleinghilterra.it", "hills4me.com", "anastasis.it", "liberidallavoro.org", "lgancce.com", "fiat.com", "amnesty.de", "raftingcenter.it", "myrabona.it", "firabarcelona.com", "elidentsrl.it", "sprayplanet.es", "cutipol.pt", "newslist.it", "bamboomt2.eu", "gisa.net", "italialaser.org", "hydeofficialstore.com", "huber-verlag.de", "joomlacontenteditor.net", "kletterzentrum-innsbruck.at", "knobmusiciandesign.com", "shipstage.com", "whatsmonitor.com", "napoleonx.ai", "activitiesbookingsystem.com", "spider-slacklines.com", "sononato.it", "alpi4000.it", "penimaster.de", "sportbionier.com", "bioseme.it", "ilpaninotondo.it", "meyer-menue.de", "uni-heidelberg.de", "cameo.it", "pasteleriabuenavista.com", "wuv.de", "papacheck.de", "traderlink.com", "agcalabrese.it", "smatchfe.club", "sarastro-stauden.com", "vandenberg-berlin.com", "t-shirtprinting.it", "raftingrepublic.com", "cityspeeddating.at", "euroval.com", "albero-dellavita.it", "mediumelisa.it", "inkmaster.it", "run-healthy.com", "cna.it", "mufight2.com", "louvardgame.be", "pruefungsdoc.de", "europublishing.it", "edaiperiodici.it", "herokuapp.com" ],
             customCountry: !1,
             SUPPORTED_BROWSERS: {
                 msie: "11",
@@ -9470,7 +9470,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.255"
+                    ver: "4.0.256"
                 };
             });
             Object(beaver_logger_client.a)(function() {
@@ -9740,11 +9740,11 @@
             });
         });
         function getScriptVersion() {
-            return Boolean(getCurrentScript()) ? "4" : "4.0.255";
+            return Boolean(getCurrentScript()) ? "4" : "4.0.256";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
-            return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.255.js";
+            return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.256.js";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -12865,7 +12865,7 @@
                     logoColor: "blue"
                 })));
             }(props_normalizeProps(props)) : null;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.255", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.256", 
             _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -14086,7 +14086,7 @@
             setup__track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.255", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
+        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.256", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
         if (Object(util.g)()) {
             interface_Checkout = component_Checkout;
             interface_BillingPage = BillingPage;
@@ -14208,7 +14208,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.255";
+                payload.version = "4.0.256";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 payload.appName = APP_NAME;
@@ -14815,18 +14815,18 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         0;
-        if (window.paypal && "4.0.255" === window.paypal.version) {
+        if (window.paypal && "4.0.256" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.255"
+                version: "4.0.256"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.255) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.256) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.255" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.256" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.255"
+                version: "4.0.256"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.255");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.256");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");

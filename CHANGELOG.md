@@ -1,3 +1,9 @@
+## <small>4.0.256 (2019-02-06)</small>
+
+* chore(whitelist-apm): Add whitelisted merchants to first increment of APMs (#1010) ([96f70ff](https://github.com/paypal/paypal-checkout/commit/96f70ff)), closes [#1010](https://github.com/paypal/paypal-checkout/issues/1010)
+
+
+
 ## <small>4.0.255 (2019-02-04)</small>
 
 * fix(funding-prop): Addressing bug when null value passed through funding prop (#1008) ([6152323](https://github.com/paypal/paypal-checkout/commit/6152323)), closes [#1008](https://github.com/paypal/paypal-checkout/issues/1008)
