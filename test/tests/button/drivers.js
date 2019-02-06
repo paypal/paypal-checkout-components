@@ -191,7 +191,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
             };
 
             const template = `
-                <paypal-button props="opts"></test-component>
+                <paypal-buttons props="opts"></paypal-button>
             `;
 
             $compile(template)($scope, element => {
@@ -232,7 +232,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
             };
 
             const template = `
-                <paypal-button props="opts"></test-component>
+                <paypal-buttons props="opts"></test-component>
             `;
 
             $compile(template)($scope, element => {
@@ -276,7 +276,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
             };
 
             const template = `
-                <paypal-button props="opts"></test-component>
+                <paypal-buttons props="opts"></test-component>
             `;
 
             $compile(template)($scope, element => {

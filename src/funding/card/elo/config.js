@@ -2,6 +2,10 @@
 
 import { EloLogo } from '@paypal/sdk-logos/src';
 
-export const ELO_CONFIG = {
-    Logo: EloLogo
-};
+import type { CardConfig } from '../../common';
+
+export function getEloConfig() : CardConfig {
+    return {
+        Logo: EloLogo
+    };
+}

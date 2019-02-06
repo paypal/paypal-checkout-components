@@ -5,7 +5,11 @@ const zoidGlobals = require('zoid/globals');
 
 module.exports = {
     
-    ...zoidGlobals,
+    __ZOID__: {
+        ...zoidGlobals.__ZOID__,
+        __DEFAULT_CONTAINER__: false,
+        __DEFAULT_PRERENDER__: false
+    },
     
     __POST_ROBOT__: {
         ...postRobotGlobals.__POST_ROBOT__,

@@ -2,31 +2,30 @@
 /** @jsx node */
 /* eslint max-lines: off, react/jsx-max-depth: off */
 
-import { isIos, animate, noop } from 'belter/src';
-import type { RenderOptionsType } from 'zoid/src/parent';
+import { isIos, animate, noop, destroyElement } from 'belter/src';
+import { EVENT, type RenderOptionsType } from 'zoid/src';
 import { node, dom } from 'jsx-pragmatic/src';
 import { LOGO_COLOR, PPLogo, PayPalLogo } from '@paypal/sdk-logos/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { CheckoutPropsType } from '../props';
 
 import { containerContent } from './containerContent';
-import { getContainerStyle, getSandboxStyle } from './containerStyle';
+import { getContainerStyle, getSandboxStyle, CLASS } from './containerStyle';
 
-export function containerTemplate({ uid, tag, props, context, close, focus, outlet, doc } : RenderOptionsType<CheckoutPropsType>) : HTMLElement {
+export function containerTemplate({ uid, tag, props, context, close, focus, doc, event, frame, prerenderFrame } : RenderOptionsType<CheckoutPropsType>) : HTMLElement {
 
     const { locale } = props;
     const { lang } = locale;
 
-    function closeCheckout(event) {
-        event.preventDefault();
-        event.stopPropagation();
+    function closeCheckout(e) {
+        e.preventDefault();
+        e.stopPropagation();
         close();
     }
 
-    function focusCheckout(event) {
-        event.preventDefault();
-        event.stopPropagation();
+    function focusCheckout(e) {
+        e.preventDefault();
+        e.stopPropagation();
 
         if (isIos()) {
             // eslint-disable-next-line no-alert
@@ -40,24 +39,44 @@ export function containerTemplate({ uid, tag, props, context, close, focus, outl
 
     const content = containerContent[lang];
 
-    const setupContainerAnimations = (el) => {
-        props.addOnDisplay(() => {
-            return ZalgoPromise.all([
-                animate(el, 'show-container', noop),
-                animate(outlet, 'show-component', noop)
-            ]).then(noop);
-        });
-
-        props.addOnClose(() => {
-            return ZalgoPromise.all([
-                animate(el, 'hide-container', noop),
-                animate(outlet, 'hide-component', noop)
-            ]).then(noop);
-        });
+    const setupAnimations = (name) => {
+        return (el) => {
+            event.on(EVENT.DISPLAY, () => animate(el, `show-${ name }`, noop));
+            event.on(EVENT.CLOSE, () => animate(el, `hide-${ name }`, noop));
+        };
     };
 
+    let outlet;
+
+    if (frame && prerenderFrame) {
+        frame.classList.add(CLASS.COMPONENT_FRAME);
+        prerenderFrame.classList.add(CLASS.PRERENDER_FRAME);
+        
+        prerenderFrame.classList.add(CLASS.VISIBLE);
+        frame.classList.add(CLASS.INVISIBLE);
+    
+        event.on(EVENT.RENDERED, () => {
+            prerenderFrame.classList.remove(CLASS.VISIBLE);
+            prerenderFrame.classList.add(CLASS.INVISIBLE);
+    
+            frame.classList.remove(CLASS.INVISIBLE);
+            frame.classList.add(CLASS.VISIBLE);
+    
+            setTimeout(() => {
+                destroyElement(prerenderFrame);
+            }, 1);
+        });
+
+        outlet = (
+            <div class={ CLASS.OUTLET } onRender={ setupAnimations('component') }>
+                <node el={ frame } />
+                <node el={ prerenderFrame } />
+            </div>
+        );
+    }
+
     return (
-        <div id={ uid } onRender={ setupContainerAnimations } class="paypal-checkout-sandbox">
+        <div id={ uid } onRender={ setupAnimations('container') } class="paypal-checkout-sandbox">
             <style>{ getSandboxStyle({ uid }) }</style>
 
             <iframe title="PayPal Checkout Overlay" name={ `__paypal_checkout_sandbox_${ uid }__` } scrolling="no" class="paypal-checkout-sandbox-iframe">
@@ -82,7 +101,7 @@ export function containerTemplate({ uid, tag, props, context, close, focus, outl
                             </div>
 
                             <div class="paypal-checkout-iframe-container">
-                                <node el={ outlet } />
+                                { outlet }
                             </div>
 
                             <style>{ getContainerStyle({ uid, tag }) }</style>

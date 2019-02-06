@@ -77,7 +77,6 @@ describe(`paypal button component sizes`, () => {
         const expectedWidth = 250;
         const expectedHeight = 53;
 
-
         window.paypal.Buttons({
 
             style: {
@@ -526,12 +525,17 @@ describe(`paypal button component sizes`, () => {
         }, getElement('#testContainer'));
 
         const expectedWidth = 255;
-        const expectedHeight = 53;
+        const expectedHeight = 38;
 
 
         window.paypal.Buttons({
 
             test: {},
+
+            style: {
+                layout: 'horizontal',
+                label:  'pay'
+            },
 
             createOrder() {
                 done(new Error('Expected createOrder() to not be called'));

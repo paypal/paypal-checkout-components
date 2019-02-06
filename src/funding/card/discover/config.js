@@ -2,6 +2,10 @@
 
 import { DiscoverLogo } from '@paypal/sdk-logos/src';
 
-export const DISCOVER_CONFIG = {
-    Logo: DiscoverLogo
-};
+import type { CardConfig } from '../../common';
+
+export function getDiscoverConfig() : CardConfig {
+    return {
+        Logo: DiscoverLogo
+    };
+}

@@ -4,6 +4,7 @@
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
+    "dev": "babel-node ./node_modules/.bin/webpack-dev-server --config webpack.config.dev.js --port 9000 --host localhost.paypal.com --open-page demo/dev/index.htm --https --hot=false --inline=false",
     "lint": "eslint --ext .js --ext .jsx src/ test/ *.js",
     "flow-typed": "rm -rf flow-typed && flow-typed install",
     "flow": "flow",
@@ -72,8 +73,8 @@
     "belter": "^1.0.2",
     "cross-domain-utils": "^2.0.1",
     "jsx-pragmatic": "^1.0.4",
-    "post-robot": "^9.0.0",
+    "post-robot": "^10.0.0",
     "zalgo-promise": "^1.0.10",
-    "zoid": "^8.0.0"
+    "zoid": "^9.0.0"
   }
 }

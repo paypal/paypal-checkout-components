@@ -2,6 +2,10 @@
 
 import { MastercardLogo } from '@paypal/sdk-logos/src';
 
-export const MASTERCARD_CONFIG = {
-    Logo: MastercardLogo
-};
+import type { CardConfig } from '../../common';
+
+export function getMastercardConfig() : CardConfig {
+    return {
+        Logo: MastercardLogo
+    };
+}

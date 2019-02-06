@@ -22,7 +22,6 @@ export type OnCancelActions = {|
     
 |};
 
-
 export type CheckoutPropsType = {|
     createOrder : () => ZalgoPromise<string>,
     onApprove : (OnApproveData, OnApproveActions) => ?ZalgoPromise<void>,

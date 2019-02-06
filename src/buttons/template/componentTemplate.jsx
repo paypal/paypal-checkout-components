@@ -7,7 +7,7 @@ import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { noop } from 'belter/src';
 
 import { BUTTON_NUMBER, BUTTON_LABEL, ATTRIBUTE, CLASS, BUTTON_COLOR } from '../../constants';
-import { FUNDING_CONFIG, determineEligibleFunding } from '../../funding';
+import { getFundingConfig, determineEligibleFunding } from '../../funding';
 import { normalizeButtonProps, type ButtonStyle, type ButtonPropsInputs } from '../props';
 import type { FundingEligibilityType } from '../../types';
 
@@ -43,7 +43,7 @@ function getButtonClasses({ label, color, logoColor } :
 function determineLabel({ fundingSource, style } :
     {| fundingSource : $Values<typeof FUNDING>, style : ButtonStyle |}) : $Values<typeof BUTTON_LABEL> {
 
-    const fundingConfig = FUNDING_CONFIG[fundingSource];
+    const fundingConfig = getFundingConfig()[fundingSource];
 
     if (!fundingConfig) {
         throw new Error(`Can not find config for ${ fundingSource }`);
@@ -71,7 +71,7 @@ function Button({ fundingSource, style, multiple, locale, env, fundingEligibilit
 
     const buttonLabel = determineLabel({ fundingSource, style });
     
-    const fundingConfig = FUNDING_CONFIG[fundingSource];
+    const fundingConfig = getFundingConfig()[fundingSource];
 
     if (!fundingConfig) {
         throw new Error(`Can not find funding config for ${ fundingSource }`);
@@ -124,7 +124,7 @@ function TagLine({ fundingSource, style, locale, multiple, nonce } :
         return;
     }
 
-    const fundingConfig = FUNDING_CONFIG[fundingSource];
+    const fundingConfig = getFundingConfig()[fundingSource];
 
     if (!fundingConfig) {
         throw new Error(`Can not get config for ${ fundingSource }`);
@@ -194,7 +194,7 @@ function Style({ style, cardNumber, nonce } :
 }
 
 function getCardNumber(locale : LocaleType) : number {
-    const cardConfig = FUNDING_CONFIG[FUNDING.CARD];
+    const cardConfig = getFundingConfig()[FUNDING.CARD];
     const vendors = cardConfig && cardConfig.vendors;
     let maxCards = 4;
 

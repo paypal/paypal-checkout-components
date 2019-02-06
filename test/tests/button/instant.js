@@ -30,7 +30,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                     onError:   error('onError', err => { throw err; })
                 }).render('#testContainer');
 
-                const frame = document.querySelector('#testContainer iframe.zoid-prerender-frame');
+                const frame = document.querySelector('#testContainer iframe.prerender-frame');
 
                 if (!frame) {
                     throw new Error(`Can not find prerender frame`);

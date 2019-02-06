@@ -11,94 +11,96 @@ import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig 
 
 import { Checkout, Pay, Installment, SaferTag, DualTag } from './labels';
 
-export const PAYPAL_CONFIG : FundingSourceConfig = {
-    ...DEFAULT_FUNDING_CONFIG,
+export function getPayPalConfig() : FundingSourceConfig {
+    return {
+        ...DEFAULT_FUNDING_CONFIG,
 
-    url: getCheckoutUrl,
-
-    defaultLabel: BUTTON_LABEL.PAYPAL,
-
-    labels: {
-        [ BUTTON_LABEL.PAYPAL ]: {
-            ...DEFAULT_LABEL_CONFIG,
-
-            defaultColor: BUTTON_COLOR.GOLD,
-
-            Label({ logoColor } : { logoColor : $Values<typeof LOGO_COLOR> }) : ElementNode {
-                return (
-                    <Fragment>
-                        <PPLogo logoColor={ logoColor } /> <PayPalLogo logoColor={ logoColor } />
-                    </Fragment>
-                );
+        url: getCheckoutUrl,
+    
+        defaultLabel: BUTTON_LABEL.PAYPAL,
+    
+        labels: {
+            [ BUTTON_LABEL.PAYPAL ]: {
+                ...DEFAULT_LABEL_CONFIG,
+    
+                defaultColor: BUTTON_COLOR.GOLD,
+    
+                Label({ logoColor } : { logoColor : $Values<typeof LOGO_COLOR> }) : ElementNode {
+                    return (
+                        <Fragment>
+                            <PPLogo logoColor={ logoColor } /> <PayPalLogo logoColor={ logoColor } />
+                        </Fragment>
+                    );
+                },
+    
+                Tag: ({ multiple, locale } : { locale : LocaleType, multiple : boolean }) => {
+                    return (multiple)
+                        ? <DualTag locale={ locale } />
+                        : <SaferTag locale={ locale } />;
+                },
+    
+                allowPrimary: true
             },
-
-            Tag: ({ multiple, locale } : { locale : LocaleType, multiple : boolean }) => {
-                return (multiple)
-                    ? <DualTag locale={ locale } />
-                    : <SaferTag locale={ locale } />;
+    
+            [ BUTTON_LABEL.CHECKOUT ]: {
+                ...DEFAULT_LABEL_CONFIG,
+    
+                defaultColor: BUTTON_COLOR.GOLD,
+    
+                Label: ({ locale, logoColor }) => {
+                    return (
+                        <Checkout locale={ locale } logoColor={ logoColor } />
+                    );
+                },
+    
+                Tag: ({ multiple, locale } : { locale : LocaleType, multiple : boolean }) => {
+                    return (multiple)
+                        ? <DualTag locale={ locale } />
+                        : <SaferTag locale={ locale } />;
+                },
+    
+                allowPrimary: true
             },
-
-            allowPrimary: true
-        },
-
-        [ BUTTON_LABEL.CHECKOUT ]: {
-            ...DEFAULT_LABEL_CONFIG,
-
-            defaultColor: BUTTON_COLOR.GOLD,
-
-            Label: ({ locale, logoColor }) => {
-                return (
-                    <Checkout locale={ locale } logoColor={ logoColor } />
-                );
+    
+            [ BUTTON_LABEL.PAY ]: {
+                ...DEFAULT_LABEL_CONFIG,
+    
+                defaultColor: BUTTON_COLOR.GOLD,
+    
+                Label: ({ locale, logoColor }) => {
+                    return (
+                        <Pay locale={ locale } logoColor={ logoColor } />
+                    );
+                },
+    
+                Tag: ({ multiple, locale } : { locale : LocaleType, multiple : boolean }) => {
+                    return (multiple)
+                        ? <DualTag locale={ locale } />
+                        : <SaferTag locale={ locale } />;
+                },
+    
+                allowPrimary: true
             },
-
-            Tag: ({ multiple, locale } : { locale : LocaleType, multiple : boolean }) => {
-                return (multiple)
-                    ? <DualTag locale={ locale } />
-                    : <SaferTag locale={ locale } />;
-            },
-
-            allowPrimary: true
-        },
-
-        [ BUTTON_LABEL.PAY ]: {
-            ...DEFAULT_LABEL_CONFIG,
-
-            defaultColor: BUTTON_COLOR.GOLD,
-
-            Label: ({ locale, logoColor }) => {
-                return (
-                    <Pay locale={ locale } logoColor={ logoColor } />
-                );
-            },
-
-            Tag: ({ multiple, locale } : { locale : LocaleType, multiple : boolean }) => {
-                return (multiple)
-                    ? <DualTag locale={ locale } />
-                    : <SaferTag locale={ locale } />;
-            },
-
-            allowPrimary: true
-        },
-
-        [ BUTTON_LABEL.INSTALLMENT ]: {
-            ...DEFAULT_LABEL_CONFIG,
-
-            defaultColor:   BUTTON_COLOR.GOLD,
-
-            Label: ({ locale, logoColor, period }) => {
-                return (
-                    <Installment locale={ locale } logoColor={ logoColor } period={ period } />
-                );
-            },
-
-            Tag: ({ multiple, locale } : { locale : LocaleType, multiple : boolean }) => {
-                return (multiple)
-                    ? <DualTag locale={ locale } />
-                    : <SaferTag locale={ locale } />;
-            },
-
-            allowPrimary: true
+    
+            [ BUTTON_LABEL.INSTALLMENT ]: {
+                ...DEFAULT_LABEL_CONFIG,
+    
+                defaultColor:   BUTTON_COLOR.GOLD,
+    
+                Label: ({ locale, logoColor, period }) => {
+                    return (
+                        <Installment locale={ locale } logoColor={ logoColor } period={ period } />
+                    );
+                },
+    
+                Tag: ({ multiple, locale } : { locale : LocaleType, multiple : boolean }) => {
+                    return (multiple)
+                        ? <DualTag locale={ locale } />
+                        : <SaferTag locale={ locale } />;
+                },
+    
+                allowPrimary: true
+            }
         }
-    }
-};
+    };
+}

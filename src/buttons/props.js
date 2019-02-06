@@ -9,7 +9,7 @@ import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE } from '../constants';
-import { FUNDING_CONFIG } from '../funding';
+import { getFundingConfig } from '../funding';
 import type { FundingEligibilityType } from '../types';
 
 import { BUTTON_SIZE_STYLE } from './config';
@@ -223,6 +223,8 @@ export function normalizeButtonStyle(style : ButtonStyleInputs) : ButtonStyle {
     if (values(BUTTON_LAYOUT).indexOf(layout) === -1) {
         throw new Error(`Invalid layout: ${ layout }`);
     }
+
+    const FUNDING_CONFIG = getFundingConfig();
 
     const funding = Object.keys(FUNDING_CONFIG)
         .filter(name => FUNDING_CONFIG[name] && FUNDING_CONFIG[name].labels[label])[0];

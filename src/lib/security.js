@@ -1,6 +1,6 @@
 /* @flow */
 
-import { getParent, isSameDomain } from 'cross-domain-utils/src';
+import { isSameDomain } from 'cross-domain-utils/src';
 import { supportsPopups } from 'belter/src';
 import { isPayPalDomain } from '@paypal/sdk-client/src';
 
@@ -14,16 +14,7 @@ export function allowIframe() : boolean {
         return true;
     }
 
-    if (__TEST__) {
-        return true;
-    }
-
-    const parentWindow = getParent(window);
-    if (parentWindow && isSameDomain(parentWindow)) {
-        return true;
-    }
-
-    const parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
+    const parentComponentWindow = window.xprops && window.xprops.getParent();
     if (parentComponentWindow && isSameDomain(parentComponentWindow)) {
         return true;
     }

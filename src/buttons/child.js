@@ -1,21 +1,22 @@
 
 /* @flow */
 
+import { type ZoidComponent } from 'zoid/src';
 import { getLogger, createOrder } from '@paypal/sdk-client/src';
 import { getPageRenderTime, isIEIntranet } from 'belter/src';
 import { FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { ATTRIBUTE, FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, BUTTON_LAYOUT } from '../constants';
 
-import typeof { Buttons } from './component';
+import { type ButtonProps } from './props';
 
-export function setupButtonChild(ButtonComponent : Buttons) : void {
+export function setupButtonChild(Buttons : ZoidComponent<ButtonProps>) : void {
 
     if (isIEIntranet()) {
         return window.xchild.error(new Error(`Can not render button in IE Intranet mode`));
     }
 
-    const xprops = ButtonComponent.xprops;
+    const xprops = Buttons.xprops;
 
     if (!xprops) {
         throw new Error(`No xprops found`);

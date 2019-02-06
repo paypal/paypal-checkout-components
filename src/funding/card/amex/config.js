@@ -2,6 +2,11 @@
 
 import { AmexLogo } from '@paypal/sdk-logos/src';
 
-export const AMEX_CONFIG = {
-    Logo: AmexLogo
-};
+import type { CardConfig } from '../../common';
+
+export function getAmexConfig() : CardConfig {
+    return {
+        Logo: AmexLogo
+    };
+}
+

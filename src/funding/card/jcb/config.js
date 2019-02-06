@@ -2,6 +2,10 @@
 
 import { JcbLogo } from '@paypal/sdk-logos/src';
 
-export const JCB_CONFIG = {
-    Logo: JcbLogo
-};
+import type { CardConfig } from '../../common';
+
+export function getJCBConfig() : CardConfig {
+    return {
+        Logo: JcbLogo
+    };
+}

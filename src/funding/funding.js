@@ -5,7 +5,7 @@ import { PLATFORM, FUNDING } from '@paypal/sdk-constants/src';
 import { BUTTON_LAYOUT } from '../constants';
 import type { FundingEligibilityType } from '../types';
 
-import { FUNDING_PRIORITY, FUNDING_CONFIG } from './config';
+import { FUNDING_PRIORITY, getFundingConfig } from './config';
 
 export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, platform, remembered, fundingEligibility } :
     { layout : $Values<typeof BUTTON_LAYOUT>, platform : $Values<typeof PLATFORM>, remembered : $ReadOnlyArray<$Values<typeof FUNDING>>, fundingEligibility : FundingEligibilityType }) : boolean {
@@ -14,7 +14,7 @@ export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, pl
         return false;
     }
 
-    const fundingConfig = FUNDING_CONFIG[source];
+    const fundingConfig = getFundingConfig()[source];
 
     if (!fundingConfig) {
         throw new Error(`Can not find funding config for ${ source }`);

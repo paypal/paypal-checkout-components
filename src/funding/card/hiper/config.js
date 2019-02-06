@@ -2,6 +2,10 @@
 
 import { HiperLogo } from '@paypal/sdk-logos/src';
 
-export const HIPER_CONFIG = {
-    Logo: HiperLogo
-};
+import type { CardConfig } from '../../common';
+
+export function getHiperConfig() : CardConfig {
+    return {
+        Logo: HiperLogo
+    };
+}

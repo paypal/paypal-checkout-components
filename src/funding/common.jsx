@@ -2,7 +2,7 @@
 /* eslint no-template-curly-in-string: off, max-lines: off */
 /** @jsx node */
 
-import { PLATFORM, CARD, type LocaleType, COUNTRY } from '@paypal/sdk-constants/src';
+import { PLATFORM, type LocaleType, COUNTRY, CARD } from '@paypal/sdk-constants/src';
 import { ElementNode } from 'jsx-pragmatic/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
@@ -79,7 +79,7 @@ type FundingLabelConfig = {|
     defaultColor : $Values<typeof BUTTON_COLOR>
 |};
 
-type CardConfig = {|
+export type CardConfig = {|
     Logo : ({|
         locale : LocaleType,
         nonce : string
@@ -93,16 +93,7 @@ export type FundingSourceConfig = {|
     layouts : $ReadOnlyArray<$Values<typeof BUTTON_LAYOUT>>,
     maxCards? : { [$Values<typeof COUNTRY>] : number },
     rememberedOnly? : boolean,
-    vendors? : {
-        visa : ?CardConfig,
-        mastercard : ?CardConfig,
-        amex : ?CardConfig,
-        discover : ?CardConfig,
-        jcb : ?CardConfig,
-        elo : ?CardConfig,
-        hiper : ?CardConfig,
-        [$Values<typeof CARD>] : CardConfig
-    },
+    vendors? : { [$Values<typeof CARD>] : ?CardConfig },
     labels : {|
         bancontact? : FundingLabelConfig,
         card? : FundingLabelConfig,

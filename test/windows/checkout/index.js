@@ -91,7 +91,7 @@ if (action === 'checkout') {
             onAuthorize: window.xprops.onAuthorize,
             onCancel:    window.xprops.onCancel,
             onError:     window.xprops.onError
-        }).renderTo(window.opener ? window.opener.parent : window.parent, 'body', CONTEXT.POPUP);
+        }).renderTo(window.parent.parent, 'body', CONTEXT.POPUP);
     });
 
 } else if (action === 'error') {

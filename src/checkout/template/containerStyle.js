@@ -1,6 +1,14 @@
 /* @flow */
 
-import { CONTEXT, CLASS } from 'zoid/src';
+import { CONTEXT } from 'zoid/src';
+
+export const CLASS = {
+    OUTLET:          'outlet',
+    VISIBLE:         'visible',
+    INVISIBLE:       'invisible',
+    COMPONENT_FRAME: 'component-frame',
+    PRERENDER_FRAME: 'prerender-frame'
+};
 
 export function getSandboxStyle({ uid } : { uid : string }) : string {
     return `
