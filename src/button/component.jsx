@@ -85,9 +85,9 @@ function isApmEligible(source, props) : boolean {
         return false;
     }
 
-    let domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
+    let domain = getDomain();
 
-    if (config.apmTestDomains.indexOf(domain) === -1) {
+    if (config.apmTestDomains.find(domainName => (domain.endsWith(domainName))) === undefined) {
         return false;
     }
 
