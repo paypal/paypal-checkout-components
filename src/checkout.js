@@ -12,20 +12,32 @@ type ActionsType = {|
     order : {
         capture : () => ZalgoPromise<OrderResponse>,
         authorize : () => ZalgoPromise<OrderResponse>,
+        patch : () => ZalgoPromise<OrderResponse>,
         get : () => ZalgoPromise<OrderResponse>
     },
     restart : () => ZalgoPromise<OrderResponse>
 |};
 
-type ShippingChangeActionsType = {|
-    order : {
-        patch : () => ZalgoPromise<OrderResponse>
-    }
+type PatchActionsType = {|
+    orderPatch : () => ZalgoPromise<OrderResponse>
 |};
 
 type CheckoutComponent = {|
     close : () => ZalgoPromise<void>
 |};
+
+function buildPatchActions(orderID : string) : PatchActionsType {
+
+    const handleProcessorError = () : ZalgoPromise<OrderResponse> => {
+        throw new Error('Order could not be patched');
+    };
+
+    const orderPatch = (patch = []) =>
+        patchOrder(orderID, patch)
+            .catch(handleProcessorError);
+
+    return { orderPatch };
+}
 
 function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : ActionsType {
 
@@ -67,31 +79,16 @@ function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : A
             .catch(handleProcessorError)
             .finally(orderGet.reset));
 
+    const { orderPatch } = buildPatchActions(orderID);
+
     return {
         order: {
             capture:    orderCapture,
             authorize:  orderAuthorize,
+            patch:      orderPatch,
             get:        orderGet
         },
         restart: restartFlow
-    };
-}
-
-function buildShippingChangeActions(checkout : CheckoutComponent, orderID : string, actions : {}) : ShippingChangeActionsType {
-
-    const handleProcessorError = () : ZalgoPromise<OrderResponse> => {
-        throw new Error('Order could not be patched');
-    };
-
-    const orderPatch = (patch = []) =>
-        patchOrder(orderID, patch)
-            .catch(handleProcessorError);
-
-    return {
-        ...actions,
-        order: {
-            patch: orderPatch
-        }
     };
 }
 
@@ -208,7 +205,11 @@ export function renderCheckout(props : Object = {}, context : string = getDefaul
 
     if (window.xprops.onShippingChange) {
         addOnProps.onShippingChange = function onShippingChange(data, actions) : ZalgoPromise<void> {
-            return window.xprops.onShippingChange(data, buildShippingChangeActions(this, data.orderID, actions));
+            const { orderPatch } = buildPatchActions(data.orderID);
+            return window.xprops.onShippingChange(data, {
+                ...actions,
+                order: { patch: orderPatch }
+            });
         };
     }
 
