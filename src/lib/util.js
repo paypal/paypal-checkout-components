@@ -123,10 +123,6 @@ export function match(str : string, pattern : RegExp) : ?string {
     }
 }
 
-export function endsWith(str : string, substr : string) : boolean {
-    return str.substring(str.length - substr.length, str.length) === substr;
-}
-
 export function safeJSON(item : mixed) : string {
     return JSON.stringify(item, (key, val) => {
 

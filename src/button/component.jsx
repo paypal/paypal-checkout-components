@@ -79,9 +79,12 @@ function isCreditDualEligible(props) : boolean {
 
 let isDomainAllowed = memoize(() : boolean => {
 
-    let domain = getDomain();
+    let domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
 
-    if (config.apmTestDomains.find(allowDomain => (endsWith(domain, allowDomain))) === undefined) {
+    if (!config.apmTestDomains.some(allowDomain => {
+        let regex = new RegExp(`[^a-zA-Z\\d\\-]*${ allowDomain }$`);  // eslint-disable-line security/detect-non-literal-regexp
+        return (domain.match(regex) !== null);
+    })) {
         return false;
     }
 
