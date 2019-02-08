@@ -7,6 +7,7 @@ type MockReq = {|
 export function mockReq(opts : Object = {}) : MockReq {
     return {
         query: {},
+        get:   () => undefined,
         ...opts
     };
 }

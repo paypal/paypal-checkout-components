@@ -42,7 +42,7 @@ export function getButtonMiddleware({ logger = console } : { logger? : LoggerTyp
                     ${ buttonHTML }
                     ${ getSDKLoader({ nonce }) }
                     <script nonce="${ nonce }">${ buttonScript }</script>
-                    <script nonce="${ nonce }">spb.setupButton()</script>
+                    <script nonce="${ nonce }">spb.setupButton(${ JSON.stringify(fundingEligibility) })</script>
                 </body>
             `;
 

@@ -1,11 +1,14 @@
 /* @flow */
 
-import { COUNTRY, LANG, DEFAULT_COUNTRY, COUNTRY_LANGS } from '@paypal/sdk-constants';
+import { FUNDING, COUNTRY, LANG, DEFAULT_COUNTRY, COUNTRY_LANGS } from '@paypal/sdk-constants';
 
 import type { ExpressRequest, ExpressResponse } from './types';
 
 type FundingEligibility = {|
     paypal : {
+        eligible : boolean
+    },
+    venmo : {
         eligible : boolean
     }
 |};
@@ -13,17 +16,28 @@ type FundingEligibility = {|
 function getFundingEligibility(req : ExpressRequest) : ?FundingEligibility {
     const encodedFundingEligibility = req.query.fundingEligibility;
 
+    let fundingEligibility;
+
     if (!encodedFundingEligibility || typeof encodedFundingEligibility !== 'string') {
-        return {
-            paypal: {
+        // $FlowFixMe
+        fundingEligibility = {
+            [ FUNDING.PAYPAL ]: {
                 eligible: true
             }
         };
+    } else {
+        fundingEligibility = JSON.parse(
+            Buffer.from(encodedFundingEligibility, 'base64').toString('utf8')
+        );
     }
 
-    return JSON.parse(
-        Buffer.from(encodedFundingEligibility, 'base64').toString('utf8')
-    );
+    const cookies = req.get('cookie');
+    if (cookies && cookies.indexOf('pwv') !== -1) {
+        fundingEligibility[FUNDING.VENMO] = fundingEligibility[FUNDING.VENMO] || {};
+        fundingEligibility[FUNDING.VENMO].eligible = true;
+    }
+
+    return fundingEligibility;
 }
 
 function getNonce(res : ExpressResponse) : string {

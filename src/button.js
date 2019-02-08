@@ -1,11 +1,12 @@
 /* @flow */
 
 import { querySelectorAll, onClick, noop } from 'belter/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { renderCheckout, setupCheckout } from './checkout';
 import { getAuth } from './api';
 
-export function setupButton() {
+export function setupButton(fundingEligibility : ?Object) {
 
     if (!window.paypal) {
         throw new Error(`PayPal library not loaded`);
@@ -40,6 +41,10 @@ export function setupButton() {
             }).catch(noop);
         }
     });
+
+    if (fundingEligibility && fundingEligibility.venmo.eligible) {
+        window.xprops.remember([ FUNDING.VENMO ]);
+    }
 
     setupCheckout();
 }
