@@ -92,7 +92,7 @@ export type FundingSourceConfig = {|
     platforms : $ReadOnlyArray<$Values<typeof PLATFORM>>,
     layouts : $ReadOnlyArray<$Values<typeof BUTTON_LAYOUT>>,
     maxCards? : { [$Values<typeof COUNTRY>] : number },
-    rememberedOnly? : boolean,
+    remembered? : boolean,
     vendors? : { [$Values<typeof CARD>] : ?CardConfig },
     labels : {|
         bancontact? : FundingLabelConfig,

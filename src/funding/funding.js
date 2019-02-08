@@ -28,7 +28,7 @@ export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, pl
         return false;
     }
 
-    if (fundingConfig.rememberedOnly && remembered && remembered.indexOf(source) === -1) {
+    if (fundingConfig.remembered && remembered && remembered.indexOf(source) === -1) {
         return false;
     }
 

@@ -19,6 +19,8 @@ export function getVenmoConfig() : FundingSourceConfig {
         platforms: [
             PLATFORM.MOBILE
         ],
+
+        remembered: true,
     
         labels: {
             [ BUTTON_LABEL.VENMO ]: {
