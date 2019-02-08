@@ -14,7 +14,7 @@ import { SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
 import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, isEligible, getCurrentScriptUrl,
-    getDomainSetting, extendUrl, isDevice, rememberFunding,
+    getDomainSetting, extendUrl, isDevice, rememberFunding, endsWith,
     getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
 import { rest, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
 import { onAuthorizeListener } from '../experiments';
@@ -77,6 +77,17 @@ function isCreditDualEligible(props) : boolean {
     return true;
 }
 
+let isDomainAllowed = memoize(() : boolean => {
+
+    let domain = getDomain();
+
+    if (config.apmTestDomains.find(allowDomain => (endsWith(domain, allowDomain))) === undefined) {
+        return false;
+    }
+
+    return true;
+});
+
 function isApmEligible(source, props) : boolean {
 
     let { locale } = normalizeProps(props, { locale: getBrowserLocale() });
@@ -85,13 +96,7 @@ function isApmEligible(source, props) : boolean {
         return false;
     }
 
-    let domain = getDomain();
-
-    if (config.apmTestDomains.find(domainName => (domain.endsWith(domainName))) === undefined) {
-        return false;
-    }
-
-    return true;
+    return isDomainAllowed();
 }
 
 let creditThrottle;

@@ -88,7 +88,7 @@ export function uniqueID() : string {
     let timeID = base32.encode(
         new Date().toISOString().slice(11, 19).replace('T', '.')
     ).replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-    
+
     return `${ randomID }_${ timeID }`;
 }
 
@@ -121,6 +121,10 @@ export function match(str : string, pattern : RegExp) : ?string {
     if (regmatch) {
         return regmatch[1];
     }
+}
+
+export function endsWith(str : string, substr : string) : boolean {
+    return str.substring(str.length - substr.length, str.length) === substr;
 }
 
 export function safeJSON(item : mixed) : string {
@@ -349,7 +353,7 @@ export function patchWithOps(obj : ?Object, patch : Array<Patch>) : Object {
 
             target = target[props[i]];
         }
-        
+
         let targetProp = target[props[length]];
 
         switch (op) {
