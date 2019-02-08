@@ -25,9 +25,7 @@ type ButtonStyleMap = {
         minWidth : number,
         maxWidth : number,
         minHeight : number,
-        maxHeight : number,
-        allowFunding : boolean,
-        allowTagline : boolean
+        maxHeight : number
     }
 };
 
@@ -39,9 +37,7 @@ export const BUTTON_SIZE_STYLE : ButtonStyleMap = {
         minWidth:        75,
         maxWidth:        150,
         minHeight:       25,
-        maxHeight:       30,
-        allowFunding:    true,
-        allowTagline:    false
+        maxHeight:       30
     },
 
     [ BUTTON_SIZE.SMALL ]: {
@@ -50,9 +46,7 @@ export const BUTTON_SIZE_STYLE : ButtonStyleMap = {
         minWidth:        150,
         maxWidth:        200,
         minHeight:       25,
-        maxHeight:       55,
-        allowFunding:    true,
-        allowTagline:    true
+        maxHeight:       55
     },
 
     [ BUTTON_SIZE.MEDIUM ]: {
@@ -61,9 +55,7 @@ export const BUTTON_SIZE_STYLE : ButtonStyleMap = {
         minWidth:          200,
         maxWidth:          300,
         minHeight:         35,
-        maxHeight:         55,
-        allowFunding:      true,
-        allowTagline:      true
+        maxHeight:         55
     },
 
     [ BUTTON_SIZE.LARGE ]: {
@@ -72,9 +64,7 @@ export const BUTTON_SIZE_STYLE : ButtonStyleMap = {
         minWidth:          300,
         maxWidth:          500,
         minHeight:         30,
-        maxHeight:         55,
-        allowFunding:      true,
-        allowTagline:      true
+        maxHeight:         55
     },
 
     [ BUTTON_SIZE.HUGE ]: {
@@ -83,8 +73,6 @@ export const BUTTON_SIZE_STYLE : ButtonStyleMap = {
         minWidth:      500,
         maxWidth:      750,
         minHeight:     40,
-        maxHeight:     55,
-        allowFunding:  true,
-        allowTagline:  true
+        maxHeight:     55
     }
 };

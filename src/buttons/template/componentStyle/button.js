@@ -114,13 +114,4 @@ export const buttonStyle = `
         width: auto;
         visibility: hidden;
     }
-
-    .${ CLASS.SEPARATOR } {
-        height: 80%;
-        border-left: 1px solid rgba(0, 0, 0, 0.15);
-        margin: 0 8px;
-        display: inline-block;
-        position: relative;
-        top: 10%;
-    }
 `;

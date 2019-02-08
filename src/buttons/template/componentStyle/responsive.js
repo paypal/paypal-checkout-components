@@ -60,11 +60,7 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                 .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.VERTICAL }:last-of-type {
                     margin-bottom: 0;
                 }
-
-                .${ CLASS.SEPARATOR } {
-                    margin: 0 ${ perc(buttonHeight, 5) }px;
-                }
-
+                
                 .${ CLASS.TAGLINE } {
                     height: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) }px;
                     line-height: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) }px;
