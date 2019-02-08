@@ -1219,7 +1219,7 @@ window.spb = function(modules) {
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
-    var _COUNTRY_LANGS, src = __webpack_require__(2), esm_extends = __webpack_require__(5), zalgo_promise_src = __webpack_require__(1), SDK_QUERY_KEYS = ((_COUNTRY_LANGS = {}).AD = [ "en", "fr", "es", "zh" ], 
+    var _COUNTRY_LANGS, src = __webpack_require__(2), SDK_QUERY_KEYS = ((_COUNTRY_LANGS = {}).AD = [ "en", "fr", "es", "zh" ], 
     _COUNTRY_LANGS.AE = [ "en", "fr", "es", "zh", "ar" ], _COUNTRY_LANGS.AG = [ "en", "fr", "es", "zh" ], 
     _COUNTRY_LANGS.AI = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.AL = [ "en" ], _COUNTRY_LANGS.AM = [ "en", "fr", "es", "zh" ], 
     _COUNTRY_LANGS.AN = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.AO = [ "en", "fr", "es", "zh" ], 
@@ -1332,7 +1332,22 @@ window.spb = function(modules) {
         CAPTURE: "capture",
         AUTHORIZE: "authorize",
         ORDER: "order"
-    }, cross_domain_utils_src = (INTENT.CAPTURE, __webpack_require__(3)), API_URI = {
+    }, FUNDING = {
+        PAYPAL: "paypal",
+        VENMO: "venmo",
+        CREDIT: "credit",
+        CARD: "card",
+        IDEAL: "ideal",
+        SEPA: "sepa",
+        BANCONTACT: "bancontact",
+        GIROPAY: "giropay",
+        SOFORT: "sofort",
+        EPS: "eps",
+        MYBANK: "mybank",
+        P24: "p24",
+        ZIMPLER: "zimpler",
+        WECHATPAY: "wechatpay"
+    }, esm_extends = (INTENT.CAPTURE, __webpack_require__(5)), zalgo_promise_src = __webpack_require__(1), cross_domain_utils_src = __webpack_require__(3), API_URI = {
         AUTH: "/webapps/hermes/api/auth",
         ORDER: "/webapps/hermes/api/order",
         PAYMENT: "/webapps/hermes/api/payment",
@@ -1370,6 +1385,27 @@ window.spb = function(modules) {
         defaultHeaders["x-paypal-internal-euat"] = accessToken;
         return getAuth().then(src.noop);
     });
+    function buildPatchActions(orderID) {
+        var handleProcessorError = function() {
+            throw new Error("Order could not be patched");
+        };
+        return {
+            orderPatch: function(patch) {
+                void 0 === patch && (patch = []);
+                return function(orderID, patch) {
+                    return callAPI({
+                        method: "post",
+                        url: API_URI.ORDER + "/" + orderID + "/patch",
+                        json: {
+                            data: {
+                                patch: patch
+                            }
+                        }
+                    });
+                }(orderID, patch).catch(handleProcessorError);
+            }
+        };
+    }
     function validateOrder(orderID) {
         if (!orderID.match(ORDER_ID_PATTERN)) throw new Error(orderID + " does not match pattern for order-id, ec-token or cart-id");
         return (query = '\n        checkout {\n            checkoutSession(token : "' + orderID + '") {\n                cart {\n                    intent\n                    returnUrl {\n                        href\n                    }\n                    cancelUrl {\n                        href\n                    }\n                    amounts {\n                        total {\n                            currencyCode\n                        }\n                    }\n                }\n            }\n        }\n    ', 
@@ -1428,29 +1464,12 @@ window.spb = function(modules) {
             });
         }(props), renderWindow = canRenderTop && top ? top : parent, validateOrderPromise = createOrder().then(validateOrder), addOnProps = {};
         window.xprops.onShippingChange && (addOnProps.onShippingChange = function(data, actions) {
-            return window.xprops.onShippingChange(data, function(checkout, orderID, actions) {
-                var handleProcessorError = function() {
-                    throw new Error("Order could not be patched");
-                };
-                return Object(esm_extends.a)({}, actions, {
-                    order: {
-                        patch: function(patch) {
-                            void 0 === patch && (patch = []);
-                            return function(orderID, patch) {
-                                return callAPI({
-                                    method: "post",
-                                    url: API_URI.ORDER + "/" + orderID + "/patch",
-                                    json: {
-                                        data: {
-                                            patch: patch
-                                        }
-                                    }
-                                });
-                            }(orderID, patch).catch(handleProcessorError);
-                        }
-                    }
-                });
-            }(0, data.orderID, actions));
+            var orderPatch = buildPatchActions(data.orderID).orderPatch;
+            return window.xprops.onShippingChange(data, Object(esm_extends.a)({}, actions, {
+                order: {
+                    patch: orderPatch
+                }
+            }));
         });
         var instance = window.paypal.Checkout(Object(esm_extends.a)({}, props, addOnProps, {
             createOrder: createOrder,
@@ -1499,6 +1518,7 @@ window.spb = function(modules) {
                                     });
                                 }(orderID).catch(handleProcessorError).finally(orderGet.reset);
                             }),
+                            patch: buildPatchActions(orderID).orderPatch,
                             get: orderGet
                         },
                         restart: restartFlow
@@ -1539,7 +1559,7 @@ window.spb = function(modules) {
             });
         });
     }
-    function setupButton() {
+    function setupButton(fundingEligibility) {
         if (!window.paypal) throw new Error("PayPal library not loaded");
         Object(src.querySelectorAll)(".paypal-button").forEach(function(button) {
             var fundingSource = button.getAttribute("data-funding-source"), card = button.getAttribute("data-card");
@@ -1568,6 +1588,7 @@ window.spb = function(modules) {
                 }).catch(src.noop);
             }
         });
+        fundingEligibility && fundingEligibility.venmo.eligible && window.xprops.remember([ FUNDING.VENMO ]);
         parent = (_ref = [ Object(cross_domain_utils_src.getParent)(window), Object(cross_domain_utils_src.getTop)(window) ])[0], 
         (top = _ref[1]) && parent && parent !== top && window.paypal.Checkout.canRenderTo(top).then(function(result) {
             canRenderTop = result;
