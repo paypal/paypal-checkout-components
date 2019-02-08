@@ -16,10 +16,14 @@ const CLASS = {
     PRERENDER_FRAME: 'prerender-frame'
 };
 
-export function containerTemplate({ uid, props, tag, context, frame, prerenderFrame, doc, event } : RenderOptionsType<ButtonProps>) : ?HTMLElement {
+export function containerTemplate({ uid, props, tag, context, frame, prerenderFrame, doc, container, event } : RenderOptionsType<ButtonProps>) : ?HTMLElement {
 
     if (!frame || !prerenderFrame) {
         return;
+    }
+
+    if (container && container.tagName.toLowerCase() === 'button') {
+        throw new Error(`Do not render the PayPal button into a button element`);
     }
 
     frame.classList.add(CLASS.COMPONENT_FRAME);
