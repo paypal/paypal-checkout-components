@@ -47,9 +47,7 @@ export function getCreditConfig() : FundingSourceConfig {
                     [BUTTON_COLOR.SILVER]: BUTTON_COLOR.DARKBLUE
                 },
     
-                defaultColor: BUTTON_COLOR.DARKBLUE,
-    
-                allowPrimary: false
+                defaultColor: BUTTON_COLOR.DARKBLUE
             }
         }
     };

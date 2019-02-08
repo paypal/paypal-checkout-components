@@ -40,9 +40,7 @@ export function getGiropayConfig() : FundingSourceConfig {
                     [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
                     [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
                     [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER
-                },
-    
-                allowPrimary: false
+                }
             }
         }
     };

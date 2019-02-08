@@ -119,9 +119,7 @@ export function getCardConfig() : FundingSourceConfig {
                     [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.TRANSPARENT,
                     [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.TRANSPARENT,
                     [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.TRANSPARENT
-                },
-    
-                allowPrimary: false
+                }
             }
         }
     };

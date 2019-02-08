@@ -75,7 +75,7 @@ type FundingLabelConfig = {|
     logoColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof LOGO_COLOR> },
     shapes : $ReadOnlyArray<$Values<typeof BUTTON_SHAPE>>,
     tagLineColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_TAGLINE_COLOR> },
-    allowPrimary : boolean,
+    allowPrimary? : boolean,
     defaultColor : $Values<typeof BUTTON_COLOR>
 |};
 
