@@ -1,44 +1,25 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.9/angular.js"></script>
-<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=sb&debug=true"></script>
 
 <script>
-    paypal.Button.driver('angular', window.angular);
+    paypal.Buttons.driver('angular', window.angular);
 
-    angular.module('app', [ 'paypal-button' ])
+    angular.module('app', [ 'paypal-buttons' ])
         .controller('appController', function($scope) {
 
             $scope.opts = {
-
-                env: 'sandbox',
-
-                client: {
-                    sandbox:    'AWi18rxt26-hrueMoPZ0tpGEOJnNT4QkiMQst9pYgaQNAfS1FLFxkxQuiaqRBj1vV5PmgHX_jA_c1ncL',
-                    production: '<insert production client id>'
-                },
-
-                payment: function() {
-
-                    var env    = this.props.env;
-                    var client = this.props.client;
-
-                    return paypal.rest.payment.create(env, client, {
-                        transactions: [
-                            {
-                                amount: { total: '1.00', currency: 'USD' }
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: '0.01'
                             }
-                        ]
+                        }]
                     });
                 },
 
-                commit: true, // Optional: show a 'Pay Now' button in the checkout flow
-
-                onAuthorize: function(data, actions) {
-
-                    // Optional: display a confirmation page here
-
-                    return actions.payment.execute().then(function() {
-                        // Show a success page to the buyer
-                    });
+                onApprove: function(data, actions) {
+                    return actions.order.capture();
                 }
             };
 
@@ -47,6 +28,6 @@
 
 <body ng-app="app" ng-controller="appController">
 
-    <paypal-button env="opts.env" client="opts.client" payment="opts.payment" commit="opts.commit" on-authorize="opts.onAuthorize"></paypal-button>
+    <paypal-buttons props="opts"></paypal-buttons>
 
 </body>

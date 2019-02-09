@@ -9,7 +9,7 @@
     <script src="https://npmcdn.com/@angular/compiler@4.2.3/bundles/compiler.umd.js"></script>
     <script src="https://npmcdn.com/@angular/platform-browser@4.2.3/bundles/platform-browser.umd.js"></script>
     <script src="https://npmcdn.com/@angular/platform-browser-dynamic@4.2.3/bundles/platform-browser-dynamic.umd.js"></script>
-    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
 </head>
 
 <body>
@@ -21,48 +21,33 @@
           selector: 'my-app',
           template:`
               <div id="app">
-                  <paypal-button [props]="{
-                      env: env,
-                      client: client,
-                      commit: commit,
-                      payment: payment,
-                      onAuthorize: onAuthorize
-                  }"></paypal-button>
+                  <paypal-buttons [props]="{
+                      createOrder: createOrder,
+                      onApprove: onApprove
+                  }"></paypal-buttons>
               </div>
           `,
         })
         class AppComponent {
-
-            env = 'sandbox'
-
-            client = {
-                sandbox:    'AWi18rxt26-hrueMoPZ0tpGEOJnNT4QkiMQst9pYgaQNAfS1FLFxkxQuiaqRBj1vV5PmgHX_jA_c1ncL',
-                production: '<insert production client id>'
-            }
-
-            commit = true
-
-            private payment(data, actions) {
-                return actions.payment.create({
-                    transactions: [
-                        {
-                            amount: { total: '1.00', currency: 'USD' }
+            private createOrder(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '0.01'
                         }
-                    ]
+                    }]
                 });
             }
 
-            private onAuthorize(data, actions) {
-                return actions.payment.execute().then(function() {
-                    // Show a success page to the buyer
-                });
+            private onApprove(data, actions) {
+                return actions.order.capture();
             }
         }
 
         @ng.core.NgModule({
             imports: [
                 ng.platformBrowser.BrowserModule,
-                paypal.Button.driver('angular2', ng.core)
+                paypal.Buttons.driver('angular2', ng.core)
             ],
             declarations: [
                 AppComponent

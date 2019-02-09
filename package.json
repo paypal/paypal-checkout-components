@@ -19,7 +19,7 @@
     "clean": "rimraf coverage",
     "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && flow-typed install",
     "debug": "cross-env NODE_ENV=debug",
-    "demo": "serve ./demo --port 1337",
+    "demo": "serve ./demo -l 1337",
     "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin",
     "jest-screenshot": "jest test/screenshot/screenshot.test.js --env=node --no-cache",
     "jest-ssr": "jest test/ssr/ssr.test.js --env=node --no-cache",
@@ -65,6 +65,7 @@
     "pixelmatch": "^4.0.2",
     "pngjs": "^3.3.0",
     "puppeteer": "^0.11.0",
+    "serve": "^10.1.2",
     "sync-browser-mocks": "^2.0.0"
   },
   "dependencies": {

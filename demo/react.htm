@@ -3,55 +3,35 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react-dom.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.js"></script>
-<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
 
 <div id="page"></div>
 
     <script type="text/babel">
 
-        let PayPalButton = paypal.Button.driver('react', { React, ReactDOM });
+        let PayPalButton = paypal.Buttons.driver('react', { React, ReactDOM });
 
         class Main extends React.Component {
 
-            constructor() {
-                super();
-
-                this.state = {
-                    env: 'sandbox',
-
-                    client: {
-                        sandbox:    'AWi18rxt26-hrueMoPZ0tpGEOJnNT4QkiMQst9pYgaQNAfS1FLFxkxQuiaqRBj1vV5PmgHX_jA_c1ncL',
-                        production: '<insert production client id>'
-                    },
-
-                    commit: true
-                };
-            }
-
-            payment(data, actions) {
-                return actions.payment.create({
-                    transactions: [
-                        {
-                            amount: { total: '0.01', currency: 'USD' }
+            createOrder(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '0.01'
                         }
-                    ]
+                    }]
                 });
             }
 
-            onAuthorize(data, actions) {
-                return actions.payment.execute().then(function(paymentData) {
-                    // Show a success page to the buyer
-                });
+            onApprove(data, actions) {
+                return actions.order.capture();
             }
 
             render() {
                 return (
                     <PayPalButton
-                        commit={ this.state.commit }
-                        env={ this.state.env }
-                        client={ this.state.client }
-                        payment={ (data, actions) => this.payment(data, actions) }
-                        onAuthorize={ (data, actions) => this.onAuthorize(data, actions) }
+                        createOrder={ (data, actions) => this.createOrder(data, actions) }
+                        onApprove={ (data, actions) => this.onApprove(data, actions) }
                     />
                 );
             }
