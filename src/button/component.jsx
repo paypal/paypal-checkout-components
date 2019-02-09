@@ -82,7 +82,7 @@ let isDomainAllowed = memoize(() : boolean => {
     let domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
 
     if (!config.apmTestDomains.some(allowDomain => {
-        let regex = new RegExp(`[^a-zA-Z\\d\\-]*${ allowDomain }$`);  // eslint-disable-line security/detect-non-literal-regexp
+        let regex = new RegExp(`[^a-zA-Z\\d\\-]*${ allowDomain.replace(/\./, '\\.') }$`);  // eslint-disable-line security/detect-non-literal-regexp
         return (domain.match(regex) !== null);
     })) {
         return false;
