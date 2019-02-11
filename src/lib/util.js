@@ -88,7 +88,7 @@ export function uniqueID() : string {
     let timeID = base32.encode(
         new Date().toISOString().slice(11, 19).replace('T', '.')
     ).replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-    
+
     return `${ randomID }_${ timeID }`;
 }
 
@@ -349,7 +349,7 @@ export function patchWithOps(obj : ?Object, patch : Array<Patch>) : Object {
 
             target = target[props[i]];
         }
-        
+
         let targetProp = target[props[length]];
 
         switch (op) {
