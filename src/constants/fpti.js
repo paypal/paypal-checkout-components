@@ -7,13 +7,12 @@ export const FPTI_BUTTON_TYPE = {
 
 export const FPTI_CONTEXT_TYPE = {
     BUTTON_SESSION_ID: ('button_session_id' : 'button_session_id'),
-    ORDER_ID:          'EC-Token'
+    ORDER_ID:          ('EC-Token' : 'EC-Token')
 };
 
 export const FPTI_STATE = {
-    LOAD:     ('checkoutjs_load' : 'checkoutjs_load'),
-    BUTTON:   ('checkoutjs_button' : 'checkoutjs_button'),
-    CHECKOUT: ('checkoutjs_checkout' : 'checkoutjs_checkout')
+    BUTTON:   ('smart_button' : 'smart_button'),
+    CHECKOUT: ('smart_checkout' : 'smart_checkout')
 };
 
 export const FPTI_TRANSITION = {

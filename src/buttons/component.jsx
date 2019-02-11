@@ -383,7 +383,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                             const logger = getLogger();
                             
                             logger.track({
-                                [ FPTI_KEY.STATE ]:              FPTI_STATE.LOAD,
+                                [ FPTI_KEY.STATE ]:              FPTI_STATE.BUTTON,
                                 [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.BUTTON_RENDER,
                                 [ FPTI_KEY.BUTTON_TYPE ]:        FPTI_BUTTON_TYPE.IFRAME,
                                 [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
