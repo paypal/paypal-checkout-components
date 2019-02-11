@@ -369,6 +369,10 @@ export let config = {
 
         'cyclegear.com': {
             disable_venmo: true
+        },
+
+        'chegg.com': {
+            disable_venmo: true
         }
     },
 
