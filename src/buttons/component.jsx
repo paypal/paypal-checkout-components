@@ -493,6 +493,11 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     value:      () => getVault()
                 },
 
+                csp: {
+                    type:     'object',
+                    required: false
+                },
+
                 test: {
                     type: 'object',
                     default() : Object {

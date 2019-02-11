@@ -181,7 +181,10 @@ export type ButtonPropsInputs = {|
     remembered? : $PropertyType<ButtonProps, 'remembered'> | void,
     sessionID? : $PropertyType<ButtonProps, 'sessionID'> | void,
     buttonSessionID? : $PropertyType<ButtonProps, 'buttonSessionID'> | void,
-    nonce? : string
+    nonce? : string,
+    csp? : {
+        nonce? : string
+    }
 |};
 
 export const DEFAULT_STYLE = {
@@ -301,6 +304,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         fundingEligibility,
         sessionID = uniqueID(),
         buttonSessionID = uniqueID(),
+        csp = {},
         nonce = ''
     } = props;
 
@@ -328,6 +332,10 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
 
     if (PLATFORMS.indexOf(platform) === -1) {
         throw new Error(`Expected valid platform, got ${ platform || 'undefined' }`);
+    }
+
+    if (csp && csp.nonce) {
+        nonce = csp.nonce;
     }
 
     style = normalizeButtonStyle(style);
