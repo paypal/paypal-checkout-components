@@ -35,7 +35,7 @@ export function getButtonMiddleware({ logger = console } : { logger? : LoggerTyp
                 return clientErrorResponse(res, 'Please provide a fundingEligibility query parameter');
             }
 
-            const buttonHTML = Buttons({ ...params, nonce, fundingEligibility }).render(html());
+            const buttonHTML = Buttons({ ...params, nonce, csp: { nonce }, fundingEligibility }).render(html());
 
             const pageHTML = `
                 <body data-nonce="${ nonce }">
