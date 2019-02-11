@@ -25,7 +25,7 @@ const URI = __TEST__
         CHECKOUT: CHECKOUT_URI,
         ALTPAY:   `/latinumcheckout`,
         GUEST:    `/webapps/xoonboarding`,
-        BUTTON:   `/sdk/js/smart-buttons`,
+        BUTTON:   `/smart/buttons`,
         CARD:     `/webapps/hermes/card-fields`
     };
 
