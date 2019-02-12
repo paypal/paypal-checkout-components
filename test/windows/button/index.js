@@ -76,11 +76,12 @@ function renderCheckout(props = {}) {
             overlayColor: window.xprops.style.overlayColor
         },
 
-        onCancel: window.xprops.onCancel,
-        onError:  window.xprops.onError,
-        commit:   window.xprops.commit,
-        locale:   window.xprops.locale,
-        test:     {
+        onCancel:   window.xprops.onCancel,
+        onError:    window.xprops.onError,
+        commit:     window.xprops.commit,
+        locale:     window.xprops.locale,
+        supplement: window.xprops.supplement,
+        test:       {
             action: action || 'checkout',
             type,
             ...checkout
@@ -113,7 +114,7 @@ if (action === 'auth') {
         window.xprops.onAuth();
     }
 
-} else if (action === 'checkout' || action === 'shippingChange' || action === 'cancel' || action === 'fallback' || action === 'error' || action === 'popout') {
+} else if (action === 'checkout' || action === 'shippingChange' || action === 'shippingOptions' || action === 'cancel' || action === 'fallback' || action === 'error' || action === 'popout') {
 
     if (delay) {
         setTimeout(() => {

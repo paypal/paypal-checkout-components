@@ -955,8 +955,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     test: MERCHANT_CLIENT_ID
                 },
 
-                payment(data) : string | ZalgoPromise<string> {
-                    return data.payment.create({
+                payment(data, actions) : string | ZalgoPromise<string> {
+                    return actions.payment.create({
                         transactions: [
                             {
                                 amount:    { total: '1.00', currency: 'USD' },
@@ -1017,8 +1017,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     test: MERCHANT_CLIENT_ID
                 },
 
-                payment(data) : string | ZalgoPromise<string> {
-                    return data.payment.create({
+                payment(data, actions) : string | ZalgoPromise<string> {
+                    return actions.payment.create({
                         transactions: [
                             {
                                 amount:    { total: '1.00', currency: 'USD' },
@@ -1085,6 +1085,163 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             }, '#testContainer');
 
+        });
+
+        it('should create payment with shipping options, and then retrieve them after render', (done) => {
+
+            window.paypal.Button.render({
+
+                test: {
+                    flow,
+                    action:   'checkout',
+                    checkout: {
+                        action:   'shippingOptions',
+                        onInit(transactionShippingOptions) {
+
+                            if (!transactionShippingOptions.length || !transactionShippingOptions[0].length) {
+                                done(new Error('Expected shipping options'));
+                            }
+
+                            const shippingOption = transactionShippingOptions[0][0];
+
+                            if (shippingOption.id !== 'TEST456') {
+                                done(new Error(`Expected option.id to be TEST123, got ${ shippingOption.id }`));
+                            }
+
+                            if (shippingOption.label !== 'Premium Shipping') {
+                                done(new Error(`Expected option.label to be Premium Shipping, got ${ shippingOption.label }`));
+                            }
+
+                            if (shippingOption.type !== 'SHIPPING') {
+                                done(new Error(`Expected option.type to be SHIPPING, got ${ shippingOption.type }`));
+                            }
+
+                            if (shippingOption.amount.value !== '5.00') {
+                                done(new Error(`Expected option.type to be 5.00, got ${ shippingOption.amount.value }`));
+                            }
+
+                            done();
+                        }
+                    }
+                },
+
+                client: {
+                    test: MERCHANT_CLIENT_ID
+                },
+
+                payment(data, actions) : string | ZalgoPromise<string> {
+                    return actions.payment.create({
+                        transactions: [
+                            {
+                                amount:    { total: '1.00', currency: 'USD' },
+                                item_list: {
+                                    shipping_options: [
+                                        {
+                                            id:     'TEST456',
+                                            label:  'Premium Shipping',
+                                            type:   'SHIPPING',
+                                            amount: {
+                                                currency_code: 'USD',
+                                                value:         '5.00'
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    });
+                },
+
+                onAuthorize() : void {
+                    return done(new Error('Expected onAuthorize to not be called'));
+                },
+                
+                onError(err) : void {
+                    return done(new Error(`Expected onError to not be called, got ${ err }`));
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
+        });
+
+
+        it('should create payment with legacy shipping options, and then retrieve them after render', (done) => {
+
+            window.paypal.Button.render({
+
+                test: {
+                    flow,
+                    action:   'checkout',
+                    checkout: {
+                        action:   'shippingOptions',
+                        onInit(transactionShippingOptions) {
+
+                            if (!transactionShippingOptions.length || !transactionShippingOptions[0].length) {
+                                done(new Error('Expected shipping options'));
+                            }
+
+                            const shippingOption = transactionShippingOptions[0][0];
+
+                            if (shippingOption.id !== 'TEST456') {
+                                done(new Error(`Expected option.id to be TEST123, got ${ shippingOption.id }`));
+                            }
+
+                            if (shippingOption.label !== 'Ship to your address') {
+                                done(new Error(`Expected option.label to be Ship to your address, got ${ shippingOption.label }`));
+                            }
+
+                            if (shippingOption.type !== 'SHIPPING') {
+                                done(new Error(`Expected option.type to be SHIPPING, got ${ shippingOption.type }`));
+                            }
+
+                            if (shippingOption.amount.value !== '0.00') {
+                                done(new Error(`Expected option.type to be 0.00, got ${ shippingOption.amount.value }`));
+                            }
+
+                            done();
+                        }
+                    }
+                },
+
+                client: {
+                    test: MERCHANT_CLIENT_ID
+                },
+
+                payment(data, actions) : string | ZalgoPromise<string> {
+                    return actions.payment.create({
+                        transactions: [
+                            {
+                                amount:    { total: '1.00', currency: 'USD' },
+                                item_list: {
+                                    shipping_options: [
+                                        {
+                                            id:     'TEST456',
+                                            label:  'SHIP_TO_HOME',
+                                            type:   'SHIP_TO_HOME'
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    });
+                },
+
+                onAuthorize() : void {
+                    return done(new Error('Expected onAuthorize to not be called'));
+                },
+                
+                onError(err) : void {
+                    return done(new Error(`Expected onError to not be called, got ${ err }`));
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
         });
 
         if (flow === 'popup') {
