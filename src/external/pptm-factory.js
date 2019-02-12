@@ -107,14 +107,15 @@ export function pptmFactory() : Object {
         
             loadScript(fullUrl, 0, {
                 async:  true,
-                id:     PPTM_ID,
-                onload: `(function() {
-                    if (window.paypalDDL && window.paypalDDL[0] && window.paypalDDL[0].event === 'snippetRun') {
-                    } else {
-                        window['${ callback }']();
-                    }
-                })()`
+                id:     PPTM_ID
             }).then(() => {
+                // If the snippet is empty, then fire the callback.
+                // We assume non-empty pptm.js bundles with init the paypalDDL and push an event called
+                // `snippetRun` to it.
+                if (!(window.paypalDDL && window.paypalDDL[0] && window.paypalDDL[0].event === 'snippetRun')) {
+                    window[callback]();
+                }
+
                 track({
                     [ FPTI.KEY.STATE ]:      FPTI.STATE.PPTM,
                     [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.PPTM_LOADED
