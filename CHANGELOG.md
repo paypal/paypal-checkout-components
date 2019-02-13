@@ -1,3 +1,16 @@
+## <small>5.0.1 (2019-02-13)</small>
+
+* Add csp button prop ([05c1171](http://github.paypal.com/paypal/paypal-checkout/commit/05c1171))
+* Cleanup allowPrimary setting ([8bf180b](http://github.paypal.com/paypal/paypal-checkout/commit/8bf180b))
+* Fix release task ([b1af578](http://github.paypal.com/paypal/paypal-checkout/commit/b1af578))
+* Switch buttons over to smartcomponentnodeweb ([55f9fe2](http://github.paypal.com/paypal/paypal-checkout/commit/55f9fe2))
+* Temporarily add paypal.request ([39c4319](http://github.paypal.com/paypal/paypal-checkout/commit/39c4319))
+* Update fpti event names ([25a59e2](http://github.paypal.com/paypal/paypal-checkout/commit/25a59e2))
+* Update framework demo pages ([1e19587](http://github.paypal.com/paypal/paypal-checkout/commit/1e19587))
+* refactor(publishing): Better publishing workflow with changelog. Yanked from v4 (#1024) ([4feda2d](http://github.paypal.com/paypal/paypal-checkout/commit/4feda2d)), closes [#1024](http://github.paypal.com/paypal/paypal-checkout/issues/1024)
+
+
+
 ## 5.0.0 (2019-02-08)
 
 * 5.0.0 ([d11eb12](http://github.paypal.com/paypal/paypal-checkout/commit/d11eb12))
