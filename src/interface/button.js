@@ -14,6 +14,12 @@ export let Checkout;
 export let PopupOpenError;
 export let allowIframe;
 
+export const request = {
+    addHeaderBuilder: () => {
+        // pass
+    }
+};
+
 if (isPayPalDomain()) {
     Checkout = CheckoutComponent;
     PopupOpenError = _PopupOpenError;
