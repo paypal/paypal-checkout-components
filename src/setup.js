@@ -9,9 +9,9 @@ import { initLogger, checkForCommonErrors, setLogLevel, stringifyError,
     stringifyErrorMessage, getResourceLoadTime, isPayPalDomain, isEligible,
     getDomainSetting, once, openMetaFrame, precacheRememberedFunding,
     getCurrentScript } from './lib';
-import { createPptmScript } from './external';
 import { Button } from './button';
 import { Checkout } from './checkout';
+import { pptm } from './external';
 
 function domainToEnv(domain : string) : ?string {
     for (let env of Object.keys(config.paypalUrls)) {
@@ -151,8 +151,8 @@ export let init = once(({ precacheRemembered }) => {
 
     initLogger();
 
-    if (!isPayPalDomain()) {
-        createPptmScript();
+    if (pptm.shouldCreateInitialPptmScript()) {
+        pptm.createPptmScript();
     }
 
     if (precacheRemembered) {

@@ -6,3 +6,4 @@ import './legacy';
 import './checkout';
 import './button';
 import './api';
+import './external';

@@ -8,6 +8,7 @@ import { type Component } from 'zoid/src/component/component';
 import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/client';
 import { getDomain } from 'cross-domain-utils/src';
 
+import { pptm } from '../external';
 import { config } from '../config';
 import { SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
     BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY } from '../constants';
@@ -29,6 +30,8 @@ import { containerTemplate, componentTemplate } from './template';
 import { validateButtonLocale, validateButtonStyle } from './validate';
 import { setupButtonChild } from './child';
 import { normalizeProps } from './props';
+
+pptm.listenForLoadWithNoContent();
 
 function isCreditDualEligible(props) : boolean {
 
@@ -523,7 +526,6 @@ export let Button : Component<ButtonOptions> = create({
             noop:      true,
             decorate(original) : Function {
                 return function decorateOnRender() : mixed {
-
                     let { browser = 'unrecognized', version = 'unrecognized' } = getBrowser();
                     info(`button_render_browser_${ browser }_${ version }`);
 
@@ -537,6 +539,8 @@ export let Button : Component<ButtonOptions> = create({
                     info(`button_render_branding_${ style.branding || 'default' }`);
                     info(`button_render_fundingicons_${ style.fundingicons || 'default' }`);
                     info(`button_render_tagline_${ style.tagline || 'default' }`);
+
+                    pptm.reloadPptmScript(this.props.client[this.props.env]);
 
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.LOAD,
