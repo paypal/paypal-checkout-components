@@ -38,8 +38,13 @@
     return __webpack_require__(__webpack_require__.s = "./src/button/template/componentTemplate.jsx");
 }({
     "./node_modules/Base64/base64.js": function(module, exports, __webpack_require__) {
+        var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
         !function() {
-            var object = exports, chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+            var object = "object" === _typeof(exports) && null !== exports && "number" != typeof exports.nodeType ? exports : "undefined" != typeof self ? self : $.global, chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
             function InvalidCharacterError(message) {
                 this.message = message;
             }
@@ -1484,7 +1489,7 @@
         var config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.256",
+            version: "4.0.257",
             cors: !0,
             env: function() {
                 return "undefined" == typeof window || void 0 === window.location ? misc_ENV.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? misc_ENV.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? misc_ENV.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? misc_ENV.SANDBOX : misc_ENV.PRODUCTION;
@@ -1736,10 +1741,16 @@
                 },
                 "cyclegear.com": {
                     disable_venmo: !0
+                },
+                "chegg.com": {
+                    disable_venmo: !0
+                },
+                "youniqueproducts.com": {
+                    disable_venmo: !0
                 }
             },
             creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
-            apmTestDomains: [ "agsm.it", "ls-felgendesign.de", "domecgo.com", "raffaeleinghilterra.it", "hills4me.com", "anastasis.it", "liberidallavoro.org", "lgancce.com", "fiat.com", "amnesty.de", "raftingcenter.it", "myrabona.it", "firabarcelona.com", "elidentsrl.it", "sprayplanet.es", "cutipol.pt", "newslist.it", "bamboomt2.eu", "gisa.net", "italialaser.org", "hydeofficialstore.com", "huber-verlag.de", "joomlacontenteditor.net", "kletterzentrum-innsbruck.at", "knobmusiciandesign.com", "shipstage.com", "whatsmonitor.com", "napoleonx.ai", "activitiesbookingsystem.com", "spider-slacklines.com", "sononato.it", "alpi4000.it", "penimaster.de", "sportbionier.com", "bioseme.it", "ilpaninotondo.it", "meyer-menue.de", "uni-heidelberg.de", "cameo.it", "pasteleriabuenavista.com", "wuv.de", "papacheck.de", "traderlink.com", "agcalabrese.it", "smatchfe.club", "sarastro-stauden.com", "vandenberg-berlin.com", "t-shirtprinting.it", "raftingrepublic.com", "cityspeeddating.at", "euroval.com", "albero-dellavita.it", "mediumelisa.it", "inkmaster.it", "run-healthy.com", "cna.it", "mufight2.com", "louvardgame.be", "pruefungsdoc.de", "europublishing.it", "edaiperiodici.it", "herokuapp.com" ],
+            apmTestDomains: [ "agsm.it", "ls-felgendesign.de", "domecgo.com", "raffaeleinghilterra.it", "hills4me.com", "anastasis.it", "liberidallavoro.org", "lgancce.com", "fiat.com", "amnesty.de", "raftingcenter.it", "myrabona.it", "firabarcelona.com", "elidentsrl.it", "sprayplanet.es", "cutipol.pt", "newslist.it", "bamboomt2.eu", "gisa.net", "italialaser.org", "hydeofficialstore.com", "huber-verlag.de", "joomlacontenteditor.net", "kletterzentrum-innsbruck.at", "knobmusiciandesign.com", "shipstage.com", "whatsmonitor.com", "napoleonx.ai", "activitiesbookingsystem.com", "spider-slacklines.com", "sononato.it", "alpi4000.it", "penimaster.de", "sportbionier.com", "bioseme.it", "ilpaninotondo.it", "meyer-menue.de", "uni-heidelberg.de", "cameo.it", "pasteleriabuenavista.com", "wuv.de", "papacheck.de", "traderlink.com", "agcalabrese.it", "smatchfe.club", "sarastro-stauden.com", "vandenberg-berlin.com", "t-shirtprinting.it", "raftingrepublic.com", "cityspeeddating.at", "euroval.com", "albero-dellavita.it", "mediumelisa.it", "inkmaster.it", "run-healthy.com", "cna.it", "mufight2.com", "louvardgame.be", "pruefungsdoc.de", "europublishing.it", "edaiperiodici.it", "paypal-checkout.herokuapp.com", "day.it", "delinero.de", "unicocampania.it", "blumediterraneosas.com", "rustv.it", "geldverstehen.de", "skiclubfossoasd.it", "panorama-restaurant-stuttgart.de", "movember.com", "ombrellibolero.it", "devoto-oli.it", "el-teatro.de", "ittshop.com", "team-f.de", "ferien.events", "newnailssystem.com", "softwarevenere.com", "stikid.com", "evocoach.it", "caffepiansa.com", "epsoprep.com", "brickowl.com", "one28racing.com", "chogusto.com", "centrostudiliberale.it", "biotech-shop.nl", "knightonline-myko.net", "rad-germany.de", "damascus-store.com", "valkhair.nl", "tu-darmstadt.de", "lemediatv.fr", "mondoevacanze.it", "golfinthesun.org", "altinotravel.gr", "nsk.si", "humanhuman.com", "conento.com", "encuentratupsicologo.com", "onlainez.net", "bp-tools.de", "bestrongforkids.de", "cloudboxes.io", "creatone.de", "nethserver.com", "kulturstiftung-koelnerdom.de", "ixso.eu", "modulus.gr", "aerbrava.com", "allgrass.net", "artfloral.org", "studyclix.ie", "esthergarciaboutique.com", "abookforthat.com", "aurarium.ch", "tippevent.de", "musicspoon.io", "h10hotels.com", "frizzoshopping.com", "stargift.ro", "svojtka.sk", "salvadori.me", "sfmc.eu", "parsifalpark.it", "exilux.de", "brothausmoberg.com", "opificiografico.com", "lalibertadivolare.it", "airportfreewifi.it", "diemagnetisten.de", "shbook.it", "vallandry-sports.com", "crowdcoinage.com", "dresscodeboutique.fr", "talhita.it", "corticle.com", "anymator.de", "legalizer.it", "handmadefantasyworld.com", "1001-sushi-bordeaux.com", "elarconte.com", "sushiathome.pt", "associazionecest.it", "traduzioni-legalizzate.it", "janvas.com", "bluemeusb.nl", "lacala.es", "speironcompany.com", "flam-racing.fr", "1thebrand.com", "kidooland.com", "beneathmysins.com", "linelab.eu", "afroonatural.com", "azurewebsites.net", "munich-ski-shuttle.com", "euroservizi2012.it", "radiostim.com", "cbibikia.com", "nadur8k.com", "custom-hookah.de", "imexlicensing.com", "belts-parma.it", "generated4u.com", "pilarsantisteban.com", "consulenzeagroalimentari.it", "lavilladeipini.com", "burgershacklennep.de", "vmlens.com", "xoring.com", "moto4.it", "parospark.com", "commentme.com", "antoniodalessandro.it", "kinarecords.com", "bybus.pt", "parquecerdeira.com", "cineclaqueta.com", "saddolls.net", "mydamart.fr", "rfbnet.nl", "netsons.org", "rebrickable.com", "portodoavesso.com", "leobridge.net", "mikros.co", "bekinky.net", "pix4u.one", "smtperformances.fr", "siiturista.it", "gorrasbebe.es", "cbd-laden.at", "tobiaswaelde.de", "veneziaradiotv.it", "sopimuspohja.com", "cristianalopes.ddns.net", "saliyafoundation.de", "robertocosentino.it", "billy-white.de", "johndixt.it", "alexmas.cloud", "things-to-do-in-gran-canaria.com", "rroseselavy.it", "paradigmpalace.com", "chardez.be", "online-rechnungen.de", "vip-urlaub.de", "lyrau.com", "perfectiptv3006.000webhostapp.com", "seminarsincyprus.com", "snapandprint.com", "le-heron.net", "need4tech.gr", "eurolamps.eu", "paygety.ee", "gestionaliprosoft.it", "decoindustriel.fr", "acmo.corsica", "slovakforaday.com", "vhlave.sk", "hughmcgovernwriting.com", "nowgaming.fr", "divecentercorralejo.com", "mobile.de", "skebby.it" ],
             customCountry: !1,
             SUPPORTED_BROWSERS: {
                 msie: "11",
@@ -2023,7 +2034,7 @@
                 return "" + config.paypalUrl + loggerUrl;
             },
             get pptmUrl() {
-                return "" + (config.env === misc_ENV.LOCAL ? config.paypalUrls[misc_ENV.STAGE] : config.paypalUrl) + config.pptmUri;
+                return "" + config.paypalUrls[config.env] + config.pptmUri;
             },
             get authApiUrl() {
                 return "" + config.apiUrl + config.authApiUri;
@@ -3119,8 +3130,8 @@
             };
         }
         var template_content = __webpack_require__("./src/button/template/content.json"), content_default = __webpack_require__.n(template_content), componentContent = "string" == typeof content_default.a ? JSON.parse(content_default.a) : content_default.a;
-        __webpack_exports__.componentTemplate = function(_ref20) {
-            var _ref21, props = _ref20.props;
+        __webpack_exports__.componentTemplate = function(_ref17) {
+            var _ref18, props = _ref17.props;
             if (props && props.style) {
                 var style = props.style;
                 "generic" === style.label && (style.label = "paypal");
@@ -3150,8 +3161,8 @@
                 multiple: multiple,
                 layout: layout
             }).map(function(button, i) {
-                return function(_ref14) {
-                    var _ref15, _ref16, _ref17, size = _ref14.size, label = _ref14.label, color = _ref14.color, locale = _ref14.locale, branding = _ref14.branding, multiple = _ref14.multiple, layout = _ref14.layout, shape = _ref14.shape, source = _ref14.source, funding = _ref14.funding, i = _ref14.i, env = _ref14.env, cards = _ref14.cards, installmentperiod = _ref14.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = determineLabel({
+                return function(_ref11) {
+                    var _ref12, _ref13, _ref14, size = _ref11.size, label = _ref11.label, color = _ref11.color, locale = _ref11.locale, branding = _ref11.branding, multiple = _ref11.multiple, layout = _ref11.layout, shape = _ref11.shape, source = _ref11.source, funding = _ref11.funding, i = _ref11.i, env = _ref11.env, cards = _ref11.cards, installmentperiod = _ref11.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = determineLabel({
                         label: label,
                         source: source,
                         multiple: multiple,
@@ -3174,9 +3185,9 @@
                         size: size
                     });
                     var hasTabIndex = -1 === [ FUNDING.CARD ].indexOf(source);
-                    return jsxToHTML("div", componentTemplate__extends({}, ((_ref15 = {})[ATTRIBUTE.LAYOUT] = layout || "", 
-                    _ref15), ((_ref16 = {})[ATTRIBUTE.SIZE] = size || "", _ref16), ((_ref17 = {})[ATTRIBUTE.FUNDING_SOURCE] = source, 
-                    _ref17[ATTRIBUTE.BUTTON] = !0, _ref17), {
+                    return jsxToHTML("div", componentTemplate__extends({}, ((_ref12 = {})[ATTRIBUTE.LAYOUT] = layout || "", 
+                    _ref12), ((_ref13 = {})[ATTRIBUTE.SIZE] = size || "", _ref13), ((_ref14 = {})[ATTRIBUTE.FUNDING_SOURCE] = source, 
+                    _ref14[ATTRIBUTE.BUTTON] = !0, _ref14), {
                         class: CLASS.BUTTON + " " + CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
                             layout: layout,
                             shape: shape,
@@ -3211,8 +3222,8 @@
                     installmentperiod: installmentperiod,
                     size: size
                 });
-            }), taglineNode = function(_ref18) {
-                var label = _ref18.label, tagline = _ref18.tagline, color = _ref18.color, locale = _ref18.locale, multiple = _ref18.multiple, env = _ref18.env, cards = _ref18.cards;
+            }), taglineNode = function(_ref15) {
+                var label = _ref15.label, tagline = _ref15.tagline, color = _ref15.color, locale = _ref15.locale, multiple = _ref15.multiple, env = _ref15.env, cards = _ref15.cards;
                 if (!tagline) return;
                 var text = renderContent(multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag"), {
                     locale: locale,
@@ -3233,8 +3244,8 @@
                 multiple: multiple,
                 env: env,
                 cards: cards
-            }), fundingiconNode = function(_ref12) {
-                var cards = _ref12.cards, fundingicons = _ref12.fundingicons, size = _ref12.size, layout = _ref12.layout;
+            }), fundingiconNode = function(_ref9) {
+                var cards = _ref9.cards, fundingicons = _ref9.fundingicons, size = _ref9.size, layout = _ref9.layout;
                 if (!fundingicons) return;
                 return jsxToHTML("div", {
                     class: "" + CLASS.FUNDINGICONS
@@ -3249,8 +3260,8 @@
                 fundingicons: fundingicons,
                 size: size,
                 layout: layout
-            }), styleNode = function(_ref19) {
-                var height = _ref19.height, cardNumber = _ref19.cardNumber;
+            }), styleNode = function(_ref16) {
+                var height = _ref16.height, cardNumber = _ref16.cardNumber;
                 return jsxToHTML("style", {
                     innerHTML: componentStyle({
                         height: height,
@@ -3277,8 +3288,8 @@
                 })));
             }(normalizeProps(props)) : null;
             var script;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[ATTRIBUTE.VERSION] = "4.0.256", 
-            _ref21), {
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[ATTRIBUTE.VERSION] = "4.0.257", 
+            _ref18), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -3306,25 +3317,22 @@
         function renderCards(_ref5) {
             var cards = _ref5.cards, button = _ref5.button, layout = _ref5.layout, size = _ref5.size;
             return cards.map(function(name) {
-                var _ref6, _ref7, _ref8, _ref9, _ref10, _ref11, logo = cardLogos[name];
+                var _ref6, _ref7, _ref8, logo = cardLogos[name];
                 return jsxToHTML("div", componentTemplate__extends({}, ((_ref6 = {})[ATTRIBUTE.LAYOUT] = layout || "", 
                 _ref6), ((_ref7 = {})[ATTRIBUTE.SIZE] = size || "", _ref7), ((_ref8 = {})[ATTRIBUTE.BUTTON] = button || !1, 
                 _ref8[ATTRIBUTE.FUNDING_SOURCE] = "" + FUNDING.CARD, _ref8[ATTRIBUTE.CARD] = "" + name, 
                 _ref8), {
                     class: (button ? CLASS.BUTTON : "") + " " + CLASS.CARD + " " + CLASS.CARD + "-" + name,
                     tabindex: "0"
-                }), jsxToHTML("img", componentTemplate__extends({}, ((_ref9 = {})[ATTRIBUTE.LAYOUT] = layout || "", 
-                _ref9), ((_ref10 = {})[ATTRIBUTE.SIZE] = size || "", _ref10), ((_ref11 = {})[ATTRIBUTE.BUTTON] = button || !1, 
-                _ref11[ATTRIBUTE.FUNDING_SOURCE] = "" + FUNDING.CARD, _ref11[ATTRIBUTE.CARD] = "" + name, 
-                _ref11), {
+                }), jsxToHTML("img", {
                     style: " display: block; ",
                     src: "data:image/svg+xml;base64," + Object(base64.btoa)(logo),
                     alt: name
-                })));
+                }));
             });
         }
-        function renderContent(text, _ref13) {
-            var renderers, nodes, label = _ref13.label, locale = _ref13.locale, color = _ref13.color, branding = _ref13.branding, logoColor = _ref13.logoColor, funding = _ref13.funding, env = _ref13.env, _cards = _ref13.cards, dynamicContent = _ref13.dynamicContent, layout = _ref13.layout, size = _ref13.size, _content = function(locale) {
+        function renderContent(text, _ref10) {
+            var renderers, nodes, label = _ref10.label, locale = _ref10.locale, color = _ref10.color, branding = _ref10.branding, logoColor = _ref10.logoColor, funding = _ref10.funding, env = _ref10.env, _cards = _ref10.cards, dynamicContent = _ref10.dynamicContent, layout = _ref10.layout, size = _ref10.size, _content = function(locale) {
                 var country = locale.country, lang = locale.lang;
                 return componentContent[country][lang];
             }(locale);

@@ -38,8 +38,13 @@
     return __webpack_require__(__webpack_require__.s = "./src/load.js");
 }({
     "./node_modules/Base64/base64.js": function(module, exports, __webpack_require__) {
+        var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
         !function() {
-            var object = exports, chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+            var object = "object" === _typeof(exports) && null !== exports && "number" != typeof exports.nodeType ? exports : "undefined" != typeof self ? self : $.global, chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
             function InvalidCharacterError(message) {
                 this.message = message;
             }
@@ -624,331 +629,6 @@
         __webpack_require__.d(__webpack_exports__, "m", function() {
             return logLevels;
         });
-    },
-    "./node_modules/belter/src/css.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-    },
-    "./node_modules/belter/src/decorators.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__("./node_modules/belter/src/util.js");
-    },
-    "./node_modules/belter/src/device.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_exports__.a = function() {
-            if (getUserAgent().match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) return !0;
-            return !1;
-        };
-        function getUserAgent() {
-            return window.navigator.mockUserAgent || window.navigator.userAgent;
-        }
-    },
-    "./node_modules/belter/src/dom.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), 
-        __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js");
-        var util = __webpack_require__("./node_modules/belter/src/util.js");
-        __webpack_require__("./node_modules/belter/src/device.js");
-        __webpack_exports__.b = function isLocalStorageEnabled() {
-            return Object(util.d)(isLocalStorageEnabled, function() {
-                try {
-                    if ("undefined" == typeof window) return !1;
-                    if (window.localStorage) {
-                        var value = Math.random().toString();
-                        window.localStorage.setItem("__test__localStorage__", value);
-                        var result = window.localStorage.getItem("__test__localStorage__");
-                        window.localStorage.removeItem("__test__localStorage__");
-                        if (value === result) return !0;
-                    }
-                } catch (err) {}
-                return !1;
-            });
-        };
-        __webpack_exports__.a = getElementSafe;
-        __webpack_exports__.c = function(el, handler) {
-            var _ref2 = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$interval = _ref2.interval, interval = void 0 === _ref2$interval ? 100 : _ref2$interval, _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win, currentWidth = el.offsetWidth, currentHeight = el.offsetHeight;
-            handler({
-                width: currentWidth,
-                height: currentHeight
-            });
-            var check = function() {
-                var newWidth = el.offsetWidth, newHeight = el.offsetHeight;
-                (width && newWidth !== currentWidth || height && newHeight !== currentHeight) && handler({
-                    width: newWidth,
-                    height: newHeight
-                });
-                currentWidth = newWidth;
-                currentHeight = newHeight;
-            }, observer = void 0, timeout = void 0;
-            if (void 0 !== win.ResizeObserver) (observer = new win.ResizeObserver(check)).observe(el); else if (void 0 !== win.MutationObserver) {
-                (observer = new win.MutationObserver(check)).observe(el, {
-                    attributes: !0,
-                    childList: !0,
-                    subtree: !0,
-                    characterData: !1
-                });
-                win.addEventListener("resize", check);
-            } else {
-                !function loop() {
-                    check();
-                    timeout = setTimeout(loop, interval);
-                }();
-            }
-            return {
-                cancel: function() {
-                    observer.disconnect();
-                    window.removeEventListener("resize", check);
-                    clearTimeout(timeout);
-                }
-            };
-        };
-        var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-            return typeof obj;
-        } : function(obj) {
-            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        };
-        Object.assign;
-        function getElementSafe(id) {
-            var element, doc = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : document;
-            return (element = id) instanceof window.Element || null !== element && "object" === (void 0 === element ? "undefined" : _typeof(element)) && 1 === element.nodeType && "object" === _typeof(element.style) && "object" === _typeof(element.ownerDocument) ? id : "string" == typeof id ? doc.querySelector(id) : void 0;
-        }
-        function PopupOpenError(message) {
-            this.message = message;
-        }
-        PopupOpenError.prototype = Object.create(Error.prototype);
-    },
-    "./node_modules/belter/src/experiment.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__("./node_modules/belter/src/util.js"), __webpack_require__("./node_modules/belter/src/storage.js");
-    },
-    "./node_modules/belter/src/global.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__("./node_modules/belter/src/util.js");
-    },
-    "./node_modules/belter/src/http.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __webpack_require__("./node_modules/cross-domain-utils/src/index.js");
-    },
-    "./node_modules/belter/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__("./node_modules/belter/src/device.js");
-        var __WEBPACK_IMPORTED_MODULE_1__dom__ = __webpack_require__("./node_modules/belter/src/dom.js");
-        __webpack_require__.d(__webpack_exports__, "getElementSafe", function() {
-            return __WEBPACK_IMPORTED_MODULE_1__dom__.a;
-        });
-        __webpack_require__.d(__webpack_exports__, "onResize", function() {
-            return __WEBPACK_IMPORTED_MODULE_1__dom__.c;
-        });
-        __webpack_require__("./node_modules/belter/src/experiment.js"), __webpack_require__("./node_modules/belter/src/global.js"), 
-        __webpack_require__("./node_modules/belter/src/storage.js"), __webpack_require__("./node_modules/belter/src/util.js"), 
-        __webpack_require__("./node_modules/belter/src/http.js");
-        var __WEBPACK_IMPORTED_MODULE_7__types__ = __webpack_require__("./node_modules/belter/src/types.js");
-        __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__types__), __webpack_require__("./node_modules/belter/src/decorators.js"), 
-        __webpack_require__("./node_modules/belter/src/css.js"), __webpack_require__("./node_modules/belter/src/test.js");
-    },
-    "./node_modules/belter/src/storage.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_exports__.a = function getStorage(_ref) {
-            var name = _ref.name, _ref$version = _ref.version, version = void 0 === _ref$version ? "latest" : _ref$version, _ref$lifetime = _ref.lifetime, lifetime = void 0 === _ref$lifetime ? 3e5 : _ref$lifetime;
-            return Object(__WEBPACK_IMPORTED_MODULE_0__util__.d)(getStorage, function() {
-                var STORAGE_KEY = "__" + name + "_" + version + "_storage__", accessedStorage = void 0;
-                function getState(handler) {
-                    var localStorageEnabled = Object(__WEBPACK_IMPORTED_MODULE_1__dom__.b)(), storage = void 0;
-                    accessedStorage && (storage = accessedStorage);
-                    if (!storage && localStorageEnabled) {
-                        var rawStorage = window.localStorage.getItem(STORAGE_KEY);
-                        rawStorage && (storage = JSON.parse(rawStorage));
-                    }
-                    storage || (storage = Object(__WEBPACK_IMPORTED_MODULE_0__util__.c)()[STORAGE_KEY]);
-                    storage || (storage = {
-                        id: Object(__WEBPACK_IMPORTED_MODULE_0__util__.m)()
-                    });
-                    storage.id || (storage.id = Object(__WEBPACK_IMPORTED_MODULE_0__util__.m)());
-                    accessedStorage = storage;
-                    var result = handler(storage);
-                    localStorageEnabled ? window.localStorage.setItem(STORAGE_KEY, JSON.stringify(storage)) : Object(__WEBPACK_IMPORTED_MODULE_0__util__.c)()[STORAGE_KEY] = storage;
-                    accessedStorage = null;
-                    return result;
-                }
-                function getSession(handler) {
-                    return getState(function(storage) {
-                        var session = storage.__session__, now = Date.now();
-                        session && now - session.created > lifetime && (session = null);
-                        session || (session = {
-                            guid: Object(__WEBPACK_IMPORTED_MODULE_0__util__.m)(),
-                            created: now
-                        });
-                        storage.__session__ = session;
-                        return handler(session);
-                    });
-                }
-                return {
-                    getState: getState,
-                    getID: function() {
-                        return getState(function(storage) {
-                            return storage.id;
-                        });
-                    },
-                    getSessionState: function(handler) {
-                        return getSession(function(session) {
-                            session.state = session.state || {};
-                            return handler(session.state);
-                        });
-                    },
-                    getSessionID: function() {
-                        return getSession(function(session) {
-                            return session.guid;
-                        });
-                    }
-                };
-            }, [ {
-                name: name,
-                version: version,
-                lifetime: lifetime
-            } ]);
-        };
-        var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__("./node_modules/belter/src/util.js"), __WEBPACK_IMPORTED_MODULE_1__dom__ = __webpack_require__("./node_modules/belter/src/dom.js");
-    },
-    "./node_modules/belter/src/test.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __webpack_require__("./node_modules/belter/src/util.js");
-    },
-    "./node_modules/belter/src/types.js": function(module, exports) {},
-    "./node_modules/belter/src/util.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_exports__.m = uniqueID;
-        __webpack_exports__.c = function() {
-            if ("undefined" != typeof window) return window;
-            if ("undefined" != typeof global) return global;
-            if ("undefined" != typeof __GLOBAL__) return __GLOBAL__;
-            throw new Error("No global found");
-        };
-        __webpack_exports__.e = function(method) {
-            var _this = this, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, cacheMap = new __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__.a();
-            function memoizedFunction() {
-                for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-                var cache = cacheMap.getOrSet(options.thisNamespace ? this : method, function() {
-                    return {};
-                }), key = serializeArgs(args), cacheTime = options.time;
-                cache[key] && cacheTime && Date.now() - cache[key].time < cacheTime && delete cache[key];
-                if (cache[key]) return cache[key].value;
-                var time = Date.now(), value = method.apply(this, arguments);
-                cache[key] = {
-                    time: time,
-                    value: value
-                };
-                return cache[key].value;
-            }
-            memoizedFunction.reset = function() {
-                cacheMap.delete(options.thisNamespace ? _this : method);
-            };
-            options.name && (memoizedFunction.displayName = options.name + ":memoized");
-            return memoizedFunction;
-        };
-        __webpack_exports__.h = function(method) {
-            var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-            function promisifiedFunction() {
-                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(method, this, arguments);
-            }
-            options.name && (promisifiedFunction.displayName = options.name + ":promisified");
-            return promisifiedFunction;
-        };
-        __webpack_exports__.d = function(method, logic) {
-            var args = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [], cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {}, key = serializeArgs(args);
-            if (cache.hasOwnProperty(key)) return cache[key];
-            return cache[key] = logic.apply(void 0, args);
-        };
-        __webpack_exports__.f = noop;
-        __webpack_exports__.g = once;
-        __webpack_exports__.k = function(item) {
-            if ("string" == typeof item) return item;
-            if (item && "function" == typeof item.toString) return item.toString();
-            return Object.prototype.toString.call(item);
-        };
-        __webpack_exports__.b = function(obj, source) {
-            if (!source) return obj;
-            if (Object.assign) return Object.assign(obj, source);
-            for (var key in source) source.hasOwnProperty(key) && (obj[key] = source[key]);
-            return obj;
-        };
-        __webpack_exports__.j = safeInterval;
-        __webpack_exports__.a = function(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-        };
-        __webpack_exports__.l = function(fn) {
-            var result = void 0, error = void 0;
-            try {
-                result = fn();
-            } catch (err) {
-                error = err;
-            }
-            return {
-                result: result,
-                error: error
-            };
-        };
-        __webpack_exports__.i = function(arr, item) {
-            var index = arr.indexOf(item);
-            -1 !== index && arr.splice(index, 1);
-        };
-        var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__ = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-            return typeof obj;
-        } : function(obj) {
-            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        };
-        function base64encode(str) {
-            if ("function" == typeof btoa) return btoa(str);
-            if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
-            throw new Error("Can not find window.btoa or Buffer");
-        }
-        function uniqueID() {
-            var chars = "0123456789abcdef";
-            return "xxxxxxxxxx".replace(/./g, function() {
-                return chars.charAt(Math.floor(Math.random() * chars.length));
-            }) + "_" + base64encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
-        }
-        var objectIDs = void 0;
-        function serializeArgs(args) {
-            try {
-                return JSON.stringify(Array.prototype.slice.call(args), function(subkey, val) {
-                    return "function" == typeof val ? "memoize[" + function(obj) {
-                        objectIDs = objectIDs || new __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__.a();
-                        if (null === obj || void 0 === obj || "object" !== (void 0 === obj ? "undefined" : _typeof(obj)) && "function" != typeof obj) throw new Error("Invalid object");
-                        var uid = objectIDs.get(obj);
-                        if (!uid) {
-                            uid = (void 0 === obj ? "undefined" : _typeof(obj)) + ":" + uniqueID();
-                            objectIDs.set(obj, uid);
-                        }
-                        return uid;
-                    }(val) + "]" : val;
-                });
-            } catch (err) {
-                throw new Error("Arguments not serializable -- can not be used to memoize");
-            }
-        }
-        function noop() {}
-        function once(method) {
-            var called = !1;
-            return function() {
-                if (!called) {
-                    called = !0;
-                    return method.apply(this, arguments);
-                }
-            };
-        }
-        function safeInterval(method, time) {
-            var timeout = void 0;
-            !function loop() {
-                timeout = setTimeout(function() {
-                    method();
-                    loop();
-                }, time);
-            }();
-            return {
-                cancel: function() {
-                    clearTimeout(timeout);
-                }
-            };
-        }
     },
     "./node_modules/bowser/bowser.min.js": function(module, exports, __webpack_require__) {
         t = "bowser", n = function() {
@@ -5850,7 +5530,7 @@
         var config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.256",
+            version: "4.0.257",
             cors: !0,
             env: function() {
                 return "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION;
@@ -6102,10 +5782,16 @@
                 },
                 "cyclegear.com": {
                     disable_venmo: !0
+                },
+                "chegg.com": {
+                    disable_venmo: !0
+                },
+                "youniqueproducts.com": {
+                    disable_venmo: !0
                 }
             },
             creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
-            apmTestDomains: [ "agsm.it", "ls-felgendesign.de", "domecgo.com", "raffaeleinghilterra.it", "hills4me.com", "anastasis.it", "liberidallavoro.org", "lgancce.com", "fiat.com", "amnesty.de", "raftingcenter.it", "myrabona.it", "firabarcelona.com", "elidentsrl.it", "sprayplanet.es", "cutipol.pt", "newslist.it", "bamboomt2.eu", "gisa.net", "italialaser.org", "hydeofficialstore.com", "huber-verlag.de", "joomlacontenteditor.net", "kletterzentrum-innsbruck.at", "knobmusiciandesign.com", "shipstage.com", "whatsmonitor.com", "napoleonx.ai", "activitiesbookingsystem.com", "spider-slacklines.com", "sononato.it", "alpi4000.it", "penimaster.de", "sportbionier.com", "bioseme.it", "ilpaninotondo.it", "meyer-menue.de", "uni-heidelberg.de", "cameo.it", "pasteleriabuenavista.com", "wuv.de", "papacheck.de", "traderlink.com", "agcalabrese.it", "smatchfe.club", "sarastro-stauden.com", "vandenberg-berlin.com", "t-shirtprinting.it", "raftingrepublic.com", "cityspeeddating.at", "euroval.com", "albero-dellavita.it", "mediumelisa.it", "inkmaster.it", "run-healthy.com", "cna.it", "mufight2.com", "louvardgame.be", "pruefungsdoc.de", "europublishing.it", "edaiperiodici.it", "herokuapp.com" ],
+            apmTestDomains: [ "agsm.it", "ls-felgendesign.de", "domecgo.com", "raffaeleinghilterra.it", "hills4me.com", "anastasis.it", "liberidallavoro.org", "lgancce.com", "fiat.com", "amnesty.de", "raftingcenter.it", "myrabona.it", "firabarcelona.com", "elidentsrl.it", "sprayplanet.es", "cutipol.pt", "newslist.it", "bamboomt2.eu", "gisa.net", "italialaser.org", "hydeofficialstore.com", "huber-verlag.de", "joomlacontenteditor.net", "kletterzentrum-innsbruck.at", "knobmusiciandesign.com", "shipstage.com", "whatsmonitor.com", "napoleonx.ai", "activitiesbookingsystem.com", "spider-slacklines.com", "sononato.it", "alpi4000.it", "penimaster.de", "sportbionier.com", "bioseme.it", "ilpaninotondo.it", "meyer-menue.de", "uni-heidelberg.de", "cameo.it", "pasteleriabuenavista.com", "wuv.de", "papacheck.de", "traderlink.com", "agcalabrese.it", "smatchfe.club", "sarastro-stauden.com", "vandenberg-berlin.com", "t-shirtprinting.it", "raftingrepublic.com", "cityspeeddating.at", "euroval.com", "albero-dellavita.it", "mediumelisa.it", "inkmaster.it", "run-healthy.com", "cna.it", "mufight2.com", "louvardgame.be", "pruefungsdoc.de", "europublishing.it", "edaiperiodici.it", "paypal-checkout.herokuapp.com", "day.it", "delinero.de", "unicocampania.it", "blumediterraneosas.com", "rustv.it", "geldverstehen.de", "skiclubfossoasd.it", "panorama-restaurant-stuttgart.de", "movember.com", "ombrellibolero.it", "devoto-oli.it", "el-teatro.de", "ittshop.com", "team-f.de", "ferien.events", "newnailssystem.com", "softwarevenere.com", "stikid.com", "evocoach.it", "caffepiansa.com", "epsoprep.com", "brickowl.com", "one28racing.com", "chogusto.com", "centrostudiliberale.it", "biotech-shop.nl", "knightonline-myko.net", "rad-germany.de", "damascus-store.com", "valkhair.nl", "tu-darmstadt.de", "lemediatv.fr", "mondoevacanze.it", "golfinthesun.org", "altinotravel.gr", "nsk.si", "humanhuman.com", "conento.com", "encuentratupsicologo.com", "onlainez.net", "bp-tools.de", "bestrongforkids.de", "cloudboxes.io", "creatone.de", "nethserver.com", "kulturstiftung-koelnerdom.de", "ixso.eu", "modulus.gr", "aerbrava.com", "allgrass.net", "artfloral.org", "studyclix.ie", "esthergarciaboutique.com", "abookforthat.com", "aurarium.ch", "tippevent.de", "musicspoon.io", "h10hotels.com", "frizzoshopping.com", "stargift.ro", "svojtka.sk", "salvadori.me", "sfmc.eu", "parsifalpark.it", "exilux.de", "brothausmoberg.com", "opificiografico.com", "lalibertadivolare.it", "airportfreewifi.it", "diemagnetisten.de", "shbook.it", "vallandry-sports.com", "crowdcoinage.com", "dresscodeboutique.fr", "talhita.it", "corticle.com", "anymator.de", "legalizer.it", "handmadefantasyworld.com", "1001-sushi-bordeaux.com", "elarconte.com", "sushiathome.pt", "associazionecest.it", "traduzioni-legalizzate.it", "janvas.com", "bluemeusb.nl", "lacala.es", "speironcompany.com", "flam-racing.fr", "1thebrand.com", "kidooland.com", "beneathmysins.com", "linelab.eu", "afroonatural.com", "azurewebsites.net", "munich-ski-shuttle.com", "euroservizi2012.it", "radiostim.com", "cbibikia.com", "nadur8k.com", "custom-hookah.de", "imexlicensing.com", "belts-parma.it", "generated4u.com", "pilarsantisteban.com", "consulenzeagroalimentari.it", "lavilladeipini.com", "burgershacklennep.de", "vmlens.com", "xoring.com", "moto4.it", "parospark.com", "commentme.com", "antoniodalessandro.it", "kinarecords.com", "bybus.pt", "parquecerdeira.com", "cineclaqueta.com", "saddolls.net", "mydamart.fr", "rfbnet.nl", "netsons.org", "rebrickable.com", "portodoavesso.com", "leobridge.net", "mikros.co", "bekinky.net", "pix4u.one", "smtperformances.fr", "siiturista.it", "gorrasbebe.es", "cbd-laden.at", "tobiaswaelde.de", "veneziaradiotv.it", "sopimuspohja.com", "cristianalopes.ddns.net", "saliyafoundation.de", "robertocosentino.it", "billy-white.de", "johndixt.it", "alexmas.cloud", "things-to-do-in-gran-canaria.com", "rroseselavy.it", "paradigmpalace.com", "chardez.be", "online-rechnungen.de", "vip-urlaub.de", "lyrau.com", "perfectiptv3006.000webhostapp.com", "seminarsincyprus.com", "snapandprint.com", "le-heron.net", "need4tech.gr", "eurolamps.eu", "paygety.ee", "gestionaliprosoft.it", "decoindustriel.fr", "acmo.corsica", "slovakforaday.com", "vhlave.sk", "hughmcgovernwriting.com", "nowgaming.fr", "divecentercorralejo.com", "mobile.de", "skebby.it" ],
             customCountry: !1,
             SUPPORTED_BROWSERS: {
                 msie: "11",
@@ -6393,7 +6079,7 @@
                 return "" + config.paypalUrl + loggerUrl;
             },
             get pptmUrl() {
-                return "" + (config.env === constants.t.LOCAL ? config.paypalUrls[constants.t.STAGE] : config.paypalUrl) + config.pptmUri;
+                return "" + config.paypalUrls[config.env] + config.pptmUri;
             },
             get authApiUrl() {
                 return "" + config.apiUrl + config.authApiUri;
@@ -7214,7 +6900,7 @@
             return src_constants.o;
         });
         __webpack_require__.d(src_interface_namespaceObject, "request", function() {
-            return request;
+            return http_request;
         });
         __webpack_require__.d(src_interface_namespaceObject, "isEligible", function() {
             return isEligible;
@@ -7366,7 +7052,60 @@
                 }, _i4 = 0, _Object$keys2 = Object.keys(listeners), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) _loop(_i4, _Object$keys2);
             };
             return BaseComponent;
-        }(), belter_src = __webpack_require__("./node_modules/belter/src/index.js"), base32 = __webpack_require__("./node_modules/hi-base32/src/base32.js"), base32_default = __webpack_require__.n(base32), constants = __webpack_require__("./node_modules/zoid/src/constants.js");
+        }();
+        __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js"), "function" == typeof Symbol && Symbol.iterator;
+        var dom__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+        Object.assign;
+        function getElementSafe(id) {
+            var element, doc = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : document;
+            return (element = id) instanceof window.Element || null !== element && "object" === (void 0 === element ? "undefined" : dom__typeof(element)) && 1 === element.nodeType && "object" === dom__typeof(element.style) && "object" === dom__typeof(element.ownerDocument) ? id : "string" == typeof id ? doc.querySelector(id) : void 0;
+        }
+        function PopupOpenError(message) {
+            this.message = message;
+        }
+        PopupOpenError.prototype = Object.create(Error.prototype);
+        function onResize(el, handler) {
+            var _ref2 = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$interval = _ref2.interval, interval = void 0 === _ref2$interval ? 100 : _ref2$interval, _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win, currentWidth = el.offsetWidth, currentHeight = el.offsetHeight;
+            handler({
+                width: currentWidth,
+                height: currentHeight
+            });
+            var check = function() {
+                var newWidth = el.offsetWidth, newHeight = el.offsetHeight;
+                (width && newWidth !== currentWidth || height && newHeight !== currentHeight) && handler({
+                    width: newWidth,
+                    height: newHeight
+                });
+                currentWidth = newWidth;
+                currentHeight = newHeight;
+            }, observer = void 0, timeout = void 0;
+            if (void 0 !== win.ResizeObserver) (observer = new win.ResizeObserver(check)).observe(el); else if (void 0 !== win.MutationObserver) {
+                (observer = new win.MutationObserver(check)).observe(el, {
+                    attributes: !0,
+                    childList: !0,
+                    subtree: !0,
+                    characterData: !1
+                });
+                win.addEventListener("resize", check);
+            } else {
+                !function loop() {
+                    check();
+                    timeout = setTimeout(loop, interval);
+                }();
+            }
+            return {
+                cancel: function() {
+                    observer.disconnect();
+                    window.removeEventListener("resize", check);
+                    clearTimeout(timeout);
+                }
+            };
+        }
+        var base32 = __webpack_require__("./node_modules/hi-base32/src/base32.js"), base32_default = __webpack_require__.n(base32), constants = __webpack_require__("./node_modules/zoid/src/constants.js");
         function normalize(str) {
             return str.replace(/^[^a-z0-9A-Z]+|[^a-z0-9A-Z]+$/g, "").replace(/[^a-z0-9A-Z]+/g, "_");
         }
@@ -7429,13 +7168,13 @@
             var prop = component.getProp(key);
             return prop ? "function" == typeof prop.childDecorate ? prop.childDecorate(value) : value : component.looseProps ? value : void 0;
         }
-        var _extends = Object.assign || function(target) {
+        var child__extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+        }, child__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
@@ -7539,7 +7278,7 @@
                     var fullKey = _ref6.fullKey, self = _ref6.self, args = _ref6.args;
                     return _this2.onInit.then(function() {
                         var func = Object(lib.r)(_this2.props, fullKey);
-                        if ("function" != typeof func) throw new TypeError("Expected " + fullKey + " to be function, got " + (void 0 === func ? "undefined" : _typeof(func)));
+                        if ("function" != typeof func) throw new TypeError("Expected " + fullKey + " to be function, got " + (void 0 === func ? "undefined" : child__typeof(func)));
                         return func.apply(self, args);
                     });
                 });
@@ -7571,7 +7310,7 @@
                 var data = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, parentWindow = window_getParentComponentWindow();
                 if (!parentWindow) throw new Error("Can not find parent component window to message");
                 this.component.log("send_to_parent_" + name);
-                return Object(post_robot_src.send)(parentWindow, name, data, _extends({
+                return Object(post_robot_src.send)(parentWindow, name, data, child__extends({
                     domain: window_getParentDomain()
                 }, options));
             };
@@ -7599,7 +7338,7 @@
             };
             ChildComponent.prototype.getAutoResize = function() {
                 var width = !1, height = !1, autoResize = this.autoResize || this.component.autoResize;
-                if ("object" === (void 0 === autoResize ? "undefined" : _typeof(autoResize))) {
+                if ("object" === (void 0 === autoResize ? "undefined" : child__typeof(autoResize))) {
                     width = Boolean(autoResize.width);
                     height = Boolean(autoResize.height);
                 } else if (autoResize) {
@@ -7616,7 +7355,7 @@
                 var _this4 = this, _getAutoResize = this.getAutoResize(), width = _getAutoResize.width, height = _getAutoResize.height, element = _getAutoResize.element;
                 if ((width || height) && this.context !== constants.CONTEXT_TYPES.POPUP && !this.watchingForResize) {
                     this.watchingForResize = !0;
-                    Object(belter_src.onResize)(element, function(_ref8) {
+                    onResize(element, function(_ref8) {
                         var newWidth = _ref8.width, newHeight = _ref8.height;
                         _this4.resize(width ? newWidth : void 0, height ? newHeight : void 0);
                     }, {
@@ -8713,7 +8452,7 @@
                             console.error(err.stack ? err.stack : err);
                         }
                         var _ref10 = "object" === parent__typeof(_this31.component.autoResize) && null !== _this31.component.autoResize ? _this31.component.autoResize : {}, _ref10$width = _ref10.width, width = void 0 !== _ref10$width && _ref10$width, _ref10$height = _ref10.height, height = void 0 !== _ref10$height && _ref10$height, _ref10$element = _ref10.element, element = void 0 === _ref10$element ? "body" : _ref10$element;
-                        (element = Object(belter_src.getElementSafe)(element, doc)) && (width || height) && Object(belter_src.onResize)(element, function(_ref11) {
+                        (element = getElementSafe(element, doc)) && (width || height) && onResize(element, function(_ref11) {
                             var newWidth = _ref11.width, newHeight = _ref11.height;
                             _this31.resize(width ? newWidth : void 0, height ? newHeight : void 0);
                         }, {
@@ -9470,7 +9209,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.256"
+                    ver: "4.0.257"
                 };
             });
             Object(beaver_logger_client.a)(function() {
@@ -9584,16 +9323,16 @@
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        }, HEADERS = {
+        }, http_HEADERS = {
             CONTENT_TYPE: "content-type",
             ACCEPT: "accept"
-        }, headerBuilders = [], corrids = [];
+        }, http_headerBuilders = [], corrids = [];
         Object(beaver_logger_client.c)(function() {
             return {
                 prev_corr_ids: corrids.join(",")
             };
         });
-        function request(_ref) {
+        function http_request(_ref) {
             var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
             return "/demo/checkout/api/braintree/client-token/" === url ? src.a.resolve("eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiJjMDFhZmRkM2Y1OTJmNWVhNTNlMzE5MWQwYmIyMWVjYjM5NzNlZGM1MzkwNDZiMjJmNTA2ODEyNzIzZmRlMTJifGNsaWVudF9pZD1jbGllbnRfaWQkc2FuZGJveCQ0ZHByYmZjNnBoNTk1Y2NqXHUwMDI2Y3JlYXRlZF9hdD0yMDE3LTA0LTI2VDIzOjI2OjU5Ljg3OTA3ODYwNiswMDAwXHUwMDI2bWVyY2hhbnRfaWQ9M3cydHR2d2QyNDY1NDhoZCIsImNvbmZpZ1VybCI6Imh0dHBzOi8vYXBpLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb206NDQzL21lcmNoYW50cy8zdzJ0dHZ3ZDI0NjU0OGhkL2NsaWVudF9hcGkvdjEvY29uZmlndXJhdGlvbiIsImNoYWxsZW5nZXMiOltdLCJlbnZpcm9ubWVudCI6InNhbmRib3giLCJjbGllbnRBcGlVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvM3cydHR2d2QyNDY1NDhoZC9jbGllbnRfYXBpIiwiYXNzZXRzVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhdXRoVXJsIjoiaHR0cHM6Ly9hdXRoLnZlbm1vLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhbmFseXRpY3MiOnsidXJsIjoiaHR0cHM6Ly9jbGllbnQtYW5hbHl0aWNzLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20vM3cydHR2d2QyNDY1NDhoZCJ9LCJ0aHJlZURTZWN1cmVFbmFibGVkIjpmYWxzZSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiYmFyY28uMDMtZmFjaWxpdGF0b3JAZ21haWwuY29tIiwiY2xpZW50SWQiOiJBV3VZdnFnMGtaN2Y5S0V4TVpqZU53T3RjQV8yZVhnOWpMZy1QSnBGX0pnYk44M0YyVml5aEdnV2JCNDg4RGU3MFpucGRBZEI2TUNqekNqSyIsInByaXZhY3lVcmwiOiJodHRwczovL2V4YW1wbGUuY29tIiwidXNlckFncmVlbWVudFVybCI6Imh0dHBzOi8vZXhhbXBsZS5jb20iLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjpmYWxzZSwiZW52aXJvbm1lbnQiOiJvZmZsaW5lIiwidW52ZXR0ZWRNZXJjaGFudCI6ZmFsc2UsImJyYWludHJlZUNsaWVudElkIjoibWFzdGVyY2xpZW50MyIsImJpbGxpbmdBZ3JlZW1lbnRzRW5hYmxlZCI6dHJ1ZSwibWVyY2hhbnRBY2NvdW50SWQiOiJVU0QiLCJjdXJyZW5jeUlzb0NvZGUiOiJVU0QifSwiY29pbmJhc2VFbmFibGVkIjpmYWxzZSwibWVyY2hhbnRJZCI6IjN3MnR0dndkMjQ2NTQ4aGQiLCJ2ZW5tbyI6Im9mZiJ9") : new src.a(function(resolve, reject) {
                 if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
@@ -9601,10 +9340,10 @@
                     var _key2 = _Object$keys2[_i4];
                     normalizedHeaders[_key2.toLowerCase()] = headers[_key2];
                 }
-                json ? normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || "application/json" : (data || body) && (normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || "application/x-www-form-urlencoded; charset=utf-8");
-                normalizedHeaders[HEADERS.ACCEPT] = normalizedHeaders[HEADERS.ACCEPT] || "application/json";
-                for (var _i6 = 0, _length6 = null == headerBuilders ? 0 : headerBuilders.length; _i6 < _length6; _i6++) for (var builtHeaders = (0, 
-                headerBuilders[_i6])(), _i8 = 0, _Object$keys4 = Object.keys(builtHeaders), _length8 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i8 < _length8; _i8++) {
+                json ? normalizedHeaders[http_HEADERS.CONTENT_TYPE] = normalizedHeaders[http_HEADERS.CONTENT_TYPE] || "application/json" : (data || body) && (normalizedHeaders[http_HEADERS.CONTENT_TYPE] = normalizedHeaders[http_HEADERS.CONTENT_TYPE] || "application/x-www-form-urlencoded; charset=utf-8");
+                normalizedHeaders[http_HEADERS.ACCEPT] = normalizedHeaders[http_HEADERS.ACCEPT] || "application/json";
+                for (var _i6 = 0, _length6 = null == http_headerBuilders ? 0 : http_headerBuilders.length; _i6 < _length6; _i6++) for (var builtHeaders = (0, 
+                http_headerBuilders[_i6])(), _i8 = 0, _Object$keys4 = Object.keys(builtHeaders), _length8 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i8 < _length8; _i8++) {
                     var _key3 = _Object$keys4[_i8];
                     normalizedHeaders[_key3.toLowerCase()] = builtHeaders[_key3];
                 }
@@ -9651,23 +9390,23 @@
                 xhr.send(body);
             });
         }
-        request.get = function(url) {
+        http_request.get = function(url) {
             var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-            return request(http__extends({
+            return http_request(http__extends({
                 method: "get",
                 url: url
             }, options));
         };
-        request.post = function(url, data) {
+        http_request.post = function(url, data) {
             var options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-            return request(http__extends({
+            return http_request(http__extends({
                 method: "post",
                 url: url,
                 data: data
             }, options));
         };
-        request.addHeaderBuilder = function(method) {
-            headerBuilders.push(method);
+        http_request.addHeaderBuilder = function(method) {
+            http_headerBuilders.push(method);
         };
         __webpack_require__("./src/lib/beacon.js");
         var throttle__extends = Object.assign || function(target) {
@@ -9677,7 +9416,7 @@
             }
             return target;
         };
-        var THROTTLE_GROUP = {
+        var throttle_THROTTLE_GROUP = {
             TEST: "test",
             CONTROL: "control",
             THROTTLE: "throttle"
@@ -9690,17 +9429,17 @@
                     return storage.throttlePercentiles[name];
                 });
             }(name), group = void 0;
-            group = throttle < sample ? THROTTLE_GROUP.TEST : sample >= 50 || sample <= throttle && throttle < 2 * sample ? THROTTLE_GROUP.CONTROL : THROTTLE_GROUP.THROTTLE;
+            group = throttle < sample ? throttle_THROTTLE_GROUP.TEST : sample >= 50 || sample <= throttle && throttle < 2 * sample ? throttle_THROTTLE_GROUP.CONTROL : throttle_THROTTLE_GROUP.THROTTLE;
             var treatment = name + "_" + group, started = !1, forced = !1;
             try {
                 window.localStorage && window.localStorage.getItem(name) && (forced = !0);
             } catch (err) {}
             return {
                 isEnabled: function() {
-                    return group === THROTTLE_GROUP.TEST || forced;
+                    return group === throttle_THROTTLE_GROUP.TEST || forced;
                 },
                 isDisabled: function() {
-                    return group !== THROTTLE_GROUP.TEST && !forced;
+                    return group !== throttle_THROTTLE_GROUP.TEST && !forced;
                 },
                 getTreatment: function() {
                     return treatment;
@@ -9740,11 +9479,11 @@
             });
         });
         function getScriptVersion() {
-            return Boolean(getCurrentScript()) ? "4" : "4.0.256";
+            return Boolean(getCurrentScript()) ? "4" : "4.0.257";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
-            return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.256.js";
+            return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.257.js";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -9835,7 +9574,7 @@
         function jsx__classCallCheck(instance, Constructor) {
             if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
         }
-        function htmlEncode() {
+        function jsx_htmlEncode() {
             return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "").toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").replace(/\//g, "&#x2F;");
         }
         var JsxHTMLNode = function() {
@@ -9853,7 +9592,7 @@
                 return props ? Object.keys(props).filter(function(key) {
                     return "innerHTML" !== key && props && !1 !== props[key];
                 }).map(function(key) {
-                    return props && !0 === props[key] ? "" + htmlEncode(key) : props ? htmlEncode(key) + '="' + htmlEncode(props[key]) + '"' : "";
+                    return props && !0 === props[key] ? "" + jsx_htmlEncode(key) : props ? jsx_htmlEncode(key) + '="' + jsx_htmlEncode(props[key]) + '"' : "";
                 }).join(" ") : "";
             };
             JsxHTMLNode.prototype.childrenToString = function() {
@@ -9863,7 +9602,7 @@
                 !function iterate(children) {
                     for (var _i2 = 0, _length2 = null == children ? 0 : children.length; _i2 < _length2; _i2++) {
                         var child = children[_i2];
-                        null !== child && void 0 !== child && (Array.isArray(child) ? iterate(child) : result += child instanceof JsxHTMLNode ? child.toString() : htmlEncode(child));
+                        null !== child && void 0 !== child && (Array.isArray(child) ? iterate(child) : result += child instanceof JsxHTMLNode ? child.toString() : jsx_htmlEncode(child));
                     }
                 }(this.children);
                 return result;
@@ -10947,7 +10686,7 @@
                             return src.a.try(function() {
                                 try {
                                     var isButton = -1 !== window.location.href.indexOf("/webapps/hermes/button"), isGuest = -1 !== _this.window.location.href.indexOf("/webapps/xoonboarding");
-                                    if (isButton && isGuest) return request({
+                                    if (isButton && isGuest) return http_request({
                                         win: _this.window,
                                         method: "get",
                                         url: "/webapps/xoonboarding/api/auth"
@@ -11354,6 +11093,80 @@
                     class: "paypal-checkout-sandbox-iframe"
                 }, container));
             }
+        });
+        function shouldCreateInitialPptmScript() {
+            if (!window.location.hostname) return !1;
+            if (Object(util.g)()) return !1;
+            var existingScript = Object(dom.c)(src_constants.C);
+            if (Boolean(existingScript)) {
+                Object(beaver_logger_client.k)("pptm_tried_loading_twice");
+                return !1;
+            }
+            return !0;
+        }
+        function removePptm() {
+            var script = Object(dom.c)(src_constants.C);
+            script && script.parentNode.removeChild(script);
+        }
+        var noContentFoundInContainer, callback, listener, obj, pptm = (noContentFoundInContainer = !1, 
+        callback = "__pptmLoadedWithNoContent", listener = void 0, obj = {
+            reloadPptmScript: function(clientId) {
+                !function tryCreatePptmScript() {
+                    if (obj.shouldReloadPptmScript(clientId)) {
+                        obj.removePptm();
+                        obj.createPptmScript(clientId);
+                    } else listener = tryCreatePptmScript;
+                }();
+            },
+            listenForLoadWithNoContent: function() {
+                window[callback] = function() {
+                    noContentFoundInContainer = !0;
+                    if (listener) {
+                        listener();
+                        listener = void 0;
+                    }
+                };
+            },
+            get callback() {
+                return callback;
+            },
+            get noContentFoundInContainer() {
+                return noContentFoundInContainer;
+            },
+            createPptmScript: function(clientId) {
+                var _track;
+                Object(beaver_logger_client.o)(((_track = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.PPTM, 
+                _track[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.PPTM_LOAD, _track));
+                var params = {
+                    t: "xo",
+                    id: window.location.hostname,
+                    mrid: config.a.merchantID,
+                    client_id: "",
+                    v: config.a.version,
+                    source: "checkoutjs"
+                };
+                clientId ? params.client_id = clientId : delete params.client_id;
+                var fullUrl = Object(dom.a)(config.a.pptmUrl, params);
+                Object(dom.g)(fullUrl, 0, {
+                    async: !0,
+                    id: src_constants.C
+                }).then(function() {
+                    var _track2;
+                    window.paypalDDL && window.paypalDDL[0] && "snippetRun" === window.paypalDDL[0].event || window[callback]();
+                    Object(beaver_logger_client.o)(((_track2 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.PPTM, 
+                    _track2[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.PPTM_LOADED, 
+                    _track2));
+                }).catch(function(err) {
+                    Object(beaver_logger_client.k)("pptm_script_error", {
+                        error: Object(util.r)(err)
+                    });
+                });
+            },
+            shouldCreateInitialPptmScript: shouldCreateInitialPptmScript,
+            shouldReloadPptmScript: function(clientId) {
+                return !1 !== noContentFoundInContainer && !Object(util.g)() && !config.a.merchantID && !!clientId;
+            },
+            removePptm: removePptm
         }), hacks__extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
@@ -11382,10 +11195,10 @@
                         shipping_options: [].concat(transaction.item_list.shipping_options).map(function(option, index) {
                             return {
                                 id: option.id || index.toString(),
-                                label: legacyLabelMap[option.label],
-                                type: legacyTypeMap[option.type],
+                                label: legacyLabelMap[option.label] || option.label,
+                                type: legacyTypeMap[option.type] || option.type,
                                 amount: {
-                                    value: "0.00",
+                                    value: option.amount && option.amount.value ? option.amount.value : "0.00",
                                     currency: transactionAmount.currency
                                 }
                             };
@@ -11420,7 +11233,7 @@
             if (!clientID) throw new Error("Client ID not found for env: " + env);
             if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) return proxyRest.createAccessToken(env, client);
             var basicAuth = Object(base64.btoa)(clientID + ":");
-            return request({
+            return http_request({
                 method: "post",
                 url: config.a.authApiUrls[env],
                 headers: {
@@ -11444,7 +11257,7 @@
             experienceDetails.temporary = !0;
             experienceDetails.name = experienceDetails.name ? experienceDetails.name + "_" + Math.random().toString() : Math.random().toString();
             return createAccessToken(env, client).then(function(accessToken) {
-                return request({
+                return http_request({
                     method: "post",
                     url: config.a.experienceApiUrls[env],
                     headers: {
@@ -11523,7 +11336,7 @@
                                 var headers = {
                                     Authorization: "Bearer " + accessToken
                                 };
-                                return request({
+                                return http_request({
                                     method: "put",
                                     url: config.a.trackingApiUrls[env] + "/" + merchantID + "/" + trackingID,
                                     headers: headers,
@@ -11543,7 +11356,7 @@
                         };
                         trackingID && (headers["Paypal-Client-Metadata-Id"] = trackingID);
                         meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
-                        return request({
+                        return http_request({
                             method: "post",
                             url: config.a.paymentApiUrls[env],
                             headers: headers,
@@ -11587,7 +11400,7 @@
                     Authorization: "Bearer " + accessToken
                 };
                 meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
-                return request({
+                return http_request({
                     method: "post",
                     url: config.a.orderApiUrls[env],
                     headers: headers,
@@ -11615,7 +11428,7 @@
                     if (experienceDetails) return src.a.resolve(createExperienceProfile(env, client, experienceDetails));
                 }).then(function(experienceID) {
                     experienceID && (billingDetails.experience_profile_id = experienceID);
-                    return request({
+                    return http_request({
                         method: "post",
                         url: config.a.billingApiUrls[env],
                         headers: {
@@ -12609,25 +12422,22 @@
         function renderCards(_ref5) {
             var cards = _ref5.cards, button = _ref5.button, layout = _ref5.layout, size = _ref5.size;
             return cards.map(function(name) {
-                var _ref6, _ref7, _ref8, _ref9, _ref10, _ref11, logo = cardLogos[name];
+                var _ref6, _ref7, _ref8, logo = cardLogos[name];
                 return jsxToHTML("div", componentTemplate__extends({}, ((_ref6 = {})[src_constants.c.LAYOUT] = layout || "", 
                 _ref6), ((_ref7 = {})[src_constants.c.SIZE] = size || "", _ref7), ((_ref8 = {})[src_constants.c.BUTTON] = button || !1, 
                 _ref8[src_constants.c.FUNDING_SOURCE] = "" + src_constants.v.CARD, _ref8[src_constants.c.CARD] = "" + name, 
                 _ref8), {
                     class: (button ? class_CLASS.BUTTON : "") + " " + class_CLASS.CARD + " " + class_CLASS.CARD + "-" + name,
                     tabindex: "0"
-                }), jsxToHTML("img", componentTemplate__extends({}, ((_ref9 = {})[src_constants.c.LAYOUT] = layout || "", 
-                _ref9), ((_ref10 = {})[src_constants.c.SIZE] = size || "", _ref10), ((_ref11 = {})[src_constants.c.BUTTON] = button || !1, 
-                _ref11[src_constants.c.FUNDING_SOURCE] = "" + src_constants.v.CARD, _ref11[src_constants.c.CARD] = "" + name, 
-                _ref11), {
+                }), jsxToHTML("img", {
                     style: " display: block; ",
                     src: "data:image/svg+xml;base64," + Object(base64.btoa)(logo),
                     alt: name
-                })));
+                }));
             });
         }
-        function renderContent(text, _ref13) {
-            var template, renderers, nodes, label = _ref13.label, locale = _ref13.locale, color = _ref13.color, branding = _ref13.branding, logoColor = _ref13.logoColor, funding = _ref13.funding, env = _ref13.env, _cards = _ref13.cards, dynamicContent = _ref13.dynamicContent, layout = _ref13.layout, size = _ref13.size, _content = function(locale) {
+        function renderContent(text, _ref10) {
+            var template, renderers, nodes, label = _ref10.label, locale = _ref10.locale, color = _ref10.color, branding = _ref10.branding, logoColor = _ref10.logoColor, funding = _ref10.funding, env = _ref10.env, _cards = _ref10.cards, dynamicContent = _ref10.dynamicContent, layout = _ref10.layout, size = _ref10.size, _content = function(locale) {
                 var country = locale.country, lang = locale.lang;
                 return content_componentContent[country][lang];
             }(locale);
@@ -12706,8 +12516,8 @@
                 return text && text.trim() && renderers.text ? /<br>/.test(text) ? renderers.break(text) : renderers.text(text) : text;
             }), new JsxHTMLNodeContainer(nodes);
         }
-        function renderButton(_ref14) {
-            var _ref15, _ref16, _ref17, size = _ref14.size, label = _ref14.label, color = _ref14.color, locale = _ref14.locale, branding = _ref14.branding, multiple = _ref14.multiple, layout = _ref14.layout, shape = _ref14.shape, source = _ref14.source, funding = _ref14.funding, i = _ref14.i, env = _ref14.env, cards = _ref14.cards, installmentperiod = _ref14.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = getButtonConfig(label, determineLabel({
+        function renderButton(_ref11) {
+            var _ref12, _ref13, _ref14, size = _ref11.size, label = _ref11.label, color = _ref11.color, locale = _ref11.locale, branding = _ref11.branding, multiple = _ref11.multiple, layout = _ref11.layout, shape = _ref11.shape, source = _ref11.source, funding = _ref11.funding, i = _ref11.i, env = _ref11.env, cards = _ref11.cards, installmentperiod = _ref11.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = getButtonConfig(label, determineLabel({
                 label: label,
                 source: source,
                 multiple: multiple,
@@ -12730,9 +12540,9 @@
                 size: size
             });
             var hasTabIndex = -1 === [ src_constants.v.CARD ].indexOf(source);
-            return jsxToHTML("div", componentTemplate__extends({}, ((_ref15 = {})[src_constants.c.LAYOUT] = layout || "", 
-            _ref15), ((_ref16 = {})[src_constants.c.SIZE] = size || "", _ref16), ((_ref17 = {})[src_constants.c.FUNDING_SOURCE] = source, 
-            _ref17[src_constants.c.BUTTON] = !0, _ref17), {
+            return jsxToHTML("div", componentTemplate__extends({}, ((_ref12 = {})[src_constants.c.LAYOUT] = layout || "", 
+            _ref12), ((_ref13 = {})[src_constants.c.SIZE] = size || "", _ref13), ((_ref14 = {})[src_constants.c.FUNDING_SOURCE] = source, 
+            _ref14[src_constants.c.BUTTON] = !0, _ref14), {
                 class: class_CLASS.BUTTON + " " + class_CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -12752,8 +12562,8 @@
                 tabindex: hasTabIndex && 0
             }), contentText);
         }
-        function componentTemplate_componentTemplate(_ref20) {
-            var _ref21, props = _ref20.props;
+        function componentTemplate_componentTemplate(_ref17) {
+            var _ref18, props = _ref17.props;
             if (props && props.style) {
                 var style = props.style;
                 "generic" === style.label && (style.label = "paypal");
@@ -12766,7 +12576,7 @@
                 validateButtonLocale(locale);
                 validateButtonStyle(style, props);
             }(props);
-            var _ref19, _normalizeProps = props_normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, buttonNodes = function(_ref4) {
+            var _ref16, _normalizeProps = props_normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, buttonNodes = function(_ref4) {
                 var label = _ref4.label, color = _ref4.color, sources = _ref4.sources, multiple = _ref4.multiple, layout = _ref4.layout;
                 return sources.map(function(source, i) {
                     var buttonLabel = determineLabel({
@@ -12804,8 +12614,8 @@
                     installmentperiod: installmentperiod,
                     size: size
                 });
-            }), taglineNode = function(_ref18) {
-                var label = _ref18.label, tagline = _ref18.tagline, color = _ref18.color, locale = _ref18.locale, multiple = _ref18.multiple, env = _ref18.env, cards = _ref18.cards;
+            }), taglineNode = function(_ref15) {
+                var label = _ref15.label, tagline = _ref15.tagline, color = _ref15.color, locale = _ref15.locale, multiple = _ref15.multiple, env = _ref15.env, cards = _ref15.cards;
                 if (tagline) {
                     var text = renderContent(multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag"), {
                         locale: locale,
@@ -12828,8 +12638,8 @@
                 multiple: multiple,
                 env: env,
                 cards: cards
-            }), fundingiconNode = function(_ref12) {
-                var cards = _ref12.cards, fundingicons = _ref12.fundingicons, size = _ref12.size, layout = _ref12.layout;
+            }), fundingiconNode = function(_ref9) {
+                var cards = _ref9.cards, fundingicons = _ref9.fundingicons, size = _ref9.size, layout = _ref9.layout;
                 if (fundingicons) return jsxToHTML("div", {
                     class: "" + class_CLASS.FUNDINGICONS
                 }, renderCards({
@@ -12845,11 +12655,11 @@
                 layout: layout
             }), styleNode = jsxToHTML("style", {
                 innerHTML: componentStyle({
-                    height: (_ref19 = {
+                    height: (_ref16 = {
                         height: height,
                         cardNumber: cards.length
                     }).height,
-                    cardNumber: _ref19.cardNumber
+                    cardNumber: _ref16.cardNumber
                 })
             }), scriptNode = jsxToHTML("script", {
                 innerHTML: "(" + getComponentScript().toString().replace(/\{\s*CLASS\.([A-Z0-9_]+)\s*\}/g, function(match, name) {
@@ -12865,8 +12675,8 @@
                     logoColor: "blue"
                 })));
             }(props_normalizeProps(props)) : null;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.256", 
-            _ref21), {
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[src_constants.c.VERSION] = "4.0.257", 
+            _ref18), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -12883,6 +12693,14 @@
             }
             return target;
         };
+        pptm.listenForLoadWithNoContent();
+        var isDomainAllowed = Object(util.j)(function() {
+            var domain = Object(cross_domain_utils_src.f)().replace(/^https?:\/\//, "").replace(/^www\./, "");
+            return !!config.a.apmTestDomains.some(function(allowDomain) {
+                var regex = new RegExp("[^a-zA-Z\\d\\-]*" + allowDomain.replace(/\./g, "\\.") + "$");
+                return null !== domain.match(regex);
+            });
+        });
         var creditThrottle = void 0, component_Button = interface_create({
             tag: "paypal-button",
             name: "ppbutton",
@@ -13091,7 +12909,7 @@
                     decorate: function(original) {
                         return function() {
                             var _this2 = this, actions = {
-                                request: request,
+                                request: http_request,
                                 payment: {
                                     create: function(options) {
                                         return _this2.props.braintree ? _this2.props.braintree.then(function(client) {
@@ -13209,9 +13027,7 @@
                                 var locale = props_normalizeProps(props, {
                                     locale: Object(dom.b)()
                                 }).locale;
-                                if (-1 === getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country)) return !1;
-                                var domain = Object(cross_domain_utils_src.f)().replace(/^https?:\/\//, "").replace(/^www\./, "");
-                                return -1 !== config.a.apmTestDomains.indexOf(domain);
+                                return -1 !== getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) && isDomainAllowed();
                             }(source, props);
                         });
                         allowed = allowed.concat(apmFunding);
@@ -13260,6 +13076,7 @@
                             Object(beaver_logger_client.k)("button_render_branding_" + (style.branding || "default"));
                             Object(beaver_logger_client.k)("button_render_fundingicons_" + (style.fundingicons || "default"));
                             Object(beaver_logger_client.k)("button_render_tagline_" + (style.tagline || "default"));
+                            pptm.reloadPptmScript(this.props.client[this.props.env]);
                             Object(beaver_logger_client.o)(((_track3 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.LOAD, 
                             _track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.BUTTON_RENDER, 
                             _track3[src_constants.u.KEY.BUTTON_TYPE] = src_constants.u.BUTTON_TYPE.IFRAME, _track3[src_constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
@@ -13339,7 +13156,7 @@
                                     return mergePaymentDetails(result.id, result);
                                 });
                             };
-                            actions.request = request;
+                            actions.request = http_request;
                             onAuthorizeListener.trigger({
                                 paymentToken: data.paymentToken
                             });
@@ -13678,18 +13495,18 @@
             }
             return callOriginal();
         });
-        var debounce = !1;
+        var hacks_debounce = !1;
         Object(util.m)(component_Checkout, "renderTo", function(_ref3) {
             var callOriginal = _ref3.callOriginal, props = _ref3.args[1];
-            if (debounce) {
+            if (hacks_debounce) {
                 Object(beaver_logger_client.p)("button_mutliple_click_debounce");
                 return new src.a(util.k);
             }
-            debounce = !0;
+            hacks_debounce = !0;
             for (var _loop = function(_i2, _ref5, _length2) {
                 var methodName = _ref5[_i2], original = props[methodName];
                 props[methodName] = function() {
-                    debounce = !1;
+                    hacks_debounce = !1;
                     if (original) return original.apply(this, arguments);
                 };
             }, _i2 = 0, _ref5 = [ "onAuthorize", "onCancel", "onError", "onClose" ], _length2 = null == _ref5 ? 0 : _ref5.length; _i2 < _length2; _i2++) _loop(_i2, _ref5);
@@ -13971,31 +13788,7 @@
                 })) && Object(beaver_logger_client.p)("object_assign_broken");
             }();
             initLogger();
-            Object(util.g)() || function() {
-                var _track;
-                if (window.location.hostname) if (Boolean(Object(dom.c)(src_constants.C))) Object(beaver_logger_client.k)("pptm_tried_loading_twice"); else {
-                    Object(beaver_logger_client.o)(((_track = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.PPTM, 
-                    _track[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.PPTM_LOAD, _track));
-                    var fullUrl = Object(dom.a)(config.a.pptmUrl, {
-                        t: "xo",
-                        id: window.location.hostname,
-                        mrid: config.a.merchantID
-                    });
-                    Object(dom.g)(fullUrl, 0, {
-                        async: !0,
-                        id: src_constants.C
-                    }).then(function() {
-                        var _track2;
-                        Object(beaver_logger_client.o)(((_track2 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.PPTM, 
-                        _track2[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.PPTM_LOADED, 
-                        _track2));
-                    }).catch(function(err) {
-                        Object(beaver_logger_client.k)("pptm_script_error", {
-                            error: Object(util.r)(err)
-                        });
-                    });
-                }
-            }();
+            pptm.shouldCreateInitialPptmScript() && pptm.createPptmScript();
             precacheRemembered && (Object(lib_session.d)(function(session) {
                 return session.recentlyCheckedRemembered;
             }) ? src.a.resolve() : loadMeta());
@@ -14086,7 +13879,7 @@
             setup__track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.256", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
+        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.257", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
         if (Object(util.g)()) {
             interface_Checkout = component_Checkout;
             interface_BillingPage = BillingPage;
@@ -14144,7 +13937,7 @@
             return src_constants.o;
         });
         __webpack_require__.d(__webpack_exports__, "request", function() {
-            return request;
+            return http_request;
         });
         __webpack_require__.d(__webpack_exports__, "isEligible", function() {
             return isEligible;
@@ -14208,7 +14001,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.256";
+                payload.version = "4.0.257";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 payload.appName = APP_NAME;
@@ -14815,18 +14608,18 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         0;
-        if (window.paypal && "4.0.256" === window.paypal.version) {
+        if (window.paypal && "4.0.257" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.256"
+                version: "4.0.257"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.256) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.257) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.256" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.257" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.256"
+                version: "4.0.257"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.256");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.257");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");

@@ -38,8 +38,13 @@
     return __webpack_require__(__webpack_require__.s = "./src/load.js");
 }({
     "./node_modules/Base64/base64.js": function(module, exports, __webpack_require__) {
+        var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
         !function() {
-            var object = exports, chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+            var object = "object" === _typeof(exports) && null !== exports && "number" != typeof exports.nodeType ? exports : "undefined" != typeof self ? self : $.global, chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
             function InvalidCharacterError(message) {
                 this.message = message;
             }
@@ -625,31 +630,785 @@
             return logLevels;
         });
     },
-    "./node_modules/belter/src/css.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/belter/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-    },
-    "./node_modules/belter/src/decorators.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__("./node_modules/belter/src/util.js");
-    },
-    "./node_modules/belter/src/device.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_exports__.a = function() {
-            if (getUserAgent().match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) return !0;
-            return !1;
-        };
         function getUserAgent() {
             return window.navigator.mockUserAgent || window.navigator.userAgent;
         }
-    },
-    "./node_modules/belter/src/dom.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), 
-        __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js");
-        var util = __webpack_require__("./node_modules/belter/src/util.js");
-        __webpack_require__("./node_modules/belter/src/device.js");
-        __webpack_exports__.b = function isLocalStorageEnabled() {
-            return Object(util.d)(isLocalStorageEnabled, function() {
+        function isDevice() {
+            return !!getUserAgent().match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i);
+        }
+        function isWebView() {
+            var userAgent = getUserAgent();
+            return /(iPhone|iPod|iPad|Macintosh).*AppleWebKit(?!.*Safari)/i.test(userAgent) || /\bwv\b/.test(userAgent) || /Android.*Version\/(\d)\.(\d)/i.test(userAgent);
+        }
+        function isStandAlone() {
+            return !0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches;
+        }
+        function isFacebookWebView() {
+            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+            return -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
+        }
+        function isFirefoxIOS() {
+            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+            return /FxiOS/i.test(ua);
+        }
+        function isEdgeIOS() {
+            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+            return /EdgiOS/i.test(ua);
+        }
+        function isOperaMini() {
+            return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent()).indexOf("Opera Mini") > -1;
+        }
+        function isAndroid() {
+            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+            return /Android/.test(ua);
+        }
+        function isIos() {
+            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+            return /iPhone|iPod|iPad/.test(ua);
+        }
+        function isGoogleSearchApp() {
+            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+            return /\bGSA\b/.test(ua);
+        }
+        function isQQBrowser() {
+            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+            return /QQBrowser/.test(ua);
+        }
+        function isIosWebview() {
+            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+            return !!isIos(ua) && (!!isGoogleSearchApp(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
+        }
+        function isAndroidWebview() {
+            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+            return !!isAndroid(ua) && (/Version\/[\d.]+/.test(ua) && !isOperaMini(ua));
+        }
+        function isIE() {
+            return !!window.document.documentMode || Boolean(window.navigator && window.navigator.userAgent && /Edge|MSIE|rv:11/i.test(window.navigator.userAgent));
+        }
+        function isIECompHeader() {
+            var mHttp = window.document.querySelector('meta[http-equiv="X-UA-Compatible"]'), mContent = window.document.querySelector('meta[content="IE=edge"]');
+            return !(!mHttp || !mContent);
+        }
+        function isElectron() {
+            return !("undefined" == typeof process || !process.versions || !process.versions.electron);
+        }
+        function isIEIntranet() {
+            if (window.document.documentMode) try {
+                var status = window.status;
+                window.status = "testIntranetMode";
+                if ("testIntranetMode" === window.status) {
+                    window.status = status;
+                    return !0;
+                }
+                return !1;
+            } catch (err) {
+                return !1;
+            }
+            return !1;
+        }
+        function isMacOsCna() {
+            var userAgent = getUserAgent();
+            return /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent);
+        }
+        function supportsPopups() {
+            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+            return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isEdgeIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron() || isMacOsCna() || isStandAlone());
+        }
+        var src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), cross_domain_safe_weakmap_src = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+        function base64encode(str) {
+            if ("function" == typeof btoa) return btoa(str);
+            if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
+            throw new Error("Can not find window.btoa or Buffer");
+        }
+        function base64decode(str) {
+            if ("undefined" != typeof window && "function" == typeof window.atob) return window.atob(str);
+            if ("undefined" != typeof Buffer) return Buffer.from(str, "base64").toString("utf8");
+            throw new Error("Can not find window.atob or Buffer");
+        }
+        function uniqueID() {
+            var chars = "0123456789abcdef";
+            return "xxxxxxxxxx".replace(/./g, function() {
+                return chars.charAt(Math.floor(Math.random() * chars.length));
+            }) + "_" + base64encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+        }
+        function getGlobal() {
+            if ("undefined" != typeof window) return window;
+            if ("undefined" != typeof global) return global;
+            if ("undefined" != typeof __GLOBAL__) return __GLOBAL__;
+            throw new Error("No global found");
+        }
+        var objectIDs = void 0;
+        function getObjectID(obj) {
+            objectIDs = objectIDs || new cross_domain_safe_weakmap_src.a();
+            if (null === obj || void 0 === obj || "object" !== (void 0 === obj ? "undefined" : _typeof(obj)) && "function" != typeof obj) throw new Error("Invalid object");
+            var uid = objectIDs.get(obj);
+            if (!uid) {
+                uid = (void 0 === obj ? "undefined" : _typeof(obj)) + ":" + uniqueID();
+                objectIDs.set(obj, uid);
+            }
+            return uid;
+        }
+        function serializeArgs(args) {
+            try {
+                return JSON.stringify(Array.prototype.slice.call(args), function(subkey, val) {
+                    return "function" == typeof val ? "memoize[" + getObjectID(val) + "]" : val;
+                });
+            } catch (err) {
+                throw new Error("Arguments not serializable -- can not be used to memoize");
+            }
+        }
+        function memoize(method) {
+            var _this = this, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, cacheMap = new cross_domain_safe_weakmap_src.a();
+            function memoizedFunction() {
+                for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+                var cache = cacheMap.getOrSet(options.thisNamespace ? this : method, function() {
+                    return {};
+                }), key = serializeArgs(args), cacheTime = options.time;
+                cache[key] && cacheTime && Date.now() - cache[key].time < cacheTime && delete cache[key];
+                if (cache[key]) return cache[key].value;
+                var time = Date.now(), value = method.apply(this, arguments);
+                cache[key] = {
+                    time: time,
+                    value: value
+                };
+                return cache[key].value;
+            }
+            memoizedFunction.reset = function() {
+                cacheMap.delete(options.thisNamespace ? _this : method);
+            };
+            options.name && (memoizedFunction.displayName = options.name + ":memoized");
+            return memoizedFunction;
+        }
+        function memoizePromise(method) {
+            var cache = {};
+            function memoizedPromiseFunction() {
+                for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) args[_key2] = arguments[_key2];
+                var key = serializeArgs(args);
+                if (cache.hasOwnProperty(key)) return cache[key];
+                cache[key] = method.apply(this, arguments).finally(function() {
+                    delete cache[key];
+                });
+                return cache[key];
+            }
+            memoizedPromiseFunction.reset = function() {
+                cache = {};
+            };
+            return memoizedPromiseFunction;
+        }
+        function promisify(method) {
+            var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+            function promisifiedFunction() {
+                return src.a.try(method, this, arguments);
+            }
+            options.name && (promisifiedFunction.displayName = options.name + ":promisified");
+            return promisifiedFunction;
+        }
+        function inlineMemoize(method, logic) {
+            var args = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [], cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {}, key = serializeArgs(args);
+            return cache.hasOwnProperty(key) ? cache[key] : cache[key] = logic.apply(void 0, args);
+        }
+        function noop() {}
+        function once(method) {
+            var called = !1;
+            return function() {
+                if (!called) {
+                    called = !0;
+                    return method.apply(this, arguments);
+                }
+            };
+        }
+        function hashStr(str) {
+            for (var hash = 0, i = 0; i < str.length; i++) hash += str[i].charCodeAt(0) * Math.pow(i % 10 + 1, 5);
+            return Math.floor(Math.pow(Math.sqrt(hash), 5));
+        }
+        function strHashStr(str) {
+            for (var hash = "", i = 0; i < str.length; i++) {
+                var total = str[i].charCodeAt(0) * i;
+                str[i + 1] && (total += str[i + 1].charCodeAt(0) * (i - 1));
+                hash += String.fromCharCode(97 + Math.abs(total) % 26);
+            }
+            return hash;
+        }
+        function match(str, pattern) {
+            var regmatch = str.match(pattern);
+            if (regmatch) return regmatch[1];
+        }
+        function awaitKey(obj, key) {
+            return new src.a(function(resolve) {
+                var value = obj[key];
+                if (value) return resolve(value);
+                delete obj[key];
+                Object.defineProperty(obj, key, {
+                    configurable: !0,
+                    set: function(item) {
+                        (value = item) && resolve(value);
+                    },
+                    get: function() {
+                        return value;
+                    }
+                });
+            });
+        }
+        function stringifyError(err) {
+            var level = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1;
+            if (level >= 3) return "stringifyError stack overflow";
+            try {
+                if (!err) return "<unknown error: " + Object.prototype.toString.call(err) + ">";
+                if ("string" == typeof err) return err;
+                if (err instanceof Error) {
+                    var stack = err && err.stack, message = err && err.message;
+                    if (stack && message) return -1 !== stack.indexOf(message) ? stack : message + "\n" + stack;
+                    if (stack) return stack;
+                    if (message) return message;
+                }
+                return "function" == typeof err.toString ? err.toString() : Object.prototype.toString.call(err);
+            } catch (newErr) {
+                return "Error while stringifying error: " + stringifyError(newErr, level + 1);
+            }
+        }
+        function stringifyErrorMessage(err) {
+            var defaultMessage = "<unknown error: " + Object.prototype.toString.call(err) + ">";
+            return err ? err instanceof Error ? err.message || defaultMessage : "string" == typeof err.message && err.message || defaultMessage : defaultMessage;
+        }
+        function stringify(item) {
+            return "string" == typeof item ? item : item && "function" == typeof item.toString ? item.toString() : Object.prototype.toString.call(item);
+        }
+        function domainMatches(hostname, domain) {
+            var index = (hostname = hostname.split("://")[1]).indexOf(domain);
+            return -1 !== index && hostname.slice(index) === domain;
+        }
+        function patchMethod(obj, name, handler) {
+            var original = obj[name];
+            obj[name] = function() {
+                var _this2 = this, _arguments = arguments;
+                return handler({
+                    context: this,
+                    args: Array.prototype.slice.call(arguments),
+                    original: original,
+                    callOriginal: function() {
+                        return original.apply(_this2, _arguments);
+                    }
+                });
+            };
+        }
+        function extend(obj, source) {
+            if (!source) return obj;
+            if (Object.assign) return Object.assign(obj, source);
+            for (var key in source) source.hasOwnProperty(key) && (obj[key] = source[key]);
+            return obj;
+        }
+        function values(obj) {
+            var result = [];
+            for (var key in obj) obj.hasOwnProperty(key) && result.push(obj[key]);
+            return result;
+        }
+        function perc(pixels, percentage) {
+            return Math.round(pixels * percentage / 100);
+        }
+        function min() {
+            return Math.min.apply(Math, arguments);
+        }
+        function max() {
+            return Math.max.apply(Math, arguments);
+        }
+        function regexMap(str, regexp, handler) {
+            var results = [];
+            str.replace(regexp, function(item) {
+                results.push(handler ? handler.apply(null, arguments) : item);
+            });
+            return results;
+        }
+        function svgToBase64(svg) {
+            return "data:image/svg+xml;base64," + base64encode(svg);
+        }
+        function objFilter(obj) {
+            var filter = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : Boolean, result = {};
+            for (var key in obj) obj.hasOwnProperty(key) && filter(obj[key], key) && (result[key] = obj[key]);
+            return result;
+        }
+        function identity(item) {
+            return item;
+        }
+        function regexTokenize(text, regexp) {
+            var result = [];
+            text.replace(regexp, function(token) {
+                result.push(token);
+                return "";
+            });
+            return result;
+        }
+        function promiseDebounce(method) {
+            var delay = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 50, promise = void 0, timeout = void 0;
+            return function() {
+                timeout && clearTimeout(timeout);
+                var localPromise = promise = promise || new src.a();
+                timeout = setTimeout(function() {
+                    promise = null;
+                    timeout = null;
+                    src.a.try(method).then(function(result) {
+                        localPromise.resolve(result);
+                    }, function(err) {
+                        localPromise.reject(err);
+                    });
+                }, delay);
+                return localPromise;
+            };
+        }
+        function safeInterval(method, time) {
+            var timeout = void 0;
+            !function loop() {
+                timeout = setTimeout(function() {
+                    method();
+                    loop();
+                }, time);
+            }();
+            return {
+                cancel: function() {
+                    clearTimeout(timeout);
+                }
+            };
+        }
+        function isInteger(str) {
+            return Boolean(str.match(/^[0-9]+$/));
+        }
+        function isFloat(str) {
+            return Boolean(str.match(/^[0-9]+\.[0-9]+$/));
+        }
+        function serializePrimitive(value) {
+            return value.toString();
+        }
+        function deserializePrimitive(value) {
+            return "true" === value || "false" !== value && (isInteger(value) ? parseInt(value, 10) : isFloat(value) ? parseFloat(value) : value);
+        }
+        function dotify(obj) {
+            var prefix = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "", newobj = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
+            prefix = prefix ? prefix + "." : prefix;
+            for (var key in obj) obj.hasOwnProperty(key) && void 0 !== obj[key] && null !== obj[key] && "function" != typeof obj[key] && (obj[key] && Array.isArray(obj[key]) && obj[key].length && obj[key].every(function(val) {
+                return "object" !== (void 0 === val ? "undefined" : _typeof(val));
+            }) ? newobj["" + prefix + key + "[]"] = obj[key].join(",") : obj[key] && "object" === _typeof(obj[key]) ? newobj = dotify(obj[key], "" + prefix + key, newobj) : newobj["" + prefix + key] = serializePrimitive(obj[key]));
+            return newobj;
+        }
+        function undotify(obj) {
+            var result = {};
+            for (var key in obj) if (obj.hasOwnProperty(key) && "string" == typeof obj[key]) {
+                var value = obj[key];
+                if (key.match(/^.+\[\]$/)) {
+                    key = key.slice(0, key.length - 2);
+                    value = value.split(",").map(deserializePrimitive);
+                } else value = deserializePrimitive(value);
+                for (var keyResult = result, parts = key.split("."), i = 0; i < parts.length; i++) {
+                    var part = parts[i], isLast = i + 1 === parts.length, isIndex = !isLast && isInteger(parts[i + 1]);
+                    isLast ? keyResult[part] = value : keyResult = keyResult[part] = keyResult[part] || (isIndex ? [] : {});
+                }
+            }
+            return result;
+        }
+        function eventEmitter() {
+            var triggered = {}, handlers = {};
+            return {
+                on: function(eventName, handler) {
+                    var handlerList = handlers[eventName] = handlers[eventName] || [];
+                    handlerList.push(handler);
+                    var cancelled = !1;
+                    return {
+                        cancel: function() {
+                            if (!cancelled) {
+                                cancelled = !0;
+                                handlerList.splice(handlerList.indexOf(handler), 1);
+                            }
+                        }
+                    };
+                },
+                once: function(eventName, handler) {
+                    var listener = this.on(eventName, function() {
+                        listener.cancel();
+                        handler();
+                    });
+                    return listener;
+                },
+                trigger: function(eventName) {
+                    for (var _len3 = arguments.length, args = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) args[_key3 - 1] = arguments[_key3];
+                    var handlerList = handlers[eventName], promises = [];
+                    if (handlerList) for (var _loop = function(_i2, _length2) {
+                        var handler = handlerList[_i2];
+                        promises.push(src.a.try(function() {
+                            return handler.apply(void 0, args);
+                        }));
+                    }, _i2 = 0, _length2 = null == handlerList ? 0 : handlerList.length; _i2 < _length2; _i2++) _loop(_i2);
+                    return src.a.all(promises).then(noop);
+                },
+                triggerOnce: function(eventName) {
+                    if (triggered[eventName]) return src.a.resolve();
+                    triggered[eventName] = !0;
+                    for (var _len4 = arguments.length, args = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) args[_key4 - 1] = arguments[_key4];
+                    return this.trigger.apply(this, [ eventName ].concat(args));
+                }
+            };
+        }
+        function camelToDasherize(string) {
+            return string.replace(/([A-Z])/g, function(g) {
+                return "-" + g.toLowerCase();
+            });
+        }
+        function dasherizeToCamel(string) {
+            return string.replace(/-([a-z])/g, function(g) {
+                return g[1].toUpperCase();
+            });
+        }
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+        }
+        function get(item, path, def) {
+            if (!path) return def;
+            for (var pathParts = path.split("."), i = 0; i < pathParts.length; i++) {
+                if ("object" !== (void 0 === item ? "undefined" : _typeof(item)) || null === item) return def;
+                item = item[pathParts[i]];
+            }
+            return void 0 === item ? def : item;
+        }
+        function safeTimeout(method, time) {
+            var interval = safeInterval(function() {
+                if ((time -= 100) <= 0) {
+                    interval.cancel();
+                    method();
+                }
+            }, 100);
+        }
+        function defineLazyProp(obj, key, getter) {
+            if (Array.isArray(obj)) {
+                if ("number" != typeof key) throw new TypeError("Array key must be number");
+            } else if ("object" === (void 0 === obj ? "undefined" : _typeof(obj)) && null !== obj && "string" != typeof key) throw new TypeError("Object key must be string");
+            Object.defineProperty(obj, key, {
+                configurable: !0,
+                enumerable: !0,
+                get: function() {
+                    delete obj[key];
+                    var value = getter();
+                    obj[key] = value;
+                    return value;
+                },
+                set: function(value) {
+                    delete obj[key];
+                    obj[key] = value;
+                }
+            });
+        }
+        function isObject(item) {
+            return "object" === (void 0 === item ? "undefined" : _typeof(item)) && null !== item;
+        }
+        function isObjectObject(obj) {
+            return isObject(obj) && "[object Object]" === Object.prototype.toString.call(obj);
+        }
+        function isPlainObject(obj) {
+            if (!isObjectObject(obj)) return !1;
+            var constructor = obj.constructor;
+            if ("function" != typeof constructor) return !1;
+            var prototype = constructor.prototype;
+            return !!isObjectObject(prototype) && !!prototype.hasOwnProperty("isPrototypeOf");
+        }
+        function replaceObject(item, replacer) {
+            var fullKey = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : "";
+            if (Array.isArray(item)) {
+                for (var _length3 = item.length, result = [], _loop2 = function(i) {
+                    defineLazyProp(result, i, function() {
+                        var itemKey = fullKey ? fullKey + "." + i : "" + i, el = item[i], child = replacer(el, i, itemKey);
+                        (isPlainObject(child) || Array.isArray(child)) && (child = replaceObject(child, replacer, itemKey));
+                        return child;
+                    });
+                }, i = 0; i < _length3; i++) _loop2(i);
+                return result;
+            }
+            if (isPlainObject(item)) {
+                var _result = {}, _loop3 = function(key) {
+                    if (!item.hasOwnProperty(key)) return "continue";
+                    defineLazyProp(_result, key, function() {
+                        var itemKey = fullKey ? fullKey + "." + key : "" + key, el = item[key], child = replacer(el, key, itemKey);
+                        (isPlainObject(child) || Array.isArray(child)) && (child = replaceObject(child, replacer, itemKey));
+                        return child;
+                    });
+                };
+                for (var key in item) _loop3(key);
+                return _result;
+            }
+            throw new Error("Pass an object or array");
+        }
+        function copyProp(source, target, name, def) {
+            if (source.hasOwnProperty(name)) {
+                var descriptor = Object.getOwnPropertyDescriptor(source, name);
+                Object.defineProperty(target, name, descriptor);
+            } else target[name] = def;
+        }
+        function regex(pattern, string) {
+            var start = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : 0;
+            "string" == typeof pattern && (pattern = new RegExp(pattern));
+            var result = string.slice(start).match(pattern);
+            if (result) {
+                var index = result.index, regmatch = result[0];
+                return {
+                    text: regmatch,
+                    groups: result.slice(1),
+                    start: start + index,
+                    end: start + index + regmatch.length,
+                    length: regmatch.length,
+                    replace: function(text) {
+                        return regmatch ? "" + regmatch.slice(0, start + index) + text + regmatch.slice(index + regmatch.length) : "";
+                    }
+                };
+            }
+        }
+        function regexAll(pattern, string) {
+            for (var matches = [], start = 0; ;) {
+                var regmatch = regex(pattern, string, start);
+                if (!regmatch) break;
+                matches.push(regmatch);
+                start = match.end;
+            }
+            return matches;
+        }
+        function isDefined(value) {
+            return null !== value && void 0 !== value;
+        }
+        function cycle(method) {
+            return src.a.try(method).then(function() {
+                return cycle(method);
+            });
+        }
+        function debounce(method) {
+            var time = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 100, timeout = void 0;
+            return function() {
+                var _this3 = this, _arguments2 = arguments;
+                clearTimeout(timeout);
+                timeout = setTimeout(function() {
+                    return method.apply(_this3, _arguments2);
+                }, time);
+            };
+        }
+        function isRegex(item) {
+            return "[object RegExp]" === Object.prototype.toString.call(item);
+        }
+        var util_weakMapMemoize = function(method) {
+            var weakmap = new cross_domain_safe_weakmap_src.a();
+            return function(arg) {
+                var _this4 = this;
+                return weakmap.getOrSet(arg, function() {
+                    return method.call(_this4, arg);
+                });
+            };
+        }, util_weakMapMemoizePromise = function(method) {
+            var weakmap = new cross_domain_safe_weakmap_src.a();
+            return function(arg) {
+                var _this5 = this;
+                return weakmap.getOrSet(arg, function() {
+                    return method.call(_this5, arg).finally(function() {
+                        weakmap.delete(arg);
+                    });
+                });
+            };
+        };
+        function getOrSet(obj, key, getter) {
+            if (obj.hasOwnProperty(key)) return obj[key];
+            var val = getter();
+            obj[key] = val;
+            return val;
+        }
+        function cleanup(obj) {
+            var tasks = [], cleaned = !1;
+            return {
+                set: function(name, item) {
+                    if (!cleaned) {
+                        obj[name] = item;
+                        this.register(function() {
+                            delete obj[name];
+                        });
+                    }
+                    return item;
+                },
+                register: function(method) {
+                    cleaned ? method() : tasks.push(once(method));
+                },
+                all: function() {
+                    var results = [];
+                    cleaned = !0;
+                    for (;tasks.length; ) {
+                        var task = tasks.pop();
+                        results.push(task());
+                    }
+                    return src.a.all(results).then(noop);
+                }
+            };
+        }
+        function tryCatch(fn) {
+            var result = void 0, error = void 0;
+            try {
+                result = fn();
+            } catch (err) {
+                error = err;
+            }
+            return {
+                result: result,
+                error: error
+            };
+        }
+        function removeFromArray(arr, item) {
+            var index = arr.indexOf(item);
+            -1 !== index && arr.splice(index, 1);
+        }
+        function assertExists(name, thing) {
+            if (null === thing || void 0 === thing) throw new Error("Expected " + name + " to be present");
+            return thing;
+        }
+        var KEY_CODES = {
+            ENTER: 13
+        }, dom__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        }, _extends = Object.assign || function(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
+            }
+            return target;
+        };
+        function isDocumentReady() {
+            return Boolean(document.body) && "complete" === document.readyState;
+        }
+        function urlEncode(str) {
+            return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B");
+        }
+        function waitForWindowReady() {
+            return inlineMemoize(waitForWindowReady, function() {
+                return new src.a(function(resolve) {
+                    isDocumentReady() && resolve();
+                    window.addEventListener("load", function() {
+                        return resolve();
+                    });
+                });
+            });
+        }
+        function waitForDocumentReady() {
+            return inlineMemoize(waitForDocumentReady, function() {
+                return new src.a(function(resolve) {
+                    if (isDocumentReady()) return resolve();
+                    var interval = setInterval(function() {
+                        if (isDocumentReady()) {
+                            clearInterval(interval);
+                            return resolve();
+                        }
+                    }, 10);
+                });
+            });
+        }
+        function waitForDocumentBody() {
+            return waitForDocumentReady().then(function() {
+                if (document.body) return document.body;
+                throw new Error("Document ready but document.body not present");
+            });
+        }
+        function parseQuery(queryString) {
+            return inlineMemoize(parseQuery, function() {
+                var params = {};
+                if (!queryString) return params;
+                if (-1 === queryString.indexOf("=")) return params;
+                for (var _i2 = 0, _queryString$split2 = queryString.split("&"), _length2 = null == _queryString$split2 ? 0 : _queryString$split2.length; _i2 < _length2; _i2++) {
+                    var pair = _queryString$split2[_i2];
+                    (pair = pair.split("="))[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
+                }
+                return params;
+            }, [ queryString ]);
+        }
+        function getQueryParam(name) {
+            return parseQuery(window.location.search.slice(1))[name];
+        }
+        function urlWillRedirectPage(url) {
+            return -1 === url.indexOf("#") || 0 !== url.indexOf("#") && url.split("#")[0] !== window.location.href.split("#")[0];
+        }
+        function formatQuery() {
+            var obj = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+            return Object.keys(obj).filter(function(key) {
+                return "string" == typeof obj[key];
+            }).map(function(key) {
+                return urlEncode(key) + "=" + urlEncode(obj[key]);
+            }).join("&");
+        }
+        function extendQuery(originalQuery) {
+            var props = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+            return props && Object.keys(props).length ? formatQuery(_extends({}, parseQuery(originalQuery), props)) : originalQuery;
+        }
+        function extendUrl(url) {
+            var originalHash, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, query = options.query || {}, hash = options.hash || {}, originalUrl = void 0, _url$split = url.split("#");
+            originalUrl = _url$split[0];
+            originalHash = _url$split[1];
+            var _originalUrl$split = originalUrl.split("?");
+            originalUrl = _originalUrl$split[0];
+            var queryString = extendQuery(_originalUrl$split[1], query), hashString = extendQuery(originalHash, hash);
+            queryString && (originalUrl = originalUrl + "?" + queryString);
+            hashString && (originalUrl = originalUrl + "#" + hashString);
+            return originalUrl;
+        }
+        function redirect(url) {
+            var win = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : window;
+            return new src.a(function(resolve) {
+                win.location = url;
+                urlWillRedirectPage(url) || resolve();
+            });
+        }
+        function hasMetaViewPort() {
+            var meta = document.querySelector("meta[name=viewport]");
+            return !(isDevice() && window.screen.width < 660 && !meta);
+        }
+        function isElementVisible(el) {
+            return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+        }
+        function enablePerformance() {
+            return inlineMemoize(enablePerformance, function() {
+                return Boolean(window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0);
+            });
+        }
+        function getPageRenderTime() {
+            return waitForDocumentReady().then(function() {
+                if (enablePerformance()) {
+                    var timing = window.performance.timing;
+                    return timing.connectEnd && timing.domInteractive ? timing.domInteractive - timing.connectEnd : void 0;
+                }
+            });
+        }
+        function htmlEncode() {
+            return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "").toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").replace(/\//g, "&#x2F;");
+        }
+        function isBrowser() {
+            return "undefined" != typeof window;
+        }
+        function querySelectorAll(selector) {
+            var doc = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : window.document;
+            return Array.prototype.slice.call(doc.querySelectorAll(selector));
+        }
+        function onClick(element, handler) {
+            element.addEventListener("touchstart", noop);
+            element.addEventListener("click", handler);
+            element.addEventListener("keypress", function(event) {
+                if (event.keyCode === KEY_CODES.ENTER) return handler(event);
+            });
+        }
+        function getScript(_ref) {
+            var _ref$host = _ref.host, host = void 0 === _ref$host ? window.location.host : _ref$host, path = _ref.path;
+            return inlineMemoize(getScript, function() {
+                for (var url = "" + host + path, scripts = Array.prototype.slice.call(document.getElementsByTagName("script")), _i4 = 0, _length4 = null == scripts ? 0 : scripts.length; _i4 < _length4; _i4++) {
+                    var script = scripts[_i4];
+                    if (script.src) {
+                        if (script.src.replace(/^https?:\/\//, "").split("?")[0] === url) return script;
+                    }
+                }
+            }, [ path ]);
+        }
+        function isLocalStorageEnabled() {
+            return inlineMemoize(isLocalStorageEnabled, function() {
                 try {
                     if ("undefined" == typeof window) return !1;
                     if (window.localStorage) {
@@ -662,9 +1421,328 @@
                 } catch (err) {}
                 return !1;
             });
+        }
+        function getBrowserLocales() {
+            var nav = window.navigator, locales = nav.languages ? Array.prototype.slice.apply(nav.languages) : [];
+            nav.language && locales.push(nav.language);
+            nav.userLanguage && locales.push(nav.userLanguage);
+            return locales.map(function(locale) {
+                if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
+                    var _locale$split = locale.split(/[-_]/), _lang = _locale$split[0];
+                    return {
+                        country: _locale$split[1],
+                        lang: _lang
+                    };
+                }
+                return locale && locale.match(/^[a-z]{2}$/) ? {
+                    lang: locale
+                } : null;
+            }).filter(Boolean);
+        }
+        function appendChild(container, child) {
+            container.appendChild(child);
+        }
+        function isElement(element) {
+            return element instanceof window.Element || null !== element && "object" === (void 0 === element ? "undefined" : dom__typeof(element)) && 1 === element.nodeType && "object" === dom__typeof(element.style) && "object" === dom__typeof(element.ownerDocument);
+        }
+        function getElementSafe(id) {
+            var doc = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : document;
+            return isElement(id) ? id : "string" == typeof id ? doc.querySelector(id) : void 0;
+        }
+        function getElement(id) {
+            var element = getElementSafe(id, arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : document);
+            if (element) return element;
+            throw new Error("Can not find element: " + stringify(id));
+        }
+        function elementReady(id) {
+            return new src.a(function(resolve, reject) {
+                var name = stringify(id), el = getElementSafe(id);
+                if (el) return resolve(el);
+                if (isDocumentReady()) return reject(new Error("Document is ready and element " + name + " does not exist"));
+                var interval = setInterval(function() {
+                    if (el = getElementSafe(id)) {
+                        clearInterval(interval);
+                        return resolve(el);
+                    }
+                    if (isDocumentReady()) {
+                        clearInterval(interval);
+                        return reject(new Error("Document is ready and element " + name + " does not exist"));
+                    }
+                }, 10);
+            });
+        }
+        function PopupOpenError(message) {
+            this.message = message;
+        }
+        PopupOpenError.prototype = Object.create(Error.prototype);
+        function popup(url, options) {
+            var _options = options = options || {}, width = _options.width, height = _options.height, top = 0, left = 0;
+            width && (window.outerWidth ? left = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (left = Math.round((window.screen.width - width) / 2)));
+            height && (window.outerHeight ? top = Math.round((window.outerHeight - height) / 2) + window.screenY : window.screen.height && (top = Math.round((window.screen.height - height) / 2)));
+            var name = (options = _extends({
+                top: top,
+                left: left,
+                width: width,
+                height: height,
+                status: 1,
+                toolbar: 0,
+                menubar: 0,
+                resizable: 1,
+                scrollbars: 1
+            }, options)).name || "";
+            delete options.name;
+            var params = Object.keys(options).map(function(key) {
+                if (options[key]) return key + "=" + stringify(options[key]);
+            }).filter(Boolean).join(","), win = void 0;
+            try {
+                win = window.open(url, name, params, !0);
+            } catch (err) {
+                throw new PopupOpenError("Can not open popup window - " + (err.stack || err.message));
+            }
+            if (Object(cross_domain_utils_src.x)(win)) {
+                var err;
+                throw new PopupOpenError("Can not open popup window - blocked");
+            }
+            window.addEventListener("unload", function() {
+                return win.close();
+            });
+            return win;
+        }
+        function writeToWindow(win, html) {
+            try {
+                win.document.open();
+                win.document.write(html);
+                win.document.close();
+            } catch (err) {
+                try {
+                    win.location = "javascript: document.open(); document.write(" + JSON.stringify(html) + "); document.close();";
+                } catch (err2) {}
+            }
+        }
+        function writeElementToWindow(win, el) {
+            var tag = el.tagName.toLowerCase();
+            if ("html" !== tag) throw new Error("Expected element to be html, got " + tag);
+            for (var documentElement = win.document.documentElement; documentElement.children && documentElement.children.length; ) documentElement.removeChild(documentElement.children[0]);
+            for (;el.children.length; ) documentElement.appendChild(el.children[0]);
+        }
+        function setStyle(el, styleText) {
+            var doc = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : window.document;
+            el.styleSheet ? el.styleSheet.cssText = styleText : el.appendChild(doc.createTextNode(styleText));
+        }
+        var awaitFrameLoadPromises = void 0;
+        function awaitFrameLoad(frame) {
+            if ((awaitFrameLoadPromises = awaitFrameLoadPromises || new cross_domain_safe_weakmap_src.a()).has(frame)) {
+                var _promise = awaitFrameLoadPromises.get(frame);
+                if (_promise) return _promise;
+            }
+            var promise = new src.a(function(resolve, reject) {
+                frame.addEventListener("load", function() {
+                    Object(cross_domain_utils_src.y)(frame);
+                    resolve(frame);
+                });
+                frame.addEventListener("error", function(err) {
+                    frame.contentWindow ? resolve(frame) : reject(err);
+                });
+            });
+            awaitFrameLoadPromises.set(frame, promise);
+            return promise;
+        }
+        function awaitFrameWindow(frame) {
+            return awaitFrameLoad(frame).then(function(loadedFrame) {
+                if (!loadedFrame.contentWindow) throw new Error("Could not find window in iframe");
+                return loadedFrame.contentWindow;
+            });
+        }
+        function createElement() {
+            var tag = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "div", options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, container = arguments[2];
+            tag = tag.toLowerCase();
+            var element = document.createElement(tag);
+            options.style && extend(element.style, options.style);
+            options.class && (element.className = options.class.join(" "));
+            options.id && element.setAttribute("id", options.id);
+            if (options.attributes) for (var _i6 = 0, _Object$keys2 = Object.keys(options.attributes), _length6 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i6 < _length6; _i6++) {
+                var key = _Object$keys2[_i6];
+                element.setAttribute(key, options.attributes[key]);
+            }
+            options.styleSheet && setStyle(element, options.styleSheet);
+            container && appendChild(container, element);
+            if (options.html) if ("iframe" === tag) {
+                if (!container || !element.contentWindow) throw new Error("Iframe html can not be written unless container provided and iframe in DOM");
+                writeToWindow(element.contentWindow, options.html);
+            } else element.innerHTML = options.html;
+            return element;
+        }
+        function iframe() {
+            var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, container = arguments[1], attempts = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : 3, attributes = options.attributes || {}, style = options.style || {}, frame = createElement("iframe", {
+                attributes: _extends({
+                    allowTransparency: "true"
+                }, attributes),
+                style: _extends({
+                    backgroundColor: "transparent",
+                    border: "none"
+                }, style),
+                html: options.html,
+                class: options.class
+            });
+            awaitFrameLoad(frame);
+            if (container) {
+                var el = getElement(container);
+                el.appendChild(frame);
+                var _win = frame.contentWindow;
+                if (_win) try {
+                    _win.name;
+                } catch (err) {
+                    el.removeChild(frame);
+                    if (!attempts) throw new Error("Frame is cross-domain: " + err.stack);
+                    return iframe(options, container, attempts - 1);
+                }
+            }
+            (options.url || window.navigator.userAgent.match(/MSIE|Edge/i)) && frame.setAttribute("src", options.url || "about:blank");
+            return frame;
+        }
+        function addEventListener(obj, event, handler) {
+            obj.addEventListener(event, handler);
+            return {
+                cancel: function() {
+                    obj.removeEventListener(event, handler);
+                }
+            };
+        }
+        function bindEvents(element, eventNames, handler) {
+            handler = once(handler);
+            for (var _i8 = 0, _length8 = null == eventNames ? 0 : eventNames.length; _i8 < _length8; _i8++) {
+                var eventName = eventNames[_i8];
+                element.addEventListener(eventName, handler);
+            }
+            return {
+                cancel: once(function() {
+                    for (var _i10 = 0, _length10 = null == eventNames ? 0 : eventNames.length; _i10 < _length10; _i10++) {
+                        var _eventName = eventNames[_i10];
+                        element.removeEventListener(_eventName, handler);
+                    }
+                })
+            };
+        }
+        var VENDOR_PREFIXES = [ "webkit", "moz", "ms", "o" ];
+        function setVendorCSS(element, name, value) {
+            element.style[name] = value;
+            for (var capitalizedName = capitalizeFirstLetter(name), _i12 = 0, _length12 = null == VENDOR_PREFIXES ? 0 : VENDOR_PREFIXES.length; _i12 < _length12; _i12++) {
+                var prefix = VENDOR_PREFIXES[_i12];
+                element.style["" + prefix + capitalizedName] = value;
+            }
+        }
+        var ANIMATION_START_EVENTS = [ "animationstart", "webkitAnimationStart", "oAnimationStart", "MSAnimationStart" ], ANIMATION_END_EVENTS = [ "animationend", "webkitAnimationEnd", "oAnimationEnd", "MSAnimationEnd" ];
+        function animate(element, name, clean) {
+            var timeout = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : 1e3;
+            return new src.a(function(resolve, reject) {
+                var el = getElement(element);
+                if (!el) return resolve();
+                var hasStarted = !1, startTimeout = void 0, endTimeout = void 0, startEvent = void 0, endEvent = void 0;
+                function cleanUp() {
+                    clearTimeout(startTimeout);
+                    clearTimeout(endTimeout);
+                    startEvent.cancel();
+                    endEvent.cancel();
+                }
+                startEvent = bindEvents(el, ANIMATION_START_EVENTS, function(event) {
+                    if (event.target === el && event.animationName === name) {
+                        clearTimeout(startTimeout);
+                        event.stopPropagation();
+                        startEvent.cancel();
+                        hasStarted = !0;
+                        endTimeout = setTimeout(function() {
+                            cleanUp();
+                            resolve();
+                        }, timeout);
+                    }
+                });
+                endEvent = bindEvents(el, ANIMATION_END_EVENTS, function(event) {
+                    if (event.target === el && event.animationName === name) {
+                        cleanUp();
+                        return "string" == typeof event.animationName && event.animationName !== name ? reject("Expected animation name to be " + name + ", found " + event.animationName) : resolve();
+                    }
+                });
+                setVendorCSS(el, "animationName", name);
+                startTimeout = setTimeout(function() {
+                    if (!hasStarted) {
+                        cleanUp();
+                        return resolve();
+                    }
+                }, 200);
+                clean && clean(cleanUp);
+            });
+        }
+        var STYLE = {
+            DISPLAY: {
+                NONE: "none",
+                BLOCK: "block"
+            },
+            VISIBILITY: {
+                VISIBLE: "visible",
+                HIDDEN: "hidden"
+            },
+            IMPORTANT: "important"
         };
-        __webpack_exports__.a = getElementSafe;
-        __webpack_exports__.c = function(el, handler) {
+        function makeElementVisible(element) {
+            element.style.setProperty("visibility", "");
+        }
+        function makeElementInvisible(element) {
+            element.style.setProperty("visibility", STYLE.VISIBILITY.HIDDEN, STYLE.IMPORTANT);
+        }
+        function showElement(element) {
+            element.style.setProperty("display", "");
+        }
+        function hideElement(element) {
+            element.style.setProperty("display", STYLE.DISPLAY.NONE, STYLE.IMPORTANT);
+        }
+        function destroyElement(element) {
+            element && element.parentNode && element.parentNode.removeChild(element);
+        }
+        function showAndAnimate(element, name, clean) {
+            var animation = animate(element, name, clean);
+            showElement(element);
+            return animation;
+        }
+        function animateAndHide(element, name, clean) {
+            return animate(element, name, clean).then(function() {
+                hideElement(element);
+            });
+        }
+        function addClass(element, name) {
+            element.classList.add(name);
+        }
+        function removeClass(element, name) {
+            element.classList.remove(name);
+        }
+        function isElementClosed(el) {
+            return !el || !el.parentNode;
+        }
+        function watchElementForClose(element, handler) {
+            handler = once(handler);
+            var interval = void 0;
+            isElementClosed(element) ? handler() : interval = safeInterval(function() {
+                if (isElementClosed(element)) {
+                    interval.cancel();
+                    handler();
+                }
+            }, 50);
+            return {
+                cancel: function() {
+                    interval && interval.cancel();
+                }
+            };
+        }
+        function fixScripts(el) {
+            for (var doc = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : window.document, _i14 = 0, _querySelectorAll2 = querySelectorAll("script", el), _length14 = null == _querySelectorAll2 ? 0 : _querySelectorAll2.length; _i14 < _length14; _i14++) {
+                var script = _querySelectorAll2[_i14], parentNode = script.parentNode;
+                if (parentNode) {
+                    var newScript = doc.createElement("script");
+                    newScript.text = script.textContent;
+                    parentNode.replaceChild(newScript, script);
+                }
+            }
+        }
+        function onResize(el, handler) {
             var _ref2 = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$interval = _ref2.interval, interval = void 0 === _ref2$interval ? 100 : _ref2$interval, _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win, currentWidth = el.offsetWidth, currentHeight = el.offsetHeight;
             handler({
                 width: currentWidth,
@@ -700,72 +1778,27 @@
                     clearTimeout(timeout);
                 }
             };
-        };
-        var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-            return typeof obj;
-        } : function(obj) {
-            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        };
-        Object.assign;
-        function getElementSafe(id) {
-            var element, doc = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : document;
-            return (element = id) instanceof window.Element || null !== element && "object" === (void 0 === element ? "undefined" : _typeof(element)) && 1 === element.nodeType && "object" === _typeof(element.style) && "object" === _typeof(element.ownerDocument) ? id : "string" == typeof id ? doc.querySelector(id) : void 0;
         }
-        function PopupOpenError(message) {
-            this.message = message;
-        }
-        PopupOpenError.prototype = Object.create(Error.prototype);
-    },
-    "./node_modules/belter/src/experiment.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__("./node_modules/belter/src/util.js"), __webpack_require__("./node_modules/belter/src/storage.js");
-    },
-    "./node_modules/belter/src/global.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__("./node_modules/belter/src/util.js");
-    },
-    "./node_modules/belter/src/http.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __webpack_require__("./node_modules/cross-domain-utils/src/index.js");
-    },
-    "./node_modules/belter/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__("./node_modules/belter/src/device.js");
-        var __WEBPACK_IMPORTED_MODULE_1__dom__ = __webpack_require__("./node_modules/belter/src/dom.js");
-        __webpack_require__.d(__webpack_exports__, "getElementSafe", function() {
-            return __WEBPACK_IMPORTED_MODULE_1__dom__.a;
-        });
-        __webpack_require__.d(__webpack_exports__, "onResize", function() {
-            return __WEBPACK_IMPORTED_MODULE_1__dom__.c;
-        });
-        __webpack_require__("./node_modules/belter/src/experiment.js"), __webpack_require__("./node_modules/belter/src/global.js"), 
-        __webpack_require__("./node_modules/belter/src/storage.js"), __webpack_require__("./node_modules/belter/src/util.js"), 
-        __webpack_require__("./node_modules/belter/src/http.js");
-        var __WEBPACK_IMPORTED_MODULE_7__types__ = __webpack_require__("./node_modules/belter/src/types.js");
-        __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__types__), __webpack_require__("./node_modules/belter/src/decorators.js"), 
-        __webpack_require__("./node_modules/belter/src/css.js"), __webpack_require__("./node_modules/belter/src/test.js");
-    },
-    "./node_modules/belter/src/storage.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_exports__.a = function getStorage(_ref) {
-            var name = _ref.name, _ref$version = _ref.version, version = void 0 === _ref$version ? "latest" : _ref$version, _ref$lifetime = _ref.lifetime, lifetime = void 0 === _ref$lifetime ? 3e5 : _ref$lifetime;
-            return Object(__WEBPACK_IMPORTED_MODULE_0__util__.d)(getStorage, function() {
-                var STORAGE_KEY = "__" + name + "_" + version + "_storage__", accessedStorage = void 0;
+        var DEFAULT_SESSION_STORAGE = 12e5;
+        function getStorage(_ref) {
+            var name = _ref.name, _ref$lifetime = _ref.lifetime, lifetime = void 0 === _ref$lifetime ? DEFAULT_SESSION_STORAGE : _ref$lifetime;
+            return inlineMemoize(getStorage, function() {
+                var STORAGE_KEY = "__" + name + "_storage__", accessedStorage = void 0;
                 function getState(handler) {
-                    var localStorageEnabled = Object(__WEBPACK_IMPORTED_MODULE_1__dom__.b)(), storage = void 0;
+                    var localStorageEnabled = isLocalStorageEnabled(), storage = void 0;
                     accessedStorage && (storage = accessedStorage);
                     if (!storage && localStorageEnabled) {
                         var rawStorage = window.localStorage.getItem(STORAGE_KEY);
                         rawStorage && (storage = JSON.parse(rawStorage));
                     }
-                    storage || (storage = Object(__WEBPACK_IMPORTED_MODULE_0__util__.c)()[STORAGE_KEY]);
+                    storage || (storage = getGlobal()[STORAGE_KEY]);
                     storage || (storage = {
-                        id: Object(__WEBPACK_IMPORTED_MODULE_0__util__.m)()
+                        id: uniqueID()
                     });
-                    storage.id || (storage.id = Object(__WEBPACK_IMPORTED_MODULE_0__util__.m)());
+                    storage.id || (storage.id = uniqueID());
                     accessedStorage = storage;
                     var result = handler(storage);
-                    localStorageEnabled ? window.localStorage.setItem(STORAGE_KEY, JSON.stringify(storage)) : Object(__WEBPACK_IMPORTED_MODULE_0__util__.c)()[STORAGE_KEY] = storage;
+                    localStorageEnabled ? window.localStorage.setItem(STORAGE_KEY, JSON.stringify(storage)) : getGlobal()[STORAGE_KEY] = storage;
                     accessedStorage = null;
                     return result;
                 }
@@ -774,7 +1807,7 @@
                         var session = storage.__session__, now = Date.now();
                         session && now - session.created > lifetime && (session = null);
                         session || (session = {
-                            guid: Object(__WEBPACK_IMPORTED_MODULE_0__util__.m)(),
+                            guid: uniqueID(),
                             created: now
                         });
                         storage.__session__ = session;
@@ -802,153 +1835,704 @@
                 };
             }, [ {
                 name: name,
-                version: version,
                 lifetime: lifetime
             } ]);
-        };
-        var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__("./node_modules/belter/src/util.js"), __WEBPACK_IMPORTED_MODULE_1__dom__ = __webpack_require__("./node_modules/belter/src/dom.js");
-    },
-    "./node_modules/belter/src/test.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __webpack_require__("./node_modules/belter/src/util.js");
-    },
-    "./node_modules/belter/src/types.js": function(module, exports) {},
-    "./node_modules/belter/src/util.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_exports__.m = uniqueID;
-        __webpack_exports__.c = function() {
-            if ("undefined" != typeof window) return window;
-            if ("undefined" != typeof global) return global;
-            if ("undefined" != typeof __GLOBAL__) return __GLOBAL__;
-            throw new Error("No global found");
-        };
-        __webpack_exports__.e = function(method) {
-            var _this = this, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, cacheMap = new __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__.a();
-            function memoizedFunction() {
-                for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-                var cache = cacheMap.getOrSet(options.thisNamespace ? this : method, function() {
-                    return {};
-                }), key = serializeArgs(args), cacheTime = options.time;
-                cache[key] && cacheTime && Date.now() - cache[key].time < cacheTime && delete cache[key];
-                if (cache[key]) return cache[key].value;
-                var time = Date.now(), value = method.apply(this, arguments);
-                cache[key] = {
-                    time: time,
-                    value: value
-                };
-                return cache[key].value;
-            }
-            memoizedFunction.reset = function() {
-                cacheMap.delete(options.thisNamespace ? _this : method);
-            };
-            options.name && (memoizedFunction.displayName = options.name + ":memoized");
-            return memoizedFunction;
-        };
-        __webpack_exports__.h = function(method) {
-            var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-            function promisifiedFunction() {
-                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(method, this, arguments);
-            }
-            options.name && (promisifiedFunction.displayName = options.name + ":promisified");
-            return promisifiedFunction;
-        };
-        __webpack_exports__.d = function(method, logic) {
-            var args = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [], cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {}, key = serializeArgs(args);
-            if (cache.hasOwnProperty(key)) return cache[key];
-            return cache[key] = logic.apply(void 0, args);
-        };
-        __webpack_exports__.f = noop;
-        __webpack_exports__.g = once;
-        __webpack_exports__.k = function(item) {
-            if ("string" == typeof item) return item;
-            if (item && "function" == typeof item.toString) return item.toString();
-            return Object.prototype.toString.call(item);
-        };
-        __webpack_exports__.b = function(obj, source) {
-            if (!source) return obj;
-            if (Object.assign) return Object.assign(obj, source);
-            for (var key in source) source.hasOwnProperty(key) && (obj[key] = source[key]);
-            return obj;
-        };
-        __webpack_exports__.j = safeInterval;
-        __webpack_exports__.a = function(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-        };
-        __webpack_exports__.l = function(fn) {
-            var result = void 0, error = void 0;
-            try {
-                result = fn();
-            } catch (err) {
-                error = err;
-            }
-            return {
-                result: result,
-                error: error
-            };
-        };
-        __webpack_exports__.i = function(arr, item) {
-            var index = arr.indexOf(item);
-            -1 !== index && arr.splice(index, 1);
-        };
-        var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__ = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-            return typeof obj;
-        } : function(obj) {
-            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        };
-        function base64encode(str) {
-            if ("function" == typeof btoa) return btoa(str);
-            if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
-            throw new Error("Can not find window.btoa or Buffer");
         }
-        function uniqueID() {
-            var chars = "0123456789abcdef";
-            return "xxxxxxxxxx".replace(/./g, function() {
-                return chars.charAt(Math.floor(Math.random() * chars.length));
-            }) + "_" + base64encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+        function getBelterExperimentStorage() {
+            return getStorage({
+                name: "belter_experiment"
+            });
         }
-        var objectIDs = void 0;
-        function serializeArgs(args) {
-            try {
-                return JSON.stringify(Array.prototype.slice.call(args), function(subkey, val) {
-                    return "function" == typeof val ? "memoize[" + function(obj) {
-                        objectIDs = objectIDs || new __WEBPACK_IMPORTED_MODULE_1_cross_domain_safe_weakmap_src__.a();
-                        if (null === obj || void 0 === obj || "object" !== (void 0 === obj ? "undefined" : _typeof(obj)) && "function" != typeof obj) throw new Error("Invalid object");
-                        var uid = objectIDs.get(obj);
-                        if (!uid) {
-                            uid = (void 0 === obj ? "undefined" : _typeof(obj)) + ":" + uniqueID();
-                            objectIDs.set(obj, uid);
-                        }
-                        return uid;
-                    }(val) + "]" : val;
+        function isEventUnique(name) {
+            return getBelterExperimentStorage().getSessionState(function(state) {
+                state.loggedBeacons = state.loggedBeacons || [];
+                if (-1 === state.loggedBeacons.indexOf(name)) {
+                    state.loggedBeacons.push(name);
+                    return !0;
+                }
+                return !1;
+            });
+        }
+        var THROTTLE_GROUP = {
+            TEST: "test",
+            CONTROL: "control",
+            THROTTLE: "throttle"
+        };
+        function experiment(_ref) {
+            var name = _ref.name, _ref$sample = _ref.sample, sample = void 0 === _ref$sample ? 50 : _ref$sample, _ref$logTreatment = _ref.logTreatment, logTreatment = void 0 === _ref$logTreatment ? noop : _ref$logTreatment, _ref$logCheckpoint = _ref.logCheckpoint, logCheckpoint = void 0 === _ref$logCheckpoint ? noop : _ref$logCheckpoint, throttle = function(name) {
+                return getBelterExperimentStorage().getState(function(state) {
+                    state.throttlePercentiles = state.throttlePercentiles || {};
+                    state.throttlePercentiles[name] = state.throttlePercentiles[name] || Math.floor(100 * Math.random());
+                    return state.throttlePercentiles[name];
                 });
-            } catch (err) {
-                throw new Error("Arguments not serializable -- can not be used to memoize");
-            }
-        }
-        function noop() {}
-        function once(method) {
-            var called = !1;
-            return function() {
-                if (!called) {
-                    called = !0;
-                    return method.apply(this, arguments);
-                }
-            };
-        }
-        function safeInterval(method, time) {
-            var timeout = void 0;
-            !function loop() {
-                timeout = setTimeout(function() {
-                    method();
-                    loop();
-                }, time);
-            }();
+            }(name), group = void 0;
+            group = throttle < sample ? THROTTLE_GROUP.TEST : sample >= 50 || sample <= throttle && throttle < 2 * sample ? THROTTLE_GROUP.CONTROL : THROTTLE_GROUP.THROTTLE;
+            var treatment = name + "_" + group, started = !1, forced = !1;
+            try {
+                window.localStorage && window.localStorage.getItem(name) && (forced = !0);
+            } catch (err) {}
             return {
-                cancel: function() {
-                    clearTimeout(timeout);
+                isEnabled: function() {
+                    return group === THROTTLE_GROUP.TEST || forced;
+                },
+                isDisabled: function() {
+                    return group !== THROTTLE_GROUP.TEST && !forced;
+                },
+                getTreatment: function() {
+                    return treatment;
+                },
+                log: function(checkpoint) {
+                    var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                    if (!started) return this;
+                    isEventUnique(name + "_" + treatment) && logTreatment({
+                        name: name,
+                        treatment: treatment
+                    });
+                    isEventUnique(name + "_" + treatment + "_" + checkpoint) && logCheckpoint({
+                        name: name,
+                        treatment: treatment,
+                        checkpoint: checkpoint,
+                        payload: payload
+                    });
+                    return this;
+                },
+                logStart: function() {
+                    var payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                    started = !0;
+                    return this.log("start", payload);
+                },
+                logComplete: function() {
+                    var payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                    return this.log("complete", payload);
                 }
             };
         }
+        function getGlobalNameSpace(_ref) {
+            var name = _ref.name, _ref$version = _ref.version, version = void 0 === _ref$version ? "latest" : _ref$version, global = getGlobal(), globalKey = "__" + name + "__" + version + "_global__", namespace = global[globalKey] = global[globalKey] || {};
+            return {
+                get: function(key, defValue) {
+                    defValue = defValue || {};
+                    return namespace[key] = namespace[key] || defValue;
+                }
+            };
+        }
+        var HEADERS = {
+            CONTENT_TYPE: "content-type",
+            ACCEPT: "accept"
+        }, headerBuilders = [];
+        function request(_ref) {
+            var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
+            return new src.a(function(resolve, reject) {
+                if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
+                for (var normalizedHeaders = {}, _i4 = 0, _Object$keys2 = Object.keys(headers), _length4 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i4 < _length4; _i4++) {
+                    var _key2 = _Object$keys2[_i4];
+                    normalizedHeaders[_key2.toLowerCase()] = headers[_key2];
+                }
+                json ? normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || "application/json" : (data || body) && (normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || "application/x-www-form-urlencoded; charset=utf-8");
+                normalizedHeaders[HEADERS.ACCEPT] = normalizedHeaders[HEADERS.ACCEPT] || "application/json";
+                for (var _i6 = 0, _length6 = null == headerBuilders ? 0 : headerBuilders.length; _i6 < _length6; _i6++) for (var builtHeaders = (0, 
+                headerBuilders[_i6])(), _i8 = 0, _Object$keys4 = Object.keys(builtHeaders), _length8 = null == _Object$keys4 ? 0 : _Object$keys4.length; _i8 < _length8; _i8++) {
+                    var _key3 = _Object$keys4[_i8];
+                    normalizedHeaders[_key3.toLowerCase()] = builtHeaders[_key3];
+                }
+                var xhr = new win.XMLHttpRequest();
+                xhr.addEventListener("load", function() {
+                    var responseHeaders = function() {
+                        for (var result = {}, _i2 = 0, _rawHeaders$trim$spli2 = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "").trim().split("\n"), _length2 = null == _rawHeaders$trim$spli2 ? 0 : _rawHeaders$trim$spli2.length; _i2 < _length2; _i2++) {
+                            var _line$split = _rawHeaders$trim$spli2[_i2].split(":"), _key = _line$split[0], values = _line$split.slice(1);
+                            result[_key.toLowerCase()] = values.join(":").trim();
+                        }
+                        return result;
+                    }(this.getAllResponseHeaders());
+                    if (!this.status) return reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: no response status code."));
+                    var contentType = responseHeaders["content-type"], isJSON = contentType && (0 === contentType.indexOf("application/json") || 0 === contentType.indexOf("text/json")), responseBody = this.responseText;
+                    try {
+                        responseBody = JSON.parse(responseBody);
+                    } catch (err) {
+                        if (isJSON) return reject(new Error("Invalid json: " + this.responseText + "."));
+                    }
+                    var res = {
+                        status: this.status,
+                        headers: responseHeaders,
+                        body: responseBody
+                    };
+                    return resolve(res);
+                }, !1);
+                xhr.addEventListener("error", function(evt) {
+                    reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + "."));
+                }, !1);
+                xhr.open(method, url, !0);
+                for (var _key4 in normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
+                json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map(function(key) {
+                    return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
+                }).join("&"));
+                xhr.timeout = timeout;
+                xhr.ontimeout = function() {
+                    reject(new Error("Request to " + method.toLowerCase() + " " + url + " has timed out"));
+                };
+                xhr.send(body);
+            });
+        }
+        function addHeaderBuilder(method) {
+            headerBuilders.push(method);
+        }
+        function memoized(target, name, descriptor) {
+            descriptor.value = memoize(descriptor.value, {
+                name: name,
+                thisNamespace: !0
+            });
+        }
+        function decorators_promise(target, name, descriptor) {
+            descriptor.value = promisify(descriptor.value, {
+                name: name
+            });
+        }
+        function isPerc(str) {
+            return "string" == typeof str && /^[0-9]+%$/.test(str);
+        }
+        function isPx(str) {
+            return "string" == typeof str && /^[0-9]+px$/.test(str);
+        }
+        function toNum(val) {
+            if ("number" == typeof val) return val;
+            var match = val.match(/^([0-9]+)(px|%)$/);
+            if (!match) throw new Error("Could not match css value from " + val);
+            return parseInt(match[1], 10);
+        }
+        function toPx(val) {
+            return toNum(val) + "px";
+        }
+        function toCSS(val) {
+            return "number" == typeof val ? toPx(val) : isPerc(val) ? val : toPx(val);
+        }
+        function percOf(num, perc) {
+            return parseInt(num * toNum(perc) / 100, 10);
+        }
+        function normalizeDimension(dim, max) {
+            if ("number" == typeof dim) return dim;
+            if (isPerc(dim)) return percOf(max, dim);
+            if (isPx(dim)) return toNum(dim);
+            throw new Error("Can not normalize dimension: " + dim);
+        }
+        function wrapPromise(method) {
+            var _ref$timeout = (arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}).timeout, expected = [], promises = [], timer = setTimeout(function() {
+                expected && promises.push(src.a.asyncReject(new Error("Expected " + expected[0] + " to be called")));
+            }, void 0 === _ref$timeout ? 5e3 : _ref$timeout), expect = function(name) {
+                var fn = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : noop;
+                expected.push(name);
+                return function() {
+                    for (var _this = this, _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+                    removeFromArray(expected, name);
+                    var _tryCatch = tryCatch(function() {
+                        return fn.call.apply(fn, [ _this ].concat(args));
+                    }), result = _tryCatch.result, error = _tryCatch.error;
+                    if (error) {
+                        promises.push(src.a.asyncReject(error));
+                        throw error;
+                    }
+                    promises.push(src.a.resolve(result));
+                    return result;
+                };
+            }, avoid = function(name) {
+                var fn = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : noop;
+                return function() {
+                    promises.push(src.a.asyncReject(new Error("Expected " + name + " to not be called")));
+                    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) args[_key2] = arguments[_key2];
+                    return fn.call.apply(fn, [ this ].concat(args));
+                };
+            }, expectError = function(name) {
+                var fn = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : noop;
+                expected.push(name);
+                return function() {
+                    for (var _this2 = this, _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) args[_key3] = arguments[_key3];
+                    removeFromArray(expected, name);
+                    var _tryCatch2 = tryCatch(function() {
+                        return fn.call.apply(fn, [ _this2 ].concat(args));
+                    }), result = _tryCatch2.result, error = _tryCatch2.error;
+                    if (error) throw error;
+                    promises.push(src.a.resolve(result).then(function() {
+                        throw new Error("Expected " + name + " to throw an error");
+                    }, noop));
+                    return result;
+                };
+            };
+            promises.push(src.a.try(function() {
+                return method({
+                    expect: expect,
+                    avoid: avoid,
+                    expectError: expectError,
+                    error: avoid
+                });
+            }));
+            return function drain() {
+                return src.a.try(function() {
+                    if (promises.length) return promises.pop();
+                }).then(function() {
+                    return promises.length ? drain() : expected.length ? src.a.delay(10).then(drain) : void 0;
+                });
+            }().then(function() {
+                clearTimeout(timer);
+            });
+        }
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return getUserAgent;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isDevice;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isWebView;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isStandAlone;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isFacebookWebView;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isFirefoxIOS;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isEdgeIOS;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isOperaMini;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isAndroid;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isIos;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isGoogleSearchApp;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isQQBrowser;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isIosWebview;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isAndroidWebview;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isIE;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isIECompHeader;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isElectron;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isIEIntranet;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isMacOsCna;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return supportsPopups;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isDocumentReady;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return urlEncode;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return waitForWindowReady;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return waitForDocumentReady;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return waitForDocumentBody;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return parseQuery;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return getQueryParam;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return urlWillRedirectPage;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return formatQuery;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return extendQuery;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return extendUrl;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return redirect;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return hasMetaViewPort;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isElementVisible;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return enablePerformance;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return getPageRenderTime;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return htmlEncode;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isBrowser;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return querySelectorAll;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return onClick;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return getScript;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isLocalStorageEnabled;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return getBrowserLocales;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return appendChild;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isElement;
+        });
+        __webpack_require__.d(__webpack_exports__, "a", function() {
+            return getElementSafe;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return getElement;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return elementReady;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return PopupOpenError;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return popup;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return writeToWindow;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return writeElementToWindow;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return setStyle;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return awaitFrameLoad;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return awaitFrameWindow;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return createElement;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return iframe;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return addEventListener;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return bindEvents;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return setVendorCSS;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return animate;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return makeElementVisible;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return makeElementInvisible;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return showElement;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return hideElement;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return destroyElement;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return showAndAnimate;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return animateAndHide;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return addClass;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return removeClass;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isElementClosed;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return watchElementForClose;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return fixScripts;
+        });
+        __webpack_require__.d(__webpack_exports__, "b", function() {
+            return onResize;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return experiment;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return getGlobalNameSpace;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return getStorage;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return base64encode;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return base64decode;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return uniqueID;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return getGlobal;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return getObjectID;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return memoize;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return memoizePromise;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return promisify;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return inlineMemoize;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return noop;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return once;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return hashStr;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return strHashStr;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return match;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return awaitKey;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return stringifyError;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return stringifyErrorMessage;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return stringify;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return domainMatches;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return patchMethod;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return extend;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return values;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return perc;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return min;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return max;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return regexMap;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return svgToBase64;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return objFilter;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return identity;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return regexTokenize;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return promiseDebounce;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return safeInterval;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isInteger;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isFloat;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return serializePrimitive;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return deserializePrimitive;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return dotify;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return undotify;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return eventEmitter;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return camelToDasherize;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return dasherizeToCamel;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return capitalizeFirstLetter;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return get;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return safeTimeout;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return defineLazyProp;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isObject;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isObjectObject;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isPlainObject;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return replaceObject;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return copyProp;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return regex;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return regexAll;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isDefined;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return cycle;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return debounce;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isRegex;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return util_weakMapMemoize;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return util_weakMapMemoizePromise;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return getOrSet;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return cleanup;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return tryCatch;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return removeFromArray;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return assertExists;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return request;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return addHeaderBuilder;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return !0;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return memoized;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return decorators_promise;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isPerc;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return isPx;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return toNum;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return toPx;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return toCSS;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return percOf;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return normalizeDimension;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return wrapPromise;
+        });
     },
     "./node_modules/bowser/bowser.min.js": function(module, exports, __webpack_require__) {
         t = "bowser", n = function() {
@@ -4414,7 +5998,7 @@
                 var _this4 = this, _getAutoResize = this.getAutoResize(), width = _getAutoResize.width, height = _getAutoResize.height, element = _getAutoResize.element;
                 if ((width || height) && this.context !== constants.CONTEXT_TYPES.POPUP && !this.watchingForResize) {
                     this.watchingForResize = !0;
-                    Object(belter_src.onResize)(element, function(_ref8) {
+                    Object(belter_src.b)(element, function(_ref8) {
                         var newWidth = _ref8.width, newHeight = _ref8.height;
                         _this4.resize(width ? newWidth : void 0, height ? newHeight : void 0);
                     }, {
@@ -6096,7 +7680,7 @@
                             console.error(err.stack ? err.stack : err);
                         }
                         var _ref10 = "object" === parent__typeof(_this31.component.autoResize) && null !== _this31.component.autoResize ? _this31.component.autoResize : {}, _ref10$width = _ref10.width, width = void 0 !== _ref10$width && _ref10$width, _ref10$height = _ref10.height, height = void 0 !== _ref10$height && _ref10$height, _ref10$element = _ref10.element, element = void 0 === _ref10$element ? "body" : _ref10$element;
-                        (element = Object(belter_src.getElementSafe)(element, doc)) && (width || height) && Object(belter_src.onResize)(element, function(_ref11) {
+                        (element = Object(belter_src.a)(element, doc)) && (width || height) && Object(belter_src.b)(element, function(_ref11) {
                             var newWidth = _ref11.width, newHeight = _ref11.height;
                             _this31.resize(width ? newWidth : void 0, height ? newHeight : void 0);
                         }, {
@@ -8761,9 +10345,9 @@
         "use strict";
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js");
         var config = {
-            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.256.js",
+            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.257.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.256",
+            version: "4.0.257",
             cors: !0,
             env: function() {
                 return "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION;
@@ -9015,10 +10599,16 @@
                 },
                 "cyclegear.com": {
                     disable_venmo: !0
+                },
+                "chegg.com": {
+                    disable_venmo: !0
+                },
+                "youniqueproducts.com": {
+                    disable_venmo: !0
                 }
             },
             creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
-            apmTestDomains: [ "agsm.it", "ls-felgendesign.de", "domecgo.com", "raffaeleinghilterra.it", "hills4me.com", "anastasis.it", "liberidallavoro.org", "lgancce.com", "fiat.com", "amnesty.de", "raftingcenter.it", "myrabona.it", "firabarcelona.com", "elidentsrl.it", "sprayplanet.es", "cutipol.pt", "newslist.it", "bamboomt2.eu", "gisa.net", "italialaser.org", "hydeofficialstore.com", "huber-verlag.de", "joomlacontenteditor.net", "kletterzentrum-innsbruck.at", "knobmusiciandesign.com", "shipstage.com", "whatsmonitor.com", "napoleonx.ai", "activitiesbookingsystem.com", "spider-slacklines.com", "sononato.it", "alpi4000.it", "penimaster.de", "sportbionier.com", "bioseme.it", "ilpaninotondo.it", "meyer-menue.de", "uni-heidelberg.de", "cameo.it", "pasteleriabuenavista.com", "wuv.de", "papacheck.de", "traderlink.com", "agcalabrese.it", "smatchfe.club", "sarastro-stauden.com", "vandenberg-berlin.com", "t-shirtprinting.it", "raftingrepublic.com", "cityspeeddating.at", "euroval.com", "albero-dellavita.it", "mediumelisa.it", "inkmaster.it", "run-healthy.com", "cna.it", "mufight2.com", "louvardgame.be", "pruefungsdoc.de", "europublishing.it", "edaiperiodici.it", "herokuapp.com" ],
+            apmTestDomains: [ "agsm.it", "ls-felgendesign.de", "domecgo.com", "raffaeleinghilterra.it", "hills4me.com", "anastasis.it", "liberidallavoro.org", "lgancce.com", "fiat.com", "amnesty.de", "raftingcenter.it", "myrabona.it", "firabarcelona.com", "elidentsrl.it", "sprayplanet.es", "cutipol.pt", "newslist.it", "bamboomt2.eu", "gisa.net", "italialaser.org", "hydeofficialstore.com", "huber-verlag.de", "joomlacontenteditor.net", "kletterzentrum-innsbruck.at", "knobmusiciandesign.com", "shipstage.com", "whatsmonitor.com", "napoleonx.ai", "activitiesbookingsystem.com", "spider-slacklines.com", "sononato.it", "alpi4000.it", "penimaster.de", "sportbionier.com", "bioseme.it", "ilpaninotondo.it", "meyer-menue.de", "uni-heidelberg.de", "cameo.it", "pasteleriabuenavista.com", "wuv.de", "papacheck.de", "traderlink.com", "agcalabrese.it", "smatchfe.club", "sarastro-stauden.com", "vandenberg-berlin.com", "t-shirtprinting.it", "raftingrepublic.com", "cityspeeddating.at", "euroval.com", "albero-dellavita.it", "mediumelisa.it", "inkmaster.it", "run-healthy.com", "cna.it", "mufight2.com", "louvardgame.be", "pruefungsdoc.de", "europublishing.it", "edaiperiodici.it", "paypal-checkout.herokuapp.com", "day.it", "delinero.de", "unicocampania.it", "blumediterraneosas.com", "rustv.it", "geldverstehen.de", "skiclubfossoasd.it", "panorama-restaurant-stuttgart.de", "movember.com", "ombrellibolero.it", "devoto-oli.it", "el-teatro.de", "ittshop.com", "team-f.de", "ferien.events", "newnailssystem.com", "softwarevenere.com", "stikid.com", "evocoach.it", "caffepiansa.com", "epsoprep.com", "brickowl.com", "one28racing.com", "chogusto.com", "centrostudiliberale.it", "biotech-shop.nl", "knightonline-myko.net", "rad-germany.de", "damascus-store.com", "valkhair.nl", "tu-darmstadt.de", "lemediatv.fr", "mondoevacanze.it", "golfinthesun.org", "altinotravel.gr", "nsk.si", "humanhuman.com", "conento.com", "encuentratupsicologo.com", "onlainez.net", "bp-tools.de", "bestrongforkids.de", "cloudboxes.io", "creatone.de", "nethserver.com", "kulturstiftung-koelnerdom.de", "ixso.eu", "modulus.gr", "aerbrava.com", "allgrass.net", "artfloral.org", "studyclix.ie", "esthergarciaboutique.com", "abookforthat.com", "aurarium.ch", "tippevent.de", "musicspoon.io", "h10hotels.com", "frizzoshopping.com", "stargift.ro", "svojtka.sk", "salvadori.me", "sfmc.eu", "parsifalpark.it", "exilux.de", "brothausmoberg.com", "opificiografico.com", "lalibertadivolare.it", "airportfreewifi.it", "diemagnetisten.de", "shbook.it", "vallandry-sports.com", "crowdcoinage.com", "dresscodeboutique.fr", "talhita.it", "corticle.com", "anymator.de", "legalizer.it", "handmadefantasyworld.com", "1001-sushi-bordeaux.com", "elarconte.com", "sushiathome.pt", "associazionecest.it", "traduzioni-legalizzate.it", "janvas.com", "bluemeusb.nl", "lacala.es", "speironcompany.com", "flam-racing.fr", "1thebrand.com", "kidooland.com", "beneathmysins.com", "linelab.eu", "afroonatural.com", "azurewebsites.net", "munich-ski-shuttle.com", "euroservizi2012.it", "radiostim.com", "cbibikia.com", "nadur8k.com", "custom-hookah.de", "imexlicensing.com", "belts-parma.it", "generated4u.com", "pilarsantisteban.com", "consulenzeagroalimentari.it", "lavilladeipini.com", "burgershacklennep.de", "vmlens.com", "xoring.com", "moto4.it", "parospark.com", "commentme.com", "antoniodalessandro.it", "kinarecords.com", "bybus.pt", "parquecerdeira.com", "cineclaqueta.com", "saddolls.net", "mydamart.fr", "rfbnet.nl", "netsons.org", "rebrickable.com", "portodoavesso.com", "leobridge.net", "mikros.co", "bekinky.net", "pix4u.one", "smtperformances.fr", "siiturista.it", "gorrasbebe.es", "cbd-laden.at", "tobiaswaelde.de", "veneziaradiotv.it", "sopimuspohja.com", "cristianalopes.ddns.net", "saliyafoundation.de", "robertocosentino.it", "billy-white.de", "johndixt.it", "alexmas.cloud", "things-to-do-in-gran-canaria.com", "rroseselavy.it", "paradigmpalace.com", "chardez.be", "online-rechnungen.de", "vip-urlaub.de", "lyrau.com", "perfectiptv3006.000webhostapp.com", "seminarsincyprus.com", "snapandprint.com", "le-heron.net", "need4tech.gr", "eurolamps.eu", "paygety.ee", "gestionaliprosoft.it", "decoindustriel.fr", "acmo.corsica", "slovakforaday.com", "vhlave.sk", "hughmcgovernwriting.com", "nowgaming.fr", "divecentercorralejo.com", "mobile.de", "skebby.it" ],
             customCountry: !1,
             SUPPORTED_BROWSERS: {
                 msie: "11",
@@ -9306,7 +10896,7 @@
                 return "" + config.paypalUrl + loggerUrl;
             },
             get pptmUrl() {
-                return "" + (config.env === constants.t.LOCAL ? config.paypalUrls[constants.t.STAGE] : config.paypalUrl) + config.pptmUri;
+                return "" + config.paypalUrls[config.env] + config.pptmUri;
             },
             get authApiUrl() {
                 return "" + config.apiUrl + config.authApiUri;
@@ -10333,7 +11923,80 @@
                     class: "paypal-checkout-sandbox-iframe"
                 }, container));
             }
-        }), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), hacks__extends = Object.assign || function(target) {
+        }), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js");
+        function shouldCreateInitialPptmScript() {
+            if (!window.location.hostname) return !1;
+            if (Object(lib.H)()) return !1;
+            var existingScript = Object(lib.o)(constants.C);
+            if (Boolean(existingScript)) {
+                Object(beaver_logger_client.k)("pptm_tried_loading_twice");
+                return !1;
+            }
+            return !0;
+        }
+        function removePptm() {
+            var script = Object(lib.o)(constants.C);
+            script && script.parentNode.removeChild(script);
+        }
+        var noContentFoundInContainer, callback, listener, obj, pptm = (noContentFoundInContainer = !1, 
+        callback = "__pptmLoadedWithNoContent", listener = void 0, obj = {
+            reloadPptmScript: function(clientId) {
+                !function tryCreatePptmScript() {
+                    if (obj.shouldReloadPptmScript(clientId)) {
+                        obj.removePptm();
+                        obj.createPptmScript(clientId);
+                    } else listener = tryCreatePptmScript;
+                }();
+            },
+            listenForLoadWithNoContent: function() {
+                window[callback] = function() {
+                    noContentFoundInContainer = !0;
+                    if (listener) {
+                        listener();
+                        listener = void 0;
+                    }
+                };
+            },
+            get callback() {
+                return callback;
+            },
+            get noContentFoundInContainer() {
+                return noContentFoundInContainer;
+            },
+            createPptmScript: function(clientId) {
+                var _track;
+                Object(beaver_logger_client.p)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.PPTM, 
+                _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PPTM_LOAD, _track));
+                var params = {
+                    t: "xo",
+                    id: window.location.hostname,
+                    mrid: config.a.merchantID,
+                    client_id: "",
+                    v: config.a.version,
+                    source: "checkoutjs"
+                };
+                clientId ? params.client_id = clientId : delete params.client_id;
+                var fullUrl = Object(lib.h)(config.a.pptmUrl, params);
+                Object(lib.I)(fullUrl, 0, {
+                    async: !0,
+                    id: constants.C
+                }).then(function() {
+                    var _track2;
+                    window.paypalDDL && window.paypalDDL[0] && "snippetRun" === window.paypalDDL[0].event || window[callback]();
+                    Object(beaver_logger_client.p)(((_track2 = {})[constants.u.KEY.STATE] = constants.u.STATE.PPTM, 
+                    _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PPTM_LOADED, _track2));
+                }).catch(function(err) {
+                    Object(beaver_logger_client.k)("pptm_script_error", {
+                        error: Object(lib.W)(err)
+                    });
+                });
+            },
+            shouldCreateInitialPptmScript: shouldCreateInitialPptmScript,
+            shouldReloadPptmScript: function(clientId) {
+                return !1 !== noContentFoundInContainer && !Object(lib.H)() && !config.a.merchantID && !!clientId;
+            },
+            removePptm: removePptm
+        }), hacks__extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
@@ -10361,10 +12024,10 @@
                         shipping_options: [].concat(transaction.item_list.shipping_options).map(function(option, index) {
                             return {
                                 id: option.id || index.toString(),
-                                label: legacyLabelMap[option.label],
-                                type: legacyTypeMap[option.type],
+                                label: legacyLabelMap[option.label] || option.label,
+                                type: legacyTypeMap[option.type] || option.type,
                                 amount: {
-                                    value: "0.00",
+                                    value: option.amount && option.amount.value ? option.amount.value : "0.00",
                                     currency: transactionAmount.currency
                                 }
                             };
@@ -11585,25 +13248,22 @@
         function renderCards(_ref5) {
             var cards = _ref5.cards, button = _ref5.button, layout = _ref5.layout, size = _ref5.size;
             return cards.map(function(name) {
-                var _ref6, _ref7, _ref8, _ref9, _ref10, _ref11, logo = resources.a[name];
+                var _ref6, _ref7, _ref8, logo = resources.a[name];
                 return Object(jsx.b)("div", componentTemplate__extends({}, ((_ref6 = {})[constants.c.LAYOUT] = layout || "", 
                 _ref6), ((_ref7 = {})[constants.c.SIZE] = size || "", _ref7), ((_ref8 = {})[constants.c.BUTTON] = button || !1, 
                 _ref8[constants.c.FUNDING_SOURCE] = "" + constants.v.CARD, _ref8[constants.c.CARD] = "" + name, 
                 _ref8), {
                     class: (button ? class_CLASS.BUTTON : "") + " " + class_CLASS.CARD + " " + class_CLASS.CARD + "-" + name,
                     tabindex: "0"
-                }), Object(jsx.b)("img", componentTemplate__extends({}, ((_ref9 = {})[constants.c.LAYOUT] = layout || "", 
-                _ref9), ((_ref10 = {})[constants.c.SIZE] = size || "", _ref10), ((_ref11 = {})[constants.c.BUTTON] = button || !1, 
-                _ref11[constants.c.FUNDING_SOURCE] = "" + constants.v.CARD, _ref11[constants.c.CARD] = "" + name, 
-                _ref11), {
+                }), Object(jsx.b)("img", {
                     style: " display: block; ",
                     src: "data:image/svg+xml;base64," + Object(base64.btoa)(logo),
                     alt: name
-                })));
+                }));
             });
         }
-        function renderContent(text, _ref13) {
-            var label = _ref13.label, locale = _ref13.locale, color = _ref13.color, branding = _ref13.branding, logoColor = _ref13.logoColor, funding = _ref13.funding, env = _ref13.env, _cards = _ref13.cards, dynamicContent = _ref13.dynamicContent, layout = _ref13.layout, size = _ref13.size, _content = function(locale) {
+        function renderContent(text, _ref10) {
+            var label = _ref10.label, locale = _ref10.locale, color = _ref10.color, branding = _ref10.branding, logoColor = _ref10.logoColor, funding = _ref10.funding, env = _ref10.env, _cards = _ref10.cards, dynamicContent = _ref10.dynamicContent, layout = _ref10.layout, size = _ref10.size, _content = function(locale) {
                 var country = locale.country, lang = locale.lang;
                 return content_componentContent[country][lang];
             }(locale);
@@ -11678,8 +13338,8 @@
                 }
             });
         }
-        function renderButton(_ref14) {
-            var _ref15, _ref16, _ref17, size = _ref14.size, label = _ref14.label, color = _ref14.color, locale = _ref14.locale, branding = _ref14.branding, multiple = _ref14.multiple, layout = _ref14.layout, shape = _ref14.shape, source = _ref14.source, funding = _ref14.funding, i = _ref14.i, env = _ref14.env, cards = _ref14.cards, installmentperiod = _ref14.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = getButtonConfig(label, determineLabel({
+        function renderButton(_ref11) {
+            var _ref12, _ref13, _ref14, size = _ref11.size, label = _ref11.label, color = _ref11.color, locale = _ref11.locale, branding = _ref11.branding, multiple = _ref11.multiple, layout = _ref11.layout, shape = _ref11.shape, source = _ref11.source, funding = _ref11.funding, i = _ref11.i, env = _ref11.env, cards = _ref11.cards, installmentperiod = _ref11.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = getButtonConfig(label, determineLabel({
                 label: label,
                 source: source,
                 multiple: multiple,
@@ -11702,9 +13362,9 @@
                 size: size
             });
             var hasTabIndex = -1 === [ constants.v.CARD ].indexOf(source);
-            return Object(jsx.b)("div", componentTemplate__extends({}, ((_ref15 = {})[constants.c.LAYOUT] = layout || "", 
-            _ref15), ((_ref16 = {})[constants.c.SIZE] = size || "", _ref16), ((_ref17 = {})[constants.c.FUNDING_SOURCE] = source, 
-            _ref17[constants.c.BUTTON] = !0, _ref17), {
+            return Object(jsx.b)("div", componentTemplate__extends({}, ((_ref12 = {})[constants.c.LAYOUT] = layout || "", 
+            _ref12), ((_ref13 = {})[constants.c.SIZE] = size || "", _ref13), ((_ref14 = {})[constants.c.FUNDING_SOURCE] = source, 
+            _ref14[constants.c.BUTTON] = !0, _ref14), {
                 class: class_CLASS.BUTTON + " " + class_CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -11724,8 +13384,8 @@
                 tabindex: hasTabIndex && 0
             }), contentText);
         }
-        function componentTemplate(_ref20) {
-            var _ref21, props = _ref20.props;
+        function componentTemplate(_ref17) {
+            var _ref18, props = _ref17.props;
             if (props && props.style) {
                 var style = props.style;
                 "generic" === style.label && (style.label = "paypal");
@@ -11776,8 +13436,8 @@
                     installmentperiod: installmentperiod,
                     size: size
                 });
-            }), taglineNode = function(_ref18) {
-                var label = _ref18.label, tagline = _ref18.tagline, color = _ref18.color, locale = _ref18.locale, multiple = _ref18.multiple, env = _ref18.env, cards = _ref18.cards;
+            }), taglineNode = function(_ref15) {
+                var label = _ref15.label, tagline = _ref15.tagline, color = _ref15.color, locale = _ref15.locale, multiple = _ref15.multiple, env = _ref15.env, cards = _ref15.cards;
                 if (tagline) {
                     var text = renderContent(multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag"), {
                         locale: locale,
@@ -11800,8 +13460,8 @@
                 multiple: multiple,
                 env: env,
                 cards: cards
-            }), fundingiconNode = function(_ref12) {
-                var cards = _ref12.cards, fundingicons = _ref12.fundingicons, size = _ref12.size, layout = _ref12.layout;
+            }), fundingiconNode = function(_ref9) {
+                var cards = _ref9.cards, fundingicons = _ref9.fundingicons, size = _ref9.size, layout = _ref9.layout;
                 if (fundingicons) return Object(jsx.b)("div", {
                     class: "" + class_CLASS.FUNDINGICONS
                 }, renderCards({
@@ -11815,8 +13475,8 @@
                 fundingicons: fundingicons,
                 size: size,
                 layout: layout
-            }), styleNode = function(_ref19) {
-                var height = _ref19.height, cardNumber = _ref19.cardNumber;
+            }), styleNode = function(_ref16) {
+                var height = _ref16.height, cardNumber = _ref16.cardNumber;
                 return Object(jsx.b)("style", {
                     innerHTML: componentStyle({
                         height: height,
@@ -11844,8 +13504,8 @@
                     logoColor: "blue"
                 })));
             }(normalizeProps(props)) : null;
-            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.256", 
-            _ref21), {
+            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.257", 
+            _ref18), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -11862,6 +13522,14 @@
             }
             return target;
         };
+        pptm.listenForLoadWithNoContent();
+        var isDomainAllowed = Object(lib.J)(function() {
+            var domain = Object(cross_domain_utils_src.f)().replace(/^https?:\/\//, "").replace(/^www\./, "");
+            return !!config.a.apmTestDomains.some(function(allowDomain) {
+                var regex = new RegExp("[^a-zA-Z\\d\\-]*" + allowDomain.replace(/\./g, "\\.") + "$");
+                return null !== domain.match(regex);
+            });
+        });
         var creditThrottle = void 0, component_Button = Object(src.c)({
             tag: "paypal-button",
             name: "ppbutton",
@@ -12177,9 +13845,7 @@
                                 var locale = normalizeProps(props, {
                                     locale: Object(lib.j)()
                                 }).locale;
-                                if (-1 === getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country)) return !1;
-                                var domain = Object(cross_domain_utils_src.f)().replace(/^https?:\/\//, "").replace(/^www\./, "");
-                                return -1 !== config.a.apmTestDomains.indexOf(domain);
+                                return -1 !== getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) && isDomainAllowed();
                             }(source, props);
                         });
                         allowed = allowed.concat(apmFunding);
@@ -12228,6 +13894,7 @@
                             Object(beaver_logger_client.k)("button_render_branding_" + (style.branding || "default"));
                             Object(beaver_logger_client.k)("button_render_fundingicons_" + (style.fundingicons || "default"));
                             Object(beaver_logger_client.k)("button_render_tagline_" + (style.tagline || "default"));
+                            pptm.reloadPptmScript(this.props.client[this.props.env]);
                             Object(beaver_logger_client.p)(((_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
                             _track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_RENDER, _track3[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, 
                             _track3[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track3[constants.u.KEY.BUTTON_SOURCE] = this.props.source, 
@@ -12903,30 +14570,7 @@
             Object(lib.C)() || Object(beaver_logger_client.q)("ineligible");
             Object(lib.c)();
             Object(lib.z)();
-            Object(lib.H)() || function() {
-                var _track;
-                if (window.location.hostname) if (Boolean(Object(lib.o)(constants.C))) Object(beaver_logger_client.k)("pptm_tried_loading_twice"); else {
-                    Object(beaver_logger_client.p)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.PPTM, 
-                    _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PPTM_LOAD, _track));
-                    var fullUrl = Object(lib.h)(config.a.pptmUrl, {
-                        t: "xo",
-                        id: window.location.hostname,
-                        mrid: config.a.merchantID
-                    });
-                    Object(lib.I)(fullUrl, 0, {
-                        async: !0,
-                        id: constants.C
-                    }).then(function() {
-                        var _track2;
-                        Object(beaver_logger_client.p)(((_track2 = {})[constants.u.KEY.STATE] = constants.u.STATE.PPTM, 
-                        _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PPTM_LOADED, _track2));
-                    }).catch(function(err) {
-                        Object(beaver_logger_client.k)("pptm_script_error", {
-                            error: Object(lib.W)(err)
-                        });
-                    });
-                }
-            }();
+            pptm.shouldCreateInitialPptmScript() && pptm.createPptmScript();
             precacheRemembered && Object(lib.Q)();
             Object(lib.n)("force_bridge") && !Object(lib.H)() && Object(lib.N)(config.a.env);
             Object(beaver_logger_client.k)("setup_" + config.a.env);
@@ -13015,7 +14659,7 @@
             setup__track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.256", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.257", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         var interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
@@ -13932,7 +15576,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.256";
+                payload.version = "4.0.257";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 payload.appName = APP_NAME;
@@ -14263,7 +15907,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(session.c)(),
-                    ver: "4.0.256"
+                    ver: "4.0.257"
                 };
             });
             Object(client.a)(function() {
@@ -14573,11 +16217,11 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return "4.0.256";
+            return "4.0.257";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
-            return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.256.js";
+            return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.257.js";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -14594,7 +16238,7 @@
                         domain: metaFrameDomain
                     });
                     return src.bridge.openBridge(Object(dom.a)(metaFrameUrl, {
-                        version: "4.0.256"
+                        version: "4.0.257"
                     }), metaFrameDomain).then(function() {
                         return metaListener;
                     }).then(function(_ref) {
@@ -15368,18 +17012,18 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         if (!Object(__WEBPACK_IMPORTED_MODULE_2__lib_util__.g)()) throw new Error("Do not integrate with versioned script url");
-        if (window.paypal && "4.0.256" === window.paypal.version) {
+        if (window.paypal && "4.0.257" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.256"
+                version: "4.0.257"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.256) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.257) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.256" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.257" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.256"
+                version: "4.0.257"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.256");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.257");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
@@ -16025,4 +17669,4 @@
         });
     }
 }));
-//# sourceMappingURL=checkout.4.0.256.js.map
+//# sourceMappingURL=checkout.4.0.257.js.map
