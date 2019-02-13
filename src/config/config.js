@@ -373,6 +373,10 @@ export let config = {
 
         'chegg.com': {
             disable_venmo: true
+        },
+
+        'youniqueproducts.com': {
+            disable_venmo: true
         }
     },
 
