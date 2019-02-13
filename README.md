@@ -61,3 +61,7 @@ npm test
 Here is a full list of features provided by this library
 
 * <a href="docs/http.md">Http (AJAX) Helper functions</a>
+
+## Releasing
+
+This package is published weekly, **Every Wednesday**. Please [view our Changelog](CHANGELOG.md) to stay updated with bug fixes and new features.

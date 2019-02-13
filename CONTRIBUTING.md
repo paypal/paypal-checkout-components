@@ -37,6 +37,7 @@ $ npm test
 3. Locally merge (or rebase) the upstream branch into your topic branch: `$ git pull upstream && git merge`.
 4. Push your topic branch up to your fork: `$ git push origin <topic-branch-name>`.
 5. Open a [Pull Request](https://help.github.com/articles/using-pull-requests) with a clear title and description.
+6. You should follow the [Angular.js commit message guidelines](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines) for both your commit messages and PR titles.
 
 If you have any questions about contributing, please feel free to contact us by posting your questions on GitHub.
 
