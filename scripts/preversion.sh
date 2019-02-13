@@ -2,9 +2,11 @@
 
 set -e;
 
+# Remove the `dist/` folder; we will re-generate later on
 rm dist/*;
 git checkout dist/;
 
+# Make sure the HEAD is clean
 if ! git diff-files --quiet; then
     echo "Can not publish with unstaged uncommited changes";
     exit 1;
@@ -15,6 +17,7 @@ if ! git diff-index --quiet --cached HEAD; then
     exit 1;
 fi;
 
+# Re-install just the basics
 modules='zoid post-robot zalgo-promise beaver-logger cross-domain-safe-weakmap cross-domain-utils belter paypal-braintree-web-client grumbler-scripts paypal-sdk-constants';
 
 for module in $modules; do
@@ -22,15 +25,4 @@ for module in $modules; do
 done;
 
 npm install $modules;
-
 npm run build;
-
-git add dist/;
-git add ./test/screenshot/images --all;
-git commit -m "Dist" || echo "Nothing to distribute";
-
-npm version ${1-patch};
-
-git push;
-git push --tags;
-npm publish;
