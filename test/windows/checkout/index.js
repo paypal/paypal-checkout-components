@@ -55,6 +55,21 @@ if (action === 'checkout') {
         });
     });
 
+} else if (action === 'shippingOptions') {
+
+    window.xprops.payment().then(paymentToken => {
+        return window.xprops.supplement.getPaymentOptions(paymentToken)
+            .then(options => {
+                const shippingOptions = options.transactions.map(t => {
+                    if (t.item_list && t.item_list.shipping_options) {
+                        return t.item_list.shipping_options;
+                    }
+                    return t;
+                });
+
+                return onInit(shippingOptions);
+            });
+    });
 } else if (action === 'shippingChange') {
 
     let callbackActions = {
