@@ -110,7 +110,11 @@ let creditThrottle;
 type ButtonOptions = {
     style : {|
         maxbuttons? : number,
-        layout? : string
+        layout? : string,
+        label? : string,
+        size? : string,
+        shape? : string,
+        color? : string
     |},
     client : {
         [string] : (string | ZalgoPromise<string>)

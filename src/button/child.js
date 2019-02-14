@@ -6,7 +6,7 @@ import { track, flush as flushLogs } from 'beaver-logger/client';
 import { Checkout } from '../checkout';
 import { setupPopupBridgeProxy } from '../integrations/popupBridge';
 import { getPageRenderTime, setLogLevel } from '../lib';
-import { ATTRIBUTE, FUNDING, FPTI, BUTTON_LAYOUT } from '../constants';
+import { ATTRIBUTE, FUNDING, FPTI, BUTTON_LAYOUT, BUTTON_COLOR, BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LABEL } from '../constants';
 
 import typeof { Button } from './component';
 
@@ -30,7 +30,11 @@ export function setupButtonChild(ButtonComponent : Button) {
             [FPTI.KEY.FUNDING_LIST]:   fundingSources.join(':'),
             [FPTI.KEY.FUNDING_COUNT]:  fundingSources.length,
             [FPTI.KEY.PAGE_LOAD_TIME]: pageRenderTime,
-            [FPTI.KEY.BUTTON_LAYOUT]:  (xprops && xprops.style && xprops.style.layout) || BUTTON_LAYOUT.HORIZONTAL
+            [FPTI.KEY.BUTTON_LAYOUT]:  (xprops && xprops.style && xprops.style.layout) || BUTTON_LAYOUT.HORIZONTAL,
+            [FPTI.KEY.BUTTON_COLOR]:   (xprops && xprops.style && xprops.style.color)  || BUTTON_COLOR.GOLD,
+            [FPTI.KEY.BUTTON_SIZE]:    (xprops && xprops.style && xprops.style.size)   || BUTTON_SIZE.SMALL,
+            [FPTI.KEY.BUTTON_SHAPE]:   (xprops && xprops.style && xprops.style.shape)  || BUTTON_SHAPE.PILL,
+            [FPTI.KEY.BUTTON_LABEL]:   (xprops && xprops.style && xprops.style.label)  || BUTTON_LABEL.CHECKOUT
         });
 
         flushLogs();

@@ -29,6 +29,10 @@ export const FPTI = {
         FUNDING_COUNT:      'eligible_payment_count',
         CHOSEN_FUNDING:     'selected_payment_method',
         BUTTON_LAYOUT:      'button_layout',
+        BUTTON_COLOR:       'button_color',
+        BUTTON_SIZE:        'button_size',
+        BUTTON_SHAPE:       'button_shape',
+        BUTTON_LABEL:       'button_label',
         VERSION:            'checkoutjs_version'
     },
 
