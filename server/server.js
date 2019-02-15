@@ -9,7 +9,7 @@ import type { ExpressRequest, ExpressResponse } from './types';
 
 const app = express();
 const PORT = process.env.PORT || 8003;
-const URI = '/sdk/js/smart-buttons';
+const URI = '/smart/buttons';
 
 const buttonMiddleware = getButtonMiddleware();
 
