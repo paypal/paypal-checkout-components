@@ -74,8 +74,7 @@ export let config = {
             allow_full_page_fallback:        true,
             memoize_payment:                 true,
             force_bridge:                    true,
-            log_authorize:                   true,
-            disable_payment_timeout:         true
+            log_authorize:                   true
         },
 
         'ulta.com': {
@@ -103,8 +102,7 @@ export let config = {
             allow_full_page_fallback:        true,
             memoize_payment:                 true,
             force_bridge:                    true,
-            log_authorize:                   true,
-            disable_payment_timeout:         true
+            log_authorize:                   true
         },
 
         'ticketmaster.com': {
