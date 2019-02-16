@@ -32,7 +32,7 @@ In certain scenarios the checkout window needs to be loaded in an iframe. This c
 
 #### Allow iframes on server
 
-When `req.query.xcomponent` is passed, do not send `X-FRAME-OPTIONS` header
+When `req.query.sdkMeta` is passed, do not send `X-FRAME-OPTIONS` header
 
 #### Validate whether iframes are allowed on the client
 
