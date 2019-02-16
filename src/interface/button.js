@@ -1,18 +1,11 @@
 /* @flow */
 
 import { isPayPalDomain } from '@paypal/sdk-client/src';
-import { PopupOpenError as _PopupOpenError } from 'zoid/src';
+import { PopupOpenError as _PopupOpenError, destroy as destroyZoid } from 'zoid/src';
 
 import { setupLogger, allowIframe as _allowIframe } from '../lib';
 import { getCheckoutComponent } from '../checkout';
 import { getButtonsComponent } from '../buttons';
-
-const CheckoutComponent = getCheckoutComponent();
-
-export const Buttons = getButtonsComponent();
-export let Checkout;
-export let PopupOpenError;
-export let allowIframe;
 
 export const request = {
     addHeaderBuilder: () => {
@@ -20,12 +13,39 @@ export const request = {
     }
 };
 
-if (isPayPalDomain()) {
-    Checkout = CheckoutComponent;
-    PopupOpenError = _PopupOpenError;
-    allowIframe = _allowIframe;
+export const Buttons = {
+    __get__: () => getButtonsComponent()
+};
+
+export const Checkout = {
+    __get__: () => {
+        const component = getCheckoutComponent();
+        if (isPayPalDomain()) {
+            return component;
+        }
+    }
+};
+
+export const PopupOpenError = {
+    __get__: () => {
+        if (isPayPalDomain()) {
+            return _PopupOpenError;
+        }
+    }
+};
+
+export const allowIframe = {
+    __get__: () => {
+        if (isPayPalDomain()) {
+            return _allowIframe;
+        }
+    }
+};
+
+export function setup() {
+    setupLogger();
 }
 
-export function setupButtons() {
-    setupLogger();
+export function destroy() {
+    destroyZoid();
 }
