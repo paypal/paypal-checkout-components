@@ -124,17 +124,6 @@ Please see https://github.com/paypal/paypal-sdk-constants for the full list of c
 	- `state`: Shipping address state or province
 	- `postal_code`: Shipping address ZIP code or postal code
 	- `country`: Shipping address country
-
-#### `commit`
-
-`window.xprops.commit` is a boolean which should be used to decide whether to display a 'pay now' button or a 'continue' button on the review page.
-
-#### `accessToken`
-
-`window.xprops.accessToken().then(accessToken => ...)` should be called if it is present. The resulting access token should be used as the buyer's access token for any authentication.
-
----
-
 - `paymentID` - [optional] the payment ID for the transaction, if the transaction was created using the payments api 
 - `billingToken` - [optional] the BA- token for the transaction, if a billing-agreement flow 
 - `selected_shipping_method`: [optional] the shipping option selected by the buyer
@@ -147,3 +136,12 @@ Please see https://github.com/paypal/paypal-sdk-constants for the full list of c
 `actions` should contain the following:
 
 - `reject` - [required] a function that the merchant will call if they do not support the address or selected shipping option.
+
+
+#### `commit`
+
+`window.xprops.commit` is a boolean which should be used to decide whether to display a 'pay now' button or a 'continue' button on the review page.
+
+#### `accessToken`
+
+`window.xprops.accessToken().then(accessToken => ...)` should be called if it is present. The resulting access token should be used as the buyer's access token for any authentication.
