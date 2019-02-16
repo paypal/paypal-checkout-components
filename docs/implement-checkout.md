@@ -129,6 +129,14 @@ Please see https://github.com/paypal/paypal-sdk-constants for the full list of c
 	- `postal_code`: Shipping address ZIP code or postal code
 	- `country`: Shipping address country
 
+#### `commit`
+
+`window.xprops.commit` is a boolean which should be used to decide whether to display a 'pay now' button or a 'continue' button on the review page.
+
+#### `accessToken`
+
+`window.xprops.accessToken().then(accessToken => ...)` should be called if it is present. The resulting access token should be used as the buyer's access token for any authentication.
+
 ---
 
 - `paymentID` - [optional] the payment ID for the transaction, if the transaction was created using the payments api 
