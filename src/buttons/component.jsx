@@ -511,6 +511,13 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
             setupButtonChild(component);
         }
 
+        const driver = component.driver;
+        component.driver = (name, module) => {
+            getLogger().info(`driver_${ name }_${ getEnv() }`);
+            getLogger().flush();
+            return driver(name, module);
+        };
+
         return component;
     });
 }
