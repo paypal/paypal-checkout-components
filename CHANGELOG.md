@@ -13,7 +13,6 @@
 
 ## 5.0.0 (2019-02-08)
 
-* 5.0.0 ([d11eb12](http://github.paypal.com/paypal/paypal-checkout/commit/d11eb12))
 * Dist ([fa7de77](http://github.paypal.com/paypal/paypal-checkout/commit/fa7de77))
 * Do not allow button to be rendered into button element - breaks in firefox ([2b7676b](http://github.paypal.com/paypal/paypal-checkout/commit/2b7676b))
 * Set venmo to remembered mode ([2868e82](http://github.paypal.com/paypal/paypal-checkout/commit/2868e82))
@@ -23,14 +22,12 @@
 
 ## <small>4.1.47 (2019-02-08)</small>
 
-* 4.1.47 ([289055a](http://github.paypal.com/paypal/paypal-checkout/commit/289055a))
 * Call getCheckoutComponent to register component in parent window ([6eeaa8c](http://github.paypal.com/paypal/paypal-checkout/commit/6eeaa8c))
 
 
 
 ## <small>4.1.46 (2019-02-08)</small>
 
-* 4.1.46 ([8607eec](http://github.paypal.com/paypal/paypal-checkout/commit/8607eec))
 * Add check-size script ([79a5b33](http://github.paypal.com/paypal/paypal-checkout/commit/79a5b33))
 * Cleanup ([9f3089b](http://github.paypal.com/paypal/paypal-checkout/commit/9f3089b))
 * Dist ([0325dd3](http://github.paypal.com/paypal/paypal-checkout/commit/0325dd3))
@@ -44,7 +41,6 @@
 
 ## <small>4.1.45 (2019-01-25)</small>
 
-* 4.1.45 ([e3d3ece](http://github.paypal.com/paypal/paypal-checkout/commit/e3d3ece))
 * Cleanup tests ([ac5edc5](http://github.paypal.com/paypal/paypal-checkout/commit/ac5edc5))
 * Correctly vertical-align button body ([f906aa9](http://github.paypal.com/paypal/paypal-checkout/commit/f906aa9))
 * Dist ([7182bf1](http://github.paypal.com/paypal/paypal-checkout/commit/7182bf1))
@@ -56,28 +52,24 @@
 
 ## <small>4.1.44 (2019-01-17)</small>
 
-* 4.1.44 ([50ea6d0](http://github.paypal.com/paypal/paypal-checkout/commit/50ea6d0))
 * Add createBillingAgreement prop ([b8afda5](http://github.paypal.com/paypal/paypal-checkout/commit/b8afda5))
 
 
 
 ## <small>4.1.43 (2019-01-10)</small>
 
-* 4.1.43 ([d4c8715](http://github.paypal.com/paypal/paypal-checkout/commit/d4c8715))
 * Add props to xchild ([fc5e4d2](http://github.paypal.com/paypal/paypal-checkout/commit/fc5e4d2))
 
 
 
 ## <small>4.1.42 (2019-01-10)</small>
 
-* 4.1.42 ([8f6715d](http://github.paypal.com/paypal/paypal-checkout/commit/8f6715d))
 * Add xchild for backwards compatibility ([149efe3](http://github.paypal.com/paypal/paypal-checkout/commit/149efe3))
 
 
 
 ## <small>4.1.41 (2019-01-10)</small>
 
-* 4.1.41 ([9ec97bb](http://github.paypal.com/paypal/paypal-checkout/commit/9ec97bb))
 * Default checkout to iframe when popups not supported ([8c7fee1](http://github.paypal.com/paypal/paypal-checkout/commit/8c7fee1))
 * Dist ([611a4c7](http://github.paypal.com/paypal/paypal-checkout/commit/611a4c7))
 * Fix module resolution ([0575f45](http://github.paypal.com/paypal/paypal-checkout/commit/0575f45))
@@ -86,7 +78,6 @@
 
 ## <small>4.1.40 (2019-01-10)</small>
 
-* 4.1.40 ([78db240](http://github.paypal.com/paypal/paypal-checkout/commit/78db240))
 * Dist ([8805a17](http://github.paypal.com/paypal/paypal-checkout/commit/8805a17))
 * Zoid v8 overhaul ([0fbcbc4](http://github.paypal.com/paypal/paypal-checkout/commit/0fbcbc4))
 * docs(callback-api): Adding integration documentation for the `onShippingChange` xprop (#966) ([6530e82](http://github.paypal.com/paypal/paypal-checkout/commit/6530e82)), closes [#966](http://github.paypal.com/paypal/paypal-checkout/issues/966)
@@ -95,7 +86,6 @@
 
 ## <small>4.1.39 (2018-12-14)</small>
 
-* 4.1.39 ([8197bb3](http://github.paypal.com/paypal/paypal-checkout/commit/8197bb3))
 * Dist ([29b6e84](http://github.paypal.com/paypal/paypal-checkout/commit/29b6e84))
 * Do not keep margin below last row of buttons ([a36956d](http://github.paypal.com/paypal/paypal-checkout/commit/a36956d))
 
@@ -103,7 +93,6 @@
 
 ## <small>4.1.38 (2018-12-13)</small>
 
-* 4.1.38 ([dfbe37a](http://github.paypal.com/paypal/paypal-checkout/commit/dfbe37a))
 * Add implement checkout doc ([0db368f](http://github.paypal.com/paypal/paypal-checkout/commit/0db368f))
 * Do not send sdkMeta in window name to child ([af6a167](http://github.paypal.com/paypal/paypal-checkout/commit/af6a167))
 * Only allow iframe check on paypal domain ([f333ed0](http://github.paypal.com/paypal/paypal-checkout/commit/f333ed0))
@@ -113,7 +102,6 @@
 
 ## <small>4.1.37 (2018-12-11)</small>
 
-* 4.1.37 ([3bfedce](http://github.paypal.com/paypal/paypal-checkout/commit/3bfedce))
 * Dist ([498348c](http://github.paypal.com/paypal/paypal-checkout/commit/498348c))
 * Update to use paypal namespace ([c20102b](http://github.paypal.com/paypal/paypal-checkout/commit/c20102b))
 
@@ -121,7 +109,6 @@
 
 ## <small>4.1.36 (2018-12-11)</small>
 
-* 4.1.36 ([009eee3](http://github.paypal.com/paypal/paypal-checkout/commit/009eee3))
 * Clean up webpack test config ([372d31c](http://github.paypal.com/paypal/paypal-checkout/commit/372d31c))
 * Dist ([05bfb5c](http://github.paypal.com/paypal/paypal-checkout/commit/05bfb5c))
 * Fix server-side render when possible ([dddd6f2](http://github.paypal.com/paypal/paypal-checkout/commit/dddd6f2))
@@ -132,7 +119,6 @@
 
 ## <small>4.1.35 (2018-12-06)</small>
 
-* 4.1.35 ([0647d8a](http://github.paypal.com/paypal/paypal-checkout/commit/0647d8a))
 * Dist ([8a5786d](http://github.paypal.com/paypal/paypal-checkout/commit/8a5786d))
 * Fix proxyRest ([5bcf21d](http://github.paypal.com/paypal/paypal-checkout/commit/5bcf21d))
 
@@ -140,14 +126,12 @@
 
 ## <small>4.1.34 (2018-12-05)</small>
 
-* 4.1.34 ([7c79c33](http://github.paypal.com/paypal/paypal-checkout/commit/7c79c33))
 * Fix checkout renderTo patch ([f1c900d](http://github.paypal.com/paypal/paypal-checkout/commit/f1c900d))
 
 
 
 ## <small>4.1.33 (2018-12-05)</small>
 
-* 4.1.33 ([6864222](http://github.paypal.com/paypal/paypal-checkout/commit/6864222))
 * Dist ([8f83dd9](http://github.paypal.com/paypal/paypal-checkout/commit/8f83dd9))
 * Localize button specific stuff ([6527391](http://github.paypal.com/paypal/paypal-checkout/commit/6527391))
 * Rename checkout props with aliases ([7a3cdbb](http://github.paypal.com/paypal/paypal-checkout/commit/7a3cdbb))
@@ -156,7 +140,6 @@
 
 ## <small>4.1.32 (2018-12-04)</small>
 
-* 4.1.32 ([4700a64](http://github.paypal.com/paypal/paypal-checkout/commit/4700a64))
 * Add popup pre-rendering ([3c3de56](http://github.paypal.com/paypal/paypal-checkout/commit/3c3de56))
 * Dist ([449f6d1](http://github.paypal.com/paypal/paypal-checkout/commit/449f6d1))
 
@@ -164,7 +147,6 @@
 
 ## <small>4.1.31 (2018-12-04)</small>
 
-* 4.1.31 ([52457d8](http://github.paypal.com/paypal/paypal-checkout/commit/52457d8))
 * Dist ([c6bb0a4](http://github.paypal.com/paypal/paypal-checkout/commit/c6bb0a4))
 * Temporary fix for stage stylesheet render ([59c73c3](http://github.paypal.com/paypal/paypal-checkout/commit/59c73c3))
 
@@ -172,7 +154,6 @@
 
 ## <small>4.1.30 (2018-12-03)</small>
 
-* 4.1.30 ([0a49619](http://github.paypal.com/paypal/paypal-checkout/commit/0a49619))
 * Dist ([4fe3131](http://github.paypal.com/paypal/paypal-checkout/commit/4fe3131))
 * Fix period validation ([b97bb05](http://github.paypal.com/paypal/paypal-checkout/commit/b97bb05))
 * User innerHTML for button style tag ([a22d6d0](http://github.paypal.com/paypal/paypal-checkout/commit/a22d6d0))
@@ -181,7 +162,6 @@
 
 ## <small>4.1.29 (2018-11-30)</small>
 
-* 4.1.29 ([0c10585](http://github.paypal.com/paypal/paypal-checkout/commit/0c10585))
 * Add scrolling attributes ([5759aac](http://github.paypal.com/paypal/paypal-checkout/commit/5759aac))
 * Dist ([e018196](http://github.paypal.com/paypal/paypal-checkout/commit/e018196))
 * Test fixes ([69f5663](http://github.paypal.com/paypal/paypal-checkout/commit/69f5663))
@@ -192,28 +172,24 @@
 
 ## <small>4.1.28 (2018-11-20)</small>
 
-* 4.1.28 ([673819b](http://github.paypal.com/paypal/paypal-checkout/commit/673819b))
 * Allow createOrder to return a string ([82b9f01](http://github.paypal.com/paypal/paypal-checkout/commit/82b9f01))
 
 
 
 ## <small>4.1.27 (2018-11-17)</small>
 
-* 4.1.27 ([1d7b7d4](http://github.paypal.com/paypal/paypal-checkout/commit/1d7b7d4))
 * Re-add globals for checkout ([1536a16](http://github.paypal.com/paypal/paypal-checkout/commit/1536a16))
 
 
 
 ## <small>4.1.26 (2018-11-17)</small>
 
-* 4.1.26 ([c75b888](http://github.paypal.com/paypal/paypal-checkout/commit/c75b888))
 * Import checkout component when requested ([aa8c6d8](http://github.paypal.com/paypal/paypal-checkout/commit/aa8c6d8))
 
 
 
 ## <small>4.1.25 (2018-11-17)</small>
 
-* 4.1.25 ([35897cd](http://github.paypal.com/paypal/paypal-checkout/commit/35897cd))
 * Dist ([9eda901](http://github.paypal.com/paypal/paypal-checkout/commit/9eda901))
 * Do not use find for IE11 compatibility ([47b9463](http://github.paypal.com/paypal/paypal-checkout/commit/47b9463))
 * Export checkout on paypal domains when buttons requested ([784de15](http://github.paypal.com/paypal/paypal-checkout/commit/784de15))
@@ -223,7 +199,6 @@
 
 ## <small>4.1.24 (2018-11-16)</small>
 
-* 4.1.24 ([d1ed115](http://github.paypal.com/paypal/paypal-checkout/commit/d1ed115))
 * Dist ([d2cff73](http://github.paypal.com/paypal/paypal-checkout/commit/d2cff73))
 * More type cleanup ([9b750f8](http://github.paypal.com/paypal/paypal-checkout/commit/9b750f8))
 * Move common libraries to web-client ([a7c9237](http://github.paypal.com/paypal/paypal-checkout/commit/a7c9237))
@@ -235,7 +210,6 @@
 
 ## <small>4.1.23 (2018-11-14)</small>
 
-* 4.1.23 ([a69ffcd](http://github.paypal.com/paypal/paypal-checkout/commit/a69ffcd))
 * Count funding as ineligible if unbranded ([eb5243b](http://github.paypal.com/paypal/paypal-checkout/commit/eb5243b))
 * Dist ([5d8dd8a](http://github.paypal.com/paypal/paypal-checkout/commit/5d8dd8a))
 * Use innerHTML for script tags ([5e3b786](http://github.paypal.com/paypal/paypal-checkout/commit/5e3b786))
@@ -244,7 +218,6 @@
 
 ## <small>4.1.22 (2018-11-09)</small>
 
-* 4.1.22 ([531de80](http://github.paypal.com/paypal/paypal-checkout/commit/531de80))
 * Dist ([c5c70ee](http://github.paypal.com/paypal/paypal-checkout/commit/c5c70ee))
 * Do not map capture to sale ([ecea0fd](http://github.paypal.com/paypal/paypal-checkout/commit/ecea0fd))
 * Mark funding source as ineligible if not present in eligibility object ([206f824](http://github.paypal.com/paypal/paypal-checkout/commit/206f824))
@@ -254,7 +227,6 @@
 
 ## <small>4.1.21 (2018-11-07)</small>
 
-* 4.1.21 ([184b52e](http://github.paypal.com/paypal/paypal-checkout/commit/184b52e))
 * Disable package-lock ([5b821df](http://github.paypal.com/paypal/paypal-checkout/commit/5b821df))
 * Dist ([5afaee0](http://github.paypal.com/paypal/paypal-checkout/commit/5afaee0))
 * grumbler-scripts / babel7 / webpack4 upgrade ([78929f5](http://github.paypal.com/paypal/paypal-checkout/commit/78929f5))
@@ -264,7 +236,6 @@
 
 ## <small>4.1.20 (2018-11-06)</small>
 
-* 4.1.20 ([681de11](http://github.paypal.com/paypal/paypal-checkout/commit/681de11))
 * Cast order promise to ZalgoPromise to ensure timeout method is present ([d6f8240](http://github.paypal.com/paypal/paypal-checkout/commit/d6f8240))
 * Dist ([d2ef69e](http://github.paypal.com/paypal/paypal-checkout/commit/d2ef69e))
 
@@ -272,7 +243,6 @@
 
 ## <small>4.1.19 (2018-10-30)</small>
 
-* 4.1.19 ([e4df44b](http://github.paypal.com/paypal/paypal-checkout/commit/e4df44b))
 * Dist ([679a4d9](http://github.paypal.com/paypal/paypal-checkout/commit/679a4d9))
 * Do not hard code commit to true in checkout component ([b77cd89](http://github.paypal.com/paypal/paypal-checkout/commit/b77cd89))
 
@@ -280,7 +250,6 @@
 
 ## <small>4.1.18 (2018-10-29)</small>
 
-* 4.1.18 ([ab51563](http://github.paypal.com/paypal/paypal-checkout/commit/ab51563))
 * Dist ([d84abc2](http://github.paypal.com/paypal/paypal-checkout/commit/d84abc2))
 * Fix stop-color in discover logo ([eeacb99](http://github.paypal.com/paypal/paypal-checkout/commit/eeacb99))
 * Pass partner attribution id to orders api ([61bf603](http://github.paypal.com/paypal/paypal-checkout/commit/61bf603))
@@ -290,7 +259,6 @@
 
 ## <small>4.1.17 (2018-10-17)</small>
 
-* 4.1.17 ([eaa935f](http://github.paypal.com/paypal/paypal-checkout/commit/eaa935f))
 * Dist ([5f80751](http://github.paypal.com/paypal/paypal-checkout/commit/5f80751))
 * Remove inline fill styles for svgs to fix firefox issue ([0570d71](http://github.paypal.com/paypal/paypal-checkout/commit/0570d71))
 
@@ -298,7 +266,6 @@
 
 ## <small>4.1.16 (2018-10-11)</small>
 
-* 4.1.16 ([c2d7e57](http://github.paypal.com/paypal/paypal-checkout/commit/c2d7e57))
 * Apply flow-typing to jsx props and fix type  issues ([900fbf3](http://github.paypal.com/paypal/paypal-checkout/commit/900fbf3))
 * Dist ([4a35bb9](http://github.paypal.com/paypal/paypal-checkout/commit/4a35bb9))
 * Encode and pass fundingEligibility to server-side button render ([b5af846](http://github.paypal.com/paypal/paypal-checkout/commit/b5af846))
@@ -307,7 +274,6 @@
 
 ## <small>4.1.15 (2018-10-09)</small>
 
-* 4.1.15 ([f64e282](http://github.paypal.com/paypal/paypal-checkout/commit/f64e282))
 * Always pass locale to credit logo ([482655f](http://github.paypal.com/paypal/paypal-checkout/commit/482655f))
 * Dist ([fa13d32](http://github.paypal.com/paypal/paypal-checkout/commit/fa13d32))
 * Fix sepa logo colors ([4c3ac0d](http://github.paypal.com/paypal/paypal-checkout/commit/4c3ac0d))
@@ -318,7 +284,6 @@
 
 ## <small>4.1.14 (2018-10-01)</small>
 
-* 4.1.14 ([36f1f21](http://github.paypal.com/paypal/paypal-checkout/commit/36f1f21))
 * Dist ([e09b374](http://github.paypal.com/paypal/paypal-checkout/commit/e09b374))
 * Use paypal-sdk-constants ([7182eb9](http://github.paypal.com/paypal/paypal-checkout/commit/7182eb9))
 
@@ -326,7 +291,6 @@
 
 ## <small>4.1.13 (2018-09-28)</small>
 
-* 4.1.13 ([501e856](http://github.paypal.com/paypal/paypal-checkout/commit/501e856))
 * Default currency in order create ([b812527](http://github.paypal.com/paypal/paypal-checkout/commit/b812527))
 * Dist ([f6c1cbb](http://github.paypal.com/paypal/paypal-checkout/commit/f6c1cbb))
 * Only load cards if branded is enabled ([3b15942](http://github.paypal.com/paypal/paypal-checkout/commit/3b15942))
@@ -337,7 +301,6 @@
 
 ## <small>4.1.12 (2018-09-20)</small>
 
-* 4.1.12 ([742927b](http://github.paypal.com/paypal/paypal-checkout/commit/742927b))
 * Dist ([37aac10](http://github.paypal.com/paypal/paypal-checkout/commit/37aac10))
 * Use new client url builder and refactor types ([7e46f4d](http://github.paypal.com/paypal/paypal-checkout/commit/7e46f4d))
 
@@ -345,7 +308,6 @@
 
 ## <small>4.1.11 (2018-09-17)</small>
 
-* 4.1.11 ([afe4904](http://github.paypal.com/paypal/paypal-checkout/commit/afe4904))
 * Dist ([018b3e9](http://github.paypal.com/paypal/paypal-checkout/commit/018b3e9))
 * Point buttons to /sdk for now ([5f1257f](http://github.paypal.com/paypal/paypal-checkout/commit/5f1257f))
 
@@ -353,7 +315,6 @@
 
 ## <small>4.1.10 (2018-09-15)</small>
 
-* 4.1.10 ([1b9e6a4](http://github.paypal.com/paypal/paypal-checkout/commit/1b9e6a4))
 * Add nonce to all inline images, script tags and stylesheets in button ([17917ca](http://github.paypal.com/paypal/paypal-checkout/commit/17917ca))
 * Dist ([f7973a6](http://github.paypal.com/paypal/paypal-checkout/commit/f7973a6))
 
@@ -361,7 +322,6 @@
 
 ## <small>4.1.9 (2018-09-14)</small>
 
-* 4.1.9 ([999c297](http://github.paypal.com/paypal/paypal-checkout/commit/999c297))
 * Dist ([4f86571](http://github.paypal.com/paypal/paypal-checkout/commit/4f86571))
 * Error out if no eligible funding sources found during button render ([412f79f](http://github.paypal.com/paypal/paypal-checkout/commit/412f79f))
 * Map commit to sale for button query param ([9cd02d8](http://github.paypal.com/paypal/paypal-checkout/commit/9cd02d8))
@@ -370,7 +330,6 @@
 
 ## <small>4.1.8 (2018-09-14)</small>
 
-* 4.1.8 ([8bdd636](http://github.paypal.com/paypal/paypal-checkout/commit/8bdd636))
 * Change sale to capture ([9876050](http://github.paypal.com/paypal/paypal-checkout/commit/9876050))
 * Dist ([ced29a2](http://github.paypal.com/paypal/paypal-checkout/commit/ced29a2))
 * Fix locale tests ([5a85307](http://github.paypal.com/paypal/paypal-checkout/commit/5a85307))
@@ -382,7 +341,6 @@
 
 ## <small>4.1.7 (2018-09-11)</small>
 
-* 4.1.7 ([676d48a](http://github.paypal.com/paypal/paypal-checkout/commit/676d48a))
 * Dist ([fc3e9c1](http://github.paypal.com/paypal/paypal-checkout/commit/fc3e9c1))
 * Fix cancel and return actions ([949b516](http://github.paypal.com/paypal/paypal-checkout/commit/949b516))
 * Import web client from src ([0d31217](http://github.paypal.com/paypal/paypal-checkout/commit/0d31217))
@@ -391,7 +349,6 @@
 
 ## <small>4.1.6 (2018-09-11)</small>
 
-* 4.1.6 ([57ba7aa](http://github.paypal.com/paypal/paypal-checkout/commit/57ba7aa))
 * Add xcomponent and version prop to checkout for backwards compat ([00e7f5d](http://github.paypal.com/paypal/paypal-checkout/commit/00e7f5d))
 * Dist ([c723266](http://github.paypal.com/paypal/paypal-checkout/commit/c723266))
 * Export checkout as an sdk module ([d5df2a5](http://github.paypal.com/paypal/paypal-checkout/commit/d5df2a5))
@@ -412,7 +369,6 @@
 
 ## <small>4.1.5 (2018-08-24)</small>
 
-* 4.1.5 ([ebf3831](http://github.paypal.com/paypal/paypal-checkout/commit/ebf3831))
 * Add clientID to button props ([dbd5941](http://github.paypal.com/paypal/paypal-checkout/commit/dbd5941))
 * Dist ([5c5a238](http://github.paypal.com/paypal/paypal-checkout/commit/5c5a238))
 * Remove redundant karma config ([1e419f3](http://github.paypal.com/paypal/paypal-checkout/commit/1e419f3))
@@ -422,7 +378,6 @@
 
 ## <small>4.1.4 (2018-08-21)</small>
 
-* 4.1.4 ([0d77aeb](http://github.paypal.com/paypal/paypal-checkout/commit/0d77aeb))
 * Dist ([d388dd7](http://github.paypal.com/paypal/paypal-checkout/commit/d388dd7))
 * Fix default locale prop ([dae0cc5](http://github.paypal.com/paypal/paypal-checkout/commit/dae0cc5))
 
@@ -430,7 +385,6 @@
 
 ## <small>4.1.3 (2018-08-21)</small>
 
-* 4.1.3 ([1c407cb](http://github.paypal.com/paypal/paypal-checkout/commit/1c407cb))
 * Dist ([87c407a](http://github.paypal.com/paypal/paypal-checkout/commit/87c407a))
 * Export locale in default props ([17ef133](http://github.paypal.com/paypal/paypal-checkout/commit/17ef133))
 
@@ -438,7 +392,6 @@
 
 ## <small>4.1.2 (2018-08-21)</small>
 
-* 4.1.2 ([148ffb3](http://github.paypal.com/paypal/paypal-checkout/commit/148ffb3))
 * Add defaults for normalized button props ([ad9c12c](http://github.paypal.com/paypal/paypal-checkout/commit/ad9c12c))
 * Dist ([75d93c9](http://github.paypal.com/paypal/paypal-checkout/commit/75d93c9))
 
@@ -446,7 +399,6 @@
 
 ## <small>4.1.1 (2018-08-21)</small>
 
-* 4.1.1 ([23cdbc7](http://github.paypal.com/paypal/paypal-checkout/commit/23cdbc7))
 * Add dist folder to npm package ([c9946bc](http://github.paypal.com/paypal/paypal-checkout/commit/c9946bc))
 
 
@@ -454,7 +406,6 @@
 ## 4.1.0 (2018-08-17)
 
 *  Adding p24 and zimpler payment methods for PL,FI countries (#745) ([4d8c3ea](http://github.paypal.com/paypal/paypal-checkout/commit/4d8c3ea)), closes [#745](http://github.paypal.com/paypal/paypal-checkout/issues/745)
-* 4.1.0 ([c194312](http://github.paypal.com/paypal/paypal-checkout/commit/c194312))
 * Add device level eligibility ([ad3414f](http://github.paypal.com/paypal/paypal-checkout/commit/ad3414f))
 * Add dist folder ([cb9d7f3](http://github.paypal.com/paypal/paypal-checkout/commit/cb9d7f3))
 * adding sofort to countries AT, BE, ES, IT, NL and logo change (#726) ([e874408](http://github.paypal.com/paypal/paypal-checkout/commit/e874408)), closes [#726](http://github.paypal.com/paypal/paypal-checkout/issues/726)
@@ -497,7 +448,6 @@
 
 ## <small>4.0.204 (2018-06-15)</small>
 
-* 4.0.204 ([de70805](http://github.paypal.com/paypal/paypal-checkout/commit/de70805))
 * Dist ([16a3cc7](http://github.paypal.com/paypal/paypal-checkout/commit/16a3cc7))
 * Fixing tests (#716) ([57e4740](http://github.paypal.com/paypal/paypal-checkout/commit/57e4740)), closes [#716](http://github.paypal.com/paypal/paypal-checkout/issues/716)
 * Update config.js (#702) ([812aefe](http://github.paypal.com/paypal/paypal-checkout/commit/812aefe)), closes [#702](http://github.paypal.com/paypal/paypal-checkout/issues/702)
@@ -510,7 +460,6 @@
 ## <small>4.0.203 (2018-05-29)</small>
 
 * (docs): Revise upgrade doc (#690) ([188fe7f](http://github.paypal.com/paypal/paypal-checkout/commit/188fe7f)), closes [#690](http://github.paypal.com/paypal/paypal-checkout/issues/690)
-* 4.0.203 ([5a0b1c3](http://github.paypal.com/paypal/paypal-checkout/commit/5a0b1c3))
 * adding dist file to .flowconfig ignore ([88cb73a](http://github.paypal.com/paypal/paypal-checkout/commit/88cb73a))
 * Dist ([8521d5f](http://github.paypal.com/paypal/paypal-checkout/commit/8521d5f))
 * fixing flow config ([ac41315](http://github.paypal.com/paypal/paypal-checkout/commit/ac41315))
@@ -523,7 +472,6 @@
 
 ## <small>4.0.202 (2018-05-07)</small>
 
-* 4.0.202 ([48e3648](http://github.paypal.com/paypal/paypal-checkout/commit/48e3648))
 * Dist ([91865bf](http://github.paypal.com/paypal/paypal-checkout/commit/91865bf))
 * Make stage url configurable ([b0c4ba9](http://github.paypal.com/paypal/paypal-checkout/commit/b0c4ba9))
 * Use stage and stageurl from props in child ([1084838](http://github.paypal.com/paypal/paypal-checkout/commit/1084838))
@@ -532,7 +480,6 @@
 
 ## <small>4.0.201 (2018-05-04)</small>
 
-* 4.0.201 ([e5bffe4](http://github.paypal.com/paypal/paypal-checkout/commit/e5bffe4))
 * Dist ([72c01ae](http://github.paypal.com/paypal/paypal-checkout/commit/72c01ae))
 * Remove flow from globals.js ([1ccee21](http://github.paypal.com/paypal/paypal-checkout/commit/1ccee21))
 
@@ -540,7 +487,6 @@
 
 ## <small>4.0.200 (2018-05-04)</small>
 
-* 4.0.200 ([82de49e](http://github.paypal.com/paypal/paypal-checkout/commit/82de49e))
 * Add warning for object assign bad polyfill ([971c5ab](http://github.paypal.com/paypal/paypal-checkout/commit/971c5ab))
 * Dist ([233872f](http://github.paypal.com/paypal/paypal-checkout/commit/233872f))
 * Do not try to deserialize json for build vars ([d922b5b](http://github.paypal.com/paypal/paypal-checkout/commit/d922b5b))
@@ -557,7 +503,6 @@
 
 ## <small>4.0.199 (2018-04-26)</small>
 
-* 4.0.199 ([5e067c5](http://github.paypal.com/paypal/paypal-checkout/commit/5e067c5))
 * Dist ([90aa45e](http://github.paypal.com/paypal/paypal-checkout/commit/90aa45e))
 * Revert "Upgrade common client" ([a76a57c](http://github.paypal.com/paypal/paypal-checkout/commit/a76a57c))
 
@@ -565,7 +510,6 @@
 
 ## <small>4.0.198 (2018-04-25)</small>
 
-* 4.0.198 ([1eadb69](http://github.paypal.com/paypal/paypal-checkout/commit/1eadb69))
 * Dist ([b88ced6](http://github.paypal.com/paypal/paypal-checkout/commit/b88ced6))
 * Fix doc typos ([a076351](http://github.paypal.com/paypal/paypal-checkout/commit/a076351))
 * Upgrade common client ([c73a473](http://github.paypal.com/paypal/paypal-checkout/commit/c73a473))
@@ -574,7 +518,6 @@
 
 ## <small>4.0.197 (2018-04-24)</small>
 
-* 4.0.197 ([7f6b9ea](http://github.paypal.com/paypal/paypal-checkout/commit/7f6b9ea))
 * Dist ([7e199d6](http://github.paypal.com/paypal/paypal-checkout/commit/7e199d6))
 * Log browser for button render ([933b34e](http://github.paypal.com/paypal/paypal-checkout/commit/933b34e))
 
@@ -582,7 +525,6 @@
 
 ## <small>4.0.196 (2018-04-24)</small>
 
-* 4.0.196 ([51b34eb](http://github.paypal.com/paypal/paypal-checkout/commit/51b34eb))
 * Add logging for button style ([8e55d13](http://github.paypal.com/paypal/paypal-checkout/commit/8e55d13))
 * Add to venmo blacklist ([6f64ff6](http://github.paypal.com/paypal/paypal-checkout/commit/6f64ff6))
 * Add to venmo blacklist ([25cc9b7](http://github.paypal.com/paypal/paypal-checkout/commit/25cc9b7))
@@ -599,7 +541,6 @@
 
 ## <small>4.0.195 (2018-04-18)</small>
 
-* 4.0.195 ([10d1d55](http://github.paypal.com/paypal/paypal-checkout/commit/10d1d55))
 * Dist ([ab5ee1b](http://github.paypal.com/paypal/paypal-checkout/commit/ab5ee1b))
 * Locale fix take two ([0795806](http://github.paypal.com/paypal/paypal-checkout/commit/0795806))
 * Revert "Default to browser locale for credit experiment eligibility" ([3cd25c2](http://github.paypal.com/paypal/paypal-checkout/commit/3cd25c2))
@@ -608,7 +549,6 @@
 
 ## <small>4.0.194 (2018-04-18)</small>
 
-* 4.0.194 ([dc0a035](http://github.paypal.com/paypal/paypal-checkout/commit/dc0a035))
 * Default to browser locale for credit experiment eligibility ([dc3e600](http://github.paypal.com/paypal/paypal-checkout/commit/dc3e600))
 * Dist ([86416a3](http://github.paypal.com/paypal/paypal-checkout/commit/86416a3))
 
@@ -616,7 +556,6 @@
 
 ## <small>4.0.193 (2018-04-18)</small>
 
-* 4.0.193 ([5fe3be3](http://github.paypal.com/paypal/paypal-checkout/commit/5fe3be3))
 * Dist ([e9a450c](http://github.paypal.com/paypal/paypal-checkout/commit/e9a450c))
 * Upgrade to latest shared client ([a918075](http://github.paypal.com/paypal/paypal-checkout/commit/a918075))
 
@@ -624,7 +563,6 @@
 
 ## <small>4.0.192 (2018-04-17)</small>
 
-* 4.0.192 ([d3a2d83](http://github.paypal.com/paypal/paypal-checkout/commit/d3a2d83))
 * changing stage ports to test on paypal staging env (#656) ([775810f](http://github.paypal.com/paypal/paypal-checkout/commit/775810f)), closes [#656](http://github.paypal.com/paypal/paypal-checkout/issues/656)
 * Dist ([3d4b4ab](http://github.paypal.com/paypal/paypal-checkout/commit/3d4b4ab))
 * enable alt pay button only for commit=true (#654) ([5aa15f3](http://github.paypal.com/paypal/paypal-checkout/commit/5aa15f3)), closes [#654](http://github.paypal.com/paypal/paypal-checkout/issues/654)
@@ -634,7 +572,6 @@
 
 ## <small>4.0.191 (2018-04-11)</small>
 
-* 4.0.191 ([7737863](http://github.paypal.com/paypal/paypal-checkout/commit/7737863))
 * Add meta object for both button and checkout components ([c7c52b9](http://github.paypal.com/paypal/paypal-checkout/commit/c7c52b9))
 * Dist ([1f4f464](http://github.paypal.com/paypal/paypal-checkout/commit/1f4f464))
 * Upgrade hi-base32 ([e02b76a](http://github.paypal.com/paypal/paypal-checkout/commit/e02b76a))
@@ -643,7 +580,6 @@
 
 ## <small>4.0.190 (2018-04-11)</small>
 
-* 4.0.190 ([6c40491](http://github.paypal.com/paypal/paypal-checkout/commit/6c40491))
 * Dist ([533dee6](http://github.paypal.com/paypal/paypal-checkout/commit/533dee6))
 * Use commonjs export for __sdk__.js ([869cdf2](http://github.paypal.com/paypal/paypal-checkout/commit/869cdf2))
 
@@ -651,7 +587,6 @@
 
 ## <small>4.0.189 (2018-04-11)</small>
 
-* 4.0.189 ([73504e8](http://github.paypal.com/paypal/paypal-checkout/commit/73504e8))
 * Add __sdk__.js in package.json ([bb6425e](http://github.paypal.com/paypal/paypal-checkout/commit/bb6425e))
 * Dist ([80860f8](http://github.paypal.com/paypal/paypal-checkout/commit/80860f8))
 
@@ -659,7 +594,6 @@
 
 ## <small>4.0.188 (2018-04-11)</small>
 
-* 4.0.188 ([8d07e33](http://github.paypal.com/paypal/paypal-checkout/commit/8d07e33))
 * Add __sdk__.js ([f91c4f5](http://github.paypal.com/paypal/paypal-checkout/commit/f91c4f5))
 * Add to venmo blacklist ([37546a5](http://github.paypal.com/paypal/paypal-checkout/commit/37546a5))
 * alt pay button: url config (#652) ([89c793c](http://github.paypal.com/paypal/paypal-checkout/commit/89c793c)), closes [#652](http://github.paypal.com/paypal/paypal-checkout/issues/652)
@@ -670,7 +604,6 @@
 
 ## <small>4.0.187 (2018-04-04)</small>
 
-* 4.0.187 ([7411cff](http://github.paypal.com/paypal/paypal-checkout/commit/7411cff))
 * Add spacing to RU checkout label ([28e8a14](http://github.paypal.com/paypal/paypal-checkout/commit/28e8a14))
 * Dist ([bc50729](http://github.paypal.com/paypal/paypal-checkout/commit/bc50729))
 * Fix typo in config ([f328dfb](http://github.paypal.com/paypal/paypal-checkout/commit/f328dfb))
@@ -680,7 +613,6 @@
 
 ## <small>4.0.186 (2018-04-02)</small>
 
-* 4.0.186 ([85d61be](http://github.paypal.com/paypal/paypal-checkout/commit/85d61be))
 * Accessibility fixes for close button ([bddf347](http://github.paypal.com/paypal/paypal-checkout/commit/bddf347))
 * Add HowTo Integration Videos (#642) ([fe64f3a](http://github.paypal.com/paypal/paypal-checkout/commit/fe64f3a)), closes [#642](http://github.paypal.com/paypal/paypal-checkout/issues/642)
 * Add to venmo blacklist ([fbe2f82](http://github.paypal.com/paypal/paypal-checkout/commit/fbe2f82))
@@ -696,7 +628,6 @@
 
 ## <small>4.0.185 (2018-03-23)</small>
 
-* 4.0.185 ([377163e](http://github.paypal.com/paypal/paypal-checkout/commit/377163e))
 * Add electron check to popup support check ([5e41ef7](http://github.paypal.com/paypal/paypal-checkout/commit/5e41ef7))
 * Dist ([3e5cdb1](http://github.paypal.com/paypal/paypal-checkout/commit/3e5cdb1))
 * Only call isCreditDualEligible once ([e4d8e56](http://github.paypal.com/paypal/paypal-checkout/commit/e4d8e56))
@@ -705,7 +636,6 @@
 
 ## <small>4.0.184 (2018-03-21)</small>
 
-* 4.0.184 ([21c8c9e](http://github.paypal.com/paypal/paypal-checkout/commit/21c8c9e))
 * Add another venmo blacklisted domain ([20b1c3b](http://github.paypal.com/paypal/paypal-checkout/commit/20b1c3b))
 * Dist ([fac9712](http://github.paypal.com/paypal/paypal-checkout/commit/fac9712))
 * Persist throttle percentiles for each experiment ([fe1a1ca](http://github.paypal.com/paypal/paypal-checkout/commit/fe1a1ca))
@@ -715,7 +645,6 @@
 
 ## <small>4.0.183 (2018-03-19)</small>
 
-* 4.0.183 ([a60775a](http://github.paypal.com/paypal/paypal-checkout/commit/a60775a))
 * Dist ([bb4d07a](http://github.paypal.com/paypal/paypal-checkout/commit/bb4d07a))
 * Only allow logs for started experiments ([555b137](http://github.paypal.com/paypal/paypal-checkout/commit/555b137))
 
@@ -723,7 +652,6 @@
 
 ## <small>4.0.182 (2018-03-19)</small>
 
-* 4.0.182 ([992180a](http://github.paypal.com/paypal/paypal-checkout/commit/992180a))
 * Dist ([7dfb2a8](http://github.paypal.com/paypal/paypal-checkout/commit/7dfb2a8))
 * Make sure credit experiment logging includes button session id ([272f259](http://github.paypal.com/paypal/paypal-checkout/commit/272f259))
 * Remove actions.order ([6e16113](http://github.paypal.com/paypal/paypal-checkout/commit/6e16113))
@@ -733,7 +661,6 @@
 
 ## <small>4.0.181 (2018-03-15)</small>
 
-* 4.0.181 ([f8d391b](http://github.paypal.com/paypal/paypal-checkout/commit/f8d391b))
 * Add a click log to credit throttle ([8646867](http://github.paypal.com/paypal/paypal-checkout/commit/8646867))
 * Better typing for throttle objects ([7117551](http://github.paypal.com/paypal/paypal-checkout/commit/7117551))
 * Dist ([8db5a5f](http://github.paypal.com/paypal/paypal-checkout/commit/8db5a5f))
@@ -743,7 +670,6 @@
 
 ## <small>4.0.180 (2018-03-13)</small>
 
-* 4.0.180 ([685c8e3](http://github.paypal.com/paypal/paypal-checkout/commit/685c8e3))
 * Dist ([6bc4047](http://github.paypal.com/paypal/paypal-checkout/commit/6bc4047))
 * Fix country eligibility check for credit experiment ([ec38f51](http://github.paypal.com/paypal/paypal-checkout/commit/ec38f51))
 * Remove extraneous function bind check ([fe6a65f](http://github.paypal.com/paypal/paypal-checkout/commit/fe6a65f))
@@ -752,7 +678,6 @@
 
 ## <small>4.0.179 (2018-03-13)</small>
 
-* 4.0.179 ([c1f9402](http://github.paypal.com/paypal/paypal-checkout/commit/c1f9402))
 * Add assertions for version being passed in url and window name ([1646120](http://github.paypal.com/paypal/paypal-checkout/commit/1646120))
 * Add more warnings for broken library behavior ([f6161ae](http://github.paypal.com/paypal/paypal-checkout/commit/f6161ae))
 * Add new venmo blacklisted sites ([5d4012d](http://github.paypal.com/paypal/paypal-checkout/commit/5d4012d))
@@ -786,7 +711,6 @@
 
 ## <small>4.0.176 (2018-02-16)</small>
 
-* 4.0.176 ([47d13b9](http://github.paypal.com/paypal/paypal-checkout/commit/47d13b9))
 * Dist ([94cd966](http://github.paypal.com/paypal/paypal-checkout/commit/94cd966))
 * Fix versioning ([9738520](http://github.paypal.com/paypal/paypal-checkout/commit/9738520))
 
@@ -794,7 +718,6 @@
 
 ## <small>4.0.175 (2018-02-15)</small>
 
-* 4.0.175 ([17853bf](http://github.paypal.com/paypal/paypal-checkout/commit/17853bf))
 * Dist ([86c6dc4](http://github.paypal.com/paypal/paypal-checkout/commit/86c6dc4))
 * Remove flow-typed from postinstall ([da61749](http://github.paypal.com/paypal/paypal-checkout/commit/da61749))
 
@@ -802,7 +725,6 @@
 
 ## <small>4.0.174 (2018-02-15)</small>
 
-* 4.0.174 ([694c9f3](http://github.paypal.com/paypal/paypal-checkout/commit/694c9f3))
 * Add checkout.button.v4.js, begin lazy-loading refactor ([e19a65e](http://github.paypal.com/paypal/paypal-checkout/commit/e19a65e))
 * Add dist and node_modules to .eslintignore ([cec8445](http://github.paypal.com/paypal/paypal-checkout/commit/cec8445))
 * Add paypal.logFundingEligibility ([a03fb39](http://github.paypal.com/paypal/paypal-checkout/commit/a03fb39))
@@ -833,7 +755,6 @@
 
 ## <small>4.0.173 (2018-01-16)</small>
 
-* 4.0.173 ([2ec3b3b](http://github.paypal.com/paypal/paypal-checkout/commit/2ec3b3b))
 * Add jcb logo ([7434725](http://github.paypal.com/paypal/paypal-checkout/commit/7434725))
 * Add more venmo blacklists ([8601c3b](http://github.paypal.com/paypal/paypal-checkout/commit/8601c3b))
 * Dist ([9565446](http://github.paypal.com/paypal/paypal-checkout/commit/9565446))
@@ -845,7 +766,6 @@
 
 ## <small>4.0.172 (2018-01-10)</small>
 
-* 4.0.172 ([e8b39ed](http://github.paypal.com/paypal/paypal-checkout/commit/e8b39ed))
 * Add actions.order.get and actions.order.capture ([51e3a2b](http://github.paypal.com/paypal/paypal-checkout/commit/51e3a2b))
 * Add rest bindings for payment and order api get, capture, execute ([8e7a213](http://github.paypal.com/paypal/paypal-checkout/commit/8e7a213))
 * Allow rendering checkout to any port on localhost ([a011928](http://github.paypal.com/paypal/paypal-checkout/commit/a011928))
@@ -862,7 +782,6 @@
 
 ## <small>4.0.171 (2017-12-16)</small>
 
-* 4.0.171 ([40df732](http://github.paypal.com/paypal/paypal-checkout/commit/40df732))
 * Dist ([ca77ac8](http://github.paypal.com/paypal/paypal-checkout/commit/ca77ac8))
 * Fix sandbox credential typer to only trigger on page load ([ee5e992](http://github.paypal.com/paypal/paypal-checkout/commit/ee5e992))
 
@@ -870,7 +789,6 @@
 
 ## <small>4.0.170 (2017-12-15)</small>
 
-* 4.0.170 ([3a1ac69](http://github.paypal.com/paypal/paypal-checkout/commit/3a1ac69))
 * Dist ([ffa3c24](http://github.paypal.com/paypal/paypal-checkout/commit/ffa3c24))
 * Prefill credentials on sandbox ([a74ced3](http://github.paypal.com/paypal/paypal-checkout/commit/a74ced3))
 
@@ -878,7 +796,6 @@
 
 ## <small>4.0.169 (2017-12-12)</small>
 
-* 4.0.169 ([755f976](http://github.paypal.com/paypal/paypal-checkout/commit/755f976))
 * Add demo_sandbox_client_id and demo_production_client_id ([3cc440d](http://github.paypal.com/paypal/paypal-checkout/commit/3cc440d))
 * Dist ([2a96d96](http://github.paypal.com/paypal/paypal-checkout/commit/2a96d96))
 * Export actions.request in onAuthorize ([56b03ad](http://github.paypal.com/paypal/paypal-checkout/commit/56b03ad))
@@ -888,7 +805,6 @@
 ## <small>4.0.168 (2017-12-08)</small>
 
 * (readme): Add Create REst application video (#547) ([775c2cb](http://github.paypal.com/paypal/paypal-checkout/commit/775c2cb)), closes [#547](http://github.paypal.com/paypal/paypal-checkout/issues/547)
-* 4.0.168 ([71872cc](http://github.paypal.com/paypal/paypal-checkout/commit/71872cc))
 * Add extra experiment instrumentation ([b8238e5](http://github.paypal.com/paypal/paypal-checkout/commit/b8238e5))
 * Add new ELV logo ([92075ca](http://github.paypal.com/paypal/paypal-checkout/commit/92075ca))
 * Allow more than four card buttons ([f3874f7](http://github.paypal.com/paypal/paypal-checkout/commit/f3874f7))
@@ -907,7 +823,6 @@
 
 ## <small>4.0.167 (2017-11-30)</small>
 
-* 4.0.167 ([0030637](http://github.paypal.com/paypal/paypal-checkout/commit/0030637))
 * Adjust button styles ([d3516fc](http://github.paypal.com/paypal/paypal-checkout/commit/d3516fc))
 * Dist ([4649e9a](http://github.paypal.com/paypal/paypal-checkout/commit/4649e9a))
 * Experiment cleanup ([9082369](http://github.paypal.com/paypal/paypal-checkout/commit/9082369))
@@ -918,7 +833,6 @@
 
 ## <small>4.0.166 (2017-11-17)</small>
 
-* 4.0.166 ([8b2cbeb](http://github.paypal.com/paypal/paypal-checkout/commit/8b2cbeb))
 * Add token to all fpti events when available ([1a17df9](http://github.paypal.com/paypal/paypal-checkout/commit/1a17df9))
 * Default button session id to regular session id if not present ([8facdaf](http://github.paypal.com/paypal/paypal-checkout/commit/8facdaf))
 * Dist ([81ca8a2](http://github.paypal.com/paypal/paypal-checkout/commit/81ca8a2))
@@ -930,7 +844,6 @@
 
 ## <small>4.0.165 (2017-11-15)</small>
 
-* 4.0.165 ([b588afb](http://github.paypal.com/paypal/paypal-checkout/commit/b588afb))
 * Dist ([1a99709](http://github.paypal.com/paypal/paypal-checkout/commit/1a99709))
 * Fix issue getting session id from url ([16723c1](http://github.paypal.com/paypal/paypal-checkout/commit/16723c1))
 
@@ -938,7 +851,6 @@
 
 ## <small>4.0.164 (2017-11-15)</small>
 
-* 4.0.164 ([a18f91e](http://github.paypal.com/paypal/paypal-checkout/commit/a18f91e))
 * Dist ([26b419b](http://github.paypal.com/paypal/paypal-checkout/commit/26b419b))
 * Fix typo in button session id lookup ([45e0998](http://github.paypal.com/paypal/paypal-checkout/commit/45e0998))
 
@@ -946,7 +858,6 @@
 
 ## <small>4.0.163 (2017-11-15)</small>
 
-* 4.0.163 ([a8b2ab4](http://github.paypal.com/paypal/paypal-checkout/commit/a8b2ab4))
 * Dist ([917aa01](http://github.paypal.com/paypal/paypal-checkout/commit/917aa01))
 * Log client-side payment call using pay id as context type ([ba64912](http://github.paypal.com/paypal/paypal-checkout/commit/ba64912))
 
@@ -954,7 +865,6 @@
 
 ## <small>4.0.162 (2017-11-14)</small>
 
-* 4.0.162 ([fbf4cee](http://github.paypal.com/paypal/paypal-checkout/commit/fbf4cee))
 * Add domain-specific settings ([1743bd8](http://github.paypal.com/paypal/paypal-checkout/commit/1743bd8))
 * Dist ([bb4430d](http://github.paypal.com/paypal/paypal-checkout/commit/bb4430d))
 * Expose actions.payment.tokenize in onAuthorize ([ffd1132](http://github.paypal.com/paypal/paypal-checkout/commit/ffd1132))
@@ -969,7 +879,6 @@
 
 ## <small>4.0.161 (2017-11-09)</small>
 
-* 4.0.161 ([09b2e19](http://github.paypal.com/paypal/paypal-checkout/commit/09b2e19))
 * Add allowpaymentrequest prop to iframe button ([9802f5f](http://github.paypal.com/paypal/paypal-checkout/commit/9802f5f))
 * Add aria-label to the button ([77ca2fb](http://github.paypal.com/paypal/paypal-checkout/commit/77ca2fb))
 * Add elo card icon ([2206b21](http://github.paypal.com/paypal/paypal-checkout/commit/2206b21))
@@ -994,21 +903,18 @@
 
 ## <small>4.0.160 (2017-11-06)</small>
 
-* 4.0.160 ([5ded424](http://github.paypal.com/paypal/paypal-checkout/commit/5ded424))
 * Dist ([c9976bc](http://github.paypal.com/paypal/paypal-checkout/commit/c9976bc))
 
 
 
 ## <small>4.0.159 (2017-11-06)</small>
 
-* 4.0.159 ([99d2ecc](http://github.paypal.com/paypal/paypal-checkout/commit/99d2ecc))
 * Dist ([94bf1a8](http://github.paypal.com/paypal/paypal-checkout/commit/94bf1a8))
 
 
 
 ## <small>4.0.158 (2017-11-05)</small>
 
-* 4.0.158 ([c6a7b07](http://github.paypal.com/paypal/paypal-checkout/commit/c6a7b07))
 * Dist ([4b27093](http://github.paypal.com/paypal/paypal-checkout/commit/4b27093))
 * Ramp up top-pay-button to 50% ([b28a4c8](http://github.paypal.com/paypal/paypal-checkout/commit/b28a4c8))
 
@@ -1016,7 +922,6 @@
 
 ## <small>4.0.157 (2017-11-02)</small>
 
-* 4.0.157 ([2fbca47](http://github.paypal.com/paypal/paypal-checkout/commit/2fbca47))
 * Add lint and typecheck to fastpublish ([11ed276](http://github.paypal.com/paypal/paypal-checkout/commit/11ed276))
 * Dist ([181fe7a](http://github.paypal.com/paypal/paypal-checkout/commit/181fe7a))
 * Hard-code quick fix for demo app ([7a26846](http://github.paypal.com/paypal/paypal-checkout/commit/7a26846))
@@ -1026,7 +931,6 @@
 
 ## <small>4.0.156 (2017-11-02)</small>
 
-* 4.0.156 ([43fa2f1](http://github.paypal.com/paypal/paypal-checkout/commit/43fa2f1))
 * Dist ([286e7f4](http://github.paypal.com/paypal/paypal-checkout/commit/286e7f4))
 * Fix top button click action ([6f956c3](http://github.paypal.com/paypal/paypal-checkout/commit/6f956c3))
 
@@ -1034,7 +938,6 @@
 
 ## <small>4.0.155 (2017-11-02)</small>
 
-* 4.0.155 ([7b9df90](http://github.paypal.com/paypal/paypal-checkout/commit/7b9df90))
 * Add client-side order create support ([b6ff6dc](http://github.paypal.com/paypal/paypal-checkout/commit/b6ff6dc))
 * Add domain-level venmo opt-out ([5610e46](http://github.paypal.com/paypal/paypal-checkout/commit/5610e46))
 * Add experiment for top pay button ([6c5d9d0](http://github.paypal.com/paypal/paypal-checkout/commit/6c5d9d0))
@@ -1045,7 +948,6 @@
 
 ## <small>4.0.154 (2017-11-01)</small>
 
-* 4.0.154 ([875a014](http://github.paypal.com/paypal/paypal-checkout/commit/875a014))
 * Dist ([c8ffa43](http://github.paypal.com/paypal/paypal-checkout/commit/c8ffa43))
 * Go directly to xoon for elv and card buttons ([e30cfb2](http://github.paypal.com/paypal/paypal-checkout/commit/e30cfb2))
 
@@ -1053,7 +955,6 @@
 
 ## <small>4.0.153 (2017-10-31)</small>
 
-* 4.0.153 ([cc0fced](http://github.paypal.com/paypal/paypal-checkout/commit/cc0fced))
 * Dist ([6ca693a](http://github.paypal.com/paypal/paypal-checkout/commit/6ca693a))
 
 
@@ -1061,7 +962,6 @@
 ## <small>4.0.152 (2017-10-31)</small>
 
 * [fix] 100% width on iPhone 5 portrait (#519) ([f766779](http://github.paypal.com/paypal/paypal-checkout/commit/f766779)), closes [#519](http://github.paypal.com/paypal/paypal-checkout/issues/519)
-* 4.0.152 ([e692437](http://github.paypal.com/paypal/paypal-checkout/commit/e692437))
 * Detect desktop Macintosh webviews ([0c32ee4](http://github.paypal.com/paypal/paypal-checkout/commit/0c32ee4))
 * Dist ([9ebda30](http://github.paypal.com/paypal/paypal-checkout/commit/9ebda30))
 * Fix lint error ([5028572](http://github.paypal.com/paypal/paypal-checkout/commit/5028572))
@@ -1070,14 +970,12 @@
 
 ## <small>4.0.151 (2017-10-28)</small>
 
-* 4.0.151 ([ce395f3](http://github.paypal.com/paypal/paypal-checkout/commit/ce395f3))
 * Dist ([7aa1632](http://github.paypal.com/paypal/paypal-checkout/commit/7aa1632))
 
 
 
 ## <small>4.0.150 (2017-10-28)</small>
 
-* 4.0.150 ([6c96b58](http://github.paypal.com/paypal/paypal-checkout/commit/6c96b58))
 * Default Object.assign in checkout flow if not present ([8b265a5](http://github.paypal.com/paypal/paypal-checkout/commit/8b265a5))
 * Dist ([997f1d1](http://github.paypal.com/paypal/paypal-checkout/commit/997f1d1))
 * Fallback in full-page mode if allowed ([a704ce7](http://github.paypal.com/paypal/paypal-checkout/commit/a704ce7))
@@ -1086,7 +984,6 @@
 
 ## <small>4.0.149 (2017-10-28)</small>
 
-* 4.0.149 ([4f8d8a0](http://github.paypal.com/paypal/paypal-checkout/commit/4f8d8a0))
 * Add logging for edge ([6c159e7](http://github.paypal.com/paypal/paypal-checkout/commit/6c159e7))
 * Dist ([0d18aa3](http://github.paypal.com/paypal/paypal-checkout/commit/0d18aa3))
 * Warn if prerender ends up running actual code (IE/Edge issue) ([d49971c](http://github.paypal.com/paypal/paypal-checkout/commit/d49971c))
@@ -1095,7 +992,6 @@
 
 ## <small>4.0.148 (2017-10-27)</small>
 
-* 4.0.148 ([6ca52ac](http://github.paypal.com/paypal/paypal-checkout/commit/6ca52ac))
 * Add fastpublish script ([45d6c40](http://github.paypal.com/paypal/paypal-checkout/commit/45d6c40))
 * Dist ([737e6f2](http://github.paypal.com/paypal/paypal-checkout/commit/737e6f2))
 * Fix timeout ([2fb0452](http://github.paypal.com/paypal/paypal-checkout/commit/2fb0452))
@@ -1104,7 +1000,6 @@
 
 ## <small>4.0.147 (2017-10-27)</small>
 
-* 4.0.147 ([29b51f5](http://github.paypal.com/paypal/paypal-checkout/commit/29b51f5))
 * Dist ([d43dd7a](http://github.paypal.com/paypal/paypal-checkout/commit/d43dd7a))
 * Fix venmo disallowed check ([2b2e6af](http://github.paypal.com/paypal/paypal-checkout/commit/2b2e6af))
 
@@ -1112,7 +1007,6 @@
 
 ## <small>4.0.146 (2017-10-27)</small>
 
-* 4.0.146 ([da29e29](http://github.paypal.com/paypal/paypal-checkout/commit/da29e29))
 * Add card funding source attribute to funding icons ([153e551](http://github.paypal.com/paypal/paypal-checkout/commit/153e551))
 * Adjust button height ([8731781](http://github.paypal.com/paypal/paypal-checkout/commit/8731781))
 * Adjust discover button ([3ccbd4f](http://github.paypal.com/paypal/paypal-checkout/commit/3ccbd4f))
@@ -1130,7 +1024,6 @@
 
 ## <small>4.0.145 (2017-10-26)</small>
 
-* 4.0.145 ([f12cc99](http://github.paypal.com/paypal/paypal-checkout/commit/f12cc99))
 * Dist ([34ce14e](http://github.paypal.com/paypal/paypal-checkout/commit/34ce14e))
 * Fix lint errors ([a57277a](http://github.paypal.com/paypal/paypal-checkout/commit/a57277a))
 * Fix locale issues ([fb5ede5](http://github.paypal.com/paypal/paypal-checkout/commit/fb5ede5))
@@ -1139,7 +1032,6 @@
 
 ## <small>4.0.144 (2017-10-26)</small>
 
-* 4.0.144 ([828e155](http://github.paypal.com/paypal/paypal-checkout/commit/828e155))
 * Dist ([f69002b](http://github.paypal.com/paypal/paypal-checkout/commit/f69002b))
 * Do not wrap card icons in span ([971d6c2](http://github.paypal.com/paypal/paypal-checkout/commit/971d6c2))
 
@@ -1147,7 +1039,6 @@
 
 ## <small>4.0.143 (2017-10-25)</small>
 
-* 4.0.143 ([b2757bf](http://github.paypal.com/paypal/paypal-checkout/commit/b2757bf))
 * Accept promise for client id ([0f7501a](http://github.paypal.com/paypal/paypal-checkout/commit/0f7501a))
 * Consider locales before languages in browser settings ([c321347](http://github.paypal.com/paypal/paypal-checkout/commit/c321347))
 * Dist ([a6d689e](http://github.paypal.com/paypal/paypal-checkout/commit/a6d689e))
@@ -1157,7 +1048,6 @@
 
 ## <small>4.0.142 (2017-10-23)</small>
 
-* 4.0.142 ([1ea1231](http://github.paypal.com/paypal/paypal-checkout/commit/1ea1231))
 * Allow fundingicons to be clicked ([c29e160](http://github.paypal.com/paypal/paypal-checkout/commit/c29e160))
 * Clean up responsive styles ([6167dcd](http://github.paypal.com/paypal/paypal-checkout/commit/6167dcd))
 * Dist ([1b870f8](http://github.paypal.com/paypal/paypal-checkout/commit/1b870f8))
@@ -1168,7 +1058,6 @@
 
 ## <small>4.0.141 (2017-10-19)</small>
 
-* 4.0.141 ([694a1f9](http://github.paypal.com/paypal/paypal-checkout/commit/694a1f9))
 * Allow maxbuttons 1 for vertical ([c09759b](http://github.paypal.com/paypal/paypal-checkout/commit/c09759b))
 * Button style adjustments ([40ae3f1](http://github.paypal.com/paypal/paypal-checkout/commit/40ae3f1))
 * Dist ([ac2dbc6](http://github.paypal.com/paypal/paypal-checkout/commit/ac2dbc6))
@@ -1184,7 +1073,6 @@
 
 ## <small>4.0.140 (2017-10-18)</small>
 
-* 4.0.140 ([498bdfb](http://github.paypal.com/paypal/paypal-checkout/commit/498bdfb))
 * Dist ([954e23e](http://github.paypal.com/paypal/paypal-checkout/commit/954e23e))
 * Fix button instrumentation ([d6bd947](http://github.paypal.com/paypal/paypal-checkout/commit/d6bd947))
 
@@ -1192,7 +1080,6 @@
 
 ## <small>4.0.139 (2017-10-18)</small>
 
-* 4.0.139 ([aab81a5](http://github.paypal.com/paypal/paypal-checkout/commit/aab81a5))
 * Add button screenshot test improvements ([899d4d6](http://github.paypal.com/paypal/paypal-checkout/commit/899d4d6))
 * Add new pill screenshots ([58065ad](http://github.paypal.com/paypal/paypal-checkout/commit/58065ad))
 * Dist ([0b30fb7](http://github.paypal.com/paypal/paypal-checkout/commit/0b30fb7))
@@ -1204,7 +1091,6 @@
 
 ## <small>4.0.138 (2017-10-17)</small>
 
-* 4.0.138 ([2107bd4](http://github.paypal.com/paypal/paypal-checkout/commit/2107bd4))
 * Dist ([663dddf](http://github.paypal.com/paypal/paypal-checkout/commit/663dddf))
 * Ensure credit is only defaulted on for vertical integrations ([2fed7bd](http://github.paypal.com/paypal/paypal-checkout/commit/2fed7bd))
 * Make sure to call original style validation after patching ([06ab4df](http://github.paypal.com/paypal/paypal-checkout/commit/06ab4df))
@@ -1215,7 +1101,6 @@
 
 ## <small>4.0.137 (2017-10-17)</small>
 
-* 4.0.137 ([aa5ab18](http://github.paypal.com/paypal/paypal-checkout/commit/aa5ab18))
 * Dist ([d046c72](http://github.paypal.com/paypal/paypal-checkout/commit/d046c72))
 * Enable credit by default for US ([f930ec7](http://github.paypal.com/paypal/paypal-checkout/commit/f930ec7))
 * Fix old style props for framework integrations ([67d8d0f](http://github.paypal.com/paypal/paypal-checkout/commit/67d8d0f))
@@ -1230,7 +1115,6 @@
 
 ## <small>4.0.136 (2017-10-17)</small>
 
-* 4.0.136 ([c54596c](http://github.paypal.com/paypal/paypal-checkout/commit/c54596c))
 * Add compatibility fixes ([dbd5f42](http://github.paypal.com/paypal/paypal-checkout/commit/dbd5f42))
 * Dist ([2897b08](http://github.paypal.com/paypal/paypal-checkout/commit/2897b08))
 
@@ -1238,7 +1122,6 @@
 
 ## <small>4.0.135 (2017-10-17)</small>
 
-* 4.0.135 ([d6ff268](http://github.paypal.com/paypal/paypal-checkout/commit/d6ff268))
 * Add button count kv ([f5f2b91](http://github.paypal.com/paypal/paypal-checkout/commit/f5f2b91))
 * Add extra window type options ([c6d62f8](http://github.paypal.com/paypal/paypal-checkout/commit/c6d62f8))
 * Add jsx eslint rules ([cdf3301](http://github.paypal.com/paypal/paypal-checkout/commit/cdf3301))
@@ -1259,7 +1142,6 @@
 
 ## <small>4.0.134 (2017-10-10)</small>
 
-* 4.0.134 ([76b84b7](http://github.paypal.com/paypal/paypal-checkout/commit/76b84b7))
 * Add data-merchant-id prop, pass to fpti and muse ([f2bad55](http://github.paypal.com/paypal/paypal-checkout/commit/f2bad55))
 * Add version number to rendered button template ([43e44bd](http://github.paypal.com/paypal/paypal-checkout/commit/43e44bd))
 * Default ELV to guest app ([e6af477](http://github.paypal.com/paypal/paypal-checkout/commit/e6af477))
@@ -1273,8 +1155,6 @@
 
 ## <small>4.0.133 (2017-10-04)</small>
 
-* 4.0.132 ([2e6875b](http://github.paypal.com/paypal/paypal-checkout/commit/2e6875b))
-* 4.0.133 ([daefd65](http://github.paypal.com/paypal/paypal-checkout/commit/daefd65))
 * Add dist/checkout.button.render.js to npm package ([4585cd0](http://github.paypal.com/paypal/paypal-checkout/commit/4585cd0))
 * Add option for white overlay ([771aca4](http://github.paypal.com/paypal/paypal-checkout/commit/771aca4))
 * Dist ([caef048](http://github.paypal.com/paypal/paypal-checkout/commit/caef048))
@@ -1291,7 +1171,6 @@
 
 ## <small>4.0.131 (2017-10-01)</small>
 
-* 4.0.131 ([280592a](http://github.paypal.com/paypal/paypal-checkout/commit/280592a))
 * Add button screenshot tests ([0e1fd70](http://github.paypal.com/paypal/paypal-checkout/commit/0e1fd70))
 * Add new check for facebook webview ([0981791](http://github.paypal.com/paypal/paypal-checkout/commit/0981791))
 * Cache bowser based on user-agent ([e75e7f1](http://github.paypal.com/paypal/paypal-checkout/commit/e75e7f1))
@@ -1307,7 +1186,6 @@
 
 ## <small>4.0.130 (2017-09-18)</small>
 
-* 4.0.130 ([524385f](http://github.paypal.com/paypal/paypal-checkout/commit/524385f))
 * Add small delay on experiment return log ([18a2b4e](http://github.paypal.com/paypal/paypal-checkout/commit/18a2b4e))
 * Dist ([8ff289b](http://github.paypal.com/paypal/paypal-checkout/commit/8ff289b))
 * Improve resize test ([eae5f16](http://github.paypal.com/paypal/paypal-checkout/commit/eae5f16))
@@ -1317,7 +1195,6 @@
 
 ## <small>4.0.129 (2017-09-18)</small>
 
-* 4.0.129 ([224ea0b](http://github.paypal.com/paypal/paypal-checkout/commit/224ea0b))
 * Cleanup hacks ([b34d3a8](http://github.paypal.com/paypal/paypal-checkout/commit/b34d3a8))
 * Dist ([1f28789](http://github.paypal.com/paypal/paypal-checkout/commit/1f28789))
 * Immediately flush missing intent logs ([2d4d8ec](http://github.paypal.com/paypal/paypal-checkout/commit/2d4d8ec))
@@ -1328,7 +1205,6 @@
 
 ## <small>4.0.128 (2017-09-15)</small>
 
-* 4.0.128 ([e87230d](http://github.paypal.com/paypal/paypal-checkout/commit/e87230d))
 * Destroy entire session after expiry time, not just guid ([fcb00e5](http://github.paypal.com/paypal/paypal-checkout/commit/fcb00e5))
 * Dist ([3f41f74](http://github.paypal.com/paypal/paypal-checkout/commit/3f41f74))
 * Do not send start/complete beacon for experiments which have already been instrumented ([2f240d9](http://github.paypal.com/paypal/paypal-checkout/commit/2f240d9))
@@ -1337,7 +1213,6 @@
 
 ## <small>4.0.127 (2017-09-14)</small>
 
-* 4.0.127 ([4c0a40f](http://github.paypal.com/paypal/paypal-checkout/commit/4c0a40f))
 * Dist ([a948694](http://github.paypal.com/paypal/paypal-checkout/commit/a948694))
 * Only log complete for external experiment if experiment is active ([504b4ee](http://github.paypal.com/paypal/paypal-checkout/commit/504b4ee))
 * Write new session to storage ([d93f922](http://github.paypal.com/paypal/paypal-checkout/commit/d93f922))
@@ -1346,7 +1221,6 @@
 
 ## <small>4.0.126 (2017-09-14)</small>
 
-* 4.0.126 ([8047b86](http://github.paypal.com/paypal/paypal-checkout/commit/8047b86))
 * Always validate props prior to doing template render ([a3d4d0c](http://github.paypal.com/paypal/paypal-checkout/commit/a3d4d0c))
 * Dist ([cbc8965](http://github.paypal.com/paypal/paypal-checkout/commit/cbc8965))
 
@@ -1354,7 +1228,6 @@
 
 ## <small>4.0.125 (2017-09-14)</small>
 
-* 4.0.125 ([1c0931f](http://github.paypal.com/paypal/paypal-checkout/commit/1c0931f))
 * Add const-immutable eslint plugin ([8c35ecc](http://github.paypal.com/paypal/paypal-checkout/commit/8c35ecc))
 * Add more logs for missing intent ([9447bbf](http://github.paypal.com/paypal/paypal-checkout/commit/9447bbf))
 * Dist ([d0705dd](http://github.paypal.com/paypal/paypal-checkout/commit/d0705dd))
@@ -1368,14 +1241,12 @@
 ## <small>4.0.124 (2017-09-07)</small>
 
 * (docs) Add missing parameter to callback functions (#456) ([df7926d](http://github.paypal.com/paypal/paypal-checkout/commit/df7926d)), closes [#456](http://github.paypal.com/paypal/paypal-checkout/issues/456)
-* 4.0.124 ([1ac1737](http://github.paypal.com/paypal/paypal-checkout/commit/1ac1737))
 * Dist ([2360019](http://github.paypal.com/paypal/paypal-checkout/commit/2360019))
 
 
 
 ## <small>4.0.123 (2017-09-07)</small>
 
-* 4.0.123 ([5dbf6c0](http://github.paypal.com/paypal/paypal-checkout/commit/5dbf6c0))
 * Call onRememberUser prop when user is remembered ([09b5325](http://github.paypal.com/paypal/paypal-checkout/commit/09b5325))
 * Dist ([97fcf20](http://github.paypal.com/paypal/paypal-checkout/commit/97fcf20))
 
@@ -1383,7 +1254,6 @@
 
 ## <small>4.0.122 (2017-09-06)</small>
 
-* 4.0.122 ([1ba36d2](http://github.paypal.com/paypal/paypal-checkout/commit/1ba36d2))
 * Dist ([3a0604d](http://github.paypal.com/paypal/paypal-checkout/commit/3a0604d))
 * Improve late-render test to make sure button iframe is visible ([b254155](http://github.paypal.com/paypal/paypal-checkout/commit/b254155))
 * Log token and payment id with missing intent ([82d3b54](http://github.paypal.com/paypal/paypal-checkout/commit/82d3b54))
@@ -1393,7 +1263,6 @@
 
 ## <small>4.0.121 (2017-09-02)</small>
 
-* 4.0.121 ([7d0aa7d](http://github.paypal.com/paypal/paypal-checkout/commit/7d0aa7d))
 * Dist ([6710fbb](http://github.paypal.com/paypal/paypal-checkout/commit/6710fbb))
 * Re-run componentScript when computedStyle is null ([81b3778](http://github.paypal.com/paypal/paypal-checkout/commit/81b3778))
 * Treat null computedStyle as being hidden ([07ede9c](http://github.paypal.com/paypal/paypal-checkout/commit/07ede9c))
@@ -1402,7 +1271,6 @@
 
 ## <small>4.0.120 (2017-09-02)</small>
 
-* 4.0.120 ([8d1889f](http://github.paypal.com/paypal/paypal-checkout/commit/8d1889f))
 * Add warning for no intent in onAuthorize data ([a45ee01](http://github.paypal.com/paypal/paypal-checkout/commit/a45ee01))
 * Dist ([7172baa](http://github.paypal.com/paypal/paypal-checkout/commit/7172baa))
 * Make interface hacks more resilient ([3fd35ac](http://github.paypal.com/paypal/paypal-checkout/commit/3fd35ac))
@@ -1413,7 +1281,6 @@
 
 ## <small>4.0.119 (2017-09-01)</small>
 
-* 4.0.119 ([0e7a620](http://github.paypal.com/paypal/paypal-checkout/commit/0e7a620))
 * Allow line break in type declarations ([3795f9f](http://github.paypal.com/paypal/paypal-checkout/commit/3795f9f))
 * Dist ([195ba9b](http://github.paypal.com/paypal/paypal-checkout/commit/195ba9b))
 * Fix proxying ([7941d85](http://github.paypal.com/paypal/paypal-checkout/commit/7941d85))
@@ -1422,7 +1289,6 @@
 
 ## <small>4.0.118 (2017-08-30)</small>
 
-* 4.0.118 ([bba32c7](http://github.paypal.com/paypal/paypal-checkout/commit/bba32c7))
 * Add angular2 demo ([61f1512](http://github.paypal.com/paypal/paypal-checkout/commit/61f1512))
 * Clean up angular2 demo ([b9e89af](http://github.paypal.com/paypal/paypal-checkout/commit/b9e89af))
 * Dist ([8502892](http://github.paypal.com/paypal/paypal-checkout/commit/8502892))
@@ -1436,7 +1302,6 @@
 
 ## <small>4.0.117 (2017-08-29)</small>
 
-* 4.0.117 ([32faa47](http://github.paypal.com/paypal/paypal-checkout/commit/32faa47))
 * Add actions.payment.get to Braintree integration ([4c6a8a9](http://github.paypal.com/paypal/paypal-checkout/commit/4c6a8a9))
 * Add window types ([2d9d2fe](http://github.paypal.com/paypal/paypal-checkout/commit/2d9d2fe))
 * Allow actions.payment.create for Braintree integrations ([b184791](http://github.paypal.com/paypal/paypal-checkout/commit/b184791))
@@ -1456,7 +1321,6 @@
 
 ## <small>4.0.116 (2017-08-22)</small>
 
-* 4.0.116 ([5cc0a47](http://github.paypal.com/paypal/paypal-checkout/commit/5cc0a47))
 * Dist ([6f17120](http://github.paypal.com/paypal/paypal-checkout/commit/6f17120))
 * Simplify iframe eligibility ([d2f8436](http://github.paypal.com/paypal/paypal-checkout/commit/d2f8436))
 
@@ -1464,7 +1328,6 @@
 
 ## <small>4.0.115 (2017-08-21)</small>
 
-* 4.0.115 ([98beb12](http://github.paypal.com/paypal/paypal-checkout/commit/98beb12))
 * Dist ([b6f4fd5](http://github.paypal.com/paypal/paypal-checkout/commit/b6f4fd5))
 * Re-enable tests ([cc5ccd4](http://github.paypal.com/paypal/paypal-checkout/commit/cc5ccd4))
 
@@ -1472,7 +1335,6 @@
 
 ## <small>4.0.114 (2017-08-21)</small>
 
-* 4.0.114 ([2c939f3](http://github.paypal.com/paypal/paypal-checkout/commit/2c939f3))
 * Dist ([96326e2](http://github.paypal.com/paypal/paypal-checkout/commit/96326e2))
 * Group together allow-iframe logic ([29eb65b](http://github.paypal.com/paypal/paypal-checkout/commit/29eb65b))
 * Improve allow-iframe logic ([702d85a](http://github.paypal.com/paypal/paypal-checkout/commit/702d85a))
@@ -1483,7 +1345,6 @@
 
 ## <small>4.0.113 (2017-08-18)</small>
 
-* 4.0.113 ([62c4190](http://github.paypal.com/paypal/paypal-checkout/commit/62c4190))
 * Allow getting session and session state ([d9915b6](http://github.paypal.com/paypal/paypal-checkout/commit/d9915b6))
 * Auto convert tiny buttons to small ([cfa5edf](http://github.paypal.com/paypal/paypal-checkout/commit/cfa5edf))
 * Dist ([4526628](http://github.paypal.com/paypal/paypal-checkout/commit/4526628))
@@ -1493,7 +1354,6 @@
 
 ## <small>4.0.112 (2017-08-17)</small>
 
-* 4.0.112 ([471e66b](http://github.paypal.com/paypal/paypal-checkout/commit/471e66b))
 * Allow passing style.tagline=false to disable button tagline ([144e8b5](http://github.paypal.com/paypal/paypal-checkout/commit/144e8b5))
 * Clean up legacy button rendering instrumentation ([771fbbc](http://github.paypal.com/paypal/paypal-checkout/commit/771fbbc))
 * Clean up localStorage and session code ([d2f832b](http://github.paypal.com/paypal/paypal-checkout/commit/d2f832b))
@@ -1512,7 +1372,6 @@
 
 ## <small>4.0.111 (2017-08-15)</small>
 
-* 4.0.111 ([0c63c90](http://github.paypal.com/paypal/paypal-checkout/commit/0c63c90))
 * Check xprops in forceIframe ([bb0f694](http://github.paypal.com/paypal/paypal-checkout/commit/bb0f694))
 * Dist ([752efbd](http://github.paypal.com/paypal/paypal-checkout/commit/752efbd))
 * Set minimum width of button to 100px ([bc10f86](http://github.paypal.com/paypal/paypal-checkout/commit/bc10f86))
@@ -1521,7 +1380,6 @@
 
 ## <small>4.0.110 (2017-08-11)</small>
 
-* 4.0.110 ([f5259b1](http://github.paypal.com/paypal/paypal-checkout/commit/f5259b1))
 * Allow enabling iframe any time prefetchLogin is enabled ([d47f4ea](http://github.paypal.com/paypal/paypal-checkout/commit/d47f4ea))
 * Allow paypal domains to enable checkout iframe with a public method ([f1d5bd1](http://github.paypal.com/paypal/paypal-checkout/commit/f1d5bd1))
 * Blank env prop for login prerender ([53ef96e](http://github.paypal.com/paypal/paypal-checkout/commit/53ef96e))
@@ -1535,7 +1393,6 @@
 
 ## <small>4.0.109 (2017-08-11)</small>
 
-* 4.0.109 ([846c21b](http://github.paypal.com/paypal/paypal-checkout/commit/846c21b))
 * Add init log for checkout component ([83b7f4c](http://github.paypal.com/paypal/paypal-checkout/commit/83b7f4c))
 * Add process_recieve_payment log the moment the button recieves the token or payment id ([ef2880d](http://github.paypal.com/paypal/paypal-checkout/commit/ef2880d))
 * Add specific log for no token passed ([913fcb0](http://github.paypal.com/paypal/paypal-checkout/commit/913fcb0))
@@ -1558,7 +1415,6 @@
 
 ## <small>4.0.108 (2017-08-09)</small>
 
-* 4.0.108 ([753f32a](http://github.paypal.com/paypal/paypal-checkout/commit/753f32a))
 * Add dev demo for in-iframe usecase ([5700e40](http://github.paypal.com/paypal/paypal-checkout/commit/5700e40))
 * Add dev demo for legacy form hijack case ([a0535a3](http://github.paypal.com/paypal/paypal-checkout/commit/a0535a3))
 * Add dev demo for legacy integration ([f74f6fc](http://github.paypal.com/paypal/paypal-checkout/commit/f74f6fc))
@@ -1571,7 +1427,6 @@
 
 ## <small>4.0.107 (2017-08-09)</small>
 
-* 4.0.107 ([284b64d](http://github.paypal.com/paypal/paypal-checkout/commit/284b64d))
 * Dist ([d165837](http://github.paypal.com/paypal/paypal-checkout/commit/d165837))
 * Use bowser.compareVersions rather than simple lessthan check ([b1ed904](http://github.paypal.com/paypal/paypal-checkout/commit/b1ed904))
 
@@ -1579,7 +1434,6 @@
 
 ## <small>4.0.106 (2017-08-09)</small>
 
-* 4.0.106 ([92315d5](http://github.paypal.com/paypal/paypal-checkout/commit/92315d5))
 * Add more supported browsers to config ([0b5528b](http://github.paypal.com/paypal/paypal-checkout/commit/0b5528b))
 * Dist ([ac1dd6a](http://github.paypal.com/paypal/paypal-checkout/commit/ac1dd6a))
 * Do not resolve promise for restart cases ([b7cfb1b](http://github.paypal.com/paypal/paypal-checkout/commit/b7cfb1b))
@@ -1588,7 +1442,6 @@
 
 ## <small>4.0.105 (2017-08-09)</small>
 
-* 4.0.105 ([cc5d75b](http://github.paypal.com/paypal/paypal-checkout/commit/cc5d75b))
 * Disable checkout iframe in authorize and cancel ([6fabfd9](http://github.paypal.com/paypal/paypal-checkout/commit/6fabfd9))
 * Dist ([8c5a8e0](http://github.paypal.com/paypal/paypal-checkout/commit/8c5a8e0))
 * Move recognized browser check to onAuthorize ([dec382b](http://github.paypal.com/paypal/paypal-checkout/commit/dec382b))
@@ -1597,7 +1450,6 @@
 
 ## <small>4.0.104 (2017-08-08)</small>
 
-* 4.0.104 ([ab2fbac](http://github.paypal.com/paypal/paypal-checkout/commit/ab2fbac))
 * Add correlation id to all http error responses ([13f971a](http://github.paypal.com/paypal/paypal-checkout/commit/13f971a))
 * Add logging on return ([bb244e5](http://github.paypal.com/paypal/paypal-checkout/commit/bb244e5))
 * Add setup tests and refactor pptm tests ([95b4b19](http://github.paypal.com/paypal/paypal-checkout/commit/95b4b19))
@@ -1617,7 +1469,6 @@
 
 ## <small>4.0.103 (2017-08-03)</small>
 
-* 4.0.103 ([f3ebe58](http://github.paypal.com/paypal/paypal-checkout/commit/f3ebe58))
 * Dist ([dc11823](http://github.paypal.com/paypal/paypal-checkout/commit/dc11823))
 * Do not open bridge on paypal domain ([f04fa21](http://github.paypal.com/paypal/paypal-checkout/commit/f04fa21))
 
@@ -1625,7 +1476,6 @@
 
 ## <small>4.0.102 (2017-08-03)</small>
 
-* 4.0.102 ([ca1240a](http://github.paypal.com/paypal/paypal-checkout/commit/ca1240a))
 * Dist ([1f54e88](http://github.paypal.com/paypal/paypal-checkout/commit/1f54e88))
 * Fix force bridge loader ([6c96560](http://github.paypal.com/paypal/paypal-checkout/commit/6c96560))
 
@@ -1633,7 +1483,6 @@
 
 ## <small>4.0.101 (2017-08-03)</small>
 
-* 4.0.101 ([3266df2](http://github.paypal.com/paypal/paypal-checkout/commit/3266df2))
 * Dist ([fc89a85](http://github.paypal.com/paypal/paypal-checkout/commit/fc89a85))
 * Update ISSUE_TEMPLATE.md ([1a79aa5](http://github.paypal.com/paypal/paypal-checkout/commit/1a79aa5))
 * Update ISSUE_TEMPLATE.md ([294725d](http://github.paypal.com/paypal/paypal-checkout/commit/294725d))
@@ -1642,7 +1491,6 @@
 
 ## <small>4.0.100 (2017-08-03)</small>
 
-* 4.0.100 ([b3b0dc3](http://github.paypal.com/paypal/paypal-checkout/commit/b3b0dc3))
 * Add tests for cancel on close window ([7c4daf9](http://github.paypal.com/paypal/paypal-checkout/commit/7c4daf9))
 * Allow forcing bridge on per-domain basis ([8de8b83](http://github.paypal.com/paypal/paypal-checkout/commit/8de8b83))
 * Dist ([cc306b3](http://github.paypal.com/paypal/paypal-checkout/commit/cc306b3))
@@ -1653,7 +1501,6 @@
 
 ## <small>4.0.99 (2017-08-02)</small>
 
-* 4.0.99 ([5164bdf](http://github.paypal.com/paypal/paypal-checkout/commit/5164bdf))
 * Add commented auto-devtools chrome option ([d2d71c6](http://github.paypal.com/paypal/paypal-checkout/commit/d2d71c6))
 * Adjust per-domain settings ([6d672ff](http://github.paypal.com/paypal/paypal-checkout/commit/6d672ff))
 * Create performance.md ([2b81ecb](http://github.paypal.com/paypal/paypal-checkout/commit/2b81ecb))
@@ -1666,7 +1513,6 @@
 
 ## <small>4.0.98 (2017-07-31)</small>
 
-* 4.0.98 ([ea9438e](http://github.paypal.com/paypal/paypal-checkout/commit/ea9438e))
 * Dist ([93c6e38](http://github.paypal.com/paypal/paypal-checkout/commit/93c6e38))
 * Make sure iframe can not be disabled in force-iframe mode ([9b86ccb](http://github.paypal.com/paypal/paypal-checkout/commit/9b86ccb))
 
@@ -1674,7 +1520,6 @@
 
 ## <small>4.0.97 (2017-07-28)</small>
 
-* 4.0.97 ([f9a734e](http://github.paypal.com/paypal/paypal-checkout/commit/f9a734e))
 * Add legacy dev demo ([009bbbc](http://github.paypal.com/paypal/paypal-checkout/commit/009bbbc))
 * Add option to go to full page for IE ([f4f16d7](http://github.paypal.com/paypal/paypal-checkout/commit/f4f16d7))
 * Add option to go to full page when clicking on prerendered button ([4d92744](http://github.paypal.com/paypal/paypal-checkout/commit/4d92744))
@@ -1696,7 +1541,6 @@
 
 ## <small>4.0.96 (2017-07-25)</small>
 
-* 4.0.96 ([581dd55](http://github.paypal.com/paypal/paypal-checkout/commit/581dd55))
 * Add commented headless chrome options ([8c2857c](http://github.paypal.com/paypal/paypal-checkout/commit/8c2857c))
 * Dist ([cad2865](http://github.paypal.com/paypal/paypal-checkout/commit/cad2865))
 * Enable lightbox/popup experiment ([b0a67d4](http://github.paypal.com/paypal/paypal-checkout/commit/b0a67d4))
@@ -1709,7 +1553,6 @@
 
 ## <small>4.0.95 (2017-07-20)</small>
 
-* 4.0.95 ([bb147d6](http://github.paypal.com/paypal/paypal-checkout/commit/bb147d6))
 * Add log for domain specific custom paypal button ([295e3f9](http://github.paypal.com/paypal/paypal-checkout/commit/295e3f9))
 * Add more instrumentation around repeat button click behavior ([a898286](http://github.paypal.com/paypal/paypal-checkout/commit/a898286))
 * Dist ([fb21712](http://github.paypal.com/paypal/paypal-checkout/commit/fb21712))
@@ -1720,7 +1563,6 @@
 
 ## <small>4.0.94 (2017-07-20)</small>
 
-* 4.0.94 ([a24b1e1](http://github.paypal.com/paypal/paypal-checkout/commit/a24b1e1))
 * Dist ([d163da6](http://github.paypal.com/paypal/paypal-checkout/commit/d163da6))
 * Do not cancel setup for ineligible browsers ([db4b994](http://github.paypal.com/paypal/paypal-checkout/commit/db4b994))
 * Fix z-index ([f1a438c](http://github.paypal.com/paypal/paypal-checkout/commit/f1a438c))
@@ -1730,7 +1572,6 @@
 
 ## <small>4.0.93 (2017-07-20)</small>
 
-* 4.0.93 ([8368630](http://github.paypal.com/paypal/paypal-checkout/commit/8368630))
 * Add log for onAuthorize in ineligible browser ([78a0b11](http://github.paypal.com/paypal/paypal-checkout/commit/78a0b11))
 * Dist ([8da7785](http://github.paypal.com/paypal/paypal-checkout/commit/8da7785))
 * Log warning for ineligible button render ([2263d07](http://github.paypal.com/paypal/paypal-checkout/commit/2263d07))
@@ -1739,7 +1580,6 @@
 
 ## <small>4.0.92 (2017-07-20)</small>
 
-* 4.0.92 ([4b9ed77](http://github.paypal.com/paypal/paypal-checkout/commit/4b9ed77))
 * Add domain specific setting for logger prefix ([23aeed1](http://github.paypal.com/paypal/paypal-checkout/commit/23aeed1))
 * Add domain specific setting util ([2dccb0c](http://github.paypal.com/paypal/paypal-checkout/commit/2dccb0c))
 * Add log for button clicked after cancel ([70abccd](http://github.paypal.com/paypal/paypal-checkout/commit/70abccd))
@@ -1761,8 +1601,6 @@
 
 ## <small>4.0.91 (2017-07-18)</small>
 
-* 4.0.90 ([d5639b8](http://github.paypal.com/paypal/paypal-checkout/commit/d5639b8))
-* 4.0.91 ([69808e9](http://github.paypal.com/paypal/paypal-checkout/commit/69808e9))
 * Add an accessToken prop to checkout ([8b3e505](http://github.paypal.com/paypal/paypal-checkout/commit/8b3e505))
 * Add cross-domain-utils and zalgo-promise to quickbuild script ([0bb128d](http://github.paypal.com/paypal/paypal-checkout/commit/0bb128d))
 * Add dev demo ([05eac5e](http://github.paypal.com/paypal/paypal-checkout/commit/05eac5e))
@@ -1785,7 +1623,6 @@
 
 ## <small>4.0.89 (2017-06-27)</small>
 
-* 4.0.89 ([a14e1ae](http://github.paypal.com/paypal/paypal-checkout/commit/a14e1ae))
 * Dist ([0fcb805](http://github.paypal.com/paypal/paypal-checkout/commit/0fcb805))
 * Re-start tagline experiment ([96f459a](http://github.paypal.com/paypal/paypal-checkout/commit/96f459a))
 
@@ -1793,7 +1630,6 @@
 
 ## <small>4.0.88 (2017-06-27)</small>
 
-* 4.0.88 ([0713403](http://github.paypal.com/paypal/paypal-checkout/commit/0713403))
 * Add timing log for button render ([0b4bfb9](http://github.paypal.com/paypal/paypal-checkout/commit/0b4bfb9))
 * Dist ([81a4920](http://github.paypal.com/paypal/paypal-checkout/commit/81a4920))
 * Fix memoize typing ([50fe9df](http://github.paypal.com/paypal/paypal-checkout/commit/50fe9df))
@@ -1804,14 +1640,12 @@
 
 ## <small>4.0.87 (2017-06-26)</small>
 
-* 4.0.87 ([0e2eda9](http://github.paypal.com/paypal/paypal-checkout/commit/0e2eda9))
 * Dist ([1a8f727](http://github.paypal.com/paypal/paypal-checkout/commit/1a8f727))
 
 
 
 ## <small>4.0.86 (2017-06-26)</small>
 
-* 4.0.86 ([cc2c472](http://github.paypal.com/paypal/paypal-checkout/commit/cc2c472))
 * Advanced session logic, throttle fixes and verifications ([b3a0851](http://github.paypal.com/paypal/paypal-checkout/commit/b3a0851))
 * Dist ([2bcc94a](http://github.paypal.com/paypal/paypal-checkout/commit/2bcc94a))
 * Fix legacy env setting regression ([c050dbb](http://github.paypal.com/paypal/paypal-checkout/commit/c050dbb))
@@ -1821,7 +1655,6 @@
 
 ## <small>4.0.85 (2017-06-22)</small>
 
-* 4.0.85 ([d48aab9](http://github.paypal.com/paypal/paypal-checkout/commit/d48aab9))
 * Add Gitter Badge (#378) ([a7894a0](http://github.paypal.com/paypal/paypal-checkout/commit/a7894a0)), closes [#378](http://github.paypal.com/paypal/paypal-checkout/issues/378)
 * Create NOOP pptm.js script upon setup (#385) ([b425166](http://github.paypal.com/paypal/paypal-checkout/commit/b425166)), closes [#385](http://github.paypal.com/paypal/paypal-checkout/issues/385)
 * Disable ModuleConcatenationPlugin for now ([86f2eca](http://github.paypal.com/paypal/paypal-checkout/commit/86f2eca))
@@ -1839,8 +1672,6 @@
 
 ## <small>4.0.84 (2017-06-17)</small>
 
-* 4.0.83 ([fa9c86e](http://github.paypal.com/paypal/paypal-checkout/commit/fa9c86e))
-* 4.0.84 ([0079f6f](http://github.paypal.com/paypal/paypal-checkout/commit/0079f6f))
 * Add button_source enum and fpti log ([12036ca](http://github.paypal.com/paypal/paypal-checkout/commit/12036ca))
 * Add fpti error logging ([8af47e6](http://github.paypal.com/paypal/paypal-checkout/commit/8af47e6))
 * Allow passing partnerAttributionID in payment create ([effd944](http://github.paypal.com/paypal/paypal-checkout/commit/effd944))
@@ -1864,7 +1695,6 @@
 
 ## <small>4.0.82 (2017-06-07)</small>
 
-* 4.0.82 ([5afb22c](http://github.paypal.com/paypal/paypal-checkout/commit/5afb22c))
 * Dist ([bcda8b5](http://github.paypal.com/paypal/paypal-checkout/commit/bcda8b5))
 * Fix typo ([7cf69a9](http://github.paypal.com/paypal/paypal-checkout/commit/7cf69a9))
 
@@ -1872,7 +1702,6 @@
 
 ## <small>4.0.81 (2017-06-07)</small>
 
-* 4.0.81 ([26082d9](http://github.paypal.com/paypal/paypal-checkout/commit/26082d9))
 * Dist ([f716746](http://github.paypal.com/paypal/paypal-checkout/commit/f716746))
 * Fix fpti logging for payment create ([e22bede](http://github.paypal.com/paypal/paypal-checkout/commit/e22bede))
 * Use latest cross-domain-utils on publish ([56c50d3](http://github.paypal.com/paypal/paypal-checkout/commit/56c50d3))
@@ -1881,8 +1710,6 @@
 
 ## <small>4.0.80 (2017-06-06)</small>
 
-* 4.0.79 ([02470d1](http://github.paypal.com/paypal/paypal-checkout/commit/02470d1))
-* 4.0.80 ([e5bea95](http://github.paypal.com/paypal/paypal-checkout/commit/e5bea95))
 * Better hash function for test groups ([41f2e97](http://github.paypal.com/paypal/paypal-checkout/commit/41f2e97))
 * branded buy now button (#343) ([369075c](http://github.paypal.com/paypal/paypal-checkout/commit/369075c)), closes [#343](http://github.paypal.com/paypal/paypal-checkout/issues/343)
 * Dist ([2d0ce1e](http://github.paypal.com/paypal/paypal-checkout/commit/2d0ce1e))
@@ -1895,14 +1722,12 @@
 
 ## <small>4.0.78 (2017-05-23)</small>
 
-* 4.0.78 ([c4fdb4d](http://github.paypal.com/paypal/paypal-checkout/commit/c4fdb4d))
 * Dist ([42f659f](http://github.paypal.com/paypal/paypal-checkout/commit/42f659f))
 
 
 
 ## <small>4.0.77 (2017-05-23)</small>
 
-* 4.0.77 ([8bad22c](http://github.paypal.com/paypal/paypal-checkout/commit/8bad22c))
 * Dist ([68ff0b4](http://github.paypal.com/paypal/paypal-checkout/commit/68ff0b4))
 * Fix minimum widths ([73981e7](http://github.paypal.com/paypal/paypal-checkout/commit/73981e7))
 
@@ -1910,7 +1735,6 @@
 
 ## <small>4.0.76 (2017-05-23)</small>
 
-* 4.0.76 ([b474cb3](http://github.paypal.com/paypal/paypal-checkout/commit/b474cb3))
 * Dist ([d226263](http://github.paypal.com/paypal/paypal-checkout/commit/d226263))
 * Fix typo in data.braintree ([889ccf7](http://github.paypal.com/paypal/paypal-checkout/commit/889ccf7))
 * Lightbox size fixes for mobile ([e8ec09c](http://github.paypal.com/paypal/paypal-checkout/commit/e8ec09c))
@@ -1919,7 +1743,6 @@
 
 ## <small>4.0.75 (2017-05-19)</small>
 
-* 4.0.75 ([0176d09](http://github.paypal.com/paypal/paypal-checkout/commit/0176d09))
 * Dist ([6ddf865](http://github.paypal.com/paypal/paypal-checkout/commit/6ddf865))
 * Doc fixes ([2f6a770](http://github.paypal.com/paypal/paypal-checkout/commit/2f6a770))
 * Downgrade `uglify-js` version to work properly with webpack 2 (#348) ([4c07751](http://github.paypal.com/paypal/paypal-checkout/commit/4c07751)), closes [#348](http://github.paypal.com/paypal/paypal-checkout/issues/348)
@@ -1931,7 +1754,6 @@
 
 ## <small>4.0.74 (2017-05-18)</small>
 
-* 4.0.74 ([6ea5a0f](http://github.paypal.com/paypal/paypal-checkout/commit/6ea5a0f))
 * Add experience prop for paypal.Checkout ([2031888](http://github.paypal.com/paypal/paypal-checkout/commit/2031888))
 * Change to payment(data, actions) to match onAuthorize ([b5119a6](http://github.paypal.com/paypal/paypal-checkout/commit/b5119a6))
 * Dist ([18e9133](http://github.paypal.com/paypal/paypal-checkout/commit/18e9133))
@@ -1940,7 +1762,6 @@
 
 ## <small>4.0.73 (2017-05-16)</small>
 
-* 4.0.73 ([38bfd98](http://github.paypal.com/paypal/paypal-checkout/commit/38bfd98))
 * Add hoverstate for button ([0ca304b](http://github.paypal.com/paypal/paypal-checkout/commit/0ca304b))
 * Adjust tagline experiment ([8e31d76](http://github.paypal.com/paypal/paypal-checkout/commit/8e31d76))
 * buy now button (#338) ([594c282](http://github.paypal.com/paypal/paypal-checkout/commit/594c282)), closes [#338](http://github.paypal.com/paypal/paypal-checkout/issues/338)
@@ -1955,7 +1776,6 @@
 
 ## <small>4.0.72 (2017-05-15)</small>
 
-* 4.0.72 ([24559c2](http://github.paypal.com/paypal/paypal-checkout/commit/24559c2))
 * David-DM badges and devDependency updates. (#328) ([8488720](http://github.paypal.com/paypal/paypal-checkout/commit/8488720)), closes [#328](http://github.paypal.com/paypal/paypal-checkout/issues/328)
 * Dist ([9e8935e](http://github.paypal.com/paypal/paypal-checkout/commit/9e8935e))
 
@@ -1963,7 +1783,6 @@
 
 ## <small>4.0.71 (2017-05-11)</small>
 
-* 4.0.71 ([fedebe1](http://github.paypal.com/paypal/paypal-checkout/commit/fedebe1))
 * Add additional fpti keys ([6c71567](http://github.paypal.com/paypal/paypal-checkout/commit/6c71567))
 * Dist ([3b6a53d](http://github.paypal.com/paypal/paypal-checkout/commit/3b6a53d))
 * Revert "Remove old prop aliases" ([5defb27](http://github.paypal.com/paypal/paypal-checkout/commit/5defb27))
@@ -1972,7 +1791,6 @@
 
 ## <small>4.0.70 (2017-05-11)</small>
 
-* 4.0.70 ([054d8de](http://github.paypal.com/paypal/paypal-checkout/commit/054d8de))
 * Add additional FPTI instrumentation ([b6de15f](http://github.paypal.com/paypal/paypal-checkout/commit/b6de15f))
 * Dist ([7ea090e](http://github.paypal.com/paypal/paypal-checkout/commit/7ea090e))
 * Remove old prop aliases ([84dc3a0](http://github.paypal.com/paypal/paypal-checkout/commit/84dc3a0))
@@ -1983,8 +1801,6 @@
 
 ## <small>4.0.69 (2017-05-10)</small>
 
-* 4.0.68 ([ac0b6f0](http://github.paypal.com/paypal/paypal-checkout/commit/ac0b6f0))
-* 4.0.69 ([0989fe1](http://github.paypal.com/paypal/paypal-checkout/commit/0989fe1))
 * Add experiment for tag content ([b504b3c](http://github.paypal.com/paypal/paypal-checkout/commit/b504b3c))
 * Add test for button rendered before element ready ([ffa9fbf](http://github.paypal.com/paypal/paypal-checkout/commit/ffa9fbf))
 * Add test for window.open iframe name case ([ce22472](http://github.paypal.com/paypal/paypal-checkout/commit/ce22472))
@@ -2009,7 +1825,6 @@
 
 ## <small>4.0.67 (2017-05-03)</small>
 
-* 4.0.67 ([db1d6c3](http://github.paypal.com/paypal/paypal-checkout/commit/db1d6c3))
 * Determine initial dimensions in container template ([b8431b4](http://github.paypal.com/paypal/paypal-checkout/commit/b8431b4))
 * Dist ([c913e1b](http://github.paypal.com/paypal/paypal-checkout/commit/c913e1b))
 * Do not use css classes for svgs ([1b90e68](http://github.paypal.com/paypal/paypal-checkout/commit/1b90e68))
@@ -2020,7 +1835,6 @@
 
 ## <small>4.0.66 (2017-05-02)</small>
 
-* 4.0.66 ([a8433a2](http://github.paypal.com/paypal/paypal-checkout/commit/a8433a2))
 * Break button dimensions to separate file ([ffce18d](http://github.paypal.com/paypal/paypal-checkout/commit/ffce18d))
 * Dist ([5b73a08](http://github.paypal.com/paypal/paypal-checkout/commit/5b73a08))
 * Improve responsive button ([5bcf7af](http://github.paypal.com/paypal/paypal-checkout/commit/5bcf7af))
@@ -2031,7 +1845,6 @@
 
 ## <small>4.0.65 (2017-04-27)</small>
 
-* 4.0.65 ([70f7ef6](http://github.paypal.com/paypal/paypal-checkout/commit/70f7ef6))
 * Add tests for button sizes ([fdecf02](http://github.paypal.com/paypal/paypal-checkout/commit/fdecf02))
 * Dist ([5e7b942](http://github.paypal.com/paypal/paypal-checkout/commit/5e7b942))
 * Safeguard for button logo not displaying in button frame ([7abb7fc](http://github.paypal.com/paypal/paypal-checkout/commit/7abb7fc))
@@ -2042,7 +1855,6 @@
 
 ## <small>4.0.64 (2017-04-26)</small>
 
-* 4.0.64 ([9a7930c](http://github.paypal.com/paypal/paypal-checkout/commit/9a7930c))
 * Disable auto-resize on the button ([311d615](http://github.paypal.com/paypal/paypal-checkout/commit/311d615))
 * Dist ([66a0ca2](http://github.paypal.com/paypal/paypal-checkout/commit/66a0ca2))
 * Log button size ([4395fb0](http://github.paypal.com/paypal/paypal-checkout/commit/4395fb0))
@@ -2052,7 +1864,6 @@
 
 ## <small>4.0.63 (2017-04-25)</small>
 
-* 4.0.63 ([07c18d4](http://github.paypal.com/paypal/paypal-checkout/commit/07c18d4))
 * Dist ([7c9d1be](http://github.paypal.com/paypal/paypal-checkout/commit/7c9d1be))
 * Re-allow setting Checkout.contexts.lightbox manually ([c6c87b7](http://github.paypal.com/paypal/paypal-checkout/commit/c6c87b7))
 
@@ -2060,7 +1871,6 @@
 
 ## <small>4.0.62 (2017-04-25)</small>
 
-* 4.0.62 ([67388c5](http://github.paypal.com/paypal/paypal-checkout/commit/67388c5))
 * Call error from child not onError ([ef8c186](http://github.paypal.com/paypal/paypal-checkout/commit/ef8c186))
 * Dist ([ff1dd2f](http://github.paypal.com/paypal/paypal-checkout/commit/ff1dd2f))
 
@@ -2068,7 +1878,6 @@
 
 ## <small>4.0.61 (2017-04-25)</small>
 
-* 4.0.61 ([2ad3c8d](http://github.paypal.com/paypal/paypal-checkout/commit/2ad3c8d))
 * Add event for window having opener and parent ([69cbd79](http://github.paypal.com/paypal/paypal-checkout/commit/69cbd79))
 * Add fpti feed name ([72e7f31](http://github.paypal.com/paypal/paypal-checkout/commit/72e7f31))
 * Add tests for error cases in payment method ([30de0eb](http://github.paypal.com/paypal/paypal-checkout/commit/30de0eb))
@@ -2084,28 +1893,24 @@
 
 ## <small>4.0.60 (2017-04-22)</small>
 
-* 4.0.60 ([3782fda](http://github.paypal.com/paypal/paypal-checkout/commit/3782fda))
 * Dist ([34cdd2d](http://github.paypal.com/paypal/paypal-checkout/commit/34cdd2d))
 
 
 
 ## <small>4.0.59 (2017-04-21)</small>
 
-* 4.0.59 ([dc80ee8](http://github.paypal.com/paypal/paypal-checkout/commit/dc80ee8))
 * Dist ([57572f6](http://github.paypal.com/paypal/paypal-checkout/commit/57572f6))
 
 
 
 ## <small>4.0.58 (2017-04-21)</small>
 
-* 4.0.58 ([38adb13](http://github.paypal.com/paypal/paypal-checkout/commit/38adb13))
 * Dist ([a57d790](http://github.paypal.com/paypal/paypal-checkout/commit/a57d790))
 
 
 
 ## <small>4.0.57 (2017-04-20)</small>
 
-* 4.0.57 ([b5ae0da](http://github.paypal.com/paypal/paypal-checkout/commit/b5ae0da))
 * Dist ([6c7e078](http://github.paypal.com/paypal/paypal-checkout/commit/6c7e078))
 * Make Chrome default test browser ([b4564e7](http://github.paypal.com/paypal/paypal-checkout/commit/b4564e7))
 * Re-add window.ppxo to exports ([78ee834](http://github.paypal.com/paypal/paypal-checkout/commit/78ee834))
@@ -2114,7 +1919,6 @@
 
 ## <small>4.0.56 (2017-04-20)</small>
 
-* 4.0.56 ([4b2536e](http://github.paypal.com/paypal/paypal-checkout/commit/4b2536e))
 * Add a v4 build without legacy support ([86212d0](http://github.paypal.com/paypal/paypal-checkout/commit/86212d0))
 * Add flag to exclude legacy support ([2f600be](http://github.paypal.com/paypal/paypal-checkout/commit/2f600be))
 * Add FPTI tracking ([f8a3ca8](http://github.paypal.com/paypal/paypal-checkout/commit/f8a3ca8))
@@ -2137,7 +1941,6 @@
 
 ## <small>4.0.55 (2017-04-14)</small>
 
-* 4.0.55 ([682e6d6](http://github.paypal.com/paypal/paypal-checkout/commit/682e6d6))
 * Add cross-domain-safe-weakmap to publish script ([32f4d21](http://github.paypal.com/paypal/paypal-checkout/commit/32f4d21))
 * Add data-paypal-checkout to test child scripts ([23aa9df](http://github.paypal.com/paypal/paypal-checkout/commit/23aa9df))
 * Add loglevel karma commandline option ([3dabeea](http://github.paypal.com/paypal/paypal-checkout/commit/3dabeea))
@@ -2189,7 +1992,6 @@
 
 ## <small>4.0.54 (2017-03-20)</small>
 
-* 4.0.54 ([3af979f](http://github.paypal.com/paypal/paypal-checkout/commit/3af979f))
 * Add DS_Store to gitignore ([f46114c](http://github.paypal.com/paypal/paypal-checkout/commit/f46114c))
 * Build and use checkout.js once for all tests windows ([324cb91](http://github.paypal.com/paypal/paypal-checkout/commit/324cb91))
 * Button window responsible for clicking button during tests ([d260310](http://github.paypal.com/paypal/paypal-checkout/commit/d260310))
@@ -2211,7 +2013,6 @@
 
 ## <small>4.0.53 (2017-03-16)</small>
 
-* 4.0.53 ([20fa334](http://github.paypal.com/paypal/paypal-checkout/commit/20fa334))
 * Add correct props to child loader script ([c282c38](http://github.paypal.com/paypal/paypal-checkout/commit/c282c38))
 * Clean up dependencies ([8b7c411](http://github.paypal.com/paypal/paypal-checkout/commit/8b7c411))
 * Disable Braintree demo ([545b8e3](http://github.paypal.com/paypal/paypal-checkout/commit/545b8e3))
@@ -2221,7 +2022,6 @@
 
 ## <small>4.0.52 (2017-03-15)</small>
 
-* 4.0.52 ([7497f23](http://github.paypal.com/paypal/paypal-checkout/commit/7497f23))
 * Add checkout.child.loader.js to load the correct version of checkout.js on a child window ([b01833a](http://github.paypal.com/paypal/paypal-checkout/commit/b01833a))
 * Add parent template for button to enforce minimum width ([6790419](http://github.paypal.com/paypal/paypal-checkout/commit/6790419))
 * Allow setting different base-url for demo app ([495265f](http://github.paypal.com/paypal/paypal-checkout/commit/495265f))
@@ -2246,20 +2046,17 @@
 
 ## <small>4.0.51 (2017-03-09)</small>
 
-* 4.0.51 ([f461030](http://github.paypal.com/paypal/paypal-checkout/commit/f461030))
 * Add postinstall script to npm package ([0f9ed65](http://github.paypal.com/paypal/paypal-checkout/commit/0f9ed65))
 
 
 
 ## <small>4.0.50 (2017-03-09)</small>
 
-* 4.0.50 ([3c3c8a5](http://github.paypal.com/paypal/paypal-checkout/commit/3c3c8a5))
 
 
 
 ## <small>4.0.49 (2017-03-09)</small>
 
-* 4.0.49 ([bc3f978](http://github.paypal.com/paypal/paypal-checkout/commit/bc3f978))
 * Add more robust post-install script to resolve flow-bin version issue ([db0b89d](http://github.paypal.com/paypal/paypal-checkout/commit/db0b89d))
 * Demo app only takes $0.01 and no-op execute in production mode ([3ac6980](http://github.paypal.com/paypal/paypal-checkout/commit/3ac6980))
 * Dist ([35430ab](http://github.paypal.com/paypal/paypal-checkout/commit/35430ab))
@@ -2272,14 +2069,12 @@
 
 ## <small>4.0.48 (2017-03-08)</small>
 
-* 4.0.48 ([ccb1594](http://github.paypal.com/paypal/paypal-checkout/commit/ccb1594))
 * Dist ([4b8a7f5](http://github.paypal.com/paypal/paypal-checkout/commit/4b8a7f5))
 
 
 
 ## <small>4.0.47 (2017-03-08)</small>
 
-* 4.0.47 ([e29c180](http://github.paypal.com/paypal/paypal-checkout/commit/e29c180))
 * Add development quickstart docs ([524fb61](http://github.paypal.com/paypal/paypal-checkout/commit/524fb61))
 * Add tests for condition for hijack cases, and stub out tests for hybrid cases ([bae9713](http://github.paypal.com/paypal/paypal-checkout/commit/bae9713))
 * Add Travis build status on README.md (#218) ([c11a2cd](http://github.paypal.com/paypal/paypal-checkout/commit/c11a2cd)), closes [#218](http://github.paypal.com/paypal/paypal-checkout/issues/218)
@@ -2304,7 +2099,6 @@
 
 ## <small>4.0.46 (2017-03-03)</small>
 
-* 4.0.46 ([ab0befc](http://github.paypal.com/paypal/paypal-checkout/commit/ab0befc))
 * Abstract out onKey method to wait for props to be set ([afde30f](http://github.paypal.com/paypal/paypal-checkout/commit/afde30f))
 * Adopt popupBridge api for webviews ([d994b41](http://github.paypal.com/paypal/paypal-checkout/commit/d994b41))
 * Allow window.ppnativexo to be set at any time, and used for any webview ([28d2c05](http://github.paypal.com/paypal/paypal-checkout/commit/28d2c05))
@@ -2316,14 +2110,12 @@
 
 ## <small>4.0.45 (2017-02-28)</small>
 
-* 4.0.45 ([71c9e47](http://github.paypal.com/paypal/paypal-checkout/commit/71c9e47))
 * Dist ([3bb8a02](http://github.paypal.com/paypal/paypal-checkout/commit/3bb8a02))
 
 
 
 ## <small>4.0.44 (2017-02-28)</small>
 
-* 4.0.44 ([367adfc](http://github.paypal.com/paypal/paypal-checkout/commit/367adfc))
 * Add large and responsive button sizes ([491d987](http://github.paypal.com/paypal/paypal-checkout/commit/491d987))
 * Cleanup ([ca7fd36](http://github.paypal.com/paypal/paypal-checkout/commit/ca7fd36))
 * Dist ([72f284b](http://github.paypal.com/paypal/paypal-checkout/commit/72f284b))
@@ -2336,7 +2128,6 @@
 
 ## <small>4.0.43 (2017-02-16)</small>
 
-* 4.0.43 ([a45b46b](http://github.paypal.com/paypal/paypal-checkout/commit/a45b46b))
 * Dist ([057d42d](http://github.paypal.com/paypal/paypal-checkout/commit/057d42d))
 * Fix typo ([178c2ab](http://github.paypal.com/paypal/paypal-checkout/commit/178c2ab))
 * Fixing repo in `git remote add upstream` call (#195) ([b08298e](http://github.paypal.com/paypal/paypal-checkout/commit/b08298e)), closes [#195](http://github.paypal.com/paypal/paypal-checkout/issues/195)
@@ -2346,7 +2137,6 @@
 
 ## <small>4.0.42 (2017-02-15)</small>
 
-* 4.0.42 ([5a03afc](http://github.paypal.com/paypal/paypal-checkout/commit/5a03afc))
 * Add body-parser dependency ([86232ea](http://github.paypal.com/paypal/paypal-checkout/commit/86232ea))
 * Add demo page for experience profiles ([1f6696c](http://github.paypal.com/paypal/paypal-checkout/commit/1f6696c))
 * Comment out agreements and braintree demo ([f3b1296](http://github.paypal.com/paypal/paypal-checkout/commit/f3b1296))
@@ -2359,7 +2149,6 @@
 
 ## <small>4.0.41 (2017-02-14)</small>
 
-* 4.0.41 ([b53468a](http://github.paypal.com/paypal/paypal-checkout/commit/b53468a))
 * Accept a logLevel option ([f5a9a71](http://github.paypal.com/paypal/paypal-checkout/commit/f5a9a71))
 * Add demo app to build/publish jobs ([b591bb3](http://github.paypal.com/paypal/paypal-checkout/commit/b591bb3))
 * Add onRemembered callback prop to button ([7365580](http://github.paypal.com/paypal/paypal-checkout/commit/7365580))
@@ -2382,7 +2171,6 @@
 
 ## <small>4.0.40 (2017-02-09)</small>
 
-* 4.0.40 ([b935033](http://github.paypal.com/paypal/paypal-checkout/commit/b935033))
 * Add files param to package.json to reduce file size of npm package (#184) ([fba3e45](http://github.paypal.com/paypal/paypal-checkout/commit/fba3e45)), closes [#184](http://github.paypal.com/paypal/paypal-checkout/issues/184)
 * Allow all v3 mobile users to throttle, but disable lightbox if no meta viewport ([e9968c2](http://github.paypal.com/paypal/paypal-checkout/commit/e9968c2))
 * Dist ([7c567fe](http://github.paypal.com/paypal/paypal-checkout/commit/7c567fe))
@@ -2392,7 +2180,6 @@
 
 ## <small>4.0.39 (2017-02-03)</small>
 
-* 4.0.39 ([9a2a487](http://github.paypal.com/paypal/paypal-checkout/commit/9a2a487))
 * Add billingAgreement as alias for payment to Checkout component ([2c9fd47](http://github.paypal.com/paypal/paypal-checkout/commit/2c9fd47))
 * Add debugging docs ([240a67a](http://github.paypal.com/paypal/paypal-checkout/commit/240a67a))
 * Add displayTo tests ([6c1caa0](http://github.paypal.com/paypal/paypal-checkout/commit/6c1caa0))
@@ -2436,7 +2223,6 @@
 
 ## <small>4.0.38 (2017-01-13)</small>
 
-* 4.0.38 ([cfbe66c](http://github.paypal.com/paypal/paypal-checkout/commit/cfbe66c))
 * Add AB test for legacy mobile in popup/lightbox ([d06517e](http://github.paypal.com/paypal/paypal-checkout/commit/d06517e))
 * Add flow annotations ([dcba31a](http://github.paypal.com/paypal/paypal-checkout/commit/dcba31a))
 * Add flow-typed and type check /test ([0c890bc](http://github.paypal.com/paypal/paypal-checkout/commit/0c890bc))
@@ -2472,7 +2258,6 @@
 
 ## <small>4.0.37 (2016-12-16)</small>
 
-* 4.0.37 ([5e6760e](http://github.paypal.com/paypal/paypal-checkout/commit/5e6760e))
 * Add a test for checkout with no click event error case ([0ad6562](http://github.paypal.com/paypal/paypal-checkout/commit/0ad6562))
 * Add cancel tests for each use case ([c35afe2](http://github.paypal.com/paypal/paypal-checkout/commit/c35afe2))
 * Add karma to build task ([4909ceb](http://github.paypal.com/paypal/paypal-checkout/commit/4909ceb))
@@ -2496,7 +2281,6 @@
 
 ## <small>4.0.36 (2016-12-09)</small>
 
-* 4.0.36 ([46c4349](http://github.paypal.com/paypal/paypal-checkout/commit/46c4349))
 * Add throttle code to AB test full-page vs in-context ([1a8a950](http://github.paypal.com/paypal/paypal-checkout/commit/1a8a950))
 * Dist ([43e41cd](http://github.paypal.com/paypal/paypal-checkout/commit/43e41cd))
 * Update README.md ([0cb17cc](http://github.paypal.com/paypal/paypal-checkout/commit/0cb17cc))
@@ -2505,7 +2289,6 @@
 
 ## <small>4.0.35 (2016-12-08)</small>
 
-* 4.0.35 ([8b79a82](http://github.paypal.com/paypal/paypal-checkout/commit/8b79a82))
 * Dist ([31ac3f1](http://github.paypal.com/paypal/paypal-checkout/commit/31ac3f1))
 * Fix link to checkout.js in demos ([610c4bf](http://github.paypal.com/paypal/paypal-checkout/commit/610c4bf))
 
@@ -2513,7 +2296,6 @@
 
 ## <small>4.0.34 (2016-12-08)</small>
 
-* 4.0.34 ([22ebce8](http://github.paypal.com/paypal/paypal-checkout/commit/22ebce8))
 * Add angular demo ([0de2e67](http://github.paypal.com/paypal/paypal-checkout/commit/0de2e67))
 * Add default xcomponent timeout of 500ms for tests ([034e5c9](http://github.paypal.com/paypal/paypal-checkout/commit/034e5c9))
 * Add popout redirect tests to button ([9869a49](http://github.paypal.com/paypal/paypal-checkout/commit/9869a49))
@@ -2534,7 +2316,6 @@
 
 ## <small>4.0.33 (2016-12-06)</small>
 
-* 4.0.33 ([fc1cf88](http://github.paypal.com/paypal/paypal-checkout/commit/fc1cf88))
 * Add debugging docs ([e6404a8](http://github.paypal.com/paypal/paypal-checkout/commit/e6404a8))
 * Add debugging docs ([92e1d74](http://github.paypal.com/paypal/paypal-checkout/commit/92e1d74))
 * Add img directory to docs ([2777172](http://github.paypal.com/paypal/paypal-checkout/commit/2777172))
@@ -2544,7 +2325,6 @@
 
 ## <small>4.0.32 (2016-12-05)</small>
 
-* 4.0.32 ([01fb6cd](http://github.paypal.com/paypal/paypal-checkout/commit/01fb6cd))
 * Add tests for popout-from-lightbox case ([56d7b12](http://github.paypal.com/paypal/paypal-checkout/commit/56d7b12))
 * Dist ([ad92288](http://github.paypal.com/paypal/paypal-checkout/commit/ad92288))
 * Re-export config from paypal object ([a6c199c](http://github.paypal.com/paypal/paypal-checkout/commit/a6c199c))
@@ -2554,7 +2334,6 @@
 
 ## <small>4.0.31 (2016-12-05)</small>
 
-* 4.0.31 ([ef36945](http://github.paypal.com/paypal/paypal-checkout/commit/ef36945))
 * Dist ([3a7dc54](http://github.paypal.com/paypal/paypal-checkout/commit/3a7dc54))
 * Remove old code ([9c0ef90](http://github.paypal.com/paypal/paypal-checkout/commit/9c0ef90))
 
@@ -2562,8 +2341,6 @@
 
 ## <small>4.0.30 (2016-12-05)</small>
 
-* 4.0.29 ([e427779](http://github.paypal.com/paypal/paypal-checkout/commit/e427779))
-* 4.0.30 ([ce0b4d7](http://github.paypal.com/paypal/paypal-checkout/commit/ce0b4d7))
 * Add beacon file ([4e92497](http://github.paypal.com/paypal/paypal-checkout/commit/4e92497))
 * Add bridge support to tests ([db0d9c5](http://github.paypal.com/paypal/paypal-checkout/commit/db0d9c5))
 * Add mock domains to tests ([5feed67](http://github.paypal.com/paypal/paypal-checkout/commit/5feed67))
@@ -2594,7 +2371,6 @@
 
 ## <small>4.0.28 (2016-11-18)</small>
 
-* 4.0.28 ([b9228f6](http://github.paypal.com/paypal/paypal-checkout/commit/b9228f6))
 * Clean up 3pc disabled code -- handling correctly in button/checkout apps ([8af7055](http://github.paypal.com/paypal/paypal-checkout/commit/8af7055))
 * Dist ([e26ab46](http://github.paypal.com/paypal/paypal-checkout/commit/e26ab46))
 * Move beacon code into repo ([03acebd](http://github.paypal.com/paypal/paypal-checkout/commit/03acebd))
@@ -2603,7 +2379,6 @@
 
 ## <small>4.0.27 (2016-11-18)</small>
 
-* 4.0.27 ([9892145](http://github.paypal.com/paypal/paypal-checkout/commit/9892145))
 * Dist ([2d200c6](http://github.paypal.com/paypal/paypal-checkout/commit/2d200c6))
 * Fix button->checkout tests ([ecd9ba0](http://github.paypal.com/paypal/paypal-checkout/commit/ecd9ba0))
 * Fixes for 3rd party cookies disabled mode in button ([a2e2918](http://github.paypal.com/paypal/paypal-checkout/commit/a2e2918))
@@ -2612,7 +2387,6 @@
 
 ## <small>4.0.26 (2016-11-17)</small>
 
-* 4.0.26 ([394ffc8](http://github.paypal.com/paypal/paypal-checkout/commit/394ffc8))
 * Add onAuth function ([6a3d14d](http://github.paypal.com/paypal/paypal-checkout/commit/6a3d14d))
 * Dist ([f12c805](http://github.paypal.com/paypal/paypal-checkout/commit/f12c805))
 
@@ -2620,7 +2394,6 @@
 
 ## <small>4.0.25 (2016-11-16)</small>
 
-* 4.0.25 ([cf91e22](http://github.paypal.com/paypal/paypal-checkout/commit/cf91e22))
 * Dist ([1e6cca0](http://github.paypal.com/paypal/paypal-checkout/commit/1e6cca0))
 * Quick fix to enable auth requests from button in cookies disabled mode ([b39e0e1](http://github.paypal.com/paypal/paypal-checkout/commit/b39e0e1))
 
@@ -2628,7 +2401,6 @@
 
 ## <small>4.0.24 (2016-11-16)</small>
 
-* 4.0.24 ([765af95](http://github.paypal.com/paypal/paypal-checkout/commit/765af95))
 * Dist ([9219566](http://github.paypal.com/paypal/paypal-checkout/commit/9219566))
 * Extend existing window.PAYPAL if found ([1b17eec](http://github.paypal.com/paypal/paypal-checkout/commit/1b17eec))
 
@@ -2636,7 +2408,6 @@
 
 ## <small>4.0.23 (2016-11-16)</small>
 
-* 4.0.23 ([78a7ee7](http://github.paypal.com/paypal/paypal-checkout/commit/78a7ee7))
 * Add tests and account for another corner case for button and container case ([5eadfbe](http://github.paypal.com/paypal/paypal-checkout/commit/5eadfbe))
 * Dist ([a097bda](http://github.paypal.com/paypal/paypal-checkout/commit/a097bda))
 
@@ -2644,7 +2415,6 @@
 
 ## <small>4.0.22 (2016-11-16)</small>
 
-* 4.0.22 ([aa87e50](http://github.paypal.com/paypal/paypal-checkout/commit/aa87e50))
 * Dist ([367ddc5](http://github.paypal.com/paypal/paypal-checkout/commit/367ddc5))
 * Emulate strange legacy button logic ([5a78758](http://github.paypal.com/paypal/paypal-checkout/commit/5a78758))
 * Fix to use isArray ([bcac2a1](http://github.paypal.com/paypal/paypal-checkout/commit/bcac2a1))
@@ -2654,7 +2424,6 @@
 
 ## <small>4.0.21 (2016-11-16)</small>
 
-* 4.0.21 ([895411c](http://github.paypal.com/paypal/paypal-checkout/commit/895411c))
 * Add a warning for fallback ([a3ccabd](http://github.paypal.com/paypal/paypal-checkout/commit/a3ccabd))
 * Add test gulp task ([2099833](http://github.paypal.com/paypal/paypal-checkout/commit/2099833))
 * Add test to publish.sh ([9ccb2bb](http://github.paypal.com/paypal/paypal-checkout/commit/9ccb2bb))
@@ -2668,14 +2437,12 @@
 
 ## <small>4.0.20 (2016-11-15)</small>
 
-* 4.0.20 ([b319976](http://github.paypal.com/paypal/paypal-checkout/commit/b319976))
 * Dist ([9b4f957](http://github.paypal.com/paypal/paypal-checkout/commit/9b4f957))
 
 
 
 ## <small>4.0.19 (2016-11-15)</small>
 
-* 4.0.19 ([19ee4ee](http://github.paypal.com/paypal/paypal-checkout/commit/19ee4ee))
 * Dist ([f1ca264](http://github.paypal.com/paypal/paypal-checkout/commit/f1ca264))
 * Make setup callable once only ([9abbb3f](http://github.paypal.com/paypal/paypal-checkout/commit/9abbb3f))
 
@@ -2683,7 +2450,6 @@
 
 ## <small>4.0.18 (2016-11-15)</small>
 
-* 4.0.18 ([95afb1e](http://github.paypal.com/paypal/paypal-checkout/commit/95afb1e))
 * Dist ([6c147c8](http://github.paypal.com/paypal/paypal-checkout/commit/6c147c8))
 * Pull in latest files during publish ([e488217](http://github.paypal.com/paypal/paypal-checkout/commit/e488217))
 
@@ -2691,7 +2457,6 @@
 
 ## <small>4.0.17 (2016-11-15)</small>
 
-* 4.0.17 ([4e9566e](http://github.paypal.com/paypal/paypal-checkout/commit/4e9566e))
 * Dist ([c562818](http://github.paypal.com/paypal/paypal-checkout/commit/c562818))
 * Fix quick build script ([a05a5a8](http://github.paypal.com/paypal/paypal-checkout/commit/a05a5a8))
 * Work correctly when different url passed than specified env ([450f84d](http://github.paypal.com/paypal/paypal-checkout/commit/450f84d))
@@ -2700,7 +2465,6 @@
 
 ## <small>4.0.16 (2016-11-15)</small>
 
-* 4.0.16 ([cc08c54](http://github.paypal.com/paypal/paypal-checkout/commit/cc08c54))
 * Dist ([1af219a](http://github.paypal.com/paypal/paypal-checkout/commit/1af219a))
 * Fix gitignore rule ([a77c10a](http://github.paypal.com/paypal/paypal-checkout/commit/a77c10a))
 * Reduce redirect delay for legacy ([abb24c1](http://github.paypal.com/paypal/paypal-checkout/commit/abb24c1))
@@ -2711,7 +2475,6 @@
 
 ## <small>4.0.15 (2016-11-15)</small>
 
-* 4.0.15 ([e05c34e](http://github.paypal.com/paypal/paypal-checkout/commit/e05c34e))
 * Build checkout.js, etc ([8d9dac1](http://github.paypal.com/paypal/paypal-checkout/commit/8d9dac1))
 * Dist ([2d5a6e7](http://github.paypal.com/paypal/paypal-checkout/commit/2d5a6e7))
 * Remove old dist files ([fb2b0c9](http://github.paypal.com/paypal/paypal-checkout/commit/fb2b0c9))
@@ -2720,7 +2483,6 @@
 
 ## <small>4.0.14 (2016-11-14)</small>
 
-* 4.0.14 ([aa1f95e](http://github.paypal.com/paypal/paypal-checkout/commit/aa1f95e))
 * Add all varieties of hijack test ([895a606](http://github.paypal.com/paypal/paypal-checkout/commit/895a606))
 * Add basic button demo ([69e131a](http://github.paypal.com/paypal/paypal-checkout/commit/69e131a))
 * Add button tests ([b9a586d](http://github.paypal.com/paypal/paypal-checkout/commit/b9a586d))
@@ -2765,7 +2527,6 @@
 
 ## <small>4.0.13 (2016-11-07)</small>
 
-* 4.0.13 ([719fd56](http://github.paypal.com/paypal/paypal-checkout/commit/719fd56))
 * Add Braintree support ([92eaad1](http://github.paypal.com/paypal/paypal-checkout/commit/92eaad1))
 * Add click listener to container for legacy integrations, not button ([55e2385](http://github.paypal.com/paypal/paypal-checkout/commit/55e2385))
 * Add function to check for common errors in the page ([e96f38d](http://github.paypal.com/paypal/paypal-checkout/commit/e96f38d))
@@ -2846,7 +2607,6 @@
 
 ## <small>4.0.12 (2016-10-04)</small>
 
-* 4.0.12 ([03488e5](http://github.paypal.com/paypal/paypal-checkout/commit/03488e5))
 * Add additional checkpoints ([f687eb7](http://github.paypal.com/paypal/paypal-checkout/commit/f687eb7))
 * Add more logs and checkpoints ([dc774b0](http://github.paypal.com/paypal/paypal-checkout/commit/dc774b0))
 * Add quickbuild script ([40f5929](http://github.paypal.com/paypal/paypal-checkout/commit/40f5929))
@@ -2891,7 +2651,6 @@
 
 ## <small>4.0.11 (2016-09-15)</small>
 
-* 4.0.11 ([b1ac505](http://github.paypal.com/paypal/paypal-checkout/commit/b1ac505))
 * Add a resize delay to account for transition time ([3f5ca85](http://github.paypal.com/paypal/paypal-checkout/commit/3f5ca85))
 * Add BillingAgreement component, better env-url handling ([092fac2](http://github.paypal.com/paypal/paypal-checkout/commit/092fac2))
 * Add button component ([2d9a7e7](http://github.paypal.com/paypal/paypal-checkout/commit/2d9a7e7))
@@ -2973,14 +2732,12 @@
 
 ## <small>4.0.10 (2016-08-26)</small>
 
-* 4.0.10 ([92cdc3a](http://github.paypal.com/paypal/paypal-checkout/commit/92cdc3a))
 * Dist ([567bd72](http://github.paypal.com/paypal/paypal-checkout/commit/567bd72))
 
 
 
 ## <small>4.0.9 (2016-08-26)</small>
 
-* 4.0.9 ([9ca0d1d](http://github.paypal.com/paypal/paypal-checkout/commit/9ca0d1d))
 * Dist ([4e6f61b](http://github.paypal.com/paypal/paypal-checkout/commit/4e6f61b))
 * Show hidden buttons on document load ([8d3dc20](http://github.paypal.com/paypal/paypal-checkout/commit/8d3dc20))
 
@@ -2988,7 +2745,6 @@
 
 ## <small>4.0.8 (2016-08-25)</small>
 
-* 4.0.8 ([f4aa4ee](http://github.paypal.com/paypal/paypal-checkout/commit/f4aa4ee))
 * Add correct z-index for overlay ([afb1f17](http://github.paypal.com/paypal/paypal-checkout/commit/afb1f17))
 * Better onDocumentReady ([7f2d2ac](http://github.paypal.com/paypal/paypal-checkout/commit/7f2d2ac))
 * Check for existence of this.props.onPaymentCancel ([54e9c47](http://github.paypal.com/paypal/paypal-checkout/commit/54e9c47))
@@ -3007,7 +2763,6 @@
 
 ## <small>4.0.7 (2016-08-19)</small>
 
-* 4.0.7 ([9ea1042](http://github.paypal.com/paypal/paypal-checkout/commit/9ea1042))
 * Add extra window.paypal namespaces for backwards compatibility ([3e68c4f](http://github.paypal.com/paypal/paypal-checkout/commit/3e68c4f))
 * Add logging for button render type ([281ffe4](http://github.paypal.com/paypal/paypal-checkout/commit/281ffe4))
 * Allow window.paypalCheckoutReady to be set after the window is loaded ([b01fdda](http://github.paypal.com/paypal/paypal-checkout/commit/b01fdda))
@@ -3026,7 +2781,6 @@
 
 ## <small>4.0.6 (2016-08-18)</small>
 
-* 4.0.6 ([85f55ed](http://github.paypal.com/paypal/paypal-checkout/commit/85f55ed))
 * Allow button array to use parent click method ([b4dedd8](http://github.paypal.com/paypal/paypal-checkout/commit/b4dedd8))
 * Dist ([ab91381](http://github.paypal.com/paypal/paypal-checkout/commit/ab91381))
 * Keep pp_uid non-sticky for now ([8866210](http://github.paypal.com/paypal/paypal-checkout/commit/8866210))
@@ -3038,7 +2792,6 @@
 
 ## <small>4.0.5 (2016-08-17)</small>
 
-* 4.0.5 ([c93af9b](http://github.paypal.com/paypal/paypal-checkout/commit/c93af9b))
 * Dist ([5baf739](http://github.paypal.com/paypal/paypal-checkout/commit/5baf739))
 * Dist ([9241440](http://github.paypal.com/paypal/paypal-checkout/commit/9241440))
 * Pass down uid to checkout component ([a1e24ee](http://github.paypal.com/paypal/paypal-checkout/commit/a1e24ee))
@@ -3047,7 +2800,6 @@
 
 ## <small>4.0.4 (2016-08-17)</small>
 
-* 4.0.4 ([b65d77c](http://github.paypal.com/paypal/paypal-checkout/commit/b65d77c))
 * Dist ([f4ff71c](http://github.paypal.com/paypal/paypal-checkout/commit/f4ff71c))
 * Make ppobjects configurable in setup call ([2aa8179](http://github.paypal.com/paypal/paypal-checkout/commit/2aa8179))
 
@@ -3055,7 +2807,6 @@
 
 ## <small>4.0.3 (2016-08-16)</small>
 
-* 4.0.3 ([b618ccd](http://github.paypal.com/paypal/paypal-checkout/commit/b618ccd))
 * Dist ([7a5c67d](http://github.paypal.com/paypal/paypal-checkout/commit/7a5c67d))
 * Export ppxo.version ([ddb4331](http://github.paypal.com/paypal/paypal-checkout/commit/ddb4331))
 * Fix current script logic ([a887e7a](http://github.paypal.com/paypal/paypal-checkout/commit/a887e7a))
@@ -3064,7 +2815,6 @@
 
 ## <small>4.0.2 (2016-08-16)</small>
 
-* 4.0.2 ([1e5d26b](http://github.paypal.com/paypal/paypal-checkout/commit/1e5d26b))
 * Add some additional legacy safeguards and logs ([ffc9a80](http://github.paypal.com/paypal/paypal-checkout/commit/ffc9a80))
 * Allow overriding paypal url for both bridge and logger ([78b8569](http://github.paypal.com/paypal/paypal-checkout/commit/78b8569))
 * Break up legacy ([96dc914](http://github.paypal.com/paypal/paypal-checkout/commit/96dc914))
@@ -3077,7 +2827,6 @@
 
 ## <small>4.0.1 (2016-08-15)</small>
 
-* 4.0.1 ([a4c13b6](http://github.paypal.com/paypal/paypal-checkout/commit/a4c13b6))
 * Add a demo folder using actual hermes flow ([674de51](http://github.paypal.com/paypal/paypal-checkout/commit/674de51))
 * Add beaver logger support and inject into xcomponent ([84c5997](http://github.paypal.com/paypal/paypal-checkout/commit/84c5997))
 * Add comments and fix close issues ([3396ccd](http://github.paypal.com/paypal/paypal-checkout/commit/3396ccd))
