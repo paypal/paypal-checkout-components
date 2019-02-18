@@ -1,3 +1,16 @@
+## <small>5.0.2 (2019-02-18)</small>
+
+* Add log for driver usage ([f5655f1](http://github.paypal.com/paypal/paypal-checkout/commit/f5655f1))
+* Export dyanmic dependencies and destroy ([ff5073a](http://github.paypal.com/paypal/paypal-checkout/commit/ff5073a))
+* Remove version commits from changelog ([bedb18b](http://github.paypal.com/paypal/paypal-checkout/commit/bedb18b))
+* Update implement-checkout.md ([1dd90e1](http://github.paypal.com/paypal/paypal-checkout/commit/1dd90e1))
+* Update implement-checkout.md ([1fc21cc](http://github.paypal.com/paypal/paypal-checkout/commit/1fc21cc))
+* Update implement-checkout.md ([9f19583](http://github.paypal.com/paypal/paypal-checkout/commit/9f19583))
+* Update implement-checkout.md ([571d3d5](http://github.paypal.com/paypal/paypal-checkout/commit/571d3d5))
+* Use setupSDK to create test namespace ([f30a701](http://github.paypal.com/paypal/paypal-checkout/commit/f30a701))
+
+
+
 ## <small>5.0.1 (2019-02-13)</small>
 
 * Add csp button prop ([05c1171](http://github.paypal.com/paypal/paypal-checkout/commit/05c1171))
