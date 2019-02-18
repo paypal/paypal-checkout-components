@@ -1,7 +1,7 @@
 /* @flow */
 
 import { isPayPalDomain } from '@paypal/sdk-client/src';
-import { PopupOpenError as _PopupOpenError, destroy as destroyZoid } from 'zoid/src';
+import { PopupOpenError as _PopupOpenError, destroy as zoidDestroy, destroyComponents } from 'zoid/src';
 
 import { setupLogger, allowIframe as _allowIframe } from '../lib';
 import { getCheckoutComponent } from '../checkout';
@@ -42,10 +42,18 @@ export const allowIframe = {
     }
 };
 
+export const destroyAll = {
+    __get__: () => {
+        if (isPayPalDomain() || __TEST__) {
+            return destroyComponents;
+        }
+    }
+};
+
 export function setup() {
     setupLogger();
 }
 
 export function destroy() {
-    destroyZoid();
+    zoidDestroy();
 }

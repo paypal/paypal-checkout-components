@@ -1,25 +1,16 @@
 /* @flow */
 
-import { destroyAll } from 'zoid/src';
-import { getHost, getPath } from '@paypal/sdk-client/src';
+import { setupSDK, insertMockSDKScript } from '@paypal/sdk-client/src';
 
-const script = document.createElement('script');
-script.setAttribute('id', 'test-sdk-script');
-script.setAttribute('type', 'mock/javascript');
-script.setAttribute('src', `https://${ getHost() }${ getPath() }?client-id=abcxyz123`);
-script.setAttribute('data-client-token', 'TEST');
+import * as paypalCheckout from '../src/interface/button'; // eslint-disable-line import/no-namespace
 
-const body = document.body;
-
-if (body) {
-    body.appendChild(script);
-}
+insertMockSDKScript();
 
 window.mockDomain = 'mock://www.paypal.com';
 
-window.paypal = require('../src/interface/button');
-
-// $FlowFixMe
-window.paypal.destroyAll = destroyAll;
-
-window.paypal.setupButtons();
+setupSDK([
+    {
+        name:     'paypal-checkout',
+        requirer: () => paypalCheckout
+    }
+]);
