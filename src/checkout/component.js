@@ -41,6 +41,7 @@ type CheckoutPropsType = {
     stage? : string,
     stageUrl? : string,
     localhostUrl? : string,
+    checkoutUri? : string,
     supplement? : {
         getPaymentOptions : Function,
         addPaymentDetails : Function
@@ -64,10 +65,6 @@ export let Checkout : Component<CheckoutPropsType> = create({
         return props.payment().then(token => {
             if (!token) {
                 throw new Error(`Expected payment id or token to be passed, got ${ token }`);
-            }
-
-            if (isPayPalDomain() && window.xprops && window.xprops.checkoutUri) {
-                return window.xprops.checkoutUri;
             }
 
             return determineUrl(env, props.fundingSource, token);
@@ -194,6 +191,18 @@ export let Checkout : Component<CheckoutPropsType> = create({
                 if (env === ENV.LOCAL) {
                     return config.localhostUrl;
                 }
+            }
+        },
+
+        checkoutUri: {
+            type:       'string',
+            required:   false,
+            queryParam: true,
+
+            def(props) : ?string {
+                const env = props.env || config.env;
+
+                return config.checkoutUris[env];
             }
         },
 

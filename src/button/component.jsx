@@ -14,7 +14,7 @@ import { SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
     BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY } from '../constants';
 import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, getScriptVersion,
-    isIEIntranet, isEligible, isPayPalDomain, getCurrentScriptUrl,
+    isIEIntranet, isEligible, getCurrentScriptUrl,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
 import { rest, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
@@ -372,15 +372,12 @@ export let Button : Component<ButtonOptions> = create({
         checkoutUri: {
             type:       'string',
             required:   false,
-            decorate(original, props) : void | string {
-                if (!isPayPalDomain()) {
-                    return;
-                }
+            queryParam: true,
 
-                const urls = config.paypalUrls;
+            def(props) : ?string {
                 const env = props.env || config.env;
 
-                return `${ urls[env] }${ original }`;
+                return config.checkoutUris[env];
             }
         },
 

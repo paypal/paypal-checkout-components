@@ -70,12 +70,13 @@ type ConfigOptions = {
     apiStage? : ?string,
     stageUrl? : ?string,
     localhostUrl? : ?string,
+    checkoutUri? : ?string,
     state? : ?string,
     logLevel? : ?string,
     merchantID? : ?string
 };
 
-function configure({ env, stage, stageUrl, apiStage, localhostUrl, state, logLevel, merchantID } : ConfigOptions = {}) {
+function configure({ env, stage, stageUrl, apiStage, localhostUrl, checkoutUri, state, logLevel, merchantID } : ConfigOptions = {}) {
 
     if (env) {
         if (!config.paypalUrls[env]) {
@@ -130,6 +131,13 @@ function configure({ env, stage, stageUrl, apiStage, localhostUrl, state, logLev
     if (localhostUrl) {
         delete config.localhostUrl;
         config.localhostUrl = localhostUrl;
+    }
+
+    checkoutUri = checkoutUri || (Button.xprops && Button.xprops.checkoutUri) || (Checkout.xprops && Checkout.xprops.checkoutUri);
+    if (checkoutUri) {
+        for (const key of Object.keys(config.checkoutUris)) {
+            config.checkoutUris[key] = checkoutUri;
+        }
     }
 
     if (state) {
@@ -187,6 +195,7 @@ if (currentScript) {
         apiStage:           currentScript.getAttribute('data-api-stage'),
         stageUrl:           currentScript.getAttribute('data-stage-url'),
         localhostUrl:       isPayPalDomain() ? currentScript.getAttribute('data-localhost-url') : undefined,
+        checkoutUri:        isPayPalDomain() ? currentScript.getAttribute('data-checkout-uri') : undefined,
         state:              currentScript.getAttribute('data-state'),
         logLevel:           currentScript.getAttribute('data-log-level'),
         merchantID:         currentScript.getAttribute('data-merchant-id'),
