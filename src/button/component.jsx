@@ -145,10 +145,6 @@ export let Button : Component<ButtonOptions> = create({
     buildUrl(props) : string {
         let env = props.env || config.env;
 
-        if (props.localhostUrl) {
-            return `${ props.localhostUrl }${ config.buttonUris.local }`;
-        }
-
         return config.buttonUrls[env];
     },
 
@@ -331,18 +327,6 @@ export let Button : Component<ButtonOptions> = create({
             required: false
         },
 
-        localhostUrl: {
-            type:       'string',
-            required:   false,
-            decorate(original, props) : void | string {
-                if (!isPayPalDomain() || props.env !== ENV.LOCAL) {
-                    return;
-                }
-
-                return original;
-            }
-        },
-
         stage: {
             type:       'string',
             required:   false,
@@ -371,6 +355,20 @@ export let Button : Component<ButtonOptions> = create({
             }
         },
 
+        localhostUrl: {
+            type:       'string',
+            required:   false,
+            queryParam: true,
+
+            def(props) : ?string {
+                const env = props.env || config.env;
+
+                if (env === ENV.LOCAL) {
+                    return config.localhostUrl;
+                }
+            }
+        },
+
         checkoutUri: {
             type:       'string',
             required:   false,
@@ -379,10 +377,7 @@ export let Button : Component<ButtonOptions> = create({
                     return;
                 }
 
-                const urls = {
-                    ...config.paypalUrls,
-                    [ ENV.LOCAL ]: props.localhostUrl || config.paypalUrls[ENV.LOCAL]
-                };
+                const urls = config.paypalUrls;
                 const env = props.env || config.env;
 
                 return `${ urls[env] }${ original }`;

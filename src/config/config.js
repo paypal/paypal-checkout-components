@@ -60,6 +60,15 @@ export let config = {
         return `${ config.apiStage }.${ config.stageDomain }`;
     },
 
+    get localhostUrl() : string {
+        return `http://localhost.paypal.com:${ config.ports.default }`;
+    },
+
+    set localhostUrl(val) {
+        delete this.localhostUrl;
+        this.localhostUrl = val;
+    },
+
     merchantID: '',
 
     logLevel: __PAYPAL_CHECKOUT__.__DEFAULT_LOG_LEVEL__,
@@ -451,7 +460,7 @@ export let config = {
 
     get paypalUrls() : Object {
         return {
-            [ ENV.LOCAL ]:      `http://localhost.paypal.com:${ config.ports.default }`,
+            [ ENV.LOCAL ]:      config.localhostUrl,
             [ ENV.STAGE ]:      `https://www.${ config.stageUrl }`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
