@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import { type LocaleType } from '@paypal/sdk-constants/src';
-import { node, Fragment, type ElementNode } from 'jsx-pragmatic/src';
+import { node, Fragment } from 'jsx-pragmatic/src';
 import { PPLogo, PayPalLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { getCheckoutUrl } from '../../config';
@@ -25,7 +25,7 @@ export function getPayPalConfig() : FundingSourceConfig {
     
                 defaultColor: BUTTON_COLOR.GOLD,
     
-                Label({ logoColor } : { logoColor : $Values<typeof LOGO_COLOR> }) : ElementNode {
+                Label: ({ logoColor } : { logoColor : $Values<typeof LOGO_COLOR> }) => {
                     return (
                         <Fragment>
                             <PPLogo logoColor={ logoColor } /> <PayPalLogo logoColor={ logoColor } />

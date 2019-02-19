@@ -78,7 +78,7 @@
     "@paypal/sdk-logos": "^1.0.1",
     "belter": "^1.0.2",
     "cross-domain-utils": "^2.0.1",
-    "jsx-pragmatic": "^1.0.4",
+    "jsx-pragmatic": "^2",
     "post-robot": "^10.0.0",
     "zalgo-promise": "^1.0.10",
     "zoid": "^9.0.0"

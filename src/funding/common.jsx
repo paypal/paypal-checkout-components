@@ -3,7 +3,7 @@
 /** @jsx node */
 
 import { PLATFORM, type LocaleType, COUNTRY, CARD } from '@paypal/sdk-constants/src';
-import { ElementNode } from 'jsx-pragmatic/src';
+import { type ChildType } from 'jsx-pragmatic/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_TAGLINE_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LABEL } from '../constants';
@@ -64,12 +64,12 @@ type FundingLabelConfig = {|
         multiple : boolean,
         period? : number,
         fundingEligibility : FundingEligibilityType
-    |}) => ElementNode | $ReadOnlyArray<ElementNode>,
+    |}) => ChildType,
     Tag? : ({|
         locale : LocaleType,
         nonce : string,
         multiple : boolean
-    |}) => ElementNode,
+    |}) => ChildType,
     colors : $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
     secondaryColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
     logoColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof LOGO_COLOR> },
@@ -83,7 +83,7 @@ export type CardConfig = {|
     Logo : ({|
         locale : LocaleType,
         nonce : string
-    |}) => ElementNode
+    |}) => ChildType
 |};
 
 export type FundingSourceConfig = {|

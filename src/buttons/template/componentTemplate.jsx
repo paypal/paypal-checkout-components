@@ -63,9 +63,19 @@ function determineLabel({ fundingSource, style } :
     throw new Error(`Could not determine label for ${ fundingSource }`);
 }
 
-function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, onClick = noop } :
-    {| style : ButtonStyle, fundingSource : $Values<typeof FUNDING>, multiple : boolean, locale : LocaleType, onClick? : Function,
-      env : $Values<typeof ENV>, fundingEligibility : FundingEligibilityType, i : number, nonce : string |}) : ElementNode {
+type ButtonProps = {|
+    style : ButtonStyle,
+    fundingSource : $Values<typeof FUNDING>,
+    multiple : boolean,
+    locale : LocaleType,
+    onClick? : Function,
+    env : $Values<typeof ENV>,
+    fundingEligibility : FundingEligibilityType,
+    i : number,
+    nonce : string
+|};
+
+function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, onClick = noop } : ButtonProps) : ElementNode {
 
     let { color, period } = style;
 
@@ -156,7 +166,11 @@ function TagLine({ fundingSource, style, locale, multiple, nonce } :
     );
 }
 
-function Script({ nonce }) : ElementNode {
+type ScriptProps = {|
+    nonce : ?string
+|};
+
+function Script({ nonce } : ScriptProps) : ElementNode {
     let script = getComponentScript().toString();
 
     script = script.replace(/\{\s*CLASS\.([A-Z0-9_]+)\s*\}/g, (match, name) => {
@@ -172,8 +186,13 @@ function Script({ nonce }) : ElementNode {
     );
 }
 
-function Style({ style, cardNumber, nonce } :
-    {| style : ButtonStyle, cardNumber? : number, nonce : string |}) : ElementNode {
+type StyleProps = {|
+    style : ButtonStyle,
+    cardNumber? : number,
+    nonce : string
+|};
+
+function Style({ style, cardNumber, nonce } : StyleProps) : ElementNode {
 
     const { height } = style;
     const css = componentStyle({ height, cardNumber });
@@ -210,7 +229,11 @@ function getCardNumber(locale : LocaleType) : number {
     }
 }
 
-export function Buttons(props : ButtonPropsInputs & {| onClick? : Function |}) : ElementNode {
+type ButtonsProps = ButtonPropsInputs & {|
+    onClick? : Function
+|};
+
+export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick } = props;
     const { style, locale, remembered, env, fundingEligibility, platform, nonce } = normalizeButtonProps(props);
 
@@ -260,6 +283,7 @@ export function Buttons(props : ButtonPropsInputs & {| onClick? : Function |}) :
         </div>
     );
 
+    // $FlowFixMe
     buttonsNode.toString = () => buttonsNode.render(html());
 
     return buttonsNode;

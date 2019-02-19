@@ -3,7 +3,7 @@
 /* eslint max-lines: 0 */
 
 import { type LocaleType } from '@paypal/sdk-constants/src';
-import { node, type ElementNode } from 'jsx-pragmatic/src';
+import { node, type ChildType, type NullableChildType } from 'jsx-pragmatic/src';
 import { regexTokenize } from 'belter/src';
 import { PPLogo, PayPalLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
@@ -11,7 +11,7 @@ import { CLASS } from '../../constants';
 
 import { componentContent } from './content';
 
-function placeholderToJSX(text : string, placeholders : { [string] : (?string) => ElementNode | string | null | void }) : $ReadOnlyArray<ElementNode | string> {
+function placeholderToJSX(text : string, placeholders : { [string] : (?string) => NullableChildType }) : ChildType {
     return regexTokenize(text, /(\{[a-z]+\})|([^{}]+)/g)
         .map(token => {
             const match = token.match(/^{([a-z]+)}$/);
@@ -25,7 +25,7 @@ function placeholderToJSX(text : string, placeholders : { [string] : (?string) =
         }).filter(Boolean);
 }
 
-function contentToJSX(key : string, locale : LocaleType, { logoColor, period } : { logoColor : $Values<typeof LOGO_COLOR>, period? : number } = {}) : $ReadOnlyArray<ElementNode | string> {
+function contentToJSX(key : string, locale : LocaleType, { logoColor, period } : { logoColor : $Values<typeof LOGO_COLOR>, period? : number } = {}) : ChildType {
     const { lang } = locale;
     const text = componentContent[lang][key];
 
@@ -38,23 +38,23 @@ function contentToJSX(key : string, locale : LocaleType, { logoColor, period } :
     });
 }
 
-export function Checkout({ locale, logoColor } : { locale : LocaleType, logoColor : $Values<typeof LOGO_COLOR> }) : $ReadOnlyArray<ElementNode | string> {
+export function Checkout({ locale, logoColor } : { locale : LocaleType, logoColor : $Values<typeof LOGO_COLOR> }) : ChildType {
     return contentToJSX('checkout', locale, { logoColor });
 }
 
-export function Pay({ locale, logoColor } : { locale : LocaleType, logoColor : $Values<typeof LOGO_COLOR> }) : $ReadOnlyArray<ElementNode | string> {
+export function Pay({ locale, logoColor } : { locale : LocaleType, logoColor : $Values<typeof LOGO_COLOR> }) : ChildType {
     return contentToJSX('pay', locale, { logoColor });
 }
 
-export function Installment({ locale, logoColor, period } : { locale : LocaleType, logoColor : $Values<typeof LOGO_COLOR>, period? : number }) : $ReadOnlyArray<ElementNode | string> {
+export function Installment({ locale, logoColor, period } : { locale : LocaleType, logoColor : $Values<typeof LOGO_COLOR>, period? : number }) : ChildType {
     return contentToJSX(period ? 'installment_period' : 'installment', locale, { logoColor, period });
 }
 
-export function SaferTag({ locale } : { locale : LocaleType }) : $ReadOnlyArray<ElementNode | string> {
+export function SaferTag({ locale } : { locale : LocaleType }) : ChildType {
     return contentToJSX('safer_tag', locale);
 }
 
-export function DualTag({ locale } : { locale : LocaleType }) : $ReadOnlyArray<ElementNode | string> {
+export function DualTag({ locale } : { locale : LocaleType }) : ChildType {
     const { lang } = locale;
 
     return componentContent[lang].dual_tag
