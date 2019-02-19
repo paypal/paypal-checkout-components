@@ -45,7 +45,7 @@
     "belter": "^1.0.19",
     "cross-domain-utils": "^2.0.16",
     "grabthar": "^3",
-    "jsx-pragmatic": "^1.0.7",
+    "jsx-pragmatic": "^2",
     "webpack-mem-compile": "^1.0.2",
     "zalgo-promise": "^1.0.28"
   },
