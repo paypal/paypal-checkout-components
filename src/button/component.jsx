@@ -375,9 +375,7 @@ export let Button : Component<ButtonOptions> = create({
             queryParam: true,
 
             def() : ?string {
-                if (config.checkoutUri) {
-                    return config.checkoutUri;
-                }
+                return config.checkoutUri;
             }
         },
 
