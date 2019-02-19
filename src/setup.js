@@ -129,15 +129,12 @@ function configure({ env, stage, stageUrl, apiStage, localhostUrl, checkoutUri, 
 
     localhostUrl = localhostUrl || (Button.xprops && Button.xprops.localhostUrl) || (Checkout.xprops && Checkout.xprops.localhostUrl);
     if (localhostUrl) {
-        delete config.localhostUrl;
         config.localhostUrl = localhostUrl;
     }
 
     checkoutUri = checkoutUri || (Button.xprops && Button.xprops.checkoutUri) || (Checkout.xprops && Checkout.xprops.checkoutUri);
     if (checkoutUri) {
-        for (const key of Object.keys(config.checkoutUris)) {
-            config.checkoutUris[key] = checkoutUri;
-        }
+        config.checkoutUri = checkoutUri;
     }
 
     if (state) {

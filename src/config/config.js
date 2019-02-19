@@ -515,13 +515,35 @@ export let config = {
         };
     },
 
-    checkoutUris: {
-        [ ENV.LOCAL ]:      `/webapps/hermes?ul=0`,
-        [ ENV.STAGE ]:      `/webapps/hermes`,
-        [ ENV.SANDBOX ]:    `/checkoutnow`,
-        [ ENV.PRODUCTION ]: `/checkoutnow`,
-        [ ENV.TEST ]:       `/base/test/windows/checkout/index.htm?checkouturl=true`,
-        [ ENV.DEMO ]:       `/demo/dev/checkout.htm`
+    get checkoutUri() : ?string {
+        return null;
+    },
+
+    set checkoutUri(val) {
+        delete this.checkoutUri;
+        this.checkoutUri = val;
+    },
+
+    get checkoutUris() : Object {
+        if (config.checkoutUri) {
+            return {
+                [ ENV.LOCAL ]:      config.checkoutUri,
+                [ ENV.STAGE ]:      config.checkoutUri,
+                [ ENV.SANDBOX ]:    config.checkoutUri,
+                [ ENV.PRODUCTION ]: config.checkoutUri,
+                [ ENV.TEST ]:       config.checkoutUri,
+                [ ENV.DEMO ]:       config.checkoutUri
+            };
+        }
+
+        return {
+            [ ENV.LOCAL ]:      `/webapps/hermes?ul=0`,
+            [ ENV.STAGE ]:      `/webapps/hermes`,
+            [ ENV.SANDBOX ]:    `/checkoutnow`,
+            [ ENV.PRODUCTION ]: `/checkoutnow`,
+            [ ENV.TEST ]:       `/base/test/windows/checkout/index.htm?checkouturl=true`,
+            [ ENV.DEMO ]:       `/demo/dev/checkout.htm`
+        };
     },
 
     altpayUris: {

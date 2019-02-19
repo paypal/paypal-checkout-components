@@ -199,10 +199,10 @@ export let Checkout : Component<CheckoutPropsType> = create({
             required:   false,
             queryParam: true,
 
-            def(props) : ?string {
-                const env = props.env || config.env;
-
-                return config.checkoutUris[env];
+            def() : ?string {
+                if (config.checkoutUri) {
+                    return config.checkoutUri;
+                }
             }
         },
 
