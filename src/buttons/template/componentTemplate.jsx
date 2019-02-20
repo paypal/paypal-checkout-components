@@ -286,5 +286,14 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     // $FlowFixMe
     buttonsNode.toString = () => buttonsNode.render(html());
 
+    const render = buttonsNode.render;
+    // $FlowFixMe
+    buttonsNode.render = (renderer) => {
+        if (renderer.length === 3 && typeof window === 'undefined') {
+            return render.call(buttonsNode, html());
+        }
+        return render.call(buttonsNode, renderer);
+    };
+
     return buttonsNode;
 }
