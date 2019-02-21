@@ -6,6 +6,7 @@ import { PopupOpenError as _PopupOpenError, destroy as zoidDestroy, destroyCompo
 import { setupLogger, allowIframe as _allowIframe } from '../lib';
 import { getCheckoutComponent } from '../checkout';
 import { getButtonsComponent } from '../buttons';
+import { Buttons as _ButtonsTemplate } from '../buttons/template';
 
 export const request = {
     addHeaderBuilder: () => {
@@ -22,6 +23,14 @@ export const Checkout = {
         const component = getCheckoutComponent();
         if (isPayPalDomain()) {
             return component;
+        }
+    }
+};
+
+export const ButtonsTemplate = {
+    __get__: () => {
+        if (isPayPalDomain()) {
+            return _ButtonsTemplate;
         }
     }
 };
