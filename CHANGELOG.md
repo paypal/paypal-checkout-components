@@ -1,3 +1,9 @@
+## <small>5.0.4 (2019-02-21)</small>
+
+* Register button and checkout components in setup step ([7c14d4f](http://github.paypal.com/paypal/paypal-checkout/commit/7c14d4f))
+
+
+
 ## <small>5.0.3 (2019-02-21)</small>
 
 * Hack in compatibility for old jsx-pragmatic renderer ([c416fff](http://github.paypal.com/paypal/paypal-checkout/commit/c416fff))
