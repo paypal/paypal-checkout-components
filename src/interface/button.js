@@ -52,6 +52,8 @@ export const destroyAll = {
 
 export function setup() {
     setupLogger();
+    getButtonsComponent();
+    getCheckoutComponent();
 }
 
 export function destroy() {
