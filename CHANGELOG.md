@@ -1,3 +1,10 @@
+## <small>5.0.3 (2019-02-21)</small>
+
+* Hack in compatibility for old jsx-pragmatic renderer ([c416fff](http://github.paypal.com/paypal/paypal-checkout/commit/c416fff))
+* Upgrade jsx-pragmatic ([e32953b](http://github.paypal.com/paypal/paypal-checkout/commit/e32953b))
+
+
+
 ## <small>5.0.2 (2019-02-18)</small>
 
 * Add log for driver usage ([f5655f1](http://github.paypal.com/paypal/paypal-checkout/commit/f5655f1))
