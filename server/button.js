@@ -2,6 +2,7 @@
 
 import { undotify } from 'belter';
 import { unpackSDKMeta } from '@paypal/sdk-client';
+import { html } from 'jsx-pragmatic';
 
 import { getSmartButtonClientScript, getSmartButtonRenderScript, startWatchers } from './watcher';
 import { getParams } from './params';
@@ -34,7 +35,7 @@ export function getButtonMiddleware({ logger = console } : { logger? : LoggerTyp
                 return clientErrorResponse(res, 'Please provide a fundingEligibility query parameter');
             }
 
-            const buttonHTML = Buttons({ ...params, nonce, csp: { nonce }, fundingEligibility }).toString();
+            const buttonHTML = Buttons({ ...params, nonce, csp: { nonce }, fundingEligibility }).render(html());
 
             const pageHTML = `
                 <body data-nonce="${ nonce }">
