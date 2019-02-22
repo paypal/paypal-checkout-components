@@ -685,7 +685,7 @@
                 var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
                 return !!isAndroid(ua) && (/Version\/[\d.]+/.test(ua) && !isOperaMini(ua));
             }
-            function isIE() {
+            function device_isIE() {
                 return !!window.document.documentMode || Boolean(window.navigator && window.navigator.userAgent && /Edge|MSIE|rv:11/i.test(window.navigator.userAgent));
             }
             function isIECompHeader() {
@@ -1574,7 +1574,7 @@
                 return element;
             }
             function iframe() {
-                var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, container = arguments[1], attempts = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : 3, attributes = options.attributes || {}, style = options.style || {}, frame = createElement("iframe", {
+                var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, container = arguments[1], attributes = options.attributes || {}, style = options.style || {}, frame = createElement("iframe", {
                     attributes: _extends({
                         allowTransparency: "true"
                     }, attributes),
@@ -1584,21 +1584,13 @@
                     }, style),
                     html: options.html,
                     class: options.class
-                });
+                }), isIE = window.navigator.userAgent.match(/MSIE|Edge/i);
+                frame.hasAttribute("id") || frame.setAttribute("id", uniqueID());
                 awaitFrameLoad(frame);
                 if (container) {
-                    var el = getElement(container);
-                    el.appendChild(frame);
-                    var _win = frame.contentWindow;
-                    if (_win) try {
-                        _win.name;
-                    } catch (err) {
-                        el.removeChild(frame);
-                        if (!attempts) throw new Error("Frame is cross-domain: " + err.stack);
-                        return iframe(options, container, attempts - 1);
-                    }
+                    getElement(container).appendChild(frame);
                 }
-                (options.url || window.navigator.userAgent.match(/MSIE|Edge/i)) && frame.setAttribute("src", options.url || "about:blank");
+                (options.url || isIE) && frame.setAttribute("src", options.url || "about:blank");
                 return frame;
             }
             function addEventListener(obj, event, handler) {
@@ -2118,7 +2110,7 @@
                 return isAndroidWebview;
             });
             __webpack_require__.d(__webpack_exports__, !1, function() {
-                return isIE;
+                return device_isIE;
             });
             __webpack_require__.d(__webpack_exports__, !1, function() {
                 return isIECompHeader;
@@ -10348,7 +10340,7 @@
             var config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.257",
+                version: "4.0.258",
                 cors: !0,
                 env: function() {
                     return "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION;
@@ -10377,8 +10369,7 @@
                         allow_full_page_fallback: !0,
                         memoize_payment: !0,
                         force_bridge: !0,
-                        log_authorize: !0,
-                        disable_payment_timeout: !0
+                        log_authorize: !0
                     },
                     "ulta.com": {
                         disable_venmo: !0
@@ -10400,8 +10391,7 @@
                         allow_full_page_fallback: !0,
                         memoize_payment: !0,
                         force_bridge: !0,
-                        log_authorize: !0,
-                        disable_payment_timeout: !0
+                        log_authorize: !0
                     },
                     "ticketmaster.com": {
                         disable_venmo: !0
@@ -11260,6 +11250,10 @@
                     FUNDING_COUNT: "eligible_payment_count",
                     CHOSEN_FUNDING: "selected_payment_method",
                     BUTTON_LAYOUT: "button_layout",
+                    BUTTON_COLOR: "button_color",
+                    BUTTON_SIZE: "button_size",
+                    BUTTON_SHAPE: "button_shape",
+                    BUTTON_LABEL: "button_label",
                     VERSION: "checkoutjs_version"
                 },
                 BUTTON_TYPE: {
@@ -13505,7 +13499,7 @@
                         logoColor: "blue"
                     })));
                 }(normalizeProps(props)) : null;
-                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.257", 
+                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.258", 
                 _ref18), {
                     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
@@ -13757,7 +13751,6 @@
                                 };
                                 if (Object(lib.n)("memoize_payment") && this.memoizedToken) return this.memoizedToken;
                                 this.memoizedToken = zalgo_promise_src.a.try(original, this, [ {}, actions ]);
-                                this.props.env !== constants.t.PRODUCTION || Object(lib.n)("disable_payment_timeout") || (this.memoizedToken = this.memoizedToken.timeout(1e4, new Error("Timed out waiting 10000ms for payment")));
                                 this.memoizedToken = this.memoizedToken.then(function(token) {
                                     var _track2;
                                     if (!token) {
@@ -14255,6 +14248,10 @@
                     _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_LOAD, _track[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, 
                     _track[constants.u.KEY.FUNDING_LIST] = fundingSources.join(":"), _track[constants.u.KEY.FUNDING_COUNT] = fundingSources.length, 
                     _track[constants.u.KEY.PAGE_LOAD_TIME] = pageRenderTime, _track[constants.u.KEY.BUTTON_LAYOUT] = xprops && xprops.style && xprops.style.layout || constants.g.HORIZONTAL, 
+                    _track[constants.u.KEY.BUTTON_COLOR] = xprops && xprops.style && xprops.style.color || constants.e.GOLD, 
+                    _track[constants.u.KEY.BUTTON_SIZE] = xprops && xprops.style && xprops.style.size || constants.l.SMALL, 
+                    _track[constants.u.KEY.BUTTON_SHAPE] = xprops && xprops.style && xprops.style.shape || constants.k.PILL, 
+                    _track[constants.u.KEY.BUTTON_LABEL] = xprops && xprops.style && xprops.style.label || constants.f.CHECKOUT, 
                     _track));
                     Object(beaver_logger_client.h)();
                 });
@@ -14660,7 +14657,7 @@
                 setup__track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, 
                 setup__track3));
             }
-            var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.257", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.258", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             interface_checkout = legacy.checkout;
             apps = legacy.apps;
             var interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
@@ -15955,7 +15952,7 @@
                         country: config.a.locale.country,
                         lang: config.a.locale.lang,
                         uid: getSessionID(),
-                        ver: "4.0.257"
+                        ver: "4.0.258"
                     };
                 });
                 Object(client.a)(function() {
@@ -16200,7 +16197,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.257";
+                    payload.version = "4.0.258";
                     payload.host = window.location.host;
                     payload.uid = getSessionID();
                     payload.appName = APP_NAME;
@@ -16218,7 +16215,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.257".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.258".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!function(name) {
                         return getSessionState(function(state) {
@@ -16237,7 +16234,7 @@
             function fpti() {
                 var payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, query = [];
                 payload = beacon__extends({}, {
-                    v: "checkout.js.4.0.257",
+                    v: "checkout.js.4.0.258",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -16353,11 +16350,11 @@
                 return Boolean(getCurrentScript());
             }
             function getScriptVersion() {
-                return "4.0.257";
+                return "4.0.258";
             }
             function getCurrentScriptUrl() {
                 var script = getCurrentScript();
-                return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.257.js";
+                return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.258.js";
             }
             var openMetaFrame = Object(util.j)(function() {
                 var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -16374,7 +16371,7 @@
                             domain: metaFrameDomain
                         });
                         return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                            version: "4.0.257"
+                            version: "4.0.258"
                         }), metaFrameDomain).then(function() {
                             return metaListener;
                         }).then(function(_ref) {

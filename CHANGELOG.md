@@ -1,3 +1,10 @@
+## <small>4.0.258 (2019-02-22)</small>
+
+* Add fpti logs for button style ([1deff0e](https://github.com/paypal/paypal-checkout/commit/1deff0e))
+* Remove payment timeout ([e8ac846](https://github.com/paypal/paypal-checkout/commit/e8ac846))
+
+
+
 ## <small>4.0.256 (2019-02-06)</small>
 
 * chore(whitelist-apm): Add whitelisted merchants to first increment of APMs (#1010) ([96f70ff](https://github.com/paypal/paypal-checkout/commit/96f70ff)), closes [#1010](https://github.com/paypal/paypal-checkout/issues/1010)
