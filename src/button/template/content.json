@@ -2408,7 +2408,7 @@
             "later_tag": "קנה עכשיו. שלם לאורך זמן.",
             "pay": "שלם באמצעות {logo:paypal}‏",
             "buynow": "{logo:pp} {logo:paypal} קנה עכשיו",
-            "poweredBy": "מופעל על-ידי {logo:paypal}"
+            "poweredBy": "{logo:paypal} מופעל על-ידי"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
