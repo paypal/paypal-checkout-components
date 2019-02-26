@@ -94,7 +94,7 @@ export const FUNDING_CONFIG = {
 
         allowHorizontal: true,
         allowVertical:   true,
-        allowRemember:   false
+        allowRemember:   true
     },
 
     [ FUNDING.IDEAL ]: {
