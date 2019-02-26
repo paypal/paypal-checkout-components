@@ -375,6 +375,10 @@ export let config = {
 
         'youniqueproducts.com': {
             disable_venmo: true
+        },
+
+        'archives.com': {
+            disable_venmo: true
         }
     },
 
