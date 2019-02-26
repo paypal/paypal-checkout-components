@@ -148,23 +148,17 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                                 return value(data, actions);
 
                             }).then(orderID => {
-
-                                const logger = getLogger();
-
                                 if (!orderID || typeof orderID !== 'string')  {
-                                    logger.error(`no_orderid_passed_to_createorder`);
                                     throw new Error(`Expected a promise for a string order id to be passed to createOrder`);
                                 }
 
-                                logger.track({
+                                getLogger().track({
                                     [ FPTI_KEY.STATE ]:              FPTI_STATE.CHECKOUT,
                                     [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.RECIEVE_ORDER,
                                     [ FPTI_KEY.CONTEXT_TYPE ]:       FPTI_CONTEXT_TYPE.ORDER_ID,
                                     [ FPTI_KEY.CONTEXT_ID ]:         orderID,
                                     [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
-                                });
-
-                                logger.flush();
+                                }).flush();
 
                                 return orderID;
                             });
@@ -231,16 +225,11 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
 
                     decorate({ value, props, close }) : OnApprove {
                         return function decorateOnApprove(data : OnApproveData, actions : OnApproveActions) : ZalgoPromise<void> {
-                            const logger = getLogger();
-                            logger.info('button_authorize');
-
-                            logger.track({
+                            getLogger().info('button_authorize').track({
                                 [ FPTI_KEY.STATE ]:              FPTI_STATE.CHECKOUT,
                                 [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.CHECKOUT_AUTHORIZE,
                                 [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
-                            });
-
-                            logger.flush();
+                            }).flush();
 
                             actions = {
                                 ...actions,
@@ -254,7 +243,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                             };
 
                             return ZalgoPromise.try(() => {
-                                return value.call(this, data, actions);
+                                return value(data, actions);
                             }).catch(err => {
                                 if (props.onError) {
                                     return props.onError(err);
@@ -302,7 +291,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                             };
 
                             return ZalgoPromise.try(() => {
-                                return value.call(this, data, { ...actions, resolve, reject });
+                                return value(data, { ...actions, resolve, reject });
                             }).catch(err => {
                                 if (onError) {
                                     onError(err);
@@ -341,7 +330,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                             };
 
                             return ZalgoPromise.try(() => {
-                                return value.call(this, data, actions);
+                                return value(data, actions);
                             }).catch(err => {
                                 if (props.onError) {
                                     return props.onError(err);
@@ -358,21 +347,16 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     type:     'function',
                     required: false,
                     decorate({ value, props }) : OnClick {
-                        return function decorateOnClick(data : OnClickData) : void {
-                            const logger = getLogger();
-                            logger.info('button_click');
-
-                            logger.track({
+                        return (data : OnClickData) => {
+                            getLogger().info('button_click').track({
                                 [ FPTI_KEY.STATE ]:              FPTI_STATE.BUTTON,
                                 [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.BUTTON_CLICK,
                                 [ FPTI_KEY.BUTTON_TYPE ]:        FPTI_BUTTON_TYPE.IFRAME,
                                 [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID,
                                 [ FPTI_KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
-                            });
+                            }).flush();
 
-                            logger.flush();
-
-                            return value.call(this, data);
+                            return value();
                         };
                     },
 
@@ -383,19 +367,15 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     type:     'function',
                     required: false,
                     decorate({ value, props }) : Function {
-                        return function decorateOnRender() : mixed {
-                            const logger = getLogger();
-                            
-                            logger.track({
+                        return () => {
+                            getLogger().track({
                                 [ FPTI_KEY.STATE ]:              FPTI_STATE.BUTTON,
                                 [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.BUTTON_RENDER,
                                 [ FPTI_KEY.BUTTON_TYPE ]:        FPTI_BUTTON_TYPE.IFRAME,
                                 [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
-                            });
+                            }).flush();
 
-                            logger.flush();
-
-                            return value.apply(this, arguments);
+                            return value();
                         };
                     },
                     default: () => noop
