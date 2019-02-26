@@ -538,6 +538,19 @@ window.spb = function(modules) {
     __webpack_require__(14), __webpack_require__(15), __webpack_require__(16), __webpack_require__(17);
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
+    __webpack_require__.d(__webpack_exports__, "a", function() {
+        return PROTOCOL;
+    });
+    __webpack_require__.d(__webpack_exports__, "b", function() {
+        return WILDCARD;
+    });
+    var PROTOCOL = {
+        MOCK: "mock:",
+        FILE: "file:",
+        ABOUT: "about:"
+    }, WILDCARD = "*";
+}, function(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
     var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(18);
     __webpack_require__.d(__webpack_exports__, "getParent", function() {
         return _utils__WEBPACK_IMPORTED_MODULE_0__.a;
@@ -554,20 +567,7 @@ window.spb = function(modules) {
     __webpack_require__.d(__webpack_exports__, "linkFrameWindow", function() {
         return _utils__WEBPACK_IMPORTED_MODULE_0__.e;
     });
-    __webpack_require__(10), __webpack_require__(4);
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", function() {
-        return PROTOCOL;
-    });
-    __webpack_require__.d(__webpack_exports__, "b", function() {
-        return WILDCARD;
-    });
-    var PROTOCOL = {
-        MOCK: "mock:",
-        FILE: "file:",
-        ABOUT: "about:"
-    }, WILDCARD = "*";
+    __webpack_require__(10), __webpack_require__(3);
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.d(__webpack_exports__, "a", function() {
@@ -589,7 +589,7 @@ window.spb = function(modules) {
     __webpack_require__.d(interface_namespaceObject, "WeakMap", function() {
         return weakmap_CrossDomainSafeWeakMap;
     });
-    var src = __webpack_require__(3);
+    var src = __webpack_require__(4);
     function safeIndexOf(collection, item) {
         for (var i = 0; i < collection.length; i++) try {
             if (collection[i] === item) return i;
@@ -849,7 +849,7 @@ window.spb = function(modules) {
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__(5), __webpack_require__(1), __webpack_require__(3), __webpack_require__(6);
+    __webpack_require__(5), __webpack_require__(1), __webpack_require__(4), __webpack_require__(6);
     var util = __webpack_require__(0), KEY_CODES = (__webpack_require__(7), {
         ENTER: 13
     });
@@ -966,7 +966,7 @@ window.spb = function(modules) {
     __webpack_require__(1), __webpack_require__(0);
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    var constants = __webpack_require__(4);
+    var constants = __webpack_require__(3);
     __webpack_require__.d(__webpack_exports__, "a", function() {
         return getParent;
     });
@@ -1347,7 +1347,7 @@ window.spb = function(modules) {
         P24: "p24",
         ZIMPLER: "zimpler",
         WECHATPAY: "wechatpay"
-    }, esm_extends = (INTENT.CAPTURE, __webpack_require__(5)), zalgo_promise_src = __webpack_require__(1), cross_domain_utils_src = __webpack_require__(3), API_URI = {
+    }, zalgo_promise_src = (INTENT.CAPTURE, __webpack_require__(1)), esm_extends = __webpack_require__(5), cross_domain_utils_src = __webpack_require__(4), API_URI = {
         AUTH: "/webapps/hermes/api/auth",
         ORDER: "/webapps/hermes/api/order",
         PAYMENT: "/webapps/hermes/api/payment",
@@ -1358,6 +1358,11 @@ window.spb = function(modules) {
     }, ORDER_API_ERROR = {
         CC_PROCESSOR_DECLINED: "CC_PROCESSOR_DECLINED",
         INSTRUMENT_DECLINED: "INSTRUMENT_DECLINED"
+    }, CONTEXT = {
+        IFRAME: "iframe",
+        POPUP: "popup"
+    }, TARGET_ELEMENT = {
+        BODY: "body"
     }, ORDER_ID_PATTERN = /^(EC-)?[A-Z0-9]+$/, ERROR_URL = "https://www.paypal.com/checkoutnow/error", defaultHeaders = {}, csrfToken = "";
     function callAPI(_ref) {
         var _extends2, url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, json = _ref.json, reqHeaders = Object(esm_extends.a)({}, defaultHeaders, ((_extends2 = {})[HEADERS.CSRF_TOKEN] = csrfToken, 
@@ -1381,31 +1386,21 @@ window.spb = function(modules) {
             url: API_URI.AUTH
         });
     }
+    function patchOrder(orderID, patch) {
+        return callAPI({
+            method: "post",
+            url: API_URI.ORDER + "/" + orderID + "/patch",
+            json: {
+                data: {
+                    patch: patch
+                }
+            }
+        });
+    }
     var persistAccessToken = Object(src.memoize)(function(accessToken) {
         defaultHeaders["x-paypal-internal-euat"] = accessToken;
         return getAuth().then(src.noop);
     });
-    function buildPatchActions(orderID) {
-        var handleProcessorError = function() {
-            throw new Error("Order could not be patched");
-        };
-        return {
-            orderPatch: function(patch) {
-                void 0 === patch && (patch = []);
-                return function(orderID, patch) {
-                    return callAPI({
-                        method: "post",
-                        url: API_URI.ORDER + "/" + orderID + "/patch",
-                        json: {
-                            data: {
-                                patch: patch
-                            }
-                        }
-                    });
-                }(orderID, patch).catch(handleProcessorError);
-            }
-        };
-    }
     function validateOrder(orderID) {
         if (!orderID.match(ORDER_ID_PATTERN)) throw new Error(orderID + " does not match pattern for order-id, ec-token or cart-id");
         return (query = '\n        checkout {\n            checkoutSession(token : "' + orderID + '") {\n                cart {\n                    intent\n                    returnUrl {\n                        href\n                    }\n                    cancelUrl {\n                        href\n                    }\n                    amounts {\n                        total {\n                            currencyCode\n                        }\n                    }\n                }\n            }\n        }\n    ', 
@@ -1439,46 +1434,44 @@ window.spb = function(modules) {
         document.body && (nonce = document.body.getAttribute("data-nonce") || "");
         return nonce;
     }
-    function renderCheckout(props, context) {
+    function getDefaultContext() {
+        return Object(src.supportsPopups)() ? CONTEXT.POPUP : CONTEXT.IFRAME;
+    }
+    function renderCheckout(props, context, validationPromise) {
         void 0 === props && (props = {});
-        void 0 === context && (context = Object(src.supportsPopups)() ? "popup" : "iframe");
+        void 0 === context && (context = getDefaultContext());
+        void 0 === validationPromise && (validationPromise = zalgo_promise_src.a.resolve(!0));
         if (checkoutOpen) throw new Error("Checkout already rendered");
-        var _ref2 = [ Object(cross_domain_utils_src.getParent)(window), Object(cross_domain_utils_src.getTop)(window) ], parent = _ref2[0], top = _ref2[1], createOrder = function(props) {
+        var top, orderCreate = function(props, validationPromise) {
             void 0 === props && (props = {});
             return Object(src.memoize)(function() {
-                return zalgo_promise_src.a.try(function() {
-                    if (props.createOrder) return props.createOrder();
-                    if (window.xprops.createBillingAgreement) return window.xprops.createBillingAgreement().then(function(billingToken) {
-                        return function(billingToken) {
-                            return callAPI({
-                                method: "post",
-                                url: API_URI.PAYMENT + "/" + billingToken + "/ectoken"
-                            }).then(function(data) {
-                                return data.token;
-                            });
-                        }(billingToken);
-                    });
-                    if (window.xprops.createOrder) return window.xprops.createOrder();
-                    throw new Error("No mechanism to create order");
+                return validationPromise.then(function(valid) {
+                    if (valid) {
+                        if (props.createOrder) return props.createOrder();
+                        if (window.xprops.createBillingAgreement) return window.xprops.createBillingAgreement().then(function(billingToken) {
+                            return function(billingToken) {
+                                return callAPI({
+                                    method: "post",
+                                    url: API_URI.PAYMENT + "/" + billingToken + "/ectoken"
+                                }).then(function(data) {
+                                    return data.token;
+                                });
+                            }(billingToken);
+                        });
+                        if (window.xprops.createOrder) return window.xprops.createOrder();
+                        throw new Error("No mechanism to create order");
+                    }
+                    return new zalgo_promise_src.a(src.noop);
                 });
             });
-        }(props), renderWindow = canRenderTop && top ? top : parent, validateOrderPromise = createOrder().then(validateOrder), addOnProps = {};
-        window.xprops.onShippingChange && (addOnProps.onShippingChange = function(data, actions) {
-            var orderPatch = buildPatchActions(data.orderID).orderPatch;
-            return window.xprops.onShippingChange(data, Object(esm_extends.a)({}, actions, {
-                order: {
-                    patch: orderPatch
-                }
-            }));
-        });
-        var instance = window.paypal.Checkout(Object(esm_extends.a)({}, props, addOnProps, {
-            createOrder: createOrder,
+        }(props, validationPromise), instance = window.paypal.Checkout(Object(esm_extends.a)({}, props, {
+            createOrder: orderCreate,
             locale: window.xprops.locale,
             commit: window.xprops.commit,
             onError: window.xprops.onError,
-            onApprove: function(_ref3) {
-                var orderID = _ref3.orderID, payerID = _ref3.payerID, paymentID = _ref3.paymentID, billingToken = _ref3.billingToken, actions = function(checkout, orderID) {
-                    var restartFlow = Object(src.memoize)(function() {
+            onApprove: function(_ref2) {
+                var orderID = _ref2.orderID, payerID = _ref2.payerID, paymentID = _ref2.paymentID, billingToken = _ref2.billingToken, actions = function(checkout, orderID) {
+                    var restart = Object(src.memoize)(function() {
                         return checkout.close().then(function() {
                             return renderCheckout({
                                 createOrder: function() {
@@ -1489,39 +1482,44 @@ window.spb = function(modules) {
                             return new zalgo_promise_src.a(src.noop);
                         });
                     }), handleProcessorError = function(err) {
-                        if (err && err.message === ORDER_API_ERROR.CC_PROCESSOR_DECLINED) return restartFlow();
-                        if (err && err.message === ORDER_API_ERROR.INSTRUMENT_DECLINED) return restartFlow();
+                        if (err && err.message === ORDER_API_ERROR.CC_PROCESSOR_DECLINED) return restart();
+                        if (err && err.message === ORDER_API_ERROR.INSTRUMENT_DECLINED) return restart();
                         throw new Error("Order could not be captured");
-                    }, orderGet = Object(src.memoize)(function() {
+                    }, get = Object(src.memoize)(function() {
                         return function(orderID) {
                             return callAPI({
                                 url: API_URI.ORDER + "/" + orderID
                             });
                         }(orderID);
+                    }), capture = Object(src.memoize)(function() {
+                        if (window.xprops.intent !== INTENT.CAPTURE) throw new Error("Use " + SDK_QUERY_KEYS.INTENT + "=" + INTENT.CAPTURE + " to use client-side capture");
+                        return function(orderID) {
+                            return callAPI({
+                                method: "post",
+                                url: API_URI.ORDER + "/" + orderID + "/capture"
+                            });
+                        }(orderID).catch(handleProcessorError).finally(get.reset);
+                    }), authorize = Object(src.memoize)(function() {
+                        return function(orderID) {
+                            return callAPI({
+                                method: "post",
+                                url: API_URI.ORDER + "/" + orderID + "/authorize"
+                            });
+                        }(orderID).catch(handleProcessorError).finally(get.reset);
                     });
                     return {
+                        restart: restart,
                         order: {
-                            capture: Object(src.memoize)(function() {
-                                if (window.xprops.intent !== INTENT.CAPTURE) throw new Error("Use " + SDK_QUERY_KEYS.INTENT + "=" + INTENT.CAPTURE + " to use client-side capture");
-                                return function(orderID) {
-                                    return callAPI({
-                                        method: "post",
-                                        url: API_URI.ORDER + "/" + orderID + "/capture"
-                                    });
-                                }(orderID).catch(handleProcessorError).finally(orderGet.reset);
-                            }),
-                            authorize: Object(src.memoize)(function() {
-                                return function(orderID) {
-                                    return callAPI({
-                                        method: "post",
-                                        url: API_URI.ORDER + "/" + orderID + "/authorize"
-                                    });
-                                }(orderID).catch(handleProcessorError).finally(orderGet.reset);
-                            }),
-                            patch: buildPatchActions(orderID).orderPatch,
-                            get: orderGet
-                        },
-                        restart: restartFlow
+                            capture: capture,
+                            authorize: authorize,
+                            patch: function(data) {
+                                void 0 === data && (data = []);
+                                return patchOrder(orderID, data).catch(function() {
+                                    throw new Error("Order could not be patched");
+                                });
+                            },
+                            get: get
+                        }
                     };
                 }(this, orderID);
                 return window.xprops.onApprove({
@@ -1535,7 +1533,7 @@ window.spb = function(modules) {
             },
             onCancel: function() {
                 return zalgo_promise_src.a.try(function() {
-                    return createOrder();
+                    return orderCreate();
                 }).then(function(orderID) {
                     return window.xprops.onCancel({
                         orderID: orderID
@@ -1544,39 +1542,85 @@ window.spb = function(modules) {
                     return window.xprops.onError(err);
                 });
             },
-            onAuth: function(_ref4) {
-                var accessToken = _ref4.accessToken;
+            onAuth: function(_ref3) {
+                var accessToken = _ref3.accessToken;
                 return persistAccessToken(accessToken);
             },
             onClose: function() {
                 checkoutOpen = !1;
             },
+            onShippingChange: window.xprops.onShippingChange ? function(data, actions) {
+                return window.xprops.onShippingChange(data, Object(esm_extends.a)({}, actions, (orderID = data.orderID, 
+                {
+                    order: {
+                        patch: function(data) {
+                            void 0 === data && (data = []);
+                            return patchOrder(orderID, data).catch(function() {
+                                throw new Error("Order could not be patched");
+                            });
+                        }
+                    }
+                })));
+                var orderID;
+            } : null,
             nonce: getNonce()
         }));
-        return instance.renderTo(renderWindow, "body", context).then(function() {
-            return validateOrderPromise.catch(function(err) {
-                return zalgo_promise_src.a.all([ instance.close(), instance.onError(err) ]);
-            });
+        orderCreate().then(validateOrder).catch(function(err) {
+            return zalgo_promise_src.a.all([ instance.close(), instance.onError(err) ]);
         });
+        validationPromise.then(function(valid) {
+            valid || instance.close();
+        });
+        return instance.renderTo((top = Object(cross_domain_utils_src.getTop)(window), canRenderTop && top ? top : window.xprops.getParent()), TARGET_ELEMENT.BODY, context);
     }
     function setupButton(fundingEligibility) {
+        var buttonEnabled = !0;
         if (!window.paypal) throw new Error("PayPal library not loaded");
+        var tasks = {};
+        window.xprops.onInit && (tasks.onInit = window.xprops.onInit({}, {
+            enable: function() {
+                return zalgo_promise_src.a.try(function() {
+                    buttonEnabled = !0;
+                });
+            },
+            disable: function() {
+                return zalgo_promise_src.a.try(function() {
+                    buttonEnabled = !1;
+                });
+            }
+        }));
         Object(src.querySelectorAll)(".paypal-button").forEach(function(button) {
             var fundingSource = button.getAttribute("data-funding-source"), card = button.getAttribute("data-card");
             Object(src.onClick)(button, function(event) {
                 event.preventDefault();
                 event.stopPropagation();
-                window.xprops.onClick && window.xprops.onClick({
-                    fundingSource: fundingSource,
-                    card: card
+                var valid = buttonEnabled, validationPromise = zalgo_promise_src.a.try(function() {
+                    if (window.xprops.onClick) return window.xprops.onClick({
+                        fundingSource: fundingSource,
+                        card: card
+                    }, {
+                        resolve: function() {
+                            return zalgo_promise_src.a.try(function() {
+                                valid = !0;
+                            });
+                        },
+                        reject: function() {
+                            return zalgo_promise_src.a.try(function() {
+                                valid = !1;
+                            });
+                        }
+                    });
+                }).then(function() {
+                    return valid;
                 });
-                renderCheckout({
-                    fundingSource: fundingSource
-                }).catch(src.noop);
+                valid && renderCheckout({
+                    fundingSource: fundingSource,
+                    validationPromise: validationPromise
+                }, getDefaultContext(), validationPromise).catch(src.noop);
             });
         });
-        getAuth().then(src.noop);
-        window.xprops.getPrerenderDetails().then(function(prerenderDetails) {
+        tasks.getAuth = getAuth().then(src.noop);
+        tasks.getPrerender = window.xprops.getPrerenderDetails().then(function(prerenderDetails) {
             if (prerenderDetails) {
                 var win = prerenderDetails.win, order = prerenderDetails.order;
                 renderCheckout({
@@ -1588,12 +1632,15 @@ window.spb = function(modules) {
                 }).catch(src.noop);
             }
         });
-        fundingEligibility && fundingEligibility.venmo.eligible && window.xprops.remember([ FUNDING.VENMO ]);
-        parent = (_ref = [ Object(cross_domain_utils_src.getParent)(window), Object(cross_domain_utils_src.getTop)(window) ])[0], 
-        (top = _ref[1]) && parent && parent !== top && window.paypal.Checkout.canRenderTo(top).then(function(result) {
-            canRenderTop = result;
-        });
-        var _ref, parent, top;
+        fundingEligibility && fundingEligibility.venmo.eligible && (tasks.remember = window.xprops.remember([ FUNDING.VENMO ]));
+        tasks.setupCheckout = function() {
+            var _ref = [ Object(cross_domain_utils_src.getParent)(window), Object(cross_domain_utils_src.getTop)(window) ], parent = _ref[0], top = _ref[1], tasks = {};
+            top && parent && parent !== top && (tasks.canRenderTo = window.paypal.Checkout.canRenderTo(top).then(function(result) {
+                canRenderTop = result;
+            }));
+            return zalgo_promise_src.a.hash(tasks).then(src.noop);
+        }();
+        return zalgo_promise_src.a.hash(tasks).then(src.noop);
     }
     __webpack_require__.d(__webpack_exports__, "setupButton", function() {
         return setupButton;
