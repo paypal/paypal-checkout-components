@@ -6,7 +6,7 @@ import { INTENT, SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
 import { getParent, getTop } from 'cross-domain-utils/src';
 
 import { getOrder, captureOrder, authorizeOrder, patchOrder, persistAccessToken, billingTokenToOrderID, callGraphQL, type OrderResponse } from './api';
-import { ORDER_API_ERROR, ORDER_ID_PATTERN, ERROR_URL } from './constants';
+import { ORDER_API_ERROR, ORDER_ID_PATTERN, ERROR_URL, CONTEXT, TARGET_ELEMENT } from './constants';
 
 type ActionsType = {|
     order : {
@@ -18,30 +18,31 @@ type ActionsType = {|
     restart : () => ZalgoPromise<OrderResponse>
 |};
 
-type PatchActionsType = {|
-    orderPatch : () => ZalgoPromise<OrderResponse>
+type ShippingChangeActionsType = {|
+    order : {
+        patch : () => ZalgoPromise<OrderResponse>
+    }
 |};
 
 type CheckoutComponent = {|
     close : () => ZalgoPromise<void>
 |};
 
-function buildPatchActions(orderID : string) : PatchActionsType {
+function buildShippingChangeActions(orderID : string) : ShippingChangeActionsType {
 
-    const handleProcessorError = () : ZalgoPromise<OrderResponse> => {
-        throw new Error('Order could not be patched');
+    const patch = (data = []) =>
+        patchOrder(orderID, data).catch(() => {
+            throw new Error('Order could not be patched');
+        });
+
+    return {
+        order: { patch }
     };
-
-    const orderPatch = (patch = []) =>
-        patchOrder(orderID, patch)
-            .catch(handleProcessorError);
-
-    return { orderPatch };
 }
 
-function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : ActionsType {
+function buildApproveActions(checkout : CheckoutComponent, orderID : string) : ActionsType {
 
-    const restartFlow = memoize(() : ZalgoPromise<OrderResponse> =>
+    const restart = memoize(() : ZalgoPromise<OrderResponse> =>
         checkout.close().then(() => {
             // eslint-disable-next-line no-use-before-define
             return renderCheckout({
@@ -51,44 +52,42 @@ function buildExecuteActions(checkout : CheckoutComponent, orderID : string) : A
 
     const handleProcessorError = (err : mixed) : ZalgoPromise<OrderResponse> => {
         if (err && err.message === ORDER_API_ERROR.CC_PROCESSOR_DECLINED) {
-            return restartFlow();
+            return restart();
         }
 
         if (err && err.message === ORDER_API_ERROR.INSTRUMENT_DECLINED) {
-            return restartFlow();
+            return restart();
         }
 
         throw new Error('Order could not be captured');
     };
 
-    const orderGet = memoize(() =>
+    const get = memoize(() =>
         getOrder(orderID));
 
-    const orderCapture = memoize(() => {
+    const capture = memoize(() => {
         if (window.xprops.intent !== INTENT.CAPTURE) {
             throw new Error(`Use ${ SDK_QUERY_KEYS.INTENT }=${ INTENT.CAPTURE } to use client-side capture`);
         }
 
         return captureOrder(orderID)
             .catch(handleProcessorError)
-            .finally(orderGet.reset);
+            .finally(get.reset);
     });
 
-    const orderAuthorize = memoize(() =>
+    const authorize = memoize(() =>
         authorizeOrder(orderID)
             .catch(handleProcessorError)
-            .finally(orderGet.reset));
+            .finally(get.reset));
 
-    const { orderPatch } = buildPatchActions(orderID);
+    const patch = (data = []) =>
+        patchOrder(orderID, data).catch(() => {
+            throw new Error('Order could not be patched');
+        });
 
     return {
-        order: {
-            capture:    orderCapture,
-            authorize:  orderAuthorize,
-            patch:      orderPatch,
-            get:        orderGet
-        },
-        restart: restartFlow
+        restart,
+        order: { capture, authorize, patch, get }
     };
 }
 
@@ -148,20 +147,35 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
 let checkoutOpen = false;
 let canRenderTop = false;
 
-export function setupCheckout() {
-    const [ parent, top ] = [ getParent(window), getTop(window) ];
-
-    if (top && parent && parent !== top) {
-        window.paypal.Checkout.canRenderTo(top).then(result => {
-            canRenderTop = result;
-        });
+function getRenderWindow() : Object {
+    const top = getTop(window);
+    if (canRenderTop && top) {
+        return top;
+    } else {
+        return window.xprops.getParent();
     }
 }
 
-function getCreateOrder(props : Object = {}) : () => ZalgoPromise<string> {
+export function setupCheckout() : ZalgoPromise<void> {
+    const [ parent, top ] = [ getParent(window), getTop(window) ];
+
+    const tasks = {};
+
+    if (top && parent && parent !== top) {
+        tasks.canRenderTo = window.paypal.Checkout.canRenderTo(top).then(result => {
+            canRenderTop = result;
+        });
+    }
+
+    return ZalgoPromise.hash(tasks).then(noop);
+}
+
+function getCreateOrder(props : Object = {}, validationPromise : ZalgoPromise<boolean>) : () => ZalgoPromise<string> {
     return memoize(() => {
-        return ZalgoPromise.try(() => {
-            if (props.createOrder) {
+        return validationPromise.then(valid => {
+            if (!valid) {
+                return new ZalgoPromise(noop);
+            } else if (props.createOrder) {
                 return props.createOrder();
             } else if (window.xprops.createBillingAgreement) {
                 return window.xprops.createBillingAgreement().then(billingToken => {
@@ -184,40 +198,26 @@ function getNonce() : string {
     return nonce;
 }
 
-function getDefaultContext() : string {
-    return supportsPopups() ? 'popup' : 'iframe';
+export function getDefaultContext() : string {
+    return supportsPopups() ? CONTEXT.POPUP : CONTEXT.IFRAME;
 }
 
-export function renderCheckout(props : Object = {}, context : string = getDefaultContext()) : ZalgoPromise<mixed> {
-
+export function renderCheckout(
+    props : Object = {},
+    context : string = getDefaultContext(),
+    validationPromise? : ZalgoPromise<boolean> = ZalgoPromise.resolve(true)
+) : ZalgoPromise<mixed> {
+    
     if (checkoutOpen) {
         throw new Error(`Checkout already rendered`);
     }
 
-    const [ parent, top ] = [ getParent(window), getTop(window) ];
-
-    const createOrder = getCreateOrder(props);
-    const renderWindow = (canRenderTop && top) ? top : parent;
-
-    const validateOrderPromise = createOrder().then(validateOrder);
-
-    const addOnProps = {};
-
-    if (window.xprops.onShippingChange) {
-        addOnProps.onShippingChange = function onShippingChange(data, actions) : ZalgoPromise<void> {
-            const { orderPatch } = buildPatchActions(data.orderID);
-            return window.xprops.onShippingChange(data, {
-                ...actions,
-                order: { patch: orderPatch }
-            });
-        };
-    }
+    const orderCreate = getCreateOrder(props, validationPromise);
 
     const instance = window.paypal.Checkout({
         ...props,
-        ...addOnProps,
-
-        createOrder,
+        
+        createOrder: orderCreate,
 
         locale: window.xprops.locale,
         commit: window.xprops.commit,
@@ -225,7 +225,7 @@ export function renderCheckout(props : Object = {}, context : string = getDefaul
         onError: window.xprops.onError,
 
         onApprove({ orderID, payerID, paymentID, billingToken }) : ZalgoPromise<void> {
-            const actions = buildExecuteActions(this, orderID);
+            const actions = buildApproveActions(this, orderID);
 
             return window.xprops.onApprove({ orderID, payerID, paymentID, billingToken }, actions).catch(err => {
                 return window.xprops.onError(err);
@@ -234,7 +234,7 @@ export function renderCheckout(props : Object = {}, context : string = getDefaul
 
         onCancel: () : ZalgoPromise<void> => {
             return ZalgoPromise.try(() => {
-                return createOrder();
+                return orderCreate();
             }).then(orderID => {
                 return window.xprops.onCancel({ orderID });
             }).catch(err => {
@@ -250,15 +250,29 @@ export function renderCheckout(props : Object = {}, context : string = getDefaul
             checkoutOpen = false;
         },
 
+        onShippingChange: window.xprops.onShippingChange
+            ? (data, actions) => {
+                return window.xprops.onShippingChange(data, {
+                    ...actions,
+                    ...buildShippingChangeActions(data.orderID)
+                });
+            } : null,
+
         nonce: getNonce()
     });
-    
-    return instance.renderTo(renderWindow, 'body', context).then(() => {
-        return validateOrderPromise.catch(err => {
-            return ZalgoPromise.all([
-                instance.close(),
-                instance.onError(err)
-            ]);
-        });
+
+    orderCreate().then(validateOrder).catch(err => {
+        return ZalgoPromise.all([
+            instance.close(),
+            instance.onError(err)
+        ]);
     });
+
+    validationPromise.then(valid => {
+        if (!valid) {
+            instance.close();
+        }
+    });
+    
+    return instance.renderTo(getRenderWindow(), TARGET_ELEMENT.BODY, context);
 }

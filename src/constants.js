@@ -14,6 +14,15 @@ export const ORDER_API_ERROR = {
     INSTRUMENT_DECLINED:   'INSTRUMENT_DECLINED'
 };
 
+export const CONTEXT = {
+    IFRAME: 'iframe',
+    POPUP:  'popup'
+};
+
+export const TARGET_ELEMENT = {
+    BODY: 'body'
+};
+
 export const ORDER_ID_PATTERN = /^(EC-)?[A-Z0-9]+$/;
 
 export const ERROR_URL = 'https://www.paypal.com/checkoutnow/error';

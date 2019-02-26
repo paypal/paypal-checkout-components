@@ -32,6 +32,9 @@ export function setupMocks() {
             return {
                 renderTo: () => {
                     return ZalgoPromise.resolve();
+                },
+                close: () => {
+                    throw new Error(`Checkout component closed`);
                 }
             };
         }
@@ -45,6 +48,9 @@ export function setupMocks() {
         },
         style: {
 
+        },
+        onInit: () => {
+            return ZalgoPromise.resolve();
         },
         onClick: () => {
             return ZalgoPromise.resolve();
@@ -65,7 +71,8 @@ export function setupMocks() {
                 // pass
             }
         },
-        getPrerenderDetails: () => ZalgoPromise.resolve()
+        getPrerenderDetails: () => ZalgoPromise.resolve(),
+        getParent:           () => window
     };
 
     window.Promise.try = (method) => {
@@ -200,9 +207,43 @@ export function patchOrderApiMock(options : Object = {}) : MockEndpoint {
     });
 }
 
+export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri:    '/graphql',
+        data:   {
+            data: {
+                checkout: {
+                    checkoutSession: {
+                        cart: {
+                            intent:    'capture',
+                            returnUrl: {
+                                href: 'https://www.paypal.com/checkoutnow/error'
+                            },
+                            cancelUrl: {
+                                href: 'https://www.paypal.com/checkoutnow/error'
+                            },
+                            amounts: {
+                                total: {
+                                    currencyCode: 'USD'
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        headers: {
+            'x-csrf-jwt': 'xxxxxx'
+        },
+        ...options
+    });
+}
+
 getAuthApiMock().listen();
 getOrderApiMock().listen();
 captureOrderApiMock().listen();
 authorizeOrderApiMock().listen();
 mapBillingTokenApiMock().listen();
 patchOrderApiMock().listen();
+getGraphQLApiMock().listen();
