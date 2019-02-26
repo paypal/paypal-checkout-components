@@ -7,6 +7,25 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { renderCheckout, setupCheckout, getDefaultContext } from './checkout';
 import { getAuth } from './api';
 
+function onClickAndValidate({ fundingSource, card }) : ZalgoPromise<boolean> {
+    let valid = true;
+
+    return ZalgoPromise.try(() => {
+        if (window.xprops.onClick) {
+            return window.xprops.onClick({ fundingSource, card }, {
+                resolve: () => ZalgoPromise.try(() => {
+                    valid = true;
+                }),
+                reject: () => ZalgoPromise.try(() => {
+                    valid = false;
+                })
+            });
+        }
+    }).then(() => {
+        return valid;
+    });
+}
+
 export function setupButton(fundingEligibility : ?Object) : ZalgoPromise<void> {
     let buttonEnabled = true;
 
@@ -16,16 +35,18 @@ export function setupButton(fundingEligibility : ?Object) : ZalgoPromise<void> {
 
     const tasks = {};
 
-    if (window.xprops.onInit) {
-        tasks.onInit = window.xprops.onInit({}, {
-            enable: () => ZalgoPromise.try(() => {
-                buttonEnabled = true;
-            }),
-            disable: () => ZalgoPromise.try(() => {
-                buttonEnabled = false;
-            })
-        });
-    }
+    tasks.onInit = ZalgoPromise.try(() => {
+        if (window.xprops.onInit) {
+            return window.xprops.onInit({}, {
+                enable: () => ZalgoPromise.try(() => {
+                    buttonEnabled = true;
+                }),
+                disable: () => ZalgoPromise.try(() => {
+                    buttonEnabled = false;
+                })
+            });
+        }
+    });
 
     querySelectorAll('.paypal-button').forEach(button => {
         const fundingSource = button.getAttribute('data-funding-source');
@@ -35,48 +56,43 @@ export function setupButton(fundingEligibility : ?Object) : ZalgoPromise<void> {
             event.preventDefault();
             event.stopPropagation();
 
-            let valid = buttonEnabled;
+            const validationPromise = onClickAndValidate({ fundingSource, card });
 
-            const validationPromise = ZalgoPromise.try(() => {
-                if (window.xprops.onClick) {
-                    return window.xprops.onClick({ fundingSource, card }, {
-                        resolve: () => ZalgoPromise.try(() => {
-                            valid = true;
-                        }),
-                        reject:  () => ZalgoPromise.try(() => {
-                            valid = false;
-                        })
-                    });
-                }
-            }).then(() => {
-                return valid;
-            });
-
-            if (!valid) {
+            if (!buttonEnabled) {
                 return;
             }
 
-            renderCheckout({ fundingSource, validationPromise }, getDefaultContext(), validationPromise).catch(noop);
+            renderCheckout({ fundingSource, card }, getDefaultContext(), validationPromise).catch(noop);
         });
     });
 
     tasks.getAuth = getAuth().then(noop);
 
-    tasks.getPrerender = window.xprops.getPrerenderDetails().then((prerenderDetails) => {
-        if (prerenderDetails) {
-            const { win, order, fundingSource } = prerenderDetails;
+    tasks.prerender = tasks.onInit.then(() => {
+        return window.xprops.getPrerenderDetails().then((prerenderDetails) => {
+            if (prerenderDetails) {
+                const { win, order, fundingSource, card } = prerenderDetails;
+                const validationPromise = onClickAndValidate({ fundingSource, card });
 
-            renderCheckout({
-                window:      win,
-                createOrder: () => order,
-                fundingSource
-            }).catch(noop);
-        }
+                if (!buttonEnabled) {
+                    return;
+                }
+
+                renderCheckout({
+                    window:      win,
+                    createOrder: order ? (() => order) : null,
+                    fundingSource,
+                    card
+                }, getDefaultContext(), validationPromise).catch(noop);
+            }
+        });
     });
 
-    if (fundingEligibility && fundingEligibility.venmo.eligible) {
-        tasks.remember = window.xprops.remember([ FUNDING.VENMO ]);
-    }
+    tasks.remember = ZalgoPromise.try(() => {
+        if (fundingEligibility && fundingEligibility.venmo.eligible) {
+            return window.xprops.remember([ FUNDING.VENMO ]);
+        }
+    });
 
     tasks.setupCheckout = setupCheckout();
 

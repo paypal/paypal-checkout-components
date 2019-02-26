@@ -7,6 +7,7 @@ import './funding';
 import './error';
 import './eligibility';
 import './validation';
+import './prerender';
 
 beforeEach(() => {
     setupMocks();
