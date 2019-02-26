@@ -7,10 +7,10 @@ import { html } from 'jsx-pragmatic';
 import { getSmartButtonClientScript, getSmartButtonRenderScript, startWatchers } from './watcher';
 import { getParams } from './params';
 import { EVENT } from './constants';
-import { serverErrorResponse, clientErrorResponse, htmlResponse, allowFrame } from './util';
+import { serverErrorResponse, clientErrorResponse, htmlResponse, allowFrame, defaultLogger } from './util';
 import type { ExpressRequest, ExpressResponse, LoggerType } from './types';
 
-export function getButtonMiddleware({ logger = console } : { logger? : LoggerType } = {}) : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
+export function getButtonMiddleware({ logger = defaultLogger } : { logger? : LoggerType } = {}) : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
     startWatchers();
 
     return async function buttonMiddleware(req : ExpressRequest, res : ExpressResponse) : Promise<void> {
@@ -19,10 +19,13 @@ export function getButtonMiddleware({ logger = console } : { logger? : LoggerTyp
 
             const { getSDKLoader } = unpackSDKMeta(req.query.sdkMeta);
 
-            const [ buttonScript, { Buttons } ] = await Promise.all([
+            const [ client, render ] = await Promise.all([
                 getSmartButtonClientScript(),
                 getSmartButtonRenderScript()
             ]);
+
+            logger.info(req, `button_client_version_${ client.version }`);
+            logger.info(req, `button_render_version_${ render.version }`);
 
             const params = undotify(req.query);
             const { clientID, fundingEligibility, nonce } = getParams(params, req, res);
@@ -35,13 +38,13 @@ export function getButtonMiddleware({ logger = console } : { logger? : LoggerTyp
                 return clientErrorResponse(res, 'Please provide a fundingEligibility query parameter');
             }
 
-            const buttonHTML = Buttons({ ...params, nonce, csp: { nonce }, fundingEligibility }).render(html());
+            const buttonHTML = render.button.Buttons({ ...params, nonce, csp: { nonce }, fundingEligibility }).render(html());
 
             const pageHTML = `
                 <body data-nonce="${ nonce }">
                     ${ buttonHTML }
                     ${ getSDKLoader({ nonce }) }
-                    <script nonce="${ nonce }">${ buttonScript }</script>
+                    <script nonce="${ nonce }">${ client.script }</script>
                     <script nonce="${ nonce }">spb.setupButton(${ JSON.stringify(fundingEligibility) })</script>
                 </body>
             `;

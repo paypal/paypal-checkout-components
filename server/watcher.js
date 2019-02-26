@@ -7,6 +7,7 @@ import { webpackCompile } from 'webpack-mem-compile';
 import { readFile } from 'fs-extra';
 import { poll } from 'grabthar';
 import { memoize } from 'belter';
+import { ENV } from '@paypal/sdk-constants';
 
 import { isLocal } from './util';
 
@@ -34,17 +35,24 @@ const fileRead = memoize(async (path : string) : Promise<string> => {
     return await readFile(path);
 });
 
-export async function getSmartButtonRenderScript() : Promise<Object> {
-    return await getPayPalCheckoutComponentWatcher().import(BUTTON_RENDER_JS);
+export async function getSmartButtonRenderScript() : Promise<{ button : Object, version : string }> {
+    const watcher = getPayPalCheckoutComponentWatcher();
+    const { version } = await watcher.get();
+    const button = await watcher.import(BUTTON_RENDER_JS);
+    return { button, version };
 }
 
-export async function getSmartButtonClientScript() : Promise<string> {
+export async function getSmartButtonClientScript() : Promise<{ script : string, version : string }> {
     if (isLocal()) {
         const { WEBPACK_CONFIG } = require('../webpack.config');
-        return await webpackCompile({ webpack, config: WEBPACK_CONFIG });
+        const script = await webpackCompile({ webpack, config: WEBPACK_CONFIG });
+        return { script, version: ENV.LOCAL };
     }
-    const { modulePath } = await getSmartButtonWatcher().get();
-    return await fileRead(join(modulePath, BUTTON_CLIENT_JS));
+    
+    const watcher = getSmartButtonWatcher();
+    const { modulePath, version } = await watcher.get();
+    const script = await fileRead(join(modulePath, BUTTON_CLIENT_JS));
+    return { script, version };
 }
 
 export function startWatchers() {

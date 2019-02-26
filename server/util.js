@@ -1,7 +1,7 @@
 /* @flow */
 
 import { HTTP_HEADER, HTTP_CONTENT_TYPE, HTTP_STATUS_CODE } from './constants';
-import type { ExpressResponse } from './types';
+import type { ExpressRequest, ExpressResponse } from './types';
 
 function response(res : ExpressResponse, status : $Values<typeof HTTP_STATUS_CODE>, type : $Values<typeof HTTP_CONTENT_TYPE>, message : string) {
     res.status(status)
@@ -28,3 +28,10 @@ export function allowFrame(res : ExpressResponse) {
 export function isLocal() : boolean {
     return (!process.env.NODE_ENV || process.env.NODE_ENV === 'development');
 }
+
+export const defaultLogger = {
+    debug: (req : ExpressRequest, ...args : $ReadOnlyArray<mixed>) => console.debug(...args), // eslint-disable-line no-console
+    info:  (req : ExpressRequest, ...args : $ReadOnlyArray<mixed>) => console.info(...args),  // eslint-disable-line no-console
+    warn:  (req : ExpressRequest, ...args : $ReadOnlyArray<mixed>) => console.warn(...args), // eslint-disable-line no-console
+    error: (req : ExpressRequest, ...args : $ReadOnlyArray<mixed>) => console.error(...args) // eslint-disable-line no-console
+};
