@@ -266,11 +266,15 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
 
                     default({ props } : { props : ButtonProps }) : OnApprove {
                         return function onApproveDefault(data : OnApproveData, actions : OnApproveActions) : ZalgoPromise<void> {
-                            if (props.intent === INTENT.CAPTURE && props.commit) {
-                                return actions.order.capture().then(noop);
-                            } else {
-                                throw new Error(`Please specify onApprove callback to handle buyer approval success`);
+                            if (props.intent === INTENT.CAPTURE) {
+                                if (props.intent === INTENT.CAPTURE) {
+                                    return actions.order.capture().then(noop);
+                                } else if (props.intent === INTENT.AUTHORIZE) {
+                                    return actions.order.authorize().then(noop);
+                                }
                             }
+
+                            throw new Error(`Please specify onApprove callback to handle buyer approval success`);
                         };
                     }
                 },
