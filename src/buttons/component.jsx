@@ -3,7 +3,7 @@
 /* eslint max-lines: 0 */
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit,
-    getVault, getPayPalDomainRegex, getCurrency, getSDKMeta,
+    getVault, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce,
     createOrder } from '@paypal/sdk-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
@@ -480,7 +480,12 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
 
                 csp: {
                     type:     'object',
-                    required: false
+                    required: false,
+                    value:    () => {
+                        return {
+                            nonce: getCSPNonce()
+                        };
+                    }
                 },
 
                 test: {

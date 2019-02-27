@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { getPayPalDomainRegex, getLogger, getLocale, getEnv, getClientID, getCommit, getSDKMeta } from '@paypal/sdk-client/src';
+import { getPayPalDomainRegex, getLogger, getLocale, getEnv, getClientID, getCommit, getSDKMeta, getCSPNonce } from '@paypal/sdk-client/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONTEXT, type ZoidComponent } from 'zoid/src';
@@ -94,7 +94,8 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
         
                 nonce: {
                     type:     'string',
-                    required: false
+                    required: false,
+                    value:    getCSPNonce
                 },
         
                 meta: {
