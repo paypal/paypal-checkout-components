@@ -21,7 +21,8 @@ import { containerTemplate, Buttons as ButtonsTemplate } from './template';
 import { rememberFunding, findRememberedFunding } from './funding';
 import { setupButtonChild } from './child';
 import { normalizeButtonStyle, type ButtonProps, type PrerenderDetails, type ButtonStyle, type ProxyRest, type CreateOrder, type OnCancel, type OnClick,
-    type CreateOrderData, type CreateOrderActions, type OnApprove, type OnApproveActions, type OnApproveData, type OnShippingChange, type GetPrerenderDetails, type OnClickData } from './props';
+    type CreateOrderData, type CreateOrderActions, type OnApprove, type OnApproveActions,
+    type OnApproveData, type OnShippingChange, type GetPrerenderDetails, type OnClickData, type OnClickActions } from './props';
 
 
 export function getButtonsComponent() : ZoidComponent<ButtonProps> {
@@ -348,7 +349,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     type:     'function',
                     required: false,
                     decorate({ value, props }) : OnClick {
-                        return (data : OnClickData) => {
+                        return (data : OnClickData, actions : OnClickActions) => {
                             getLogger().info('button_click').track({
                                 [ FPTI_KEY.STATE ]:              FPTI_STATE.BUTTON,
                                 [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.BUTTON_CLICK,
@@ -357,7 +358,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                                 [ FPTI_KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                             }).flush();
 
-                            return value();
+                            return value({}, actions);
                         };
                     },
 

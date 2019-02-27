@@ -93,7 +93,12 @@ export type OnClickData = {|
     card? : $Values<typeof CARD>
 |};
 
-export type OnClick = (OnClickData) => void;
+export type OnClickActions = {|
+    resolve : () => ZalgoPromise<void>,
+    reject : () => ZalgoPromise<void>
+|};
+
+export type OnClick = (OnClickData, OnClickActions) => void;
 
 export type ButtonStyle = {|
     label : $Values<typeof BUTTON_LABEL>,
