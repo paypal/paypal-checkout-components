@@ -15,7 +15,8 @@ const BUTTON_RENDER_MODULE = '@paypal/checkout-components';
 const BUTTON_CLIENT_MODULE = require('../package.json').name;
 
 const BUTTON_RENDER_JS = 'dist/button.js';
-const BUTTON_CLIENT_JS = 'dist/smart-payment-buttons.min.js';
+const BUTTON_CLIENT_JS = 'dist/smart-payment-buttons.js';
+const BUTTON_CLIENT_MIN_JS = 'dist/smart-payment-buttons.min.js';
 
 const getPayPalCheckoutComponentWatcher = memoize(() => {
     return poll({
@@ -42,7 +43,7 @@ export async function getSmartButtonRenderScript() : Promise<{ button : Object, 
     return { button, version };
 }
 
-export async function getSmartButtonClientScript() : Promise<{ script : string, version : string }> {
+export async function getSmartButtonClientScript({ debug = false } : { debug : boolean } = {}) : Promise<{ script : string, version : string }> {
     if (isLocal()) {
         const { WEBPACK_CONFIG } = require('../webpack.config');
         const script = await webpackCompile({ webpack, config: WEBPACK_CONFIG });
@@ -51,7 +52,7 @@ export async function getSmartButtonClientScript() : Promise<{ script : string, 
     
     const watcher = getSmartButtonWatcher();
     const { modulePath, version } = await watcher.get();
-    const script = await fileRead(join(modulePath, BUTTON_CLIENT_JS));
+    const script = await fileRead(join(modulePath, debug ? BUTTON_CLIENT_JS : BUTTON_CLIENT_MIN_JS));
     return { script, version };
 }
 

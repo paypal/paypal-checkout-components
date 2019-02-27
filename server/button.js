@@ -20,7 +20,7 @@ export function getButtonMiddleware({ logger = defaultLogger } : { logger? : Log
             const { getSDKLoader } = unpackSDKMeta(req.query.sdkMeta);
 
             const [ client, render ] = await Promise.all([
-                getSmartButtonClientScript(),
+                getSmartButtonClientScript({ debug: Boolean(req.query.debug) }),
                 getSmartButtonRenderScript()
             ]);
 
