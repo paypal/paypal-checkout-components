@@ -133,8 +133,8 @@ export type RenderButtonProps = {|
 
 export type PrerenderDetails = {|
     win : ?CrossDomainWindowType,
-    order : ZalgoPromise<string>,
-    fundingSource : $Values<typeof FUNDING>
+    fundingSource : $Values<typeof FUNDING>,
+    card : ?$Values<typeof CARD>
 |};
 
 export type GetPrerenderDetails = () => PrerenderDetails | void;

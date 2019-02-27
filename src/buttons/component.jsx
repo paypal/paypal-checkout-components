@@ -8,10 +8,10 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit,
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { isIEIntranet, isDevice, uniqueID, redirect, supportsPopups, popup, writeElementToWindow, noop, inlineMemoize } from 'belter/src';
-import { FUNDING, PLATFORM, INTENT, FPTI_KEY } from '@paypal/sdk-constants/src';
+import { FUNDING, PLATFORM, INTENT, FPTI_KEY, CARD } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
-import { getButtonUrl } from '../config';
+import { getButtonUrl, DEFAULT_POPUP_SIZE } from '../config';
 import { getFundingEligibility } from '../globals';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_CONTEXT_TYPE } from '../constants';
 import { getSessionID } from '../lib';
@@ -43,13 +43,14 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
 
             prerenderTemplate({ state, props, doc }) : HTMLElement {
 
-                const prerenderCheckout = ({ fundingSource } : {| fundingSource : $Values<typeof FUNDING> |}) => {
-                    // $FlowFixMe
-                    const order = props.createOrder();
+                const prerenderCheckout = ({ fundingSource, card } : {| fundingSource : $Values<typeof FUNDING>, card : ?$Values<typeof CARD> |}) => {
                     let win;
 
                     if (supportsPopups()) {
-                        win = popup('', { width: 450, height: 535 });
+                        win = popup('', {
+                            width:  DEFAULT_POPUP_SIZE.WIDTH,
+                            height: DEFAULT_POPUP_SIZE.HEIGHT
+                        });
 
                         // $FlowFixMe
                         writeElementToWindow(win, componentTemplate({
@@ -59,7 +60,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                         }));
                     }
 
-                    state.prerenderDetails = { win, order, fundingSource };
+                    state.prerenderDetails = { win, fundingSource, card };
                 };
 
                 return (

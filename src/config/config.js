@@ -52,3 +52,8 @@ export function getCardUrl() : string {
 export function getAltPayUrl() : string {
     return `${ getPayPalDomain() }${ URI.ALTPAY }`;
 }
+
+export const DEFAULT_POPUP_SIZE = {
+    WIDTH:  450,
+    HEIGHT: 535
+};

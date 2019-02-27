@@ -130,19 +130,14 @@ if (action === 'auth') {
             return;
         }
 
-        const { win, order, fundingSource } = prerenderDetails;
-
-        if (!order) {
-            throw new Error(`Expected order to be passed`);
-        }
+        const { win, fundingSource } = prerenderDetails;
 
         if (!fundingSource) {
             throw new Error(`Expected fundingSource to be passed`);
         }
 
         return renderCheckout({
-            window:      win,
-            createOrder: () => order,
+            window: win,
             fundingSource
         });
     });

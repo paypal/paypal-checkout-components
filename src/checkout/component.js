@@ -9,6 +9,7 @@ import { isDevice, memoize, isIEIntranet, noop, once, supportsPopups, inlineMemo
 
 import { getSessionID, getButtonSessionID } from '../lib';
 import { getFundingConfig } from '../funding';
+import { DEFAULT_POPUP_SIZE } from '../config';
 
 import { containerTemplate, componentTemplate } from './template';
 import type { CheckoutPropsType } from './props';
@@ -305,8 +306,8 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
             },
         
             dimensions: isDevice()
-                ? { width:  '100%', height: '535px' }
-                : { width:  '450px', height: '535px' }
+                ? { width:  '100%', height: `${ DEFAULT_POPUP_SIZE.HEIGHT }px` }
+                : { width:  `${ DEFAULT_POPUP_SIZE.WIDTH }px`, height: `${ DEFAULT_POPUP_SIZE.HEIGHT }px` }
         });
         
         if (component.isChild()) {
