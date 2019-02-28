@@ -45,8 +45,8 @@ export async function getSmartButtonRenderScript() : Promise<{ button : Object, 
 
 export async function getSmartButtonClientScript({ debug = false } : { debug : boolean } = {}) : Promise<{ script : string, version : string }> {
     if (isLocal()) {
-        const { WEBPACK_CONFIG } = require('../webpack.config');
-        const script = await webpackCompile({ webpack, config: WEBPACK_CONFIG });
+        const { WEBPACK_CONFIG_DEBUG } = require('../webpack.config');
+        const script = await webpackCompile({ webpack, config: WEBPACK_CONFIG_DEBUG });
         return { script, version: ENV.LOCAL };
     }
     

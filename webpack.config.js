@@ -25,6 +25,15 @@ export const WEBPACK_CONFIG_MIN = getWebpackConfig({
     }
 });
 
+export const WEBPACK_CONFIG_DEBUG = getWebpackConfig({
+    entry:         `${ __dirname }/src/index.js`,
+    filename:      `${ FILE_NAME }.js`,
+    modulename:    MODULE_NAME,
+    minify:        false,
+    debug:         true,
+    libraryTarget: 'window'
+});
+
 export const WEBPACK_CONFIG_TEST = getWebpackConfig({
     modulename: MODULE_NAME,
     test:       true,
