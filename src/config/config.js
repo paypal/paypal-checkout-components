@@ -527,10 +527,10 @@ export let config = {
     },
 
     buttonUris: {
-        [ ENV.LOCAL ]:      `/webapps/hermes/button`,
-        [ ENV.STAGE ]:      `/webapps/hermes/button`,
-        [ ENV.SANDBOX ]:    `/webapps/hermes/button`,
-        [ ENV.PRODUCTION ]: `/webapps/hermes/button`,
+        [ ENV.LOCAL ]:      `/smart/button`,
+        [ ENV.STAGE ]:      `/smart/button`,
+        [ ENV.SANDBOX ]:    `/smart/button`,
+        [ ENV.PRODUCTION ]: `/smart/button`,
         [ ENV.TEST ]:       `/base/test/windows/button/index.htm`,
         [ ENV.DEMO ]:       `/demo/dev/button.htm`
     },
