@@ -1101,7 +1101,7 @@ window.spb = function(modules) {
                         fundingSource: fundingSource,
                         card: card
                     });
-                    if (!buttonEnabled) return;
+                    if (!buttonEnabled) return win.close();
                     renderCheckout({
                         window: win,
                         createOrder: order ? function() {
