@@ -12,12 +12,14 @@ import { createButtonHTML } from './mocks';
 describe('prerender cases', () => {
 
     it('should prerender a button, and call createOrder or onApprove', async () => {
-        return await wrapPromise(async ({ expect }) => {
+        return await wrapPromise(async ({ expect, avoid }) => {
 
             const orderID = 'XXXXXXXXXX';
             const payerID = 'YYYYYYYYYY';
 
-            const win = {};
+            const win = {
+                close: avoid('close')
+            };
 
             window.xprops.getPrerenderDetails = () => {
                 return ZalgoPromise.try(() => {
@@ -71,7 +73,9 @@ describe('prerender cases', () => {
             const orderID = 'XXXXXXXXXX';
             const payerID = 'YYYYYYYYYY';
 
-            const win = {};
+            const win = {
+                close: avoid('close')
+            };
 
             window.xprops.getPrerenderDetails = () => {
                 return ZalgoPromise.try(() => {
@@ -123,7 +127,9 @@ describe('prerender cases', () => {
 
             const orderID = 'XXXXXXXXXX';
 
-            const win = {};
+            const win = {
+                close: avoid('close')
+            };
 
             window.xprops.getPrerenderDetails = () => {
                 return ZalgoPromise.try(() => {
@@ -163,7 +169,9 @@ describe('prerender cases', () => {
     it('should render a button, disable the button, click, and not call Checkout or createOrder or onApprove', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
-            const win = {};
+            const win = {
+                close: expect('close')
+            };
 
             window.xprops.getPrerenderDetails = () => {
                 return ZalgoPromise.try(() => {
@@ -202,7 +210,9 @@ describe('prerender cases', () => {
 
             const orderID = 'XXXXXXXXXX';
 
-            const win = {};
+            const win = {
+                close: avoid('close')
+            };
 
             window.xprops.getPrerenderDetails = () => {
                 return ZalgoPromise.try(() => {
@@ -248,7 +258,9 @@ describe('prerender cases', () => {
 
             const orderID = 'XXXXXXXXXX';
 
-            const win = {};
+            const win = {
+                close: avoid('close')
+            };
 
             window.xprops.getPrerenderDetails = () => {
                 return ZalgoPromise.try(() => {
@@ -287,7 +299,9 @@ describe('prerender cases', () => {
     it('should render a button, and reject in onClick', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
-            const win = {};
+            const win = {
+                close: expect('close')
+            };
 
             window.xprops.getPrerenderDetails = () => {
                 return ZalgoPromise.try(() => {
@@ -311,7 +325,9 @@ describe('prerender cases', () => {
                 }
 
                 return {
-                    close:    expect('close'),
+                    close:    expect('close', () => {
+                        return props.window.close();
+                    }),
                     renderTo: expect('renderTo', async () => {
                         return props.createOrder().then(avoid('createOrderThen'))
                             .timeout(50).catch(expect('timeout'));

@@ -27,7 +27,7 @@ const getPayPalCheckoutComponentWatcher = memoize(() => {
 
 const getSmartButtonWatcher = memoize(() => {
     return poll({
-        name:       BUTTON_CLIENT_MODULE,
+        name: BUTTON_CLIENT_MODULE,
         flat: true
     });
 });

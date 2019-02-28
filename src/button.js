@@ -75,7 +75,7 @@ export function setupButton(fundingEligibility : ?Object) : ZalgoPromise<void> {
                 const validationPromise = onClickAndValidate({ fundingSource, card });
 
                 if (!buttonEnabled) {
-                    return;
+                    return win.close();
                 }
 
                 renderCheckout({
