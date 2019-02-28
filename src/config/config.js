@@ -515,19 +515,19 @@ export let config = {
     },
 
     buttonUris: {
-        [ ENV.LOCAL ]:      `/webapps/hermes/button`,
-        [ ENV.STAGE ]:      `/webapps/hermes/button`,
-        [ ENV.SANDBOX ]:    `/webapps/hermes/button`,
-        [ ENV.PRODUCTION ]: `/webapps/hermes/button`,
+        [ ENV.LOCAL ]:      `/smart/button`,
+        [ ENV.STAGE ]:      `/smart/button`,
+        [ ENV.SANDBOX ]:    `/smart/button`,
+        [ ENV.PRODUCTION ]: `/smart/button`,
         [ ENV.TEST ]:       `/base/test/windows/button/index.htm`,
         [ ENV.DEMO ]:       `/demo/dev/button.htm`
     },
 
     inlinedCardFieldUris: {
-        [ ENV.LOCAL ]:      `/webapps/hermes/card-fields`,
-        [ ENV.STAGE ]:      `/webapps/hermes/card-fields`,
-        [ ENV.SANDBOX ]:    `/webapps/hermes/card-fields`,
-        [ ENV.PRODUCTION ]: `/webapps/hermes/card-fields`,
+        [ ENV.LOCAL ]:      `/smart/card-fields`,
+        [ ENV.STAGE ]:      `/smart/card-fields`,
+        [ ENV.SANDBOX ]:    `/smart/card-fields`,
+        [ ENV.PRODUCTION ]: `/smart/card-fields`,
         [ ENV.TEST ]:       `/base/test/windows/card-fields/index.htm`,
         [ ENV.DEMO ]:       `/demo/dev/card.htm`
     },
