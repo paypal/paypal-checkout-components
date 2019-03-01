@@ -1,3 +1,16 @@
+## <small>5.0.5 (2019-03-01)</small>
+
+* Auto-authorize if onApprove not implemented ([67d7bc4](http://github.paypal.com/paypal/paypal-checkout/commit/67d7bc4))
+* Cleanup ([86e7473](http://github.paypal.com/paypal/paypal-checkout/commit/86e7473))
+* Do not kick off create order call on prerender ([6fe2a99](http://github.paypal.com/paypal/paypal-checkout/commit/6fe2a99))
+* Export Button template on client on paypal domain ([f776319](http://github.paypal.com/paypal/paypal-checkout/commit/f776319))
+* Pass actions through button onClick ([7138f8c](http://github.paypal.com/paypal/paypal-checkout/commit/7138f8c))
+* Re-add black/white/buynow ([0b57cbb](http://github.paypal.com/paypal/paypal-checkout/commit/0b57cbb))
+* Tests and fixes ([096dd6c](http://github.paypal.com/paypal/paypal-checkout/commit/096dd6c))
+* Use csp nonce for rendering on top level page ([757f85d](http://github.paypal.com/paypal/paypal-checkout/commit/757f85d))
+
+
+
 ## <small>5.0.4 (2019-02-21)</small>
 
 * Register button and checkout components in setup step ([7c14d4f](http://github.paypal.com/paypal/paypal-checkout/commit/7c14d4f))
