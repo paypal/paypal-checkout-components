@@ -89,6 +89,10 @@ export function getCardConfig() : FundingSourceConfig {
                         if (!cardEligibility) {
                             return null;
                         }
+
+                        if (!cardEligibility.vendors) {
+                            throw new Error(`wut ${ JSON.stringify(fundingEligibility) }`);
+                        }
     
                         if (!cardEligibility.vendors[name] || !cardEligibility.vendors[name].eligible) {
                             return null;

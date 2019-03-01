@@ -5,9 +5,7 @@ import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 import { html, type ElementNode } from 'jsx-pragmatic';
 
 import { webpackCompileToString } from '../screenshot/lib/compile';
-import { testGlobals } from '../globals';
-
-const fundingEligibility = testGlobals.__paypal_checkout__.serverConfig.fundingEligibility;
+import { fundingEligibility } from '../globals';
 
 jest.setTimeout(120000);
 

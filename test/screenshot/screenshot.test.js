@@ -29,7 +29,7 @@ const HEADLESS = true;
 jest.setTimeout(120000);
 
 const setupBrowserPage = (async () => {
-    const { browser, page } = await openPage(await webpackCompile(getWebpackConfig({
+    const { browser, page, open } = await openPage(await webpackCompile(getWebpackConfig({
         entry:         './test/paypal.js',
         libraryTarget: 'window',
         test:          true,
@@ -42,10 +42,12 @@ const setupBrowserPage = (async () => {
         }
     }
 
-    return { browser, page };
+    return { browser, page, open };
 })();
 
-beforeAll(() => setupBrowserPage);
+beforeAll(async () => {
+    await setupBrowserPage;
+});
 
 afterAll(async () => {
     const { browser } = await setupBrowserPage;
@@ -55,11 +57,11 @@ afterAll(async () => {
 for (const config of buttonConfigs) {
     const filename = config.filename || dotifyToString(config) || 'base';
 
-    test(`Render button with ${ filename }`, async () => {
+    const testPromise = (async () => {
         const { page } = await setupBrowserPage;
 
         const filepath = `${ IMAGE_DIR }/${ filename }.png`;
-        const diffpath  = `${ IMAGE_DIR }/${ filename }-old.png`;
+        const diffpath = `${ IMAGE_DIR }/${ filename }-old.png`;
 
         const { x, y, width, height } = await page.evaluate(async (options, userAgents) => {
 
@@ -68,6 +70,18 @@ for (const config of buttonConfigs) {
 
             const container = window.document.createElement('div');
             window.document.body.appendChild(container);
+            
+
+            const oldFundingEligibility = window.__TEST_FUNDING_ELIGIBILITY__;
+            const oldRememberedFunding = window.__TEST_REMEMBERED_FUNDING__;
+
+            if (options.fundingEligibility) {
+                window.__TEST_FUNDING_ELIGIBILITY__ = options.fundingEligibility;
+            }
+
+            if (options.rememberedFunding) {
+                window.__TEST_REMEMBERED_FUNDING__ = options.rememberedFunding;
+            }
 
             if (options.container) {
                 container.style.width = `${ options.container.width }px`;
@@ -79,13 +93,21 @@ for (const config of buttonConfigs) {
                 window.navigator.mockUserAgent = userAgents[options.userAgent];
             }
 
-            window.paypal.Buttons(options.button).render(container);
+            const renderPromise = window.paypal.Buttons(options.button).render(container);
 
             await new Promise(resolve => setTimeout(resolve, 100));
 
-            const rect = container.querySelector('iframe').getBoundingClientRect();
+            const frame = container.querySelector('iframe');
+
+            if (!frame) {
+                await renderPromise.timeout(500);
+            }
+
+            const rect = frame.getBoundingClientRect();
 
             delete window.navigator.mockUserAgent;
+            window.__TEST_FUNDING_ELIGIBILITY__ = oldFundingEligibility;
+            window.__TEST_REMEMBERED_FUNDING__ = oldRememberedFunding;
 
             return {
                 x:      rect.left,
@@ -124,12 +146,18 @@ for (const config of buttonConfigs) {
                 if (process.env.TRAVIS) {
                     imgurUrl = await uploadToImgur(filepath);
                 }
-                
+
                 throw new Error(`Button style changed with delta of ${ delta } for configuration:\n\n${ JSON.stringify(config, null, 4) }\n\nSee ${ diffpath } or ${ imgurUrl || '' }`);
             }
 
         } else {
             await screenshot.write(filepath);
         }
+            
+    });
+
+    test(`Render button with ${ filename }`, async () => {
+        console.log(`Render button with ${ filename }`);
+        await testPromise();
     });
 }

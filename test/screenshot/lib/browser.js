@@ -15,27 +15,37 @@ import { readPNG, type PngType } from './image';
 export async function openPage(scriptURL : string, { headless = true } : { headless : boolean }) : Promise<Object> {
 
     const browser = await puppeteer.launch({ headless, args: [ '--no-sandbox' ] });
-    const page    = await browser.newPage();
 
-    page.emulate({
-        viewport: {
-            width:             1000,
-            height:            1000,
-            deviceScaleFactor: 2
-        },
-        userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'
-    });
+    const open = async () => {
+        const page = await browser.newPage();
 
-    page.on('error', err => {
-        console.error('Browser error:', err.stack);
-        process.exit(1);
-    });
+        page.emulate({
+            viewport: {
+                width:             1000,
+                height:            1000,
+                deviceScaleFactor: 2
+            },
+            userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'
+        });
 
-    await page.goto(`file://${ await createTempFile('puppeteer-blank.html') }`);
+        page.on('error', err => {
+            console.error('Browser error:', err.stack);
+            process.exit(1);
+        });
 
-    await page.addScriptTag(scriptURL);
+        const filename = await createTempFile(`puppeteer-blank.html`);
+        await page.goto(`file://${ filename }`);
 
-    return { browser, page };
+        await page.addScriptTag(scriptURL);
+
+        return page;
+    };
+
+    return {
+        browser,
+        page: await open(),
+        open
+    };
 }
 
 export async function takeScreenshot(page : Object, { x, y, width, height } : { x : number, y : number, width : number, height : number }) :

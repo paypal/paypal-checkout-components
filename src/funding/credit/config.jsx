@@ -44,6 +44,10 @@ export function getCreditConfig() : FundingSourceConfig {
                     BUTTON_COLOR.WHITE
                 ],
 
+                secondaryColors: {
+                    [ DEFAULT ]: BUTTON_COLOR.DARKBLUE
+                },
+
                 logoColors: {
                     [ DEFAULT ]:            LOGO_COLOR.WHITE,
                     [ BUTTON_COLOR.WHITE ]: LOGO_COLOR.BLUE
