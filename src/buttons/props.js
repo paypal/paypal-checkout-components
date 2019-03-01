@@ -234,28 +234,16 @@ export function normalizeButtonStyle(style : ButtonStyleInputs) : ButtonStyle {
     }
 
     const FUNDING_CONFIG = getFundingConfig();
-
-    const funding = Object.keys(FUNDING_CONFIG)
-        .filter(name => FUNDING_CONFIG[name] && FUNDING_CONFIG[name].labels[label])[0];
-
-    if (!funding) {
-        throw new Error(`Invalid button label: ${ label }`);
-    }
-
-    const fundingConfig = FUNDING_CONFIG[funding];
+    const fundingConfig = FUNDING_CONFIG[FUNDING.PAYPAL];
 
     if (!fundingConfig) {
-        throw new Error(`Can not find funding config for ${ funding }`);
+        throw new Error(`Expected ${ FUNDING.PAYPAL } to be eligible`);
     }
 
     const labelConfig = fundingConfig.labels[label];
 
     if (!labelConfig) {
         throw new Error(`Can not find label config for ${ label }`);
-    }
-
-    if (!labelConfig.allowPrimary) {
-        throw new Error(`Label ${ label } can not be used as primary button label`);
     }
 
     if (color && labelConfig.colors.indexOf(color) === -1) {

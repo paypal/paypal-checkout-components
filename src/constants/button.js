@@ -3,6 +3,7 @@
 export const BUTTON_LABEL = {
     PAYPAL:      ('paypal' : 'paypal'),
     CHECKOUT:    ('checkout' : 'checkout'),
+    BUYNOW:      ('buynow' : 'buynow'),
     PAY:         ('pay' : 'pay'),
     CREDIT:      ('credit' : 'credit'),
     CARD:        ('card' : 'card'),
@@ -21,10 +22,13 @@ export const BUTTON_LABEL = {
 };
 
 export const BUTTON_COLOR = {
+    DEFAULT:     ('default' : 'default'),
     GOLD:        ('gold' : 'gold'),
     BLUE:        ('blue' : 'blue'),
     SILVER:      ('silver' : 'silver'),
     DARKBLUE:    ('darkblue' : 'darkblue'),
+    BLACK:       ('black' : 'black'),
+    WHITE:       ('white' : 'white'),
     TRANSPARENT: ('transparent' : 'transparent')
 };
 

@@ -3,10 +3,10 @@
 
 import { COUNTRY } from '@paypal/sdk-constants/src';
 import { node, Fragment } from 'jsx-pragmatic/src';
-import { CreditLogo, LOGO_COLOR, PPLogo, PayPalLogo } from '@paypal/sdk-logos/src';
+import { CreditLogo, PPLogo, PayPalLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { getCheckoutUrl } from '../../config';
-import { BUTTON_LABEL, BUTTON_COLOR } from '../../constants';
+import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
 
 export function getCreditConfig() : FundingSourceConfig {
@@ -16,6 +16,11 @@ export function getCreditConfig() : FundingSourceConfig {
         url: getCheckoutUrl,
     
         defaultLabel: BUTTON_LABEL.CREDIT,
+
+        layouts: [
+            BUTTON_LAYOUT.HORIZONTAL,
+            BUTTON_LAYOUT.VERTICAL
+        ],
     
         labels: {
             [BUTTON_LABEL.CREDIT]: {
@@ -34,20 +39,15 @@ export function getCreditConfig() : FundingSourceConfig {
                 },
     
                 colors: [
-                    BUTTON_COLOR.DARKBLUE
+                    BUTTON_COLOR.DARKBLUE,
+                    BUTTON_COLOR.BLACK,
+                    BUTTON_COLOR.WHITE
                 ],
-    
+
                 logoColors: {
-                    [ BUTTON_COLOR.DARKBLUE ]: LOGO_COLOR.WHITE
-                },
-    
-                secondaryColors: {
-                    [BUTTON_COLOR.GOLD]:   BUTTON_COLOR.DARKBLUE,
-                    [BUTTON_COLOR.BLUE]:   BUTTON_COLOR.DARKBLUE,
-                    [BUTTON_COLOR.SILVER]: BUTTON_COLOR.DARKBLUE
-                },
-    
-                defaultColor: BUTTON_COLOR.DARKBLUE
+                    [ DEFAULT ]:            LOGO_COLOR.WHITE,
+                    [ BUTTON_COLOR.WHITE ]: LOGO_COLOR.BLUE
+                }
             }
         }
     };

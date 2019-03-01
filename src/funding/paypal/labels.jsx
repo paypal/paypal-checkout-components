@@ -3,7 +3,7 @@
 /* eslint max-lines: 0 */
 
 import { type LocaleType } from '@paypal/sdk-constants/src';
-import { node, type ChildType, type NullableChildType } from 'jsx-pragmatic/src';
+import { node, Fragment, type ChildType, type NullableChildType } from 'jsx-pragmatic/src';
 import { regexTokenize } from 'belter/src';
 import { PPLogo, PayPalLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
@@ -38,8 +38,20 @@ function contentToJSX(key : string, locale : LocaleType, { logoColor, period } :
     });
 }
 
+export function PayPal({ logoColor } : { logoColor : $Values<typeof LOGO_COLOR> }) : ChildType {
+    return (
+        <Fragment>
+            <PPLogo logoColor={ logoColor } /> <PayPalLogo logoColor={ logoColor } />
+        </Fragment>
+    );
+}
+
 export function Checkout({ locale, logoColor } : { locale : LocaleType, logoColor : $Values<typeof LOGO_COLOR> }) : ChildType {
     return contentToJSX('checkout', locale, { logoColor });
+}
+
+export function BuyNow({ locale, logoColor } : { locale : LocaleType, logoColor : $Values<typeof LOGO_COLOR> }) : ChildType {
+    return contentToJSX('buynow', locale, { logoColor });
 }
 
 export function Pay({ locale, logoColor } : { locale : LocaleType, logoColor : $Values<typeof LOGO_COLOR> }) : ChildType {

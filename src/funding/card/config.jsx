@@ -3,10 +3,9 @@
 
 import { node } from 'jsx-pragmatic/src';
 import { CARD, FUNDING, COUNTRY } from '@paypal/sdk-constants/src';
-import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { getGuestUrl } from '../../config';
-import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR } from '../../constants';
+import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR, DEFAULT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig, type CardConfig } from '../common';
 
 import { getVisaConfig } from './visa';
@@ -65,6 +64,14 @@ export function getCardConfig() : FundingSourceConfig {
         labels: {
             [ BUTTON_LABEL.CARD ]: {
                 ...DEFAULT_LABEL_CONFIG,
+
+                colors: [
+                    BUTTON_COLOR.TRANSPARENT
+                ],
+
+                secondaryColors: {
+                    [ DEFAULT ]: BUTTON_COLOR.TRANSPARENT
+                },
     
                 Label: ({ fundingEligibility, locale, nonce }) => {
                     let maxCards = 4;
@@ -102,23 +109,6 @@ export function getCardConfig() : FundingSourceConfig {
                             />
                         );
                     }).filter(Boolean).slice(0, maxCards);
-                },
-    
-                defaultColor: BUTTON_COLOR.SILVER,
-    
-                colors: [
-                    BUTTON_COLOR.TRANSPARENT
-                ],
-    
-                logoColors:  {
-                    [ BUTTON_COLOR.TRANSPARENT ]: LOGO_COLOR.BLACK
-                },
-    
-                secondaryColors: {
-                    [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.TRANSPARENT,
-                    [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.TRANSPARENT,
-                    [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.TRANSPARENT,
-                    [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.TRANSPARENT
                 }
             }
         }

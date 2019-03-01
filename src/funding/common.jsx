@@ -6,13 +6,12 @@ import { PLATFORM, type LocaleType, COUNTRY, CARD } from '@paypal/sdk-constants/
 import { type ChildType } from 'jsx-pragmatic/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
-import { BUTTON_COLOR, BUTTON_TAGLINE_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LABEL } from '../constants';
+import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LABEL, DEFAULT } from '../constants';
 import type { FundingEligibilityType } from '../types';
 
 export const DEFAULT_FUNDING_CONFIG = {
 
     layouts: [
-        BUTTON_LAYOUT.HORIZONTAL,
         BUTTON_LAYOUT.VERTICAL
     ],
 
@@ -25,34 +24,25 @@ export const DEFAULT_FUNDING_CONFIG = {
 export const DEFAULT_LABEL_CONFIG = {
 
     colors: [
-        BUTTON_COLOR.GOLD,
-        BUTTON_COLOR.BLUE,
-        BUTTON_COLOR.SILVER
+        BUTTON_COLOR.SILVER,
+        BUTTON_COLOR.BLACK,
+        BUTTON_COLOR.WHITE
     ],
+
+    logoColors: {
+        [ BUTTON_COLOR.BLACK ]: LOGO_COLOR.WHITE,
+        [ BUTTON_COLOR.WHITE ]: LOGO_COLOR.BLUE
+    },
 
     shapes: [
         BUTTON_SHAPE.PILL,
         BUTTON_SHAPE.RECT
     ],
 
-    logoColors:  {
-        [ BUTTON_COLOR.GOLD ]:   LOGO_COLOR.BLUE,
-        [ BUTTON_COLOR.SILVER ]: LOGO_COLOR.BLUE,
-        [ BUTTON_COLOR.BLUE ]:   LOGO_COLOR.WHITE
-    },
-
-    tagLineColors:  {
-        [ BUTTON_COLOR.GOLD ]:       BUTTON_TAGLINE_COLOR.BLUE,
-        [ BUTTON_COLOR.SILVER ]:     BUTTON_TAGLINE_COLOR.BLUE,
-        [ BUTTON_COLOR.BLUE ]:       BUTTON_TAGLINE_COLOR.BLUE,
-        [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_TAGLINE_COLOR.BLUE
-    },
-
     secondaryColors: {
-        [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.BLUE,
-        [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.BLUE,
-        [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
-        [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER
+        [ DEFAULT ]:            BUTTON_COLOR.SILVER,
+        [ BUTTON_COLOR.BLACK ]: BUTTON_COLOR.BLACK,
+        [ BUTTON_COLOR.WHITE ]: BUTTON_COLOR.WHITE
     }
 };
 
@@ -73,10 +63,7 @@ type FundingLabelConfig = {|
     colors : $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
     secondaryColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
     logoColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof LOGO_COLOR> },
-    shapes : $ReadOnlyArray<$Values<typeof BUTTON_SHAPE>>,
-    tagLineColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_TAGLINE_COLOR> },
-    allowPrimary? : boolean,
-    defaultColor : $Values<typeof BUTTON_COLOR>
+    shapes : $ReadOnlyArray<$Values<typeof BUTTON_SHAPE>>
 |};
 
 export type CardConfig = {|
@@ -106,6 +93,7 @@ export type FundingSourceConfig = {|
         paypal? : FundingLabelConfig,
         checkout? : FundingLabelConfig,
         pay? : FundingLabelConfig,
+        buynow? : FundingLabelConfig,
         installment? : FundingLabelConfig,
         sepa? : FundingLabelConfig,
         sofort? : FundingLabelConfig,

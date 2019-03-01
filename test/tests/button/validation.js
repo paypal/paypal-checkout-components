@@ -47,7 +47,7 @@ const buttonConfigs = [
 
             {
                 label: `buynow`,
-                valid: false
+                valid: true
             },
 
             {
@@ -195,7 +195,7 @@ const buttonConfigs = [
 
             {
                 color: `black`,
-                valid: false
+                valid: true
             },
 
             {
@@ -234,7 +234,7 @@ const buttonConfigs = [
             {
                 label: `checkout`,
                 color: `black`,
-                valid: false
+                valid: true
             },
 
             {
@@ -276,7 +276,7 @@ const buttonConfigs = [
             {
                 label: `paypal`,
                 color: `black`,
-                valid: false
+                valid: true
             },
 
             {
@@ -318,7 +318,7 @@ const buttonConfigs = [
             {
                 label: `pay`,
                 color: `black`,
-                valid: false
+                valid: true
             },
 
             {
@@ -342,25 +342,25 @@ const buttonConfigs = [
             {
                 label: `buynow`,
                 color: `gold`,
-                valid: false
+                valid: true
             },
 
             {
                 label: `buynow`,
                 color: `blue`,
-                valid: false
+                valid: true
             },
 
             {
                 label: `buynow`,
                 color: `silver`,
-                valid: false
+                valid: true
             },
 
             {
                 label: `buynow`,
                 color: `black`,
-                valid: false
+                valid: true
             },
 
             {
@@ -527,7 +527,7 @@ const buttonConfigs = [
             {
                 layout: `vertical`,
                 label:  `buynow`,
-                valid:  false
+                valid:  true
             },
 
             {

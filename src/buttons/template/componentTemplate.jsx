@@ -6,7 +6,7 @@ import { node, html, type ElementNode } from 'jsx-pragmatic/src';
 import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { noop } from 'belter/src';
 
-import { BUTTON_NUMBER, BUTTON_LABEL, ATTRIBUTE, CLASS, BUTTON_COLOR } from '../../constants';
+import { BUTTON_NUMBER, BUTTON_LABEL, ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_TAGLINE_COLOR } from '../../constants';
 import { getFundingConfig, determineEligibleFunding } from '../../funding';
 import { normalizeButtonProps, type ButtonStyle, type ButtonPropsInputs } from '../props';
 import type { FundingEligibilityType } from '../../types';
@@ -93,14 +93,15 @@ function Button({ fundingSource, style, multiple, locale, env, fundingEligibilit
         throw new Error(`Can not find label config for ${ buttonLabel }`);
     }
 
-    const secondaryColors = labelConfig.secondaryColors;
+    const colors = labelConfig.colors;
+    const secondaryColors = labelConfig.secondaryColors || {};
 
     if (multiple && i > 0) {
-        color = secondaryColors[color];
+        color = secondaryColors[color] || secondaryColors[BUTTON_COLOR.DEFAULT] || colors[0];
     }
 
-    const logoColors = labelConfig.logoColors;
-    const logoColor = logoColors[color];
+    const logoColors = labelConfig.logoColors || {};
+    const logoColor = logoColors[color] || logoColors[LOGO_COLOR.DEFAULT] || LOGO_COLOR.DEFAULT;
 
     const { Label } = labelConfig;
 
@@ -128,7 +129,7 @@ function Button({ fundingSource, style, multiple, locale, env, fundingEligibilit
 function TagLine({ fundingSource, style, locale, multiple, nonce } :
     {| fundingSource : $Values<typeof FUNDING>, style : ButtonStyle, locale : LocaleType, multiple : boolean, nonce : string |}) : ?ElementNode {
 
-    const { tagline, label, color } = style;
+    const { tagline, label } = style;
 
     if (!tagline) {
         return;
@@ -146,8 +147,7 @@ function TagLine({ fundingSource, style, locale, multiple, nonce } :
         throw new Error(`Can not find label config for ${ label }`);
     }
 
-    const tagColors = labelConfig.tagLineColors;
-    const tagColor = tagColors[color];
+    const tagColor = BUTTON_TAGLINE_COLOR.BLACK;
 
     const { Tag } = labelConfig;
 
