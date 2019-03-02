@@ -11,7 +11,7 @@ import { getDomain } from 'cross-domain-utils/src';
 import { pptm } from '../external';
 import { config } from '../config';
 import { SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
-    BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY } from '../constants';
+    BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY, INTEGRATION_ARTIFACT, PRODUCT_FLOW } from '../constants';
 import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, isEligible, getCurrentScriptUrl,
@@ -940,6 +940,20 @@ export let Button : Component<ButtonOptions> = create({
             def() : Object {
                 return { action: 'checkout' };
             }
+        },
+
+        integrationArtifact: {
+            type:       'string',
+            required:   false,
+            queryParam: true,
+            def:        () => INTEGRATION_ARTIFACT.JSV4
+        },
+
+        productFlow: {
+            type:       'string',
+            required:   false,
+            queryParam: true,
+            def:        () => PRODUCT_FLOW.SMART_PAYMENT_BUTTONS
         }
     }
 });

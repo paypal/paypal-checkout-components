@@ -6,7 +6,7 @@ import { prefix, flush as flushLogs } from 'beaver-logger/client';
 
 import { Checkout } from '../checkout';
 import { config } from '../config';
-import { ENV, FPTI } from '../constants';
+import { ENV, FPTI, INTEGRATION_ARTIFACT } from '../constants';
 import { supportsPopups, once, safeJSON, extendUrl, stringifyError } from '../lib';
 
 import { setupPostBridge } from './postBridge';
@@ -255,6 +255,7 @@ function renderPayPalCheckout(props : Object = {}, hijackTarget? : ?Element) : Z
         });
     });
 
+    props.integrationArtifact = INTEGRATION_ARTIFACT.JSV3;
     props.onError = errorHandler;
 
     let paypalCheckout;

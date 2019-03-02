@@ -50,4 +50,12 @@ export const PLATFORM = {
 
 export const DEFAULT = 'default';
 
+export const INTEGRATION_ARTIFACT = {
+    JSV3: 'JS_V3',
+    JSV4: 'JS_V4'
+};
 
+export const PRODUCT_FLOW = {
+    HERMES:                'HERMES',
+    SMART_PAYMENT_BUTTONS: 'SMART_PAYMENT_BUTTONS'
+};

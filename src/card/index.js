@@ -9,6 +9,7 @@ import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { config } from '../config';
 import { getButtonSessionID, getBrowserLocale, getSessionID, getCurrentScriptUrl } from '../lib';
+import { INTEGRATION_ARTIFACT, PRODUCT_FLOW } from '../constants';
 
 type CardOptions = {
     client : {
@@ -180,6 +181,32 @@ export const Card : Component<CardOptions> = create({
                         display: true
                     }
                 };
+            }
+        },
+
+        integrationArtifact: {
+            type:       'string',
+            required:   false,
+            queryParam: true,
+            def:        () => {
+                if (window.xprops && window.xprops.integrationArtifact) {
+                    return window.xprops.integrationArtifact;
+                }
+
+                return INTEGRATION_ARTIFACT.JSV4;
+            }
+        },
+
+        productFlow: {
+            type:       'string',
+            required:   false,
+            queryParam: true,
+            def:        () => {
+                if (window.xprops && window.xprops.productFlow) {
+                    return window.xprops.productFlow;
+                }
+
+                return PRODUCT_FLOW.SMART_PAYMENT_BUTTONS;
             }
         }
     }

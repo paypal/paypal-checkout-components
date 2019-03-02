@@ -12,7 +12,7 @@ import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
     getDomainSetting, getScriptVersion, getButtonSessionID, isPayPalDomain,
     isEligible, getCurrentScriptUrl } from '../lib';
 import { config } from '../config';
-import { ENV, FPTI, PAYMENT_TYPE, CHECKOUT_OVERLAY_COLOR, ATTRIBUTE } from '../constants';
+import { ENV, FPTI, PAYMENT_TYPE, CHECKOUT_OVERLAY_COLOR, ATTRIBUTE, INTEGRATION_ARTIFACT, PRODUCT_FLOW } from '../constants';
 import { onLegacyPaymentAuthorize } from '../compat';
 import { determineParameterFromToken, determineUrl } from '../integrations';
 
@@ -541,6 +541,32 @@ export let Checkout : Component<CheckoutPropsType> = create({
                 return btoa(JSON.stringify({
                     url: getCurrentScriptUrl()
                 }));
+            }
+        },
+
+        integrationArtifact: {
+            type:       'string',
+            required:   false,
+            queryParam: true,
+            def:        () => {
+                if (window.xprops && window.xprops.integrationArtifact) {
+                    return window.xprops.integrationArtifact;
+                }
+
+                return INTEGRATION_ARTIFACT.JSV3;
+            }
+        },
+
+        productFlow: {
+            type:       'string',
+            required:   false,
+            queryParam: true,
+            def:        () => {
+                if (window.xprops && window.xprops.productFlow) {
+                    return window.xprops.productFlow;
+                }
+
+                return PRODUCT_FLOW.HERMES;
             }
         }
     },
