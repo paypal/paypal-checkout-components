@@ -1,3 +1,9 @@
+## <small>5.0.6 (2019-03-04)</small>
+
+* Fix button autoResize ([e6ad017](http://github.paypal.com/paypal/paypal-checkout/commit/e6ad017))
+
+
+
 ## <small>5.0.5 (2019-03-01)</small>
 
 * Auto-authorize if onApprove not implemented ([67d7bc4](http://github.paypal.com/paypal/paypal-checkout/commit/67d7bc4))
