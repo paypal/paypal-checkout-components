@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { values, destroyElement } from 'belter/src';
+import { values, destroyElement, toCSS } from 'belter/src';
 import { node, dom } from 'jsx-pragmatic/src';
 import { EVENT, type RenderOptionsType } from 'zoid/src';
 
@@ -63,8 +63,20 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
         minimumSize = possibleSizes[0];
     }
 
+    const setupAutoResize = (el) => {
+        event.on(EVENT.RESIZE, ({ width: newWidth, height: newHeight }) => {
+            if (typeof newWidth === 'number') {
+                el.style.width = toCSS(newWidth);
+            }
+
+            if (typeof newHeight === 'number') {
+                el.style.height = toCSS(newHeight);
+            }
+        });
+    };
+
     return (
-        <div id={ uid } class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-layout-${ layout }` }>
+        <div id={ uid } onRender={ setupAutoResize } class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-layout-${ layout }` }>
 
             <style>
                 {`
