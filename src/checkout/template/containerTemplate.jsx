@@ -2,7 +2,6 @@
 /** @jsx node */
 /* eslint max-lines: off, react/jsx-max-depth: off */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
 import { isIos, animate, noop, destroyElement } from 'belter/src';
 import { EVENT, type RenderOptionsType } from 'zoid/src';
 import { node, dom } from 'jsx-pragmatic/src';
@@ -40,18 +39,10 @@ export function containerTemplate({ uid, tag, props, context, close, focus, doc,
 
     const content = containerContent[lang];
 
-    const onDisplay = new ZalgoPromise(resolve => {
-        event.on(EVENT.DISPLAY, resolve);
-    });
-
-    const onClose = new ZalgoPromise(resolve => {
-        event.on(EVENT.CLOSE, resolve);
-    });
-
     const setupAnimations = (name) => {
         return (el) => {
-            onDisplay.then(() => animate(el, `show-${ name }`, noop));
-            onClose.then(() => animate(el, `hide-${ name }`, noop));
+            event.on(EVENT.DISPLAY, () => animate(el, `show-${ name }`, noop));
+            event.on(EVENT.CLOSE, () => animate(el, `hide-${ name }`, noop));
         };
     };
 
