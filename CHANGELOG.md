@@ -1,3 +1,9 @@
+## <small>5.0.9 (2019-03-05)</small>
+
+* Fix black and white secondary color config ([2f48858](http://github.paypal.com/paypal/paypal-checkout/commit/2f48858))
+
+
+
 ## <small>5.0.8 (2019-03-05)</small>
 
 * Clean up addOnDisplay and addOnClose ([67048b6](http://github.paypal.com/paypal/paypal-checkout/commit/67048b6))
