@@ -240,9 +240,6 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
                     decorate: ({ value, props, state }) => {
                         return once((reason, ...args) : ZalgoPromise<void> => {
                             return ZalgoPromise.try(() => {
-                                return ZalgoPromise.all((state.onCloseHandlers || []).map(handler => handler()));
-        
-                            }).then(() => {
                                 if (!state.approved) {
                                     // $FlowFixMe
                                     return ZalgoPromise.try(() => props.onCancel())
@@ -257,45 +254,20 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
                     default: () => noop
                 },
         
-                addOnClose: {
-                    type:          'function',
-                    allowDelegate: true,
-                    value:         ({ state }) => {
-                        return (handler) => {
-                            state.onCloseHandlers = state.onCloseHandlers || [];
-                            state.onCloseHandlers.push(handler);
-                        };
-                    }
-                },
-        
                 onDisplay: {
                     type:          'function',
                     required:      false,
                     allowDelegate: true,
         
-                    decorate: ({ value, state }) => {
+                    decorate: ({ value }) => {
                         return once(function decorateOnDisplay() : ZalgoPromise<void> {
                             return ZalgoPromise.try(() => {
-                                return ZalgoPromise.all((state.onDisplayHandlers || []).map(handler => handler()));
-        
-                            }).then(() => {
                                 return value.apply(this, arguments);
                             });
                         });
                     },
         
                     default: () => noop
-                },
-        
-                addOnDisplay: {
-                    type:          'function',
-                    allowDelegate: true,
-                    value:         ({ state }) => {
-                        return (handler) => {
-                            state.onDisplayHandlers = state.onDisplayHandlers || [];
-                            state.onDisplayHandlers.push(handler);
-                        };
-                    }
                 },
         
                 test: {

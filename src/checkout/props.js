@@ -34,7 +34,5 @@ export type CheckoutPropsType = {|
     style : {|
     
     |},
-    nonce? : string,
-    addOnDisplay : (() => (void | ZalgoPromise<void>)) => void,
-    addOnClose : (() => (void | ZalgoPromise<void>)) => void
+    nonce? : string
 |};
