@@ -33,6 +33,7 @@ export const FPTI = {
         BUTTON_SIZE:        'button_size',
         BUTTON_SHAPE:       'button_shape',
         BUTTON_LABEL:       'button_label',
+        BUTTON_WIDTH:       'button_width',
         VERSION:            'checkoutjs_version'
     },
 

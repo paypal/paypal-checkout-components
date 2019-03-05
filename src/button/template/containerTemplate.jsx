@@ -1,8 +1,6 @@
 /* @flow */
 /* @jsx jsxDom */
 
-import { info, flush as flushLogs } from 'beaver-logger/client';
-
 import { BUTTON_SIZE, BUTTON_LAYOUT } from '../../constants';
 import { getButtonConfig, BUTTON_STYLE } from '../config';
 import { normalizeProps } from '../props';
@@ -46,8 +44,6 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
 
     setTimeout(() => {
         outlet.style.transition = 'all 0.5s ease-in-out 0.3s';
-        info(`button_outlet_size_${ outlet.offsetWidth ? outlet.offsetWidth.toString() : 'unknown' }`);
-        flushLogs();
     }, 3000);
 
     return (

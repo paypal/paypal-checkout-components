@@ -34,7 +34,8 @@ export function setupButtonChild(ButtonComponent : Button) {
             [FPTI.KEY.BUTTON_COLOR]:   (xprops && xprops.style && xprops.style.color)  || BUTTON_COLOR.GOLD,
             [FPTI.KEY.BUTTON_SIZE]:    (xprops && xprops.style && xprops.style.size)   || BUTTON_SIZE.SMALL,
             [FPTI.KEY.BUTTON_SHAPE]:   (xprops && xprops.style && xprops.style.shape)  || BUTTON_SHAPE.PILL,
-            [FPTI.KEY.BUTTON_LABEL]:   (xprops && xprops.style && xprops.style.label)  || BUTTON_LABEL.CHECKOUT
+            [FPTI.KEY.BUTTON_LABEL]:   (xprops && xprops.style && xprops.style.label)  || BUTTON_LABEL.CHECKOUT,
+            [FPTI.KEY.BUTTON_WIDTH]:   window.innerWidth
         });
 
         flushLogs();
