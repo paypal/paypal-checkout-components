@@ -45,6 +45,8 @@ export function getCreditConfig() : FundingSourceConfig {
                 ],
 
                 secondaryColors: {
+                    ...DEFAULT_LABEL_CONFIG.secondaryColors,
+                    
                     [ DEFAULT ]: BUTTON_COLOR.DARKBLUE
                 },
 

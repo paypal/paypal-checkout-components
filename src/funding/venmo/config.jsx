@@ -48,11 +48,11 @@ export function getVenmoConfig() : FundingSourceConfig {
                 },
     
                 secondaryColors: {
+                    ...DEFAULT_LABEL_CONFIG.secondaryColors,
+
                     [ BUTTON_COLOR.GOLD ]:   BUTTON_COLOR.BLUE,
                     [ BUTTON_COLOR.BLUE ]:   BUTTON_COLOR.SILVER,
-                    [ BUTTON_COLOR.SILVER ]: BUTTON_COLOR.BLUE,
-                    [ BUTTON_COLOR.BLACK ]:  BUTTON_COLOR.BLACK,
-                    [ BUTTON_COLOR.WHITE ]:  BUTTON_COLOR.WHITE
+                    [ BUTTON_COLOR.SILVER ]: BUTTON_COLOR.BLUE
                 }
             }
         }
