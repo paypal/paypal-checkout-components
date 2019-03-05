@@ -1,3 +1,10 @@
+## <small>5.0.8 (2019-03-05)</small>
+
+* Clean up addOnDisplay and addOnClose ([67048b6](http://github.paypal.com/paypal/paypal-checkout/commit/67048b6))
+* Revert "Ensure events are listened to on time" ([782eb3b](http://github.paypal.com/paypal/paypal-checkout/commit/782eb3b))
+
+
+
 ## <small>5.0.7 (2019-03-05)</small>
 
 * Ensure events are listened to on time ([7c76b30](http://github.paypal.com/paypal/paypal-checkout/commit/7c76b30))
