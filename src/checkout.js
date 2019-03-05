@@ -2,11 +2,11 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, noop, supportsPopups } from 'belter/src';
-import { INTENT, SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
+import { INTENT, SDK_QUERY_KEYS, FUNDING, CARD } from '@paypal/sdk-constants/src';
 import { getParent, getTop } from 'cross-domain-utils/src';
 
-import { getOrder, captureOrder, authorizeOrder, patchOrder, persistAccessToken, billingTokenToOrderID, callGraphQL, type OrderResponse } from './api';
-import { ORDER_API_ERROR, ORDER_ID_PATTERN, ERROR_URL, CONTEXT, TARGET_ELEMENT } from './constants';
+import { getOrder, captureOrder, authorizeOrder, patchOrder, persistAccessToken, billingTokenToOrderID, callGraphQL, type OrderResponse, patchClientConfiguration } from './api';
+import { ORDER_API_ERROR, ORDER_ID_PATTERN, ERROR_URL, CONTEXT, TARGET_ELEMENT, CLIENT_CONFIG } from './constants';
 
 type ActionsType = {|
     order : {
@@ -40,12 +40,13 @@ function buildShippingChangeActions(orderID : string) : ShippingChangeActionsTyp
     };
 }
 
-function buildApproveActions(checkout : CheckoutComponent, orderID : string) : ActionsType {
+function buildApproveActions(checkout : CheckoutComponent, orderID : string, fundingSource : $Values<typeof FUNDING>) : ActionsType {
 
     const restart = memoize(() : ZalgoPromise<OrderResponse> =>
         checkout.close().then(() => {
             // eslint-disable-next-line no-use-before-define
             return renderCheckout({
+                fundingSource,
                 createOrder: () => ZalgoPromise.resolve(orderID)
             }, 'iframe');
         }).catch(noop).then(() => new ZalgoPromise(noop)));
@@ -144,7 +145,7 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
     });
 }
 
-let checkoutOpen = false;
+const checkoutOpen = false;
 let canRenderTop = false;
 
 function getRenderWindow() : Object {
@@ -202,8 +203,23 @@ export function getDefaultContext() : string {
     return supportsPopups() ? CONTEXT.POPUP : CONTEXT.IFRAME;
 }
 
+export function addClientConfiguration(token : string) : ZalgoPromise<void> {
+    return patchClientConfiguration(token, {
+        integration_artifact: CLIENT_CONFIG.INTEGRATION_ARTIFACT,
+        product_flow:         CLIENT_CONFIG.PRODUCT_FLOW,
+        user_experience_flow: CLIENT_CONFIG.USER_EXPERIENCE_FLOW
+    });
+}
+
+type CheckoutPropsOverride = {|
+    fundingSource : $Values<typeof FUNDING>,
+    card? : ?$Values<typeof CARD>,
+    createOrder? : ?() => ZalgoPromise<string>,
+    window? : ?Object
+|};
+
 export function renderCheckout(
-    props : Object = {},
+    props : CheckoutPropsOverride,
     context : string = getDefaultContext(),
     validationPromise? : ZalgoPromise<boolean> = ZalgoPromise.resolve(true)
 ) : ZalgoPromise<mixed> {
@@ -212,56 +228,77 @@ export function renderCheckout(
         throw new Error(`Checkout already rendered`);
     }
 
-    const orderCreate = getCreateOrder(props, validationPromise);
+    const createOrder = getCreateOrder(props, validationPromise);
+    const { fundingSource } = props;
 
-    const instance = window.paypal.Checkout({
-        ...props,
-        
-        createOrder: orderCreate,
+    let approved = false;
+    const onApprove = ({ orderID, payerID, paymentID, billingToken }) => {
+        approved = true;
 
-        locale: window.xprops.locale,
-        commit: window.xprops.commit,
+        const actions = buildApproveActions(instance, orderID, fundingSource); // eslint-disable-line no-use-before-define
 
-        onError: window.xprops.onError,
+        return window.xprops.onApprove({ orderID, payerID, paymentID, billingToken }, actions).catch(err => {
+            return window.xprops.onError(err);
+        });
+    };
 
-        onApprove({ orderID, payerID, paymentID, billingToken }) : ZalgoPromise<void> {
-            const actions = buildApproveActions(this, orderID);
+    const onCancel = () => {
+        return ZalgoPromise.try(() => {
+            if (approved) {
+                return false;
+            }
 
-            return window.xprops.onApprove({ orderID, payerID, paymentID, billingToken }, actions).catch(err => {
-                return window.xprops.onError(err);
-            });
-        },
+            return validationPromise;
 
-        onCancel: () : ZalgoPromise<void> => {
-            return ZalgoPromise.try(() => {
-                return orderCreate();
-            }).then(orderID => {
+        }).then(valid => {
+
+            if (!valid) {
+                return;
+            }
+
+            return createOrder().then(orderID => {
                 return window.xprops.onCancel({ orderID });
             }).catch(err => {
                 return window.xprops.onError(err);
             });
-        },
+        });
+    };
 
-        onAuth: ({ accessToken }) : ZalgoPromise<void> => {
-            return persistAccessToken(accessToken);
-        },
+    const onAuth = ({ accessToken }) : ZalgoPromise<void> => {
+        return persistAccessToken(accessToken);
+    };
 
-        onClose: () => {
-            checkoutOpen = false;
-        },
+    const onClose = onCancel;
 
-        onShippingChange: window.xprops.onShippingChange
-            ? (data, actions) => {
-                return window.xprops.onShippingChange(data, {
-                    ...actions,
-                    ...buildShippingChangeActions(data.orderID)
-                });
-            } : null,
+    const onShippingChange = window.xprops.onShippingChange
+        && ((data, actions) => {
+            return window.xprops.onShippingChange(data, {
+                ...actions,
+                ...buildShippingChangeActions(data.orderID)
+            });
+        });
 
-        nonce: getNonce()
+    const nonce = getNonce();
+    const { locale, commit, onError } = window.xprops;
+
+    const instance = window.paypal.Checkout({
+        ...props,
+        
+        createOrder,
+
+        onApprove,
+        onCancel,
+        onError,
+        onAuth,
+        onClose,
+        onShippingChange,
+
+        locale,
+        commit,
+        nonce
     });
 
-    orderCreate().then(validateOrder).catch(err => {
+    createOrder().then(validateOrder).catch(err => {
         return ZalgoPromise.all([
             instance.close(),
             instance.onError(err)

@@ -2,6 +2,7 @@
 /* eslint require-await: off, max-lines: off */
 
 import { wrapPromise } from 'belter/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { setupButton } from '../../src';
 
@@ -334,6 +335,9 @@ describe('happy cases', () => {
             return {
                 renderTo: async () => {
                     onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+                },
+                close: () => {
+                    return ZalgoPromise.resolve();
                 }
             };
         };
@@ -539,6 +543,9 @@ describe('happy cases', () => {
             return {
                 renderTo: async () => {
                     onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+                },
+                close: () => {
+                    return ZalgoPromise.resolve();
                 }
             };
         };
@@ -589,6 +596,9 @@ describe('happy cases', () => {
             return {
                 renderTo: async () => {
                     onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+                },
+                close: () => {
+                    return ZalgoPromise.resolve();
                 }
             };
         };
@@ -639,6 +649,9 @@ describe('happy cases', () => {
             return {
                 renderTo: async () => {
                     onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+                },
+                close: () => {
+                    return ZalgoPromise.resolve();
                 }
             };
         };

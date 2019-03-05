@@ -1,7 +1,7 @@
 /* @flow */
 
 import { querySelectorAll, onClick, noop } from 'belter/src';
-import { FUNDING } from '@paypal/sdk-constants/src';
+import { FUNDING, CARD } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { renderCheckout, setupCheckout, getDefaultContext } from './checkout';
@@ -24,6 +24,14 @@ function onClickAndValidate({ fundingSource, card }) : ZalgoPromise<boolean> {
     }).then(() => {
         return valid;
     });
+}
+
+function getSelectedFunding(button : HTMLElement) : { fundingSource : $Values<typeof FUNDING>, card : $Values<typeof CARD> } {
+    const fundingSource = button.getAttribute('data-funding-source');
+    const card = button.getAttribute('data-card');
+
+    // $FlowFixMe
+    return { fundingSource, card };
 }
 
 export function setupButton(fundingEligibility : ?Object) : ZalgoPromise<void> {
@@ -49,8 +57,7 @@ export function setupButton(fundingEligibility : ?Object) : ZalgoPromise<void> {
     });
 
     querySelectorAll('.paypal-button').forEach(button => {
-        const fundingSource = button.getAttribute('data-funding-source');
-        const card = button.getAttribute('data-card');
+        const { fundingSource, card } = getSelectedFunding(button);
 
         onClick(button, event => {
             event.preventDefault();
