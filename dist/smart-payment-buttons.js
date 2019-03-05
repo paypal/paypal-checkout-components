@@ -808,6 +808,7 @@ window.spb = function(modules) {
         WECHATPAY: "wechatpay"
     }, API_URI = {
         AUTH: "/webapps/hermes/api/auth",
+        CHECKOUT: "/webapps/hermes/api/checkout",
         ORDER: "/webapps/hermes/api/order",
         PAYMENT: "/webapps/hermes/api/payment",
         GRAPHQL: "/graphql"
@@ -910,10 +911,9 @@ window.spb = function(modules) {
         var ua, userAgent;
     }
     function renderCheckout(props, context, validationPromise) {
-        if (void 0 === props && (props = {}), void 0 === context && (context = getDefaultContext()), 
-        void 0 === validationPromise && (validationPromise = promise_ZalgoPromise.resolve(!0)), 
+        if (void 0 === context && (context = getDefaultContext()), void 0 === validationPromise && (validationPromise = promise_ZalgoPromise.resolve(!0)), 
         checkoutOpen) throw new Error("Checkout already rendered");
-        var nonce, top, orderCreate = function(props, validationPromise) {
+        var top, createOrder = function(props, validationPromise) {
             return void 0 === props && (props = {}), memoize(function() {
                 return validationPromise.then(function(valid) {
                     if (valid) {
@@ -934,16 +934,44 @@ window.spb = function(modules) {
                     return new promise_ZalgoPromise(src_util_noop);
                 });
             });
-        }(props, validationPromise), instance = window.paypal.Checkout(_extends({}, props, {
-            createOrder: orderCreate,
-            locale: window.xprops.locale,
-            commit: window.xprops.commit,
-            onError: window.xprops.onError,
+        }(props, validationPromise), fundingSource = props.fundingSource, approved = !1, onCancel = function() {
+            return promise_ZalgoPromise.try(function() {
+                return !approved && validationPromise;
+            }).then(function(valid) {
+                if (valid) return createOrder().then(function(orderID) {
+                    return window.xprops.onCancel({
+                        orderID: orderID
+                    });
+                }).catch(function(err) {
+                    return window.xprops.onError(err);
+                });
+            });
+        }, onClose = onCancel, onShippingChange = window.xprops.onShippingChange && function(data, actions) {
+            return window.xprops.onShippingChange(data, _extends({}, actions, (orderID = data.orderID, 
+            {
+                order: {
+                    patch: function(data) {
+                        return void 0 === data && (data = []), patchOrder(orderID, data).catch(function() {
+                            throw new Error("Order could not be patched");
+                        });
+                    }
+                }
+            })));
+            var orderID;
+        }, nonce = function() {
+            var nonce = "";
+            return document.body && (nonce = document.body.getAttribute("data-nonce") || ""), 
+            nonce;
+        }(), _window$xprops = window.xprops, instance = window.paypal.Checkout(_extends({}, props, {
+            createOrder: createOrder,
             onApprove: function(_ref2) {
-                var orderID = _ref2.orderID, payerID = _ref2.payerID, paymentID = _ref2.paymentID, billingToken = _ref2.billingToken, actions = function(checkout, orderID) {
+                var orderID = _ref2.orderID, payerID = _ref2.payerID, paymentID = _ref2.paymentID, billingToken = _ref2.billingToken;
+                approved = !0;
+                var actions = function(checkout, orderID, fundingSource) {
                     var restart = memoize(function() {
                         return checkout.close().then(function() {
                             return renderCheckout({
+                                fundingSource: fundingSource,
                                 createOrder: function() {
                                     return promise_ZalgoPromise.resolve(orderID);
                                 }
@@ -990,7 +1018,7 @@ window.spb = function(modules) {
                             get: get
                         }
                     };
-                }(this, orderID);
+                }(instance, orderID, fundingSource);
                 return window.xprops.onApprove({
                     orderID: orderID,
                     payerID: payerID,
@@ -1000,40 +1028,18 @@ window.spb = function(modules) {
                     return window.xprops.onError(err);
                 });
             },
-            onCancel: function() {
-                return promise_ZalgoPromise.try(function() {
-                    return orderCreate();
-                }).then(function(orderID) {
-                    return window.xprops.onCancel({
-                        orderID: orderID
-                    });
-                }).catch(function(err) {
-                    return window.xprops.onError(err);
-                });
-            },
+            onCancel: onCancel,
+            onError: _window$xprops.onError,
             onAuth: function(_ref3) {
                 return persistAccessToken(_ref3.accessToken);
             },
-            onClose: function() {
-                checkoutOpen = !1;
-            },
-            onShippingChange: window.xprops.onShippingChange ? function(data, actions) {
-                return window.xprops.onShippingChange(data, _extends({}, actions, (orderID = data.orderID, 
-                {
-                    order: {
-                        patch: function(data) {
-                            return void 0 === data && (data = []), patchOrder(orderID, data).catch(function() {
-                                throw new Error("Order could not be patched");
-                            });
-                        }
-                    }
-                })));
-                var orderID;
-            } : null,
-            nonce: (nonce = "", document.body && (nonce = document.body.getAttribute("data-nonce") || ""), 
-            nonce)
+            onClose: onClose,
+            onShippingChange: onShippingChange,
+            locale: _window$xprops.locale,
+            commit: _window$xprops.commit,
+            nonce: nonce
         }));
-        return orderCreate().then(validateOrder).catch(function(err) {
+        return createOrder().then(validateOrder).catch(function(err) {
             return promise_ZalgoPromise.all([ instance.close(), instance.onError(err) ]);
         }), validationPromise.then(function(valid) {
             valid || instance.close();
@@ -1079,7 +1085,12 @@ window.spb = function(modules) {
                 }
             });
         }), (".paypal-button", void 0 === doc && (doc = window.document), [].slice.call(doc.querySelectorAll(".paypal-button"))).forEach(function(button) {
-            var element, handler, fundingSource = button.getAttribute("data-funding-source"), card = button.getAttribute("data-card");
+            var element, handler, _getSelectedFunding = function(button) {
+                return {
+                    fundingSource: button.getAttribute("data-funding-source"),
+                    card: button.getAttribute("data-card")
+                };
+            }(button), fundingSource = _getSelectedFunding.fundingSource, card = _getSelectedFunding.card;
             handler = function(event) {
                 event.preventDefault(), event.stopPropagation();
                 var validationPromise = onClickAndValidate({
