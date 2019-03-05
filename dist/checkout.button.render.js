@@ -1090,7 +1090,7 @@
             platforms: [ "mobile" ],
             allowHorizontal: !0,
             allowVertical: !0,
-            allowRemember: !1
+            allowRemember: !0
         }, _FUNDING_CONFIG[FUNDING.IDEAL] = {
             allowedCountries: [ COUNTRY.NL ],
             allowHorizontal: !1,
@@ -1489,7 +1489,7 @@
         var config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.258",
+            version: "4.0.259",
             cors: !0,
             env: function() {
                 return "undefined" == typeof window || void 0 === window.location ? misc_ENV.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? misc_ENV.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? misc_ENV.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? misc_ENV.SANDBOX : misc_ENV.PRODUCTION;
@@ -1744,6 +1744,9 @@
                     disable_venmo: !0
                 },
                 "youniqueproducts.com": {
+                    disable_venmo: !0
+                },
+                "archives.com": {
                     disable_venmo: !0
                 }
             },
@@ -3286,7 +3289,7 @@
                 })));
             }(normalizeProps(props)) : null;
             var script;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[ATTRIBUTE.VERSION] = "4.0.258", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[ATTRIBUTE.VERSION] = "4.0.259", 
             _ref18), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
