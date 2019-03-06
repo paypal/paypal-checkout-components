@@ -1,3 +1,9 @@
+## <small>5.0.10 (2019-03-06)</small>
+
+* Make intranet mode warning rather than hard failure ([da967d9](http://github.paypal.com/paypal/paypal-checkout/commit/da967d9))
+
+
+
 ## <small>5.0.9 (2019-03-05)</small>
 
 * Fix black and white secondary color config ([2f48858](http://github.paypal.com/paypal/paypal-checkout/commit/2f48858))
