@@ -8,7 +8,7 @@ import { FPTI } from './constants';
 import { initLogger, checkForCommonErrors, setLogLevel, stringifyError,
     stringifyErrorMessage, getResourceLoadTime, isPayPalDomain, isEligible,
     getDomainSetting, once, openMetaFrame, precacheRememberedFunding,
-    getCurrentScript } from './lib';
+    getCurrentScript, noop } from './lib';
 import { Button } from './button';
 import { Checkout } from './checkout';
 import { pptm } from './external';
@@ -210,6 +210,51 @@ if (!isPayPalDomain()) {
             [ FPTI.KEY.TRANSITION ]:      FPTI.TRANSITION.SCRIPT_LOAD,
             [ FPTI.KEY.TRANSITION_TIME ]: loadTime
         });
+
+        try {
+            let applePay = 'unavailable';
+            let paymentRequest = 'unavailable';
+
+            if (window.ApplePaySession && window.ApplePaySession.canMakePayments && window.ApplePaySession.canMakePayments()) {
+                applePay = 'available';
+            }
+            
+            if (window.PaymentRequest) {
+                paymentRequest = 'available';
+            }
+
+            new window.PaymentRequest([
+                {
+                    supportedMethods: 'basic-card'
+                }
+            ], {
+                total: {
+                    label:  'Total',
+                    amount: {
+                        currency: 'USD',
+                        value:    '1.00'
+                    }
+                }
+            }).catch(() => false).then(result => {
+                if (result) {
+                    paymentRequest = 'available_with_funding_sources';
+                }
+
+                track({
+                    apple_pay:           applePay,
+                    payment_request_api: paymentRequest
+                });
+
+                info(`apple_pay_${ applePay }`);
+                info(`payment_request_${ paymentRequest }`);
+
+                flushLogs();
+
+            }).catch(noop);
+
+        } catch (err) {
+            // pass
+        }
 
     } else {
 
