@@ -45,7 +45,7 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
         
             validate() {
                 if (isIEIntranet()) {
-                    throw new Error(`Can not render button in IE intranet mode`);
+                    getLogger().warn('checkout_render_intranet_mode');
                 }
             },
         

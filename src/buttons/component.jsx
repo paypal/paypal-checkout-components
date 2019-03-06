@@ -84,7 +84,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
 
             validate() {
                 if (isIEIntranet()) {
-                    throw new Error(`Can not render button in IE intranet mode`);
+                    getLogger().warn('button_render_intranet_mode');
                 }
             },
 

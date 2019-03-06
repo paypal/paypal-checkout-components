@@ -10,10 +10,10 @@ import { ATTRIBUTE, FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, BUTTON_LAYOUT
 
 import { type ButtonProps } from './props';
 
-export function setupButtonChild(Buttons : ZoidComponent<ButtonProps>) : void {
+export function setupButtonChild(Buttons : ZoidComponent<ButtonProps>) {
 
     if (isIEIntranet()) {
-        return window.xchild.error(new Error(`Can not render button in IE Intranet mode`));
+        getLogger().warn('button_child_intranet_mode');
     }
 
     const xprops = Buttons.xprops;

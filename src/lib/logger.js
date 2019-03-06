@@ -9,8 +9,8 @@ import { FPTI_CONTEXT_TYPE } from '../constants';
 import { getButtonSessionID } from './session';
 
 function getRefererDomain() : string {
-    return (window.xchild && window.xchild.getParentDomain)
-        ? window.xchild.getParentDomain()
+    return (window.xprops && window.xprops.getParentDomain)
+        ? window.xprops.getParentDomain()
         : window.location.host;
 }
 
