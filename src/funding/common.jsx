@@ -53,7 +53,8 @@ type FundingLabelConfig = {|
         nonce : string,
         multiple : boolean,
         period? : number,
-        fundingEligibility : FundingEligibilityType
+        fundingEligibility : FundingEligibilityType,
+        onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void
     |}) => ChildType,
     Tag? : ({|
         locale : LocaleType,
@@ -69,7 +70,8 @@ type FundingLabelConfig = {|
 export type CardConfig = {|
     Logo : ({|
         locale : LocaleType,
-        nonce : string
+        nonce : string,
+        onClick : (event : Event, ...args : $ReadOnlyArray<mixed>) => void
     |}) => ChildType
 |};
 

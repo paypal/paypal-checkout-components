@@ -105,13 +105,24 @@ function Button({ fundingSource, style, multiple, locale, env, fundingEligibilit
 
     const { Label } = labelConfig;
 
+    const clickHandler = (event, { card } = {}) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (fundingSource === FUNDING.CARD && !card) {
+            return;
+        }
+
+        onClick({ fundingSource, card });
+    };
+
     return (
         <div
             { ...{ [ATTRIBUTE.FUNDING_SOURCE]: fundingSource, [ATTRIBUTE.BUTTON]: true } }
             class={ `${ CLASS.BUTTON } ${ CLASS.NUMBER }-${ i } ${ getCommonClasses({ style, multiple, env }) } ${ getButtonClasses({ label: buttonLabel, color, logoColor }) }` }
             role='button'
             aria-label={ fundingSource }
-            onClick={ () => onClick({ fundingSource }) }
+            onClick={ clickHandler }
             tabindex='0'>
 
             <Label
@@ -121,6 +132,7 @@ function Button({ fundingSource, style, multiple, locale, env, fundingEligibilit
                 period={ period }
                 multiple={ multiple }
                 fundingEligibility={ fundingEligibility }
+                onClick={ clickHandler }
             />
         </div>
     );

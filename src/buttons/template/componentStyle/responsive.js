@@ -26,7 +26,7 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                     font-size: ${ max(perc(buttonHeight, 32), 10) }px;
                 }
 
-                .${ CLASS.BUTTON }:not(.${ LOGO_CLASS.CARD }) {
+                .${ CLASS.BUTTON } {
                     height: ${ buttonHeight }px;
                     min-height: ${ height || style.minHeight }px;
                     max-height: ${ height || style.maxHeight }px;
@@ -45,12 +45,12 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                     min-height: ${ perc(buttonHeight, 40) }px;
                 }
 
-                .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.PILL }:not(${ CLASS.LABEL }-${ LOGO_CLASS.CARD }) {
-                    border-radius: ${ Math.ceil(buttonHeight / 2) }px;
-                }
-
                 .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.RECT } {
                     border-radius: 4px;
+                }
+
+                .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.PILL } {
+                    border-radius: ${ Math.ceil(buttonHeight / 2) }px;
                 }
 
                 .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.VERTICAL } {
@@ -66,11 +66,11 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                     line-height: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) }px;
                 }
 
-                .${ LOGO_CLASS.CARD } {
+                .${ CLASS.CARD } {
                     display: inline-block;
                 }
 
-                .${ CLASS.BUTTON } .${ LOGO_CLASS.CARD } {
+                .${ CLASS.BUTTON } .${ CLASS.CARD } {
                     width: ${ (90 / cardNumber).toFixed(2) }%;
                     max-width: ${ perc(buttonHeight, 160) }px;
                     margin-top: 0;
@@ -78,7 +78,7 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                     margin-right: ${ (5 / cardNumber).toFixed(2) }%;
                 }
 
-                .${ CLASS.BUTTON } .${ LOGO_CLASS.CARD } img {
+                .${ CLASS.BUTTON } .${ CLASS.CARD } img {
                     width: 100%;
                 }
             }

@@ -5,7 +5,7 @@ import { node } from 'jsx-pragmatic/src';
 import { CARD, FUNDING, COUNTRY } from '@paypal/sdk-constants/src';
 
 import { getGuestUrl } from '../../config';
-import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR, DEFAULT } from '../../constants';
+import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR, DEFAULT, CLASS } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig, type CardConfig } from '../common';
 
 import { getVisaConfig } from './visa';
@@ -73,7 +73,7 @@ export function getCardConfig() : FundingSourceConfig {
                     [ DEFAULT ]: BUTTON_COLOR.TRANSPARENT
                 },
     
-                Label: ({ fundingEligibility, locale, nonce }) => {
+                Label: ({ fundingEligibility, locale, nonce, onClick }) => {
                     let maxCards = 4;
     
                     // $FlowFixMe
@@ -107,10 +107,13 @@ export function getCardConfig() : FundingSourceConfig {
                         const { Logo } = vendorConfig;
                         
                         return (
-                            <Logo
-                                locale={ locale }
-                                nonce={ nonce }
-                            />
+                            <div class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name }` } onClick={ event => onClick(event, { card: name }) }>
+                                <Logo
+                                    locale={ locale }
+                                    nonce={ nonce }
+                                    onClick={ onClick }
+                                />
+                            </div>
                         );
                     }).filter(Boolean).slice(0, maxCards);
                 }

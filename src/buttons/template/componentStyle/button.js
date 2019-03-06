@@ -23,7 +23,7 @@ export const buttonStyle = `
         box-sizing: border-box;
     }
 
-    .${ CLASS.BUTTON }:not(.${ LOGO_CLASS.CARD }) {
+    .${ CLASS.BUTTON } {
         border: 1px solid transparent;
         border-radius: 0 3px 3px 0;
         position: relative;
@@ -64,11 +64,11 @@ export const buttonStyle = `
         box-shadow: none;
     }
 
-    .${ LOGO_CLASS.CARD }, .${ LOGO_CLASS.CARD } * {
+    .${ CLASS.CARD } {
         cursor: pointer;
     }
 
-    .${ LOGO_CLASS.CARD }:hover {
+    .${ CLASS.CARD }:hover {
         filter: brightness(1.2);
     }
 
