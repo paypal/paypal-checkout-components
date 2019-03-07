@@ -524,10 +524,10 @@ export let config = {
     },
 
     inlinedCardFieldUris: {
-        [ ENV.LOCAL ]:      `/webapps/hermes/card-fields`,
-        [ ENV.STAGE ]:      `/webapps/hermes/card-fields`,
-        [ ENV.SANDBOX ]:    `/webapps/hermes/card-fields`,
-        [ ENV.PRODUCTION ]: `/webapps/hermes/card-fields`,
+        [ ENV.LOCAL ]:      `/smart/card-fields`,
+        [ ENV.STAGE ]:      `/smart/card-fields`,
+        [ ENV.SANDBOX ]:    `/smart/card-fields`,
+        [ ENV.PRODUCTION ]: `/smart/card-fields`,
         [ ENV.TEST ]:       `/base/test/windows/card-fields/index.htm`,
         [ ENV.DEMO ]:       `/demo/dev/card.htm`
     },
