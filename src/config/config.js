@@ -379,6 +379,18 @@ export let config = {
 
         'archives.com': {
             disable_venmo: true
+        },
+
+        'hautelook.com': {
+            disable_venmo: true
+        },
+
+        'nordstromrack.com': {
+            disable_venmo: true
+        },
+
+        'motherhoodcanada.ca': {
+            disable_venmo: true
         }
     },
 
