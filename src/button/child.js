@@ -35,7 +35,8 @@ export function setupButtonChild(ButtonComponent : Button) {
             [FPTI.KEY.BUTTON_SIZE]:    (xprops && xprops.style && xprops.style.size)   || BUTTON_SIZE.SMALL,
             [FPTI.KEY.BUTTON_SHAPE]:   (xprops && xprops.style && xprops.style.shape)  || BUTTON_SHAPE.PILL,
             [FPTI.KEY.BUTTON_LABEL]:   (xprops && xprops.style && xprops.style.label)  || BUTTON_LABEL.CHECKOUT,
-            [FPTI.KEY.BUTTON_WIDTH]:   window.innerWidth
+            [FPTI.KEY.BUTTON_WIDTH]:   window.innerWidth,
+            [FPTI.KEY.MAX_BUTTONS]:    (xprops && xprops.style && xprops.style.maxbuttons)
         });
 
         flushLogs();
