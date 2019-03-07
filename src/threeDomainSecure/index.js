@@ -2,9 +2,9 @@
 /* @jsx jsxDom */
 /* eslint max-lines: 0 */
 
-// import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'zoid/src';
-// import { type Component } from 'zoid/src/component/component';
+import { info } from 'beaver-logger/client';
 
 import { ENV } from '../constants';
 import { getButtonSessionID, getBrowserLocale, getSessionID, getCurrentScriptUrl } from '../lib';
@@ -70,6 +70,25 @@ export const ThreeDomainSecure = create({
         },
         method: {
             type: 'string'
+        },
+        onSuccess: {
+            type:       'function',
+            required:   false
+        },
+        onFailure: {
+            type:       'function',
+            required:   false
+        },
+        onCancel: {
+            type:       'function',
+            required:   false
+        },
+        onClose: {
+            type:      'function',
+            required:  false,
+            once:      true,
+            promisify: true,
+            noop:      true
         }
     },
 
