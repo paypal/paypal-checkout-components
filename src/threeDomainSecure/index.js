@@ -32,14 +32,44 @@ export const ThreeDomainSecure = create({
 
     props: {
         sdkMeta: {
-            type:        'string',
+            type: 'string',
             queryParam:  true,
             sendToChild: false,
-            def:         () => {
+            def: () => {
                 return btoa(JSON.stringify({
                     url: getCurrentScriptUrl()
                 }));
             }
+        },
+        locale: {
+            type: 'string',
+            def: () => {
+                return getBrowserLocale();
+            }
+        },
+        env: {
+            type:       'string',
+            required:   false,
+            queryParam: true,
+
+            def() : string {
+                return config.env;
+            },
+
+            validate(env) {
+                if (!config.paypalUrls[env]) {
+                    throw new Error(`Invalid env: ${ env }`);
+                }
+            }
+        },
+        challengeUrl: {
+            type: 'string'
+        },
+        threeDomainSecureToken: {
+            type: 'string'
+        },
+        method: {
+            type: 'string'
         }
     },
 

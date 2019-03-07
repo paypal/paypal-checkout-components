@@ -39,7 +39,7 @@ export type ContainerTemplateOptions = {
 // eslint-disable-next-line no-unused-vars
 export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT, on, tag, context, actions, outlet, jsxDom } : ContainerTemplateOptions) : HTMLElement {
 
-    let [ lang, country ] = props.locale.split('_');
+    let [ lang, country ] = (props.locale || 'en_US').split('_');
 
     const containerStyle = `
         ${ getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION }) }
