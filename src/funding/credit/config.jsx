@@ -5,15 +5,12 @@ import { COUNTRY } from '@paypal/sdk-constants/src';
 import { node, Fragment } from 'jsx-pragmatic/src';
 import { CreditLogo, PPLogo, PayPalLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
-import { getCheckoutUrl } from '../../config';
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
 
 export function getCreditConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
-    
-        url: getCheckoutUrl,
     
         defaultLabel: BUTTON_LABEL.CREDIT,
 

@@ -30,7 +30,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
         const component = create({
             tag:  'paypal-buttons',
 
-            url:    getButtonUrl(),
+            url:    getButtonUrl,
             domain: getPayPalDomainRegex(),
             
             autoResize: {

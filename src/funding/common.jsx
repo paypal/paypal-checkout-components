@@ -76,7 +76,6 @@ export type CardConfig = {|
 |};
 
 export type FundingSourceConfig = {|
-    url : () => string,
     defaultLabel : $Values<typeof BUTTON_LABEL>,
     platforms : $ReadOnlyArray<$Values<typeof PLATFORM>>,
     layouts : $ReadOnlyArray<$Values<typeof BUTTON_LAYOUT>>,

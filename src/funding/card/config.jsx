@@ -4,7 +4,6 @@
 import { node } from 'jsx-pragmatic/src';
 import { CARD, FUNDING, COUNTRY } from '@paypal/sdk-constants/src';
 
-import { getGuestUrl } from '../../config';
 import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR, DEFAULT, CLASS } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig, type CardConfig } from '../common';
 
@@ -48,9 +47,7 @@ export function getCardConfig() : FundingSourceConfig {
 
     return {
         ...DEFAULT_FUNDING_CONFIG,
-
-        url: getGuestUrl,
-    
+        
         layouts: [
             BUTTON_LAYOUT.VERTICAL
         ],

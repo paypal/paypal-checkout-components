@@ -3,7 +3,7 @@
 
 import { noop, supportsPopups, getElement } from 'belter/src';
 import { type ZalgoPromise } from 'zalgo-promise/src';
-import { node, html } from 'jsx-pragmatic/src';
+import { node, dom } from 'jsx-pragmatic/src';
 import { CONTEXT } from 'zoid/src';
 
 import { Buttons as ButtonsTemplate } from '../../../src/buttons/template';
@@ -13,9 +13,9 @@ let { action, type, authed = false, bridge = false, delay = 0, onRender, checkou
 
 const body = document.body;
 if (body) {
-    body.innerHTML = (
+    body.appendChild((
         <ButtonsTemplate { ...window.xprops } />
-    ).render(html());
+    ).render(dom({ doc: document })));
 }
 
 if (bridge) {

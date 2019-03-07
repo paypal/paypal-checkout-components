@@ -5,7 +5,6 @@ import { type LocaleType } from '@paypal/sdk-constants/src';
 import { node } from 'jsx-pragmatic/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
-import { getCheckoutUrl } from '../../config';
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
 
@@ -40,9 +39,7 @@ const DEFAULT_PAYPAL_LABEL = {
 export function getPayPalConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
-
-        url: getCheckoutUrl,
-    
+        
         defaultLabel: BUTTON_LABEL.PAYPAL,
 
         layouts: [

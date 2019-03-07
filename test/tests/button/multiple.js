@@ -26,7 +26,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
             {
                 source:   FUNDING.CARD,
-                fragment: 'guesturl=true'
+                fragment: 'checkouturl=true'
             },
 
             {
@@ -49,7 +49,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
             {
                 source:   FUNDING.SEPA,
-                fragment: 'guesturl=true',
+                fragment: 'checkouturl=true',
                 country:   'DE'
             }
 

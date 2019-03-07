@@ -8,8 +8,7 @@ import { create, CONTEXT, type ZoidComponent } from 'zoid/src';
 import { isDevice, memoize, isIEIntranet, noop, once, supportsPopups, inlineMemoize } from 'belter/src';
 
 import { getSessionID, getButtonSessionID } from '../lib';
-import { getFundingConfig } from '../funding';
-import { DEFAULT_POPUP_SIZE } from '../config';
+import { DEFAULT_POPUP_SIZE, getCheckoutUrl } from '../config';
 
 import { containerTemplate, componentTemplate } from './template';
 import type { CheckoutPropsType } from './props';
@@ -28,16 +27,7 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
         
             defaultContext: supportsPopups() ? CONTEXT.POPUP : CONTEXT.IFRAME,
         
-            url({ props }) : string {
-                const { fundingSource } = props;
-                const fundingConfig = getFundingConfig()[fundingSource];
-        
-                if (!fundingConfig) {
-                    throw new Error(`Can not find funding config for ${ fundingSource }`);
-                }
-        
-                return fundingConfig.url();
-            },
+            url: getCheckoutUrl,
         
             domain: getPayPalDomainRegex(),
         
