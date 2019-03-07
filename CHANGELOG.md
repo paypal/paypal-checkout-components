@@ -1,3 +1,9 @@
+## <small>5.0.11 (2019-03-07)</small>
+
+* Correctly handle onClick for card icons and pass selected card ([15638ae](http://github.paypal.com/paypal/paypal-checkout/commit/15638ae))
+
+
+
 ## <small>5.0.10 (2019-03-06)</small>
 
 * Make intranet mode warning rather than hard failure ([da967d9](http://github.paypal.com/paypal/paypal-checkout/commit/da967d9))
