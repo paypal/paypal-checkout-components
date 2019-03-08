@@ -807,10 +807,10 @@ window.spb = function(modules) {
         ZIMPLER: "zimpler",
         WECHATPAY: "wechatpay"
     }, API_URI = {
-        AUTH: "/webapps/hermes/api/auth",
-        CHECKOUT: "/webapps/hermes/api/checkout",
-        ORDER: "/webapps/hermes/api/order",
-        PAYMENT: "/webapps/hermes/api/payment",
+        AUTH: "/smart/api/auth",
+        CHECKOUT: "/smart/api/checkout",
+        ORDER: "/smart/api/order",
+        PAYMENT: "/smart/api/payment",
         GRAPHQL: "/graphql"
     }, SMART_BUTTONS = "smart_buttons", constants_HEADERS = {
         CSRF_TOKEN: "x-csrf-jwt",
