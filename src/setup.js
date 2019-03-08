@@ -223,18 +223,26 @@ if (!isPayPalDomain()) {
                 paymentRequest = 'available';
             }
 
-            new window.PaymentRequest([
-                {
-                    supportedMethods: 'basic-card'
+            ZalgoPromise.try(() => {
+                if (window.PaymentRequest) {
+                    let paymentReq = new window.PaymentRequest([
+                        {
+                            supportedMethods: 'basic-card'
+                        }
+                    ], {
+                        total: {
+                            label:  'Total',
+                            amount: {
+                                currency: 'USD',
+                                value:    '1.00'
+                            }
+                        }
+                    });
+
+                    return paymentReq.canMakePayment();
                 }
-            ], {
-                total: {
-                    label:  'Total',
-                    amount: {
-                        currency: 'USD',
-                        value:    '1.00'
-                    }
-                }
+
+                return false;
             }).catch(() => false).then(result => {
                 if (result) {
                     paymentRequest = 'available_with_funding_sources';
