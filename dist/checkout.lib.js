@@ -10340,7 +10340,7 @@
             var config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.260",
+                version: "4.0.261",
                 cors: !0,
                 env: function() {
                     return "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION;
@@ -13513,7 +13513,7 @@
                         logoColor: "blue"
                     })));
                 }(normalizeProps(props)) : null;
-                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.260", 
+                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.261", 
                 _ref18), {
                     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
@@ -14648,16 +14648,21 @@
                     var applePay = "unavailable", paymentRequest = "unavailable";
                     window.ApplePaySession && window.ApplePaySession.canMakePayments && window.ApplePaySession.canMakePayments() && (applePay = "available");
                     window.PaymentRequest && (paymentRequest = "available");
-                    new window.PaymentRequest([ {
-                        supportedMethods: "basic-card"
-                    } ], {
-                        total: {
-                            label: "Total",
-                            amount: {
-                                currency: "USD",
-                                value: "1.00"
-                            }
+                    zalgo_promise_src.a.try(function() {
+                        if (window.PaymentRequest) {
+                            return new window.PaymentRequest([ {
+                                supportedMethods: "basic-card"
+                            } ], {
+                                total: {
+                                    label: "Total",
+                                    amount: {
+                                        currency: "USD",
+                                        value: "1.00"
+                                    }
+                                }
+                            }).canMakePayment();
                         }
+                        return !1;
                     }).catch(function() {
                         return !1;
                     }).then(function(result) {
@@ -14682,7 +14687,7 @@
                 setup__track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, 
                 setup__track3));
             }
-            var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.260", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.261", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             interface_checkout = legacy.checkout;
             apps = legacy.apps;
             var interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
@@ -15977,7 +15982,7 @@
                         country: config.a.locale.country,
                         lang: config.a.locale.lang,
                         uid: getSessionID(),
-                        ver: "4.0.260"
+                        ver: "4.0.261"
                     };
                 });
                 Object(client.a)(function() {
@@ -16222,7 +16227,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.260";
+                    payload.version = "4.0.261";
                     payload.host = window.location.host;
                     payload.uid = getSessionID();
                     payload.appName = APP_NAME;
@@ -16240,7 +16245,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.260".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.261".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!function(name) {
                         return getSessionState(function(state) {
@@ -16259,7 +16264,7 @@
             function fpti() {
                 var payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, query = [];
                 payload = beacon__extends({}, {
-                    v: "checkout.js.4.0.260",
+                    v: "checkout.js.4.0.261",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -16375,11 +16380,11 @@
                 return Boolean(getCurrentScript());
             }
             function getScriptVersion() {
-                return "4.0.260";
+                return "4.0.261";
             }
             function getCurrentScriptUrl() {
                 var script = getCurrentScript();
-                return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.260.js";
+                return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.261.js";
             }
             var openMetaFrame = Object(util.j)(function() {
                 var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -16396,7 +16401,7 @@
                             domain: metaFrameDomain
                         });
                         return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                            version: "4.0.260"
+                            version: "4.0.261"
                         }), metaFrameDomain).then(function() {
                             return metaListener;
                         }).then(function(_ref) {
