@@ -4,6 +4,9 @@ import { getKarmaConfig } from 'grumbler-scripts/config/karma.conf';
 
 import { TEST } from './webpack.config';
 
+// eslint-disable-next-line no-process-env
+process.env.CHROME_BIN = require('puppeteer').executablePath();
+
 export default function configKarma(karma : Object) {
 
     let karmaConfig = getKarmaConfig(karma, {
