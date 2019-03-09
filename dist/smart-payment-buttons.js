@@ -809,7 +809,7 @@ window.spb = function(modules) {
     }, BASE_API_URL = "/webapps/hermes/api";
     try {
         if (window.localStorage) {
-            var config_url = window.localStorage.get("BASE_API_URL");
+            var config_url = window.localStorage.getItem("BASE_API_URL");
             config_url && (BASE_API_URL = config_url);
         }
     } catch (err) {}
