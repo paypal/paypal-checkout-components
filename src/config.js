@@ -1,17 +1,6 @@
 /* @flow */
 
-let BASE_API_URL = '/webapps/hermes/api';
-
-try {
-    if (window.localStorage) {
-        const url = window.localStorage.getItem('BASE_API_URL');
-        if (url) {
-            BASE_API_URL = url;
-        }
-    }
-} catch (err) {
-    // pass
-}
+const BASE_API_URL = '/smart/api';
 
 export const API_URI = {
     AUTH:     `${ BASE_API_URL }/auth`,

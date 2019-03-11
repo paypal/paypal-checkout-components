@@ -11,7 +11,7 @@ export function setupMocks() {
 
     window.config = {
         urls: {
-            baseUrl: '/webapps/hermes'
+            baseUrl: '/smart'
         }
     };
 
@@ -111,7 +111,7 @@ type MockEndpoint = {|
 export function getAuthApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
         method: 'GET',
-        uri:    '/webapps/hermes/api/auth',
+        uri:    '/smart/api/auth',
         data:   {
             ack:  'success',
             data: {
@@ -128,7 +128,7 @@ export function getAuthApiMock(options : Object = {}) : MockEndpoint {
 export function getOrderApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
         method: 'GET',
-        uri:    new RegExp('/webapps/hermes/api/order/[^/]+'),
+        uri:    new RegExp('/smart/api/order/[^/]+'),
         data:   {
             ack:  'success',
             data: {
@@ -145,7 +145,7 @@ export function getOrderApiMock(options : Object = {}) : MockEndpoint {
 export function captureOrderApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
         method: 'POST',
-        uri:    new RegExp('/webapps/hermes/api/order/[^/]+/capture'),
+        uri:    new RegExp('/smart/api/order/[^/]+/capture'),
         data:   {
             ack:  'success',
             data: {
@@ -162,7 +162,7 @@ export function captureOrderApiMock(options : Object = {}) : MockEndpoint {
 export function authorizeOrderApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
         method: 'POST',
-        uri:    new RegExp('/webapps/hermes/api/order/[^/]+/authorize'),
+        uri:    new RegExp('/smart/api/order/[^/]+/authorize'),
         data:   {
             ack:  'success',
             data: {
@@ -179,7 +179,7 @@ export function authorizeOrderApiMock(options : Object = {}) : MockEndpoint {
 export function mapBillingTokenApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
         method: 'POST',
-        uri:    new RegExp('/webapps/hermes/api/payment/[^/]+/ectoken'),
+        uri:    new RegExp('/smart/api/payment/[^/]+/ectoken'),
         data:   {
             ack:  'success',
             data: {
@@ -195,7 +195,7 @@ export function mapBillingTokenApiMock(options : Object = {}) : MockEndpoint {
 export function patchOrderApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
         method: 'POST',
-        uri:    new RegExp('/webapps/hermes/api/order/[^/]+/patch'),
+        uri:    new RegExp('/smart/api/order/[^/]+/patch'),
         data:   {
             ack:  'success',
             data: {}
