@@ -819,9 +819,10 @@ window.spb = function(modules) {
         ORDER: BASE_API_URL + "/order",
         PAYMENT: BASE_API_URL + "/payment",
         GRAPHQL: "/graphql"
-    }, SMART_BUTTONS = "smart_buttons", constants_HEADERS = {
+    }, SMART_BUTTONS = "smart_buttons", SMART_PAYMENT_BUTTONS = "smart-payment-buttons", constants_HEADERS = {
         CSRF_TOKEN: "x-csrf-jwt",
-        SOURCE: "x-source"
+        SOURCE: "x-source",
+        REQUESTED_BY: "x-requested-by"
     }, ORDER_API_ERROR = {
         CC_PROCESSOR_DECLINED: "CC_PROCESSOR_DECLINED",
         INSTRUMENT_DECLINED: "INSTRUMENT_DECLINED"
@@ -833,7 +834,8 @@ window.spb = function(modules) {
     }, ORDER_ID_PATTERN = /^(EC-)?[A-Z0-9]+$/, ERROR_URL = "https://www.paypal.com/checkoutnow/error", defaultHeaders = {}, csrfToken = "";
     function callAPI(_ref) {
         var _extends2, url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, json = _ref.json, reqHeaders = _extends({}, defaultHeaders, ((_extends2 = {})[constants_HEADERS.CSRF_TOKEN] = csrfToken, 
-        _extends2[constants_HEADERS.SOURCE] = SMART_BUTTONS, _extends2));
+        _extends2[constants_HEADERS.SOURCE] = SMART_BUTTONS, _extends2[constants_HEADERS.REQUESTED_BY] = SMART_PAYMENT_BUTTONS, 
+        _extends2));
         return request({
             url: url,
             method: method,
