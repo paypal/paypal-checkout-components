@@ -806,18 +806,11 @@ window.spb = function(modules) {
         P24: "p24",
         ZIMPLER: "zimpler",
         WECHATPAY: "wechatpay"
-    }, BASE_API_URL = "/webapps/hermes/api";
-    try {
-        if (window.localStorage) {
-            var config_url = window.localStorage.getItem("BASE_API_URL");
-            config_url && (BASE_API_URL = config_url);
-        }
-    } catch (err) {}
-    var API_URI = {
-        AUTH: BASE_API_URL + "/auth",
-        CHECKOUT: BASE_API_URL + "/checkout",
-        ORDER: BASE_API_URL + "/order",
-        PAYMENT: BASE_API_URL + "/payment",
+    }, API_URI = {
+        AUTH: "/smart/api/auth",
+        CHECKOUT: "/smart/api/checkout",
+        ORDER: "/smart/api/order",
+        PAYMENT: "/smart/api/payment",
         GRAPHQL: "/graphql"
     }, SMART_BUTTONS = "smart_buttons", SMART_PAYMENT_BUTTONS = "smart-payment-buttons", constants_HEADERS = {
         CSRF_TOKEN: "x-csrf-jwt",
