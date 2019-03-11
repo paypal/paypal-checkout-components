@@ -1,3 +1,10 @@
+## <small>5.0.12 (2019-03-11)</small>
+
+* Add forceIframe as a protected export ([081312e](http://github.paypal.com/paypal/paypal-checkout/commit/081312e))
+* Use same url for all checkout flows ([273c79b](http://github.paypal.com/paypal/paypal-checkout/commit/273c79b))
+
+
+
 ## <small>5.0.11 (2019-03-07)</small>
 
 * Correctly handle onClick for card icons and pass selected card ([15638ae](http://github.paypal.com/paypal/paypal-checkout/commit/15638ae))
