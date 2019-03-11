@@ -525,7 +525,7 @@ export let Button : Component<ButtonOptions> = create({
             decorate(original) : Function {
                 return function decorateOnRender() : mixed {
                     let { browser = 'unrecognized', version = 'unrecognized' } = getBrowser();
-                    info(`button_render_browser_${ browser }_${ version }`);
+                    info(`button_render_browser_${ browser }_${ isDevice() ? 'mobile' : 'desktop' }_${ version }`);
 
                     let style = this.props.style || {};
 
