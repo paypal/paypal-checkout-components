@@ -29,7 +29,10 @@ function callAPI({ url, method = 'get', json } : APIRequest) : ZalgoPromise<Obje
             csrfToken = resHeaders[HEADERS.CSRF_TOKEN];
 
             if (body.ack === 'contingency') {
-                throw new Error(body.contingency);
+                const err = new Error(body.contingency);
+                // $FlowFixMe
+                err.data = body.data;
+                throw err;
             }
 
             if (status > 400) {

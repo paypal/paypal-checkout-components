@@ -510,59 +510,6 @@ describe('happy cases', () => {
         }
     });
 
-    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture call and automatic restart on CC_PROCESSOR_DECLINED', async () => {
-
-        const orderID = 'XXXXXXXXXX';
-        const payerID = 'YYYYYYYYYY';
-
-        let onApprove;
-        let onApproveCalled = false;
-        let didRestart = false;
-
-        window.xprops.onApprove = async (data, actions) => {
-            if (didRestart) {
-                onApproveCalled = true;
-            } else {
-                didRestart = true;
-                onApprove = null;
-
-                const captureOrderMock = captureOrderApiMock({
-                    data: {
-                        ack:         'contingency',
-                        contingency: 'CC_PROCESSOR_DECLINED'
-                    }
-                });
-
-                captureOrderMock.expectCalls();
-                actions.order.capture();
-                captureOrderMock.done();
-            }
-        };
-
-        window.paypal.Checkout = (props) => {
-            return {
-                renderTo: async () => {
-                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
-                },
-                close: () => {
-                    return ZalgoPromise.resolve();
-                }
-            };
-        };
-
-        window.document.body.innerHTML = createButtonHTML();
-
-        await setupButton();
-
-        window.document.querySelector('.paypal-button').click();
-
-        await onApprove;
-
-        if (!onApprove || !onApproveCalled) {
-            throw new Error(`Expected onApprove to have been called`);
-        }
-    });
-
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture call and automatic restart on INSTRUMENT_DECLINED', async () => {
 
         const orderID = 'XXXXXXXXXX';
@@ -582,7 +529,14 @@ describe('happy cases', () => {
                 const captureOrderMock = captureOrderApiMock({
                     data: {
                         ack:         'contingency',
-                        contingency: 'INSTRUMENT_DECLINED'
+                        contingency: 'UNPROCESSABLE_ENTITY',
+                        data:        {
+                            details: [
+                                {
+                                    issue: 'INSTRUMENT_DECLINED'
+                                }
+                            ]
+                        }
                     }
                 });
 
@@ -592,59 +546,6 @@ describe('happy cases', () => {
             }
         };
 
-        window.paypal.Checkout = (props) => {
-            return {
-                renderTo: async () => {
-                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
-                },
-                close: () => {
-                    return ZalgoPromise.resolve();
-                }
-            };
-        };
-
-        window.document.body.innerHTML = createButtonHTML();
-
-        await setupButton();
-
-        window.document.querySelector('.paypal-button').click();
-
-        await onApprove;
-
-        if (!onApprove || !onApproveCalled) {
-            throw new Error(`Expected onApprove to have been called`);
-        }
-    });
-
-    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.authorize call and automatic restart on CC_PROCESSOR_DECLINED', async () => {
-
-        const orderID = 'XXXXXXXXXX';
-        const payerID = 'YYYYYYYYYY';
-
-        let onApprove;
-        let onApproveCalled = false;
-        let didRestart = false;
-
-        window.xprops.onApprove = async (data, actions) => {
-            if (didRestart) {
-                onApproveCalled = true;
-            } else {
-                didRestart = true;
-                onApprove = null;
-
-                const authorizeOrderMock = authorizeOrderApiMock({
-                    data: {
-                        ack:         'contingency',
-                        contingency: 'CC_PROCESSOR_DECLINED'
-                    }
-                });
-
-                authorizeOrderMock.expectCalls();
-                actions.order.authorize();
-                authorizeOrderMock.done();
-            }
-        };
-        
         window.paypal.Checkout = (props) => {
             return {
                 renderTo: async () => {

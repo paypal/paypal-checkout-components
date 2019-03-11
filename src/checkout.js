@@ -52,11 +52,12 @@ function buildApproveActions(checkout : CheckoutComponent, orderID : string, fun
         }).catch(noop).then(() => new ZalgoPromise(noop)));
 
     const handleProcessorError = (err : mixed) : ZalgoPromise<OrderResponse> => {
-        if (err && err.message === ORDER_API_ERROR.CC_PROCESSOR_DECLINED) {
-            return restart();
-        }
+        // $FlowFixMe
+        const isProcessorDecline = err && err.data && err.data.details && err.data.details.some(detail => {
+            return detail.issue === ORDER_API_ERROR.INSTRUMENT_DECLINED;
+        });
 
-        if (err && err.message === ORDER_API_ERROR.INSTRUMENT_DECLINED) {
+        if (isProcessorDecline) {
             return restart();
         }
 
