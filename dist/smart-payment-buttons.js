@@ -824,7 +824,6 @@ window.spb = function(modules) {
         SOURCE: "x-source",
         REQUESTED_BY: "x-requested-by"
     }, ORDER_API_ERROR = {
-        CC_PROCESSOR_DECLINED: "CC_PROCESSOR_DECLINED",
         INSTRUMENT_DECLINED: "INSTRUMENT_DECLINED"
     }, CONTEXT = {
         IFRAME: "iframe",
@@ -843,7 +842,10 @@ window.spb = function(modules) {
             json: json
         }).then(function(_ref2) {
             var status = _ref2.status, body = _ref2.body;
-            if (csrfToken = _ref2.headers[constants_HEADERS.CSRF_TOKEN], "contingency" === body.ack) throw new Error(body.contingency);
+            if (csrfToken = _ref2.headers[constants_HEADERS.CSRF_TOKEN], "contingency" === body.ack) {
+                var err = new Error(body.contingency);
+                throw err.data = body.data, err;
+            }
             if (status > 400) throw new Error("Api: " + url + " returned status code: " + status);
             if ("success" !== body.ack) throw new Error("Api: " + url + " returned ack: " + body.ack);
             return body.data;
@@ -989,8 +991,9 @@ window.spb = function(modules) {
                             return new promise_ZalgoPromise(src_util_noop);
                         });
                     }), handleProcessorError = function(err) {
-                        if (err && err.message === ORDER_API_ERROR.CC_PROCESSOR_DECLINED) return restart();
-                        if (err && err.message === ORDER_API_ERROR.INSTRUMENT_DECLINED) return restart();
+                        if (err && err.data && err.data.details && err.data.details.some(function(detail) {
+                            return detail.issue === ORDER_API_ERROR.INSTRUMENT_DECLINED;
+                        })) return restart();
                         throw new Error("Order could not be captured");
                     }, get = memoize(function() {
                         return function(orderID) {
