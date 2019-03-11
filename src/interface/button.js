@@ -8,6 +8,12 @@ import { getCheckoutComponent } from '../checkout';
 import { getButtonsComponent } from '../buttons';
 import { Buttons as _ButtonsTemplate } from '../buttons/template';
 
+function protectedExport<T>(xport : T) : ?T {
+    if (isPayPalDomain()) {
+        return xport;
+    }
+}
+
 export const request = {
     addHeaderBuilder: () => {
         // pass
@@ -19,44 +25,27 @@ export const Buttons = {
 };
 
 export const Checkout = {
-    __get__: () => {
-        const component = getCheckoutComponent();
-        if (isPayPalDomain()) {
-            return component;
-        }
-    }
+    __get__: () => protectedExport(getCheckoutComponent())
 };
 
 export const ButtonsTemplate = {
-    __get__: () => {
-        if (isPayPalDomain()) {
-            return _ButtonsTemplate;
-        }
-    }
+    __get__: () => protectedExport(_ButtonsTemplate)
 };
 
 export const PopupOpenError = {
-    __get__: () => {
-        if (isPayPalDomain()) {
-            return _PopupOpenError;
-        }
-    }
+    __get__: () => protectedExport(_PopupOpenError)
 };
 
 export const allowIframe = {
-    __get__: () => {
-        if (isPayPalDomain()) {
-            return _allowIframe;
-        }
-    }
+    __get__: () => protectedExport(_allowIframe)
+};
+
+export const forceIframe = {
+    __get__: () => protectedExport(_allowIframe)
 };
 
 export const destroyAll = {
-    __get__: () => {
-        if (isPayPalDomain() || __TEST__) {
-            return destroyComponents;
-        }
-    }
+    __get__: () => protectedExport(destroyComponents)
 };
 
 export function setup() {
