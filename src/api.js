@@ -4,7 +4,7 @@ import type { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, request, noop } from 'belter/src';
 
 import { API_URI } from './config';
-import { ACCESS_TOKEN_HEADER, HEADERS, SMART_BUTTONS } from './constants';
+import { ACCESS_TOKEN_HEADER, HEADERS, SMART_BUTTONS, SMART_PAYMENT_BUTTONS } from './constants';
 
 const defaultHeaders = {};
 let csrfToken = '';
@@ -19,8 +19,9 @@ function callAPI({ url, method = 'get', json } : APIRequest) : ZalgoPromise<Obje
 
     const reqHeaders = {
         ...defaultHeaders,
-        [ HEADERS.CSRF_TOKEN ]: csrfToken,
-        [ HEADERS.SOURCE ]:     SMART_BUTTONS
+        [ HEADERS.CSRF_TOKEN ]:   csrfToken,
+        [ HEADERS.SOURCE ]:       SMART_BUTTONS,
+        [ HEADERS.REQUESTED_BY ]: SMART_PAYMENT_BUTTONS
     };
 
     return request({ url, method, headers: reqHeaders, json })

@@ -1,12 +1,14 @@
 /* @flow */
 
 export const SMART_BUTTONS = 'smart_buttons';
+export const SMART_PAYMENT_BUTTONS = 'smart-payment-buttons';
 
 export const ACCESS_TOKEN_HEADER = 'x-paypal-internal-euat';
 
 export const HEADERS = {
-    CSRF_TOKEN: 'x-csrf-jwt',
-    SOURCE:     'x-source'
+    CSRF_TOKEN:   'x-csrf-jwt',
+    SOURCE:       'x-source',
+    REQUESTED_BY: 'x-requested-by'
 };
 
 export const ORDER_API_ERROR = {
