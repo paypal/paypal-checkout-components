@@ -2,14 +2,11 @@
 /* @jsx jsxDom */
 /* eslint max-lines: 0 */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'zoid/src';
-import { info } from 'beaver-logger/client';
 
 import { ENV } from '../constants';
-import { getButtonSessionID, getBrowserLocale, getSessionID, getCurrentScriptUrl } from '../lib';
+import { getBrowserLocale, getCurrentScriptUrl } from '../lib';
 import { config } from '../config';
-
 import { containerTemplate } from '../billing/template';
 
 export const ThreeDomainSecure = create({
@@ -32,10 +29,10 @@ export const ThreeDomainSecure = create({
 
     props: {
         sdkMeta: {
-            type: 'string',
-            queryParam:  true,
-            sendToChild: false,
-            def: () => {
+            type:         'string',
+            queryParam:   true,
+            sendToChild:  false,
+            def:         () => {
                 return btoa(JSON.stringify({
                     url: getCurrentScriptUrl()
                 }));
@@ -43,7 +40,7 @@ export const ThreeDomainSecure = create({
         },
         locale: {
             type: 'string',
-            def: () => {
+            def:  () => {
                 return getBrowserLocale();
             }
         },
@@ -79,16 +76,17 @@ export const ThreeDomainSecure = create({
             type:       'function',
             required:   false
         },
-        onCancel: {
-            type:       'function',
-            required:   false
-        },
         onClose: {
             type:      'function',
             required:  false,
             once:      true,
             promisify: true,
             noop:      true
+        },
+        onCancel: {
+            type:           'function',
+            required:       true,
+            allowDelegate:  true
         }
     },
 
