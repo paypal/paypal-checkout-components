@@ -1,13 +1,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <div id="paypal-button"></div>
 
-<!-- <script src="https://www.paypalobjects.com/api/checkout.js"></script> -->
-<script src="http://localhost.paypal.com:9000/checkout.js" data-paypal-checkout></script>
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
 
 <script>
     paypal.Button.render({
 
-        env: 'local', // Optional: specify 'sandbox' environment
+        env: 'sandbox', // Optional: specify 'sandbox' environment
 
         locale: 'en_US',
 
@@ -28,7 +27,6 @@
         },
 
         payment(data, actions) { 
-            // return 'EC-6NW94754TB9704328';
             const transactions = [
                 {
                     amount: {

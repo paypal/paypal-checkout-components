@@ -3,7 +3,6 @@
 /* eslint max-lines: 0 */
 
 import { btoa } from 'Base64';
-export { ZalgoPromise as Promise } from 'zalgo-promise/src';
 
 import { fundingLogos } from '../../resources';
 import { BUTTON_LOGO_COLOR, CHECKOUT_OVERLAY_COLOR } from '../../constants';
