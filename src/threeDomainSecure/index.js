@@ -39,9 +39,11 @@ export const ThreeDomainSecure = create({
             }
         },
         locale: {
-            type: 'string',
-            def:  () => {
-                return getBrowserLocale();
+            type:           'string',
+            allowDelegate:  true,
+            def:            () => {
+                const { lang, country } = getBrowserLocale();
+                return `${ lang }_${ country }`;
             }
         },
         env: {
