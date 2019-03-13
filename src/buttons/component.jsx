@@ -236,6 +236,9 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                             actions = {
                                 ...actions,
                                 redirect: (url, win) => {
+                                    if (!url) {
+                                        throw new Error(`Expected redirect url`);
+                                    }
                                     return ZalgoPromise.try(() => {
                                         return close();
                                     }).then(() => {
@@ -324,6 +327,9 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                             actions = {
                                 ...actions,
                                 redirect: (url, win) => {
+                                    if (!url) {
+                                        throw new Error(`Expected redirect url`);
+                                    }
                                     return ZalgoPromise.all([
                                         redirect(url, win || window.top),
                                         close()
