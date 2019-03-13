@@ -1,7 +1,6 @@
 /* @flow */
 /* @jsx jsxDom */
 /* eslint max-lines: 0 */
-
 import { btoa } from 'Base64';
 
 import { fundingLogos } from '../../resources';
@@ -43,6 +42,23 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
 
     const containerStyle = `
         ${ getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION }) }
+        #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } {
+            position: relative;
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
+            -ms-transition: all 0.3s ease;
+            -o-transition: all 0.3 ease;
+            transition: all 0.3s ease;
+            -webkit-animation-duration: 0.3s;
+            animation-duration: 0.3s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+            max-width: none;
+            width: auto;
+            height: 100%;
+            background-color: white;
+            overflow: auto
+        }
         @media screen and (max-width: 470px) {
             #${ id } .paypal-checkout-close {
                 position: absolute;
@@ -83,6 +99,9 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
     function close(event) {
         event.preventDefault();
         event.stopPropagation();
+        if (props.cancel) {
+            props.onCancel();
+        }
         actions.close();
     }
 
@@ -133,9 +152,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
                 </div>
             </div>
 
-            <div class="paypal-checkout-iframe-container">
-                {outlet}
-            </div>
+            {outlet}
 
             <style>{ containerStyle }</style>
         </div>

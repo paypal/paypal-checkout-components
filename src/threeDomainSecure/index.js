@@ -7,7 +7,8 @@ import { create } from 'zoid/src';
 import { ENV } from '../constants';
 import { getBrowserLocale, getCurrentScriptUrl } from '../lib';
 import { config } from '../config';
-import { containerTemplate } from '../billing/template';
+
+import { containerTemplate } from './template';
 
 export const ThreeDomainSecure = create({
     tag:  'paypal-3ds',
