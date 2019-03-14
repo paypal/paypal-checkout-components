@@ -53,7 +53,7 @@ describe('happy cases', () => {
 
             window.document.body.innerHTML = createButtonHTML();
 
-            await setupButton();
+            await setupButton({});
 
             window.document.querySelector('.paypal-button').click();
         });
@@ -101,7 +101,7 @@ describe('happy cases', () => {
 
             window.document.body.innerHTML = createButtonHTML();
 
-            await setupButton();
+            await setupButton({});
 
             window.document.querySelector('.paypal-button').click();
         });
@@ -123,7 +123,7 @@ describe('happy cases', () => {
     
         window.document.body.innerHTML = createButtonHTML();
     
-        await setupButton();
+        await setupButton({});
     
         triggerKeyPress(window.document.querySelector('.paypal-button'), 13);
     
@@ -142,7 +142,7 @@ describe('happy cases', () => {
     
         window.document.body.innerHTML = createButtonHTML();
     
-        await setupButton();
+        await setupButton({});
     
         window.document.querySelector('.paypal-button').click();
     
@@ -161,7 +161,7 @@ describe('happy cases', () => {
     
         window.document.body.innerHTML = createButtonHTML();
     
-        await setupButton();
+        await setupButton({});
     
         triggerKeyPress(window.document.querySelector('.paypal-button'), 13);
     
@@ -200,7 +200,7 @@ describe('happy cases', () => {
     
         window.document.body.innerHTML = createButtonHTML();
     
-        await setupButton();
+        await setupButton({});
     
         window.document.querySelector('.paypal-button').click();
 
@@ -238,7 +238,7 @@ describe('happy cases', () => {
 
         window.document.body.innerHTML = createButtonHTML();
 
-        await setupButton();
+        await setupButton({});
 
         window.document.querySelector('.paypal-button').click();
 
@@ -268,7 +268,7 @@ describe('happy cases', () => {
 
         window.document.body.innerHTML = createButtonHTML();
 
-        await setupButton();
+        await setupButton({});
 
         window.document.querySelector('.paypal-button').click();
 
@@ -310,7 +310,7 @@ describe('happy cases', () => {
     
         window.document.body.innerHTML = createButtonHTML();
     
-        await setupButton();
+        await setupButton({});
     
         window.document.querySelector('.paypal-button').click();
 
@@ -355,7 +355,7 @@ describe('happy cases', () => {
     
         window.document.body.innerHTML = createButtonHTML();
     
-        await setupButton();
+        await setupButton({});
     
         window.document.querySelector('.paypal-button').click();
 
@@ -394,7 +394,7 @@ describe('happy cases', () => {
 
         window.document.body.innerHTML = createButtonHTML();
 
-        await setupButton();
+        await setupButton({});
 
         window.document.querySelector('.paypal-button').click();
 
@@ -433,7 +433,7 @@ describe('happy cases', () => {
 
         window.document.body.innerHTML = createButtonHTML();
 
-        await setupButton();
+        await setupButton({});
 
         window.document.querySelector('.paypal-button').click();
 
@@ -471,7 +471,7 @@ describe('happy cases', () => {
 
         window.document.body.innerHTML = createButtonHTML();
 
-        await setupButton();
+        await setupButton({});
 
         window.document.querySelector('.paypal-button').click();
 
@@ -510,7 +510,7 @@ describe('happy cases', () => {
 
         window.document.body.innerHTML = createButtonHTML();
 
-        await setupButton();
+        await setupButton({});
 
         window.document.querySelector('.paypal-button').click();
 
@@ -572,7 +572,7 @@ describe('happy cases', () => {
 
         window.document.body.innerHTML = createButtonHTML();
 
-        await setupButton();
+        await setupButton({});
 
         window.document.querySelector('.paypal-button').click();
 

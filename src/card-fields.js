@@ -1,7 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { FUNDING, CARD } from '@paypal/sdk-constants/src';
+import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
 import { memoize, noop } from 'belter/src';
 
 import { persistAccessToken, type OrderResponse } from './api';
@@ -15,7 +15,8 @@ let cardFieldsOpen = false;
 type CardPropsOverride = {|
     fundingSource : $Values<typeof FUNDING>,
     createOrder : () => ZalgoPromise<string>,
-    card : ?$Values<typeof CARD>
+    card : ?$Values<typeof CARD>,
+    buyerCountry : $Values<typeof COUNTRY>
 |};
 
 type CardFieldsInstance = {|
@@ -32,7 +33,7 @@ export function initCardFields(props : CardPropsOverride) : CardFieldsInstance {
         throw new Error(`Checkout already rendered`);
     }
 
-    const { createOrder, fundingSource } = props;
+    const { createOrder, fundingSource, buyerCountry } = props;
 
     const restart = memoize(() : ZalgoPromise<OrderResponse> => {
         return ZalgoPromise.try(() => {
@@ -41,7 +42,8 @@ export function initCardFields(props : CardPropsOverride) : CardFieldsInstance {
         }).then(() => {
             return initCheckout({
                 fundingSource,
-                createOrder
+                createOrder,
+                buyerCountry
             }).render(CONTEXT.IFRAME);
         }).catch(noop).then(() => {
             return new ZalgoPromise(noop);
@@ -107,6 +109,7 @@ export function initCardFields(props : CardPropsOverride) : CardFieldsInstance {
         onClose,
         onShippingChange,
 
+        buyerCountry,
         locale,
         commit,
         nonce

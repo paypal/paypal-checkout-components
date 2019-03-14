@@ -6,8 +6,13 @@ import { html } from 'jsx-pragmatic';
 
 import { getSmartButtonClientScript, getSmartButtonRenderScript, startWatchers } from './watcher';
 import { getParams } from './params';
+<<<<<<< HEAD
 import { EVENT } from './constants';
 import { serverErrorResponse, clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON } from './util';
+=======
+import { EVENT, HTTP_HEADER } from './constants';
+import { serverErrorResponse, clientErrorResponse, htmlResponse, allowFrame, defaultLogger } from './util';
+>>>>>>> f4fd5e8... Pass buyerCountry into checkout and card components
 import type { ExpressRequest, ExpressResponse, LoggerType } from './types';
 import { buttonStyle } from './style';
 
@@ -39,6 +44,8 @@ export function getButtonMiddleware({ logger = defaultLogger } : { logger? : Log
                 return clientErrorResponse(res, 'Please provide a fundingEligibility query parameter');
             }
 
+            const buyerCountry = req.get(HTTP_HEADER.PP_GEO_LOC);
+
             const buttonHTML = render.button.Buttons({ ...params, nonce, csp: { nonce }, fundingEligibility }).render(html());
 
             const pageHTML = `
@@ -52,7 +59,7 @@ export function getButtonMiddleware({ logger = defaultLogger } : { logger? : Log
                     <div id="card-fields-container" class="card-fields-container"></div>
                     ${ getSDKLoader({ nonce }) }
                     <script nonce="${ nonce }">${ client.script }</script>
-                    <script nonce="${ nonce }">spb.setupButton(${ safeJSON(fundingEligibility) })</script>
+                    <script nonce="${ nonce }">spb.setupButton(${ safeJSON({ fundingEligibility, buyerCountry }) })</script>
                 </body>
             `;
 

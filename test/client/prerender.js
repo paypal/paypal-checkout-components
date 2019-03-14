@@ -66,7 +66,7 @@ describe('prerender cases', () => {
             });
 
             window.document.body.innerHTML = createButtonHTML();
-            await setupButton();
+            await setupButton({});
         });
     });
 
@@ -110,7 +110,7 @@ describe('prerender cases', () => {
             });
 
             window.document.body.innerHTML = createButtonHTML();
-            await setupButton();
+            await setupButton({});
         });
     });
 
@@ -149,7 +149,7 @@ describe('prerender cases', () => {
             };
 
             window.document.body.innerHTML = createButtonHTML();
-            await setupButton();
+            await setupButton({});
         });
     });
 
@@ -199,7 +199,7 @@ describe('prerender cases', () => {
             });
 
             window.document.body.innerHTML = createButtonHTML();
-            await setupButton();
+            await setupButton({});
         });
     });
 
@@ -244,7 +244,7 @@ describe('prerender cases', () => {
             });
 
             window.document.body.innerHTML = createButtonHTML();
-            await setupButton();
+            await setupButton({});
         });
     });
 
@@ -288,7 +288,7 @@ describe('prerender cases', () => {
             });
 
             window.document.body.innerHTML = createButtonHTML();
-            await setupButton();
+            await setupButton({});
         });
     });
 });

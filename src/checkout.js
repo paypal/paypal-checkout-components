@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, noop, supportsPopups } from 'belter/src';
-import { FUNDING, CARD } from '@paypal/sdk-constants/src';
+import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
 import { getParent, getTop } from 'cross-domain-utils/src';
 
 import { persistAccessToken, type OrderResponse, patchClientConfiguration } from './api';
@@ -55,7 +55,8 @@ type CheckoutPropsOverride = {|
     fundingSource : $Values<typeof FUNDING>,
     card? : ?$Values<typeof CARD>,
     window? : ?Object,
-    validationPromise? : ZalgoPromise<boolean>
+    validationPromise? : ZalgoPromise<boolean>,
+    buyerCountry : $Values<typeof COUNTRY>
 |};
 
 type CheckoutInstance = {|
@@ -75,7 +76,8 @@ export function initCheckout(props : CheckoutPropsOverride) : CheckoutInstance {
     const {
         createOrder,
         fundingSource,
-        validationPromise = ZalgoPromise.resolve(true)
+        validationPromise = ZalgoPromise.resolve(true),
+        buyerCountry
     } = props;
 
     const restart = memoize(() : ZalgoPromise<OrderResponse> => {
@@ -85,7 +87,8 @@ export function initCheckout(props : CheckoutPropsOverride) : CheckoutInstance {
         }).then(() => {
             return initCheckout({
                 fundingSource,
-                createOrder
+                createOrder,
+                buyerCountry
             }).render(CONTEXT.IFRAME);
         }).catch(noop).then(() => {
             return new ZalgoPromise(noop);
@@ -158,6 +161,7 @@ export function initCheckout(props : CheckoutPropsOverride) : CheckoutInstance {
         onClose,
         onShippingChange,
 
+        buyerCountry,
         locale,
         commit,
         nonce

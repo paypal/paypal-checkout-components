@@ -37,7 +37,7 @@ describe('error cases', () => {
 
         window.document.body.innerHTML = createButtonHTML();
 
-        setupButton();
+        setupButton({});
 
         window.document.querySelector('.paypal-button').click();
 
@@ -82,7 +82,7 @@ describe('error cases', () => {
 
         window.document.body.innerHTML = createButtonHTML();
 
-        setupButton();
+        setupButton({});
 
         window.document.querySelector('.paypal-button').click();
 

@@ -24,7 +24,7 @@ describe('funding source cases', () => {
     
         window.document.body.innerHTML = createButtonHTML();
     
-        setupButton();
+        setupButton({});
     
         window.document.querySelector(`.paypal-button[data-funding-source="${ FUNDING.PAYPAL }"]`).click();
     
@@ -48,7 +48,7 @@ describe('funding source cases', () => {
     
         window.document.body.innerHTML = createButtonHTML([ FUNDING.VENMO ]);
     
-        setupButton();
+        setupButton({});
     
         window.document.querySelector(`.paypal-button[data-funding-source="${ FUNDING.VENMO }"]`).click();
     

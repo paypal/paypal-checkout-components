@@ -1,7 +1,7 @@
 /* @flow */
 
 import { querySelectorAll, onClick, noop } from 'belter/src';
-import { FUNDING, CARD } from '@paypal/sdk-constants/src';
+import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import type { ProxyWindow } from 'post-robot/src';
 
@@ -38,12 +38,19 @@ function getSelectedFunding(button : HTMLElement) : { fundingSource : $Values<ty
     return { fundingSource, card };
 }
 
-export function setupButton(fundingEligibility : ?Object) : ZalgoPromise<void> {
-    let buttonEnabled = true;
+export function setupButton(fundingEligibility : Object) : ZalgoPromise<void> {
 
     if (!window.paypal) {
         throw new Error(`PayPal library not loaded`);
     }
+
+    const buyerCountry = window.xprops.buyerCountry || fundingEligibility.buyerCountry || COUNTRY.US;
+    
+    if (fundingEligibility.fundingEligibility) {
+        fundingEligibility = fundingEligibility.fundingEligibility;
+    }
+
+    let buttonEnabled = true;
 
     const start = ({ win, fundingSource, card } : { win? : ProxyWindow, fundingSource : $Values<typeof FUNDING>, card : ?$Values<typeof CARD> }) => {
         const validationPromise = onClickAndValidate({ fundingSource, card });
@@ -67,8 +74,8 @@ export function setupButton(fundingEligibility : ?Object) : ZalgoPromise<void> {
         const createOrder = () => orderPromise;
 
         const { instance, render } = (fundingSource === FUNDING.CARD && INLINE_GUEST_ENABLED)
-            ? initCardFields({ createOrder, fundingSource, card })
-            : initCheckout({ window: win, createOrder, fundingSource, card, validationPromise });
+            ? initCardFields({ createOrder, fundingSource, card, buyerCountry })
+            : initCheckout({ window: win, createOrder, fundingSource, card, validationPromise, buyerCountry });
 
         return ZalgoPromise.try(() => {
             if (fundingSource === FUNDING.CARD && INLINE_GUEST_ENABLED) {
@@ -138,7 +145,7 @@ export function setupButton(fundingEligibility : ?Object) : ZalgoPromise<void> {
     });
 
     tasks.remember = ZalgoPromise.try(() => {
-        if (fundingEligibility && fundingEligibility.venmo.eligible) {
+        if (fundingEligibility && fundingEligibility.venmo && fundingEligibility.venmo.eligible) {
             return window.xprops.remember([ FUNDING.VENMO ]);
         }
     });

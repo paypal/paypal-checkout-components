@@ -33,7 +33,7 @@ describe('validation cases', () => {
             });
 
             window.document.body.innerHTML = createButtonHTML();
-            await setupButton();
+            await setupButton({});
             window.document.querySelector('.paypal-button').click();
         });
     });
@@ -56,7 +56,7 @@ describe('validation cases', () => {
             };
 
             window.document.body.innerHTML = createButtonHTML();
-            await setupButton();
+            await setupButton({});
             window.document.querySelector('.paypal-button').click();
         });
     });
@@ -88,7 +88,7 @@ describe('validation cases', () => {
             });
 
             window.document.body.innerHTML = createButtonHTML();
-            await setupButton();
+            await setupButton({});
             window.document.querySelector('.paypal-button').click();
         });
     });
@@ -115,7 +115,7 @@ describe('validation cases', () => {
             });
 
             window.document.body.innerHTML = createButtonHTML();
-            await setupButton();
+            await setupButton({});
             window.document.querySelector('.paypal-button').click();
         });
     });
@@ -142,7 +142,7 @@ describe('validation cases', () => {
             });
 
             window.document.body.innerHTML = createButtonHTML();
-            await setupButton();
+            await setupButton({});
             window.document.querySelector('.paypal-button').click();
         });
     });
