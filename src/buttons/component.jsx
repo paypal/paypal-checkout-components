@@ -3,7 +3,7 @@
 /* eslint max-lines: 0 */
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit,
-    getVault, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce,
+    getVault, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry,
     createOrder } from '@paypal/sdk-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
@@ -471,6 +471,13 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     type:       'string',
                     queryParam: true,
                     value:      () => getIntent()
+                },
+
+                buyerCountry: {
+                    type:       'string',
+                    queryParam: true,
+                    required:   false,
+                    value:      getBuyerCountry
                 },
 
                 commit: {
