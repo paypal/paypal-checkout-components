@@ -27,7 +27,7 @@ function getDefaultEnv() : $Values<typeof ENV> {
     return ENV.PRODUCTION;
 }
 
-export const config = {
+export let config = {
 
     scriptUrl: __TEST__
         ? `//${ window.location.host }/base/src/load.js`
@@ -493,9 +493,9 @@ export const config = {
 
     get apiUrls() : Object {
 
-        const domain      = `${ window.location.protocol }//${ window.location.host }`;
-        const corsApiUrls = config.corsApiUrls;
-        const wwwApiUrls  = config.wwwApiUrls;
+        let domain      = `${ window.location.protocol }//${ window.location.host }`;
+        let corsApiUrls = config.corsApiUrls;
+        let wwwApiUrls  = config.wwwApiUrls;
 
         return {
             [ ENV.LOCAL ]:      domain === wwwApiUrls.local      ? wwwApiUrls.local      : corsApiUrls.local,
@@ -615,7 +615,7 @@ export const config = {
 
     get checkoutUrls() : Object {
 
-        const paypalUrls = config.paypalUrls;
+        let paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local }${ config.checkoutUris.local.replace(`:${ config.ports.default }`, `:${ config.ports.checkout }`) }`,
@@ -629,7 +629,7 @@ export const config = {
 
     get guestUrls() : Object {
 
-        const paypalUrls = config.paypalUrls;
+        let paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.guest }`) }${ config.guestUris.local }`,
@@ -643,7 +643,7 @@ export const config = {
 
     get altpayUrls() : Object {
 
-        const paypalUrls = config.paypalUrls;
+        let paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.altpay }`) }${ config.altpayUris.local }`,
@@ -657,7 +657,7 @@ export const config = {
 
     get billingUrls() : Object {
 
-        const paypalUrls = config.paypalUrls;
+        let paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.checkout }`) }${ config.billingUris.local }`,
@@ -671,7 +671,7 @@ export const config = {
 
     get buttonUrls() : Object {
 
-        const paypalUrls = config.paypalUrls;
+        let paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.button }`) }${ config.buttonUris.local }`,
@@ -685,7 +685,7 @@ export const config = {
 
     get inlinedCardFieldUrls() : Object {
 
-        const paypalUrls = config.paypalUrls;
+        let paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.button }`) }${ config.inlinedCardFieldUris.local }`,
@@ -699,7 +699,7 @@ export const config = {
 
     get loginUrls() : Object {
 
-        const paypalUrls = config.paypalUrls;
+        let paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.stage }${ config.loginUri }`,
@@ -712,7 +712,7 @@ export const config = {
 
     get paymentsStandardUrls() : Object {
 
-        const paypalUrls = config.paypalUrls;
+        let paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local }${ config.paymentStandardUri }`,
@@ -725,7 +725,7 @@ export const config = {
 
     get metaFrameUrls() : Object {
 
-        const paypalUrls = config.paypalUrls;
+        let paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local }${ config.postBridgeUri }&env=local`,
@@ -739,7 +739,7 @@ export const config = {
 
     get legacyCheckoutUrls() : Object {
 
-        const paypalUrls = config.paypalUrls;
+        let paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.stage }${ config.legacyCheckoutUris.local }`,
@@ -752,8 +752,8 @@ export const config = {
 
     get authApiUrls() : Object {
 
-        const apiUrls    = config.apiUrls;
-        const authApiUri = config.authApiUri;
+        let apiUrls    = config.apiUrls;
+        let authApiUri = config.authApiUri;
 
         return {
             [ ENV.LOCAL ]:      `${ apiUrls.local }${ authApiUri }`,
@@ -766,8 +766,8 @@ export const config = {
 
     get paymentApiUrls() : Object {
 
-        const apiUrls       = config.apiUrls;
-        const paymentApiUri = config.paymentApiUri;
+        let apiUrls       = config.apiUrls;
+        let paymentApiUri = config.paymentApiUri;
 
         return {
             [ ENV.LOCAL ]:      `${ apiUrls.local }${ paymentApiUri }`,
@@ -780,8 +780,8 @@ export const config = {
 
     get orderApiUrls() : Object {
 
-        const apiUrls = config.apiUrls;
-        const orderApiUri = config.orderApiUri;
+        let apiUrls = config.apiUrls;
+        let orderApiUri = config.orderApiUri;
 
         return {
             [ENV.LOCAL]:      `${ apiUrls.local }${ orderApiUri }`,
@@ -794,8 +794,8 @@ export const config = {
 
     get billingApiUrls() : Object {
 
-        const apiUrls       = config.apiUrls;
-        const billingApiUri = config.billingApiUri;
+        let apiUrls       = config.apiUrls;
+        let billingApiUri = config.billingApiUri;
 
         return {
             [ ENV.LOCAL ]:      `${ apiUrls.local }${ billingApiUri }`,
@@ -808,8 +808,8 @@ export const config = {
 
     get experienceApiUrls() : Object {
 
-        const apiUrls          = config.apiUrls;
-        const experienceApiUri = config.experienceApiUri;
+        let apiUrls          = config.apiUrls;
+        let experienceApiUri = config.experienceApiUri;
 
         return {
             [ ENV.LOCAL ]:      `${ apiUrls.local }${ experienceApiUri }`,
@@ -822,8 +822,8 @@ export const config = {
 
     get trackingApiUrls() : Object {
 
-        const apiUrls       = config.apiUrls;
-        const trackingApiUri = config.trackingApiUri;
+        let apiUrls       = config.apiUrls;
+        let trackingApiUri = config.trackingApiUri;
 
         return {
             [ ENV.LOCAL ]:      `${ apiUrls.local }${ trackingApiUri }`,
@@ -858,9 +858,9 @@ export const config = {
 
     get apiUrl() : string {
 
-        const domain     = `${ window.location.protocol }//${ window.location.host }`;
-        const corsApiUrl = config.corsApiUrl;
-        const wwwApiUrl  = config.wwwApiUrl;
+        let domain     = `${ window.location.protocol }//${ window.location.host }`;
+        let corsApiUrl = config.corsApiUrl;
+        let wwwApiUrl  = config.wwwApiUrl;
 
         return domain === wwwApiUrl ? wwwApiUrl : corsApiUrl;
     },
@@ -890,8 +890,8 @@ export const config = {
     },
 
     get loggerUrl() : string {
-        const isTestExperiment = Math.random() < config.loggerThrottlePercentage;
-        const loggerUrl = isTestExperiment ? config.loggerUri : config.hermesLoggerUri;
+        let isTestExperiment = Math.random() < config.loggerThrottlePercentage;
+        let loggerUrl = isTestExperiment ? config.loggerUri : config.hermesLoggerUri;
 
         return `${ config.paypalUrl }${ loggerUrl }`;
     },
