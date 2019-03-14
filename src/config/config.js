@@ -391,6 +391,22 @@ export let config = {
 
         'motherhoodcanada.ca': {
             disable_venmo: true
+        },
+
+        'atomtickets.com': {
+            disable_venmo: true
+        },
+
+        'trademore.com': {
+            disable_venmo: true
+        },
+
+        'lasheaseoffer.com': {
+            disable_venmo: true
+        },
+
+        'rookie.paypalsixthman.com': {
+            disable_venmo: true
         }
     },
 
