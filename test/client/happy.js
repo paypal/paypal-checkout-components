@@ -42,6 +42,10 @@ describe('happy cases', () => {
                             }
 
                             return props.onApprove({ orderID, payerID }, {});
+
+                        // eslint-disable-next-line max-nested-callbacks
+                        }).then(() => {
+                            return props.onClose();
                         });
                     })
                 };
@@ -87,6 +91,9 @@ describe('happy cases', () => {
                             }
 
                             return props.onApprove({ billingToken, payerID }, {});
+
+                        }).then(() => {
+                            return props.onClose();
                         });
                     })
                 };
@@ -104,10 +111,12 @@ describe('happy cases', () => {
     
         let renderToCalled = false;
     
-        window.paypal.Checkout = () => {
+        window.paypal.Checkout = (props) => {
             return {
                 renderTo: async () => {
                     renderToCalled = true;
+
+                    return props.onClose();
                 }
             };
         };
@@ -337,7 +346,9 @@ describe('happy cases', () => {
                     onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
                 },
                 close: () => {
-                    return ZalgoPromise.resolve();
+                    return ZalgoPromise.resolve().then(() => {
+                        return props.onClose();
+                    });
                 }
             };
         };
@@ -552,7 +563,9 @@ describe('happy cases', () => {
                     onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
                 },
                 close: () => {
-                    return ZalgoPromise.resolve();
+                    return ZalgoPromise.resolve().then(() => {
+                        return props.onClose();
+                    });
                 }
             };
         };

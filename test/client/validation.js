@@ -131,7 +131,9 @@ describe('validation cases', () => {
 
             window.paypal.Checkout = expect('Checkout', (props) => {
                 return {
-                    close:    expect('close'),
+                    close:    expect('close', () => {
+                        return props.onClose();
+                    }),
                     renderTo: expect('renderTo', async () => {
                         return props.createOrder().then(avoid('createOrderThen'))
                             .timeout(50).catch(expect('timeout'));

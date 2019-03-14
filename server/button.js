@@ -9,6 +9,7 @@ import { getParams } from './params';
 import { EVENT } from './constants';
 import { serverErrorResponse, clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON } from './util';
 import type { ExpressRequest, ExpressResponse, LoggerType } from './types';
+import { buttonStyle } from './style';
 
 export function getButtonMiddleware({ logger = defaultLogger } : { logger? : LoggerType } = {}) : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
     startWatchers();
@@ -42,7 +43,13 @@ export function getButtonMiddleware({ logger = defaultLogger } : { logger? : Log
 
             const pageHTML = `
                 <body data-nonce="${ nonce }" data-client-version="${ client.version }" data-render-version="${ render.version }">
-                    ${ buttonHTML }
+                    <style nonce="${ nonce }">
+                        ${ buttonStyle }
+                    </style>
+                    <div id="buttons-container" class="buttons-container">
+                        ${ buttonHTML }
+                    </div>
+                    <div id="card-fields-container" class="card-fields-container"></div>
                     ${ getSDKLoader({ nonce }) }
                     <script nonce="${ nonce }">${ client.script }</script>
                     <script nonce="${ nonce }">spb.setupButton(${ safeJSON(fundingEligibility) })</script>

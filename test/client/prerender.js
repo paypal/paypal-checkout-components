@@ -57,61 +57,9 @@ describe('prerender cases', () => {
                             }
 
                             return props.onApprove({ orderID, payerID }, {});
-                        });
-                    })
-                };
-            });
 
-            window.document.body.innerHTML = createButtonHTML();
-            await setupButton();
-        });
-    });
-
-    it('should prerender a button and pass an order promise', async () => {
-        return await wrapPromise(async ({ expect, avoid }) => {
-
-            const orderID = 'XXXXXXXXXX';
-            const payerID = 'YYYYYYYYYY';
-
-            const win = {
-                close: avoid('close')
-            };
-
-            window.xprops.getPrerenderDetails = () => {
-                return ZalgoPromise.try(() => {
-                    return {
-                        win,
-                        order:         ZalgoPromise.resolve(orderID),
-                        fundingSource: FUNDING.PAYPAL
-                    };
-                });
-            };
-
-            window.xprops.createOrder = avoid('createOrder');
-
-            window.xprops.onApprove = expect('onApprove', async (data) => {
-                if (data.orderID !== orderID) {
-                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
-                }
-
-                if (data.payerID !== payerID) {
-                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
-                }
-            });
-
-            window.paypal.Checkout = expect('Checkout', (props) => {
-                if (props.window !== win) {
-                    throw new Error(`Expected window prop to be passed`);
-                }
-
-                return {
-                    renderTo: expect('renderTo', async () => {
-                        return props.createOrder().then(id => {
-                            if (id !== orderID) {
-                                throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
-                            }
-
-                            return props.onApprove({ orderID, payerID }, {});
+                        }).then(() => {
+                            return props.onClose();
                         });
                     })
                 };
@@ -243,7 +191,9 @@ describe('prerender cases', () => {
                 return {
                     close:    avoid('close'),
                     renderTo: expect('renderTo', async () => {
-                        return props.createOrder().then(expect('createOrderThen'));
+                        return props.createOrder().then(expect('createOrderThen')).then(() => {
+                            return props.onClose();
+                        });
                     })
                 };
             });
@@ -286,7 +236,9 @@ describe('prerender cases', () => {
                 return {
                     close:    avoid('close'),
                     renderTo: expect('renderTo', async () => {
-                        return props.createOrder().then(expect('createOrderThen'));
+                        return props.createOrder().then(expect('createOrderThen')).then(() => {
+                            return props.onClose();
+                        });
                     })
                 };
             });

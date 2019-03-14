@@ -9,3 +9,5 @@ export const API_URI = {
     PAYMENT:  `${ BASE_API_URL }/payment`,
     GRAPHQL:  '/graphql'
 };
+
+export const INLINE_GUEST_ENABLED = false;

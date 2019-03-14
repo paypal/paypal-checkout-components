@@ -54,6 +54,7 @@
     "express": "^4.16.3",
     "flow-bin": "^0.70.0",
     "grumbler-scripts": "^3.0.18",
+    "post-robot": "^10.0.13",
     "sync-browser-mocks": "^1.0.44"
   },
   "license": "PayPal",

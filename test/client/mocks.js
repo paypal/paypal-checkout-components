@@ -28,10 +28,14 @@ export function setupMocks() {
                 lang:    'en'
             }
         },
-        Checkout: () => {
+        Checkout: (props) => {
             return {
                 renderTo: () => {
-                    return ZalgoPromise.resolve();
+                    return ZalgoPromise.resolve().then(() => {
+                        return props.onApprove();
+                    }).then(() => {
+                        return props.onClose();
+                    });
                 },
                 close: () => {
                     throw new Error(`Checkout component closed`);
