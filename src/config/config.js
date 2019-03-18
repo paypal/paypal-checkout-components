@@ -407,6 +407,10 @@ export let config = {
 
         'rookie.paypalsixthman.com': {
             disable_venmo: true
+        },
+
+        '1800Contacts.com': {
+            disable_venmo: true
         }
     },
 
