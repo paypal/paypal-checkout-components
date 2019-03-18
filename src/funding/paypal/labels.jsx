@@ -27,15 +27,19 @@ function placeholderToJSX(text : string, placeholders : { [string] : (?string) =
 
 function contentToJSX(key : string, locale : LocaleType, { logoColor, period } : { logoColor : $Values<typeof LOGO_COLOR>, period? : number } = {}) : ChildType {
     const { lang } = locale;
-    const text = componentContent[lang][key];
+    const Content = componentContent[lang][key];
 
-    return placeholderToJSX(text, {
-        text:   (token) => <span class={ CLASS.TEXT }>{ token }</span>,
-        pp:     ()      => <PPLogo logoColor={ logoColor } />,
-        paypal: ()      => <PayPalLogo logoColor={ logoColor } />,
-        br:     ()      => <br />,
-        period: ()      => { return period ? period.toString() : null; }
-    });
+    if (typeof Content === 'string') {
+        return placeholderToJSX(Content, {
+            text:   (token) => <span class={ CLASS.TEXT }>{token}</span>,
+            pp:     () => <PPLogo logoColor={ logoColor } />,
+            paypal: () => <PayPalLogo logoColor={ logoColor } />,
+            br:     () => <br />,
+            period: () => { return period ? period.toString() : null; }
+        });
+    }
+
+    return <Content logoColor={ logoColor } period={ period } />;
 }
 
 export function PayPal({ logoColor } : { logoColor : $Values<typeof LOGO_COLOR> }) : ChildType {

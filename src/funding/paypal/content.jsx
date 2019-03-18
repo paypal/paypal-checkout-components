@@ -1,17 +1,34 @@
 /* @flow */
 /* eslint max-lines: 0 */
+/** @jsx node */
+/** @jsxFrag Fragment */
 
+import { node, Fragment, type ChildType, type NodePropsType, type ChildrenType, type ComponentNode } from 'jsx-pragmatic/src'; // eslint-disable-line no-unused-vars
 import { LANG } from '@paypal/sdk-constants/src';
+import { PPLogo, PayPalLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
-type ContentMap = {
+import { Text } from '../common';
+
+export type Content = string | ({ logoColor : $Values<typeof LOGO_COLOR>, period? : number }) => ChildType;
+
+export type ContentMap = {
     [ $Values<typeof LANG> ] : {
-        checkout : string,
-        pay : string,
-        installment? : string,
-        installment_period? : string,
-        safer_tag : string,
-        dual_tag? : string
+        checkout : Content,
+        pay : Content,
+        installment? : Content,
+        installment_period? : Content,
+        safer_tag : Content,
+        dual_tag? : Content
     }
+};
+
+const Installment = ({ logoColor } : NodePropsType, children : ChildrenType) : ChildType => {
+    return (
+        // $FlowFixMe
+        <>
+            <PPLogo logoColor={ logoColor } /> <PayPalLogo logoColor={ logoColor } /> <Text>{ children }</Text>
+        </>
+    );
 };
 
 export const componentContent : ContentMap = {
@@ -19,8 +36,8 @@ export const componentContent : ContentMap = {
         checkout:           '{pp} {paypal} Checkout',
         safer_tag:          'The safer, easier way to pay',
         pay:                'Pay with {paypal}',
-        installment:        '{pp} {paypal}  Interest free{br}  payments',
-        installment_period: '{pp} {paypal}  Pay up to {period}x{br}  without interest',
+        installment:        ({ logoColor }) => <Installment logoColor={ logoColor }> Interest free<br /> payments</Installment>,
+        installment_period: ({ logoColor, period }) => <Installment logoColor={ logoColor }> Pay up to { period ? period.toString() : '' }x<br /> without interest</Installment>,
         dual_tag:           'Two easy ways to pay',
         buynow:             '{pp} {paypal} Buy Now',
         poweredBy:          'Powered by {paypal}'
@@ -36,8 +53,8 @@ export const componentContent : ContentMap = {
         checkout:           '{pp} {paypal} Pagar',
         safer_tag:          'La forma rápida y segura de pagar',
         pay:                'Pagar con {paypal}',
-        installment:        '{pp} {paypal}  Pagos en{br}  mensualidades',
-        installment_period: '{pp} {paypal}  Pague hasta{br}  {period}x sin interés',
+        installment:        ({ logoColor }) => <Installment logoColor={ logoColor }> Pagos en<br /> mensualidades</Installment>,
+        installment_period: ({ logoColor, period }) => <Installment logoColor={ logoColor }> Pague hasta { period ? period.toString() : '' }x<br /> sin interés</Installment>,
         buynow:             '{pp} {paypal} Comprar ahora',
         poweredBy:          'Desarrollado por {paypal}'
     },
@@ -73,8 +90,8 @@ export const componentContent : ContentMap = {
         checkout:           '{pp} {paypal} Checkout',
         safer_tag:          'A maneira fácil e segura de pagar',
         pay:                'Pague com {paypal}',
-        installment:        '{pp} {paypal}  Pagamentos{br}  parcelados',
-        installment_period: '{pp} {paypal}  Pague em até{br}  {period}x sem juros',
+        installment:        ({ logoColor }) => <Installment logoColor={ logoColor }> Pagamentos<br /> parcelados</Installment>,
+        installment_period: ({ logoColor, period }) => <Installment logoColor={ logoColor }> Pague em até<br />{ period ? period.toString() : '' }x sem juros</Installment>,
         buynow:             '{pp} {paypal} Comprar agora',
         poweredBy:          'Powered by {paypal}'
     },
