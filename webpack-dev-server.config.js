@@ -1,8 +1,8 @@
 /* @flow */
 /* eslint unicorn/filename-case: 0 */
-import { BASE, getWebpackConfig } from './webpack.config';
+import { BASE } from './webpack.config';
 
-const webpackConfig = {
+let webpackConfig = {
     ...BASE
 };
 
