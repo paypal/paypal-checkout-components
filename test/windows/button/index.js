@@ -19,7 +19,7 @@ if (flow === 'iframe') {
 
 if (bridge) {
     errorOnWindowOpen();
-    delay = 100;
+    delay = 200;
 }
 
 if (window.location.href.indexOf('version=test_minor') === -1) {
