@@ -1,3 +1,13 @@
+## <small>5.0.13 (2019-03-18)</small>
+
+* Add buyerCountry prop ([f9144ef](http://github.paypal.com/paypal/paypal-checkout/commit/f9144ef))
+* Error if no url passed to actions.redirect ([713036b](http://github.paypal.com/paypal/paypal-checkout/commit/713036b))
+* Fix dev server ([20d4847](http://github.paypal.com/paypal/paypal-checkout/commit/20d4847))
+* Fix installment content ([20376d7](http://github.paypal.com/paypal/paypal-checkout/commit/20376d7))
+* Remove old doc ([b3f5562](http://github.paypal.com/paypal/paypal-checkout/commit/b3f5562))
+
+
+
 ## <small>5.0.12 (2019-03-11)</small>
 
 * Add forceIframe as a protected export ([081312e](http://github.paypal.com/paypal/paypal-checkout/commit/081312e))
