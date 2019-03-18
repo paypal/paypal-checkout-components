@@ -1220,7 +1220,7 @@
             "later_tag": "Jetzt bei uns bequem in Raten zahlen.",
             "pay": "Mit {logo:paypal} zahlen",
             "buynow": "{logo:pp} {logo:paypal} Jetzt kaufen",
-            "poweredBy": "Abgewickelt durch {logo:paypal}"
+            "poweredBy": "Powered by {logo:paypal}"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
