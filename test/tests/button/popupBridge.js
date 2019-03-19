@@ -2,6 +2,7 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { wrapPromise } from 'belter/src';
 
 import { generateECToken, createTestContainer, destroyTestContainer,
     setupPopupBridge, destroyPopupBridge, onHashChange, generatePaymentID,
@@ -156,44 +157,34 @@ for (let flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button then redirect on authorize', () => {
+            return wrapPromise(({ expect, avoid }) => {
+                let token = generateECToken();
 
-            let token = generateECToken();
+                let openPopupBridge = window.popupBridge.open;
 
-            let openPopupBridgeCalled = false;
-            let openPopupBridge = window.popupBridge.open;
+                window.popupBridge.open = expect('window.popupBridge.open', (url) => {
+                    assert.ok(url.indexOf(`token=${ token }`) !== -1);
+                    assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                    assert.ok(url.indexOf(`ba_token=`) === -1);
+                    assert.ok(url.indexOf(`billingurl`) === -1);
+                    return openPopupBridge(url);
+                });
 
-            window.popupBridge.open = (url) => {
-                assert.ok(url.indexOf(`token=${ token }`) !== -1);
-                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
-                assert.ok(url.indexOf(`ba_token=`) === -1);
-                assert.ok(url.indexOf(`billingurl`) === -1);
-                openPopupBridgeCalled = true;
-                return openPopupBridge(url);
-            };
+                return window.paypal.Button.render({
 
-            return window.paypal.Button.render({
+                    test: { flow, action: 'checkout', bridge: true },
 
-                test: { flow, action: 'checkout', bridge: true },
+                    payment:     expect('payment', () => token),
+                    onAuthorize: expect('onAuthorize', (data, actions) => {
+                        return actions.redirect(window);
+                    }),
+                    onCancel: avoid('onCancel')
 
-                payment() : string | ZalgoPromise<string> {
-                    return token;
-                },
+                }, '#testContainer').then(() => {
 
-                onAuthorize(data, actions) : ZalgoPromise<void> {
-                    return actions.redirect(window);
-                },
-
-                onCancel(data, actions) : ZalgoPromise<void> {
-                    return actions.redirect(window);
-                }
-
-            }, '#testContainer').then(() => {
-
-                return onHashChange().then(urlHash => {
-                    if (!openPopupBridgeCalled) {
-                        throw new Error(`Expected window.popupBridge.open to have been called`);
-                    }
-                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
+                    return onHashChange().then(expect('onHashChange', urlHash => {
+                        assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
+                    }));
                 });
             });
         });
