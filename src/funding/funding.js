@@ -1,12 +1,13 @@
 /* @flow */
 
+import { getDomain } from 'cross-domain-utils/src';
+
 import { ENV, CARD_PRIORITY, FUNDING, BUTTON_LAYOUT, FUNDING_ELIGIBILITY_REASON } from '../constants';
 import type { LocaleType, FundingSource, FundingSelection, FundingList } from '../types';
 
-import { getFundingConfig, getCardConfig, FUNDING_PRIORITY, FUNDING_CONFIG } from './config';
-
 import { config } from '../config';
-import { getDomain } from 'cross-domain-utils/src';
+
+import { getFundingConfig, getCardConfig, FUNDING_PRIORITY, FUNDING_CONFIG } from './config';
 
 let fundingEligibilityReasons = [];
 
