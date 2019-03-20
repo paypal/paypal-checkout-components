@@ -1281,8 +1281,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     test: {
                         flow,
-                        action: 'checkout',
-                        bridge: true
+                        action: 'checkout'
                     },
 
                     payment() : string | ZalgoPromise<string> {
