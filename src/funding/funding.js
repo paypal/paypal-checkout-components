@@ -5,6 +5,9 @@ import type { LocaleType, FundingSource, FundingSelection, FundingList } from '.
 
 import { getFundingConfig, getCardConfig, FUNDING_PRIORITY, FUNDING_CONFIG } from './config';
 
+import { config } from '../config';
+import { getDomain } from 'cross-domain-utils/src';
+
 let fundingEligibilityReasons = [];
 
 export function isFundingIneligible(source : FundingSource, { locale, funding, layout, commit } :
@@ -12,6 +15,7 @@ export function isFundingIneligible(source : FundingSource, { locale, funding, l
 
     let isVertical = layout === BUTTON_LAYOUT.VERTICAL;
     let allowSecondary = getFundingConfig(source, isVertical ? 'allowVertical' : 'allowHorizontal');
+    let apmDomain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
 
     if (!allowSecondary) {
         return FUNDING_ELIGIBILITY_REASON.SECONDARY_DISALLOWED;
@@ -29,7 +33,7 @@ export function isFundingIneligible(source : FundingSource, { locale, funding, l
         return FUNDING_ELIGIBILITY_REASON.DISALLOWED_COUNTRY;
     }
 
-    if (getFundingConfig(source, 'requireCommitAsTrue') && !commit) {
+    if ((getFundingConfig(source, 'requireCommitAsTrue') && !commit) || config.apmTestDomains.indexOf(apmDomain) !== -1) {
         return FUNDING_ELIGIBILITY_REASON.COMMIT_NOT_SET;
     }
 }
