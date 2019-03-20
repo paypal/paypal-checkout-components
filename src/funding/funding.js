@@ -4,7 +4,6 @@ import { getDomain } from 'cross-domain-utils/src';
 
 import { ENV, CARD_PRIORITY, FUNDING, BUTTON_LAYOUT, FUNDING_ELIGIBILITY_REASON } from '../constants';
 import type { LocaleType, FundingSource, FundingSelection, FundingList } from '../types';
-
 import { config } from '../config';
 
 import { getFundingConfig, getCardConfig, FUNDING_PRIORITY, FUNDING_CONFIG } from './config';
