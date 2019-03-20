@@ -34,7 +34,7 @@ export function isFundingIneligible(source : FundingSource, { locale, funding, l
         return FUNDING_ELIGIBILITY_REASON.DISALLOWED_COUNTRY;
     }
 
-    if ((getFundingConfig(source, 'requireCommitAsTrue') && !commit) || isWhitelistedMerchant) {
+    if (getFundingConfig(source, 'requireCommitAsTrue') && !commit && !isWhitelistedMerchant) {
         return FUNDING_ELIGIBILITY_REASON.COMMIT_NOT_SET;
     }
 }
