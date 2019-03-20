@@ -9,13 +9,14 @@ import { config } from '../config';
 import { getFundingConfig, getCardConfig, FUNDING_PRIORITY, FUNDING_CONFIG } from './config';
 
 let fundingEligibilityReasons = [];
+let apmDomain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
+let isWhitelistedMerchant = config.apmTestDomains.indexOf(apmDomain) !== -1;
 
 export function isFundingIneligible(source : FundingSource, { locale, funding, layout, commit } :
     { locale : LocaleType, funding : FundingSelection, layout : string, commit? : boolean }) : ?string {
 
     let isVertical = layout === BUTTON_LAYOUT.VERTICAL;
     let allowSecondary = getFundingConfig(source, isVertical ? 'allowVertical' : 'allowHorizontal');
-    let apmDomain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
 
     if (!allowSecondary) {
         return FUNDING_ELIGIBILITY_REASON.SECONDARY_DISALLOWED;
@@ -33,7 +34,7 @@ export function isFundingIneligible(source : FundingSource, { locale, funding, l
         return FUNDING_ELIGIBILITY_REASON.DISALLOWED_COUNTRY;
     }
 
-    if ((getFundingConfig(source, 'requireCommitAsTrue') && !commit) || config.apmTestDomains.indexOf(apmDomain) !== -1) {
+    if ((getFundingConfig(source, 'requireCommitAsTrue') && !commit) || isWhitelistedMerchant) {
         return FUNDING_ELIGIBILITY_REASON.COMMIT_NOT_SET;
     }
 }
