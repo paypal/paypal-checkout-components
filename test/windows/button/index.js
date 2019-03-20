@@ -1,6 +1,6 @@
 /* @flow */
 
-import { type ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { componentTemplate } from '../../../src/button/template';
 import { getElement, getElements, errorOnWindowOpen } from '../../tests/common';
@@ -115,14 +115,17 @@ if (action === 'auth') {
     }
 
 } else if (action === 'checkout' || action === 'shippingChange' || action === 'shippingOptions' || action === 'cancel' || action === 'fallback' || action === 'error' || action === 'popout') {
-
-    if (delay) {
-        setTimeout(() => {
-            getElement(selector || '.paypal-button', document).click();
-        }, delay);
-    } else {
+    ZalgoPromise.try(() => {
+        if (bridge && window.xprops.awaitPopupBridge) {
+            return window.xprops.awaitPopupBridge();
+        }
+    }).then(() => {
+        if (delay) {
+            return ZalgoPromise.delay(delay);
+        }
+    }).then(() => {
         getElement(selector || '.paypal-button', document).click();
-    }
+    });
 }
 
 if (onRender) {
