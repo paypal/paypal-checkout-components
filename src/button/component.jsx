@@ -132,7 +132,9 @@ type ButtonOptions = {
     meta : Object,
     validate? : ({ enable : () => ZalgoPromise<void>, disable : () => ZalgoPromise<void> }) => void,
     stage? : string,
-    stageUrl? : string
+    stageUrl? : string,
+    localhostUrl? : string,
+    checkoutUri? : string
 };
 
 export let Button : Component<ButtonOptions> = create({
@@ -350,6 +352,30 @@ export let Button : Component<ButtonOptions> = create({
                 if (env === ENV.STAGE || env === ENV.LOCAL) {
                     return config.stageUrl;
                 }
+            }
+        },
+
+        localhostUrl: {
+            type:       'string',
+            required:   false,
+            queryParam: true,
+
+            def(props) : ?string {
+                const env = props.env || config.env;
+
+                if (env === ENV.LOCAL) {
+                    return config.localhostUrl;
+                }
+            }
+        },
+
+        checkoutUri: {
+            type:       'string',
+            required:   false,
+            queryParam: true,
+
+            def() : ?string {
+                return config.checkoutUri;
             }
         },
 

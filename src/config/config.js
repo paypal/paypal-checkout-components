@@ -60,6 +60,15 @@ export let config = {
         return `${ config.apiStage }.${ config.stageDomain }`;
     },
 
+    get localhostUrl() : string {
+        return `http://localhost.paypal.com:${ config.ports.default }`;
+    },
+
+    set localhostUrl(val) {
+        delete this.localhostUrl;
+        this.localhostUrl = val;
+    },
+
     merchantID: '',
 
     logLevel: __PAYPAL_CHECKOUT__.__DEFAULT_LOG_LEVEL__,
@@ -455,7 +464,7 @@ export let config = {
 
     get paypalUrls() : Object {
         return {
-            [ ENV.LOCAL ]:      `http://localhost.paypal.com:${ config.ports.default }`,
+            [ ENV.LOCAL ]:      config.localhostUrl,
             [ ENV.STAGE ]:      `https://www.${ config.stageUrl }`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
@@ -466,7 +475,7 @@ export let config = {
 
     get paypalDomains() : Object {
         return {
-            [ ENV.LOCAL ]:      `http://localhost.paypal.com:${ config.ports.default }`,
+            [ ENV.LOCAL ]:      /^https?:\/\/.*\.paypal\.com:?\d*$/,
             [ ENV.STAGE ]:      `https://www.${ config.stageUrl }`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
@@ -510,13 +519,35 @@ export let config = {
         };
     },
 
-    checkoutUris: {
-        [ ENV.LOCAL ]:      `/webapps/hermes?ul=0`,
-        [ ENV.STAGE ]:      `/webapps/hermes`,
-        [ ENV.SANDBOX ]:    `/checkoutnow`,
-        [ ENV.PRODUCTION ]: `/checkoutnow`,
-        [ ENV.TEST ]:       `/base/test/windows/checkout/index.htm?checkouturl=true`,
-        [ ENV.DEMO ]:       `/demo/dev/checkout.htm`
+    get checkoutUri() : ?string {
+        return null;
+    },
+
+    set checkoutUri(val) {
+        delete this.checkoutUri;
+        this.checkoutUri = val;
+    },
+
+    get checkoutUris() : Object {
+        if (config.checkoutUri) {
+            return {
+                [ ENV.LOCAL ]:      config.checkoutUri,
+                [ ENV.STAGE ]:      config.checkoutUri,
+                [ ENV.SANDBOX ]:    config.checkoutUri,
+                [ ENV.PRODUCTION ]: config.checkoutUri,
+                [ ENV.TEST ]:       config.checkoutUri,
+                [ ENV.DEMO ]:       config.checkoutUri
+            };
+        }
+
+        return {
+            [ ENV.LOCAL ]:      `/webapps/hermes?ul=0`,
+            [ ENV.STAGE ]:      `/webapps/hermes`,
+            [ ENV.SANDBOX ]:    `/checkoutnow`,
+            [ ENV.PRODUCTION ]: `/checkoutnow`,
+            [ ENV.TEST ]:       `/base/test/windows/checkout/index.htm?checkouturl=true`,
+            [ ENV.DEMO ]:       `/demo/dev/checkout.htm`
+        };
     },
 
     altpayUris: {
