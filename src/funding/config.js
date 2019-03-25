@@ -136,8 +136,6 @@ export const FUNDING_CONFIG = {
 
         allowHorizontal: false,
         allowVertical:   true,
-
-        requireCommitAsTrue: true
     },
 
     [ FUNDING.SOFORT ]: {
