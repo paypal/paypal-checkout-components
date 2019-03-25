@@ -103,9 +103,7 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
+        allowVertical:   true
     },
 
     [ FUNDING.ELV ]: {
@@ -128,9 +126,7 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
+        allowVertical:   true
     },
 
     [ FUNDING.GIROPAY ]: {
@@ -139,9 +135,7 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
+        allowVertical:   true
     },
 
     [ FUNDING.SOFORT ]: {
@@ -155,9 +149,7 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
+        allowVertical:   true
     },
 
     [ FUNDING.EPS ]: {
@@ -166,9 +158,7 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
+        allowVertical:   true
     },
 
     [ FUNDING.MYBANK ]: {
@@ -177,9 +167,7 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
+        allowVertical:   true
     },
     [ FUNDING.P24 ]: {
         allowedCountries: [
@@ -187,9 +175,7 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
+        allowVertical:   true
     },
     [ FUNDING.ZIMPLER ]: {
         allowedCountries: [
@@ -197,9 +183,7 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: false,
-        allowVertical:   true,
-
-        requireCommitAsTrue: true
+        allowVertical:   true
     }
 };
 
