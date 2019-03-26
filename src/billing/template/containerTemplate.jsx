@@ -83,6 +83,9 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
     function close(event) {
         event.preventDefault();
         event.stopPropagation();
+        if (props.onCancel) {
+            props.onCancel();
+        }
         actions.close();
     }
 

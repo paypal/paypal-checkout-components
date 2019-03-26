@@ -7,8 +7,7 @@ import { create } from 'zoid/src';
 import { ENV } from '../constants';
 import { getBrowserLocale, getCurrentScriptUrl } from '../lib';
 import { config } from '../config';
-
-import { containerTemplate } from './template';
+import { containerTemplate } from '../billing/template';
 
 export const ThreeDomainSecure = create({
     tag:  'paypal-3ds',
@@ -41,9 +40,12 @@ export const ThreeDomainSecure = create({
         },
         locale: {
             type:           'string',
+            required:       false,
+            queryParam:     'locale.x',
             allowDelegate:  true,
-            def:            () => {
-                const { lang, country } = getBrowserLocale();
+
+            def() : string {
+                let { lang, country } = getBrowserLocale();
                 return `${ lang }_${ country }`;
             }
         },
@@ -75,16 +77,9 @@ export const ThreeDomainSecure = create({
             type:       'function',
             required:   false
         },
-        onFailure: {
+        onError: {
             type:       'function',
             required:   false
-        },
-        onClose: {
-            type:      'function',
-            required:  false,
-            once:      true,
-            promisify: true,
-            noop:      true
         },
         onCancel: {
             type:           'function',
