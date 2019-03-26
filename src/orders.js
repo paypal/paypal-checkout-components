@@ -118,7 +118,7 @@ export function validateOrder(orderID : string) : ZalgoPromise<void> {
             }
         }
     `, { orderID }).then(res => {
-        const cart = res.data.checkout.checkoutSession.cart;
+        const cart = res.data.checkoutSession.cart;
 
         const intent = (cart.intent.toLowerCase() === 'sale') ? INTENT.CAPTURE : cart.intent.toLowerCase();
         const currency = cart.amounts && cart.amounts.total.currencyCode;

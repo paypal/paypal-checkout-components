@@ -217,20 +217,18 @@ export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
         uri:    '/graphql',
         data:   {
             data: {
-                checkout: {
-                    checkoutSession: {
-                        cart: {
-                            intent:    'capture',
-                            returnUrl: {
-                                href: 'https://www.paypal.com/checkoutnow/error'
-                            },
-                            cancelUrl: {
-                                href: 'https://www.paypal.com/checkoutnow/error'
-                            },
-                            amounts: {
-                                total: {
-                                    currencyCode: 'USD'
-                                }
+                checkoutSession: {
+                    cart: {
+                        intent:    'capture',
+                        returnUrl: {
+                            href: 'https://www.paypal.com/checkoutnow/error'
+                        },
+                        cancelUrl: {
+                            href: 'https://www.paypal.com/checkoutnow/error'
+                        },
+                        amounts: {
+                            total: {
+                                currencyCode: 'USD'
                             }
                         }
                     }
