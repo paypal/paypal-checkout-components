@@ -17,7 +17,7 @@ export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, pl
     const fundingConfig = getFundingConfig()[source];
 
     if (!fundingConfig) {
-        throw new Error(`Can not find funding config for ${ source }`);
+        return false;
     }
 
     if (fundingConfig.layouts && fundingConfig.layouts.indexOf(layout) === -1) {
