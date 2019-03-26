@@ -47,16 +47,13 @@ function callAPI({ url, method = 'get', json } : APIRequest) : ZalgoPromise<Obje
         });
 }
 
-export function callGraphQL<T>(query : string) : ZalgoPromise<T> {
+export function callGraphQL<T>(query : string, variables : { [string] : mixed }) : ZalgoPromise<T> {
     return request({
         url:     API_URI.GRAPHQL,
         method:  'POST',
         json:    {
-            query: `
-                query {
-                    ${ query }
-                }
-            `
+            query,
+            variables
         }
     }).then(({ body }) => {
         const errors = (body.errors || []).filter(error => (error.message !== 'ACCOUNT_CANNOT_BE_FETCHED'));
