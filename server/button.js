@@ -7,7 +7,7 @@ import { html } from 'jsx-pragmatic';
 import { getSmartButtonClientScript, getSmartButtonRenderScript, startWatchers } from './watcher';
 import { getParams } from './params';
 import { EVENT } from './constants';
-import { serverErrorResponse, clientErrorResponse, htmlResponse, allowFrame, defaultLogger } from './util';
+import { serverErrorResponse, clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON } from './util';
 import type { ExpressRequest, ExpressResponse, LoggerType } from './types';
 
 export function getButtonMiddleware({ logger = defaultLogger } : { logger? : LoggerType } = {}) : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
@@ -45,7 +45,7 @@ export function getButtonMiddleware({ logger = defaultLogger } : { logger? : Log
                     ${ buttonHTML }
                     ${ getSDKLoader({ nonce }) }
                     <script nonce="${ nonce }">${ client.script }</script>
-                    <script nonce="${ nonce }">spb.setupButton(${ JSON.stringify(fundingEligibility) })</script>
+                    <script nonce="${ nonce }">spb.setupButton(${ safeJSON(fundingEligibility) })</script>
                 </body>
             `;
 

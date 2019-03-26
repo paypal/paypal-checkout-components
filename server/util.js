@@ -29,6 +29,11 @@ export function isLocal() : boolean {
     return (!process.env.NODE_ENV || process.env.NODE_ENV === 'development');
 }
 
+// eslint-disable-next-line no-unused-vars, flowtype/no-weak-types
+export function safeJSON(...args : $ReadOnlyArray<any>) : string {
+    return JSON.stringify.apply(null, arguments).replace(/</g, '\\u003C').replace(/>/g, '\\u003E');
+}
+
 export const defaultLogger = {
     debug: (req : ExpressRequest, ...args : $ReadOnlyArray<mixed>) => console.debug(...args), // eslint-disable-line no-console
     info:  (req : ExpressRequest, ...args : $ReadOnlyArray<mixed>) => console.info(...args),  // eslint-disable-line no-console
