@@ -42,7 +42,7 @@ export function getFundingConfig() : { [$Values<typeof FUNDING>] : ?FundingSourc
             [ FUNDING.PAYPAL ]:     (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.paypal.eligible) ? getPayPalConfig() : null,
             [ FUNDING.VENMO ]:      (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.venmo.eligible) ? getVenmoConfig() : null,
             [ FUNDING.CREDIT ]:     (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.credit.eligible) ? getCreditConfig() : null,
-            [ FUNDING.CARD ]:       (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card.eligible && __paypal_checkout__.serverConfig.fundingEligibility.card.branded)) ? getCardConfig() : null,
+            [ FUNDING.CARD ]:       (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card.eligible && typeof __hosted_fields__ === 'undefined')) ? getCardConfig() : null,
             [ FUNDING.IDEAL ]:      (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.ideal.eligible) ? getIdealConfig() : null,
             [ FUNDING.SEPA ]:       (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.sepa.eligible) ? getSepaConfig() : null,
             [ FUNDING.BANCONTACT ]: (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.bancontact.eligible) ? getBancontactConfig() : null,

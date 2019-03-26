@@ -14,3 +14,5 @@ declare var __paypal_checkout__ : {
         fundingEligibility : FundingEligibilityType
     }
 };
+
+declare var __hosted_fields__ : void;
