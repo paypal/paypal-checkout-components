@@ -147,3 +147,25 @@ export function validateOrder(orderID : string) : ZalgoPromise<void> {
         }
     });
 }
+
+type ClientConfig = {|
+    orderID : string,
+    fundingSource : $Values<typeof FUNDING>,
+    integrationArtifact : string,
+    userExperienceFlow : string,
+    productFlow : string
+|};
+
+export function updateClientConfig({ orderID, fundingSource, integrationArtifact, userExperienceFlow, productFlow } : ClientConfig) : ZalgoPromise<mixed> {
+    return callGraphQL(`
+        mutation UpdateClientConfig($orderID : String!, $fundingSource : String!, $integrationArtifact : String!, $userExperienceFlow : String!, $productFlow : String!) {
+            updateClientConfig(
+                token: $orderID,
+                fundingSource: $fundingSource,
+                integrationArtifact: $integrationArtifact,
+                userExperienceFlow: $userExperienceFlow,
+                productFlow: $productFlow
+            );
+        }
+    `, { orderID, fundingSource, integrationArtifact, userExperienceFlow, productFlow });
+}

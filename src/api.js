@@ -118,14 +118,6 @@ export function patchOrder(orderID : string, patch : []) : ZalgoPromise<OrderRes
     });
 }
 
-export function patchClientConfiguration(orderID : string, data : Object) : ZalgoPromise<void> {
-    return callAPI({
-        method: 'post',
-        url:    `${ API_URI.CHECKOUT }/${ orderID }/session/patchClientConfiguration`,
-        json:   { data }
-    }).then(noop);
-}
-
 export const persistAccessToken = memoize((accessToken) : ZalgoPromise<void> => {
     defaultHeaders[ACCESS_TOKEN_HEADER] = accessToken;
     return getAuth().then(noop);

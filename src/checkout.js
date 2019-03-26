@@ -5,8 +5,8 @@ import { memoize, noop, supportsPopups } from 'belter/src';
 import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
 import { getParent, getTop } from 'cross-domain-utils/src';
 
-import { persistAccessToken, type OrderResponse, patchClientConfiguration } from './api';
-import { CONTEXT, TARGET_ELEMENT, CLIENT_CONFIG } from './constants';
+import { persistAccessToken, type OrderResponse } from './api';
+import { CONTEXT, TARGET_ELEMENT } from './constants';
 import { getNonce } from './util';
 import { buildApproveActions, buildShippingChangeActions } from './orders';
 
@@ -40,14 +40,6 @@ export function setupCheckout() : ZalgoPromise<void> {
 
 export function getDefaultContext() : $Values<typeof CONTEXT> {
     return supportsPopups() ? CONTEXT.POPUP : CONTEXT.IFRAME;
-}
-
-export function addClientConfiguration(token : string) : ZalgoPromise<void> {
-    return patchClientConfiguration(token, {
-        integration_artifact: CLIENT_CONFIG.INTEGRATION_ARTIFACT,
-        product_flow:         CLIENT_CONFIG.PRODUCT_FLOW,
-        user_experience_flow: CLIENT_CONFIG.USER_EXPERIENCE_FLOW
-    });
 }
 
 type CheckoutPropsOverride = {|

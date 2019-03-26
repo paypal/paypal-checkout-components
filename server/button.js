@@ -6,13 +6,8 @@ import { html } from 'jsx-pragmatic';
 
 import { getSmartButtonClientScript, getSmartButtonRenderScript, startWatchers } from './watcher';
 import { getParams } from './params';
-<<<<<<< HEAD
-import { EVENT } from './constants';
-import { serverErrorResponse, clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON } from './util';
-=======
 import { EVENT, HTTP_HEADER } from './constants';
-import { serverErrorResponse, clientErrorResponse, htmlResponse, allowFrame, defaultLogger } from './util';
->>>>>>> f4fd5e8... Pass buyerCountry into checkout and card components
+import { serverErrorResponse, clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON } from './util';
 import type { ExpressRequest, ExpressResponse, LoggerType } from './types';
 import { buttonStyle } from './style';
 

@@ -28,9 +28,15 @@ export const ERROR_URL = 'https://www.paypal.com/checkoutnow/error';
 
 export const ORDER_ID_PATTERN = /^(EC-)?[A-Z0-9]+$/;
 
-export const CLIENT_CONFIG = {
-    INTEGRATION_ARTIFACT: 'JS_SDK',
-    PRODUCT_FLOW:         'SMART_PAYMENT_BUTTONS',
-    USER_EXPERIENCE_FLOW: 'INCONTEXT',
-    ENTRY_POINT:          'PAY_WITH'
+export const INTEGRATION_ARTIFACT = {
+    PAYPAL_JS_SDK: 'PAYPAL_JS_SDK'
+};
+
+export const USER_EXPERIENCE_FLOW = {
+    INCONTEXT: 'INCONTEXT',
+    INLINE:    'INLINE'
+};
+
+export const PRODUCT_FLOW = {
+    SMART_PAYMENT_BUTTONS: 'SMART_PAYMENT_BUTTONS'
 };

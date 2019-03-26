@@ -8,8 +8,9 @@ import type { ProxyWindow } from 'post-robot/src';
 import { setupCheckout, initCheckout } from './checkout';
 import { getAuth } from './api';
 import { initCardFields } from './card-fields';
-import { createOrderOrBillingAgreement, validateOrder } from './orders';
-import { INLINE_GUEST_ENABLED } from './config';
+import { createOrderOrBillingAgreement, validateOrder, updateClientConfig } from './orders';
+import { INLINE_GUEST_ENABLED, CLIENT_CONFIG_ENABLED } from './config';
+import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW } from './constants';
 
 function onClickAndValidate({ fundingSource, card }) : ZalgoPromise<boolean> {
     let valid = true;
@@ -71,14 +72,27 @@ export function setupButton(fundingEligibility : Object) : ZalgoPromise<void> {
             }
         });
 
+        const isInlineGuest = (fundingSource === FUNDING.CARD && INLINE_GUEST_ENABLED);
         const createOrder = () => orderPromise;
 
-        const { instance, render } = (fundingSource === FUNDING.CARD && INLINE_GUEST_ENABLED)
+        const { instance, render } = isInlineGuest
             ? initCardFields({ createOrder, fundingSource, card, buyerCountry })
             : initCheckout({ window: win, createOrder, fundingSource, card, validationPromise, buyerCountry });
 
+        if (CLIENT_CONFIG_ENABLED) {
+            createOrder().then(orderID => {
+                updateClientConfig({
+                    orderID,
+                    fundingSource,
+                    integrationArtifact: INTEGRATION_ARTIFACT.PAYPAL_JS_SDK,
+                    userExperienceFlow:  isInlineGuest ? USER_EXPERIENCE_FLOW.INCONTEXT : USER_EXPERIENCE_FLOW.INLINE,
+                    productFlow:         PRODUCT_FLOW.SMART_PAYMENT_BUTTONS
+                });
+            });
+        }
+
         return ZalgoPromise.try(() => {
-            if (fundingSource === FUNDING.CARD && INLINE_GUEST_ENABLED) {
+            if (isInlineGuest) {
                 return validationPromise.then(valid => {
                     if (valid) {
                         return render();
