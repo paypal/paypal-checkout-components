@@ -8,6 +8,7 @@ import * as _postRobot from 'post-robot/src'; // eslint-disable-line import/no-n
 import { isPayPalDomain } from './lib';
 import { Checkout as _Checkout } from './checkout';
 import { BillingPage as _BillingPage } from './billing';
+import { ThreeDomainSecure as _ThreeDomainSecure } from './threeDomainSecure';
 
 import './hacks'; // eslint-disable-line import/no-unassigned-import
 
@@ -46,6 +47,7 @@ export let PayPalCheckout;
 export let destroyAll;
 export let enableCheckoutIframe;
 export let logger;
+export let ThreeDomainSecure;
 
 function _enableCheckoutIframe() {
     _Checkout.contexts.iframe = true;
@@ -54,6 +56,7 @@ function _enableCheckoutIframe() {
 if (isPayPalDomain() || __TEST__) {
     Checkout = _Checkout;
     BillingPage = _BillingPage;
+    ThreeDomainSecure = _ThreeDomainSecure;
     PayPalCheckout = _Checkout;
     enableCheckoutIframe = _enableCheckoutIframe;
     destroyAll = _destroyAll;
