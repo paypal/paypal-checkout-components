@@ -27,6 +27,30 @@ type CardFieldsInstance = {|
     render : () => ZalgoPromise<mixed>
 |};
 
+const openCardFields = () => {
+    const buttonsContainer = document.querySelector('#buttons-container');
+    const cardButtonsContainer = document.querySelector(`[data-funding-source="${ FUNDING.CARD }"]`);
+    const cardFieldsContainer = document.querySelector('#card-fields-container');
+
+    if (!buttonsContainer || !cardButtonsContainer || !cardFieldsContainer) {
+        throw new Error(`Required elements not found`);
+    }
+
+    cardFieldsContainer.style.display = 'block';
+
+    const recalculateMargin = () => {
+        const margin = -(buttonsContainer.offsetHeight - cardButtonsContainer.offsetHeight);
+        buttonsContainer.style.marginTop = `${ margin }px`;
+    };
+
+    window.addEventListener('resize', () => {
+        buttonsContainer.style.transitionDuration = '0s';
+        recalculateMargin();
+    });
+
+    recalculateMargin();
+};
+
 export function initCardFields(props : CardPropsOverride) : CardFieldsInstance {
 
     if (cardFieldsOpen) {
@@ -119,9 +143,8 @@ export function initCardFields(props : CardPropsOverride) : CardFieldsInstance {
         instance,
         render: () => {
             cardFieldsOpen = true;
-
             const renderPromise = instance.render('#card-fields-container');
-            
+            openCardFields();
             return renderPromise;
         }
     };

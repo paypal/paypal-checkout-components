@@ -2,11 +2,12 @@
 
 export const buttonStyle = `
     .buttons-container {
-        transition: all 3s ease-in-out;
+        transition: all 0.3s ease-in-out;
     }
 
     .card-fields-container {
         min-height: 300px;
+        margin-top: 10px;
         display: none;
     }
 `;

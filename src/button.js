@@ -46,7 +46,7 @@ export function setupButton(fundingEligibility : Object) : ZalgoPromise<void> {
     }
 
     const buyerCountry = window.xprops.buyerCountry || fundingEligibility.buyerCountry || COUNTRY.US;
-    
+
     if (fundingEligibility.fundingEligibility) {
         fundingEligibility = fundingEligibility.fundingEligibility;
     }
