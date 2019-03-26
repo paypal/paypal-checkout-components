@@ -33,9 +33,7 @@ function contentToJSX(key : string, locale : LocaleType, { logoColor, period } :
         return placeholderToJSX(Content, {
             text:   (token) => <span class={ CLASS.TEXT }>{token}</span>,
             pp:     () => <PPLogo logoColor={ logoColor } />,
-            paypal: () => <PayPalLogo logoColor={ logoColor } />,
-            br:     () => <br />,
-            period: () => { return period ? period.toString() : null; }
+            paypal: () => <PayPalLogo logoColor={ logoColor } />
         });
     }
 
