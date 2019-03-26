@@ -1,3 +1,11 @@
+## <small>5.0.14 (2019-03-26)</small>
+
+* Add CardFields component ([a45fc86](http://github.paypal.com/paypal/paypal-checkout/commit/a45fc86))
+* Cleanup ([53a6611](http://github.paypal.com/paypal/paypal-checkout/commit/53a6611))
+* Only suppress card buttons when hosted fields is used ([24a62f1](http://github.paypal.com/paypal/paypal-checkout/commit/24a62f1))
+
+
+
 ## <small>5.0.13 (2019-03-18)</small>
 
 * Add buyerCountry prop ([f9144ef](http://github.paypal.com/paypal/paypal-checkout/commit/f9144ef))
