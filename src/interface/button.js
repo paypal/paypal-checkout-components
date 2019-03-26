@@ -7,6 +7,7 @@ import { setupLogger, allowIframe as _allowIframe } from '../lib';
 import { getCheckoutComponent } from '../checkout';
 import { getButtonsComponent } from '../buttons';
 import { Buttons as _ButtonsTemplate } from '../buttons/template';
+import { getCardFieldsComponent } from '../card-fields';
 
 function protectedExport<T>(xport : T) : ?T {
     if (isPayPalDomain()) {
@@ -26,6 +27,10 @@ export const Buttons = {
 
 export const Checkout = {
     __get__: () => protectedExport(getCheckoutComponent())
+};
+
+export const CardFields = {
+    __get__: () => protectedExport(getCardFieldsComponent())
 };
 
 export const ButtonsTemplate = {

@@ -7,8 +7,8 @@ module.exports = {
     
     __ZOID__: {
         ...zoidGlobals.__ZOID__,
-        __DEFAULT_CONTAINER__: false,
-        __DEFAULT_PRERENDER__: false,
+        __DEFAULT_CONTAINER__: true,
+        __DEFAULT_PRERENDER__: true,
         __FRAMEWORK_SUPPORT__: true
     },
     

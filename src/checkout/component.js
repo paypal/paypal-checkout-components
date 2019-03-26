@@ -160,7 +160,7 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
                 commit: {
                     type:       'boolean',
                     queryParam: true,
-                    default:        getCommit
+                    value:      getCommit
                 },
         
                 // $FlowFixMe

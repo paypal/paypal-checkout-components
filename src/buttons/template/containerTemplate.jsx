@@ -75,7 +75,7 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
         });
     };
 
-    return (
+    const element = (
         <div id={ uid } onRender={ setupAutoResize } class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-layout-${ layout }` }>
 
             <style>
@@ -121,4 +121,10 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
             <node el={ prerenderFrame } />
         </div>
     ).render(dom({ doc }));
+
+    event.on(EVENT.RENDERED, () => {
+        element.style.transition = 'all 0.5s ease-in-out';
+    });
+
+    return element;
 }
