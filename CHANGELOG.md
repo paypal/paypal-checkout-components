@@ -1,3 +1,9 @@
+## <small>5.0.15 (2019-03-27)</small>
+
+* Treat missing funding config as ineligible ([c3b32bd](http://github.paypal.com/paypal/paypal-checkout/commit/c3b32bd))
+
+
+
 ## <small>5.0.14 (2019-03-26)</small>
 
 * Add CardFields component ([a45fc86](http://github.paypal.com/paypal/paypal-checkout/commit/a45fc86))
