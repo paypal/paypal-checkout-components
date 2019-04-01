@@ -823,7 +823,7 @@ window.spb = function(modules) {
         POPUP: "popup"
     }, TARGET_ELEMENT = {
         BODY: "body"
-    }, ORDER_ID_PATTERN = /^(EC-)?[A-Z0-9]+$/, ERROR_URL = "https://www.paypal.com/checkoutnow/error", defaultHeaders = {}, csrfToken = "";
+    }, ORDER_ID_PATTERN = /^(EC-)?[A-Z0-9]+$/, defaultHeaders = {}, csrfToken = "";
     function callAPI(_ref) {
         var _extends2, url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, json = _ref.json, reqHeaders = _extends({}, defaultHeaders, ((_extends2 = {})[constants_HEADERS.CSRF_TOKEN] = csrfToken, 
         _extends2[constants_HEADERS.SOURCE] = SMART_BUTTONS, _extends2[constants_HEADERS.REQUESTED_BY] = SMART_PAYMENT_BUTTONS, 
@@ -865,7 +865,7 @@ window.spb = function(modules) {
     });
     function validateOrder(orderID) {
         if (!orderID.match(ORDER_ID_PATTERN)) throw new Error(orderID + " does not match pattern for order-id, ec-token or cart-id");
-        return (query = '\n        checkout {\n            checkoutSession(token : "' + orderID + '") {\n                cart {\n                    intent\n                    returnUrl {\n                        href\n                    }\n                    cancelUrl {\n                        href\n                    }\n                    amounts {\n                        total {\n                            currencyCode\n                        }\n                    }\n                }\n            }\n        }\n    ', 
+        return (query = '\n        checkout {\n            checkoutSession(token : "' + orderID + '") {\n                cart {\n                    intent\n                    amounts {\n                        total {\n                            currencyCode\n                        }\n                    }\n                }\n            }\n        }\n    ', 
         request({
             url: API_URI.GRAPHQL,
             method: "POST",
@@ -882,11 +882,9 @@ window.spb = function(modules) {
             }
             return body;
         })).then(function(res) {
-            var cart = res.data.checkout.checkoutSession.cart, intent = "sale" === cart.intent.toLowerCase() ? INTENT.CAPTURE : cart.intent.toLowerCase(), currency = cart.amounts && cart.amounts.total.currencyCode, returnUrl = cart.returnUrl && cart.returnUrl.href, cancelUrl = cart.cancelUrl && cart.cancelUrl.href, expectedIntent = window.xprops.intent, expectedCurrency = window.xprops.currency;
+            var cart = res.data.checkout.checkoutSession.cart, intent = "sale" === cart.intent.toLowerCase() ? INTENT.CAPTURE : cart.intent.toLowerCase(), currency = cart.amounts && cart.amounts.total.currencyCode, expectedIntent = window.xprops.intent, expectedCurrency = window.xprops.currency;
             if (intent !== expectedIntent) throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing " + SDK_QUERY_KEYS.INTENT + "=" + intent + " to the sdk");
             if (currency && currency !== expectedCurrency) throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing " + SDK_QUERY_KEYS.CURRENCY + "=" + currency + " to the sdk");
-            if (returnUrl && 0 !== returnUrl.indexOf(ERROR_URL)) throw new Error('Expected return url to be either blank, or "' + ERROR_URL + '". Return url is forbidden for smart payment button integration.');
-            if (cancelUrl && 0 !== cancelUrl.indexOf(ERROR_URL)) throw new Error('Expected cancel url to be either blank, or "' + ERROR_URL + '". Cancel url is forbidden for smart payment button integration.');
         });
         var query;
     }
