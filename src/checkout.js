@@ -6,7 +6,7 @@ import { INTENT, SDK_QUERY_KEYS, FUNDING, CARD } from '@paypal/sdk-constants/src
 import { getParent, getTop } from 'cross-domain-utils/src';
 
 import { getOrder, captureOrder, authorizeOrder, patchOrder, persistAccessToken, billingTokenToOrderID, callGraphQL, type OrderResponse, patchClientConfiguration } from './api';
-import { ORDER_API_ERROR, ORDER_ID_PATTERN, ERROR_URL, CONTEXT, TARGET_ELEMENT, CLIENT_CONFIG } from './constants';
+import { ORDER_API_ERROR, ORDER_ID_PATTERN, CONTEXT, TARGET_ELEMENT, CLIENT_CONFIG } from './constants';
 
 type ActionsType = {|
     order : {
@@ -103,12 +103,6 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
             checkoutSession(token : "${ orderID }") {
                 cart {
                     intent
-                    returnUrl {
-                        href
-                    }
-                    cancelUrl {
-                        href
-                    }
                     amounts {
                         total {
                             currencyCode
@@ -122,8 +116,6 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
 
         const intent = (cart.intent.toLowerCase() === 'sale') ? INTENT.CAPTURE : cart.intent.toLowerCase();
         const currency = cart.amounts && cart.amounts.total.currencyCode;
-        const returnUrl = cart.returnUrl && cart.returnUrl.href;
-        const cancelUrl = cart.cancelUrl && cart.cancelUrl.href;
 
         const expectedIntent = window.xprops.intent;
         const expectedCurrency = window.xprops.currency;
@@ -134,14 +126,6 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
 
         if (currency && currency !== expectedCurrency) {
             throw new Error(`Expected currency from order api call to be ${ expectedCurrency }, got ${ currency }. Please ensure you are passing ${ SDK_QUERY_KEYS.CURRENCY }=${ currency } to the sdk`);
-        }
-
-        if (returnUrl && returnUrl.indexOf(ERROR_URL) !== 0) {
-            throw new Error(`Expected return url to be either blank, or "${ ERROR_URL }". Return url is forbidden for smart payment button integration.`);
-        }
-
-        if (cancelUrl && cancelUrl.indexOf(ERROR_URL) !== 0) {
-            throw new Error(`Expected cancel url to be either blank, or "${ ERROR_URL }". Cancel url is forbidden for smart payment button integration.`);
         }
     });
 }
