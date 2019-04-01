@@ -93,6 +93,10 @@ function buildApproveActions(checkout : CheckoutComponent, orderID : string, fun
     };
 }
 
+function isOrderID(orderID : string) : boolean {
+    return Boolean(orderID.match(/^[A-Z0-9]{17}$/));
+}
+
 function validateOrder(orderID : string) : ZalgoPromise<void> {
     if (!orderID.match(ORDER_ID_PATTERN)) {
         throw new Error(`${ orderID } does not match pattern for order-id, ec-token or cart-id`);
@@ -103,6 +107,12 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
             checkoutSession(token : "${ orderID }") {
                 cart {
                     intent
+                    returnUrl {
+                        href
+                    }
+                    cancelUrl {
+                        href
+                    }
                     amounts {
                         total {
                             currencyCode
@@ -116,6 +126,8 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
 
         const intent = (cart.intent.toLowerCase() === 'sale') ? INTENT.CAPTURE : cart.intent.toLowerCase();
         const currency = cart.amounts && cart.amounts.total.currencyCode;
+        const returnUrl = cart.returnUrl && cart.returnUrl.href;
+        const cancelUrl = cart.cancelUrl && cart.cancelUrl.href;
 
         const expectedIntent = window.xprops.intent;
         const expectedCurrency = window.xprops.currency;
@@ -126,6 +138,16 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
 
         if (currency && currency !== expectedCurrency) {
             throw new Error(`Expected currency from order api call to be ${ expectedCurrency }, got ${ currency }. Please ensure you are passing ${ SDK_QUERY_KEYS.CURRENCY }=${ currency } to the sdk`);
+        }
+
+        if (isOrderID(orderID)) {
+            if (returnUrl) {
+                throw new Error(`Return url is forbidden for smart payment button integration.`);
+            }
+
+            if (cancelUrl) {
+                throw new Error(`Cancel url is forbidden for smart payment button integration.`);
+            }
         }
     });
 }
