@@ -1,3 +1,10 @@
+## <small>5.0.16 (2019-04-01)</small>
+
+* Remove branded check for card eligibility ([a3beed9](http://github.paypal.com/paypal/paypal-checkout/commit/a3beed9))
+* Update README.md ([6b298fa](http://github.paypal.com/paypal/paypal-checkout/commit/6b298fa))
+
+
+
 ## <small>5.0.15 (2019-03-27)</small>
 
 * Treat missing funding config as ineligible ([c3b32bd](http://github.paypal.com/paypal/paypal-checkout/commit/c3b32bd))
