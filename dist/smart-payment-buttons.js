@@ -888,8 +888,8 @@ window.spb = function(modules) {
             if (function(orderID) {
                 return Boolean(orderID.match(/^[A-Z0-9]{17}$/));
             }(orderID)) {
-                if (returnUrl && returnUrl !== ERROR_URL) throw new Error("Return url is forbidden for smart payment button integration.");
-                if (cancelUrl && cancelUrl !== ERROR_URL) throw new Error("Cancel url is forbidden for smart payment button integration.");
+                if (returnUrl && 0 !== returnUrl.indexOf(ERROR_URL)) throw new Error("Return url is forbidden for smart payment button integration.");
+                if (cancelUrl && 0 !== cancelUrl.indexOf(ERROR_URL)) throw new Error("Cancel url is forbidden for smart payment button integration.");
             }
         });
         var query;
