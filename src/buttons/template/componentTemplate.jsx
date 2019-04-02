@@ -247,9 +247,9 @@ type ButtonsProps = ButtonPropsInputs & {|
 
 export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick } = props;
-    const { style, locale, remembered, env, fundingEligibility, platform, nonce } = normalizeButtonProps(props);
+    const { style, locale, remembered, env, fundingEligibility, platform, nonce, components } = normalizeButtonProps(props);
 
-    const fundingSources = determineEligibleFunding({ style, remembered, platform, fundingEligibility });
+    const fundingSources = determineEligibleFunding({ style, remembered, platform, fundingEligibility, components });
     const multiple = fundingSources.length > 1;
 
     if (!fundingSources.length) {

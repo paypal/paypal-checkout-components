@@ -117,6 +117,13 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     }
                 },
 
+                components: {
+                    type:       'array',
+                    queryParam: true,
+                    // $FlowFixMe
+                    value:      () => __COMPONENTS__
+                },
+
                 locale: {
                     type:       'object',
                     queryParam: true,

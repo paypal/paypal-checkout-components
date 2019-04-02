@@ -87,5 +87,6 @@ export const testGlobals = {
     __HOSTNAME__:   'test.paypal.com',
     __PATH__:       '/sdk/js',
     __VERSION__:    '1.0.55',
-    __NAMESPACE__:  'paypal'
+    __NAMESPACE__:  'paypal',
+    __COMPONENTS__: [ 'buttons' ]
 };

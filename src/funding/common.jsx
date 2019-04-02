@@ -2,7 +2,7 @@
 /* eslint no-template-curly-in-string: off, max-lines: off */
 /** @jsx node */
 
-import { PLATFORM, type LocaleType, COUNTRY, CARD } from '@paypal/sdk-constants/src';
+import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
 import { node, type ChildType, type NodePropsType, type ChildrenType } from 'jsx-pragmatic/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
@@ -82,6 +82,7 @@ export type FundingSourceConfig = {|
     maxCards? : { [$Values<typeof COUNTRY>] : number },
     remembered? : boolean,
     vendors? : { [$Values<typeof CARD>] : ?CardConfig },
+    eligible? : ({ components : $ReadOnlyArray<$Values<typeof COMPONENTS>> }) => boolean,
     labels : {|
         bancontact? : FundingLabelConfig,
         card? : FundingLabelConfig,

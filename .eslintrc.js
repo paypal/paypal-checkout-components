@@ -17,7 +17,8 @@ module.exports = {
         '__PORT__': true,
         '__STAGE_HOST__': true,
         '__HOST__': true,
-        '__PATH__': true
+        '__PATH__': true,
+        '__COMPONENTS__': true
     },
 
     'rules': {

@@ -5,7 +5,7 @@ import { values, uniqueID } from 'belter/src';
 import { createOrder, type OrderCreateRequest,
     type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from '@paypal/sdk-client/src';
 import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
-    ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD } from '@paypal/sdk-constants/src';
+    ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE } from '../constants';
@@ -133,7 +133,8 @@ export type RenderButtonProps = {|
     clientID : string,
     sessionID : string,
     buttonSessionID : string,
-    nonce : string
+    nonce : string,
+    components : $ReadOnlyArray<$Values<typeof COMPONENTS>>
 |};
 
 export type PrerenderDetails = {|
@@ -188,6 +189,7 @@ export type ButtonPropsInputs = {|
     sessionID? : $PropertyType<ButtonProps, 'sessionID'> | void,
     buttonSessionID? : $PropertyType<ButtonProps, 'buttonSessionID'> | void,
     nonce? : string,
+    components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     csp? : {
         nonce? : string
     }
@@ -299,6 +301,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         sessionID = uniqueID(),
         buttonSessionID = uniqueID(),
         csp = {},
+        components = [ COMPONENTS.BUTTONS ],
         nonce = ''
     } = props;
 
@@ -334,5 +337,5 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
 
     style = normalizeButtonStyle(style);
 
-    return { clientID, style, locale, remembered, env, fundingEligibility, platform, buttonSessionID, commit, sessionID, nonce };
+    return { clientID, style, locale, remembered, env, fundingEligibility, platform, buttonSessionID, commit, sessionID, nonce, components };
 }

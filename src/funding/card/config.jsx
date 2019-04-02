@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import { node } from 'jsx-pragmatic/src';
-import { CARD, FUNDING, COUNTRY } from '@paypal/sdk-constants/src';
+import { CARD, FUNDING, COUNTRY, COMPONENTS } from '@paypal/sdk-constants/src';
 
 import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR, DEFAULT, CLASS } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig, type CardConfig } from '../common';
@@ -47,6 +47,10 @@ export function getCardConfig() : FundingSourceConfig {
 
     return {
         ...DEFAULT_FUNDING_CONFIG,
+
+        eligible: ({ components }) => {
+            return (components.indexOf(COMPONENTS.HOSTED_FIELDS) === -1);
+        },
         
         layouts: [
             BUTTON_LAYOUT.VERTICAL
