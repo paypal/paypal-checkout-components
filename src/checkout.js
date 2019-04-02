@@ -6,7 +6,7 @@ import { INTENT, SDK_QUERY_KEYS, FUNDING, CARD } from '@paypal/sdk-constants/src
 import { getParent, getTop } from 'cross-domain-utils/src';
 
 import { getOrder, captureOrder, authorizeOrder, patchOrder, persistAccessToken, billingTokenToOrderID, callGraphQL, type OrderResponse, patchClientConfiguration } from './api';
-import { ORDER_API_ERROR, ORDER_ID_PATTERN, CONTEXT, TARGET_ELEMENT, CLIENT_CONFIG } from './constants';
+import { ORDER_API_ERROR, ORDER_ID_PATTERN, CONTEXT, TARGET_ELEMENT, CLIENT_CONFIG, ERROR_URL } from './constants';
 
 type ActionsType = {|
     order : {
@@ -141,11 +141,11 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
         }
 
         if (isOrderID(orderID)) {
-            if (returnUrl) {
+            if (returnUrl && returnUrl !== ERROR_URL) {
                 throw new Error(`Return url is forbidden for smart payment button integration.`);
             }
 
-            if (cancelUrl) {
+            if (cancelUrl && cancelUrl !== ERROR_URL) {
                 throw new Error(`Cancel url is forbidden for smart payment button integration.`);
             }
         }
