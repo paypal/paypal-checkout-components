@@ -141,11 +141,11 @@ function validateOrder(orderID : string) : ZalgoPromise<void> {
         }
 
         if (isOrderID(orderID)) {
-            if (returnUrl && returnUrl !== ERROR_URL) {
+            if (returnUrl && returnUrl.indexOf(ERROR_URL) !== 0) {
                 throw new Error(`Return url is forbidden for smart payment button integration.`);
             }
 
-            if (cancelUrl && cancelUrl !== ERROR_URL) {
+            if (cancelUrl && cancelUrl.indexOf(ERROR_URL) !== 0) {
                 throw new Error(`Cancel url is forbidden for smart payment button integration.`);
             }
         }
