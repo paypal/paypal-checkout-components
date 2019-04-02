@@ -823,7 +823,7 @@ window.spb = function(modules) {
         POPUP: "popup"
     }, TARGET_ELEMENT = {
         BODY: "body"
-    }, ORDER_ID_PATTERN = /^(EC-)?[A-Z0-9]+$/, defaultHeaders = {}, csrfToken = "";
+    }, ERROR_URL = "https://www.paypal.com/checkoutnow/error", ORDER_ID_PATTERN = /^(EC-)?[A-Z0-9]+$/, defaultHeaders = {}, csrfToken = "";
     function callAPI(_ref) {
         var _extends2, url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, json = _ref.json, reqHeaders = _extends({}, defaultHeaders, ((_extends2 = {})[constants_HEADERS.CSRF_TOKEN] = csrfToken, 
         _extends2[constants_HEADERS.SOURCE] = SMART_BUTTONS, _extends2[constants_HEADERS.REQUESTED_BY] = SMART_PAYMENT_BUTTONS, 
@@ -888,8 +888,8 @@ window.spb = function(modules) {
             if (function(orderID) {
                 return Boolean(orderID.match(/^[A-Z0-9]{17}$/));
             }(orderID)) {
-                if (returnUrl) throw new Error("Return url is forbidden for smart payment button integration.");
-                if (cancelUrl) throw new Error("Cancel url is forbidden for smart payment button integration.");
+                if (returnUrl && returnUrl !== ERROR_URL) throw new Error("Return url is forbidden for smart payment button integration.");
+                if (cancelUrl && cancelUrl !== ERROR_URL) throw new Error("Cancel url is forbidden for smart payment button integration.");
             }
         });
         var query;
