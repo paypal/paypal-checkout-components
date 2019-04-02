@@ -1,3 +1,9 @@
+## <small>5.0.17 (2019-04-02)</small>
+
+* Toggle card eligibility based on whether hosted-fields requested ([1eddfbd](http://github.paypal.com/paypal/paypal-checkout/commit/1eddfbd))
+
+
+
 ## <small>5.0.16 (2019-04-01)</small>
 
 * Remove branded check for card eligibility ([a3beed9](http://github.paypal.com/paypal/paypal-checkout/commit/a3beed9))
