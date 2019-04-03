@@ -158,14 +158,20 @@ type ClientConfig = {|
 
 export function updateClientConfig({ orderID, fundingSource, integrationArtifact, userExperienceFlow, productFlow } : ClientConfig) : ZalgoPromise<mixed> {
     return callGraphQL(`
-        mutation UpdateClientConfig($orderID : String!, $fundingSource : String!, $integrationArtifact : String!, $userExperienceFlow : String!, $productFlow : String!) {
+        mutation UpdateClientConfig(
+            $orderID : String!,
+            $fundingSource : ButtonFundingSourceType!,
+            $integrationArtifact : IntegrationArtifactType!,
+            $userExperienceFlow : UserExperienceFlowType!,
+            $productFlow : ProductFlowType!
+        ) {
             updateClientConfig(
                 token: $orderID,
                 fundingSource: $fundingSource,
                 integrationArtifact: $integrationArtifact,
                 userExperienceFlow: $userExperienceFlow,
                 productFlow: $productFlow
-            );
+            )
         }
     `, { orderID, fundingSource, integrationArtifact, userExperienceFlow, productFlow });
 }

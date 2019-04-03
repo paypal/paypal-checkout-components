@@ -11,4 +11,4 @@ export const API_URI = {
 };
 
 export const INLINE_GUEST_ENABLED = false;
-export const CLIENT_CONFIG_ENABLED = false;
+export const CLIENT_CONFIG_ENABLED = Boolean(window.xprops && window.xprops.updateClientConfiguration);
