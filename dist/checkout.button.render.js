@@ -1094,8 +1094,7 @@
         }, _FUNDING_CONFIG[FUNDING.IDEAL] = {
             allowedCountries: [ COUNTRY.NL ],
             allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
+            allowVertical: !0
         }, _FUNDING_CONFIG[FUNDING.ELV] = {
             allowedCountries: [ COUNTRY.DE, COUNTRY.AT ],
             defaultVerticalCountries: [ COUNTRY.DE, COUNTRY.AT ],
@@ -1104,38 +1103,31 @@
         }, _FUNDING_CONFIG[FUNDING.BANCONTACT] = {
             allowedCountries: [ COUNTRY.BE ],
             allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
+            allowVertical: !0
         }, _FUNDING_CONFIG[FUNDING.GIROPAY] = {
             allowedCountries: [ COUNTRY.DE ],
             allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
+            allowVertical: !0
         }, _FUNDING_CONFIG[FUNDING.SOFORT] = {
             allowedCountries: [ COUNTRY.DE, COUNTRY.AT, COUNTRY.BE, COUNTRY.ES, COUNTRY.IT, COUNTRY.NL ],
             allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
+            allowVertical: !0
         }, _FUNDING_CONFIG[FUNDING.EPS] = {
             allowedCountries: [ COUNTRY.AT ],
             allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
+            allowVertical: !0
         }, _FUNDING_CONFIG[FUNDING.MYBANK] = {
             allowedCountries: [ COUNTRY.IT ],
             allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
+            allowVertical: !0
         }, _FUNDING_CONFIG[FUNDING.P24] = {
             allowedCountries: [ COUNTRY.PL ],
             allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
+            allowVertical: !0
         }, _FUNDING_CONFIG[FUNDING.ZIMPLER] = {
             allowedCountries: [ COUNTRY.FI ],
             allowHorizontal: !1,
-            allowVertical: !0,
-            requireCommitAsTrue: !0
+            allowVertical: !0
         }, _FUNDING_CONFIG), CARD_CONFIG = ((_CARD_CONFIG = {})[DEFAULT] = {
             priority: [ CARD_VISA, CARD_MASTERCARD, CARD_AMEX ]
         }, _CARD_CONFIG[COUNTRY.GB] = {
@@ -1485,11 +1477,11 @@
                 }(ZalgoPromise);
             };
         }();
-        var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales;
+        var _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales;
         var config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.263",
+            version: "4.0.264",
             cors: !0,
             env: function() {
                 return "undefined" == typeof window || void 0 === window.location ? misc_ENV.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? misc_ENV.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? misc_ENV.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? misc_ENV.SANDBOX : misc_ENV.PRODUCTION;
@@ -1506,6 +1498,13 @@
             },
             get apiStageUrl() {
                 return config.apiStage + "." + config.stageDomain;
+            },
+            get localhostUrl() {
+                return "http://localhost.paypal.com:" + config.ports.default;
+            },
+            set localhostUrl(val) {
+                delete this.localhostUrl;
+                this.localhostUrl = val;
             },
             merchantID: "",
             logLevel: "warn",
@@ -1772,6 +1771,18 @@
                 },
                 "1800Contacts.com": {
                     disable_venmo: !0
+                },
+                "hulu.com": {
+                    disable_venmo: !0
+                },
+                "grubhub.com": {
+                    disable_venmo: !0
+                },
+                "eat24.com": {
+                    disable_venmo: !0
+                },
+                "seamless.com": {
+                    disable_venmo: !0
                 }
             },
             creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
@@ -1806,18 +1817,16 @@
             },
             get paypalUrls() {
                 var _ref;
-                return (_ref = {})[misc_ENV.LOCAL] = "http://localhost.paypal.com:" + config.ports.default, 
-                _ref[misc_ENV.STAGE] = "https://www." + config.stageUrl, _ref[misc_ENV.SANDBOX] = "https://www.sandbox.paypal.com", 
-                _ref[misc_ENV.PRODUCTION] = "https://www.paypal.com", _ref[misc_ENV.TEST] = window.location.protocol + "//" + window.location.host, 
-                _ref[misc_ENV.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
+                return (_ref = {})[misc_ENV.LOCAL] = config.localhostUrl, _ref[misc_ENV.STAGE] = "https://www." + config.stageUrl, 
+                _ref[misc_ENV.SANDBOX] = "https://www.sandbox.paypal.com", _ref[misc_ENV.PRODUCTION] = "https://www.paypal.com", 
+                _ref[misc_ENV.TEST] = window.location.protocol + "//" + window.location.host, _ref[misc_ENV.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
                 _ref;
             },
             get paypalDomains() {
                 var _ref2;
-                return (_ref2 = {})[misc_ENV.LOCAL] = "http://localhost.paypal.com:" + config.ports.default, 
-                _ref2[misc_ENV.STAGE] = "https://www." + config.stageUrl, _ref2[misc_ENV.SANDBOX] = "https://www.sandbox.paypal.com", 
-                _ref2[misc_ENV.PRODUCTION] = "https://www.paypal.com", _ref2[misc_ENV.TEST] = "mock://www.paypal.com", 
-                _ref2[misc_ENV.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
+                return (_ref2 = {})[misc_ENV.LOCAL] = /^https?:\/\/.*\.paypal\.com:?\d*$/, _ref2[misc_ENV.STAGE] = "https://www." + config.stageUrl, 
+                _ref2[misc_ENV.SANDBOX] = "https://www.sandbox.paypal.com", _ref2[misc_ENV.PRODUCTION] = "https://www.paypal.com", 
+                _ref2[misc_ENV.TEST] = "mock://www.paypal.com", _ref2[misc_ENV.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
                 _ref2;
             },
             get wwwApiUrls() {
@@ -1842,10 +1851,27 @@
                 _ref5[misc_ENV.TEST] = domain === wwwApiUrls.test ? wwwApiUrls.test : corsApiUrls.test, 
                 _ref5;
             },
-            checkoutUris: (_checkoutUris = {}, _checkoutUris[misc_ENV.LOCAL] = "/webapps/hermes?ul=0", 
-            _checkoutUris[misc_ENV.STAGE] = "/webapps/hermes", _checkoutUris[misc_ENV.SANDBOX] = "/checkoutnow", 
-            _checkoutUris[misc_ENV.PRODUCTION] = "/checkoutnow", _checkoutUris[misc_ENV.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
-            _checkoutUris[misc_ENV.DEMO] = "/demo/dev/checkout.htm", _checkoutUris),
+            get checkoutUri() {
+                return null;
+            },
+            set checkoutUri(val) {
+                delete this.checkoutUri;
+                this.checkoutUri = val;
+            },
+            get checkoutUris() {
+                var _ref7;
+                if (config.checkoutUri) {
+                    var _ref6;
+                    return (_ref6 = {})[misc_ENV.LOCAL] = config.checkoutUri, _ref6[misc_ENV.STAGE] = config.checkoutUri, 
+                    _ref6[misc_ENV.SANDBOX] = config.checkoutUri, _ref6[misc_ENV.PRODUCTION] = config.checkoutUri, 
+                    _ref6[misc_ENV.TEST] = config.checkoutUri, _ref6[misc_ENV.DEMO] = config.checkoutUri, 
+                    _ref6;
+                }
+                return (_ref7 = {})[misc_ENV.LOCAL] = "/webapps/hermes?ul=0", _ref7[misc_ENV.STAGE] = "/webapps/hermes", 
+                _ref7[misc_ENV.SANDBOX] = "/checkoutnow", _ref7[misc_ENV.PRODUCTION] = "/checkoutnow", 
+                _ref7[misc_ENV.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
+                _ref7[misc_ENV.DEMO] = "/demo/dev/checkout.htm", _ref7;
+            },
             altpayUris: (_altpayUris = {}, _altpayUris[misc_ENV.LOCAL] = "/latinumcheckout", 
             _altpayUris[misc_ENV.STAGE] = "/latinumcheckout", _altpayUris[misc_ENV.SANDBOX] = "/latinumcheckout", 
             _altpayUris[misc_ENV.PRODUCTION] = "/latinumcheckout", _altpayUris[misc_ENV.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
@@ -1899,122 +1925,122 @@
             experienceApiUri: "/v1/payment-experience/web-profiles",
             trackingApiUri: "/v1/risk/transaction-contexts",
             get checkoutUrls() {
-                var _ref6, paypalUrls = config.paypalUrls;
-                return (_ref6 = {})[misc_ENV.LOCAL] = "" + paypalUrls.local + config.checkoutUris.local.replace(":" + config.ports.default, ":" + config.ports.checkout), 
-                _ref6[misc_ENV.STAGE] = "" + paypalUrls.stage + config.checkoutUris.stage, _ref6[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.checkoutUris.sandbox, 
-                _ref6[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.checkoutUris.production, 
-                _ref6[misc_ENV.TEST] = "" + paypalUrls.test + config.checkoutUris.test, _ref6[misc_ENV.DEMO] = "" + paypalUrls.test + config.checkoutUris.demo, 
-                _ref6;
-            },
-            get guestUrls() {
-                var _ref7, paypalUrls = config.paypalUrls;
-                return (_ref7 = {})[misc_ENV.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.guest) + config.guestUris.local, 
-                _ref7[misc_ENV.STAGE] = "" + paypalUrls.stage + config.guestUris.stage, _ref7[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.guestUris.sandbox, 
-                _ref7[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.guestUris.production, 
-                _ref7[misc_ENV.TEST] = "" + paypalUrls.test + config.guestUris.test, _ref7[misc_ENV.DEMO] = "" + paypalUrls.test + config.guestUris.demo, 
-                _ref7;
-            },
-            get altpayUrls() {
                 var _ref8, paypalUrls = config.paypalUrls;
-                return (_ref8 = {})[misc_ENV.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.altpay) + config.altpayUris.local, 
-                _ref8[misc_ENV.STAGE] = "" + paypalUrls.stage + config.altpayUris.stage, _ref8[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.altpayUris.sandbox, 
-                _ref8[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.altpayUris.production, 
-                _ref8[misc_ENV.TEST] = "" + paypalUrls.test + config.altpayUris.test, _ref8[misc_ENV.DEMO] = "" + paypalUrls.test + config.altpayUris.demo, 
+                return (_ref8 = {})[misc_ENV.LOCAL] = "" + paypalUrls.local + config.checkoutUris.local.replace(":" + config.ports.default, ":" + config.ports.checkout), 
+                _ref8[misc_ENV.STAGE] = "" + paypalUrls.stage + config.checkoutUris.stage, _ref8[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.checkoutUris.sandbox, 
+                _ref8[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.checkoutUris.production, 
+                _ref8[misc_ENV.TEST] = "" + paypalUrls.test + config.checkoutUris.test, _ref8[misc_ENV.DEMO] = "" + paypalUrls.test + config.checkoutUris.demo, 
                 _ref8;
             },
-            get billingUrls() {
+            get guestUrls() {
                 var _ref9, paypalUrls = config.paypalUrls;
-                return (_ref9 = {})[misc_ENV.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.checkout) + config.billingUris.local, 
-                _ref9[misc_ENV.STAGE] = "" + paypalUrls.stage + config.billingUris.stage, _ref9[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.billingUris.sandbox, 
-                _ref9[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.billingUris.production, 
-                _ref9[misc_ENV.TEST] = "" + paypalUrls.test + config.billingUris.test, _ref9[misc_ENV.DEMO] = "" + paypalUrls.test + config.billingUris.demo, 
+                return (_ref9 = {})[misc_ENV.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.guest) + config.guestUris.local, 
+                _ref9[misc_ENV.STAGE] = "" + paypalUrls.stage + config.guestUris.stage, _ref9[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.guestUris.sandbox, 
+                _ref9[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.guestUris.production, 
+                _ref9[misc_ENV.TEST] = "" + paypalUrls.test + config.guestUris.test, _ref9[misc_ENV.DEMO] = "" + paypalUrls.test + config.guestUris.demo, 
                 _ref9;
             },
-            get buttonUrls() {
+            get altpayUrls() {
                 var _ref10, paypalUrls = config.paypalUrls;
-                return (_ref10 = {})[misc_ENV.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.buttonUris.local, 
-                _ref10[misc_ENV.STAGE] = "" + paypalUrls.stage + config.buttonUris.stage, _ref10[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.buttonUris.sandbox, 
-                _ref10[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.buttonUris.production, 
-                _ref10[misc_ENV.TEST] = "" + paypalUrls.test + config.buttonUris.test, _ref10[misc_ENV.DEMO] = "" + paypalUrls.demo + config.buttonUris.demo, 
+                return (_ref10 = {})[misc_ENV.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.altpay) + config.altpayUris.local, 
+                _ref10[misc_ENV.STAGE] = "" + paypalUrls.stage + config.altpayUris.stage, _ref10[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.altpayUris.sandbox, 
+                _ref10[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.altpayUris.production, 
+                _ref10[misc_ENV.TEST] = "" + paypalUrls.test + config.altpayUris.test, _ref10[misc_ENV.DEMO] = "" + paypalUrls.test + config.altpayUris.demo, 
                 _ref10;
             },
-            get inlinedCardFieldUrls() {
+            get billingUrls() {
                 var _ref11, paypalUrls = config.paypalUrls;
-                return (_ref11 = {})[misc_ENV.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.inlinedCardFieldUris.local, 
-                _ref11[misc_ENV.STAGE] = "" + paypalUrls.stage + config.inlinedCardFieldUris.stage, 
-                _ref11[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.inlinedCardFieldUris.sandbox, 
-                _ref11[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.inlinedCardFieldUris.production, 
-                _ref11[misc_ENV.TEST] = "" + paypalUrls.test + config.inlinedCardFieldUris.test, 
-                _ref11[misc_ENV.DEMO] = "" + paypalUrls.demo + config.inlinedCardFieldUris.demo, 
+                return (_ref11 = {})[misc_ENV.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.checkout) + config.billingUris.local, 
+                _ref11[misc_ENV.STAGE] = "" + paypalUrls.stage + config.billingUris.stage, _ref11[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.billingUris.sandbox, 
+                _ref11[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.billingUris.production, 
+                _ref11[misc_ENV.TEST] = "" + paypalUrls.test + config.billingUris.test, _ref11[misc_ENV.DEMO] = "" + paypalUrls.test + config.billingUris.demo, 
                 _ref11;
             },
-            get loginUrls() {
+            get buttonUrls() {
                 var _ref12, paypalUrls = config.paypalUrls;
-                return (_ref12 = {})[misc_ENV.LOCAL] = "" + paypalUrls.stage + config.loginUri, 
-                _ref12[misc_ENV.STAGE] = "" + paypalUrls.stage + config.loginUri, _ref12[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.loginUri, 
-                _ref12[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.loginUri, _ref12[misc_ENV.TEST] = "" + paypalUrls.test + config.loginUri, 
+                return (_ref12 = {})[misc_ENV.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.buttonUris.local, 
+                _ref12[misc_ENV.STAGE] = "" + paypalUrls.stage + config.buttonUris.stage, _ref12[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.buttonUris.sandbox, 
+                _ref12[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.buttonUris.production, 
+                _ref12[misc_ENV.TEST] = "" + paypalUrls.test + config.buttonUris.test, _ref12[misc_ENV.DEMO] = "" + paypalUrls.demo + config.buttonUris.demo, 
                 _ref12;
             },
-            get paymentsStandardUrls() {
+            get inlinedCardFieldUrls() {
                 var _ref13, paypalUrls = config.paypalUrls;
-                return (_ref13 = {})[misc_ENV.LOCAL] = "" + paypalUrls.local + config.paymentStandardUri, 
-                _ref13[misc_ENV.STAGE] = "" + paypalUrls.stage + config.paymentStandardUri, _ref13[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.paymentStandardUri, 
-                _ref13[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.paymentStandardUri, 
-                _ref13[misc_ENV.TEST] = "" + paypalUrls.test + config.paymentStandardUri, _ref13;
+                return (_ref13 = {})[misc_ENV.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.inlinedCardFieldUris.local, 
+                _ref13[misc_ENV.STAGE] = "" + paypalUrls.stage + config.inlinedCardFieldUris.stage, 
+                _ref13[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.inlinedCardFieldUris.sandbox, 
+                _ref13[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.inlinedCardFieldUris.production, 
+                _ref13[misc_ENV.TEST] = "" + paypalUrls.test + config.inlinedCardFieldUris.test, 
+                _ref13[misc_ENV.DEMO] = "" + paypalUrls.demo + config.inlinedCardFieldUris.demo, 
+                _ref13;
             },
-            get metaFrameUrls() {
+            get loginUrls() {
                 var _ref14, paypalUrls = config.paypalUrls;
-                return (_ref14 = {})[misc_ENV.LOCAL] = "" + paypalUrls.local + config.postBridgeUri + "&env=local", 
-                _ref14[misc_ENV.STAGE] = "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=" + config.stage, 
-                _ref14[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox", 
-                _ref14[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.postBridgeUri + "&env=production", 
-                _ref14[misc_ENV.TEST] = "" + paypalUrls.test + config.postBridgeUri + "&env=test", 
-                _ref14[misc_ENV.DEMO] = "" + paypalUrls.demo + config.postBridgeUri + "&env=demo", 
+                return (_ref14 = {})[misc_ENV.LOCAL] = "" + paypalUrls.stage + config.loginUri, 
+                _ref14[misc_ENV.STAGE] = "" + paypalUrls.stage + config.loginUri, _ref14[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.loginUri, 
+                _ref14[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.loginUri, _ref14[misc_ENV.TEST] = "" + paypalUrls.test + config.loginUri, 
                 _ref14;
             },
-            get legacyCheckoutUrls() {
+            get paymentsStandardUrls() {
                 var _ref15, paypalUrls = config.paypalUrls;
-                return (_ref15 = {})[misc_ENV.LOCAL] = "" + paypalUrls.stage + config.legacyCheckoutUris.local, 
-                _ref15[misc_ENV.STAGE] = "" + paypalUrls.stage + config.legacyCheckoutUris.stage, 
-                _ref15[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox, 
-                _ref15[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.legacyCheckoutUris.production, 
-                _ref15[misc_ENV.TEST] = "" + paypalUrls.test + config.legacyCheckoutUris.test, _ref15;
+                return (_ref15 = {})[misc_ENV.LOCAL] = "" + paypalUrls.local + config.paymentStandardUri, 
+                _ref15[misc_ENV.STAGE] = "" + paypalUrls.stage + config.paymentStandardUri, _ref15[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.paymentStandardUri, 
+                _ref15[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.paymentStandardUri, 
+                _ref15[misc_ENV.TEST] = "" + paypalUrls.test + config.paymentStandardUri, _ref15;
+            },
+            get metaFrameUrls() {
+                var _ref16, paypalUrls = config.paypalUrls;
+                return (_ref16 = {})[misc_ENV.LOCAL] = "" + paypalUrls.local + config.postBridgeUri + "&env=local", 
+                _ref16[misc_ENV.STAGE] = "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=" + config.stage, 
+                _ref16[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox", 
+                _ref16[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.postBridgeUri + "&env=production", 
+                _ref16[misc_ENV.TEST] = "" + paypalUrls.test + config.postBridgeUri + "&env=test", 
+                _ref16[misc_ENV.DEMO] = "" + paypalUrls.demo + config.postBridgeUri + "&env=demo", 
+                _ref16;
+            },
+            get legacyCheckoutUrls() {
+                var _ref17, paypalUrls = config.paypalUrls;
+                return (_ref17 = {})[misc_ENV.LOCAL] = "" + paypalUrls.stage + config.legacyCheckoutUris.local, 
+                _ref17[misc_ENV.STAGE] = "" + paypalUrls.stage + config.legacyCheckoutUris.stage, 
+                _ref17[misc_ENV.SANDBOX] = "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox, 
+                _ref17[misc_ENV.PRODUCTION] = "" + paypalUrls.production + config.legacyCheckoutUris.production, 
+                _ref17[misc_ENV.TEST] = "" + paypalUrls.test + config.legacyCheckoutUris.test, _ref17;
             },
             get authApiUrls() {
-                var _ref16, apiUrls = config.apiUrls, authApiUri = config.authApiUri;
-                return (_ref16 = {})[misc_ENV.LOCAL] = "" + apiUrls.local + authApiUri, _ref16[misc_ENV.STAGE] = "" + apiUrls.stage + authApiUri, 
-                _ref16[misc_ENV.SANDBOX] = "" + apiUrls.sandbox + authApiUri, _ref16[misc_ENV.PRODUCTION] = "" + apiUrls.production + authApiUri, 
-                _ref16[misc_ENV.TEST] = "" + apiUrls.test + authApiUri, _ref16;
+                var _ref18, apiUrls = config.apiUrls, authApiUri = config.authApiUri;
+                return (_ref18 = {})[misc_ENV.LOCAL] = "" + apiUrls.local + authApiUri, _ref18[misc_ENV.STAGE] = "" + apiUrls.stage + authApiUri, 
+                _ref18[misc_ENV.SANDBOX] = "" + apiUrls.sandbox + authApiUri, _ref18[misc_ENV.PRODUCTION] = "" + apiUrls.production + authApiUri, 
+                _ref18[misc_ENV.TEST] = "" + apiUrls.test + authApiUri, _ref18;
             },
             get paymentApiUrls() {
-                var _ref17, apiUrls = config.apiUrls, paymentApiUri = config.paymentApiUri;
-                return (_ref17 = {})[misc_ENV.LOCAL] = "" + apiUrls.local + paymentApiUri, _ref17[misc_ENV.STAGE] = "" + apiUrls.stage + paymentApiUri, 
-                _ref17[misc_ENV.SANDBOX] = "" + apiUrls.sandbox + paymentApiUri, _ref17[misc_ENV.PRODUCTION] = "" + apiUrls.production + paymentApiUri, 
-                _ref17[misc_ENV.TEST] = "" + apiUrls.test + paymentApiUri, _ref17;
+                var _ref19, apiUrls = config.apiUrls, paymentApiUri = config.paymentApiUri;
+                return (_ref19 = {})[misc_ENV.LOCAL] = "" + apiUrls.local + paymentApiUri, _ref19[misc_ENV.STAGE] = "" + apiUrls.stage + paymentApiUri, 
+                _ref19[misc_ENV.SANDBOX] = "" + apiUrls.sandbox + paymentApiUri, _ref19[misc_ENV.PRODUCTION] = "" + apiUrls.production + paymentApiUri, 
+                _ref19[misc_ENV.TEST] = "" + apiUrls.test + paymentApiUri, _ref19;
             },
             get orderApiUrls() {
-                var _ref18, apiUrls = config.apiUrls, orderApiUri = config.orderApiUri;
-                return (_ref18 = {})[misc_ENV.LOCAL] = "" + apiUrls.local + orderApiUri, _ref18[misc_ENV.STAGE] = "" + apiUrls.stage + orderApiUri, 
-                _ref18[misc_ENV.SANDBOX] = "" + apiUrls.sandbox + orderApiUri, _ref18[misc_ENV.PRODUCTION] = "" + apiUrls.production + orderApiUri, 
-                _ref18[misc_ENV.TEST] = "" + apiUrls.test + orderApiUri, _ref18;
+                var _ref20, apiUrls = config.apiUrls, orderApiUri = config.orderApiUri;
+                return (_ref20 = {})[misc_ENV.LOCAL] = "" + apiUrls.local + orderApiUri, _ref20[misc_ENV.STAGE] = "" + apiUrls.stage + orderApiUri, 
+                _ref20[misc_ENV.SANDBOX] = "" + apiUrls.sandbox + orderApiUri, _ref20[misc_ENV.PRODUCTION] = "" + apiUrls.production + orderApiUri, 
+                _ref20[misc_ENV.TEST] = "" + apiUrls.test + orderApiUri, _ref20;
             },
             get billingApiUrls() {
-                var _ref19, apiUrls = config.apiUrls, billingApiUri = config.billingApiUri;
-                return (_ref19 = {})[misc_ENV.LOCAL] = "" + apiUrls.local + billingApiUri, _ref19[misc_ENV.STAGE] = "" + apiUrls.stage + billingApiUri, 
-                _ref19[misc_ENV.SANDBOX] = "" + apiUrls.sandbox + billingApiUri, _ref19[misc_ENV.PRODUCTION] = "" + apiUrls.production + billingApiUri, 
-                _ref19[misc_ENV.TEST] = "" + apiUrls.test + billingApiUri, _ref19;
+                var _ref21, apiUrls = config.apiUrls, billingApiUri = config.billingApiUri;
+                return (_ref21 = {})[misc_ENV.LOCAL] = "" + apiUrls.local + billingApiUri, _ref21[misc_ENV.STAGE] = "" + apiUrls.stage + billingApiUri, 
+                _ref21[misc_ENV.SANDBOX] = "" + apiUrls.sandbox + billingApiUri, _ref21[misc_ENV.PRODUCTION] = "" + apiUrls.production + billingApiUri, 
+                _ref21[misc_ENV.TEST] = "" + apiUrls.test + billingApiUri, _ref21;
             },
             get experienceApiUrls() {
-                var _ref20, apiUrls = config.apiUrls, experienceApiUri = config.experienceApiUri;
-                return (_ref20 = {})[misc_ENV.LOCAL] = "" + apiUrls.local + experienceApiUri, _ref20[misc_ENV.STAGE] = "" + apiUrls.stage + experienceApiUri, 
-                _ref20[misc_ENV.SANDBOX] = "" + apiUrls.sandbox + experienceApiUri, _ref20[misc_ENV.PRODUCTION] = "" + apiUrls.production + experienceApiUri, 
-                _ref20[misc_ENV.TEST] = "" + apiUrls.test + experienceApiUri, _ref20;
+                var _ref22, apiUrls = config.apiUrls, experienceApiUri = config.experienceApiUri;
+                return (_ref22 = {})[misc_ENV.LOCAL] = "" + apiUrls.local + experienceApiUri, _ref22[misc_ENV.STAGE] = "" + apiUrls.stage + experienceApiUri, 
+                _ref22[misc_ENV.SANDBOX] = "" + apiUrls.sandbox + experienceApiUri, _ref22[misc_ENV.PRODUCTION] = "" + apiUrls.production + experienceApiUri, 
+                _ref22[misc_ENV.TEST] = "" + apiUrls.test + experienceApiUri, _ref22;
             },
             get trackingApiUrls() {
-                var _ref21, apiUrls = config.apiUrls, trackingApiUri = config.trackingApiUri;
-                return (_ref21 = {})[misc_ENV.LOCAL] = "" + apiUrls.local + trackingApiUri, _ref21[misc_ENV.STAGE] = "" + apiUrls.stage + trackingApiUri, 
-                _ref21[misc_ENV.SANDBOX] = "" + apiUrls.sandbox + trackingApiUri, _ref21[misc_ENV.PRODUCTION] = "" + apiUrls.production + trackingApiUri, 
-                _ref21[misc_ENV.TEST] = "" + apiUrls.test + trackingApiUri, _ref21;
+                var _ref23, apiUrls = config.apiUrls, trackingApiUri = config.trackingApiUri;
+                return (_ref23 = {})[misc_ENV.LOCAL] = "" + apiUrls.local + trackingApiUri, _ref23[misc_ENV.STAGE] = "" + apiUrls.stage + trackingApiUri, 
+                _ref23[misc_ENV.SANDBOX] = "" + apiUrls.sandbox + trackingApiUri, _ref23[misc_ENV.PRODUCTION] = "" + apiUrls.production + trackingApiUri, 
+                _ref23[misc_ENV.TEST] = "" + apiUrls.test + trackingApiUri, _ref23;
             },
             _paypalUrl: "",
             get paypalUrl() {
@@ -3313,7 +3339,7 @@
                 })));
             }(normalizeProps(props)) : null;
             var script;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[ATTRIBUTE.VERSION] = "4.0.263", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[ATTRIBUTE.VERSION] = "4.0.264", 
             _ref18), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,

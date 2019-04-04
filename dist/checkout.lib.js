@@ -9807,9 +9807,7 @@
                     return config.a.env === constants.t.LOCAL;
                 },
                 get domain() {
-                    var _extends2;
-                    return _extends({}, config.a.paypalDomains, ((_extends2 = {})[constants.t.LOCAL] = /^http:\/\/localhost.paypal.com:\d+$/, 
-                    _extends2));
+                    return _extends({}, config.a.paypalDomains);
                 },
                 get bridgeUrl() {
                     return config.a.metaFrameUrls;
@@ -9880,6 +9878,22 @@
                         def: function(props) {
                             var env = props.env || config.a.env;
                             if (env === constants.t.STAGE || env === constants.t.LOCAL) return config.a.stageUrl;
+                        }
+                    },
+                    localhostUrl: {
+                        type: "string",
+                        required: !1,
+                        queryParam: !0,
+                        def: function(props) {
+                            if ((props.env || config.a.env) === constants.t.LOCAL) return config.a.localhostUrl;
+                        }
+                    },
+                    checkoutUri: {
+                        type: "string",
+                        required: !1,
+                        queryParam: !0,
+                        def: function() {
+                            return config.a.checkoutUri;
                         }
                     },
                     locale: {
@@ -10342,11 +10356,11 @@
         },
         "./src/config/index.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
-            var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js");
+            var _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js");
             var config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.263",
+                version: "4.0.264",
                 cors: !0,
                 env: function() {
                     return "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION;
@@ -10363,6 +10377,13 @@
                 },
                 get apiStageUrl() {
                     return config.apiStage + "." + config.stageDomain;
+                },
+                get localhostUrl() {
+                    return "http://localhost.paypal.com:" + config.ports.default;
+                },
+                set localhostUrl(val) {
+                    delete this.localhostUrl;
+                    this.localhostUrl = val;
                 },
                 merchantID: "",
                 logLevel: "warn",
@@ -10629,6 +10650,18 @@
                     },
                     "1800Contacts.com": {
                         disable_venmo: !0
+                    },
+                    "hulu.com": {
+                        disable_venmo: !0
+                    },
+                    "grubhub.com": {
+                        disable_venmo: !0
+                    },
+                    "eat24.com": {
+                        disable_venmo: !0
+                    },
+                    "seamless.com": {
+                        disable_venmo: !0
                     }
                 },
                 creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
@@ -10663,18 +10696,17 @@
                 },
                 get paypalUrls() {
                     var _ref;
-                    return (_ref = {})[constants.t.LOCAL] = "http://localhost.paypal.com:" + config.ports.default, 
-                    _ref[constants.t.STAGE] = "https://www." + config.stageUrl, _ref[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", 
-                    _ref[constants.t.PRODUCTION] = "https://www.paypal.com", _ref[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
+                    return (_ref = {})[constants.t.LOCAL] = config.localhostUrl, _ref[constants.t.STAGE] = "https://www." + config.stageUrl, 
+                    _ref[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref[constants.t.PRODUCTION] = "https://www.paypal.com", 
+                    _ref[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
                     _ref[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
                     _ref;
                 },
                 get paypalDomains() {
                     var _ref2;
-                    return (_ref2 = {})[constants.t.LOCAL] = "http://localhost.paypal.com:" + config.ports.default, 
-                    _ref2[constants.t.STAGE] = "https://www." + config.stageUrl, _ref2[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", 
-                    _ref2[constants.t.PRODUCTION] = "https://www.paypal.com", _ref2[constants.t.TEST] = "mock://www.paypal.com", 
-                    _ref2[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
+                    return (_ref2 = {})[constants.t.LOCAL] = /^https?:\/\/.*\.paypal\.com:?\d*$/, _ref2[constants.t.STAGE] = "https://www." + config.stageUrl, 
+                    _ref2[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref2[constants.t.PRODUCTION] = "https://www.paypal.com", 
+                    _ref2[constants.t.TEST] = "mock://www.paypal.com", _ref2[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
                     _ref2;
                 },
                 get wwwApiUrls() {
@@ -10700,10 +10732,27 @@
                     _ref5[constants.t.TEST] = domain === wwwApiUrls.test ? wwwApiUrls.test : corsApiUrls.test, 
                     _ref5;
                 },
-                checkoutUris: (_checkoutUris = {}, _checkoutUris[constants.t.LOCAL] = "/webapps/hermes?ul=0", 
-                _checkoutUris[constants.t.STAGE] = "/webapps/hermes", _checkoutUris[constants.t.SANDBOX] = "/checkoutnow", 
-                _checkoutUris[constants.t.PRODUCTION] = "/checkoutnow", _checkoutUris[constants.t.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
-                _checkoutUris[constants.t.DEMO] = "/demo/dev/checkout.htm", _checkoutUris),
+                get checkoutUri() {
+                    return null;
+                },
+                set checkoutUri(val) {
+                    delete this.checkoutUri;
+                    this.checkoutUri = val;
+                },
+                get checkoutUris() {
+                    var _ref7;
+                    if (config.checkoutUri) {
+                        var _ref6;
+                        return (_ref6 = {})[constants.t.LOCAL] = config.checkoutUri, _ref6[constants.t.STAGE] = config.checkoutUri, 
+                        _ref6[constants.t.SANDBOX] = config.checkoutUri, _ref6[constants.t.PRODUCTION] = config.checkoutUri, 
+                        _ref6[constants.t.TEST] = config.checkoutUri, _ref6[constants.t.DEMO] = config.checkoutUri, 
+                        _ref6;
+                    }
+                    return (_ref7 = {})[constants.t.LOCAL] = "/webapps/hermes?ul=0", _ref7[constants.t.STAGE] = "/webapps/hermes", 
+                    _ref7[constants.t.SANDBOX] = "/checkoutnow", _ref7[constants.t.PRODUCTION] = "/checkoutnow", 
+                    _ref7[constants.t.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
+                    _ref7[constants.t.DEMO] = "/demo/dev/checkout.htm", _ref7;
+                },
                 altpayUris: (_altpayUris = {}, _altpayUris[constants.t.LOCAL] = "/latinumcheckout", 
                 _altpayUris[constants.t.STAGE] = "/latinumcheckout", _altpayUris[constants.t.SANDBOX] = "/latinumcheckout", 
                 _altpayUris[constants.t.PRODUCTION] = "/latinumcheckout", _altpayUris[constants.t.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
@@ -10758,124 +10807,124 @@
                 experienceApiUri: "/v1/payment-experience/web-profiles",
                 trackingApiUri: "/v1/risk/transaction-contexts",
                 get checkoutUrls() {
-                    var _ref6, paypalUrls = config.paypalUrls;
-                    return (_ref6 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.checkoutUris.local.replace(":" + config.ports.default, ":" + config.ports.checkout), 
-                    _ref6[constants.t.STAGE] = "" + paypalUrls.stage + config.checkoutUris.stage, _ref6[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.checkoutUris.sandbox, 
-                    _ref6[constants.t.PRODUCTION] = "" + paypalUrls.production + config.checkoutUris.production, 
-                    _ref6[constants.t.TEST] = "" + paypalUrls.test + config.checkoutUris.test, _ref6[constants.t.DEMO] = "" + paypalUrls.test + config.checkoutUris.demo, 
-                    _ref6;
-                },
-                get guestUrls() {
-                    var _ref7, paypalUrls = config.paypalUrls;
-                    return (_ref7 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.guest) + config.guestUris.local, 
-                    _ref7[constants.t.STAGE] = "" + paypalUrls.stage + config.guestUris.stage, _ref7[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.guestUris.sandbox, 
-                    _ref7[constants.t.PRODUCTION] = "" + paypalUrls.production + config.guestUris.production, 
-                    _ref7[constants.t.TEST] = "" + paypalUrls.test + config.guestUris.test, _ref7[constants.t.DEMO] = "" + paypalUrls.test + config.guestUris.demo, 
-                    _ref7;
-                },
-                get altpayUrls() {
                     var _ref8, paypalUrls = config.paypalUrls;
-                    return (_ref8 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.altpay) + config.altpayUris.local, 
-                    _ref8[constants.t.STAGE] = "" + paypalUrls.stage + config.altpayUris.stage, _ref8[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.altpayUris.sandbox, 
-                    _ref8[constants.t.PRODUCTION] = "" + paypalUrls.production + config.altpayUris.production, 
-                    _ref8[constants.t.TEST] = "" + paypalUrls.test + config.altpayUris.test, _ref8[constants.t.DEMO] = "" + paypalUrls.test + config.altpayUris.demo, 
+                    return (_ref8 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.checkoutUris.local.replace(":" + config.ports.default, ":" + config.ports.checkout), 
+                    _ref8[constants.t.STAGE] = "" + paypalUrls.stage + config.checkoutUris.stage, _ref8[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.checkoutUris.sandbox, 
+                    _ref8[constants.t.PRODUCTION] = "" + paypalUrls.production + config.checkoutUris.production, 
+                    _ref8[constants.t.TEST] = "" + paypalUrls.test + config.checkoutUris.test, _ref8[constants.t.DEMO] = "" + paypalUrls.test + config.checkoutUris.demo, 
                     _ref8;
                 },
-                get billingUrls() {
+                get guestUrls() {
                     var _ref9, paypalUrls = config.paypalUrls;
-                    return (_ref9 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.checkout) + config.billingUris.local, 
-                    _ref9[constants.t.STAGE] = "" + paypalUrls.stage + config.billingUris.stage, _ref9[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.billingUris.sandbox, 
-                    _ref9[constants.t.PRODUCTION] = "" + paypalUrls.production + config.billingUris.production, 
-                    _ref9[constants.t.TEST] = "" + paypalUrls.test + config.billingUris.test, _ref9[constants.t.DEMO] = "" + paypalUrls.test + config.billingUris.demo, 
+                    return (_ref9 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.guest) + config.guestUris.local, 
+                    _ref9[constants.t.STAGE] = "" + paypalUrls.stage + config.guestUris.stage, _ref9[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.guestUris.sandbox, 
+                    _ref9[constants.t.PRODUCTION] = "" + paypalUrls.production + config.guestUris.production, 
+                    _ref9[constants.t.TEST] = "" + paypalUrls.test + config.guestUris.test, _ref9[constants.t.DEMO] = "" + paypalUrls.test + config.guestUris.demo, 
                     _ref9;
                 },
-                get buttonUrls() {
+                get altpayUrls() {
                     var _ref10, paypalUrls = config.paypalUrls;
-                    return (_ref10 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.buttonUris.local, 
-                    _ref10[constants.t.STAGE] = "" + paypalUrls.stage + config.buttonUris.stage, _ref10[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.buttonUris.sandbox, 
-                    _ref10[constants.t.PRODUCTION] = "" + paypalUrls.production + config.buttonUris.production, 
-                    _ref10[constants.t.TEST] = "" + paypalUrls.test + config.buttonUris.test, _ref10[constants.t.DEMO] = "" + paypalUrls.demo + config.buttonUris.demo, 
+                    return (_ref10 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.altpay) + config.altpayUris.local, 
+                    _ref10[constants.t.STAGE] = "" + paypalUrls.stage + config.altpayUris.stage, _ref10[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.altpayUris.sandbox, 
+                    _ref10[constants.t.PRODUCTION] = "" + paypalUrls.production + config.altpayUris.production, 
+                    _ref10[constants.t.TEST] = "" + paypalUrls.test + config.altpayUris.test, _ref10[constants.t.DEMO] = "" + paypalUrls.test + config.altpayUris.demo, 
                     _ref10;
                 },
-                get inlinedCardFieldUrls() {
+                get billingUrls() {
                     var _ref11, paypalUrls = config.paypalUrls;
-                    return (_ref11 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.inlinedCardFieldUris.local, 
-                    _ref11[constants.t.STAGE] = "" + paypalUrls.stage + config.inlinedCardFieldUris.stage, 
-                    _ref11[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.inlinedCardFieldUris.sandbox, 
-                    _ref11[constants.t.PRODUCTION] = "" + paypalUrls.production + config.inlinedCardFieldUris.production, 
-                    _ref11[constants.t.TEST] = "" + paypalUrls.test + config.inlinedCardFieldUris.test, 
-                    _ref11[constants.t.DEMO] = "" + paypalUrls.demo + config.inlinedCardFieldUris.demo, 
+                    return (_ref11 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.checkout) + config.billingUris.local, 
+                    _ref11[constants.t.STAGE] = "" + paypalUrls.stage + config.billingUris.stage, _ref11[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.billingUris.sandbox, 
+                    _ref11[constants.t.PRODUCTION] = "" + paypalUrls.production + config.billingUris.production, 
+                    _ref11[constants.t.TEST] = "" + paypalUrls.test + config.billingUris.test, _ref11[constants.t.DEMO] = "" + paypalUrls.test + config.billingUris.demo, 
                     _ref11;
                 },
-                get loginUrls() {
+                get buttonUrls() {
                     var _ref12, paypalUrls = config.paypalUrls;
-                    return (_ref12 = {})[constants.t.LOCAL] = "" + paypalUrls.stage + config.loginUri, 
-                    _ref12[constants.t.STAGE] = "" + paypalUrls.stage + config.loginUri, _ref12[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.loginUri, 
-                    _ref12[constants.t.PRODUCTION] = "" + paypalUrls.production + config.loginUri, _ref12[constants.t.TEST] = "" + paypalUrls.test + config.loginUri, 
+                    return (_ref12 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.buttonUris.local, 
+                    _ref12[constants.t.STAGE] = "" + paypalUrls.stage + config.buttonUris.stage, _ref12[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.buttonUris.sandbox, 
+                    _ref12[constants.t.PRODUCTION] = "" + paypalUrls.production + config.buttonUris.production, 
+                    _ref12[constants.t.TEST] = "" + paypalUrls.test + config.buttonUris.test, _ref12[constants.t.DEMO] = "" + paypalUrls.demo + config.buttonUris.demo, 
                     _ref12;
                 },
-                get paymentsStandardUrls() {
+                get inlinedCardFieldUrls() {
                     var _ref13, paypalUrls = config.paypalUrls;
-                    return (_ref13 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.paymentStandardUri, 
-                    _ref13[constants.t.STAGE] = "" + paypalUrls.stage + config.paymentStandardUri, _ref13[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.paymentStandardUri, 
-                    _ref13[constants.t.PRODUCTION] = "" + paypalUrls.production + config.paymentStandardUri, 
-                    _ref13[constants.t.TEST] = "" + paypalUrls.test + config.paymentStandardUri, _ref13;
+                    return (_ref13 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.inlinedCardFieldUris.local, 
+                    _ref13[constants.t.STAGE] = "" + paypalUrls.stage + config.inlinedCardFieldUris.stage, 
+                    _ref13[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.inlinedCardFieldUris.sandbox, 
+                    _ref13[constants.t.PRODUCTION] = "" + paypalUrls.production + config.inlinedCardFieldUris.production, 
+                    _ref13[constants.t.TEST] = "" + paypalUrls.test + config.inlinedCardFieldUris.test, 
+                    _ref13[constants.t.DEMO] = "" + paypalUrls.demo + config.inlinedCardFieldUris.demo, 
+                    _ref13;
                 },
-                get metaFrameUrls() {
+                get loginUrls() {
                     var _ref14, paypalUrls = config.paypalUrls;
-                    return (_ref14 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.postBridgeUri + "&env=local", 
-                    _ref14[constants.t.STAGE] = "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=" + config.stage, 
-                    _ref14[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox", 
-                    _ref14[constants.t.PRODUCTION] = "" + paypalUrls.production + config.postBridgeUri + "&env=production", 
-                    _ref14[constants.t.TEST] = "" + paypalUrls.test + config.postBridgeUri + "&env=test", 
-                    _ref14[constants.t.DEMO] = "" + paypalUrls.demo + config.postBridgeUri + "&env=demo", 
+                    return (_ref14 = {})[constants.t.LOCAL] = "" + paypalUrls.stage + config.loginUri, 
+                    _ref14[constants.t.STAGE] = "" + paypalUrls.stage + config.loginUri, _ref14[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.loginUri, 
+                    _ref14[constants.t.PRODUCTION] = "" + paypalUrls.production + config.loginUri, _ref14[constants.t.TEST] = "" + paypalUrls.test + config.loginUri, 
                     _ref14;
                 },
-                get legacyCheckoutUrls() {
+                get paymentsStandardUrls() {
                     var _ref15, paypalUrls = config.paypalUrls;
-                    return (_ref15 = {})[constants.t.LOCAL] = "" + paypalUrls.stage + config.legacyCheckoutUris.local, 
-                    _ref15[constants.t.STAGE] = "" + paypalUrls.stage + config.legacyCheckoutUris.stage, 
-                    _ref15[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox, 
-                    _ref15[constants.t.PRODUCTION] = "" + paypalUrls.production + config.legacyCheckoutUris.production, 
-                    _ref15[constants.t.TEST] = "" + paypalUrls.test + config.legacyCheckoutUris.test, 
-                    _ref15;
+                    return (_ref15 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.paymentStandardUri, 
+                    _ref15[constants.t.STAGE] = "" + paypalUrls.stage + config.paymentStandardUri, _ref15[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.paymentStandardUri, 
+                    _ref15[constants.t.PRODUCTION] = "" + paypalUrls.production + config.paymentStandardUri, 
+                    _ref15[constants.t.TEST] = "" + paypalUrls.test + config.paymentStandardUri, _ref15;
+                },
+                get metaFrameUrls() {
+                    var _ref16, paypalUrls = config.paypalUrls;
+                    return (_ref16 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.postBridgeUri + "&env=local", 
+                    _ref16[constants.t.STAGE] = "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=" + config.stage, 
+                    _ref16[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox", 
+                    _ref16[constants.t.PRODUCTION] = "" + paypalUrls.production + config.postBridgeUri + "&env=production", 
+                    _ref16[constants.t.TEST] = "" + paypalUrls.test + config.postBridgeUri + "&env=test", 
+                    _ref16[constants.t.DEMO] = "" + paypalUrls.demo + config.postBridgeUri + "&env=demo", 
+                    _ref16;
+                },
+                get legacyCheckoutUrls() {
+                    var _ref17, paypalUrls = config.paypalUrls;
+                    return (_ref17 = {})[constants.t.LOCAL] = "" + paypalUrls.stage + config.legacyCheckoutUris.local, 
+                    _ref17[constants.t.STAGE] = "" + paypalUrls.stage + config.legacyCheckoutUris.stage, 
+                    _ref17[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox, 
+                    _ref17[constants.t.PRODUCTION] = "" + paypalUrls.production + config.legacyCheckoutUris.production, 
+                    _ref17[constants.t.TEST] = "" + paypalUrls.test + config.legacyCheckoutUris.test, 
+                    _ref17;
                 },
                 get authApiUrls() {
-                    var _ref16, apiUrls = config.apiUrls, authApiUri = config.authApiUri;
-                    return (_ref16 = {})[constants.t.LOCAL] = "" + apiUrls.local + authApiUri, _ref16[constants.t.STAGE] = "" + apiUrls.stage + authApiUri, 
-                    _ref16[constants.t.SANDBOX] = "" + apiUrls.sandbox + authApiUri, _ref16[constants.t.PRODUCTION] = "" + apiUrls.production + authApiUri, 
-                    _ref16[constants.t.TEST] = "" + apiUrls.test + authApiUri, _ref16;
+                    var _ref18, apiUrls = config.apiUrls, authApiUri = config.authApiUri;
+                    return (_ref18 = {})[constants.t.LOCAL] = "" + apiUrls.local + authApiUri, _ref18[constants.t.STAGE] = "" + apiUrls.stage + authApiUri, 
+                    _ref18[constants.t.SANDBOX] = "" + apiUrls.sandbox + authApiUri, _ref18[constants.t.PRODUCTION] = "" + apiUrls.production + authApiUri, 
+                    _ref18[constants.t.TEST] = "" + apiUrls.test + authApiUri, _ref18;
                 },
                 get paymentApiUrls() {
-                    var _ref17, apiUrls = config.apiUrls, paymentApiUri = config.paymentApiUri;
-                    return (_ref17 = {})[constants.t.LOCAL] = "" + apiUrls.local + paymentApiUri, _ref17[constants.t.STAGE] = "" + apiUrls.stage + paymentApiUri, 
-                    _ref17[constants.t.SANDBOX] = "" + apiUrls.sandbox + paymentApiUri, _ref17[constants.t.PRODUCTION] = "" + apiUrls.production + paymentApiUri, 
-                    _ref17[constants.t.TEST] = "" + apiUrls.test + paymentApiUri, _ref17;
+                    var _ref19, apiUrls = config.apiUrls, paymentApiUri = config.paymentApiUri;
+                    return (_ref19 = {})[constants.t.LOCAL] = "" + apiUrls.local + paymentApiUri, _ref19[constants.t.STAGE] = "" + apiUrls.stage + paymentApiUri, 
+                    _ref19[constants.t.SANDBOX] = "" + apiUrls.sandbox + paymentApiUri, _ref19[constants.t.PRODUCTION] = "" + apiUrls.production + paymentApiUri, 
+                    _ref19[constants.t.TEST] = "" + apiUrls.test + paymentApiUri, _ref19;
                 },
                 get orderApiUrls() {
-                    var _ref18, apiUrls = config.apiUrls, orderApiUri = config.orderApiUri;
-                    return (_ref18 = {})[constants.t.LOCAL] = "" + apiUrls.local + orderApiUri, _ref18[constants.t.STAGE] = "" + apiUrls.stage + orderApiUri, 
-                    _ref18[constants.t.SANDBOX] = "" + apiUrls.sandbox + orderApiUri, _ref18[constants.t.PRODUCTION] = "" + apiUrls.production + orderApiUri, 
-                    _ref18[constants.t.TEST] = "" + apiUrls.test + orderApiUri, _ref18;
+                    var _ref20, apiUrls = config.apiUrls, orderApiUri = config.orderApiUri;
+                    return (_ref20 = {})[constants.t.LOCAL] = "" + apiUrls.local + orderApiUri, _ref20[constants.t.STAGE] = "" + apiUrls.stage + orderApiUri, 
+                    _ref20[constants.t.SANDBOX] = "" + apiUrls.sandbox + orderApiUri, _ref20[constants.t.PRODUCTION] = "" + apiUrls.production + orderApiUri, 
+                    _ref20[constants.t.TEST] = "" + apiUrls.test + orderApiUri, _ref20;
                 },
                 get billingApiUrls() {
-                    var _ref19, apiUrls = config.apiUrls, billingApiUri = config.billingApiUri;
-                    return (_ref19 = {})[constants.t.LOCAL] = "" + apiUrls.local + billingApiUri, _ref19[constants.t.STAGE] = "" + apiUrls.stage + billingApiUri, 
-                    _ref19[constants.t.SANDBOX] = "" + apiUrls.sandbox + billingApiUri, _ref19[constants.t.PRODUCTION] = "" + apiUrls.production + billingApiUri, 
-                    _ref19[constants.t.TEST] = "" + apiUrls.test + billingApiUri, _ref19;
+                    var _ref21, apiUrls = config.apiUrls, billingApiUri = config.billingApiUri;
+                    return (_ref21 = {})[constants.t.LOCAL] = "" + apiUrls.local + billingApiUri, _ref21[constants.t.STAGE] = "" + apiUrls.stage + billingApiUri, 
+                    _ref21[constants.t.SANDBOX] = "" + apiUrls.sandbox + billingApiUri, _ref21[constants.t.PRODUCTION] = "" + apiUrls.production + billingApiUri, 
+                    _ref21[constants.t.TEST] = "" + apiUrls.test + billingApiUri, _ref21;
                 },
                 get experienceApiUrls() {
-                    var _ref20, apiUrls = config.apiUrls, experienceApiUri = config.experienceApiUri;
-                    return (_ref20 = {})[constants.t.LOCAL] = "" + apiUrls.local + experienceApiUri, 
-                    _ref20[constants.t.STAGE] = "" + apiUrls.stage + experienceApiUri, _ref20[constants.t.SANDBOX] = "" + apiUrls.sandbox + experienceApiUri, 
-                    _ref20[constants.t.PRODUCTION] = "" + apiUrls.production + experienceApiUri, _ref20[constants.t.TEST] = "" + apiUrls.test + experienceApiUri, 
-                    _ref20;
+                    var _ref22, apiUrls = config.apiUrls, experienceApiUri = config.experienceApiUri;
+                    return (_ref22 = {})[constants.t.LOCAL] = "" + apiUrls.local + experienceApiUri, 
+                    _ref22[constants.t.STAGE] = "" + apiUrls.stage + experienceApiUri, _ref22[constants.t.SANDBOX] = "" + apiUrls.sandbox + experienceApiUri, 
+                    _ref22[constants.t.PRODUCTION] = "" + apiUrls.production + experienceApiUri, _ref22[constants.t.TEST] = "" + apiUrls.test + experienceApiUri, 
+                    _ref22;
                 },
                 get trackingApiUrls() {
-                    var _ref21, apiUrls = config.apiUrls, trackingApiUri = config.trackingApiUri;
-                    return (_ref21 = {})[constants.t.LOCAL] = "" + apiUrls.local + trackingApiUri, _ref21[constants.t.STAGE] = "" + apiUrls.stage + trackingApiUri, 
-                    _ref21[constants.t.SANDBOX] = "" + apiUrls.sandbox + trackingApiUri, _ref21[constants.t.PRODUCTION] = "" + apiUrls.production + trackingApiUri, 
-                    _ref21[constants.t.TEST] = "" + apiUrls.test + trackingApiUri, _ref21;
+                    var _ref23, apiUrls = config.apiUrls, trackingApiUri = config.trackingApiUri;
+                    return (_ref23 = {})[constants.t.LOCAL] = "" + apiUrls.local + trackingApiUri, _ref23[constants.t.STAGE] = "" + apiUrls.stage + trackingApiUri, 
+                    _ref23[constants.t.SANDBOX] = "" + apiUrls.sandbox + trackingApiUri, _ref23[constants.t.PRODUCTION] = "" + apiUrls.production + trackingApiUri, 
+                    _ref23[constants.t.TEST] = "" + apiUrls.test + trackingApiUri, _ref23;
                 },
                 _paypalUrl: "",
                 get paypalUrl() {
@@ -11772,9 +11821,89 @@
             __webpack_require__.d(interface_namespaceObject, "logger", function() {
                 return logger;
             });
+            __webpack_require__.d(interface_namespaceObject, "ThreeDomainSecure", function() {
+                return interface_ThreeDomainSecure;
+            });
             var _LOGO_COLOR, beaver_logger_client = __webpack_require__("./node_modules/beaver-logger/client/index.js"), src = __webpack_require__("./node_modules/zoid/src/index.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js"), lib = __webpack_require__("./src/lib/index.js"), src_checkout = __webpack_require__("./src/checkout/index.js"), constants = (__webpack_require__("./node_modules/zoid/src/component/component/index.js"), 
             __webpack_require__("./src/constants/index.js")), config = __webpack_require__("./src/config/index.js"), base64 = __webpack_require__("./node_modules/Base64/base64.js"), resources = __webpack_require__("./src/resources/index.js"), containerContent = __webpack_require__("./src/checkout/template/containerContent.json"), containerContent_default = __webpack_require__.n(containerContent), checkout_template = __webpack_require__("./src/checkout/template/index.js"), componentContent = JSON.parse(containerContent_default.a), LOGO_COLOR = ((_LOGO_COLOR = {})[constants.q.BLACK] = constants.i.WHITE, 
             _LOGO_COLOR[constants.q.WHITE] = constants.i.BLACK, _LOGO_COLOR);
+            function containerTemplate(_ref) {
+                var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION, CONTEXT = _ref.CONTEXT, EVENT = _ref.EVENT, on = _ref.on, tag = _ref.tag, context = _ref.context, actions = _ref.actions, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _props$locale$split = props.locale.split("_"), lang = _props$locale$split[0], country = _props$locale$split[1], containerStyle = "\n        " + Object(checkout_template.c)({
+                    id: id,
+                    tag: tag,
+                    CONTEXT: CONTEXT,
+                    CLASS: CLASS,
+                    ANIMATION: ANIMATION
+                }) + "\n        @media screen and (max-width: 470px) {\n            #" + id + " .paypal-checkout-close {\n                position: absolute;\n                right: 20px;\n                width: 40px;\n                height: 40px;\n                opacity: 0.6;\n                top: 20px;\n                opacity: 0.6;\n                z-index: 2;\n            }\n\n            #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n                position: absolute;\n                left: 20px;\n                content: ' ';\n                height: 40px;\n                width: 1px;\n                background-color: #111 !important;\n            }\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                height: 100%;\n                min-height: 100%;\n                max-height: 100%;\n                min-width: 100%;\n                max-width: 100%;\n                border-radius: 0px;\n            }\n            #" + id + " ." + CLASS.OUTLET + " {\n                height: 100%;\n            }\n        }\n    ", content = componentContent[country][lang];
+                function focus(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    Object(lib.G)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
+                }
+                var overlayColor = (props.style || {}).overlayColor || constants.q.BLACK, logoColor = LOGO_COLOR[overlayColor], ppLogo = "function" == typeof resources.b.pp ? resources.b.pp({
+                    logoColor: logoColor
+                }) : resources.b.pp[logoColor], paypalLogo = "function" == typeof resources.b.paypal ? resources.b.paypal({
+                    logoColor: logoColor
+                }) : resources.b.paypal[logoColor], el = jsxDom("div", {
+                    id: id,
+                    onClick: focus,
+                    class: tag + "-context-" + context + " paypal-checkout-overlay " + tag + "-background-color-" + overlayColor + " " + tag + "-logo-color-" + logoColor,
+                    role: "dialog",
+                    "aria-modal": "true",
+                    "aria-label": "PayPal Checkout Overlay"
+                }, jsxDom("a", {
+                    href: "#",
+                    class: "paypal-checkout-close",
+                    onClick: function(event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        props.onCancel && props.onCancel();
+                        actions.close();
+                    },
+                    "aria-label": "close",
+                    role: "button"
+                }), jsxDom("div", {
+                    class: "paypal-checkout-modal"
+                }, jsxDom("div", {
+                    class: "paypal-checkout-logo"
+                }, jsxDom("img", {
+                    class: "paypal-checkout-logo-pp",
+                    alt: "pp",
+                    src: "data:image/svg+xml;base64," + Object(base64.btoa)(ppLogo)
+                }), jsxDom("img", {
+                    class: "paypal-checkout-logo-paypal",
+                    alt: "paypal",
+                    src: "data:image/svg+xml;base64," + Object(base64.btoa)(paypalLogo)
+                })), jsxDom("div", {
+                    class: "paypal-checkout-message"
+                }, content.windowMessage), jsxDom("div", {
+                    class: "paypal-checkout-continue"
+                }, jsxDom("a", {
+                    onClick: focus,
+                    href: "#"
+                }, content.continue)), jsxDom("div", {
+                    class: "paypal-checkout-loader"
+                }, jsxDom("div", {
+                    class: "paypal-spinner"
+                }))), jsxDom("div", {
+                    class: "paypal-checkout-iframe-container"
+                }, outlet), jsxDom("style", null, containerStyle)), container = jsxDom("html", null, jsxDom("body", null, el));
+                on(EVENT.CLOSE, function() {
+                    el.className += " " + tag + "-loading";
+                });
+                return jsxDom("div", {
+                    id: id,
+                    class: "paypal-checkout-sandbox"
+                }, jsxDom("style", null, Object(checkout_template.d)({
+                    id: id,
+                    ANIMATION: ANIMATION
+                })), jsxDom("iframe", {
+                    title: "PayPal Checkout Overlay",
+                    name: "__paypal_checkout_sandbox_" + id + "__",
+                    scrolling: "no",
+                    class: "paypal-checkout-sandbox-iframe"
+                }, container));
+            }
             var _extends = Object.assign || function(target) {
                 for (var i = 1; i < arguments.length; i++) {
                     var source = arguments[i];
@@ -11877,82 +12006,82 @@
                         }
                     }
                 },
-                containerTemplate: function(_ref) {
-                    var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION, CONTEXT = _ref.CONTEXT, EVENT = _ref.EVENT, on = _ref.on, tag = _ref.tag, context = _ref.context, actions = _ref.actions, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _props$locale$split = props.locale.split("_"), lang = _props$locale$split[0], country = _props$locale$split[1], containerStyle = "\n        " + Object(checkout_template.c)({
-                        id: id,
-                        tag: tag,
-                        CONTEXT: CONTEXT,
-                        CLASS: CLASS,
-                        ANIMATION: ANIMATION
-                    }) + "\n        @media screen and (max-width: 470px) {\n            #" + id + " .paypal-checkout-close {\n                position: absolute;\n                right: 20px;\n                width: 40px;\n                height: 40px;\n                opacity: 0.6;\n                top: 20px;\n                opacity: 0.6;\n                z-index: 2;\n            }\n\n            #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n                position: absolute;\n                left: 20px;\n                content: ' ';\n                height: 40px;\n                width: 1px;\n                background-color: #111 !important;\n            }\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                height: 100%;\n                min-height: 100%;\n                max-height: 100%;\n                min-width: 100%;\n                max-width: 100%;\n                border-radius: 0px;\n            }\n            #" + id + " ." + CLASS.OUTLET + " {\n                height: 100%;\n            }\n        }\n    ", content = componentContent[country][lang];
-                    function focus(event) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        Object(lib.G)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
-                    }
-                    var overlayColor = (props.style || {}).overlayColor || constants.q.BLACK, logoColor = LOGO_COLOR[overlayColor], ppLogo = "function" == typeof resources.b.pp ? resources.b.pp({
-                        logoColor: logoColor
-                    }) : resources.b.pp[logoColor], paypalLogo = "function" == typeof resources.b.paypal ? resources.b.paypal({
-                        logoColor: logoColor
-                    }) : resources.b.paypal[logoColor], el = jsxDom("div", {
-                        id: id,
-                        onClick: focus,
-                        class: tag + "-context-" + context + " paypal-checkout-overlay " + tag + "-background-color-" + overlayColor + " " + tag + "-logo-color-" + logoColor,
-                        role: "dialog",
-                        "aria-modal": "true",
-                        "aria-label": "PayPal Checkout Overlay"
-                    }, jsxDom("a", {
-                        href: "#",
-                        class: "paypal-checkout-close",
-                        onClick: function(event) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                            actions.close();
-                        },
-                        "aria-label": "close",
-                        role: "button"
-                    }), jsxDom("div", {
-                        class: "paypal-checkout-modal"
-                    }, jsxDom("div", {
-                        class: "paypal-checkout-logo"
-                    }, jsxDom("img", {
-                        class: "paypal-checkout-logo-pp",
-                        alt: "pp",
-                        src: "data:image/svg+xml;base64," + Object(base64.btoa)(ppLogo)
-                    }), jsxDom("img", {
-                        class: "paypal-checkout-logo-paypal",
-                        alt: "paypal",
-                        src: "data:image/svg+xml;base64," + Object(base64.btoa)(paypalLogo)
-                    })), jsxDom("div", {
-                        class: "paypal-checkout-message"
-                    }, content.windowMessage), jsxDom("div", {
-                        class: "paypal-checkout-continue"
-                    }, jsxDom("a", {
-                        onClick: focus,
-                        href: "#"
-                    }, content.continue)), jsxDom("div", {
-                        class: "paypal-checkout-loader"
-                    }, jsxDom("div", {
-                        class: "paypal-spinner"
-                    }))), jsxDom("div", {
-                        class: "paypal-checkout-iframe-container"
-                    }, outlet), jsxDom("style", null, containerStyle)), container = jsxDom("html", null, jsxDom("body", null, el));
-                    on(EVENT.CLOSE, function() {
-                        el.className += " " + tag + "-loading";
-                    });
-                    return jsxDom("div", {
-                        id: id,
-                        class: "paypal-checkout-sandbox"
-                    }, jsxDom("style", null, Object(checkout_template.d)({
-                        id: id,
-                        ANIMATION: ANIMATION
-                    })), jsxDom("iframe", {
-                        title: "PayPal Checkout Overlay",
-                        name: "__paypal_checkout_sandbox_" + id + "__",
-                        scrolling: "no",
-                        class: "paypal-checkout-sandbox-iframe"
-                    }, container));
+                containerTemplate: containerTemplate
+            }), threeDomainSecure__extends = Object.assign || function(target) {
+                for (var i = 1; i < arguments.length; i++) {
+                    var source = arguments[i];
+                    for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
                 }
+                return target;
+            }, ThreeDomainSecure = Object(src.c)({
+                tag: "paypal-3ds",
+                name: "3ds",
+                buildUrl: function(props) {
+                    var env = props.env || config.a.env;
+                    return config.a.inlinedCardFieldUrls[env] + "/init3ds";
+                },
+                get domain() {
+                    var _extends2;
+                    return threeDomainSecure__extends({}, config.a.paypalDomains, ((_extends2 = {})[constants.t.LOCAL] = /^http:\/\/localhost.paypal.com:\d+$/, 
+                    _extends2));
+                },
+                scrolling: !0,
+                props: {
+                    sdkMeta: {
+                        type: "string",
+                        queryParam: !0,
+                        sendToChild: !1,
+                        def: function() {
+                            return btoa(JSON.stringify({
+                                url: Object(lib.m)()
+                            }));
+                        }
+                    },
+                    locale: {
+                        type: "string",
+                        required: !1,
+                        queryParam: "locale.x",
+                        allowDelegate: !0,
+                        def: function() {
+                            var _getBrowserLocale = Object(lib.j)();
+                            return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
+                        }
+                    },
+                    env: {
+                        type: "string",
+                        required: !1,
+                        queryParam: !0,
+                        def: function() {
+                            return config.a.env;
+                        },
+                        validate: function(env) {
+                            if (!config.a.paypalUrls[env]) throw new Error("Invalid env: " + env);
+                        }
+                    },
+                    challengeUrl: {
+                        type: "string"
+                    },
+                    threeDomainSecureToken: {
+                        type: "string"
+                    },
+                    method: {
+                        type: "string"
+                    },
+                    onSuccess: {
+                        type: "function",
+                        required: !1
+                    },
+                    onError: {
+                        type: "function",
+                        required: !1
+                    },
+                    onCancel: {
+                        type: "function",
+                        required: !0,
+                        allowDelegate: !0
+                    }
+                },
+                containerTemplate: containerTemplate
             }), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js");
             function shouldCreateInitialPptmScript() {
                 if (!window.location.hostname) return !1;
@@ -12507,8 +12636,7 @@
             }, _FUNDING_CONFIG[constants.v.IDEAL] = {
                 allowedCountries: [ constants.r.NL ],
                 allowHorizontal: !1,
-                allowVertical: !0,
-                requireCommitAsTrue: !0
+                allowVertical: !0
             }, _FUNDING_CONFIG[constants.v.ELV] = {
                 allowedCountries: [ constants.r.DE, constants.r.AT ],
                 defaultVerticalCountries: [ constants.r.DE, constants.r.AT ],
@@ -12517,38 +12645,31 @@
             }, _FUNDING_CONFIG[constants.v.BANCONTACT] = {
                 allowedCountries: [ constants.r.BE ],
                 allowHorizontal: !1,
-                allowVertical: !0,
-                requireCommitAsTrue: !0
+                allowVertical: !0
             }, _FUNDING_CONFIG[constants.v.GIROPAY] = {
                 allowedCountries: [ constants.r.DE ],
                 allowHorizontal: !1,
-                allowVertical: !0,
-                requireCommitAsTrue: !0
+                allowVertical: !0
             }, _FUNDING_CONFIG[constants.v.SOFORT] = {
                 allowedCountries: [ constants.r.DE, constants.r.AT, constants.r.BE, constants.r.ES, constants.r.IT, constants.r.NL ],
                 allowHorizontal: !1,
-                allowVertical: !0,
-                requireCommitAsTrue: !0
+                allowVertical: !0
             }, _FUNDING_CONFIG[constants.v.EPS] = {
                 allowedCountries: [ constants.r.AT ],
                 allowHorizontal: !1,
-                allowVertical: !0,
-                requireCommitAsTrue: !0
+                allowVertical: !0
             }, _FUNDING_CONFIG[constants.v.MYBANK] = {
                 allowedCountries: [ constants.r.IT ],
                 allowHorizontal: !1,
-                allowVertical: !0,
-                requireCommitAsTrue: !0
+                allowVertical: !0
             }, _FUNDING_CONFIG[constants.v.P24] = {
                 allowedCountries: [ constants.r.PL ],
                 allowHorizontal: !1,
-                allowVertical: !0,
-                requireCommitAsTrue: !0
+                allowVertical: !0
             }, _FUNDING_CONFIG[constants.v.ZIMPLER] = {
                 allowedCountries: [ constants.r.FI ],
                 allowHorizontal: !1,
-                allowVertical: !0,
-                requireCommitAsTrue: !0
+                allowVertical: !0
             }, _FUNDING_CONFIG), CARD_CONFIG = ((_CARD_CONFIG = {})[constants.s] = {
                 priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX ]
             }, _CARD_CONFIG[constants.r.GB] = {
@@ -13534,7 +13655,7 @@
                         logoColor: "blue"
                     })));
                 }(normalizeProps(props)) : null;
-                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.263", 
+                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.264", 
                 _ref18), {
                     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
@@ -13731,6 +13852,22 @@
                         def: function(props) {
                             var env = props.env || config.a.env;
                             if (env === constants.t.STAGE || env === constants.t.LOCAL) return config.a.stageUrl;
+                        }
+                    },
+                    localhostUrl: {
+                        type: "string",
+                        required: !1,
+                        queryParam: !0,
+                        def: function(props) {
+                            if ((props.env || config.a.env) === constants.t.LOCAL) return config.a.localhostUrl;
+                        }
+                    },
+                    checkoutUri: {
+                        type: "string",
+                        required: !1,
+                        queryParam: !0,
+                        def: function() {
+                            return config.a.checkoutUri;
                         }
                     },
                     braintree: {
@@ -14596,7 +14733,7 @@
             function setup() {
                 var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 !function() {
-                    var _ref = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, env = _ref.env, stage = _ref.stage, stageUrl = _ref.stageUrl, apiStage = _ref.apiStage, state = _ref.state, logLevel = _ref.logLevel, merchantID = _ref.merchantID;
+                    var _ref = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, env = _ref.env, stage = _ref.stage, stageUrl = _ref.stageUrl, apiStage = _ref.apiStage, localhostUrl = _ref.localhostUrl, checkoutUri = _ref.checkoutUri, state = _ref.state, logLevel = _ref.logLevel, merchantID = _ref.merchantID;
                     if (env) {
                         if (!config.a.paypalUrls[env]) throw new Error("Invalid env: " + env);
                         delete config.a.env;
@@ -14632,6 +14769,8 @@
                         delete config.a.apiStage;
                         config.a.apiStage = apiStage;
                     }
+                    (localhostUrl = localhostUrl || component_Button.xprops && component_Button.xprops.localhostUrl || src_checkout.a.xprops && src_checkout.a.xprops.localhostUrl) && (config.a.localhostUrl = localhostUrl);
+                    (checkoutUri = checkoutUri || component_Button.xprops && component_Button.xprops.checkoutUri || src_checkout.a.xprops && src_checkout.a.xprops.checkoutUri) && (config.a.checkoutUri = checkoutUri);
                     if (state) {
                         delete config.a.state;
                         config.a.state = state;
@@ -14646,6 +14785,8 @@
                 stage: currentScript.getAttribute("data-stage"),
                 apiStage: currentScript.getAttribute("data-api-stage"),
                 stageUrl: currentScript.getAttribute("data-stage-url"),
+                localhostUrl: Object(lib.H)() ? currentScript.getAttribute("data-localhost-url") : void 0,
+                checkoutUri: Object(lib.H)() ? currentScript.getAttribute("data-checkout-uri") : void 0,
                 state: currentScript.getAttribute("data-state"),
                 logLevel: currentScript.getAttribute("data-log-level"),
                 merchantID: currentScript.getAttribute("data-merchant-id"),
@@ -14708,13 +14849,14 @@
                 setup__track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, 
                 setup__track3));
             }
-            var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.263", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.264", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             interface_checkout = legacy.checkout;
             apps = legacy.apps;
-            var interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0;
+            var interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0, interface_ThreeDomainSecure = void 0;
             if (Object(lib.H)()) {
                 interface_Checkout = src_checkout.a;
                 interface_BillingPage = BillingPage;
+                interface_ThreeDomainSecure = ThreeDomainSecure;
                 PayPalCheckout = src_checkout.a;
                 enableCheckoutIframe = function() {
                     src_checkout.a.contexts.iframe = !0;
@@ -14821,6 +14963,9 @@
             });
             __webpack_require__.d(__webpack_exports__, "logger", function() {
                 return logger;
+            });
+            __webpack_require__.d(__webpack_exports__, "ThreeDomainSecure", function() {
+                return interface_ThreeDomainSecure;
             });
             __webpack_exports__.default = interface_namespaceObject;
         },
@@ -16003,7 +16148,7 @@
                         country: config.a.locale.country,
                         lang: config.a.locale.lang,
                         uid: getSessionID(),
-                        ver: "4.0.263"
+                        ver: "4.0.264"
                     };
                 });
                 Object(client.a)(function() {
@@ -16248,7 +16393,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.263";
+                    payload.version = "4.0.264";
                     payload.host = window.location.host;
                     payload.uid = getSessionID();
                     payload.appName = APP_NAME;
@@ -16266,7 +16411,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.263".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.264".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!function(name) {
                         return getSessionState(function(state) {
@@ -16285,7 +16430,7 @@
             function fpti() {
                 var payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, query = [];
                 payload = beacon__extends({}, {
-                    v: "checkout.js.4.0.263",
+                    v: "checkout.js.4.0.264",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -16401,11 +16546,11 @@
                 return Boolean(getCurrentScript());
             }
             function getScriptVersion() {
-                return "4.0.263";
+                return "4.0.264";
             }
             function getCurrentScriptUrl() {
                 var script = getCurrentScript();
-                return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.263.js";
+                return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.264.js";
             }
             var openMetaFrame = Object(util.j)(function() {
                 var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -16422,7 +16567,7 @@
                             domain: metaFrameDomain
                         });
                         return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                            version: "4.0.263"
+                            version: "4.0.264"
                         }), metaFrameDomain).then(function() {
                             return metaListener;
                         }).then(function(_ref) {
