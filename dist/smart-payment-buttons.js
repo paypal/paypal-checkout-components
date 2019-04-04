@@ -676,95 +676,312 @@ window.spb = function(modules) {
             }, xhr.send(body);
         });
     }
-    var SDK_QUERY_KEYS = ((_COUNTRY_LANGS = {}).AD = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.AE = [ "en", "fr", "es", "zh", "ar" ], 
-    _COUNTRY_LANGS.AG = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.AI = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.AL = [ "en" ], _COUNTRY_LANGS.AM = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.AN = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.AO = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.AR = [ "es", "en" ], 
-    _COUNTRY_LANGS.AT = [ "de", "en" ], _COUNTRY_LANGS.AU = [ "en" ], _COUNTRY_LANGS.AW = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.AZ = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.BA = [ "en" ], _COUNTRY_LANGS.BB = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.BE = [ "en", "nl", "fr" ], _COUNTRY_LANGS.BF = [ "fr", "en", "es", "zh" ], 
-    _COUNTRY_LANGS.BG = [ "en" ], _COUNTRY_LANGS.BH = [ "ar", "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.BI = [ "fr", "en", "es", "zh" ], _COUNTRY_LANGS.BJ = [ "fr", "en", "es", "zh" ], 
-    _COUNTRY_LANGS.BM = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.BN = [ "en" ], _COUNTRY_LANGS.BO = [ "es", "en", "fr", "zh" ], 
-    _COUNTRY_LANGS.BR = [ "pt", "en" ], _COUNTRY_LANGS.BS = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.BT = [ "en" ], _COUNTRY_LANGS.BW = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.BY = [ "en" ], 
-    _COUNTRY_LANGS.BZ = [ "en", "es", "fr", "zh" ], _COUNTRY_LANGS.CA = [ "en", "fr" ], 
-    _COUNTRY_LANGS.CD = [ "fr", "en", "es", "zh" ], _COUNTRY_LANGS.CG = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.CH = [ "de", "fr", "en" ], _COUNTRY_LANGS.CI = [ "fr", "en" ], _COUNTRY_LANGS.CK = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.CL = [ "es", "en", "fr", "zh" ], _COUNTRY_LANGS.CM = [ "fr", "en" ], 
-    _COUNTRY_LANGS.CN = [ "zh" ], _COUNTRY_LANGS.CO = [ "es", "en", "fr", "zh" ], _COUNTRY_LANGS.CR = [ "es", "en", "fr", "zh" ], 
-    _COUNTRY_LANGS.CV = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.CY = [ "en" ], _COUNTRY_LANGS.CZ = [ "cs", "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.DE = [ "de", "en" ], _COUNTRY_LANGS.DJ = [ "fr", "en", "es", "zh" ], 
-    _COUNTRY_LANGS.DK = [ "da", "en" ], _COUNTRY_LANGS.DM = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.DO = [ "es", "en", "fr", "zh" ], _COUNTRY_LANGS.DZ = [ "ar", "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.EC = [ "es", "en", "fr", "zh" ], _COUNTRY_LANGS.EE = [ "en", "ru", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.EG = [ "ar", "en", "fr", "es", "zh" ], _COUNTRY_LANGS.ER = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.ES = [ "es", "en" ], _COUNTRY_LANGS.ET = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.FI = [ "fi", "en", "fr", "es", "zh" ], _COUNTRY_LANGS.FJ = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.FK = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.FM = [ "en" ], _COUNTRY_LANGS.FO = [ "da", "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.FR = [ "fr", "en" ], _COUNTRY_LANGS.GA = [ "fr", "en", "es", "zh" ], 
-    _COUNTRY_LANGS.GB = [ "en" ], _COUNTRY_LANGS.GD = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.GE = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.GF = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.GI = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.GL = [ "da", "en", "fr", "es", "zh" ], _COUNTRY_LANGS.GM = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.GN = [ "fr", "en", "es", "zh" ], _COUNTRY_LANGS.GP = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.GR = [ "el", "en", "fr", "es", "zh" ], _COUNTRY_LANGS.GT = [ "es", "en", "fr", "zh" ], 
-    _COUNTRY_LANGS.GW = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.GY = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.HK = [ "en", "zh" ], _COUNTRY_LANGS.HN = [ "es", "en", "fr", "zh" ], 
-    _COUNTRY_LANGS.HR = [ "en" ], _COUNTRY_LANGS.HU = [ "hu", "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.ID = [ "id", "en" ], _COUNTRY_LANGS.IE = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.IL = [ "he", "en" ], _COUNTRY_LANGS.IN = [ "en" ], _COUNTRY_LANGS.IS = [ "en" ], 
-    _COUNTRY_LANGS.IT = [ "it", "en" ], _COUNTRY_LANGS.JM = [ "en", "es", "fr", "zh" ], 
-    _COUNTRY_LANGS.JO = [ "ar", "en", "fr", "es", "zh" ], _COUNTRY_LANGS.JP = [ "ja", "en" ], 
-    _COUNTRY_LANGS.KE = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.KG = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.KH = [ "en" ], _COUNTRY_LANGS.KI = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.KM = [ "fr", "en", "es", "zh" ], 
-    _COUNTRY_LANGS.KN = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.KR = [ "ko", "en" ], 
-    _COUNTRY_LANGS.KW = [ "ar", "en", "fr", "es", "zh" ], _COUNTRY_LANGS.KY = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.KZ = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.LA = [ "en" ], _COUNTRY_LANGS.LC = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.LI = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.LK = [ "en" ], _COUNTRY_LANGS.LS = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.LT = [ "en", "ru", "fr", "es", "zh" ], _COUNTRY_LANGS.LU = [ "en", "de", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.LV = [ "en", "ru", "fr", "es", "zh" ], _COUNTRY_LANGS.MA = [ "ar", "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.MC = [ "fr", "en" ], _COUNTRY_LANGS.MD = [ "en" ], _COUNTRY_LANGS.ME = [ "en" ], 
-    _COUNTRY_LANGS.MG = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.MH = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.MK = [ "en" ], _COUNTRY_LANGS.ML = [ "fr", "en", "es", "zh" ], _COUNTRY_LANGS.MN = [ "en" ], 
-    _COUNTRY_LANGS.MQ = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.MR = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.MS = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.MT = [ "en" ], _COUNTRY_LANGS.MU = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.MV = [ "en" ], _COUNTRY_LANGS.MW = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.MX = [ "es", "en" ], 
-    _COUNTRY_LANGS.MY = [ "en" ], _COUNTRY_LANGS.MZ = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.NA = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.NC = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.NE = [ "fr", "en", "es", "zh" ], 
-    _COUNTRY_LANGS.NF = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.NG = [ "en" ], _COUNTRY_LANGS.NI = [ "es", "en", "fr", "zh" ], 
-    _COUNTRY_LANGS.NL = [ "nl", "en" ], _COUNTRY_LANGS.NO = [ "no", "en" ], _COUNTRY_LANGS.NP = [ "en" ], 
-    _COUNTRY_LANGS.NR = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.NU = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.NZ = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.OM = [ "ar", "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.PA = [ "es", "en", "fr", "zh" ], _COUNTRY_LANGS.PE = [ "es", "en", "fr", "zh" ], 
-    _COUNTRY_LANGS.PF = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.PG = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.PH = [ "en" ], _COUNTRY_LANGS.PL = [ "pl", "en" ], _COUNTRY_LANGS.PM = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.PN = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.PT = [ "pt", "en" ], 
-    _COUNTRY_LANGS.PW = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.PY = [ "es", "en" ], 
-    _COUNTRY_LANGS.QA = [ "en", "fr", "es", "zh", "ar" ], _COUNTRY_LANGS.RE = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.RO = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.RS = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.RU = [ "ru", "en" ], _COUNTRY_LANGS.RW = [ "fr", "en", "es", "zh" ], 
-    _COUNTRY_LANGS.SA = [ "ar", "en", "fr", "es", "zh" ], _COUNTRY_LANGS.SB = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.SC = [ "fr", "en", "es", "zh" ], _COUNTRY_LANGS.SE = [ "sv", "en" ], 
-    _COUNTRY_LANGS.SG = [ "en" ], _COUNTRY_LANGS.SH = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.SI = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.SJ = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.SK = [ "sk", "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.SL = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.SM = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.SN = [ "fr", "en", "es", "zh" ], _COUNTRY_LANGS.SO = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.SR = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.ST = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.SV = [ "es", "en", "fr", "zh" ], _COUNTRY_LANGS.SZ = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.TC = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.TD = [ "fr", "en", "es", "zh" ], 
-    _COUNTRY_LANGS.TG = [ "fr", "en", "es", "zh" ], _COUNTRY_LANGS.TH = [ "th", "en" ], 
-    _COUNTRY_LANGS.TJ = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.TM = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.TN = [ "ar", "en", "fr", "es", "zh" ], _COUNTRY_LANGS.TO = [ "en" ], 
-    _COUNTRY_LANGS.TR = [ "tr", "en" ], _COUNTRY_LANGS.TT = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.TV = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.TW = [ "zh", "en" ], 
-    _COUNTRY_LANGS.TZ = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.UA = [ "en", "ru", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.UG = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.US = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.UY = [ "es", "en", "fr", "zh" ], _COUNTRY_LANGS.VA = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.VC = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.VE = [ "es", "en", "fr", "zh" ], 
-    _COUNTRY_LANGS.VG = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.VN = [ "en" ], _COUNTRY_LANGS.VU = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.WF = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.WS = [ "en" ], _COUNTRY_LANGS.YE = [ "ar", "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.YT = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.ZA = [ "en", "fr", "es", "zh" ], 
-    _COUNTRY_LANGS.ZM = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS.ZW = [ "en" ], {
+    var COUNTRY = {
+        AD: "AD",
+        AE: "AE",
+        AG: "AG",
+        AI: "AI",
+        AL: "AL",
+        AM: "AM",
+        AN: "AN",
+        AO: "AO",
+        AR: "AR",
+        AT: "AT",
+        AU: "AU",
+        AW: "AW",
+        AZ: "AZ",
+        BA: "BA",
+        BB: "BB",
+        BE: "BE",
+        BF: "BF",
+        BG: "BG",
+        BH: "BH",
+        BI: "BI",
+        BJ: "BJ",
+        BM: "BM",
+        BN: "BN",
+        BO: "BO",
+        BR: "BR",
+        BS: "BS",
+        BT: "BT",
+        BW: "BW",
+        BY: "BY",
+        BZ: "BZ",
+        CA: "CA",
+        CD: "CD",
+        CG: "CG",
+        CH: "CH",
+        CI: "CI",
+        CK: "CK",
+        CL: "CL",
+        CM: "CM",
+        CN: "CN",
+        CO: "CO",
+        CR: "CR",
+        CV: "CV",
+        CY: "CY",
+        CZ: "CZ",
+        DE: "DE",
+        DJ: "DJ",
+        DK: "DK",
+        DM: "DM",
+        DO: "DO",
+        DZ: "DZ",
+        EC: "EC",
+        EE: "EE",
+        EG: "EG",
+        ER: "ER",
+        ES: "ES",
+        ET: "ET",
+        FI: "FI",
+        FJ: "FJ",
+        FK: "FK",
+        FM: "FM",
+        FO: "FO",
+        FR: "FR",
+        GA: "GA",
+        GB: "GB",
+        GD: "GD",
+        GE: "GE",
+        GF: "GF",
+        GI: "GI",
+        GL: "GL",
+        GM: "GM",
+        GN: "GN",
+        GP: "GP",
+        GR: "GR",
+        GT: "GT",
+        GW: "GW",
+        GY: "GY",
+        HK: "HK",
+        HN: "HN",
+        HR: "HR",
+        HU: "HU",
+        ID: "ID",
+        IE: "IE",
+        IL: "IL",
+        IN: "IN",
+        IS: "IS",
+        IT: "IT",
+        JM: "JM",
+        JO: "JO",
+        JP: "JP",
+        KE: "KE",
+        KG: "KG",
+        KH: "KH",
+        KI: "KI",
+        KM: "KM",
+        KN: "KN",
+        KR: "KR",
+        KW: "KW",
+        KY: "KY",
+        KZ: "KZ",
+        LA: "LA",
+        LC: "LC",
+        LI: "LI",
+        LK: "LK",
+        LS: "LS",
+        LT: "LT",
+        LU: "LU",
+        LV: "LV",
+        MA: "MA",
+        MC: "MC",
+        MD: "MD",
+        ME: "ME",
+        MG: "MG",
+        MH: "MH",
+        MK: "MK",
+        ML: "ML",
+        MN: "MN",
+        MQ: "MQ",
+        MR: "MR",
+        MS: "MS",
+        MT: "MT",
+        MU: "MU",
+        MV: "MV",
+        MW: "MW",
+        MX: "MX",
+        MY: "MY",
+        MZ: "MZ",
+        NA: "NA",
+        NC: "NC",
+        NE: "NE",
+        NF: "NF",
+        NG: "NG",
+        NI: "NI",
+        NL: "NL",
+        NO: "NO",
+        NP: "NP",
+        NR: "NR",
+        NU: "NU",
+        NZ: "NZ",
+        OM: "OM",
+        PA: "PA",
+        PE: "PE",
+        PF: "PF",
+        PG: "PG",
+        PH: "PH",
+        PL: "PL",
+        PM: "PM",
+        PN: "PN",
+        PT: "PT",
+        PW: "PW",
+        PY: "PY",
+        QA: "QA",
+        RE: "RE",
+        RO: "RO",
+        RS: "RS",
+        RU: "RU",
+        RW: "RW",
+        SA: "SA",
+        SB: "SB",
+        SC: "SC",
+        SE: "SE",
+        SG: "SG",
+        SH: "SH",
+        SI: "SI",
+        SJ: "SJ",
+        SK: "SK",
+        SL: "SL",
+        SM: "SM",
+        SN: "SN",
+        SO: "SO",
+        SR: "SR",
+        ST: "ST",
+        SV: "SV",
+        SZ: "SZ",
+        TC: "TC",
+        TD: "TD",
+        TG: "TG",
+        TH: "TH",
+        TJ: "TJ",
+        TM: "TM",
+        TN: "TN",
+        TO: "TO",
+        TR: "TR",
+        TT: "TT",
+        TV: "TV",
+        TW: "TW",
+        TZ: "TZ",
+        UA: "UA",
+        UG: "UG",
+        US: "US",
+        UY: "UY",
+        VA: "VA",
+        VC: "VC",
+        VE: "VE",
+        VG: "VG",
+        VN: "VN",
+        VU: "VU",
+        WF: "WF",
+        WS: "WS",
+        YE: "YE",
+        YT: "YT",
+        ZA: "ZA",
+        ZM: "ZM",
+        ZW: "ZW"
+    }, SDK_QUERY_KEYS = ((_COUNTRY_LANGS = {})[COUNTRY.AD] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.AE] = [ "en", "fr", "es", "zh", "ar" ], _COUNTRY_LANGS[COUNTRY.AG] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.AI] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.AL] = [ "en" ], 
+    _COUNTRY_LANGS[COUNTRY.AM] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.AN] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.AO] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.AR] = [ "es", "en" ], 
+    _COUNTRY_LANGS[COUNTRY.AT] = [ "de", "en" ], _COUNTRY_LANGS[COUNTRY.AU] = [ "en" ], 
+    _COUNTRY_LANGS[COUNTRY.AW] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.AZ] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.BA] = [ "en" ], _COUNTRY_LANGS[COUNTRY.BB] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.BE] = [ "en", "nl", "fr" ], _COUNTRY_LANGS[COUNTRY.BF] = [ "fr", "en", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.BG] = [ "en" ], _COUNTRY_LANGS[COUNTRY.BH] = [ "ar", "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.BI] = [ "fr", "en", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.BJ] = [ "fr", "en", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.BM] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.BN] = [ "en" ], 
+    _COUNTRY_LANGS[COUNTRY.BO] = [ "es", "en", "fr", "zh" ], _COUNTRY_LANGS[COUNTRY.BR] = [ "pt", "en" ], 
+    _COUNTRY_LANGS[COUNTRY.BS] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.BT] = [ "en" ], 
+    _COUNTRY_LANGS[COUNTRY.BW] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.BY] = [ "en" ], 
+    _COUNTRY_LANGS[COUNTRY.BZ] = [ "en", "es", "fr", "zh" ], _COUNTRY_LANGS[COUNTRY.CA] = [ "en", "fr" ], 
+    _COUNTRY_LANGS[COUNTRY.CD] = [ "fr", "en", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.CG] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.CH] = [ "de", "fr", "en" ], _COUNTRY_LANGS[COUNTRY.CI] = [ "fr", "en" ], 
+    _COUNTRY_LANGS[COUNTRY.CK] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.CL] = [ "es", "en", "fr", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.CM] = [ "fr", "en" ], _COUNTRY_LANGS[COUNTRY.CN] = [ "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.CO] = [ "es", "en", "fr", "zh" ], _COUNTRY_LANGS[COUNTRY.CR] = [ "es", "en", "fr", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.CV] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.CY] = [ "en" ], 
+    _COUNTRY_LANGS[COUNTRY.CZ] = [ "cs", "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.DE] = [ "de", "en" ], 
+    _COUNTRY_LANGS[COUNTRY.DJ] = [ "fr", "en", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.DK] = [ "da", "en" ], 
+    _COUNTRY_LANGS[COUNTRY.DM] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.DO] = [ "es", "en", "fr", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.DZ] = [ "ar", "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.EC] = [ "es", "en", "fr", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.EE] = [ "en", "ru", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.EG] = [ "ar", "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.ER] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.ES] = [ "es", "en" ], 
+    _COUNTRY_LANGS[COUNTRY.ET] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.FI] = [ "fi", "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.FJ] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.FK] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.FM] = [ "en" ], _COUNTRY_LANGS[COUNTRY.FO] = [ "da", "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.FR] = [ "fr", "en" ], _COUNTRY_LANGS[COUNTRY.GA] = [ "fr", "en", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.GB] = [ "en" ], _COUNTRY_LANGS[COUNTRY.GD] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.GE] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.GF] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.GI] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.GL] = [ "da", "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.GM] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.GN] = [ "fr", "en", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.GP] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.GR] = [ "el", "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.GT] = [ "es", "en", "fr", "zh" ], _COUNTRY_LANGS[COUNTRY.GW] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.GY] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.HK] = [ "en", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.HN] = [ "es", "en", "fr", "zh" ], _COUNTRY_LANGS[COUNTRY.HR] = [ "en" ], 
+    _COUNTRY_LANGS[COUNTRY.HU] = [ "hu", "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.ID] = [ "id", "en" ], 
+    _COUNTRY_LANGS[COUNTRY.IE] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.IL] = [ "he", "en" ], 
+    _COUNTRY_LANGS[COUNTRY.IN] = [ "en" ], _COUNTRY_LANGS[COUNTRY.IS] = [ "en" ], _COUNTRY_LANGS[COUNTRY.IT] = [ "it", "en" ], 
+    _COUNTRY_LANGS[COUNTRY.JM] = [ "en", "es", "fr", "zh" ], _COUNTRY_LANGS[COUNTRY.JO] = [ "ar", "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.JP] = [ "ja", "en" ], _COUNTRY_LANGS[COUNTRY.KE] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.KG] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.KH] = [ "en" ], 
+    _COUNTRY_LANGS[COUNTRY.KI] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.KM] = [ "fr", "en", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.KN] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.KR] = [ "ko", "en" ], 
+    _COUNTRY_LANGS[COUNTRY.KW] = [ "ar", "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.KY] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.KZ] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.LA] = [ "en" ], 
+    _COUNTRY_LANGS[COUNTRY.LC] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.LI] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.LK] = [ "en" ], _COUNTRY_LANGS[COUNTRY.LS] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.LT] = [ "en", "ru", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.LU] = [ "en", "de", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.LV] = [ "en", "ru", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.MA] = [ "ar", "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.MC] = [ "fr", "en" ], _COUNTRY_LANGS[COUNTRY.MD] = [ "en" ], 
+    _COUNTRY_LANGS[COUNTRY.ME] = [ "en" ], _COUNTRY_LANGS[COUNTRY.MG] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.MH] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.MK] = [ "en" ], 
+    _COUNTRY_LANGS[COUNTRY.ML] = [ "fr", "en", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.MN] = [ "en" ], 
+    _COUNTRY_LANGS[COUNTRY.MQ] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.MR] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.MS] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.MT] = [ "en" ], 
+    _COUNTRY_LANGS[COUNTRY.MU] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.MV] = [ "en" ], 
+    _COUNTRY_LANGS[COUNTRY.MW] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.MX] = [ "es", "en" ], 
+    _COUNTRY_LANGS[COUNTRY.MY] = [ "en" ], _COUNTRY_LANGS[COUNTRY.MZ] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.NA] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.NC] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.NE] = [ "fr", "en", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.NF] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.NG] = [ "en" ], _COUNTRY_LANGS[COUNTRY.NI] = [ "es", "en", "fr", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.NL] = [ "nl", "en" ], _COUNTRY_LANGS[COUNTRY.NO] = [ "no", "en" ], 
+    _COUNTRY_LANGS[COUNTRY.NP] = [ "en" ], _COUNTRY_LANGS[COUNTRY.NR] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.NU] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.NZ] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.OM] = [ "ar", "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.PA] = [ "es", "en", "fr", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.PE] = [ "es", "en", "fr", "zh" ], _COUNTRY_LANGS[COUNTRY.PF] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.PG] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.PH] = [ "en" ], 
+    _COUNTRY_LANGS[COUNTRY.PL] = [ "pl", "en" ], _COUNTRY_LANGS[COUNTRY.PM] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.PN] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.PT] = [ "pt", "en" ], 
+    _COUNTRY_LANGS[COUNTRY.PW] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.PY] = [ "es", "en" ], 
+    _COUNTRY_LANGS[COUNTRY.QA] = [ "en", "fr", "es", "zh", "ar" ], _COUNTRY_LANGS[COUNTRY.RE] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.RO] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.RS] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.RU] = [ "ru", "en" ], _COUNTRY_LANGS[COUNTRY.RW] = [ "fr", "en", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.SA] = [ "ar", "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.SB] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.SC] = [ "fr", "en", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.SE] = [ "sv", "en" ], 
+    _COUNTRY_LANGS[COUNTRY.SG] = [ "en" ], _COUNTRY_LANGS[COUNTRY.SH] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.SI] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.SJ] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.SK] = [ "sk", "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.SL] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.SM] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.SN] = [ "fr", "en", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.SO] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.SR] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.ST] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.SV] = [ "es", "en", "fr", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.SZ] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.TC] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.TD] = [ "fr", "en", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.TG] = [ "fr", "en", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.TH] = [ "th", "en" ], _COUNTRY_LANGS[COUNTRY.TJ] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.TM] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.TN] = [ "ar", "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.TO] = [ "en" ], _COUNTRY_LANGS[COUNTRY.TR] = [ "tr", "en" ], 
+    _COUNTRY_LANGS[COUNTRY.TT] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.TV] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.TW] = [ "zh", "en" ], _COUNTRY_LANGS[COUNTRY.TZ] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.UA] = [ "en", "ru", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.UG] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.US] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.UY] = [ "es", "en", "fr", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.VA] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.VC] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.VE] = [ "es", "en", "fr", "zh" ], _COUNTRY_LANGS[COUNTRY.VG] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.VN] = [ "en" ], _COUNTRY_LANGS[COUNTRY.VU] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.WF] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.WS] = [ "en" ], 
+    _COUNTRY_LANGS[COUNTRY.YE] = [ "ar", "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.YT] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.ZA] = [ "en", "fr", "es", "zh" ], _COUNTRY_LANGS[COUNTRY.ZM] = [ "en", "fr", "es", "zh" ], 
+    _COUNTRY_LANGS[COUNTRY.ZW] = [ "en" ], {
         COMPONENTS: "components",
         ENV: "env",
         DEBUG: "debug",
@@ -812,7 +1029,7 @@ window.spb = function(modules) {
         ORDER: "/smart/api/order",
         PAYMENT: "/smart/api/payment",
         GRAPHQL: "/graphql"
-    }, SMART_BUTTONS = "smart_buttons", SMART_PAYMENT_BUTTONS = "smart-payment-buttons", constants_HEADERS = {
+    }, INLINE_GUEST_ENABLED = !1, CLIENT_CONFIG_ENABLED = Boolean(window.xprops && window.xprops.updateClientConfiguration), SMART_BUTTONS = "smart_buttons", SMART_PAYMENT_BUTTONS = "smart-payment-buttons", constants_HEADERS = {
         CSRF_TOKEN: "x-csrf-jwt",
         SOURCE: "x-source",
         REQUESTED_BY: "x-requested-by"
@@ -823,7 +1040,14 @@ window.spb = function(modules) {
         POPUP: "popup"
     }, TARGET_ELEMENT = {
         BODY: "body"
-    }, ERROR_URL = "https://www.paypal.com/checkoutnow/error", ORDER_ID_PATTERN = /^(EC-)?[A-Z0-9]+$/, defaultHeaders = {}, csrfToken = "";
+    }, ERROR_URL = "https://www.paypal.com/checkoutnow/error", ORDER_ID_PATTERN = /^(EC-)?[A-Z0-9]+$/, INTEGRATION_ARTIFACT = {
+        PAYPAL_JS_SDK: "PAYPAL_JS_SDK"
+    }, USER_EXPERIENCE_FLOW = {
+        INCONTEXT: "INCONTEXT",
+        INLINE: "INLINE"
+    }, PRODUCT_FLOW = {
+        SMART_PAYMENT_BUTTONS: "SMART_PAYMENT_BUTTONS"
+    }, defaultHeaders = {}, csrfToken = "";
     function callAPI(_ref) {
         var _extends2, url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, json = _ref.json, reqHeaders = _extends({}, defaultHeaders, ((_extends2 = {})[constants_HEADERS.CSRF_TOKEN] = csrfToken, 
         _extends2[constants_HEADERS.SOURCE] = SMART_BUTTONS, _extends2[constants_HEADERS.REQUESTED_BY] = SMART_PAYMENT_BUTTONS, 
@@ -842,6 +1066,25 @@ window.spb = function(modules) {
             if (status > 400) throw new Error("Api: " + url + " returned status code: " + status);
             if ("success" !== body.ack) throw new Error("Api: " + url + " returned ack: " + body.ack);
             return body.data;
+        });
+    }
+    function callGraphQL(query, variables) {
+        return request({
+            url: API_URI.GRAPHQL,
+            method: "POST",
+            json: {
+                query: query,
+                variables: variables
+            }
+        }).then(function(_ref3) {
+            var body = _ref3.body, errors = (body.errors || []).filter(function(error) {
+                return "ACCOUNT_CANNOT_BE_FETCHED" !== error.message;
+            });
+            if (errors.length) {
+                var message = errors[0].message || JSON.stringify(errors[0]);
+                throw new Error(message);
+            }
+            return body;
         });
     }
     function getAuth() {
@@ -863,26 +1106,69 @@ window.spb = function(modules) {
     var persistAccessToken = memoize(function(accessToken) {
         return defaultHeaders["x-paypal-internal-euat"] = accessToken, getAuth().then(src_util_noop);
     });
+    function getNonce() {
+        var nonce = "";
+        return document.body && (nonce = document.body.getAttribute("data-nonce") || ""), 
+        nonce;
+    }
+    function buildShippingChangeActions(orderID) {
+        return {
+            order: {
+                patch: function(data) {
+                    return void 0 === data && (data = []), patchOrder(orderID, data).catch(function() {
+                        throw new Error("Order could not be patched");
+                    });
+                }
+            }
+        };
+    }
+    function buildApproveActions(orderID, fundingSource, restart) {
+        var handleProcessorError = function(err) {
+            if (err && err.data && err.data.details && err.data.details.some(function(detail) {
+                return detail.issue === ORDER_API_ERROR.INSTRUMENT_DECLINED;
+            })) return restart();
+            throw new Error("Order could not be captured");
+        }, get = memoize(function() {
+            return function(orderID) {
+                return callAPI({
+                    url: API_URI.ORDER + "/" + orderID
+                });
+            }(orderID);
+        });
+        return {
+            order: {
+                capture: memoize(function() {
+                    if (window.xprops.intent !== INTENT.CAPTURE) throw new Error("Use " + SDK_QUERY_KEYS.INTENT + "=" + INTENT.CAPTURE + " to use client-side capture");
+                    return function(orderID) {
+                        return callAPI({
+                            method: "post",
+                            url: API_URI.ORDER + "/" + orderID + "/capture"
+                        });
+                    }(orderID).catch(handleProcessorError).finally(get.reset);
+                }),
+                authorize: memoize(function() {
+                    return function(orderID) {
+                        return callAPI({
+                            method: "post",
+                            url: API_URI.ORDER + "/" + orderID + "/authorize"
+                        });
+                    }(orderID).catch(handleProcessorError).finally(get.reset);
+                }),
+                patch: function(data) {
+                    return void 0 === data && (data = []), patchOrder(orderID, data).catch(function() {
+                        throw new Error("Order could not be patched");
+                    });
+                },
+                get: get
+            }
+        };
+    }
     function validateOrder(orderID) {
         if (!orderID.match(ORDER_ID_PATTERN)) throw new Error(orderID + " does not match pattern for order-id, ec-token or cart-id");
-        return (query = '\n        checkout {\n            checkoutSession(token : "' + orderID + '") {\n                cart {\n                    intent\n                    returnUrl {\n                        href\n                    }\n                    cancelUrl {\n                        href\n                    }\n                    amounts {\n                        total {\n                            currencyCode\n                        }\n                    }\n                }\n            }\n        }\n    ', 
-        request({
-            url: API_URI.GRAPHQL,
-            method: "POST",
-            json: {
-                query: "\n                query {\n                    " + query + "\n                }\n            "
-            }
-        }).then(function(_ref3) {
-            var body = _ref3.body, errors = (body.errors || []).filter(function(error) {
-                return "ACCOUNT_CANNOT_BE_FETCHED" !== error.message;
-            });
-            if (errors.length) {
-                var message = errors[0].message || JSON.stringify(errors[0]);
-                throw new Error(message);
-            }
-            return body;
-        })).then(function(res) {
-            var cart = res.data.checkout.checkoutSession.cart, intent = "sale" === cart.intent.toLowerCase() ? INTENT.CAPTURE : cart.intent.toLowerCase(), currency = cart.amounts && cart.amounts.total.currencyCode, returnUrl = cart.returnUrl && cart.returnUrl.href, cancelUrl = cart.cancelUrl && cart.cancelUrl.href, expectedIntent = window.xprops.intent, expectedCurrency = window.xprops.currency;
+        return callGraphQL("\n        query GetCheckoutDetails($orderID: String!) {\n            checkoutSession(token: $orderID) {\n                cart {\n                    intent\n                    returnUrl {\n                        href\n                    }\n                    cancelUrl {\n                        href\n                    }\n                    amounts {\n                        total {\n                            currencyCode\n                        }\n                    }\n                }\n            }\n        }\n    ", {
+            orderID: orderID
+        }).then(function(res) {
+            var cart = res.data.checkoutSession.cart, intent = "sale" === cart.intent.toLowerCase() ? INTENT.CAPTURE : cart.intent.toLowerCase(), currency = cart.amounts && cart.amounts.total.currencyCode, returnUrl = cart.returnUrl && cart.returnUrl.href, cancelUrl = cart.cancelUrl && cart.cancelUrl.href, expectedIntent = window.xprops.intent, expectedCurrency = window.xprops.currency;
             if (intent !== expectedIntent) throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing " + SDK_QUERY_KEYS.INTENT + "=" + intent + " to the sdk");
             if (currency && currency !== expectedCurrency) throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing " + SDK_QUERY_KEYS.CURRENCY + "=" + currency + " to the sdk");
             if (function(orderID) {
@@ -892,57 +1178,23 @@ window.spb = function(modules) {
                 if (cancelUrl && 0 !== cancelUrl.indexOf(ERROR_URL)) throw new Error("Cancel url is forbidden for smart payment button integration.");
             }
         });
-        var query;
     }
     var checkoutOpen = !1, canRenderTop = !1;
-    function getDefaultContext() {
-        return void 0 === ua && (ua = getUserAgent()), function(ua) {
-            return void 0 === ua && (ua = getUserAgent()), !!function(ua) {
-                return void 0 === ua && (ua = getUserAgent()), /iPhone|iPod|iPad/.test(ua);
-            }(ua) && (!!function(ua) {
-                return void 0 === ua && (ua = getUserAgent()), /\bGSA\b/.test(ua);
-            }(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
-        }(ua) || function(ua) {
-            return void 0 === ua && (ua = getUserAgent()), !!function(ua) {
-                return void 0 === ua && (ua = getUserAgent()), /Android/.test(ua);
-            }(ua) && /Version\/[\d.]+/.test(ua) && !isOperaMini(ua);
-        }(ua) || isOperaMini(ua) || function(ua) {
-            return void 0 === ua && (ua = getUserAgent()), /FxiOS/i.test(ua);
-        }(ua) || function(ua) {
-            return void 0 === ua && (ua = getUserAgent()), /EdgiOS/i.test(ua);
-        }(ua) || function(ua) {
-            return void 0 === ua && (ua = getUserAgent()), -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
-        }(ua) || function(ua) {
-            return void 0 === ua && (ua = getUserAgent()), /QQBrowser/.test(ua);
-        }(ua) || "undefined" != typeof process && process.versions && process.versions.electron || (userAgent = getUserAgent(), 
-        /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent)) || !0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches ? CONTEXT.IFRAME : CONTEXT.POPUP;
-        var ua, userAgent;
-    }
-    function renderCheckout(props, context, validationPromise) {
-        if (void 0 === context && (context = getDefaultContext()), void 0 === validationPromise && (validationPromise = promise_ZalgoPromise.resolve(!0)), 
-        checkoutOpen) throw new Error("Checkout already rendered");
-        var top, createOrder = function(props, validationPromise) {
-            return void 0 === props && (props = {}), memoize(function() {
-                return validationPromise.then(function(valid) {
-                    if (valid) {
-                        if (props.createOrder) return props.createOrder();
-                        if (window.xprops.createBillingAgreement) return window.xprops.createBillingAgreement().then(function(billingToken) {
-                            return function(billingToken) {
-                                return callAPI({
-                                    method: "post",
-                                    url: API_URI.PAYMENT + "/" + billingToken + "/ectoken"
-                                }).then(function(data) {
-                                    return data.token;
-                                });
-                            }(billingToken);
-                        });
-                        if (window.xprops.createOrder) return window.xprops.createOrder();
-                        throw new Error("No mechanism to create order");
-                    }
-                    return new promise_ZalgoPromise(src_util_noop);
-                });
+    function initCheckout(props) {
+        if (checkoutOpen) throw new Error("Checkout already rendered");
+        var createOrder = props.createOrder, fundingSource = props.fundingSource, _props$validationProm = props.validationPromise, validationPromise = void 0 === _props$validationProm ? promise_ZalgoPromise.resolve(!0) : _props$validationProm, buyerCountry = props.buyerCountry, restart = memoize(function() {
+            return promise_ZalgoPromise.try(function() {
+                return instance.close();
+            }).then(function() {
+                return initCheckout({
+                    fundingSource: fundingSource,
+                    createOrder: createOrder,
+                    buyerCountry: buyerCountry
+                }).render(CONTEXT.IFRAME);
+            }).catch(src_util_noop).then(function() {
+                return new promise_ZalgoPromise(src_util_noop);
             });
-        }(props, validationPromise), fundingSource = props.fundingSource, approved = !1, onCancel = function() {
+        }), approved = !1, onCancel = function() {
             return promise_ZalgoPromise.try(function() {
                 return !approved && validationPromise;
             }).then(function(valid) {
@@ -954,80 +1206,15 @@ window.spb = function(modules) {
                     return window.xprops.onError(err);
                 });
             });
-        }, onClose = onCancel, onShippingChange = window.xprops.onShippingChange && function(data, actions) {
-            return window.xprops.onShippingChange(data, _extends({}, actions, (orderID = data.orderID, 
-            {
-                order: {
-                    patch: function(data) {
-                        return void 0 === data && (data = []), patchOrder(orderID, data).catch(function() {
-                            throw new Error("Order could not be patched");
-                        });
-                    }
-                }
-            })));
-            var orderID;
-        }, nonce = function() {
-            var nonce = "";
-            return document.body && (nonce = document.body.getAttribute("data-nonce") || ""), 
-            nonce;
-        }(), _window$xprops = window.xprops, instance = window.paypal.Checkout(_extends({}, props, {
-            createOrder: createOrder,
+        }, onShippingChange = window.xprops.onShippingChange && function(data, actions) {
+            return window.xprops.onShippingChange(data, _extends({}, actions, buildShippingChangeActions(data.orderID)));
+        }, nonce = getNonce(), _window$xprops = window.xprops, instance = window.paypal.Checkout(_extends({}, props, {
             onApprove: function(_ref2) {
                 var orderID = _ref2.orderID, payerID = _ref2.payerID, paymentID = _ref2.paymentID, billingToken = _ref2.billingToken;
                 approved = !0;
-                var actions = function(checkout, orderID, fundingSource) {
-                    var restart = memoize(function() {
-                        return checkout.close().then(function() {
-                            return renderCheckout({
-                                fundingSource: fundingSource,
-                                createOrder: function() {
-                                    return promise_ZalgoPromise.resolve(orderID);
-                                }
-                            }, "iframe");
-                        }).catch(src_util_noop).then(function() {
-                            return new promise_ZalgoPromise(src_util_noop);
-                        });
-                    }), handleProcessorError = function(err) {
-                        if (err && err.data && err.data.details && err.data.details.some(function(detail) {
-                            return detail.issue === ORDER_API_ERROR.INSTRUMENT_DECLINED;
-                        })) return restart();
-                        throw new Error("Order could not be captured");
-                    }, get = memoize(function() {
-                        return function(orderID) {
-                            return callAPI({
-                                url: API_URI.ORDER + "/" + orderID
-                            });
-                        }(orderID);
-                    }), capture = memoize(function() {
-                        if (window.xprops.intent !== INTENT.CAPTURE) throw new Error("Use " + SDK_QUERY_KEYS.INTENT + "=" + INTENT.CAPTURE + " to use client-side capture");
-                        return function(orderID) {
-                            return callAPI({
-                                method: "post",
-                                url: API_URI.ORDER + "/" + orderID + "/capture"
-                            });
-                        }(orderID).catch(handleProcessorError).finally(get.reset);
-                    }), authorize = memoize(function() {
-                        return function(orderID) {
-                            return callAPI({
-                                method: "post",
-                                url: API_URI.ORDER + "/" + orderID + "/authorize"
-                            });
-                        }(orderID).catch(handleProcessorError).finally(get.reset);
-                    });
-                    return {
-                        restart: restart,
-                        order: {
-                            capture: capture,
-                            authorize: authorize,
-                            patch: function(data) {
-                                return void 0 === data && (data = []), patchOrder(orderID, data).catch(function() {
-                                    throw new Error("Order could not be patched");
-                                });
-                            },
-                            get: get
-                        }
-                    };
-                }(instance, orderID, fundingSource);
+                var actions = _extends({
+                    restart: restart
+                }, buildApproveActions(orderID, 0, restart));
                 return window.xprops.onApprove({
                     orderID: orderID,
                     payerID: payerID,
@@ -1042,44 +1229,208 @@ window.spb = function(modules) {
             onAuth: function(_ref3) {
                 return persistAccessToken(_ref3.accessToken);
             },
-            onClose: onClose,
+            onClose: function() {
+                return checkoutOpen = !1, onCancel();
+            },
             onShippingChange: onShippingChange,
+            buyerCountry: buyerCountry,
             locale: _window$xprops.locale,
             commit: _window$xprops.commit,
             nonce: nonce
         }));
-        return createOrder().then(validateOrder).catch(function(err) {
-            return promise_ZalgoPromise.all([ instance.close(), instance.onError(err) ]);
-        }), validationPromise.then(function(valid) {
-            valid || instance.close();
-        }), instance.renderTo((top = getTop(window), canRenderTop && top ? top : window.xprops.getParent()), TARGET_ELEMENT.BODY, context);
+        return {
+            instance: instance,
+            render: function(context) {
+                return void 0 === context && (void 0 === ua && (ua = getUserAgent()), context = function(ua) {
+                    return void 0 === ua && (ua = getUserAgent()), !!function(ua) {
+                        return void 0 === ua && (ua = getUserAgent()), /iPhone|iPod|iPad/.test(ua);
+                    }(ua) && (!!function(ua) {
+                        return void 0 === ua && (ua = getUserAgent()), /\bGSA\b/.test(ua);
+                    }(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
+                }(ua) || function(ua) {
+                    return void 0 === ua && (ua = getUserAgent()), !!function(ua) {
+                        return void 0 === ua && (ua = getUserAgent()), /Android/.test(ua);
+                    }(ua) && /Version\/[\d.]+/.test(ua) && !isOperaMini(ua);
+                }(ua) || isOperaMini(ua) || function(ua) {
+                    return void 0 === ua && (ua = getUserAgent()), /FxiOS/i.test(ua);
+                }(ua) || function(ua) {
+                    return void 0 === ua && (ua = getUserAgent()), /EdgiOS/i.test(ua);
+                }(ua) || function(ua) {
+                    return void 0 === ua && (ua = getUserAgent()), -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
+                }(ua) || function(ua) {
+                    return void 0 === ua && (ua = getUserAgent()), /QQBrowser/.test(ua);
+                }(ua) || "undefined" != typeof process && process.versions && process.versions.electron || (userAgent = getUserAgent(), 
+                /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent)) || !0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches ? CONTEXT.IFRAME : CONTEXT.POPUP), 
+                checkoutOpen = !0, instance.renderTo((top = getTop(window), canRenderTop && top ? top : window.xprops.getParent()), TARGET_ELEMENT.BODY, context);
+                var ua, userAgent, top;
+            }
+        };
     }
-    function onClickAndValidate(_ref) {
-        var fundingSource = _ref.fundingSource, card = _ref.card, valid = !0;
-        return promise_ZalgoPromise.try(function() {
-            if (window.xprops.onClick) return window.xprops.onClick({
+    var cardFieldsOpen = !1, card_fields_openCardFields = function() {
+        var buttonsContainer = document.querySelector("#buttons-container"), cardButtonsContainer = document.querySelector('[data-funding-source="' + FUNDING.CARD + '"]'), cardFieldsContainer = document.querySelector("#card-fields-container");
+        if (!buttonsContainer || !cardButtonsContainer || !cardFieldsContainer) throw new Error("Required elements not found");
+        cardFieldsContainer.style.display = "block";
+        var recalculateMargin = function() {
+            buttonsContainer.style.marginTop = -(buttonsContainer.offsetHeight - cardButtonsContainer.offsetHeight) + "px";
+        };
+        window.addEventListener("resize", function() {
+            buttonsContainer.style.transitionDuration = "0s", recalculateMargin();
+        }), recalculateMargin();
+    };
+    function setupButton(fundingEligibility) {
+        if (!window.paypal) throw new Error("PayPal library not loaded");
+        var buyerCountry = window.xprops.buyerCountry || fundingEligibility.buyerCountry || COUNTRY.US;
+        fundingEligibility.fundingEligibility && (fundingEligibility = fundingEligibility.fundingEligibility);
+        var doc, buttonEnabled = !0, start = function(_ref2) {
+            var win = _ref2.win, fundingSource = _ref2.fundingSource, card = _ref2.card, validationPromise = function(_ref) {
+                var fundingSource = _ref.fundingSource, card = _ref.card, valid = !0;
+                return promise_ZalgoPromise.try(function() {
+                    if (window.xprops.onClick) return window.xprops.onClick({
+                        fundingSource: fundingSource,
+                        card: card
+                    }, {
+                        resolve: function() {
+                            return promise_ZalgoPromise.try(function() {
+                                valid = !0;
+                            });
+                        },
+                        reject: function() {
+                            return promise_ZalgoPromise.try(function() {
+                                valid = !1;
+                            });
+                        }
+                    });
+                }).then(function() {
+                    return valid;
+                });
+            }({
                 fundingSource: fundingSource,
                 card: card
-            }, {
-                resolve: function() {
-                    return promise_ZalgoPromise.try(function() {
-                        valid = !0;
-                    });
-                },
-                reject: function() {
-                    return promise_ZalgoPromise.try(function() {
-                        valid = !1;
-                    });
-                }
             });
-        }).then(function() {
-            return valid;
-        });
-    }
-    function setupButton(fundingEligibility) {
-        var buttonEnabled = !0;
-        if (!window.paypal) throw new Error("PayPal library not loaded");
-        var doc, tasks = {};
+            if (!buttonEnabled) return win ? win.close() : void 0;
+            var orderPromise = validationPromise.then(function(valid) {
+                return valid ? function() {
+                    if (window.xprops.createBillingAgreement) return window.xprops.createBillingAgreement().then(function(billingToken) {
+                        return function(billingToken) {
+                            return callAPI({
+                                method: "post",
+                                url: API_URI.PAYMENT + "/" + billingToken + "/ectoken"
+                            }).then(function(data) {
+                                return data.token;
+                            });
+                        }(billingToken);
+                    });
+                    if (window.xprops.createOrder) return window.xprops.createOrder();
+                    throw new Error("No mechanism to create order");
+                }() : new promise_ZalgoPromise(src_util_noop);
+            }), isInlineGuest = fundingSource === FUNDING.CARD && INLINE_GUEST_ENABLED, createOrder = function() {
+                return orderPromise;
+            }, _ref3 = isInlineGuest ? function(props) {
+                if (cardFieldsOpen) throw new Error("Checkout already rendered");
+                var createOrder = props.createOrder, fundingSource = props.fundingSource, buyerCountry = props.buyerCountry, restart = memoize(function() {
+                    return promise_ZalgoPromise.try(function() {
+                        return instance.close();
+                    }).then(function() {
+                        return initCheckout({
+                            fundingSource: fundingSource,
+                            createOrder: createOrder,
+                            buyerCountry: buyerCountry
+                        }).render(CONTEXT.IFRAME);
+                    }).catch(src_util_noop).then(function() {
+                        return new promise_ZalgoPromise(src_util_noop);
+                    });
+                }), approved = !1, onCancel = function() {
+                    return promise_ZalgoPromise.try(function() {
+                        if (!approved) return createOrder().then(function(orderID) {
+                            return window.xprops.onCancel({
+                                orderID: orderID
+                            });
+                        }).catch(function(err) {
+                            return window.xprops.onError(err);
+                        });
+                    });
+                }, onShippingChange = window.xprops.onShippingChange && function(data, actions) {
+                    return window.xprops.onShippingChange(data, _extends({}, actions, buildShippingChangeActions(data.orderID)));
+                }, nonce = getNonce(), _window$xprops = window.xprops, locale = _window$xprops.locale, commit = _window$xprops.commit, onError = _window$xprops.onError, instance = window.paypal.CardFields(_extends({}, props, {
+                    cspNonce: getNonce(),
+                    createOrder: createOrder,
+                    onApprove: function(_ref) {
+                        var orderID = _ref.orderID, payerID = _ref.payerID, paymentID = _ref.paymentID, billingToken = _ref.billingToken;
+                        approved = !0;
+                        var actions = buildApproveActions(orderID, 0, restart);
+                        return window.xprops.onApprove({
+                            orderID: orderID,
+                            payerID: payerID,
+                            paymentID: paymentID,
+                            billingToken: billingToken
+                        }, actions).catch(function(err) {
+                            return window.xprops.onError(err);
+                        });
+                    },
+                    onCancel: onCancel,
+                    onError: onError,
+                    onAuth: function(_ref2) {
+                        return persistAccessToken(_ref2.accessToken);
+                    },
+                    onClose: function() {
+                        return cardFieldsOpen = !1, onCancel();
+                    },
+                    onShippingChange: onShippingChange,
+                    buyerCountry: buyerCountry,
+                    locale: locale,
+                    commit: commit,
+                    nonce: nonce
+                }));
+                return {
+                    instance: instance,
+                    render: function() {
+                        cardFieldsOpen = !0;
+                        var renderPromise = instance.render("#card-fields-container");
+                        return card_fields_openCardFields(), renderPromise;
+                    }
+                };
+            }({
+                createOrder: createOrder,
+                fundingSource: fundingSource,
+                card: card,
+                buyerCountry: buyerCountry
+            }) : initCheckout({
+                window: win,
+                createOrder: createOrder,
+                fundingSource: fundingSource,
+                card: card,
+                validationPromise: validationPromise,
+                buyerCountry: buyerCountry
+            }), instance = _ref3.instance, render = _ref3.render;
+            return CLIENT_CONFIG_ENABLED && createOrder().then(function(orderID) {
+                var _ref;
+                callGraphQL("\n        mutation UpdateClientConfig(\n            $orderID : String!,\n            $fundingSource : ButtonFundingSourceType!,\n            $integrationArtifact : IntegrationArtifactType!,\n            $userExperienceFlow : UserExperienceFlowType!,\n            $productFlow : ProductFlowType!\n        ) {\n            updateClientConfig(\n                token: $orderID,\n                fundingSource: $fundingSource,\n                integrationArtifact: $integrationArtifact,\n                userExperienceFlow: $userExperienceFlow,\n                productFlow: $productFlow\n            )\n        }\n    ", {
+                    orderID: (_ref = {
+                        orderID: orderID,
+                        fundingSource: fundingSource,
+                        integrationArtifact: INTEGRATION_ARTIFACT.PAYPAL_JS_SDK,
+                        userExperienceFlow: isInlineGuest ? USER_EXPERIENCE_FLOW.INCONTEXT : USER_EXPERIENCE_FLOW.INLINE,
+                        productFlow: PRODUCT_FLOW.SMART_PAYMENT_BUTTONS
+                    }).orderID,
+                    fundingSource: _ref.fundingSource,
+                    integrationArtifact: _ref.integrationArtifact,
+                    userExperienceFlow: _ref.userExperienceFlow,
+                    productFlow: _ref.productFlow
+                });
+            }), promise_ZalgoPromise.try(function() {
+                return isInlineGuest ? validationPromise.then(function(valid) {
+                    if (valid) return render();
+                }) : promise_ZalgoPromise.all([ render(), validationPromise.then(function(valid) {
+                    if (!valid) return instance.close();
+                }) ]);
+            }).then(function() {
+                return validationPromise.then(function(valid) {
+                    if (valid) return createOrder().then(validateOrder);
+                });
+            }).catch(function(err) {
+                return promise_ZalgoPromise.all([ instance.close(), instance.onError(err) ]);
+            });
+        }, tasks = {};
         return tasks.onInit = promise_ZalgoPromise.try(function() {
             if (window.xprops.onInit) return window.xprops.onInit({}, {
                 enable: function() {
@@ -1101,40 +1452,26 @@ window.spb = function(modules) {
                 };
             }(button), fundingSource = _getSelectedFunding.fundingSource, card = _getSelectedFunding.card;
             handler = function(event) {
-                event.preventDefault(), event.stopPropagation();
-                var validationPromise = onClickAndValidate({
+                event.preventDefault(), event.stopPropagation(), start({
                     fundingSource: fundingSource,
                     card: card
                 });
-                buttonEnabled && renderCheckout({
-                    fundingSource: fundingSource,
-                    card: card
-                }, getDefaultContext(), validationPromise).catch(src_util_noop);
             }, (element = button).addEventListener("touchstart", src_util_noop), element.addEventListener("click", handler), 
             element.addEventListener("keypress", function(event) {
                 if (event.keyCode === KEY_CODES.ENTER) return handler(event);
             });
         }), tasks.getAuth = getAuth().then(src_util_noop), tasks.prerender = tasks.onInit.then(function() {
             return window.xprops.getPrerenderDetails().then(function(prerenderDetails) {
-                if (prerenderDetails) {
-                    var win = prerenderDetails.win, order = prerenderDetails.order, fundingSource = prerenderDetails.fundingSource, card = prerenderDetails.card, validationPromise = onClickAndValidate({
-                        fundingSource: fundingSource,
-                        card: card
-                    });
-                    if (!buttonEnabled) return win.close();
-                    renderCheckout({
-                        window: win,
-                        createOrder: order ? function() {
-                            return order;
-                        } : null,
-                        fundingSource: fundingSource,
-                        card: card
-                    }, getDefaultContext(), validationPromise).catch(src_util_noop);
-                }
+                if (prerenderDetails) return start({
+                    win: prerenderDetails.win,
+                    fundingSource: prerenderDetails.fundingSource,
+                    card: prerenderDetails.card
+                });
             });
         }), tasks.remember = promise_ZalgoPromise.try(function() {
-            if (fundingEligibility && fundingEligibility.venmo.eligible) return window.xprops.remember([ FUNDING.VENMO ]);
+            if (fundingEligibility && fundingEligibility.venmo && fundingEligibility.venmo.eligible) return window.xprops.remember([ FUNDING.VENMO ]);
         }), tasks.setupCheckout = function() {
+            checkoutOpen = !1;
             var _ref = [ getParent(window), getTop(window) ], parent = _ref[0], top = _ref[1], tasks = {};
             return top && parent && parent !== top && (tasks.canRenderTo = window.paypal.Checkout.canRenderTo(top).then(function(result) {
                 canRenderTop = result;
