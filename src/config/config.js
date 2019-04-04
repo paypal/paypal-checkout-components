@@ -420,6 +420,22 @@ export let config = {
 
         '1800Contacts.com': {
             disable_venmo: true
+        },
+
+        'hulu.com': {
+            disable_venmo: true
+        },
+
+        'grubhub.com': {
+            disable_venmo: true
+        },
+
+        'eat24.com': {
+            disable_venmo: true
+        },
+
+        'seamless.com': {
+            disable_venmo: true
         }
     },
 
