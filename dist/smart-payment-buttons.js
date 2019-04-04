@@ -1409,7 +1409,7 @@ window.spb = function(modules) {
                         orderID: orderID,
                         fundingSource: fundingSource,
                         integrationArtifact: INTEGRATION_ARTIFACT.PAYPAL_JS_SDK,
-                        userExperienceFlow: isInlineGuest ? USER_EXPERIENCE_FLOW.INCONTEXT : USER_EXPERIENCE_FLOW.INLINE,
+                        userExperienceFlow: isInlineGuest ? USER_EXPERIENCE_FLOW.INLINE : USER_EXPERIENCE_FLOW.INCONTEXT,
                         productFlow: PRODUCT_FLOW.SMART_PAYMENT_BUTTONS
                     }).orderID,
                     fundingSource: _ref.fundingSource,
