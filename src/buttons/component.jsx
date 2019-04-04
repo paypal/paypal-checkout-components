@@ -4,7 +4,8 @@
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit,
     getVault, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry,
-    createOrder } from '@paypal/sdk-client/src';
+    createOrder,
+    getClientAccessToken } from '@paypal/sdk-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { isIEIntranet, isDevice, uniqueID, redirect, supportsPopups, popup, writeElementToWindow, noop, inlineMemoize } from 'belter/src';
@@ -418,6 +419,13 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     type:       'string',
                     value:      () => getClientID(),
                     queryParam: true
+                },
+
+                clientAccessToken: {
+                    type:       'string',
+                    required:   false,
+                    queryParam: true,
+                    value:      getClientAccessToken
                 },
 
                 sessionID: {
