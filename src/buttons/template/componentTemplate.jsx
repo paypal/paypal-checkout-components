@@ -123,7 +123,7 @@ function Button({ fundingSource, style, multiple, locale, env, fundingEligibilit
             role='button'
             aria-label={ fundingSource }
             onClick={ clickHandler }
-            tabindex='0'>
+            tabindex={ fundingSource === FUNDING.CARD ? '-1' : '0' }>
 
             <Label
                 nonce={ nonce }

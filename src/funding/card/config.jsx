@@ -86,16 +86,8 @@ export function getCardConfig() : FundingSourceConfig {
                     return CARD_PRIORITY.map(name => {
     
                         const cardEligibility = fundingEligibility[FUNDING.CARD];
-    
-                        if (!cardEligibility) {
-                            return null;
-                        }
 
-                        if (!cardEligibility.vendors) {
-                            throw new Error(`wut ${ JSON.stringify(fundingEligibility) }`);
-                        }
-    
-                        if (!cardEligibility.vendors[name] || !cardEligibility.vendors[name].eligible) {
+                        if (!cardEligibility || !cardEligibility.vendors || !cardEligibility.vendors[name] || !cardEligibility.vendors[name].eligible) {
                             return null;
                         }
     
@@ -108,7 +100,7 @@ export function getCardConfig() : FundingSourceConfig {
                         const { Logo } = vendorConfig;
                         
                         return (
-                            <div class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name }` } onClick={ event => onClick(event, { card: name }) }>
+                            <div class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name }` } onClick={ event => onClick(event, { card: name }) } tabindex='0' role='button'>
                                 <Logo
                                     locale={ locale }
                                     nonce={ nonce }

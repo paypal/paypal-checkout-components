@@ -32,7 +32,6 @@ export const buttonStyle = `
         border: none;
         vertical-align: top;
         cursor: pointer;
-        outline: none;
         overflow: hidden;
     }
 
@@ -51,33 +50,8 @@ export const buttonStyle = `
         text-shadow: none  !important;
     }
 
-    .${ CLASS.BUTTON }:hover {
-        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);
-    }
-
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD }:hover,
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER }:hover {
-        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);
-    }
-
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.TRANSPARENT }:hover {
-        box-shadow: none;
-    }
-
     .${ CLASS.CARD } {
         cursor: pointer;
-    }
-
-    .${ CLASS.CARD }:hover {
-        filter: brightness(1.2);
-    }
-
-    .${ CLASS.BUTTON }:focus {
-        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;
-    }
-
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.TRANSPARENT }:focus {
-        box-shadow: none;
     }
 
     .${ LOGO_CLASS.LOGO } {
