@@ -341,6 +341,12 @@ export let Button : Component<ButtonOptions> = create({
             }
         },
 
+        updateClientConfiguration: {
+            type:     'boolean',
+            required: false,
+            def:      () => false
+        },
+
         stageUrl: {
             type:       'string',
             required:   false,
