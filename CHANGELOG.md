@@ -1,3 +1,10 @@
+## <small>5.0.18 (2019-04-09)</small>
+
+* Accessibility (hover and focus state) for each button color ([d19a5bc](http://github.paypal.com/paypal/paypal-checkout/commit/d19a5bc))
+* Pass clientAccessToken down to button ([2f2e427](http://github.paypal.com/paypal/paypal-checkout/commit/2f2e427))
+
+
+
 ## <small>5.0.17 (2019-04-02)</small>
 
 * Toggle card eligibility based on whether hosted-fields requested ([1eddfbd](http://github.paypal.com/paypal/paypal-checkout/commit/1eddfbd))
