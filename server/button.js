@@ -11,7 +11,7 @@ import { serverErrorResponse, clientErrorResponse, htmlResponse, allowFrame, def
 import type { ExpressRequest, ExpressResponse, LoggerType } from './types';
 import { buttonStyle } from './style';
 
-export function getButtonMiddleware({ logger = defaultLogger } : { logger? : LoggerType } = {}) : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
+export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibility } : { logger? : LoggerType, getFundingEligibility : Function }) : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
     startWatchers();
 
     return async function buttonMiddleware(req : ExpressRequest, res : ExpressResponse) : Promise<void> {
@@ -29,7 +29,36 @@ export function getButtonMiddleware({ logger = defaultLogger } : { logger? : Log
             logger.info(req, `button_render_version_${ render.version }`);
 
             const params = undotify(req.query);
-            const { clientID, fundingEligibility, nonce } = getParams(params, req, res);
+            const receivedParams = getParams(params, req, res);
+            // default buyerCountry to pp geo loc if not passed through sdk
+            const { clientID, currency, intent, commit, vault, buyerCountry = req.get(HTTP_HEADER.PP_GEO_LOC), disableFunding, disableCard, merchantID, buttonSessionID, clientAccessToken, nonce } = receivedParams;
+            const gqlArg = { clientId: clientID, buyerCountry, cookies: req.get('cookie'), ip: req.ip, currency, intent, commit, vault, disableFunding, disableCard, merchantId: merchantID, userAgent: req.headers['user-agent'], buttonSessionId: buttonSessionID, clientAccessToken };
+            let fundingEligibility;
+            try {
+                fundingEligibility = await getFundingEligibility(req, gqlArg);
+            } catch (err) {
+                logger.warn(req, 'gql_errored_for_fundingEligibility', { err: err.stack ? err.stack : err.toString() });
+                fundingEligibility = {
+                    paypal: {
+                        eligible: true
+                    },
+                    card: {
+                        eligible: true,
+                        branded:  true,
+                        vendors:  {
+                            visa: {
+                                eligible: true
+                            },
+                            mastercard: {
+                                eligible: true
+                            },
+                            amex: {
+                                eligible: true
+                            }
+                        }
+                    }
+                };
+            }
 
             if (!clientID) {
                 return clientErrorResponse(res, 'Please provide a clientID query parameter');
@@ -38,8 +67,6 @@ export function getButtonMiddleware({ logger = defaultLogger } : { logger? : Log
             if (!fundingEligibility) {
                 return clientErrorResponse(res, 'Please provide a fundingEligibility query parameter');
             }
-
-            const buyerCountry = req.get(HTTP_HEADER.PP_GEO_LOC);
 
             const buttonHTML = render.button.Buttons({ ...params, nonce, csp: { nonce }, fundingEligibility }).render(html());
 

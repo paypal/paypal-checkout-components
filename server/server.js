@@ -11,6 +11,7 @@ const app = express();
 const PORT = process.env.PORT || 8003;
 const URI = '/smart/buttons';
 
+// $FlowFixMe
 const buttonMiddleware = getButtonMiddleware();
 
 app.get(URI, (req : ExpressRequest, res : ExpressResponse) => {
