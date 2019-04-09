@@ -1323,6 +1323,19 @@ window.spb = function(modules) {
                     if (window.xprops.createOrder) return window.xprops.createOrder();
                     throw new Error("No mechanism to create order");
                 }() : new promise_ZalgoPromise(src_util_noop);
+            }).then(function(orderID) {
+                return promise_ZalgoPromise.try(function() {
+                    var _ref2, _window$xprops = window.xprops, clientAccessToken = _window$xprops.clientAccessToken;
+                    if (_window$xprops.vault && clientAccessToken) return callGraphQL("\n        mutation EnableVault(\n            $orderID : String!,\n            $clientToken : String!\n        ) {\n            enableVault(\n                token: $orderID,\n                clientAccessToken: $clientAccessToken\n            )\n        }\n    ", {
+                        orderID: (_ref2 = {
+                            orderID: orderID,
+                            clientAccessToken: clientAccessToken
+                        }).orderID,
+                        clientAccessToken: _ref2.clientAccessToken
+                    });
+                }).then(function() {
+                    return orderID;
+                });
             }), isInlineGuest = fundingSource === FUNDING.CARD && INLINE_GUEST_ENABLED, createOrder = function() {
                 return orderPromise;
             }, _ref3 = isInlineGuest ? function(props) {
