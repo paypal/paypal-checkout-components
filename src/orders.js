@@ -180,7 +180,7 @@ export function enableVault({ orderID, clientAccessToken } : { orderID : string,
     return callGraphQL(`
         mutation EnableVault(
             $orderID : String!,
-            $clientToken : String!
+            $clientAccessToken : String!
         ) {
             enableVault(
                 token: $orderID,
