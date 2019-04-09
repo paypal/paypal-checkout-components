@@ -175,3 +175,17 @@ export function updateClientConfig({ orderID, fundingSource, integrationArtifact
         }
     `, { orderID, fundingSource, integrationArtifact, userExperienceFlow, productFlow });
 }
+
+export function enableVault({ orderID, clientAccessToken } : { orderID : string, clientAccessToken : string }) : ZalgoPromise<mixed> {
+    return callGraphQL(`
+        mutation EnableVault(
+            $orderID : String!,
+            $clientToken : String!
+        ) {
+            enableVault(
+                token: $orderID,
+                clientAccessToken: $clientAccessToken
+            )
+        }
+    `, { orderID, clientAccessToken });
+}

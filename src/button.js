@@ -8,7 +8,7 @@ import type { ProxyWindow } from 'post-robot/src';
 import { setupCheckout, initCheckout } from './checkout';
 import { getAuth } from './api';
 import { initCardFields } from './card-fields';
-import { createOrderOrBillingAgreement, validateOrder, updateClientConfig } from './orders';
+import { createOrderOrBillingAgreement, validateOrder, updateClientConfig, enableVault } from './orders';
 import { INLINE_GUEST_ENABLED, CLIENT_CONFIG_ENABLED } from './config';
 import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW } from './constants';
 
@@ -70,6 +70,18 @@ export function setupButton(fundingEligibility : Object) : ZalgoPromise<void> {
             } else {
                 return new ZalgoPromise(noop);
             }
+        }).then(orderID => {
+            return ZalgoPromise.try(() => {
+                const { vault, clientAccessToken } = window.xprops;
+                if (vault && clientAccessToken) {
+                    return enableVault({
+                        orderID,
+                        clientAccessToken
+                    });
+                }
+            }).then(() => {
+                return orderID;
+            });
         });
 
         const isInlineGuest = (fundingSource === FUNDING.CARD && INLINE_GUEST_ENABLED);
