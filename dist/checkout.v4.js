@@ -5530,7 +5530,7 @@
         var config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.264",
+            version: "4.0.265",
             cors: !0,
             env: function() {
                 return "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION;
@@ -5918,7 +5918,7 @@
                     _ref6[constants.t.TEST] = config.checkoutUri, _ref6[constants.t.DEMO] = config.checkoutUri, 
                     _ref6;
                 }
-                return (_ref7 = {})[constants.t.LOCAL] = "/webapps/hermes?ul=0", _ref7[constants.t.STAGE] = "/webapps/hermes", 
+                return (_ref7 = {})[constants.t.LOCAL] = "/webapps/hermes", _ref7[constants.t.STAGE] = "/webapps/hermes", 
                 _ref7[constants.t.SANDBOX] = "/checkoutnow", _ref7[constants.t.PRODUCTION] = "/checkoutnow", 
                 _ref7[constants.t.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
                 _ref7[constants.t.DEMO] = "/demo/dev/checkout.htm", _ref7;
@@ -5931,7 +5931,7 @@
             _guestUris[constants.t.STAGE] = "/webapps/xoonboarding", _guestUris[constants.t.SANDBOX] = "/webapps/xoonboarding", 
             _guestUris[constants.t.PRODUCTION] = "/webapps/xoonboarding", _guestUris[constants.t.TEST] = "/base/test/windows/checkout/index.htm?guesturl=true", 
             _guestUris[constants.t.DEMO] = "/demo/dev/guest.htm", _guestUris),
-            billingUris: (_billingUris = {}, _billingUris[constants.t.LOCAL] = "/webapps/hermes/agreements?ul=0", 
+            billingUris: (_billingUris = {}, _billingUris[constants.t.LOCAL] = "/webapps/hermes/agreements", 
             _billingUris[constants.t.STAGE] = "/webapps/hermes/agreements", _billingUris[constants.t.SANDBOX] = "/agreements/approve", 
             _billingUris[constants.t.PRODUCTION] = "/agreements/approve", _billingUris[constants.t.TEST] = "/base/test/windows/checkout/index.htm?billingurl=true", 
             _billingUris[constants.t.DEMO] = "/demo/dev/checkout.htm", _billingUris),
@@ -9284,7 +9284,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.264"
+                    ver: "4.0.265"
                 };
             });
             Object(beaver_logger_client.a)(function() {
@@ -9554,11 +9554,11 @@
             });
         });
         function getScriptVersion() {
-            return Boolean(getCurrentScript()) ? "4" : "4.0.264";
+            return Boolean(getCurrentScript()) ? "4" : "4.0.265";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
-            return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.264.js";
+            return script && "string" == typeof script.src ? script.src : "https://www.paypalobjects.com/api/checkout.4.0.265.js";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -12833,7 +12833,7 @@
                     logoColor: "blue"
                 })));
             }(props_normalizeProps(props)) : null;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[src_constants.c.VERSION] = "4.0.264", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[src_constants.c.VERSION] = "4.0.265", 
             _ref18), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -13021,6 +13021,13 @@
                     def: function(props) {
                         var env = props.env || config.a.env;
                         if (env === src_constants.t.STAGE || env === src_constants.t.LOCAL) return config.a.stage;
+                    }
+                },
+                updateClientConfiguration: {
+                    type: "boolean",
+                    required: !1,
+                    def: function() {
+                        return !1;
                     }
                 },
                 stageUrl: {
@@ -14076,7 +14083,7 @@
             setup__track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.264", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0, interface_ThreeDomainSecure = void 0;
+        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.265", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0, interface_ThreeDomainSecure = void 0;
         if (Object(util.g)()) {
             interface_Checkout = component_Checkout;
             interface_BillingPage = BillingPage;
@@ -14202,7 +14209,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.264";
+                payload.version = "4.0.265";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 payload.appName = APP_NAME;
@@ -14809,18 +14816,18 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         0;
-        if (window.paypal && "4.0.264" === window.paypal.version) {
+        if (window.paypal && "4.0.265" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.264"
+                version: "4.0.265"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.264) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.265) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.264" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.265" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.264"
+                version: "4.0.265"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.264");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.265");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");

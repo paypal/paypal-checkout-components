@@ -1481,7 +1481,7 @@
         var config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.264",
+            version: "4.0.265",
             cors: !0,
             env: function() {
                 return "undefined" == typeof window || void 0 === window.location ? misc_ENV.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? misc_ENV.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? misc_ENV.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? misc_ENV.SANDBOX : misc_ENV.PRODUCTION;
@@ -1867,7 +1867,7 @@
                     _ref6[misc_ENV.TEST] = config.checkoutUri, _ref6[misc_ENV.DEMO] = config.checkoutUri, 
                     _ref6;
                 }
-                return (_ref7 = {})[misc_ENV.LOCAL] = "/webapps/hermes?ul=0", _ref7[misc_ENV.STAGE] = "/webapps/hermes", 
+                return (_ref7 = {})[misc_ENV.LOCAL] = "/webapps/hermes", _ref7[misc_ENV.STAGE] = "/webapps/hermes", 
                 _ref7[misc_ENV.SANDBOX] = "/checkoutnow", _ref7[misc_ENV.PRODUCTION] = "/checkoutnow", 
                 _ref7[misc_ENV.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
                 _ref7[misc_ENV.DEMO] = "/demo/dev/checkout.htm", _ref7;
@@ -1880,7 +1880,7 @@
             _guestUris[misc_ENV.STAGE] = "/webapps/xoonboarding", _guestUris[misc_ENV.SANDBOX] = "/webapps/xoonboarding", 
             _guestUris[misc_ENV.PRODUCTION] = "/webapps/xoonboarding", _guestUris[misc_ENV.TEST] = "/base/test/windows/checkout/index.htm?guesturl=true", 
             _guestUris[misc_ENV.DEMO] = "/demo/dev/guest.htm", _guestUris),
-            billingUris: (_billingUris = {}, _billingUris[misc_ENV.LOCAL] = "/webapps/hermes/agreements?ul=0", 
+            billingUris: (_billingUris = {}, _billingUris[misc_ENV.LOCAL] = "/webapps/hermes/agreements", 
             _billingUris[misc_ENV.STAGE] = "/webapps/hermes/agreements", _billingUris[misc_ENV.SANDBOX] = "/agreements/approve", 
             _billingUris[misc_ENV.PRODUCTION] = "/agreements/approve", _billingUris[misc_ENV.TEST] = "/base/test/windows/checkout/index.htm?billingurl=true", 
             _billingUris[misc_ENV.DEMO] = "/demo/dev/checkout.htm", _billingUris),
@@ -3339,7 +3339,7 @@
                 })));
             }(normalizeProps(props)) : null;
             var script;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[ATTRIBUTE.VERSION] = "4.0.264", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[ATTRIBUTE.VERSION] = "4.0.265", 
             _ref18), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
