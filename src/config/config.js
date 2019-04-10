@@ -557,7 +557,7 @@ export let config = {
         }
 
         return {
-            [ ENV.LOCAL ]:      `/webapps/hermes?ul=0`,
+            [ ENV.LOCAL ]:      `/webapps/hermes`,
             [ ENV.STAGE ]:      `/webapps/hermes`,
             [ ENV.SANDBOX ]:    `/checkoutnow`,
             [ ENV.PRODUCTION ]: `/checkoutnow`,
@@ -585,7 +585,7 @@ export let config = {
     },
 
     billingUris: {
-        [ ENV.LOCAL ]:      `/webapps/hermes/agreements?ul=0`,
+        [ ENV.LOCAL ]:      `/webapps/hermes/agreements`,
         [ ENV.STAGE ]:      `/webapps/hermes/agreements`,
         [ ENV.SANDBOX ]:    `/agreements/approve`,
         [ ENV.PRODUCTION ]: `/agreements/approve`,
