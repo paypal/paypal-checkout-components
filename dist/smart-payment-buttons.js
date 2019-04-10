@@ -1077,13 +1077,14 @@ window.spb = function(modules) {
                 variables: variables
             }
         }).then(function(_ref3) {
-            var body = _ref3.body, errors = (body.errors || []).filter(function(error) {
+            var status = _ref3.status, body = _ref3.body, errors = (body.errors || []).filter(function(error) {
                 return "ACCOUNT_CANNOT_BE_FETCHED" !== error.message;
             });
             if (errors.length) {
                 var message = errors[0].message || JSON.stringify(errors[0]);
                 throw new Error(message);
             }
+            if (200 !== status) throw new Error(API_URI.GRAPHQL + " returned status " + status);
             return body;
         });
     }
