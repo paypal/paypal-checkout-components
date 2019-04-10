@@ -3,7 +3,7 @@
 /* eslint max-lines: 0 */
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit,
-    getVault, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry,
+    getVault, getDisableFunding, getDisableCard, getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry,
     createOrder,
     getClientAccessToken } from '@paypal/sdk-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
@@ -505,6 +505,27 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     type:       'boolean',
                     queryParam: true,
                     value:      () => getVault()
+                },
+                
+                disableFunding: {
+                    type:       'array',
+                    queryParam: true,
+                    // $FlowFixMe
+                    value:      () => getDisableFunding()
+                },
+                
+                disableCard: {
+                    type:       'array',
+                    queryParam: true,
+                    // $FlowFixMe
+                    value:      () => getDisableCard()
+                },
+                
+                merchantID: {
+                    type:       'array',
+                    queryParam: true,
+                    // $FlowFixMe
+                    value:      () => getMerchantID()
                 },
 
                 csp: {
