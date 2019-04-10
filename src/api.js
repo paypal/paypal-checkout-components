@@ -55,12 +55,16 @@ export function callGraphQL<T>(query : string, variables : { [string] : mixed })
             query,
             variables
         }
-    }).then(({ body }) => {
+    }).then(({ status, body }) => {
         const errors = (body.errors || []).filter(error => (error.message !== 'ACCOUNT_CANNOT_BE_FETCHED'));
 
         if (errors.length) {
             const message = errors[0].message || JSON.stringify(errors[0]);
             throw new Error(message);
+        }
+
+        if (status !== 200) {
+            throw new Error(`${ API_URI.GRAPHQL } returned status ${ status }`);
         }
 
         return body;
