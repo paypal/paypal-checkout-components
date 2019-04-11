@@ -71,6 +71,3 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
 };
 
 window.__TEST_REMEMBERED_FUNDING__ = [];
-
-window.__TEST_LOCALE_COUNTRY__ = 'US';
-window.__TEST_LOCALE_LANG__ = 'en';

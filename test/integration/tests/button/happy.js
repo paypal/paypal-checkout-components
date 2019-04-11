@@ -2,7 +2,7 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { wrapPromise, createElement, getElement } from 'belter/src';
+import { wrapPromise, createElement, getElement, once } from 'belter/src';
 import { SDK_QUERY_KEYS, QUERY_BOOL } from '@paypal/sdk-constants/src';
 
 import { generateOrderID, createTestContainer, generateBillingAgreementToken,
@@ -25,6 +25,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button, then complete the checkout without createOrder', (done) => {
+            done = once(done);
             window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
@@ -53,6 +54,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button, then complete the checkout with a billing agreement', (done) => {
+            done = once(done);
             window.paypal.Buttons({
 
                 test: { flow, action: 'checkout', captureOrder: () => done() },
@@ -69,6 +71,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button, then complete the checkout without createOrder or onApprove', (done) => {
+            done = once(done);
             window.paypal.Buttons({
 
                 test: { flow, action: 'checkout', captureOrder: () => done() },
@@ -81,6 +84,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button, then complete the checkout', (done) => {
+            done = once(done);
             window.paypal.Buttons({
 
                 test: { flow, action: 'checkout' },
@@ -101,6 +105,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button, then cancel the createOrder', (done) => {
+            done = once(done);
 
 
             window.paypal.Buttons({
@@ -153,6 +158,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button then redirect on authorize and await the promise', (done) => {
+            done = once(done);
 
             const orderID = generateOrderID();
 
@@ -239,6 +245,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button then redirect on cancel and await the promise', (done) => {
+            done = once(done);
 
             const orderID = generateOrderID();
 
@@ -295,6 +302,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button, call the REST api via actions.order to create an order, then complete the checkout', (done) => {
+            done = once(done);
 
 
             window.paypal.Buttons({
@@ -326,6 +334,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button, call the REST api via actions.order with an object to create an order, then complete the checkout', (done) => {
+            done = once(done);
 
 
             window.paypal.Buttons({
@@ -357,6 +366,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button, with an async resolved token passed, then complete the checkout', (done) => {
+            done = once(done);
 
 
             window.paypal.Buttons({
@@ -383,6 +393,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button, with a promise token passed, then complete the checkout', (done) => {
+            done = once(done);
 
 
             window.paypal.Buttons({
@@ -407,6 +418,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button, with a non-zalgo promise token passed, then complete the checkout', (done) => {
+            done = once(done);
 
 
             window.paypal.Buttons({
@@ -435,6 +447,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render button with a checkout token on the correct url, then complete the checkout', (done) => {
+            done = once(done);
 
             const orderID = generateOrderID();
 
@@ -461,6 +474,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render button with a createOrder id on the correct url, then complete the checkout', (done) => {
+            done = once(done);
 
             const orderID = generateOrderID();
 
@@ -487,6 +501,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render button with a new-style createOrder id on the correct url, then complete the checkout', (done) => {
+            done = once(done);
 
             const orderID = generateOrderID().replace('PAY-', 'PAYID-');
 
@@ -513,6 +528,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button, restart the createOrder, then complete the checkout', (done) => {
+            done = once(done);
 
             let isRestarted = false;
 
@@ -543,6 +559,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container before the container exists, and click on the button, then complete the checkout', (done) => {
+            done = once(done);
 
             const readyState = document.readyState;
             Object.defineProperty(document, 'readyState', { value: 'loading', configurable: true });
@@ -593,6 +610,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button, call the REST api via actions.order with an object to create an order, then call onShippingChange', (done) => {
+            done = once(done);
 
             window.paypal.Buttons({
 
@@ -627,6 +645,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container and click on the button, call the REST api via actions.order with an object to create an order, then call onShippingChange and call actions.reject', (done) => {
+            done = once(done);
 
             window.paypal.Buttons({
 
@@ -688,6 +707,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         if (flow === 'iframe') {
 
             it('should render a button into a container and click on the button, popout, then complete the checkout', (done) => {
+                done = once(done);
 
                 let createOrderCalls = 0;
 
@@ -742,6 +762,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
             });
 
             it('should render checkout, popout, then redirect and await the promise', (done) => {
+                done = once(done);
 
                 const orderID = generateOrderID();
 

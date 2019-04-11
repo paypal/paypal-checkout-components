@@ -1,6 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { once } from 'belter/src';
 
 import { generateOrderID, createTestContainer, destroyTestContainer, assert, WEBVIEW_USER_AGENT } from '../common';
 
@@ -21,6 +22,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render button, render checkout, and return a blank string in createOrder', (done) => {
+            done = once(done);
 
 
             window.paypal.Buttons({
@@ -48,6 +50,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render button, render checkout, and return a blank string promise in createOrder', (done) => {
+            done = once(done);
 
 
             window.paypal.Buttons({
@@ -75,6 +78,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render button, render checkout, and throw an error in createOrder', (done) => {
+            done = once(done);
 
 
             window.paypal.Buttons({
@@ -102,6 +106,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render button, render checkout, and return a rejected promise in createOrder', (done) => {
+            done = once(done);
 
 
             window.paypal.Buttons({
@@ -129,6 +134,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render button, render checkout, and call reject in createOrder', (done) => {
+            done = once(done);
 
 
             window.paypal.Buttons({
@@ -156,6 +162,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render button, render checkout, and call reject with undefined in createOrder', (done) => {
+            done = once(done);
 
 
             window.paypal.Buttons({
@@ -183,6 +190,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render button, render checkout, and throw an error in onShippingChange', (done) => {
+            done = once(done);
 
             window.paypal.Buttons({
 
@@ -209,6 +217,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render button, render checkout, call reject in onShippingChange with no reject action', (done) => {
+            done = once(done);
 
             window.paypal.Buttons({
 
@@ -236,6 +245,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render button, render checkout, then error out', (done) => {
+            done = once(done);
 
 
             window.paypal.Buttons({
@@ -263,6 +273,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render button, render checkout, then throw an error in onApprove', (done) => {
+            done = once(done);
 
 
             window.paypal.Buttons({
@@ -290,6 +301,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render button, render checkout, then return a rejected promise in onApprove', (done) => {
+            done = once(done);
 
 
             window.paypal.Buttons({
@@ -319,6 +331,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render button, render checkout, then return a rejected promise for undefined in onApprove', (done) => {
+            done = once(done);
 
 
             window.paypal.Buttons({

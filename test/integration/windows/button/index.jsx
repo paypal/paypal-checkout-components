@@ -6,7 +6,7 @@ import { type ZalgoPromise } from 'zalgo-promise/src';
 import { node, dom } from 'jsx-pragmatic/src';
 import { CONTEXT } from 'zoid/src';
 
-import { Buttons as ButtonsTemplate } from '../../../src/buttons/template';
+import { Buttons as ButtonsTemplate } from '../../../../src/buttons/template';
 import { getElements, errorOnWindowOpen, generateOrderID } from '../../tests/common';
 
 let { action, type, authed = false, bridge = false, delay = 0, onRender, checkout, selector, remembered, captureOrder = noop } = window.xprops.test;

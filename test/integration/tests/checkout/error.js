@@ -1,6 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { once } from 'belter/src';
 
 import { generateOrderID, createTestContainer, destroyTestContainer, assert, WEBVIEW_USER_AGENT, runOnClick } from '../common';
 
@@ -21,6 +22,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render checkout and return a blank token in payment', (done) => {
+            done = once(done);
             runOnClick(() => {
                 return window.paypal.Checkout({
 
@@ -46,6 +48,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render checkout and return a promise for a blank token in payment', (done) => {
+            done = once(done);
             runOnClick(() => {
                 return window.paypal.Checkout({
 
@@ -71,6 +74,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render checkout and throw an error in payment', (done) => {
+            done = once(done);
             runOnClick(() => {
                 return window.paypal.Checkout({
 
@@ -96,6 +100,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render checkout and return a rejected promise in payment', (done) => {
+            done = once(done);
             runOnClick(() => {
                 return window.paypal.Checkout({
 
@@ -121,6 +126,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
         
         it('should render checkout, then error out', (done) => {
+            done = once(done);
             runOnClick(() => {
                 return window.paypal.Checkout({
 
@@ -148,6 +154,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render checkout, then throw an error in onAuthorize', (done) => {
+            done = once(done);
             runOnClick(() => {
                 return window.paypal.Checkout({
 
@@ -173,6 +180,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render checkout, then return a rejected promise in onAuthorize', (done) => {
+            done = once(done);
             runOnClick(() => {
                 return window.paypal.Checkout({
 
@@ -200,6 +208,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render checkout, then return an undefined rejected promise in onAuthorize', (done) => {
+            done = once(done);
             runOnClick(() => {
                 return window.paypal.Checkout({
 
@@ -228,6 +237,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
         if (flow === 'iframe') {
             it('should render checkout, window.open the iframe name, then complete the payment', (done) => {
+                done = once(done);
                 runOnClick(() => {
                     let name;
 
@@ -258,6 +268,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
         if (flow === 'popup') {
             it('should render checkout without a click event and error out', (done) => {
+                done = once(done);
                 window.paypal.Checkout({
                     payment() : string | ZalgoPromise<string> {
                         return generateOrderID();

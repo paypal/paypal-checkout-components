@@ -8,8 +8,11 @@ import { WEBPACK_CONFIG_TEST } from './webpack.config';
 export default function configKarma(karma : Object) {
 
     const karmaConfig = getKarmaConfig(karma, {
-        basePath: __dirname,
-        webpack:  WEBPACK_CONFIG_TEST
+        basePath:  __dirname,
+        testDir:   'test',
+        windowDir: 'test/integration/windows',
+        entry:     'test/integration/index.js',
+        webpack:   WEBPACK_CONFIG_TEST
     });
 
     karma.set({
@@ -17,25 +20,25 @@ export default function configKarma(karma : Object) {
 
         files: [
             {
-                pattern:  'test/lib/react_v15.1.0.js',
+                pattern:  'test/integration/vendor/react_v15.1.0.js',
                 included: true,
                 served:   true
             },
 
             {
-                pattern:  'test/lib/react-dom_v15.1.0.js',
+                pattern:  'test/integration/vendor/react-dom_v15.1.0.js',
                 included: true,
                 served:   true
             },
 
             {
-                pattern:  'test/lib/angular.min.js',
+                pattern:  'test/integration/vendor/angular.min.js',
                 included: true,
                 served:   true
             },
 
             {
-                pattern:  'test/tests/globals.js',
+                pattern:  'test/integration/globals.js',
                 included: true,
                 served:   true
             },

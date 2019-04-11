@@ -350,18 +350,55 @@ export function errorOnWindowOpen(win : CrossDomainWindowType = window) {
     };
 }
 
-export function onElementResize(el : HTMLElement) : ZalgoPromise<void> {
-    return new ZalgoPromise(resolve => {
+type OnElementResizeOptions = {|
+    width? : number, height? : number, timeout? : number
+|};
+
+// $FlowFixMe
+export function onElementResize(el : HTMLElement, opts? : OnElementResizeOptions = {}) : ZalgoPromise<void> {
+    const { width: expectedWidth, height: expectedHeight, timeout = 1000 } = opts;
+
+    return new ZalgoPromise((resolve, reject) => {
 
         const originalWidth = el.offsetWidth;
         const originalHeight = el.offsetHeight;
 
+        // eslint-disable-next-line prefer-const
+        let timer;
+
         const interval = setInterval(() => {
-            if (el.offsetWidth !== originalWidth || el.offsetHeight !== originalHeight) {
-                clearInterval(interval);
-                resolve();
+            const newWidth = el.offsetWidth;
+            const newHeight = el.offsetHeight;
+
+            if (typeof expectedWidth !== 'undefined') {
+                if (newWidth !== expectedWidth) {
+                    return;
+                }
+            } else {
+                if (newWidth === originalWidth) {
+                    return;
+                }
             }
+
+            if (typeof expectedHeight !== 'undefined') {
+                if (newHeight !== expectedHeight) {
+                    return;
+                }
+            } else {
+                if (newHeight === originalHeight) {
+                    return;
+                }
+            }
+
+            clearTimeout(timer);
+            clearInterval(interval);
+            resolve();
         }, 50);
+
+        timer = setTimeout(() => {
+            clearInterval(interval);
+            reject(new Error(`Element did not resize in ${ timeout }ms. Final dimensions: ${ el.offsetWidth }x${ el.offsetHeight }`));
+        }, timeout);
     });
 }
 

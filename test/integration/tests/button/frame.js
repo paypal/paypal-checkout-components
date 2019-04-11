@@ -17,7 +17,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         it('should render a button into a container and click on the button, then complete the checkout', () => {
 
             const iframe = document.createElement('iframe');
-            iframe.src = `/base/test/windows/buttonframe/index.htm#${ flow }`;
+            iframe.src = `/base/test/integration/windows/buttonframe/index.htm#${ flow }`;
 
             if (!document.body) {
                 throw new Error('Expected document.body to be present');

@@ -2,6 +2,7 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { once } from 'belter/src';
 
 import { createTestContainer, destroyTestContainer } from '../common';
 
@@ -16,6 +17,7 @@ describe(`paypal button layouts`, () => {
     });
 
     it('should render a maximum of 2 buttons horizontally', (done) => {
+        done = once(done);
         window.paypal.Buttons({
 
             style: {
@@ -50,6 +52,7 @@ describe(`paypal button layouts`, () => {
     });
 
     it('should render a maximum of 4 buttons vertically', (done) => {
+        done = once(done);
 
 
         window.paypal.Buttons({

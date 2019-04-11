@@ -4,7 +4,7 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { noop } from 'belter/src';
 
-import { createTestContainer, destroyTestContainer, mockProp } from '../common';
+import { createTestContainer, destroyTestContainer } from '../common';
 
 const buttonConfigs = [
 
@@ -101,35 +101,29 @@ const buttonConfigs = [
 
             {
                 period: 4,
-                locale:            { country: 'BR', lang: 'pt' },
-                valid:             true
+                valid:  true
             },
 
             {
                 period: 6,
-                locale:            { country: 'BR', lang: 'en' },
-                valid:             true
+                valid:  true
             },
 
             {
                 period: 6,
-                locale:            { country: 'MX', lang: 'es' },
-                valid:             true
+                valid:  true
             },
 
             {
                 period: 6,
-                locale: { country: 'MX', lang: 'en' },
                 valid:  true
             }
 
-        ].map(({ period, locale, valid }) => ({
+        ].map(({ period, valid }) => ({
             
-            desc: `label: installment, locale: ${ locale.lang }_${ locale.country } and period: ${ period }`,
+            desc: `label: installment, period: ${ period }`,
 
             valid,
-
-            locale,
 
             conf: {
                 createOrder:     noop,
@@ -731,15 +725,6 @@ for (const group of buttonConfigs) {
 
         for (const useCase of group.cases) {
             it(`should attempt to render a button with ${ useCase.desc } and ${ useCase.valid ? `succeed` : `fail` }`, () => {
-
-                let mockCountry;
-                let mockLang;
-
-                if (useCase.locale) {
-                    mockCountry = mockProp(window, '__TEST_LOCALE_COUNTRY__', useCase.locale.country);
-                    mockLang = mockProp(window, '__TEST_LOCALE_LANG__', useCase.locale.lang);
-                }
-
                 return ZalgoPromise.try(() => {
 
                     if (useCase.valid) {
@@ -762,16 +747,6 @@ for (const group of buttonConfigs) {
                         if (!error) {
                             throw new Error(`Expected error to be thrown`);
                         }
-                    }
-
-                }).then(() => {
-
-                    if (mockCountry) {
-                        mockCountry.cancel();
-                    }
-
-                    if (mockLang) {
-                        mockLang.cancel();
                     }
                 });
             });

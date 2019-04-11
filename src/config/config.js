@@ -8,9 +8,9 @@ export const SESSION_LIFETIME = 5 * 60 * 1000;
 const URI = __TEST__
 
     ? {
-        CHECKOUT: `/base/test/windows/checkout/index.htm?checkouturl=true`,
-        BUTTON:   `/base/test/windows/button/index.htm`,
-        CARD:     `/base/test/windows/card-fields/index.htm`
+        CHECKOUT: `/base/test/integration/windows/checkout/index.htm?checkouturl=true`,
+        BUTTON:   `/base/test/integration/windows/button/index.htm`,
+        CARD:     `/base/test/integration/windows/card-fields/index.htm`
     }
 
     : {

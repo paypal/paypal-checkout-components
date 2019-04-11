@@ -2,6 +2,7 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { once } from 'belter/src';
 
 import { generateOrderID, createTestContainer, destroyTestContainer, getElementRecursive, assert, WEBVIEW_USER_AGENT } from '../common';
 
@@ -21,6 +22,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button and click and get a black overlay', (done) => {
+            done = once(done);
             window.paypal.Buttons({
 
                 test: {

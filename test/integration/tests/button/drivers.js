@@ -1,6 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { once } from 'belter/src';
 
 import { generateOrderID, createTestContainer, destroyTestContainer, WEBVIEW_USER_AGENT } from '../common';
 
@@ -24,6 +25,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container with React and click on the button, then complete the checkout', (done) => {
+            done = once(done);
 
             const PayPalButton = window.paypal.Buttons.driver('react', {
                 React:    window.React,
@@ -69,6 +71,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container with React with a promise in createOrder and click on the button, then complete the checkout', (done) => {
+            done = once(done);
 
             const PayPalButton = window.paypal.Buttons.driver('react', {
                 React:    window.React,
@@ -116,6 +119,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
         });
 
         it('should render a button into a container with React with a non-zalgo promise in createOrder and click on the button, then complete the checkout', (done) => {
+            done = once(done);
 
             const PayPalButton = window.paypal.Buttons.driver('react', {
                 React:    window.React,
