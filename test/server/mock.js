@@ -6,7 +6,10 @@ type MockReq = {|
 
 export function mockReq(opts : Object = {}) : MockReq {
     return {
-        query: {},
+        query:   {},
+        headers: {
+            'user-agent': 'xyz'
+        },
         get:   () => undefined,
         ...opts
     };
@@ -59,3 +62,77 @@ export function mockRes(opts : Object = {}) : MockRes {
         ...opts
     };
 }
+
+// eslint-disable-next-line require-await
+export async function getFundingEligibility() : Object {
+    return {
+        bancontact: {
+            eligible: false
+        },
+        card: {
+            eligible: true,
+            branded:  true,
+        
+            vendors: {
+                visa: {
+                    eligible: true
+                },
+                mastercard: {
+                    eligible: true
+                },
+                amex: {
+                    eligible: true
+                },
+                discover: {
+                    eligible: true
+                },
+                hiper: {
+                    eligible: false
+                },
+                elo: {
+                    eligible: false
+                },
+                jcb: {
+                    eligible: false
+                }
+            }
+        },
+        credit: {
+            eligible: false
+        },
+        sepa: {
+            eligible: false
+        },
+        eps: {
+            eligible: false
+        },
+        giropay: {
+            eligible: false
+        },
+        ideal: {
+            eligible: false
+        },
+        mybank: {
+            eligible: false
+        },
+        p24: {
+            eligible: false
+        },
+        paypal: {
+            eligible: true
+        },
+        sofort: {
+            eligible: false
+        },
+        venmo: {
+            eligible: false
+        },
+        wechatpay: {
+            eligible: false
+        },
+        zimpler: {
+            eligible: false
+        }
+    };
+}
+
