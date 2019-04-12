@@ -37,7 +37,7 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
             try {
                 fundingEligibility = await getFundingEligibility(req, gqlArg);
             } catch (err) {
-                logger.warn(req, 'gql_errored_for_fundingEligibility', { err: err.stack ? err.stack : err.toString() });
+                logger.error(req, 'gql_errored_for_fundingEligibility', { err: err.stack ? err.stack : err.toString() });
                 fundingEligibility = {
                     paypal: {
                         eligible: true
