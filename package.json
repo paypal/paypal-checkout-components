@@ -13,7 +13,7 @@
     "webpack": "babel-node ./node_modules/.bin/webpack --progress",
     "webpack-base": "babel-node ./node_modules/.bin/webpack --progress --config webpack.base.config.js",
     "webpack-button": "babel-node ./node_modules/.bin/webpack --progress --config webpack.button.config.js",
-    "test": "npm run lint && npm run flow && npm run test-ssr && npm run karma && npm run buttondiff",
+    "test": "if [ ! $SKIP_TEST ]; then npm run lint && npm run flow && npm run test-ssr && npm run karma && npm run buttondiff; fi;",
     "build": "npm run test && npm run webpack",
     "release": "./scripts/publish.sh",
     "release:patch": "./scripts/publish.sh patch",
