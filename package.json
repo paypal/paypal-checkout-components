@@ -24,8 +24,9 @@
     "debug": "cross-env NODE_ENV=debug",
     "demo": "serve ./demo -l 1337",
     "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin",
-    "jest-screenshot": "jest test/screenshot/screenshot.test.js --env=node --no-cache",
-    "jest-ssr": "jest test/ssr/ssr.test.js --env=node --no-cache",
+    "jest-screenshot": "jest test/screenshot --env=node --no-cache",
+    "jest-ssr": "jest test/ssr --env=node --no-cache",
+    "jest-e2e": "jest test/e2e",
     "check-size": "babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/webpack --progress --config webpack.config.size && cat dist/size.js | gzip -9 | wc && rm dist/size.js"
   },
   "files": [
@@ -64,12 +65,12 @@
     "grumbler-scripts": "^3",
     "imagemagick": "^0.1.3",
     "imgur": "^0.2.1",
-    "jest-puppeteer": "^4.1.1",
     "memory-fs": "^0.4.1",
     "mocha": "^4",
+    "mocketeer": "^0.3.0",
     "pixelmatch": "^4.0.2",
     "pngjs": "^3.3.0",
-    "puppeteer": "^0.11.0",
+    "puppeteer": "^1.14.0",
     "serve": "^10.1.2",
     "sync-browser-mocks": "^2.0.0"
   },
