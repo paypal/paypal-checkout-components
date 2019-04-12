@@ -10,7 +10,9 @@ export async function withPage(handler : ({ page : Object }) => Promise<void>) :
         headless:          HEADLESS,
         devtools:          DEVTOOLS,
         ignoreHTTPSErrors: true,
-        handleSIGINT:      false
+        args:              [
+            '--no-sandbox'
+        ]
     });
 
     try {
