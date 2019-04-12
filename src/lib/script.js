@@ -41,7 +41,13 @@ export function getCurrentScriptUrl() : string {
     let script = getCurrentScript();
 
     if (script && typeof script.src === 'string') {
-        return script.src;
+        let scriptUrl = script.src;
+
+        if (scriptUrl.indexOf('http://www.paypalobjects.com') === 0) {
+            scriptUrl = scriptUrl.replace('http://', 'https://');
+        }
+
+        return scriptUrl;
     }
 
     return `https://www.paypalobjects.com/api/checkout.${ __PAYPAL_CHECKOUT__.__MINOR_VERSION__ }${ __MIN__ ? '.min' : '' }.js`;
