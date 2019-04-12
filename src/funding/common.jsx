@@ -31,7 +31,7 @@ export const DEFAULT_LABEL_CONFIG = {
 
     logoColors: {
         [ BUTTON_COLOR.BLACK ]: LOGO_COLOR.WHITE,
-        [ BUTTON_COLOR.WHITE ]: LOGO_COLOR.BLUE
+        [ BUTTON_COLOR.WHITE ]: LOGO_COLOR.BLACK
     },
 
     shapes: [
