@@ -1,7 +1,10 @@
 /* @flow */
 
-export const BUTTON_FRAME_NAME = '__zoid__paypal_buttons__';
-export const CHECKOUT_POPUP_NAME = '__zoid__paypal_checkout__';
+export const WINDOW_NAME = {
+    BUTTON:   '__zoid__paypal_buttons__',
+    CHECKOUT: '__zoid__paypal_checkout__',
+    LOGIN:    'injectedUl'
+};
 
 export const SELECTORS = {
 
@@ -13,8 +16,11 @@ export const SELECTORS = {
     },
 
     CHECKOUT: {
-        ECONSENT_ACCEPT_CHECKBOX: '[data-test-id=eConsentLabel]',
+        LOGIN_IFRAME:             `iframe[name=${ WINDOW_NAME.LOGIN }]`,
+        CREDIT_CANCEL:            'button#billingInfoCancelBtn',
+        ECONSENT_ACCEPT_CHECKBOX: 'label[data-test-id=eConsentLabel]',
         ECONSENT_ACCEPT_BUTTON:   'input#submitEConsent',
+        SHIPPING_ADDRESS:         '#shippingAddress',
         REVIEW_CONTINUE_BUTTON:   'input#confirmButtonTop'
     }
 };
