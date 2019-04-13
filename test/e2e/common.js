@@ -5,7 +5,7 @@
 import puppeteer from 'puppeteer';
 import { withMock, methods } from 'mocketeer';
 
-import { HEADLESS, DEVTOOLS, DOMAIN, RETRIES, LOG } from './config';
+import { HEADLESS, DEVTOOLS, DOMAIN, RETRIES, LOG, TIMEOUT } from './config';
 
 export function log(...args : $ReadOnlyArray<mixed>) {
     if (LOG) {
@@ -22,7 +22,7 @@ export async function retry<T>(handler : () => Promise<T>, attempts : number) : 
             throw err;
         }
 
-        log('Failed with error, retrying:', err);
+        log(`Failed with error, retrying (${ attempts } attempts remaining):`, err);
         return retry(handler, attempts);
     }
 }
@@ -89,7 +89,7 @@ export async function findFrameByName(page : Object, name : string) : Object {
 }
 
 export async function waitForPopup(page : Object, opts? : { timeout? : number } = {}) : Promise<Object> {
-    const { timeout = 5000 } = opts;
+    const { timeout = TIMEOUT * 1000 } = opts;
     log('WAIT FOR POPUP');
     return await new Promise((resolve, reject) => {
         const timer = setTimeout(() => {
@@ -110,20 +110,22 @@ export async function delay(time : number) : Promise<void> {
 }
 
 export async function waitForElement(page : Object, selector : string, opts? : { timeout? : number } = {}) : Promise<void> {
-    const { timeout } = opts;
+    const { timeout = TIMEOUT * 1000 } = opts;
     log('WAIT FOR', selector);
     await page.waitForSelector(selector, { timeout });
 }
 
-export async function waitAndType(page : Object, selector : string, text : string) : Promise<void> {
-    await waitForElement(page, selector);
+export async function waitAndType(page : Object, selector : string, text : string, opts? : { timeout? : number } = {}) : Promise<void> {
+    const { timeout = TIMEOUT * 1000 } = opts;
+    await waitForElement(page, selector, { timeout });
     await delay(1000);
     log('TYPE', selector, text);
     await page.type(selector, text);
 }
 
-export async function waitAndClick(page : Object, selector : string) : Promise<void> {
-    await waitForElement(page, selector);
+export async function waitAndClick(page : Object, selector : string, opts? : { timeout? : number } = {}) : Promise<void> {
+    const { timeout = TIMEOUT * 1000 } = opts;
+    await waitForElement(page, selector, { timeout });
     await delay(1000);
     log('CLICK', selector);
     await page.click(selector);
@@ -152,7 +154,7 @@ export async function elementExists(page : Object, selector : string) : Promise<
 }
 
 export async function waitForClose(page : Object, opts? : { timeout? : number } = {}) : Promise<void> {
-    const { timeout = 30000 } = opts;
+    const { timeout = TIMEOUT * 1000 } = opts;
 
     const start = Date.now();
 
