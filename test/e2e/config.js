@@ -9,3 +9,5 @@ export const DOMAIN = process.env.SPB_DOMAIN || 'https://www.mock-spb-merchant.c
 
 export const HEADLESS = Boolean(process.env.HEADLESS !== '0');
 export const DEVTOOLS = Boolean(HEADLESS && process.env.DEV_TOOLS);
+export const RETRIES = process.env.RETRIES ? parseInt(process.env.RETRIES, 10) : 5;
+export const LOG = Boolean(process.env.LOG === '1');
