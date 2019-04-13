@@ -1,6 +1,7 @@
 /* @flow */
 /* eslint no-console: off */
 
+// $FlowFixMe
 import puppeteer from 'puppeteer';
 import { withMock, methods } from 'mocketeer';
 
