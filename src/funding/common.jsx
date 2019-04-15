@@ -23,6 +23,8 @@ export const DEFAULT_FUNDING_CONFIG = {
 
 export const DEFAULT_LABEL_CONFIG = {
 
+    handleClick: false,
+
     colors: [
         BUTTON_COLOR.SILVER,
         BUTTON_COLOR.BLACK,
@@ -61,6 +63,7 @@ type FundingLabelConfig = {|
         nonce : string,
         multiple : boolean
     |}) => ChildType,
+    handleClick : boolean,
     colors : $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
     secondaryColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
     logoColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof LOGO_COLOR> },

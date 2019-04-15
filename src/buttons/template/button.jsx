@@ -76,27 +76,22 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     const logoColors = labelConfig.logoColors || {};
     const logoColor = logoColors[color] || logoColors[LOGO_COLOR.DEFAULT] || LOGO_COLOR.DEFAULT;
 
-    const { Label } = labelConfig;
+    const { Label, handleClick } = labelConfig;
 
-    const clickHandler = (event, { card } = {}) => {
+    const clickHandler = (event, opts) => {
         event.preventDefault();
         event.stopPropagation();
-
-        if (fundingSource === FUNDING.CARD && !card) {
-            return;
-        }
-
-        onClick({ fundingSource, card });
+        onClick({ fundingSource, ...opts });
     };
 
     return (
         <div
+            role='button'
             { ...{ [ATTRIBUTE.FUNDING_SOURCE]: fundingSource, [ATTRIBUTE.BUTTON]: true } }
             class={ `${ CLASS.BUTTON } ${ CLASS.NUMBER }-${ i } ${ getCommonClasses({ style, multiple, env }) } ${ getButtonClasses({ label: buttonLabel, color, logoColor }) }` }
-            role='button'
             aria-label={ fundingSource }
-            onClick={ clickHandler }
-            tabindex={ fundingSource === FUNDING.CARD ? '-1' : '0' }>
+            onClick={ handleClick ? null : clickHandler }
+            tabindex={ handleClick ? '-1' : '0' }>
 
             <Label
                 nonce={ nonce }

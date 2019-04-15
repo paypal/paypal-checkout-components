@@ -73,6 +73,8 @@ export function getCardConfig() : FundingSourceConfig {
                 secondaryColors: {
                     [ DEFAULT ]: BUTTON_COLOR.TRANSPARENT
                 },
+
+                handleClick: true,
     
                 Label: ({ fundingEligibility, locale, nonce, onClick }) => {
                     let maxCards = 4;

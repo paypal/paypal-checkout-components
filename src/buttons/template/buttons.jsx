@@ -1,11 +1,10 @@
 /* @flow */
 /** @jsx node */
 
-import { FUNDING, type LocaleType } from '@paypal/sdk-constants/src';
 import { node, html, type ElementNode } from 'jsx-pragmatic/src';
 
 import { CLASS } from '../../constants';
-import { getFundingConfig, determineEligibleFunding } from '../../funding';
+import { determineEligibleFunding } from '../../funding';
 import { normalizeButtonProps, type ButtonPropsInputs } from '../props';
 
 import { getCommonClasses, Style } from './style';
@@ -16,23 +15,6 @@ import { Script } from './script';
 type ButtonsProps = ButtonPropsInputs & {|
     onClick? : Function
 |};
-
-function getCardNumber(locale : LocaleType) : number {
-    const cardConfig = getFundingConfig()[FUNDING.CARD];
-    const vendors = cardConfig && cardConfig.vendors;
-    let maxCards = 4;
-
-    if (cardConfig && cardConfig.maxCards && cardConfig.maxCards[locale.country]) {
-        maxCards = cardConfig.maxCards[locale.country];
-    }
-
-    if (vendors) {
-        const numCards = Object.keys(vendors).length;
-        return Math.min(numCards, maxCards);
-    } else {
-        return maxCards;
-    }
-}
 
 export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick } = props;
@@ -51,7 +33,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             <Style
                 nonce={ nonce }
                 style={ style }
-                cardNumber={ getCardNumber(locale) }
+                locale={ locale }
             />
 
             {
