@@ -11,7 +11,7 @@ import { serverErrorResponse, clientErrorResponse, htmlResponse, allowFrame, def
 import type { ExpressRequest, ExpressResponse, LoggerType } from './types';
 import { buttonStyle } from './style';
 
-export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibility } : { logger? : LoggerType, getFundingEligibility : Function }) : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
+export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibility } : { logger? : LoggerType, getFundingEligibility : Function } = {}) : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
     startWatchers();
 
     return async function buttonMiddleware(req : ExpressRequest, res : ExpressResponse) : Promise<void> {
