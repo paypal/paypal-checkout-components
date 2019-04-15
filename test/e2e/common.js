@@ -33,6 +33,22 @@ export async function screenshot(page : Object, name : string) : Promise<void> {
     });
 }
 
+export function logFailedRequests(page : Object) {
+    page.on('response', req => {
+        const url = req.url();
+        const status = req.status().toString();
+        let corrID = req.headers()['paypal-debug-id'];
+
+        if (corrID) {
+            corrID = corrID.split(',')[0];
+        }
+
+        if (status.startsWith('4') || status.startsWith('5')) {
+            log(status, url, corrID || '(unknown correlation id)');
+        }
+    });
+}
+
 export async function getElement(page : Object, selector : string) : Promise<Object> {
     const element = await page.$(selector);
 
@@ -70,19 +86,7 @@ export async function withPage(handler : ({ page : Object }) => Promise<void>) :
     try {
         const page = await browser.newPage();
 
-        page.on('response', req => {
-            const url = req.url();
-            const status = req.status().toString();
-            let corrID = req.headers()['paypal-debug-id'];
-
-            if (corrID) {
-                corrID = corrID.split(',')[0];
-            }
-
-            if (status.startsWith('4') || status.startsWith('5')) {
-                log(status, url, corrID || '(unknown correlation id)');
-            }
-        });
+        logFailedRequests(page);
 
         await withMock(
             methods.get(DOMAIN, {
@@ -146,6 +150,7 @@ export async function waitForPopup(page : Object, opts? : { timeout? : number } 
             resolve(popup);
         });
     });
+    logFailedRequests(popupPage);
     await screenshot(popupPage, `popup_opened`);
     return popupPage;
 }
