@@ -1,5 +1,4 @@
 /* @flow */
 
-export * from './componentTemplate';
-export * from './containerTemplate';
-
+export * from './buttons';
+export * from './container';

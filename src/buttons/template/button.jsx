@@ -1,0 +1,112 @@
+/* @flow */
+/** @jsx node */
+
+import { FUNDING, ENV, type LocaleType } from '@paypal/sdk-constants/src';
+import { node, type ElementNode } from 'jsx-pragmatic/src';
+import { LOGO_COLOR } from '@paypal/sdk-logos/src';
+import { noop } from 'belter/src';
+
+import { BUTTON_LABEL, ATTRIBUTE, CLASS, BUTTON_COLOR } from '../../constants';
+import { getFundingConfig } from '../../funding';
+import { type ButtonStyle } from '../props';
+import type { FundingEligibilityType } from '../../types';
+
+import { getCommonClasses, getButtonClasses } from './style';
+
+type ButtonProps = {|
+    style : ButtonStyle,
+    fundingSource : $Values<typeof FUNDING>,
+    multiple : boolean,
+    locale : LocaleType,
+    onClick? : Function,
+    env : $Values<typeof ENV>,
+    fundingEligibility : FundingEligibilityType,
+    i : number,
+    nonce : string
+|};
+
+function determineLabel({ fundingSource, style } :
+    {| fundingSource : $Values<typeof FUNDING>, style : ButtonStyle |}) : $Values<typeof BUTTON_LABEL> {
+
+    const fundingConfig = getFundingConfig()[fundingSource];
+
+    if (!fundingConfig) {
+        throw new Error(`Can not find config for ${ fundingSource }`);
+    }
+
+    const labelsConfig = fundingConfig.labels;
+    const { label } = style;
+
+    if (labelsConfig[label]) {
+        return label;
+    }
+
+    if (fundingConfig.defaultLabel) {
+        return fundingConfig.defaultLabel;
+    }
+
+    throw new Error(`Could not determine label for ${ fundingSource }`);
+}
+
+export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, onClick = noop } : ButtonProps) : ElementNode {
+
+    let { color, period } = style;
+
+    const buttonLabel = determineLabel({ fundingSource, style });
+    
+    const fundingConfig = getFundingConfig()[fundingSource];
+
+    if (!fundingConfig) {
+        throw new Error(`Can not find funding config for ${ fundingSource }`);
+    }
+
+    const labelConfig = fundingConfig.labels[buttonLabel];
+
+    if (!labelConfig) {
+        throw new Error(`Can not find label config for ${ buttonLabel }`);
+    }
+
+    const colors = labelConfig.colors;
+    const secondaryColors = labelConfig.secondaryColors || {};
+
+    if (multiple && i > 0) {
+        color = secondaryColors[color] || secondaryColors[BUTTON_COLOR.DEFAULT] || colors[0];
+    }
+
+    const logoColors = labelConfig.logoColors || {};
+    const logoColor = logoColors[color] || logoColors[LOGO_COLOR.DEFAULT] || LOGO_COLOR.DEFAULT;
+
+    const { Label } = labelConfig;
+
+    const clickHandler = (event, { card } = {}) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (fundingSource === FUNDING.CARD && !card) {
+            return;
+        }
+
+        onClick({ fundingSource, card });
+    };
+
+    return (
+        <div
+            { ...{ [ATTRIBUTE.FUNDING_SOURCE]: fundingSource, [ATTRIBUTE.BUTTON]: true } }
+            class={ `${ CLASS.BUTTON } ${ CLASS.NUMBER }-${ i } ${ getCommonClasses({ style, multiple, env }) } ${ getButtonClasses({ label: buttonLabel, color, logoColor }) }` }
+            role='button'
+            aria-label={ fundingSource }
+            onClick={ clickHandler }
+            tabindex={ fundingSource === FUNDING.CARD ? '-1' : '0' }>
+
+            <Label
+                nonce={ nonce }
+                locale={ locale }
+                logoColor={ logoColor }
+                period={ period }
+                multiple={ multiple }
+                fundingEligibility={ fundingEligibility }
+                onClick={ clickHandler }
+            />
+        </div>
+    );
+}

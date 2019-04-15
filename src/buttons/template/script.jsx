@@ -1,6 +1,12 @@
 /* @flow */
+/** @jsx node */
 
-export function getComponentScript() : () => void {
+import { node, type ElementNode } from 'jsx-pragmatic/src';
+import { LOGO_CLASS } from '@paypal/sdk-logos/src';
+
+import { CLASS } from '../../constants';
+
+function getComponentScript() : () => void {
 
     /* istanbul ignore next */
     return () => {
@@ -139,4 +145,24 @@ export function getComponentScript() : () => void {
             loop(toggleOptionals, 10, 10);
         });
     };
+}
+
+type ScriptProps = {|
+    nonce : ?string
+|};
+
+export function Script({ nonce } : ScriptProps) : ElementNode {
+    let script = getComponentScript().toString();
+
+    script = script.replace(/\{\s*CLASS\.([A-Z0-9_]+)\s*\}/g, (match, name) => {
+        return CLASS[name];
+    });
+
+    script = script.replace(/\{\s*LOGO_CLASS\.([A-Z0-9_]+)\s*\}/g, (match, name) => {
+        return LOGO_CLASS[name];
+    });
+
+    return (
+        <script nonce={ nonce } innerHTML={ `(${ script })()` } />
+    );
 }
