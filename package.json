@@ -26,7 +26,7 @@
     "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin",
     "jest-screenshot": "jest test/screenshot --env=node --no-cache",
     "jest-ssr": "jest test/ssr --env=node --no-cache",
-    "jest-e2e": "jest test/e2e",
+    "jest-e2e": "rm -f ./test/e2e/screenshots/*.png && jest test/e2e",
     "check-size": "babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/webpack --progress --config webpack.config.size && cat dist/size.js | gzip -9 | wc && rm dist/size.js"
   },
   "files": [

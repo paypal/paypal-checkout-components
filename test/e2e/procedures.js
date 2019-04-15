@@ -1,6 +1,6 @@
 /* @flow */
 
-import { waitAndClick, waitAndType, elementExists, findFrameByName, waitForPopup, waitForElement } from './common';
+import { waitAndClick, waitAndType, elementExists, findFrameByName, waitForPopup, waitForElement, getElement } from './common';
 import { SELECTORS, DATA_ATTRIBUTES, WINDOW_NAME } from './selectors';
 import { STAGE, CLIENT_ID } from './config';
 
@@ -13,7 +13,7 @@ export async function renderSmartButtons(page : Object, opts? : string = '') : P
 }
 
 export async function getButtonByFundingSource(buttonFrame : Object, funding : string) : Promise<Object> {
-    return await buttonFrame.$(`[${ DATA_ATTRIBUTES.BUTTON.FUNDING_SOURCE }=${ funding }]`);
+    return await getElement(buttonFrame, `[${ DATA_ATTRIBUTES.BUTTON.FUNDING_SOURCE }=${ funding }]`);
 }
 
 export async function clickButton(buttonFrame : Object, button : Object) : Promise<Object> {

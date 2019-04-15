@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint no-process-env: off */
 
-jest.setTimeout(3 * 60 * 1000);
+jest.setTimeout(10 * 60 * 1000);
 
 export const STAGE = process.env.STAGE || 'msmaster.qa.paypal.com';
 export const CLIENT_ID = process.env.CLIENT_ID || 'ATq4kPMhjTp6qrUQybY0SSz6Es1sO0YDF9f67rt2e-dZx36hHGbV1U9Ek3QRwcHcyyBlHXysRr-uXg18';

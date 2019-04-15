@@ -1,5 +1,7 @@
 /* @flow */
-/* eslint no-console: off */
+/* eslint no-console: off, import/no-nodejs-modules: off */
+
+import { join } from 'path';
 
 // $FlowFixMe
 import puppeteer from 'puppeteer';
@@ -11,6 +13,34 @@ export function log(...args : $ReadOnlyArray<mixed>) {
     if (LOG) {
         console.info(...args);
     }
+}
+
+function normalizeString(str : string, reg : RegExp) : string {
+    return str.replace(reg, '_').replace(/^_+/, '').replace(/_+$/, '');
+}
+
+function getDate() : string {
+    return normalizeString(new Date().toISOString(), /[^0-9]+/g);
+}
+
+export async function screenshot(page : Object, name : string) : Promise<void> {
+    if (!page.screenshot && page._frameManager) {
+        page = page._frameManager.page();
+    }
+
+    await page.screenshot({
+        path: join(__dirname, 'screenshots', `${ getDate() }_${ normalizeString(name, /[^a-zA-Z_0-9-]+/g) }.png`)
+    });
+}
+
+export async function getElement(page : Object, selector : string) : Promise<Object> {
+    const element = await page.$(selector);
+
+    if (!element) {
+        throw new Error(`Could not find element: ${ selector }`);
+    }
+
+    return element;
 }
 
 export async function retry<T>(handler : () => Promise<T>, attempts : number) : Promise<T> {
@@ -79,7 +109,8 @@ export async function findFrameByName(page : Object, name : string) : Object {
         const frame = await element.contentFrame();
         if (frame) {
             log('FOUND FRAME', name);
-            return frame;
+            await screenshot(page, `frame_opened`);
+            return page;
         }
     } catch (err) {
         // pass
@@ -91,7 +122,7 @@ export async function findFrameByName(page : Object, name : string) : Object {
 export async function waitForPopup(page : Object, opts? : { timeout? : number } = {}) : Promise<Object> {
     const { timeout = TIMEOUT * 1000 } = opts;
     log('WAIT FOR POPUP');
-    return await new Promise((resolve, reject) => {
+    const popupPage = await new Promise((resolve, reject) => {
         const timer = setTimeout(() => {
             reject(new Error(`Timed out waiting for popup window for ${ timeout }ms`));
         }, timeout);
@@ -101,6 +132,8 @@ export async function waitForPopup(page : Object, opts? : { timeout? : number } 
             resolve(popup);
         });
     });
+    await screenshot(popupPage, `popup_opened`);
+    return popupPage;
 }
 
 export async function delay(time : number) : Promise<void> {
@@ -112,6 +145,7 @@ export async function delay(time : number) : Promise<void> {
 export async function waitForElement(page : Object, selector : string, opts? : { timeout? : number } = {}) : Promise<void> {
     const { timeout = TIMEOUT * 1000 } = opts;
     log('WAIT FOR', selector);
+    await screenshot(page, `wait_for_${ selector }`);
     await page.waitForSelector(selector, { timeout });
 }
 
@@ -119,7 +153,9 @@ export async function waitAndType(page : Object, selector : string, text : strin
     const { timeout = TIMEOUT * 1000 } = opts;
     await waitForElement(page, selector, { timeout });
     await delay(1000);
+    await screenshot(page, `pre_type_${ selector }`);
     log('TYPE', selector, text);
+    await screenshot(page, `post_click_${ selector }`);
     await page.type(selector, text);
 }
 
@@ -127,7 +163,9 @@ export async function waitAndClick(page : Object, selector : string, opts? : { t
     const { timeout = TIMEOUT * 1000 } = opts;
     await waitForElement(page, selector, { timeout });
     await delay(1000);
+    await screenshot(page, `pre_click_${ selector }`);
     log('CLICK', selector);
+    await screenshot(page, `post_click_${ selector }`);
     await page.click(selector);
 }
 
@@ -159,6 +197,8 @@ export async function waitForClose(page : Object, opts? : { timeout? : number } 
     const start = Date.now();
 
     log('WAIT FOR CLOSE');
+
+    await screenshot(page, `wait_close`);
 
     return await new Promise((resolve, reject) => {
         const interval = setInterval(async () => {
