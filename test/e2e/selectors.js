@@ -21,7 +21,9 @@ export const SELECTORS = {
         ECONSENT_ACCEPT_CHECKBOX: 'label[data-test-id=eConsentLabel]',
         ECONSENT_ACCEPT_BUTTON:   'input#submitEConsent',
         SHIPPING_ADDRESS:         '#shippingAddress',
-        REVIEW_CONTINUE_BUTTON:   'input#confirmButtonTop'
+        REVIEW_CONTINUE_BUTTON:   'input#confirmButtonTop',
+        REVIEW_CHANGE_PAYMENT:    'a.changePayment',
+        SELECT_FUNDING:           (n : number) => `ul.allPlanList li.fundingsource:nth-child(${ n })`
     }
 };
 

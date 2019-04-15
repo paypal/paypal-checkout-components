@@ -33,7 +33,7 @@ export async function runLoginFlow(page : Object, { user, password } : { user : 
     await waitAndClick(page, SELECTORS.LOGIN.LOGIN_BUTTON);
 }
 
-export async function runCheckoutFlow(page : Object, { user, password } : { user : string, password : string }) : Promise<void> {
+export async function runCheckoutLoginFlow(page : Object, { user, password } : { user : string, password : string }) : Promise<void> {
     await Promise.race([
         waitForElement(page, SELECTORS.LOGIN.EMAIL_FIELD),
         waitForElement(page, SELECTORS.CHECKOUT.LOGIN_IFRAME)
@@ -44,7 +44,9 @@ export async function runCheckoutFlow(page : Object, { user, password } : { user
     } else {
         await runLoginFlow(page, { user, password });
     }
+}
 
+export async function resolveCheckoutContingencies(page : Object) : Promise<void> {
     await Promise.race([
         waitForElement(page, SELECTORS.CHECKOUT.CREDIT_CANCEL),
         waitForElement(page, SELECTORS.CHECKOUT.ECONSENT_ACCEPT_CHECKBOX),
@@ -64,12 +66,21 @@ export async function runCheckoutFlow(page : Object, { user, password } : { user
         await waitAndClick(page, SELECTORS.CHECKOUT.ECONSENT_ACCEPT_CHECKBOX);
         await waitAndClick(page, SELECTORS.CHECKOUT.ECONSENT_ACCEPT_BUTTON);
     }
+}
 
+export async function runCheckoutChoicePage(page : Object) : Promise<void> {
     await waitForElement(page, SELECTORS.CHECKOUT.REVIEW_CONTINUE_BUTTON);
 
     if (!await elementExists(page, SELECTORS.CHECKOUT.SHIPPING_ADDRESS)) {
         await waitAndClick(page, SELECTORS.CHECKOUT.REVIEW_CONTINUE_BUTTON);
     }
+}
 
+export async function changeFundingSource(page : Object) : Promise<void> {
+    await waitAndClick(page, SELECTORS.CHECKOUT.REVIEW_CHANGE_PAYMENT);
+    await waitAndClick(page, SELECTORS.CHECKOUT.SELECT_FUNDING(2));
+}
+
+export async function completeCheckoutReviewPage(page : Object) : Promise<void> {
     await waitAndClick(page, SELECTORS.CHECKOUT.REVIEW_CONTINUE_BUTTON);
 }
