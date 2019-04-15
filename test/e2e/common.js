@@ -146,7 +146,13 @@ export async function waitForElement(page : Object, selector : string, opts? : {
     const { timeout = TIMEOUT * 1000 } = opts;
     log('WAIT FOR', selector);
     await screenshot(page, `wait_for_${ selector }`);
-    await page.waitForSelector(selector, { timeout });
+    try {
+        await page.waitForSelector(selector, { timeout });
+    } catch (err) {
+        await screenshot(page, `wait_for_${ selector }_failed`);
+        throw err;
+    }
+    await screenshot(page, `wait_for_${ selector }_success`);
 }
 
 export async function waitAndType(page : Object, selector : string, text : string, opts? : { timeout? : number } = {}) : Promise<void> {
