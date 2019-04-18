@@ -1,3 +1,29 @@
+## <small>5.0.19 (2019-04-18)</small>
+
+* Add basic end to end tests ([196f87c](http://github.paypal.com/paypal/paypal-checkout/commit/196f87c))
+* Add ci.sh script ([120e4d3](http://github.paypal.com/paypal/paypal-checkout/commit/120e4d3))
+* Add credit test ([85c5315](http://github.paypal.com/paypal/paypal-checkout/commit/85c5315))
+* Add env-vars for configs ([c6a65f8](http://github.paypal.com/paypal/paypal-checkout/commit/c6a65f8))
+* Add retries for end to end tests ([bfcc581](http://github.paypal.com/paypal/paypal-checkout/commit/bfcc581))
+* Add screenshots for success and error case of wait for element ([c35aa19](http://github.paypal.com/paypal/paypal-checkout/commit/c35aa19))
+* Add screenshots to e2e test ([6000142](http://github.paypal.com/paypal/paypal-checkout/commit/6000142))
+* Add test to start with credit and change funding source ([4220a32](http://github.paypal.com/paypal/paypal-checkout/commit/4220a32))
+* Add url error logging to e2e tests ([98d3fdd](http://github.paypal.com/paypal/paypal-checkout/commit/98d3fdd))
+* Fix env var bools ([f944365](http://github.paypal.com/paypal/paypal-checkout/commit/f944365))
+* Fix flow in CI ([aa94364](http://github.paypal.com/paypal/paypal-checkout/commit/aa94364))
+* Log failed requests in e2e tests popup window ([d59cc2e](http://github.paypal.com/paypal/paypal-checkout/commit/d59cc2e))
+* Make timeout configurable for e2e tests ([446bfe1](http://github.paypal.com/paypal/paypal-checkout/commit/446bfe1))
+* Map white button to black logo color ([e02b598](http://github.paypal.com/paypal/paypal-checkout/commit/e02b598))
+* More Flow fixes ([a7d0222](http://github.paypal.com/paypal/paypal-checkout/commit/a7d0222))
+* Move karma tests to test/integration ([1000d98](http://github.paypal.com/paypal/paypal-checkout/commit/1000d98))
+* Refactor and break up button templates ([f375976](http://github.paypal.com/paypal/paypal-checkout/commit/f375976))
+* Remove jest-puppeteer preset ([b9291d4](http://github.paypal.com/paypal/paypal-checkout/commit/b9291d4))
+* Remove some card specific logic from button renderer ([eef57dd](http://github.paypal.com/paypal/paypal-checkout/commit/eef57dd))
+* Run chrome in no-sandbox mode ([736674f](http://github.paypal.com/paypal/paypal-checkout/commit/736674f))
+* Use default logo color for white buttons ([56c13fa](http://github.paypal.com/paypal/paypal-checkout/commit/56c13fa))
+
+
+
 ## <small>5.0.18 (2019-04-09)</small>
 
 * Accessibility (hover and focus state) for each button color ([d19a5bc](http://github.paypal.com/paypal/paypal-checkout/commit/d19a5bc))
