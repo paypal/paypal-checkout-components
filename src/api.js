@@ -123,6 +123,8 @@ export function patchOrder(orderID : string, patch : []) : ZalgoPromise<OrderRes
 }
 
 export const persistAccessToken = memoize((accessToken) : ZalgoPromise<void> => {
-    defaultHeaders[ACCESS_TOKEN_HEADER] = accessToken;
-    return getAuth().then(noop);
+    if (accessToken) {
+        defaultHeaders[ACCESS_TOKEN_HEADER] = accessToken;
+        return getAuth().then(noop);
+    }
 });
