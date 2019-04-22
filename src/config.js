@@ -2,6 +2,8 @@
 
 export const BASE_API_URL = '/smart/api';
 export const LOGGER_URL = '/xoplatform/logger/api/logger';
+export const AUTH_API_URL = '/v1/oauth2/token';
+export const ORDERS_API_URL = '/v2/checkout/orders';
 
 export const API_URI = {
     AUTH:     `${ BASE_API_URL }/auth`,

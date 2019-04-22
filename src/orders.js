@@ -4,29 +4,26 @@ import { type ZalgoPromise } from 'zalgo-promise/src';
 import { INTENT, SDK_QUERY_KEYS, FUNDING } from '@paypal/sdk-constants/src';
 import { memoize } from 'belter/src';
 
-import { billingTokenToOrderID, callGraphQL, patchOrder, type OrderResponse, getOrder, captureOrder, authorizeOrder } from './api';
+import { billingTokenToOrderID, callGraphQL, patchOrder, type OrderResponse, getOrder, captureOrder, authorizeOrder, createAccessToken, createOrder } from './api';
 import { ORDER_ID_PATTERN, ERROR_URL, ORDER_API_ERROR, HEADERS } from './constants';
 
-export function createOrderOrBillingAgreement() : ZalgoPromise<string> {
-    if (window.xprops.createBillingAgreement) {
-        return window.xprops.createBillingAgreement().then(billingToken => {
-            return billingTokenToOrderID(billingToken);
-        });
-    } else if (window.xprops.createOrder) {
-        return window.xprops.createOrder();
-    } else {
-        throw new Error(`No mechanism to create order`);
-    }
-}
-
-type ApproveActionsType = {|
+type CreateOrderActionsType = {|
     order : {
-        capture : () => ZalgoPromise<OrderResponse>,
-        authorize : () => ZalgoPromise<OrderResponse>,
-        patch : () => ZalgoPromise<OrderResponse>,
-        get : () => ZalgoPromise<OrderResponse>
+        create : (Object) => ZalgoPromise<string>
     }
 |};
+
+export function buildCreateOrderActions() : CreateOrderActionsType {
+    const create = (data) => {
+        return createAccessToken(window.xprops.clientID).then(accessToken => {
+            return createOrder(accessToken, data);
+        });
+    };
+
+    return {
+        order: { create }
+    };
+}
 
 type ShippingChangeActionsType = {|
     order : {
@@ -45,6 +42,15 @@ export function buildShippingChangeActions(orderID : string) : ShippingChangeAct
         order: { patch }
     };
 }
+
+type ApproveActionsType = {|
+    order : {
+        capture : () => ZalgoPromise<OrderResponse>,
+        authorize : () => ZalgoPromise<OrderResponse>,
+        patch : () => ZalgoPromise<OrderResponse>,
+        get : () => ZalgoPromise<OrderResponse>
+    }
+|};
 
 export function buildApproveActions(orderID : string, fundingSource : $Values<typeof FUNDING>, restart : () => ZalgoPromise<OrderResponse>) : ApproveActionsType {
 
@@ -88,6 +94,19 @@ export function buildApproveActions(orderID : string, fundingSource : $Values<ty
         order: { capture, authorize, patch, get }
     };
 }
+
+export function createOrderOrBillingAgreement() : ZalgoPromise<string> {
+    if (window.xprops.createBillingAgreement) {
+        return window.xprops.createBillingAgreement().then(billingToken => {
+            return billingTokenToOrderID(billingToken);
+        });
+    } else if (window.xprops.createOrder) {
+        return window.xprops.createOrder({}, buildCreateOrderActions());
+    } else {
+        throw new Error(`No mechanism to create order`);
+    }
+}
+
 
 function isOrderID(orderID : string) : boolean {
     return Boolean(orderID.match(/^[A-Z0-9]{17}$/));

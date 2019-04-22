@@ -41,3 +41,16 @@ export const USER_EXPERIENCE_FLOW = {
 export const PRODUCT_FLOW = {
     SMART_PAYMENT_BUTTONS: 'SMART_PAYMENT_BUTTONS'
 };
+
+export const FPTI_CONTEXT_TYPE = {
+    BUTTON_SESSION_ID: ('button_session_id' : 'button_session_id'),
+    ORDER_ID:          ('EC-Token' : 'EC-Token')
+};
+
+export const FPTI_STATE = {
+    BUTTON:   ('smart_button' : 'smart_button')
+};
+
+export const FPTI_TRANSITION = {
+    CREATE_ORDER: ('process_create_order' : 'process_create_order')
+};
