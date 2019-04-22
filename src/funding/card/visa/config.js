@@ -6,6 +6,6 @@ import type { CardConfig } from '../../common';
 
 export function getVisaConfig() : CardConfig {
     return {
-        Logo: VisaLogo
+        Label: VisaLogo
     };
 }

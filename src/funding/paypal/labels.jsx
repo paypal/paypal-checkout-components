@@ -7,7 +7,7 @@ import { node, Fragment, type ChildType, type NullableChildType } from 'jsx-prag
 import { regexTokenize } from 'belter/src';
 import { PPLogo, PayPalLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
-import { CLASS } from '../../constants';
+import { Text } from '../common';
 
 import { componentContent } from './content';
 
@@ -25,13 +25,14 @@ function placeholderToJSX(text : string, placeholders : { [string] : (?string) =
         }).filter(Boolean);
 }
 
-function contentToJSX(key : string, locale : LocaleType, { logoColor, period } : { logoColor : $Values<typeof LOGO_COLOR>, period? : number } = {}) : ChildType {
+function contentToJSX(key : string, locale : LocaleType, opts? : { logoColor? : $Values<typeof LOGO_COLOR>, period? : number, optional? : boolean } = {}) : ChildType {
+    const { logoColor, period, optional } = opts;
     const { lang } = locale;
     const Content = componentContent[lang][key];
 
     if (typeof Content === 'string') {
         return placeholderToJSX(Content, {
-            text:   (token) => <span class={ CLASS.TEXT }>{token}</span>,
+            text:   (token) => <Text optional={ optional || Boolean(token && token.trim()) }>{ token }</Text>,
             pp:     () => <PPLogo logoColor={ logoColor } />,
             paypal: () => <PayPalLogo logoColor={ logoColor } />
         });
@@ -40,10 +41,10 @@ function contentToJSX(key : string, locale : LocaleType, { logoColor, period } :
     return <Content logoColor={ logoColor } period={ period } />;
 }
 
-export function PayPal({ logoColor } : { logoColor : $Values<typeof LOGO_COLOR> }) : ChildType {
+export function PayPal({ logoColor, optional } : { logoColor : $Values<typeof LOGO_COLOR>, optional? : boolean }) : ChildType {
     return (
         <Fragment>
-            <PPLogo logoColor={ logoColor } /> <PayPalLogo logoColor={ logoColor } />
+            <PPLogo logoColor={ logoColor } optional={ optional } /> <PayPalLogo logoColor={ logoColor } optional={ optional } />
         </Fragment>
     );
 }
@@ -64,14 +65,14 @@ export function Installment({ locale, logoColor, period } : { locale : LocaleTyp
     return contentToJSX(period ? 'installment_period' : 'installment', locale, { logoColor, period });
 }
 
-export function SaferTag({ locale } : { locale : LocaleType }) : ChildType {
-    return contentToJSX('safer_tag', locale);
+export function SaferTag({ locale, optional } : { locale : LocaleType, optional? : boolean }) : ChildType {
+    return contentToJSX('safer_tag', locale, { optional });
 }
 
-export function DualTag({ locale } : { locale : LocaleType }) : ChildType {
+export function DualTag({ locale, optional } : { locale : LocaleType, optional? : boolean }) : ChildType {
     const { lang } = locale;
 
     return componentContent[lang].dual_tag
-        ? contentToJSX('dual_tag', locale)
-        : contentToJSX('safer_tag', locale);
+        ? contentToJSX('dual_tag', locale, { optional })
+        : contentToJSX('safer_tag', locale, { optional });
 }

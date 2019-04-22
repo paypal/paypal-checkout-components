@@ -32,7 +32,8 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                     max-height: ${ height || style.maxHeight }px;
                 }
 
-                .${ LOGO_CLASS.LOGO } {
+                .${ CLASS.BUTTON } > .${ LOGO_CLASS.LOGO },
+                .${ CLASS.BUTTON } > .${ LOGO_CLASS.CARD } {
                     height: ${ perc(buttonHeight, 35) + 5 }px;
                     max-height: ${ perc(buttonHeight, 60) }px;
                     min-height: ${ perc(buttonHeight, 40) }px;

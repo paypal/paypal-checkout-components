@@ -7,6 +7,7 @@ import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT } from '../../s
 const RESPONSIVE_WIDTHS = [ 144, 222, 465, 670 ];
 
 type ButtonConfig = {|
+    only? : boolean,
     filename? : string,
     userAgent? : string,
     container? : {
@@ -14,7 +15,7 @@ type ButtonConfig = {|
     },
     fundingEligibility? : Object,
     rememberedFunding? : $ReadOnlyArray<string>,
-    button : {
+    button? : {
         locale? : string,
         style? : {
             color? : string,
@@ -166,3 +167,49 @@ for (const label of [ BUTTON_LABEL.PAYPAL ]) {
         }
     });
 }
+
+buttonConfigs.push({
+    fundingEligibility: {
+        paypal: {
+            eligible:           true,
+            vaultedInstruments: [
+                {
+                    id:    'xyz',
+                    label: {
+                        description: 'foo@bar.com'
+                    }
+                }
+            ]
+        },
+        card: {
+            eligible: true,
+            vendors:  {
+                visa: {
+                    eligible:           true,
+                    vaultedInstruments: [
+                        {
+                            id:    'abc',
+                            label: {
+                                description: 'Visa x-1234'
+                            }
+                        }
+                    ]
+                },
+                mastercard: {
+                    eligible:           true,
+                    vaultedInstruments: [
+                        {
+                            id:    'abc',
+                            label: {
+                                description: 'Mastercard x-1234'
+                            }
+                        }
+                    ]
+                },
+                amex: {
+                    eligible: true
+                }
+            }
+        }
+    }
+});

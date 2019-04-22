@@ -6,6 +6,6 @@ import type { CardConfig } from '../../common';
 
 export function getJCBConfig() : CardConfig {
     return {
-        Logo: JcbLogo
+        Label: JcbLogo
     };
 }

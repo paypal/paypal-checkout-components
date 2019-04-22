@@ -3,7 +3,7 @@
 /** @jsx node */
 
 import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
-import { node, type ChildType, type NodePropsType, type ChildrenType } from 'jsx-pragmatic/src';
+import { node, type ChildType, type ChildrenType } from 'jsx-pragmatic/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LABEL, DEFAULT, CLASS } from '../constants';
@@ -44,6 +44,12 @@ export const DEFAULT_LABEL_CONFIG = {
         [ DEFAULT ]:            BUTTON_COLOR.SILVER,
         [ BUTTON_COLOR.BLACK ]: BUTTON_COLOR.BLACK,
         [ BUTTON_COLOR.WHITE ]: BUTTON_COLOR.WHITE
+    },
+
+    secondaryVaultColors: {
+        [ DEFAULT ]:            BUTTON_COLOR.SILVER,
+        [ BUTTON_COLOR.BLACK ]: BUTTON_COLOR.BLACK,
+        [ BUTTON_COLOR.WHITE ]: BUTTON_COLOR.WHITE
     }
 };
 
@@ -55,7 +61,13 @@ type FundingLabelConfig = {|
         multiple : boolean,
         period? : number,
         fundingEligibility : FundingEligibilityType,
+        optional? : boolean,
         onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void
+    |}) => ChildType,
+    VaultLabel? : ({|
+        logoColor : $Values<typeof LOGO_COLOR>,
+        label : string,
+        vendor? : $Values<typeof CARD>
     |}) => ChildType,
     Tag? : ({|
         locale : LocaleType,
@@ -65,12 +77,13 @@ type FundingLabelConfig = {|
     handleClick : boolean,
     colors : $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
     secondaryColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
+    secondaryVaultColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
     logoColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof LOGO_COLOR> },
     shapes : $ReadOnlyArray<$Values<typeof BUTTON_SHAPE>>
 |};
 
 export type CardConfig = {|
-    Logo : ({|
+    Label : ({|
         locale : LocaleType,
         nonce : string,
         onClick : (event : Event, ...args : $ReadOnlyArray<mixed>) => void
@@ -107,8 +120,8 @@ export type FundingSourceConfig = {|
     |}
 |};
 
-export function Text(props : NodePropsType, children : ChildrenType) : ChildType {
+export function Text({ optional } : { optional? : boolean }, children : ChildrenType) : ChildType {
     return (
-        <span class={ CLASS.TEXT }>{ children }</span>
+        <span class={ CLASS.TEXT } optional={ optional }>{ children }</span>
     );
 }

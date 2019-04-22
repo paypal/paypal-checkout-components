@@ -17,28 +17,76 @@ export type FundingEligibilityType = {|
         branded : boolean,
         vendors : {
             visa : {
-                eligible : boolean
+                eligible : boolean,
+                vaultedInstruments ? : $ReadOnlyArray<{
+                    id : string,
+                    label : {
+                        description : string
+                    }
+                }>
             },
             mastercard : {
-                eligible : boolean
+                eligible : boolean,
+                vaultedInstruments ? : $ReadOnlyArray<{
+                    id : string,
+                    label : {
+                        description : string
+                    }
+                }>
             },
             amex : {
-                eligible : boolean
+                eligible : boolean,
+                vaultedInstruments ? : $ReadOnlyArray<{
+                    id : string,
+                    label : {
+                        description : string
+                    }
+                }>
             },
             discover : {
-                eligible : boolean
+                eligible : boolean,
+                vaultedInstruments ? : $ReadOnlyArray<{
+                    id : string,
+                    label : {
+                        description : string
+                    }
+                }>
             },
             hiper : {
-                eligible : boolean
+                eligible : boolean,
+                vaultedInstruments ? : $ReadOnlyArray<{
+                    id : string,
+                    label : {
+                        description : string
+                    }
+                }>
             },
             elo : {
-                eligible : boolean
+                eligible : boolean,
+                vaultedInstruments ? : $ReadOnlyArray<{
+                    id : string,
+                    label : {
+                        description : string
+                    }
+                }>
             },
             jcb : {
-                eligible : boolean
+                eligible : boolean,
+                vaultedInstruments ? : $ReadOnlyArray<{
+                    id : string,
+                    label : {
+                        description : string
+                    }
+                }>
             },
             cup : {
-                eligible : boolean
+                eligible : boolean,
+                vaultedInstruments ? : $ReadOnlyArray<{
+                    id : string,
+                    label : {
+                        description : string
+                    }
+                }>
             }
         }
     },
@@ -72,7 +120,13 @@ export type FundingEligibilityType = {|
     },
     paypal : {
         eligible : boolean,
-        branded : boolean
+        branded : boolean,
+        vaultedInstruments? : $ReadOnlyArray<{
+            id : string,
+            label : {
+                description : string
+            }
+        }>
     },
     sofort : {
         eligible : boolean,

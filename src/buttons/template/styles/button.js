@@ -67,17 +67,14 @@ export const buttonStyle = `
         white-space: pre-wrap;
     }
 
-    .${ CLASS.BUTTON } .${ LOGO_CLASS.LOGO },
-    .${ CLASS.BUTTON } .${ CLASS.TEXT } {
+    .${ CLASS.BUTTON } > .${ LOGO_CLASS.LOGO },
+    .${ CLASS.BUTTON } > .${ LOGO_CLASS.CARD },
+    .${ CLASS.BUTTON } > .${ CLASS.TEXT } {
         vertical-align: top;
         position: relative;
         top: 50%;
         transform: translateY(-50%);
         text-align: left;
-    }
-
-    .${ CLASS.BUTTON } .${ CLASS.TEXT } {
-        visibility: hidden;
     }
 
     .${ CLASS.TAGLINE } {
@@ -86,6 +83,5 @@ export const buttonStyle = `
         display: block;
         text-align: center;
         width: auto;
-        visibility: hidden;
     }
 `;

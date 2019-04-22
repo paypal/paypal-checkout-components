@@ -6,6 +6,6 @@ import type { CardConfig } from '../../common';
 
 export function getDiscoverConfig() : CardConfig {
     return {
-        Logo: DiscoverLogo
+        Label: DiscoverLogo
     };
 }

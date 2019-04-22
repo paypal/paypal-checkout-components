@@ -12,6 +12,7 @@ export const pageStyle = `
     body {
         display: inline-block;
         vertical-align: top;
+        border-collapse: collapse;
     }
 
     * {

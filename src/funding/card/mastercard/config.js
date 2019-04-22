@@ -6,6 +6,6 @@ import type { CardConfig } from '../../common';
 
 export function getMastercardConfig() : CardConfig {
     return {
-        Logo: MastercardLogo
+        Label: MastercardLogo
     };
 }

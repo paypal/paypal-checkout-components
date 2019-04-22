@@ -3,12 +3,12 @@
 
 import { node, html, type ElementNode } from 'jsx-pragmatic/src';
 
-import { CLASS } from '../../constants';
-import { determineEligibleFunding } from '../../funding';
+import { CLASS, BUTTON_NUMBER } from '../../constants';
+import { determineEligibleFunding, determineVaultedFunding } from '../../funding';
 import { normalizeButtonProps, type ButtonPropsInputs } from '../props';
 
-import { getCommonClasses, Style } from './style';
-import { Button } from './button';
+import { Style } from './style';
+import { BasicButton, VaultedButton } from './button';
 import { TagLine } from './tagline';
 import { Script } from './script';
 
@@ -27,8 +27,17 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         throw new Error(`No eligible funding fundingSources found to render buttons:\n\n${ JSON.stringify(fundingEligibility, null, 4) }`);
     }
 
+    const { layout, shape } = style;
+    const vaultedFunding = determineVaultedFunding({ fundingEligibility, layout });
+
     const buttonsNode = (
-        <div class={ `${ CLASS.CONTAINER } ${ getCommonClasses({ style, multiple, env }) }` }>
+        <div class={ [
+            CLASS.CONTAINER,
+            `${ CLASS.LAYOUT }-${ layout }`,
+            `${ CLASS.SHAPE }-${ shape }`,
+            `${ CLASS.NUMBER }-${ multiple ? BUTTON_NUMBER.MULTIPLE : BUTTON_NUMBER.SINGLE }`,
+            `${ CLASS.ENV }-${ env }`
+        ].join(' ') }>
 
             <Style
                 nonce={ nonce }
@@ -38,7 +47,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
 
             {
                 fundingSources.map((fundingSource, i) => (
-                    <Button
+                    <BasicButton
                         i={ i }
                         style={ style }
                         fundingSource={ fundingSource }
@@ -48,6 +57,21 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         nonce={ nonce }
                         fundingEligibility={ fundingEligibility }
                         onClick={ onClick }
+                    />
+                ))
+            }
+
+            {
+                vaultedFunding.map(({ fundingSource, vendor, label }) => (
+                    <VaultedButton
+                        style={ style }
+                        fundingSource={ fundingSource }
+                        multiple={ multiple }
+                        env={ env }
+                        nonce={ nonce }
+                        onClick={ onClick }
+                        vendor={ vendor }
+                        label={ label }
                     />
                 ))
             }

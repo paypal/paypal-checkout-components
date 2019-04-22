@@ -2,9 +2,6 @@
 /** @jsx node */
 
 import { node, type ElementNode } from 'jsx-pragmatic/src';
-import { LOGO_CLASS } from '@paypal/sdk-logos/src';
-
-import { CLASS } from '../../constants';
 
 function getComponentScript() : () => void {
 
@@ -18,16 +15,6 @@ function getComponentScript() : () => void {
             VISIBLE:      'visible',
             HIDDEN:       'hidden'
         };
-
-        function loop(method : Function, delay : number, instances : number) {
-            setTimeout(() => {
-                method();
-                instances -= 1;
-                if (instances) {
-                    loop(method, delay, instances);
-                }
-            }, delay);
-        }
 
         function getElements(selector, parent) : $ReadOnlyArray<HTMLElement> {
             parent = parent || document;
@@ -80,6 +67,29 @@ function getComponentScript() : () => void {
             }, 5);
         }
 
+        function pxToInt(val : string | number) : number {
+            if (typeof val === 'number') {
+                return val;
+            }
+            const match = val.match(/^([0-9]+)px$/);
+            if (!match) {
+                throw new Error(`Could not match css value from ${  val }`);
+            }
+            return parseInt(match[1], 10);
+        }
+
+        function unique<T>(arr : $ReadOnlyArray<T>) : $ReadOnlyArray<T> {
+            const result = [];
+
+            for (const el of arr) {
+                if (result.indexOf(el) === -1) {
+                    result.push(el);
+                }
+            }
+
+            return result;
+        }
+
         function isOverflowing(el : HTMLElement) : boolean {
 
             if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) {
@@ -92,57 +102,59 @@ function getComponentScript() : () => void {
                 return false;
             }
 
-            const e = el.getBoundingClientRect();
+            let { top: elementTop, bottom: elementBottom, left: elementLeft, right: elementRight } = el.getBoundingClientRect();
             // $FlowFixMe
-            const p = parent.getBoundingClientRect();
+            const { top: containerTop, bottom: containerBottom, left: containerLeft, right: containerRight } = parent.getBoundingClientRect();
+            const { innerWidth: windowWidth, innerHeight: windowHeight } = window;
+            
+            const { paddingTop: elementPaddingTop, paddingLeft: elementPaddingLeft, paddingRight: elementPaddingRight, paddingBottom: elementPaddingBottom } = window.getComputedStyle(el);
+            elementTop += pxToInt(elementPaddingTop);
+            elementLeft += pxToInt(elementPaddingLeft);
+            elementRight += pxToInt(elementPaddingRight);
+            elementBottom += pxToInt(elementPaddingBottom);
 
-            if (e.top < p.top || e.left < p.left || e.right > p.right || e.bottom > p.bottom) {
+            if (elementTop < containerTop || elementLeft < containerLeft || elementRight > containerRight || elementBottom > containerBottom) {
                 return true;
             }
 
-            if (e.left < 0 || e.top < 0 || (e.left + e.width) > window.innerWidth || (e.top + e.height) > window.innerHeight) {
+            if (elementTop < 0 || elementTop < 0 || elementRight > windowWidth || elementBottom > windowHeight) {
                 return true;
             }
 
             return false;
         }
 
-        const images    = getElements('.{ CLASS.BUTTON } .{ LOGO_CLASS.LOGO }');
-        const text      = getElements('.{ CLASS.BUTTON } .{ CLASS.TEXT }');
-        const tagline   = getElements('.{ CLASS.TAGLINE }');
-        const optionals = getElements('.{ CLASS.BUTTON }-label-credit .{ CLASS.BUTTON }-logo-paypal');
+        const allImages = getElements('img');
+        const optionals = getElements('[optional]');
+        const optionalParents = unique(optionals.map(optional => optional.parentElement).filter(Boolean));
 
         function toggleOptionals() {
+            optionalParents.forEach(optionalParent => {
 
-            if (tagline.some(isOverflowing)) {
-                tagline.forEach(makeElementInvisible);
-            } else {
-                tagline.forEach(makeElementVisible);
-            }
+                // eslint-disable-next-line unicorn/prefer-spread
+                const parentChildren = Array.from(optionalParent.children);
+                const optionalChildren = getElements('[optional]', optionalParent);
 
-            text.forEach(el => showElement(el));
-            optionals.forEach(el => showElement(el));
+                parentChildren.forEach(el => showElement(el));
 
-            if (images.some(isOverflowing) || text.some(isOverflowing)) {
-                text.forEach(hideElement);
-                optionals.forEach(hideElement);
-                
-            } else {
-                text.forEach(makeElementVisible);
-                optionals.forEach(el => showElement(el));
-            }
+                if (parentChildren.some(isOverflowing)) {
+                    optionalChildren.forEach(hideElement);
+                    optionalChildren.forEach(makeElementInvisible);
+                } else {
+                    optionalChildren.forEach(makeElementVisible);
+                }
+            });
         }
 
         toggleOptionals();
 
-        onDisplay(images, () => {
-            images.forEach(makeElementVisible);
+        onDisplay(allImages, () => {
+            allImages.forEach(makeElementVisible);
             toggleOptionals();
 
             document.addEventListener('DOMContentLoaded', toggleOptionals);
             window.addEventListener('load', toggleOptionals);
             window.addEventListener('resize', toggleOptionals);
-            loop(toggleOptionals, 10, 10);
         });
     };
 }
@@ -152,17 +164,7 @@ type ScriptProps = {|
 |};
 
 export function Script({ nonce } : ScriptProps) : ElementNode {
-    let script = getComponentScript().toString();
-
-    script = script.replace(/\{\s*CLASS\.([A-Z0-9_]+)\s*\}/g, (match, name) => {
-        return CLASS[name];
-    });
-
-    script = script.replace(/\{\s*LOGO_CLASS\.([A-Z0-9_]+)\s*\}/g, (match, name) => {
-        return LOGO_CLASS[name];
-    });
-
     return (
-        <script nonce={ nonce } innerHTML={ `(${ script })()` } />
+        <script nonce={ nonce } innerHTML={ `(${ getComponentScript().toString() })()` } />
     );
 }

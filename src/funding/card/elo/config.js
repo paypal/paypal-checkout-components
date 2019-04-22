@@ -6,6 +6,6 @@ import type { CardConfig } from '../../common';
 
 export function getEloConfig() : CardConfig {
     return {
-        Logo: EloLogo
+        Label: EloLogo
     };
 }

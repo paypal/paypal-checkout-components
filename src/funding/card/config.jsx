@@ -1,11 +1,11 @@
 /* @flow */
 /** @jsx node */
 
-import { node } from 'jsx-pragmatic/src';
+import { node, Fragment } from 'jsx-pragmatic/src';
 import { CARD, FUNDING, COUNTRY, COMPONENTS } from '@paypal/sdk-constants/src';
 
 import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR, DEFAULT, CLASS } from '../../constants';
-import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig, type CardConfig } from '../common';
+import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig, type CardConfig, Text } from '../common';
 
 import { getVisaConfig } from './visa';
 import { getMastercardConfig } from './mastercard';
@@ -99,11 +99,11 @@ export function getCardConfig() : FundingSourceConfig {
                             return null;
                         }
     
-                        const { Logo } = vendorConfig;
+                        const { Label } = vendorConfig;
                         
                         return (
                             <div class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name }` } onClick={ event => onClick(event, { card: name }) } tabindex='0' role='button'>
-                                <Logo
+                                <Label
                                     locale={ locale }
                                     nonce={ nonce }
                                     onClick={ onClick }
@@ -111,6 +111,26 @@ export function getCardConfig() : FundingSourceConfig {
                             </div>
                         );
                     }).filter(Boolean).slice(0, maxCards);
+                },
+
+                VaultLabel: ({ vendor, label } : { vendor? : $Values<typeof CARD>, label : string }) => {
+                    if (!vendor) {
+                        throw new Error(`Vendor required for card vault label`);
+                    }
+
+                    const vendorConfig = vendors[vendor];
+
+                    if (!vendorConfig) {
+                        throw new Error(`Could not find vendor config for ${ vendor }`);
+                    }
+
+                    const { Label } = vendorConfig;
+
+                    return (
+                        <Fragment>
+                            <Label optional /> <Text>{ label }</Text>
+                        </Fragment>
+                    );
                 }
             }
         }

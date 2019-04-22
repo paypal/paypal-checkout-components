@@ -3,6 +3,7 @@
 /* eslint import/no-nodejs-modules: 0 */
 
 import os from 'os';
+import { createHash } from 'crypto';
 
 import fs from 'fs-extra';
 
@@ -35,4 +36,8 @@ export function dotifyToString(obj : Object) : string {
     return Object.keys(dotified).map(key => {
         return `${ key }=${ dotified[key] }`;
     }).join('&');
+}
+
+export function sha256(str : string) : string {
+    return createHash('sha256').update(str).digest('base64').replace(/[^a-zA-Z0-9_-]/g, '');
 }

@@ -1,19 +1,17 @@
 /* @flow */
 /** @jsx node */
 
-import { FUNDING, ENV, type LocaleType } from '@paypal/sdk-constants/src';
+import { FUNDING, ENV, type LocaleType, CARD } from '@paypal/sdk-constants/src';
 import { node, type ElementNode } from 'jsx-pragmatic/src';
-import { LOGO_COLOR } from '@paypal/sdk-logos/src';
+import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { noop } from 'belter/src';
 
-import { BUTTON_LABEL, ATTRIBUTE, CLASS, BUTTON_COLOR } from '../../constants';
+import { BUTTON_LABEL, ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER } from '../../constants';
 import { getFundingConfig } from '../../funding';
 import { type ButtonStyle } from '../props';
 import type { FundingEligibilityType } from '../../types';
 
-import { getCommonClasses, getButtonClasses } from './style';
-
-type ButtonProps = {|
+type BasicButtonProps = {|
     style : ButtonStyle,
     fundingSource : $Values<typeof FUNDING>,
     multiple : boolean,
@@ -48,7 +46,7 @@ function determineLabel({ fundingSource, style } :
     throw new Error(`Could not determine label for ${ fundingSource }`);
 }
 
-export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, onClick = noop } : ButtonProps) : ElementNode {
+export function BasicButton({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, onClick = noop } : BasicButtonProps) : ElementNode {
 
     let { color, period } = style;
 
@@ -84,11 +82,23 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
         onClick({ fundingSource, ...opts });
     };
 
+    const { layout, shape } = style;
+
     return (
         <div
             role='button'
             { ...{ [ATTRIBUTE.FUNDING_SOURCE]: fundingSource, [ATTRIBUTE.BUTTON]: true } }
-            class={ `${ CLASS.BUTTON } ${ CLASS.NUMBER }-${ i } ${ getCommonClasses({ style, multiple, env }) } ${ getButtonClasses({ label: buttonLabel, color, logoColor }) }` }
+            class={ [
+                CLASS.BUTTON,
+                `${ CLASS.NUMBER }-${ i }`,
+                `${ CLASS.LAYOUT }-${ layout }`,
+                `${ CLASS.SHAPE }-${ shape }`,
+                `${ CLASS.NUMBER }-${ multiple ? BUTTON_NUMBER.MULTIPLE : BUTTON_NUMBER.SINGLE }`,
+                `${ CLASS.ENV }-${ env }`,
+                `${ CLASS.LABEL }-${ buttonLabel }`,
+                `${ CLASS.COLOR }-${ color }`,
+                `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`
+            ].join(' ') }
             aria-label={ fundingSource }
             onClick={ handleClick ? null : clickHandler }
             tabindex={ handleClick ? '-1' : '0' }>
@@ -101,6 +111,76 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 multiple={ multiple }
                 fundingEligibility={ fundingEligibility }
                 onClick={ clickHandler }
+            />
+        </div>
+    );
+}
+
+type VaultedButtonProps = {|
+    style : ButtonStyle,
+    fundingSource : $Values<typeof FUNDING>,
+    multiple : boolean,
+    locale : LocaleType,
+    onClick? : Function,
+    env : $Values<typeof ENV>,
+    fundingEligibility : FundingEligibilityType,
+    i : number,
+    nonce : string,
+    vendor : $Values<typeof CARD>,
+    label : string
+|};
+
+export function VaultedButton({ fundingSource, style, multiple, env, nonce, vendor, label, onClick = noop } : VaultedButtonProps) : ElementNode {
+
+    const clickHandler = (event, opts) => {
+        event.preventDefault();
+        event.stopPropagation();
+        onClick({ fundingSource, ...opts });
+    };
+
+    let { layout, shape, color } = style;
+
+    const fundingConfig = getFundingConfig()[fundingSource];
+
+    if (!fundingConfig) {
+        throw new Error(`Can not find funding config for ${ fundingSource }`);
+    }
+
+    const labelConfig = fundingConfig.labels[fundingConfig.defaultLabel];
+
+    if (!labelConfig) {
+        throw new Error(`Can not find default label config for ${ fundingSource }`);
+    }
+
+    const { VaultLabel, colors, logoColors = {}, secondaryVaultColors = {} } = labelConfig;
+
+    if (!VaultLabel) {
+        throw new Error(`Could not find vault label for ${ fundingSource }`);
+    }
+
+    color = secondaryVaultColors[color] || secondaryVaultColors[BUTTON_COLOR.DEFAULT] || colors[0];
+    const logoColor = logoColors[color] || logoColors[LOGO_COLOR.DEFAULT] || LOGO_COLOR.DEFAULT;
+
+    return (
+        <div
+            role='button'
+            { ...{ [ATTRIBUTE.FUNDING_SOURCE]: fundingSource, [ATTRIBUTE.BUTTON]: true } }
+            class={ [
+                CLASS.BUTTON,
+                `${ CLASS.LAYOUT }-${ layout }`,
+                `${ CLASS.SHAPE }-${ shape }`,
+                `${ CLASS.NUMBER }-${ multiple ? BUTTON_NUMBER.MULTIPLE : BUTTON_NUMBER.SINGLE }`,
+                `${ CLASS.ENV }-${ env }`,
+                `${ CLASS.COLOR }-${ color }`
+            ].join(' ') }
+            aria-label={ fundingSource }
+            onClick={ clickHandler } >
+
+            <VaultLabel
+                nonce={ nonce }
+                logoColor={ logoColor }
+                vendor={ vendor }
+                label={ label }
             />
         </div>
     );

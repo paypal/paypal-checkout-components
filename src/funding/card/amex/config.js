@@ -6,7 +6,7 @@ import type { CardConfig } from '../../common';
 
 export function getAmexConfig() : CardConfig {
     return {
-        Logo: AmexLogo
+        Label: AmexLogo
     };
 }
 

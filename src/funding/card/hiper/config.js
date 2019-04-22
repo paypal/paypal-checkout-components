@@ -6,6 +6,6 @@ import type { CardConfig } from '../../common';
 
 export function getHiperConfig() : CardConfig {
     return {
-        Logo: HiperLogo
+        Label: HiperLogo
     };
 }

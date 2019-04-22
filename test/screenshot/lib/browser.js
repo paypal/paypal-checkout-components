@@ -13,10 +13,10 @@ import puppeteer from 'puppeteer';
 import { createTempFile } from './util';
 import { readPNG, type PngType } from './image';
 
-export async function openPage(scriptURL : string, { headless = true } : { headless : boolean }) : Promise<Object> {
+export async function openPage(scriptURL : string, { headless = true, devtools = false } : { headless? : boolean, devtools? : boolean }) : Promise<Object> {
 
     // $FlowFixMe
-    const browser = await puppeteer.launch({ headless, args: [ '--no-sandbox' ] });
+    const browser = await puppeteer.launch({ headless, devtools, args: [ '--no-sandbox' ] });
 
     const open = async () => {
         const page = await browser.newPage();

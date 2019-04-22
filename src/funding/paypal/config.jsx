@@ -2,11 +2,11 @@
 /** @jsx node */
 
 import { type LocaleType } from '@paypal/sdk-constants/src';
-import { node } from 'jsx-pragmatic/src';
+import { node, Fragment } from 'jsx-pragmatic/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT } from '../../constants';
-import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
+import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig, Text } from '../common';
 
 import { PayPal, Checkout, BuyNow, Pay, Installment, SaferTag, DualTag } from './labels';
 
@@ -31,8 +31,8 @@ const DEFAULT_PAYPAL_LABEL = {
 
     Tag: ({ multiple, locale } : { locale : LocaleType, multiple : boolean }) => {
         return (multiple)
-            ? <DualTag locale={ locale } />
-            : <SaferTag locale={ locale } />;
+            ? <DualTag locale={ locale } optional />
+            : <SaferTag locale={ locale } optional />;
     }
 };
 
@@ -50,7 +50,14 @@ export function getPayPalConfig() : FundingSourceConfig {
         labels: {
             [ BUTTON_LABEL.PAYPAL ]: {
                 ...DEFAULT_PAYPAL_LABEL,
-                Label: PayPal
+                Label:      PayPal,
+                VaultLabel: ({ logoColor, label }) => {
+                    return (
+                        <Fragment>
+                            <PayPal logoColor={ logoColor } optional /> <Text>{ label }</Text>
+                        </Fragment>
+                    );
+                }
             },
     
             [ BUTTON_LABEL.CHECKOUT ]: {

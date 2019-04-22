@@ -1,8 +1,5 @@
 /* @flow */
-/* eslint no-restricted-globals: 0 */
-/* eslint no-console: 0 */
-/* eslint no-process-exit: 0 */
-/* eslint unicorn/no-process-exit: 0 */
+/* eslint no-restricted-globals: off, no-console: off, no-process-exit: off, no-process-env: off, unicorn/no-process-exit: off */
 
 import fs from 'fs-extra';
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
@@ -12,7 +9,7 @@ import globals from '../../globals';
 
 import { webpackCompile } from './lib/compile';
 import { openPage, takeScreenshot } from './lib/browser';
-import { dotifyToString } from './lib/util';
+import { sha256, dotifyToString } from './lib/util';
 import { diffPNG, readPNG, uploadToImgur } from './lib/image';
 import { buttonConfigs } from './config';
 
@@ -24,7 +21,8 @@ const USER_AGENTS = {
     iphone6: 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'
 };
 
-const HEADLESS = true;
+const HEADLESS = (process.env.HEADLESS !== '0');
+const DEVTOOLS = (process.env.DEVTOOLS === '1');
 
 jest.setTimeout(120000);
 
@@ -34,7 +32,7 @@ const setupBrowserPage = (async () => {
         libraryTarget: 'window',
         test:          true,
         vars:          { ...globals, ...testGlobals }
-    })), { headless: HEADLESS });
+    })), { headless: HEADLESS, devtools: DEVTOOLS });
 
     for (const filename of await fs.readdir(IMAGE_DIR)) {
         if (filename.endsWith('-old.png')) {
@@ -55,7 +53,9 @@ afterAll(async () => {
 });
 
 for (const config of buttonConfigs) {
-    const filename = config.filename || dotifyToString(config) || 'base';
+    const { only, ...buttonConfig } = config;
+    const description = dotifyToString(buttonConfig) || 'base';
+    const filename = sha256(JSON.stringify(buttonConfig));
 
     const testPromise = (async () => {
         const { page } = await setupBrowserPage;
@@ -70,7 +70,6 @@ for (const config of buttonConfigs) {
 
             const container = window.document.createElement('div');
             window.document.body.appendChild(container);
-            
 
             const oldFundingEligibility = window.__TEST_FUNDING_ELIGIBILITY__;
             const oldRememberedFunding = window.__TEST_REMEMBERED_FUNDING__;
@@ -93,7 +92,7 @@ for (const config of buttonConfigs) {
                 window.navigator.mockUserAgent = userAgents[options.userAgent];
             }
 
-            const renderPromise = window.paypal.Buttons(options.button).render(container);
+            const renderPromise = window.paypal.Buttons(options.button || {}).render(container);
 
             await new Promise(resolve => setTimeout(resolve, 100));
 
@@ -116,7 +115,7 @@ for (const config of buttonConfigs) {
                 height: rect.height
             };
 
-        }, config, USER_AGENTS);
+        }, buttonConfig, USER_AGENTS);
 
         if (width === 0) {
             throw new Error(`Button width is 0`);
@@ -141,8 +140,7 @@ for (const config of buttonConfigs) {
                 await screenshot.write(filepath);
 
                 let imgurUrl = '';
-
-                // eslint-disable-next-line no-process-env
+                
                 if (process.env.TRAVIS) {
                     imgurUrl = await uploadToImgur(filepath);
                 }
@@ -156,8 +154,8 @@ for (const config of buttonConfigs) {
             
     });
 
-    test(`Render button with ${ filename }`, async () => {
-        console.log(`Render button with ${ filename }`);
+    (only ? test.only : test)(`Render button with ${ description }`, async () => {
+        console.log(`Render button with ${ description }`);
         await testPromise();
     });
 }
