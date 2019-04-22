@@ -1,7 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { memoize, noop, supportsPopups } from 'belter/src';
+import { memoize, noop, supportsPopups, once } from 'belter/src';
 import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
 import { getParent, getTop } from 'cross-domain-utils/src';
 
@@ -101,7 +101,7 @@ export function initCheckout(props : CheckoutPropsOverride) : CheckoutInstance {
         });
     };
 
-    const onCancel = () => {
+    const onCancel = once(() => {
         return ZalgoPromise.try(() => {
             if (approved) {
                 return false;
@@ -121,7 +121,7 @@ export function initCheckout(props : CheckoutPropsOverride) : CheckoutInstance {
                 return window.xprops.onError(err);
             });
         });
-    };
+    });
 
     const onAuth = ({ accessToken }) : ZalgoPromise<void> => {
         return persistAccessToken(accessToken);
