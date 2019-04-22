@@ -1,6 +1,6 @@
 /* @flow */
 
-import type { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, request, noop } from 'belter/src';
 
 import { API_URI } from './config';
@@ -47,7 +47,7 @@ function callAPI({ url, method = 'get', json } : APIRequest) : ZalgoPromise<Obje
         });
 }
 
-export function callGraphQL<T>({ query, variables, headers } : { query : string, variables : { [string] : mixed } }) : ZalgoPromise<T> {
+export function callGraphQL<T>({ query, variables = {}, headers = {} } : { query : string, variables? : { [string] : mixed }, headers? : { [string] : string } }) : ZalgoPromise<T> {
     return request({
         url:     API_URI.GRAPHQL,
         method:  'POST',
@@ -126,8 +126,10 @@ export function patchOrder(orderID : string, patch : []) : ZalgoPromise<OrderRes
 }
 
 export const persistAccessToken = memoize((accessToken) : ZalgoPromise<void> => {
-    if (accessToken) {
-        defaultHeaders[ACCESS_TOKEN_HEADER] = accessToken;
-        return getAuth().then(noop);
-    }
+    return ZalgoPromise.try(() => {
+        if (accessToken) {
+            defaultHeaders[ACCESS_TOKEN_HEADER] = accessToken;
+            return getAuth().then(noop);
+        }
+    });
 });
