@@ -11,6 +11,7 @@ import { initCardFields } from './card-fields';
 import { createOrderOrBillingAgreement, validateOrder, updateClientConfig, enableVault } from './orders';
 import { INLINE_GUEST_ENABLED, CLIENT_CONFIG_ENABLED } from './config';
 import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW } from './constants';
+import { setupLogger } from './log';
 
 function onClickAndValidate({ fundingSource, card }) : ZalgoPromise<boolean> {
     let valid = true;
@@ -44,6 +45,8 @@ export function setupButton(fundingEligibility : Object) : ZalgoPromise<void> {
     if (!window.paypal) {
         throw new Error(`PayPal library not loaded`);
     }
+
+    setupLogger();
 
     const buyerCountry = window.xprops.buyerCountry || fundingEligibility.buyerCountry || COUNTRY.US;
 

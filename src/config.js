@@ -1,6 +1,7 @@
 /* @flow */
 
-const BASE_API_URL = '/smart/api';
+export const BASE_API_URL = '/smart/api';
+export const LOGGER_URL = '/xoplatform/logger/api/logger';
 
 export const API_URI = {
     AUTH:     `${ BASE_API_URL }/auth`,
