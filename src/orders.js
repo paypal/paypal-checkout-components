@@ -5,7 +5,7 @@ import { INTENT, SDK_QUERY_KEYS, FUNDING } from '@paypal/sdk-constants/src';
 import { memoize } from 'belter/src';
 
 import { billingTokenToOrderID, callGraphQL, patchOrder, type OrderResponse, getOrder, captureOrder, authorizeOrder } from './api';
-import { ORDER_ID_PATTERN, ERROR_URL, ORDER_API_ERROR } from './constants';
+import { ORDER_ID_PATTERN, ERROR_URL, ORDER_API_ERROR, HEADERS } from './constants';
 
 export function createOrderOrBillingAgreement() : ZalgoPromise<string> {
     if (window.xprops.createBillingAgreement) {
@@ -98,26 +98,29 @@ export function validateOrder(orderID : string) : ZalgoPromise<void> {
         throw new Error(`${ orderID } does not match pattern for order-id, ec-token or cart-id`);
     }
 
-    return callGraphQL(`
-        query GetCheckoutDetails($orderID: String!) {
-            checkoutSession(token: $orderID) {
-                cart {
-                    intent
-                    returnUrl {
-                        href
-                    }
-                    cancelUrl {
-                        href
-                    }
-                    amounts {
-                        total {
-                            currencyCode
+    return callGraphQL({
+        query: `
+            query GetCheckoutDetails($orderID: String!) {
+                checkoutSession(token: $orderID) {
+                    cart {
+                        intent
+                        returnUrl {
+                            href
+                        }
+                        cancelUrl {
+                            href
+                        }
+                        amounts {
+                            total {
+                                currencyCode
+                            }
                         }
                     }
                 }
             }
-        }
-    `, { orderID }).then(res => {
+        `,
+        variables: { orderID }
+    }).then(res => {
         const cart = res.data.checkoutSession.cart;
 
         const intent = (cart.intent.toLowerCase() === 'sale') ? INTENT.CAPTURE : cart.intent.toLowerCase();
@@ -157,35 +160,44 @@ type ClientConfig = {|
 |};
 
 export function updateClientConfig({ orderID, fundingSource, integrationArtifact, userExperienceFlow, productFlow } : ClientConfig) : ZalgoPromise<mixed> {
-    return callGraphQL(`
-        mutation UpdateClientConfig(
-            $orderID : String!,
-            $fundingSource : ButtonFundingSourceType!,
-            $integrationArtifact : IntegrationArtifactType!,
-            $userExperienceFlow : UserExperienceFlowType!,
-            $productFlow : ProductFlowType!
-        ) {
-            updateClientConfig(
-                token: $orderID,
-                fundingSource: $fundingSource,
-                integrationArtifact: $integrationArtifact,
-                userExperienceFlow: $userExperienceFlow,
-                productFlow: $productFlow
-            )
-        }
-    `, { orderID, fundingSource, integrationArtifact, userExperienceFlow, productFlow });
+    return callGraphQL({
+        query: `
+            mutation UpdateClientConfig(
+                $orderID : String!,
+                $fundingSource : ButtonFundingSourceType!,
+                $integrationArtifact : IntegrationArtifactType!,
+                $userExperienceFlow : UserExperienceFlowType!,
+                $productFlow : ProductFlowType!
+            ) {
+                updateClientConfig(
+                    token: $orderID,
+                    fundingSource: $fundingSource,
+                    integrationArtifact: $integrationArtifact,
+                    userExperienceFlow: $userExperienceFlow,
+                    productFlow: $productFlow
+                )
+            }
+        `,
+        variables: { orderID, fundingSource, integrationArtifact, userExperienceFlow, productFlow }
+    });
 }
 
 export function enableVault({ orderID, clientAccessToken } : { orderID : string, clientAccessToken : string }) : ZalgoPromise<mixed> {
-    return callGraphQL(`
-        mutation EnableVault(
-            $orderID : String!,
-            $clientAccessToken : String!
-        ) {
-            enableVault(
-                token: $orderID,
-                clientAccessToken: $clientAccessToken
-            )
+    return callGraphQL({
+        query: `
+            mutation EnableVault(
+                $orderID : String!
+            ) {
+                enableVault(
+                    token: $orderID
+                )
+            }
+        `,
+        variables: {
+            orderID
+        },
+        headers: {
+            [ HEADERS.ACCESS_TOKEN ]: clientAccessToken
         }
-    `, { orderID, clientAccessToken });
+    });
 }
