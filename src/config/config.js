@@ -464,6 +464,10 @@ export let config = {
 
         '55mulberry.com': {
             disable_venmo: true
+        },
+        
+        'hollar.com': {
+            disable_venmo: true
         }
     },
 
