@@ -10,6 +10,8 @@ import { EVENT, HTTP_HEADER } from './constants';
 import { serverErrorResponse, clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON } from './util';
 import type { ExpressRequest, ExpressResponse, LoggerType } from './types';
 import { buttonStyle } from './style';
+import { renderFraudnetScript } from './fraudnet';
+import { FRAUDNET_ENABLED } from './config';
 
 export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibility } : { logger? : LoggerType, getFundingEligibility : Function } = {}) : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
     startWatchers();
@@ -82,6 +84,7 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
                     ${ getSDKLoader({ nonce }) }
                     <script nonce="${ nonce }">${ client.script }</script>
                     <script nonce="${ nonce }">spb.setupButton(${ safeJSON({ fundingEligibility, buyerCountry }) })</script>
+                    ${ FRAUDNET_ENABLED ? renderFraudnetScript({ id: buttonSessionID, nonce }) : '' }
                 </body>
             `;
 

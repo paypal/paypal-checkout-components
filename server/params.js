@@ -28,7 +28,7 @@ type ParamsType = {|
     disableFunding : $ReadOnlyArray<?$Values<typeof FUNDING>>,
     disableCard : $ReadOnlyArray<?$Values<typeof CARD>>,
     merchantID? : string,
-    buttonSessionID? : string,
+    buttonSessionID : string,
     clientAccessToken? : string
 |};
 
@@ -44,7 +44,7 @@ type RequestParams = {|
     disableFunding : $ReadOnlyArray<?$Values<typeof FUNDING>>,
     disableCard : $ReadOnlyArray<?$Values<typeof CARD>>,
     merchantID : ?string,
-    buttonSessionID : ?string,
+    buttonSessionID : string,
     clientAccessToken : ?string,
     nonce : string
 |};

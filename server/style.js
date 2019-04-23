@@ -10,4 +10,8 @@ export const buttonStyle = `
         margin-top: 10px;
         display: none;
     }
+
+    iframe[title=pbf], iframe[title=ppfniframe] {
+        display: none;
+    }
 `;
