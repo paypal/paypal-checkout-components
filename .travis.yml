@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+   - "10"
+script:
+  - npm run test
+sudo: required
+dist: xenial
+addons:
+  chrome: stable
