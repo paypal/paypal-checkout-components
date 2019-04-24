@@ -3,6 +3,7 @@
 
 import { wrapPromise } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
@@ -55,7 +56,7 @@ describe('happy cases', () => {
 
             await setupButton({});
 
-            window.document.querySelector('.paypal-button').click();
+            window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
         });
     });
 
@@ -103,7 +104,7 @@ describe('happy cases', () => {
 
             await setupButton({});
 
-            window.document.querySelector('.paypal-button').click();
+            window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
         });
     });
     
@@ -125,7 +126,7 @@ describe('happy cases', () => {
     
         await setupButton({});
     
-        triggerKeyPress(window.document.querySelector('.paypal-button'), 13);
+        triggerKeyPress(window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`), 13);
     
         if (!renderToCalled) {
             throw new Error(`Expected renderTo to be called`);
@@ -144,7 +145,7 @@ describe('happy cases', () => {
     
         await setupButton({});
     
-        window.document.querySelector('.paypal-button').click();
+        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
     
         if (!onClickCalled) {
             throw new Error(`Expected onClick to be called`);
@@ -163,7 +164,7 @@ describe('happy cases', () => {
     
         await setupButton({});
     
-        triggerKeyPress(window.document.querySelector('.paypal-button'), 13);
+        triggerKeyPress(window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`), 13);
     
         if (!onClickCalled) {
             throw new Error(`Expected onClick to be called`);
@@ -202,7 +203,7 @@ describe('happy cases', () => {
     
         await setupButton({});
     
-        window.document.querySelector('.paypal-button').click();
+        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
 
         await onApprove;
 
@@ -240,7 +241,7 @@ describe('happy cases', () => {
 
         await setupButton({});
 
-        window.document.querySelector('.paypal-button').click();
+        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
 
         await onApprove;
 
@@ -270,7 +271,7 @@ describe('happy cases', () => {
 
         await setupButton({});
 
-        window.document.querySelector('.paypal-button').click();
+        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
 
         await onCancel;
 
@@ -312,7 +313,7 @@ describe('happy cases', () => {
     
         await setupButton({});
     
-        window.document.querySelector('.paypal-button').click();
+        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
 
         await onApprove;
 
@@ -357,7 +358,7 @@ describe('happy cases', () => {
     
         await setupButton({});
     
-        window.document.querySelector('.paypal-button').click();
+        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
 
         await onApprove;
 
@@ -396,7 +397,7 @@ describe('happy cases', () => {
 
         await setupButton({});
 
-        window.document.querySelector('.paypal-button').click();
+        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
 
         await onApprove;
 
@@ -435,7 +436,7 @@ describe('happy cases', () => {
 
         await setupButton({});
 
-        window.document.querySelector('.paypal-button').click();
+        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
 
         await onApprove;
 
@@ -473,7 +474,7 @@ describe('happy cases', () => {
 
         await setupButton({});
 
-        window.document.querySelector('.paypal-button').click();
+        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
 
         await onShippingChange;
 
@@ -512,7 +513,7 @@ describe('happy cases', () => {
 
         await setupButton({});
 
-        window.document.querySelector('.paypal-button').click();
+        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
 
         await onApprove;
 
@@ -574,7 +575,7 @@ describe('happy cases', () => {
 
         await setupButton({});
 
-        window.document.querySelector('.paypal-button').click();
+        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
 
         await onApprove;
 

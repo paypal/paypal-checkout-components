@@ -5,7 +5,7 @@ import { memoize, request, noop, inlineMemoize, base64encode } from 'belter/src'
 import { UNKNOWN, FPTI_KEY } from '@paypal/sdk-constants';
 import { SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
 
-import { API_URI, AUTH_API_URL, ORDERS_API_URL } from './config';
+import { API_URI, AUTH_API_URL, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from './config';
 import { ACCESS_TOKEN_HEADER, HEADERS, SMART_BUTTONS, SMART_PAYMENT_BUTTONS, FPTI_TRANSITION, FPTI_CONTEXT_TYPE, FPTI_STATE } from './constants';
 import { getLogger } from './log';
 
@@ -18,7 +18,7 @@ type APIRequest = {|
     json? : $ReadOnlyArray<mixed> | Object
 |};
 
-function callAPI({ url, method = 'get', json } : APIRequest) : ZalgoPromise<Object> {
+function callSmartAPI({ url, method = 'get', json } : APIRequest) : ZalgoPromise<Object> {
 
     const reqHeaders = {
         ...defaultHeaders,
@@ -82,7 +82,7 @@ export type AuthResponse = {|
 |};
 
 export function getAuth() : ZalgoPromise<AuthResponse> {
-    return callAPI({
+    return callSmartAPI({
         url: API_URI.AUTH
     });
 }
@@ -92,27 +92,27 @@ export type OrderResponse = {|
 |};
 
 export function getOrder(orderID : string) : ZalgoPromise<OrderResponse> {
-    return callAPI({
+    return callSmartAPI({
         url: `${ API_URI.ORDER }/${ orderID }`
     });
 }
 
 export function captureOrder(orderID : string) : ZalgoPromise<OrderResponse> {
-    return callAPI({
+    return callSmartAPI({
         method: 'post',
         url:    `${ API_URI.ORDER }/${ orderID }/capture`
     });
 }
 
 export function authorizeOrder(orderID : string) : ZalgoPromise<OrderResponse> {
-    return callAPI({
+    return callSmartAPI({
         method: 'post',
         url:    `${ API_URI.ORDER }/${ orderID }/authorize`
     });
 }
 
 export function billingTokenToOrderID(billingToken : string) : ZalgoPromise<string> {
-    return callAPI({
+    return callSmartAPI({
         method: 'post',
         url:    `${ API_URI.PAYMENT }/${ billingToken }/ectoken`
     }).then(data => {
@@ -121,7 +121,7 @@ export function billingTokenToOrderID(billingToken : string) : ZalgoPromise<stri
 }
 
 export function patchOrder(orderID : string, patch : []) : ZalgoPromise<OrderResponse> {
-    return callAPI({
+    return callSmartAPI({
         method: 'post',
         url:    `${ API_URI.ORDER }/${ orderID }/patch`,
         json:   { data: { patch } }
@@ -265,5 +265,46 @@ export function createOrder(accessToken : string, order : OrderCreateRequest) : 
         });
 
         return body.id;
+    });
+}
+
+export function validatePaymentMethod(accessToken : string, orderID : string, paymentMethodID : string) : ZalgoPromise<void> {
+    getLogger().info(`rest_api_create_order_token`);
+
+    if (!accessToken) {
+        throw new Error(`Access token not passed`);
+    }
+
+    if (!orderID) {
+        throw new Error(`Expected order id to be passed`);
+    }
+
+    if (!paymentMethodID) {
+        throw new Error(`Expected payment method id to be passed`);
+    }
+
+    const headers : Object = {
+        'Authorization':                 `Bearer ${ accessToken }`,
+        'PayPal-Partner-Attribution-Id': window.xprops.partnerAttributionID
+    };
+
+    const json = {
+        payment_source: {
+            token: {
+                id:   paymentMethodID,
+                type: 'NONCE'
+            }
+        }
+    };
+
+    return request({
+        method: `post`,
+        url:    `${ ORDERS_API_URL }/${ orderID }/${ VALIDATE_PAYMENT_METHOD_API }`,
+        headers,
+        json
+    }).then(({ status }) => {
+        if (status !== 200) {
+            throw new Error(`Validate payment failed with status: ${ status }`);
+        }
     });
 }

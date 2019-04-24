@@ -8,6 +8,7 @@ import './error';
 import './eligibility';
 import './validation';
 import './prerender';
+import './vault';
 
 beforeEach(() => {
     setupMocks();

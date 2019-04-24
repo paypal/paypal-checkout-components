@@ -3,6 +3,7 @@
 
 import { wrapPromise } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
@@ -34,7 +35,7 @@ describe('validation cases', () => {
 
             window.document.body.innerHTML = createButtonHTML();
             await setupButton({});
-            window.document.querySelector('.paypal-button').click();
+            window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
         });
     });
 
@@ -57,7 +58,7 @@ describe('validation cases', () => {
 
             window.document.body.innerHTML = createButtonHTML();
             await setupButton({});
-            window.document.querySelector('.paypal-button').click();
+            window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
         });
     });
 
@@ -89,7 +90,7 @@ describe('validation cases', () => {
 
             window.document.body.innerHTML = createButtonHTML();
             await setupButton({});
-            window.document.querySelector('.paypal-button').click();
+            window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
         });
     });
 
@@ -116,7 +117,7 @@ describe('validation cases', () => {
 
             window.document.body.innerHTML = createButtonHTML();
             await setupButton({});
-            window.document.querySelector('.paypal-button').click();
+            window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
         });
     });
 
@@ -143,7 +144,7 @@ describe('validation cases', () => {
 
             window.document.body.innerHTML = createButtonHTML();
             await setupButton({});
-            window.document.querySelector('.paypal-button').click();
+            window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
         });
     });
 });

@@ -4,11 +4,13 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
 import { memoize, noop } from 'belter/src';
 
-import { persistAccessToken, type OrderResponse } from './api';
-import { getNonce } from './util';
-import { buildApproveActions, buildShippingChangeActions } from './orders';
+import { persistAccessToken, type OrderResponse } from '../api';
+import { getNonce } from '../util';
+import { buildApproveActions, buildShippingChangeActions } from '../orders';
+import { CONTEXT } from '../constants';
+import { INLINE_GUEST_ENABLED } from '../config';
+
 import { initCheckout } from './checkout';
-import { CONTEXT } from './constants';
 
 let cardFieldsOpen = false;
 
@@ -20,12 +22,30 @@ type CardPropsOverride = {|
 |};
 
 type CardFieldsInstance = {|
-    instance : {
-        close : () => ZalgoPromise<void>,
-        onError : (mixed) => ZalgoPromise<void>
-    },
-    render : () => ZalgoPromise<mixed>
+    start : () => ZalgoPromise<mixed>,
+    close : () => ZalgoPromise<void>,
+    onError : (mixed) => ZalgoPromise<void>
 |};
+
+export function isCardFieldsEligible({ fundingSource } : { fundingSource : $Values<typeof FUNDING> }) : boolean {
+    if (!INLINE_GUEST_ENABLED) {
+        return false;
+    }
+
+    if (fundingSource !== FUNDING.CARD) {
+        return false;
+    }
+
+    if (window.xprops.vault) {
+        return false;
+    }
+
+    if (window.xprops.onShippingChange) {
+        return false;
+    }
+
+    return true;
+}
 
 const openCardFields = () => {
     const buttonsContainer = document.querySelector('#buttons-container');
@@ -67,8 +87,9 @@ export function initCardFields(props : CardPropsOverride) : CardFieldsInstance {
             return initCheckout({
                 fundingSource,
                 createOrder,
-                buyerCountry
-            }).render(CONTEXT.IFRAME);
+                buyerCountry,
+                context: CONTEXT.IFRAME
+            }).start();
         }).catch(noop).then(() => {
             return new ZalgoPromise(noop);
         });
@@ -140,12 +161,13 @@ export function initCardFields(props : CardPropsOverride) : CardFieldsInstance {
     });
 
     return {
-        instance,
-        render: () => {
+        start: () => {
             cardFieldsOpen = true;
             const renderPromise = instance.render('#card-fields-container');
             openCardFields();
             return renderPromise;
-        }
+        },
+        close:   () => instance.close(),
+        onError: (err) => instance.onError(err)
     };
 }

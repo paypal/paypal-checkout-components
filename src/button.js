@@ -5,15 +5,14 @@ import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import type { ProxyWindow } from 'post-robot/src';
 
-import { setupCheckout, initCheckout } from './checkout';
+import { setupCheckout, initCheckout, initCardFields, initVault, isCardFieldsEligible, isVaultCaptureEligible, isVaultSetupEligible } from './flows';
 import { getAuth } from './api';
-import { initCardFields } from './card-fields';
 import { createOrderOrBillingAgreement, validateOrder, updateClientConfig, enableVault } from './orders';
-import { INLINE_GUEST_ENABLED, CLIENT_CONFIG_ENABLED } from './config';
-import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW } from './constants';
+import { CLIENT_CONFIG_ENABLED } from './config';
+import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW, DATA_ATTRIBUTES } from './constants';
 import { setupLogger } from './log';
 
-function onClickAndValidate({ fundingSource, card }) : ZalgoPromise<boolean> {
+function onClickValidate({ fundingSource, card }) : ZalgoPromise<boolean> {
     let valid = true;
 
     return ZalgoPromise.try(() => {
@@ -32,12 +31,13 @@ function onClickAndValidate({ fundingSource, card }) : ZalgoPromise<boolean> {
     });
 }
 
-function getSelectedFunding(button : HTMLElement) : { fundingSource : $Values<typeof FUNDING>, card : $Values<typeof CARD> } {
-    const fundingSource = button.getAttribute('data-funding-source');
-    const card = button.getAttribute('data-card');
+function getSelectedFunding(button : HTMLElement) : { fundingSource : $Values<typeof FUNDING>, card : $Values<typeof CARD>, paymentMethodID : ?string } {
+    const fundingSource = button.getAttribute(DATA_ATTRIBUTES.FUNDING_SOURCE);
+    const paymentMethodID = button.getAttribute(DATA_ATTRIBUTES.PAYMENT_METHOD_ID);
+    const card = button.getAttribute(DATA_ATTRIBUTES.CARD);
 
     // $FlowFixMe
-    return { fundingSource, card };
+    return { fundingSource, card, paymentMethodID };
 }
 
 export function setupButton(fundingEligibility : Object) : ZalgoPromise<void> {
@@ -56,16 +56,22 @@ export function setupButton(fundingEligibility : Object) : ZalgoPromise<void> {
 
     let buttonEnabled = true;
 
-    const start = ({ win, fundingSource, card } : { win? : ProxyWindow, fundingSource : $Values<typeof FUNDING>, card : ?$Values<typeof CARD> }) => {
-        const validationPromise = onClickAndValidate({ fundingSource, card });
+    const checkout = ({ win, fundingSource, card, paymentMethodID } : { win? : ProxyWindow, fundingSource : $Values<typeof FUNDING>, card : ?$Values<typeof CARD>, paymentMethodID? : ?string }) => {
+        const validationPromise = onClickValidate({ fundingSource, card });
 
         if (!buttonEnabled) {
-            if (win) {
-                return win.close();
-            }
-
-            return;
+            return ZalgoPromise.try(() => {
+                if (win) {
+                    return win.close();
+                }
+            });
         }
+
+        const { clientAccessToken } = window.xprops;
+
+        const isVaultCapture = isVaultCaptureEligible({ fundingSource, paymentMethodID });
+        const isVaultSetup = isVaultSetupEligible({ clientAccessToken, fundingSource, fundingEligibility }) && !isVaultCapture;
+        const isCardFields = isCardFieldsEligible({ fundingSource }) && !isVaultSetup;
 
         const orderPromise = validationPromise.then(valid => {
             if (valid) {
@@ -75,11 +81,11 @@ export function setupButton(fundingEligibility : Object) : ZalgoPromise<void> {
             }
         }).then(orderID => {
             return ZalgoPromise.try(() => {
-                const { vault, clientAccessToken } = window.xprops;
-                if (vault && clientAccessToken) {
-                    return enableVault({
-                        orderID,
-                        clientAccessToken
+                if (isVaultSetup) {
+                    return enableVault({ orderID, clientAccessToken }).catch(err => {
+                        if (window.xprops.vault) {
+                            throw err;
+                        }
                     });
                 }
             }).then(() => {
@@ -87,52 +93,63 @@ export function setupButton(fundingEligibility : Object) : ZalgoPromise<void> {
             });
         });
 
-        const isInlineGuest = (fundingSource === FUNDING.CARD && INLINE_GUEST_ENABLED);
         const createOrder = () => orderPromise;
 
-        const { instance, render } = isInlineGuest
-            ? initCardFields({ createOrder, fundingSource, card, buyerCountry })
-            : initCheckout({ window: win, createOrder, fundingSource, card, validationPromise, buyerCountry });
+        const { start, close, onError } = (() => {
 
+            if (isVaultCapture) {
+                return initVault({
+                    createOrder,
+                    fundingSource,
+                    buyerCountry,
+                    // $FlowFixMe
+                    paymentMethodID
+                });
+            }
+
+            if (isCardFields && !isVaultSetup) {
+                return initCardFields({
+                    createOrder,
+                    fundingSource,
+                    card,
+                    buyerCountry
+                });
+            }
+
+            return initCheckout({
+                window: win,
+                createOrder,
+                fundingSource,
+                card,
+                validationPromise,
+                buyerCountry
+            });
+        })();
+        
         if (CLIENT_CONFIG_ENABLED) {
             createOrder().then(orderID => {
                 updateClientConfig({
                     orderID,
                     fundingSource,
                     integrationArtifact: INTEGRATION_ARTIFACT.PAYPAL_JS_SDK,
-                    userExperienceFlow:  isInlineGuest ? USER_EXPERIENCE_FLOW.INLINE : USER_EXPERIENCE_FLOW.INCONTEXT,
+                    userExperienceFlow:  isCardFields ? USER_EXPERIENCE_FLOW.INLINE : USER_EXPERIENCE_FLOW.INCONTEXT,
                     productFlow:         PRODUCT_FLOW.SMART_PAYMENT_BUTTONS
                 });
             });
         }
 
-        return ZalgoPromise.try(() => {
-            if (isInlineGuest) {
-                return validationPromise.then(valid => {
-                    if (valid) {
-                        return render();
-                    }
-                });
-            } else {
-                return ZalgoPromise.all([
-                    render(),
-                    validationPromise.then(valid => {
-                        if (!valid) {
-                            return instance.close();
-                        }
-                    })
-                ]);
+        return validationPromise.then(valid => {
+            if (!valid) {
+                return close();
             }
-        }).then(() => {
-            return validationPromise.then(valid => {
-                if (valid) {
-                    return createOrder().then(validateOrder);
-                }
-            });
+
+            return start()
+                .then(createOrder)
+                .then(validateOrder);
         }).catch(err => {
             return ZalgoPromise.all([
-                instance.close(),
-                instance.onError(err)
+                onError(err),
+                close()
             ]);
         });
     };
@@ -152,13 +169,13 @@ export function setupButton(fundingEligibility : Object) : ZalgoPromise<void> {
         }
     });
 
-    querySelectorAll('.paypal-button').forEach(button => {
-        const { fundingSource, card } = getSelectedFunding(button);
+    querySelectorAll(`[ ${ DATA_ATTRIBUTES.FUNDING_SOURCE } ]`).forEach(button => {
+        const { fundingSource, card, paymentMethodID } = getSelectedFunding(button);
 
         onClick(button, event => {
             event.preventDefault();
             event.stopPropagation();
-            start({ fundingSource, card });
+            checkout({ fundingSource, card, paymentMethodID });
         });
     });
 
@@ -168,7 +185,7 @@ export function setupButton(fundingEligibility : Object) : ZalgoPromise<void> {
         return window.xprops.getPrerenderDetails().then((prerenderDetails) => {
             if (prerenderDetails) {
                 const { win, fundingSource, card } = prerenderDetails;
-                return start({ win, fundingSource, card });
+                return checkout({ win, fundingSource, card });
             }
         });
     });

@@ -2,10 +2,9 @@
 
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { ZalgoPromise } from 'zalgo-promise';
+import { values } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants';
-import { INTENT, CURRENCY } from '@paypal/sdk-constants/src';
-
-const PAYPAL_BUTTON_CLASS = 'paypal-button';
+import { INTENT, CURRENCY, CARD } from '@paypal/sdk-constants/src';
 
 export function setupMocks() {
 
@@ -31,8 +30,11 @@ export function setupMocks() {
         Checkout: (props) => {
             return {
                 renderTo: () => {
-                    return ZalgoPromise.resolve().then(() => {
-                        return props.onApprove();
+                    return props.createOrder().then(orderID => {
+                        return props.onApprove({
+                            orderID,
+                            payerID: 'AAABBBCCC'
+                        });
                     }).then(() => {
                         return props.onClose();
                     });
@@ -52,6 +54,10 @@ export function setupMocks() {
         },
         style: {
 
+        },
+        locale: {
+            country: 'US',
+            lang:    'en'
         },
         onInit: () => {
             return ZalgoPromise.resolve();
@@ -98,12 +104,51 @@ export function getMockCheckoutInstance() : { closeComponent : () => ZalgoPromis
     };
 }
 
-export function createButtonHTML(sources : $ReadOnlyArray<string> = [ FUNDING.PAYPAL ]) : $ReadOnlyArray<string> {
-    return sources.map(source => {
-        return `
-            <div class="${ PAYPAL_BUTTON_CLASS }" data-funding-source="${ source }"></div>
-        `;
-    });
+const DEFAULT_FUNDING_ELIGIBILITY = {
+    [ FUNDING.PAYPAL ]: {
+        eligible: true
+    }
+};
+
+export function createButtonHTML(fundingEligibility? : Object = DEFAULT_FUNDING_ELIGIBILITY) : string {
+    const buttons = [];
+
+    // $FlowFixMe
+    for (const fundingSource of values(FUNDING)) {
+        const fundingConfig = fundingEligibility[fundingSource];
+
+        if (!fundingConfig || !fundingConfig.eligible) {
+            continue;
+        }
+
+        buttons.push(`<button data-funding-source="${ fundingSource }"></div>`);
+
+        if (fundingConfig.vaultedInstruments) {
+            for (const vaultedInstrument of fundingConfig.vaultedInstruments) {
+                buttons.push(`<button data-funding-source="${ fundingSource }" data-payment-method-id="${ vaultedInstrument.id }"></div>`);
+            }
+        }
+
+        if (fundingSource === FUNDING.CARD) {
+            for (const card of values(CARD)) {
+                const cardConfig = fundingConfig.vendors[card];
+
+                if (!cardConfig || !cardConfig.eligible) {
+                    continue;
+                }
+
+                buttons.push(`<button data-funding-source="${ fundingSource }" data-card="${ card }"></div>`);
+
+                if (cardConfig.vaultedInstruments) {
+                    for (const vaultedInstrument of cardConfig.vaultedInstruments) {
+                        buttons.push(`<button data-funding-source="${ fundingSource }" data-card="${ card }" data-payment-method-id="${ vaultedInstrument.id }"></div>`);
+                    }
+                }
+            }
+        }
+    }
+
+    return buttons.join('\n');
 }
 
 type MockEndpoint = {|
@@ -242,6 +287,28 @@ export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
     });
 }
 
+export function getLoggerApiMock(options : Object = {}) : MockEndpoint {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri:    '/xoplatform/logger/api/logger',
+        data:   {
+
+        },
+        ...options
+    });
+}
+
+export function validatePaymentMethodApiMock(options : Object = {}) : MockEndpoint {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri:    new RegExp('/v2/checkout/orders/[^/]+/validate-payment-method'),
+        data:   {
+        
+        },
+        ...options
+    });
+}
+
 getAuthApiMock().listen();
 getOrderApiMock().listen();
 captureOrderApiMock().listen();
@@ -249,3 +316,5 @@ authorizeOrderApiMock().listen();
 mapBillingTokenApiMock().listen();
 patchOrderApiMock().listen();
 getGraphQLApiMock().listen();
+getLoggerApiMock().listen();
+validatePaymentMethodApiMock().listen();

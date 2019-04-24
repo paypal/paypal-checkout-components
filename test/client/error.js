@@ -1,6 +1,8 @@
 /* @flow */
 /* eslint require-await: off */
 
+import { FUNDING } from '@paypal/sdk-constants/src';
+
 import { setupButton } from '../../src';
 
 import { createButtonHTML, getMockCheckoutInstance } from './mocks';
@@ -39,7 +41,7 @@ describe('error cases', () => {
 
         setupButton({});
 
-        window.document.querySelector('.paypal-button').click();
+        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
 
         await onApprove;
 
@@ -84,7 +86,7 @@ describe('error cases', () => {
 
         setupButton({});
 
-        window.document.querySelector('.paypal-button').click();
+        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
 
         await onCancel;
 

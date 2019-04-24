@@ -26,7 +26,7 @@ describe('funding source cases', () => {
     
         setupButton({});
     
-        window.document.querySelector(`.paypal-button[data-funding-source="${ FUNDING.PAYPAL }"]`).click();
+        window.document.querySelector(`button[data-funding-source="${ FUNDING.PAYPAL }"]`).click();
     
         if (selectedFundingSource !== FUNDING.PAYPAL) {
             throw new Error(`Expected fundingSource to be ${ FUNDING.PAYPAL }, got ${ selectedFundingSource }`);
@@ -46,11 +46,15 @@ describe('funding source cases', () => {
             };
         };
     
-        window.document.body.innerHTML = createButtonHTML([ FUNDING.VENMO ]);
+        window.document.body.innerHTML = createButtonHTML({
+            venmo: {
+                eligible: true
+            }
+        });
     
         setupButton({});
     
-        window.document.querySelector(`.paypal-button[data-funding-source="${ FUNDING.VENMO }"]`).click();
+        window.document.querySelector(`button[data-funding-source="${ FUNDING.VENMO }"]`).click();
     
         if (selectedFundingSource !== FUNDING.VENMO) {
             throw new Error(`Expected fundingSource to be ${ FUNDING.VENMO }, got ${ selectedFundingSource }`);

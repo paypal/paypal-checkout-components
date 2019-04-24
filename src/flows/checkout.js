@@ -5,10 +5,10 @@ import { memoize, noop, supportsPopups, once } from 'belter/src';
 import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
 import { getParent, getTop } from 'cross-domain-utils/src';
 
-import { persistAccessToken, type OrderResponse } from './api';
-import { CONTEXT, TARGET_ELEMENT } from './constants';
-import { getNonce } from './util';
-import { buildApproveActions, buildShippingChangeActions } from './orders';
+import { persistAccessToken, type OrderResponse } from '../api';
+import { CONTEXT, TARGET_ELEMENT } from '../constants';
+import { getNonce } from '../util';
+import { buildApproveActions, buildShippingChangeActions } from '../orders';
 
 let checkoutOpen = false;
 let canRenderTop = false;
@@ -48,15 +48,14 @@ type CheckoutPropsOverride = {|
     card? : ?$Values<typeof CARD>,
     window? : ?Object,
     validationPromise? : ZalgoPromise<boolean>,
-    buyerCountry : $Values<typeof COUNTRY>
+    buyerCountry : $Values<typeof COUNTRY>,
+    context? : $Values<typeof CONTEXT>
 |};
 
 type CheckoutInstance = {|
-    instance : {
-        close : () => ZalgoPromise<void>,
-        onError : (mixed) => ZalgoPromise<void>
-    },
-    render : (context? : $Values<typeof CONTEXT>) => ZalgoPromise<mixed>
+    start : () => ZalgoPromise<mixed>,
+    close : () => ZalgoPromise<void>,
+    onError : (mixed) => ZalgoPromise<void>
 |};
 
 export function initCheckout(props : CheckoutPropsOverride) : CheckoutInstance {
@@ -66,6 +65,7 @@ export function initCheckout(props : CheckoutPropsOverride) : CheckoutInstance {
     }
 
     const {
+        context,
         createOrder,
         fundingSource,
         validationPromise = ZalgoPromise.resolve(true),
@@ -80,8 +80,9 @@ export function initCheckout(props : CheckoutPropsOverride) : CheckoutInstance {
             return initCheckout({
                 fundingSource,
                 createOrder,
-                buyerCountry
-            }).render(CONTEXT.IFRAME);
+                buyerCountry,
+                context: CONTEXT.IFRAME
+            }).start();
         }).catch(noop).then(() => {
             return new ZalgoPromise(noop);
         });
@@ -159,11 +160,12 @@ export function initCheckout(props : CheckoutPropsOverride) : CheckoutInstance {
         nonce
     });
 
+    checkoutOpen = true;
+    const renderPromise = instance.renderTo(getRenderWindow(), TARGET_ELEMENT.BODY, context);
+
     return {
-        instance,
-        render: (context? : $Values<typeof CONTEXT> = getDefaultContext()) => {
-            checkoutOpen = true;
-            return instance.renderTo(getRenderWindow(), TARGET_ELEMENT.BODY, context);
-        }
+        start:   () => renderPromise,
+        close:   () => instance.close(),
+        onError: (err) => instance.onError(err)
     };
 }

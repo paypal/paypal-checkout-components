@@ -6,10 +6,17 @@ export const SMART_PAYMENT_BUTTONS = 'smart-payment-buttons';
 export const ACCESS_TOKEN_HEADER = 'x-paypal-internal-euat';
 
 export const HEADERS = {
-    ACCESS_TOKEN: 'x-paypal-internal-euat',
-    CSRF_TOKEN:   'x-csrf-jwt',
-    SOURCE:       'x-source',
-    REQUESTED_BY: 'x-requested-by'
+    ACCESS_TOKEN:       'x-paypal-internal-euat',
+    CLIENT_METADATA_ID: 'paypal-client-metadata-id',
+    CSRF_TOKEN:         'x-csrf-jwt',
+    SOURCE:             'x-source',
+    REQUESTED_BY:       'x-requested-by'
+};
+
+export const DATA_ATTRIBUTES = {
+    FUNDING_SOURCE:    'data-funding-source',
+    CARD:              'data-card',
+    PAYMENT_METHOD_ID: 'data-payment-method-id'
 };
 
 export const ORDER_API_ERROR = {
