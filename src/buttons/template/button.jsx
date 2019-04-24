@@ -89,7 +89,10 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
     return (
         <div
             role='button'
-            { ...{ [ATTRIBUTE.FUNDING_SOURCE]: fundingSource, [ATTRIBUTE.BUTTON]: true } }
+            { ...{
+                [ ATTRIBUTE.BUTTON ]:         true,
+                [ ATTRIBUTE.FUNDING_SOURCE ]: fundingSource
+            } }
             class={ [
                 CLASS.BUTTON,
                 `${ CLASS.NUMBER }-${ i }`,
@@ -131,10 +134,11 @@ type VaultedButtonProps = {|
     i : number,
     nonce : string,
     vendor : $Values<typeof CARD>,
-    label : string
+    label : string,
+    paymentMethodID : string
 |};
 
-export function VaultedButton({ fundingSource, style, multiple, env, nonce, vendor, label, onClick = noop } : VaultedButtonProps) : ElementNode {
+export function VaultedButton({ fundingSource, paymentMethodID, style, multiple, env, nonce, vendor, label, onClick = noop } : VaultedButtonProps) : ElementNode {
 
     const clickHandler = (event, opts) => {
         event.preventDefault();
@@ -168,7 +172,11 @@ export function VaultedButton({ fundingSource, style, multiple, env, nonce, vend
     return (
         <div
             role='button'
-            { ...{ [ATTRIBUTE.FUNDING_SOURCE]: fundingSource, [ATTRIBUTE.BUTTON]: true } }
+            { ...{
+                [ ATTRIBUTE.BUTTON ]:            true,
+                [ ATTRIBUTE.FUNDING_SOURCE ]:    fundingSource,
+                [ ATTRIBUTE.PAYMENT_METHOD_ID ]: paymentMethodID
+            } }
             class={ [
                 CLASS.BUTTON,
                 `${ CLASS.LAYOUT }-${ layout }`,

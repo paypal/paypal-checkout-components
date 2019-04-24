@@ -62,7 +62,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             }
 
             {
-                vaultedFunding.map(({ fundingSource, vendor, label }) => (
+                vaultedFunding.map(({ fundingSource, paymentMethodID, vendor, label }) => (
                     <VaultedButton
                         style={ style }
                         fundingSource={ fundingSource }
@@ -72,6 +72,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         onClick={ onClick }
                         vendor={ vendor }
                         label={ label }
+                        paymentMethodID={ paymentMethodID }
                     />
                 ))
             }

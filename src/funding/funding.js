@@ -56,7 +56,7 @@ export function determineEligibleFunding({ style, platform, remembered, fundingE
 }
 
 export function determineVaultedFunding({ fundingEligibility, layout } : {| fundingEligibility : FundingEligibilityType, layout : $Values<typeof BUTTON_LAYOUT> |}) :
-    $ReadOnlyArray<{ fundingSource : $Values<typeof FUNDING>, vendor? : $Values<typeof CARD>, label : string }>  {
+    $ReadOnlyArray<{ fundingSource : $Values<typeof FUNDING>, paymentMethodID : string, vendor? : $Values<typeof CARD>, label : string }>  {
     
     const vaultedFunding = [];
 
@@ -69,8 +69,8 @@ export function determineVaultedFunding({ fundingEligibility, layout } : {| fund
 
         if (fundingConfig && fundingConfig.eligible && fundingConfig.vaultedInstruments) {
             // $FlowFixMe
-            for (const { label: { description } } of fundingConfig.vaultedInstruments) {
-                vaultedFunding.push({ fundingSource, label: description });
+            for (const { id, label: { description } } of fundingConfig.vaultedInstruments) {
+                vaultedFunding.push({ fundingSource, label: description, paymentMethodID: id });
             }
         }
 
@@ -80,8 +80,8 @@ export function determineVaultedFunding({ fundingEligibility, layout } : {| fund
                 const vendorConfig = fundingConfig.vendors[vendor];
 
                 if (vendorConfig && vendorConfig.vaultedInstruments) {
-                    for (const { label: { description } } of vendorConfig.vaultedInstruments) {
-                        vaultedFunding.push({ fundingSource, vendor, label: description });
+                    for (const { id, label: { description } } of vendorConfig.vaultedInstruments) {
+                        vaultedFunding.push({ fundingSource, vendor, label: description, paymentMethodID: id });
                     }
                 }
             }

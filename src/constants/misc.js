@@ -8,9 +8,10 @@ export const LOG_LEVEL = {
 };
 
 export const ATTRIBUTE = {
-    BUTTON:         ('data-button' : 'data-button'),
-    FUNDING_SOURCE: ('data-funding-source' : 'data-funding-source'),
-    CARD:           ('data-card' : 'data-card')
+    BUTTON:            ('data-button' : 'data-button'),
+    FUNDING_SOURCE:    ('data-funding-source' : 'data-funding-source'),
+    PAYMENT_METHOD_ID: ('data-payment-method-id' : 'data-payment-method-id'),
+    CARD:              ('data-card' : 'data-card')
 };
 
 export const DEFAULT = ('default' : 'default');
