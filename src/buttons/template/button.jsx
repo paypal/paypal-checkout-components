@@ -186,6 +186,7 @@ export function VaultedButton({ fundingSource, paymentMethodID, style, multiple,
                 `${ CLASS.COLOR }-${ color }`
             ].join(' ') }
             aria-label={ fundingSource }
+            tabIndex='0'
             onClick={ clickHandler } >
 
             <VaultLabel
