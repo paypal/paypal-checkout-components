@@ -81,12 +81,13 @@ export const testGlobals = {
         __REMEMBERED_FUNDING__: () => 'window.__TEST_REMEMBERED_FUNDING__ || []'
     },
 
-    __PORT__:       8000,
-    __STAGE_HOST__: 'msmaster.qa.paypal.com',
-    __HOST__:       'test.paypal.com',
-    __HOSTNAME__:   'test.paypal.com',
-    __PATH__:       '/sdk/js',
-    __VERSION__:    '1.0.55',
-    __NAMESPACE__:  'paypal',
-    __COMPONENTS__: [ 'buttons' ]
+    __PORT__:           8000,
+    __STAGE_HOST__:     'msmaster.qa.paypal.com',
+    __HOST__:           'test.paypal.com',
+    __HOSTNAME__:       'test.paypal.com',
+    __PATH__:           '/sdk/js',
+    __VERSION__:        '1.0.55',
+    __NAMESPACE__:      'paypal',
+    __COMPONENTS__:     [ 'buttons' ],
+    __CORRELATION_ID__: 'abc123'
 };
