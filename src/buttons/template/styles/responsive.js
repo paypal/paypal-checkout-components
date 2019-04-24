@@ -32,6 +32,11 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                     max-height: ${ height || style.maxHeight }px;
                 }
 
+                .${ CLASS.BUTTON } .${ CLASS.SPINNER } {
+                    height: ${ perc(buttonHeight, 50) }px;
+                    width: ${ perc(buttonHeight, 50) }px;
+                }
+
                 .${ CLASS.BUTTON } > .${ LOGO_CLASS.LOGO },
                 .${ CLASS.BUTTON } > .${ LOGO_CLASS.CARD } {
                     height: ${ perc(buttonHeight, 35) + 5 }px;

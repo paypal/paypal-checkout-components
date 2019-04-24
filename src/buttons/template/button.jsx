@@ -11,6 +11,8 @@ import { getFundingConfig } from '../../funding';
 import { type ButtonStyle } from '../props';
 import type { FundingEligibilityType } from '../../types';
 
+import { Spinner } from './spinner';
+
 type BasicButtonProps = {|
     style : ButtonStyle,
     fundingSource : $Values<typeof FUNDING>,
@@ -112,6 +114,8 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
                 fundingEligibility={ fundingEligibility }
                 onClick={ clickHandler }
             />
+
+            <Spinner />
         </div>
     );
 }
@@ -182,6 +186,8 @@ export function VaultedButton({ fundingSource, style, multiple, env, nonce, vend
                 vendor={ vendor }
                 label={ label }
             />
+
+            <Spinner />
         </div>
     );
 }

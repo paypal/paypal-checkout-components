@@ -11,6 +11,9 @@ export const CLASS = {
     NUMBER:     ('paypal-button-number' : 'paypal-button-number'),
     ENV:        ('paypal-button-env' : 'paypal-button-env'),
 
+    LOADING:    ('paypal-button-loading' : 'paypal-button-loading'),
+    SPINNER:    ('paypal-button-spinner' : 'paypal-button-spinner'),
+
     TAGLINE:       ('paypal-button-tagline' : 'paypal-button-tagline'),
     TAGLINE_COLOR: ('paypal-button-tagline-color' : 'paypal-button-tagline-color'),
 

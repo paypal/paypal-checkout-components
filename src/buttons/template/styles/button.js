@@ -84,4 +84,39 @@ export const buttonStyle = `
         text-align: center;
         width: auto;
     }
+
+    .${ CLASS.BUTTON } .${ CLASS.SPINNER } {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        box-sizing: border-box;
+        border: 3px solid rgba(0, 0, 0, .2);
+        border-top-color: rgba(33, 128, 192, 0.8);
+        border-radius: 100%;
+        animation: ${ CLASS.SPINNER }-rotation .7s infinite linear;
+    }
+
+    @keyframes ${ CLASS.SPINNER }-rotation {
+        from {
+            transform: translateX(-50%) translateY(-50%) rotate(0deg);
+        }
+        to {
+            transform: translateX(-50%) translateY(-50%) rotate(359deg);
+        }
+    }
+
+    .${ CLASS.BUTTON } .${ CLASS.SPINNER } {
+        display: none !important;
+    }
+
+    .${ CLASS.BUTTON }.${ CLASS.LOADING } * {
+        display: none;
+    }
+
+    .${ CLASS.BUTTON }.${ CLASS.LOADING } .${ CLASS.SPINNER } {
+        display: block !important;
+    }
 `;
