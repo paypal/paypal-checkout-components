@@ -57,7 +57,7 @@ export function buildApproveActions(orderID : string, fundingSource : $Values<ty
     const handleProcessorError = (err : mixed) : ZalgoPromise<OrderResponse> => {
         // $FlowFixMe
         const isProcessorDecline = err && err.data && err.data.details && err.data.details.some(detail => {
-            return detail.issue === ORDER_API_ERROR.INSTRUMENT_DECLINED;
+            return detail.issue === ORDER_API_ERROR.INSTRUMENT_DECLINED || detail.issue === ORDER_API_ERROR.PAYER_ACTION_REQUIRED;
         });
 
         if (isProcessorDecline) {

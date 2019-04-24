@@ -583,4 +583,66 @@ describe('happy cases', () => {
             throw new Error(`Expected onApprove to have been called`);
         }
     });
+
+    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture call and automatic restart on PAYER_ACTION_REQUIRED', async () => {
+
+        const orderID = 'XXXXXXXXXX';
+        const payerID = 'YYYYYYYYYY';
+
+        let onApprove;
+        let onApproveCalled = false;
+        let didRestart = false;
+
+        window.xprops.onApprove = async (data, actions) => {
+            if (didRestart) {
+                onApproveCalled = true;
+            } else {
+                didRestart = true;
+                onApprove = null;
+
+                const captureOrderMock = captureOrderApiMock({
+                    data: {
+                        ack:         'contingency',
+                        contingency: 'UNPROCESSABLE_ENTITY',
+                        data:        {
+                            details: [
+                                {
+                                    issue: 'PAYER_ACTION_REQUIRED'
+                                }
+                            ]
+                        }
+                    }
+                });
+
+                captureOrderMock.expectCalls();
+                actions.order.capture();
+                captureOrderMock.done();
+            }
+        };
+
+        window.paypal.Checkout = (props) => {
+            return {
+                renderTo: async () => {
+                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+                },
+                close: () => {
+                    return ZalgoPromise.resolve().then(() => {
+                        return props.onClose();
+                    });
+                }
+            };
+        };
+
+        window.document.body.innerHTML = createButtonHTML();
+
+        await setupButton({});
+
+        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
+
+        await onApprove;
+
+        if (!onApprove || !onApproveCalled) {
+            throw new Error(`Expected onApprove to have been called`);
+        }
+    });
 });
