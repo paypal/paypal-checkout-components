@@ -19,6 +19,10 @@ export const DATA_ATTRIBUTES = {
     PAYMENT_METHOD_ID: 'data-payment-method-id'
 };
 
+export const CLASS = {
+    LOADING: 'paypal-button-loading'
+};
+
 export const ORDER_API_ERROR = {
     INSTRUMENT_DECLINED:   'INSTRUMENT_DECLINED',
     PAYER_ACTION_REQUIRED: 'PAYER_ACTION_REQUIRED'

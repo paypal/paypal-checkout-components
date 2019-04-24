@@ -9,7 +9,7 @@ import { setupCheckout, initCheckout, initCardFields, initVault, isCardFieldsEli
 import { getAuth } from './api';
 import { createOrderOrBillingAgreement, validateOrder, updateClientConfig, enableVault } from './orders';
 import { CLIENT_CONFIG_ENABLED } from './config';
-import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW, DATA_ATTRIBUTES } from './constants';
+import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW, DATA_ATTRIBUTES, CLASS } from './constants';
 import { setupLogger } from './log';
 
 function onClickValidate({ fundingSource, card }) : ZalgoPromise<boolean> {
@@ -55,8 +55,13 @@ export function setupButton(fundingEligibility : Object) : ZalgoPromise<void> {
     }
 
     let buttonEnabled = true;
+    let buttonProcessing = false;
 
-    const checkout = ({ win, fundingSource, card, paymentMethodID } : { win? : ProxyWindow, fundingSource : $Values<typeof FUNDING>, card : ?$Values<typeof CARD>, paymentMethodID? : ?string }) => {
+    const checkout = ({ button, win, fundingSource, card, paymentMethodID } : { button : HTMLElement, win? : ProxyWindow, fundingSource : $Values<typeof FUNDING>, card : ?$Values<typeof CARD>, paymentMethodID? : ?string }) => {
+        if (buttonProcessing) {
+            return;
+        }
+        
         const validationPromise = onClickValidate({ fundingSource, card });
 
         if (!buttonEnabled) {
@@ -72,6 +77,11 @@ export function setupButton(fundingEligibility : Object) : ZalgoPromise<void> {
         const isVaultCapture = isVaultCaptureEligible({ fundingSource, paymentMethodID });
         const isVaultSetup = isVaultSetupEligible({ clientAccessToken, fundingSource, fundingEligibility }) && !isVaultCapture;
         const isCardFields = isCardFieldsEligible({ fundingSource }) && !isVaultSetup;
+
+        buttonProcessing = true;
+        if (isVaultCapture) {
+            button.classList.add(CLASS.LOADING);
+        }
 
         const orderPromise = validationPromise.then(valid => {
             if (valid) {
@@ -151,6 +161,9 @@ export function setupButton(fundingEligibility : Object) : ZalgoPromise<void> {
                 onError(err),
                 close()
             ]);
+        }).finally(() => {
+            buttonProcessing = false;
+            button.classList.remove(CLASS.LOADING);
         });
     };
 
@@ -175,7 +188,7 @@ export function setupButton(fundingEligibility : Object) : ZalgoPromise<void> {
         onClick(button, event => {
             event.preventDefault();
             event.stopPropagation();
-            checkout({ fundingSource, card, paymentMethodID });
+            checkout({ button, fundingSource, card, paymentMethodID });
         });
     });
 
@@ -185,7 +198,13 @@ export function setupButton(fundingEligibility : Object) : ZalgoPromise<void> {
         return window.xprops.getPrerenderDetails().then((prerenderDetails) => {
             if (prerenderDetails) {
                 const { win, fundingSource, card } = prerenderDetails;
-                return checkout({ win, fundingSource, card });
+                const button = document.querySelector(`[${ DATA_ATTRIBUTES.FUNDING_SOURCE }=${ fundingSource }]`);
+                
+                if (!button) {
+                    throw new Error(`Can not find button element`);
+                }
+
+                return checkout({ button, win, fundingSource, card });
             }
         });
     });
