@@ -31,13 +31,24 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
             logger.info(req, `button_render_version_${ render.version }`);
 
             const params = undotify(req.query);
-            const receivedParams = getParams(params, req, res);
-            // default buyerCountry to pp geo loc if not passed through sdk
-            const { clientID, currency, intent, commit, vault, buyerCountry = req.get(HTTP_HEADER.PP_GEO_LOC), disableFunding, disableCard, merchantID, buttonSessionID, clientAccessToken, nonce } = receivedParams;
-            const gqlArg = { clientId: clientID, buyerCountry, cookies: req.get('cookie'), ip: req.ip, currency, intent, commit, vault, disableFunding, disableCard, merchantId: merchantID, userAgent: req.headers['user-agent'], buttonSessionId: buttonSessionID, clientAccessToken };
+
+            const { clientID, currency, intent, commit, vault, buyerCountry = req.get(HTTP_HEADER.PP_GEO_LOC),
+                disableFunding, disableCard, merchantID, buttonSessionID, clientAccessToken, cspNonce } = getParams(params, req, res);
+            
             let fundingEligibility;
+            
             try {
-                fundingEligibility = await getFundingEligibility(req, gqlArg);
+                const ip = req.ip;
+                const cookies = req.get('cookie');
+                const userAgent = req.get('user-agent');
+                const clientId = clientID;
+                const merchantId = merchantID;
+                const buttonSessionId = buttonSessionID;
+
+                fundingEligibility = await getFundingEligibility(req, {
+                    clientId, merchantId, buyerCountry, cookies, ip, currency, intent, commit,
+                    vault, disableFunding, disableCard, userAgent, buttonSessionId, clientAccessToken });
+
             } catch (err) {
                 logger.error(req, 'gql_errored_for_fundingEligibility', { err: err.stack ? err.stack : err.toString() });
                 fundingEligibility = {
@@ -70,21 +81,21 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
                 return clientErrorResponse(res, 'Please provide a fundingEligibility query parameter');
             }
 
-            const buttonHTML = render.button.Buttons({ ...params, nonce, csp: { nonce }, fundingEligibility }).render(html());
+            const buttonHTML = render.button.Buttons({ ...params, nonce: cspNonce, csp: { nonce: cspNonce }, fundingEligibility }).render(html());
 
             const pageHTML = `
-                <body data-nonce="${ nonce }" data-client-version="${ client.version }" data-render-version="${ render.version }">
-                    <style nonce="${ nonce }">
+                <body data-nonce="${ cspNonce }" data-client-version="${ client.version }" data-render-version="${ render.version }">
+                    <style nonce="${ cspNonce }">
                         ${ buttonStyle }
                     </style>
                     <div id="buttons-container" class="buttons-container">
                         ${ buttonHTML }
                     </div>
                     <div id="card-fields-container" class="card-fields-container"></div>
-                    ${ getSDKLoader({ nonce }) }
-                    <script nonce="${ nonce }">${ client.script }</script>
-                    <script nonce="${ nonce }">spb.setupButton(${ safeJSON({ fundingEligibility, buyerCountry }) })</script>
-                    ${ FRAUDNET_ENABLED ? renderFraudnetScript({ id: buttonSessionID, nonce }) : '' }
+                    ${ getSDKLoader({ cspNonce }) }
+                    <script nonce="${ cspNonce }">${ client.script }</script>
+                    <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON({ fundingEligibility, buyerCountry, cspNonce }) })</script>
+                    ${ FRAUDNET_ENABLED ? renderFraudnetScript({ id: buttonSessionID, cspNonce }) : '' }
                 </body>
             `;
 

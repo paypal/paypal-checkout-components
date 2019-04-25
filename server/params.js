@@ -46,7 +46,7 @@ type RequestParams = {|
     merchantID : ?string,
     buttonSessionID : string,
     clientAccessToken : ?string,
-    nonce : string
+        cspNonce : string
 |};
 
 export function getParams(params : ParamsType, req : ExpressRequest, res : ExpressResponse) : RequestParams {
@@ -70,7 +70,7 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         lang = COUNTRY_LANGS[country][0]
     } = locale;
 
-    const nonce = getNonce(res);
+    const cspNonce = getNonce(res);
 
     return {
         clientID,
@@ -87,6 +87,6 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         merchantID,
         buttonSessionID,
         clientAccessToken,
-        nonce
+        cspNonce
     };
 }

@@ -18,8 +18,10 @@ describe('eligibility cases', () => {
             });
 
             await setupButton({
-                [ FUNDING.VENMO ]: {
-                    eligible: true
+                fundingEligibility: {
+                    [ FUNDING.VENMO ]: {
+                        eligible: true
+                    }
                 }
             });
         });

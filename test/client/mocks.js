@@ -6,6 +6,8 @@ import { values } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants';
 import { INTENT, CURRENCY, CARD } from '@paypal/sdk-constants/src';
 
+import { triggerKeyPress } from './util';
+
 export function setupMocks() {
 
     window.config = {
@@ -31,16 +33,23 @@ export function setupMocks() {
             return {
                 renderTo: () => {
                     return props.createOrder().then(orderID => {
-                        return props.onApprove({
-                            orderID,
-                            payerID: 'AAABBBCCC'
+                        return ZalgoPromise.delay(50).then(() => {
+                            return props.onApprove({
+                                orderID,
+                                payerID: 'AAABBBCCC'
+                            });
                         });
-                    }).then(() => {
-                        return props.onClose();
                     });
                 },
                 close: () => {
-                    throw new Error(`Checkout component closed`);
+                    return ZalgoPromise.delay(50).then(() => {
+                        if (props.onClose) {
+                            return props.onClose();
+                        }
+                    });
+                },
+                onError: (err) => {
+                    throw err;
                 }
             };
         }
@@ -74,12 +83,8 @@ export function setupMocks() {
         onError: (err) => {
             throw err;
         },
-        funding: {
-            allowed:    [],
-            disallowed: [],
-            remember:   () => {
-                // pass
-            }
+        remember: () => {
+            return ZalgoPromise.resolve();
         },
         getPrerenderDetails: () => ZalgoPromise.resolve(),
         getParent:           () => window
@@ -93,18 +98,30 @@ export function setupMocks() {
 setupMocks();
 patchXmlHttpRequest();
 
-export function getMockCheckoutInstance() : { closeComponent : () => ZalgoPromise<void>, close : () => ZalgoPromise<void> } {
+export function mockFunction<T, A>(obj : mixed, prop : string, mock : ({ args : $ReadOnlyArray<A>, original : (...args: $ReadOnlyArray<A>) => T }) => T) : { cancel : () => void } {
+    // $FlowFixMe
+    const original = obj[prop];
+    // $FlowFixMe
+    obj[prop] = (...args) => {
+        return mock({ args, original });
+    };
     return {
-        closeComponent: () => {
-            return window.Promise.resolve();
-        },
-        close: () => {
-            return window.Promise.resolve();
+        cancel: () => {
+            // $FlowFixMe
+            obj[prop] = original;
         }
     };
 }
 
-const DEFAULT_FUNDING_ELIGIBILITY = {
+export function clickButton(fundingSource? : string = FUNDING.PAYPAL) {
+    window.document.querySelector(`button[data-funding-source=${ fundingSource }]`).click();
+}
+
+export function enterButton(fundingSource? : string = FUNDING.PAYPAL) {
+    triggerKeyPress(window.document.querySelector(`button[data-funding-source=${ fundingSource }]`), 13);
+}
+
+export const DEFAULT_FUNDING_ELIGIBILITY = {
     [ FUNDING.PAYPAL ]: {
         eligible: true
     }

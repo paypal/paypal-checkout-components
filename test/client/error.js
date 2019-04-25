@@ -1,101 +1,74 @@
 /* @flow */
-/* eslint require-await: off */
+/* eslint require-await: off, max-nested-callbacks: off */
 
 import { FUNDING } from '@paypal/sdk-constants/src';
+import { wrapPromise, noop } from 'belter/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, getMockCheckoutInstance } from './mocks';
+import { createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, clickButton, mockFunction } from './mocks';
 
 describe('error cases', () => {
 
+    beforeEach(() => {
+        // eslint-disable-next-line unicorn/prefer-add-event-listener
+        window.onerror = noop;
+    });
+
     it('should call xprops.onError for any onApprove error', async () => {
+        return await wrapPromise(async ({ expect, expectError }) => {
 
-        let onApprove;
-        let onApproveCalled = false;
-        let errorCalled = false;
-        const error = new Error(`Something went wrong`);
+            const error = new Error(`Something went wrong`);
 
-        window.xprops.onError = (err) => {
-            if (err !== error) {
-                throw new Error(`Expected errors to match`);
-            }
+            window.xprops.onApprove = expectError('onApprove', async () => {
+                throw error;
+            });
 
-            errorCalled = true;
-        };
-
-        window.xprops.onApprove = async () => {
-            onApproveCalled = true;
-            throw error;
-        };
-
-        window.paypal.Checkout = (props) => {
-            return {
-                renderTo: async () => {
-                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID: 'XXXXX', payerID: 'YYYYY' });
+            window.xprops.onError = expect('onError', (err) => {
+                if (err !== error) {
+                    throw new Error(`Expected errors to match`);
                 }
-            };
-        };
+            });
 
-        window.document.body.innerHTML = createButtonHTML();
+            window.document.body.innerHTML = createButtonHTML();
 
-        setupButton({});
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
-
-        await onApprove;
-
-        if (!onApprove || !onApproveCalled) {
-            throw new Error(`Expected onApprove to have been called`);
-        }
-
-        if (!errorCalled) {
-            throw new Error(`Expected window.xprops.onError to be called`);
-        }
+            clickButton(FUNDING.PAYPAL);
+        });
     });
 
     it('should call xprops.onError for any onCancel error', async () => {
+        return await wrapPromise(async ({ expect, expectError }) => {
+            const orderID = 'XXXXXXXXXX';
 
-        let onCancel;
-        let onCancelCalled = false;
-        let errorCalled = false;
-        const error = new Error(`Something went wrong`);
+            const error = new Error(`Something went wrong`);
 
-        window.xprops.onError = (err) => {
-            if (err !== error) {
-                throw new Error(`Expected errors to match -- got "${ err.message }", expected "${ error.message }"`);
-            }
+            window.xprops.onCancel = expectError('onCancel', async () => {
+                throw error;
+            });
 
-            errorCalled = true;
-        };
-
-        window.xprops.onCancel = () => {
-            onCancelCalled = true;
-            throw error;
-        };
-
-        window.paypal.Checkout = (props) => {
-            return {
-                renderTo: async () => {
-                    onCancel = props.onCancel.call(getMockCheckoutInstance(), { payerID: 'YYYYYY' });
+            window.xprops.onError = expect('onError', (err) => {
+                if (err !== error) {
+                    throw new Error(`Expected errors to match`);
                 }
-            };
-        };
+            });
 
-        window.document.body.innerHTML = createButtonHTML();
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+                const checkoutInstance = CheckoutOriginal(props);
 
-        setupButton({});
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async () => {
+                    return props.onCancel({ orderID });
+                }));
 
-        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
+                return checkoutInstance;
+            }));
 
-        await onCancel;
+            window.document.body.innerHTML = createButtonHTML();
 
-        if (!onCancel || !onCancelCalled) {
-            throw new Error(`Expected onCancel to have been called`);
-        }
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-        if (!errorCalled) {
-            throw new Error(`Expected window.xprops.onError to be called`);
-        }
+            clickButton(FUNDING.PAYPAL);
+        });
     });
 });

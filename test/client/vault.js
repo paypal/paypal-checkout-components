@@ -6,7 +6,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, validatePaymentMethodApiMock } from './mocks';
+import { createButtonHTML, validatePaymentMethodApiMock, DEFAULT_FUNDING_ELIGIBILITY, clickButton } from './mocks';
 
 describe('vault cases', () => {
 
@@ -29,9 +29,9 @@ describe('vault cases', () => {
             });
 
             window.document.body.innerHTML = createButtonHTML();
-            await setupButton({});
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
+            clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -59,9 +59,9 @@ describe('vault cases', () => {
             };
 
             window.document.body.innerHTML = createButtonHTML(fundingEligibility);
-            await setupButton(fundingEligibility);
+            await setupButton({ fundingEligibility });
 
-            window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
+            clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -92,14 +92,17 @@ describe('vault cases', () => {
                     eligible:           true,
                     vaultedInstruments: [
                         {
-                            id: paymentMethodID
+                            id:    paymentMethodID,
+                            label: {
+                                description: 'foo@bar.com'
+                            }
                         }
                     ]
                 }
             };
 
             window.document.body.innerHTML = createButtonHTML(fundingEligibility);
-            await setupButton(fundingEligibility);
+            await setupButton({ fundingEligibility });
 
             window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }][data-payment-method-id]`).click();
         });
@@ -138,7 +141,10 @@ describe('vault cases', () => {
                             eligible:           true,
                             vaultedInstruments: [
                                 {
-                                    id: paymentMethodID
+                                    id:    paymentMethodID,
+                                    label: {
+                                        description: 'Visa x-1234'
+                                    }
                                 }
                             ]
                         }
@@ -147,7 +153,7 @@ describe('vault cases', () => {
             };
 
             window.document.body.innerHTML = createButtonHTML(fundingEligibility);
-            await setupButton(fundingEligibility);
+            await setupButton({ fundingEligibility });
 
             window.document.querySelector(`button[data-funding-source=${ FUNDING.CARD }][data-payment-method-id]`).click();
         });

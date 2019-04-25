@@ -7,7 +7,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML } from './mocks';
+import { createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY } from './mocks';
 
 describe('prerender cases', () => {
 
@@ -15,58 +15,32 @@ describe('prerender cases', () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
             const orderID = 'XXXXXXXXXX';
-            const payerID = 'YYYYYYYYYY';
 
             const win = {
                 close: avoid('close')
             };
 
-            window.xprops.getPrerenderDetails = () => {
+            window.xprops.getPrerenderDetails = expect('getPrerenderDetails', () => {
                 return ZalgoPromise.try(() => {
                     return {
                         win,
                         fundingSource: FUNDING.PAYPAL
                     };
                 });
-            };
-
-            window.xprops.createOrder = expect('createOrder', async () => {
-                return orderID;
             });
+
+            window.xprops.createOrder = expect('createOrder', async () => ZalgoPromise.resolve(orderID));
 
             window.xprops.onApprove = expect('onApprove', async (data) => {
-                if (data.orderID !== orderID) {
-                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
-                }
-
-                if (data.payerID !== payerID) {
-                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
-                }
-            });
-
-            window.paypal.Checkout = expect('Checkout', (props) => {
-                if (props.window !== win) {
-                    throw new Error(`Expected window prop to be passed`);
-                }
-
-                return {
-                    renderTo: expect('renderTo', async () => {
-                        return props.createOrder().then(id => {
-                            if (id !== orderID) {
-                                throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
-                            }
-
-                            return props.onApprove({ orderID, payerID }, {});
-
-                        }).then(() => {
-                            return props.onClose();
-                        });
-                    })
-                };
+                return ZalgoPromise.try(() => {
+                    if (data.orderID !== orderID) {
+                        throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                    }
+                });
             });
 
             window.document.body.innerHTML = createButtonHTML();
-            await setupButton({});
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 
@@ -79,38 +53,25 @@ describe('prerender cases', () => {
                 close: avoid('close')
             };
 
-            window.xprops.getPrerenderDetails = () => {
+            window.xprops.getPrerenderDetails = expect('getPrerenderDetails', () => {
                 return ZalgoPromise.try(() => {
                     return {
                         win,
                         fundingSource: FUNDING.PAYPAL
                     };
                 });
-            };
-
-            window.xprops.onInit = (data, actions) => {
-                return actions.enable();
-            };
-
-            window.xprops.onClick = expect('onClick');
-
-            window.xprops.createOrder = expect('createOrder', () => orderID);
-
-            window.paypal.Checkout = expect('Checkout', (props) => {
-                if (props.window !== win) {
-                    throw new Error(`Expected window prop to be passed`);
-                }
-
-                return {
-                    close:    avoid('close'),
-                    renderTo: expect('renderTo', async () => {
-                        return props.createOrder().then(expect('createOrderThen'));
-                    })
-                };
             });
 
+            window.xprops.onInit = expect('onInit', (data, actions) => {
+                return actions.enable();
+            });
+
+            window.xprops.onClick = expect('onClick', () => ZalgoPromise.resolve());
+
+            window.xprops.createOrder = expect('createOrder', async () => ZalgoPromise.resolve(orderID));
+
             window.document.body.innerHTML = createButtonHTML();
-            await setupButton({});
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 
@@ -121,35 +82,26 @@ describe('prerender cases', () => {
                 close: expect('close')
             };
 
-            window.xprops.getPrerenderDetails = () => {
+            window.xprops.getPrerenderDetails = expect('getPrerenderDetails', () => {
                 return ZalgoPromise.try(() => {
                     return {
                         win,
                         fundingSource: FUNDING.PAYPAL
                     };
                 });
-            };
+            });
 
-            window.xprops.onInit = (data, actions) => {
+            window.xprops.onInit = expect('onInit', (data, actions) => {
                 return actions.disable();
-            };
+            });
 
-            window.xprops.onClick = expect('onClick');
+            window.xprops.onClick = expect('onClick', () => ZalgoPromise.resolve());
 
-            window.xprops.createOrder = avoid('createOrder');
-            window.xprops.onApprove = avoid('onApprove');
-            window.paypal.Checkout = (props) => {
-                if (props.window !== win) {
-                    throw new Error(`Expected window prop to be passed`);
-                }
-
-                return {
-                    renderTo: avoid('renderTo')
-                };
-            };
+            window.xprops.createOrder = avoid('createOrder', () => ZalgoPromise.reject(new Error(`Avoid createOrder`)));
+            window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.reject(new Error(`Avoid onApprove`)));
 
             window.document.body.innerHTML = createButtonHTML();
-            await setupButton({});
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 
@@ -162,14 +114,14 @@ describe('prerender cases', () => {
                 close: avoid('close')
             };
 
-            window.xprops.getPrerenderDetails = () => {
+            window.xprops.getPrerenderDetails = expect('getPrerenderDetails', () => {
                 return ZalgoPromise.try(() => {
                     return {
                         win,
                         fundingSource: FUNDING.PAYPAL
                     };
                 });
-            };
+            });
 
             window.xprops.onInit = (data, actions) => {
                 return actions.disable().then(() => {
@@ -179,27 +131,11 @@ describe('prerender cases', () => {
                 });
             };
 
-            window.xprops.onClick = expect('onClick');
-
-            window.xprops.createOrder = expect('createOrder', () => orderID);
-
-            window.paypal.Checkout = expect('Checkout', (props) => {
-                if (props.window !== win) {
-                    throw new Error(`Expected window prop to be passed`);
-                }
-
-                return {
-                    close:    avoid('close'),
-                    renderTo: expect('renderTo', async () => {
-                        return props.createOrder().then(expect('createOrderThen')).then(() => {
-                            return props.onClose();
-                        });
-                    })
-                };
-            });
+            window.xprops.onClick = expect('onClick', () => ZalgoPromise.resolve());
+            window.xprops.createOrder = expect('createOrder', async () => ZalgoPromise.resolve(orderID));
 
             window.document.body.innerHTML = createButtonHTML();
-            await setupButton({});
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 
@@ -212,39 +148,24 @@ describe('prerender cases', () => {
                 close: avoid('close')
             };
 
-            window.xprops.getPrerenderDetails = () => {
+            window.xprops.getPrerenderDetails = expect('getPrerenderDetails', () => {
                 return ZalgoPromise.try(() => {
                     return {
                         win,
                         fundingSource: FUNDING.PAYPAL
                     };
                 });
-            };
+            });
 
             window.xprops.onClick = expect('onClick', (data, actions) => {
                 return ZalgoPromise.delay(50).then(() => actions.resolve());
             });
 
-            window.xprops.createOrder = expect('createOrder', () => orderID);
-            window.xprops.onApprove = avoid('onApprove');
-
-            window.paypal.Checkout = expect('Checkout', (props) => {
-                if (props.window !== win) {
-                    throw new Error(`Expected window prop to be passed`);
-                }
-
-                return {
-                    close:    avoid('close'),
-                    renderTo: expect('renderTo', async () => {
-                        return props.createOrder().then(expect('createOrderThen')).then(() => {
-                            return props.onClose();
-                        });
-                    })
-                };
-            });
+            window.xprops.createOrder = expect('createOrder', async () => ZalgoPromise.resolve(orderID));
+            window.xprops.onApprove = expect('onApprove', () => ZalgoPromise.resolve());
 
             window.document.body.innerHTML = createButtonHTML();
-            await setupButton({});
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 
@@ -255,40 +176,24 @@ describe('prerender cases', () => {
                 close: expect('close')
             };
 
-            window.xprops.getPrerenderDetails = () => {
+            window.xprops.getPrerenderDetails = expect('getPrerenderDetails', () => {
                 return ZalgoPromise.try(() => {
                     return {
                         win,
                         fundingSource: FUNDING.PAYPAL
                     };
                 });
-            };
+            });
 
             window.xprops.onClick = expect('onClick', (data, actions) => {
                 return ZalgoPromise.delay(50).then(() => actions.reject());
             });
 
-            window.xprops.createOrder = avoid('createOrder');
-            window.xprops.onApprove = avoid('onApprove');
-
-            window.paypal.Checkout = expect('Checkout', (props) => {
-                if (props.window !== win) {
-                    throw new Error(`Expected window prop to be passed`);
-                }
-
-                return {
-                    close:    expect('close', () => {
-                        return props.window.close();
-                    }),
-                    renderTo: expect('renderTo', async () => {
-                        return props.createOrder().then(avoid('createOrderThen'))
-                            .timeout(50).catch(expect('timeout'));
-                    })
-                };
-            });
+            window.xprops.createOrder = avoid('createOrder', () => ZalgoPromise.reject(new Error(`Avoid createOrder`)));
+            window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.reject(new Error(`Avoid onApprove`)));
 
             window.document.body.innerHTML = createButtonHTML();
-            await setupButton({});
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 });

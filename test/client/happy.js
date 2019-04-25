@@ -1,5 +1,5 @@
 /* @flow */
-/* eslint require-await: off, max-lines: off */
+/* eslint require-await: off, max-lines: off, max-nested-callbacks: off */
 
 import { wrapPromise } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
@@ -7,8 +7,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, getMockCheckoutInstance,
-    getOrderApiMock, captureOrderApiMock, authorizeOrderApiMock, patchOrderApiMock } from './mocks';
+import { createButtonHTML, getOrderApiMock, captureOrderApiMock, authorizeOrderApiMock, patchOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, enterButton } from './mocks';
 import { triggerKeyPress } from './util';
 
 describe('happy cases', () => {
@@ -20,7 +19,9 @@ describe('happy cases', () => {
             const payerID = 'YYYYYYYYYY';
 
             window.xprops.createOrder = expect('createOrder', async () => {
-                return orderID;
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
             });
 
             window.xprops.onApprove = expect('onApprove', async (data) => {
@@ -33,30 +34,88 @@ describe('happy cases', () => {
                 }
             });
 
-            window.paypal.Checkout = (props) => {
-                return {
-                    renderTo: expect('renderTo', async () => {
-                        // eslint-disable-next-line max-nested-callbacks
-                        return props.createOrder().then(id => {
-                            if (id !== orderID) {
-                                throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
-                            }
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
-                            return props.onApprove({ orderID, payerID }, {});
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID }, actions);
+                }));
 
-                        // eslint-disable-next-line max-nested-callbacks
-                        }).then(() => {
-                            return props.onClose();
-                        });
-                    })
-                };
-            };
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
 
             window.document.body.innerHTML = createButtonHTML();
 
-            await setupButton({});
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
+            clickButton(FUNDING.PAYPAL);
+        });
+    });
+
+    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with a paymentID', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            const orderID = 'XXXXXXXXXX';
+            const payerID = 'YYYYYYYYYY';
+            const paymentID = 'ZZZZZZ';
+
+            window.xprops.createOrder = expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            });
+
+            window.xprops.onApprove = expect('onApprove', async (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+
+                if (data.paymentID !== paymentID) {
+                    throw new Error(`Expected paymentID to be ${ paymentID }, got ${ data.paymentID }`);
+                }
+            });
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID, paymentID }, actions);
+                }));
+
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            window.document.body.innerHTML = createButtonHTML();
+
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -70,7 +129,9 @@ describe('happy cases', () => {
             window.xprops.createOrder = avoid('createOrder');
 
             window.xprops.createBillingAgreement = expect('createBillingAgreement', async () => {
-                return billingToken;
+                return ZalgoPromise.try(() => {
+                    return billingToken;
+                });
             });
 
             window.xprops.onApprove = expect('onApprove', async (data) => {
@@ -83,566 +144,431 @@ describe('happy cases', () => {
                 }
             });
 
-            window.paypal.Checkout = (props) => {
-                return {
-                    renderTo: expect('renderTo', async () => {
-                        return props.createOrder().then(id => {
-                            if (id !== orderID) {
-                                throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
-                            }
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
-                            return props.onApprove({ billingToken, payerID }, {});
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID, billingToken }, actions);
+                }));
 
-                        }).then(() => {
-                            return props.onClose();
-                        });
-                    })
-                };
-            };
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
 
             window.document.body.innerHTML = createButtonHTML();
 
-            await setupButton({});
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
+            clickButton(FUNDING.PAYPAL);
         });
     });
     
     it('should render a button, press enter on the button, and render checkout', async () => {
-    
-        let renderToCalled = false;
-    
-        window.paypal.Checkout = (props) => {
-            return {
-                renderTo: async () => {
-                    renderToCalled = true;
+        return await wrapPromise(async ({ expect }) => {
 
-                    return props.onClose();
+            const orderID = 'XXXXXXXXXX';
+            const payerID = 'YYYYYYYYYY';
+
+            window.xprops.createOrder = expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            });
+
+            window.xprops.onApprove = expect('onApprove', async (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
-            };
-        };
-    
-        window.document.body.innerHTML = createButtonHTML();
-    
-        await setupButton({});
-    
-        triggerKeyPress(window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`), 13);
-    
-        if (!renderToCalled) {
-            throw new Error(`Expected renderTo to be called`);
-        }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+            });
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID }, actions);
+                }));
+
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            window.document.body.innerHTML = createButtonHTML();
+
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            triggerKeyPress(window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`), 13);
+        });
     });
     
     it('should render a button, click the button, and call onClick', async () => {
-    
-        let onClickCalled = false;
-    
-        window.xprops.onClick = async () => {
-            onClickCalled = true;
-        };
-    
-        window.document.body.innerHTML = createButtonHTML();
-    
-        await setupButton({});
-    
-        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
-    
-        if (!onClickCalled) {
-            throw new Error(`Expected onClick to be called`);
-        }
+        return await wrapPromise(async ({ expect }) => {
+            window.xprops.onClick = expect('onClick', () => ZalgoPromise.resolve());
+
+            window.document.body.innerHTML = createButtonHTML();
+
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            clickButton(FUNDING.PAYPAL);
+        });
     });
     
     it('should render a button, press enter on the button, and call onClick', async () => {
-        
-        let onClickCalled = false;
-    
-        window.xprops.onClick = async () => {
-            onClickCalled = true;
-        };
-    
-        window.document.body.innerHTML = createButtonHTML();
-    
-        await setupButton({});
-    
-        triggerKeyPress(window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`), 13);
-    
-        if (!onClickCalled) {
-            throw new Error(`Expected onClick to be called`);
-        }
+        return await wrapPromise(async ({ expect }) => {
+            window.xprops.onClick = expect('onClick', () => ZalgoPromise.resolve());
+
+            window.document.body.innerHTML = createButtonHTML();
+
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            enterButton(FUNDING.PAYPAL);
+        });
     });
 
-    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent', async () => {
+    it('should render a button, click the button, and render checkout, then call onCancel', async () => {
+        return await wrapPromise(async ({ expect }) => {
 
-        const orderID = 'XXXXXX';
-        const payerID = 'YYYYYY';
-    
-        let onApprove;
-        let onApproveCalled = false;
+            const orderID = 'XXXXXXXXXX';
 
-        window.xprops.onApprove = async (data) => {
-            if (data.orderID !== orderID) {
-                throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
-            }
+            window.xprops.createOrder = expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            });
 
-            if (data.payerID !== payerID) {
-                throw new Error(`Expected orderID to be ${ payerID }, got ${ data.payerID }`);
-            }
-
-            onApproveCalled = true;
-        };
-
-        window.paypal.Checkout = (props) => {
-            return {
-                renderTo: async () => {
-                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+            window.xprops.onCancel = expect('onCancel', async (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
-            };
-        };
-    
-        window.document.body.innerHTML = createButtonHTML();
-    
-        await setupButton({});
-    
-        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
+            });
 
-        await onApprove;
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+                const checkoutInstance = CheckoutOriginal(props);
 
-        if (!onApprove || !onApproveCalled) {
-            throw new Error(`Expected onApprove to have been called`);
-        }
-    });
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async () => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
 
-    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with a paymentID', async () => {
-
-        const orderID = 'XXXXXX';
-        const payerID = 'YYYYYY';
-        const paymentID = 'ZZZZZZ';
-
-        let onApprove;
-        let onApproveCalled = false;
-
-        window.xprops.onApprove = async (data) => {
-            if (data.paymentID !== paymentID) {
-                throw new Error(`Expected paymentID to be ${ paymentID }, got ${ data.paymentID }`);
-            }
-
-            onApproveCalled = true;
-        };
-
-        window.paypal.Checkout = (props) => {
-            return {
-                renderTo: async () => {
-                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID, paymentID });
-                }
-            };
-        };
-
-        window.document.body.innerHTML = createButtonHTML();
-
-        await setupButton({});
-
-        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
-
-        await onApprove;
-
-        if (!onApprove || !onApproveCalled) {
-            throw new Error(`Expected onApprove to have been called`);
-        }
-    });
-
-    it('should render a button, click the button, and render checkout, then pass onCancel callback to the parent', async () => {
-
-        let onCancel;
-        let onCancelCalled = false;
-
-        window.xprops.onCancel = () => {
-            onCancelCalled = true;
-        };
-
-        window.paypal.Checkout = (props) => {
-            return {
-                renderTo: async () => {
-                    onCancel = props.onCancel.call(getMockCheckoutInstance(), {});
-                }
-            };
-        };
-
-        window.document.body.innerHTML = createButtonHTML();
-
-        await setupButton({});
-
-        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
-
-        await onCancel;
-
-        if (!onCancel || !onCancelCalled) {
-            throw new Error(`Expected onCancel to have been called`);
-        }
-    });
-
-    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with the correct data', async () => {
-    
-        const orderID = 'XXXXXXXXXX';
-        const payerID = 'YYYYYYYYYY';
-
-        let onApprove;
-        let onApproveCalled = false;
-
-        window.xprops.onApprove = async (data) => {
-
-            if (data.orderID !== orderID) {
-                throw new Error(`Expected data.orderID to be ${ orderID }, got ${ data.orderID }`);
-            }
-
-            if (data.orderID !== orderID) {
-                throw new Error(`Expected data.orderID to be ${ orderID }, got ${ data.orderID }`);
-            }
-
-            onApproveCalled = true;
-        };
-
-        window.paypal.Checkout = (props) => {
-            return {
-                renderTo: async () => {
-                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
-                }
-            };
-        };
-    
-        window.document.body.innerHTML = createButtonHTML();
-    
-        await setupButton({});
-    
-        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
-
-        await onApprove;
-
-        if (!onApprove || !onApproveCalled) {
-            throw new Error(`Expected onApprove to have been called`);
-        }
-    });
-
-    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.restart', async () => {
-    
-        const orderID = 'XXXXXXX';
-        const payerID = 'YYYYYYYYYY';
-
-        let onApprove;
-        let onApproveCalled = false;
-        let didRestart = false;
-
-        window.xprops.onApprove = async (data, actions) => {
-            if (didRestart) {
-                onApproveCalled = true;
-            } else {
-                didRestart = true;
-                onApprove = null;
-                actions.restart();
-            }
-        };
-
-        window.paypal.Checkout = (props) => {
-            return {
-                renderTo: async () => {
-                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
-                },
-                close: () => {
-                    return ZalgoPromise.resolve().then(() => {
-                        return props.onClose();
+                        return props.onCancel({ orderID });
                     });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            window.document.body.innerHTML = createButtonHTML();
+
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            clickButton(FUNDING.PAYPAL);
+        });
+    });
+
+    it('should render a button, click the button, and render checkout, onApprove, restart and call onApprove again', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+
+            const orderID = 'XXXXXXXXXX';
+            const payerID = 'YYYYYYYYYY';
+
+            window.xprops.createOrder = expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            });
+
+            let onApprove = async (data, actions) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+
+                onApprove = expect('onApprove2', async (data2) => {
+                    if (data2.orderID !== orderID) {
+                        throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                    }
+
+                    if (data2.payerID !== payerID) {
+                        throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                    }
+                });
+
+                actions.restart().then(avoid('restartThen'));
             };
-        };
-    
-        window.document.body.innerHTML = createButtonHTML();
-    
-        await setupButton({});
-    
-        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
 
-        await onApprove;
+            window.xprops.onApprove = expect('onApprove', (data, actions) => onApprove(data, actions));
 
-        if (!onApprove || !onApproveCalled) {
-            throw new Error(`Expected onApprove to have been called`);
-        }
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID }, actions);
+                }));
+
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            window.document.body.innerHTML = createButtonHTML();
+
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            clickButton(FUNDING.PAYPAL);
+        });
     });
 
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.get', async () => {
+        return await wrapPromise(async ({ expect }) => {
 
-        const orderID = 'XXXXXXXXXX';
-        const payerID = 'YYYYYYYYYY';
+            const orderID = 'XXXXXXXXXX';
+            const payerID = 'YYYYYYYYYY';
 
-        let onApprove;
-        let onApproveCalled = false;
+            window.xprops.createOrder = expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            });
 
-        window.xprops.onApprove = async (data, actions) => {
+            window.xprops.onApprove = expect('onApprove', async (data, actions) => {
+                const getOrderMock = getOrderApiMock();
+                getOrderMock.expectCalls();
+                await actions.order.get();
+                getOrderMock.done();
 
-            const getOrderMock = getOrderApiMock();
-            getOrderMock.expectCalls();
-            await actions.order.get();
-            getOrderMock.done();
-
-            onApproveCalled = true;
-        };
-
-        window.paypal.Checkout = (props) => {
-            return {
-                renderTo: async () => {
-                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
-            };
-        };
 
-        window.document.body.innerHTML = createButtonHTML();
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+            });
 
-        await setupButton({});
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
-        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID }, actions);
+                }));
 
-        await onApprove;
+                const checkoutInstance = CheckoutOriginal(props);
 
-        if (!onApprove || !onApproveCalled) {
-            throw new Error(`Expected onApprove to have been called`);
-        }
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            window.document.body.innerHTML = createButtonHTML();
+
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            clickButton(FUNDING.PAYPAL);
+        });
     });
 
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture', async () => {
+        return await wrapPromise(async ({ expect }) => {
 
-        const orderID = 'XXXXXXXXXX';
-        const payerID = 'YYYYYYYYYY';
+            const orderID = 'XXXXXXXXXX';
+            const payerID = 'YYYYYYYYYY';
 
-        let onApprove;
-        let onApproveCalled = false;
+            window.xprops.createOrder = expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            });
 
-        window.xprops.onApprove = async (data, actions) => {
+            window.xprops.onApprove = expect('onApprove', async (data, actions) => {
+                const captureOrderMock = captureOrderApiMock();
+                captureOrderMock.expectCalls();
+                await actions.order.capture();
+                captureOrderMock.done();
 
-            const captureOrderMock = captureOrderApiMock();
-            captureOrderMock.expectCalls();
-            await actions.order.capture();
-            captureOrderMock.done();
-
-            onApproveCalled = true;
-        };
-
-        window.paypal.Checkout = (props) => {
-            return {
-                renderTo: async () => {
-                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
-            };
-        };
 
-        window.document.body.innerHTML = createButtonHTML();
-
-        await setupButton({});
-
-        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
-
-        await onApprove;
-
-        if (!onApprove || !onApproveCalled) {
-            throw new Error(`Expected onApprove to have been called`);
-        }
-    });
-
-    it('should render a button, click the button, and render checkout, then pass onShippingChange callback to the parent with actions.order.patch', async () => {
-
-        const orderID = 'XXXXXXXXXX';
-
-        let onShippingChange;
-        let onShippingChangeCalled = false;
-
-        window.xprops.onShippingChange = async (data, actions) => {
-
-            const patchOrderMock = patchOrderApiMock();
-            patchOrderMock.expectCalls();
-            await actions.order.patch();
-            patchOrderMock.done();
-
-            onShippingChangeCalled = true;
-        };
-
-        window.paypal.Checkout = (props) => {
-            return {
-                renderTo: async () => {
-                    onShippingChange = props.onShippingChange.call(getMockCheckoutInstance(), { orderID });
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                 }
-            };
-        };
+            });
 
-        window.document.body.innerHTML = createButtonHTML();
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
-        await setupButton({});
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID }, actions);
+                }));
 
-        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
+                const checkoutInstance = CheckoutOriginal(props);
 
-        await onShippingChange;
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
 
-        if (!onShippingChange || !onShippingChangeCalled) {
-            throw new Error(`Expected onShippingChange to have been called`);
-        }
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            window.document.body.innerHTML = createButtonHTML();
+
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            clickButton(FUNDING.PAYPAL);
+        });
     });
 
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.authorize', async () => {
+        return await wrapPromise(async ({ expect }) => {
 
-        const orderID = 'XXXXXXXXXX';
-        const payerID = 'YYYYYYYYYY';
+            const orderID = 'XXXXXXXXXX';
+            const payerID = 'YYYYYYYYYY';
 
-        let onApprove;
-        let onApproveCalled = false;
+            window.xprops.createOrder = expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            });
 
-        window.xprops.onApprove = async (data, actions) => {
+            window.xprops.onApprove = expect('onApprove', async (data, actions) => {
+                const authorizeOrderMock = authorizeOrderApiMock();
+                authorizeOrderMock.expectCalls();
+                await actions.order.authorize();
+                authorizeOrderMock.done();
 
-            const authorizeOrderMock = authorizeOrderApiMock();
-            authorizeOrderMock.expectCalls();
-            await actions.order.authorize();
-            authorizeOrderMock.done();
-
-            onApproveCalled = true;
-        };
-
-        window.paypal.Checkout = (props) => {
-            return {
-                renderTo: async () => {
-                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
-            };
-        };
 
-        window.document.body.innerHTML = createButtonHTML();
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+            });
 
-        await setupButton({});
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
-        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID }, actions);
+                }));
 
-        await onApprove;
+                const checkoutInstance = CheckoutOriginal(props);
 
-        if (!onApprove || !onApproveCalled) {
-            throw new Error(`Expected onApprove to have been called`);
-        }
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            window.document.body.innerHTML = createButtonHTML();
+
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            clickButton(FUNDING.PAYPAL);
+        });
     });
 
-    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture call and automatic restart on INSTRUMENT_DECLINED', async () => {
+    it('should render a button, click the button, and render checkout, then pass onShippingChange callback to the parent with actions.order.patch', async () => {
+        return await wrapPromise(async ({ expect }) => {
 
-        const orderID = 'XXXXXXXXXX';
-        const payerID = 'YYYYYYYYYY';
+            const orderID = 'XXXXXXXXXX';
+            const payerID = 'YYYYYYYYYY';
 
-        let onApprove;
-        let onApproveCalled = false;
-        let didRestart = false;
-
-        window.xprops.onApprove = async (data, actions) => {
-            if (didRestart) {
-                onApproveCalled = true;
-            } else {
-                didRestart = true;
-                onApprove = null;
-
-                const captureOrderMock = captureOrderApiMock({
-                    data: {
-                        ack:         'contingency',
-                        contingency: 'UNPROCESSABLE_ENTITY',
-                        data:        {
-                            details: [
-                                {
-                                    issue: 'INSTRUMENT_DECLINED'
-                                }
-                            ]
-                        }
-                    }
+            window.xprops.createOrder = expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
                 });
+            });
 
-                captureOrderMock.expectCalls();
-                actions.order.capture();
-                captureOrderMock.done();
-            }
-        };
+            window.xprops.onShippingChange = expect('onShippingChange', async (data, actions) => {
+                const patchOrderMock = patchOrderApiMock();
+                patchOrderMock.expectCalls();
+                await actions.order.patch();
+                patchOrderMock.done();
+            });
 
-        window.paypal.Checkout = (props) => {
-            return {
-                renderTo: async () => {
-                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
-                },
-                close: () => {
-                    return ZalgoPromise.resolve().then(() => {
-                        return props.onClose();
-                    });
-                }
-            };
-        };
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
-        window.document.body.innerHTML = createButtonHTML();
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID }, actions);
+                }));
 
-        await setupButton({});
+                const checkoutInstance = CheckoutOriginal(props);
 
-        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
-
-        await onApprove;
-
-        if (!onApprove || !onApproveCalled) {
-            throw new Error(`Expected onApprove to have been called`);
-        }
-    });
-
-    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture call and automatic restart on PAYER_ACTION_REQUIRED', async () => {
-
-        const orderID = 'XXXXXXXXXX';
-        const payerID = 'YYYYYYYYYY';
-
-        let onApprove;
-        let onApproveCalled = false;
-        let didRestart = false;
-
-        window.xprops.onApprove = async (data, actions) => {
-            if (didRestart) {
-                onApproveCalled = true;
-            } else {
-                didRestart = true;
-                onApprove = null;
-
-                const captureOrderMock = captureOrderApiMock({
-                    data: {
-                        ack:         'contingency',
-                        contingency: 'UNPROCESSABLE_ENTITY',
-                        data:        {
-                            details: [
-                                {
-                                    issue: 'PAYER_ACTION_REQUIRED'
-                                }
-                            ]
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
                         }
-                    }
-                });
 
-                captureOrderMock.expectCalls();
-                actions.order.capture();
-                captureOrderMock.done();
-            }
-        };
-
-        window.paypal.Checkout = (props) => {
-            return {
-                renderTo: async () => {
-                    onApprove = props.onApprove.call(getMockCheckoutInstance(), { orderID, payerID });
-                },
-                close: () => {
-                    return ZalgoPromise.resolve().then(() => {
-                        return props.onClose();
+                        return props.onShippingChange({ orderID }).then(() => {
+                            return renderToOriginal(...args);
+                        });
                     });
-                }
-            };
-        };
+                }));
 
-        window.document.body.innerHTML = createButtonHTML();
+                return checkoutInstance;
+            }));
 
-        await setupButton({});
+            window.document.body.innerHTML = createButtonHTML();
 
-        window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }]`).click();
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-        await onApprove;
-
-        if (!onApprove || !onApproveCalled) {
-            throw new Error(`Expected onApprove to have been called`);
-        }
+            clickButton(FUNDING.PAYPAL);
+        });
     });
 });

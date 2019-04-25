@@ -3,6 +3,7 @@
 import { setupMocks } from './mocks';
 
 import './happy';
+import './contingency';
 import './funding';
 import './error';
 import './eligibility';

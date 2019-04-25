@@ -4,7 +4,7 @@ import { FNCLS, FRAUDNET_ID } from './config';
 
 const FRAUDNET_URL = 'https://c.paypal.com/da/r/fb.js';
 
-export function renderFraudnetScript({ id, nonce } : { id : string, nonce : string }) : string {
+export function renderFraudnetScript({ id, cspNonce } : { id : string, cspNonce : string }) : string {
 
     const fraudnetConfig = JSON.stringify({
         f: id,
@@ -12,9 +12,9 @@ export function renderFraudnetScript({ id, nonce } : { id : string, nonce : stri
     });
 
     return `
-        <script nonce="${ nonce }" type="application/json" id="fconfig" fncls="${ FNCLS }">
+        <script nonce="${ cspNonce }" type="application/json" id="fconfig" fncls="${ FNCLS }">
             ${ fraudnetConfig }
         </script>
-        <script nonce="${ nonce }" type="text/javascript" src="${ FRAUDNET_URL }" async></script>
+        <script nonce="${ cspNonce }" type="text/javascript" src="${ FRAUDNET_URL }" async></script>
     `;
 }
