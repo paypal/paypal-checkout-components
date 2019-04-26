@@ -19,7 +19,7 @@ describe('funding source cases', () => {
                 }
             }));
 
-            window.document.body.innerHTML = createButtonHTML();
+            createButtonHTML();
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
@@ -43,7 +43,7 @@ describe('funding source cases', () => {
                 }
             };
 
-            window.document.body.innerHTML = createButtonHTML(fundingEligibility);
+            createButtonHTML(fundingEligibility);
 
             await setupButton({ fundingEligibility });
 

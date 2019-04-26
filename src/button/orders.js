@@ -4,13 +4,12 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { INTENT, SDK_QUERY_KEYS, FUNDING } from '@paypal/sdk-constants/src';
 
 import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW, ORDER_ID_PATTERN, ERROR_URL } from '../constants';
-import { CLIENT_CONFIG_ENABLED } from '../config';
 import { updateClientConfig } from '../api';
 import { callGraphQL } from '../api/api';
 
 export function updateButtonClientConfig({ orderID, fundingSource, isCardFields } : { orderID : string, fundingSource : $Values<typeof FUNDING>, isCardFields : boolean }) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
-        if (CLIENT_CONFIG_ENABLED) {
+        if (window.xprops.updateClientConfiguration) {
             return updateClientConfig({
                 orderID,
                 fundingSource,

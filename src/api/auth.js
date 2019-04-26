@@ -3,21 +3,11 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, inlineMemoize, base64encode, request } from 'belter/src';
 
-import { API_URI, AUTH_API_URL } from '../config';
+import { AUTH_API_URL } from '../config';
 import { getLogger } from '../lib';
 import { ACCESS_TOKEN_HEADER } from '../constants';
 
-import { callSmartAPI, addHeaderBuilder } from './api';
-
-export type AuthResponse = {|
-
-|};
-
-export function getAuth() : ZalgoPromise<AuthResponse> {
-    return callSmartAPI({
-        url: API_URI.AUTH
-    });
-}
+import { addHeaderBuilder } from './api';
 
 export function createAccessToken (clientID : string) : ZalgoPromise<string> {
     return inlineMemoize(createAccessToken, () => {

@@ -39,7 +39,7 @@ describe('prerender cases', () => {
                 });
             });
 
-            window.document.body.innerHTML = createButtonHTML();
+            createButtonHTML();
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
@@ -70,7 +70,7 @@ describe('prerender cases', () => {
 
             window.xprops.createOrder = expect('createOrder', async () => ZalgoPromise.resolve(orderID));
 
-            window.document.body.innerHTML = createButtonHTML();
+            createButtonHTML();
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
@@ -100,7 +100,7 @@ describe('prerender cases', () => {
             window.xprops.createOrder = avoid('createOrder', () => ZalgoPromise.reject(new Error(`Avoid createOrder`)));
             window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.reject(new Error(`Avoid onApprove`)));
 
-            window.document.body.innerHTML = createButtonHTML();
+            createButtonHTML();
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
@@ -134,7 +134,7 @@ describe('prerender cases', () => {
             window.xprops.onClick = expect('onClick', () => ZalgoPromise.resolve());
             window.xprops.createOrder = expect('createOrder', async () => ZalgoPromise.resolve(orderID));
 
-            window.document.body.innerHTML = createButtonHTML();
+            createButtonHTML();
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
@@ -164,7 +164,7 @@ describe('prerender cases', () => {
             window.xprops.createOrder = expect('createOrder', async () => ZalgoPromise.resolve(orderID));
             window.xprops.onApprove = expect('onApprove', () => ZalgoPromise.resolve());
 
-            window.document.body.innerHTML = createButtonHTML();
+            createButtonHTML();
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
@@ -192,7 +192,7 @@ describe('prerender cases', () => {
             window.xprops.createOrder = avoid('createOrder', () => ZalgoPromise.reject(new Error(`Avoid createOrder`)));
             window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.reject(new Error(`Avoid onApprove`)));
 
-            window.document.body.innerHTML = createButtonHTML();
+            createButtonHTML();
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });

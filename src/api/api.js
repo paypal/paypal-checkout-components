@@ -65,7 +65,7 @@ export function callGraphQL<T>({ query, variables = {}, headers = {} } : { query
             ...headers
         }
     }).then(({ status, body }) => {
-        const errors = (body.errors || []).filter(error => (error.message !== 'ACCOUNT_CANNOT_BE_FETCHED'));
+        const errors = body.errors || [];
 
         if (errors.length) {
             const message = errors[0].message || JSON.stringify(errors[0]);

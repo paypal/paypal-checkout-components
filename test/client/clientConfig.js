@@ -1,0 +1,258 @@
+/* @flow */
+/* eslint require-await: off, max-lines: off, max-nested-callbacks: off */
+
+import { wrapPromise } from 'belter/src';
+import { FUNDING, CARD } from '@paypal/sdk-constants/src';
+
+import { setupButton } from '../../src';
+
+import { createButtonHTML, clickButton, getGraphQLApiMock, DEFAULT_FUNDING_ELIGIBILITY } from './mocks';
+
+describe('client config cases', () => {
+
+    it('should pass the correct basic values for incontext checkout', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            window.xprops.updateClientConfiguration = true;
+            let clientConfigCalled = false;
+
+            const gqlMock = getGraphQLApiMock({
+                handler: expect('clientConfigCall', ({ data }) => {
+                    if (!data.query.includes('mutation UpdateClientConfig')) {
+                        return {};
+                    }
+
+                    if (!data.variables.orderID) {
+                        throw new Error(`Expected orderID to be passed`);
+                    }
+
+                    if (data.variables.integrationArtifact !== 'PAYPAL_JS_SDK') {
+                        throw new Error(`Expected integrationArtifact to be PAYPAL_JS_SDK, got ${ data.variables.integrationArtifact }`);
+                    }
+
+                    if (data.variables.productFlow !== 'SMART_PAYMENT_BUTTONS') {
+                        throw new Error(`Expected productFlow to be SMART_PAYMENT_BUTTONS, got ${ data.variables.productFlow }`);
+                    }
+
+                    if (data.variables.userExperienceFlow !== 'INCONTEXT') {
+                        throw new Error(`Expected userExperienceFlow to be INCONTEXT, got ${ data.variables.userExperienceFlow }`);
+                    }
+
+                    clientConfigCalled = true;
+                    return {};
+                })
+            }).expectCalls();
+
+            window.xprops.onApprove = expect('onApprove', async () => {
+                gqlMock.disable();
+
+                if (!clientConfigCalled) {
+                    throw new Error(`Expected clientConfig mutation to be called`);
+                }
+            });
+
+            createButtonHTML();
+
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            clickButton(FUNDING.PAYPAL);
+        });
+    });
+
+    it('should pass the correct basic values for inline card fields', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            window.xprops.updateClientConfiguration = true;
+            window.xprops.enableInlineGuest = true;
+
+            let clientConfigCalled = false;
+
+            const gqlMock = getGraphQLApiMock({
+                handler: expect('clientConfigCall', ({ data }) => {
+                    if (!data.query.includes('mutation UpdateClientConfig')) {
+                        return {};
+                    }
+
+                    if (!data.variables.orderID) {
+                        throw new Error(`Expected orderID to be passed`);
+                    }
+
+                    if (data.variables.integrationArtifact !== 'PAYPAL_JS_SDK') {
+                        throw new Error(`Expected integrationArtifact to be PAYPAL_JS_SDK, got ${ data.variables.integrationArtifact }`);
+                    }
+
+                    if (data.variables.productFlow !== 'SMART_PAYMENT_BUTTONS') {
+                        throw new Error(`Expected productFlow to be SMART_PAYMENT_BUTTONS, got ${ data.variables.productFlow }`);
+                    }
+
+                    if (data.variables.userExperienceFlow !== 'INLINE') {
+                        throw new Error(`Expected userExperienceFlow to be INLINE, got ${ data.variables.userExperienceFlow }`);
+                    }
+
+                    clientConfigCalled = true;
+                    return {};
+                })
+            }).expectCalls();
+
+            window.xprops.onApprove = expect('onApprove', async () => {
+                gqlMock.disable();
+
+                if (!clientConfigCalled) {
+                    throw new Error(`Expected clientConfig mutation to be called`);
+                }
+            });
+
+            const fundingEligibility = {
+                [ FUNDING.CARD ]: {
+                    eligible: true,
+                    vendors:  {
+                        [ CARD.VISA ]: {
+                            eligible: true
+                        }
+                    }
+                }
+            };
+
+            createButtonHTML(fundingEligibility);
+
+            await setupButton({ fundingEligibility });
+
+            clickButton(FUNDING.CARD, CARD.VISA);
+        });
+    });
+
+    it('should pass paypal when button clicked', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            const fundingSource = FUNDING.PAYPAL;
+
+            window.xprops.updateClientConfiguration = true;
+            let clientConfigCalled = false;
+
+            const gqlMock = getGraphQLApiMock({
+                handler: expect('clientConfigCall', ({ data }) => {
+                    if (!data.query.includes('mutation UpdateClientConfig')) {
+                        return {};
+                    }
+
+                    if (data.variables.fundingSource !== fundingSource) {
+                        throw new Error(`Expected fundingSource to be ${ fundingSource }, got ${ data.variables.fundingSource }`);
+                    }
+
+                    clientConfigCalled = true;
+                    return {};
+                })
+            }).expectCalls();
+
+            window.xprops.onApprove = expect('onApprove', async () => {
+                gqlMock.disable();
+
+                if (!clientConfigCalled) {
+                    throw new Error(`Expected clientConfig mutation to be called`);
+                }
+            });
+
+            const fundingEligibility = {
+                [fundingSource]: {
+                    eligible: true
+                }
+            };
+
+            createButtonHTML(fundingEligibility);
+
+            await setupButton({ fundingEligibility });
+
+            clickButton(fundingSource);
+        });
+    });
+
+    it('should pass venmo when button clicked', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            const fundingSource = FUNDING.VENMO;
+
+            window.xprops.updateClientConfiguration = true;
+            let clientConfigCalled = false;
+
+            const gqlMock = getGraphQLApiMock({
+                handler: expect('clientConfigCall', ({ data }) => {
+                    if (!data.query.includes('mutation UpdateClientConfig')) {
+                        return {};
+                    }
+
+                    if (data.variables.fundingSource !== fundingSource) {
+                        throw new Error(`Expected fundingSource to be ${ fundingSource }, got ${ data.variables.fundingSource }`);
+                    }
+
+                    clientConfigCalled = true;
+                    return {};
+                })
+            }).expectCalls();
+
+            window.xprops.onApprove = expect('onApprove', async () => {
+                gqlMock.disable();
+
+                if (!clientConfigCalled) {
+                    throw new Error(`Expected clientConfig mutation to be called`);
+                }
+            });
+
+            const fundingEligibility = {
+                [ fundingSource ]: {
+                    eligible: true
+                }
+            };
+
+            createButtonHTML(fundingEligibility);
+
+            await setupButton({ fundingEligibility });
+
+            clickButton(fundingSource);
+        });
+    });
+
+    it('should pass credit when button clicked', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            const fundingSource = FUNDING.CREDIT;
+
+            window.xprops.updateClientConfiguration = true;
+            let clientConfigCalled = false;
+
+            const gqlMock = getGraphQLApiMock({
+                handler: expect('clientConfigCall', ({ data }) => {
+                    if (!data.query.includes('mutation UpdateClientConfig')) {
+                        return {};
+                    }
+
+                    if (data.variables.fundingSource !== fundingSource) {
+                        throw new Error(`Expected fundingSource to be ${ fundingSource }, got ${ data.variables.fundingSource }`);
+                    }
+
+                    clientConfigCalled = true;
+                    return {};
+                })
+            }).expectCalls();
+
+            window.xprops.onApprove = expect('onApprove', async () => {
+                gqlMock.disable();
+
+                if (!clientConfigCalled) {
+                    throw new Error(`Expected clientConfig mutation to be called`);
+                }
+            });
+
+            const fundingEligibility = {
+                [fundingSource]: {
+                    eligible: true
+                }
+            };
+
+            createButtonHTML(fundingEligibility);
+
+            await setupButton({ fundingEligibility });
+
+            clickButton(fundingSource);
+        });
+    });
+});

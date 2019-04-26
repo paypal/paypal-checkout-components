@@ -24,7 +24,7 @@ describe('validation cases', () => {
             window.xprops.createOrder = expect('createOrder', () => ZalgoPromise.delay(50).then(() => orderID));
             window.xprops.onApprove = expect('onApprove', () => ZalgoPromise.resolve());
 
-            window.document.body.innerHTML = createButtonHTML();
+            createButtonHTML();
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
             clickButton(FUNDING.PAYPAL);
         });
@@ -41,7 +41,7 @@ describe('validation cases', () => {
             window.xprops.createOrder = avoid('createOrder', () => ZalgoPromise.reject(new Error(`Avoid createOrder`)));
             window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.reject(new Error(`Avoid onApprove`)));
 
-            window.document.body.innerHTML = createButtonHTML();
+            createButtonHTML();
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
             clickButton(FUNDING.PAYPAL);
         });
@@ -64,7 +64,7 @@ describe('validation cases', () => {
             window.xprops.createOrder = expect('createOrder', () => ZalgoPromise.delay(50).then(() => orderID));
             window.xprops.onApprove = expect('onApprove', () => ZalgoPromise.resolve());
 
-            window.document.body.innerHTML = createButtonHTML();
+            createButtonHTML();
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
             clickButton(FUNDING.PAYPAL);
         });
@@ -81,7 +81,7 @@ describe('validation cases', () => {
             window.xprops.createOrder = expect('createOrder', () => ZalgoPromise.delay(50).then(() => orderID));
             window.xprops.onApprove = expect('onApprove', () => ZalgoPromise.resolve());
             
-            window.document.body.innerHTML = createButtonHTML();
+            createButtonHTML();
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
             clickButton(FUNDING.PAYPAL);
         });
@@ -96,7 +96,7 @@ describe('validation cases', () => {
             window.xprops.createOrder = avoid('createOrder', () => ZalgoPromise.reject(new Error(`Avoid createOrder`)));
             window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.reject(new Error(`Avoid onApprove`)));
 
-            window.document.body.innerHTML = createButtonHTML();
+            createButtonHTML();
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
             clickButton(FUNDING.PAYPAL);
         });

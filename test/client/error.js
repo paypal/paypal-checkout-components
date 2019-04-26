@@ -30,7 +30,7 @@ describe('error cases', () => {
                 }
             });
 
-            window.document.body.innerHTML = createButtonHTML();
+            createButtonHTML();
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
@@ -64,7 +64,7 @@ describe('error cases', () => {
                 return checkoutInstance;
             }));
 
-            window.document.body.innerHTML = createButtonHTML();
+            createButtonHTML();
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 

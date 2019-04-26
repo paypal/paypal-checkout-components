@@ -7,24 +7,36 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, captureOrderApiMock, authorizeOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton } from './mocks';
+import { createButtonHTML, getOrderApiMock, captureOrderApiMock, authorizeOrderApiMock, patchOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, getCreateOrderApiMock } from './mocks';
 
-describe('contingency cases', () => {
+describe('actions cases', () => {
 
-    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture and auto restart with INSTRUMENT_DECLINED', async () => {
+    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.create', async () => {
         return await wrapPromise(async ({ expect }) => {
 
-            const orderID = 'XXXXXXXXXX';
+            let orderID;
             const payerID = 'YYYYYYYYYY';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
-                return ZalgoPromise.try(() => {
-                    return orderID;
+            window.xprops.createOrder = expect('createOrder', async (data, actions) => {
+                const createOrderMock = getCreateOrderApiMock();
+                createOrderMock.expectCalls();
+                orderID = await actions.order.create({
+                    purchase_units: [ {
+                        amount: {
+                            value: '0.01'
+                        }
+                    } ]
                 });
+                createOrderMock.done();
+
+                if (!orderID) {
+                    throw new Error(`Expected orderID to be returned by actions.order.create`);
+                }
+
+                return orderID;
             });
 
-            let onApprove = expect('onApprove', async (data, actions) => {
-
+            window.xprops.onApprove = expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
@@ -32,42 +44,7 @@ describe('contingency cases', () => {
                 if (data.payerID !== payerID) {
                     throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                 }
-
-                onApprove = expect('onApprove2', async (data2) => {
-                    if (data2.orderID !== orderID) {
-                        throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
-                    }
-
-                    if (data2.payerID !== payerID) {
-                        throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
-                    }
-
-                    const captureOrderMock2 = captureOrderApiMock();
-                    captureOrderMock2.expectCalls();
-                    await actions.order.capture();
-                    captureOrderMock2.done();
-                });
-
-                const captureOrderMock = captureOrderApiMock({
-                    data: {
-                        ack:         'contingency',
-                        contingency: 'UNPROCESSABLE_ENTITY',
-                        data:        {
-                            details: [
-                                {
-                                    issue: 'INSTRUMENT_DECLINED'
-                                }
-                            ]
-                        }
-                    }
-                });
-
-                captureOrderMock.expectCalls();
-                actions.order.capture();
-                captureOrderMock.done();
             });
-
-            window.xprops.onApprove = expect('onApprove', (data, actions) => onApprove(data, actions));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
@@ -98,7 +75,7 @@ describe('contingency cases', () => {
         });
     });
 
-    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture and auto restart with PAYER_ACTION_REQUIRED', async () => {
+    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.get', async () => {
         return await wrapPromise(async ({ expect }) => {
 
             const orderID = 'XXXXXXXXXX';
@@ -110,7 +87,11 @@ describe('contingency cases', () => {
                 });
             });
 
-            let onApprove = expect('onApprove', async (data, actions) => {
+            window.xprops.onApprove = expect('onApprove', async (data, actions) => {
+                const getOrderMock = getOrderApiMock();
+                getOrderMock.expectCalls();
+                await actions.order.get();
+                getOrderMock.done();
 
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
@@ -119,42 +100,7 @@ describe('contingency cases', () => {
                 if (data.payerID !== payerID) {
                     throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                 }
-
-                onApprove = expect('onApprove2', async (data2) => {
-                    if (data2.orderID !== orderID) {
-                        throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
-                    }
-
-                    if (data2.payerID !== payerID) {
-                        throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
-                    }
-
-                    const captureOrderMock2 = captureOrderApiMock();
-                    captureOrderMock2.expectCalls();
-                    await actions.order.capture();
-                    captureOrderMock2.done();
-                });
-
-                const captureOrderMock = captureOrderApiMock({
-                    data: {
-                        ack:         'contingency',
-                        contingency: 'UNPROCESSABLE_ENTITY',
-                        data:        {
-                            details: [
-                                {
-                                    issue: 'PAYER_ACTION_REQUIRED'
-                                }
-                            ]
-                        }
-                    }
-                });
-
-                captureOrderMock.expectCalls();
-                actions.order.capture();
-                captureOrderMock.done();
             });
-
-            window.xprops.onApprove = expect('onApprove', (data, actions) => onApprove(data, actions));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
@@ -185,7 +131,7 @@ describe('contingency cases', () => {
         });
     });
 
-    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.authorize and auto restart with INSTRUMENT_DECLINED', async () => {
+    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture', async () => {
         return await wrapPromise(async ({ expect }) => {
 
             const orderID = 'XXXXXXXXXX';
@@ -197,7 +143,11 @@ describe('contingency cases', () => {
                 });
             });
 
-            let onApprove = expect('onApprove', async (data, actions) => {
+            window.xprops.onApprove = expect('onApprove', async (data, actions) => {
+                const captureOrderMock = captureOrderApiMock();
+                captureOrderMock.expectCalls();
+                await actions.order.capture();
+                captureOrderMock.done();
 
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
@@ -206,42 +156,7 @@ describe('contingency cases', () => {
                 if (data.payerID !== payerID) {
                     throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                 }
-
-                onApprove = expect('onApprove2', async (data2) => {
-                    if (data2.orderID !== orderID) {
-                        throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
-                    }
-
-                    if (data2.payerID !== payerID) {
-                        throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
-                    }
-
-                    const captureOrderMock2 = authorizeOrderApiMock();
-                    captureOrderMock2.expectCalls();
-                    await actions.order.authorize();
-                    captureOrderMock2.done();
-                });
-
-                const captureOrderMock = authorizeOrderApiMock({
-                    data: {
-                        ack:         'contingency',
-                        contingency: 'UNPROCESSABLE_ENTITY',
-                        data:        {
-                            details: [
-                                {
-                                    issue: 'INSTRUMENT_DECLINED'
-                                }
-                            ]
-                        }
-                    }
-                });
-
-                captureOrderMock.expectCalls();
-                actions.order.authorize();
-                captureOrderMock.done();
             });
-
-            window.xprops.onApprove = expect('onApprove', (data, actions) => onApprove(data, actions));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
@@ -272,7 +187,7 @@ describe('contingency cases', () => {
         });
     });
 
-    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.authorize and auto restart with PAYER_ACTION_REQUIRED', async () => {
+    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.authorize', async () => {
         return await wrapPromise(async ({ expect }) => {
 
             const orderID = 'XXXXXXXXXX';
@@ -284,7 +199,11 @@ describe('contingency cases', () => {
                 });
             });
 
-            let onApprove = expect('onApprove', async (data, actions) => {
+            window.xprops.onApprove = expect('onApprove', async (data, actions) => {
+                const authorizeOrderMock = authorizeOrderApiMock();
+                authorizeOrderMock.expectCalls();
+                await actions.order.authorize();
+                authorizeOrderMock.done();
 
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
@@ -293,42 +212,7 @@ describe('contingency cases', () => {
                 if (data.payerID !== payerID) {
                     throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                 }
-
-                onApprove = expect('onApprove2', async (data2) => {
-                    if (data2.orderID !== orderID) {
-                        throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
-                    }
-
-                    if (data2.payerID !== payerID) {
-                        throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
-                    }
-
-                    const captureOrderMock2 = authorizeOrderApiMock();
-                    captureOrderMock2.expectCalls();
-                    await actions.order.authorize();
-                    captureOrderMock2.done();
-                });
-
-                const captureOrderMock = authorizeOrderApiMock({
-                    data: {
-                        ack:         'contingency',
-                        contingency: 'UNPROCESSABLE_ENTITY',
-                        data:        {
-                            details: [
-                                {
-                                    issue: 'PAYER_ACTION_REQUIRED'
-                                }
-                            ]
-                        }
-                    }
-                });
-
-                captureOrderMock.expectCalls();
-                actions.order.authorize();
-                captureOrderMock.done();
             });
-
-            window.xprops.onApprove = expect('onApprove', (data, actions) => onApprove(data, actions));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
@@ -345,6 +229,56 @@ describe('contingency cases', () => {
                         }
 
                         return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            createButtonHTML();
+
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            clickButton(FUNDING.PAYPAL);
+        });
+    });
+
+    it('should render a button, click the button, and render checkout, then pass onShippingChange callback to the parent with actions.order.patch', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            const orderID = 'XXXXXXXXXX';
+            const payerID = 'YYYYYYYYYY';
+
+            window.xprops.createOrder = expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            });
+
+            window.xprops.onShippingChange = expect('onShippingChange', async (data, actions) => {
+                const patchOrderMock = patchOrderApiMock();
+                patchOrderMock.expectCalls();
+                await actions.order.patch();
+                patchOrderMock.done();
+            });
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID }, actions);
+                }));
+
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+
+                        return props.onShippingChange({ orderID }).then(() => {
+                            return renderToOriginal(...args);
+                        });
                     });
                 }));
 

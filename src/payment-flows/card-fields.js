@@ -5,7 +5,6 @@ import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
 import { memoize } from 'belter/src';
 
 import { CONTEXT } from '../constants';
-import { INLINE_GUEST_ENABLED } from '../config';
 import type { LocaleType, FundingEligibilityType } from '../types';
 import { unresolvedPromise } from '../lib';
 import type { CreateOrder, OnApprove, OnCancel, OnAuth, OnShippingChange, OnError } from '../button/props';
@@ -45,7 +44,7 @@ type CardFieldsEligibleProps = {|
 |};
 
 export function isCardFieldsEligible({ vault, onShippingChange, fundingSource } : CardFieldsEligibleProps) : boolean {
-    if (!INLINE_GUEST_ENABLED) {
+    if (!window.xprops.enableInlineGuest) {
         return false;
     }
 

@@ -2,13 +2,20 @@
 
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { ZalgoPromise } from 'zalgo-promise';
-import { values } from 'belter/src';
+import { values, destroyElement } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants';
 import { INTENT, CURRENCY, CARD } from '@paypal/sdk-constants/src';
 
 import { triggerKeyPress } from './util';
 
 export function setupMocks() {
+    const body = document.body;
+
+    if (!body) {
+        throw new Error(`No document.body found`);
+    }
+
+    body.innerHTML = '';
 
     window.config = {
         urls: {
@@ -32,6 +39,30 @@ export function setupMocks() {
         Checkout: (props) => {
             return {
                 renderTo: () => {
+                    return props.createOrder().then(orderID => {
+                        return ZalgoPromise.delay(50).then(() => {
+                            return props.onApprove({
+                                orderID,
+                                payerID: 'AAABBBCCC'
+                            });
+                        });
+                    });
+                },
+                close: () => {
+                    return ZalgoPromise.delay(50).then(() => {
+                        if (props.onClose) {
+                            return props.onClose();
+                        }
+                    });
+                },
+                onError: (err) => {
+                    throw err;
+                }
+            };
+        },
+        CardFields: (props) => {
+            return {
+                render: () => {
                     return props.createOrder().then(orderID => {
                         return ZalgoPromise.delay(50).then(() => {
                             return props.onApprove({
@@ -93,6 +124,16 @@ export function setupMocks() {
     window.Promise.try = (method) => {
         return window.Promise.resolve().then(method);
     };
+
+    const buttonsContainer = document.querySelector('#buttons-container') || document.createElement('div');
+    buttonsContainer.id = 'buttons-container';
+    destroyElement(buttonsContainer);
+    body.appendChild(buttonsContainer);
+
+    const cardContainer = document.querySelector('#card-fields-container') || document.createElement('div');
+    cardContainer.id = 'card-fields-container';
+    destroyElement(cardContainer);
+    body.appendChild(cardContainer);
 }
 
 setupMocks();
@@ -113,8 +154,12 @@ export function mockFunction<T, A>(obj : mixed, prop : string, mock : ({ args : 
     };
 }
 
-export function clickButton(fundingSource? : string = FUNDING.PAYPAL) {
-    window.document.querySelector(`button[data-funding-source=${ fundingSource }]`).click();
+export function clickButton(fundingSource? : string = FUNDING.PAYPAL, card? : string = CARD.VISA) {
+    let selector = `button[data-funding-source=${ fundingSource }]`;
+    if (fundingSource === FUNDING.CARD) {
+        selector = `${ selector }[data-card=${ card }]`;
+    }
+    window.document.querySelector(selector).click();
 }
 
 export function enterButton(fundingSource? : string = FUNDING.PAYPAL) {
@@ -127,7 +172,7 @@ export const DEFAULT_FUNDING_ELIGIBILITY = {
     }
 };
 
-export function createButtonHTML(fundingEligibility? : Object = DEFAULT_FUNDING_ELIGIBILITY) : string {
+export function createButtonHTML(fundingEligibility? : Object = DEFAULT_FUNDING_ELIGIBILITY) {
     const buttons = [];
 
     // $FlowFixMe
@@ -165,27 +210,40 @@ export function createButtonHTML(fundingEligibility? : Object = DEFAULT_FUNDING_
         }
     }
 
-    return buttons.join('\n');
+    const body = document.body;
+
+    if (!body) {
+        throw new Error(`No document.body found`);
+    }
+
+    body.innerHTML += buttons.join('\n');
 }
 
 type MockEndpoint = {|
-    listen : () => void,
-    expectCalls : () => void,
-    done : () => void
+    listen : () => MockEndpoint,
+    expectCalls : () => MockEndpoint,
+    done : () => MockEndpoint,
+    enable : () => MockEndpoint,
+    disable : () => MockEndpoint
 |};
 
-export function getAuthApiMock(options : Object = {}) : MockEndpoint {
+export function getCreateAccessTokenMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
-        method: 'GET',
-        uri:    '/smart/api/auth',
+        method: 'POST',
+        uri:    '/v1/oauth2/token',
         data:   {
-            ack:  'success',
-            data: {
-
-            }
+            access_token: 'abc123'
         },
-        headers: {
-            'x-csrf-jwt': 'xxxxxx'
+        ...options
+    });
+}
+
+export function getCreateOrderApiMock(options : Object = {}) : MockEndpoint {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri:    new RegExp('/v2/checkout/orders'),
+        data:   {
+            id: 'ABCDEFG0123456789'
         },
         ...options
     });
@@ -201,9 +259,6 @@ export function getOrderApiMock(options : Object = {}) : MockEndpoint {
 
             }
         },
-        headers: {
-            'x-csrf-jwt': 'xxxxxx'
-        },
         ...options
     });
 }
@@ -217,9 +272,6 @@ export function captureOrderApiMock(options : Object = {}) : MockEndpoint {
             data: {
 
             }
-        },
-        headers: {
-            'x-csrf-jwt': 'xxxxxx'
         },
         ...options
     });
@@ -235,9 +287,6 @@ export function authorizeOrderApiMock(options : Object = {}) : MockEndpoint {
 
             }
         },
-        headers: {
-            'x-csrf-jwt': 'xxxxxx'
-        },
         ...options
     });
 }
@@ -252,9 +301,6 @@ export function mapBillingTokenApiMock(options : Object = {}) : MockEndpoint {
                 token: 'ABCDEFG12345'
             }
         },
-        headers: {
-            'x-csrf-jwt': 'xxxxxx'
-        },
         ...options
     });
 }
@@ -265,9 +311,6 @@ export function patchOrderApiMock(options : Object = {}) : MockEndpoint {
         data:   {
             ack:  'success',
             data: {}
-        },
-        headers: {
-            'x-csrf-jwt': 'xxxxxx'
         },
         ...options
     });
@@ -297,9 +340,6 @@ export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
                 }
             }
         },
-        headers: {
-            'x-csrf-jwt': 'xxxxxx'
-        },
         ...options
     });
 }
@@ -326,7 +366,8 @@ export function validatePaymentMethodApiMock(options : Object = {}) : MockEndpoi
     });
 }
 
-getAuthApiMock().listen();
+getCreateAccessTokenMock().listen();
+getCreateOrderApiMock().listen();
 getOrderApiMock().listen();
 captureOrderApiMock().listen();
 authorizeOrderApiMock().listen();
