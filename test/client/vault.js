@@ -6,7 +6,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, validatePaymentMethodApiMock, DEFAULT_FUNDING_ELIGIBILITY, clickButton, getGraphQLApiMock } from './mocks';
+import { createButtonHTML, getValidatePaymentMethodApiMock, DEFAULT_FUNDING_ELIGIBILITY, clickButton, getGraphQLApiMock } from './mocks';
 
 describe('vault cases', () => {
 
@@ -153,7 +153,7 @@ describe('vault cases', () => {
                 return orderID;
             });
 
-            const vpmCall = validatePaymentMethodApiMock().expectCalls();
+            const vpmCall = getValidatePaymentMethodApiMock().expectCalls();
 
             window.xprops.onApprove = expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
@@ -196,7 +196,7 @@ describe('vault cases', () => {
                 return orderID;
             });
 
-            const vpmCall = validatePaymentMethodApiMock().expectCalls();
+            const vpmCall = getValidatePaymentMethodApiMock().expectCalls();
 
             window.xprops.onApprove = expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {

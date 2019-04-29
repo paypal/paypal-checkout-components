@@ -4,6 +4,7 @@ import { setupMocks } from './mocks';
 
 import './happy';
 import './actions';
+import './auth';
 import './contingency';
 import './funding';
 import './error';

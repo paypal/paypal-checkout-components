@@ -7,7 +7,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, getOrderApiMock, captureOrderApiMock, authorizeOrderApiMock, patchOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, getCreateOrderApiMock } from './mocks';
+import { createButtonHTML, getGetOrderApiMock, getCaptureOrderApiMock, getAuthorizeOrderApiMock, getPatchOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, getCreateOrderApiMock } from './mocks';
 
 describe('actions cases', () => {
 
@@ -88,7 +88,7 @@ describe('actions cases', () => {
             });
 
             window.xprops.onApprove = expect('onApprove', async (data, actions) => {
-                const getOrderMock = getOrderApiMock();
+                const getOrderMock = getGetOrderApiMock();
                 getOrderMock.expectCalls();
                 await actions.order.get();
                 getOrderMock.done();
@@ -144,7 +144,7 @@ describe('actions cases', () => {
             });
 
             window.xprops.onApprove = expect('onApprove', async (data, actions) => {
-                const captureOrderMock = captureOrderApiMock();
+                const captureOrderMock = getCaptureOrderApiMock();
                 captureOrderMock.expectCalls();
                 await actions.order.capture();
                 captureOrderMock.done();
@@ -200,7 +200,7 @@ describe('actions cases', () => {
             });
 
             window.xprops.onApprove = expect('onApprove', async (data, actions) => {
-                const authorizeOrderMock = authorizeOrderApiMock();
+                const authorizeOrderMock = getAuthorizeOrderApiMock();
                 authorizeOrderMock.expectCalls();
                 await actions.order.authorize();
                 authorizeOrderMock.done();
@@ -256,7 +256,7 @@ describe('actions cases', () => {
             });
 
             window.xprops.onShippingChange = expect('onShippingChange', async (data, actions) => {
-                const patchOrderMock = patchOrderApiMock();
+                const patchOrderMock = getPatchOrderApiMock();
                 patchOrderMock.expectCalls();
                 await actions.order.patch();
                 patchOrderMock.done();
@@ -284,6 +284,32 @@ describe('actions cases', () => {
 
                 return checkoutInstance;
             }));
+
+            createButtonHTML();
+
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            clickButton(FUNDING.PAYPAL);
+        });
+    });
+
+    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.patch', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            const orderID = 'XXXXXXXXXX';
+
+            window.xprops.createOrder = expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            });
+
+            window.xprops.onApprove = expect('onApprove', async (data, actions) => {
+                const patchOrderMock = getPatchOrderApiMock();
+                patchOrderMock.expectCalls();
+                await actions.order.patch();
+                patchOrderMock.done();
+            });
 
             createButtonHTML();
 

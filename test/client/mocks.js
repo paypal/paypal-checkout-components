@@ -249,7 +249,7 @@ export function getCreateOrderApiMock(options : Object = {}) : MockEndpoint {
     });
 }
 
-export function getOrderApiMock(options : Object = {}) : MockEndpoint {
+export function getGetOrderApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
         method: 'GET',
         uri:    new RegExp('/smart/api/order/[^/]+'),
@@ -263,7 +263,7 @@ export function getOrderApiMock(options : Object = {}) : MockEndpoint {
     });
 }
 
-export function captureOrderApiMock(options : Object = {}) : MockEndpoint {
+export function getCaptureOrderApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
         method: 'POST',
         uri:    new RegExp('/smart/api/order/[^/]+/capture'),
@@ -277,7 +277,7 @@ export function captureOrderApiMock(options : Object = {}) : MockEndpoint {
     });
 }
 
-export function authorizeOrderApiMock(options : Object = {}) : MockEndpoint {
+export function getAuthorizeOrderApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
         method: 'POST',
         uri:    new RegExp('/smart/api/order/[^/]+/authorize'),
@@ -291,7 +291,7 @@ export function authorizeOrderApiMock(options : Object = {}) : MockEndpoint {
     });
 }
 
-export function mapBillingTokenApiMock(options : Object = {}) : MockEndpoint {
+export function getMapBillingTokenApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
         method: 'POST',
         uri:    new RegExp('/smart/api/payment/[^/]+/ectoken'),
@@ -304,7 +304,7 @@ export function mapBillingTokenApiMock(options : Object = {}) : MockEndpoint {
         ...options
     });
 }
-export function patchOrderApiMock(options : Object = {}) : MockEndpoint {
+export function getPatchOrderApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
         method: 'POST',
         uri:    new RegExp('/smart/api/order/[^/]+/patch'),
@@ -355,7 +355,7 @@ export function getLoggerApiMock(options : Object = {}) : MockEndpoint {
     });
 }
 
-export function validatePaymentMethodApiMock(options : Object = {}) : MockEndpoint {
+export function getValidatePaymentMethodApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
         method: 'POST',
         uri:    new RegExp('/v2/checkout/orders/[^/]+/validate-payment-method'),
@@ -368,11 +368,11 @@ export function validatePaymentMethodApiMock(options : Object = {}) : MockEndpoi
 
 getCreateAccessTokenMock().listen();
 getCreateOrderApiMock().listen();
-getOrderApiMock().listen();
-captureOrderApiMock().listen();
-authorizeOrderApiMock().listen();
-mapBillingTokenApiMock().listen();
-patchOrderApiMock().listen();
+getGetOrderApiMock().listen();
+getCaptureOrderApiMock().listen();
+getAuthorizeOrderApiMock().listen();
+getMapBillingTokenApiMock().listen();
+getPatchOrderApiMock().listen();
 getGraphQLApiMock().listen();
 getLoggerApiMock().listen();
-validatePaymentMethodApiMock().listen();
+getValidatePaymentMethodApiMock().listen();

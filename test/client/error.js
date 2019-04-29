@@ -71,4 +71,22 @@ describe('error cases', () => {
             clickButton(FUNDING.PAYPAL);
         });
     });
+
+    it('should error on button setup if paypal not defined', async () => {
+        return await wrapPromise(async () => {
+
+            delete window.paypal;
+
+            let error;
+            try {
+                await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            } catch (err) {
+                error = err;
+            }
+
+            if (!error) {
+                throw new Error(`Expected setupButton to throw an error`);
+            }
+        });
+    });
 });

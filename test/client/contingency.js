@@ -7,7 +7,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, captureOrderApiMock, authorizeOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton } from './mocks';
+import { createButtonHTML, getCaptureOrderApiMock, getAuthorizeOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton } from './mocks';
 
 describe('contingency cases', () => {
 
@@ -42,13 +42,13 @@ describe('contingency cases', () => {
                         throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                     }
 
-                    const captureOrderMock2 = captureOrderApiMock();
+                    const captureOrderMock2 = getCaptureOrderApiMock();
                     captureOrderMock2.expectCalls();
                     await actions.order.capture();
                     captureOrderMock2.done();
                 });
 
-                const captureOrderMock = captureOrderApiMock({
+                const captureOrderMock = getCaptureOrderApiMock({
                     data: {
                         ack:         'contingency',
                         contingency: 'UNPROCESSABLE_ENTITY',
@@ -129,13 +129,13 @@ describe('contingency cases', () => {
                         throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                     }
 
-                    const captureOrderMock2 = captureOrderApiMock();
+                    const captureOrderMock2 = getCaptureOrderApiMock();
                     captureOrderMock2.expectCalls();
                     await actions.order.capture();
                     captureOrderMock2.done();
                 });
 
-                const captureOrderMock = captureOrderApiMock({
+                const captureOrderMock = getCaptureOrderApiMock({
                     data: {
                         ack:         'contingency',
                         contingency: 'UNPROCESSABLE_ENTITY',
@@ -216,13 +216,13 @@ describe('contingency cases', () => {
                         throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                     }
 
-                    const captureOrderMock2 = authorizeOrderApiMock();
+                    const captureOrderMock2 = getAuthorizeOrderApiMock();
                     captureOrderMock2.expectCalls();
                     await actions.order.authorize();
                     captureOrderMock2.done();
                 });
 
-                const captureOrderMock = authorizeOrderApiMock({
+                const captureOrderMock = getAuthorizeOrderApiMock({
                     data: {
                         ack:         'contingency',
                         contingency: 'UNPROCESSABLE_ENTITY',
@@ -303,13 +303,13 @@ describe('contingency cases', () => {
                         throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                     }
 
-                    const captureOrderMock2 = authorizeOrderApiMock();
+                    const captureOrderMock2 = getAuthorizeOrderApiMock();
                     captureOrderMock2.expectCalls();
                     await actions.order.authorize();
                     captureOrderMock2.done();
                 });
 
-                const captureOrderMock = authorizeOrderApiMock({
+                const captureOrderMock = getAuthorizeOrderApiMock({
                     data: {
                         ack:         'contingency',
                         contingency: 'UNPROCESSABLE_ENTITY',
