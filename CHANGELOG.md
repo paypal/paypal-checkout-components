@@ -1,3 +1,15 @@
+## <small>5.0.20 (2019-04-29)</small>
+
+* Add disableFunding, disableCard, merchantID as button props (#1078) ([8de835c](http://github.paypal.com/paypal/paypal-checkout/commit/8de835c)), closes [#1078](http://github.paypal.com/paypal/paypal-checkout/issues/1078)
+* Add getPopupBridge prop ([068108a](http://github.paypal.com/paypal/paypal-checkout/commit/068108a))
+* Add partnerAttributionID and correlationID to button props ([21c93fc](http://github.paypal.com/paypal/paypal-checkout/commit/21c93fc))
+* Add spinner to buttons ([c1f0171](http://github.paypal.com/paypal/paypal-checkout/commit/c1f0171))
+* Make vault buttons tabbable ([cb9634b](http://github.paypal.com/paypal/paypal-checkout/commit/cb9634b))
+* Pass payment method id to vault buttons ([f4539d0](http://github.paypal.com/paypal/paypal-checkout/commit/f4539d0))
+* Vaulted funding buttons rendering logic ([d0f5eab](http://github.paypal.com/paypal/paypal-checkout/commit/d0f5eab))
+
+
+
 ## <small>5.0.19 (2019-04-18)</small>
 
 * Add basic end to end tests ([196f87c](http://github.paypal.com/paypal/paypal-checkout/commit/196f87c))
