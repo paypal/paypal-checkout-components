@@ -29,6 +29,7 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
         correlationID,
         clientAccessToken,
         buyerCountry = buyerGeoCountry || COUNTRY.US,
+        getPopupBridge,
         getPrerenderDetails,
         remember: rememberFunding,
         onError
@@ -55,6 +56,7 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
         partnerAttributionID,
         correlationID,
 
+        getPopupBridge,
         getPrerenderDetails,
         rememberFunding,
 

@@ -14,6 +14,7 @@ import type { OnClick, XOnClick } from './onClick';
 import type { OnShippingChange, XOnShippingChange } from './onShippingChange';
 import type { OnAuth } from './onAuth';
 import type { XOnError, OnError } from './onError';
+import type { XGetPopupBridge, GetPopupBridge } from './getPopupBridge';
 
 export type PrerenderDetailsType = {|
     win ? : ? ProxyWindow,
@@ -43,6 +44,7 @@ export type XProps = {|
     createBillingAgreement : ?XCreateBillingAgreement,
 
     getPrerenderDetails : () => ZalgoPromise<PrerenderDetailsType>,
+    getPopupBridge : XGetPopupBridge,
     remember : ($ReadOnlyArray<$Values<typeof FUNDING>>) => ZalgoPromise<void>,
     
     onInit : XOnInit,
@@ -72,6 +74,7 @@ export type GlobalProps = {|
     cspNonce : ?string,
 
     getPrerenderDetails : () => ZalgoPromise<PrerenderDetailsType>,
+    getPopupBridge : GetPopupBridge,
     rememberFunding : ($ReadOnlyArray<$Values<typeof FUNDING>>) => ZalgoPromise<void>,
 
     onInit : OnInit,

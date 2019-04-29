@@ -13,3 +13,7 @@ export const API_URI = {
     PAYMENT:  `${ BASE_SMART_API_URL }/payment`,
     GRAPHQL:  '/graphql'
 };
+
+export const EXPERIENCE_URI = {
+    CHECKOUT: '/checkoutnow'
+};

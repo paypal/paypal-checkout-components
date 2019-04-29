@@ -13,6 +13,7 @@ import './validation';
 import './prerender';
 import './vault';
 import './clientConfig';
+import './popupBridge';
 
 beforeEach(() => {
     setupMocks();

@@ -8,6 +8,7 @@ import { setupLogger } from '../lib';
 import { initCheckout, setupCheckout, isVaultCaptureEligible, isCardFieldsEligible, initVault, initCardFields } from '../payment-flows';
 import { DATA_ATTRIBUTES } from '../constants';
 import type { FundingEligibilityType, ProxyWindow } from '../types';
+import { isPopupBridgeEligible, initPopupBridge } from '../payment-flows/popup-bridge';
 
 import { getGlobalProps, getButtonCallbackProps } from './props';
 import { getSelectedFunding, enableLoadingSpinner, getButtons, disableLoadingSpinner } from './dom';
@@ -36,6 +37,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
         partnerAttributionID,
         correlationID,
 
+        getPopupBridge,
         getPrerenderDetails,
         rememberFunding,
 
@@ -48,6 +50,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
     setupLogger({ env, sessionID, clientID, partnerAttributionID, commit, correlationID, locale, merchantID });
 
     let buttonProcessing = false;
+    let popupBridge;
 
     const pay = ({ button, win, fundingSource, card, paymentMethodID } : { button : HTMLElement, win? : ?ProxyWindow, fundingSource : $Values<typeof FUNDING>, card : ?$Values<typeof CARD>, paymentMethodID? : ?string }) => {
         return ZalgoPromise.try(() => {
@@ -74,8 +77,9 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
 
             const isCardFields = isCardFieldsEligible({ vault, onShippingChange, fundingSource });
             const isVaultCapture = isVaultCaptureEligible({ paymentMethodID, onShippingChange });
+            const isPopupBridge = isPopupBridgeEligible({ popupBridge, onShippingChange });
 
-            if (isVaultCapture) {
+            if (isVaultCapture || isPopupBridge) {
                 enableLoadingSpinner(button);
             }
 
@@ -91,6 +95,12 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
                         fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
                         onAuth, onShippingChange, cspNonce, locale, commit, onError, vault,
                         clientAccessToken, fundingEligibility
+                    });
+                }
+
+                if (isPopupBridge) {
+                    return initPopupBridge({
+                        popupBridge, createOrder, onApprove, onCancel
                     });
                 }
 
@@ -162,6 +172,14 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
     tasks.remember = ZalgoPromise.try(() => {
         if (fundingEligibility && fundingEligibility.venmo && fundingEligibility.venmo.eligible) {
             return rememberFunding([ FUNDING.VENMO ]);
+        }
+    });
+
+    tasks.getPopupBridge = ZalgoPromise.try(() => {
+        if (getPopupBridge) {
+            return getPopupBridge().then(bridge => {
+                popupBridge = bridge;
+            });
         }
     });
 
