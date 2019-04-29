@@ -408,6 +408,28 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     }
                 },
 
+                getPopupBridge: {
+                    type:     'object',
+                    required: false,
+                    value:    () => {
+                        if (!window.popupBridge) {
+                            return;
+                        }
+
+                        return {
+                            nativeUrl: window.popupBridge.getReturnUrlPrefix(),
+                            start:     (url) => {
+                                return new ZalgoPromise((resolve, reject) => {
+                                    window.popupBridge.onComplete = (err, result) => {
+                                        return err ? reject(err) : resolve(result);
+                                    };
+                                    window.popupBridge.open(url);
+                                });
+                            }
+                        };
+                    }
+                },
+
                 proxyRest: {
                     type: 'function',
                     value({ state }) : (ProxyRest) => void {
