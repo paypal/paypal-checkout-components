@@ -21,7 +21,7 @@ export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, pl
         return false;
     }
 
-    if (fundingConfig.eligible && !fundingConfig.eligible({ components })) {
+    if (fundingConfig.eligible && !fundingConfig.eligible({ components, fundingEligibility })) {
         return false;
     }
 

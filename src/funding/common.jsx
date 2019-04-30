@@ -97,7 +97,7 @@ export type FundingSourceConfig = {|
     maxCards? : { [$Values<typeof COUNTRY>] : number },
     remembered? : boolean,
     vendors? : { [$Values<typeof CARD>] : ?CardConfig },
-    eligible? : ({ components : $ReadOnlyArray<$Values<typeof COMPONENTS>> }) => boolean,
+    eligible? : ({ components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, fundingEligibility : FundingEligibilityType }) => boolean,
     labels : {|
         bancontact? : FundingLabelConfig,
         card? : FundingLabelConfig,

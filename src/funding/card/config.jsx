@@ -48,8 +48,28 @@ export function getCardConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
 
-        eligible: ({ components }) => {
-            return (components.indexOf(COMPONENTS.HOSTED_FIELDS) === -1);
+        eligible: ({ components, fundingEligibility }) => {
+            const hostedFieldsRequested = Boolean(components.indexOf(COMPONENTS.HOSTED_FIELDS) !== -1);
+            const cardEligible = Boolean(fundingEligibility.card && fundingEligibility.card.eligible);
+            const cardBranded = Boolean(fundingEligibility.card && fundingEligibility.card.branded);
+
+            // If card is not eligible, never show card buttons
+            if (!cardEligible) {
+                return false;
+            }
+
+            // If card is branded, always show card buttons
+            if (cardBranded) {
+                return true;
+            }
+            
+            // If hosted fields is requested, do not show card buttons
+            if (hostedFieldsRequested) {
+                return false;
+            }
+
+            // Otherwise default to show card buttons
+            return true;
         },
         
         layouts: [
