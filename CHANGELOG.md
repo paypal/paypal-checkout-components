@@ -1,3 +1,9 @@
+## <small>5.0.21 (2019-04-30)</small>
+
+* UI fixes ([4eb51d3](http://github.paypal.com/paypal/paypal-checkout/commit/4eb51d3))
+
+
+
 ## <small>5.0.20 (2019-04-29)</small>
 
 * Add disableFunding, disableCard, merchantID as button props (#1078) ([8de835c](http://github.paypal.com/paypal/paypal-checkout/commit/8de835c)), closes [#1078](http://github.paypal.com/paypal/paypal-checkout/issues/1078)
