@@ -34,6 +34,8 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
 
             const { clientID, currency, intent, commit, vault, buyerCountry = req.get(HTTP_HEADER.PP_GEO_LOC),
                 disableFunding, disableCard, merchantID, buttonSessionID, clientAccessToken, cspNonce } = getParams(params, req, res);
+
+            logger.info(req, `button_params`, { params: JSON.stringify(params) });
             
             let fundingEligibility;
             
