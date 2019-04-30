@@ -2289,15 +2289,14 @@ window.spb = function(modules) {
                 });
             },
             onApprove: function(_ref4) {
-                var payerID = _ref4.payerID, paymentID = _ref4.paymentID, billingToken = _ref4.billingToken;
-                return closeCheckout().then(function() {
-                    return _onApprove({
-                        payerID: payerID,
-                        paymentID: paymentID,
-                        billingToken: billingToken
-                    }, {
-                        restart: restart
-                    });
+                return checkoutOpen = !1, _onApprove({
+                    payerID: _ref4.payerID,
+                    paymentID: _ref4.paymentID,
+                    billingToken: _ref4.billingToken
+                }, {
+                    restart: restart
+                }).then(function() {
+                    return closeCheckout();
                 });
             },
             onCancel: function() {
