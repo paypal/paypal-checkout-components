@@ -123,13 +123,15 @@ export function initCheckout(props : CheckoutProps) : CheckoutInstance {
         throw new Error(`Checkout already rendered`);
     }
 
+    let approved = false;
+
     const restart = memoize(() : ZalgoPromise<void> =>
         initCheckout({ ...props, context: CONTEXT.IFRAME }).start().finally(unresolvedPromise));
 
     const onClose = () => {
         checkoutOpen = false;
         return validationPromise.then(valid => {
-            if (valid) {
+            if (valid && !approved) {
                 return onCancel();
             }
         });
@@ -153,9 +155,10 @@ export function initCheckout(props : CheckoutProps) : CheckoutInstance {
         },
 
         onApprove: ({ payerID, paymentID, billingToken }) => {
-            checkoutOpen = false;
-            return onApprove({ payerID, paymentID, billingToken }, { restart }).then(() => {
-                return closeCheckout();
+            approved = true;
+
+            return closeCheckout().then(() => {
+                return onApprove({ payerID, paymentID, billingToken }, { restart });
             });
         },
 

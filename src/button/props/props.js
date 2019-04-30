@@ -1,6 +1,5 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
 import { COUNTRY } from '@paypal/sdk-constants/src';
 
 import { getNonce } from '../dom';
@@ -68,29 +67,10 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
 export function getButtonCallbackProps({ xprops } : {| xprops : XProps |}) : ButtonCallbackProps {
 
     const createOrder = getCreateOrder(xprops);
-
-    let approved = false;
-    const _onApprove = getOnApprove(xprops, { createOrder });
-    const onApprove = (data, actions) => {
-        approved = true;
-        return _onApprove(data, actions);
-    };
-
-    const _onCancel = getOnCancel(xprops, { createOrder });
-    const onCancel = () => {
-        return ZalgoPromise.try(() => {
-            if (approved) {
-                return;
-            }
-
-            return _onCancel();
-        });
-    };
-
+    const onApprove = getOnApprove(xprops, { createOrder });
+    const onCancel = getOnCancel(xprops, { createOrder });
     const onShippingChange = getOnShippingChange(xprops, { createOrder });
-
     const onClick = getOnClick(xprops);
-
     const onAuth = getOnAuth();
 
     return {

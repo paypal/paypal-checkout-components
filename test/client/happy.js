@@ -13,7 +13,7 @@ import { triggerKeyPress } from './util';
 describe('happy cases', () => {
 
     it('should render a button with createOrder, click the button, and render checkout', async () => {
-        return await wrapPromise(async ({ expect }) => {
+        return await wrapPromise(async ({ expect, avoid }) => {
 
             const orderID = 'XXXXXXXXXX';
             const payerID = 'YYYYYYYYYY';
@@ -23,6 +23,8 @@ describe('happy cases', () => {
                     return orderID;
                 });
             });
+
+            window.xprops.onCancel = avoid('onCancel');
 
             window.xprops.onApprove = expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
@@ -64,7 +66,7 @@ describe('happy cases', () => {
     });
 
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with a paymentID', async () => {
-        return await wrapPromise(async ({ expect }) => {
+        return await wrapPromise(async ({ expect, avoid }) => {
 
             const orderID = 'XXXXXXXXXX';
             const payerID = 'YYYYYYYYYY';
@@ -75,6 +77,8 @@ describe('happy cases', () => {
                     return orderID;
                 });
             });
+
+            window.xprops.onCancel = avoid('onCancel');
 
             window.xprops.onApprove = expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
@@ -134,6 +138,8 @@ describe('happy cases', () => {
                 });
             });
 
+            window.xprops.onCancel = avoid('onCancel');
+
             window.xprops.onApprove = expect('onApprove', async (data) => {
                 if (data.billingToken !== billingToken) {
                     throw new Error(`Expected billingToken to be ${ billingToken }, got ${ data.billingToken }`);
@@ -174,7 +180,7 @@ describe('happy cases', () => {
     });
     
     it('should render a button, press enter on the button, and render checkout', async () => {
-        return await wrapPromise(async ({ expect }) => {
+        return await wrapPromise(async ({ expect, avoid }) => {
 
             const orderID = 'XXXXXXXXXX';
             const payerID = 'YYYYYYYYYY';
@@ -184,6 +190,8 @@ describe('happy cases', () => {
                     return orderID;
                 });
             });
+
+            window.xprops.onCancel = avoid('onCancel');
 
             window.xprops.onApprove = expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
@@ -249,7 +257,7 @@ describe('happy cases', () => {
     });
 
     it('should render a button, click the button, and render checkout, then call onCancel', async () => {
-        return await wrapPromise(async ({ expect }) => {
+        return await wrapPromise(async ({ expect, avoid }) => {
 
             const orderID = 'XXXXXXXXXX';
 
@@ -264,6 +272,8 @@ describe('happy cases', () => {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
             });
+
+            window.xprops.onApprove = avoid('onApprove');
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
                 const checkoutInstance = CheckoutOriginal(props);
@@ -300,6 +310,8 @@ describe('happy cases', () => {
                     return orderID;
                 });
             });
+
+            window.xprops.onCancel = avoid('onCancel');
 
             let onApprove = async (data, actions) => {
                 if (data.orderID !== orderID) {
