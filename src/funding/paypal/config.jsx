@@ -3,9 +3,9 @@
 
 import { type LocaleType } from '@paypal/sdk-constants/src';
 import { node, Fragment } from 'jsx-pragmatic/src';
-import { LOGO_COLOR } from '@paypal/sdk-logos/src';
+import { LOGO_COLOR, PPLogo } from '@paypal/sdk-logos/src';
 
-import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT } from '../../constants';
+import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, CLASS } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig, Text } from '../common';
 
 import { PayPal, Checkout, BuyNow, Pay, Installment, SaferTag, DualTag } from './labels';
@@ -54,7 +54,7 @@ export function getPayPalConfig() : FundingSourceConfig {
                 VaultLabel: ({ logoColor, label }) => {
                     return (
                         <Fragment>
-                            <PayPal logoColor={ logoColor } optional /> <Text>{ label }</Text>
+                            <PPLogo logoColor={ logoColor } optional /> <Text className={ CLASS.VAULT_LABEL }>{ label }</Text>
                         </Fragment>
                     );
                 }

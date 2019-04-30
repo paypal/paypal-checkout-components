@@ -128,7 +128,7 @@ export function getCardConfig() : FundingSourceConfig {
 
                     return (
                         <Fragment>
-                            <Label optional /> <Text>{ label }</Text>
+                            <Label optional /> <Text className={ CLASS.VAULT_LABEL }>{ label }</Text>
                         </Fragment>
                     );
                 }

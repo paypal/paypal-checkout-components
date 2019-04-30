@@ -120,8 +120,8 @@ export type FundingSourceConfig = {|
     |}
 |};
 
-export function Text({ optional } : { optional? : boolean }, children : ChildrenType) : ChildType {
+export function Text({ optional, className = [] } : { optional? : boolean, className? : $ReadOnlyArray<string> }, children : ChildrenType) : ChildType {
     return (
-        <span class={ CLASS.TEXT } optional={ optional }>{ children }</span>
+        <span class={ [ CLASS.TEXT, ...className  ].join(' ') } optional={ optional }>{ children }</span>
     );
 }

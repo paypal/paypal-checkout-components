@@ -19,6 +19,8 @@ export const CLASS = {
 
     TEXT: ('paypal-button-text' : 'paypal-button-text'),
     CARD: ('paypal-button-card' : 'paypal-button-card'),
+    
+    VAULT_LABEL: ('paypal-vault-label' : 'paypal-vault-label'),
 
     SEPARATOR: ('paypal-separator' : 'paypal-separator')
 };
