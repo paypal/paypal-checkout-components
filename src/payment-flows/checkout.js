@@ -153,8 +153,9 @@ export function initCheckout(props : CheckoutProps) : CheckoutInstance {
         },
 
         onApprove: ({ payerID, paymentID, billingToken }) => {
-            return closeCheckout().then(() => {
-                return onApprove({ payerID, paymentID, billingToken }, { restart });
+            checkoutOpen = false;
+            return onApprove({ payerID, paymentID, billingToken }, { restart }).then(() => {
+                return closeCheckout();
             });
         },
 
