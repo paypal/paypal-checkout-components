@@ -564,7 +564,6 @@ window.spb = function(modules) {
             }
             var xhr = new win.XMLHttpRequest();
             for (var _key4 in xhr.addEventListener("load", function() {
-                console.warn("load!!", method, url);
                 var responseHeaders = function(rawHeaders) {
                     void 0 === rawHeaders && (rawHeaders = "");
                     for (var result = {}, _i2 = 0, _rawHeaders$trim$spli2 = rawHeaders.trim().split("\n"); _i2 < _rawHeaders$trim$spli2.length; _i2++) {
@@ -580,15 +579,14 @@ window.spb = function(modules) {
                 } catch (err) {
                     if (isJSON) return reject(new Error("Invalid json: " + this.responseText + "."));
                 }
-                var res = {
+                return resolve({
                     status: this.status,
                     headers: responseHeaders,
                     body: responseBody
-                };
-                return console.warn("resolve!!", method, url, responseBody), resolve(res);
+                });
             }, !1), xhr.addEventListener("error", function(evt) {
                 reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + "."));
-            }, !1), console.warn("open!!", method, url), xhr.open(method, url, !0), normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
+            }, !1), xhr.open(method, url, !0), normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
             json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map(function(key) {
                 return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
             }).join("&")), xhr.timeout = timeout, xhr.ontimeout = function() {
@@ -1143,6 +1141,8 @@ window.spb = function(modules) {
         INFO: "info",
         WARN: "warn",
         ERROR: "error"
+    }, PROTOCOL = {
+        FILE: "file:"
     }, AUTO_FLUSH_LEVEL = [ LOG_LEVEL.WARN, LOG_LEVEL.ERROR ], LOG_LEVEL_PRIORITY = [ LOG_LEVEL.ERROR, LOG_LEVEL.WARN, LOG_LEVEL.INFO, LOG_LEVEL.DEBUG ], FLUSH_INTERVAL = 6e4, DEFAULT_LOG_LEVEL = LOG_LEVEL.WARN;
     function httpTransport(_ref) {
         var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json;
@@ -1176,7 +1176,7 @@ window.spb = function(modules) {
                 }
                 function immediateFlush() {
                     return src.a.try(function() {
-                        if (Object(belter_src.d)() && (events.length || tracking.length)) {
+                        if (Object(belter_src.d)() && window.location.protocol !== PROTOCOL.FILE && (events.length || tracking.length)) {
                             for (var meta = {}, _i2 = 0; _i2 < metaBuilders.length; _i2++) extendIfDefined(meta, (0, 
                             metaBuilders[_i2])(meta));
                             for (var headers = {}, _i4 = 0; _i4 < headerBuilders.length; _i4++) extendIfDefined(headers, (0, 
