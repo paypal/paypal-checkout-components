@@ -6,7 +6,7 @@ import type { ZalgoPromise } from 'zalgo-promise/src';
 import type { LocaleType, ProxyWindow } from '../../types';
 
 import type { CreateOrder, XCreateOrder } from './createOrder';
-import type { XCreateBillingAgreement } from './createBillingAgreement';
+import type { CreateBillingAgreement, XCreateBillingAgreement } from './createBillingAgreement';
 import type { OnInit, XOnInit } from './onInit';
 import type { OnApprove, XOnApprove } from './onApprove';
 import type { OnCancel, XOnCancel } from './onCancel';
@@ -83,6 +83,8 @@ export type GlobalProps = {|
 
 export type ButtonCallbackProps = {|
     createOrder : CreateOrder,
+    createBillingAgreement : ?CreateBillingAgreement,
+    
     onApprove : OnApprove,
 
     onCancel : OnCancel,

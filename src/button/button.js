@@ -62,6 +62,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
 
             const {
                 createOrder,
+                createBillingAgreement,
                 onApprove,
                 onCancel,
                 onClick,
@@ -94,7 +95,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
                     return initCardFields({
                         fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
                         onAuth, onShippingChange, cspNonce, locale, commit, onError, vault,
-                        clientAccessToken, fundingEligibility
+                        clientAccessToken, fundingEligibility, createBillingAgreement
                     });
                 }
 
@@ -107,7 +108,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
                 return initCheckout({
                     win, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
                     onAuth, onShippingChange, cspNonce, locale, commit, onError, vault,
-                    clientAccessToken, fundingEligibility, validationPromise
+                    clientAccessToken, fundingEligibility, validationPromise, createBillingAgreement
                 });
             })();
 

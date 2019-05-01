@@ -5,7 +5,7 @@ import { memoize } from 'belter/src';
 
 import { createAccessToken, createOrderID, billingTokenToOrderID } from '../../api';
 
-import { buildXCreateBillingAgreementData, buildXCreateBillingAgreementActions } from './createBillingAgreement';
+import type { CreateBillingAgreement } from './createBillingAgreement';
 import type { XProps } from './types';
 
 export type XCreateOrderDataType = {|
@@ -39,13 +39,12 @@ export function buildXCreateOrderActions({ clientID } : { clientID : string }) :
 
 export type CreateOrder = () => ZalgoPromise<string>;
 
-export function getCreateOrder(xprops : XProps) : CreateOrder {
-    const { createOrder, createBillingAgreement, clientID } = xprops;
+export function getCreateOrder(xprops : XProps, { createBillingAgreement } : { createBillingAgreement : ?CreateBillingAgreement }) : CreateOrder {
+    const { createOrder, clientID } = xprops;
 
     return memoize(() => {
         if (createBillingAgreement) {
-            return createBillingAgreement(buildXCreateBillingAgreementData(), buildXCreateBillingAgreementActions())
-                .then(billingTokenToOrderID);
+            return createBillingAgreement().then(billingTokenToOrderID);
         } else if (createOrder) {
             return createOrder(buildXCreateOrderData(), buildXCreateOrderActions({ clientID }));
         } else {

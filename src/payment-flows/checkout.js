@@ -9,7 +9,7 @@ import { enableVault } from '../api';
 import { CONTEXT, TARGET_ELEMENT } from '../constants';
 import { unresolvedPromise } from '../lib';
 import type { ProxyWindow, LocaleType, FundingEligibilityType } from '../types';
-import type { CreateOrder, OnApprove, OnCancel, OnAuth, OnShippingChange } from '../button/props';
+import type { CreateOrder, OnApprove, OnCancel, OnAuth, OnShippingChange, CreateBillingAgreement } from '../button/props';
 
 let checkoutOpen = false;
 let canRenderTop = false;
@@ -43,11 +43,16 @@ type VaultSetupEligibleProps = {|
     vault : boolean,
     clientAccessToken : ?string,
     fundingEligibility : Object,
-    fundingSource : $Values<typeof FUNDING>
+    fundingSource : $Values<typeof FUNDING>,
+    createBillingAgreement : ?CreateBillingAgreement
 |};
 
-function isVaultSetupEligible({ vault, clientAccessToken, fundingEligibility, fundingSource } : VaultSetupEligibleProps) : boolean {
+function isVaultSetupEligible({ vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement } : VaultSetupEligibleProps) : boolean {
     if (!clientAccessToken) {
+        return false;
+    }
+
+    if (createBillingAgreement) {
         return false;
     }
     
@@ -68,12 +73,13 @@ type EnableVaultSetupOptions = {|
     vault : boolean,
     clientAccessToken : ?string,
     fundingEligibility : FundingEligibilityType,
-    fundingSource : $Values<typeof FUNDING>
+    fundingSource : $Values<typeof FUNDING>,
+    createBillingAgreement : ?CreateBillingAgreement
 |};
 
-function enableVaultSetup({ orderID, vault, clientAccessToken, fundingEligibility, fundingSource } : EnableVaultSetupOptions) : ZalgoPromise<void> {
+function enableVaultSetup({ orderID, vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement } : EnableVaultSetupOptions) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
-        if (clientAccessToken && isVaultSetupEligible({ vault, clientAccessToken, fundingEligibility, fundingSource })) {
+        if (clientAccessToken && isVaultSetupEligible({ vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement })) {
             return enableVault({ orderID, clientAccessToken }).catch(err => {
                 if (vault) {
                     throw err;
@@ -94,6 +100,7 @@ type CheckoutProps= {|
     card : ?$Values<typeof CARD>,
     buyerCountry : $Values<typeof COUNTRY>,
     createOrder : CreateOrder,
+    createBillingAgreement : ?CreateBillingAgreement,
     onApprove : OnApprove,
     onCancel : OnCancel,
     onAuth : OnAuth,
@@ -117,7 +124,7 @@ type CheckoutInstance = {|
 export function initCheckout(props : CheckoutProps) : CheckoutInstance {
     const { win, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
         onAuth, onShippingChange, cspNonce, context, locale, commit, onError, vault,
-        clientAccessToken, fundingEligibility, validationPromise = ZalgoPromise.resolve(true) } = props;
+        clientAccessToken, fundingEligibility, createBillingAgreement, validationPromise = ZalgoPromise.resolve(true) } = props;
     
     if (checkoutOpen) {
         throw new Error(`Checkout already rendered`);
@@ -147,7 +154,7 @@ export function initCheckout(props : CheckoutProps) : CheckoutInstance {
                 }
 
                 return createOrder().then(orderID => {
-                    return enableVaultSetup({ orderID, vault, clientAccessToken, fundingEligibility, fundingSource }).then(() => {
+                    return enableVaultSetup({ orderID, vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement }).then(() => {
                         return orderID;
                     });
                 });
