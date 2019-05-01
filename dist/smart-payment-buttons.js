@@ -1848,7 +1848,7 @@ window.spb = function(modules) {
     }), __webpack_require__.d(__webpack_exports__, "getButtonCallbackProps", function() {
         return _props__WEBPACK_IMPORTED_MODULE_1__.a;
     });
-    var _createOrder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(15);
+    var _createOrder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(14);
     __webpack_require__.d(__webpack_exports__, "buildXCreateOrderData", function() {
         return _createOrder__WEBPACK_IMPORTED_MODULE_2__.b;
     }), __webpack_require__.d(__webpack_exports__, "buildXCreateOrderActions", function() {
@@ -1856,17 +1856,19 @@ window.spb = function(modules) {
     }), __webpack_require__.d(__webpack_exports__, "getCreateOrder", function() {
         return _createOrder__WEBPACK_IMPORTED_MODULE_2__.c;
     });
-    var _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(13);
+    var _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(20);
     __webpack_require__.d(__webpack_exports__, "buildXCreateBillingAgreementData", function() {
         return _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__.b;
     }), __webpack_require__.d(__webpack_exports__, "buildXCreateBillingAgreementActions", function() {
         return _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__.a;
+    }), __webpack_require__.d(__webpack_exports__, "getCreateBillingAgreement", function() {
+        return _createBillingAgreement__WEBPACK_IMPORTED_MODULE_3__.c;
     });
-    var _onApprove__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(16);
+    var _onApprove__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(15);
     __webpack_require__.d(__webpack_exports__, "getOnApprove", function() {
         return _onApprove__WEBPACK_IMPORTED_MODULE_4__.a;
     });
-    var _onInit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(14);
+    var _onInit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(13);
     __webpack_require__.d(__webpack_exports__, "buildXOnInitData", function() {
         return _onInit__WEBPACK_IMPORTED_MODULE_5__.b;
     }), __webpack_require__.d(__webpack_exports__, "buildXOnInitActions", function() {
@@ -1874,7 +1876,7 @@ window.spb = function(modules) {
     }), __webpack_require__.d(__webpack_exports__, "getOnInit", function() {
         return _onInit__WEBPACK_IMPORTED_MODULE_5__.c;
     });
-    var _onCancel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(17);
+    var _onCancel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(16);
     __webpack_require__.d(__webpack_exports__, "buildXOnCancelData", function() {
         return _onCancel__WEBPACK_IMPORTED_MODULE_6__.b;
     }), __webpack_require__.d(__webpack_exports__, "buildXOnCancelActions", function() {
@@ -1882,7 +1884,7 @@ window.spb = function(modules) {
     }), __webpack_require__.d(__webpack_exports__, "getOnCancel", function() {
         return _onCancel__WEBPACK_IMPORTED_MODULE_6__.c;
     });
-    var _onShippingChange__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(18);
+    var _onShippingChange__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(17);
     __webpack_require__.d(__webpack_exports__, "buildXOnShippingChangeData", function() {
         return _onShippingChange__WEBPACK_IMPORTED_MODULE_7__.a;
     }), __webpack_require__.d(__webpack_exports__, "buildXShippingChangeActions", function() {
@@ -1890,7 +1892,7 @@ window.spb = function(modules) {
     }), __webpack_require__.d(__webpack_exports__, "getOnShippingChange", function() {
         return _onShippingChange__WEBPACK_IMPORTED_MODULE_7__.c;
     });
-    var _onClick__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(19);
+    var _onClick__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(18);
     __webpack_require__.d(__webpack_exports__, "buildXOnClickData", function() {
         return _onClick__WEBPACK_IMPORTED_MODULE_8__.b;
     }), __webpack_require__.d(__webpack_exports__, "buildXOnClickActions", function() {
@@ -1898,12 +1900,12 @@ window.spb = function(modules) {
     }), __webpack_require__.d(__webpack_exports__, "getOnClick", function() {
         return _onClick__WEBPACK_IMPORTED_MODULE_8__.c;
     });
-    var _onAuth__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(20);
+    var _onAuth__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(19);
     __webpack_require__.d(__webpack_exports__, "getOnAuth", function() {
         return _onAuth__WEBPACK_IMPORTED_MODULE_9__.a;
     });
     var _onError__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(24);
-    for (var __WEBPACK_IMPORT_KEY__ in _onError__WEBPACK_IMPORTED_MODULE_10__) [ "getGlobalProps", "getButtonCallbackProps", "buildXCreateOrderData", "buildXCreateOrderActions", "getCreateOrder", "buildXCreateBillingAgreementData", "buildXCreateBillingAgreementActions", "getOnApprove", "buildXOnInitData", "buildXOnInitActions", "getOnInit", "buildXOnCancelData", "buildXOnCancelActions", "getOnCancel", "buildXOnShippingChangeData", "buildXShippingChangeActions", "getOnShippingChange", "buildXOnClickData", "buildXOnClickActions", "getOnClick", "getOnAuth", "default" ].indexOf(__WEBPACK_IMPORT_KEY__) < 0 && function(key) {
+    for (var __WEBPACK_IMPORT_KEY__ in _onError__WEBPACK_IMPORTED_MODULE_10__) [ "getGlobalProps", "getButtonCallbackProps", "buildXCreateOrderData", "buildXCreateOrderActions", "getCreateOrder", "buildXCreateBillingAgreementData", "buildXCreateBillingAgreementActions", "getCreateBillingAgreement", "getOnApprove", "buildXOnInitData", "buildXOnInitActions", "getOnInit", "buildXOnCancelData", "buildXOnCancelActions", "getOnCancel", "buildXOnShippingChangeData", "buildXShippingChangeActions", "getOnShippingChange", "buildXOnClickData", "buildXOnClickActions", "getOnClick", "getOnAuth", "default" ].indexOf(__WEBPACK_IMPORT_KEY__) < 0 && function(key) {
         __webpack_require__.d(__webpack_exports__, key, function() {
             return _onError__WEBPACK_IMPORTED_MODULE_10__[key];
         });
@@ -1911,19 +1913,6 @@ window.spb = function(modules) {
     var _getPopupBridge__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(11);
     __webpack_require__.d(__webpack_exports__, "POPUP_BRIDGE_OPTYPE", function() {
         return _getPopupBridge__WEBPACK_IMPORTED_MODULE_11__.a;
-    });
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    function buildXCreateBillingAgreementData() {
-        return {};
-    }
-    function buildXCreateBillingAgreementActions() {
-        return {};
-    }
-    __webpack_require__.d(__webpack_exports__, "b", function() {
-        return buildXCreateBillingAgreementData;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
-        return buildXCreateBillingAgreementActions;
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
@@ -1977,7 +1966,7 @@ window.spb = function(modules) {
     }), __webpack_require__.d(__webpack_exports__, "c", function() {
         return getCreateOrder;
     });
-    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1), _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6), _createBillingAgreement__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
+    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1), _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
     function buildXCreateOrderData() {
         return {};
     }
@@ -1993,10 +1982,10 @@ window.spb = function(modules) {
             }
         };
     }
-    function getCreateOrder(xprops) {
-        var createOrder = xprops.createOrder, createBillingAgreement = xprops.createBillingAgreement, clientID = xprops.clientID;
+    function getCreateOrder(xprops, _ref2) {
+        var createBillingAgreement = _ref2.createBillingAgreement, createOrder = xprops.createOrder, clientID = xprops.clientID;
         return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.e)(function() {
-            if (createBillingAgreement) return createBillingAgreement(Object(_createBillingAgreement__WEBPACK_IMPORTED_MODULE_2__.b)(), Object(_createBillingAgreement__WEBPACK_IMPORTED_MODULE_2__.a)()).then(_api__WEBPACK_IMPORTED_MODULE_1__.b);
+            if (createBillingAgreement) return createBillingAgreement().then(_api__WEBPACK_IMPORTED_MODULE_1__.b);
             if (createOrder) return createOrder({}, buildXCreateOrderActions({
                 clientID: clientID
             }));
@@ -2173,6 +2162,28 @@ window.spb = function(modules) {
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
+    __webpack_require__.d(__webpack_exports__, "b", function() {
+        return buildXCreateBillingAgreementData;
+    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+        return buildXCreateBillingAgreementActions;
+    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+        return getCreateBillingAgreement;
+    });
+    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+    function buildXCreateBillingAgreementData() {
+        return {};
+    }
+    function buildXCreateBillingAgreementActions() {
+        return {};
+    }
+    function getCreateBillingAgreement(xprops) {
+        var createBillingAgreement = xprops.createBillingAgreement;
+        if (createBillingAgreement) return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.e)(function() {
+            return createBillingAgreement({}, {});
+        });
+    }
+}, function(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
     __webpack_require__.r(__webpack_exports__);
     var _button__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(25);
     __webpack_require__.d(__webpack_exports__, "setupButton", function() {
@@ -2194,7 +2205,7 @@ window.spb = function(modules) {
     }), __webpack_require__.d(__webpack_exports__, "a", function() {
         return getButtonCallbackProps;
     });
-    var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0), _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2), _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10), _onInit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14), _createOrder__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(15), _onApprove__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(16), _onCancel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(17), _onShippingChange__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(18), _onClick__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(19), _onAuth__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(20);
+    var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2), _dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10), _onInit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13), _createOrder__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14), _onApprove__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(15), _onCancel__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(16), _onShippingChange__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(17), _onClick__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(18), _onAuth__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(19), _createBillingAgreement__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(20);
     function getGlobalProps(_ref) {
         var xprops = _ref.xprops, cspNonce = _ref.cspNonce, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, merchantID = xprops.merchantID, partnerAttributionID = xprops.partnerAttributionID, correlationID = xprops.correlationID, _xprops$buyerCountry = xprops.buyerCountry, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, rememberFunding = xprops.remember, onError = xprops.onError;
         return {
@@ -2202,9 +2213,9 @@ window.spb = function(modules) {
             vault: xprops.vault,
             commit: xprops.commit,
             clientAccessToken: xprops.clientAccessToken,
-            buyerCountry: void 0 === _xprops$buyerCountry ? _ref.buyerGeoCountry || _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.a.US : _xprops$buyerCountry,
+            buyerCountry: void 0 === _xprops$buyerCountry ? _ref.buyerGeoCountry || _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.a.US : _xprops$buyerCountry,
             locale: xprops.locale,
-            cspNonce: cspNonce = cspNonce || Object(_dom__WEBPACK_IMPORTED_MODULE_2__.d)(),
+            cspNonce: cspNonce = cspNonce || Object(_dom__WEBPACK_IMPORTED_MODULE_1__.d)(),
             sessionID: sessionID,
             buttonSessionID: buttonSessionID,
             clientID: clientID,
@@ -2214,30 +2225,27 @@ window.spb = function(modules) {
             getPopupBridge: getPopupBridge,
             getPrerenderDetails: getPrerenderDetails,
             rememberFunding: rememberFunding,
-            onInit: Object(_onInit__WEBPACK_IMPORTED_MODULE_3__.c)(xprops),
+            onInit: Object(_onInit__WEBPACK_IMPORTED_MODULE_2__.c)(xprops),
             onError: onError
         };
     }
     function getButtonCallbackProps(_ref2) {
-        var xprops = _ref2.xprops, createOrder = Object(_createOrder__WEBPACK_IMPORTED_MODULE_4__.c)(xprops), approved = !1, _onApprove = Object(_onApprove__WEBPACK_IMPORTED_MODULE_5__.a)(xprops, {
+        var xprops = _ref2.xprops, createBillingAgreement = Object(_createBillingAgreement__WEBPACK_IMPORTED_MODULE_9__.c)(xprops), createOrder = Object(_createOrder__WEBPACK_IMPORTED_MODULE_3__.c)(xprops, {
+            createBillingAgreement: createBillingAgreement
+        }), onApprove = Object(_onApprove__WEBPACK_IMPORTED_MODULE_4__.a)(xprops, {
             createOrder: createOrder
-        }), _onCancel = Object(_onCancel__WEBPACK_IMPORTED_MODULE_6__.c)(xprops, {
+        }), onCancel = Object(_onCancel__WEBPACK_IMPORTED_MODULE_5__.c)(xprops, {
             createOrder: createOrder
-        }), onShippingChange = Object(_onShippingChange__WEBPACK_IMPORTED_MODULE_7__.c)(xprops, {
+        }), onShippingChange = Object(_onShippingChange__WEBPACK_IMPORTED_MODULE_6__.c)(xprops, {
             createOrder: createOrder
         });
         return {
             createOrder: createOrder,
-            onApprove: function(data, actions) {
-                return approved = !0, _onApprove(data, actions);
-            },
-            onCancel: function() {
-                return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__.a.try(function() {
-                    if (!approved) return _onCancel();
-                });
-            },
-            onClick: Object(_onClick__WEBPACK_IMPORTED_MODULE_8__.c)(xprops),
-            onAuth: Object(_onAuth__WEBPACK_IMPORTED_MODULE_9__.a)(),
+            createBillingAgreement: createBillingAgreement,
+            onApprove: onApprove,
+            onCancel: onCancel,
+            onClick: Object(_onClick__WEBPACK_IMPORTED_MODULE_7__.c)(xprops),
+            onAuth: Object(_onAuth__WEBPACK_IMPORTED_MODULE_8__.a)(),
             onShippingChange: onShippingChange
         };
     }
@@ -2245,9 +2253,9 @@ window.spb = function(modules) {
     "use strict";
     var src = __webpack_require__(1), sdk_constants_src = __webpack_require__(2), zalgo_promise_src = __webpack_require__(0), lib = __webpack_require__(5), esm_extends = __webpack_require__(4), cross_domain_utils_src = __webpack_require__(8), api = __webpack_require__(6), constants = __webpack_require__(3), checkoutOpen = !1, canRenderTop = !1;
     function initCheckout(props) {
-        var win = props.win, fundingSource = props.fundingSource, card = props.card, buyerCountry = props.buyerCountry, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onAuth = props.onAuth, onShippingChange = props.onShippingChange, cspNonce = props.cspNonce, context = props.context, locale = props.locale, commit = props.commit, onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, fundingEligibility = props.fundingEligibility, _props$validationProm = props.validationPromise, validationPromise = void 0 === _props$validationProm ? zalgo_promise_src.a.resolve(!0) : _props$validationProm;
+        var win = props.win, fundingSource = props.fundingSource, card = props.card, buyerCountry = props.buyerCountry, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onAuth = props.onAuth, onShippingChange = props.onShippingChange, cspNonce = props.cspNonce, context = props.context, locale = props.locale, commit = props.commit, onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, fundingEligibility = props.fundingEligibility, createBillingAgreement = props.createBillingAgreement, _props$validationProm = props.validationPromise, validationPromise = void 0 === _props$validationProm ? zalgo_promise_src.a.resolve(!0) : _props$validationProm;
         if (checkoutOpen) throw new Error("Checkout already rendered");
-        var restart = Object(src.e)(function() {
+        var approved = !1, restart = Object(src.e)(function() {
             return initCheckout(Object(esm_extends.a)({}, props, {
                 context: constants.c.IFRAME
             })).start().finally(lib.d);
@@ -2257,10 +2265,12 @@ window.spb = function(modules) {
                 return validationPromise.then(function(valid) {
                     return valid ? _createOrder().then(function(orderID) {
                         return function(_ref3) {
-                            var orderID = _ref3.orderID, vault = _ref3.vault, clientAccessToken = _ref3.clientAccessToken, fundingEligibility = _ref3.fundingEligibility, fundingSource = _ref3.fundingSource;
+                            var orderID = _ref3.orderID, vault = _ref3.vault, clientAccessToken = _ref3.clientAccessToken, fundingEligibility = _ref3.fundingEligibility, fundingSource = _ref3.fundingSource, createBillingAgreement = _ref3.createBillingAgreement;
                             return zalgo_promise_src.a.try(function() {
                                 if (clientAccessToken && function(_ref2) {
+                                    if (!window.xprops.enableVault) return !1;
                                     if (!_ref2.clientAccessToken) return !1;
+                                    if (_ref2.createBillingAgreement) return !1;
                                     if (_ref2.vault) return !0;
                                     var fundingConfig = _ref2.fundingEligibility[_ref2.fundingSource];
                                     return !(!fundingConfig.eligible || !fundingConfig.vaultable);
@@ -2268,7 +2278,8 @@ window.spb = function(modules) {
                                     vault: vault,
                                     clientAccessToken: clientAccessToken,
                                     fundingEligibility: fundingEligibility,
-                                    fundingSource: fundingSource
+                                    fundingSource: fundingSource,
+                                    createBillingAgreement: createBillingAgreement
                                 })) return Object(api.f)({
                                     orderID: orderID,
                                     clientAccessToken: clientAccessToken
@@ -2281,7 +2292,8 @@ window.spb = function(modules) {
                             vault: vault,
                             clientAccessToken: clientAccessToken,
                             fundingEligibility: fundingEligibility,
-                            fundingSource: fundingSource
+                            fundingSource: fundingSource,
+                            createBillingAgreement: createBillingAgreement
                         }).then(function() {
                             return orderID;
                         });
@@ -2289,14 +2301,15 @@ window.spb = function(modules) {
                 });
             },
             onApprove: function(_ref4) {
-                return checkoutOpen = !1, _onApprove({
-                    payerID: _ref4.payerID,
-                    paymentID: _ref4.paymentID,
-                    billingToken: _ref4.billingToken
-                }, {
-                    restart: restart
-                }).then(function() {
-                    return closeCheckout();
+                var payerID = _ref4.payerID, paymentID = _ref4.paymentID, billingToken = _ref4.billingToken;
+                return approved = !0, closeCheckout().then(function() {
+                    return _onApprove({
+                        payerID: payerID,
+                        paymentID: paymentID,
+                        billingToken: billingToken
+                    }, {
+                        restart: restart
+                    });
                 });
             },
             onCancel: function() {
@@ -2310,7 +2323,7 @@ window.spb = function(modules) {
             onAuth: onAuth,
             onClose: function() {
                 return checkoutOpen = !1, validationPromise.then(function(valid) {
-                    if (valid) return _onCancel();
+                    if (valid && !approved) return _onCancel();
                 });
             },
             onShippingChange: onShippingChange,
@@ -2347,8 +2360,11 @@ window.spb = function(modules) {
             buttonsContainer.style.transitionDuration = "0s", recalculateMargin();
         }), recalculateMargin();
     }, config = __webpack_require__(7), props_getPopupBridge = __webpack_require__(11), button_props = __webpack_require__(12), dom = __webpack_require__(10), api_api = __webpack_require__(9);
-    function setupButton(_ref) {
-        var fundingEligibility = _ref.fundingEligibility, buyerGeoCountry = _ref.buyerCountry, serverCSPNonce = _ref.cspNonce;
+    function setupButton(opts) {
+        opts.paypal && (opts = {
+            fundingEligibility: opts
+        });
+        var fundingEligibility = opts.fundingEligibility, buyerGeoCountry = opts.buyerCountry, serverCSPNonce = opts.cspNonce;
         if (!window.paypal) throw new Error("PayPal library not loaded");
         var _getGlobalProps = Object(button_props.getGlobalProps)({
             xprops: window.xprops,
@@ -2366,14 +2382,14 @@ window.spb = function(modules) {
             locale: locale,
             merchantID: merchantID
         });
-        var popupBridge, buttonProcessing = !1, pay = function(_ref2) {
-            var button = _ref2.button, win = _ref2.win, fundingSource = _ref2.fundingSource, card = _ref2.card, paymentMethodID = _ref2.paymentMethodID;
+        var popupBridge, buttonProcessing = !1, pay = function(_ref) {
+            var button = _ref.button, win = _ref.win, fundingSource = _ref.fundingSource, card = _ref.card, paymentMethodID = _ref.paymentMethodID;
             return zalgo_promise_src.a.try(function() {
                 if (!buttonProcessing) {
                     buttonProcessing = !0;
                     var _getButtonCallbackPro = Object(button_props.getButtonCallbackProps)({
                         xprops: window.xprops
-                    }), createOrder = _getButtonCallbackPro.createOrder, onApprove = _getButtonCallbackPro.onApprove, onCancel = _getButtonCallbackPro.onCancel, onAuth = _getButtonCallbackPro.onAuth, onShippingChange = _getButtonCallbackPro.onShippingChange, validationPromise = (0, 
+                    }), createOrder = _getButtonCallbackPro.createOrder, createBillingAgreement = _getButtonCallbackPro.createBillingAgreement, onApprove = _getButtonCallbackPro.onApprove, onCancel = _getButtonCallbackPro.onCancel, onAuth = _getButtonCallbackPro.onAuth, onShippingChange = _getButtonCallbackPro.onShippingChange, validationPromise = (0, 
                     _getButtonCallbackPro.onClick)();
                     if (!init.isEnabled()) return win ? win.close() : null;
                     var _ref, isCardFields = (_ref = {
@@ -2392,7 +2408,7 @@ window.spb = function(modules) {
                         onShippingChange: onShippingChange
                     });
                     (isVaultCapture || isPopupBridge) && Object(dom.b)(button);
-                    var _ref3 = isVaultCapture ? function(props) {
+                    var _ref2 = isVaultCapture ? function(props) {
                         var createOrder = props.createOrder, paymentMethodID = props.paymentMethodID, onApprove = props.onApprove;
                         if (!paymentMethodID) throw new Error("Payment method id required for vault capture");
                         var restart = function() {
@@ -2481,7 +2497,8 @@ window.spb = function(modules) {
                         onError: onError,
                         vault: vault,
                         clientAccessToken: clientAccessToken,
-                        fundingEligibility: fundingEligibility
+                        fundingEligibility: fundingEligibility,
+                        createBillingAgreement: createBillingAgreement
                     }) : isPopupBridge ? function(props) {
                         var popupBridge = props.popupBridge, createOrder = props.createOrder, onApprove = props.onApprove, onCancel = props.onCancel;
                         if (!popupBridge) throw new Error("Popup bridge required");
@@ -2535,8 +2552,9 @@ window.spb = function(modules) {
                         vault: vault,
                         clientAccessToken: clientAccessToken,
                         fundingEligibility: fundingEligibility,
-                        validationPromise: validationPromise
-                    }), start = _ref3.start, close = _ref3.close, triggerError = _ref3.triggerError;
+                        validationPromise: validationPromise,
+                        createBillingAgreement: createBillingAgreement
+                    }), start = _ref2.start, close = _ref2.close, triggerError = _ref2.triggerError;
                     return validationPromise.then(function(valid) {
                         return valid ? (createOrder().then(function(orderID) {
                             return function(_ref) {
