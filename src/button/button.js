@@ -14,7 +14,15 @@ import { getGlobalProps, getButtonCallbackProps } from './props';
 import { getSelectedFunding, enableLoadingSpinner, getButtons, disableLoadingSpinner } from './dom';
 import { updateButtonClientConfig, validateOrder } from './orders';
 
-export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry, cspNonce: serverCSPNonce } : { fundingEligibility : FundingEligibilityType, buyerCountry? : ?$Values<typeof COUNTRY>, cspNonce? : string }) : ZalgoPromise<void> {
+export function setupButton(opts : { fundingEligibility : FundingEligibilityType, buyerCountry? : ?$Values<typeof COUNTRY>, cspNonce? : string }) : ZalgoPromise<void> {
+    
+    // $FlowFixMe
+    if (opts.paypal) {
+        // $FlowFixMe
+        opts = { fundingEligibility: opts };
+    }
+
+    const { fundingEligibility, buyerCountry: buyerGeoCountry, cspNonce: serverCSPNonce } = opts;
 
     if (!window.paypal) {
         throw new Error(`PayPal library not loaded`);
