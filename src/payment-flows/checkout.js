@@ -48,6 +48,10 @@ type VaultSetupEligibleProps = {|
 |};
 
 function isVaultSetupEligible({ vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement } : VaultSetupEligibleProps) : boolean {
+    if (!window.xprops.enableVault) {
+        return false;
+    }
+    
     if (!clientAccessToken) {
         return false;
     }
