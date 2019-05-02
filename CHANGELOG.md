@@ -1,3 +1,14 @@
+## <small>5.0.22 (2019-05-02)</small>
+
+* Add enableVault param ([e588c8b](http://github.paypal.com/paypal/paypal-checkout/commit/e588c8b))
+* Add margin for vault label ([b9274a9](http://github.paypal.com/paypal/paypal-checkout/commit/b9274a9))
+* Add margin for vault label ([a8d90a3](http://github.paypal.com/paypal/paypal-checkout/commit/a8d90a3))
+* Add vaulted funding header ([2600079](http://github.paypal.com/paypal/paypal-checkout/commit/2600079))
+* Fix document passed to prerender template from pre-button-click ([b3fd9ab](http://github.paypal.com/paypal/paypal-checkout/commit/b3fd9ab))
+* More explicit eligibility logic for cards ([4a5d02c](http://github.paypal.com/paypal/paypal-checkout/commit/4a5d02c))
+
+
+
 ## <small>5.0.21 (2019-04-30)</small>
 
 * UI fixes ([4eb51d3](http://github.paypal.com/paypal/paypal-checkout/commit/4eb51d3))
