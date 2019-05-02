@@ -59,8 +59,8 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                         // $FlowFixMe
                         writeElementToWindow(win, componentTemplate({
                             // $FlowFixMe
-                            document: win.document,
-                            props:    { nonce: props.nonce }
+                            doc:   win.document,
+                            props: { nonce: props.nonce }
                         }));
                     }
 
