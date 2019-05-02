@@ -1079,11 +1079,13 @@ window.spb = function(modules) {
         return FPTI_TRANSITION;
     });
     var SMART_BUTTONS = "smart_buttons", SMART_PAYMENT_BUTTONS = "smart-payment-buttons", ACCESS_TOKEN_HEADER = "x-paypal-internal-euat", HEADERS = {
-        ACCESS_TOKEN: "x-paypal-internal-euat",
-        CLIENT_METADATA_ID: "paypal-client-metadata-id",
+        AUTHORIZATION: "authorization",
         CSRF_TOKEN: "x-csrf-jwt",
         SOURCE: "x-source",
-        REQUESTED_BY: "x-requested-by"
+        REQUESTED_BY: "x-requested-by",
+        ACCESS_TOKEN: "x-paypal-internal-euat",
+        PARTNER_ATTRIBUTION_ID: "paypal-partner-attribution-id",
+        CLIENT_METADATA_ID: "paypal-client-metadata-id"
     }, DATA_ATTRIBUTES = {
         FUNDING_SOURCE: "data-funding-source",
         CARD: "data-card",
@@ -1398,14 +1400,12 @@ window.spb = function(modules) {
             }
         });
     }
-    function validatePaymentMethod(accessToken, orderID, paymentMethodID) {
-        if (Object(lib.a)().info("rest_api_create_order_token"), !accessToken) throw new Error("Access token not passed");
-        if (!orderID) throw new Error("Expected order id to be passed");
-        if (!paymentMethodID) throw new Error("Expected payment method id to be passed");
-        var headers = {
-            Authorization: "Bearer " + accessToken,
-            "PayPal-Partner-Attribution-Id": window.xprops.partnerAttributionID
-        }, json = {
+    function validatePaymentMethod(_ref2) {
+        var _headers, clientAccessToken = _ref2.clientAccessToken, orderID = _ref2.orderID, paymentMethodID = _ref2.paymentMethodID;
+        Object(lib.a)().info("rest_api_create_order_token");
+        var headers = ((_headers = {})[constants.i.AUTHORIZATION] = "Bearer " + clientAccessToken, 
+        _headers[constants.i.PARTNER_ATTRIBUTION_ID] = window.xprops.partnerAttributionID, 
+        _headers[constants.i.CLIENT_METADATA_ID] = window.xprops.buttonSessionID, _headers), json = {
             payment_source: {
                 token: {
                     id: paymentMethodID,
@@ -1418,8 +1418,8 @@ window.spb = function(modules) {
             url: config.e + "/" + orderID + "/" + config.f,
             headers: headers,
             json: json
-        }).then(function(_ref2) {
-            var status = _ref2.status;
+        }).then(function(_ref3) {
+            var status = _ref3.status;
             if (200 !== status) throw new Error("Validate payment failed with status: " + status);
         });
     }
@@ -1431,19 +1431,19 @@ window.spb = function(modules) {
             return data.token;
         });
     }
-    function enableVault(_ref3) {
-        var _headers, orderID = _ref3.orderID, clientAccessToken = _ref3.clientAccessToken;
+    function enableVault(_ref4) {
+        var _headers2, orderID = _ref4.orderID, clientAccessToken = _ref4.clientAccessToken;
         return Object(api.b)({
             query: "\n            mutation EnableVault(\n                $orderID : String!\n            ) {\n                enableVault(\n                    token: $orderID\n                )\n            }\n        ",
             variables: {
                 orderID: orderID
             },
-            headers: (_headers = {}, _headers[constants.i.ACCESS_TOKEN] = clientAccessToken, 
-            _headers)
+            headers: (_headers2 = {}, _headers2[constants.i.ACCESS_TOKEN] = clientAccessToken, 
+            _headers2)
         });
     }
-    function updateClientConfig(_ref4) {
-        var orderID = _ref4.orderID, fundingSource = _ref4.fundingSource, integrationArtifact = _ref4.integrationArtifact, userExperienceFlow = _ref4.userExperienceFlow, productFlow = _ref4.productFlow;
+    function updateClientConfig(_ref5) {
+        var orderID = _ref5.orderID, fundingSource = _ref5.fundingSource, integrationArtifact = _ref5.integrationArtifact, userExperienceFlow = _ref5.userExperienceFlow, productFlow = _ref5.productFlow;
         return Object(api.b)({
             query: "\n            mutation UpdateClientConfig(\n                $orderID : String!,\n                $fundingSource : ButtonFundingSourceType!,\n                $integrationArtifact : IntegrationArtifactType!,\n                $userExperienceFlow : UserExperienceFlowType!,\n                $productFlow : ProductFlowType!\n            ) {\n                updateClientConfig(\n                    token: $orderID,\n                    fundingSource: $fundingSource,\n                    integrationArtifact: $integrationArtifact,\n                    userExperienceFlow: $userExperienceFlow,\n                    productFlow: $productFlow\n                )\n            }\n        ",
             variables: {
@@ -2409,8 +2409,9 @@ window.spb = function(modules) {
                     });
                     (isVaultCapture || isPopupBridge) && Object(dom.b)(button);
                     var _ref2 = isVaultCapture ? function(props) {
-                        var createOrder = props.createOrder, paymentMethodID = props.paymentMethodID, onApprove = props.onApprove;
+                        var createOrder = props.createOrder, paymentMethodID = props.paymentMethodID, onApprove = props.onApprove, clientAccessToken = props.clientAccessToken;
                         if (!paymentMethodID) throw new Error("Payment method id required for vault capture");
+                        if (!clientAccessToken) throw new Error("Client access token required for vault capture");
                         var restart = function() {
                             return zalgo_promise_src.a.try(function() {
                                 throw new Error("Vault capture restart not implemented");
@@ -2419,7 +2420,11 @@ window.spb = function(modules) {
                         return {
                             start: function() {
                                 return createOrder().then(function(orderID) {
-                                    return Object(api.k)(window.xprops.clientAccessToken, orderID, paymentMethodID).then(function() {
+                                    return Object(api.k)({
+                                        clientAccessToken: clientAccessToken,
+                                        orderID: orderID,
+                                        paymentMethodID: paymentMethodID
+                                    }).then(function() {
                                         return onApprove({}, {
                                             restart: restart
                                         });
@@ -2436,7 +2441,8 @@ window.spb = function(modules) {
                     }({
                         createOrder: createOrder,
                         paymentMethodID: paymentMethodID,
-                        onApprove: onApprove
+                        onApprove: onApprove,
+                        clientAccessToken: clientAccessToken
                     }) : isCardFields ? function(props) {
                         var fundingSource = props.fundingSource, card = props.card, buyerCountry = props.buyerCountry, createOrder = props.createOrder, _onApprove = props.onApprove, onCancel = props.onCancel, onAuth = props.onAuth, onShippingChange = props.onShippingChange, cspNonce = props.cspNonce, locale = props.locale, commit = props.commit, onError = props.onError;
                         if (!card) throw new Error("Card required to render card fields");
