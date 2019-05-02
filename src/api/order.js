@@ -137,24 +137,19 @@ export function patchOrder(orderID : string, patch : []) : ZalgoPromise<OrderRes
     });
 }
 
-export function validatePaymentMethod(accessToken : string, orderID : string, paymentMethodID : string) : ZalgoPromise<void> {
+type ValidatePaymentMethodOptions = {|
+    clientAccessToken : string,
+    orderID : string,
+    paymentMethodID : string
+|};
+
+export function validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID } : ValidatePaymentMethodOptions) : ZalgoPromise<void> {
     getLogger().info(`rest_api_create_order_token`);
 
-    if (!accessToken) {
-        throw new Error(`Access token not passed`);
-    }
-
-    if (!orderID) {
-        throw new Error(`Expected order id to be passed`);
-    }
-
-    if (!paymentMethodID) {
-        throw new Error(`Expected payment method id to be passed`);
-    }
-
     const headers : Object = {
-        'Authorization':                 `Bearer ${ accessToken }`,
-        'PayPal-Partner-Attribution-Id': window.xprops.partnerAttributionID
+        [HEADERS.AUTHORIZATION]:            `Bearer ${ clientAccessToken }`,
+        [ HEADERS.PARTNER_ATTRIBUTION_ID ]: window.xprops.partnerAttributionID,
+        [ HEADERS.CLIENT_METADATA_ID ]:     window.xprops.buttonSessionID
     };
 
     const json = {

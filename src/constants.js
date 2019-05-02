@@ -6,11 +6,15 @@ export const SMART_PAYMENT_BUTTONS = 'smart-payment-buttons';
 export const ACCESS_TOKEN_HEADER = 'x-paypal-internal-euat';
 
 export const HEADERS = {
-    ACCESS_TOKEN:       'x-paypal-internal-euat',
-    CLIENT_METADATA_ID: 'paypal-client-metadata-id',
+    AUTHORIZATION: 'authorization',
+
     CSRF_TOKEN:         'x-csrf-jwt',
     SOURCE:             'x-source',
-    REQUESTED_BY:       'x-requested-by'
+    REQUESTED_BY:       'x-requested-by',
+
+    ACCESS_TOKEN:           'x-paypal-internal-euat',
+    PARTNER_ATTRIBUTION_ID: 'paypal-partner-attribution-id',
+    CLIENT_METADATA_ID:     'paypal-client-metadata-id'
 };
 
 export const DATA_ATTRIBUTES = {

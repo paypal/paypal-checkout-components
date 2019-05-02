@@ -31,14 +31,19 @@ type VaultInstance = {|
 type VaultProps = {|
     createOrder : CreateOrder,
     paymentMethodID : ?string,
-    onApprove : OnApprove
+    onApprove : OnApprove,
+    clientAccessToken : ?string
 |};
 
 export function initVault(props : VaultProps) : VaultInstance {
-    const { createOrder, paymentMethodID, onApprove } = props;
+    const { createOrder, paymentMethodID, onApprove, clientAccessToken } = props;
 
     if (!paymentMethodID) {
         throw new Error(`Payment method id required for vault capture`);
+    }
+
+    if (!clientAccessToken) {
+        throw new Error(`Client access token required for vault capture`);
     }
 
     const restart = () => {
@@ -50,7 +55,7 @@ export function initVault(props : VaultProps) : VaultInstance {
     return {
         start: () => {
             return createOrder().then(orderID => {
-                return validatePaymentMethod(window.xprops.clientAccessToken, orderID, paymentMethodID)
+                return validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID })
                     .then(() => onApprove({}, { restart }));
             });
         },

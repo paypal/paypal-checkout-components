@@ -95,7 +95,7 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
             const { start, close, triggerError } = (() => {
                 if (isVaultCapture) {
                     return initVault({
-                        createOrder, paymentMethodID, onApprove
+                        createOrder, paymentMethodID, onApprove, clientAccessToken
                     });
                 }
 
