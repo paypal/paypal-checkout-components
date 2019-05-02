@@ -62,6 +62,12 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             }
 
             {
+                vaultedFunding.length
+                    ? <p class={ `${ CLASS.VAULT_HEADER } ${ CLASS.TEXT }` }>Saved payment methods</p>
+                    : null
+            }
+
+            {
                 vaultedFunding.map(({ fundingSource, paymentMethodID, vendor, label }) => (
                     <VaultedButton
                         style={ style }

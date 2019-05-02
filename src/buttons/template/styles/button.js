@@ -119,4 +119,8 @@ export const buttonStyle = `
     .${ CLASS.BUTTON }.${ CLASS.LOADING } .${ CLASS.SPINNER } {
         display: block !important;
     }
+
+    .${ CLASS.CONTAINER } .${ CLASS.VAULT_HEADER } {
+        margin-top: 25px;
+    }
 `;
