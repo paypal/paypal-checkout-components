@@ -8,14 +8,11 @@ export const labelStyle = `
         border-radius: 0 !important;
     }
 
-    .${ CLASS.BUTTON }.${ CLASS.LABEL }-${ BUTTON_LABEL.CREDIT } .${ CLASS.TEXT } {
-        display: none !important;
-    }
-
     .${ CLASS.BUTTON } .${ CLASS.VAULT_LABEL } {
         max-width: 60%;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+        margin-left: 4px;
     }
 `;
