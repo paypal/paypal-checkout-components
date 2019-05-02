@@ -478,6 +478,12 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     queryParam: true
                 },
 
+                enableVault: {
+                    type:       'boolean',
+                    required:   false,
+                    queryParam: true
+                },
+
                 env: {
                     type:       'string',
                     queryParam: true,
