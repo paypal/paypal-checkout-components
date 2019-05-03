@@ -249,6 +249,8 @@ export function getContainerStyle({ uid, tag } : { uid : string, tag : string })
 
             opacity: 0;
             transform: scale3d(.3, .3, .3);
+
+            -webkit-overflow-scrolling: touch;
         }
 
         #${ uid }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } > iframe {
