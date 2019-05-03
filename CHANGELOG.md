@@ -1,3 +1,10 @@
+## <small>5.0.25 (2019-05-03)</small>
+
+* Deanonymize cross-window call ([7e6e274](http://github.paypal.com/paypal/paypal-checkout/commit/7e6e274))
+* Remove Array.from ([c5604e0](http://github.paypal.com/paypal/paypal-checkout/commit/c5604e0))
+
+
+
 ## <small>5.0.24 (2019-05-03)</small>
 
 * Fix checkout iframe scrolling in webviews ([c98ada4](http://github.paypal.com/paypal/paypal-checkout/commit/c98ada4))
