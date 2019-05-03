@@ -1,3 +1,10 @@
+## <small>5.0.24 (2019-05-03)</small>
+
+* Fix checkout iframe scrolling in webviews ([c98ada4](http://github.paypal.com/paypal/paypal-checkout/commit/c98ada4))
+* Reduce margin for vault header ([1e5811d](http://github.paypal.com/paypal/paypal-checkout/commit/1e5811d))
+
+
+
 ## <small>5.0.23 (2019-05-02)</small>
 
 * chore(release): 5.0.22 :tada: ([ab4679e](http://github.paypal.com/paypal/paypal-checkout/commit/ab4679e))
