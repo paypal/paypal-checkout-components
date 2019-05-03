@@ -121,6 +121,6 @@ export const buttonStyle = `
     }
 
     .${ CLASS.CONTAINER } .${ CLASS.VAULT_HEADER } {
-        margin-top: 25px;
+        margin-top: 20px;
     }
 `;
