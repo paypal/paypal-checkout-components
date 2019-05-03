@@ -1,6 +1,6 @@
 /* @flow */
 
-import { COUNTRY, LANG, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, DEFAULT_COUNTRY, COUNTRY_LANGS } from '@paypal/sdk-constants';
+import { ENV, COUNTRY, LANG, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, DEFAULT_COUNTRY, COUNTRY_LANGS } from '@paypal/sdk-constants';
 
 import type { ExpressRequest, ExpressResponse } from './types';
 
@@ -15,6 +15,7 @@ function getNonce(res : ExpressResponse) : string {
 }
 
 type ParamsType = {|
+    env : $Values<typeof ENV>,
     clientID : string,
     locale? : {
         country : $Values<typeof COUNTRY>,
@@ -33,6 +34,7 @@ type ParamsType = {|
 |};
 
 type RequestParams = {|
+    env : $Values<typeof ENV>,
     clientID : ?string,
     country : $Values<typeof COUNTRY>,
     buyerCountry : ?$Values<typeof COUNTRY>,
@@ -46,11 +48,12 @@ type RequestParams = {|
     merchantID : ?string,
     buttonSessionID : string,
     clientAccessToken : ?string,
-        cspNonce : string
+    cspNonce : string
 |};
 
 export function getParams(params : ParamsType, req : ExpressRequest, res : ExpressResponse) : RequestParams {
     const {
+        env,
         clientID,
         locale = {},
         buyerCountry,
@@ -73,6 +76,7 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
     const cspNonce = getNonce(res);
 
     return {
+        env,
         clientID,
         // $FlowFixMe
         lang,

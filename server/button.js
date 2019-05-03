@@ -32,7 +32,7 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
 
             const params = undotify(req.query);
 
-            const { clientID, currency, intent, commit, vault, buyerCountry = req.get(HTTP_HEADER.PP_GEO_LOC),
+            const { env, clientID, currency, intent, commit, vault, buyerCountry = req.get(HTTP_HEADER.PP_GEO_LOC),
                 disableFunding, disableCard, merchantID, buttonSessionID, clientAccessToken, cspNonce } = getParams(params, req, res);
 
             logger.info(req, `button_params`, { params: JSON.stringify(params) });
@@ -97,7 +97,7 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
                     ${ getSDKLoader({ cspNonce }) }
                     <script nonce="${ cspNonce }">${ client.script }</script>
                     <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON({ fundingEligibility, buyerCountry, cspNonce }) })</script>
-                    ${ (FRAUDNET_ENABLED || req.query.enableVault) ? renderFraudnetScript({ id: buttonSessionID, cspNonce }) : '' }
+                    ${ (FRAUDNET_ENABLED || req.query.enableVault) ? renderFraudnetScript({ id: buttonSessionID, cspNonce, env }) : '' }
                 </body>
             `;
 
