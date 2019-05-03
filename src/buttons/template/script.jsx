@@ -130,9 +130,7 @@ function getComponentScript() : () => void {
 
         function toggleOptionals() {
             optionalParents.forEach(optionalParent => {
-
-                // eslint-disable-next-line unicorn/prefer-spread
-                const parentChildren = Array.from(optionalParent.children);
+                const parentChildren = Array.prototype.slice.call(optionalParent.children);
                 const optionalChildren = getElements('[optional]', optionalParent);
 
                 parentChildren.forEach(el => showElement(el));
