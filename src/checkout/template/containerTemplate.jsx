@@ -41,8 +41,10 @@ export function containerTemplate({ uid, tag, props, context, close, focus, doc,
 
     const setupAnimations = (name) => {
         return (el) => {
-            event.on(EVENT.DISPLAY, () => animate(el, `show-${ name }`, noop));
-            event.on(EVENT.CLOSE, () => animate(el, `hide-${ name }`, noop));
+            const showContainer = () => animate(el, `show-${ name }`, noop);
+            const hideContainer = () => animate(el, `hide-${ name }`, noop);
+            event.on(EVENT.DISPLAY, showContainer);
+            event.on(EVENT.CLOSE, hideContainer);
         };
     };
 
