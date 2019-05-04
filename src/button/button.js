@@ -53,7 +53,8 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
         onInit
     } = getGlobalProps({ xprops: window.xprops, buyerGeoCountry, cspNonce: serverCSPNonce });
 
-    const init = onInit();
+    // eslint-disable-next-line prefer-const
+    let init;
 
     setupLogger({ env, sessionID, clientID, partnerAttributionID, commit, correlationID, locale, merchantID });
 
@@ -80,7 +81,7 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
 
             const validationPromise = onClick();
 
-            if (!init.isEnabled()) {
+            if (!init || !init.isEnabled()) {
                 return win ? win.close() : null;
             }
 
@@ -141,17 +142,16 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
                             triggerError(err),
                             close()
                         ]);
-                    }).finally(() => {
-                        buttonProcessing = false;
-                        disableLoadingSpinner(button);
                     });
+                    
             });
+        }).finally(() => {
+            buttonProcessing = false;
+            disableLoadingSpinner(button);
         });
     };
 
     const tasks = {};
-
-    tasks.onInit = init.promise;
 
     getButtons().forEach(button => {
         const { fundingSource, card, paymentMethodID } = getSelectedFunding(button);
@@ -160,21 +160,6 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
             event.preventDefault();
             event.stopPropagation();
             pay({ button, fundingSource, card, paymentMethodID });
-        });
-    });
-
-    tasks.prerender = tasks.onInit.then(() => {
-        return getPrerenderDetails().then((prerenderDetails) => {
-            if (prerenderDetails) {
-                const { win, fundingSource, card } = prerenderDetails;
-                const button = document.querySelector(`[${ DATA_ATTRIBUTES.FUNDING_SOURCE }=${ fundingSource }]`);
-
-                if (!button) {
-                    throw new Error(`Can not find button element`);
-                }
-
-                return pay({ button, win, fundingSource, card });
-            }
         });
     });
 
@@ -193,6 +178,24 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
     });
 
     tasks.setupCheckout = setupCheckout();
+
+    init = onInit();
+    tasks.onInit = init.promise;
+
+    tasks.prerender = tasks.onInit.then(() => {
+        return getPrerenderDetails().then((prerenderDetails) => {
+            if (prerenderDetails) {
+                const { win, fundingSource, card } = prerenderDetails;
+                const button = document.querySelector(`[${ DATA_ATTRIBUTES.FUNDING_SOURCE }=${ fundingSource }]`);
+
+                if (!button) {
+                    throw new Error(`Can not find button element`);
+                }
+
+                return pay({ button, win, fundingSource, card });
+            }
+        });
+    });
 
     return ZalgoPromise.hash(tasks).then(noop);
 }
