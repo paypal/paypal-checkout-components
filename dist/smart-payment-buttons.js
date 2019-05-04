@@ -330,17 +330,16 @@ window.spb = function(modules) {
             } catch (err) {
                 delete this.weakmap;
             }
-            if (this.isSafeToReadWrite(key)) {
+            if (this.isSafeToReadWrite(key)) try {
                 var name = this.name, entry = key[name];
-                entry && entry[0] === key ? entry[1] = value : defineProperty(key, name, {
+                return void (entry && entry[0] === key ? entry[1] = value : defineProperty(key, name, {
                     value: [ key, value ],
                     writable: !0
-                });
-            } else {
-                this._cleanupClosedWindows();
-                var keys = this.keys, values = this.values, index = safeIndexOf(keys, key);
-                -1 === index ? (keys.push(key), values.push(value)) : values[index] = value;
-            }
+                }));
+            } catch (err) {}
+            this._cleanupClosedWindows();
+            var keys = this.keys, values = this.values, index = safeIndexOf(keys, key);
+            -1 === index ? (keys.push(key), values.push(value)) : values[index] = value;
         }, _proto.get = function(key) {
             if (!key) throw new Error("WeakMap expected key");
             var weakmap = this.weakmap;
@@ -349,14 +348,13 @@ window.spb = function(modules) {
             } catch (err) {
                 delete this.weakmap;
             }
-            if (!this.isSafeToReadWrite(key)) {
-                this._cleanupClosedWindows();
-                var index = safeIndexOf(this.keys, key);
-                if (-1 === index) return;
-                return this.values[index];
-            }
-            var entry = key[this.name];
-            if (entry && entry[0] === key) return entry[1];
+            if (this.isSafeToReadWrite(key)) try {
+                var entry = key[this.name];
+                return entry && entry[0] === key ? entry[1] : void 0;
+            } catch (err) {}
+            this._cleanupClosedWindows();
+            var index = safeIndexOf(this.keys, key);
+            if (-1 !== index) return this.values[index];
         }, _proto.delete = function(key) {
             if (!key) throw new Error("WeakMap expected key");
             var weakmap = this.weakmap;
@@ -365,14 +363,13 @@ window.spb = function(modules) {
             } catch (err) {
                 delete this.weakmap;
             }
-            if (this.isSafeToReadWrite(key)) {
+            if (this.isSafeToReadWrite(key)) try {
                 var entry = key[this.name];
                 entry && entry[0] === key && (entry[0] = entry[1] = void 0);
-            } else {
-                this._cleanupClosedWindows();
-                var keys = this.keys, index = safeIndexOf(keys, key);
-                -1 !== index && (keys.splice(index, 1), this.values.splice(index, 1));
-            }
+            } catch (err) {}
+            this._cleanupClosedWindows();
+            var keys = this.keys, index = safeIndexOf(keys, key);
+            -1 !== index && (keys.splice(index, 1), this.values.splice(index, 1));
         }, _proto.has = function(key) {
             if (!key) throw new Error("WeakMap expected key");
             var weakmap = this.weakmap;
@@ -381,10 +378,10 @@ window.spb = function(modules) {
             } catch (err) {
                 delete this.weakmap;
             }
-            if (this.isSafeToReadWrite(key)) {
+            if (this.isSafeToReadWrite(key)) try {
                 var entry = key[this.name];
                 return !(!entry || entry[0] !== key);
-            }
+            } catch (err) {}
             return this._cleanupClosedWindows(), -1 !== safeIndexOf(this.keys, key);
         }, _proto.getOrSet = function(key, getter) {
             if (this.has(key)) return this.get(key);
@@ -1513,7 +1510,7 @@ window.spb = function(modules) {
         return void 0 === win && (win = window), win.location.protocol === PROTOCOL.ABOUT;
     }
     function getParent(win) {
-        if (win) try {
+        if (void 0 === win && (win = window), win) try {
             if (win.parent && win.parent !== win) return win.parent;
         } catch (err) {}
     }
@@ -2366,12 +2363,11 @@ window.spb = function(modules) {
         });
         var fundingEligibility = opts.fundingEligibility, buyerGeoCountry = opts.buyerCountry, serverCSPNonce = opts.cspNonce;
         if (!window.paypal) throw new Error("PayPal library not loaded");
-        var _getGlobalProps = Object(button_props.getGlobalProps)({
+        var init, _getGlobalProps = Object(button_props.getGlobalProps)({
             xprops: window.xprops,
             buyerGeoCountry: buyerGeoCountry,
             cspNonce: serverCSPNonce
-        }), env = _getGlobalProps.env, vault = _getGlobalProps.vault, commit = _getGlobalProps.commit, clientAccessToken = _getGlobalProps.clientAccessToken, buyerCountry = _getGlobalProps.buyerCountry, locale = _getGlobalProps.locale, cspNonce = _getGlobalProps.cspNonce, sessionID = _getGlobalProps.sessionID, clientID = _getGlobalProps.clientID, merchantID = _getGlobalProps.merchantID, partnerAttributionID = _getGlobalProps.partnerAttributionID, correlationID = _getGlobalProps.correlationID, getPopupBridge = _getGlobalProps.getPopupBridge, getPrerenderDetails = _getGlobalProps.getPrerenderDetails, rememberFunding = _getGlobalProps.rememberFunding, onError = _getGlobalProps.onError, init = (0, 
-        _getGlobalProps.onInit)();
+        }), env = _getGlobalProps.env, vault = _getGlobalProps.vault, commit = _getGlobalProps.commit, clientAccessToken = _getGlobalProps.clientAccessToken, buyerCountry = _getGlobalProps.buyerCountry, locale = _getGlobalProps.locale, cspNonce = _getGlobalProps.cspNonce, sessionID = _getGlobalProps.sessionID, clientID = _getGlobalProps.clientID, merchantID = _getGlobalProps.merchantID, partnerAttributionID = _getGlobalProps.partnerAttributionID, correlationID = _getGlobalProps.correlationID, getPopupBridge = _getGlobalProps.getPopupBridge, getPrerenderDetails = _getGlobalProps.getPrerenderDetails, rememberFunding = _getGlobalProps.rememberFunding, onError = _getGlobalProps.onError, onInit = _getGlobalProps.onInit;
         Object(lib.c)({
             env: env,
             sessionID: sessionID,
@@ -2391,7 +2387,7 @@ window.spb = function(modules) {
                         xprops: window.xprops
                     }), createOrder = _getButtonCallbackPro.createOrder, createBillingAgreement = _getButtonCallbackPro.createBillingAgreement, onApprove = _getButtonCallbackPro.onApprove, onCancel = _getButtonCallbackPro.onCancel, onAuth = _getButtonCallbackPro.onAuth, onShippingChange = _getButtonCallbackPro.onShippingChange, validationPromise = (0, 
                     _getButtonCallbackPro.onClick)();
-                    if (!init.isEnabled()) return win ? win.close() : null;
+                    if (!init || !init.isEnabled()) return win ? win.close() : null;
                     var _ref, isCardFields = (_ref = {
                         vault: vault,
                         onShippingChange: onShippingChange,
@@ -2603,14 +2599,14 @@ window.spb = function(modules) {
                             }(orderID);
                         }).catch(function(err) {
                             return zalgo_promise_src.a.all([ triggerError(err), close() ]);
-                        }).finally(function() {
-                            buttonProcessing = !1, Object(dom.a)(button);
                         })) : zalgo_promise_src.a.all([ close(), win && win.close() ]).then(src.f);
                     });
                 }
+            }).finally(function() {
+                buttonProcessing = !1, Object(dom.a)(button);
             });
         }, tasks = {};
-        return tasks.onInit = init.promise, Object(dom.c)().forEach(function(button) {
+        return Object(dom.c)().forEach(function(button) {
             var _getSelectedFunding = Object(dom.e)(button), fundingSource = _getSelectedFunding.fundingSource, card = _getSelectedFunding.card, paymentMethodID = _getSelectedFunding.paymentMethodID;
             Object(src.h)(button, function(event) {
                 event.preventDefault(), event.stopPropagation(), pay({
@@ -2619,19 +2615,6 @@ window.spb = function(modules) {
                     card: card,
                     paymentMethodID: paymentMethodID
                 });
-            });
-        }), tasks.prerender = tasks.onInit.then(function() {
-            return getPrerenderDetails().then(function(prerenderDetails) {
-                if (prerenderDetails) {
-                    var win = prerenderDetails.win, fundingSource = prerenderDetails.fundingSource, card = prerenderDetails.card, button = document.querySelector("[" + constants.d.FUNDING_SOURCE + "=" + fundingSource + "]");
-                    if (!button) throw new Error("Can not find button element");
-                    return pay({
-                        button: button,
-                        win: win,
-                        fundingSource: fundingSource,
-                        card: card
-                    });
-                }
             });
         }), tasks.remember = zalgo_promise_src.a.try(function() {
             if (fundingEligibility && fundingEligibility.venmo && fundingEligibility.venmo.eligible) return rememberFunding([ sdk_constants_src.g.VENMO ]);
@@ -2645,7 +2628,20 @@ window.spb = function(modules) {
             return top && parent && parent !== top && (tasks.canRenderTo = window.paypal.Checkout.canRenderTo(top).then(function(result) {
                 canRenderTop = result;
             })), zalgo_promise_src.a.hash(tasks).then(src.f);
-        }(), zalgo_promise_src.a.hash(tasks).then(src.f);
+        }(), init = onInit(), tasks.onInit = init.promise, tasks.prerender = tasks.onInit.then(function() {
+            return getPrerenderDetails().then(function(prerenderDetails) {
+                if (prerenderDetails) {
+                    var win = prerenderDetails.win, fundingSource = prerenderDetails.fundingSource, card = prerenderDetails.card, button = document.querySelector("[" + constants.d.FUNDING_SOURCE + "=" + fundingSource + "]");
+                    if (!button) throw new Error("Can not find button element");
+                    return pay({
+                        button: button,
+                        win: win,
+                        fundingSource: fundingSource,
+                        card: card
+                    });
+                }
+            });
+        }), zalgo_promise_src.a.hash(tasks).then(src.f);
     }
     __webpack_require__.d(__webpack_exports__, "a", function() {
         return setupButton;
