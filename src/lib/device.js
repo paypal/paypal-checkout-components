@@ -20,7 +20,7 @@ export function isDevice() : boolean {
 
 export function isInsidePopup() : boolean {
     // Checks to see if the top-most window is a pop-up
-    return Boolean(getOpener(getTop(window)));
+    return Boolean(getOpener(getTop(window) || window));
 }
 
 export function isStandAlone() : boolean {
