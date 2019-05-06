@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint --ext .js --ext .jsx src/ test/ *.js",
-    "flow-typed": "flow-typed install",
+    "flow-typed": "rm -rf ./flow-typed && flow-typed install",
     "flow": "flow",
     "flow:build": "flow gen-flow-files ./src/index.js --out-dir ./dist/module",
     "karma": "cross-env NODE_ENV=test babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/karma start",
@@ -13,7 +13,7 @@
     "webpack": "babel-node ./node_modules/.bin/webpack --progress",
     "webpack-base": "babel-node ./node_modules/.bin/webpack --progress --config webpack.base.config.js",
     "webpack-button": "babel-node ./node_modules/.bin/webpack --progress --config webpack.button.config.js",
-    "test": "if [ ! $SKIP_TEST ]; then npm run lint && npm run flow && npm run test-ssr && npm run karma && npm run buttondiff; fi;",
+    "test": "if [ ! $SKIP_TEST ]; then npm run lint && npm run flow-typed && npm run flow && npm run test-ssr && npm run karma && npm run buttondiff; fi;",
     "build": "npm run test && npm run webpack",
     "release": "./scripts/publish.sh",
     "release:patch": "./scripts/publish.sh patch",
