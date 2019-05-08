@@ -1100,6 +1100,9 @@
                     }
                 });
             }
+            function arrayFrom(item) {
+                return Array.prototype.slice.call(item);
+            }
             function isObject(item) {
                 return "object" === (void 0 === item ? "undefined" : _typeof(item)) && null !== item;
             }
@@ -1523,8 +1526,14 @@
             function writeElementToWindow(win, el) {
                 var tag = el.tagName.toLowerCase();
                 if ("html" !== tag) throw new Error("Expected element to be html, got " + tag);
-                for (var documentElement = win.document.documentElement; documentElement.children && documentElement.children.length; ) documentElement.removeChild(documentElement.children[0]);
-                for (;el.children.length; ) documentElement.appendChild(el.children[0]);
+                for (var documentElement = win.document.documentElement, _i6 = 0, _arrayFrom2 = arrayFrom(documentElement.children), _length6 = null == _arrayFrom2 ? 0 : _arrayFrom2.length; _i6 < _length6; _i6++) {
+                    var child = _arrayFrom2[_i6];
+                    documentElement.removeChild(child);
+                }
+                for (var _i8 = 0, _arrayFrom4 = arrayFrom(el.children), _length8 = null == _arrayFrom4 ? 0 : _arrayFrom4.length; _i8 < _length8; _i8++) {
+                    var _child = _arrayFrom4[_i8];
+                    documentElement.appendChild(_child);
+                }
             }
             function setStyle(el, styleText) {
                 var doc = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : window.document;
@@ -1561,8 +1570,8 @@
                 options.style && extend(element.style, options.style);
                 options.class && (element.className = options.class.join(" "));
                 options.id && element.setAttribute("id", options.id);
-                if (options.attributes) for (var _i6 = 0, _Object$keys2 = Object.keys(options.attributes), _length6 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i6 < _length6; _i6++) {
-                    var key = _Object$keys2[_i6];
+                if (options.attributes) for (var _i10 = 0, _Object$keys2 = Object.keys(options.attributes), _length10 = null == _Object$keys2 ? 0 : _Object$keys2.length; _i10 < _length10; _i10++) {
+                    var key = _Object$keys2[_i10];
                     element.setAttribute(key, options.attributes[key]);
                 }
                 options.styleSheet && setStyle(element, options.styleSheet);
@@ -1603,14 +1612,14 @@
             }
             function bindEvents(element, eventNames, handler) {
                 handler = once(handler);
-                for (var _i8 = 0, _length8 = null == eventNames ? 0 : eventNames.length; _i8 < _length8; _i8++) {
-                    var eventName = eventNames[_i8];
+                for (var _i12 = 0, _length12 = null == eventNames ? 0 : eventNames.length; _i12 < _length12; _i12++) {
+                    var eventName = eventNames[_i12];
                     element.addEventListener(eventName, handler);
                 }
                 return {
                     cancel: once(function() {
-                        for (var _i10 = 0, _length10 = null == eventNames ? 0 : eventNames.length; _i10 < _length10; _i10++) {
-                            var _eventName = eventNames[_i10];
+                        for (var _i14 = 0, _length14 = null == eventNames ? 0 : eventNames.length; _i14 < _length14; _i14++) {
+                            var _eventName = eventNames[_i14];
                             element.removeEventListener(_eventName, handler);
                         }
                     })
@@ -1619,8 +1628,8 @@
             var VENDOR_PREFIXES = [ "webkit", "moz", "ms", "o" ];
             function setVendorCSS(element, name, value) {
                 element.style[name] = value;
-                for (var capitalizedName = capitalizeFirstLetter(name), _i12 = 0, _length12 = null == VENDOR_PREFIXES ? 0 : VENDOR_PREFIXES.length; _i12 < _length12; _i12++) {
-                    var prefix = VENDOR_PREFIXES[_i12];
+                for (var capitalizedName = capitalizeFirstLetter(name), _i16 = 0, _length16 = null == VENDOR_PREFIXES ? 0 : VENDOR_PREFIXES.length; _i16 < _length16; _i16++) {
+                    var prefix = VENDOR_PREFIXES[_i16];
                     element.style["" + prefix + capitalizedName] = value;
                 }
             }
@@ -1726,8 +1735,8 @@
                 };
             }
             function fixScripts(el) {
-                for (var doc = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : window.document, _i14 = 0, _querySelectorAll2 = querySelectorAll("script", el), _length14 = null == _querySelectorAll2 ? 0 : _querySelectorAll2.length; _i14 < _length14; _i14++) {
-                    var script = _querySelectorAll2[_i14], parentNode = script.parentNode;
+                for (var doc = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : window.document, _i18 = 0, _querySelectorAll2 = querySelectorAll("script", el), _length18 = null == _querySelectorAll2 ? 0 : _querySelectorAll2.length; _i18 < _length18; _i18++) {
+                    var script = _querySelectorAll2[_i18], parentNode = script.parentNode;
                     if (parentNode) {
                         var newScript = doc.createElement("script");
                         newScript.text = script.textContent;
@@ -2434,6 +2443,9 @@
                 return defineLazyProp;
             });
             __webpack_require__.d(__webpack_exports__, !1, function() {
+                return arrayFrom;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
                 return isObject;
             });
             __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -2852,20 +2864,20 @@
                     } catch (err) {
                         delete this.weakmap;
                     }
-                    if (this.isSafeToReadWrite(key)) {
+                    if (this.isSafeToReadWrite(key)) try {
                         var name = this.name, entry = key[name];
                         entry && entry[0] === key ? entry[1] = value : defineProperty(key, name, {
                             value: [ key, value ],
                             writable: !0
                         });
-                    } else {
-                        this._cleanupClosedWindows();
-                        var keys = this.keys, values = this.values, index = safeIndexOf(keys, key);
-                        if (-1 === index) {
-                            keys.push(key);
-                            values.push(value);
-                        } else values[index] = value;
-                    }
+                        return;
+                    } catch (err) {}
+                    this._cleanupClosedWindows();
+                    var keys = this.keys, values = this.values, index = safeIndexOf(keys, key);
+                    if (-1 === index) {
+                        keys.push(key);
+                        values.push(value);
+                    } else values[index] = value;
                 };
                 CrossDomainSafeWeakMap.prototype.get = function(key) {
                     if (!key) throw new Error("WeakMap expected key");
@@ -2875,14 +2887,13 @@
                     } catch (err) {
                         delete this.weakmap;
                     }
-                    if (!this.isSafeToReadWrite(key)) {
-                        this._cleanupClosedWindows();
-                        var index = safeIndexOf(this.keys, key);
-                        if (-1 === index) return;
-                        return this.values[index];
-                    }
-                    var entry = key[this.name];
-                    if (entry && entry[0] === key) return entry[1];
+                    if (this.isSafeToReadWrite(key)) try {
+                        var entry = key[this.name];
+                        return entry && entry[0] === key ? entry[1] : void 0;
+                    } catch (err) {}
+                    this._cleanupClosedWindows();
+                    var index = safeIndexOf(this.keys, key);
+                    if (-1 !== index) return this.values[index];
                 };
                 CrossDomainSafeWeakMap.prototype.delete = function(key) {
                     if (!key) throw new Error("WeakMap expected key");
@@ -2892,16 +2903,15 @@
                     } catch (err) {
                         delete this.weakmap;
                     }
-                    if (this.isSafeToReadWrite(key)) {
+                    if (this.isSafeToReadWrite(key)) try {
                         var entry = key[this.name];
                         entry && entry[0] === key && (entry[0] = entry[1] = void 0);
-                    } else {
-                        this._cleanupClosedWindows();
-                        var keys = this.keys, index = safeIndexOf(keys, key);
-                        if (-1 !== index) {
-                            keys.splice(index, 1);
-                            this.values.splice(index, 1);
-                        }
+                    } catch (err) {}
+                    this._cleanupClosedWindows();
+                    var keys = this.keys, index = safeIndexOf(keys, key);
+                    if (-1 !== index) {
+                        keys.splice(index, 1);
+                        this.values.splice(index, 1);
                     }
                 };
                 CrossDomainSafeWeakMap.prototype.has = function(key) {
@@ -2912,10 +2922,10 @@
                     } catch (err) {
                         delete this.weakmap;
                     }
-                    if (this.isSafeToReadWrite(key)) {
+                    if (this.isSafeToReadWrite(key)) try {
                         var entry = key[this.name];
                         return !(!entry || entry[0] !== key);
-                    }
+                    } catch (err) {}
                     this._cleanupClosedWindows();
                     return -1 !== safeIndexOf(this.keys, key);
                 };
@@ -2950,12 +2960,14 @@
             function isAboutProtocol() {
                 return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window).location.protocol === PROTOCOL.ABOUT;
             }
-            function getParent(win) {
+            function getParent() {
+                var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window;
                 if (win) try {
                     if (win.parent && win.parent !== win) return win.parent;
                 } catch (err) {}
             }
-            function getOpener(win) {
+            function getOpener() {
+                var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window;
                 if (win && !getParent(win)) try {
                     return win.opener;
                 } catch (err) {}
@@ -3224,8 +3236,8 @@
             function isOpener(parent, child) {
                 return parent === getOpener(child);
             }
-            function getAncestor(win) {
-                var opener = getOpener(win = win || window);
+            function getAncestor() {
+                var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, opener = getOpener(win = win || window);
                 if (opener) return opener;
                 var parent = getParent(win);
                 return parent || void 0;
@@ -3369,6 +3381,11 @@
             function normalizeMockUrl(url) {
                 if (!isMockDomain(getDomainFromUrl(url))) return url;
                 throw new Error("Mock urls not supported out of test mode");
+            }
+            function closeWindow(win) {
+                try {
+                    win.close();
+                } catch (err) {}
             }
             __webpack_require__.d(__webpack_exports__, !1, function() {
                 return isFileProtocol;
@@ -3516,6 +3533,9 @@
             });
             __webpack_require__.d(__webpack_exports__, !1, function() {
                 return normalizeMockUrl;
+            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {
+                return closeWindow;
             });
             __webpack_require__.d(__webpack_exports__, !1, function() {
                 return !0;
@@ -7193,29 +7213,30 @@
                     });
                 };
                 ParentComponent.prototype.getComponentParentRef = function() {
-                    var renderToWindow = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window;
-                    if (this.context === constants.CONTEXT_TYPES.POPUP) return {
+                    if (this.component.getDomain(null, this.props.env) === Object(cross_domain_utils_src.f)(window)) {
+                        var _uid = Object(lib.T)();
+                        lib.u.windows = lib.u.windows || {};
+                        lib.u.windows[_uid] = window;
+                        this.clean.register(function() {
+                            delete lib.u.windows[_uid];
+                        });
+                        return {
+                            ref: constants.WINDOW_REFERENCES.GLOBAL,
+                            uid: _uid
+                        };
+                    }
+                    return this.context === constants.CONTEXT_TYPES.POPUP ? {
                         ref: constants.WINDOW_REFERENCES.OPENER
-                    };
-                    if (renderToWindow === window) return Object(cross_domain_utils_src.v)(window) ? {
+                    } : Object(cross_domain_utils_src.v)(window) ? {
                         ref: constants.WINDOW_REFERENCES.TOP
                     } : {
                         ref: constants.WINDOW_REFERENCES.PARENT,
                         distance: Object(cross_domain_utils_src.e)(window)
                     };
-                    var uid = Object(lib.T)();
-                    lib.u.windows[uid] = window;
-                    this.clean.register(function() {
-                        delete lib.u.windows[uid];
-                    });
-                    return {
-                        ref: constants.WINDOW_REFERENCES.GLOBAL,
-                        uid: uid
-                    };
                 };
                 ParentComponent.prototype.getRenderParentRef = function() {
                     var renderToWindow = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window;
-                    if (renderToWindow === window) return this.getComponentParentRef(renderToWindow);
+                    if (renderToWindow === window) return this.getComponentParentRef();
                     var uid = Object(lib.T)();
                     lib.u.windows[uid] = renderToWindow;
                     this.clean.register(function() {
@@ -7227,7 +7248,7 @@
                     };
                 };
                 ParentComponent.prototype.buildChildWindowName = function() {
-                    var _ref6$renderTo = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}).renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, sameDomain = Object(cross_domain_utils_src.t)(renderTo), uid = Object(lib.T)(), tag = this.component.tag, sProps = Object(lib.M)(this.getPropsForChild()), componentParent = this.getComponentParentRef(renderTo), renderParent = this.getRenderParentRef(renderTo), props = !sameDomain && !this.component.unsafeRenderTo ? {
+                    var _ref6$renderTo = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}).renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, sameDomain = Object(cross_domain_utils_src.t)(renderTo), uid = Object(lib.T)(), tag = this.component.tag, sProps = Object(lib.M)(this.getPropsForChild()), componentParent = this.getComponentParentRef(), renderParent = this.getRenderParentRef(renderTo), props = !sameDomain && !this.component.unsafeRenderTo ? {
                         type: constants.INITIAL_PROPS.UID,
                         uid: uid
                     } : {
@@ -10360,7 +10381,7 @@
             var config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.267",
+                version: "4.0.268",
                 cors: !0,
                 env: function() {
                     return "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION;
@@ -10661,6 +10682,30 @@
                         disable_venmo: !0
                     },
                     "seamless.com": {
+                        disable_venmo: !0
+                    },
+                    "freshfeetscrubber.com": {
+                        disable_venmo: !0
+                    },
+                    "opensky.com": {
+                        disable_venmo: !0
+                    },
+                    "dotandbo.com": {
+                        disable_venmo: !0
+                    },
+                    "storenvy.com": {
+                        disable_venmo: !0
+                    },
+                    "gemafina.com": {
+                        disable_venmo: !0
+                    },
+                    "pickperfect.com": {
+                        disable_venmo: !0
+                    },
+                    "55mulberry.com": {
+                        disable_venmo: !0
+                    },
+                    "hollar.com": {
                         disable_venmo: !0
                     }
                 },
@@ -13655,7 +13700,7 @@
                         logoColor: "blue"
                     })));
                 }(normalizeProps(props)) : null;
-                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.267", 
+                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.268", 
                 _ref18), {
                     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
@@ -14856,7 +14901,7 @@
                 setup__track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, 
                 setup__track3));
             }
-            var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.267", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.268", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             interface_checkout = legacy.checkout;
             apps = legacy.apps;
             var interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0, interface_ThreeDomainSecure = void 0;
@@ -15778,7 +15823,7 @@
                 return !!getUserAgent().match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i);
             }
             function isInsidePopup() {
-                return Boolean(Object(cross_domain_utils_src.k)(Object(cross_domain_utils_src.m)(window)));
+                return Boolean(Object(cross_domain_utils_src.k)(Object(cross_domain_utils_src.m)(window) || window));
             }
             function isStandAlone() {
                 return !isInsidePopup() && (!0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches);
@@ -16155,7 +16200,7 @@
                         country: config.a.locale.country,
                         lang: config.a.locale.lang,
                         uid: getSessionID(),
-                        ver: "4.0.267"
+                        ver: "4.0.268"
                     };
                 });
                 Object(client.a)(function() {
@@ -16400,7 +16445,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.267";
+                    payload.version = "4.0.268";
                     payload.host = window.location.host;
                     payload.uid = getSessionID();
                     payload.appName = APP_NAME;
@@ -16418,7 +16463,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.267".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.268".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!function(name) {
                         return getSessionState(function(state) {
@@ -16437,7 +16482,7 @@
             function fpti() {
                 var payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, query = [];
                 payload = beacon__extends({}, {
-                    v: "checkout.js.4.0.267",
+                    v: "checkout.js.4.0.268",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -16553,7 +16598,7 @@
                 return Boolean(getCurrentScript());
             }
             function getScriptVersion() {
-                return "4.0.267";
+                return "4.0.268";
             }
             function getCurrentScriptUrl() {
                 var script = getCurrentScript();
@@ -16562,7 +16607,7 @@
                     0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://"));
                     return scriptUrl;
                 }
-                return "https://www.paypalobjects.com/api/checkout.4.0.267.js";
+                return "https://www.paypalobjects.com/api/checkout.4.0.268.js";
             }
             var openMetaFrame = Object(util.j)(function() {
                 var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -16579,7 +16624,7 @@
                             domain: metaFrameDomain
                         });
                         return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                            version: "4.0.267"
+                            version: "4.0.268"
                         }), metaFrameDomain).then(function() {
                             return metaListener;
                         }).then(function(_ref) {

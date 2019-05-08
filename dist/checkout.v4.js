@@ -955,20 +955,20 @@
                 } catch (err) {
                     delete this.weakmap;
                 }
-                if (this.isSafeToReadWrite(key)) {
+                if (this.isSafeToReadWrite(key)) try {
                     var name = this.name, entry = key[name];
                     entry && entry[0] === key ? entry[1] = value : defineProperty(key, name, {
                         value: [ key, value ],
                         writable: !0
                     });
-                } else {
-                    this._cleanupClosedWindows();
-                    var keys = this.keys, values = this.values, index = safeIndexOf(keys, key);
-                    if (-1 === index) {
-                        keys.push(key);
-                        values.push(value);
-                    } else values[index] = value;
-                }
+                    return;
+                } catch (err) {}
+                this._cleanupClosedWindows();
+                var keys = this.keys, values = this.values, index = safeIndexOf(keys, key);
+                if (-1 === index) {
+                    keys.push(key);
+                    values.push(value);
+                } else values[index] = value;
             };
             CrossDomainSafeWeakMap.prototype.get = function(key) {
                 if (!key) throw new Error("WeakMap expected key");
@@ -978,14 +978,13 @@
                 } catch (err) {
                     delete this.weakmap;
                 }
-                if (!this.isSafeToReadWrite(key)) {
-                    this._cleanupClosedWindows();
-                    var index = safeIndexOf(this.keys, key);
-                    if (-1 === index) return;
-                    return this.values[index];
-                }
-                var entry = key[this.name];
-                if (entry && entry[0] === key) return entry[1];
+                if (this.isSafeToReadWrite(key)) try {
+                    var entry = key[this.name];
+                    return entry && entry[0] === key ? entry[1] : void 0;
+                } catch (err) {}
+                this._cleanupClosedWindows();
+                var index = safeIndexOf(this.keys, key);
+                if (-1 !== index) return this.values[index];
             };
             CrossDomainSafeWeakMap.prototype.delete = function(key) {
                 if (!key) throw new Error("WeakMap expected key");
@@ -995,16 +994,15 @@
                 } catch (err) {
                     delete this.weakmap;
                 }
-                if (this.isSafeToReadWrite(key)) {
+                if (this.isSafeToReadWrite(key)) try {
                     var entry = key[this.name];
                     entry && entry[0] === key && (entry[0] = entry[1] = void 0);
-                } else {
-                    this._cleanupClosedWindows();
-                    var keys = this.keys, index = safeIndexOf(keys, key);
-                    if (-1 !== index) {
-                        keys.splice(index, 1);
-                        this.values.splice(index, 1);
-                    }
+                } catch (err) {}
+                this._cleanupClosedWindows();
+                var keys = this.keys, index = safeIndexOf(keys, key);
+                if (-1 !== index) {
+                    keys.splice(index, 1);
+                    this.values.splice(index, 1);
                 }
             };
             CrossDomainSafeWeakMap.prototype.has = function(key) {
@@ -1015,10 +1013,10 @@
                 } catch (err) {
                     delete this.weakmap;
                 }
-                if (this.isSafeToReadWrite(key)) {
+                if (this.isSafeToReadWrite(key)) try {
                     var entry = key[this.name];
                     return !(!entry || entry[0] !== key);
-                }
+                } catch (err) {}
                 this._cleanupClosedWindows();
                 return -1 !== safeIndexOf(this.keys, key);
             };
@@ -1053,12 +1051,14 @@
         function isAboutProtocol() {
             return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window).location.protocol === PROTOCOL.ABOUT;
         }
-        function getParent(win) {
+        function getParent() {
+            var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window;
             if (win) try {
                 if (win.parent && win.parent !== win) return win.parent;
             } catch (err) {}
         }
-        function getOpener(win) {
+        function getOpener() {
+            var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window;
             if (win && !getParent(win)) try {
                 return win.opener;
             } catch (err) {}
@@ -1327,8 +1327,8 @@
         function isOpener(parent, child) {
             return parent === getOpener(child);
         }
-        function getAncestor(win) {
-            var opener = getOpener(win = win || window);
+        function getAncestor() {
+            var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, opener = getOpener(win = win || window);
             if (opener) return opener;
             var parent = getParent(win);
             return parent || void 0;
@@ -1472,6 +1472,11 @@
         function normalizeMockUrl(url) {
             if (!isMockDomain(getDomainFromUrl(url))) return url;
             throw new Error("Mock urls not supported out of test mode");
+        }
+        function closeWindow(win) {
+            try {
+                win.close();
+            } catch (err) {}
         }
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return isFileProtocol;
@@ -1619,6 +1624,9 @@
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return normalizeMockUrl;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return closeWindow;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return !0;
@@ -5530,7 +5538,7 @@
         var config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.267",
+            version: "4.0.268",
             cors: !0,
             env: function() {
                 return "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION;
@@ -5831,6 +5839,30 @@
                     disable_venmo: !0
                 },
                 "seamless.com": {
+                    disable_venmo: !0
+                },
+                "freshfeetscrubber.com": {
+                    disable_venmo: !0
+                },
+                "opensky.com": {
+                    disable_venmo: !0
+                },
+                "dotandbo.com": {
+                    disable_venmo: !0
+                },
+                "storenvy.com": {
+                    disable_venmo: !0
+                },
+                "gemafina.com": {
+                    disable_venmo: !0
+                },
+                "pickperfect.com": {
+                    disable_venmo: !0
+                },
+                "55mulberry.com": {
+                    disable_venmo: !0
+                },
+                "hollar.com": {
                     disable_venmo: !0
                 }
             },
@@ -8038,29 +8070,30 @@
                 });
             };
             ParentComponent.prototype.getComponentParentRef = function() {
-                var renderToWindow = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window;
-                if (this.context === constants.CONTEXT_TYPES.POPUP) return {
+                if (this.component.getDomain(null, this.props.env) === Object(cross_domain_utils_src.f)(window)) {
+                    var _uid = Object(lib.T)();
+                    lib.u.windows = lib.u.windows || {};
+                    lib.u.windows[_uid] = window;
+                    this.clean.register(function() {
+                        delete lib.u.windows[_uid];
+                    });
+                    return {
+                        ref: constants.WINDOW_REFERENCES.GLOBAL,
+                        uid: _uid
+                    };
+                }
+                return this.context === constants.CONTEXT_TYPES.POPUP ? {
                     ref: constants.WINDOW_REFERENCES.OPENER
-                };
-                if (renderToWindow === window) return Object(cross_domain_utils_src.v)(window) ? {
+                } : Object(cross_domain_utils_src.v)(window) ? {
                     ref: constants.WINDOW_REFERENCES.TOP
                 } : {
                     ref: constants.WINDOW_REFERENCES.PARENT,
                     distance: Object(cross_domain_utils_src.e)(window)
                 };
-                var uid = Object(lib.T)();
-                lib.u.windows[uid] = window;
-                this.clean.register(function() {
-                    delete lib.u.windows[uid];
-                });
-                return {
-                    ref: constants.WINDOW_REFERENCES.GLOBAL,
-                    uid: uid
-                };
             };
             ParentComponent.prototype.getRenderParentRef = function() {
                 var renderToWindow = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window;
-                if (renderToWindow === window) return this.getComponentParentRef(renderToWindow);
+                if (renderToWindow === window) return this.getComponentParentRef();
                 var uid = Object(lib.T)();
                 lib.u.windows[uid] = renderToWindow;
                 this.clean.register(function() {
@@ -8072,7 +8105,7 @@
                 };
             };
             ParentComponent.prototype.buildChildWindowName = function() {
-                var _ref6$renderTo = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}).renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, sameDomain = Object(cross_domain_utils_src.t)(renderTo), uid = Object(lib.T)(), tag = this.component.tag, sProps = Object(lib.M)(this.getPropsForChild()), componentParent = this.getComponentParentRef(renderTo), renderParent = this.getRenderParentRef(renderTo), props = !sameDomain && !this.component.unsafeRenderTo ? {
+                var _ref6$renderTo = (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}).renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, sameDomain = Object(cross_domain_utils_src.t)(renderTo), uid = Object(lib.T)(), tag = this.component.tag, sProps = Object(lib.M)(this.getPropsForChild()), componentParent = this.getComponentParentRef(), renderParent = this.getRenderParentRef(renderTo), props = !sameDomain && !this.component.unsafeRenderTo ? {
                     type: constants.INITIAL_PROPS.UID,
                     uid: uid
                 } : {
@@ -9284,7 +9317,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.267"
+                    ver: "4.0.268"
                 };
             });
             Object(beaver_logger_client.a)(function() {
@@ -9554,7 +9587,7 @@
             });
         });
         function getScriptVersion() {
-            return Boolean(getCurrentScript()) ? "4" : "4.0.267";
+            return Boolean(getCurrentScript()) ? "4" : "4.0.268";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
@@ -9563,7 +9596,7 @@
                 0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://"));
                 return scriptUrl;
             }
-            return "https://www.paypalobjects.com/api/checkout.4.0.267.js";
+            return "https://www.paypalobjects.com/api/checkout.4.0.268.js";
         }
         var openMetaFrame = Object(util.j)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -12838,7 +12871,7 @@
                     logoColor: "blue"
                 })));
             }(props_normalizeProps(props)) : null;
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[src_constants.c.VERSION] = "4.0.267", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref18 = {}, _ref18[src_constants.c.VERSION] = "4.0.268", 
             _ref18), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -14088,7 +14121,7 @@
             setup__track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.SCRIPT_LOAD, 
             setup__track3));
         }
-        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.267", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0, interface_ThreeDomainSecure = void 0;
+        var interface_postRobot = post_robot_src, onPossiblyUnhandledException = src.a.onPossiblyUnhandledException, interface_version = "4.0.268", interface_checkout = void 0, apps = void 0, interface_Checkout = void 0, interface_BillingPage = void 0, PayPalCheckout = void 0, src_interface_destroyAll = void 0, enableCheckoutIframe = void 0, logger = void 0, interface_ThreeDomainSecure = void 0;
         if (Object(util.g)()) {
             interface_Checkout = component_Checkout;
             interface_BillingPage = BillingPage;
@@ -14214,7 +14247,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.267";
+                payload.version = "4.0.268";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 payload.appName = APP_NAME;
@@ -14278,7 +14311,7 @@
             }(ua) || (userAgent = getUserAgent(), /\belectron\b/i.test(userAgent)) || function() {
                 var userAgent = getUserAgent();
                 return /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent);
-            }() || !Boolean(Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.k)(Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.m)(window))) && (!0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches));
+            }() || !Boolean(Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.k)(Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.m)(window) || window)) && (!0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches));
             var userAgent;
         };
         var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js");
@@ -14821,18 +14854,18 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
         0;
-        if (window.paypal && "4.0.267" === window.paypal.version) {
+        if (window.paypal && "4.0.268" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.267"
+                version: "4.0.268"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.267) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.268) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.267" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.268" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.267"
+                version: "4.0.268"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.267");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.268");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
