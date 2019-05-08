@@ -190,8 +190,7 @@ export function getWebpackConfig({
             library:        modulename,
             chunkFilename:  chunkname,
             pathinfo:       false,
-            jsonpFunction:  '__paypal_checkout_jsonp__',
-            publicPath:     'https://www.paypalobjects.com/api/'
+            jsonpFunction:  '__paypal_checkout_jsonp__'
         };
     }
 

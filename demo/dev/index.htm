@@ -3,32 +3,49 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="../../dist/checkout.js" data-paypal-checkout data-env="demo"></script>
+    <script src="/checkout.js" data-paypal-checkout></script>
 </head>
 
 <body>
-    <div id="paypal-button-container"></div>
+    <div id="paypal-button"></div>
 
     <script>
+        // paypal.config.buttonUris.sandbox = '/smart/button';
+        // paypal.config.buttonUris.production = '/smart/button';
+
         paypal.Button.render({
 
-            env: 'demo',
+            env: 'demo', // Optional: specify 'sandbox' environment
 
-            payment: function() {
-                return new paypal.Promise(function(resolve) {
-                    setTimeout(function() {
-                        resolve('PAY-XXXXXXXXXXXXXXXX');
-                    }, 500);
+            client: {
+                demo: 'abc123'
+            },
+
+            payment: function () {
+
+                var env = this.props.env;
+                var client = this.props.client;
+
+                return paypal.rest.payment.create(env, client, {
+                    transactions: [
+                        {
+                            amount: { total: '1.00', currency: 'USD' }
+                        }
+                    ]
                 });
             },
 
-            onAuthorize: function(data, actions) {
-                actions.close();
+            commit: true, // Optional: show a 'Pay Now' button in the checkout flow
 
-                return new paypal.Promise(function(resolve) {
-                    setTimeout(resolve, 500);
+            onAuthorize: function (data, actions) {
+
+                // Optional: display a confirmation page here
+
+                return actions.payment.execute().then(function () {
+                    // Show a success page to the buyer
                 });
             }
-        }, '#paypal-button-container');
+
+        }, '#paypal-button');
     </script>
 </body>
