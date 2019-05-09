@@ -4,7 +4,7 @@
 import { node, Fragment } from 'jsx-pragmatic/src';
 import { CARD, FUNDING, COUNTRY, COMPONENTS } from '@paypal/sdk-constants/src';
 
-import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR, DEFAULT, CLASS } from '../../constants';
+import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR, DEFAULT, CLASS, ATTRIBUTE } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig, type CardConfig, Text } from '../common';
 
 import { getVisaConfig } from './visa';
@@ -122,7 +122,15 @@ export function getCardConfig() : FundingSourceConfig {
                         const { Label } = vendorConfig;
                         
                         return (
-                            <div class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name }` } onClick={ event => onClick(event, { card: name }) } tabindex='0' role='button'>
+                            <div
+                                class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name }` }
+                                onClick={ event => onClick(event, { card: name }) }
+                                tabindex='0'
+                                role='button'
+                                { ...{
+                                    [ ATTRIBUTE.CARD ]: name
+                                } }
+                            >
                                 <Label
                                     locale={ locale }
                                     nonce={ nonce }
