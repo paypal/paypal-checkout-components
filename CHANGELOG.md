@@ -1,3 +1,9 @@
+## <small>5.0.27 (2019-05-09)</small>
+
+* Add fundingSource to card buttons ([cf76a5e](http://github.paypal.com/paypal/paypal-checkout/commit/cf76a5e))
+
+
+
 ## <small>5.0.26 (2019-05-09)</small>
 
 * Add card attribute to card buttons ([f918df1](http://github.paypal.com/paypal/paypal-checkout/commit/f918df1))
