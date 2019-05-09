@@ -128,7 +128,8 @@ export function getCardConfig() : FundingSourceConfig {
                                 tabindex='0'
                                 role='button'
                                 { ...{
-                                    [ ATTRIBUTE.CARD ]: name
+                                    [ ATTRIBUTE.FUNDING_SOURCE ]: FUNDING.CARD,
+                                    [ ATTRIBUTE.CARD ]:           name
                                 } }
                             >
                                 <Label
