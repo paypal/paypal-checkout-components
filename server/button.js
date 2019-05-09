@@ -94,7 +94,7 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
                         ${ buttonHTML }
                     </div>
                     <div id="card-fields-container" class="card-fields-container"></div>
-                    ${ getSDKLoader({ cspNonce }) }
+                    ${ getSDKLoader({ nonce: cspNonce }) }
                     <script nonce="${ cspNonce }">${ client.script }</script>
                     <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON({ fundingEligibility, buyerCountry, cspNonce }) })</script>
                     ${ (FRAUDNET_ENABLED || req.query.enableVault) ? renderFraudnetScript({ id: buttonSessionID, cspNonce, env }) : '' }
