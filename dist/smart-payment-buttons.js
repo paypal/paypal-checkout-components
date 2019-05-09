@@ -258,6 +258,16 @@ window.spb = function(modules) {
     function isOperaMini(ua) {
         return void 0 === ua && (ua = getUserAgent()), ua.indexOf("Opera Mini") > -1;
     }
+    function isIEIntranet() {
+        if (window.document.documentMode) try {
+            var status = window.status;
+            return window.status = "testIntranetMode", "testIntranetMode" === window.status && (window.status = status, 
+            !0);
+        } catch (err) {
+            return !1;
+        }
+        return !1;
+    }
     function supportsPopups(ua) {
         return void 0 === ua && (ua = getUserAgent()), !(function(ua) {
             return void 0 === ua && (ua = getUserAgent()), !!function(ua) {
@@ -330,16 +340,17 @@ window.spb = function(modules) {
             } catch (err) {
                 delete this.weakmap;
             }
-            if (this.isSafeToReadWrite(key)) try {
+            if (this.isSafeToReadWrite(key)) {
                 var name = this.name, entry = key[name];
-                return void (entry && entry[0] === key ? entry[1] = value : defineProperty(key, name, {
+                entry && entry[0] === key ? entry[1] = value : defineProperty(key, name, {
                     value: [ key, value ],
                     writable: !0
-                }));
-            } catch (err) {}
-            this._cleanupClosedWindows();
-            var keys = this.keys, values = this.values, index = safeIndexOf(keys, key);
-            -1 === index ? (keys.push(key), values.push(value)) : values[index] = value;
+                });
+            } else {
+                this._cleanupClosedWindows();
+                var keys = this.keys, values = this.values, index = safeIndexOf(keys, key);
+                -1 === index ? (keys.push(key), values.push(value)) : values[index] = value;
+            }
         }, _proto.get = function(key) {
             if (!key) throw new Error("WeakMap expected key");
             var weakmap = this.weakmap;
@@ -348,13 +359,14 @@ window.spb = function(modules) {
             } catch (err) {
                 delete this.weakmap;
             }
-            if (this.isSafeToReadWrite(key)) try {
-                var entry = key[this.name];
-                return entry && entry[0] === key ? entry[1] : void 0;
-            } catch (err) {}
-            this._cleanupClosedWindows();
-            var index = safeIndexOf(this.keys, key);
-            if (-1 !== index) return this.values[index];
+            if (!this.isSafeToReadWrite(key)) {
+                this._cleanupClosedWindows();
+                var index = safeIndexOf(this.keys, key);
+                if (-1 === index) return;
+                return this.values[index];
+            }
+            var entry = key[this.name];
+            if (entry && entry[0] === key) return entry[1];
         }, _proto.delete = function(key) {
             if (!key) throw new Error("WeakMap expected key");
             var weakmap = this.weakmap;
@@ -363,13 +375,14 @@ window.spb = function(modules) {
             } catch (err) {
                 delete this.weakmap;
             }
-            if (this.isSafeToReadWrite(key)) try {
+            if (this.isSafeToReadWrite(key)) {
                 var entry = key[this.name];
                 entry && entry[0] === key && (entry[0] = entry[1] = void 0);
-            } catch (err) {}
-            this._cleanupClosedWindows();
-            var keys = this.keys, index = safeIndexOf(keys, key);
-            -1 !== index && (keys.splice(index, 1), this.values.splice(index, 1));
+            } else {
+                this._cleanupClosedWindows();
+                var keys = this.keys, index = safeIndexOf(keys, key);
+                -1 !== index && (keys.splice(index, 1), this.values.splice(index, 1));
+            }
         }, _proto.has = function(key) {
             if (!key) throw new Error("WeakMap expected key");
             var weakmap = this.weakmap;
@@ -378,10 +391,10 @@ window.spb = function(modules) {
             } catch (err) {
                 delete this.weakmap;
             }
-            if (this.isSafeToReadWrite(key)) try {
+            if (this.isSafeToReadWrite(key)) {
                 var entry = key[this.name];
                 return !(!entry || entry[0] !== key);
-            } catch (err) {}
+            }
             return this._cleanupClosedWindows(), -1 !== safeIndexOf(this.keys, key);
         }, _proto.getOrSet = function(key, getter) {
             if (this.has(key)) return this.get(key);
@@ -493,8 +506,21 @@ window.spb = function(modules) {
     var KEY_CODES = {
         ENTER: 13
     };
+    function isDocumentReady() {
+        return Boolean(document.body) && "complete" === document.readyState;
+    }
     function urlEncode(str) {
         return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B");
+    }
+    function waitForDocumentReady() {
+        return inlineMemoize(waitForDocumentReady, function() {
+            return new src.a(function(resolve) {
+                if (isDocumentReady()) return resolve();
+                var interval = setInterval(function() {
+                    if (isDocumentReady()) return clearInterval(interval), resolve();
+                }, 10);
+            });
+        });
     }
     function parseQuery(queryString) {
         return inlineMemoize(parseQuery, function() {
@@ -526,6 +552,19 @@ window.spb = function(modules) {
         var queryString = extendQuery(_originalUrl$split[1], query), hashString = extendQuery(originalHash, hash);
         return queryString && (originalUrl = originalUrl + "?" + queryString), hashString && (originalUrl = originalUrl + "#" + hashString), 
         originalUrl;
+    }
+    function enablePerformance() {
+        return inlineMemoize(enablePerformance, function() {
+            return Boolean(window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0);
+        });
+    }
+    function getPageRenderTime() {
+        return waitForDocumentReady().then(function() {
+            if (enablePerformance()) {
+                var timing = window.performance.timing;
+                return timing.connectEnd && timing.domInteractive ? timing.domInteractive - timing.connectEnd : void 0;
+            }
+        });
     }
     function isBrowser() {
         return "undefined" != typeof window;
@@ -591,35 +630,39 @@ window.spb = function(modules) {
             }, xhr.send(body);
         });
     }
-    __webpack_require__.d(__webpack_exports__, "o", function() {
+    __webpack_require__.d(__webpack_exports__, "f", function() {
+        return isIEIntranet;
+    }), __webpack_require__.d(__webpack_exports__, "q", function() {
         return supportsPopups;
     }), __webpack_require__.d(__webpack_exports__, "b", function() {
         return extendUrl;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+        return getPageRenderTime;
+    }), __webpack_require__.d(__webpack_exports__, "e", function() {
         return isBrowser;
-    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+    }), __webpack_require__.d(__webpack_exports__, "l", function() {
         return querySelectorAll;
-    }), __webpack_require__.d(__webpack_exports__, "h", function() {
+    }), __webpack_require__.d(__webpack_exports__, "j", function() {
         return onClick;
     }), __webpack_require__.d(__webpack_exports__, "a", function() {
         return base64encode;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
-        return memoize;
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
-        return inlineMemoize;
-    }), __webpack_require__.d(__webpack_exports__, "f", function() {
-        return util_noop;
-    }), __webpack_require__.d(__webpack_exports__, "m", function() {
-        return stringifyError;
-    }), __webpack_require__.d(__webpack_exports__, "n", function() {
-        return stringifyErrorMessage;
     }), __webpack_require__.d(__webpack_exports__, "g", function() {
-        return objFilter;
+        return memoize;
+    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+        return inlineMemoize;
+    }), __webpack_require__.d(__webpack_exports__, "h", function() {
+        return util_noop;
+    }), __webpack_require__.d(__webpack_exports__, "o", function() {
+        return stringifyError;
+    }), __webpack_require__.d(__webpack_exports__, "p", function() {
+        return stringifyErrorMessage;
     }), __webpack_require__.d(__webpack_exports__, "i", function() {
-        return promiseDebounce;
-    }), __webpack_require__.d(__webpack_exports__, "l", function() {
-        return safeInterval;
+        return objFilter;
     }), __webpack_require__.d(__webpack_exports__, "k", function() {
+        return promiseDebounce;
+    }), __webpack_require__.d(__webpack_exports__, "n", function() {
+        return safeInterval;
+    }), __webpack_require__.d(__webpack_exports__, "m", function() {
         return request;
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
@@ -1110,6 +1153,7 @@ window.spb = function(modules) {
     }, FPTI_STATE = {
         BUTTON: "smart_button"
     }, FPTI_TRANSITION = {
+        BUTTON_LOAD: "process_button_load",
         CREATE_ORDER: "process_create_order"
     };
 }, function(module, __webpack_exports__, __webpack_require__) {
@@ -1130,7 +1174,7 @@ window.spb = function(modules) {
     "use strict";
     var src = __webpack_require__(0), belter_src = __webpack_require__(1);
     function unresolvedPromise() {
-        return new src.a(belter_src.f);
+        return new src.a(belter_src.h);
     }
     function promiseNoop() {
         return src.a.resolve();
@@ -1145,23 +1189,23 @@ window.spb = function(modules) {
     }, AUTO_FLUSH_LEVEL = [ LOG_LEVEL.WARN, LOG_LEVEL.ERROR ], LOG_LEVEL_PRIORITY = [ LOG_LEVEL.ERROR, LOG_LEVEL.WARN, LOG_LEVEL.INFO, LOG_LEVEL.DEBUG ], FLUSH_INTERVAL = 6e4, DEFAULT_LOG_LEVEL = LOG_LEVEL.WARN;
     function httpTransport(_ref) {
         var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json;
-        return Object(belter_src.k)({
+        return Object(belter_src.m)({
             url: url,
             method: method,
             headers: headers,
             json: json
-        }).then(belter_src.f);
+        }).then(belter_src.h);
     }
     function extendIfDefined(target, source) {
         for (var key in source) source.hasOwnProperty(key) && source[key] && (target[key] = source[key]);
     }
-    var sdk_constants_src = __webpack_require__(2), config = __webpack_require__(7);
+    var sdk_constants_src = __webpack_require__(2), config = __webpack_require__(7), constants = __webpack_require__(3);
     function getLogger() {
-        return Object(belter_src.c)(getLogger, function() {
+        return Object(belter_src.d)(getLogger, function() {
             return function(_ref2) {
                 var url = _ref2.url, prefix = _ref2.prefix, _ref2$logLevel = _ref2.logLevel, logLevel = void 0 === _ref2$logLevel ? DEFAULT_LOG_LEVEL : _ref2$logLevel, _ref2$transport = _ref2.transport, transport = void 0 === _ref2$transport ? httpTransport : _ref2$transport, _ref2$flushInterval = _ref2.flushInterval, flushInterval = void 0 === _ref2$flushInterval ? FLUSH_INTERVAL : _ref2$flushInterval, events = [], tracking = [], payloadBuilders = [], metaBuilders = [], trackingBuilders = [], headerBuilders = [];
                 function print(level, event, payload) {
-                    if (Object(belter_src.d)() && window.console && window.console.log) {
+                    if (Object(belter_src.e)() && window.console && window.console.log) {
                         var consoleLogLevel = logLevel;
                         if (window.LOG_LEVEL && -1 !== LOG_LEVEL_PRIORITY.indexOf(window.LOG_LEVEL) && (consoleLogLevel = window.LOG_LEVEL), 
                         !(LOG_LEVEL_PRIORITY.indexOf(level) > LOG_LEVEL_PRIORITY.indexOf(consoleLogLevel))) {
@@ -1175,7 +1219,7 @@ window.spb = function(modules) {
                 }
                 function immediateFlush() {
                     return src.a.try(function() {
-                        if (Object(belter_src.d)() && window.location.protocol !== PROTOCOL.FILE && (events.length || tracking.length)) {
+                        if (Object(belter_src.e)() && window.location.protocol !== PROTOCOL.FILE && (events.length || tracking.length)) {
                             for (var meta = {}, _i2 = 0; _i2 < metaBuilders.length; _i2++) extendIfDefined(meta, (0, 
                             metaBuilders[_i2])(meta));
                             for (var headers = {}, _i4 = 0; _i4 < headerBuilders.length; _i4++) extendIfDefined(headers, (0, 
@@ -1190,15 +1234,15 @@ window.spb = function(modules) {
                                     tracking: tracking
                                 }
                             });
-                            return events = [], tracking = [], req.then(belter_src.f);
+                            return events = [], tracking = [], req.then(belter_src.h);
                         }
                     });
                 }
-                var flush = Object(belter_src.i)(immediateFlush);
+                var flush = Object(belter_src.k)(immediateFlush);
                 function log(level, event, payload) {
-                    if (void 0 === payload && (payload = {}), !Object(belter_src.d)()) return logger;
+                    if (void 0 === payload && (payload = {}), !Object(belter_src.e)()) return logger;
                     prefix && (event = prefix + "_" + event);
-                    for (var logPayload = Object(esm_extends.a)({}, Object(belter_src.g)(payload), {
+                    for (var logPayload = Object(esm_extends.a)({}, Object(belter_src.i)(payload), {
                         timestamp: Date.now().toString()
                     }), _i6 = 0; _i6 < payloadBuilders.length; _i6++) extendIfDefined(logPayload, (0, 
                     payloadBuilders[_i6])(logPayload));
@@ -1213,7 +1257,7 @@ window.spb = function(modules) {
                 function addBuilder(builders, builder) {
                     return builders.push(builder), logger;
                 }
-                Object(belter_src.d)() && Object(belter_src.l)(flush, flushInterval);
+                Object(belter_src.e)() && Object(belter_src.n)(flush, flushInterval);
                 var logger = {
                     debug: function(event, payload) {
                         return log(LOG_LEVEL.DEBUG, event, payload);
@@ -1228,8 +1272,8 @@ window.spb = function(modules) {
                         return log(LOG_LEVEL.ERROR, event, payload);
                     },
                     track: function(payload) {
-                        if (void 0 === payload && (payload = {}), !Object(belter_src.d)()) return logger;
-                        for (var trackingPayload = Object(belter_src.g)(payload), _i8 = 0; _i8 < trackingBuilders.length; _i8++) extendIfDefined(trackingPayload, (0, 
+                        if (void 0 === payload && (payload = {}), !Object(belter_src.e)()) return logger;
+                        for (var trackingPayload = Object(belter_src.i)(payload), _i8 = 0; _i8 < trackingBuilders.length; _i8++) extendIfDefined(trackingPayload, (0, 
                         trackingBuilders[_i8])(trackingPayload));
                         return print(LOG_LEVEL.DEBUG, "track", trackingPayload), tracking.push(trackingPayload), 
                         logger;
@@ -1268,7 +1312,7 @@ window.spb = function(modules) {
             };
         }), logger.addTrackingBuilder(function() {
             var _ref2, lang = locale.lang, country = locale.country, mID = merchantID;
-            return (_ref2 = {})[sdk_constants_src.d.FEED] = sdk_constants_src.c.PAYMENTS_SDK, 
+            return (_ref2 = {})[sdk_constants_src.d.STATE] = constants.g.BUTTON, _ref2[sdk_constants_src.d.FEED] = sdk_constants_src.c.PAYMENTS_SDK, 
             _ref2[sdk_constants_src.d.DATA_SOURCE] = sdk_constants_src.b.PAYMENTS_SDK, _ref2[sdk_constants_src.d.CLIENT_ID] = clientID, 
             _ref2[sdk_constants_src.d.SELLER_ID] = mID && mID[0], _ref2[sdk_constants_src.d.SESSION_UID] = sessionID, 
             _ref2[sdk_constants_src.d.REFERER] = window.location.host, _ref2[sdk_constants_src.d.LOCALE] = lang + "_" + country, 
@@ -1280,10 +1324,10 @@ window.spb = function(modules) {
         }), src.a.onPossiblyUnhandledException(function(err) {
             var _logger$track;
             logger.track(((_logger$track = {})[sdk_constants_src.d.ERROR_CODE] = "payments_sdk_error", 
-            _logger$track[sdk_constants_src.d.ERROR_DESC] = Object(belter_src.n)(err), _logger$track)), 
+            _logger$track[sdk_constants_src.d.ERROR_DESC] = Object(belter_src.p)(err), _logger$track)), 
             logger.error("unhandled_error", {
-                err: Object(belter_src.m)(err)
-            }), logger.flush().catch(belter_src.f);
+                err: Object(belter_src.o)(err)
+            }), logger.flush().catch(belter_src.h);
         });
     }
     __webpack_require__.d(__webpack_exports__, "d", function() {
@@ -1299,10 +1343,10 @@ window.spb = function(modules) {
     "use strict";
     var persistedAccessToken, src = __webpack_require__(0), belter_src = __webpack_require__(1), config = __webpack_require__(7), lib = __webpack_require__(5), constants = __webpack_require__(3), api = __webpack_require__(9);
     function createAccessToken(clientID) {
-        return Object(belter_src.c)(createAccessToken, function() {
+        return Object(belter_src.d)(createAccessToken, function() {
             Object(lib.a)().info("rest_api_create_access_token");
             var basicAuth = Object(belter_src.a)(clientID + ":");
-            return Object(belter_src.k)({
+            return Object(belter_src.m)({
                 method: "post",
                 url: config.b,
                 headers: {
@@ -1323,7 +1367,7 @@ window.spb = function(modules) {
         var _ref2;
         return (_ref2 = {})[constants.a] = persistedAccessToken, _ref2;
     });
-    var persistAccessToken = Object(belter_src.e)(function(accessToken) {
+    var persistAccessToken = Object(belter_src.g)(function(accessToken) {
         return src.a.try(function() {
             accessToken && (persistedAccessToken = accessToken);
         });
@@ -1355,7 +1399,7 @@ window.spb = function(modules) {
             Authorization: "Bearer " + accessToken,
             "PayPal-Partner-Attribution-Id": window.xprops.partnerAttributionID
         };
-        return Object(belter_src.k)({
+        return Object(belter_src.m)({
             method: "post",
             url: config.e,
             headers: headers,
@@ -1410,7 +1454,7 @@ window.spb = function(modules) {
                 }
             }
         };
-        return Object(belter_src.k)({
+        return Object(belter_src.m)({
             method: "post",
             url: config.e + "/" + orderID + "/" + config.f,
             headers: headers,
@@ -1450,7 +1494,7 @@ window.spb = function(modules) {
                 userExperienceFlow: userExperienceFlow,
                 productFlow: productFlow
             }
-        }).then(belter_src.f);
+        }).then(belter_src.h);
     }
     __webpack_require__.d(__webpack_exports__, "d", function() {
         return createAccessToken;
@@ -1510,7 +1554,7 @@ window.spb = function(modules) {
         return void 0 === win && (win = window), win.location.protocol === PROTOCOL.ABOUT;
     }
     function getParent(win) {
-        if (void 0 === win && (win = window), win) try {
+        if (win) try {
             if (win.parent && win.parent !== win) return win.parent;
         } catch (err) {}
     }
@@ -1755,7 +1799,7 @@ window.spb = function(modules) {
             var headerBuilder = headerBuilders[_i2];
             reqHeaders = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, reqHeaders, headerBuilder());
         }
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.k)({
+        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.m)({
             url: url,
             method: method,
             headers: reqHeaders,
@@ -1773,7 +1817,7 @@ window.spb = function(modules) {
     }
     function callGraphQL(_ref3) {
         var query = _ref3.query, _ref3$variables = _ref3.variables, variables = void 0 === _ref3$variables ? {} : _ref3$variables, _ref3$headers = _ref3.headers, headers = void 0 === _ref3$headers ? {} : _ref3$headers;
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.k)({
+        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.m)({
             url: _config__WEBPACK_IMPORTED_MODULE_3__.a.GRAPHQL,
             method: "POST",
             json: {
@@ -1806,7 +1850,7 @@ window.spb = function(modules) {
     }), __webpack_require__(2);
     var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1), _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
     function getButtons() {
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__.j)("[ " + _constants__WEBPACK_IMPORTED_MODULE_2__.d.FUNDING_SOURCE + " ]");
+        return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__.l)("[ " + _constants__WEBPACK_IMPORTED_MODULE_2__.d.FUNDING_SOURCE + " ]");
     }
     function getSelectedFunding(button) {
         var fundingSource = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__.d.FUNDING_SOURCE), paymentMethodID = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__.d.PAYMENT_METHOD_ID);
@@ -1981,7 +2025,7 @@ window.spb = function(modules) {
     }
     function getCreateOrder(xprops, _ref2) {
         var createBillingAgreement = _ref2.createBillingAgreement, createOrder = xprops.createOrder, clientID = xprops.clientID;
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.e)(function() {
+        return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
             if (createBillingAgreement) return createBillingAgreement().then(_api__WEBPACK_IMPORTED_MODULE_1__.b);
             if (createOrder) return createOrder({}, buildXCreateOrderActions({
                 clientID: clientID
@@ -1997,7 +2041,7 @@ window.spb = function(modules) {
     var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1), _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2), _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6), _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(3), _lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
     function getOnApprove(xprops, _ref2) {
         var createOrder = _ref2.createOrder, onApprove = xprops.onApprove, onError = xprops.onError, intent = xprops.intent;
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.e)(function(_ref3, _ref4) {
+        return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function(_ref3, _ref4) {
             var payerID = _ref3.payerID, paymentID = _ref3.paymentID, billingToken = _ref3.billingToken, restart = _ref4.restart;
             return createOrder().then(function(orderID) {
                 return onApprove({
@@ -2011,12 +2055,12 @@ window.spb = function(modules) {
                             return detail.issue === _constants__WEBPACK_IMPORTED_MODULE_3__.k.INSTRUMENT_DECLINED || detail.issue === _constants__WEBPACK_IMPORTED_MODULE_3__.k.PAYER_ACTION_REQUIRED;
                         })) return restart().then(_lib__WEBPACK_IMPORTED_MODULE_4__.d);
                         throw new Error("Order could not be captured");
-                    }, get = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.e)(function() {
+                    }, get = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
                         return Object(_api__WEBPACK_IMPORTED_MODULE_2__.g)(orderID);
-                    }), capture = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.e)(function() {
+                    }), capture = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
                         if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.CAPTURE) throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.i.INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.CAPTURE + " to use client-side capture");
                         return Object(_api__WEBPACK_IMPORTED_MODULE_2__.c)(orderID).finally(get.reset).finally(capture.reset).catch(handleProcessorError);
-                    }), authorize = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.e)(function() {
+                    }), authorize = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
                         return Object(_api__WEBPACK_IMPORTED_MODULE_2__.a)(orderID).finally(get.reset).finally(authorize.reset).catch(handleProcessorError);
                     });
                     return {
@@ -2062,7 +2106,7 @@ window.spb = function(modules) {
     }
     function getOnCancel(xprops, _ref2) {
         var createOrder = _ref2.createOrder, onCancel = xprops.onCancel, onError = xprops.onError;
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.e)(function() {
+        return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
             return createOrder().then(function(orderID) {
                 return onCancel(buildXOnCancelData({
                     orderID: orderID
@@ -2175,7 +2219,7 @@ window.spb = function(modules) {
     }
     function getCreateBillingAgreement(xprops) {
         var createBillingAgreement = xprops.createBillingAgreement;
-        if (createBillingAgreement) return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.e)(function() {
+        if (createBillingAgreement) return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
             return createBillingAgreement({}, {});
         });
     }
@@ -2252,7 +2296,7 @@ window.spb = function(modules) {
     function initCheckout(props) {
         var win = props.win, fundingSource = props.fundingSource, card = props.card, buyerCountry = props.buyerCountry, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onAuth = props.onAuth, onShippingChange = props.onShippingChange, cspNonce = props.cspNonce, context = props.context, locale = props.locale, commit = props.commit, onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, fundingEligibility = props.fundingEligibility, createBillingAgreement = props.createBillingAgreement, _props$validationProm = props.validationPromise, validationPromise = void 0 === _props$validationProm ? zalgo_promise_src.a.resolve(!0) : _props$validationProm;
         if (checkoutOpen) throw new Error("Checkout already rendered");
-        var approved = !1, restart = Object(src.e)(function() {
+        var approved = !1, restart = Object(src.g)(function() {
             return initCheckout(Object(esm_extends.a)({}, props, {
                 context: constants.c.IFRAME
             })).start().finally(lib.d);
@@ -2340,7 +2384,7 @@ window.spb = function(modules) {
             start: function() {
                 return validationPromise.then(function(valid) {
                     return valid ? renderPromise : close();
-                }).then(src.f);
+                }).then(src.h);
             },
             close: close,
             triggerError: triggerError
@@ -2443,7 +2487,7 @@ window.spb = function(modules) {
                         var fundingSource = props.fundingSource, card = props.card, buyerCountry = props.buyerCountry, createOrder = props.createOrder, _onApprove = props.onApprove, onCancel = props.onCancel, onAuth = props.onAuth, onShippingChange = props.onShippingChange, cspNonce = props.cspNonce, locale = props.locale, commit = props.commit, onError = props.onError;
                         if (!card) throw new Error("Card required to render card fields");
                         if (cardFieldsOpen) throw new Error("Card fields already rendered");
-                        var restart = Object(src.e)(function() {
+                        var restart = Object(src.g)(function() {
                             return initCheckout(Object(esm_extends.a)({}, props, {
                                 context: constants.c.IFRAME
                             })).start().finally(lib.d);
@@ -2599,7 +2643,7 @@ window.spb = function(modules) {
                             }(orderID);
                         }).catch(function(err) {
                             return zalgo_promise_src.a.all([ triggerError(err), close() ]);
-                        })) : zalgo_promise_src.a.all([ close(), win && win.close() ]).then(src.f);
+                        })) : zalgo_promise_src.a.all([ close(), win && win.close() ]).then(src.h);
                     });
                 }
             }).finally(function() {
@@ -2608,7 +2652,7 @@ window.spb = function(modules) {
         }, tasks = {};
         return Object(dom.c)().forEach(function(button) {
             var _getSelectedFunding = Object(dom.e)(button), fundingSource = _getSelectedFunding.fundingSource, card = _getSelectedFunding.card, paymentMethodID = _getSelectedFunding.paymentMethodID;
-            Object(src.h)(button, function(event) {
+            Object(src.j)(button, function(event) {
                 event.preventDefault(), event.stopPropagation(), pay({
                     button: button,
                     fundingSource: fundingSource,
@@ -2622,12 +2666,28 @@ window.spb = function(modules) {
             if (getPopupBridge) return getPopupBridge().then(function(bridge) {
                 popupBridge = bridge;
             });
-        }), tasks.setupCheckout = function() {
+        }), function() {
+            var logger = Object(lib.a)();
+            Object(src.f)() && logger.warn("button_child_intranet_mode");
+            var xprops = window.xprops;
+            if (!xprops) throw new Error("No xprops found");
+            Object(src.c)().then(function(pageRenderTime) {
+                var _logger$track, fundingSources = [].slice.call(document.querySelectorAll("[" + constants.d.FUNDING_SOURCE + "]")).map(function(el) {
+                    return el.getAttribute(constants.d.CARD) || el.getAttribute(constants.d.FUNDING_SOURCE);
+                }).filter(function(source) {
+                    return source && source !== sdk_constants_src.g.CARD;
+                }), layout = xprops.style && xprops.style.layout;
+                logger.track(((_logger$track = {})[sdk_constants_src.d.TRANSITION] = constants.h.BUTTON_LOAD, 
+                _logger$track[sdk_constants_src.d.FUNDING_LIST] = fundingSources.join(":"), _logger$track[sdk_constants_src.d.FUNDING_COUNT] = fundingSources.length.toString(), 
+                _logger$track[sdk_constants_src.d.PAGE_LOAD_TIME] = pageRenderTime ? pageRenderTime.toString() : "", 
+                _logger$track[sdk_constants_src.d.BUTTON_LAYOUT] = layout, _logger$track)), logger.flush();
+            });
+        }(), tasks.setupCheckout = function() {
             checkoutOpen = !1;
             var _ref = [ Object(cross_domain_utils_src.b)(window), Object(cross_domain_utils_src.c)(window) ], parent = _ref[0], top = _ref[1], tasks = {};
             return top && parent && parent !== top && (tasks.canRenderTo = window.paypal.Checkout.canRenderTo(top).then(function(result) {
                 canRenderTop = result;
-            })), zalgo_promise_src.a.hash(tasks).then(src.f);
+            })), zalgo_promise_src.a.hash(tasks).then(src.h);
         }(), init = onInit(), tasks.onInit = init.promise, tasks.prerender = tasks.onInit.then(function() {
             return getPrerenderDetails().then(function(prerenderDetails) {
                 if (prerenderDetails) {
@@ -2641,7 +2701,7 @@ window.spb = function(modules) {
                     });
                 }
             });
-        }), zalgo_promise_src.a.hash(tasks).then(src.f);
+        }), zalgo_promise_src.a.hash(tasks).then(src.h);
     }
     __webpack_require__.d(__webpack_exports__, "a", function() {
         return setupButton;
