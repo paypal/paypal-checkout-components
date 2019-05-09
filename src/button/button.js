@@ -13,6 +13,7 @@ import { isPopupBridgeEligible, initPopupBridge } from '../payment-flows/popup-b
 import { getGlobalProps, getButtonCallbackProps } from './props';
 import { getSelectedFunding, enableLoadingSpinner, getButtons, disableLoadingSpinner } from './dom';
 import { updateButtonClientConfig, validateOrder } from './orders';
+import { triggerButtonLogs } from './logs';
 
 export function setupButton(opts : { fundingEligibility : FundingEligibilityType, buyerCountry? : ?$Values<typeof COUNTRY>, cspNonce? : string }) : ZalgoPromise<void> {
     
@@ -176,6 +177,8 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
             });
         }
     });
+
+    triggerButtonLogs();
 
     tasks.setupCheckout = setupCheckout();
 

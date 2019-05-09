@@ -5,8 +5,9 @@ import { noop, stringifyError, stringifyErrorMessage, inlineMemoize } from 'belt
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY, FPTI_FEED, FPTI_DATA_SOURCE, FPTI_SDK_NAME, FPTI_USER_ACTION, ENV } from '@paypal/sdk-constants/src';
 
-import { LOGGER_URL } from '../config';
 import type { LocaleType } from '../types';
+import { LOGGER_URL } from '../config';
+import { FPTI_STATE } from '../constants';
 
 export function getLogger() : LoggerType {
     return inlineMemoize(getLogger, () =>
@@ -42,6 +43,7 @@ export function setupLogger({ env, sessionID, clientID, partnerAttributionID, co
         const mID = merchantID;
 
         return {
+            [FPTI_KEY.STATE]:                  FPTI_STATE.BUTTON,
             [FPTI_KEY.FEED]:                   FPTI_FEED.PAYMENTS_SDK,
             [FPTI_KEY.DATA_SOURCE]:            FPTI_DATA_SOURCE.PAYMENTS_SDK,
             [FPTI_KEY.CLIENT_ID]:              clientID,
