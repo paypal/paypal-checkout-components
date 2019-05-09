@@ -570,6 +570,7 @@ export let Button : Component<ButtonOptions> = create({
                     info(`button_render_fundingicons_${ style.fundingicons || 'default' }`);
                     info(`button_render_tagline_${ style.tagline || 'default' }`);
 
+                    pptm.listenForButtonRender();
                     pptm.reloadPptmScript(this.props.client[this.props.env]);
 
                     track({

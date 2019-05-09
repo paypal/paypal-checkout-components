@@ -64,6 +64,35 @@ describe(`external pptm`, () => {
         return done();
     };
 
+    it('should push one and only one `paypalButtonRender` event to paypalDDL when button is rendered', done => {
+        window.paypal.Button.render({
+            env:    'test',
+            client: {
+                test: 'foo'
+            },
+            test: {
+                onRender() : void {
+                    const renderEventQueue = window.paypalDDL.filter(e => e.event === 'paypalButtonRender');
+                    if (renderEventQueue.length === 0) {
+                        return done(new Error('Expected `paypalButtonRender` event to be pushed to paypalDDL'));
+                    }
+                    if (renderEventQueue.length > 1) {
+                        return done(new Error('Expected only one `paypalButtonRender` event to be pushed to paypalDDL'));
+                    }
+                    done();
+                }
+            },
+
+            payment() {
+                done(new Error('Expected payment() to not be called'));
+            },
+
+            onAuthorize() {
+                done(new Error('Expected onAuthorize() to not be called'));
+            }
+        }, '#testContainer');
+    });
+
     it('should re-load the pptm script during button render with async prop and correct url when a client ID is present (render called *after* initial pptm is loaded)', done => {
         const pptm = require('../../../src/external/pptm').pptm;
         // Mock this side-effect from `setup` being called.
