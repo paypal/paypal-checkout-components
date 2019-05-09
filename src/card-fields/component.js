@@ -41,6 +41,13 @@ export function getCardFieldsComponent() : ZoidComponent<CardProps> {
                 width:  '100%'
             },
 
+            attributes: {
+                iframe: {
+                    allowpaymentrequest: 'allowpaymentrequest',
+                    scrolling:           'no'
+                }
+            },
+
             autoResize: {
                 height: true,
                 width:  false
