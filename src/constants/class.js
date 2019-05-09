@@ -15,7 +15,6 @@ export const CLASS = {
     SPINNER:    ('paypal-button-spinner' : 'paypal-button-spinner'),
 
     TAGLINE:       ('paypal-button-tagline' : 'paypal-button-tagline'),
-    TAGLINE_COLOR: ('paypal-button-tagline-color' : 'paypal-button-tagline-color'),
 
     TEXT: ('paypal-button-text' : 'paypal-button-text'),
     CARD: ('paypal-button-card' : 'paypal-button-card'),

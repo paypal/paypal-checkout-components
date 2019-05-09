@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { node, html, type ElementNode } from 'jsx-pragmatic/src';
+import { node, type ElementNode } from 'jsx-pragmatic/src';
 
 import { CLASS, BUTTON_NUMBER } from '../../constants';
 import { determineEligibleFunding, determineVaultedFunding } from '../../funding';
@@ -30,7 +30,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     const { layout, shape } = style;
     const vaultedFunding = determineVaultedFunding({ fundingEligibility, layout });
 
-    const buttonsNode = (
+    return (
         <div class={ [
             CLASS.CONTAINER,
             `${ CLASS.LAYOUT }-${ layout }`,
@@ -96,20 +96,6 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             />
         </div>
     );
-
-    // $FlowFixMe
-    buttonsNode.toString = () => buttonsNode.render(html());
-
-    const render = buttonsNode.render;
-    // $FlowFixMe
-    buttonsNode.render = (renderer) => {
-        if (renderer.length === 3 && typeof window === 'undefined') {
-            return render.call(buttonsNode, html());
-        }
-        return render.call(buttonsNode, renderer);
-    };
-
-    return buttonsNode;
 }
 
 export { DEFAULT_PROPS } from '../props';

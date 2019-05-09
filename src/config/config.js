@@ -19,10 +19,6 @@ const URI = __TEST__
         CARD:     `/smart/card-fields`
     };
 
-export function getPayPalUrl() : string {
-    return getPayPalDomain();
-}
-
 export function getCheckoutUrl() : string {
     return `${ getPayPalDomain() }${ URI.CHECKOUT }`;
 }

@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import { noop, supportsPopups, getElement } from 'belter/src';
-import { type ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 import { node, dom } from 'jsx-pragmatic/src';
 import { CONTEXT } from 'zoid/src';
 
@@ -34,7 +34,15 @@ function renderCheckout(props = {}, context = CONTEXT.POPUP) {
                     return generateOrderID();
                 });
             }
-            : window.xprops.createOrder,
+            : () => {
+                return window.xprops.createOrder({}, {
+                    order: {
+                        create: () => {
+                            return ZalgoPromise.resolve(generateOrderID());
+                        }
+                    }
+                });
+            },
         
         onAuthorize(data, actions) : void | ZalgoPromise<void> {
 

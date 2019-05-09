@@ -15,12 +15,6 @@ function protectedExport<T>(xport : T) : ?T {
     }
 }
 
-export const request = {
-    addHeaderBuilder: () => {
-        // pass
-    }
-};
-
 export const Buttons = {
     __get__: () => getButtonsComponent()
 };

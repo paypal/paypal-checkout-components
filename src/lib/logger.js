@@ -31,20 +31,9 @@ export function setupLogger() {
         const orderID = getOrderID();
         const buttonSessionID = getButtonSessionID();
 
-        let contextType;
-        let contextID;
-
-        if (orderID) {
-            contextType = FPTI_CONTEXT_TYPE.ORDER_ID;
-            contextID = orderID;
-        } else if (buttonSessionID) {
-            contextType = FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID;
-            contextID = buttonSessionID;
-        }
-
         return {
-            [FPTI_KEY.CONTEXT_TYPE]:       contextType,
-            [FPTI_KEY.CONTEXT_ID]:         contextID,
+            [FPTI_KEY.CONTEXT_TYPE]:       orderID ? FPTI_CONTEXT_TYPE.ORDER_ID : FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID,
+            [FPTI_KEY.CONTEXT_ID]:         orderID ? orderID : buttonSessionID,
             [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
             [FPTI_KEY.TOKEN]:              orderID,
             [FPTI_KEY.REFERER]:            getRefererDomain()

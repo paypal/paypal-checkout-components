@@ -2,12 +2,9 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
-import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit,
-    getVault, getDisableFunding, getDisableCard, getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry,
-    createOrder,
-    getClientAccessToken,
-    getPartnerAttributionID,
-    getCorrelationID } from '@paypal/sdk-client/src';
+import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
+    getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken,
+    getPartnerAttributionID, getCorrelationID, getStorageState } from '@paypal/sdk-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { isIEIntranet, isDevice, uniqueID, redirect, supportsPopups, popup, writeElementToWindow, noop, inlineMemoize } from 'belter/src';
@@ -15,15 +12,13 @@ import { FUNDING, PLATFORM, INTENT, FPTI_KEY, CARD } from '@paypal/sdk-constants
 import { node, dom } from 'jsx-pragmatic/src';
 
 import { getButtonUrl, DEFAULT_POPUP_SIZE } from '../config';
-import { getFundingEligibility } from '../globals';
-import { FPTI_STATE, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_CONTEXT_TYPE } from '../constants';
+import { getFundingEligibility, getRememberedFunding } from '../globals';
+import { FPTI_STATE, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../constants';
 import { getSessionID } from '../lib';
 import { componentTemplate } from '../checkout/template';
 
 import { containerTemplate, Buttons as ButtonsTemplate } from './template';
-import { rememberFunding, findRememberedFunding } from './funding';
-import { setupButtonChild } from './child';
-import { normalizeButtonStyle, type ButtonProps, type PrerenderDetails, type ButtonStyle, type ProxyRest, type CreateOrder, type OnCancel, type OnClick,
+import { normalizeButtonStyle, type ButtonProps, type PrerenderDetails, type ButtonStyle, type CreateOrder, type OnCancel, type OnClick,
     type CreateOrderData, type CreateOrderActions, type OnApprove, type OnApproveActions,
     type OnApproveData, type OnShippingChange, type GetPrerenderDetails, type OnClickData, type OnClickActions } from './props';
 
@@ -143,20 +138,9 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 createOrder: {
                     type:     'function',
                     required: false,
-                    decorate({ value, props, state }) : Function {
-                        return function decoratedCreateOrder() : ZalgoPromise<string> {
+                    decorate({ value, props }) : Function {
+                        return function decoratedCreateOrder(data, actions) : ZalgoPromise<string> {
                             return ZalgoPromise.try(() => {
-
-                                const data : CreateOrderData = {};
-
-                                const actions = {
-                                    order: {
-                                        create: (options) =>
-                                            (state.remoteCreateOrder || createOrder)(props.clientID, options, { fptiState: FPTI_STATE.BUTTON })
-                                    }
-                                };
-
-                                // $FlowFixMe
                                 return value(data, actions);
 
                             }).then(orderID => {
@@ -369,7 +353,6 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                             getLogger().info('button_click').track({
                                 [ FPTI_KEY.STATE ]:              FPTI_STATE.BUTTON,
                                 [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.BUTTON_CLICK,
-                                [ FPTI_KEY.BUTTON_TYPE ]:        FPTI_BUTTON_TYPE.IFRAME,
                                 [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID,
                                 [ FPTI_KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                             }).flush();
@@ -389,7 +372,6 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                             getLogger().track({
                                 [ FPTI_KEY.STATE ]:              FPTI_STATE.BUTTON,
                                 [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.BUTTON_RENDER,
-                                [ FPTI_KEY.BUTTON_TYPE ]:        FPTI_BUTTON_TYPE.IFRAME,
                                 [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
                             }).flush();
 
@@ -426,15 +408,6 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                                     window.popupBridge.open(url);
                                 });
                             }
-                        };
-                    }
-                },
-
-                proxyRest: {
-                    type: 'function',
-                    value({ state }) : (ProxyRest) => void {
-                        return function proxyRest(rest) {
-                            state.remoteCreateOrder = rest.createOrder;
                         };
                     }
                 },
@@ -508,13 +481,27 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 remembered: {
                     type:       'array',
                     queryParam: true,
-                    value:      () => findRememberedFunding()
+                    value:      () => {
+                        return getStorageState(storage => {
+                            storage.rememberedFunding = storage.rememberedFunding || getRememberedFunding();
+                            return storage.rememberedFunding;
+                        });
+                    }
                 },
 
                 remember: {
                     type: 'function',
                     value() : Function {
-                        return rememberFunding;
+                        return (sources : $ReadOnlyArray<$Values<typeof FUNDING>>) => {
+                            return getStorageState(storage => {
+                                storage.rememberedFunding = storage.rememberedFunding || getRememberedFunding();
+                                for (const source of sources) {
+                                    if (storage.rememberedFunding.indexOf(source) === -1) {
+                                        storage.rememberedFunding.push(source);
+                                    }
+                                }
+                            });
+                        };
                     }
                 },
 
@@ -588,17 +575,6 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 }
             }
         });
-
-        if (component.isChild()) {
-            setupButtonChild(component);
-        }
-
-        const driver = component.driver;
-        component.driver = (name, module) => {
-            getLogger().info(`driver_${ name }_${ getEnv() }`);
-            getLogger().flush();
-            return driver(name, module);
-        };
 
         return component;
     });

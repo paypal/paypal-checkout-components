@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { values, uniqueID } from 'belter/src';
-import { createOrder, type OrderCreateRequest,
+import { type OrderCreateRequest,
     type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from '@paypal/sdk-client/src';
 import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
     ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
@@ -12,7 +12,7 @@ import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE } 
 import { getFundingConfig } from '../funding';
 import type { FundingEligibilityType } from '../types';
 
-import { BUTTON_SIZE_STYLE } from './config';
+import { BUTTON_SIZE_STYLE } from './template/config';
 
 export type CreateOrderData = {|
 
@@ -145,10 +145,6 @@ export type PrerenderDetails = {|
 
 export type GetPrerenderDetails = () => PrerenderDetails | void;
 
-export type ProxyRest = {|
-    createOrder : typeof createOrder
-|};
-
 export type ButtonProps = {|
     intent : $Values<typeof INTENT>,
     createOrder : CreateOrder,
@@ -157,7 +153,6 @@ export type ButtonProps = {|
     onApprove : OnApprove,
     onClick : OnClick,
     getPrerenderDetails : GetPrerenderDetails,
-    proxyRest : ProxyRest,
     style : ButtonStyle,
     locale : LocaleType,
     commit : boolean,
@@ -170,8 +165,7 @@ export type ButtonProps = {|
     clientID : string,
     sessionID : string,
     buttonSessionID : string,
-    nonce : string,
-    proxyRest : ({ createOrder : typeof createOrder }) => ZalgoPromise<void>
+    nonce : string
 |};
 
 export type ButtonPropsInputs = {|

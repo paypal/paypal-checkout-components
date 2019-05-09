@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint no-template-curly-in-string: off, max-lines: off */
 
-import { BUTTON_SIZE, BUTTON_LAYOUT } from '../constants';
+import { BUTTON_SIZE, BUTTON_LAYOUT } from '../../constants';
 
 export const MINIMUM_SIZE = {
     [ BUTTON_LAYOUT.HORIZONTAL ]: BUTTON_SIZE.SMALL,

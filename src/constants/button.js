@@ -41,11 +41,6 @@ export const BUTTON_SIZE = {
     RESPONSIVE: ('responsive' : 'responsive')
 };
 
-export const BUTTON_TAGLINE_COLOR = {
-    BLACK: ('black' : 'black'),
-    BLUE:  ('blue' : 'blue')
-};
-
 export const BUTTON_SHAPE = {
     PILL: ('pill' : 'pill'),
     RECT: ('rect' : 'rect')

@@ -1,10 +1,5 @@
 /* @flow */
 
-
-export const FPTI_BUTTON_TYPE = {
-    IFRAME: ('iframe' : 'iframe')
-};
-
 export const FPTI_CONTEXT_TYPE = {
     BUTTON_SESSION_ID: ('button_session_id' : 'button_session_id'),
     ORDER_ID:          ('EC-Token' : 'EC-Token')
