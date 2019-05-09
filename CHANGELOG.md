@@ -1,3 +1,10 @@
+## <small>5.0.26 (2019-05-09)</small>
+
+* Add card attribute to card buttons ([f918df1](http://github.paypal.com/paypal/paypal-checkout/commit/f918df1))
+* Remove redundant code handled by smart-buttons ([1a2f890](http://github.paypal.com/paypal/paypal-checkout/commit/1a2f890))
+
+
+
 ## <small>5.0.25 (2019-05-03)</small>
 
 * Deanonymize cross-window call ([7e6e274](http://github.paypal.com/paypal/paypal-checkout/commit/7e6e274))
