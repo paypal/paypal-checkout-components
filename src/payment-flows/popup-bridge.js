@@ -5,17 +5,22 @@ import { getDomain } from 'cross-domain-utils/src';
 import { extendUrl } from 'belter/src';
 
 import type { PopupBridge, CreateOrder, OnApprove, OnCancel, OnShippingChange } from '../button/props';
+import type { ProxyWindow } from '../types';
 import { EXPERIENCE_URI } from '../config';
 import { promiseNoop } from '../lib';
 import { POPUP_BRIDGE_OPTYPE } from '../button/props/getPopupBridge';
 
 type PopupBridgeEligibleProps = {|
+    win : ?ProxyWindow,
     popupBridge : ?PopupBridge,
     onShippingChange : ?OnShippingChange
 |};
 
-export function isPopupBridgeEligible({ popupBridge, onShippingChange } : PopupBridgeEligibleProps) : boolean {
-    
+export function isPopupBridgeEligible({ win, popupBridge, onShippingChange } : PopupBridgeEligibleProps) : boolean {
+    if (win) {
+        return false;
+    }
+
     if (!popupBridge) {
         return false;
     }

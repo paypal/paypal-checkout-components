@@ -14,4 +14,11 @@ export const buttonStyle = `
     iframe[title=pbf], iframe[title=ppfniframe] {
         display: none;
     }
+    
+    .paypal-button-clicked,
+    .paypal-button-clicked:focus,
+    .paypal-button-clicked:focus::after {
+        outline: none !important;
+        box-shadow: none !important;
+    }
 `;

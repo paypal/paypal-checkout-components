@@ -6,7 +6,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { setupLogger } from '../lib';
 import { initCheckout, setupCheckout, isVaultCaptureEligible, isCardFieldsEligible, initVault, initCardFields } from '../payment-flows';
-import { DATA_ATTRIBUTES } from '../constants';
+import { DATA_ATTRIBUTES, CLASS } from '../constants';
 import type { FundingEligibilityType, ProxyWindow } from '../types';
 import { isPopupBridgeEligible, initPopupBridge } from '../payment-flows/popup-bridge';
 
@@ -86,9 +86,9 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
                 return win ? win.close() : null;
             }
 
-            const isCardFields = isCardFieldsEligible({ vault, onShippingChange, fundingSource });
-            const isVaultCapture = isVaultCaptureEligible({ paymentMethodID, onShippingChange });
-            const isPopupBridge = isPopupBridgeEligible({ popupBridge, onShippingChange });
+            const isCardFields = isCardFieldsEligible({ win, vault, onShippingChange, fundingSource });
+            const isVaultCapture = isVaultCaptureEligible({ win, paymentMethodID, onShippingChange });
+            const isPopupBridge = isPopupBridgeEligible({ win, popupBridge, onShippingChange });
 
             if (isVaultCapture || isPopupBridge) {
                 enableLoadingSpinner(button);
@@ -161,6 +161,18 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
             event.preventDefault();
             event.stopPropagation();
             pay({ button, fundingSource, card, paymentMethodID });
+        });
+
+        button.addEventListener('mousedown', () => {
+            button.classList.add(CLASS.CLICKED);
+        });
+
+        button.addEventListener('focus', (event : Event) => {
+            if (button.classList.contains(CLASS.CLICKED)) {
+                event.preventDefault();
+                button.blur();
+                button.classList.remove(CLASS.CLICKED);
+            }
         });
     });
 

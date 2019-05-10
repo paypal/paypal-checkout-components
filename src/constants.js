@@ -24,7 +24,8 @@ export const DATA_ATTRIBUTES = {
 };
 
 export const CLASS = {
-    LOADING: 'paypal-button-loading'
+    LOADING: 'paypal-button-loading',
+    CLICKED: 'paypal-button-clicked'
 };
 
 export const ORDER_API_ERROR = {

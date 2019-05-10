@@ -2,11 +2,11 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
-import { memoize } from 'belter/src';
+import { memoize, querySelectorAll } from 'belter/src';
 
-import { CONTEXT } from '../constants';
-import type { LocaleType, FundingEligibilityType } from '../types';
-import { unresolvedPromise } from '../lib';
+import { CONTEXT, DATA_ATTRIBUTES } from '../constants';
+import type { LocaleType, FundingEligibilityType, ProxyWindow } from '../types';
+import { unresolvedPromise, promiseNoop } from '../lib';
 import type { CreateOrder, OnApprove, OnCancel, OnAuth, OnShippingChange, OnError, CreateBillingAgreement } from '../button/props';
 
 import { initCheckout } from './checkout';
@@ -33,18 +33,23 @@ type CardFieldsProps = {|
 |};
 
 type CardFieldsInstance = {|
-    start : () => ZalgoPromise<mixed>,
+    start : () => ZalgoPromise<void>,
     close : () => ZalgoPromise<void>,
     triggerError : (mixed) => ZalgoPromise<void>
 |};
 
 type CardFieldsEligibleProps = {|
+    win : ?ProxyWindow,
     vault : boolean,
     fundingSource : $Values<typeof FUNDING>,
     onShippingChange : ?OnShippingChange
 |};
 
-export function isCardFieldsEligible({ vault, onShippingChange, fundingSource } : CardFieldsEligibleProps) : boolean {
+export function isCardFieldsEligible({ win, vault, onShippingChange, fundingSource } : CardFieldsEligibleProps) : boolean {
+    if (win) {
+        return false;
+    }
+
     if (!window.xprops.enableInlineGuest) {
         return false;
     }
@@ -62,6 +67,12 @@ export function isCardFieldsEligible({ vault, onShippingChange, fundingSource } 
     }
 
     return true;
+}
+
+function highlightCard(card : $Values<typeof CARD>) {
+    querySelectorAll(`[${ DATA_ATTRIBUTES.CARD }]`).forEach(el => {
+        el.style.opacity = (el.getAttribute(DATA_ATTRIBUTES.CARD) === card) ? '1' : '0.1';
+    });
 }
 
 const openCardFields = () => {
@@ -97,7 +108,12 @@ export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
     }
 
     if (cardFieldsOpen) {
-        throw new Error(`Card fields already rendered`);
+        highlightCard(card);
+        return {
+            start:        promiseNoop,
+            close:        promiseNoop,
+            triggerError: promiseNoop
+        };
     }
 
     const restart = memoize(() : ZalgoPromise<void> =>
@@ -106,6 +122,10 @@ export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
     const onClose = () => {
         cardFieldsOpen = false;
         return onCancel();
+    };
+
+    const onCardTypeChange = ({ card: cardType }) => {
+        highlightCard(cardType);
     };
 
     const { render, close, onError: triggerError } = window.paypal.CardFields({
@@ -125,6 +145,7 @@ export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
         onAuth,
         onClose,
         onShippingChange,
+        onCardTypeChange,
 
         buyerCountry,
         locale,
@@ -138,6 +159,7 @@ export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
         cardFieldsOpen = true;
         const renderPromise = render('#card-fields-container');
         openCardFields();
+        highlightCard(card);
         return renderPromise;
     };
 

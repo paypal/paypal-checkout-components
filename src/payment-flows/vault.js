@@ -2,15 +2,21 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
+import type { ProxyWindow } from '../types';
 import { validatePaymentMethod } from '../api';
 import type { CreateOrder, OnApprove, OnShippingChange } from '../button/props';
 
 type VaultCaptureEligibleProps = {|
+    win : ?ProxyWindow,
     paymentMethodID : ?string,
     onShippingChange : ?OnShippingChange
 |};
 
-export function isVaultCaptureEligible({ paymentMethodID, onShippingChange } : VaultCaptureEligibleProps) : boolean {
+export function isVaultCaptureEligible({ win, paymentMethodID, onShippingChange } : VaultCaptureEligibleProps) : boolean {
+    if (win) {
+        return false;
+    }
+    
     if (!paymentMethodID) {
         return false;
     }
