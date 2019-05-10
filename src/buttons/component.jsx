@@ -20,7 +20,8 @@ import { componentTemplate } from '../checkout/template';
 import { containerTemplate, Buttons as ButtonsTemplate } from './template';
 import { normalizeButtonStyle, type ButtonProps, type PrerenderDetails, type ButtonStyle, type CreateOrder, type OnCancel, type OnClick,
     type CreateOrderData, type CreateOrderActions, type OnApprove, type OnApproveActions,
-    type OnApproveData, type OnShippingChange, type GetPrerenderDetails, type OnClickData, type OnClickActions } from './props';
+    type OnApproveData, type OnShippingChange, type GetPrerenderDetails, type OnClickData, type OnClickActions, type CreateSubscription, type CreateSubscriptionData, type  } from './props';
+import type { CreateSubscriptionActions } from "./props";
 
 
 export function getButtonsComponent() : ZoidComponent<ButtonProps> {
@@ -161,7 +162,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                         };
                     },
                     default({ props }) : ?CreateOrder {
-                        if (props.createBillingAgreement) {
+                        if (props.createBillingAgreement || props.createSubscription) {
                             return;
                         }
 
@@ -210,6 +211,32 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                                 logger.flush();
 
                                 return billingToken;
+                            });
+                        };
+                    }
+                },
+
+                createSubscription: {
+                    type:     'function',
+                    required: false,
+                    decorate({ value, props }) : Function {
+                        return function decoratedCreateSubscription(data, actions) : ZalgoPromise<string> {
+                            return ZalgoPromise.try(() => {
+                                return value(data, actions);
+                            }).then(subscriptionId => {
+                                if (!subscriptionId || typeof subscriptionId !== 'string')  {
+                                    throw new Error(`Expected a promise for a string subscription id to be passed to createSubscription`);
+                                }
+
+                                getLogger().track({
+                                    [ FPTI_KEY.STATE ]:              FPTI_STATE.CHECKOUT,
+                                    [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.RECEIVE_SUBSCRIPTION,
+                                    [ FPTI_KEY.CONTEXT_TYPE ]:       FPTI_CONTEXT_TYPE.SUBSCRIPTION_ID,
+                                    [ FPTI_KEY.CONTEXT_ID ]:         subscriptionId,
+                                    [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
+                                }).flush();
+
+                                return subscriptionId;
                             });
                         };
                     }
