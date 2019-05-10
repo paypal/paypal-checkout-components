@@ -9,4 +9,6 @@ export const ATTRIBUTE = {
 
 export const DEFAULT = ('default' : 'default');
 
-
+export const EVENT = {
+    BUTTON_RENDER: ('button_render' : 'button_render')
+};

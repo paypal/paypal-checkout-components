@@ -4,7 +4,7 @@
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken,
-    getPartnerAttributionID, getCorrelationID, getStorageState } from '@paypal/sdk-client/src';
+    getPartnerAttributionID, getCorrelationID, getStorageState, getEventEmitter } from '@paypal/sdk-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { isIEIntranet, isDevice, uniqueID, redirect, supportsPopups, popup, writeElementToWindow, noop, inlineMemoize } from 'belter/src';
@@ -13,7 +13,7 @@ import { node, dom } from 'jsx-pragmatic/src';
 
 import { getButtonUrl, DEFAULT_POPUP_SIZE } from '../config';
 import { getFundingEligibility, getRememberedFunding } from '../globals';
-import { FPTI_STATE, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../constants';
+import { FPTI_STATE, FPTI_TRANSITION, FPTI_CONTEXT_TYPE, EVENT } from '../constants';
 import { getSessionID } from '../lib';
 import { componentTemplate } from '../checkout/template';
 
@@ -374,6 +374,8 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                                 [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.BUTTON_RENDER,
                                 [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
                             }).flush();
+
+                            getEventEmitter().trigger(EVENT.BUTTON_RENDER);
 
                             return value();
                         };
