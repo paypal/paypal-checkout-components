@@ -78,7 +78,8 @@ export function pptmFactory() : Object {
         },
         listenForButtonRender() {
             window.paypalDDL = window.paypalDDL || [];
-            if (!window.paypalDDL.find(e => e.event === 'paypalButtonRender')) {
+            const buttonRenderEvent = window.paypalDDL.filter(e => e.event === 'paypalButtonRender');
+            if (buttonRenderEvent.length === 0) {
                 window.paypalDDL.push({ event: 'paypalButtonRender' });
             }
         },
