@@ -81,7 +81,8 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
     const clickHandler = (event, opts) => {
         event.preventDefault();
         event.stopPropagation();
-        onClick({ fundingSource, ...opts });
+        event.target.blur();
+        onClick(event, { fundingSource, ...opts });
     };
 
     const { layout, shape } = style;
@@ -143,7 +144,8 @@ export function VaultedButton({ fundingSource, paymentMethodID, style, multiple,
     const clickHandler = (event, opts) => {
         event.preventDefault();
         event.stopPropagation();
-        onClick({ fundingSource, ...opts });
+        event.target.blur();
+        onClick(event, { fundingSource, ...opts });
     };
 
     let { layout, shape, color } = style;

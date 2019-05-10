@@ -42,7 +42,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
 
             prerenderTemplate({ state, props, doc }) : HTMLElement {
 
-                const prerenderCheckout = ({ fundingSource, card } : {| fundingSource : $Values<typeof FUNDING>, card : ?$Values<typeof CARD> |}) => {
+                const handleClick = (event, { fundingSource, card } : {| fundingSource : $Values<typeof FUNDING>, card : ?$Values<typeof CARD> |}) => {
                     let win;
 
                     if (supportsPopups()) {
@@ -66,7 +66,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     <html>
                         <body>
                             <div>
-                                <ButtonsTemplate { ...props } onClick={ prerenderCheckout } />
+                                <ButtonsTemplate { ...props } onClick={ handleClick } />
                             </div>
                         </body>
                     </html>
