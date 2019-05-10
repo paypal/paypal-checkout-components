@@ -76,6 +76,13 @@ export function pptmFactory() : Object {
                 }
             };
         },
+        listenForButtonRender() {
+            window.paypalDDL = window.paypalDDL || [];
+            const buttonRenderEvent = window.paypalDDL.filter(e => e.event === 'paypalButtonRender');
+            if (buttonRenderEvent.length === 0) {
+                window.paypalDDL.push({ event: 'paypalButtonRender' });
+            }
+        },
         get callback() : string {
             return callback;
         },
