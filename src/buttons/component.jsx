@@ -20,8 +20,7 @@ import { componentTemplate } from '../checkout/template';
 import { containerTemplate, Buttons as ButtonsTemplate } from './template';
 import { normalizeButtonStyle, type ButtonProps, type PrerenderDetails, type ButtonStyle, type CreateOrder, type OnCancel, type OnClick,
     type CreateOrderData, type CreateOrderActions, type OnApprove, type OnApproveActions,
-    type OnApproveData, type OnShippingChange, type GetPrerenderDetails, type OnClickData, type OnClickActions, type CreateSubscription, type CreateSubscriptionData, type  } from './props';
-import type { CreateSubscriptionActions } from "./props";
+    type OnApproveData, type OnShippingChange, type GetPrerenderDetails, type OnClickData, type OnClickActions  } from './props';
 
 
 export function getButtonsComponent() : ZoidComponent<ButtonProps> {

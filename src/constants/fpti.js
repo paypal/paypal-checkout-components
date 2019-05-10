@@ -16,7 +16,7 @@ export const FPTI_TRANSITION = {
     BUTTON_LOAD:    ('process_button_load' : 'process_button_load'),
     BUTTON_CLICK:   ('process_button_click' : 'process_button_click'),
 
-    RECIEVE_ORDER: ('process_recieve_order' : 'process_recieve_order'),
+    RECIEVE_ORDER:        ('process_recieve_order' : 'process_recieve_order'),
     RECEIVE_SUBSCRIPTION: ('process_recieve_subscription' : 'process_recieve_subscription'),
 
     CHECKOUT_INIT:            ('process_checkout_init' : 'process_checkout_init'),
