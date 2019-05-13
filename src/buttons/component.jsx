@@ -229,11 +229,16 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                                 if (!getVault()) {
                                     throw new Error(`Must pass vault=true to sdk to use subscription flow`);
                                 }
+
+                                // $FlowFixMe
                                 return value(data, actions);
                             }).then(subscriptionID => {
+                                const logger = getLogger();
                                 if (!subscriptionID || typeof subscriptionID !== 'string')  {
+                                    logger.error(`no_subscription_id_passed_to_createsubscription`);
                                     throw new Error(`Expected a promise for a string subscriptionID to be passed to createSubscription`);
                                 }
+                                logger.flush();
                                 return subscriptionID;
                             });
                         };
