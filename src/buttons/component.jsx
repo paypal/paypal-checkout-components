@@ -218,23 +218,22 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 createSubscription: {
                     type:     'function',
                     required: false,
-                    decorate({ value, props }) : Function {
+                    validate: ({ props }) => {
+                        if (props.createOrder || props.createBillingAgreement) {
+                            throw new Error(`Do not pass both createOrder or createBillingAgreement with createSubscription`);
+                        }
+                    },
+                    decorate({ value }) : Function {
                         return function decoratedCreateSubscription(data, actions) : ZalgoPromise<string> {
                             return ZalgoPromise.try(() => {
+                                if (!getVault()) {
+                                    throw new Error(`Must pass vault=true to sdk to use subscription flow`);
+                                }
                                 return value(data, actions);
                             }).then(subscriptionID => {
                                 if (!subscriptionID || typeof subscriptionID !== 'string')  {
-                                    throw new Error(`Expected a promise for a string subscription id to be passed to createSubscription`);
+                                    throw new Error(`Expected a promise for a string subscriptionID to be passed to createSubscription`);
                                 }
-
-                                getLogger().track({
-                                    [ FPTI_KEY.STATE ]:              FPTI_STATE.CHECKOUT,
-                                    [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.RECEIVE_SUBSCRIPTION,
-                                    [ FPTI_KEY.CONTEXT_TYPE ]:       FPTI_CONTEXT_TYPE.SUBSCRIPTION_ID,
-                                    [ FPTI_KEY.CONTEXT_ID ]:         subscriptionID,
-                                    [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
-                                }).flush();
-
                                 return subscriptionID;
                             });
                         };

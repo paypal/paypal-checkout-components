@@ -2,8 +2,7 @@
 
 export const FPTI_CONTEXT_TYPE = {
     BUTTON_SESSION_ID: ('button_session_id' : 'button_session_id'),
-    ORDER_ID:          ('EC-Token' : 'EC-Token'),
-    SUBSCRIPTION_ID:          ('Subscription-ID' : 'Subscription-ID')
+    ORDER_ID:          ('EC-Token' : 'EC-Token')
 };
 
 export const FPTI_STATE = {
@@ -16,8 +15,7 @@ export const FPTI_TRANSITION = {
     BUTTON_LOAD:    ('process_button_load' : 'process_button_load'),
     BUTTON_CLICK:   ('process_button_click' : 'process_button_click'),
 
-    RECIEVE_ORDER:        ('process_recieve_order' : 'process_recieve_order'),
-    RECEIVE_SUBSCRIPTION: ('process_recieve_subscription' : 'process_recieve_subscription'),
+    RECIEVE_ORDER: ('process_recieve_order' : 'process_recieve_order'),
 
     CHECKOUT_INIT:            ('process_checkout_init' : 'process_checkout_init'),
     CHECKOUT_AUTHORIZE:       ('process_checkout_authorize' : 'process_checkout_authorize'),
