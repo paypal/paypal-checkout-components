@@ -55,36 +55,13 @@ if (action === 'checkout') {
         });
     });
 
-} else if (action === 'shippingOptions') {
-
-    window.xprops.payment().then(paymentToken => {
-        return window.xprops.supplement.getPaymentOptions(paymentToken)
-            .then(options => {
-                const shippingOptions = options.transactions.map(t => {
-                    if (t.item_list && t.item_list.shipping_options) {
-                        return t.item_list.shipping_options;
-                    }
-                    return t;
-                });
-
-                return onInit(shippingOptions);
-            });
-    });
 } else if (action === 'shippingChange') {
 
     let callbackActions = {
         reject:  () => { /* pass */ },
         type,
         payment: {
-            patch: (data) => {
-                const shippingOptions = data.filter(op => {
-                    return op.path.match(/\/(transactions)\/(\d)\/(item_list)\/(shipping_options)/);
-                });
-
-                if (shippingOptions.length) {
-                    throw new Error('Expecting shipping_options to be stripped from payment patch');
-                }
-            }
+            patch: (data) => { /* pass */ }
         }
     };
 
@@ -101,28 +78,7 @@ if (action === 'checkout') {
             country_code: 'YY'
         };
 
-        return window.xprops.supplement.getPaymentOptions(paymentToken)
-            .then(options => {
-
-                if (!options || !options.transactions) {
-                    return shippingChangePayload;
-                }
-
-                const shippingOptions = options.transactions.map(t => {
-                    if (t.item_list && t.item_list.shipping_options) {
-                        return t.item_list.shipping_options;
-                    }
-                    return t;
-                });
-
-                return {
-                    ...shippingChangePayload,
-                    shipping_options: shippingOptions.length === 1 ? shippingOptions[0] : shippingOptions
-                };
-            })
-            .then(payload => {
-                window.xprops.onShippingChange(payload, callbackActions);
-            });
+        return window.xprops.onShippingChange(shippingChangePayload, callbackActions);
     });
 
 } else if (action === 'cancel') {
