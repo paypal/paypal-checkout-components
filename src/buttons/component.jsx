@@ -222,8 +222,8 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                         return function decoratedCreateSubscription(data, actions) : ZalgoPromise<string> {
                             return ZalgoPromise.try(() => {
                                 return value(data, actions);
-                            }).then(subscriptionId => {
-                                if (!subscriptionId || typeof subscriptionId !== 'string')  {
+                            }).then(subscriptionID => {
+                                if (!subscriptionID || typeof subscriptionID !== 'string')  {
                                     throw new Error(`Expected a promise for a string subscription id to be passed to createSubscription`);
                                 }
 
@@ -231,11 +231,11 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                                     [ FPTI_KEY.STATE ]:              FPTI_STATE.CHECKOUT,
                                     [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.RECEIVE_SUBSCRIPTION,
                                     [ FPTI_KEY.CONTEXT_TYPE ]:       FPTI_CONTEXT_TYPE.SUBSCRIPTION_ID,
-                                    [ FPTI_KEY.CONTEXT_ID ]:         subscriptionId,
+                                    [ FPTI_KEY.CONTEXT_ID ]:         subscriptionID,
                                     [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
                                 }).flush();
 
-                                return subscriptionId;
+                                return subscriptionID;
                             });
                         };
                     }
