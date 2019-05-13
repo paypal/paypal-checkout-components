@@ -17,13 +17,12 @@ import { redirect as redir, checkRecognizedBrowser,
     isIEIntranet, isEligible, getCurrentScriptUrl,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
-import { rest, getPaymentOptions, addPaymentDetails, getPaymentDetails } from '../api';
+import { rest } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
     mapPaymentToBraintree, type BraintreePayPalClient } from '../integrations';
 import { awaitPopupBridge } from '../integrations/popupBridge';
 import { validateFunding, isFundingIneligible, isFundingAutoEligible } from '../funding';
-import { mergePaymentDetails, patchPaymentOptions } from '../api/hacks';
 import { getFundingConfig } from '../funding/config';
 
 import { containerTemplate, componentTemplate } from './template';
@@ -123,11 +122,6 @@ type ButtonOptions = {
     env? : string,
     locale? : string,
     logLevel : string,
-    supplement : {
-        getPaymentOptions : Function,
-        addPaymentDetails : Function,
-        getPaymentDetails : Function
-    },
     awaitPopupBridge : Function,
     meta : Object,
     validate? : ({ enable : () => ZalgoPromise<void>, disable : () => ZalgoPromise<void> }) => void,
@@ -670,7 +664,7 @@ export let Button : Component<ButtonOptions> = create({
                                 return new ZalgoPromise();
                             }
 
-                            return mergePaymentDetails(result.id, result);
+                            return result;
                         });
                     };
 
@@ -683,7 +677,7 @@ export let Button : Component<ButtonOptions> = create({
                                 return new ZalgoPromise();
                             }
 
-                            return mergePaymentDetails(result.id, result);
+                            return result;
                         });
                     };
 
@@ -750,20 +744,7 @@ export let Button : Component<ButtonOptions> = create({
 
                     let patch = actions.payment.patch;
                     actions.payment.patch = (patchObject) => {
-
-                        const itemListPatches = patchObject.filter((op, index) => {
-                            if (op.path.match(/\/(transactions)\/(\d)\/(item_list)\/(shipping_options)/)) {
-                                return patchObject.splice(index, 1);
-                            }
-
-                            return false;
-                        });
-
                         return ZalgoPromise.try(() => {
-                            if (itemListPatches.length) {
-                                return patchPaymentOptions(data.paymentID, itemListPatches);
-                            }
-                        }).then(() => {
                             return patch(patchObject);
                         });
                     };
@@ -959,12 +940,6 @@ export let Button : Component<ButtonOptions> = create({
             type:     'object',
             required: false,
             value:    () => awaitPopupBridge(Button)
-        },
-
-        supplement: {
-            type:     'object',
-            required: false,
-            value:    { getPaymentOptions, addPaymentDetails, getPaymentDetails }
         },
 
         test: {
