@@ -51,7 +51,7 @@ describe('vault cases', () => {
         });
     });
 
-    it('should set up a new optionally-vaulted funding source', async () => {
+    it.skip('should set up a new optionally-vaulted funding source', async () => {
         return await wrapPromise(async ({ expect }) => {
 
             window.xprops.enableVault = true;
@@ -98,7 +98,7 @@ describe('vault cases', () => {
         });
     });
 
-    it('should not set up a new optionally-vaulted funding source when vaulting is not eligible', async () => {
+    it.skip('should not set up a new optionally-vaulted funding source when vaulting is not eligible', async () => {
         return await wrapPromise(async ({ expect }) => {
 
             window.xprops.enableVault = true;

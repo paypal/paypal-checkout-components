@@ -42,13 +42,11 @@ export function setupCheckout() : ZalgoPromise<void> {
 type VaultSetupEligibleProps = {|
     vault : boolean,
     clientAccessToken : ?string,
-    fundingEligibility : Object,
-    fundingSource : $Values<typeof FUNDING>,
     createBillingAgreement : ?CreateBillingAgreement,
     createSubscription : ?CreateSubscription
 |};
 
-function isVaultSetupEligible({ vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement, createSubscription } : VaultSetupEligibleProps) : boolean {
+function isVaultSetupEligible({ vault, clientAccessToken, createBillingAgreement, createSubscription } : VaultSetupEligibleProps) : boolean {
     if (!window.xprops.enableVault) {
         return false;
     }
@@ -70,11 +68,6 @@ function isVaultSetupEligible({ vault, clientAccessToken, fundingEligibility, fu
         return true;
     }
 
-    const fundingConfig = fundingEligibility[fundingSource];
-    if (fundingConfig.eligible && fundingConfig.vaultable) {
-        return true;
-    }
-
     return false;
 }
 
@@ -88,9 +81,9 @@ type EnableVaultSetupOptions = {|
     createSubscription : ?CreateSubscription
 |};
 
-function enableVaultSetup({ orderID, vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement, createSubscription } : EnableVaultSetupOptions) : ZalgoPromise<void> {
+function enableVaultSetup({ orderID, vault, clientAccessToken, createBillingAgreement, createSubscription } : EnableVaultSetupOptions) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
-        if (clientAccessToken && isVaultSetupEligible({ vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement, createSubscription })) {
+        if (clientAccessToken && isVaultSetupEligible({ vault, clientAccessToken, createBillingAgreement, createSubscription })) {
             return enableVault({ orderID, clientAccessToken }).catch(err => {
                 if (vault) {
                     throw err;
