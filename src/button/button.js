@@ -77,7 +77,8 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
                 onCancel,
                 onClick,
                 onAuth,
-                onShippingChange
+                onShippingChange,
+                createSubscription
             } = getButtonCallbackProps({ xprops: window.xprops });
 
             const validationPromise = onClick();
@@ -105,7 +106,7 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
                     return initCardFields({
                         fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
                         onAuth, onShippingChange, cspNonce, locale, commit, onError, vault,
-                        clientAccessToken, fundingEligibility, createBillingAgreement
+                        clientAccessToken, fundingEligibility, createBillingAgreement, createSubscription
                     });
                 }
 
@@ -118,7 +119,7 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
                 return initCheckout({
                     win, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
                     onAuth, onShippingChange, cspNonce, locale, commit, onError, vault,
-                    clientAccessToken, fundingEligibility, validationPromise, createBillingAgreement
+                    clientAccessToken, fundingEligibility, validationPromise, createBillingAgreement, createSubscription
                 });
             })();
 

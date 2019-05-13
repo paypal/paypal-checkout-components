@@ -5,6 +5,7 @@ export * from './props';
 
 export * from './createOrder';
 export * from './createBillingAgreement';
+export * from './createSubscription';
 export * from './onApprove';
 export * from './onInit';
 export * from './onCancel';

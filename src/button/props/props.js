@@ -13,6 +13,7 @@ import { getOnShippingChange } from './onShippingChange';
 import { getOnClick } from './onClick';
 import { getOnAuth } from './onAuth';
 import { getCreateBillingAgreement } from './createBillingAgreement';
+import { getCreateSubscription } from './createSubscription';
 
 export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops : XProps, buyerGeoCountry : ?$Values<typeof COUNTRY>, cspNonce : ?string |}) : GlobalProps {
 
@@ -68,7 +69,8 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
 export function getButtonCallbackProps({ xprops } : {| xprops : XProps |}) : ButtonCallbackProps {
 
     const createBillingAgreement = getCreateBillingAgreement(xprops);
-    const createOrder = getCreateOrder(xprops, { createBillingAgreement });
+    const createSubscription = getCreateSubscription(xprops);
+    const createOrder = getCreateOrder(xprops, { createBillingAgreement, createSubscription });
 
     const onApprove = getOnApprove(xprops, { createOrder });
     const onCancel = getOnCancel(xprops, { createOrder });
@@ -79,6 +81,7 @@ export function getButtonCallbackProps({ xprops } : {| xprops : XProps |}) : But
     return {
         createOrder,
         createBillingAgreement,
+        createSubscription,
         onApprove,
         onCancel,
         onClick,

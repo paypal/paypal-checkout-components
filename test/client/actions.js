@@ -7,7 +7,22 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, getGetOrderApiMock, getCaptureOrderApiMock, getAuthorizeOrderApiMock, getPatchOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, getCreateOrderApiMock } from './mocks';
+import {
+    createButtonHTML,
+    getGetOrderApiMock,
+    getCaptureOrderApiMock,
+    getAuthorizeOrderApiMock,
+    getPatchOrderApiMock,
+    DEFAULT_FUNDING_ELIGIBILITY,
+    mockFunction,
+    clickButton,
+    getCreateOrderApiMock,
+    getCreateSubscriptionIdApiMock,
+    getSubscriptionIdToCartIdApiMock,
+    getGetSubscriptionApiMock,
+    getActivateSubscriptionIdApiMock,
+    getReviseSubscriptionIdApiMock
+} from './mocks';
 
 describe('actions cases', () => {
 
@@ -318,4 +333,146 @@ describe('actions cases', () => {
             clickButton(FUNDING.PAYPAL);
         });
     });
+
+    it('should render a subscription button, click the button, and render checkout, then pass onApprove callback to the parent with actions.subscription.create', async () => {
+        return await wrapPromise(async ({ expect }) => {
+            const mockSubscriptionID = 'I-CREATESUBSCRIPTIONID';
+            const mockCartID = 'CARTIDCREATESUBSFLOW';
+            let subscriptionID;
+            const payerID = 'YYYYYYYYYY';
+
+
+            window.xprops.createSubscription = expect('createSubscription', async (data, actions) => {
+                const createSubscriptionIdApiMock = getCreateSubscriptionIdApiMock({}, mockSubscriptionID);
+                createSubscriptionIdApiMock.expectCalls();
+                subscriptionID = await actions.subscription.create({
+                    plan_id: 'P-XXXXXX'
+                });
+                createSubscriptionIdApiMock.done();
+                if (!subscriptionID) {
+                    throw new Error(`Expected subscriptionID to be returned by actions.subscription.create`);
+                }
+
+                return subscriptionID;
+            });
+
+            window.xprops.onApprove = expect('onApprove', async (data, actions) => {
+
+                if (data.subscriptionID !== subscriptionID) {
+                    throw new Error(`Expected subscriptionID to be ${ subscriptionID }, got ${ data.subscriptionID }`);
+                }
+
+                const getSubscriptionApiMock = getGetSubscriptionApiMock({}, mockSubscriptionID);
+                getSubscriptionApiMock.expectCalls();
+                const response = await actions.subscription.get();
+                if (response.id !== subscriptionID) {
+                    throw new Error(`Expected subscriptionID to be ${ subscriptionID }, got ${ response.id } in Get Subscriptions response`);
+                }
+                getSubscriptionApiMock.done();
+                const activateSubscriptionIdApiMock = getActivateSubscriptionIdApiMock({}, mockSubscriptionID);
+                activateSubscriptionIdApiMock.expectCalls();
+                const activateResponse = await actions.subscription.activate();
+                if (JSON.stringify(activateResponse) !== '{}') {
+                    throw new Error(`Expected activate response to be 204 NO CONTENT , got ${ JSON.stringify(activateResponse) } in Activate Subscriptions`);
+                }
+                activateSubscriptionIdApiMock.done();
+            });
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID, subscriptionID }, actions);
+                }));
+
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    const subscriptionIdToCartIdApiMock = getSubscriptionIdToCartIdApiMock({}, mockSubscriptionID, mockCartID);
+                    subscriptionIdToCartIdApiMock.expectCalls();
+                    const id = await props.createOrder();
+                    subscriptionIdToCartIdApiMock.done();
+                    if (id !== mockCartID) {
+                        throw new Error(`Expected orderID to be ${ subscriptionID }, got ${ id }`);
+                    }
+                    return renderToOriginal(...args);
+                }));
+
+                return checkoutInstance;
+            }));
+
+            createButtonHTML();
+
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            clickButton(FUNDING.PAYPAL);
+        });
+    });
+
+    it('should render a revise subscription button, click the button, and render checkout, then pass onApprove callback to the parent with actions.subscription.revise', async () => {
+        return await wrapPromise(async ({ expect }) => {
+            const mockSubscriptionID = 'I-REVISESUBSCRIPTIONID';
+            const mockCartID = 'CARTIDCREATESUBSFLOW';
+            let subscriptionID;
+            const payerID = 'YYYYYYYYYY';
+
+
+            window.xprops.createSubscription = expect('createSubscription', async (data, actions) => {
+                const reviseSubscriptionIdApiMock = getReviseSubscriptionIdApiMock({}, mockSubscriptionID);
+                reviseSubscriptionIdApiMock.expectCalls();
+                subscriptionID = await actions.subscription.revise(mockSubscriptionID, {
+                    plan_id: 'P-NEW_PLAN_XXXXXX'
+                });
+                reviseSubscriptionIdApiMock.done();
+                if (!subscriptionID) {
+                    throw new Error(`Expected subscriptionID to be returned by actions.subscription.revise`);
+                }
+
+                return subscriptionID;
+            });
+
+            window.xprops.onApprove = expect('onApprove', async (data, actions) => {
+
+                if (data.subscriptionID !== subscriptionID) {
+                    throw new Error(`Expected subscriptionID to be ${ subscriptionID }, got ${ data.subscriptionID }`);
+                }
+
+                const getSubscriptionApiMock = getGetSubscriptionApiMock({}, mockSubscriptionID);
+                getSubscriptionApiMock.expectCalls();
+                const response = await actions.subscription.get();
+                if (response.id !== subscriptionID) {
+                    throw new Error(`Expected subscriptionID to be ${ subscriptionID }, got ${ response.id } in Get Subscriptions response`);
+                }
+                getSubscriptionApiMock.done();
+            });
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID, subscriptionID }, actions);
+                }));
+
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    const subscriptionIdToCartIdApiMock = getSubscriptionIdToCartIdApiMock({}, mockSubscriptionID, mockCartID);
+                    subscriptionIdToCartIdApiMock.expectCalls();
+                    const id = await props.createOrder();
+                    subscriptionIdToCartIdApiMock.done();
+                    if (id !== mockCartID) {
+                        throw new Error(`Expected orderID to be ${ subscriptionID }, got ${ id }`);
+                    }
+                    return renderToOriginal(...args);
+                }));
+
+                return checkoutInstance;
+            }));
+
+            createButtonHTML();
+
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            clickButton(FUNDING.PAYPAL);
+        });
+    });
+
 });

@@ -178,7 +178,63 @@ describe('happy cases', () => {
             clickButton(FUNDING.PAYPAL);
         });
     });
-    
+
+    it('should render a button with createSubscription, click the button, and render checkout', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+
+            const cartID = 'CARTIDOFSUBSCRIPTIONS';
+            const subscriptionID = 'I-SUBSCRIPTIONID';
+            const payerID = 'YYYYYYYYYY';
+
+            window.xprops.createOrder = avoid('createOrder');
+
+            window.xprops.createSubscription = expect('createSubscription', async () => {
+                return ZalgoPromise.try(() => {
+                    return subscriptionID;
+                });
+            });
+
+            window.xprops.onCancel = avoid('onCancel');
+
+            window.xprops.onApprove = expect('onApprove', async (data) => {
+                if (data.subscriptionID !== subscriptionID) {
+                    throw new Error(`Expected billingToken to be ${ subscriptionID }, got ${ data.subscriptionID }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+            });
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID, subscriptionID }, actions);
+                }));
+
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== cartID) {
+                            throw new Error(`Expected cartID to be ${ cartID }, got ${ id }`);
+                        }
+
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            createButtonHTML();
+
+            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            clickButton(FUNDING.PAYPAL);
+        });
+    });
+
     it('should render a button, press enter on the button, and render checkout', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 

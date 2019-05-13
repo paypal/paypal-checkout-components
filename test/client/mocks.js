@@ -316,6 +316,76 @@ export function getPatchOrderApiMock(options : Object = {}) : MockEndpoint {
     });
 }
 
+export function getSubscriptionIdToCartIdApiMock(options : Object = {}, subscriptionID : string = 'I-SUBSCRIPTIONID', cartId : string = 'CARTIDOFSUBSCRIPTIONS') : MockEndpoint {
+
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri:    `/smart/api/billagmt/subscriptions/${ subscriptionID }/cartid`,
+        data:   {
+            ack:  'success',
+            data: {
+                token: cartId
+            }
+        },
+        ...options
+    });
+}
+
+export function getGetSubscriptionApiMock(options : Object = {}, subscriptionID : string) : MockEndpoint {
+
+    return $mockEndpoint.register({
+        method: 'GET',
+        uri:    `/smart/api/billagmt/subscriptions/${ subscriptionID }`,
+        data:   {
+            ack:  'success',
+            data: {
+                'status':      'APPROVAL_PENDING',
+                'id':          subscriptionID,
+                'create_time': '2019-05-13T13:50:17Z'
+            }
+        },
+        ...options
+    });
+}
+
+export function getCreateSubscriptionIdApiMock(options : Object, subscriptionID : string) : MockEndpoint {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri:    'v1/billing/subscriptions',
+        data:   {
+            'status':      'APPROVAL_PENDING',
+            'id':          subscriptionID,
+            'create_time': '2019-05-10T13:50:17Z'
+        },
+        ...options
+    });
+}
+
+export function getReviseSubscriptionIdApiMock(options : Object, subscriptionID : string) : MockEndpoint {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri:    `v1/billing/subscriptions/${ subscriptionID }/revise`,
+        data:   {
+            'status':      'APPROVAL_PENDING',
+            'id':          subscriptionID,
+            'create_time': '2019-05-10T13:50:17Z'
+        },
+        ...options
+    });
+}
+
+export function getActivateSubscriptionIdApiMock(options : Object = {}, subscriptionID : string) : MockEndpoint {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri:    `/smart/api/billagmt/subscriptions/${ subscriptionID }/activate`,
+        data:   {
+            ack:  'success',
+            data: {}
+        },
+        ...options
+    });
+}
+
 export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
     return $mockEndpoint.register({
         method: 'POST',
@@ -373,6 +443,7 @@ getCaptureOrderApiMock().listen();
 getAuthorizeOrderApiMock().listen();
 getMapBillingTokenApiMock().listen();
 getPatchOrderApiMock().listen();
+getSubscriptionIdToCartIdApiMock().listen();
 getGraphQLApiMock().listen();
 getLoggerApiMock().listen();
 getValidatePaymentMethodApiMock().listen();

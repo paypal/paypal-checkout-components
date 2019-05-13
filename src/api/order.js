@@ -182,6 +182,15 @@ export function billingTokenToOrderID(billingToken : string) : ZalgoPromise<stri
     });
 }
 
+export function subscriptionIdToCartId(subscriptionID : string) : ZalgoPromise<string> {
+    return callSmartAPI({
+        method: 'post',
+        url:    `${ API_URI.SUBSCRIPTION }/${ subscriptionID }/cartid`
+    }).then(data => {
+        return data.token;
+    });
+}
+
 export function enableVault({ orderID, clientAccessToken } : { orderID : string, clientAccessToken : string }) : ZalgoPromise<mixed> {
     return callGraphQL({
         query: `

@@ -7,7 +7,16 @@ import { memoize, querySelectorAll } from 'belter/src';
 import { CONTEXT, DATA_ATTRIBUTES } from '../constants';
 import type { LocaleType, FundingEligibilityType, ProxyWindow } from '../types';
 import { unresolvedPromise, promiseNoop } from '../lib';
-import type { CreateOrder, OnApprove, OnCancel, OnAuth, OnShippingChange, OnError, CreateBillingAgreement } from '../button/props';
+import type {
+    CreateOrder,
+    OnApprove,
+    OnCancel,
+    OnAuth,
+    OnShippingChange,
+    OnError,
+    CreateBillingAgreement,
+    CreateSubscription
+} from '../button/props';
 
 import { initCheckout } from './checkout';
 
@@ -19,6 +28,7 @@ type CardFieldsProps = {|
     buyerCountry : $Values<typeof COUNTRY>,
     createOrder : CreateOrder,
     createBillingAgreement : ?CreateBillingAgreement,
+    createSubscription : ?CreateSubscription,
     onApprove : OnApprove,
     onCancel : OnCancel,
     onAuth : OnAuth,
