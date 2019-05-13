@@ -3,7 +3,7 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { values, uniqueID } from 'belter/src';
 import { type OrderCreateRequest,
-    type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse, type SubscriptionCreateRequest } from '@paypal/sdk-client/src';
+    type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from '@paypal/sdk-client/src';
 import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
     ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
@@ -18,20 +18,9 @@ export type CreateOrderData = {|
 
 |} | {};
 
-export type CreateSubscriptionData = {|
-
-|} | {};
-
 export type CreateOrderActions = {|
     order : {
         create : (OrderCreateRequest) => ZalgoPromise<string>
-    }
-|};
-
-export type CreateSubscriptionActions = {|
-    order : {
-        create : (SubscriptionCreateRequest) => ZalgoPromise<string>,
-        revise : (SubscriptionCreateRequest) => ZalgoPromise<string>
     }
 |};
 
@@ -44,7 +33,6 @@ export type OnApproveData = {|
 |};
 
 export type CreateBillingAgreement = () => ZalgoPromise<string> | string;
-export type CreateSubscription = (CreateSubscriptionData, CreateSubscriptionActions) => ZalgoPromise<string> | string;
 
 export type OnApproveActions = {|
     redirect : (string, CrossDomainWindowType) => ZalgoPromise<void>,
@@ -161,7 +149,6 @@ export type ButtonProps = {|
     intent : $Values<typeof INTENT>,
     createOrder : CreateOrder,
     createBillingAgreement : CreateBillingAgreement,
-    CreateSubscription : CreateSubscription,
     oncancel : OnCancel,
     onApprove : OnApprove,
     onClick : OnClick,
