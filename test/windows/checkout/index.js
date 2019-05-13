@@ -61,7 +61,7 @@ if (action === 'checkout') {
         reject:  () => { /* pass */ },
         type,
         payment: {
-            patch: (data) => { /* pass */ }
+            patch: () => { /* pass */ }
         }
     };
 
