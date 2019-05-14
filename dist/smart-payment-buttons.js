@@ -2613,7 +2613,7 @@ window.spb = function(modules) {
                                             })) return function(_ref2) {
                                                 var createOrder = _ref2.createOrder;
                                                 return new zalgo_promise_src.a(function(resolve, reject) {
-                                                    return window.paypal.ThreeDomainSecure({
+                                                    var _window$paypal$ThreeD = window.paypal.ThreeDomainSecure({
                                                         createOrder: createOrder,
                                                         onSuccess: function() {
                                                             return resolve();
@@ -2622,7 +2622,8 @@ window.spb = function(modules) {
                                                             return reject(new Error("3DS cancelled"));
                                                         },
                                                         onError: reject
-                                                    }).renderTo(window.parent, "body");
+                                                    }), close = _window$paypal$ThreeD.close;
+                                                    return (0, _window$paypal$ThreeD.renderTo)(window.parent, "body").finally(close);
                                                 });
                                             }({
                                                 createOrder: createOrder
