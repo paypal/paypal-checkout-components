@@ -45,6 +45,7 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
         merchantID,
         partnerAttributionID,
         correlationID,
+        enableThreeDomainSecure,
 
         getPopupBridge,
         getPrerenderDetails,
@@ -98,7 +99,7 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
             const { start, close, triggerError } = (() => {
                 if (isVaultCapture) {
                     return initVault({
-                        createOrder, paymentMethodID, onApprove, clientAccessToken
+                        createOrder, paymentMethodID, onApprove, clientAccessToken, enableThreeDomainSecure
                     });
                 }
 

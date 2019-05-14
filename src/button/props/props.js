@@ -32,6 +32,7 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
         buyerCountry = buyerGeoCountry || COUNTRY.US,
         getPopupBridge,
         getPrerenderDetails,
+        enableThreeDomainSecure,
         remember: rememberFunding,
         onError
     } = xprops;
@@ -60,6 +61,7 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
         getPopupBridge,
         getPrerenderDetails,
         rememberFunding,
+        enableThreeDomainSecure,
 
         onInit,
         onError

@@ -48,6 +48,7 @@ export type XProps = {|
     getPrerenderDetails : () => ZalgoPromise<PrerenderDetailsType>,
     getPopupBridge : XGetPopupBridge,
     remember : ($ReadOnlyArray<$Values<typeof FUNDING>>) => ZalgoPromise<void>,
+    enableThreeDomainSecure : boolean,
     
     onInit : XOnInit,
     onApprove : XOnApprove,
@@ -78,6 +79,7 @@ export type GlobalProps = {|
     getPrerenderDetails : () => ZalgoPromise<PrerenderDetailsType>,
     getPopupBridge : GetPopupBridge,
     rememberFunding : ($ReadOnlyArray<$Values<typeof FUNDING>>) => ZalgoPromise<void>,
+    enableThreeDomainSecure : boolean,
 
     onInit : OnInit,
     onError : OnError

@@ -137,13 +137,32 @@ export function patchOrder(orderID : string, patch : []) : ZalgoPromise<OrderRes
     });
 }
 
-type ValidatePaymentMethodOptions = {|
+export type ValidatePaymentMethodOptions = {|
     clientAccessToken : string,
     orderID : string,
-    paymentMethodID : string
+    paymentMethodID : string,
+    enableThreeDomainSecure : boolean
 |};
 
-export function validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID } : ValidatePaymentMethodOptions) : ZalgoPromise<void> {
+const VALIDATE_CONTINGENCIES = {
+    THREE_DOMAIN_SECURE: '3D_SECURE'
+};
+
+export type ValidatePaymentMethodResponse = {|
+    links? : $ReadOnlyArray<{|
+        rel : string
+    |}>
+|};
+
+type PaymentSource = {|
+    token : {|
+        id : string,
+        type : 'NONCE'
+    |},
+    contingencies? : $ReadOnlyArray<$Values<typeof VALIDATE_CONTINGENCIES>>
+|};
+
+export function validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure } : ValidatePaymentMethodOptions) : ZalgoPromise<{ status : number, body : ValidatePaymentMethodResponse, headers : { [string] : string } }> {
     getLogger().info(`rest_api_create_order_token`);
 
     const headers : Object = {
@@ -152,13 +171,19 @@ export function validatePaymentMethod({ clientAccessToken, orderID, paymentMetho
         [ HEADERS.CLIENT_METADATA_ID ]:     window.xprops.buttonSessionID
     };
 
-    const json = {
-        payment_source: {
-            token: {
-                id:   paymentMethodID,
-                type: 'NONCE'
-            }
+    const paymentSource : PaymentSource = {
+        token: {
+            id:   paymentMethodID,
+            type: 'NONCE'
         }
+    };
+
+    if (enableThreeDomainSecure) {
+        paymentSource.contingencies = [ VALIDATE_CONTINGENCIES.THREE_DOMAIN_SECURE ];
+    }
+
+    const json = {
+        payment_source: paymentSource
     };
 
     return request({
@@ -166,10 +191,6 @@ export function validatePaymentMethod({ clientAccessToken, orderID, paymentMetho
         url:    `${ ORDERS_API_URL }/${ orderID }/${ VALIDATE_PAYMENT_METHOD_API }`,
         headers,
         json
-    }).then(({ status }) => {
-        if (status !== 200) {
-            throw new Error(`Validate payment failed with status: ${ status }`);
-        }
     });
 }
 
