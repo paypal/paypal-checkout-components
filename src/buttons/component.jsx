@@ -161,7 +161,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                         };
                     },
                     default({ props }) : ?CreateOrder {
-                        if (props.createBillingAgreement) {
+                        if (props.createBillingAgreement || props.createSubscription) {
                             return;
                         }
 
@@ -210,6 +210,36 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                                 logger.flush();
 
                                 return billingToken;
+                            });
+                        };
+                    }
+                },
+
+                createSubscription: {
+                    type:     'function',
+                    required: false,
+                    validate: ({ props }) => {
+                        if (props.createOrder || props.createBillingAgreement) {
+                            throw new Error(`Do not pass both createOrder or createBillingAgreement with createSubscription`);
+                        }
+                    },
+                    decorate({ value }) : Function {
+                        return function decoratedCreateSubscription(data, actions) : ZalgoPromise<string> {
+                            return ZalgoPromise.try(() => {
+                                if (!getVault()) {
+                                    throw new Error(`Must pass vault=true to sdk to use subscription flow`);
+                                }
+
+                                // $FlowFixMe
+                                return value(data, actions);
+                            }).then(subscriptionID => {
+                                const logger = getLogger();
+                                if (!subscriptionID || typeof subscriptionID !== 'string')  {
+                                    logger.error(`no_subscription_id_passed_to_createsubscription`);
+                                    throw new Error(`Expected a promise for a string subscriptionID to be passed to createSubscription`);
+                                }
+                                logger.flush();
+                                return subscriptionID;
                             });
                         };
                     }

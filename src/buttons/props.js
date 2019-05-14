@@ -34,12 +34,30 @@ export type OnApproveData = {|
 
 export type CreateBillingAgreement = () => ZalgoPromise<string> | string;
 
+export type CreateSubscriptionRequest = {||};
+export type SubscriptionResponse = {||} | {};
+export type CreateSubscriptionData = {|
+|} | {};
+
+export type CreateSubscriptionActions = {|
+    subscription : {
+        create : (CreateSubscriptionRequest) => ZalgoPromise<string>,
+        revise : (CreateSubscriptionRequest) => ZalgoPromise<string>
+    }
+|};
+
+export type CreateSubscription = (CreateSubscriptionData, CreateSubscriptionActions) => ZalgoPromise<string> | string;
+
 export type OnApproveActions = {|
     redirect : (string, CrossDomainWindowType) => ZalgoPromise<void>,
     order : {
         capture : () => ZalgoPromise<OrderCaptureResponse>,
         get : () => ZalgoPromise<OrderGetResponse>,
         authorize : () => ZalgoPromise<OrderAuthorizeResponse>
+    },
+    subscription : {
+        get : () => ZalgoPromise<SubscriptionResponse>,
+        activate : () => ZalgoPromise<SubscriptionResponse>
     }
 |};
 
@@ -149,6 +167,7 @@ export type ButtonProps = {|
     intent : $Values<typeof INTENT>,
     createOrder : CreateOrder,
     createBillingAgreement : CreateBillingAgreement,
+    createSubscription : CreateSubscription,
     oncancel : OnCancel,
     onApprove : OnApprove,
     onClick : OnClick,
