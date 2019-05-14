@@ -1,3 +1,11 @@
+## <small>5.0.30 (2019-05-14)</small>
+
+* chore(release): 5.0.29 :tada: ([5229fa8](http://github.paypal.com/paypal/paypal-checkout/commit/5229fa8))
+* Add debug query param to button ([5c0ec3f](http://github.paypal.com/paypal/paypal-checkout/commit/5c0ec3f))
+* feat(subscriptions) Add Create Subscription Method (#1100) ([44f83b0](http://github.paypal.com/paypal/paypal-checkout/commit/44f83b0)), closes [#1100](http://github.paypal.com/paypal/paypal-checkout/issues/1100)
+
+
+
 ## <small>5.0.29 (2019-05-14)</small>
 
 * Add debug query param to button ([5c0ec3f](http://github.paypal.com/paypal/paypal-checkout/commit/5c0ec3f))
