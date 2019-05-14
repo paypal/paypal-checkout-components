@@ -5,6 +5,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import type { ProxyWindow } from '../types';
 import { validatePaymentMethod, type ValidatePaymentMethodResponse } from '../api';
 import type { CreateOrder, OnApprove, OnShippingChange } from '../button/props';
+import { TARGET_ELEMENT } from '../constants';
 
 type VaultCaptureEligibleProps = {|
     win : ?ProxyWindow,
@@ -48,17 +49,18 @@ type ThreeDomainSecureProps = {|
 |};
 
 function handleThreeDomainSecure({ createOrder } : ThreeDomainSecureProps) : ZalgoPromise<void> {
-    return new ZalgoPromise((resolve, reject) => {
-        const { close, renderTo } = window.paypal.ThreeDomainSecure({
-            createOrder,
-            onSuccess: () => resolve(),
-            onCancel:  () => reject(new Error(`3DS cancelled`)),
-            onError:   reject
-        });
-        
-        return renderTo(window.parent, 'body')
-            .finally(close);
+    
+    const promise = new ZalgoPromise();
+    const instance = window.paypal.ThreeDomainSecure({
+        createOrder,
+        onSuccess: () => promise.resolve(),
+        onCancel:  () => promise.reject(new Error(`3DS cancelled`)),
+        onError:   (err) => promise.reject(err)
     });
+
+    return instance.renderTo(window.parent, TARGET_ELEMENT.BODY)
+        .then(() => promise)
+        .finally(instance.close);
 }
 
 type HandleValidateResponse = {|
