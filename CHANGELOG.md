@@ -1,3 +1,14 @@
+## <small>5.0.28 (2019-05-14)</small>
+
+* Change vault tagline ([df0cda8](http://github.paypal.com/paypal/paypal-checkout/commit/df0cda8))
+* Defocus button on click ([35de8a9](http://github.paypal.com/paypal/paypal-checkout/commit/35de8a9))
+* Disable scrolling in card fields frame ([2b88d4d](http://github.paypal.com/paypal/paypal-checkout/commit/2b88d4d))
+* Fix typo ([ec85149](http://github.paypal.com/paypal/paypal-checkout/commit/ec85149))
+* Pass enableThreeDomainSecure ([1e83cca](http://github.paypal.com/paypal/paypal-checkout/commit/1e83cca))
+* Publish button render event ([162268c](http://github.paypal.com/paypal/paypal-checkout/commit/162268c))
+
+
+
 ## <small>5.0.27 (2019-05-09)</small>
 
 * Add fundingSource to card buttons ([cf76a5e](http://github.paypal.com/paypal/paypal-checkout/commit/cf76a5e))
