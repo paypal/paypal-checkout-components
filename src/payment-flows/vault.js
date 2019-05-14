@@ -49,12 +49,15 @@ type ThreeDomainSecureProps = {|
 
 function handleThreeDomainSecure({ createOrder } : ThreeDomainSecureProps) : ZalgoPromise<void> {
     return new ZalgoPromise((resolve, reject) => {
-        return window.paypal.ThreeDomainSecure({
+        const { close, renderTo } = window.paypal.ThreeDomainSecure({
             createOrder,
             onSuccess: () => resolve(),
             onCancel:  () => reject(new Error(`3DS cancelled`)),
             onError:   reject
-        }).renderTo(window.parent, 'body');
+        });
+        
+        return renderTo(window.parent, 'body')
+            .finally(close);
     });
 }
 
