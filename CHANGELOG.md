@@ -1,3 +1,9 @@
+## <small>5.0.29 (2019-05-14)</small>
+
+* Add debug query param to button ([5c0ec3f](http://github.paypal.com/paypal/paypal-checkout/commit/5c0ec3f))
+
+
+
 ## <small>5.0.28 (2019-05-14)</small>
 
 * Change vault tagline ([df0cda8](http://github.paypal.com/paypal/paypal-checkout/commit/df0cda8))
