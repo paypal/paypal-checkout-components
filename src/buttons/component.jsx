@@ -4,7 +4,7 @@
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken,
-    getPartnerAttributionID, getCorrelationID, getStorageState, getEventEmitter, getEnableThreeDomainSecure } from '@paypal/sdk-client/src';
+    getPartnerAttributionID, getCorrelationID, getStorageState, getEventEmitter, getEnableThreeDomainSecure, getDebug } from '@paypal/sdk-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { isIEIntranet, isDevice, uniqueID, redirect, supportsPopups, popup, writeElementToWindow, noop, inlineMemoize } from 'belter/src';
@@ -572,6 +572,12 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                             nonce: getCSPNonce()
                         };
                     }
+                },
+
+                debug: {
+                    type:       'boolean',
+                    value:      getDebug,
+                    queryParam: true
                 },
 
                 test: {
