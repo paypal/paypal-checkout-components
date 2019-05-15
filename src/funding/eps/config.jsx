@@ -11,6 +11,8 @@ export function getEpsConfig() : FundingSourceConfig {
         ...DEFAULT_FUNDING_CONFIG,
 
         defaultLabel: BUTTON_LABEL.EPS,
+
+        shippingChange: false,
     
         layouts: [
             BUTTON_LAYOUT.VERTICAL

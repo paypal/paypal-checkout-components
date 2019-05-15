@@ -12,6 +12,8 @@ export function getZimplerConfig() : FundingSourceConfig {
 
         defaultLabel: BUTTON_LABEL.ZIMPLER,
 
+        shippingChange: false,
+
         layouts: [
             BUTTON_LAYOUT.VERTICAL
         ],

@@ -152,7 +152,8 @@ export type RenderButtonProps = {|
     sessionID : string,
     buttonSessionID : string,
     nonce : string,
-    components : $ReadOnlyArray<$Values<typeof COMPONENTS>>
+    components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
+    onShippingChange : ?Function
 |};
 
 export type PrerenderDetails = {|
@@ -184,6 +185,7 @@ export type ButtonProps = {|
     clientID : string,
     sessionID : string,
     buttonSessionID : string,
+    onShippingChange : ?Function,
     nonce : string
 |};
 
@@ -203,6 +205,7 @@ export type ButtonPropsInputs = {|
     buttonSessionID? : $PropertyType<ButtonProps, 'buttonSessionID'> | void,
     nonce? : string,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
+    onShippingChange : ?Function,
     csp? : {
         nonce? : string
     }
@@ -315,7 +318,8 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         buttonSessionID = uniqueID(),
         csp = {},
         components = [ COMPONENTS.BUTTONS ],
-        nonce = ''
+        nonce = '',
+        onShippingChange
     } = props;
 
     const { country, lang } = locale;
@@ -350,5 +354,5 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
 
     style = normalizeButtonStyle(style);
 
-    return { clientID, style, locale, remembered, env, fundingEligibility, platform, buttonSessionID, commit, sessionID, nonce, components };
+    return { clientID, style, locale, remembered, env, fundingEligibility, platform, buttonSessionID, commit, sessionID, nonce, components, onShippingChange };
 }

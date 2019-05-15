@@ -11,6 +11,8 @@ export function getMybankConfig() : FundingSourceConfig {
         ...DEFAULT_FUNDING_CONFIG,
 
         defaultLabel: BUTTON_LABEL.MYBANK,
+
+        shippingChange: false,
     
         layouts: [
             BUTTON_LAYOUT.VERTICAL

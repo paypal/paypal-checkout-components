@@ -92,6 +92,7 @@ export type CardConfig = {|
 
 export type FundingSourceConfig = {|
     defaultLabel : $Values<typeof BUTTON_LABEL>,
+    shippingChange? : boolean,
     platforms : $ReadOnlyArray<$Values<typeof PLATFORM>>,
     layouts : $ReadOnlyArray<$Values<typeof BUTTON_LAYOUT>>,
     maxCards? : { [$Values<typeof COUNTRY>] : number },

@@ -11,6 +11,8 @@ export function getGiropayConfig() : FundingSourceConfig {
         ...DEFAULT_FUNDING_CONFIG,
 
         defaultLabel: BUTTON_LABEL.GIROPAY,
+
+        shippingChange: false,
     
         layouts: [
             BUTTON_LAYOUT.VERTICAL

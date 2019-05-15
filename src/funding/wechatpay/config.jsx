@@ -11,6 +11,8 @@ export function getWechatpayConfig() : FundingSourceConfig {
         ...DEFAULT_FUNDING_CONFIG,
 
         defaultLabel: BUTTON_LABEL.WECHATPAY,
+
+        shippingChange: false,
     
         layouts: [
             BUTTON_LAYOUT.VERTICAL

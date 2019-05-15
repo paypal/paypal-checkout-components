@@ -10,6 +10,8 @@ export function getSofortConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
 
+        shippingChange: false,
+
         layouts: [
             BUTTON_LAYOUT.VERTICAL
         ],

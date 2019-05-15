@@ -11,6 +11,8 @@ export function getIdealConfig() : FundingSourceConfig {
         ...DEFAULT_FUNDING_CONFIG,
 
         defaultLabel: BUTTON_LABEL.IDEAL,
+
+        shippingChange: false,
     
         layouts: [
             BUTTON_LAYOUT.VERTICAL

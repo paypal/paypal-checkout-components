@@ -13,6 +13,8 @@ export function getP24Config() : FundingSourceConfig {
         layouts: [
             BUTTON_LAYOUT.VERTICAL
         ],
+
+        shippingChange: false,
     
         defaultLabel: BUTTON_LABEL.P24,
     
