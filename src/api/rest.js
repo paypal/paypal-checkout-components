@@ -10,8 +10,6 @@ import { config } from '../config';
 import { FPTI, PAYMENT_TYPE } from '../constants';
 import { request, memoize, isPayPalDomain, uniqueID } from '../lib';
 
-import { addPaymentOptions, validateExtraPaymentOptions, removeExtraPaymentOptions } from './hacks';
-
 type ProxyRest = {
     [string] : (...args : Array<mixed>) => ZalgoPromise<*>
 };
@@ -196,14 +194,8 @@ function createPayment(env : string, client : { [key : string] : string }, payme
         throw new Error(`Expected payment details to be passed`);
     }
 
-    validateExtraPaymentOptions(payment);
-
     if (proxyRest.createPayment && !proxyRest.createPayment.source.closed) {
-        return proxyRest.createPayment(env, client, { payment, experience, meta, tracking })
-            .then(id => {
-                addPaymentOptions(id, payment);
-                return id;
-            });
+        return proxyRest.createPayment(env, client, { payment, experience, meta, tracking });
     }
 
     payment = { ...payment };
@@ -252,7 +244,7 @@ function createPayment(env : string, client : { [key : string] : string }, payme
                     method: `post`,
                     url:    config.paymentApiUrls[env],
                     headers,
-                    json:   removeExtraPaymentOptions(payment)
+                    json:   payment
                 });
             });
         });
@@ -267,10 +259,6 @@ function createPayment(env : string, client : { [key : string] : string }, payme
 
         throw new Error(`Payment Api response error:\n\n${ JSON.stringify(res, null, 4) }`);
 
-    }).then(id => {
-
-        addPaymentOptions(id, payment);
-        return id;
     });
 }
 

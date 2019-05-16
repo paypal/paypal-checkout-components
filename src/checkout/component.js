@@ -41,11 +41,7 @@ type CheckoutPropsType = {
     stage? : string,
     stageUrl? : string,
     localhostUrl? : string,
-    checkoutUri? : string,
-    supplement? : {
-        getPaymentOptions : Function,
-        addPaymentDetails : Function
-    }
+    checkoutUri? : string
 };
 
 export let Checkout : Component<CheckoutPropsType> = create({
@@ -539,17 +535,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
                 return config.logLevel;
             }
         },
-
-        supplement: {
-            type:     'object',
-            required: false,
-            get value() : Object {
-                // $FlowFixMe
-                let value : Object = window.xprops && window.xprops.supplement;
-                return value;
-            }
-        },
-
+        
         test: {
             type:     'object',
             required: false,
