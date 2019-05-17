@@ -10,7 +10,7 @@ export function getUserAgent() : string {
 }
 
 export function isDevice() : boolean {
-    let userAgent = getUserAgent();
+    const userAgent = getUserAgent();
     if (userAgent.match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) {
         return true;
     }
@@ -118,8 +118,8 @@ export function isIE11() : boolean {
 }
 
 export function isIECompHeader() : boolean {
-    let mHttp = window.document.querySelector('meta[http-equiv="X-UA-Compatible"]');
-    let mContent = window.document.querySelector('meta[content="IE=edge"]');
+    const mHttp = window.document.querySelector('meta[http-equiv="X-UA-Compatible"]');
+    const mContent = window.document.querySelector('meta[content="IE=edge"]');
     if (mHttp && mContent) {
         return true;
     }
@@ -127,7 +127,7 @@ export function isIECompHeader() : boolean {
 }
 
 export function isElectron() : boolean {
-    let userAgent = getUserAgent();
+    const userAgent = getUserAgent();
     // here we want a case-insensitive full word boundary
     return (/\belectron\b/i).test(userAgent);
 }
@@ -141,7 +141,7 @@ export function isIEIntranet() : boolean {
 
     if (window.document.documentMode) {
         try {
-            let status = window.status;
+            const status = window.status;
 
             window.status = 'testIntranetMode';
 
@@ -163,7 +163,7 @@ export function isIEIntranet() : boolean {
 }
 
 export function isMacOsCna() : boolean {
-    let userAgent = getUserAgent();
+    const userAgent = getUserAgent();
     return (/Macintosh.*AppleWebKit(?!.*Safari)/i).test(userAgent);
 }
 

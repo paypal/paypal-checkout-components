@@ -6,7 +6,7 @@ import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT,
     IE11_USER_AGENT, createTestContainer, destroyTestContainer, getElement, assert } from '../common';
 
-for (let flow of [ 'popup', 'iframe' ]) {
+for (const flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal legacy checkout setup/startflow on ${ flow }`, () => {
 
@@ -23,7 +23,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call startFlow', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -45,7 +45,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call startFlow with a cancel', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -74,12 +74,12 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 configurable: true
             });
 
-            let checkoutUrl = Object.getOwnPropertyDescriptor(window.paypal.config, 'checkoutUrl');
+            const checkoutUrl = Object.getOwnPropertyDescriptor(window.paypal.config, 'checkoutUrl');
             delete window.paypal.config.checkoutUrl;
 
             window.paypal.config.checkoutUrl = '#testCheckoutUrl';
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -109,12 +109,12 @@ for (let flow of [ 'popup', 'iframe' ]) {
             });
             window.document.documentMode = 11;
 
-            let checkoutUrl = Object.getOwnPropertyDescriptor(window.paypal.config, 'checkoutUrl');
+            const checkoutUrl = Object.getOwnPropertyDescriptor(window.paypal.config, 'checkoutUrl');
             delete window.paypal.config.checkoutUrl;
 
             window.paypal.config.checkoutUrl = '#testCheckoutUrl';
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -138,8 +138,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call startFlow with a url', () => {
 
-            let token = generateECToken();
-            let hash = uniqueID();
+            const token = generateECToken();
+            const hash = uniqueID();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -161,8 +161,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call startFlow with a url usingwindow.paypal.checkout.urlPrefix', () => {
 
-            let token = generateECToken();
-            let hash = uniqueID();
+            const token = generateECToken();
+            const hash = uniqueID();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -184,8 +184,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container with test env, and click on the button, then call startFlow with a url', () => {
 
-            let token = generateECToken();
-            let hash = uniqueID();
+            const token = generateECToken();
+            const hash = uniqueID();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -208,8 +208,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container with a bad env, and click on the button, then call startFlow with a url', () => {
 
-            let token = generateECToken();
-            let hash = uniqueID();
+            const token = generateECToken();
+            const hash = uniqueID();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -232,8 +232,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call startFlow with a url and a true condition', () => {
 
-            let token = generateECToken();
-            let hash = uniqueID();
+            const token = generateECToken();
+            const hash = uniqueID();
             let clicked = false;
 
             return window.paypal.checkout.setup('merchantID', {
@@ -282,7 +282,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }).then(() => {
 
                 let windowOpened = false;
-                let windowOpen = window.open;
+                const windowOpen = window.open;
 
                 window.open = () => {
                     windowOpened = true;
@@ -309,7 +309,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 configurable: true
             });
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -331,7 +331,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call startFlow with a url with no token', () => {
 
-            let hash = uniqueID();
+            const hash = uniqueID();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -378,7 +378,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call initXO, then startFlow', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -408,8 +408,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call initXO, then startFlow with a token and hash', () => {
 
-            let token = generateECToken();
-            let hash = uniqueID();
+            const token = generateECToken();
+            const hash = uniqueID();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -441,7 +441,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 configurable: true
             });
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -467,7 +467,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call initXO, then startFlow with no token', () => {
 
-            let hash = uniqueID();
+            const hash = uniqueID();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -493,8 +493,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call initXO, then startFlow with a url', () => {
 
-            let token = generateECToken();
-            let hash = uniqueID();
+            const token = generateECToken();
+            const hash = uniqueID();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -521,7 +521,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call initXO and immediately startFlow', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -551,15 +551,15 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 click() {
 
                     if (flow === 'popup') {
-                        let open = window.open;
+                        const open = window.open;
                         window.open = function overrideWindowOpen() : CrossDomainWindowType {
                             window.open = open;
 
-                            let win = window.open.apply(this, arguments);
+                            const win = window.open.apply(this, arguments);
 
-                            let close = win.close;
+                            const close = win.close;
                             win.close = function overrideWindowClose() : void {
-                                let result = close.apply(this, arguments);
+                                const result = close.apply(this, arguments);
                                 done();
                                 return result;
                             };
@@ -591,7 +591,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call startFlow immediately', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -645,15 +645,15 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 click() : void {
 
                     if (flow === 'popup') {
-                        let open = window.open;
+                        const open = window.open;
                         window.open = function overrideWindowOpen() : CrossDomainWindowType {
                             window.open = open;
 
-                            let win = window.open.apply(this, arguments);
+                            const win = window.open.apply(this, arguments);
 
-                            let close = win.close;
+                            const close = win.close;
                             win.close = function overrideWindowClose() : void {
-                                let result = close.apply(this, arguments);
+                                const result = close.apply(this, arguments);
                                 done();
                                 return result;
                             };
@@ -684,7 +684,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             window.paypal.postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = false;
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.checkout.setup('merchantID', {
 

@@ -7,7 +7,7 @@ import { getElement, getElements, errorOnWindowOpen } from '../../tests/common';
 
 let { action, type, flow = 'popup', authed = false, bridge = false, delay = 0, onRender, checkout, selector, remembered } = window.xprops.test;
 
-let button = componentTemplate({ props: window.xprops });
+const button = componentTemplate({ props: window.xprops });
 
 if (document.body) {
     document.body.innerHTML = button;
@@ -129,6 +129,7 @@ if (action === 'auth') {
 
 if (onRender) {
     onRender({
+        // eslint-disable-next-line unicorn/prefer-spread
         fundingSources: Array.from(new Set(getElements('[data-funding-source]').map(el => el.getAttribute('data-funding-source')))),
         click() {
             getElement('.paypal-button', document).click();

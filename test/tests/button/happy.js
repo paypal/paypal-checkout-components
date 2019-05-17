@@ -7,7 +7,7 @@ import { generateECToken, generateBillingToken, generatePaymentID,
     createElement, createTestContainer, destroyTestContainer, onHashChange,
     MERCHANT_CLIENT_ID, assert } from '../common';
 
-for (let flow of [ 'popup', 'iframe' ]) {
+for (const flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal button component happy path on ${ flow }`, () => {
 
@@ -45,7 +45,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a hidden container and click on the button, then complete the payment', (done) => {
 
-            let ele = document.getElementById('testContainer');
+            const ele = document.getElementById('testContainer');
             if (ele) {
                 ele.style.display = 'none';
             }
@@ -113,7 +113,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on authorize', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.Button.render({
 
@@ -142,7 +142,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on authorize and await the promise', (done) => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             window.paypal.Button.render({
 
@@ -167,7 +167,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on authorize with a custom url', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.Button.render({
 
@@ -196,7 +196,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on cancel', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.Button.render({
 
@@ -225,7 +225,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on cancel and await the promise', (done) => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             window.paypal.Button.render({
 
@@ -250,7 +250,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on cancel with a custom url', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.Button.render({
 
@@ -289,8 +289,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 payment() : string | ZalgoPromise<string> {
 
-                    let env    = this.props.env;
-                    let client = this.props.client;
+                    const env    = this.props.env;
+                    const client = this.props.client;
 
                     return window.paypal.rest.payment.create(env, client, {
                         transactions: [
@@ -494,8 +494,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 payment() : string | ZalgoPromise<string> {
 
-                    let env    = this.props.env;
-                    let client = this.props.client;
+                    const env    = this.props.env;
+                    const client = this.props.client;
 
                     return window.paypal.rest.payment.create(env, client, {
                         transactions: [
@@ -566,8 +566,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 payment() : string | ZalgoPromise<string> {
 
-                    let env    = this.props.env;
-                    let client = this.props.client;
+                    const env    = this.props.env;
+                    const client = this.props.client;
 
                     return window.paypal.rest.billingAgreement.create(env, client, {
                         plan: {
@@ -683,7 +683,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render button with a checkout token on the correct url, then complete the payment', (done) => {
 
-            let checkoutToken = generateECToken();
+            const checkoutToken = generateECToken();
 
             window.paypal.Button.render({
 
@@ -711,7 +711,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render button with a payment id on the correct url, then complete the payment', (done) => {
 
-            let paymentID = generatePaymentID();
+            const paymentID = generatePaymentID();
 
             window.paypal.Button.render({
 
@@ -739,7 +739,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render button with a new-style payment id on the correct url, then complete the payment', (done) => {
 
-            let paymentID = generatePaymentID().replace('PAY-', 'PAYID-');
+            const paymentID = generatePaymentID().replace('PAY-', 'PAYID-');
 
             window.paypal.Button.render({
 
@@ -767,7 +767,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render button with a billing token on the correct url, then complete the payment', (done) => {
 
-            let billingToken = generateBillingToken();
+            const billingToken = generateBillingToken();
 
             window.paypal.Button.render({
 
@@ -824,9 +824,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container before the container exists, and click on the button, then complete the payment', (done) => {
 
-            let readyState = document.readyState;
+            const readyState = document.readyState;
             Object.defineProperty(document, 'readyState', { value: 'loading', configurable: true });
 
+            // eslint-disable-next-line prefer-const
             let container;
 
             window.paypal.Button.render({
@@ -838,13 +839,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         throw new Error(`Expected container to be created`);
                     }
 
-                    let frame = container.querySelector('iframe');
+                    const frame = container.querySelector('iframe');
 
                     if (!frame) {
                         throw new Error(`Expected iframe to be created`);
                     }
 
-                    let { width, height } = frame.getBoundingClientRect();
+                    const { width, height } = frame.getBoundingClientRect();
 
                     if (!width || !height) {
                         throw new Error(`Expected button frame to have width and height`);
@@ -1035,7 +1036,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             it('should render checkout, popout, then redirect', () => {
 
-                let token = generateECToken();
+                const token = generateECToken();
 
                 window.paypal.Button.render({
 
@@ -1058,7 +1059,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             it('should render checkout, popout, then redirect and await the promise', (done) => {
 
-                let token = generateECToken();
+                const token = generateECToken();
 
                 window.paypal.Button.render({
 

@@ -3,15 +3,16 @@
 import { CONFIG as POSTROBOT_CONFIG } from 'post-robot/src';
 import { setTransport, getTransport, addPayloadBuilder, addHeaderBuilder, addMetaBuilder,
     addTrackingBuilder, init, logLevels, config as loggerConfig } from 'beaver-logger/client';
-import { getParent } from 'cross-domain-utils/src';
+import { getParent, PROTOCOL } from 'cross-domain-utils/src';
 
 import { config } from '../config';
 import { FPTI, PAYMENT_TYPE } from '../constants';
 
 import { getSessionID, getButtonSessionID } from './session';
 import { proxyMethod } from './proxy';
-import { once, isPayPalDomain } from './util';
+import { once } from './util';
 import { getQueryParam } from './dom';
+import { isPayPalDomain } from './security';
 
 function getRefererDomain() : string {
     return (window.xchild && window.xchild.getParentDomain)
@@ -19,7 +20,7 @@ function getRefererDomain() : string {
         : window.location.host;
 }
 
-let setupProxyLogTransport = once(() => {
+const setupProxyLogTransport = once(() => {
     setTransport(proxyMethod('log', getParent(window), getTransport()));
 });
 
@@ -29,7 +30,7 @@ function getToken() : ?string {
     }
 
     if (isPayPalDomain()) {
-        let queryToken = getQueryParam('token');
+        const queryToken = getQueryParam('token');
 
         if (queryToken) {
             return queryToken;
@@ -68,9 +69,9 @@ export function initLogger() {
 
     addTrackingBuilder((payload = {}) => {
 
-        let sessionID       = getSessionID();
-        let paymentToken    = getToken();
-        let buttonSessionID = payload[FPTI.KEY.BUTTON_SESSION_UID] || getButtonSessionID();
+        const sessionID       = getSessionID();
+        const paymentToken    = getToken();
+        const buttonSessionID = payload[FPTI.KEY.BUTTON_SESSION_UID] || getButtonSessionID();
 
         let contextType;
         let contextID;
@@ -100,15 +101,17 @@ export function initLogger() {
         };
     });
 
-    let prefix = 'ppxo';
+    const prefix = 'ppxo';
 
-    init({
-        uri:            config.loggerUrl,
-        heartbeat:      false,
-        logPerformance: false,
-        prefix,
-        logLevel:       __PAYPAL_CHECKOUT__.__DEFAULT_LOG_LEVEL__
-    });
+    if (window.location.protocol !== PROTOCOL.FILE) {
+        init({
+            uri:            config.loggerUrl,
+            heartbeat:      false,
+            logPerformance: false,
+            prefix,
+            logLevel:       __PAYPAL_CHECKOUT__.__DEFAULT_LOG_LEVEL__
+        });
+    }
 }
 
 export function setLogLevel(logLevel : string) {

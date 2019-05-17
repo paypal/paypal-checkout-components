@@ -18,7 +18,7 @@ describe(`paypal button component funding mix`, () => {
 
     it('should render venmo alongside default button', (done) => {
 
-        let decorate = window.paypal.Button.props.funding.decorate;
+        const decorate = window.paypal.Button.props.funding.decorate;
         window.paypal.Button.props.funding.decorate = (funding) => {
             return {
                 ...funding,
@@ -63,7 +63,7 @@ describe(`paypal button component funding mix`, () => {
 
     it('should render venmo alongside checkout button', (done) => {
 
-        let decorate = window.paypal.Button.props.funding.decorate;
+        const decorate = window.paypal.Button.props.funding.decorate;
         window.paypal.Button.props.funding.decorate = (funding) => {
             return {
                 ...funding,
@@ -112,7 +112,7 @@ describe(`paypal button component funding mix`, () => {
 
     it('should render venmo alongside pay button', (done) => {
 
-        let decorate = window.paypal.Button.props.funding.decorate;
+        const decorate = window.paypal.Button.props.funding.decorate;
         window.paypal.Button.props.funding.decorate = (funding) => {
             return {
                 ...funding,
@@ -161,7 +161,7 @@ describe(`paypal button component funding mix`, () => {
 
     it('should render venmo alongside paypal button', (done) => {
 
-        let decorate = window.paypal.Button.props.funding.decorate;
+        const decorate = window.paypal.Button.props.funding.decorate;
         window.paypal.Button.props.funding.decorate = (funding) => {
             return {
                 ...funding,
@@ -210,7 +210,7 @@ describe(`paypal button component funding mix`, () => {
 
     it('should render venmo alongside buynow button', (done) => {
 
-        let decorate = window.paypal.Button.props.funding.decorate;
+        const decorate = window.paypal.Button.props.funding.decorate;
         window.paypal.Button.props.funding.decorate = (funding) => {
             return {
                 ...funding,
@@ -259,7 +259,7 @@ describe(`paypal button component funding mix`, () => {
 
     it('should not render venmo for ineligible country', (done) => {
 
-        let decorate = window.paypal.Button.props.funding.decorate;
+        const decorate = window.paypal.Button.props.funding.decorate;
         window.paypal.Button.props.funding.decorate = (funding) => {
             return {
                 ...funding,
@@ -304,7 +304,7 @@ describe(`paypal button component funding mix`, () => {
 
     it('should not render multiple horizontal buttons alongside credit button', (done) => {
 
-        let decorate = window.paypal.Button.props.funding.decorate;
+        const decorate = window.paypal.Button.props.funding.decorate;
         window.paypal.Button.props.funding.decorate = (funding) => {
             return {
                 ...funding,

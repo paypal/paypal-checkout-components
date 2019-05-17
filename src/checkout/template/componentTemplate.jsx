@@ -1,7 +1,7 @@
 /* @flow */
-/* @jsx jsxDom */
+/** @jsx jsxDom */
 
-let checkoutComponentStyle = `
+const checkoutComponentStyle = `
 
     body {
         width: 100%;
@@ -94,7 +94,6 @@ let checkoutComponentStyle = `
     }
 `;
 
-// eslint-disable-next-line no-unused-vars
 export function componentTemplate({ jsxDom } : { jsxDom : Function }) : HTMLElement {
 
     return (
@@ -110,8 +109,8 @@ export function componentTemplate({ jsxDom } : { jsxDom : Function }) : HTMLElem
                     </style>
 
                     <div class="spinWrap">
-                        <p class="spinnerImage"></p>
-                        <p class="loader"></p>
+                        <p class="spinnerImage" />
+                        <p class="loader" />
                     </div>
                 </div>
             </body>

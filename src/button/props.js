@@ -9,13 +9,13 @@ import { FUNDING_ORDER } from '../funding/config';
 import { getButtonConfig, labelToFunding } from './config';
 
 function parseLocale(locale : string) : LocaleType {
-    let [ lang, country ] = locale.split('_');
+    const [ lang, country ] = locale.split('_');
     return { country, lang };
 }
 
 export function determineMaxButtons({ label, layout, max } : { layout : string, label : string, max : number }) : number {
 
-    let allowed = (layout === BUTTON_LAYOUT.HORIZONTAL)
+    const allowed = (layout === BUTTON_LAYOUT.HORIZONTAL)
         ? getButtonConfig(label, 'allowPrimaryHorizontal')
         : getButtonConfig(label, 'allowPrimaryVertical');
 
@@ -23,7 +23,7 @@ export function determineMaxButtons({ label, layout, max } : { layout : string, 
         return 1;
     }
 
-    let configMax = (layout === BUTTON_LAYOUT.HORIZONTAL)
+    const configMax = (layout === BUTTON_LAYOUT.HORIZONTAL)
         ? getButtonConfig(label, 'maxHorizontalButtons')
         : getButtonConfig(label, 'maxVerticalButtons');
 
@@ -52,11 +52,11 @@ type NormalizedProps = {|
     multiple : boolean,
     env : string,
     height : ?number,
-    cards : Array<string>,
+    cards : $ReadOnlyArray<string>,
     installmentperiod : number
 |};
 
-export let normalizeProps = memoize((props : Object, defs? : { locale? : LocaleType } = {}) : NormalizedProps => {
+export const normalizeProps = memoize((props : Object, defs? : { locale? : LocaleType } = {}) : NormalizedProps => {
 
     let {
         env,
@@ -68,13 +68,14 @@ export let normalizeProps = memoize((props : Object, defs? : { locale? : LocaleT
 
     locale = locale ? parseLocale(locale) : (defs.locale || getButtonConfig('DEFAULT', 'defaultLocale'));
 
+    // $FlowFixMe
     funding = funding || {};
     funding.allowed = funding.allowed || [];
     funding.disallowed = funding.disallowed || [];
     funding.remembered = funding.remembered || [];
 
-    let label  = style[BUTTON_STYLE_OPTIONS.LABEL] || getButtonConfig('DEFAULT', (style.layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalLabel' : 'defaultLabel');
-    let layout = style[BUTTON_STYLE_OPTIONS.LAYOUT] || getButtonConfig(label, 'defaultLayout');
+    const label  = style[BUTTON_STYLE_OPTIONS.LABEL] || getButtonConfig('DEFAULT', (style.layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalLabel' : 'defaultLabel');
+    const layout = style[BUTTON_STYLE_OPTIONS.LAYOUT] || getButtonConfig(label, 'defaultLayout');
 
     let {
         [ BUTTON_STYLE_OPTIONS.SIZE ]:         size         = getButtonConfig(label, (layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalSize' : 'defaultSize'),
@@ -90,10 +91,10 @@ export let normalizeProps = memoize((props : Object, defs? : { locale? : LocaleT
 
     max = determineMaxButtons({ label, layout, max });
 
-    let selected = labelToFunding(label);
+    const selected = labelToFunding(label);
     let sources  = determineEligibleFunding({ funding, selected, locale, env, layout, commit });
     sources = sortBy(sources.slice(0, max), FUNDING_ORDER);
-    let multiple = sources.length > 1;
+    const multiple = sources.length > 1;
 
     if (multiple) {
         branding = true;
@@ -101,7 +102,7 @@ export let normalizeProps = memoize((props : Object, defs? : { locale? : LocaleT
 
     tagline = enableTagline({ tagline, branding, fundingicons, layout });
 
-    let cards = determineEligibleCards({ funding, locale });
+    const cards = determineEligibleCards({ funding, locale });
 
     return { size, label, locale, color, shape, branding, fundingicons,
         tagline, funding, layout, sources, max, multiple, env, height, cards, installmentperiod };

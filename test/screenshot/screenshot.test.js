@@ -24,10 +24,10 @@ const USER_AGENTS = {
 
 jest.setTimeout(120000);
 
-let setupBrowserPage = (async () => {
-    let { browser, page } = await openPage(await webpackCompile(BASE));
+const setupBrowserPage = (async () => {
+    const { browser, page } = await openPage(await webpackCompile(BASE));
 
-    for (let filename of await fs.readdir(IMAGE_DIR)) {
+    for (const filename of await fs.readdir(IMAGE_DIR)) {
         if (filename.endsWith('-old.png')) {
             await fs.unlink(`${ IMAGE_DIR }/${ filename }`);
         }
@@ -43,30 +43,30 @@ let setupBrowserPage = (async () => {
 beforeAll(() => setupBrowserPage);
 
 afterAll(async () => {
-    let { browser } = await setupBrowserPage;
+    const { browser } = await setupBrowserPage;
     await browser.close();
 });
 
 const total = buttonConfigs.length;
 let index = 1;
 
-for (let config of buttonConfigs) {
-    let filename = config.filename || dotifyToString(config) || 'base';
+for (const config of buttonConfigs) {
+    const filename = config.filename || dotifyToString(config) || 'base';
 
     test(`Render button with ${ filename }`, async () => {
-        let { page } = await setupBrowserPage;
+        const { page } = await setupBrowserPage;
 
         // fasten up the animation
         await page._client.send('Animation.setPlaybackRate', { playbackRate: 12.0 });
-        let filepath = `${ IMAGE_DIR }/${ filename }.png`;
-        let diffpath  = `${ IMAGE_DIR }/${ filename }-old.png`;
+        const filepath = `${ IMAGE_DIR }/${ filename }.png`;
+        const diffpath  = `${ IMAGE_DIR }/${ filename }-old.png`;
 
-        let { x, y, width, height } = await page.evaluate((options, userAgents) => {
+        const { x, y, width, height } = await page.evaluate(async (options, userAgents) => {
 
             // $FlowFixMe
             document.body.innerHTML = '';
 
-            let container = window.document.createElement('div');
+            const container = window.document.createElement('div');
             window.document.body.appendChild(container);
 
             if (options.container) {
@@ -82,18 +82,24 @@ for (let config of buttonConfigs) {
             if (options.button.funding && options.button.funding.allowed && options.button.funding.allowed.indexOf(window.paypal.FUNDING.VENMO) !== -1) {
                 decorate = window.paypal.Button.props.funding.decorate;
                 window.paypal.Button.props.funding.decorate = (funding = {}) => {
-                    return Object.assign({}, funding, {
-                        remembered: [ window.paypal.FUNDING.VENMO ]
-                    });
+                    // eslint-disable-next-line prefer-object-spread
+                    return Object.assign({}, funding, { remembered: [ window.paypal.FUNDING.VENMO ] });
                 };
             }
 
+            // eslint-disable-next-line prefer-object-spread
             window.paypal.Button.render(Object.assign({
-                payment() { /* pass */ },
-                onAuthorize() { /* pass */ }
+                payment() {
+                    // pass
+                },
+                onAuthorize() {
+                    // pass
+                }
             }, options.button), container);
 
-            let rect = container.querySelector('iframe').getBoundingClientRect();
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            const rect = container.querySelector('iframe').getBoundingClientRect();
 
             delete window.navigator.mockUserAgent;
 
@@ -110,15 +116,15 @@ for (let config of buttonConfigs) {
 
         }, config, USER_AGENTS);
 
-        let existingExists = await fs.exists(filepath);
+        const existingExists = await fs.exists(filepath);
 
-        let [ screenshot, existing ] = await Promise.all([
+        const [ screenshot, existing ] = await Promise.all([
             takeScreenshot(page, { x, y, width, height }),
             existingExists ? readPNG(filepath) : null
         ]);
 
         if (existing) {
-            let delta = await diffPNG(screenshot, existing);
+            const delta = await diffPNG(screenshot, existing);
 
             if (delta > DIFF_THRESHOLD) {
                 await existing.write(diffpath);

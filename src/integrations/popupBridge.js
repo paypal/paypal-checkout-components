@@ -20,9 +20,9 @@ const CONTINGENCY = {
     PAYMENT_CANCELLED: 'PAYMENT_CANCELLED'
 };
 
-type PopupBridge = {
+type PopupBridge = {|
     open : (string) => ZalgoPromise<Object>
-};
+|};
 
 function wrapPopupBridge(popupBridge : Object) : PopupBridge {
     return {
@@ -38,7 +38,7 @@ function wrapPopupBridge(popupBridge : Object) : PopupBridge {
                 };
 
                 popupBridge.onCancel = () => {
-                    let err = new Error(CONTINGENCY.PAYMENT_CANCELLED);
+                    const err = new Error(CONTINGENCY.PAYMENT_CANCELLED);
                     // $FlowFixMe
                     err.code = CONTINGENCY.PAYMENT_CANCELLED;
                     return reject(err);
@@ -65,18 +65,18 @@ function validateCheckoutProps(props) {
 }
 
 function normalizeCheckoutProps(props : Object) : { env : string, payment : Function, onAuthorize : Function, onCancel : Function } {
-    let env = props.env = props.env || config.env;
+    const env = props.env = props.env || config.env;
 
-    let payment = props.payment;
-    let onAuthorize = once(props.onAuthorize);
-    let onCancel = once(props.onCancel || noop);
+    const payment = props.payment;
+    const onAuthorize = once(props.onAuthorize);
+    const onCancel = once(props.onCancel || noop);
 
     return { env, payment, onAuthorize, onCancel };
 }
 
 function getUrl(props : { env : string, payment : Function, onAuthorize : Function, onCancel? : Function, commit? : boolean }) : ZalgoPromise<string> {
 
-    let { env, payment } = normalizeCheckoutProps(props);
+    const { env, payment } = normalizeCheckoutProps(props);
 
     return ZalgoPromise.try(payment, { props }).then(token => {
         if (!token) {
@@ -94,7 +94,7 @@ function getUrl(props : { env : string, payment : Function, onAuthorize : Functi
 
 function extractDataFromQuery(query : Object) : Object {
 
-    let data : Object = {
+    const data : Object = {
         paymentToken: query.token,
         billingToken: query.ba_token,
         paymentID:    query.paymentId,
@@ -102,7 +102,7 @@ function extractDataFromQuery(query : Object) : Object {
         intent:       query.intent
     };
     
-    let { opType, return_uri, cancel_uri } = query;
+    const { opType, return_uri, cancel_uri } = query;
 
     if (opType === OPTYPE.PAYMENT) {
         data.returnUrl = return_uri;
@@ -116,12 +116,12 @@ function extractDataFromQuery(query : Object) : Object {
 
 function buildActions(query : Object) : Object {
     
-    let actions : Object = {
+    const actions : Object = {
         close:          noop,
         closeComponent: noop
     };
 
-    let { opType, return_uri, cancel_uri } = query;
+    const { opType, return_uri, cancel_uri } = query;
 
     if (opType === OPTYPE.PAYMENT) {
         actions.redirect = (win : CrossDomainWindowType = window, redirectUrl : string = return_uri) : ZalgoPromise<void> => {
@@ -152,11 +152,11 @@ function renderThroughPopupBridge(props : Object, popupBridge : PopupBridge) : Z
 
     }).then(payload => {
 
-        let { opType } = payload.queryItems;
-        let { onAuthorize, onCancel } = normalizeCheckoutProps(props);
+        const { opType } = payload.queryItems;
+        const { onAuthorize, onCancel } = normalizeCheckoutProps(props);
 
-        let data    = extractDataFromQuery(payload.queryItems);
-        let actions = buildActions(payload.queryItems);
+        const data    = extractDataFromQuery(payload.queryItems);
+        const actions = buildActions(payload.queryItems);
         
         if (opType === OPTYPE.PAYMENT) {
             return onAuthorize(data, actions);
@@ -171,7 +171,7 @@ function renderThroughPopupBridge(props : Object, popupBridge : PopupBridge) : Z
     }).catch(err => {
 
         if (err && err.code === CONTINGENCY.PAYMENT_CANCELLED) {
-            let { onCancel } = normalizeCheckoutProps(props);
+            const { onCancel } = normalizeCheckoutProps(props);
             return onCancel({}, {});
         }
 
@@ -209,17 +209,17 @@ export function setupPopupBridgeProxy(Checkout : Object, Button : Object) {
             });
     }
 
-    let render = Checkout.render;
+    const render = Checkout.render;
     Checkout.render = function popupBridgeRender(props : Object) : ZalgoPromise<void> {
         return doRender(props, () => render.apply(this, arguments));
     };
 
-    let renderTo = Checkout.renderTo;
+    const renderTo = Checkout.renderTo;
     Checkout.renderTo = function popupBridgeRenderTo(win : CrossDomainWindowType, props : Object) : ZalgoPromise<void> {
         return doRender(props, () => renderTo.apply(this, arguments));
     };
 
-    let renderPopupTo = Checkout.renderPopupTo;
+    const renderPopupTo = Checkout.renderPopupTo;
     Checkout.renderPopupTo = function popupBridgeRenderPopupTo(win : CrossDomainWindowType, props : Object) : ZalgoPromise<void> {
         return doRender(props, () => renderPopupTo.apply(this, arguments));
     };

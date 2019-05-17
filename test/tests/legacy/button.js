@@ -138,7 +138,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should work with a link container', (done) => {
 
-        let link = createElement({
+        const link = createElement({
             tag:       'link',
             id:        'linkContainer',
             container: 'testContainer'
@@ -163,7 +163,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should work with a link container when the container is clicked', (done) => {
 
-        let link = createElement({
+        const link = createElement({
             tag:       'a',
             id:        'linkContainer',
             container: 'testContainer'
@@ -189,7 +189,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should not work with a non-link container when the container is clicked', (done) => {
 
-        let paraContainer = createElement({
+        const paraContainer = createElement({
             tag:       'p',
             id:        'paraContainer',
             container: 'testContainer'
@@ -300,7 +300,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should use a custom button and provide a working click handler', (done) => {
 
-        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
         window.paypal.checkout.setup('merchantID', {
 
@@ -318,8 +318,8 @@ describe('paypal legacy button rendering', () => {
 
     it('should use a custom button array with multiple buttons and provide a working click handler', (done) => {
 
-        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-        let testButton2 = createElement({ tag: 'button', id: 'testButton2', container: 'testContainer' });
+        const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        const testButton2 = createElement({ tag: 'button', id: 'testButton2', container: 'testContainer' });
 
         let clickCount = 0;
 
@@ -344,8 +344,8 @@ describe('paypal legacy button rendering', () => {
 
     it('should use a custom button array with multiple buttons, some non-existant and provide a working click handler', (done) => {
 
-        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-        let testButton2 = createElement({ tag: 'button', id: 'testButton2', container: 'testContainer' });
+        const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        const testButton2 = createElement({ tag: 'button', id: 'testButton2', container: 'testContainer' });
 
         let clickCount = 0;
 
@@ -370,8 +370,8 @@ describe('paypal legacy button rendering', () => {
 
     it('should use a custom button array with mutiple buttons called button and provide a working click handler', (done) => {
 
-        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-        let testButton2 = createElement({ tag: 'button', id: 'testButton2', container: 'testContainer' });
+        const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        const testButton2 = createElement({ tag: 'button', id: 'testButton2', container: 'testContainer' });
 
         let clickCount = 0;
 
@@ -396,7 +396,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should use a custom buttons array and provide a working click handler', (done) => {
 
-        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
         window.paypal.checkout.setup('merchantID', {
 
@@ -417,8 +417,8 @@ describe('paypal legacy button rendering', () => {
 
     it('should use a custom buttons array with multiple buttons and provide a working click handler', (done) => {
 
-        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-        let testButton2 = createElement({ tag: 'button', id: 'testButton2', container: 'testContainer' });
+        const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        const testButton2 = createElement({ tag: 'button', id: 'testButton2', container: 'testContainer' });
 
         let clickCount = 0;
 
@@ -457,8 +457,8 @@ describe('paypal legacy button rendering', () => {
 
     it('should use a custom buttons array with multiple buttons, some non-existant, and provide a working click handler', (done) => {
 
-        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-        let testButton2 = createElement({ tag: 'button', id: 'testButton2', container: 'testContainer' });
+        const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        const testButton2 = createElement({ tag: 'button', id: 'testButton2', container: 'testContainer' });
 
         let clickCount = 0;
 
@@ -519,7 +519,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should use a custom button and provide a working click handler which is passed an event', (done) => {
 
-        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
         window.paypal.checkout.setup('merchantID', {
 
@@ -540,7 +540,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should render a button into a link container, click on a custom button, and provide a working click handler', (done) => {
 
-        let customLink = createElement({
+        const customLink = createElement({
             tag:       'a',
             id:        'customLink',
             container: 'testContainer',
@@ -569,8 +569,8 @@ describe('paypal legacy button rendering', () => {
 
     it('should use a containers array and provide a working click handler', (done) => {
 
-        let buttonContainer1 = createElement({ id: 'buttonContainer1', container: 'testContainer' });
-        let buttonContainer2 = createElement({ id: 'buttonContainer2', container: 'testContainer' });
+        const buttonContainer1 = createElement({ id: 'buttonContainer1', container: 'testContainer' });
+        const buttonContainer2 = createElement({ id: 'buttonContainer2', container: 'testContainer' });
 
         let clickCount = 0;
 
@@ -595,8 +595,8 @@ describe('paypal legacy button rendering', () => {
 
     it('should use a containers array, some nonexistent, and provide a working click handler', (done) => {
 
-        let buttonContainer1 = createElement({ id: 'buttonContainer1', container: 'testContainer' });
-        let buttonContainer2 = createElement({ id: 'buttonContainer2', container: 'testContainer' });
+        const buttonContainer1 = createElement({ id: 'buttonContainer1', container: 'testContainer' });
+        const buttonContainer2 = createElement({ id: 'buttonContainer2', container: 'testContainer' });
 
         let clickCount = 0;
 
@@ -621,7 +621,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should render a button into a non-link container, click on a custom button, and provide a working click handler', (done) => {
 
-        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
         let clicked = false;
 
@@ -650,7 +650,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should listen for click on button when passed both button and container', (done) => {
 
-        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
         window.paypal.checkout.setup('merchantID', {
@@ -670,7 +670,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should listen for click on button when passed both button array and container', (done) => {
 
-        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
         window.paypal.checkout.setup('merchantID', {
@@ -690,7 +690,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should listen for click on button when passed both button array and container array', (done) => {
 
-        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
         window.paypal.checkout.setup('merchantID', {
@@ -711,7 +711,7 @@ describe('paypal legacy button rendering', () => {
     it('should not render button to container when passed both button and container', (done) => {
 
         createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-        let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
+        const randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
         window.paypal.checkout.setup('merchantID', {
 
@@ -735,7 +735,7 @@ describe('paypal legacy button rendering', () => {
     it('should register clicks on container when passed both button and container', (done) => {
 
         createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-        let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
+        const randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
         window.paypal.checkout.setup('merchantID', {
 
@@ -755,7 +755,7 @@ describe('paypal legacy button rendering', () => {
     it('should register clicks on container when passed both button and container array', (done) => {
 
         createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-        let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
+        const randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
         window.paypal.checkout.setup('merchantID', {
 
@@ -775,7 +775,7 @@ describe('paypal legacy button rendering', () => {
     it('should register clicks on container when passed both button array and container', (done) => {
 
         createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-        let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
+        const randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
         window.paypal.checkout.setup('merchantID', {
 
@@ -795,7 +795,7 @@ describe('paypal legacy button rendering', () => {
     it('should register clicks on container when passed both button array and container array', (done) => {
 
         createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-        let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
+        const randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
         window.paypal.checkout.setup('merchantID', {
 
@@ -825,9 +825,9 @@ describe('paypal legacy button options', () => {
 
     it('should render two buttons with different locales and verify that the content is different', () => {
 
-        let container1 = createElement({ id: 'container1', container: 'testContainer' });
-        let container2 = createElement({ id: 'container2', container: 'testContainer' });
-        let container3 = createElement({ id: 'container3', container: 'testContainer' });
+        const container1 = createElement({ id: 'container1', container: 'testContainer' });
+        const container2 = createElement({ id: 'container2', container: 'testContainer' });
+        const container3 = createElement({ id: 'container3', container: 'testContainer' });
 
         return window.paypal.checkout.setup('merchantID', {
 
@@ -850,9 +850,9 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            let content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
-            let content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
-            let content3 = (getElement('.paypal-button-content span', container3).innerText || '').trim();
+            const content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
+            const content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
+            const content3 = (getElement('.paypal-button-content span', container3).innerText || '').trim();
 
             assert.equal(content1, content2, 'en_US should match en_US');
             assert.notEqual(content1, content3, 'en_US should not match en_FR');
@@ -862,8 +862,8 @@ describe('paypal legacy button options', () => {
 
     it('should render a button with no locale and verify it defaults to en_US', () => {
 
-        let container1 = createElement({ id: 'container1', container: 'testContainer' });
-        let container2 = createElement({ id: 'container2', container: 'testContainer' });
+        const container1 = createElement({ id: 'container1', container: 'testContainer' });
+        const container2 = createElement({ id: 'container2', container: 'testContainer' });
 
         return window.paypal.checkout.setup('merchantID', {
 
@@ -880,8 +880,8 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            let content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
-            let content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
+            const content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
+            const content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
 
             assert.equal(content1, content2, 'en_US should match no locale');
         });
@@ -889,8 +889,8 @@ describe('paypal legacy button options', () => {
 
     it('should render a button with an unknown locale and verify it defaults to en_US', () => {
 
-        let container1 = createElement({ id: 'container1', container: 'testContainer' });
-        let container2 = createElement({ id: 'container2', container: 'testContainer' });
+        const container1 = createElement({ id: 'container1', container: 'testContainer' });
+        const container2 = createElement({ id: 'container2', container: 'testContainer' });
 
         return window.paypal.checkout.setup('merchantID', {
 
@@ -908,8 +908,8 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            let content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
-            let content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
+            const content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
+            const content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
 
             assert.equal(content1, content2, 'en_US should match xx_XX');
         });
@@ -917,8 +917,8 @@ describe('paypal legacy button options', () => {
 
     it('should render a button with locale=fr and verify it defaults to fr_US', () => {
 
-        let container1 = createElement({ id: 'container1', container: 'testContainer' });
-        let container2 = createElement({ id: 'container2', container: 'testContainer' });
+        const container1 = createElement({ id: 'container1', container: 'testContainer' });
+        const container2 = createElement({ id: 'container2', container: 'testContainer' });
 
         return window.paypal.checkout.setup('merchantID', {
 
@@ -936,8 +936,8 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            let content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
-            let content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
+            const content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
+            const content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
 
             assert.equal(content1, content2, 'fr_US should match fr');
         });
@@ -945,8 +945,8 @@ describe('paypal legacy button options', () => {
 
     it('should render a button with locale=US and verify it defaults to en_US', () => {
 
-        let container1 = createElement({ id: 'container1', container: 'testContainer' });
-        let container2 = createElement({ id: 'container2', container: 'testContainer' });
+        const container1 = createElement({ id: 'container1', container: 'testContainer' });
+        const container2 = createElement({ id: 'container2', container: 'testContainer' });
 
         return window.paypal.checkout.setup('merchantID', {
 
@@ -964,8 +964,8 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            let content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
-            let content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
+            const content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
+            const content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
 
             assert.equal(content1, content2, 'en_US should match US');
         });
@@ -973,8 +973,8 @@ describe('paypal legacy button options', () => {
 
     it('should render a button with locale=FR and verify it defaults to fr_FR', () => {
 
-        let container1 = createElement({ id: 'container1', container: 'testContainer' });
-        let container2 = createElement({ id: 'container2', container: 'testContainer' });
+        const container1 = createElement({ id: 'container1', container: 'testContainer' });
+        const container2 = createElement({ id: 'container2', container: 'testContainer' });
 
         return window.paypal.checkout.setup('merchantID', {
 
@@ -992,8 +992,8 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            let content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
-            let content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
+            const content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
+            const content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
 
             assert.equal(content1, content2, 'en_FR should match FR');
         });
@@ -1001,7 +1001,7 @@ describe('paypal legacy button options', () => {
 
     it('should render a button and ensure the correct class is added by default', () => {
 
-        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+        const container1 = createElement({ id: 'container1', container: 'testContainer' });
 
         return window.paypal.checkout.setup('merchantID', {
 
@@ -1018,7 +1018,7 @@ describe('paypal legacy button options', () => {
 
     it('should render a button with size=tiny and ensure the correct class is added', () => {
 
-        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+        const container1 = createElement({ id: 'container1', container: 'testContainer' });
 
         return window.paypal.checkout.setup('merchantID', {
 
@@ -1033,7 +1033,7 @@ describe('paypal legacy button options', () => {
 
     it('should render a button with size=small and ensure the correct class is added', () => {
 
-        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+        const container1 = createElement({ id: 'container1', container: 'testContainer' });
 
         return window.paypal.checkout.setup('merchantID', {
 
@@ -1048,7 +1048,7 @@ describe('paypal legacy button options', () => {
 
     it('should render a button with size=medium and ensure the correct class is added', () => {
 
-        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+        const container1 = createElement({ id: 'container1', container: 'testContainer' });
 
         return window.paypal.checkout.setup('merchantID', {
 
@@ -1063,7 +1063,7 @@ describe('paypal legacy button options', () => {
 
     it('should render a button with shape=pill and ensure the correct class is added', () => {
 
-        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+        const container1 = createElement({ id: 'container1', container: 'testContainer' });
 
         return window.paypal.checkout.setup('merchantID', {
 
@@ -1078,7 +1078,7 @@ describe('paypal legacy button options', () => {
 
     it('should render a button with shape=rect and ensure the correct class is added', () => {
 
-        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+        const container1 = createElement({ id: 'container1', container: 'testContainer' });
 
         return window.paypal.checkout.setup('merchantID', {
 
@@ -1093,7 +1093,7 @@ describe('paypal legacy button options', () => {
 
     it('should render a button with color=gold and ensure the correct class is added', () => {
 
-        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+        const container1 = createElement({ id: 'container1', container: 'testContainer' });
 
         return window.paypal.checkout.setup('merchantID', {
 
@@ -1108,7 +1108,7 @@ describe('paypal legacy button options', () => {
 
     it('should render a button with color=blue and ensure the correct class is added', () => {
 
-        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+        const container1 = createElement({ id: 'container1', container: 'testContainer' });
 
         return window.paypal.checkout.setup('merchantID', {
 
@@ -1123,7 +1123,7 @@ describe('paypal legacy button options', () => {
 
     it('should render a button with color=silver and ensure the correct class is added', () => {
 
-        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+        const container1 = createElement({ id: 'container1', container: 'testContainer' });
 
         return window.paypal.checkout.setup('merchantID', {
 
@@ -1138,7 +1138,7 @@ describe('paypal legacy button options', () => {
 
     it('should render a button with locale=fr_FR and ensure the correct class is added', () => {
 
-        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+        const container1 = createElement({ id: 'container1', container: 'testContainer' });
 
         return window.paypal.checkout.setup('merchantID', {
 
@@ -1153,9 +1153,9 @@ describe('paypal legacy button options', () => {
 
     it('should render multiple buttons with different styles and ensure the correct class is added', () => {
 
-        let container1 = createElement({ id: 'container1', container: 'testContainer' });
-        let container2 = createElement({ id: 'container2', container: 'testContainer' });
-        let container3 = createElement({ id: 'container3', container: 'testContainer' });
+        const container1 = createElement({ id: 'container1', container: 'testContainer' });
+        const container2 = createElement({ id: 'container2', container: 'testContainer' });
+        const container3 = createElement({ id: 'container3', container: 'testContainer' });
 
         return window.paypal.checkout.setup('merchantID', {
 

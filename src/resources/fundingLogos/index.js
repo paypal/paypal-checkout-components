@@ -20,7 +20,7 @@ import venmo_blue   from './venmo_blue.svg';
 import elv          from './elv.svg';
 import elv_white    from './elv_white.svg';
 
-export let fundingLogos = {
+export const fundingLogos = {
 
     [ BUTTON_LOGO.PP ]: {
         [ BUTTON_LOGO_COLOR.WHITE ]: pp_white,

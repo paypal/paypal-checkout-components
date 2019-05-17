@@ -2,6 +2,8 @@
 
 import { getParent, isSameDomain } from 'cross-domain-utils/src';
 
+import { config } from '../config';
+
 import { supportsPopups } from './device';
 
 export function allowIframe() : boolean {
@@ -10,12 +12,12 @@ export function allowIframe() : boolean {
         return true;
     }
 
-    let parentWindow = getParent(window);
+    const parentWindow = getParent(window);
     if (parentWindow && isSameDomain(parentWindow)) {
         return true;
     }
 
-    let parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
+    const parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
     if (parentComponentWindow && isSameDomain(parentComponentWindow)) {
         return true;
     }
@@ -25,4 +27,9 @@ export function allowIframe() : boolean {
     }
 
     return false;
+}
+
+
+export function isPayPalDomain() : boolean {
+    return Boolean(`${ window.location.protocol }//${ window.location.host }`.match(config.paypal_domain_regex)) || window.mockDomain === 'mock://www.paypal.com';
 }

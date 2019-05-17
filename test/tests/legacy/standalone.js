@@ -5,7 +5,7 @@ import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, createElement,
     createTestContainer, destroyTestContainer, assert } from '../common';
 
-for (let flow of [ 'popup', 'iframe' ]) {
+for (const flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal legacy standalone checkout on ${ flow }`, () => {
 
@@ -22,8 +22,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call startFlow', () => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-            let token = generateECToken();
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const token = generateECToken();
 
             testButton.addEventListener('click', () => {
                 window.paypal.checkout.startFlow(token);
@@ -38,8 +38,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call startFlow, with a cancel', () => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-            let token = generateECToken();
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const token = generateECToken();
 
             testButton.addEventListener('click', () => {
                 window.paypal.checkout.startFlow(token);
@@ -56,9 +56,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call startFlow with a url', () => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-            let token = generateECToken();
-            let hash = uniqueID();
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const token = generateECToken();
+            const hash = uniqueID();
 
             testButton.addEventListener('click', () => {
                 window.paypal.checkout.startFlow(`${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`);
@@ -73,9 +73,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call startFlow with a url with no token', () => {
 
-            let hash = uniqueID();
+            const hash = uniqueID();
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 window.paypal.checkout.startFlow(`${ CHILD_REDIRECT_URI }#${ hash }`);
@@ -90,8 +90,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call initXO and then startFlow', () => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-            let token = generateECToken();
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const token = generateECToken();
 
             testButton.addEventListener('click', () => {
 
@@ -111,9 +111,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call initXO and then startFlow with a url', () => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-            let token = generateECToken();
-            let hash = uniqueID();
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const token = generateECToken();
+            const hash = uniqueID();
 
             testButton.addEventListener('click', () => {
                 window.paypal.checkout.initXO();
@@ -133,9 +133,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call initXO and then startFlow with a url with no token', () => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-            let hash = uniqueID();
+            const hash = uniqueID();
 
             testButton.addEventListener('click', () => {
                 window.paypal.checkout.initXO();
@@ -154,8 +154,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call initXO and immediately startFlow', () => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-            let token = generateECToken();
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const token = generateECToken();
 
             testButton.addEventListener('click', () => {
 
@@ -172,20 +172,20 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call initXO and then closeFlow', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
 
                 if (flow === 'popup') {
-                    let open = window.open;
+                    const open = window.open;
                     window.open = function overrideWindowOpen() : CrossDomainWindowType {
                         window.open = open;
 
-                        let win = window.open.apply(this, arguments);
+                        const win = window.open.apply(this, arguments);
 
-                        let close = win.close;
+                        const close = win.close;
                         win.close = function overrideWindowClose() : void {
-                            let result = close.apply(this, arguments);
+                            const result = close.apply(this, arguments);
                             done();
                             return result;
                         };
@@ -214,7 +214,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call initXO and then closeFlow with a url', () => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 window.paypal.checkout.initXO();
@@ -233,7 +233,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call initXO and then closeFlow immediately', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
 
@@ -248,11 +248,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 } else {
 
-                    let open = window.open;
+                    const open = window.open;
                     window.open = function overrideWindowOpen() : CrossDomainWindowType {
                         window.open = open;
 
-                        let win : Object = {
+                        const win : Object = {
                             close() {
                                 done();
                             }
@@ -276,8 +276,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             window.paypal.postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = false;
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-            let token = generateECToken();
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const token = generateECToken();
 
             testButton.addEventListener('click', () => {
                 window.paypal.checkout.startFlow(token);

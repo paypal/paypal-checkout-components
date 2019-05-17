@@ -1,22 +1,21 @@
 /* @flow */
-/* @jsx jsxDom */
+/** @jsx jsxDom */
 /* eslint max-lines: 0 */
 
-import { btoa } from 'Base64';
+import { base64encode } from 'belter/src';
 
 import { fundingLogos } from '../../resources';
 import { BUTTON_LOGO_COLOR, CHECKOUT_OVERLAY_COLOR } from '../../constants';
 import { isIos } from '../../lib';
-import componentContentJSON from '../../checkout/template/containerContent.json';
+import { containerContent } from '../../checkout/template/containerContent';
 import { getSandboxStyle, getContainerStyle } from '../../checkout/template';
-
-let componentContent = JSON.parse(componentContentJSON);
 
 const LOGO_COLOR = {
     [ CHECKOUT_OVERLAY_COLOR.BLACK ]: BUTTON_LOGO_COLOR.WHITE,
     [ CHECKOUT_OVERLAY_COLOR.WHITE ]: BUTTON_LOGO_COLOR.BLACK
 };
 
+// eslint-disable-next-line flowtype/require-exact-type
 export type ContainerTemplateOptions = {
     id : string,
     props : Object,
@@ -36,10 +35,9 @@ export type ContainerTemplateOptions = {
     jsxDom : Function
 };
 
-// eslint-disable-next-line no-unused-vars
 export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT, on, tag, context, actions, outlet, jsxDom } : ContainerTemplateOptions) : HTMLElement {
 
-    let [ lang, country ] = props.locale.split('_');
+    const [ lang, country ] = props.locale.split('_');
 
     const containerStyle = `
         ${ getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION }) }
@@ -78,7 +76,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
         }
     `;
 
-    let content = componentContent[country][lang];
+    const content = containerContent[country][lang];
 
     function close(event) {
         event.preventDefault();
@@ -101,29 +99,29 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
         }
     }
 
-    let style = props.style || {};
-    let overlayColor = style.overlayColor || CHECKOUT_OVERLAY_COLOR.BLACK;
-    let logoColor = LOGO_COLOR[overlayColor];
+    const style = props.style || {};
+    const overlayColor = style.overlayColor || CHECKOUT_OVERLAY_COLOR.BLACK;
+    const logoColor = LOGO_COLOR[overlayColor];
 
-    let ppLogo = (typeof fundingLogos.pp === 'function')
+    const ppLogo = (typeof fundingLogos.pp === 'function')
         ? fundingLogos.pp({ logoColor })
         : fundingLogos.pp[logoColor];
 
-    let paypalLogo = (typeof fundingLogos.paypal === 'function')
+    const paypalLogo = (typeof fundingLogos.paypal === 'function')
         ? fundingLogos.paypal({ logoColor })
         : fundingLogos.paypal[logoColor];
 
-    let el = (
+    const el = (
         <div id={ id } onClick={ focus } class={ `${ tag }-context-${ context } paypal-checkout-overlay ${ tag }-background-color-${ overlayColor } ${ tag }-logo-color-${ logoColor }` } role="dialog" aria-modal="true" aria-label="PayPal Checkout Overlay">
-            <a href='#' class="paypal-checkout-close" onClick={ close } aria-label="close" role="button"></a>
+            <a href='#' class="paypal-checkout-close" onClick={ close } aria-label="close" role="button" />
             <div class="paypal-checkout-modal">
                 <div class="paypal-checkout-logo">
                     <img
                         class="paypal-checkout-logo-pp" alt="pp"
-                        src={ `data:image/svg+xml;base64,${ btoa(ppLogo) }` } />
+                        src={ `data:image/svg+xml;base64,${ base64encode(ppLogo.toString()) }` } />
                     <img
                         class="paypal-checkout-logo-paypal" alt="paypal"
-                        src={ `data:image/svg+xml;base64,${ btoa(paypalLogo) }` } />
+                        src={ `data:image/svg+xml;base64,${ base64encode(paypalLogo.toString()) }` } />
                 </div>
                 <div class="paypal-checkout-message">
                     {content.windowMessage}
@@ -132,7 +130,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
                     <a onClick={ focus } href='#'>{content.continue}</a>
                 </div>
                 <div class="paypal-checkout-loader">
-                    <div class="paypal-spinner"></div>
+                    <div class="paypal-spinner" />
                 </div>
             </div>
 
@@ -144,7 +142,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
         </div>
     );
 
-    let container = (
+    const container = (
         <html>
             <body>
                 { el }

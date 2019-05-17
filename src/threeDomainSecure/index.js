@@ -1,8 +1,9 @@
 /* @flow */
-/* @jsx jsxDom */
+/** @jsx jsxDom */
 /* eslint max-lines: 0 */
 
 import { create } from 'zoid/src';
+import { base64encode } from 'belter/src';
 
 import { ENV } from '../constants';
 import { getBrowserLocale, getCurrentScriptUrl } from '../lib';
@@ -33,7 +34,7 @@ export const ThreeDomainSecure = create({
             queryParam:   true,
             sendToChild:  false,
             def:         () => {
-                return btoa(JSON.stringify({
+                return base64encode(JSON.stringify({
                     url: getCurrentScriptUrl()
                 }));
             }
@@ -45,7 +46,7 @@ export const ThreeDomainSecure = create({
             allowDelegate:  true,
 
             def() : string {
-                let { lang, country } = getBrowserLocale();
+                const { lang, country } = getBrowserLocale();
                 return `${ lang }_${ country }`;
             }
         },

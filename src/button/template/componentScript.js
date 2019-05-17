@@ -23,7 +23,7 @@ export function getComponentScript() : () => void {
             }, delay);
         }
 
-        function getElements(selector, parent) : Array<HTMLElement> {
+        function getElements(selector, parent) : $ReadOnlyArray<HTMLElement> {
             parent = parent || document;
             return Array.prototype.slice.call(parent.querySelectorAll(selector));
         }
@@ -45,16 +45,16 @@ export function getComponentScript() : () => void {
         }
 
         function hasDimensions(el : HTMLElement) : boolean {
-            let rect = el.getBoundingClientRect();
+            const rect = el.getBoundingClientRect();
             return Boolean(rect.height && rect.width);
         }
 
         function isHidden(el : HTMLElement) : boolean {
-            let computedStyle = window.getComputedStyle(el);
+            const computedStyle = window.getComputedStyle(el);
             return (!computedStyle || computedStyle.display === STYLE.NONE);
         }
 
-        function displayedElementsHaveDimensions(elements : Array<HTMLElement>) : boolean {
+        function displayedElementsHaveDimensions(elements : $ReadOnlyArray<HTMLElement>) : boolean {
             return elements.every(el => {
                 return hasDimensions(el) || isHidden(el);
             });
@@ -66,7 +66,7 @@ export function getComponentScript() : () => void {
                 return;
             }
 
-            let interval = setInterval(() => {
+            const interval = setInterval(() => {
                 if (displayedElementsHaveDimensions(elements)) {
                     clearInterval(interval);
                     method();
@@ -80,15 +80,15 @@ export function getComponentScript() : () => void {
                 return true;
             }
 
-            let parent = el.parentNode;
+            const parent = el.parentNode;
 
             if (!parent) {
                 return false;
             }
 
-            let e = el.getBoundingClientRect();
+            const e = el.getBoundingClientRect();
             // $FlowFixMe
-            let p = parent.getBoundingClientRect();
+            const p = parent.getBoundingClientRect();
 
             if (e.top < p.top || e.left < p.left || e.right > p.right || e.bottom > p.bottom) {
                 return true;
@@ -101,11 +101,11 @@ export function getComponentScript() : () => void {
             return false;
         }
 
-        let images    = getElements('.{ CLASS.BUTTON } .{ CLASS.LOGO }');
-        let text      = getElements('.{ CLASS.BUTTON } .{ CLASS.TEXT }');
-        let tagline   = getElements('.{ CLASS.TAGLINE }');
-        let cards     = getElements('.{ CLASS.FUNDINGICONS } .{ CLASS.CARD }');
-        let optionals = getElements('.{ CLASS.BUTTON }-label-credit .{ CLASS.BUTTON }-logo-paypal');
+        const images    = getElements('.{ CLASS.BUTTON } .{ CLASS.LOGO }');
+        const text      = getElements('.{ CLASS.BUTTON } .{ CLASS.TEXT }');
+        const tagline   = getElements('.{ CLASS.TAGLINE }');
+        const cards     = getElements('.{ CLASS.FUNDINGICONS } .{ CLASS.CARD }');
+        const optionals = getElements('.{ CLASS.BUTTON }-label-credit .{ CLASS.BUTTON }-logo-paypal');
 
         function toggleOptionals() {
 

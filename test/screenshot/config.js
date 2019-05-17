@@ -5,9 +5,12 @@ import { BUTTON_LABEL, BUTTON_SIZE, FUNDING, CARD } from '../../src/constants';
 
 const RESPONSIVE_WIDTHS = [ 92, 144, 212, /* 345, */ 460, 670 ];
 
-type ButtonConfig = {
+type ButtonConfig = {|
     filename? : string,
     userAgent? : string,
+    container? : {
+        width? : number
+    },
     button : {
         locale? : string,
         style? : {
@@ -18,13 +21,13 @@ type ButtonConfig = {
             installmentperiod? : number
         },
         funding? : {
-            allowed? : Array<string>,
-            disallowed? : Array<string>
+            allowed? : $ReadOnlyArray<string>,
+            disallowed? : $ReadOnlyArray<string>
         }
     }
-};
+|};
 
-export let buttonConfigs : Array<ButtonConfig> = [];
+export const buttonConfigs : Array<ButtonConfig> = [];
 
 buttonConfigs.push({
     button: {}
@@ -45,10 +48,10 @@ for (let label of Object.keys(BUTTON_LABEL)) {
             }
         });
 
-        for (let size of getButtonConfig(label, 'sizes')) {
+        for (const size of getButtonConfig(label, 'sizes')) {
 
             if (size === BUTTON_SIZE.RESPONSIVE) {
-                for (let width of RESPONSIVE_WIDTHS) {
+                for (const width of RESPONSIVE_WIDTHS) {
                     buttonConfigs.push({
                         container: {
                             width
@@ -73,7 +76,7 @@ for (let label of Object.keys(BUTTON_LABEL)) {
             }
         }
 
-        for (let color of getButtonConfig(label, 'colors')) {
+        for (const color of getButtonConfig(label, 'colors')) {
             buttonConfigs.push({
                 button: {
                     style: {
@@ -84,7 +87,7 @@ for (let label of Object.keys(BUTTON_LABEL)) {
             });
         }
 
-        for (let shape of getButtonConfig(label, 'shapes')) {
+        for (const shape of getButtonConfig(label, 'shapes')) {
             buttonConfigs.push({
                 button: {
                     style: {
@@ -157,7 +160,7 @@ for (let label of Object.keys(BUTTON_LABEL)) {
             }
         });
 
-        for (let shape of getButtonConfig(label, 'shapes')) {
+        for (const shape of getButtonConfig(label, 'shapes')) {
 
             buttonConfigs.push({
                 button: {
@@ -216,7 +219,7 @@ for (let label of Object.keys(BUTTON_LABEL)) {
     }
 }
 
-for (let color of getButtonConfig('paypal', 'colors')) {
+for (const color of getButtonConfig('paypal', 'colors')) {
 
     buttonConfigs.push({
         button: {

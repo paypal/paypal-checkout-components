@@ -4,20 +4,21 @@ export type Enum<T> = {
     [string] : T
 };
 
-export type DimensionsType = {
+export type DimensionsType = {|
     width : number,
     height : number
-};
+|};
 
-export type LocaleType = {
+export type LocaleType = {|
     country : string,
     lang : string
-};
+|};
 
 export type FundingSource = string;
+// eslint-disable-next-line flowtype/no-mutable-array
 export type FundingList = Array<FundingSource>;
-export type FundingSelection = {
+export type FundingSelection = {|
     allowed : FundingList,
     disallowed : FundingList,
     remembered : FundingList
-};
+|};

@@ -1,14 +1,11 @@
 /* @flow */
+/* eslint max-lines: off */
 
-import base32 from 'hi-base32';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { getDomain } from 'cross-domain-utils/src';
 
-import { config } from '../config';
+export { noop, once, uniqueID, isLocalStorageEnabled } from 'belter/src';
 
-export function isPayPalDomain() : boolean {
-    return Boolean(`${ window.location.protocol }//${ window.location.host }`.match(config.paypal_domain_regex)) || window.mockDomain === 'mock://www.paypal.com';
-}
+const moduleGlobal = {};
 
 export function getGlobal() : Object {
     if (typeof window !== 'undefined') {
@@ -17,16 +14,16 @@ export function getGlobal() : Object {
     if (typeof global !== 'undefined') {
         return global;
     }
-    throw new Error(`No global found`);
+    return moduleGlobal;
 }
 
 // eslint-disable-next-line flowtype/no-weak-types
-export function memoize<R>(method : (...args : Array<any>) => R, options : { time? : number } = {}) : ((...args : Array<any>) => R) {
+export function memoize<R>(method : (...args : $ReadOnlyArray<any>) => R, options : { time? : number } = {}) : ((...args : $ReadOnlyArray<any>) => R) {
 
-    let cache : { [key : string] : { time : number, value : R } } = {};
+    const cache : { [key : string] : { time : number, value : R } } = {};
 
     // eslint-disable-next-line no-unused-vars, flowtype/no-weak-types
-    return function memoizedFunction(...args : Array<any>) : R {
+    return function memoizedFunction(...args : $ReadOnlyArray<any>) : R {
 
         let key : string;
 
@@ -36,13 +33,13 @@ export function memoize<R>(method : (...args : Array<any>) => R, options : { tim
             throw new Error(`Arguments not serializable -- can not be used to memoize`);
         }
 
-        let time = options.time;
+        const time = options.time;
 
         if (cache[key] && time && (Date.now() - cache[key].time) < time) {
             delete cache[key];
         }
 
-        let glob = getGlobal();
+        const glob = getGlobal();
 
         if (glob.__CACHE_START_TIME__ && cache[key] && cache[key].time < glob.__CACHE_START_TIME__) {
             delete cache[key];
@@ -59,37 +56,6 @@ export function memoize<R>(method : (...args : Array<any>) => R, options : { tim
 
         return cache[key].value;
     };
-}
-
-// eslint-disable-next-line no-unused-vars
-export function noop(...args : Array<mixed>) {
-    // pass
-}
-
-export function once(method : Function) : Function {
-    let called = false;
-
-    return function onceFunction() : mixed {
-        if (!called) {
-            called = true;
-            return method.apply(this, arguments);
-        }
-    };
-}
-
-export function uniqueID() : string {
-
-    let chars = '0123456789abcdef';
-
-    let randomID = 'xxxxxxxxxx'.replace(/./g, () => {
-        return chars.charAt(Math.floor(Math.random() * chars.length));
-    });
-
-    let timeID = base32.encode(
-        new Date().toISOString().slice(11, 19).replace('T', '.')
-    ).replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-
-    return `${ randomID }_${ timeID }`;
 }
 
 export function hashStr(str : string) : number {
@@ -117,7 +83,7 @@ export function strHashStr(str : string) : string {
 }
 
 export function match(str : string, pattern : RegExp) : ?string {
-    let regmatch = str.match(pattern);
+    const regmatch = str.match(pattern);
     if (regmatch) {
         return regmatch[1];
     }
@@ -140,17 +106,17 @@ export function safeJSON(item : mixed) : string {
     });
 }
 
-type Listener = {
+type Listener = {|
     listen : (method : Function) => {
         cancel : () => void
     },
     once : (method : Function) => void,
-    trigger : (...args : Array<mixed>) => void
-};
+    trigger : (...args : $ReadOnlyArray<mixed>) => void
+|};
 
 export function eventEmitter() : Listener {
 
-    let listeners = [];
+    const listeners = [];
 
     return {
         listen(method : Function) : { cancel : () => void } {
@@ -164,14 +130,14 @@ export function eventEmitter() : Listener {
         },
 
         once(method : Function) {
-            let listener = this.listen(function onceListener() {
+            const listener = this.listen(function onceListener() {
                 method.apply(null, arguments);
                 listener.cancel();
             });
         },
 
-        trigger(...args : Array<mixed>) {
-            for (let listener of listeners) {
+        trigger(...args : $ReadOnlyArray<mixed>) {
+            for (const listener of listeners) {
                 listener(...args);
             }
         }
@@ -224,8 +190,8 @@ export function stringifyError(err : mixed, level : number = 1) : string {
         }
 
         if (err instanceof Error) {
-            let stack = err && err.stack;
-            let message = err && err.message;
+            const stack = err && err.stack;
+            const message = err && err.message;
 
             if (stack && message) {
                 if (stack.indexOf(message) !== -1) {
@@ -253,7 +219,7 @@ export function stringifyError(err : mixed, level : number = 1) : string {
 
 export function stringifyErrorMessage(err : mixed) : string {
 
-    let defaultMessage = `<unknown error: ${ Object.prototype.toString.call(err) }>`;
+    const defaultMessage = `<unknown error: ${ Object.prototype.toString.call(err) }>`;
 
     if (!err) {
         return defaultMessage;
@@ -282,101 +248,14 @@ export function stringify(item : mixed) : string {
     return Object.prototype.toString.call(item);
 }
 
-
-export let isLocalStorageEnabled = memoize(() : boolean => {
-    try {
-        if (typeof window === 'undefined') {
-            return false;
-        }
-
-        if (window.localStorage) {
-            let value = Math.random().toString();
-            window.localStorage.setItem('__test__localStorage__', value);
-            let result = window.localStorage.getItem('__test__localStorage__');
-            window.localStorage.removeItem('__test__localStorage__');
-            if (value === result) {
-                return true;
-            }
-        }
-    } catch (err) {
-        // pass
-    }
-    return false;
-});
-
 export function domainMatches(hostname : string, domain : string) : boolean {
     hostname = hostname.split('://')[1];
-    let index = hostname.indexOf(domain);
+    const index = hostname.indexOf(domain);
     return (index !== -1 && hostname.slice(index) === domain);
 }
 
-export function getDomainSetting<T : mixed>(name : string, def : ?T) : ?T {
-
-    let hostname = window.xchild
-        ? window.xchild.getParentDomain()
-        : getDomain();
-
-    if (config.domain_settings) {
-        for (let domain of Object.keys(config.domain_settings)) {
-            if (domainMatches(hostname, domain)) {
-                return config.domain_settings[domain][name];
-            }
-        }
-    }
-
-    return def;
-}
-
-const PATCH_OPS = {
-    add:     'add',
-    remove:  'remove',
-    replace: 'replace'
-};
-export type PatchOp = $Values<typeof PATCH_OPS>;
-export type Patch = { op : PatchOp, path : string, value : ?mixed };
-
-export function patchWithOps(obj : ?Object, patch : Array<Patch>) : Object {
-    let patchedObj = { ...obj };
-
-    const changePropertyFromPath = (target : Object, path : string, value : mixed, op : ?string) => {
-        const props = path.split('/').filter(p => p);
-        const length = (props.length - 1);
-
-        for (let i = 0; i < length; i++) {
-            if (typeof target[props[i]] === 'undefined') {
-                target[props[i]] = {};
-            }
-
-            target = target[props[i]];
-        }
-
-        let targetProp = target[props[length]];
-
-        switch (op) {
-        case PATCH_OPS.add:
-            if (Array.isArray(target[props[length]])) {
-                targetProp = [ ...targetProp, value ];
-            } else if (typeof targetProp === 'object') {
-                targetProp = { ...targetProp, value };
-            }
-            break;
-        case PATCH_OPS.replace:
-        default:
-            target[props[length]] = value;
-        }
-    };
-
-    try {
-        patch.map(op => changePropertyFromPath(patchedObj, op.path, op.value, op.op));
-    } catch (err) {
-        throw new Error('Invalid patch syntax');
-    }
-
-    return patchedObj;
-}
-
 export function patchMethod(obj : Object, name : string, handler : Function) {
-    let original = obj[name];
+    const original = obj[name];
 
     obj[name] = function patchedMethod() : mixed {
         return handler({
@@ -401,7 +280,7 @@ export function extend<T : Object | Function>(obj : T, source : Object) : T {
         return Object.assign(obj, source);
     }
 
-    for (let key in source) {
+    for (const key in source) {
         if (source.hasOwnProperty(key)) {
             obj[key] = source[key];
         }
@@ -415,7 +294,7 @@ export function deepExtend<T : Object | Function > (obj : T, source : Object) : 
         return obj;
     }
 
-    for (let key in source) {
+    for (const key in source) {
         if (source.hasOwnProperty(key)) {
             if (isObject(obj[key]) && isObject(source[key])) {
                 deepExtend(obj[key], source[key]);
@@ -429,7 +308,7 @@ export function deepExtend<T : Object | Function > (obj : T, source : Object) : 
 }
 
 export function hasValue<T : mixed>(obj : { [string] : T }, value : T) : boolean {
-    for (let key in obj) {
+    for (const key in obj) {
         if (obj.hasOwnProperty(key) && obj[key] === value) {
             return true;
         }
@@ -437,19 +316,20 @@ export function hasValue<T : mixed>(obj : { [string] : T }, value : T) : boolean
     return false;
 }
 
-export function contains<T>(arr : Array<T>, value : T) : boolean {
+export function contains<T>(arr : $ReadOnlyArray<T>, value : T) : boolean {
     return arr.indexOf(value) !== -1;
 }
 
-export function sortBy<T>(arr : Array<T>, order : Array<T>) : Array<T> {
+// eslint-disable-next-line flowtype/no-mutable-array
+export function sortBy<T>(arr : Array<T>, order : $ReadOnlyArray<T>) : Array<T> {
     return arr.sort((a : T, b : T) => {
         return order.indexOf(a) - order.indexOf(b);
     });
 }
 
 export function reverseMap(obj : { [string] : string }) : { [string] : string } {
-    let result = {};
-    for (let key in obj) {
+    const result = {};
+    for (const key in obj) {
         if (obj.hasOwnProperty(key)) {
             result[obj[key]] = key;
         }
@@ -457,6 +337,7 @@ export function reverseMap(obj : { [string] : string }) : { [string] : string } 
     return result;
 }
 
+// eslint-disable-next-line flowtype/no-mutable-array
 export function arrayRemove<T>(arr : Array<T>, item : T) {
     arr.splice(arr.indexOf(item), 1);
 }
@@ -465,9 +346,9 @@ export function identity<T : mixed>(item : T) : T {
     return item;
 }
 
-export function values<T>(obj : { [string] : T }) : Array<T> {
-    let result = [];
-    for (let key in obj) {
+export function values<T>(obj : { [string] : T }) : $ReadOnlyArray<T> {
+    const result = [];
+    for (const key in obj) {
         if (obj.hasOwnProperty(key)) {
             result.push(obj[key]);
         }
@@ -479,16 +360,16 @@ export function perc(pixels : number, percentage : number) : number {
     return Math.round((pixels * percentage) / 100);
 }
 
-export function min(...args : Array<number>) : number {
+export function min(...args : $ReadOnlyArray<number>) : number {
     return Math.min(...args);
 }
 
-export function max(...args : Array<number>) : number {
+export function max(...args : $ReadOnlyArray<number>) : number {
     return Math.max(...args);
 }
 
-export function regexMap<T>(str : string, regex : RegExp, handler : () => T) : Array<T> {
-    let results = [];
+export function regexMap<T>(str : string, regex : RegExp, handler : () => T) : $ReadOnlyArray<T> {
+    const results = [];
 
     // $FlowFixMe
     str.replace(regex, function regexMapMatcher() {

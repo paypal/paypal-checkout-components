@@ -19,7 +19,7 @@ if (isIE() && getDomainSetting('ie_full_page')) {
         flushLogs();
 
         // $FlowFixMe
-        let checkout = Checkout.init({
+        const checkout = Checkout.init({
             onAuthorize: noop
         });
 
@@ -39,8 +39,8 @@ if (isIE() && getDomainSetting('ie_full_page')) {
     };
 }
 
-let parent = getParent(window);
-let top = getTop(window);
+const parent = getParent(window);
+const top = getTop(window);
 
 if (top && parent) {
     let canRenderTop = (top === parent);
@@ -63,11 +63,11 @@ if (top && parent) {
 
 patchMethod(Checkout, 'renderTo', ({ callOriginal, args: [ , props ] }) => {
     if (getDomainSetting('allow_full_page_fallback')) {
-        let handleError = once((err) => {
+        const handleError = once((err) => {
             try {
                 // eslint-disable-next-line no-console
                 console.error(err && err.stack);
-            } catch (err2) { // eslint-disable-line unicorn/catch-error-name
+            } catch (err2) {
                 // pass
             }
 
@@ -94,8 +94,8 @@ patchMethod(Checkout, 'renderTo', ({ callOriginal, args: [ , props ] }) => {
 
     debounce = true;
 
-    for (let methodName of [ 'onAuthorize', 'onCancel', 'onError', 'onClose' ]) {
-        let original = props[methodName];
+    for (const methodName of [ 'onAuthorize', 'onCancel', 'onError', 'onClose' ]) {
+        const original = props[methodName];
         props[methodName] = function unDebounce() : mixed {
             debounce = false;
             if (original) {
@@ -169,7 +169,7 @@ patchMethod(Button.props.payment, 'decorate', ({ original, context, args: [ orig
             extend(resolveData, actions);
             extend(rejectActions, actions);
 
-            let ctx = {
+            const ctx = {
                 props: {
                     env:    this.props.env,
                     client: this.props.client

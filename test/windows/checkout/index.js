@@ -12,15 +12,15 @@ if (window.name.split('__')[2] !== 'test_minor') {
     throw new Error(`Expected window name to have version`);
 }
 
-let { action, type, onRender, onInit } = window.xprops.test;
+const { action, type, onRender, onInit } = window.xprops.test;
 
-let actions = {
+const actions = {
     close() {
         window.close();
     }
 };
 
-let hash = window.location.hash ? `&hash=${ window.location.hash.slice(1) }` : '';
+const hash = window.location.hash ? `&hash=${ window.location.hash.slice(1) }` : '';
 
 if (action === 'checkout') {
 
@@ -57,7 +57,7 @@ if (action === 'checkout') {
 
 } else if (action === 'shippingChange') {
 
-    let callbackActions = {
+    const callbackActions = {
         reject:  () => { /* pass */ },
         type,
         payment: {
@@ -95,7 +95,7 @@ if (action === 'checkout') {
 
     createTestContainer();
 
-    let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+    const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
     testButton.addEventListener('click', () => {
         window.xchild.hide();
@@ -114,14 +114,14 @@ if (action === 'checkout') {
 
 } else if (action === 'fallback') {
 
-    let parent = window.xchild.getParentComponentWindow();
+    const parent = window.xchild.getParentComponentWindow();
 
     window.xprops.payment().then(paymentToken => {
         return window.xprops.fallback(`#fallbackUrl?token=${ paymentToken }`).then(() => {
 
             createTestContainer();
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 let win;
@@ -139,7 +139,7 @@ if (action === 'checkout') {
                     return parent.watchForLegacyFallback(win);
                 }
 
-                for (let frame of getFrames(parent)) {
+                for (const frame of getFrames(parent)) {
                     // $FlowFixMe
                     if (isSameDomain(frame) && frame.watchForLegacyFallback) {
                         return frame.watchForLegacyFallback(win);

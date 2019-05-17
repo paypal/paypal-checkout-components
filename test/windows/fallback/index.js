@@ -15,7 +15,7 @@ $mockEndpoint.register({
     })
 }).expectCalls();
 
-let interval = setInterval(() => {
+const interval = setInterval(() => {
 
     if (!window.ppxoWatching) {
         return;
@@ -23,7 +23,7 @@ let interval = setInterval(() => {
 
     clearInterval(interval);
 
-    let req = new window.XMLHttpRequest();
+    const req = new window.XMLHttpRequest();
     req.open('POST', '/legacy/complete', true);
     req.send();
 

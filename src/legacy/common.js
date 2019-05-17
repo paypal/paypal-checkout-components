@@ -2,13 +2,12 @@
 
 import { prefix } from 'beaver-logger/client';
 
-import { config } from '../config';
-import { COUNTRY, LANG } from '../constants';
+import { COUNTRY, LANG, LOCALE } from '../constants';
 import type { LocaleType } from '../types';
 
 import { LOG_PREFIX } from './constants';
 
-let { warn } = prefix(LOG_PREFIX);
+const { warn } = prefix(LOG_PREFIX);
 
 const DEFAULT_COUNTRY = COUNTRY.US;
 const DEFAULT_LANG = LANG.EN;
@@ -18,7 +17,7 @@ export function normalizeLocale(locale : string) : LocaleType {
     let [ lang, country ] = locale.split('_');
 
     if (!country) {
-        if (config.locales[lang]) {
+        if (LOCALE[lang]) {
             country = lang;
             lang = null;
         } else {
@@ -26,7 +25,7 @@ export function normalizeLocale(locale : string) : LocaleType {
         }
     }
 
-    if (!config.locales[country]) {
+    if (!LOCALE[country]) {
         warn(`invalid_user_country`, { country });
         country = DEFAULT_COUNTRY;
     }
@@ -35,13 +34,13 @@ export function normalizeLocale(locale : string) : LocaleType {
         lang = DEFAULT_LANG;
     }
 
-    if (config.locales[country].indexOf(lang) === -1) {
+    if (LOCALE[country].indexOf(lang) === -1) {
         warn(`invalid_user_lang`, { lang });
 
-        if (config.locales[country].indexOf(DEFAULT_LANG) !== -1) {
+        if (LOCALE[country].indexOf(DEFAULT_LANG) !== -1) {
             lang = DEFAULT_LANG;
         } else {
-            lang = config.locales[country][0];
+            lang = LOCALE[country][0];
         }
     }
 

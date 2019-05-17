@@ -40,10 +40,10 @@ function removePptm() {
 
 export function pptmFactory() : Object {
     let noContentFoundInContainer = false;
-    let callback = `__pptmLoadedWithNoContent`;
+    const callback = `__pptmLoadedWithNoContent`;
     let listener;
 
-    let obj = {
+    const obj = {
         /*
         In the button component, we set up a global window[callback] that will be called in pptm `onload` attribute.
         Button.render calls `reloadPptmScript`, which checks if window[callback] has been called yet (meaning, it checks
@@ -95,7 +95,7 @@ export function pptmFactory() : Object {
                 [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.PPTM_LOAD
             });
         
-            let params = {
+            const params = {
                 t:         'xo',
                 id:        window.location.hostname,
                 mrid:      config.merchantID,

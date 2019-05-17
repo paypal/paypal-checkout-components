@@ -15,13 +15,13 @@ export function setupButtonChild(ButtonComponent : Button) {
 
     getPageRenderTime().then(pageRenderTime => {
 
-        let fundingSources = Array.prototype.slice.call(document.querySelectorAll(`[${ ATTRIBUTE.FUNDING_SOURCE }]`)).map(el => {
+        const fundingSources = Array.prototype.slice.call(document.querySelectorAll(`[${ ATTRIBUTE.FUNDING_SOURCE }]`)).map(el => {
             return el.getAttribute(ATTRIBUTE.CARD) || el.getAttribute(ATTRIBUTE.FUNDING_SOURCE);
         }).filter(source => {
             return source && source !== FUNDING.CARD;
         });
 
-        let xprops = ButtonComponent.xprops;
+        const xprops = ButtonComponent.xprops;
 
         track({
             [FPTI.KEY.STATE]:          FPTI.STATE.BUTTON,
@@ -42,7 +42,7 @@ export function setupButtonChild(ButtonComponent : Button) {
         flushLogs();
     });
 
-    let xprops = ButtonComponent.xprops || Checkout.xprops;
+    const xprops = ButtonComponent.xprops || Checkout.xprops;
 
     if (xprops && xprops.logLevel) {
         setLogLevel(xprops.logLevel);

@@ -2,19 +2,19 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-export type Braintree = {
+export type Braintree = {|
     client : {
         create : Function
     },
     paypalCheckout : {
         create : Function
     }
-};
+|};
 
-export type BraintreePayPalClient = {
+export type BraintreePayPalClient = {|
     createPayment : Function,
     tokenizePayment : Function
-};
+|};
 
 export function awaitBraintreeClient(braintree : Braintree, auth : string | ZalgoPromise<string>) : ZalgoPromise<BraintreePayPalClient> {
     return ZalgoPromise.resolve(auth).then(authorization => {
@@ -56,9 +56,9 @@ const SUPPORTED_REST_FIELDS = {
 
 function validate(obj, supported, name) {
 
-    let supportedKeys = Object.keys(supported);
+    const supportedKeys = Object.keys(supported);
 
-    for (let key of Object.keys(obj)) {
+    for (const key of Object.keys(obj)) {
 
         if (supportedKeys.indexOf(key) === -1) {
             throw new Error(`Unsupported REST key for Braintree: ${ name }.${ key }`);
@@ -73,7 +73,7 @@ function validate(obj, supported, name) {
 export function mapPaymentToBraintree(payment : Object) : Object {
     validate(payment, SUPPORTED_REST_FIELDS, 'payment');
 
-    let btPayment = {};
+    const btPayment = {};
 
     btPayment.intent   = payment.intent || 'sale';
     btPayment.flow     = 'checkout';

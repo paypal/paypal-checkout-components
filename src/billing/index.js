@@ -1,10 +1,11 @@
 /* @flow */
-/* @jsx jsxDom */
+/** @jsx jsxDom */
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
+import { base64encode } from 'belter/src';
 
 import { ENV } from '../constants';
 import { getButtonSessionID, getBrowserLocale, getSessionID, getCurrentScriptUrl } from '../lib';
@@ -12,7 +13,7 @@ import { config } from '../config';
 
 import { containerTemplate } from './template';
 
-type BillingOptions = {
+type BillingOptions = {|
     client : {
         [string] : (string | ZalgoPromise<string>)
     },
@@ -23,7 +24,7 @@ type BillingOptions = {
     meta : Object,
     commit : boolean,
     token : string
-};
+|};
 
 export const BillingPage : Component<BillingOptions> = create({
     tag:  'billing-page',
@@ -98,7 +99,7 @@ export const BillingPage : Component<BillingOptions> = create({
             allowDelegate: true,
 
             def() : string {
-                let { lang, country } = getBrowserLocale();
+                const { lang, country } = getBrowserLocale();
                 return `${ lang }_${ country }`;
             }
         },
@@ -136,7 +137,7 @@ export const BillingPage : Component<BillingOptions> = create({
             queryParam:  true,
             sendToChild: false,
             def:         () => {
-                return btoa(JSON.stringify({
+                return base64encode(JSON.stringify({
                     url: getCurrentScriptUrl()
                 }));
             }

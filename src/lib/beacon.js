@@ -19,7 +19,7 @@ export function beacon(event : string, payload : Object = {}) {
 
         let query = [];
 
-        for (let key in payload) {
+        for (const key in payload) {
             if (payload.hasOwnProperty(key)) {
                 query.push(`${ encodeURIComponent(key) }=${ encodeURIComponent(payload[key]) }`);
             }
@@ -28,7 +28,7 @@ export function beacon(event : string, payload : Object = {}) {
         query = query.join('&');
 
         if (!__TEST__) {
-            let beaconImage = new window.Image();
+            const beaconImage = new window.Image();
             beaconImage.src = `${ BEACON_URL }?${ query }`;
         }
 
@@ -63,7 +63,7 @@ export function checkpoint(name : string, payload : Object = {}, options : Objec
         let checkpointName = name;
 
         if (options.version) {
-            let version = __PAYPAL_CHECKOUT__.__MINOR_VERSION__.replace(/[^0-9]+/g, '_');
+            const version = __PAYPAL_CHECKOUT__.__MINOR_VERSION__.replace(/[^0-9]+/g, '_');
             checkpointName = `${ version }_${ checkpointName }`;
         }
 
@@ -103,7 +103,7 @@ export function fpti(payload : Object = {}) {
 
     payload = { ...buildPayload(), ...payload };
 
-    for (let key in payload) {
+    for (const key in payload) {
         if (payload.hasOwnProperty(key)) {
             query.push(`${ encodeURIComponent(key) }=${ encodeURIComponent(payload[key]) }`);
         }
@@ -112,7 +112,7 @@ export function fpti(payload : Object = {}) {
     query = query.join('&');
 
     try {
-        let beaconImage = new window.Image();
+        const beaconImage = new window.Image();
         beaconImage.src = `${ FPTI_URL }?${ query }`;
     } catch (err) {
         // pass

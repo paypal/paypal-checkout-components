@@ -1,5 +1,5 @@
 /* @flow */
-/* @jsx jsxDom */
+/** @jsx jsxDom */
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
@@ -7,6 +7,7 @@ import { create } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
 import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/client';
 import { getDomain } from 'cross-domain-utils/src';
+import { base64encode } from 'belter/src';
 
 import { pptm } from '../external';
 import { config } from '../config';
@@ -34,9 +35,9 @@ pptm.listenForLoadWithNoContent();
 
 function isCreditDualEligible(props) : boolean {
 
-    let { label, funding, layout, locale, max, sources } = normalizeProps(props, { locale: getBrowserLocale() });
-    let { allowed } = funding;
-    let { country } = locale;
+    const { label, funding, layout, locale, max, sources } = normalizeProps(props, { locale: getBrowserLocale() });
+    const { allowed } = funding;
+    const { country } = locale;
 
     if (allowed && allowed.indexOf(FUNDING.CREDIT) !== -1) {
         return false;
@@ -70,7 +71,7 @@ function isCreditDualEligible(props) : boolean {
         return false;
     }
 
-    let domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
+    const domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
 
     if (config.creditTestDomains.indexOf(domain) === -1) {
         return false;
@@ -79,12 +80,12 @@ function isCreditDualEligible(props) : boolean {
     return true;
 }
 
-let isDomainAllowed = memoize(() : boolean => {
+const isDomainAllowed = memoize(() : boolean => {
 
-    let domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
+    const domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
 
     if (!config.apmTestDomains.some(allowDomain => {
-        let regex = new RegExp(`[^a-zA-Z\\d\\-]*${ allowDomain.replace(/\./g, '\\.') }$`);  // eslint-disable-line security/detect-non-literal-regexp
+        const regex = new RegExp(`[^a-zA-Z\\d\\-]*${ allowDomain.replace(/\./g, '\\.') }$`);  // eslint-disable-line security/detect-non-literal-regexp
         return (domain.match(regex) !== null);
     })) {
         return false;
@@ -95,7 +96,7 @@ let isDomainAllowed = memoize(() : boolean => {
 
 function isApmEligible(source, props) : boolean {
 
-    let { locale } = normalizeProps(props, { locale: getBrowserLocale() });
+    const { locale } = normalizeProps(props, { locale: getBrowserLocale() });
 
     if (getFundingConfig(source, 'allowedCountries', [ locale.country ]).indexOf(locale.country) === -1) {
         return false;
@@ -106,7 +107,7 @@ function isApmEligible(source, props) : boolean {
 
 let creditThrottle;
 
-type ButtonOptions = {
+type ButtonOptions = {|
     style : {|
         maxbuttons? : number,
         layout? : string,
@@ -118,7 +119,7 @@ type ButtonOptions = {
     client : {
         [string] : (string | ZalgoPromise<string>)
     },
-    funding? : { allowed? : Array<string>, disallowed? : Array<string> },
+    funding? : { allowed? : $ReadOnlyArray<string>, disallowed? : $ReadOnlyArray<string> },
     env? : string,
     locale? : string,
     logLevel : string,
@@ -129,15 +130,15 @@ type ButtonOptions = {
     stageUrl? : string,
     localhostUrl? : string,
     checkoutUri? : string
-};
+|};
 
-export let Button : Component<ButtonOptions> = create({
+export const Button : Component<ButtonOptions> = create({
 
     tag:  'paypal-button',
     name: 'ppbutton',
 
     buildUrl(props) : string {
-        let env = props.env || config.env;
+        const env = props.env || config.env;
 
         return config.buttonUrls[env];
     },
@@ -157,11 +158,10 @@ export let Button : Component<ButtonOptions> = create({
         width:  false
     },
 
-    // eslint-disable-next-line no-unused-vars
     prerenderTemplate({ props, jsxDom } : { props : Object, jsxDom : Function }) : HTMLElement {
 
-        let template = (
-            <div innerHTML={ componentTemplate({ props }) }></div>
+        const template = (
+            <div innerHTML={ componentTemplate({ props }) } />
         );
 
         template.addEventListener('click', () => {
@@ -284,7 +284,7 @@ export let Button : Component<ButtonOptions> = create({
             sendToChild: false,
 
             validate(client, props) {
-                let env = props.env || config.env;
+                const env = props.env || config.env;
 
                 if (!client[env]) {
                     throw new Error(`Client ID not found for env: ${ env }`);
@@ -327,7 +327,7 @@ export let Button : Component<ButtonOptions> = create({
             queryParam: true,
 
             def(props) : ?string {
-                let env = props.env || config.env;
+                const env = props.env || config.env;
 
                 if (env === ENV.STAGE || env === ENV.LOCAL) {
                     return config.stage;
@@ -347,7 +347,7 @@ export let Button : Component<ButtonOptions> = create({
             queryParam: true,
 
             def(props) : ?string {
-                let env = props.env || config.env;
+                const env = props.env || config.env;
 
                 if (env === ENV.STAGE || env === ENV.LOCAL) {
                     return config.stageUrl;
@@ -394,7 +394,7 @@ export let Button : Component<ButtonOptions> = create({
             },
             // $FlowFixMe
             decorate(braintree, props) : ZalgoPromise<BraintreePayPalClient> {
-                let env = props.env || config.env;
+                const env = props.env || config.env;
                 // $FlowFixMe
                 return ZalgoPromise.hash(props.client).then(client => {
                     return awaitBraintreeClient(braintree, client[env]);
@@ -412,9 +412,9 @@ export let Button : Component<ButtonOptions> = create({
             decorate(original) : Function {
                 return function payment() : ZalgoPromise<string> {
 
-                    let data = {};
+                    const data = {};
 
-                    let actions = {
+                    const actions = {
                         request,
                         payment: {
                             create: (options) => {
@@ -507,7 +507,7 @@ export let Button : Component<ButtonOptions> = create({
 
                 const APM_FUNDING = [ FUNDING.IDEAL, FUNDING.SOFORT, FUNDING.GIROPAY, FUNDING.BANCONTACT, FUNDING.P24, FUNDING.MYBANK, FUNDING.ZIMPLER, FUNDING.EPS ];
 
-                let apmFunding = APM_FUNDING.filter(source => (isApmEligible(source, props)));
+                const apmFunding = APM_FUNDING.filter(source => (isApmEligible(source, props)));
 
                 allowed = allowed.concat(apmFunding);
 
@@ -550,10 +550,10 @@ export let Button : Component<ButtonOptions> = create({
             noop:      true,
             decorate(original) : Function {
                 return function decorateOnRender() : mixed {
-                    let { browser = 'unrecognized', version = 'unrecognized' } = getBrowser();
+                    const { browser = 'unrecognized', version = 'unrecognized' } = getBrowser();
                     info(`button_render_browser_${ browser }_${ isDevice() ? 'mobile' : 'desktop' }_${ version }`);
 
-                    let style = this.props.style || {};
+                    const style = this.props.style || {};
 
                     info(`button_render`);
                     info(`button_render_color_${ style.color || 'default' }`);
@@ -631,7 +631,7 @@ export let Button : Component<ButtonOptions> = create({
 
                     flushLogs();
 
-                    let restart = actions.restart;
+                    const restart = actions.restart;
                     actions.restart = () => {
                         return restart().then(() => {
                             return new ZalgoPromise();
@@ -655,7 +655,7 @@ export let Button : Component<ButtonOptions> = create({
                             .then(client => client.tokenizePayment(data));
                     });
 
-                    let execute = actions.payment.execute;
+                    const execute = actions.payment.execute;
                     actions.payment.execute = () => {
                         return execute().then(result => {
 
@@ -668,7 +668,7 @@ export let Button : Component<ButtonOptions> = create({
                         });
                     };
 
-                    let get = actions.payment.get;
+                    const get = actions.payment.get;
 
                     actions.payment.get = () => {
                         return get().then(result => {
@@ -740,9 +740,9 @@ export let Button : Component<ButtonOptions> = create({
                     });
 
                     flushLogs();
-                    let timeout = __TEST__ ? 500 : 10 * 1000;
+                    const timeout = __TEST__ ? 500 : 10 * 1000;
 
-                    let patch = actions.payment.patch;
+                    const patch = actions.payment.patch;
                     actions.payment.patch = (patchObject) => {
                         return ZalgoPromise.try(() => {
                             return patch(patchObject);
@@ -757,8 +757,7 @@ export let Button : Component<ButtonOptions> = create({
                     return ZalgoPromise.try(() => {
                         return original.call(this, data, { ...actions, resolve, reject });
                     }).timeout(timeout,
-                        new Error(`Timed out waiting ${ timeout }ms for payment`)
-                    ).catch(err => {
+                        new Error(`Timed out waiting ${ timeout }ms for payment`)).catch(err => {
                         if (this.props.onError) {
                             this.props.onError(err);
                         }
@@ -809,7 +808,7 @@ export let Button : Component<ButtonOptions> = create({
 
                     flushLogs();
 
-                    let redirect = (win, url) => {
+                    const redirect = (win, url) => {
                         return ZalgoPromise.all([
                             redir(win || window.top, url || data.cancelUrl),
                             actions.close()
@@ -858,7 +857,7 @@ export let Button : Component<ButtonOptions> = create({
                         });
                     }
 
-                    let { color = 'default' } = this.props.style || {};
+                    const { color = 'default' } = this.props.style || {};
                     info(`button_click_color_${ color }`);
 
                     flushLogs();
@@ -874,7 +873,7 @@ export let Button : Component<ButtonOptions> = create({
             queryParam: 'locale.x',
 
             def() : string {
-                let { lang, country } = getBrowserLocale();
+                const { lang, country } = getBrowserLocale();
                 return `${ lang }_${ country }`;
             },
 
@@ -930,7 +929,7 @@ export let Button : Component<ButtonOptions> = create({
             queryParam:  true,
             sendToChild: false,
             def:         () => {
-                return btoa(JSON.stringify({
+                return base64encode(JSON.stringify({
                     url: getCurrentScriptUrl()
                 }));
             }

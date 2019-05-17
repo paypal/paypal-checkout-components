@@ -6,6 +6,7 @@ import { info, track, warn, flush as flushLogs, immediateFlush } from 'beaver-lo
 import { create, CONSTANTS, PopupOpenError } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
+import { base64encode } from 'belter/src';
 
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
     setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize,
@@ -29,6 +30,7 @@ function addHeader(name, value) : void {
     }
 }
 
+// eslint-disable-next-line flowtype/require-exact-type
 type CheckoutPropsType = {
     payment? : () => ZalgoPromise<string>,
     onAuthorize : ({ returnUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
@@ -44,7 +46,7 @@ type CheckoutPropsType = {
     checkoutUri? : string
 };
 
-export let Checkout : Component<CheckoutPropsType> = create({
+export const Checkout : Component<CheckoutPropsType> = create({
 
     tag:  'paypal-checkout',
     name: 'ppcheckout',
@@ -52,7 +54,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
     scrolling: true,
 
     buildUrl(props) : ZalgoPromise<string> {
-        let env = props.env || config.env;
+        const env = props.env || config.env;
 
         if (!props.payment) {
             throw new Error(`Can not build url without payment prop`);
@@ -143,7 +145,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
             type:     'object',
             required: false,
             def() : Object {
-                let meta = window.xprops && window.xprops.meta;
+                const meta = window.xprops && window.xprops.meta;
                 return meta || {};
             }
         },
@@ -154,7 +156,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
             queryParam: true,
 
             def(props) : ?string {
-                let env = props.env || config.env;
+                const env = props.env || config.env;
 
                 if (env === ENV.STAGE || env === ENV.LOCAL) {
                     return config.stage;
@@ -168,7 +170,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
             queryParam: true,
 
             def(props) : ?string {
-                let env = props.env || config.env;
+                const env = props.env || config.env;
 
                 if (env === ENV.STAGE || env === ENV.LOCAL) {
                     return config.stageUrl;
@@ -207,7 +209,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
             allowDelegate: true,
 
             def() : string {
-                let { lang, country } = getBrowserLocale();
+                const { lang, country } = getBrowserLocale();
                 return `${ lang }_${ country }`;
             }
         },
@@ -222,7 +224,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
             sendToChild: false,
 
             validate(client, props) {
-                let env = props.env || config.env;
+                const env = props.env || config.env;
 
                 if (!client[env]) {
                     throw new Error(`Client ID not found for env: ${ env }`);
@@ -248,7 +250,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
                 return payment();
             },
             childDecorate(payment) : () => ZalgoPromise<string> {
-                let token = getQueryParam('token');
+                const token = getQueryParam('token');
 
                 return token
                     ? memoize(() => ZalgoPromise.resolve(token))
@@ -300,9 +302,9 @@ export let Checkout : Component<CheckoutPropsType> = create({
             required:   false,
             queryParam: true,
             def() : Object {
-                let elements = Array.prototype.slice.call(document.querySelectorAll(`[${ ATTRIBUTE.FUNDING_SOURCE }]`));
+                const elements = Array.prototype.slice.call(document.querySelectorAll(`[${ ATTRIBUTE.FUNDING_SOURCE }]`));
 
-                let fundingSources = elements.map(el => {
+                const fundingSources = elements.map(el => {
                     return el.getAttribute(ATTRIBUTE.FUNDING_SOURCE);
                 });
 
@@ -327,7 +329,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
                             warn(`checkout_authorize_no_intent`, { paymentID: data.paymentID, token: data.paymentToken });
                         }
 
-                        let close = () => {
+                        const close = () => {
                             return ZalgoPromise.try(() => {
                                 if (actions.close) {
                                     return actions.close();
@@ -337,7 +339,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
                             });
                         };
 
-                        let redirect = (win, url) => {
+                        const redirect = (win, url) => {
                             return ZalgoPromise.all([
                                 redir(win || window.top, url || data.returnUrl),
                                 close()
@@ -347,8 +349,8 @@ export let Checkout : Component<CheckoutPropsType> = create({
                         return ZalgoPromise.try(() => {
 
                             try {
-                                let isButton = window.location.href.indexOf('/webapps/hermes/button') !== -1;
-                                let isGuest  = this.window.location.href.indexOf('/webapps/xoonboarding') !== -1;
+                                const isButton = window.location.href.indexOf('/webapps/hermes/button') !== -1;
+                                const isGuest  = this.window.location.href.indexOf('/webapps/xoonboarding') !== -1;
 
                                 if (isButton && isGuest) {
                                     return request({
@@ -415,7 +417,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
             decorate(original) : Function {
                 return function decorateOnCancel(data, actions = {}) : ZalgoPromise<void> {
 
-                    let close = () => {
+                    const close = () => {
                         return ZalgoPromise.try(() => {
                             if (actions.close) {
                                 return actions.close();
@@ -425,7 +427,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
                         });
                     };
 
-                    let redirect = (win, url) => {
+                    const redirect = (win, url) => {
                         return ZalgoPromise.all([
                             redir(win || window.top, url || data.cancelUrl),
                             close()
@@ -480,11 +482,11 @@ export let Checkout : Component<CheckoutPropsType> = create({
             decorate(original) : Function {
                 return function decorateOnClose(reason) : ZalgoPromise<void> {
 
-                    let onClose = original.apply(this, arguments);
+                    const onClose = original.apply(this, arguments);
 
-                    let CLOSE_REASONS = CONSTANTS.CLOSE_REASONS;
+                    const CLOSE_REASONS = CONSTANTS.CLOSE_REASONS;
 
-                    let shouldCancel =
+                    const shouldCancel =
                         this.props.onCancel &&
                         [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1;
 
@@ -549,7 +551,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
             queryParam:  true,
             sendToChild: false,
             def:         () => {
-                return btoa(JSON.stringify({
+                return base64encode(JSON.stringify({
                     url: getCurrentScriptUrl()
                 }));
             }
@@ -584,7 +586,7 @@ if (Checkout.isChild() && Checkout.xchild && Checkout.xprops) {
                 warn(`hermes_authorize_no_intent`, { paymentID: data.paymentID, token: data.paymentToken });
 
                 try {
-                    let intent = window.injector.get('$CheckoutCartModel').instance(data.paymentToken).payment_action;
+                    const intent = window.injector.get('$CheckoutCartModel').instance(data.paymentToken).payment_action;
                     warn(`hermes_intent`, { paymentID: data.paymentID, token: data.paymentToken, intent });
                 } catch (err) {
                     // pass
@@ -607,7 +609,7 @@ patchMethod(Checkout, 'render', ({ args: [ props ], original, context }) => {
 
 patchMethod(Checkout, 'renderTo', ({ args: [ win, props ], original, context }) => {
 
-    let payment = props.payment();
+    const payment = props.payment();
     props.payment = () => payment;
 
     return original.call(context, win, props, 'body').catch(err => {

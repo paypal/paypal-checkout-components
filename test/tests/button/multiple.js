@@ -5,7 +5,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { generateECToken, createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, assert } from '../common';
 
-for (let flow of [ 'popup', 'iframe' ]) {
+for (const flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal multiple button component happy path on ${ flow }`, () => {
 
@@ -20,7 +20,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             window.paypal.Checkout.contexts.iframe = false;
         });
 
-        let cases = [
+        const cases = [
 
             {
                 source:   window.paypal.FUNDING.CARD,
@@ -57,7 +57,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         ];
 
         // $FlowFixMe
-        for (let { source, fragment, locale, userAgent, commit } of cases) {
+        for (const { source, fragment, locale, userAgent, commit } of cases) {
             it(`should render multiple buttons including ${ source }, click on the ${ source } button, and send the correct url params`, (done) => {
 
                 if (userAgent) {
@@ -79,7 +79,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     allowed = [ source ];
                 }
 
-                let checkoutToken = generateECToken();
+                const checkoutToken = generateECToken();
 
                 window.paypal.Button.render({
 

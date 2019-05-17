@@ -51,8 +51,8 @@ function getRememberedFundingPromises() : { [FundingSource] : ZalgoPromise<boole
 }
 
 function getRememberedFundingPromise(source : FundingSource) : ZalgoPromise<boolean> {
-    let promises = getRememberedFundingPromises();
-    let promise = promises[source] = promises[source] || new ZalgoPromise();
+    const promises = getRememberedFundingPromises();
+    const promise = promises[source] = promises[source] || new ZalgoPromise();
     if (hasRememberedFunding(source)) {
         promise.resolve(isRememberedFunding(source));
     }
@@ -60,17 +60,17 @@ function getRememberedFundingPromise(source : FundingSource) : ZalgoPromise<bool
 }
 
 function flushRememberedFundingPromises() {
-    let promises = getRememberedFundingPromises();
-    let rememberedFunding = getRememberedFunding(sources => sources);
+    const promises = getRememberedFundingPromises();
+    const rememberedFunding = getRememberedFunding(sources => sources);
 
-    for (let source of Object.keys(promises)) {
+    for (const source of Object.keys(promises)) {
         promises[source].resolve(rememberedFunding.indexOf(source) !== -1);
     }
 }
 
 export function rememberFunding(sources : FundingList) {
     getRememberedFunding(rememberedFunding => {
-        for (let source of sources) {
+        for (const source of sources) {
 
             if (source === FUNDING.VENMO && !isDevice()) {
                 continue;

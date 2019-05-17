@@ -26,15 +26,15 @@ export { request, isEligible, isFundingRemembered, allowIframe as forceIframe, a
 export { logExperimentTreatment } from './experiments';
 export { logFundingEligibility } from './funding';
 
-export let onPossiblyUnhandledException = ZalgoPromise.onPossiblyUnhandledException;
+export const onPossiblyUnhandledException = ZalgoPromise.onPossiblyUnhandledException;
 
-export let version = __PAYPAL_CHECKOUT__.__MINOR_VERSION__;
+export const version = __PAYPAL_CHECKOUT__.__MINOR_VERSION__;
 
 export let checkout;
 export let apps;
 
 if (__PAYPAL_CHECKOUT__.__LEGACY_SUPPORT__) {
-    let legacy = require('./legacy');
+    const legacy = require('./legacy');
     checkout = legacy.checkout;
     apps = legacy.apps;
 }

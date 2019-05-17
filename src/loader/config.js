@@ -1,6 +1,6 @@
 /* @flow */
 
-export let config = {
+export const config = {
     checkoutjs_url: 'https://www.paypalobjects.com/api/checkout{version}.js',
     major_version:  '4',
     latest_version: 'latest',

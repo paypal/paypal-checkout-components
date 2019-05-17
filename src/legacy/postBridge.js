@@ -10,7 +10,7 @@ import { openMetaFrame, noop } from '../lib';
 export function setupPostBridge(env : string) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
 
-        let metaFrameDomain : string = config.paypalDomains[env];
+        const metaFrameDomain : string = config.paypalDomains[env];
 
         if (!bridge || !bridge.needsBridge({ domain: metaFrameDomain })) {
             return debug(`post_bridge_not_required`, { env });

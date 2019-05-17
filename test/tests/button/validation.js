@@ -3,7 +3,7 @@
 
 import { createTestContainer, destroyTestContainer, noop, assert } from '../common';
 
-let buttonConfigs = [
+const buttonConfigs = [
 
     {
         name: 'callbacks',
@@ -1842,7 +1842,7 @@ let buttonConfigs = [
     }
 ];
 
-for (let group of buttonConfigs) {
+for (const group of buttonConfigs) {
     describe(`paypal button ${ group.name } validation`, () => {
 
         beforeEach(() => {
@@ -1853,7 +1853,7 @@ for (let group of buttonConfigs) {
             destroyTestContainer();
         });
 
-        for (let useCase of group.cases) {
+        for (const useCase of group.cases) {
             if (useCase.valid) {
                 it(`should attempt to render a button with ${ useCase.desc } and succeed`, () => {
                     return window.paypal.Button.render({

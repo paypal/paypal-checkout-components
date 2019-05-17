@@ -3,7 +3,7 @@
 import { onHashChange, uniqueID, generateECToken, createElement,
     createTestContainer, destroyTestContainer, getElement, assert } from '../common';
 
-for (let flow of [ 'popup', 'iframe' ]) {
+for (const flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal legacy hijack on ${ flow }`, () => {
 
@@ -20,9 +20,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a form container and click on the button', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
-            let testForm = createElement({
+            const testForm = createElement({
                 tag:       'form',
                 container: 'testContainer',
                 id:        'testForm',
@@ -57,9 +57,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a form container and click on the button, with a cancel', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
-            let testForm = createElement({
+            const testForm = createElement({
                 tag:       'form',
                 container: 'testContainer',
                 id:        'testForm',
@@ -96,10 +96,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a link and click on the button', () => {
 
-            let token = generateECToken();
-            let hash = uniqueID();
+            const token = generateECToken();
+            const hash = uniqueID();
 
-            let testLink = createElement({
+            const testLink = createElement({
                 tag:       'a',
                 id:        'testLink',
                 container: 'testContainer',
@@ -124,9 +124,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a custom button into a form container and click on the button', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
-            let testForm = createElement({
+            const testForm = createElement({
                 tag:       'form',
                 container: 'testContainer',
                 id:        'testForm',
@@ -166,10 +166,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a custom link and click on the link', () => {
 
-            let token = generateECToken();
-            let hash = uniqueID();
+            const token = generateECToken();
+            const hash = uniqueID();
 
-            let testLink = createElement({
+            const testLink = createElement({
                 tag:       'a',
                 id:        'testLink',
                 container: 'testContainer',
@@ -194,10 +194,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a custom button into a link and click on the button', () => {
 
-            let token = generateECToken();
-            let hash = uniqueID();
+            const token = generateECToken();
+            const hash = uniqueID();
 
-            let testLink = createElement({
+            const testLink = createElement({
                 tag:       'a',
                 id:        'testLink',
                 container: 'testContainer',
@@ -229,10 +229,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a custom button into a div into a link and click on the button', () => {
 
-            let token = generateECToken();
-            let hash = uniqueID();
+            const token = generateECToken();
+            const hash = uniqueID();
 
-            let testLink = createElement({
+            const testLink = createElement({
                 tag:       'a',
                 id:        'testLink',
                 container: 'testContainer',
@@ -268,10 +268,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a custom button into a link and click on another button in the link', () => {
 
-            let token = generateECToken();
-            let hash = uniqueID();
+            const token = generateECToken();
+            const hash = uniqueID();
 
-            let testForm = createElement({
+            const testForm = createElement({
 
                 container: 'testContainer',
 
@@ -316,9 +316,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a form container and click on the button, with a true condition', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
-            let testForm = createElement({
+            const testForm = createElement({
                 tag:       'form',
                 container: 'testContainer',
                 id:        'testForm',
@@ -357,9 +357,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a form container and click on the button, with a false condition', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
-            let testForm = createElement({
+            const testForm = createElement({
                 tag:       'form',
                 container: 'testContainer',
                 id:        'testForm',
@@ -400,9 +400,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             window.paypal.postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = false;
 
-            let token = generateECToken();
+            const token = generateECToken();
 
-            let testForm = createElement({
+            const testForm = createElement({
                 tag:       'form',
                 container: 'testContainer',
                 id:        'testForm',

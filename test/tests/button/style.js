@@ -5,7 +5,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { generateECToken, createTestContainer, destroyTestContainer, getElementRecursive, assert } from '../common';
 
-for (let flow of [ 'popup', 'iframe' ]) {
+for (const flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal button style cases on ${ flow }`, () => {
 

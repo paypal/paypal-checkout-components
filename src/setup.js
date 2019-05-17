@@ -14,7 +14,7 @@ import { Checkout } from './checkout';
 import { pptm } from './external';
 
 function domainToEnv(domain : string) : ?string {
-    for (let env of Object.keys(config.paypalUrls)) {
+    for (const env of Object.keys(config.paypalUrls)) {
         if (config.paypalUrls[env] === domain) {
             return env;
         }
@@ -22,7 +22,7 @@ function domainToEnv(domain : string) : ?string {
 }
 
 function setDomainEnv(domain : string) {
-    let currentDomainEnv = domainToEnv(domain);
+    const currentDomainEnv = domainToEnv(domain);
 
     if (currentDomainEnv && currentDomainEnv !== 'test') {
         config.env = currentDomainEnv;
@@ -60,11 +60,11 @@ ZalgoPromise.onPossiblyUnhandledException(err => {
     });
 });
 
-let currentScript = getCurrentScript();
-let currentProtocol = window.location.protocol.split(':')[0];
+const currentScript = getCurrentScript();
+const currentProtocol = window.location.protocol.split(':')[0];
 
 
-type ConfigOptions = {
+type ConfigOptions = {|
     env? : ?string,
     stage? : ?string,
     apiStage? : ?string,
@@ -73,8 +73,9 @@ type ConfigOptions = {
     checkoutUri? : ?string,
     state? : ?string,
     logLevel? : ?string,
-    merchantID? : ?string
-};
+    merchantID? : ?string,
+    precacheRemembered? : boolean
+|};
 
 function configure({ env, stage, stageUrl, apiStage, localhostUrl, checkoutUri, state, logLevel, merchantID } : ConfigOptions = {}) {
 
@@ -153,7 +154,7 @@ function configure({ env, stage, stageUrl, apiStage, localhostUrl, checkoutUri, 
     }
 }
 
-export let init = once(({ precacheRemembered }) => {
+export const init = once(({ precacheRemembered }) => {
 
     if (!isEligible()) {
         warn('ineligible');
@@ -180,6 +181,7 @@ export let init = once(({ precacheRemembered }) => {
     debug(`current_protocol_${ currentProtocol }`);
 });
 
+// $FlowFixMe
 export function setup(options : ConfigOptions = {}) {
     configure(options);
     init(options);
@@ -207,8 +209,8 @@ if (!isPayPalDomain()) {
 
     if (currentScript) {
 
-        let scriptProtocol = currentScript.src.split(':')[0];
-        let loadTime = getResourceLoadTime(currentScript.src);
+        const scriptProtocol = currentScript.src.split(':')[0];
+        const loadTime = getResourceLoadTime(currentScript.src);
 
         debug(`current_script_protocol_${ scriptProtocol }`);
         debug(`current_script_protocol_${ currentProtocol === scriptProtocol ? 'match' : 'mismatch' }`);
@@ -239,7 +241,7 @@ if (!isPayPalDomain()) {
 
             ZalgoPromise.try(() => {
                 if (window.PaymentRequest) {
-                    let paymentReq = new window.PaymentRequest([
+                    const paymentReq = new window.PaymentRequest([
                         {
                             supportedMethods: 'basic-card'
                         }

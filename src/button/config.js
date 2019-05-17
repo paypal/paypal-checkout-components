@@ -6,7 +6,7 @@ import { FUNDING, DEFAULT, COUNTRY, BUTTON_LABEL, BUTTON_COLOR, BUTTON_LOGO_COLO
 
 type ButtonConfig = {
     [ string ] : {
-        colors? : Array<$Values<typeof BUTTON_COLOR>>
+        colors? : $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>
     }
 };
 
@@ -692,7 +692,7 @@ export function fundingToDefaultLabel(funding : string) : $Values<typeof BUTTON_
 }
 
 function getConfig<T : mixed>(conf : Object, category : string, key : string, def : ?T) : T {
-    let categoryConfig = conf[category];
+    const categoryConfig = conf[category];
 
     if (categoryConfig && categoryConfig.hasOwnProperty(key)) {
         return categoryConfig[key];

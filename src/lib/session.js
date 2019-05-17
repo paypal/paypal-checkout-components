@@ -2,8 +2,9 @@
 
 import { config } from '../config';
 
-import { uniqueID, isLocalStorageEnabled, isPayPalDomain } from './util';
+import { uniqueID, isLocalStorageEnabled } from './util';
 import { getQueryParam } from './dom';
+import { isPayPalDomain } from './security';
 
 const LOCAL_STORAGE_KEY = '__paypal_storage__';
 const SESSION_KEY       = '__paypal_session__';
@@ -13,7 +14,7 @@ let accessedStorage;
 
 export function getStorageState<T>(handler : (storage : Object) => T) : T {
 
-    let localStorageEnabled = isLocalStorageEnabled();
+    const localStorageEnabled = isLocalStorageEnabled();
     let storage;
 
     if (accessedStorage) {
@@ -21,7 +22,7 @@ export function getStorageState<T>(handler : (storage : Object) => T) : T {
     }
 
     if (!storage && localStorageEnabled) {
-        let rawStorage = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+        const rawStorage = window.localStorage.getItem(LOCAL_STORAGE_KEY);
 
         if (rawStorage) {
             storage = JSON.parse(rawStorage);
@@ -44,7 +45,7 @@ export function getStorageState<T>(handler : (storage : Object) => T) : T {
 
     accessedStorage = storage;
 
-    let result = handler(storage);
+    const result = handler(storage);
 
     if (localStorageEnabled) {
         window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storage));
@@ -65,7 +66,7 @@ export function getSession<T>(handler : (state : Object) => T) : T {
     return getStorageState(storage => {
 
         let session = storage[SESSION_KEY];
-        let now     = Date.now();
+        const now     = Date.now();
 
         if (session && ((now - session.created) > config.session_uid_lifetime)) {
             session = null;
@@ -93,13 +94,13 @@ export function getSessionState<T>(handler : (state : Object) => T) : T {
 
 export function getSessionID() : string {
 
-    let xprops = window.xprops;
+    const xprops = window.xprops;
 
     if (xprops && xprops.sessionID) {
         return xprops.sessionID;
     }
 
-    let querySessionID = getQueryParam('sessionID');
+    const querySessionID = getQueryParam('sessionID');
 
     if (isPayPalDomain() && querySessionID) {
         return querySessionID;
@@ -114,7 +115,7 @@ export function getButtonSessionID() : ?string {
         return window.xprops.buttonSessionID;
     }
 
-    let querySessionID = getQueryParam('buttonSessionID');
+    const querySessionID = getQueryParam('buttonSessionID');
 
     if (isPayPalDomain() && querySessionID) {
         return querySessionID;

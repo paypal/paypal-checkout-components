@@ -21,7 +21,7 @@ export function getPaymentType(payment : string) : string {
 
 export function determineUrl(env : string, fundingSource : ?string, payment : string) : string {
 
-    let paymentType = getPaymentType(payment);
+    const paymentType = getPaymentType(payment);
 
     if (paymentType === PAYMENT_TYPE.BA_TOKEN) {
         return config.billingUrls[env];

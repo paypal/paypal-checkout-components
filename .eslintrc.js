@@ -14,6 +14,11 @@ module.exports = {
     'rules': {
         'promise/catch-or-return': 'off',
         'complexity': 'off',
-        'max-nested-callbacks': [ 'error', 5 ]
+        'max-nested-callbacks': [ 'error', 5 ],
+        'react/prop-types': 'off',
+        'react/destructuring-assignment': 'off',
+        'react/require-default-props': 'off',
+        'react/no-unused-prop-types': 'off',
+        'react/style-prop-object': 'off'
     }
 };

@@ -246,7 +246,7 @@ export const CARD_CONFIG = {
 };
 
 function getConfig<T : mixed>(conf : Object, category : string, key : string, def : ?T) : T {
-    let categoryConfig = conf[category];
+    const categoryConfig = conf[category];
 
     if (categoryConfig && categoryConfig.hasOwnProperty(key)) {
         return categoryConfig[key];

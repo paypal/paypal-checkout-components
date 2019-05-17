@@ -10,9 +10,9 @@ import { loadScript, memoize, isElementVisible, stringifyError } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { normalizeLocale } from './common';
 
-let { info, debug, error } = prefix(LOG_PREFIX);
+const { info, debug, error } = prefix(LOG_PREFIX);
 
-let loadButtonJS = memoize(() : ZalgoPromise<void> => {
+const loadButtonJS = memoize(() : ZalgoPromise<void> => {
 
     debug(`buttonjs_load`);
 
@@ -33,7 +33,7 @@ function renderButton(id, { container, locale, type, color, shape, size }) : Zal
     return loadButtonJS().then(() => {
 
         if (locale) {
-            let { country, lang } = normalizeLocale(locale);
+            const { country, lang } = normalizeLocale(locale);
             locale = `${ lang }_${ country }`;
         }
 
@@ -49,7 +49,7 @@ function renderButton(id, { container, locale, type, color, shape, size }) : Zal
         debug(`render_button_size_${ size }`);
         debug(`render_button_label_${ type }`);
 
-        let el = window.paypal.button.create(id, { lc: locale, color, shape, size }, { type: 'button', label: type }).el;
+        const el = window.paypal.button.create(id, { lc: locale, color, shape, size }, { type: 'button', label: type }).el;
         container.appendChild(el);
 
         try {
@@ -63,6 +63,7 @@ function renderButton(id, { container, locale, type, color, shape, size }) : Zal
     });
 }
 
+// eslint-disable-next-line flowtype/no-mutable-array
 export function renderButtons(id : string, buttons : Array<Object>) : ZalgoPromise<Array<Object>> {
 
     return ZalgoPromise.map(buttons, button => {
@@ -78,8 +79,8 @@ export function renderButtons(id : string, buttons : Array<Object>) : ZalgoPromi
 
             let container;
             let type;
-            let condition = button.condition;
-            let click     = button.click;
+            const condition = button.condition;
+            const click     = button.click;
 
             if (button.container) {
                 container = button.container;
@@ -97,30 +98,30 @@ export function renderButtons(id : string, buttons : Array<Object>) : ZalgoPromi
 export function getHijackTargetElement(button : HTMLElement | HTMLButtonElement) : ?Element {
 
     // $FlowFixMe
-    let form = button.form;
+    const form = button.form;
 
     if (form) {
         debug(`target_element_button_form`);
         return form;
     }
 
-    let tagName = button.tagName && button.tagName.toLowerCase();
+    const tagName = button.tagName && button.tagName.toLowerCase();
 
     if (tagName === 'a') {
         debug(`target_element_link`);
         return button;
     }
 
-    let parentElement = button.parentElement;
-    let parentTagName = parentElement && parentElement.tagName && parentElement.tagName.toLowerCase();
+    const parentElement = button.parentElement;
+    const parentTagName = parentElement && parentElement.tagName && parentElement.tagName.toLowerCase();
 
     if ((tagName === 'img' || tagName === 'button') && parentTagName === 'a') {
         debug(`target_element_parent_link`);
         return parentElement;
     }
 
-    let grandparentElement = parentElement && parentElement.parentElement;
-    let grandparentTagName = grandparentElement && grandparentElement.tagName && grandparentElement.tagName.toLowerCase();
+    const grandparentElement = parentElement && parentElement.parentElement;
+    const grandparentTagName = grandparentElement && grandparentElement.tagName && grandparentElement.tagName.toLowerCase();
 
     if (tagName === 'button' && grandparentTagName === 'a') {
         debug(`target_element_grandparent_link`);

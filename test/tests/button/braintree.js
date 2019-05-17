@@ -7,7 +7,7 @@ import { createTestContainer, destroyTestContainer, generatePaymentID } from '..
 const MOCK_BRAINTREE_AUTH = 'MOCK_BRAINTREE_AUTH';
 const MOCK_BRAINTREE_NONCE = 'MOCK_BRAINTREE_NONCE';
 
-let mockPayPalCheckout = {
+const mockPayPalCheckout = {
 
     createPayment(paymentOptions) : ZalgoPromise<string> {
         return ZalgoPromise.try(() => {
@@ -38,7 +38,7 @@ let mockPayPalCheckout = {
     }
 };
 
-let mockBraintree = {
+const mockBraintree = {
 
     client: {
         create(options) : ZalgoPromise<mixed> {
@@ -75,7 +75,7 @@ let mockBraintree = {
 };
 
 
-for (let flow of [ 'popup', 'iframe' ]) {
+for (const flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal button braintree tests on ${ flow }`, () => {
 
@@ -166,7 +166,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should accept actions.payment.create', (done) => {
 
-            let payment = {
+            const payment = {
                 intent:       'authorize',
                 transactions: [
                     {
@@ -212,7 +212,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should accept actions.payment.create with a payment object', (done) => {
 
-            let payment = {
+            const payment = {
                 intent:       'authorize',
                 transactions: [
                     {
@@ -258,7 +258,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should accept actions.payment.create and correctly map to a Braintree payment', (done) => {
 
-            let payment = {
+            const payment = {
                 intent:       'authorize',
                 transactions: [
                     {
@@ -288,7 +288,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 }
             };
 
-            let createPayment = mockPayPalCheckout.createPayment;
+            const createPayment = mockPayPalCheckout.createPayment;
 
             // $FlowFixMe
             mockPayPalCheckout.createPayment = (paymentOptions) => {
@@ -397,7 +397,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should error on actions.payment.create with a payment object which can not be mapped', (done) => {
 
-            let payment = {
+            const payment = {
                 intent:       'authorize',
                 transactions: [
                     {

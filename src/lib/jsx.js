@@ -1,5 +1,5 @@
 /* @flow */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
 import { regexMap } from './util';
 
@@ -34,7 +34,7 @@ export class JsxHTMLNode {
     }
 
     propsToString() : string {
-        let props = this.props;
+        const props = this.props;
 
         if (!props) {
             return '';
@@ -63,7 +63,7 @@ export class JsxHTMLNode {
         let result = '';
 
         function iterate(children) {
-            for (let child of children) {
+            for (const child of children) {
 
                 if (child === null || child === undefined) {
                     continue;
@@ -101,10 +101,10 @@ export function jsxToHTML(name : string, props : PropsType, ...children : Childr
     return new JsxHTMLNode(name, props, children);
 }
 
-export function jsxRender(template : string, renderers : { [string] : (string) =>?(JsxHTMLNode | Array<JsxHTMLNode>) }) : JsxHTMLNode {
+export function jsxRender(template : string, renderers : { [string] : (string) =>?(JsxHTMLNode | $ReadOnlyArray<JsxHTMLNode>) }) : JsxHTMLNode {
 
-    // eslint-disable-next-line security/detect-unsafe-regex
-    let nodes = regexMap(template, /\{\s*([a-z]+)(?::\s*([^} ]+))?\s*\}|([^${}]+)/g, (match, type, value, text) => {
+    // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
+    const nodes = regexMap(template, /\{\s*([a-z]+)(?::\s*([^} ]+))?\s*\}|([^${}]+)/g, (match, type, value, text) => {
         if (type) {
             if (!renderers[type]) {
                 throw new Error(`Can not render type: ${ type }`);
@@ -117,7 +117,7 @@ export function jsxRender(template : string, renderers : { [string] : (string) =
                 return text;
             }
 
-            if (/<br>/.test(text)) {
+            if ((/<br>/).test(text)) {
                 return renderers.break(text);
             } else {
                 return renderers.text(text);

@@ -25,9 +25,9 @@ describe('paypal initial setup', () => {
 
     it('should call setup for script tag', () => {
 
-        let key = 'stage';
-        let optKey = 'data-stage';
-        let val = 'stage2qa1234';
+        const key = 'stage';
+        const optKey = 'data-stage';
+        const val = 'stage2qa1234';
 
         return verifySetupOptions({
             key,
@@ -40,9 +40,9 @@ describe('paypal initial setup', () => {
 
     it('should call setup and customize logLevel', () => {
 
-        let key = 'logLevel';
-        let optKey = 'data-log-level';
-        let val = 'debug';
+        const key = 'logLevel';
+        const optKey = 'data-log-level';
+        const val = 'debug';
 
         return verifySetupOptions({
             key,
@@ -56,9 +56,9 @@ describe('paypal initial setup', () => {
 
     it('should call setup and customize env', () => {
 
-        let key = 'env';
-        let optKey = 'data-env';
-        let val = 'stage';
+        const key = 'env';
+        const optKey = 'data-env';
+        const val = 'stage';
 
         return verifySetupOptions({
             key,
@@ -72,9 +72,9 @@ describe('paypal initial setup', () => {
 
     it('should call setup and customize apiStage', () => {
 
-        let key = 'apiStage';
-        let optKey = 'data-api-stage';
-        let val = 'stage2qa1234';
+        const key = 'apiStage';
+        const optKey = 'data-api-stage';
+        const val = 'stage2qa1234';
 
         return verifySetupOptions({
             key,
@@ -88,9 +88,9 @@ describe('paypal initial setup', () => {
 
     it('should call setup and customize state', () => {
 
-        let key = 'state';
-        let optKey = 'data-state';
-        let val = 'abc123';
+        const key = 'state';
+        const optKey = 'data-state';
+        const val = 'abc123';
 
         return verifySetupOptions({
             key,
@@ -104,9 +104,9 @@ describe('paypal initial setup', () => {
 
     it('should call setup and customize state', () => {
 
-        let key = 'state';
-        let optKey = 'data-state';
-        let val = 'abc123';
+        const key = 'state';
+        const optKey = 'data-state';
+        const val = 'abc123';
 
         return verifySetupOptions({
             key,
