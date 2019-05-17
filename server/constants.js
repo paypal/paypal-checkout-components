@@ -19,6 +19,7 @@ export const HTTP_STATUS_CODE = {
 };
 
 export const EVENT = {
-    RENDER: 'smart_button_render',
-    ERROR:  'smart_button_error'
+    RENDER:      'smart_button_render',
+    ERROR:       'smart_button_error',
+    FETCH_ERROR: 'smart_button_fetch_error'
 };

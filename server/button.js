@@ -20,21 +20,19 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
         try {
             logger.info(EVENT.RENDER);
 
+            const params = undotify(req.query);
+            const { env, clientID, currency, intent, commit, vault, buyerCountry = req.get(HTTP_HEADER.PP_GEO_LOC),
+                disableFunding, disableCard, merchantID, buttonSessionID, clientAccessToken, cspNonce, debug } = getParams(params, req, res);
+
             const { getSDKLoader } = unpackSDKMeta(req.query.sdkMeta);
 
             const [ client, render ] = await Promise.all([
-                getSmartButtonClientScript({ debug: Boolean(req.query.debug) }),
+                getSmartButtonClientScript({ debug }),
                 getSmartButtonRenderScript()
             ]);
 
             logger.info(req, `button_client_version_${ client.version }`);
             logger.info(req, `button_render_version_${ render.version }`);
-
-            const params = undotify(req.query);
-
-            const { env, clientID, currency, intent, commit, vault, buyerCountry = req.get(HTTP_HEADER.PP_GEO_LOC),
-                disableFunding, disableCard, merchantID, buttonSessionID, clientAccessToken, cspNonce } = getParams(params, req, res);
-
             logger.info(req, `button_params`, { params: JSON.stringify(params) });
             
             let fundingEligibility;

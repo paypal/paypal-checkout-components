@@ -30,7 +30,8 @@ type ParamsType = {|
     disableCard : $ReadOnlyArray<?$Values<typeof CARD>>,
     merchantID? : string,
     buttonSessionID : string,
-    clientAccessToken? : string
+    clientAccessToken? : string,
+    debug? : boolean
 |};
 
 type RequestParams = {|
@@ -48,7 +49,8 @@ type RequestParams = {|
     merchantID : ?string,
     buttonSessionID : string,
     clientAccessToken : ?string,
-    cspNonce : string
+    cspNonce : string,
+    debug : boolean
 |};
 
 export function getParams(params : ParamsType, req : ExpressRequest, res : ExpressResponse) : RequestParams {
@@ -65,7 +67,8 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         disableCard,
         merchantID,
         buttonSessionID,
-        clientAccessToken
+        clientAccessToken,
+        debug = false
     } = params;
 
     const {
@@ -91,6 +94,7 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         merchantID,
         buttonSessionID,
         clientAccessToken,
-        cspNonce
+        cspNonce,
+        debug
     };
 }

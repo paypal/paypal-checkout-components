@@ -40,6 +40,7 @@
     "express": "^4.16.3"
   },
   "dependencies": {
+    "@paypal/checkout-components": "^5.0.30",
     "@paypal/sdk-client": "^4.0.27",
     "@paypal/sdk-constants": "^1.0.11",
     "belter": "^1.0.19",

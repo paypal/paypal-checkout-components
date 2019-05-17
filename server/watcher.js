@@ -1,24 +1,15 @@
 /* @flow */
 
-import { join } from 'path';
-
 import webpack from 'webpack';
 import { webpackCompile } from 'webpack-mem-compile';
-import { readFile } from 'fs-extra';
 import { poll } from 'grabthar';
 import { memoize } from 'belter';
 import { ENV } from '@paypal/sdk-constants';
 
 import { isLocal } from './util';
+import { BUTTON_RENDER_MODULE, BUTTON_CLIENT_MODULE, BUTTON_RENDER_JS, BUTTON_CLIENT_JS, BUTTON_CLIENT_MIN_JS } from './config';
 
-const BUTTON_RENDER_MODULE = '@paypal/checkout-components';
-const BUTTON_CLIENT_MODULE = require('../package.json').name;
-
-const BUTTON_RENDER_JS = 'dist/button.js';
-const BUTTON_CLIENT_JS = 'dist/smart-payment-buttons.js';
-const BUTTON_CLIENT_MIN_JS = 'dist/smart-payment-buttons.min.js';
-
-const getPayPalCheckoutComponentWatcher = memoize(() => {
+const getPayPalCheckoutComponentsWatcher = memoize(() => {
     return poll({
         name: BUTTON_RENDER_MODULE,
         flat: true
@@ -32,36 +23,37 @@ const getSmartButtonWatcher = memoize(() => {
     });
 });
 
-const fileRead = memoize(async (path : string) : Promise<string> => {
-    return await readFile(path);
-});
-
 export async function getSmartButtonRenderScript() : Promise<{ button : Object, version : string }> {
-    const watcher = getPayPalCheckoutComponentWatcher();
+    const watcher = getPayPalCheckoutComponentsWatcher();
     const { version } = await watcher.get();
     const button = await watcher.import(BUTTON_RENDER_JS);
     return { button, version };
 }
 
+export async function compileLocalSmartButtonClientScript() : Promise<{ script : string, version : string }> {
+    const { WEBPACK_CONFIG_DEBUG } = require('../webpack.config');
+    const script = await webpackCompile({ webpack, config: WEBPACK_CONFIG_DEBUG });
+    return { script, version: ENV.LOCAL };
+}
+
 export async function getSmartButtonClientScript({ debug = false } : { debug : boolean } = {}) : Promise<{ script : string, version : string }> {
     if (isLocal()) {
-        const { WEBPACK_CONFIG_DEBUG } = require('../webpack.config');
-        const script = await webpackCompile({ webpack, config: WEBPACK_CONFIG_DEBUG });
-        return { script, version: ENV.LOCAL };
+        return await compileLocalSmartButtonClientScript();
     }
     
     const watcher = getSmartButtonWatcher();
-    const { modulePath, version } = await watcher.get();
-    const script = await fileRead(join(modulePath, debug ? BUTTON_CLIENT_JS : BUTTON_CLIENT_MIN_JS));
+    const { version } = await watcher.get();
+    const script = await watcher.read(debug ? BUTTON_CLIENT_JS : BUTTON_CLIENT_MIN_JS);
+
     return { script, version };
 }
 
 export function startWatchers() {
-    getPayPalCheckoutComponentWatcher();
+    getPayPalCheckoutComponentsWatcher();
     getSmartButtonWatcher();
 }
 
 export function cancelWatchers() {
-    getPayPalCheckoutComponentWatcher().cancel();
+    getPayPalCheckoutComponentsWatcher().cancel();
     getSmartButtonWatcher().cancel();
 }
