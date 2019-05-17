@@ -1,13 +1,14 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { FUNDING } from '@paypal/sdk-constants';
 
 import { promiseNoop } from '../../lib';
 
 import type { XProps } from './types';
 
 export type XOnClickDataType = {|
-    
+    fundingSource : $Values<typeof FUNDING>
 |};
 
 export type XOnClickActionsType = {|
@@ -17,9 +18,9 @@ export type XOnClickActionsType = {|
 
 export type XOnClick = (XOnClickDataType, XOnClickActionsType) => ZalgoPromise<boolean | void>;
 
-export function buildXOnClickData() : XOnClickDataType {
+export function buildXOnClickData({ fundingSource } : { fundingSource : $Values<typeof FUNDING> }) : XOnClickDataType {
     // $FlowFixMe
-    return {};
+    return { fundingSource };
 }
 
 export function buildXOnClickActions() : XOnClickActionsType {
@@ -29,13 +30,17 @@ export function buildXOnClickActions() : XOnClickActionsType {
     };
 }
 
-export type OnClick = () => ZalgoPromise<boolean>;
+export type OnClickDataType = {|
+    fundingSource : $Values<typeof FUNDING>
+|};
+
+export type OnClick = (OnClickDataType) => ZalgoPromise<boolean>;
 
 export function getOnClick(xprops : XProps) : OnClick {
     const { onClick = promiseNoop } = xprops;
 
-    return () => {
-        return onClick(buildXOnClickData(), buildXOnClickActions()).then(valid => {
+    return ({ fundingSource } : { fundingSource : $Values<typeof FUNDING> }) => {
+        return onClick(buildXOnClickData({ fundingSource }), buildXOnClickActions()).then(valid => {
             return (valid !== false);
         });
     };

@@ -82,7 +82,7 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
                 createSubscription
             } = getButtonCallbackProps({ xprops: window.xprops });
 
-            const validationPromise = onClick();
+            const validationPromise = onClick({ fundingSource });
 
             if (!init || !init.isEnabled()) {
                 return win ? win.close() : null;
