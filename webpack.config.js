@@ -51,7 +51,8 @@ export const MAJOR_MIN = getWebpackConfig({
     entry:         './src/load.js',
     filename:      `${ FILE_NAME }.min.js`,
     minify:        true,
-    libraryTarget: null
+    libraryTarget: null,
+    vars:          globals
 });
 
 export const MINOR_MIN = getWebpackConfig({
