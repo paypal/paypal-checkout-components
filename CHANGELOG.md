@@ -1,3 +1,9 @@
+## <small>5.0.32 (2019-05-21)</small>
+
+* Pass along data to onClick ([8b49fa4](http://github.paypal.com/paypal/paypal-checkout/commit/8b49fa4))
+
+
+
 ## <small>5.0.31 (2019-05-21)</small>
 
 * Disable apms when onShippingChange passed ([d1e1f02](http://github.paypal.com/paypal/paypal-checkout/commit/d1e1f02))
