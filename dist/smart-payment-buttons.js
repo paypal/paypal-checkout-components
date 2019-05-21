@@ -667,7 +667,7 @@ window.spb = function(modules) {
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    var _COUNTRY_LANGS, COUNTRY = {
+    var _COUNTRY_LANGS, _FPTI_KEY, COUNTRY = {
         AD: "AD",
         AE: "AE",
         AG: "AG",
@@ -995,7 +995,7 @@ window.spb = function(modules) {
         ORDER_INTENT: "order-intent",
         ORDER_COMMIT: "order-commit",
         ORDER_VAULT: "order-vault"
-    }), FPTI_KEY = {
+    }), FPTI_KEY = ((_FPTI_KEY = {
         FEED: "feed_name",
         STATE: "state_name",
         TRANSITION: "transition_name",
@@ -1021,17 +1021,16 @@ window.spb = function(modules) {
         FUNDING_COUNT: "eligible_payment_count",
         CHOSEN_FUNDING: "selected_payment_method",
         BUTTON_LAYOUT: "button_layout",
-        VERSION: "checkoutjs_version",
-        LOCALE: "locale",
-        BUYER_COUNTRY: "buyer_cntry",
-        INTEGRATION_IDENTIFIER: "integration_identifier",
-        PARTNER_ATTRIBUTION_ID: "bn_code",
-        SDK_NAME: "sdk_name",
-        SDK_VERSION: "sdk_version",
-        USER_AGENT: "user_agent",
-        USER_ACTION: "user_action",
-        CONTEXT_CORRID: "context_correlation_id"
-    }, FPTI_USER_ACTION = {
+        BUTTON_COLOR: "button_color",
+        BUTTON_SIZE: "button_size",
+        BUTTON_SHAPE: "button_shape",
+        BUTTON_LABEL: "button_label",
+        BUTTON_WIDTH: "button_width"
+    }).BUTTON_TYPE = "button_type", _FPTI_KEY.VERSION = "checkoutjs_version", _FPTI_KEY.LOCALE = "locale", 
+    _FPTI_KEY.BUYER_COUNTRY = "buyer_cntry", _FPTI_KEY.INTEGRATION_IDENTIFIER = "integration_identifier", 
+    _FPTI_KEY.PARTNER_ATTRIBUTION_ID = "bn_code", _FPTI_KEY.SDK_NAME = "sdk_name", _FPTI_KEY.SDK_VERSION = "sdk_version", 
+    _FPTI_KEY.USER_AGENT = "user_agent", _FPTI_KEY.USER_ACTION = "user_action", _FPTI_KEY.CONTEXT_CORRID = "context_correlation_id", 
+    _FPTI_KEY), FPTI_USER_ACTION = {
         COMMIT: "commit",
         CONTINUE: "continue"
     }, FPTI_DATA_SOURCE = {
@@ -1083,38 +1082,40 @@ window.spb = function(modules) {
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "m", function() {
+    __webpack_require__.d(__webpack_exports__, "n", function() {
         return SMART_BUTTONS;
-    }), __webpack_require__.d(__webpack_exports__, "n", function() {
+    }), __webpack_require__.d(__webpack_exports__, "o", function() {
         return SMART_PAYMENT_BUTTONS;
     }), __webpack_require__.d(__webpack_exports__, "a", function() {
         return ACCESS_TOKEN_HEADER;
-    }), __webpack_require__.d(__webpack_exports__, "h", function() {
+    }), __webpack_require__.d(__webpack_exports__, "i", function() {
         return HEADERS;
     }), __webpack_require__.d(__webpack_exports__, "d", function() {
         return DATA_ATTRIBUTES;
     }), __webpack_require__.d(__webpack_exports__, "b", function() {
         return CLASS;
-    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+    }), __webpack_require__.d(__webpack_exports__, "k", function() {
         return ORDER_API_ERROR;
     }), __webpack_require__.d(__webpack_exports__, "c", function() {
         return CONTEXT;
-    }), __webpack_require__.d(__webpack_exports__, "o", function() {
-        return TARGET_ELEMENT;
-    }), __webpack_require__.d(__webpack_exports__, "k", function() {
-        return ORDER_ID_PATTERN;
-    }), __webpack_require__.d(__webpack_exports__, "i", function() {
-        return INTEGRATION_ARTIFACT;
     }), __webpack_require__.d(__webpack_exports__, "p", function() {
-        return USER_EXPERIENCE_FLOW;
+        return TARGET_ELEMENT;
     }), __webpack_require__.d(__webpack_exports__, "l", function() {
+        return ORDER_ID_PATTERN;
+    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+        return INTEGRATION_ARTIFACT;
+    }), __webpack_require__.d(__webpack_exports__, "q", function() {
+        return USER_EXPERIENCE_FLOW;
+    }), __webpack_require__.d(__webpack_exports__, "m", function() {
         return PRODUCT_FLOW;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
-        return FPTI_CONTEXT_TYPE;
     }), __webpack_require__.d(__webpack_exports__, "f", function() {
-        return FPTI_STATE;
+        return FPTI_CONTEXT_TYPE;
     }), __webpack_require__.d(__webpack_exports__, "g", function() {
+        return FPTI_STATE;
+    }), __webpack_require__.d(__webpack_exports__, "h", function() {
         return FPTI_TRANSITION;
+    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+        return FPTI_BUTTON_TYPE;
     });
     var SMART_BUTTONS = "smart_buttons", SMART_PAYMENT_BUTTONS = "smart-payment-buttons", ACCESS_TOKEN_HEADER = "x-paypal-internal-euat", HEADERS = {
         AUTHORIZATION: "authorization",
@@ -1154,6 +1155,8 @@ window.spb = function(modules) {
     }, FPTI_TRANSITION = {
         BUTTON_LOAD: "process_button_load",
         CREATE_ORDER: "process_create_order"
+    }, FPTI_BUTTON_TYPE = {
+        IFRAME: "iframe"
     };
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
@@ -1297,7 +1300,7 @@ window.spb = function(modules) {
             };
         }), logger.addTrackingBuilder(function() {
             var _ref2, lang = locale.lang, country = locale.country, mID = merchantID;
-            return (_ref2 = {})[sdk_constants_src.d.STATE] = constants.f.BUTTON, _ref2[sdk_constants_src.d.FEED] = sdk_constants_src.c.PAYMENTS_SDK, 
+            return (_ref2 = {})[sdk_constants_src.d.STATE] = constants.g.BUTTON, _ref2[sdk_constants_src.d.FEED] = sdk_constants_src.c.PAYMENTS_SDK, 
             _ref2[sdk_constants_src.d.DATA_SOURCE] = sdk_constants_src.b.PAYMENTS_SDK, _ref2[sdk_constants_src.d.CLIENT_ID] = clientID, 
             _ref2[sdk_constants_src.d.SELLER_ID] = mID && mID[0], _ref2[sdk_constants_src.d.SESSION_UID] = sessionID, 
             _ref2[sdk_constants_src.d.REFERER] = window.location.host, _ref2[sdk_constants_src.d.LOCALE] = lang + "_" + country, 
@@ -1392,8 +1395,8 @@ window.spb = function(modules) {
         }).then(function(_ref) {
             var _getLogger$track, body = _ref.body;
             if (!body || !body.id) throw new Error("Order Api response error:\n\n" + JSON.stringify(body, null, 4));
-            return Object(lib.a)().track(((_getLogger$track = {})[sdk_constants_src.d.STATE] = constants.f.BUTTON, 
-            _getLogger$track[sdk_constants_src.d.TRANSITION] = constants.g.CREATE_ORDER, _getLogger$track[sdk_constants_src.d.CONTEXT_TYPE] = constants.e.ORDER_ID, 
+            return Object(lib.a)().track(((_getLogger$track = {})[sdk_constants_src.d.STATE] = constants.g.BUTTON, 
+            _getLogger$track[sdk_constants_src.d.TRANSITION] = constants.h.CREATE_ORDER, _getLogger$track[sdk_constants_src.d.CONTEXT_TYPE] = constants.f.ORDER_ID, 
             _getLogger$track[sdk_constants_src.d.TOKEN] = body.id, _getLogger$track[sdk_constants_src.d.CONTEXT_ID] = body.id, 
             _getLogger$track)), body.id;
         });
@@ -1432,9 +1435,9 @@ window.spb = function(modules) {
     function validatePaymentMethod(_ref2) {
         var _headers, clientAccessToken = _ref2.clientAccessToken, orderID = _ref2.orderID, paymentMethodID = _ref2.paymentMethodID, enableThreeDomainSecure = _ref2.enableThreeDomainSecure;
         Object(lib.a)().info("rest_api_create_order_token");
-        var headers = ((_headers = {})[constants.h.AUTHORIZATION] = "Bearer " + clientAccessToken, 
-        _headers[constants.h.PARTNER_ATTRIBUTION_ID] = window.xprops.partnerAttributionID, 
-        _headers[constants.h.CLIENT_METADATA_ID] = window.xprops.buttonSessionID, _headers), paymentSource = {
+        var headers = ((_headers = {})[constants.i.AUTHORIZATION] = "Bearer " + clientAccessToken, 
+        _headers[constants.i.PARTNER_ATTRIBUTION_ID] = window.xprops.partnerAttributionID, 
+        _headers[constants.i.CLIENT_METADATA_ID] = window.xprops.buttonSessionID, _headers), paymentSource = {
             token: {
                 id: paymentMethodID,
                 type: "NONCE"
@@ -1474,7 +1477,7 @@ window.spb = function(modules) {
             variables: {
                 orderID: orderID
             },
-            headers: (_headers2 = {}, _headers2[constants.h.ACCESS_TOKEN] = clientAccessToken, 
+            headers: (_headers2 = {}, _headers2[constants.i.ACCESS_TOKEN] = clientAccessToken, 
             _headers2)
         });
     }
@@ -1628,8 +1631,8 @@ window.spb = function(modules) {
         headerBuilders.push(builder);
     }
     function callSmartAPI(_ref) {
-        for (var _reqHeaders, url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, json = _ref.json, reqHeaders = ((_reqHeaders = {})[_constants__WEBPACK_IMPORTED_MODULE_4__.h.SOURCE] = _constants__WEBPACK_IMPORTED_MODULE_4__.m, 
-        _reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__.h.REQUESTED_BY] = _constants__WEBPACK_IMPORTED_MODULE_4__.n, 
+        for (var _reqHeaders, url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, json = _ref.json, reqHeaders = ((_reqHeaders = {})[_constants__WEBPACK_IMPORTED_MODULE_4__.i.SOURCE] = _constants__WEBPACK_IMPORTED_MODULE_4__.n, 
+        _reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__.i.REQUESTED_BY] = _constants__WEBPACK_IMPORTED_MODULE_4__.o, 
         _reqHeaders), _i2 = 0; _i2 < headerBuilders.length; _i2++) {
             var headerBuilder = headerBuilders[_i2];
             reqHeaders = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, reqHeaders, headerBuilder());
@@ -2132,7 +2135,7 @@ window.spb = function(modules) {
                 }, function(_ref) {
                     var intent = _ref.intent, orderID = _ref.orderID, restart = _ref.restart, subscriptionID = _ref.subscriptionID, handleProcessorError = function(err) {
                         if (err && err.data && err.data.details && err.data.details.some(function(detail) {
-                            return detail.issue === _constants__WEBPACK_IMPORTED_MODULE_3__.j.INSTRUMENT_DECLINED || detail.issue === _constants__WEBPACK_IMPORTED_MODULE_3__.j.PAYER_ACTION_REQUIRED;
+                            return detail.issue === _constants__WEBPACK_IMPORTED_MODULE_3__.k.INSTRUMENT_DECLINED || detail.issue === _constants__WEBPACK_IMPORTED_MODULE_3__.k.PAYER_ACTION_REQUIRED;
                         })) return restart().then(_lib__WEBPACK_IMPORTED_MODULE_4__.d);
                         throw new Error("Order could not be captured");
                     }, get = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
@@ -2507,7 +2510,7 @@ window.spb = function(modules) {
         }), closeCheckout = _window$paypal$Checko.close, triggerError = _window$paypal$Checko.onError;
         checkoutOpen = !0;
         var top, renderPromise = (0, _window$paypal$Checko.renderTo)((top = Object(cross_domain_utils_src.c)(window), 
-        canRenderTop && top ? top : window.xprops.getParent()), constants.o.BODY, context), close = function() {
+        canRenderTop && top ? top : window.xprops.getParent()), constants.p.BODY, context), close = function() {
             return checkoutOpen = !1, closeCheckout();
         };
         return {
@@ -2628,7 +2631,7 @@ window.spb = function(modules) {
                                                         return promise.reject(err);
                                                     }
                                                 });
-                                                return instance.renderTo(window.parent, constants.o.BODY).then(function() {
+                                                return instance.renderTo(window.parent, constants.p.BODY).then(function() {
                                                     return promise;
                                                 }).finally(instance.close);
                                             }({
@@ -2795,9 +2798,9 @@ window.spb = function(modules) {
                                     if (window.xprops.updateClientConfiguration) return Object(api.o)({
                                         orderID: orderID,
                                         fundingSource: fundingSource,
-                                        integrationArtifact: constants.i.PAYPAL_JS_SDK,
-                                        userExperienceFlow: isCardFields ? constants.p.INLINE : constants.p.INCONTEXT,
-                                        productFlow: constants.l.SMART_PAYMENT_BUTTONS
+                                        integrationArtifact: constants.j.PAYPAL_JS_SDK,
+                                        userExperienceFlow: isCardFields ? constants.q.INLINE : constants.q.INCONTEXT,
+                                        productFlow: constants.m.SMART_PAYMENT_BUTTONS
                                     });
                                 });
                             }({
@@ -2809,7 +2812,7 @@ window.spb = function(modules) {
                             return createOrder();
                         }).then(function(orderID) {
                             return function(orderID) {
-                                if (!orderID.match(constants.k)) throw new Error(orderID + " does not match pattern for order-id, ec-token or cart-id");
+                                if (!orderID.match(constants.l)) throw new Error(orderID + " does not match pattern for order-id, ec-token or cart-id");
                                 return Object(api_api.b)({
                                     query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        intent\n                        amounts {\n                            total {\n                                currencyCode\n                            }\n                        }\n                    }\n                }\n            }\n        ",
                                     variables: {
@@ -2861,11 +2864,15 @@ window.spb = function(modules) {
                     return el.getAttribute(constants.d.CARD) || el.getAttribute(constants.d.FUNDING_SOURCE);
                 }).filter(function(source) {
                     return source && source !== sdk_constants_src.g.CARD;
-                }), layout = xprops.style && xprops.style.layout;
-                logger.track(((_logger$track = {})[sdk_constants_src.d.TRANSITION] = constants.g.BUTTON_LOAD, 
+                }), style = xprops.style || {};
+                logger.track(((_logger$track = {})[sdk_constants_src.d.TRANSITION] = constants.h.BUTTON_LOAD, 
                 _logger$track[sdk_constants_src.d.FUNDING_LIST] = fundingSources.join(":"), _logger$track[sdk_constants_src.d.FUNDING_COUNT] = fundingSources.length.toString(), 
                 _logger$track[sdk_constants_src.d.PAGE_LOAD_TIME] = pageRenderTime ? pageRenderTime.toString() : "", 
-                _logger$track[sdk_constants_src.d.BUTTON_LAYOUT] = layout, _logger$track)), logger.flush();
+                _logger$track[sdk_constants_src.d.BUTTON_LAYOUT] = style && style.layout, _logger$track[sdk_constants_src.d.BUTTON_COLOR] = style && style.color, 
+                _logger$track[sdk_constants_src.d.BUTTON_SIZE] = style && style.size, _logger$track[sdk_constants_src.d.BUTTON_SHAPE] = style && style.shape, 
+                _logger$track[sdk_constants_src.d.BUTTON_LABEL] = style && style.label, _logger$track[sdk_constants_src.d.BUTTON_WIDTH] = window.innerWidth, 
+                _logger$track[sdk_constants_src.d.BUTTON_TYPE] = constants.e.IFRAME, _logger$track)), 
+                logger.flush();
             });
         }(), tasks.setupCheckout = function() {
             checkoutOpen = !1;
