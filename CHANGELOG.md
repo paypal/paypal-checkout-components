@@ -1,3 +1,9 @@
+## <small>5.0.31 (2019-05-21)</small>
+
+* Disable apms when onShippingChange passed ([d1e1f02](http://github.paypal.com/paypal/paypal-checkout/commit/d1e1f02))
+
+
+
 ## <small>5.0.30 (2019-05-14)</small>
 
 * chore(release): 5.0.29 :tada: ([5229fa8](http://github.paypal.com/paypal/paypal-checkout/commit/5229fa8))
