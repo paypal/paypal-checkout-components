@@ -387,7 +387,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                                 [ FPTI_KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                             }).flush();
 
-                            return value({}, actions);
+                            return value(data, actions);
                         };
                     },
 
