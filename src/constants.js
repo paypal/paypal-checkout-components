@@ -42,8 +42,6 @@ export const TARGET_ELEMENT = {
     BODY: 'body'
 };
 
-export const ERROR_URL = 'https://www.paypal.com/checkoutnow/error';
-
 export const ORDER_ID_PATTERN = /^(EC-)?[A-Z0-9]+$/;
 
 export const INTEGRATION_ARTIFACT = {
