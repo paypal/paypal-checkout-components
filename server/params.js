@@ -4,6 +4,42 @@ import { ENV, COUNTRY, LANG, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, DEF
 
 import type { ExpressRequest, ExpressResponse } from './types';
 
+type FundingEligibility = {|
+    paypal : {
+    eligible : boolean
+},
+venmo : {
+    eligible : boolean
+}
+|};
+
+function getFundingEligibility(req : ExpressRequest) : FundingEligibility {
+    const encodedFundingEligibility = req.query.fundingEligibility;
+
+    let fundingEligibility;
+
+    if (!encodedFundingEligibility || typeof encodedFundingEligibility !== 'string') {
+        // $FlowFixMe
+        fundingEligibility = {
+            [FUNDING.PAYPAL]: {
+                eligible: true
+            }
+        };
+    } else {
+        fundingEligibility = JSON.parse(
+            Buffer.from(encodedFundingEligibility, 'base64').toString('utf8')
+        );
+    }
+
+    const cookies = req.get('cookie');
+    if (cookies && cookies.indexOf('pwv') !== -1) {
+        fundingEligibility[FUNDING.VENMO] = fundingEligibility[FUNDING.VENMO] || {};
+        fundingEligibility[FUNDING.VENMO].eligible = true;
+    }
+
+    return fundingEligibility;
+}
+
 function getNonce(res : ExpressResponse) : string {
     let nonce = res.locals && res.locals.nonce;
 
@@ -50,6 +86,7 @@ type RequestParams = {|
     buttonSessionID : string,
     clientAccessToken : ?string,
     cspNonce : string,
+    fundingEligibility : FundingEligibility,
     debug : boolean
 |};
 
@@ -78,6 +115,8 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
 
     const cspNonce = getNonce(res);
 
+    const fundingEligibility = getFundingEligibility(req);
+
     return {
         env,
         clientID,
@@ -94,6 +133,7 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         merchantID,
         buttonSessionID,
         clientAccessToken,
+        fundingEligibility,
         cspNonce,
         debug
     };
