@@ -1,7 +1,7 @@
 /* @flow weak */
 /* eslint max-lines: 0 */
 
-import { ENV, COUNTRY, LANG } from '../constants';
+import { ENV, COUNTRY, LANG, LOCALE } from '../constants';
 
 function getDefaultEnv() : $Values<typeof ENV> {
     if (__TEST__) {
@@ -28,6 +28,8 @@ function getDefaultEnv() : $Values<typeof ENV> {
 }
 
 export const config = {
+
+    locales: LOCALE,
 
     scriptUrl: __TEST__
         ? `//${ window.location.host }/base/src/load.js`
