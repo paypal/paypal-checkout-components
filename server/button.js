@@ -24,7 +24,21 @@ export function getButtonMiddleware({ logger = defaultLogger } : { logger? : Log
             const { fundingEligibility, env, clientID, buttonSessionID, cspNonce, debug, buyerCountry = req.get(HTTP_HEADER.PP_GEO_LOC)
                 /* disableFunding, disableCard, merchantID, currency, intent, commit, vault, clientAccessToken */ } = getParams(params, req, res);
 
-            const { getSDKLoader } = unpackSDKMeta(req.query.sdkMeta);
+            const sdkMeta = req.query.sdkMeta;
+            let meta;
+
+            try {
+                if (typeof sdkMeta !== 'string') {
+                    throw new TypeError(`Expected sdkMeta to be a string`);
+                }
+
+                meta = unpackSDKMeta(req.query.sdkMeta);
+            } catch (err) {
+                logger.warn(req, 'bad_sdk_meta', { sdkMeta, err: err.stack ? err.stack : err.toString() });
+                return clientErrorResponse(res, `Invalid sdk meta: ${ sdkMeta.toString() }`);
+            }
+
+            const { getSDKLoader } = meta;
 
             const [ client, render ] = await Promise.all([
                 getSmartButtonClientScript({ debug }),
