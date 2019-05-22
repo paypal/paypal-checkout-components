@@ -1988,9 +1988,10 @@
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     var _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, constants = __webpack_require__(0), config = {
+        locales: constants.z,
         scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.270",
+        version: "4.0.271",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -5113,7 +5114,7 @@
     function beacon(event, payload) {
         void 0 === payload && (payload = {});
         try {
-            payload.event = "ppxo_" + event, payload.version = "4.0.270", payload.host = window.location.host, 
+            payload.event = "ppxo_" + event, payload.version = "4.0.271", payload.host = window.location.host, 
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)(), payload.appName = APP_NAME;
             var query = [];
             for (var key in payload) payload.hasOwnProperty(key) && query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
@@ -5810,13 +5811,13 @@
     "use strict";
     __webpack_require__.r(__webpack_exports__);
     var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23), _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24), _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
-    if (__webpack_require__(21), window.paypal && "4.0.270" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-        version: "4.0.270"
-    }), new Error("PayPal Checkout Integration Script with same version (4.0.270) already loaded on page");
-    if (window.paypal && window.paypal.version && "4.0.270" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
+    if (__webpack_require__(21), window.paypal && "4.0.271" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
+        version: "4.0.271"
+    }), new Error("PayPal Checkout Integration Script with same version (4.0.271) already loaded on page");
+    if (window.paypal && window.paypal.version && "4.0.271" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
         existingVersion: window.paypal.version,
-        version: "4.0.270"
-    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.270");
+        version: "4.0.271"
+    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.271");
     try {
         var _interface = __webpack_require__(55);
         Object(_lib_namespace__WEBPACK_IMPORTED_MODULE_1__.a)(_interface, [ "paypal", "PAYPAL", "ppxo" ], [ "apps" ]);
@@ -7792,7 +7793,7 @@
         });
     });
     function getScriptVersion() {
-        return Boolean(getCurrentScript()) ? "4" : "4.0.270";
+        return Boolean(getCurrentScript()) ? "4" : "4.0.271";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -7801,7 +7802,7 @@
             return 0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://")), 
             scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.270.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.271.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.g)();
@@ -19796,7 +19797,7 @@
                 logoColor: "blue"
             })));
         }(props_normalizeProps(props)) : null;
-        return jsxToHTML("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[src_constants.c.VERSION] = "4.0.270", 
+        return jsxToHTML("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[src_constants.c.VERSION] = "4.0.271", 
         _ref18), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -20888,7 +20889,7 @@
                 country: config.a.locale.country,
                 lang: config.a.locale.lang,
                 uid: Object(lib_session.c)(),
-                ver: "4.0.270"
+                ver: "4.0.271"
             };
         }), Object(beaver_logger_client.a)(function() {
             return {
@@ -21004,7 +21005,7 @@
         setup_track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.SCRIPT_LOAD, 
         setup_track3));
     }
-    var interface_Checkout, interface_BillingPage, PayPalCheckout, src_interface_destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, interface_postRobot = src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.270";
+    var interface_Checkout, interface_BillingPage, PayPalCheckout, src_interface_destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, interface_postRobot = src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.271";
     Object(security.b)() && (interface_Checkout = component_Checkout, interface_BillingPage = BillingPage, 
     interface_ThreeDomainSecure = ThreeDomainSecure, PayPalCheckout = component_Checkout, 
     enableCheckoutIframe = function() {
