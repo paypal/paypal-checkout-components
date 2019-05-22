@@ -24,7 +24,7 @@ export function getButtonMiddleware({ logger = defaultLogger } : { logger? : Log
             const { fundingEligibility, env, clientID, buttonSessionID, cspNonce, debug, buyerCountry = req.get(HTTP_HEADER.PP_GEO_LOC)
                 /* disableFunding, disableCard, merchantID, currency, intent, commit, vault, clientAccessToken */ } = getParams(params, req, res);
 
-            const sdkMeta = req.query.sdkMeta;
+            const sdkMeta = req.query.sdkMeta || '';
             let meta;
 
             try {
