@@ -1,3 +1,9 @@
+## <small>5.0.33 (2019-05-23)</small>
+
+* Null checks for eligibility tree shaking ([75c9270](http://github.paypal.com/paypal/paypal-checkout/commit/75c9270))
+
+
+
 ## <small>5.0.32 (2019-05-21)</small>
 
 * Pass along data to onClick ([8b49fa4](http://github.paypal.com/paypal/paypal-checkout/commit/8b49fa4))
