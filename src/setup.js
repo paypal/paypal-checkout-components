@@ -8,7 +8,7 @@ import { FPTI } from './constants';
 import { initLogger, checkForCommonErrors, setLogLevel, stringifyError,
     stringifyErrorMessage, getResourceLoadTime, isPayPalDomain, isEligible,
     getDomainSetting, once, openMetaFrame, precacheRememberedFunding,
-    getCurrentScript, noop } from './lib';
+    getCurrentScript, noop, getRememberedFunding } from './lib';
 import { Button } from './button';
 import { Checkout } from './checkout';
 import { pptm } from './external';
@@ -222,9 +222,10 @@ if (!isPayPalDomain()) {
         }
 
         track({
-            [ FPTI.KEY.STATE ]:           FPTI.STATE.LOAD,
-            [ FPTI.KEY.TRANSITION ]:      FPTI.TRANSITION.SCRIPT_LOAD,
-            [ FPTI.KEY.TRANSITION_TIME ]: loadTime
+            [ FPTI.KEY.STATE ]:              FPTI.STATE.LOAD,
+            [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.SCRIPT_LOAD,
+            [ FPTI.KEY.TRANSITION_TIME ]:    loadTime,
+            [ FPTI.KEY.FUNDING_REMEMBERED ]: getRememberedFunding().join(',')
         });
 
         try {

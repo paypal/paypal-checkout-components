@@ -35,7 +35,8 @@ export const FPTI = {
         BUTTON_LABEL:       'button_label',
         BUTTON_WIDTH:       'button_width',
         VERSION:            'checkoutjs_version',
-        MAX_BUTTONS:        'max_buttons'
+        MAX_BUTTONS:        'max_buttons',
+        FUNDING_REMEMBERED: 'funding_remembered'
     },
 
     BUTTON_TYPE: {

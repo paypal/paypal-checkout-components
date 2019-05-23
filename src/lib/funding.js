@@ -8,8 +8,10 @@ import type { FundingSource, FundingList } from '../types';
 import { getStorageState, getGlobalState, getSessionState } from './session';
 import { isDevice } from './device';
 import { openMetaFrame } from './meta';
+import { identity } from './util';
 
-export function getRememberedFunding<T>(handler : (rememberedFunding : FundingList) => T) : T {
+// $FlowFixMe
+export function getRememberedFunding<T>(handler? : (rememberedFunding : FundingList) => T = identity) : T {
     return getStorageState(storage => {
         storage.rememberedFunding = storage.rememberedFunding || [];
         return handler(storage.rememberedFunding);
