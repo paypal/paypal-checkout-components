@@ -470,6 +470,14 @@ export const config = {
         
         'hollar.com': {
             disable_venmo: true
+        },
+
+        'bjs.com': {
+            disable_venmo: true
+        },
+
+        'playsugarhouse.com': {
+            disable_venmo: true
         }
     },
 
