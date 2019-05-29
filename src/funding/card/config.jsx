@@ -27,13 +27,13 @@ const CARD_PRIORITY : $ReadOnlyArray<$Values<typeof CARD>> = [
 
 function getVendorConfig() : { [$Values<typeof CARD>] : ?CardConfig } {
     return {
-        [ CARD.VISA ]:       (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.visa.eligible) ? getVisaConfig() : null,
-        [ CARD.AMEX ]:       (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.amex.eligible) ? getAmexConfig() : null,
-        [ CARD.MASTERCARD ]: (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.mastercard.eligible) ? getMastercardConfig() : null,
-        [ CARD.DISCOVER ]:   (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.discover.eligible) ? getDiscoverConfig() : null,
-        [ CARD.JCB ]:        (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.jcb.eligible) ? getJCBConfig() : null,
-        [ CARD.ELO ]:        (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.elo.eligible) ? getEloConfig() : null,
-        [ CARD.HIPER ]:      (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.hiper.eligible) ? getHiperConfig() : null
+        [ CARD.VISA ]:       (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.visa && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.visa.eligible)) ? getVisaConfig() : null,
+        [ CARD.AMEX ]:       (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.amex && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.amex.eligible)) ? getAmexConfig() : null,
+        [ CARD.MASTERCARD ]: (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.mastercard && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.mastercard.eligible)) ? getMastercardConfig() : null,
+        [ CARD.DISCOVER ]:   (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.discover && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.discover.eligible)) ? getDiscoverConfig() : null,
+        [ CARD.JCB ]:        (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.jcb && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.jcb.eligible)) ? getJCBConfig() : null,
+        [ CARD.ELO ]:        (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.elo && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.elo.eligible)) ? getEloConfig() : null,
+        [ CARD.HIPER ]:      (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.hiper && __paypal_checkout__.serverConfig.fundingEligibility.card.vendors.hiper.eligible)) ? getHiperConfig() : null
     };
 }
 
