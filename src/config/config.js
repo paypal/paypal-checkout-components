@@ -72,6 +72,7 @@ export const config = {
     },
 
     merchantID: '',
+    authCode:   '',
 
     logLevel: __PAYPAL_CHECKOUT__.__DEFAULT_LOG_LEVEL__,
 

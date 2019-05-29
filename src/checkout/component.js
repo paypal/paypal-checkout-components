@@ -43,7 +43,8 @@ type CheckoutPropsType = {
     stage? : string,
     stageUrl? : string,
     localhostUrl? : string,
-    checkoutUri? : string
+    checkoutUri? : string,
+    authCode? : string
 };
 
 export const Checkout : Component<CheckoutPropsType> = create({
@@ -176,6 +177,15 @@ export const Checkout : Component<CheckoutPropsType> = create({
                     return config.stageUrl;
                 }
             }
+        },
+
+        authCode: {
+            type:     'string',
+            required: false,
+            def() : string {
+                return config.authCode;
+            },
+            queryParam: 'code'
         },
 
         localhostUrl: {

@@ -129,7 +129,8 @@ type ButtonOptions = {|
     stage? : string,
     stageUrl? : string,
     localhostUrl? : string,
-    checkoutUri? : string
+    checkoutUri? : string,
+    authCode? : string
 |};
 
 export const Button : Component<ButtonOptions> = create({
@@ -475,6 +476,14 @@ export const Button : Component<ButtonOptions> = create({
 
                     return this.memoizedToken;
                 };
+            }
+        },
+
+        authCode: {
+            type:     'string',
+            required: false,
+            def() : string {
+                return config.authCode;
             }
         },
 

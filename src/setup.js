@@ -74,10 +74,11 @@ type ConfigOptions = {|
     state? : ?string,
     logLevel? : ?string,
     merchantID? : ?string,
-    precacheRemembered? : boolean
+    precacheRemembered? : boolean,
+    authCode? : ?string
 |};
 
-function configure({ env, stage, stageUrl, apiStage, localhostUrl, checkoutUri, state, logLevel, merchantID } : ConfigOptions = {}) {
+function configure({ env, stage, stageUrl, apiStage, localhostUrl, checkoutUri, state, logLevel, merchantID, authCode } : ConfigOptions = {}) {
 
     if (env) {
         if (!config.paypalUrls[env]) {
@@ -121,6 +122,13 @@ function configure({ env, stage, stageUrl, apiStage, localhostUrl, checkoutUri, 
         delete config.stageUrl;
         // $FlowFixMe
         config.stageUrl = Checkout.xprops.stageUrl;
+    }
+
+    authCode = authCode || (Button.xprops && Button.xprops.authCode) || (Checkout.xprops && Checkout.xprops.authCode);
+
+    if (authCode) {
+        delete config.authCode;
+        config.authCode = authCode;
     }
 
     if (apiStage) {
@@ -198,6 +206,7 @@ if (currentScript) {
         state:              currentScript.getAttribute('data-state'),
         logLevel:           currentScript.getAttribute('data-log-level'),
         merchantID:         currentScript.getAttribute('data-merchant-id'),
+        authCode:           currentScript.getAttribute('data-auth-code'),
         precacheRemembered: currentScript.hasAttribute('data-precache-remembered-funding')
     });
 
