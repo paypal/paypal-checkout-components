@@ -22,7 +22,7 @@ export function getMybankConfig() : FundingSourceConfig {
             [ BUTTON_LABEL.MYBANK ]: {
                 ...DEFAULT_LABEL_CONFIG,
     
-                Label: MybankLogo
+                Label: ({ logoColor, optional }) => MybankLogo({ logoColor, optional })
             }
         }
     };

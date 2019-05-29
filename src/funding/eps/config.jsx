@@ -22,7 +22,7 @@ export function getEpsConfig() : FundingSourceConfig {
             [ BUTTON_LABEL.EPS ]: {
                 ...DEFAULT_LABEL_CONFIG,
     
-                Label: EpsLogo
+                Label: ({ logoColor, optional }) => EpsLogo({ logoColor, optional })
             }
         }
     };

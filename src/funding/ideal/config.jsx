@@ -22,7 +22,7 @@ export function getIdealConfig() : FundingSourceConfig {
             [ BUTTON_LABEL.IDEAL ]: {
                 ...DEFAULT_LABEL_CONFIG,
     
-                Label: IdealLogo
+                Label: ({ logoColor, optional }) => IdealLogo({ logoColor, optional })
             }
         }
     };

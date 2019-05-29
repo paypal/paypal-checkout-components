@@ -22,7 +22,7 @@ export function getZimplerConfig() : FundingSourceConfig {
             [ BUTTON_LABEL.ZIMPLER ]: {
                 ...DEFAULT_LABEL_CONFIG,
 
-                Label: ZimplerLogo
+                Label: ({ logoColor, optional }) => ZimplerLogo({ logoColor, optional })
             }
         }
     };

@@ -22,7 +22,7 @@ export function getWechatpayConfig() : FundingSourceConfig {
             [ BUTTON_LABEL.WECHATPAY ]: {
                 ...DEFAULT_LABEL_CONFIG,
     
-                Label: WechatpayLogo
+                Label: ({ logoColor, optional }) => WechatpayLogo({ logoColor, optional })
             }
         }
     };

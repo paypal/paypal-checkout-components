@@ -22,7 +22,7 @@ export function getSofortConfig() : FundingSourceConfig {
             [ BUTTON_LABEL.SOFORT ]: {
                 ...DEFAULT_LABEL_CONFIG,
     
-                Label: SofortLogo
+                Label: ({ logoColor, optional }) => SofortLogo({ logoColor, optional })
             }
         }
     };

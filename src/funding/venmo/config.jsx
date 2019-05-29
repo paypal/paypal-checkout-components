@@ -28,7 +28,7 @@ export function getVenmoConfig() : FundingSourceConfig {
             [ BUTTON_LABEL.VENMO ]: {
                 ...DEFAULT_LABEL_CONFIG,
     
-                Label: VenmoLogo,
+                Label: ({ logoColor, optional }) => VenmoLogo({ logoColor, optional }),
     
                 colors: [
                     BUTTON_COLOR.BLUE,

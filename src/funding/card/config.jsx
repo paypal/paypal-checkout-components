@@ -96,7 +96,7 @@ export function getCardConfig() : FundingSourceConfig {
 
                 handleClick: true,
     
-                Label: ({ fundingEligibility, locale, nonce, onClick }) => {
+                Label: ({ fundingEligibility, locale, onClick }) => {
                     let maxCards = 4;
     
                     // $FlowFixMe
@@ -132,11 +132,7 @@ export function getCardConfig() : FundingSourceConfig {
                                     [ ATTRIBUTE.CARD ]:           name
                                 } }
                             >
-                                <Label
-                                    locale={ locale }
-                                    nonce={ nonce }
-                                    onClick={ onClick }
-                                />
+                                <Label />
                             </div>
                         );
                     }).filter(Boolean).slice(0, maxCards);

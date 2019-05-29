@@ -57,7 +57,6 @@ type FundingLabelConfig = {|
     Label : ({|
         locale : LocaleType,
         logoColor : $Values<typeof LOGO_COLOR>,
-        nonce : string,
         multiple : boolean,
         period? : number,
         fundingEligibility : FundingEligibilityType,
@@ -71,7 +70,6 @@ type FundingLabelConfig = {|
     |}) => ChildType,
     Tag? : ({|
         locale : LocaleType,
-        nonce : string,
         multiple : boolean
     |}) => ChildType,
     handleClick : boolean,
@@ -83,11 +81,7 @@ type FundingLabelConfig = {|
 |};
 
 export type CardConfig = {|
-    Label : ({|
-        locale : LocaleType,
-        nonce : string,
-        onClick : (event : Event, ...args : $ReadOnlyArray<mixed>) => void
-    |}) => ChildType
+    Label : () => ChildType
 |};
 
 export type FundingSourceConfig = {|

@@ -22,7 +22,7 @@ export function getGiropayConfig() : FundingSourceConfig {
             [ BUTTON_LABEL.GIROPAY ]: {
                 ...DEFAULT_LABEL_CONFIG,
     
-                Label: GiropayLogo
+                Label: ({ logoColor, optional }) => GiropayLogo({ logoColor, optional })
             }
         }
     };

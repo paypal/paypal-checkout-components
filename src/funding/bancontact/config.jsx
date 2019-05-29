@@ -22,7 +22,7 @@ export function getBancontactConfig() : FundingSourceConfig {
             [ BUTTON_LABEL.BANCONTACT ]: {
                 ...DEFAULT_LABEL_CONFIG,
     
-                Label: BancontactLogo
+                Label: ({ logoColor, optional }) => BancontactLogo({ logoColor, optional })
             }
         }
     };
