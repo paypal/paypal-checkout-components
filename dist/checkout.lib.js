@@ -1199,7 +1199,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: getSessionID(),
-                    ver: "4.0.272"
+                    ver: "4.0.273"
                 };
             }), Object(client.a)(function() {
                 return {
@@ -1447,7 +1447,7 @@
             });
         });
         function getScriptVersion() {
-            return "4.0.272";
+            return "4.0.273";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
@@ -1456,7 +1456,7 @@
                 return 0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://")), 
                 scriptUrl;
             }
-            return "https://www.paypalobjects.com/api/checkout.4.0.272.js";
+            return "https://www.paypalobjects.com/api/checkout.4.0.273.js";
         }
         function getDomainSetting(name, def) {
             var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.g)();
@@ -1480,7 +1480,7 @@
                         domain: metaFrameDomain
                     });
                     return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                        version: "4.0.272"
+                        version: "4.0.273"
                     }), metaFrameDomain).then(function() {
                         return metaListener;
                     }).then(function(_ref) {
@@ -1661,7 +1661,7 @@
             locales: constants.z,
             scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.272",
+            version: "4.0.273",
             cors: !0,
             env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -2033,7 +2033,7 @@
             },
             get paypalDomains() {
                 var _ref2;
-                return (_ref2 = {})[constants.t.LOCAL] = /^https?:\/\/.*\.paypal\.com:?\d*$/, _ref2[constants.t.STAGE] = "https://www." + config.stageUrl, 
+                return (_ref2 = {})[constants.t.LOCAL] = "http://localhost.paypal.com:8000", _ref2[constants.t.STAGE] = "https://www." + config.stageUrl, 
                 _ref2[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref2[constants.t.PRODUCTION] = "https://www.paypal.com", 
                 _ref2[constants.t.TEST] = "mock://www.paypal.com", _ref2[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
                 _ref2;
@@ -2617,9 +2617,10 @@
                 return parseInt(timing.connectEnd - timing.navigationStart, 10);
             }
         }
-        var clientTimer = timer(), reqTimer = timer(reqStartElapsed()), initiated = !1;
+        var clientTimer = timer(), reqTimer = timer(reqStartElapsed());
+        var initiated = !1;
         function init(conf) {
-            var method, time, heartBeatTimer, heartbeatCount;
+            var time, heartBeatTimer, heartbeatCount;
             extend(config, conf || {}), initiated || (initiated = !0, config.logPerformance && function() {
                 if (!enablePerformance) return info("no_performance_data");
                 addPayloadBuilder(function() {
@@ -2646,19 +2647,20 @@
                         [ "link", "script", "img", "css" ].indexOf(resource.initiatorType) > -1 && info(resource.initiatorType, resource);
                     });
                 });
-            }(), config.heartbeat && (heartBeatTimer = timer(), heartbeatCount = 0, method = function() {
-                if (!(config.heartbeatMaxThreshold && heartbeatCount > config.heartbeatMaxThreshold)) {
-                    heartbeatCount += 1;
-                    var elapsed = heartBeatTimer.elapsed(), lag = elapsed - config.heartbeatInterval, heartbeatPayload = {
-                        count: heartbeatCount,
-                        elapsed: elapsed
-                    };
-                    config.heartbeatTooBusy && (heartbeatPayload.lag = lag, lag >= config.heartbeatTooBusyThreshold && info("toobusy", heartbeatPayload)), 
-                    info("heartbeat", heartbeatPayload);
-                }
-            }, time = config.heartbeatInterval, function loop() {
+            }(), config.heartbeat && (heartBeatTimer = timer(), heartbeatCount = 0, time = config.heartbeatInterval, 
+            function loop() {
                 setTimeout(function() {
-                    method(), loop();
+                    (function() {
+                        if (!(config.heartbeatMaxThreshold && heartbeatCount > config.heartbeatMaxThreshold)) {
+                            heartbeatCount += 1;
+                            var elapsed = heartBeatTimer.elapsed(), lag = elapsed - config.heartbeatInterval, heartbeatPayload = {
+                                count: heartbeatCount,
+                                elapsed: elapsed
+                            };
+                            config.heartbeatTooBusy && (heartbeatPayload.lag = lag, lag >= config.heartbeatTooBusyThreshold && info("toobusy", heartbeatPayload)), 
+                            info("heartbeat", heartbeatPayload);
+                        }
+                    })(), loop();
                 }, time);
             }()), config.logUnload && (window.addEventListener("beforeunload", function() {
                 info("window_beforeunload"), immediateFlush({
@@ -4965,9 +4967,10 @@
             return replaceObject({
                 obj: obj
             }, function(item) {
-                var obj, err;
-                if ("object" == typeof item && null !== item) return isSerialized(item, conf.b.SERIALIZATION_TYPES.METHOD) ? deserializeMethod(source, origin, item) : isSerialized(item, conf.b.SERIALIZATION_TYPES.ERROR) ? (obj = item, 
-                err = new Error(obj.__message__), obj.__code__ && (err.code = obj.__code__), err) : isSerialized(item, conf.b.SERIALIZATION_TYPES.PROMISE) ? function(source, origin, prom) {
+                if ("object" == typeof item && null !== item) return isSerialized(item, conf.b.SERIALIZATION_TYPES.METHOD) ? deserializeMethod(source, origin, item) : isSerialized(item, conf.b.SERIALIZATION_TYPES.ERROR) ? function(source, origin, obj) {
+                    var err = new Error(obj.__message__);
+                    return obj.__code__ && (err.code = obj.__code__), err;
+                }(0, 0, item) : isSerialized(item, conf.b.SERIALIZATION_TYPES.PROMISE) ? function(source, origin, prom) {
                     return window.Promise ? new window.Promise(function(resolve, reject) {
                         return deserializeMethod(source, origin, prom.__then__)(resolve, reject);
                     }) : deserializeZalgoPromise(source, origin, prom);
@@ -20083,7 +20086,7 @@
                     logoColor: "blue"
                 })));
             }(normalizeProps(props)) : null;
-            return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.272", 
+            return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.273", 
             _ref18), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -21157,7 +21160,7 @@
             }), Object(beaver_logger_client.p)(((setup_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
             setup_track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, setup_track3));
         }
-        var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.272", legacy = __webpack_require__(58);
+        var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.273", legacy = __webpack_require__(58);
         interface_checkout = legacy.checkout, apps = legacy.apps, Object(lib.G)() && (interface_Checkout = src_checkout.a, 
         interface_BillingPage = BillingPage, interface_ThreeDomainSecure = ThreeDomainSecure, 
         PayPalCheckout = src_checkout.a, enableCheckoutIframe = function() {
