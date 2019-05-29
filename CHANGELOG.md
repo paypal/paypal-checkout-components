@@ -1,3 +1,9 @@
+## <small>5.0.34 (2019-05-29)</small>
+
+* fix card tree shaking ([9cc3513](http://github.paypal.com/paypal/paypal-checkout/commit/9cc3513))
+
+
+
 ## <small>5.0.33 (2019-05-23)</small>
 
 * Null checks for eligibility tree shaking ([75c9270](http://github.paypal.com/paypal/paypal-checkout/commit/75c9270))
