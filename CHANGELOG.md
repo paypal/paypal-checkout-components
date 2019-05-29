@@ -1,3 +1,8 @@
+## <small>5.0.35 (2019-05-29)</small>
+
+
+
+
 ## <small>5.0.34 (2019-05-29)</small>
 
 * fix card tree shaking ([9cc3513](http://github.paypal.com/paypal/paypal-checkout/commit/9cc3513))
