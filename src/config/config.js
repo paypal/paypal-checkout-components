@@ -534,7 +534,7 @@ export const config = {
 
     get paypalDomains() : Object {
         return {
-            [ ENV.LOCAL ]:      /^https?:\/\/.*\.paypal\.com:?\d*$/,
+            [ ENV.LOCAL ]:      'http://localhost.paypal.com:8000',
             [ ENV.STAGE ]:      `https://www.${ config.stageUrl }`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
