@@ -47,4 +47,14 @@ export function setupButtonChild(ButtonComponent : Button) {
     if (xprops && xprops.logLevel) {
         setLogLevel(xprops.logLevel);
     }
+
+    try {
+        if (xprops && xprops.onShippingChange && window.pre &&
+            window.pre.inlineGuest && window.pre.inlineGuest.res &&
+            window.pre.inlineGuest.res.data && window.pre.inlineGuest.res.data.treatments) {
+            window.pre.inlineGuest.res.data.treatments = [];
+        }
+    } catch (err) {
+        // pass
+    }
 }
