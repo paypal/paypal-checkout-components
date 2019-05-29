@@ -231,7 +231,8 @@
             BUTTON_LABEL: "button_label",
             BUTTON_WIDTH: "button_width",
             VERSION: "checkoutjs_version",
-            MAX_BUTTONS: "max_buttons"
+            MAX_BUTTONS: "max_buttons",
+            FUNDING_REMEMBERED: "funding_remembered"
         },
         BUTTON_TYPE: {
             IFRAME: "iframe",
@@ -894,7 +895,7 @@
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    var esm_extends = __webpack_require__(9), src = __webpack_require__(5), zalgo_promise_src = __webpack_require__(1), cross_domain_safe_weakmap_src = __webpack_require__(14), error = __webpack_require__(20);
+    var esm_extends = __webpack_require__(10), src = __webpack_require__(5), zalgo_promise_src = __webpack_require__(1), cross_domain_safe_weakmap_src = __webpack_require__(14), error = __webpack_require__(20);
     function urlEncode(str) {
         return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B");
     }
@@ -1991,7 +1992,7 @@
         locales: constants.z,
         scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.271",
+        version: "4.0.272",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -2014,6 +2015,7 @@
             delete this.localhostUrl, this.localhostUrl = val;
         },
         merchantID: "",
+        authCode: "",
         logLevel: "warn",
         throttles: {
             v4_mobile_device: 0
@@ -2313,6 +2315,12 @@
                 disable_venmo: !0
             },
             "hollar.com": {
+                disable_venmo: !0
+            },
+            "bjs.com": {
+                disable_venmo: !0
+            },
+            "playsugarhouse.com": {
                 disable_venmo: !0
             }
         },
@@ -3231,57 +3239,45 @@
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    function _extends() {
-        return (_extends = Object.assign || function(target) {
-            for (var i = 1; i < arguments.length; i++) {
-                var source = arguments[i];
-                for (var key in source) ({}).hasOwnProperty.call(source, key) && (target[key] = source[key]);
-            }
-            return target;
-        }).apply(this, arguments);
-    }
-    __webpack_require__.d(__webpack_exports__, "a", function() {
-        return _extends;
-    });
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "h", function() {
+    __webpack_require__.d(__webpack_exports__, "i", function() {
         return memoize;
-    }), __webpack_require__.d(__webpack_exports__, "f", function() {
+    }), __webpack_require__.d(__webpack_exports__, "g", function() {
         return match;
     }), __webpack_require__.d(__webpack_exports__, "c", function() {
         return eventEmitter;
     }), __webpack_require__.d(__webpack_exports__, "a", function() {
         return awaitKey;
-    }), __webpack_require__.d(__webpack_exports__, "o", function() {
-        return stringifyError;
     }), __webpack_require__.d(__webpack_exports__, "p", function() {
+        return stringifyError;
+    }), __webpack_require__.d(__webpack_exports__, "q", function() {
         return stringifyErrorMessage;
     }), __webpack_require__.d(__webpack_exports__, "b", function() {
         return domainMatches;
-    }), __webpack_require__.d(__webpack_exports__, "k", function() {
+    }), __webpack_require__.d(__webpack_exports__, "l", function() {
         return patchMethod;
     }), __webpack_require__.d(__webpack_exports__, "d", function() {
         return extend;
-    }), __webpack_require__.d(__webpack_exports__, "n", function() {
+    }), __webpack_require__.d(__webpack_exports__, "o", function() {
         return sortBy;
-    }), __webpack_require__.d(__webpack_exports__, "r", function() {
+    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+        return identity;
+    }), __webpack_require__.d(__webpack_exports__, "s", function() {
         return values;
-    }), __webpack_require__.d(__webpack_exports__, "l", function() {
-        return perc;
-    }), __webpack_require__.d(__webpack_exports__, "g", function() {
-        return max;
     }), __webpack_require__.d(__webpack_exports__, "m", function() {
+        return perc;
+    }), __webpack_require__.d(__webpack_exports__, "h", function() {
+        return max;
+    }), __webpack_require__.d(__webpack_exports__, "n", function() {
         return regexMap;
     });
     var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1), belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
-    __webpack_require__.d(__webpack_exports__, "i", function() {
+    __webpack_require__.d(__webpack_exports__, "j", function() {
         return belter_src__WEBPACK_IMPORTED_MODULE_1__.d;
-    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+    }), __webpack_require__.d(__webpack_exports__, "k", function() {
         return belter_src__WEBPACK_IMPORTED_MODULE_1__.f;
-    }), __webpack_require__.d(__webpack_exports__, "q", function() {
+    }), __webpack_require__.d(__webpack_exports__, "r", function() {
         return belter_src__WEBPACK_IMPORTED_MODULE_1__.g;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+    }), __webpack_require__.d(__webpack_exports__, "f", function() {
         return belter_src__WEBPACK_IMPORTED_MODULE_1__.c;
     });
     var moduleGlobal = {};
@@ -3394,6 +3390,9 @@
             return order.indexOf(a) - order.indexOf(b);
         });
     }
+    function identity(item) {
+        return item;
+    }
     function values(obj) {
         var result = [];
         for (var _key6 in obj) obj.hasOwnProperty(_key6) && result.push(obj[_key6]);
@@ -3411,6 +3410,20 @@
             results.push(handler.apply(null, arguments));
         }), results;
     }
+}, function(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+    function _extends() {
+        return (_extends = Object.assign || function(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) ({}).hasOwnProperty.call(source, key) && (target[key] = source[key]);
+            }
+            return target;
+        }).apply(this, arguments);
+    }
+    __webpack_require__.d(__webpack_exports__, "a", function() {
+        return _extends;
+    });
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
@@ -3448,7 +3461,7 @@
     }), __webpack_require__.d(interface_namespaceObject, "disable", function() {
         return disable;
     });
-    var lib = __webpack_require__(12), src = __webpack_require__(5), conf = __webpack_require__(8), global = __webpack_require__(7), esm_extends = __webpack_require__(9), zalgo_promise_src = __webpack_require__(1), SEND_MESSAGE_STRATEGIES = {};
+    var lib = __webpack_require__(12), src = __webpack_require__(5), conf = __webpack_require__(8), global = __webpack_require__(7), esm_extends = __webpack_require__(10), zalgo_promise_src = __webpack_require__(1), SEND_MESSAGE_STRATEGIES = {};
     SEND_MESSAGE_STRATEGIES[conf.b.SEND_STRATEGIES.POST_MESSAGE] = function(win, serializedMessage, domain) {
         try {
             __webpack_require__(34).emulateIERestrictions(window, win);
@@ -4201,7 +4214,7 @@
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__(9), __webpack_require__(1), __webpack_require__(5);
+    __webpack_require__(10), __webpack_require__(1), __webpack_require__(5);
     var objectIDs, cross_domain_safe_weakmap_src = __webpack_require__(14);
     function base64encode(str) {
         if ("function" == typeof btoa) return btoa(str);
@@ -4425,16 +4438,16 @@
     }), __webpack_require__.d(__webpack_exports__, "b", function() {
         return getGlobalState;
     });
-    var accessedStorage, _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4), _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10), _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(19), _security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(21), LOCAL_STORAGE_KEY = "__paypal_storage__", SESSION_KEY = "__paypal_session__", GLOBAL_KEY = "__paypal_global__";
+    var accessedStorage, _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4), _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9), _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(19), _security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(21), LOCAL_STORAGE_KEY = "__paypal_storage__", SESSION_KEY = "__paypal_session__", GLOBAL_KEY = "__paypal_global__";
     function getStorageState(handler) {
-        var storage, localStorageEnabled = Object(_util__WEBPACK_IMPORTED_MODULE_1__.e)();
+        var storage, localStorageEnabled = Object(_util__WEBPACK_IMPORTED_MODULE_1__.f)();
         if (accessedStorage && (storage = accessedStorage), !storage && localStorageEnabled) {
             var rawStorage = window.localStorage.getItem(LOCAL_STORAGE_KEY);
             rawStorage && (storage = JSON.parse(rawStorage));
         }
         storage || (storage = window[LOCAL_STORAGE_KEY]), storage || (storage = {
-            id: Object(_util__WEBPACK_IMPORTED_MODULE_1__.q)()
-        }), storage.id || (storage.id = Object(_util__WEBPACK_IMPORTED_MODULE_1__.q)()), 
+            id: Object(_util__WEBPACK_IMPORTED_MODULE_1__.r)()
+        }), storage.id || (storage.id = Object(_util__WEBPACK_IMPORTED_MODULE_1__.r)()), 
         accessedStorage = storage;
         var result = handler(storage);
         return localStorageEnabled ? window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storage)) : window[LOCAL_STORAGE_KEY] = storage, 
@@ -4450,7 +4463,7 @@
             var session = storage[SESSION_KEY], now = Date.now();
             return session && now - session.created > _config__WEBPACK_IMPORTED_MODULE_0__.a.session_uid_lifetime && (session = null), 
             session || (session = {
-                guid: Object(_util__WEBPACK_IMPORTED_MODULE_1__.q)(),
+                guid: Object(_util__WEBPACK_IMPORTED_MODULE_1__.r)(),
                 created: now
             }), storage[SESSION_KEY] = session, handler(session);
         });
@@ -4899,7 +4912,7 @@
     }), __webpack_require__.d(__webpack_exports__, "f", function() {
         return getResourceLoadTime;
     });
-    var beaver_logger_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3), zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1), _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0), _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4), _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(10);
+    var beaver_logger_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3), zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1), _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0), _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4), _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9);
     function isDocumentReady() {
         return Boolean(document.body) && "complete" === document.readyState;
     }
@@ -4947,7 +4960,7 @@
         if (document.body) return document.body;
         throw new Error("Document ready but document.body not present");
     });
-    var parseQuery = Object(_util__WEBPACK_IMPORTED_MODULE_4__.h)(function(queryString) {
+    var parseQuery = Object(_util__WEBPACK_IMPORTED_MODULE_4__.i)(function(queryString) {
         var params = {};
         if (!queryString) return params;
         if (-1 === queryString.indexOf("=")) return params;
@@ -5006,7 +5019,7 @@
             lang: lang
         };
     }
-    var getBrowserLocale = Object(_util__WEBPACK_IMPORTED_MODULE_4__.h)(function() {
+    var getBrowserLocale = Object(_util__WEBPACK_IMPORTED_MODULE_4__.i)(function() {
         for (var locales = function() {
             var nav = window.navigator, locales = nav.languages ? [].slice.apply(nav.languages) : [];
             return nav.language && locales.push(nav.language), nav.userLanguage && locales.push(nav.userLanguage), 
@@ -5019,7 +5032,7 @@
             loc;
         }
         return _config__WEBPACK_IMPORTED_MODULE_3__.a.defaultLocale;
-    }), enablePerformance = Object(_util__WEBPACK_IMPORTED_MODULE_4__.h)(function() {
+    }), enablePerformance = Object(_util__WEBPACK_IMPORTED_MODULE_4__.i)(function() {
         return Boolean(window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0);
     });
     function getPageRenderTime() {
@@ -5109,12 +5122,12 @@
     "use strict";
     __webpack_require__.d(__webpack_exports__, "a", function() {
         return beacon;
-    }), __webpack_require__(9);
+    }), __webpack_require__(10);
     var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4), _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0), _session__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(15), BEACON_URL = _config__WEBPACK_IMPORTED_MODULE_1__.a.loggerUrl, APP_NAME = "checkoutjs";
     function beacon(event, payload) {
         void 0 === payload && (payload = {});
         try {
-            payload.event = "ppxo_" + event, payload.version = "4.0.271", payload.host = window.location.host, 
+            payload.event = "ppxo_" + event, payload.version = "4.0.272", payload.host = window.location.host, 
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)(), payload.appName = APP_NAME;
             var query = [];
             for (var key in payload) payload.hasOwnProperty(key) && query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
@@ -5128,7 +5141,7 @@
     __webpack_require__.d(__webpack_exports__, "a", function() {
         return extendNamespace;
     });
-    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
+    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
     function extendNamespace(xports, namespaces, childnamespaces) {
         void 0 === namespaces && (namespaces = []), void 0 === childnamespaces && (childnamespaces = []);
         for (var _i2 = 0, _namespaces2 = namespaces; _i2 < _namespaces2.length; _i2++) {
@@ -5450,7 +5463,7 @@
     __webpack_require__.d(__webpack_exports__, "a", function() {
         return glimmer;
     });
-    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9), _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(17), glimmer = {
+    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10), _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(17), glimmer = {
         global: function() {},
         register: function(component, GlimmerComponent) {
             return function(_GlimmerComponent) {
@@ -5469,7 +5482,7 @@
     __webpack_require__.d(__webpack_exports__, "a", function() {
         return angular2;
     });
-    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9), _lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2), angular2 = {
+    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10), _lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2), angular2 = {
         global: function() {},
         register: function(zoid, _ref) {
             var AngularComponent = _ref.Component, NgModule = _ref.NgModule, ElementRef = _ref.ElementRef, NgZone = _ref.NgZone;
@@ -5810,20 +5823,20 @@
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
-    var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23), _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24), _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
-    if (__webpack_require__(21), window.paypal && "4.0.271" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-        version: "4.0.271"
-    }), new Error("PayPal Checkout Integration Script with same version (4.0.271) already loaded on page");
-    if (window.paypal && window.paypal.version && "4.0.271" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
+    var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23), _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24), _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
+    if (__webpack_require__(21), window.paypal && "4.0.272" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
+        version: "4.0.272"
+    }), new Error("PayPal Checkout Integration Script with same version (4.0.272) already loaded on page");
+    if (window.paypal && window.paypal.version && "4.0.272" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
         existingVersion: window.paypal.version,
-        version: "4.0.271"
-    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.271");
+        version: "4.0.272"
+    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.272");
     try {
         var _interface = __webpack_require__(55);
         Object(_lib_namespace__WEBPACK_IMPORTED_MODULE_1__.a)(_interface, [ "paypal", "PAYPAL", "ppxo" ], [ "apps" ]);
     } catch (err) {
         throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_error", {
-            error: Object(_lib_util__WEBPACK_IMPORTED_MODULE_2__.o)(err),
+            error: Object(_lib_util__WEBPACK_IMPORTED_MODULE_2__.p)(err),
             errtype: {}.toString.call(err)
         }), err;
     }
@@ -6041,7 +6054,7 @@
                 });
             }, _i4 = 0, _Object$keys2 = Object.keys(listeners); _i4 < _Object$keys2.length; _i4++) _loop(_i4, _Object$keys2);
         }, BaseComponent;
-    }(), esm_extends = __webpack_require__(9), belter_src = __webpack_require__(13), base32 = __webpack_require__(25), base32_default = __webpack_require__.n(base32), constants = __webpack_require__(6);
+    }(), esm_extends = __webpack_require__(10), belter_src = __webpack_require__(13), base32 = __webpack_require__(25), base32_default = __webpack_require__.n(base32), constants = __webpack_require__(6);
     function normalize(str) {
         return str.replace(/^[^a-z0-9A-Z]+|[^a-z0-9A-Z]+$/g, "").replace(/[^a-z0-9A-Z]+/g, "_");
     }
@@ -7631,15 +7644,15 @@
     function interface_destroyAll() {
         return parent_ParentComponent.destroyAll();
     }
-    var postRobot = src, CONSTANTS = constants, device = __webpack_require__(16), util = __webpack_require__(10), config = __webpack_require__(4), src_constants = __webpack_require__(0), lib_session = __webpack_require__(15), dom = __webpack_require__(19), security = __webpack_require__(21);
+    var postRobot = src, CONSTANTS = constants, device = __webpack_require__(16), util = __webpack_require__(9), config = __webpack_require__(4), src_constants = __webpack_require__(0), lib_session = __webpack_require__(15), dom = __webpack_require__(19), security = __webpack_require__(21);
     function getRefererDomain() {
         return window.xchild && window.xchild.getParentDomain ? window.xchild.getParentDomain() : window.location.host;
     }
-    var setupProxyLogTransport = Object(util.j)(function() {
+    var setupProxyLogTransport = Object(util.k)(function() {
         Object(beaver_logger_client.n)(function(name, win, originalMethod) {
             if (win && Object(cross_domain_utils_src.g)() === config.a.paypalDomain && !Object(cross_domain_utils_src.u)(win)) return win && Object(src.send)(win, "proxy_log", {
                 originalMethod: originalMethod
-            }).catch(util.i), originalMethod;
+            }).catch(util.j), originalMethod;
             var methods = [];
             return Object(src.on)("proxy_log", {
                 domain: config.a.paypal_domain_regex
@@ -7690,7 +7703,7 @@
         }();
         return eligibilityResults[userAgent] = result, result;
     }
-    var checkRecognizedBrowser = Object(util.j)(function(state) {
+    var checkRecognizedBrowser = Object(util.k)(function(state) {
         if (!getBrowser().browser) {
             var _getBowser = getBowser(), name = _getBowser.name, version = _getBowser.version, mobile = _getBowser.mobile, android = _getBowser.android, ios = _getBowser.ios;
             Object(beaver_logger_client.k)("unrecognized_browser_" + state, {
@@ -7782,7 +7795,7 @@
     }, __webpack_require__(23);
     var THROTTLE_GROUP_TEST = "test", THROTTLE_GROUP_CONTROL = "control";
     __webpack_require__(24);
-    var getCurrentScript = Object(util.h)(function() {
+    var getCurrentScript = Object(util.i)(function() {
         for (var scripts = [].slice.call(document.getElementsByTagName("script")), _i2 = 0; _i2 < scripts.length; _i2++) {
             var script = scripts[_i2];
             if (script.src && (script.src.replace(/^https?:/, "").split("?")[0] === config.a.scriptUrl || script.hasAttribute("data-paypal-checkout"))) return script;
@@ -7793,7 +7806,7 @@
         });
     });
     function getScriptVersion() {
-        return Boolean(getCurrentScript()) ? "4" : "4.0.271";
+        return Boolean(getCurrentScript()) ? "4" : "4.0.272";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -7802,7 +7815,7 @@
             return 0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://")), 
             scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.271.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.272.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.g)();
@@ -7812,7 +7825,7 @@
         }
         return def;
     }
-    var openMetaFrame = Object(util.h)(function(env) {
+    var openMetaFrame = Object(util.i)(function(env) {
         return void 0 === env && (env = config.a.env), zalgo_promise_src.a.try(function() {
             if (Object(device.e)()) return {
                 iframeEligible: !1,
@@ -7836,7 +7849,7 @@
         });
     });
     function getRememberedFunding(handler) {
-        return Object(lib_session.f)(function(storage) {
+        return void 0 === handler && (handler = util.e), Object(lib_session.f)(function(storage) {
             return storage.rememberedFunding = storage.rememberedFunding || [], handler(storage.rememberedFunding);
         });
     }
@@ -7946,7 +7959,7 @@
                     method: method
                 }, {
                     domain: config.a.paypalDomain
-                }).then(util.i);
+                }).then(util.j);
             });
         });
     }
@@ -7987,7 +8000,7 @@
                                     paymentID: fallback_match(url, /paymentId=((PAY-)?[A-Z0-9]+)/)
                                 }), fallback_onAuthorize = null, win.PAYPAL && win.PAYPAL.Checkout && win.PAYPAL.Checkout.XhrResponse && win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES && Object.defineProperty(win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES, "Redirect", {
                                     value: Math.random().toString()
-                                }), win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = util.i);
+                                }), win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = util.j);
                             }
                         } catch (err) {
                             return;
@@ -12010,6 +12023,14 @@
                     if (env === src_constants.t.STAGE || env === src_constants.t.LOCAL) return config.a.stageUrl;
                 }
             },
+            authCode: {
+                type: "string",
+                required: !1,
+                def: function() {
+                    return config.a.authCode;
+                },
+                queryParam: "code"
+            },
             localhostUrl: {
                 type: "string",
                 required: !1,
@@ -12064,7 +12085,7 @@
                 },
                 childDecorate: function(payment) {
                     var token = Object(dom.e)("token");
-                    return token ? Object(util.h)(function() {
+                    return token ? Object(util.i)(function() {
                         return zalgo_promise_src.a.resolve(token);
                     }) : payment;
                 },
@@ -12300,7 +12321,7 @@
     });
     component_Checkout.isChild() && component_Checkout.xchild && component_Checkout.xprops && (component_Checkout.xprops && component_Checkout.xprops.logLevel && setLogLevel(component_Checkout.xprops.logLevel), 
     component_Checkout.xchild.onProps(function(xprops) {
-        Object(util.k)(xprops, "onAuthorize", function(_ref) {
+        Object(util.l)(xprops, "onAuthorize", function(_ref) {
             var callOriginal = _ref.callOriginal, data = _ref.args[0];
             if (data && !data.intent) {
                 Object(beaver_logger_client.p)("hermes_authorize_no_intent", {
@@ -12319,12 +12340,12 @@
             }
             return callOriginal();
         });
-    })), Object(util.k)(component_Checkout, "init", function(_ref2) {
+    })), Object(util.l)(component_Checkout, "init", function(_ref2) {
         var _ref2$args = _ref2.args;
         return _ref2.original.call(_ref2.context, _ref2$args[0], _ref2$args[1], "body");
-    }), Object(util.k)(component_Checkout, "render", function(_ref3) {
+    }), Object(util.l)(component_Checkout, "render", function(_ref3) {
         return _ref3.original.call(_ref3.context, _ref3.args[0], "body");
-    }), Object(util.k)(component_Checkout, "renderTo", function(_ref4) {
+    }), Object(util.l)(component_Checkout, "renderTo", function(_ref4) {
         var _ref4$args = _ref4.args, win = _ref4$args[0], props = _ref4$args[1], original = _ref4.original, context = _ref4.context, payment = props.payment();
         return props.payment = function() {
             return payment;
@@ -12622,7 +12643,7 @@
                 _track2));
             }).catch(function(err) {
                 Object(beaver_logger_client.k)("pptm_script_error", {
-                    error: Object(util.o)(err)
+                    error: Object(util.p)(err)
                 });
             });
         },
@@ -12640,7 +12661,7 @@
             var script = Object(dom.c)(src_constants.D);
             script && script.parentNode.removeChild(script);
         }
-    }), proxyRest = {}, createAccessToken = Object(util.h)(function(env, client) {
+    }), proxyRest = {}, createAccessToken = Object(util.i)(function(env, client) {
         Object(beaver_logger_client.k)("rest_api_create_access_token");
         var clientID = client[env = env || config.a.env];
         if (!clientID) throw new Error("Client ID not found for env: " + env);
@@ -12662,7 +12683,7 @@
         });
     }, {
         time: 6e5
-    }), createExperienceProfile = Object(util.h)(function(env, client, experienceDetails) {
+    }), createExperienceProfile = Object(util.i)(function(env, client, experienceDetails) {
         if (void 0 === experienceDetails && (experienceDetails = {}), Object(beaver_logger_client.k)("rest_api_create_experience_profile"), 
         !client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
         return proxyRest.createExperienceProfile && !proxyRest.createExperienceProfile.source.closed ? proxyRest.createExperienceProfile(env, client, experienceDetails) : (experienceDetails.temporary = !0, 
@@ -12719,7 +12740,7 @@
                 return zalgo_promise_src.a.try(function() {
                     if (tracking) return zalgo_promise_src.a.resolve(function(env, client, merchantID, trackingData) {
                         if (!client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
-                        var trackingID = Object(util.q)();
+                        var trackingID = Object(util.r)();
                         return createAccessToken(env, client).then(function(accessToken) {
                             return request({
                                 method: "put",
@@ -12877,7 +12898,7 @@
             }, 1);
         });
         var returnToken = function() {
-            var token = Object(util.f)(window.location.href, /token=((EC-)?[A-Z0-9]+)/), payer = Object(util.f)(window.location.href, /PayerID=([A-Z0-9]+)/);
+            var token = Object(util.g)(window.location.href, /token=((EC-)?[A-Z0-9]+)/), payer = Object(util.g)(window.location.href, /PayerID=([A-Z0-9]+)/);
             if (token && payer) return token;
         }();
         returnToken && setTimeout(function() {
@@ -13384,7 +13405,7 @@
             throw new Error("No value found for " + category + ":" + key);
         }(BUTTON_CONFIG, label, key, def);
     }
-    var props_normalizeProps = Object(util.h)(function(props, defs) {
+    var props_normalizeProps = Object(util.i)(function(props, defs) {
         void 0 === defs && (defs = {});
         var env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit;
         locale = locale ? function(locale) {
@@ -13467,7 +13488,7 @@
             env: env,
             layout: layout,
             commit: commit
-        }), multiple = (sources = Object(util.n)(sources.slice(0, max), FUNDING_ORDER)).length > 1;
+        }), multiple = (sources = Object(util.o)(sources.slice(0, max), FUNDING_ORDER)).length > 1;
         return multiple && (branding = !0), _ref2 = {
             tagline: tagline,
             branding: branding,
@@ -19549,7 +19570,7 @@
                     class: "" + class_CLASS.TEXT
                 }, value.split("<br>")[0], jsxToHTML("br", null), value.split("<br>")[1]);
             }
-        }, nodes = Object(util.m)(template, /\{\s*([a-z]+)(?::\s*([^} ]+))?\s*\}|([^${}]+)/g, function(match, type, value, text) {
+        }, nodes = Object(util.n)(template, /\{\s*([a-z]+)(?::\s*([^} ]+))?\s*\}|([^${}]+)/g, function(match, type, value, text) {
             if (type) {
                 if (!renderers[type]) throw new Error("Can not render type: " + type);
                 return renderers[type](value);
@@ -19698,7 +19719,7 @@
                 var height = _ref.height, _ref$cardNumber = _ref.cardNumber, cardNumber = void 0 === _ref$cardNumber ? 4 : _ref$cardNumber;
                 return Object.keys(BUTTON_STYLE).map(function(size) {
                     var style = BUTTON_STYLE[size], buttonHeight = height || style.defaultHeight, minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
-                    return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + class_CLASS.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(util.g)(Object(util.l)(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + (height || style.minHeight) + "px;\n                    max-height: " + (height || style.maxHeight) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + src_constants.d.UNBRANDED + " {\n                    font-size: " + Object(util.g)(Object(util.l)(buttonHeight, 45), 10) + "px;\n                }\n\n                ." + class_CLASS.LOGO + " {\n                    height: " + (Object(util.l)(buttonHeight, 35) + 5) + "px;\n                    max-height: " + Object(util.l)(buttonHeight, 60) + "px;\n                    min-height: " + Object(util.l)(buttonHeight, 40) + "px;\n                }\n                \n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + src_constants.f.EPS + ",\n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + src_constants.f.MYBANK + " {\n                    height: " + (Object(util.l)(buttonHeight, 50) + 5) + "px;\n                    max-height: " + Object(util.l)(buttonHeight, 70) + "px;\n                    min-height: " + Object(util.l)(buttonHeight, 40) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + src_constants.k.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + src_constants.k.RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.VERTICAL + " {\n                    margin-bottom: " + Object(util.l)(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + class_CLASS.SEPARATOR + " {\n                    margin: 0 " + Object(util.l)(buttonHeight, 5) + "px;\n                }\n\n                ." + class_CLASS.TAGLINE + " {\n                    display: " + (style.allowTagline ? "block" : "none") + ";\n                    height: " + Object(util.l)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                    line-height: " + Object(util.l)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " {\n                    display: " + (style.allowFunding ? "block" : "none") + ";\n                    height: " + Object(util.l)(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) + "px;\n                }\n\n                ." + class_CLASS.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n                    width: " + (90 / cardNumber).toFixed(2) + "%;\n                    max-width: " + Object(util.l)(buttonHeight, 160) + "px;\n                    margin-top: 0;\n                    margin-left: " + (5 / cardNumber).toFixed(2) + "%;\n                    margin-right: " + (5 / cardNumber).toFixed(2) + "%;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " {\n                    height: " + Object(util.l)(buttonHeight, 70) + "px;\n                    margin-top: " + Object(util.l)(buttonHeight, 15) + "px;\n                    margin-left: " + Object(util.l)(buttonHeight, 7) + "px;\n                    margin-right: " + Object(util.l)(buttonHeight, 7) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(util.g)(style.minWidth, minDualWidth) + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
+                    return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + class_CLASS.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(util.h)(Object(util.m)(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + (height || style.minHeight) + "px;\n                    max-height: " + (height || style.maxHeight) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + src_constants.d.UNBRANDED + " {\n                    font-size: " + Object(util.h)(Object(util.m)(buttonHeight, 45), 10) + "px;\n                }\n\n                ." + class_CLASS.LOGO + " {\n                    height: " + (Object(util.m)(buttonHeight, 35) + 5) + "px;\n                    max-height: " + Object(util.m)(buttonHeight, 60) + "px;\n                    min-height: " + Object(util.m)(buttonHeight, 40) + "px;\n                }\n                \n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + src_constants.f.EPS + ",\n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + src_constants.f.MYBANK + " {\n                    height: " + (Object(util.m)(buttonHeight, 50) + 5) + "px;\n                    max-height: " + Object(util.m)(buttonHeight, 70) + "px;\n                    min-height: " + Object(util.m)(buttonHeight, 40) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + src_constants.k.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + src_constants.k.RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.VERTICAL + " {\n                    margin-bottom: " + Object(util.m)(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + class_CLASS.SEPARATOR + " {\n                    margin: 0 " + Object(util.m)(buttonHeight, 5) + "px;\n                }\n\n                ." + class_CLASS.TAGLINE + " {\n                    display: " + (style.allowTagline ? "block" : "none") + ";\n                    height: " + Object(util.m)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                    line-height: " + Object(util.m)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " {\n                    display: " + (style.allowFunding ? "block" : "none") + ";\n                    height: " + Object(util.m)(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) + "px;\n                }\n\n                ." + class_CLASS.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n                    width: " + (90 / cardNumber).toFixed(2) + "%;\n                    max-width: " + Object(util.m)(buttonHeight, 160) + "px;\n                    margin-top: 0;\n                    margin-left: " + (5 / cardNumber).toFixed(2) + "%;\n                    margin-right: " + (5 / cardNumber).toFixed(2) + "%;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " {\n                    height: " + Object(util.m)(buttonHeight, 70) + "px;\n                    margin-top: " + Object(util.m)(buttonHeight, 15) + "px;\n                    margin-left: " + Object(util.m)(buttonHeight, 7) + "px;\n                    margin-right: " + Object(util.m)(buttonHeight, 7) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(util.h)(style.minWidth, minDualWidth) + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + src_constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + src_constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
                 }).join("\n");
             }({
                 height: _ref.height,
@@ -19797,7 +19818,7 @@
                 logoColor: "blue"
             })));
         }(props_normalizeProps(props)) : null;
-        return jsxToHTML("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[src_constants.c.VERSION] = "4.0.271", 
+        return jsxToHTML("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[src_constants.c.VERSION] = "4.0.272", 
         _ref18), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -19809,7 +19830,7 @@
         }), styleNode, buttonNodes, taglineNode || fundingiconNode, labelPowerByPayPal, scriptNode).toString();
     }
     pptm.listenForLoadWithNoContent();
-    var creditThrottle, isDomainAllowed = Object(util.h)(function() {
+    var creditThrottle, isDomainAllowed = Object(util.i)(function() {
         var domain = Object(cross_domain_utils_src.g)().replace(/^https?:\/\//, "").replace(/^www\./, "");
         return !!config.a.apmTestDomains.some(function(allowDomain) {
             var regex = new RegExp("[^a-zA-Z\\d\\-]*" + allowDomain.replace(/\./g, "\\.") + "$");
@@ -19830,7 +19851,7 @@
         containerTemplate: function(_ref) {
             var id = _ref.id, CLASS = _ref.CLASS, tag = _ref.tag, context = _ref.context, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _normalizeProps = props_normalizeProps(_ref.props), size = _normalizeProps.size, label = _normalizeProps.label, layout = _normalizeProps.layout, buttonHeight = _normalizeProps.height, minimumSize = getButtonConfig(label, layout === src_constants.g.VERTICAL ? "minimumVerticalSize" : "minimumSize"), maximumSize = getButtonConfig(label, layout === src_constants.g.VERTICAL ? "maximumVerticalSize" : "maximumSize");
             if (buttonHeight) {
-                var possibleSizes = Object(util.r)(src_constants.l).filter(function(possibleSize) {
+                var possibleSizes = Object(util.s)(src_constants.l).filter(function(possibleSize) {
                     return BUTTON_STYLE[possibleSize] && buttonHeight && BUTTON_STYLE[possibleSize].minHeight <= buttonHeight && BUTTON_STYLE[possibleSize].maxHeight >= buttonHeight;
                 });
                 possibleSizes.sort(function(sizeA, sizeB) {
@@ -19905,7 +19926,7 @@
                 type: "string",
                 required: !1,
                 def: function() {
-                    return Object(util.q)();
+                    return Object(util.r)();
                 },
                 queryParam: !0
             },
@@ -20094,6 +20115,13 @@
                             _track2)), Object(beaver_logger_client.h)(), token;
                         }), this.memoizedToken);
                     };
+                }
+            },
+            authCode: {
+                type: "string",
+                required: !1,
+                def: function() {
+                    return config.a.authCode;
                 }
             },
             funding: {
@@ -20285,7 +20313,7 @@
                             }).then(function() {
                                 return Object(dom.h)(win || window.top, url || data.returnUrl);
                             });
-                        }, actions.payment.tokenize = Object(util.h)(function() {
+                        }, actions.payment.tokenize = Object(util.i)(function() {
                             if (!_this3.props.braintree) throw new Error("Must pass in Braintree client to tokenize payment");
                             return _this3.props.braintree.then(function(client) {
                                 return client.tokenizePayment(data);
@@ -20549,7 +20577,7 @@
                     });
                 }(props, popupBridge).catch(function(err) {
                     return Object(beaver_logger_client.g)("popup_bridge_error", {
-                        err: Object(util.o)(err)
+                        err: Object(util.p)(err)
                     }), original();
                 }) : original();
             }
@@ -20597,10 +20625,13 @@
         });
         var xprops = ButtonComponent.xprops || component_Checkout.xprops;
         xprops && xprops.logLevel && setLogLevel(xprops.logLevel);
+        try {
+            xprops && xprops.onShippingChange && window.pre && window.pre.inlineGuest && window.pre.inlineGuest.res && window.pre.inlineGuest.res.data && window.pre.inlineGuest.res.data.treatments && (window.pre.inlineGuest.res.data.treatments = []);
+        } catch (err) {}
     }(component_Button), Object(device.c)() && getDomainSetting("ie_full_page") && (component_Checkout.renderTo = function(win) {
         Object(beaver_logger_client.k)("force_ie_full_page"), Object(beaver_logger_client.h)();
         var checkout = component_Checkout.init({
-            onAuthorize: util.i
+            onAuthorize: util.j
         });
         checkout.delegate(win), checkout.openContainer().then(function() {
             checkout.event.triggerOnce(CONSTANTS.EVENTS.CLOSE), checkout.showContainer();
@@ -20617,15 +20648,15 @@
         var canRenderTop = hacks_top === hacks_parent;
         canRenderTop || (component_Checkout.canRenderTo(hacks_top).then(function(result) {
             canRenderTop = result;
-        }), Object(util.k)(component_Checkout, "renderTo", function(_ref) {
+        }), Object(util.l)(component_Checkout, "renderTo", function(_ref) {
             var _ref$args = _ref.args, win = _ref$args[0], props = _ref$args[1], el = _ref$args[2], original = _ref.original, context = _ref.context;
             return canRenderTop || (win = Object(cross_domain_utils_src.m)(window)), original.call(context, win, props, el);
         }));
     }
-    Object(util.k)(component_Checkout, "renderTo", function(_ref2) {
+    Object(util.l)(component_Checkout, "renderTo", function(_ref2) {
         var callOriginal = _ref2.callOriginal, props = _ref2.args[1];
         if (getDomainSetting("allow_full_page_fallback")) {
-            var handleError = Object(util.j)(function(err) {
+            var handleError = Object(util.k)(function(err) {
                 try {
                     console.error(err && err.stack);
                 } catch (err2) {}
@@ -20640,10 +20671,10 @@
         return callOriginal();
     });
     var debounce = !1;
-    Object(util.k)(component_Checkout, "renderTo", function(_ref3) {
+    Object(util.l)(component_Checkout, "renderTo", function(_ref3) {
         var callOriginal = _ref3.callOriginal, props = _ref3.args[1];
         if (debounce) return Object(beaver_logger_client.p)("button_mutliple_click_debounce"), 
-        new zalgo_promise_src.a(util.i);
+        new zalgo_promise_src.a(util.j);
         debounce = !0;
         for (var _loop = function(_i2, _ref5) {
             var methodName = _ref5[_i2], original = props[methodName];
@@ -20652,22 +20683,22 @@
             };
         }, _i2 = 0, _ref5 = [ "onAuthorize", "onCancel", "onError", "onClose" ]; _i2 < _ref5.length; _i2++) _loop(_i2, _ref5);
         return callOriginal();
-    }), Object(util.k)(rest.payment, "create", function(_ref6) {
+    }), Object(util.l)(rest.payment, "create", function(_ref6) {
         var _ref6$args = _ref6.args, options = _ref6$args[2];
         return options.payment || (options = {
             payment: options,
             experience: _ref6$args[3]
         }), _ref6.original.call(_ref6.context, _ref6$args[0], _ref6$args[1], options);
-    }), Object(util.k)(component_Button.props.style, "validate", function(_ref7) {
+    }), Object(util.l)(component_Button.props.style, "validate", function(_ref7) {
         var callOriginal = _ref7.callOriginal, style = _ref7.args[0];
         return style ? (style && "creditblue" === style.color && (style.color = src_constants.e.DARKBLUE), 
         style && "generic" === style.label && (style.label = src_constants.f.PAYPAL), !style || style.label && style.label !== src_constants.f.CHECKOUT || "tiny" !== style.size || (Object(beaver_logger_client.p)("unsupported_button_size_tiny"), 
         style.size = src_constants.l.SMALL), callOriginal()) : callOriginal();
-    }), Object(util.k)(component_Button, "render", function(_ref8) {
+    }), Object(util.l)(component_Button, "render", function(_ref8) {
         var callOriginal = _ref8.callOriginal, props = _ref8.args[0];
         return props.billingAgreement && (props.payment = props.billingAgreement, delete props.billingAgreement), 
         callOriginal();
-    }), Object(util.k)(component_Button.props.payment, "decorate", function(_ref9) {
+    }), Object(util.l)(component_Button.props.payment, "decorate", function(_ref9) {
         var originalPayment = _ref9.args[0];
         return _ref9.original.call(_ref9.context, function(data, actions) {
             var _this = this;
@@ -20678,7 +20709,7 @@
                 function rejectActions(err) {
                     reject(err);
                 }
-                Object(util.k)(actions.payment, "create", function(_ref10) {
+                Object(util.l)(actions.payment, "create", function(_ref10) {
                     var _ref10$args = _ref10.args, options = _ref10$args[0];
                     return options.payment || (options = {
                         payment: options,
@@ -20840,12 +20871,12 @@
     zalgo_promise_src.a.onPossiblyUnhandledException(function(err) {
         var _track;
         return Object(beaver_logger_client.g)("unhandled_error", {
-            stack: Object(util.o)(err),
+            stack: Object(util.p)(err),
             errtype: {}.toString.call(err)
         }), Object(beaver_logger_client.o)(((_track = {})[src_constants.u.KEY.ERROR_CODE] = "checkoutjs_error", 
-        _track[src_constants.u.KEY.ERROR_DESC] = Object(util.p)(err), _track)), Object(beaver_logger_client.h)().catch(function(err2) {
+        _track[src_constants.u.KEY.ERROR_DESC] = Object(util.q)(err), _track)), Object(beaver_logger_client.h)().catch(function(err2) {
             if (window.console) try {
-                window.console.error ? window.console.error("Error flushing:", Object(util.o)(err2)) : window.console.log && window.console.log("Error flushing:", Object(util.o)(err2));
+                window.console.error ? window.console.error("Error flushing:", Object(util.p)(err2)) : window.console.log && window.console.log("Error flushing:", Object(util.p)(err2));
             } catch (err3) {
                 setTimeout(function() {
                     throw err3;
@@ -20853,7 +20884,7 @@
             }
         });
     });
-    var currentScript = getCurrentScript(), currentProtocol = window.location.protocol.split(":")[0], setup_init = Object(util.j)(function(_ref2) {
+    var currentScript = getCurrentScript(), currentProtocol = window.location.protocol.split(":")[0], setup_init = Object(util.k)(function(_ref2) {
         var precacheRemembered = _ref2.precacheRemembered;
         isEligible() || Object(beaver_logger_client.p)("ineligible"), function() {
             "[]" !== JSON.stringify([]) && (logWarn([].toJSON ? "Custom Array.prototype.toJSON is causing incorrect json serialization of arrays. This is likely to cause issues. Probable cause is Prototype.js" : "JSON.stringify is doing incorrect serialization of arrays. This is likely to cause issues."), 
@@ -20889,7 +20920,7 @@
                 country: config.a.locale.country,
                 lang: config.a.locale.lang,
                 uid: Object(lib_session.c)(),
-                ver: "4.0.271"
+                ver: "4.0.272"
             };
         }), Object(beaver_logger_client.a)(function() {
             return {
@@ -20931,7 +20962,7 @@
     });
     function setup(options) {
         void 0 === options && (options = {}), function(_temp) {
-            var _ref = void 0 === options ? {} : options, env = _ref.env, stage = _ref.stage, stageUrl = _ref.stageUrl, apiStage = _ref.apiStage, localhostUrl = _ref.localhostUrl, checkoutUri = _ref.checkoutUri, state = _ref.state, logLevel = _ref.logLevel, merchantID = _ref.merchantID;
+            var _ref = void 0 === options ? {} : options, env = _ref.env, stage = _ref.stage, stageUrl = _ref.stageUrl, apiStage = _ref.apiStage, localhostUrl = _ref.localhostUrl, checkoutUri = _ref.checkoutUri, state = _ref.state, logLevel = _ref.logLevel, merchantID = _ref.merchantID, authCode = _ref.authCode;
             if (env) {
                 if (!config.a.paypalUrls[env]) throw new Error("Invalid env: " + env);
                 delete config.a.env, config.a.env = env;
@@ -20943,8 +20974,9 @@
             config.a.stage = component_Checkout.xprops.stage), stageUrl ? (delete config.a.stageUrl, 
             config.a.stageUrl = stageUrl) : component_Button.xprops && component_Button.xprops.stageUrl ? (delete config.a.stageUrl, 
             config.a.stageUrl = component_Button.xprops.stageUrl) : component_Checkout.xprops && component_Checkout.xprops.stageUrl && (delete config.a.stageUrl, 
-            config.a.stageUrl = component_Checkout.xprops.stageUrl), apiStage && (delete config.a.apiStage, 
-            config.a.apiStage = apiStage), (localhostUrl = localhostUrl || component_Button.xprops && component_Button.xprops.localhostUrl || component_Checkout.xprops && component_Checkout.xprops.localhostUrl) && (config.a.localhostUrl = localhostUrl), 
+            config.a.stageUrl = component_Checkout.xprops.stageUrl), (authCode = authCode || component_Button.xprops && component_Button.xprops.authCode || component_Checkout.xprops && component_Checkout.xprops.authCode) && (delete config.a.authCode, 
+            config.a.authCode = authCode), apiStage && (delete config.a.apiStage, config.a.apiStage = apiStage), 
+            (localhostUrl = localhostUrl || component_Button.xprops && component_Button.xprops.localhostUrl || component_Checkout.xprops && component_Checkout.xprops.localhostUrl) && (config.a.localhostUrl = localhostUrl), 
             (checkoutUri = checkoutUri || component_Button.xprops && component_Button.xprops.checkoutUri || component_Checkout.xprops && component_Checkout.xprops.checkoutUri) && (config.a.checkoutUri = checkoutUri), 
             state && (delete config.a.state, config.a.state = state), merchantID && (config.a.merchantID = merchantID), 
             setLogLevel(logLevel || config.a.logLevel);
@@ -20960,6 +20992,7 @@
         state: currentScript.getAttribute("data-state"),
         logLevel: currentScript.getAttribute("data-log-level"),
         merchantID: currentScript.getAttribute("data-merchant-id"),
+        authCode: currentScript.getAttribute("data-auth-code"),
         precacheRemembered: currentScript.hasAttribute("data-precache-remembered-funding")
     }) : setup(), !Object(security.b)()) if (currentScript) {
         var setup_track2, scriptProtocol = currentScript.src.split(":")[0], loadTime = Object(dom.f)(currentScript.src);
@@ -20970,7 +21003,8 @@
         }), Object(beaver_logger_client.f)("current_script_time_" + Math.floor(loadTime / 1e3))), 
         Object(beaver_logger_client.o)(((setup_track2 = {})[src_constants.u.KEY.STATE] = src_constants.u.STATE.LOAD, 
         setup_track2[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.SCRIPT_LOAD, 
-        setup_track2[src_constants.u.KEY.TRANSITION_TIME] = loadTime, setup_track2));
+        setup_track2[src_constants.u.KEY.TRANSITION_TIME] = loadTime, setup_track2[src_constants.u.KEY.FUNDING_REMEMBERED] = getRememberedFunding().join(","), 
+        setup_track2));
         try {
             var applePay = "unavailable", paymentRequest = "unavailable";
             window.ApplePaySession && window.ApplePaySession.canMakePayments && window.ApplePaySession.canMakePayments() && (applePay = "available"), 
@@ -20994,7 +21028,7 @@
                     payment_request_api: paymentRequest
                 }), Object(beaver_logger_client.k)("apple_pay_" + applePay), Object(beaver_logger_client.k)("payment_request_" + paymentRequest), 
                 Object(beaver_logger_client.h)();
-            }).catch(util.i);
+            }).catch(util.j);
         } catch (err) {}
     } else {
         var setup_track3;
@@ -21005,7 +21039,7 @@
         setup_track3[src_constants.u.KEY.TRANSITION] = src_constants.u.TRANSITION.SCRIPT_LOAD, 
         setup_track3));
     }
-    var interface_Checkout, interface_BillingPage, PayPalCheckout, src_interface_destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, interface_postRobot = src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.271";
+    var interface_Checkout, interface_BillingPage, PayPalCheckout, src_interface_destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, interface_postRobot = src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.272";
     Object(security.b)() && (interface_Checkout = component_Checkout, interface_BillingPage = BillingPage, 
     interface_ThreeDomainSecure = ThreeDomainSecure, PayPalCheckout = component_Checkout, 
     enableCheckoutIframe = function() {

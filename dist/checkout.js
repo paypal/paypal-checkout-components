@@ -231,7 +231,8 @@
             BUTTON_LABEL: "button_label",
             BUTTON_WIDTH: "button_width",
             VERSION: "checkoutjs_version",
-            MAX_BUTTONS: "max_buttons"
+            MAX_BUTTONS: "max_buttons",
+            FUNDING_REMEMBERED: "funding_remembered"
         },
         BUTTON_TYPE: {
             IFRAME: "iframe",
@@ -898,11 +899,11 @@
     function getRefererDomain() {
         return window.xchild && window.xchild.getParentDomain ? window.xchild.getParentDomain() : window.location.host;
     }
-    var setupProxyLogTransport = Object(util.j)(function() {
+    var setupProxyLogTransport = Object(util.k)(function() {
         Object(client.o)(function(name, win, originalMethod) {
             if (win && Object(cross_domain_utils_src.g)() === config.a.paypalDomain && !Object(cross_domain_utils_src.u)(win)) return win && Object(src.send)(win, "proxy_log", {
                 originalMethod: originalMethod
-            }).catch(util.i), originalMethod;
+            }).catch(util.j), originalMethod;
             var methods = [];
             return Object(src.on)("proxy_log", {
                 domain: config.a.paypal_domain_regex
@@ -928,7 +929,7 @@
                 country: config.a.locale.country,
                 lang: config.a.locale.lang,
                 uid: Object(session.c)(),
-                ver: "4.0.271"
+                ver: "4.0.272"
             };
         }), Object(client.a)(function() {
             return {
@@ -1000,7 +1001,7 @@
         }();
         return eligibilityResults[userAgent] = result, result;
     }
-    var checkRecognizedBrowser = Object(util.j)(function(state) {
+    var checkRecognizedBrowser = Object(util.k)(function(state) {
         if (!getBrowser().browser) {
             var _getBowser = getBowser(), name = _getBowser.name, version = _getBowser.version, mobile = _getBowser.mobile, android = _getBowser.android, ios = _getBowser.ios;
             Object(client.k)("unrecognized_browser_" + state, {
@@ -1158,11 +1159,11 @@
         };
     }
     function getReturnToken() {
-        var token = Object(util.f)(window.location.href, /token=((EC-)?[A-Z0-9]+)/), payer = Object(util.f)(window.location.href, /PayerID=([A-Z0-9]+)/);
+        var token = Object(util.g)(window.location.href, /token=((EC-)?[A-Z0-9]+)/), payer = Object(util.g)(window.location.href, /PayerID=([A-Z0-9]+)/);
         if (token && payer) return token;
     }
     __webpack_require__(32);
-    var getCurrentScript = Object(util.h)(function() {
+    var getCurrentScript = Object(util.i)(function() {
         for (var scripts = [].slice.call(document.getElementsByTagName("script")), _i2 = 0; _i2 < scripts.length; _i2++) {
             var script = scripts[_i2];
             if (script.src && (script.src.replace(/^https?:/, "").split("?")[0] === config.a.scriptUrl || script.hasAttribute("data-paypal-checkout"))) return script;
@@ -1173,7 +1174,7 @@
         });
     });
     function getScriptVersion() {
-        return Boolean(getCurrentScript()) ? "4" : "4.0.271";
+        return Boolean(getCurrentScript()) ? "4" : "4.0.272";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -1182,7 +1183,7 @@
             return 0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://")), 
             scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.271.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.272.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.g)();
@@ -1192,7 +1193,7 @@
         }
         return def;
     }
-    var openMetaFrame = Object(util.h)(function(env) {
+    var openMetaFrame = Object(util.i)(function(env) {
         return void 0 === env && (env = config.a.env), zalgo_promise_src.a.try(function() {
             if (Object(device.e)()) return {
                 iframeEligible: !1,
@@ -1216,7 +1217,7 @@
         });
     });
     function getRememberedFunding(handler) {
-        return Object(session.f)(function(storage) {
+        return void 0 === handler && (handler = util.e), Object(session.f)(function(storage) {
             return storage.rememberedFunding = storage.rememberedFunding || [], handler(storage.rememberedFunding);
         });
     }
@@ -1288,25 +1289,25 @@
     }), __webpack_require__.d(__webpack_exports__, "W", function() {
         return device.g;
     }), __webpack_require__.d(__webpack_exports__, "J", function() {
-        return util.i;
-    }), __webpack_require__.d(__webpack_exports__, "L", function() {
         return util.j;
+    }), __webpack_require__.d(__webpack_exports__, "L", function() {
+        return util.k;
     }), __webpack_require__.d(__webpack_exports__, "X", function() {
-        return util.r;
+        return util.s;
     }), __webpack_require__.d(__webpack_exports__, "I", function() {
-        return util.h;
+        return util.i;
     }), __webpack_require__.d(__webpack_exports__, "S", function() {
-        return util.n;
+        return util.o;
     }), __webpack_require__.d(__webpack_exports__, "e", function() {
         return util.c;
     }), __webpack_require__.d(__webpack_exports__, "b", function() {
         return util.a;
     }), __webpack_require__.d(__webpack_exports__, "U", function() {
-        return util.p;
-    }), __webpack_require__.d(__webpack_exports__, "V", function() {
         return util.q;
+    }), __webpack_require__.d(__webpack_exports__, "V", function() {
+        return util.r;
     }), __webpack_require__.d(__webpack_exports__, "N", function() {
-        return util.k;
+        return util.l;
     }), __webpack_require__.d(__webpack_exports__, "f", function() {
         return util.d;
     }), __webpack_require__.d(__webpack_exports__, "y", function() {
@@ -1386,7 +1387,7 @@
         locales: constants.z,
         scriptUrl: "//www.paypalobjects.com/api/checkout.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.271",
+        version: "4.0.272",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -1409,6 +1410,7 @@
             delete this.localhostUrl, this.localhostUrl = val;
         },
         merchantID: "",
+        authCode: "",
         logLevel: "warn",
         throttles: {
             v4_mobile_device: 0
@@ -1708,6 +1710,12 @@
                 disable_venmo: !0
             },
             "hollar.com": {
+                disable_venmo: !0
+            },
+            "bjs.com": {
+                disable_venmo: !0
+            },
+            "playsugarhouse.com": {
                 disable_venmo: !0
             }
         },
@@ -3182,7 +3190,7 @@
         return new JsxHTMLNode(name, props, children);
     }
     function jsxRender(template, renderers) {
-        var nodes = Object(_util__WEBPACK_IMPORTED_MODULE_1__.m)(template, /\{\s*([a-z]+)(?::\s*([^} ]+))?\s*\}|([^${}]+)/g, function(match, type, value, text) {
+        var nodes = Object(_util__WEBPACK_IMPORTED_MODULE_1__.n)(template, /\{\s*([a-z]+)(?::\s*([^} ]+))?\s*\}|([^${}]+)/g, function(match, type, value, text) {
             if (type) {
                 if (!renderers[type]) throw new Error("Can not render type: " + type);
                 return renderers[type](value);
@@ -3795,45 +3803,47 @@
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "h", function() {
+    __webpack_require__.d(__webpack_exports__, "i", function() {
         return memoize;
-    }), __webpack_require__.d(__webpack_exports__, "f", function() {
+    }), __webpack_require__.d(__webpack_exports__, "g", function() {
         return match;
-    }), __webpack_require__.d(__webpack_exports__, "n", function() {
+    }), __webpack_require__.d(__webpack_exports__, "o", function() {
         return safeJSON;
     }), __webpack_require__.d(__webpack_exports__, "c", function() {
         return eventEmitter;
     }), __webpack_require__.d(__webpack_exports__, "a", function() {
         return awaitKey;
-    }), __webpack_require__.d(__webpack_exports__, "p", function() {
-        return stringifyError;
     }), __webpack_require__.d(__webpack_exports__, "q", function() {
+        return stringifyError;
+    }), __webpack_require__.d(__webpack_exports__, "r", function() {
         return stringifyErrorMessage;
     }), __webpack_require__.d(__webpack_exports__, "b", function() {
         return domainMatches;
-    }), __webpack_require__.d(__webpack_exports__, "k", function() {
+    }), __webpack_require__.d(__webpack_exports__, "l", function() {
         return patchMethod;
     }), __webpack_require__.d(__webpack_exports__, "d", function() {
         return extend;
-    }), __webpack_require__.d(__webpack_exports__, "o", function() {
+    }), __webpack_require__.d(__webpack_exports__, "p", function() {
         return sortBy;
-    }), __webpack_require__.d(__webpack_exports__, "s", function() {
+    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+        return identity;
+    }), __webpack_require__.d(__webpack_exports__, "t", function() {
         return values;
-    }), __webpack_require__.d(__webpack_exports__, "l", function() {
-        return perc;
-    }), __webpack_require__.d(__webpack_exports__, "g", function() {
-        return max;
     }), __webpack_require__.d(__webpack_exports__, "m", function() {
+        return perc;
+    }), __webpack_require__.d(__webpack_exports__, "h", function() {
+        return max;
+    }), __webpack_require__.d(__webpack_exports__, "n", function() {
         return regexMap;
     });
-    var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1), belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(15);
-    __webpack_require__.d(__webpack_exports__, "i", function() {
+    var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1), belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(16);
+    __webpack_require__.d(__webpack_exports__, "j", function() {
         return belter_src__WEBPACK_IMPORTED_MODULE_1__.d;
-    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+    }), __webpack_require__.d(__webpack_exports__, "k", function() {
         return belter_src__WEBPACK_IMPORTED_MODULE_1__.f;
-    }), __webpack_require__.d(__webpack_exports__, "r", function() {
+    }), __webpack_require__.d(__webpack_exports__, "s", function() {
         return belter_src__WEBPACK_IMPORTED_MODULE_1__.g;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+    }), __webpack_require__.d(__webpack_exports__, "f", function() {
         return belter_src__WEBPACK_IMPORTED_MODULE_1__.c;
     });
     var moduleGlobal = {};
@@ -3956,6 +3966,9 @@
         return arr.sort(function(a, b) {
             return order.indexOf(a) - order.indexOf(b);
         });
+    }
+    function identity(item) {
+        return item;
     }
     function values(obj) {
         var result = [];
@@ -4764,104 +4777,7 @@
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__(11), __webpack_require__(1), __webpack_require__(7);
-    var objectIDs, cross_domain_safe_weakmap_src = __webpack_require__(17);
-    function base64encode(str) {
-        if ("function" == typeof btoa) return btoa(str);
-        if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
-        throw new Error("Can not find window.btoa or Buffer");
-    }
-    function uniqueID() {
-        var chars = "0123456789abcdef";
-        return "xxxxxxxxxx".replace(/./g, function() {
-            return chars.charAt(Math.floor(Math.random() * chars.length));
-        }) + "_" + base64encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
-    }
-    function noop() {}
-    function once(method) {
-        var called = !1;
-        return function() {
-            if (!called) return called = !0, method.apply(this, arguments);
-        };
-    }
-    function isLocalStorageEnabled() {
-        return function(method, logic, args) {
-            void 0 === args && (args = []);
-            var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {}, key = function(args) {
-                try {
-                    return JSON.stringify([].slice.call(args), function(subkey, val) {
-                        return "function" == typeof val ? "memoize[" + function(obj) {
-                            if (objectIDs = objectIDs || new cross_domain_safe_weakmap_src.a(), null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
-                            var uid = objectIDs.get(obj);
-                            return uid || (uid = typeof obj + ":" + uniqueID(), objectIDs.set(obj, uid)), uid;
-                        }(val) + "]" : val;
-                    });
-                } catch (err) {
-                    throw new Error("Arguments not serializable -- can not be used to memoize");
-                }
-            }(args);
-            return cache.hasOwnProperty(key) ? cache[key] : cache[key] = logic.apply(void 0, args);
-        }(isLocalStorageEnabled, function() {
-            try {
-                if ("undefined" == typeof window) return !1;
-                if (window.localStorage) {
-                    var value = Math.random().toString();
-                    window.localStorage.setItem("__test__localStorage__", value);
-                    var result = window.localStorage.getItem("__test__localStorage__");
-                    if (window.localStorage.removeItem("__test__localStorage__"), value === result) return !0;
-                }
-            } catch (err) {}
-            return !1;
-        });
-    }
-    function getElementSafe(id, doc) {
-        return void 0 === doc && (doc = document), (element = id) instanceof window.Element || null !== element && "object" == typeof element && 1 === element.nodeType && "object" == typeof element.style && "object" == typeof element.ownerDocument ? id : "string" == typeof id ? doc.querySelector(id) : void 0;
-        var element;
-    }
-    function onResize(el, handler, _temp) {
-        var _ref2 = void 0 === _temp ? {} : _temp, _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$interval = _ref2.interval, interval = void 0 === _ref2$interval ? 100 : _ref2$interval, _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win, currentWidth = el.offsetWidth, currentHeight = el.offsetHeight;
-        handler({
-            width: currentWidth,
-            height: currentHeight
-        });
-        var observer, timeout, check = function() {
-            var newWidth = el.offsetWidth, newHeight = el.offsetHeight;
-            (width && newWidth !== currentWidth || height && newHeight !== currentHeight) && handler({
-                width: newWidth,
-                height: newHeight
-            }), currentWidth = newWidth, currentHeight = newHeight;
-        };
-        return void 0 !== win.ResizeObserver ? (observer = new win.ResizeObserver(check)).observe(el) : void 0 !== win.MutationObserver ? ((observer = new win.MutationObserver(check)).observe(el, {
-            attributes: !0,
-            childList: !0,
-            subtree: !0,
-            characterData: !1
-        }), win.addEventListener("resize", check)) : function loop() {
-            check(), timeout = setTimeout(loop, interval);
-        }(), {
-            cancel: function() {
-                observer.disconnect(), window.removeEventListener("resize", check), clearTimeout(timeout);
-            }
-        };
-    }
-    Object.create(Error.prototype), __webpack_require__.d(__webpack_exports__, "c", function() {
-        return isLocalStorageEnabled;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
-        return getElementSafe;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
-        return onResize;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
-        return base64encode;
-    }), __webpack_require__.d(__webpack_exports__, "g", function() {
-        return uniqueID;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
-        return noop;
-    }), __webpack_require__.d(__webpack_exports__, "f", function() {
-        return once;
-    });
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    var onAuthorize, esm_extends = __webpack_require__(11), src = __webpack_require__(1), beaver_logger_client = __webpack_require__(4), zoid_src = __webpack_require__(20), belter_src = __webpack_require__(15), lib = __webpack_require__(2), config = __webpack_require__(3), constants = __webpack_require__(0), post_robot_src = __webpack_require__(13);
+    var onAuthorize, esm_extends = __webpack_require__(11), src = __webpack_require__(1), beaver_logger_client = __webpack_require__(4), zoid_src = __webpack_require__(20), belter_src = __webpack_require__(16), lib = __webpack_require__(2), config = __webpack_require__(3), constants = __webpack_require__(0), post_robot_src = __webpack_require__(13);
     function match(str, pattern) {
         var regmatch = str.match(pattern);
         if (regmatch) return regmatch[1];
@@ -5016,6 +4932,14 @@
                     var env = props.env || config.a.env;
                     if (env === constants.t.STAGE || env === constants.t.LOCAL) return config.a.stageUrl;
                 }
+            },
+            authCode: {
+                type: "string",
+                required: !1,
+                def: function() {
+                    return config.a.authCode;
+                },
+                queryParam: "code"
             },
             localhostUrl: {
                 type: "string",
@@ -5341,6 +5265,103 @@
         });
     }), __webpack_require__.d(__webpack_exports__, "a", function() {
         return Checkout;
+    });
+}, function(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+    __webpack_require__(11), __webpack_require__(1), __webpack_require__(7);
+    var objectIDs, cross_domain_safe_weakmap_src = __webpack_require__(17);
+    function base64encode(str) {
+        if ("function" == typeof btoa) return btoa(str);
+        if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
+        throw new Error("Can not find window.btoa or Buffer");
+    }
+    function uniqueID() {
+        var chars = "0123456789abcdef";
+        return "xxxxxxxxxx".replace(/./g, function() {
+            return chars.charAt(Math.floor(Math.random() * chars.length));
+        }) + "_" + base64encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+    }
+    function noop() {}
+    function once(method) {
+        var called = !1;
+        return function() {
+            if (!called) return called = !0, method.apply(this, arguments);
+        };
+    }
+    function isLocalStorageEnabled() {
+        return function(method, logic, args) {
+            void 0 === args && (args = []);
+            var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {}, key = function(args) {
+                try {
+                    return JSON.stringify([].slice.call(args), function(subkey, val) {
+                        return "function" == typeof val ? "memoize[" + function(obj) {
+                            if (objectIDs = objectIDs || new cross_domain_safe_weakmap_src.a(), null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
+                            var uid = objectIDs.get(obj);
+                            return uid || (uid = typeof obj + ":" + uniqueID(), objectIDs.set(obj, uid)), uid;
+                        }(val) + "]" : val;
+                    });
+                } catch (err) {
+                    throw new Error("Arguments not serializable -- can not be used to memoize");
+                }
+            }(args);
+            return cache.hasOwnProperty(key) ? cache[key] : cache[key] = logic.apply(void 0, args);
+        }(isLocalStorageEnabled, function() {
+            try {
+                if ("undefined" == typeof window) return !1;
+                if (window.localStorage) {
+                    var value = Math.random().toString();
+                    window.localStorage.setItem("__test__localStorage__", value);
+                    var result = window.localStorage.getItem("__test__localStorage__");
+                    if (window.localStorage.removeItem("__test__localStorage__"), value === result) return !0;
+                }
+            } catch (err) {}
+            return !1;
+        });
+    }
+    function getElementSafe(id, doc) {
+        return void 0 === doc && (doc = document), (element = id) instanceof window.Element || null !== element && "object" == typeof element && 1 === element.nodeType && "object" == typeof element.style && "object" == typeof element.ownerDocument ? id : "string" == typeof id ? doc.querySelector(id) : void 0;
+        var element;
+    }
+    function onResize(el, handler, _temp) {
+        var _ref2 = void 0 === _temp ? {} : _temp, _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$interval = _ref2.interval, interval = void 0 === _ref2$interval ? 100 : _ref2$interval, _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win, currentWidth = el.offsetWidth, currentHeight = el.offsetHeight;
+        handler({
+            width: currentWidth,
+            height: currentHeight
+        });
+        var observer, timeout, check = function() {
+            var newWidth = el.offsetWidth, newHeight = el.offsetHeight;
+            (width && newWidth !== currentWidth || height && newHeight !== currentHeight) && handler({
+                width: newWidth,
+                height: newHeight
+            }), currentWidth = newWidth, currentHeight = newHeight;
+        };
+        return void 0 !== win.ResizeObserver ? (observer = new win.ResizeObserver(check)).observe(el) : void 0 !== win.MutationObserver ? ((observer = new win.MutationObserver(check)).observe(el, {
+            attributes: !0,
+            childList: !0,
+            subtree: !0,
+            characterData: !1
+        }), win.addEventListener("resize", check)) : function loop() {
+            check(), timeout = setTimeout(loop, interval);
+        }(), {
+            cancel: function() {
+                observer.disconnect(), window.removeEventListener("resize", check), clearTimeout(timeout);
+            }
+        };
+    }
+    Object.create(Error.prototype), __webpack_require__.d(__webpack_exports__, "c", function() {
+        return isLocalStorageEnabled;
+    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+        return getElementSafe;
+    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+        return onResize;
+    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+        return base64encode;
+    }), __webpack_require__.d(__webpack_exports__, "g", function() {
+        return uniqueID;
+    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+        return noop;
+    }), __webpack_require__.d(__webpack_exports__, "f", function() {
+        return once;
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
@@ -6045,14 +6066,14 @@
     });
     var accessedStorage, _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3), _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12), _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(24), _security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(26), LOCAL_STORAGE_KEY = "__paypal_storage__", SESSION_KEY = "__paypal_session__", GLOBAL_KEY = "__paypal_global__";
     function getStorageState(handler) {
-        var storage, localStorageEnabled = Object(_util__WEBPACK_IMPORTED_MODULE_1__.e)();
+        var storage, localStorageEnabled = Object(_util__WEBPACK_IMPORTED_MODULE_1__.f)();
         if (accessedStorage && (storage = accessedStorage), !storage && localStorageEnabled) {
             var rawStorage = window.localStorage.getItem(LOCAL_STORAGE_KEY);
             rawStorage && (storage = JSON.parse(rawStorage));
         }
         storage || (storage = window[LOCAL_STORAGE_KEY]), storage || (storage = {
-            id: Object(_util__WEBPACK_IMPORTED_MODULE_1__.r)()
-        }), storage.id || (storage.id = Object(_util__WEBPACK_IMPORTED_MODULE_1__.r)()), 
+            id: Object(_util__WEBPACK_IMPORTED_MODULE_1__.s)()
+        }), storage.id || (storage.id = Object(_util__WEBPACK_IMPORTED_MODULE_1__.s)()), 
         accessedStorage = storage;
         var result = handler(storage);
         return localStorageEnabled ? window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storage)) : window[LOCAL_STORAGE_KEY] = storage, 
@@ -6068,7 +6089,7 @@
             var session = storage[SESSION_KEY], now = Date.now();
             return session && now - session.created > _config__WEBPACK_IMPORTED_MODULE_0__.a.session_uid_lifetime && (session = null), 
             session || (session = {
-                guid: Object(_util__WEBPACK_IMPORTED_MODULE_1__.r)(),
+                guid: Object(_util__WEBPACK_IMPORTED_MODULE_1__.s)(),
                 created: now
             }), storage[SESSION_KEY] = session, handler(session);
         });
@@ -6211,7 +6232,7 @@
                 });
             }, _i4 = 0, _Object$keys2 = Object.keys(listeners); _i4 < _Object$keys2.length; _i4++) _loop(_i4, _Object$keys2);
         }, BaseComponent;
-    }(), esm_extends = __webpack_require__(11), client = __webpack_require__(4), belter_src = __webpack_require__(15), base32 = __webpack_require__(34), base32_default = __webpack_require__.n(base32), constants = __webpack_require__(8);
+    }(), esm_extends = __webpack_require__(11), client = __webpack_require__(4), belter_src = __webpack_require__(16), base32 = __webpack_require__(34), base32_default = __webpack_require__.n(base32), constants = __webpack_require__(8);
     function normalize(str) {
         return str.replace(/^[^a-z0-9A-Z]+|[^a-z0-9A-Z]+$/g, "").replace(/[^a-z0-9A-Z]+/g, "_");
     }
@@ -8308,7 +8329,7 @@
         if (document.body) return document.body;
         throw new Error("Document ready but document.body not present");
     });
-    var parseQuery = Object(_util__WEBPACK_IMPORTED_MODULE_4__.h)(function(queryString) {
+    var parseQuery = Object(_util__WEBPACK_IMPORTED_MODULE_4__.i)(function(queryString) {
         var params = {};
         if (!queryString) return params;
         if (-1 === queryString.indexOf("=")) return params;
@@ -8368,7 +8389,7 @@
             lang: lang
         };
     }
-    var getBrowserLocale = Object(_util__WEBPACK_IMPORTED_MODULE_4__.h)(function() {
+    var getBrowserLocale = Object(_util__WEBPACK_IMPORTED_MODULE_4__.i)(function() {
         for (var locales = function() {
             var nav = window.navigator, locales = nav.languages ? [].slice.apply(nav.languages) : [];
             return nav.language && locales.push(nav.language), nav.userLanguage && locales.push(nav.userLanguage), 
@@ -8385,7 +8406,7 @@
     function isElementVisible(el) {
         return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
     }
-    var enablePerformance = Object(_util__WEBPACK_IMPORTED_MODULE_4__.h)(function() {
+    var enablePerformance = Object(_util__WEBPACK_IMPORTED_MODULE_4__.i)(function() {
         return Boolean(window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0);
     });
     function getPageRenderTime() {
@@ -8558,7 +8579,7 @@
     function beacon(event, payload) {
         void 0 === payload && (payload = {});
         try {
-            payload.event = "ppxo_" + event, payload.version = "4.0.271", payload.host = window.location.host, 
+            payload.event = "ppxo_" + event, payload.version = "4.0.272", payload.host = window.location.host, 
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)(), payload.appName = APP_NAME;
             var query = [];
             for (var key in payload) payload.hasOwnProperty(key) && query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
@@ -8585,7 +8606,7 @@
             class: "loader"
         })))));
     }
-    var _LOGO_COLOR, src = __webpack_require__(15), zalgo_promise_src = __webpack_require__(1), resources = __webpack_require__(18), constants = __webpack_require__(0), lib = __webpack_require__(2), containerContent = __webpack_require__(33);
+    var _LOGO_COLOR, src = __webpack_require__(16), zalgo_promise_src = __webpack_require__(1), resources = __webpack_require__(18), constants = __webpack_require__(0), lib = __webpack_require__(2), containerContent = __webpack_require__(33);
     function getContainerStyle(_ref) {
         var id = _ref.id, tag = _ref.tag, CONTEXT = _ref.CONTEXT, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION;
         return "\n        #" + id + " {\n            position: absolute;\n            z-index: 2147483647;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n\n            -webkit-transform: translate3d(0, 0, 0);\n            -moz-transform: translate3d(0, 0, 0);\n            -ms-transform: translate3d(0, 0, 0);\n            -o-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " {\n            background-color: black;\n            background-color: rgba(0, 0, 0, 0.75);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " {\n            background-color: white;\n            background-color: rgba(255, 255, 255, 0.4);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " a {\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " a {\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " .paypal-checkout-close:after {\n            background-color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " .paypal-checkout-close:after {\n            background-color: #111;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + " a {\n            text-decoration: none;\n        }\n\n        #" + id + ' .paypal-checkout-modal {\n            font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n            font-size: 14px;\n            text-align: center;\n\n            -webkit-box-sizing: border-box;\n            -moz-box-sizing: border-box;\n            -ms-box-sizing: border-box;\n            box-sizing: border-box;\n            max-width: 350px;\n            top: 50%;\n            left: 50%;\n            position: absolute;\n            transform: translateX(-50%) translateY(-50%);\n            -webkit-transform: translateX(-50%) translateY(-50%);\n            -moz-transform: translateX(-50%) translateY(-50%);\n            -o-transform: translateX(-50%) translateY(-50%);\n            -ms-transform: translateX(-50%) translateY(-50%);\n            cursor: pointer;\n            text-align: center;\n        }\n\n        #' + id + "." + tag + "-loading .paypal-checkout-message, #" + id + "." + tag + "-loading .paypal-checkout-continue {\n            display: none;\n        }\n\n        .paypal-checkout-loader {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-loader {\n            display: block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo {\n            cursor: pointer;\n            margin-bottom: 30px;\n            display: inline-block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img {\n            height: 36px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img.paypal-checkout-logo-pp {\n            margin-right: 10px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-message {\n            font-size: 15px;\n            line-height: 1.5;\n            padding: 10px 0;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-message, #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-continue {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue {\n            font-size: 15px;\n            line-height: 1.35;\n            padding: 10px 0;\n            font-weight: bold;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue a {\n            border-bottom: 1px solid currentColor;\n        }\n\n        #" + id + " .paypal-checkout-close {\n            position: absolute;\n            right: 16px;\n            top: 16px;\n            width: 16px;\n            height: 16px;\n            opacity: 0.6;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-close {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-close:hover {\n            opacity: 1;\n        }\n\n        #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n            position: absolute;\n            left: 8px;\n            content: ' ';\n            height: 16px;\n            width: 2px;\n        }\n\n        #" + id + " .paypal-checkout-close:before {\n            transform: rotate(45deg);\n            -webkit-transform: rotate(45deg);\n            -moz-transform: rotate(45deg);\n            -o-transform: rotate(45deg);\n            -ms-transform: rotate(45deg);\n        }\n\n        #" + id + " .paypal-checkout-close:after {\n            transform: rotate(-45deg);\n            -webkit-transform: rotate(-45deg);\n            -moz-transform: rotate(-45deg);\n            -o-transform: rotate(-45deg);\n            -ms-transform: rotate(-45deg);\n        }\n\n        #" + id + " .paypal-checkout-iframe-container {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + ",\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + " > iframe {\n            max-height: calc(95vh - 60px);\n            max-width: 95vw;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container {\n\n            display: block;\n\n            position: absolute;\n\n            top: 50%;\n            left: 50%;\n\n            min-width: 450px;\n\n            transform: translate(-50%, -50%);\n            -webkit-transform: translate(-50%, -50%);\n            -moz-transform: translate(-50%, -50%);\n            -o-transform: translate(-50%, -50%);\n            -ms-transform: translate(-50%, -50%);\n\n            transform: translate3d(-50%, -50%, 0);\n            -webkit-transform: translate3d(-50%, -50%, 0);\n            -moz-transform: translate3d(-50%, -50%, 0);\n            -o-transform: translate3d(-50%, -50%, 0);\n            -ms-transform: translate3d(-50%, -50%, 0);\n\n            border-radius: 10px;\n            overflow: hidden;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n\n            position: relative;\n\n            -webkit-transition: all 0.3s ease;\n            -moz-transition: all 0.3s ease;\n            -ms-transition: all 0.3s ease;\n            -o-transition: all 0.3 ease;\n            transition: all 0.3s ease;\n\n            -webkit-animation-duration: 0.3s;\n            animation-duration: 0.3s;\n            -webkit-animation-fill-mode: both;\n            animation-fill-mode: both;\n\n            min-width: 450px;\n            max-width: 450px;\n            width: 450px;\n            height: 535px;\n\n            background-color: white;\n\n            overflow: auto;\n            -webkit-overflow-scrolling: touch;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            transition: opacity .4s ease-in-out;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n            z-index: 100;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n            opacity: 1;\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n            opacity: 0;\n            z-index: 100;\n        }\n\n        @media screen and (-ms-high-contrast: active) {\n            #" + id + " .paypal-checkout-close {\n                opacity: 1;\n            }\n\n            #" + id + " .paypal-checkout-close:before , .paypal-checkout-close:after {\n                background-color: currentColor;\n            }\n        }\n\n        @media screen and (max-width: 470px) {\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                min-width: 100%;\n                min-width: calc(100% - 20px);\n                min-width: -webkit-calc(100% - 20px);\n                min-width: -moz-calc(100% - 20px);\n                min-width: -o-calc(100% - 20px);\n                min-width: -ms-calc(100% - 20px);\n\n                max-width: 100%;\n                max-width: calc(100% - 20px);\n                max-width: -webkit-calc(100% - 20px);\n                max-width: -moz-calc(100% - 20px);\n                max-width: -o-calc(100% - 20px);\n                max-width: -ms-calc(100% - 20px);\n            }\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " iframe {\n            width: 1px;\n            min-width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        .paypal-spinner {\n            height: 30px;\n            width: 30px;\n            display: inline-block;\n            box-sizing: content-box;\n            opacity: 1;\n            filter: alpha(opacity=100);\n            -webkit-animation: rotation .7s infinite linear;\n            -moz-animation: rotation .7s infinite linear;\n            -o-animation: rotation .7s infinite linear;\n            animation: rotation .7s infinite linear;\n            border-left: 8px solid rgba(0, 0, 0, .2);\n            border-right: 8px solid rgba(0, 0, 0, .2);\n            border-bottom: 8px solid rgba(0, 0, 0, .2);\n            border-top: 8px solid #fff;\n            border-radius: 100%\n        }\n\n        @-webkit-keyframes rotation {\n            from {\n                -webkit-transform: rotate(0deg)\n            }\n            to {\n                -webkit-transform: rotate(359deg)\n            }\n        }\n        @-moz-keyframes rotation {\n            from {\n                -moz-transform: rotate(0deg)\n            }\n            to {\n                -moz-transform: rotate(359deg)\n            }\n        }\n        @-o-keyframes rotation {\n            from {\n                -o-transform: rotate(0deg)\n            }\n            to {\n                -o-transform: rotate(359deg)\n            }\n        }\n        @keyframes rotation {\n            from {\n                transform: rotate(0deg)\n            }\n            to {\n                transform: rotate(359deg)\n            }\n        }\n    ";
@@ -12618,19 +12639,19 @@
     "use strict";
     __webpack_require__.r(__webpack_exports__);
     var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29), _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32), _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
-    if (__webpack_require__(26), window.paypal && "4.0.271" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-        version: "4.0.271"
-    }), new Error("PayPal Checkout Integration Script with same version (4.0.271) already loaded on page");
-    if (window.paypal && window.paypal.version && "4.0.271" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
+    if (__webpack_require__(26), window.paypal && "4.0.272" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
+        version: "4.0.272"
+    }), new Error("PayPal Checkout Integration Script with same version (4.0.272) already loaded on page");
+    if (window.paypal && window.paypal.version && "4.0.272" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
         existingVersion: window.paypal.version,
-        version: "4.0.271"
-    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.271");
+        version: "4.0.272"
+    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.272");
     try {
         var _interface = __webpack_require__(64);
         Object(_lib_namespace__WEBPACK_IMPORTED_MODULE_1__.a)(_interface, [ "paypal", "PAYPAL", "ppxo" ], [ "apps" ]);
     } catch (err) {
         throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_error", {
-            error: Object(_lib_util__WEBPACK_IMPORTED_MODULE_2__.p)(err),
+            error: Object(_lib_util__WEBPACK_IMPORTED_MODULE_2__.q)(err),
             errtype: {}.toString.call(err)
         }), err;
     }
@@ -12736,7 +12757,7 @@
     }), __webpack_require__.d(interface_namespaceObject, "ThreeDomainSecure", function() {
         return interface_ThreeDomainSecure;
     });
-    var _LOGO_COLOR, beaver_logger_client = __webpack_require__(4), src = __webpack_require__(20), zalgo_promise_src = __webpack_require__(1), post_robot_src = __webpack_require__(13), lib = __webpack_require__(2), src_checkout = __webpack_require__(16), esm_extends = __webpack_require__(11), belter_src = __webpack_require__(15), constants = __webpack_require__(0), config = __webpack_require__(3), resources = __webpack_require__(18), containerContent = __webpack_require__(33), checkout_template = __webpack_require__(30), LOGO_COLOR = ((_LOGO_COLOR = {})[constants.q.BLACK] = constants.i.WHITE, 
+    var _LOGO_COLOR, beaver_logger_client = __webpack_require__(4), src = __webpack_require__(20), zalgo_promise_src = __webpack_require__(1), post_robot_src = __webpack_require__(13), lib = __webpack_require__(2), src_checkout = __webpack_require__(15), esm_extends = __webpack_require__(11), belter_src = __webpack_require__(16), constants = __webpack_require__(0), config = __webpack_require__(3), resources = __webpack_require__(18), containerContent = __webpack_require__(33), checkout_template = __webpack_require__(30), LOGO_COLOR = ((_LOGO_COLOR = {})[constants.q.BLACK] = constants.i.WHITE, 
     _LOGO_COLOR[constants.q.WHITE] = constants.i.BLACK, _LOGO_COLOR);
     function containerTemplate(_ref) {
         var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION, CONTEXT = _ref.CONTEXT, EVENT = _ref.EVENT, on = _ref.on, tag = _ref.tag, context = _ref.context, actions = _ref.actions, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _props$locale$split = props.locale.split("_"), lang = _props$locale$split[0], country = _props$locale$split[1], containerStyle = "\n        " + Object(checkout_template.c)({
@@ -13782,7 +13803,7 @@
             throw new Error("No value found for " + category + ":" + key);
         }(BUTTON_CONFIG, label, key, def);
     }
-    var util = __webpack_require__(12), normalizeProps = Object(util.h)(function(props, defs) {
+    var util = __webpack_require__(12), normalizeProps = Object(util.i)(function(props, defs) {
         void 0 === defs && (defs = {});
         var env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit;
         locale = locale ? function(locale) {
@@ -13865,7 +13886,7 @@
             env: env,
             layout: layout,
             commit: commit
-        }), multiple = (sources = Object(util.o)(sources.slice(0, max), FUNDING_ORDER)).length > 1;
+        }), multiple = (sources = Object(util.p)(sources.slice(0, max), FUNDING_ORDER)).length > 1;
         return multiple && (branding = !0), _ref2 = {
             tagline: tagline,
             branding: branding,
@@ -20092,7 +20113,7 @@
                     var height = _ref.height, _ref$cardNumber = _ref.cardNumber, cardNumber = void 0 === _ref$cardNumber ? 4 : _ref$cardNumber;
                     return Object.keys(BUTTON_STYLE).map(function(size) {
                         var style = BUTTON_STYLE[size], buttonHeight = height || style.defaultHeight, minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
-                        return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + class_CLASS.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(util.g)(Object(util.l)(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + (height || style.minHeight) + "px;\n                    max-height: " + (height || style.maxHeight) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.d.UNBRANDED + " {\n                    font-size: " + Object(util.g)(Object(util.l)(buttonHeight, 45), 10) + "px;\n                }\n\n                ." + class_CLASS.LOGO + " {\n                    height: " + (Object(util.l)(buttonHeight, 35) + 5) + "px;\n                    max-height: " + Object(util.l)(buttonHeight, 60) + "px;\n                    min-height: " + Object(util.l)(buttonHeight, 40) + "px;\n                }\n                \n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.f.EPS + ",\n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.f.MYBANK + " {\n                    height: " + (Object(util.l)(buttonHeight, 50) + 5) + "px;\n                    max-height: " + Object(util.l)(buttonHeight, 70) + "px;\n                    min-height: " + Object(util.l)(buttonHeight, 40) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + constants.k.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + constants.k.RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.VERTICAL + " {\n                    margin-bottom: " + Object(util.l)(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + class_CLASS.SEPARATOR + " {\n                    margin: 0 " + Object(util.l)(buttonHeight, 5) + "px;\n                }\n\n                ." + class_CLASS.TAGLINE + " {\n                    display: " + (style.allowTagline ? "block" : "none") + ";\n                    height: " + Object(util.l)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                    line-height: " + Object(util.l)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " {\n                    display: " + (style.allowFunding ? "block" : "none") + ";\n                    height: " + Object(util.l)(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) + "px;\n                }\n\n                ." + class_CLASS.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n                    width: " + (90 / cardNumber).toFixed(2) + "%;\n                    max-width: " + Object(util.l)(buttonHeight, 160) + "px;\n                    margin-top: 0;\n                    margin-left: " + (5 / cardNumber).toFixed(2) + "%;\n                    margin-right: " + (5 / cardNumber).toFixed(2) + "%;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " {\n                    height: " + Object(util.l)(buttonHeight, 70) + "px;\n                    margin-top: " + Object(util.l)(buttonHeight, 15) + "px;\n                    margin-left: " + Object(util.l)(buttonHeight, 7) + "px;\n                    margin-right: " + Object(util.l)(buttonHeight, 7) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(util.g)(style.minWidth, minDualWidth) + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
+                        return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + class_CLASS.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(util.h)(Object(util.m)(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + (height || style.minHeight) + "px;\n                    max-height: " + (height || style.maxHeight) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.d.UNBRANDED + " {\n                    font-size: " + Object(util.h)(Object(util.m)(buttonHeight, 45), 10) + "px;\n                }\n\n                ." + class_CLASS.LOGO + " {\n                    height: " + (Object(util.m)(buttonHeight, 35) + 5) + "px;\n                    max-height: " + Object(util.m)(buttonHeight, 60) + "px;\n                    min-height: " + Object(util.m)(buttonHeight, 40) + "px;\n                }\n                \n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.f.EPS + ",\n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.f.MYBANK + " {\n                    height: " + (Object(util.m)(buttonHeight, 50) + 5) + "px;\n                    max-height: " + Object(util.m)(buttonHeight, 70) + "px;\n                    min-height: " + Object(util.m)(buttonHeight, 40) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + constants.k.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + constants.k.RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.VERTICAL + " {\n                    margin-bottom: " + Object(util.m)(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + class_CLASS.SEPARATOR + " {\n                    margin: 0 " + Object(util.m)(buttonHeight, 5) + "px;\n                }\n\n                ." + class_CLASS.TAGLINE + " {\n                    display: " + (style.allowTagline ? "block" : "none") + ";\n                    height: " + Object(util.m)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                    line-height: " + Object(util.m)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " {\n                    display: " + (style.allowFunding ? "block" : "none") + ";\n                    height: " + Object(util.m)(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) + "px;\n                }\n\n                ." + class_CLASS.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n                    width: " + (90 / cardNumber).toFixed(2) + "%;\n                    max-width: " + Object(util.m)(buttonHeight, 160) + "px;\n                    margin-top: 0;\n                    margin-left: " + (5 / cardNumber).toFixed(2) + "%;\n                    margin-right: " + (5 / cardNumber).toFixed(2) + "%;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " {\n                    height: " + Object(util.m)(buttonHeight, 70) + "px;\n                    margin-top: " + Object(util.m)(buttonHeight, 15) + "px;\n                    margin-left: " + Object(util.m)(buttonHeight, 7) + "px;\n                    margin-right: " + Object(util.m)(buttonHeight, 7) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(util.h)(style.minWidth, minDualWidth) + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
                     }).join("\n");
                 }({
                     height: _ref.height,
@@ -20195,7 +20216,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.271", 
+        return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.272", 
         _ref18), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -20228,7 +20249,7 @@
         containerTemplate: function(_ref) {
             var id = _ref.id, CLASS = _ref.CLASS, tag = _ref.tag, context = _ref.context, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _normalizeProps = normalizeProps(_ref.props), size = _normalizeProps.size, label = _normalizeProps.label, layout = _normalizeProps.layout, buttonHeight = _normalizeProps.height, minimumSize = getButtonConfig(label, layout === constants.g.VERTICAL ? "minimumVerticalSize" : "minimumSize"), maximumSize = getButtonConfig(label, layout === constants.g.VERTICAL ? "maximumVerticalSize" : "maximumSize");
             if (buttonHeight) {
-                var possibleSizes = Object(util.s)(constants.l).filter(function(possibleSize) {
+                var possibleSizes = Object(util.t)(constants.l).filter(function(possibleSize) {
                     return BUTTON_STYLE[possibleSize] && buttonHeight && BUTTON_STYLE[possibleSize].minHeight <= buttonHeight && BUTTON_STYLE[possibleSize].maxHeight >= buttonHeight;
                 });
                 possibleSizes.sort(function(sizeA, sizeB) {
@@ -20456,6 +20477,13 @@
                             _track2)), Object(beaver_logger_client.h)(), token;
                         }), this.memoizedToken);
                     };
+                }
+            },
+            authCode: {
+                type: "string",
+                required: !1,
+                def: function() {
+                    return config.a.authCode;
                 }
             },
             funding: {
@@ -20919,6 +20947,9 @@
         });
         var xprops = ButtonComponent.xprops || src_checkout.a.xprops;
         xprops && xprops.logLevel && Object(lib.T)(xprops.logLevel);
+        try {
+            xprops && xprops.onShippingChange && window.pre && window.pre.inlineGuest && window.pre.inlineGuest.res && window.pre.inlineGuest.res.data && window.pre.inlineGuest.res.data.treatments && (window.pre.inlineGuest.res.data.treatments = []);
+        } catch (err) {}
     }(component_Button), Object(lib.D)() && Object(lib.m)("ie_full_page") && (src_checkout.a.renderTo = function(win) {
         Object(beaver_logger_client.k)("force_ie_full_page"), Object(beaver_logger_client.h)();
         var checkout = src_checkout.a.init({
@@ -21184,7 +21215,7 @@
     });
     function setup(options) {
         void 0 === options && (options = {}), function(_temp) {
-            var _ref = void 0 === options ? {} : options, env = _ref.env, stage = _ref.stage, stageUrl = _ref.stageUrl, apiStage = _ref.apiStage, localhostUrl = _ref.localhostUrl, checkoutUri = _ref.checkoutUri, state = _ref.state, logLevel = _ref.logLevel, merchantID = _ref.merchantID;
+            var _ref = void 0 === options ? {} : options, env = _ref.env, stage = _ref.stage, stageUrl = _ref.stageUrl, apiStage = _ref.apiStage, localhostUrl = _ref.localhostUrl, checkoutUri = _ref.checkoutUri, state = _ref.state, logLevel = _ref.logLevel, merchantID = _ref.merchantID, authCode = _ref.authCode;
             if (env) {
                 if (!config.a.paypalUrls[env]) throw new Error("Invalid env: " + env);
                 delete config.a.env, config.a.env = env;
@@ -21196,8 +21227,9 @@
             config.a.stage = src_checkout.a.xprops.stage), stageUrl ? (delete config.a.stageUrl, 
             config.a.stageUrl = stageUrl) : component_Button.xprops && component_Button.xprops.stageUrl ? (delete config.a.stageUrl, 
             config.a.stageUrl = component_Button.xprops.stageUrl) : src_checkout.a.xprops && src_checkout.a.xprops.stageUrl && (delete config.a.stageUrl, 
-            config.a.stageUrl = src_checkout.a.xprops.stageUrl), apiStage && (delete config.a.apiStage, 
-            config.a.apiStage = apiStage), (localhostUrl = localhostUrl || component_Button.xprops && component_Button.xprops.localhostUrl || src_checkout.a.xprops && src_checkout.a.xprops.localhostUrl) && (config.a.localhostUrl = localhostUrl), 
+            config.a.stageUrl = src_checkout.a.xprops.stageUrl), (authCode = authCode || component_Button.xprops && component_Button.xprops.authCode || src_checkout.a.xprops && src_checkout.a.xprops.authCode) && (delete config.a.authCode, 
+            config.a.authCode = authCode), apiStage && (delete config.a.apiStage, config.a.apiStage = apiStage), 
+            (localhostUrl = localhostUrl || component_Button.xprops && component_Button.xprops.localhostUrl || src_checkout.a.xprops && src_checkout.a.xprops.localhostUrl) && (config.a.localhostUrl = localhostUrl), 
             (checkoutUri = checkoutUri || component_Button.xprops && component_Button.xprops.checkoutUri || src_checkout.a.xprops && src_checkout.a.xprops.checkoutUri) && (config.a.checkoutUri = checkoutUri), 
             state && (delete config.a.state, config.a.state = state), merchantID && (config.a.merchantID = merchantID), 
             logLevel ? Object(lib.T)(logLevel) : Object(lib.T)(config.a.logLevel);
@@ -21213,6 +21245,7 @@
         state: currentScript.getAttribute("data-state"),
         logLevel: currentScript.getAttribute("data-log-level"),
         merchantID: currentScript.getAttribute("data-merchant-id"),
+        authCode: currentScript.getAttribute("data-auth-code"),
         precacheRemembered: currentScript.hasAttribute("data-precache-remembered-funding")
     }) : setup(), !Object(lib.G)()) if (currentScript) {
         var setup_track2, scriptProtocol = currentScript.src.split(":")[0], loadTime = Object(lib.s)(currentScript.src);
@@ -21223,7 +21256,7 @@
         }), Object(beaver_logger_client.f)("current_script_time_" + Math.floor(loadTime / 1e3))), 
         Object(beaver_logger_client.p)(((setup_track2 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
         setup_track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, setup_track2[constants.u.KEY.TRANSITION_TIME] = loadTime, 
-        setup_track2));
+        setup_track2[constants.u.KEY.FUNDING_REMEMBERED] = Object(lib.r)().join(","), setup_track2));
         try {
             var applePay = "unavailable", paymentRequest = "unavailable";
             window.ApplePaySession && window.ApplePaySession.canMakePayments && window.ApplePaySession.canMakePayments() && (applePay = "available"), 
@@ -21257,7 +21290,7 @@
         }), Object(beaver_logger_client.p)(((setup_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
         setup_track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, setup_track3));
     }
-    var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.271", legacy = __webpack_require__(65);
+    var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.272", legacy = __webpack_require__(65);
     interface_checkout = legacy.checkout, apps = legacy.apps, Object(lib.G)() && (interface_Checkout = src_checkout.a, 
     interface_BillingPage = BillingPage, interface_ThreeDomainSecure = ThreeDomainSecure, 
     PayPalCheckout = src_checkout.a, enableCheckoutIframe = function() {
@@ -21344,7 +21377,7 @@
         SANDBOX: "data-sandbox"
     }, CLASSES = {
         HIDDEN_BUTTON: "paypal-button-hidden"
-    }, esm_extends = __webpack_require__(11), src = __webpack_require__(1), checkout = __webpack_require__(16), config = __webpack_require__(3), post_robot_src = __webpack_require__(13);
+    }, esm_extends = __webpack_require__(11), src = __webpack_require__(1), checkout = __webpack_require__(15), config = __webpack_require__(3), post_robot_src = __webpack_require__(13);
     function isLegacyEligible() {
         return !!Object(lib.B)() && !!Object(lib.W)() && !Object(lib.z)();
     }
