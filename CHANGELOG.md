@@ -1,3 +1,9 @@
+## <small>5.0.36 (2019-05-30)</small>
+
+* Fix jsx logos integration ([d0e71a7](http://github.paypal.com/paypal/paypal-checkout/commit/d0e71a7))
+
+
+
 ## <small>5.0.35 (2019-05-29)</small>
 
 
