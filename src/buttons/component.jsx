@@ -502,7 +502,15 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
 
                 fundingEligibility: {
                     type:          'object',
-                    value:         () => getFundingEligibility(),
+                    value:         () => {
+                        const fundingEligibility = getFundingEligibility();
+                        
+                        if (fundingEligibility && fundingEligibility.card && fundingEligibility.card.eligible && getDisableFunding().indexOf(FUNDING.CARD) !== -1) {
+                            fundingEligibility.card.eligible = false;
+                        }
+
+                        return fundingEligibility;
+                    },
                     queryParam:    true,
                     serialization: 'base64'
                 },
