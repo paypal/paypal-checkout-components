@@ -1,13 +1,15 @@
 /* @flow */
 
-import webpack from 'webpack';
-import { webpackCompile } from 'webpack-mem-compile';
+import { join } from 'path';
+
 import { poll } from 'grabthar';
 import { memoize } from 'belter';
 import { ENV } from '@paypal/sdk-constants';
 
-import { isLocal } from './util';
+import { isLocal, compileWebpack, requireScript } from './util';
 import { BUTTON_RENDER_MODULE, BUTTON_CLIENT_MODULE, BUTTON_RENDER_JS, BUTTON_CLIENT_JS, BUTTON_CLIENT_MIN_JS } from './config';
+
+const WEBPACK_CONFIG = 'webpack.config';
 
 const getPayPalCheckoutComponentsWatcher = memoize(() => {
     return poll({
@@ -23,7 +25,20 @@ const getSmartButtonWatcher = memoize(() => {
     });
 });
 
+export async function compileLocalSmartButtonRenderScript() : Promise<{ button : Object, version : string }> {
+    const dir = process.env.BUTTON_RENDER_DIR;
+    if (!dir) {
+        throw new Error(`Can not find directory to render smart buttons script`);
+    }
+    const button = requireScript(await compileWebpack(join(dir, WEBPACK_CONFIG), 'WEBPACK_CONFIG_BUTTON_RENDER'));
+    return { button, version: ENV.LOCAL };
+}
+
 export async function getSmartButtonRenderScript() : Promise<{ button : Object, version : string }> {
+    if (isLocal() && process.env.BUTTON_RENDER_DIR) {
+        return await compileLocalSmartButtonRenderScript();
+    }
+
     const watcher = getPayPalCheckoutComponentsWatcher();
     const { version } = await watcher.get();
     const button = await watcher.import(BUTTON_RENDER_JS);
@@ -31,8 +46,7 @@ export async function getSmartButtonRenderScript() : Promise<{ button : Object, 
 }
 
 export async function compileLocalSmartButtonClientScript() : Promise<{ script : string, version : string }> {
-    const { WEBPACK_CONFIG_DEBUG } = require('../webpack.config');
-    const script = await webpackCompile({ webpack, config: WEBPACK_CONFIG_DEBUG });
+    const script = await compileWebpack(join(__dirname, '..', WEBPACK_CONFIG), 'WEBPACK_CONFIG_DEBUG');
     return { script, version: ENV.LOCAL };
 }
 

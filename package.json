@@ -47,7 +47,6 @@
     "cross-domain-utils": "^2.0.16",
     "grabthar": "^3",
     "jsx-pragmatic": "^2",
-    "webpack-mem-compile": "^1.0.2",
     "zalgo-promise": "^1.0.28"
   },
   "devDependencies": {
@@ -56,7 +55,8 @@
     "flow-bin": "^0.70.0",
     "grumbler-scripts": "^3.0.18",
     "post-robot": "^10.0.13",
-    "sync-browser-mocks": "^1.0.44"
+    "sync-browser-mocks": "^1.0.44",
+    "webpack-mem-compile": "^1.0.2"
   },
   "license": "PayPal",
   "author": "DL-PP-Hermes-Integration@paypal.com"

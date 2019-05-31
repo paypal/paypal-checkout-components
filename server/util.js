@@ -1,5 +1,10 @@
 /* @flow */
 
+import { dirname, resolve } from 'path';
+
+import { webpackCompile } from 'webpack-mem-compile';
+import webpack from 'webpack';
+
 import { HTTP_HEADER, HTTP_CONTENT_TYPE, HTTP_STATUS_CODE } from './constants';
 import type { ExpressRequest, ExpressResponse } from './types';
 
@@ -40,3 +45,41 @@ export const defaultLogger = {
     warn:  (req : ExpressRequest, ...args : $ReadOnlyArray<mixed>) => console.warn(...args), // eslint-disable-line no-console
     error: (req : ExpressRequest, ...args : $ReadOnlyArray<mixed>) => console.error(...args) // eslint-disable-line no-console
 };
+
+export function babelRegister(dir : string) {
+    require('@babel/register')({
+        only: [
+            (path) => {
+                return (path.indexOf(dir) === 0 && path.indexOf('/node_modules/') === -1);
+            }
+        ]
+    });
+}
+
+export async function compileWebpack(configPath : string, configKey? : string) : Promise<string> {
+    configPath = resolve(configPath);
+    const dir = dirname(configPath);
+
+    babelRegister(dir);
+
+    // $FlowFixMe
+    let config = require(configPath); // eslint-disable-line security/detect-non-literal-require
+
+    if (configKey) {
+        config = config[configKey];
+    }
+
+    config.context = dir;
+
+    return await webpackCompile({ webpack, config });
+}
+
+export function requireScript<T>(script : string) : T {
+    const module = {
+        exports: {}
+    };
+    // eslint-disable-next-line security/detect-eval-with-expression, no-eval
+    eval(script);
+    // $FlowFixMe
+    return module.exports; // eslint-disable-line import/no-commonjs
+}
