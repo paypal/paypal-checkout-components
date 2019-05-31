@@ -1,3 +1,10 @@
+## <small>5.0.37 (2019-05-31)</small>
+
+* Fix fundingEligibility type to make everything optional ([d6e34c2](http://github.paypal.com/paypal/paypal-checkout/commit/d6e34c2))
+* Force card to be ineligible if passed in disableFunding ([d23e5ac](http://github.paypal.com/paypal/paypal-checkout/commit/d23e5ac))
+
+
+
 ## <small>5.0.36 (2019-05-30)</small>
 
 * Fix jsx logos integration ([d0e71a7](http://github.paypal.com/paypal/paypal-checkout/commit/d0e71a7))
