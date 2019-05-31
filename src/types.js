@@ -8,7 +8,7 @@ export type DimensionsType = {|
 |};
 
 export type FundingEligibilityType = {|
-    bancontact : {
+    bancontact? : {
         eligible : boolean,
         branded : boolean
     },
@@ -16,7 +16,7 @@ export type FundingEligibilityType = {|
         eligible : boolean,
         branded : boolean,
         vendors : {
-            visa : {
+            visa? : {
                 eligible : boolean,
                 vaultedInstruments ? : $ReadOnlyArray<{
                     id : string,
@@ -25,7 +25,7 @@ export type FundingEligibilityType = {|
                     }
                 }>
             },
-            mastercard : {
+            mastercard? : {
                 eligible : boolean,
                 vaultedInstruments ? : $ReadOnlyArray<{
                     id : string,
@@ -34,7 +34,7 @@ export type FundingEligibilityType = {|
                     }
                 }>
             },
-            amex : {
+            amex? : {
                 eligible : boolean,
                 vaultedInstruments ? : $ReadOnlyArray<{
                     id : string,
@@ -43,7 +43,7 @@ export type FundingEligibilityType = {|
                     }
                 }>
             },
-            discover : {
+            discover? : {
                 eligible : boolean,
                 vaultedInstruments ? : $ReadOnlyArray<{
                     id : string,
@@ -52,7 +52,7 @@ export type FundingEligibilityType = {|
                     }
                 }>
             },
-            hiper : {
+            hiper? : {
                 eligible : boolean,
                 vaultedInstruments ? : $ReadOnlyArray<{
                     id : string,
@@ -61,7 +61,7 @@ export type FundingEligibilityType = {|
                     }
                 }>
             },
-            elo : {
+            elo? : {
                 eligible : boolean,
                 vaultedInstruments ? : $ReadOnlyArray<{
                     id : string,
@@ -70,7 +70,7 @@ export type FundingEligibilityType = {|
                     }
                 }>
             },
-            jcb : {
+            jcb? : {
                 eligible : boolean,
                 vaultedInstruments ? : $ReadOnlyArray<{
                     id : string,
@@ -79,7 +79,7 @@ export type FundingEligibilityType = {|
                     }
                 }>
             },
-            cup : {
+            cup? : {
                 eligible : boolean,
                 vaultedInstruments ? : $ReadOnlyArray<{
                     id : string,
@@ -90,35 +90,35 @@ export type FundingEligibilityType = {|
             }
         }
     },
-    credit : {
+    credit? : {
         eligible : boolean,
         branded : boolean
     },
-    sepa : {
+    sepa? : {
         eligible : boolean,
         branded : boolean
     },
-    eps : {
+    eps? : {
         eligible : boolean,
         branded : boolean
     },
-    giropay : {
+    giropay? : {
         eligible : boolean,
         branded : boolean
     },
-    ideal : {
+    ideal? : {
         eligible : boolean,
         branded : boolean
     },
-    mybank : {
+    mybank? : {
         eligible : boolean,
         branded : boolean
     },
-    p24 : {
+    p24? : {
         eligible : boolean,
         branded : boolean
     },
-    paypal : {
+    paypal? : {
         eligible : boolean,
         branded : boolean,
         vaultedInstruments? : $ReadOnlyArray<{
@@ -128,19 +128,23 @@ export type FundingEligibilityType = {|
             }
         }>
     },
-    sofort : {
+    sofort? : {
         eligible : boolean,
         branded : boolean
     },
-    venmo : {
+    venmo? : {
         eligible : boolean,
         branded : boolean
     },
-    wechatpay : {
+    wechatpay? : {
         eligible : boolean,
         branded : boolean
     },
-    zimpler : {
+    zimpler? : {
+        eligible : boolean,
+        branded : boolean
+    },
+    itau? : {
         eligible : boolean,
         branded : boolean
     }
