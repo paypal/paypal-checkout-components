@@ -107,6 +107,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     },
 
                     validate({ value = {} }) {
+                        // $FlowFixMe
                         normalizeButtonStyle(value);
                     },
 
