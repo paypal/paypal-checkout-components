@@ -75,7 +75,6 @@ export function rememberFunding(sources : FundingList) {
             if (source === FUNDING.VENMO && !isDevice()) {
                 continue;
             }
-
             if (rememberedFunding.indexOf(source) === -1) {
                 rememberedFunding.push(source);
             }
@@ -100,7 +99,7 @@ export function isFundingRemembered(source : FundingSource = FUNDING.PAYPAL) : Z
     if (hasRememberedFunding(source)) {
         return getRememberedFundingPromise(source);
     }
-    
+
     return loadMeta().then(() => {
         return getRememberedFundingPromise(source);
     });

@@ -502,6 +502,9 @@ export let Button : Component<ButtonOptions> = create({
                 if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1) {
                     allowed = allowed.filter(source => (source !== FUNDING.VENMO));
                 }
+                if (allowed && allowed.indexOf(FUNDING.ITAU) !== -1) {
+                    allowed = allowed.filter(source => (source !== FUNDING.ITAU));
+                }
 
                 if (isCreditDualEligible(props)) {
                     creditThrottle = getThrottle('dual_credit_automatic', 50);
@@ -526,6 +529,16 @@ export let Button : Component<ButtonOptions> = create({
 
                     if (disallowed && disallowed.indexOf(FUNDING.VENMO) === -1) {
                         disallowed = [ ...disallowed, FUNDING.VENMO ];
+                    }
+                }
+
+                if (getDomainSetting('disable_itau')) {
+                    if (remembered && remembered.indexOf(FUNDING.ITAU) !== -1) {
+                        remembered = remembered.filter(source => (source !== FUNDING.ITAU));
+                    }
+
+                    if (disallowed && disallowed.indexOf(FUNDING.ITAU) === -1) {
+                        disallowed = [ ...disallowed, FUNDING.ITAU ];
                     }
                 }
 

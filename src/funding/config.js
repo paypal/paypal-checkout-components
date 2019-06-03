@@ -6,6 +6,7 @@ import { FUNDING, COUNTRY, CARD, PLATFORM, DEFAULT } from '../constants';
 export const FUNDING_PRIORITY = [
     FUNDING.PAYPAL,
     FUNDING.VENMO,
+    FUNDING.ITAU,
     FUNDING.CREDIT,
     FUNDING.CARD,
     FUNDING.IDEAL,
@@ -23,6 +24,7 @@ export const FUNDING_PRIORITY = [
 export const FUNDING_ORDER = [
     FUNDING.PAYPAL,
     FUNDING.VENMO,
+    FUNDING.ITAU,
     FUNDING.CREDIT,
     FUNDING.IDEAL,
     FUNDING.ELV,
@@ -70,6 +72,15 @@ export const FUNDING_CONFIG = {
     },
 
     [ FUNDING.VENMO ]: {
+        allowOptOut:      false,
+        allowedCountries: [
+            COUNTRY.US
+        ],
+
+        allowHorizontal: true,
+        allowVertical:   true
+    },
+    [ FUNDING.ITAU ]: {
         allowOptOut:      false,
         allowedCountries: [
             COUNTRY.US

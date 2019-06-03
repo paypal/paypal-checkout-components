@@ -241,6 +241,40 @@ export const BUTTON_CONFIG : ButtonConfig = {
         allowPrimaryVertical:   false,
         allowPrimaryHorizontal: true
     },
+    [ BUTTON_LABEL.ITAU ]: {
+        label:     `{ logo: ${ BUTTON_LOGO.ITAU } }`,
+        logoLabel: `{ logo: ${ BUTTON_LOGO.ITAU } }`,
+
+        defaultColor: BUTTON_COLOR.SILVER,
+
+        colors: [
+            BUTTON_COLOR.BLUE,
+            BUTTON_COLOR.SILVER,
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.WHITE
+        ],
+
+        logoColors:  {
+            [ BUTTON_COLOR.BLUE ]:   BUTTON_LOGO_COLOR.WHITE,
+            [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLUE,
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE,
+            [ BUTTON_COLOR.WHITE ]:  BUTTON_LOGO_COLOR.BLUE
+        },
+
+        secondaryColors: {
+            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.BLUE,
+            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.BLUE,
+            [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.WHITE ]:      BUTTON_COLOR.WHITE
+        },
+
+        allowPrimary: true,
+
+        allowPrimaryVertical:   false,
+        allowPrimaryHorizontal: true
+    },
 
     [ BUTTON_LABEL.IDEAL ]: {
 
@@ -582,6 +616,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
 export const FUNDING_TO_DEFAULT_LABEL = {
     [ FUNDING.PAYPAL ]:    BUTTON_LABEL.PAYPAL,
     [ FUNDING.VENMO ]:     BUTTON_LABEL.VENMO,
+    [ FUNDING.ITAU ]:      BUTTON_LABEL.ITAU,
     [ FUNDING.CARD ]:      BUTTON_LABEL.CARD,
     [ FUNDING.CREDIT ]:    BUTTON_LABEL.CREDIT,
     [ FUNDING.IDEAL ]:     BUTTON_LABEL.IDEAL,
@@ -604,6 +639,7 @@ export const LABEL_TO_FUNDING = {
     [ BUTTON_LABEL.CARD ]:          FUNDING.CARD,
     [ BUTTON_LABEL.CREDIT ]:        FUNDING.CREDIT,
     [ BUTTON_LABEL.VENMO ]:         FUNDING.VENMO,
+    [ BUTTON_LABEL.ITAU ]:          FUNDING.ITAU,
     [ BUTTON_LABEL.IDEAL ]:         FUNDING.IDEAL,
     [ BUTTON_LABEL.BANCONTACT]:     FUNDING.BANCONTACT,
     [ BUTTON_LABEL.GIROPAY]:        FUNDING.GIROPAY,
