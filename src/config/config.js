@@ -1,7 +1,6 @@
 /* @flow */
 
 import { getPayPalDomain } from '@paypal/sdk-client/src';
-import { ENV } from '@paypal/sdk-constants/src';
 
 export const SESSION_LIFETIME = 5 * 60 * 1000;
 
@@ -14,7 +13,7 @@ const URI = __TEST__
     }
 
     : {
-        CHECKOUT: (__ENV__ === ENV.LOCAL) ? `/webapps/hermes?ul=0` : `/checkoutnow`,
+        CHECKOUT: `/checkoutnow`,
         BUTTON:   `/smart/buttons`,
         CARD:     `/smart/card-fields`
     };
