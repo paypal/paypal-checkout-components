@@ -1,3 +1,12 @@
+## <small>5.0.38 (2019-06-03)</small>
+
+* Add SKIP_TEST flag ([ce238e5](http://github.paypal.com/paypal/paypal-checkout/commit/ce238e5))
+* Ensure content does not display at the same time as loading spinner ([b7a022f](http://github.paypal.com/paypal/paypal-checkout/commit/b7a022f))
+* Pass in context for button render webpack config ([3ba160f](http://github.paypal.com/paypal/paypal-checkout/commit/3ba160f))
+* Upgrade flow ([8a4d79b](http://github.paypal.com/paypal/paypal-checkout/commit/8a4d79b))
+
+
+
 ## <small>5.0.37 (2019-05-31)</small>
 
 * Fix fundingEligibility type to make everything optional ([d6e34c2](http://github.paypal.com/paypal/paypal-checkout/commit/d6e34c2))
