@@ -25,6 +25,7 @@ export const WEBPACK_CONFIG_TEST = getWebpackConfig({
 });
 
 export const WEBPACK_CONFIG_BUTTON_RENDER = getWebpackConfig({
+    context:       __dirname,
     entry:         './src/buttons/template/buttons',
     filename:      'button.js',
     modulename:    MODULE_NAME,
