@@ -18,7 +18,7 @@ export const FUNDING_PRIORITY = [
     FUNDING.MYBANK,
     FUNDING.P24,
     FUNDING.ZIMPLER
-    
+
 ];
 
 export const FUNDING_ORDER = [
@@ -81,9 +81,9 @@ export const FUNDING_CONFIG = {
         allowVertical:   true
     },
     [ FUNDING.ITAU ]: {
-        allowOptOut:      false,
+        allowOptOut:      true,
         allowedCountries: [
-            COUNTRY.US
+            COUNTRY.BR
         ],
 
         allowHorizontal: true,
