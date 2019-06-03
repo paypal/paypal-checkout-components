@@ -1,11 +1,12 @@
 /* @flow */
-/* @jsx jsxDom */
+/** @jsx jsxDom */
 
 import { BUTTON_SIZE, BUTTON_LAYOUT } from '../../constants';
 import { getButtonConfig, BUTTON_STYLE } from '../config';
 import { normalizeProps } from '../props';
 import { values } from '../../lib/util';
 
+// eslint-disable-next-line flowtype/require-exact-type
 type ContainerTemplateOptions = {
     id : string,
     props : Object,
@@ -18,16 +19,15 @@ type ContainerTemplateOptions = {
     on : Function
 };
 
-// eslint-disable-next-line no-unused-vars
-export function containerTemplate({ id, props, CLASS, on, container, tag, context, outlet, jsxDom } : ContainerTemplateOptions) : HTMLElement {
+export function containerTemplate({ id, props, CLASS, tag, context, outlet, jsxDom } : ContainerTemplateOptions) : HTMLElement {
 
-    let { size, label, layout, height: buttonHeight } = normalizeProps(props);
+    const { size, label, layout, height: buttonHeight } = normalizeProps(props);
 
     let minimumSize = getButtonConfig(label, (layout === BUTTON_LAYOUT.VERTICAL) ? 'minimumVerticalSize' : 'minimumSize');
     let maximumSize = getButtonConfig(label, (layout === BUTTON_LAYOUT.VERTICAL) ? 'maximumVerticalSize' : 'maximumSize');
 
     if (buttonHeight) {
-        let possibleSizes = values(BUTTON_SIZE).filter(possibleSize => {
+        const possibleSizes = values(BUTTON_SIZE).filter(possibleSize => {
             return BUTTON_STYLE[possibleSize] && buttonHeight &&
                 BUTTON_STYLE[possibleSize].minHeight <= buttonHeight && BUTTON_STYLE[possibleSize].maxHeight >= buttonHeight;
         });
@@ -40,7 +40,7 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
         maximumSize = possibleSizes[possibleSizes.length - 1];
     }
 
-    let { defaultWidth, defaultHeight } = BUTTON_STYLE[size] || BUTTON_STYLE[BUTTON_SIZE.SMALL];
+    const { defaultWidth, defaultHeight } = BUTTON_STYLE[size] || BUTTON_STYLE[BUTTON_SIZE.SMALL];
 
     setTimeout(() => {
         outlet.style.transition = 'all 0.5s ease-in-out 0.3s';

@@ -7,7 +7,7 @@ import { getElement, getElements, errorOnWindowOpen } from '../../tests/common';
 
 let { action, type, flow = 'popup', authed = false, bridge = false, delay = 0, onRender, checkout, selector, remembered } = window.xprops.test;
 
-let button = componentTemplate({ props: window.xprops });
+const button = componentTemplate({ props: window.xprops });
 
 if (document.body) {
     document.body.innerHTML = button;
@@ -80,7 +80,6 @@ function renderCheckout(props = {}) {
         onError:    window.xprops.onError,
         commit:     window.xprops.commit,
         locale:     window.xprops.locale,
-        supplement: window.xprops.supplement,
         test:       {
             action: action || 'checkout',
             type,
@@ -114,7 +113,7 @@ if (action === 'auth') {
         window.xprops.onAuth();
     }
 
-} else if (action === 'checkout' || action === 'shippingChange' || action === 'shippingOptions' || action === 'cancel' || action === 'fallback' || action === 'error' || action === 'popout') {
+} else if (action === 'checkout' || action === 'shippingChange' || action === 'cancel' || action === 'fallback' || action === 'error' || action === 'popout') {
     ZalgoPromise.try(() => {
         if (bridge && window.xprops.awaitPopupBridge) {
             return window.xprops.awaitPopupBridge();
@@ -130,6 +129,7 @@ if (action === 'auth') {
 
 if (onRender) {
     onRender({
+        // eslint-disable-next-line unicorn/prefer-spread
         fundingSources: Array.from(new Set(getElements('[data-funding-source]').map(el => el.getAttribute('data-funding-source')))),
         click() {
             getElement('.paypal-button', document).click();

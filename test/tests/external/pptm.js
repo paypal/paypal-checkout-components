@@ -49,13 +49,13 @@ describe(`external pptm`, () => {
             return done(new Error(`Expected pptm script to be loaded only once, but it was loaded ${ scripts.length } times`));
         }
 
-        let el = scripts[0];
+        const el = scripts[0];
 
         if (!el.async) {
             return done(new Error('Expected pptm script to be async'));
         }
 
-        let expectedUrl = `pptm.js?client_id=foo&id=${ window.location.hostname }&source=checkoutjs&t=xo&v=test_minor`;
+        const expectedUrl = `pptm.js?client_id=foo&id=${ window.location.hostname }&source=checkoutjs&t=xo&v=test_minor`;
 
         if (el.src.indexOf(expectedUrl) === -1) {
             return done(new Error(`Expected pptm script to contain ${ expectedUrl } but found ${ el.src }`));
@@ -158,7 +158,7 @@ describe(`external pptm`, () => {
         window.paypal.Button.render({
             test: {
                 onRender() : void {
-                    let el = document.getElementById(PPTM_ID);
+                    const el = document.getElementById(PPTM_ID);
 
                     if (el) {
                         return done(new Error(`Expected pptm script to not be loaded, window.location.hostname = ${ window.location.hostname }, window.mockDomain = ${ window.mockDomain }`));
@@ -188,7 +188,7 @@ describe(`external pptm`, () => {
         window.paypal.Button.render({
             test: {
                 onRender() : void {
-                    let el = document.getElementById(PPTM_ID);
+                    const el = document.getElementById(PPTM_ID);
 
                     if (el) {
                         return done(new Error(`Expected pptm script to not be loaded, config.merchantID = ${ config.merchantID }`));

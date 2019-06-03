@@ -5,7 +5,7 @@ import { extendUrl } from '../../../src/lib/dom';
 import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, preventOpenWindow,
     createElement, uniqueID, getElement, assert } from '../common';
 
-for (let flow of [ 'popup', 'iframe' ]) {
+for (const flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal legacy legacy error cases on ${ flow }`, () => {
 
@@ -22,8 +22,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call standalone startFlow with a url and redirect to full-page if the window.open fails', () => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-            let token = generateECToken();
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const token = generateECToken();
 
             testButton.addEventListener('click', () => {
                 window.paypal.checkout.startFlow(`#redirectUrl?token=${ token }`);
@@ -40,8 +40,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call standalone startFlow with a url and redirect to full-page if there is an error on the page', () => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-            let token = generateECToken();
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const token = generateECToken();
 
             testButton.addEventListener('click', () => {
                 window.paypal.checkout.startFlow(token);
@@ -58,7 +58,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call startFlow and redirect to full-page if the window.open fails with immediate startFlow', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -82,8 +82,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call startFlow and redirect to full-page if there is an error from the page', () => {
 
-            let token = generateECToken();
-            let redirectUrl = extendUrl(`${ window.paypal.checkout.urlPrefix }${ token }`);
+            const token = generateECToken();
+            const redirectUrl = extendUrl(`${ window.paypal.checkout.urlPrefix }${ token }`);
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -107,7 +107,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call startFlow and redirect to full-page if the window.open fails with initXO and startFlow', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -135,8 +135,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call startFlow and redirect to full-page with initXO and startFlow, with an error from the page', () => {
 
-            let token = generateECToken();
-            let redirectUrl = extendUrl(`${ window.paypal.checkout.urlPrefix }${ token }`);
+            const token = generateECToken();
+            const redirectUrl = extendUrl(`${ window.paypal.checkout.urlPrefix }${ token }`);
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -164,7 +164,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call startFlow with a token and redirect to full-page if the window.open fails with immediate startFlow', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -176,7 +176,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             }).then(() => {
 
-                let paypalCheckoutUrlDescriptor = Object.getOwnPropertyDescriptor(window.paypal.config, 'checkoutUrl');
+                const paypalCheckoutUrlDescriptor = Object.getOwnPropertyDescriptor(window.paypal.config, 'checkoutUrl');
                 delete window.paypal.config.checkoutUrl;
 
                 window.paypal.config.checkoutUrl = '#errorRedirectUrl';
@@ -195,8 +195,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call startFlow with a token and redirect to full-page if there is an error from the page', () => {
 
-            let token = generateECToken();
-            let redirectUrl = extendUrl(`${ window.paypal.checkout.urlPrefix }${ token }`);
+            const token = generateECToken();
+            const redirectUrl = extendUrl(`${ window.paypal.checkout.urlPrefix }${ token }`);
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -221,9 +221,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should run hijack case and redirect to full page if the window.open fails', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
-            let testForm = createElement({
+            const testForm = createElement({
                 tag:       'form',
                 container: 'testContainer',
                 id:        'testForm',
@@ -258,7 +258,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 preventOpenWindow(flow);
 
-                let result = onHashChange().then(urlHash => {
+                const result = onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#errorRedirectUrl?token=${ token }`);
                 });
 
@@ -270,9 +270,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should run hijack case and redirect to full page if there is an error from the page', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
-            let testForm = createElement({
+            const testForm = createElement({
                 tag:       'form',
                 container: 'testContainer',
                 id:        'testForm',
@@ -301,7 +301,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 getElement('button', testForm).click();
 
-                let CheckoutUrlDescriptor = Object.getOwnPropertyDescriptor(window.paypal.config, 'checkoutUrl');
+                const CheckoutUrlDescriptor = Object.getOwnPropertyDescriptor(window.paypal.config, 'checkoutUrl');
                 delete window.paypal.config.checkoutUrl;
 
                 window.paypal.config.checkoutUrl = '#errorRedirectUrl';
@@ -316,10 +316,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should run a hybrid case, and redirect to full page if the window.open fails', () => {
 
-            let token = generateECToken();
-            let hash = uniqueID();
+            const token = generateECToken();
+            const hash = uniqueID();
 
-            let testForm = createElement({
+            const testForm = createElement({
                 tag:       'form',
                 container: 'testContainer',
                 id:        'testForm',
@@ -361,11 +361,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should run a hybrid case, and redirect to full page if there is an error from the page', () => {
 
-            let token = generateECToken();
-            let hash = uniqueID();
-            let redirectUrl = extendUrl(`${ window.paypal.checkout.urlPrefix }${ token }`);
+            const token = generateECToken();
+            const hash = uniqueID();
+            const redirectUrl = extendUrl(`${ window.paypal.checkout.urlPrefix }${ token }`);
 
-            let testForm = createElement({
+            const testForm = createElement({
                 tag:       'form',
                 container: 'testContainer',
                 id:        'testForm',
@@ -429,7 +429,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call startFlow with an invalid url for the env and trigger a full page redirect', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -451,7 +451,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call initXO and startFlow with an invalid url for the env and trigger a full page redirect', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -477,7 +477,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call startFlow, then fallback', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
             return window.paypal.checkout.setup('merchantID', {
 

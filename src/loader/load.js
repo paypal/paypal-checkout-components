@@ -5,7 +5,7 @@ import { responder } from './responder';
 import { isLatest, getVersion, isCheckoutXComponent } from './component';
 import { loadScript, warn, parseQuery, stringifyError } from './util';
 
-let integrationResponder = responder();
+const integrationResponder = responder();
 
 export function onLoadCheckoutIntegration(callback : (err : ?Error, result : ?mixed) => void) : void {
     return integrationResponder.listen(callback);
@@ -22,9 +22,9 @@ function getIntegrationURLs() : { latest : boolean, major : string, minor : stri
 
 function getIntegrationProps() : Object {
 
-    let props : Object = { ...config.script_props };
+    const props : Object = { ...config.script_props };
 
-    let query = parseQuery();
+    const query = parseQuery();
 
     if (query.env) {
         props['data-env'] = query.env;
@@ -43,8 +43,8 @@ function loadCheckoutIntegration(callback : (err : ?Error, result : ?mixed) => v
         return callback(null, null);
     }
 
-    let urls = getIntegrationURLs();
-    let props = getIntegrationProps();
+    const urls = getIntegrationURLs();
+    const props = getIntegrationProps();
 
     loadScript(urls.latest ? urls.major : urls.minor, config.xchild_global, props, (err, result) => {
 

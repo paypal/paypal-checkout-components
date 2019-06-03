@@ -12,7 +12,7 @@ import elo          from './elo.svg';
 import jcb          from './jcb.svg';
 import cup          from './cup.svg';
 
-export let cardLogos = {
+export const cardLogos = {
     [ CARD.VISA ]:       visa,
     [ CARD.AMEX ]:       amex,
     [ CARD.MASTERCARD ]: mastercard,

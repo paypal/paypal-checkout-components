@@ -9,8 +9,8 @@ import webpack from 'webpack';
 
 export async function webpackCompile(config : Object) : Promise<string> {
 
-    let path     = os.tmpdir();
-    let filename = `${ Math.random().toString() }.js`;
+    const path     = os.tmpdir();
+    const filename = `${ Math.random().toString() }.js`;
 
     await new Promise((resolve, reject) => {
         webpack({
@@ -25,7 +25,7 @@ export async function webpackCompile(config : Object) : Promise<string> {
 }
 
 export async function webpackCompileToString(config : Object) : Promise<string> {
-    let path = await webpackCompile(config);
-    let script = await readFile(path);
+    const path = await webpackCompile(config);
+    const script = await readFile(path);
     return script.toString();
 }

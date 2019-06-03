@@ -1,15 +1,15 @@
 /* @flow */
 
-export function extendNamespace(xports : Object, namespaces : Array<string> = [], childnamespaces : Array<string> = []) : Object {
+export function extendNamespace(xports : Object, namespaces : $ReadOnlyArray<string> = [], childnamespaces : $ReadOnlyArray<string> = []) : Object {
 
-    for (let name of namespaces) {
-        let namespace = window[name];
+    for (const name of namespaces) {
+        const namespace = window[name];
 
         if (!namespace) {
             continue;
         }
 
-        for (let childname of childnamespaces) {
+        for (const childname of childnamespaces) {
             let childnamespace = xports[childname];
 
             if (namespace[childname]) {
@@ -20,7 +20,7 @@ export function extendNamespace(xports : Object, namespaces : Array<string> = []
         }
     }
 
-    for (let name of namespaces) {
+    for (const name of namespaces) {
         window[name] = xports;
     }
 

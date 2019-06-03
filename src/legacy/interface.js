@@ -16,10 +16,10 @@ import { renderButtons, getHijackTargetElement } from './button';
 import { redirect, logRedirect, parseToken } from './util';
 import { normalizeOptions, setupConfig } from './options';
 
-let { info, debug, warn, error, track } = prefix(LOG_PREFIX);
+const { info, debug, warn, error, track } = prefix(LOG_PREFIX);
 
-export let checkout = {};
-export let apps = { checkout, Checkout: checkout };
+export const checkout = {};
+export const apps = { checkout, Checkout: checkout };
 
 export function reset() {
 
@@ -49,7 +49,7 @@ function matchUrlAndPaymentToken(item) : { url : string, paymentToken : ?string 
     }
 
 
-    let paymentToken = parseToken(item);
+    const paymentToken = parseToken(item);
     let url = (paymentToken && paymentToken === item) ? '' : item;
 
     if (url) {
@@ -92,10 +92,10 @@ function matchUrlAndPaymentToken(item) : { url : string, paymentToken : ?string 
 
 function checkUrlAgainstEnv(url : string) {
 
-    let paypalUrls = config.paypalUrls;
+    const paypalUrls = config.paypalUrls;
 
-    for (let env of Object.keys(paypalUrls)) {
-        let paypalUrl = paypalUrls[env];
+    for (const env of Object.keys(paypalUrls)) {
+        const paypalUrl = paypalUrls[env];
 
         if (env === ENV.TEST || env === ENV.DEMO) {
             continue;
@@ -127,7 +127,7 @@ function checkUrlAgainstEnv(url : string) {
 
 function awaitPaymentTokenAndUrl() : { url : ZalgoPromise<string>, paymentToken : ZalgoPromise<?string> } {
 
-    let paymentTokenAndUrl = new ZalgoPromise((resolve) => {
+    const paymentTokenAndUrl = new ZalgoPromise((resolve) => {
 
         checkout.initXO = () => {
             warn(`gettoken_initxo`);
@@ -138,7 +138,7 @@ function awaitPaymentTokenAndUrl() : { url : ZalgoPromise<string>, paymentToken 
         checkout.startFlow = once((item) => {
             debug(`gettoken_startflow`, { item });
 
-            let { url, paymentToken } = matchUrlAndPaymentToken(item);
+            const { url, paymentToken } = matchUrlAndPaymentToken(item);
 
             checkUrlAgainstEnv(url);
 
@@ -146,8 +146,8 @@ function awaitPaymentTokenAndUrl() : { url : ZalgoPromise<string>, paymentToken 
         });
     });
 
-    let url          = paymentTokenAndUrl.then(result => result.url);
-    let paymentToken = paymentTokenAndUrl.then(result => result.paymentToken);
+    const url          = paymentTokenAndUrl.then(result => result.url);
+    const paymentToken = paymentTokenAndUrl.then(result => result.paymentToken);
 
     return { url, paymentToken };
 }
@@ -180,7 +180,7 @@ function initPayPalCheckout(props = {}) : Object {
 
     paypalCheckoutInited = true;
 
-    let paypalCheckout = Checkout.init({
+    const paypalCheckout = Checkout.init({
 
         onAuthorize(data, actions) : ZalgoPromise<void> {
             info(`payment_authorized`);
@@ -225,15 +225,15 @@ function initPayPalCheckout(props = {}) : Object {
 
 function renderPayPalCheckout(props : Object = {}, hijackTarget? : ?Element) : ZalgoPromise<Object> {
 
-    let urlProp = ZalgoPromise.resolve(props.url);
+    const urlProp = ZalgoPromise.resolve(props.url);
 
-    let paymentToken = new ZalgoPromise(resolve => {
+    const paymentToken = new ZalgoPromise(resolve => {
         props.init = (data) => {
             resolve(data.paymentToken);
         };
     });
 
-    let errorHandler = once(err => {
+    const errorHandler = once(err => {
 
         error(`component_error`, { error: stringifyError(err) });
 
@@ -278,7 +278,7 @@ function renderPayPalCheckout(props : Object = {}, hijackTarget? : ?Element) : Z
         paypalCheckout = initPayPalCheckout(props);
     }
 
-    let render = paypalCheckout.render(null, !hijackTarget);
+    const render = paypalCheckout.render(null, !hijackTarget);
 
     checkout.win = paypalCheckout.window;
 
@@ -298,7 +298,7 @@ function handleClick(clickHandler, event) {
 
 function handleClickHijack(element) : void {
 
-    let targetElement = getHijackTargetElement(element);
+    const targetElement = getHijackTargetElement(element);
 
     if (!targetElement) {
         return error(`target_element_not_found`);
@@ -306,7 +306,7 @@ function handleClickHijack(element) : void {
 
     info(`init_paypal_checkout_hijack`);
 
-    let { url, paymentToken } = awaitPaymentTokenAndUrl();
+    const { url, paymentToken } = awaitPaymentTokenAndUrl();
 
     let token;
     
@@ -319,9 +319,9 @@ function handleClickHijack(element) : void {
 
 function listenClick(container, button, clickHandler, condition, tracker) : void {
 
-    let element : HTMLElement = (container.tagName.toLowerCase() === 'a') ? container : button;
+    const element : HTMLElement = (container.tagName.toLowerCase() === 'a') ? container : button;
 
-    let isClick  = (typeof clickHandler === 'function');
+    const isClick  = (typeof clickHandler === 'function');
 
     if (element.hasAttribute('data-paypal-click-listener')) {
         return warn(`button_already_has_paypal_click_listener`);
@@ -329,7 +329,7 @@ function listenClick(container, button, clickHandler, condition, tracker) : void
 
     element.setAttribute('data-paypal-click-listener', '');
 
-    let targetElement = getHijackTargetElement(element);
+    const targetElement = getHijackTargetElement(element);
 
     if (targetElement && isClick) {
         info(`button_link_or_form`);
@@ -339,7 +339,7 @@ function listenClick(container, button, clickHandler, condition, tracker) : void
 
         tracker();
 
-        let eligible = isLegacyEligible();
+        const eligible = isLegacyEligible();
 
         if (supportsPopups()) {
             debug(`click_popups_supported`);
@@ -479,7 +479,7 @@ function initXO() : void {
         return debug(`ineligible_initxo`);
     }
 
-    let { url, paymentToken } = awaitPaymentTokenAndUrl();
+    const { url, paymentToken } = awaitPaymentTokenAndUrl();
 
     info(`init_paypal_checkout_initxo`);
 
@@ -502,7 +502,7 @@ checkout.initXO = initXO;
 function startFlow(item : string) {
     debug(`startflow`, { item });
 
-    let { paymentToken, url } = matchUrlAndPaymentToken(item);
+    const { paymentToken, url } = matchUrlAndPaymentToken(item);
 
     checkUrlAgainstEnv(url);
 

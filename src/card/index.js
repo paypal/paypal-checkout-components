@@ -1,16 +1,17 @@
 /* @flow */
-/* @jsx jsxDom */
+/** @jsx jsxDom */
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create  } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
+import { base64encode } from 'belter/src';
 
 import { config } from '../config';
 import { getButtonSessionID, getBrowserLocale, getSessionID, getCurrentScriptUrl } from '../lib';
 
-type CardOptions = {
+type CardOptions = {|
     client : {
         [string] : (string | ZalgoPromise<string>)
     },
@@ -24,14 +25,14 @@ type CardOptions = {
     meta : Object,
     commit : boolean,
     token : string
-};
+|};
 
 export const Card : Component<CardOptions> = create({
     tag:  'card-fields',
     name: 'ppcard',
 
     buildUrl(props) : string {
-        let env = props.env || config.env;
+        const env = props.env || config.env;
         return config.inlinedCardFieldUrls[env];
     },
 
@@ -105,7 +106,7 @@ export const Card : Component<CardOptions> = create({
             allowDelegate: true,
 
             def() : string {
-                let { lang, country } = getBrowserLocale();
+                const { lang, country } = getBrowserLocale();
                 return `${ lang }_${ country }`;
             }
         },
@@ -158,7 +159,7 @@ export const Card : Component<CardOptions> = create({
             queryParam:  true,
             sendToChild: false,
             def:         () => {
-                return btoa(JSON.stringify({
+                return base64encode(JSON.stringify({
                     url: getCurrentScriptUrl()
                 }));
             }

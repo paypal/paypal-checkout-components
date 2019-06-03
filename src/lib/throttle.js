@@ -7,14 +7,14 @@ import { FPTI } from '../constants';
 import { match } from './util';
 import { getStorageState, getStorageID } from './session';
 
-type Throttle = {
+type Throttle = {|
     isEnabled : () => boolean,
     isDisabled : () => boolean,
     getTreatment : () => string,
     log : (string, payload? : { [string] : ?string }) => Throttle,
     logStart : (payload? : { [string] : ?string }) => Throttle,
     logComplete : (payload? : { [string] : ?string }) => Throttle
-};
+|};
 
 function getThrottlePercentile(name : string) : number {
     return getStorageState(storage => {
@@ -32,9 +32,9 @@ const THROTTLE_GROUP = {
 
 export function getThrottle(name : string, sample : number) : Throttle {
 
-    let uid = getStorageID();
+    const uid = getStorageID();
 
-    let throttle = getThrottlePercentile(name);
+    const throttle = getThrottlePercentile(name);
 
     let group;
 
@@ -46,7 +46,7 @@ export function getThrottle(name : string, sample : number) : Throttle {
         group = THROTTLE_GROUP.THROTTLE;
     }
 
-    let treatment = `${ name }_${ group }`;
+    const treatment = `${ name }_${ group }`;
 
     let started = false;
     let forced = false;
@@ -78,7 +78,7 @@ export function getThrottle(name : string, sample : number) : Throttle {
                 return this;
             }
 
-            let checkpoint = `${ name }_${ treatment }_${ checkpointName }`;
+            const checkpoint = `${ name }_${ treatment }_${ checkpointName }`;
             info(checkpoint, { ...payload, expuid: uid });
 
             track({
@@ -108,8 +108,8 @@ export function getThrottle(name : string, sample : number) : Throttle {
 
 export function getReturnToken() : ?string {
 
-    let token = match(window.location.href, /token=((EC-)?[A-Z0-9]+)/);
-    let payer = match(window.location.href, /PayerID=([A-Z0-9]+)/);
+    const token = match(window.location.href, /token=((EC-)?[A-Z0-9]+)/);
+    const payer = match(window.location.href, /PayerID=([A-Z0-9]+)/);
 
     if (token && payer) {
         return token;

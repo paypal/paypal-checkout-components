@@ -1,16 +1,17 @@
 /* @flow */
 
 import { debug } from 'beaver-logger/client';
+import { getDomain } from 'cross-domain-utils/src';
 
 import { config } from '../config';
 
-import { memoize } from './util';
+import { memoize, domainMatches } from './util';
 
-export let getCurrentScript = memoize(() : ?HTMLScriptElement => {
+export const getCurrentScript = memoize(() : ?HTMLScriptElement => {
 
-    let scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
+    const scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
 
-    for (let script of scripts) {
+    for (const script of scripts) {
         if (script.src && (script.src.replace(/^https?:/, '').split('?')[0] === config.scriptUrl || script.hasAttribute('data-paypal-checkout'))) {
             return script;
         }
@@ -38,7 +39,7 @@ export function getScriptVersion() : string {
 }
 
 export function getCurrentScriptUrl() : string {
-    let script = getCurrentScript();
+    const script = getCurrentScript();
 
     if (script && typeof script.src === 'string') {
         let scriptUrl = script.src;
@@ -51,4 +52,21 @@ export function getCurrentScriptUrl() : string {
     }
 
     return `https://www.paypalobjects.com/api/checkout.${ __PAYPAL_CHECKOUT__.__MINOR_VERSION__ }${ __MIN__ ? '.min' : '' }.js`;
+}
+
+export function getDomainSetting<T : mixed>(name : string, def : ?T) : ?T {
+
+    const hostname = window.xchild
+        ? window.xchild.getParentDomain()
+        : getDomain();
+
+    if (config.domain_settings) {
+        for (const domain of Object.keys(config.domain_settings)) {
+            if (domainMatches(hostname, domain)) {
+                return config.domain_settings[domain][name];
+            }
+        }
+    }
+
+    return def;
 }

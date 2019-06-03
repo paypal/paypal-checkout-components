@@ -12,11 +12,11 @@ export function testSetup({ options, script, preScript } : { options? : Object, 
             'env':                  'test'
         };
 
-        let dataOptions = Object.keys(options).map(name => {
+        const dataOptions = Object.keys(options).map(name => {
             return `${ name }="${ options ? options[name] : '' }"`;
         }).join(' ');
 
-        let frameHTML = `
+        const frameHTML = `
             <head>
                 <script>
                     window.mockDomain = 'mock://www.merchant.com';
@@ -45,7 +45,7 @@ export function testSetup({ options, script, preScript } : { options? : Object, 
             </body>
         `;
 
-        let frame = createFrame({
+        const frame = createFrame({
             container: document.body,
             html:      frameHTML
         });

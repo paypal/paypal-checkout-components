@@ -1,7 +1,7 @@
 /* @flow */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
-import { jsxToHTML, JsxHTMLNode } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, JsxHTMLNode } from '../../lib/jsx';
 import { BUTTON_LOGO_COLOR } from '../../constants';
 
 const EPS_LOGO_COLORS = {
@@ -28,7 +28,7 @@ export function epsLogo({ logoColor } : { logoColor : $Values<typeof BUTTON_LOGO
         throw new Error(`No ${ logoColor } eps logo available`);
     }
 
-    let { primary, secondary, tertiary } = EPS_LOGO_COLORS[logoColor];
+    const { primary, secondary, tertiary } = EPS_LOGO_COLORS[logoColor];
 
     return (
         <svg width="52px" height="32px" viewBox="0 0 52 32" version="1.1" xmlns="http://www.w3.org/2000/svg">

@@ -1,7 +1,7 @@
 /* @flow weak */
 /* eslint max-lines: 0 */
 
-import { ENV, COUNTRY, LANG } from '../constants';
+import { ENV, COUNTRY, LANG, LOCALE } from '../constants';
 
 function getDefaultEnv() : $Values<typeof ENV> {
     if (__TEST__) {
@@ -27,13 +27,15 @@ function getDefaultEnv() : $Values<typeof ENV> {
     return ENV.PRODUCTION;
 }
 
-export let config = {
+export const config = {
+
+    locales: LOCALE,
 
     scriptUrl: __TEST__
         ? `//${ window.location.host }/base/src/load.js`
         : `//www.paypalobjects.com/api/${ __FILE_NAME__ }`,
 
-    // eslint-disable-next-line security/detect-unsafe-regex
+    // eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
     paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
 
     version: __PAYPAL_CHECKOUT__.__MINOR_VERSION__,
@@ -70,6 +72,7 @@ export let config = {
     },
 
     merchantID: '',
+    authCode:   '',
 
     logLevel: __PAYPAL_CHECKOUT__.__DEFAULT_LOG_LEVEL__,
 
@@ -468,6 +471,14 @@ export let config = {
         
         'hollar.com': {
             disable_venmo: true
+        },
+
+        'bjs.com': {
+            disable_venmo: true
+        },
+
+        'playsugarhouse.com': {
+            disable_venmo: true
         }
     },
 
@@ -523,7 +534,7 @@ export let config = {
 
     get paypalDomains() : Object {
         return {
-            [ ENV.LOCAL ]:      /^https?:\/\/.*\.paypal\.com:?\d*$/,
+            [ ENV.LOCAL ]:      'http://localhost.paypal.com:8000',
             [ ENV.STAGE ]:      `https://www.${ config.stageUrl }`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
@@ -554,9 +565,9 @@ export let config = {
 
     get apiUrls() : Object {
 
-        let domain      = `${ window.location.protocol }//${ window.location.host }`;
-        let corsApiUrls = config.corsApiUrls;
-        let wwwApiUrls  = config.wwwApiUrls;
+        const domain      = `${ window.location.protocol }//${ window.location.host }`;
+        const corsApiUrls = config.corsApiUrls;
+        const wwwApiUrls  = config.wwwApiUrls;
 
         return {
             [ ENV.LOCAL ]:      domain === wwwApiUrls.local      ? wwwApiUrls.local      : corsApiUrls.local,
@@ -698,7 +709,7 @@ export let config = {
 
     get checkoutUrls() : Object {
 
-        let paypalUrls = config.paypalUrls;
+        const paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local }${ config.checkoutUris.local.replace(`:${ config.ports.default }`, `:${ config.ports.checkout }`) }`,
@@ -712,7 +723,7 @@ export let config = {
 
     get guestUrls() : Object {
 
-        let paypalUrls = config.paypalUrls;
+        const paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.guest }`) }${ config.guestUris.local }`,
@@ -726,7 +737,7 @@ export let config = {
 
     get altpayUrls() : Object {
 
-        let paypalUrls = config.paypalUrls;
+        const paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.altpay }`) }${ config.altpayUris.local }`,
@@ -740,7 +751,7 @@ export let config = {
 
     get billingUrls() : Object {
 
-        let paypalUrls = config.paypalUrls;
+        const paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.checkout }`) }${ config.billingUris.local }`,
@@ -754,7 +765,7 @@ export let config = {
 
     get buttonUrls() : Object {
 
-        let paypalUrls = config.paypalUrls;
+        const paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.button }`) }${ config.buttonUris.local }`,
@@ -768,7 +779,7 @@ export let config = {
 
     get inlinedCardFieldUrls() : Object {
 
-        let paypalUrls = config.paypalUrls;
+        const paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.button }`) }${ config.inlinedCardFieldUris.local }`,
@@ -782,7 +793,7 @@ export let config = {
 
     get loginUrls() : Object {
 
-        let paypalUrls = config.paypalUrls;
+        const paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.stage }${ config.loginUri }`,
@@ -795,7 +806,7 @@ export let config = {
 
     get paymentsStandardUrls() : Object {
 
-        let paypalUrls = config.paypalUrls;
+        const paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local }${ config.paymentStandardUri }`,
@@ -808,7 +819,7 @@ export let config = {
 
     get metaFrameUrls() : Object {
 
-        let paypalUrls = config.paypalUrls;
+        const paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local }${ config.postBridgeUri }&env=local`,
@@ -822,7 +833,7 @@ export let config = {
 
     get legacyCheckoutUrls() : Object {
 
-        let paypalUrls = config.paypalUrls;
+        const paypalUrls = config.paypalUrls;
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.stage }${ config.legacyCheckoutUris.local }`,
@@ -835,8 +846,8 @@ export let config = {
 
     get authApiUrls() : Object {
 
-        let apiUrls    = config.apiUrls;
-        let authApiUri = config.authApiUri;
+        const apiUrls    = config.apiUrls;
+        const authApiUri = config.authApiUri;
 
         return {
             [ ENV.LOCAL ]:      `${ apiUrls.local }${ authApiUri }`,
@@ -849,8 +860,8 @@ export let config = {
 
     get paymentApiUrls() : Object {
 
-        let apiUrls       = config.apiUrls;
-        let paymentApiUri = config.paymentApiUri;
+        const apiUrls       = config.apiUrls;
+        const paymentApiUri = config.paymentApiUri;
 
         return {
             [ ENV.LOCAL ]:      `${ apiUrls.local }${ paymentApiUri }`,
@@ -863,8 +874,8 @@ export let config = {
 
     get orderApiUrls() : Object {
 
-        let apiUrls = config.apiUrls;
-        let orderApiUri = config.orderApiUri;
+        const apiUrls = config.apiUrls;
+        const orderApiUri = config.orderApiUri;
 
         return {
             [ENV.LOCAL]:      `${ apiUrls.local }${ orderApiUri }`,
@@ -877,8 +888,8 @@ export let config = {
 
     get billingApiUrls() : Object {
 
-        let apiUrls       = config.apiUrls;
-        let billingApiUri = config.billingApiUri;
+        const apiUrls       = config.apiUrls;
+        const billingApiUri = config.billingApiUri;
 
         return {
             [ ENV.LOCAL ]:      `${ apiUrls.local }${ billingApiUri }`,
@@ -891,8 +902,8 @@ export let config = {
 
     get experienceApiUrls() : Object {
 
-        let apiUrls          = config.apiUrls;
-        let experienceApiUri = config.experienceApiUri;
+        const apiUrls          = config.apiUrls;
+        const experienceApiUri = config.experienceApiUri;
 
         return {
             [ ENV.LOCAL ]:      `${ apiUrls.local }${ experienceApiUri }`,
@@ -905,8 +916,8 @@ export let config = {
 
     get trackingApiUrls() : Object {
 
-        let apiUrls       = config.apiUrls;
-        let trackingApiUri = config.trackingApiUri;
+        const apiUrls       = config.apiUrls;
+        const trackingApiUri = config.trackingApiUri;
 
         return {
             [ ENV.LOCAL ]:      `${ apiUrls.local }${ trackingApiUri }`,
@@ -941,9 +952,9 @@ export let config = {
 
     get apiUrl() : string {
 
-        let domain     = `${ window.location.protocol }//${ window.location.host }`;
-        let corsApiUrl = config.corsApiUrl;
-        let wwwApiUrl  = config.wwwApiUrl;
+        const domain     = `${ window.location.protocol }//${ window.location.host }`;
+        const corsApiUrl = config.corsApiUrl;
+        const wwwApiUrl  = config.wwwApiUrl;
 
         return domain === wwwApiUrl ? wwwApiUrl : corsApiUrl;
     },
@@ -973,8 +984,8 @@ export let config = {
     },
 
     get loggerUrl() : string {
-        let isTestExperiment = Math.random() < config.loggerThrottlePercentage;
-        let loggerUrl = isTestExperiment ? config.loggerUri : config.hermesLoggerUri;
+        const isTestExperiment = Math.random() < config.loggerThrottlePercentage;
+        const loggerUrl = isTestExperiment ? config.loggerUri : config.hermesLoggerUri;
 
         return `${ config.paypalUrl }${ loggerUrl }`;
     },
@@ -1006,212 +1017,5 @@ export let config = {
     defaultLocale: {
         country: COUNTRY.US,
         lang:    LANG.EN
-    },
-
-    locales: {
-        [COUNTRY.AD]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.AE]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH, LANG.AR ],
-        [COUNTRY.AG]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.AI]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.AL]: [ LANG.EN ],
-        [COUNTRY.AM]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.AN]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.AO]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.AR]: [ LANG.ES, LANG.EN ],
-        [COUNTRY.AT]: [ LANG.DE, LANG.EN ],
-        [COUNTRY.AU]: [ LANG.EN ],
-        [COUNTRY.AW]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.AZ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.BA]: [ LANG.EN ],
-        [COUNTRY.BB]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.BE]: [ LANG.EN, LANG.NL, LANG.FR ],
-        [COUNTRY.BF]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.BG]: [ LANG.EN ],
-        [COUNTRY.BH]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.BI]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.BJ]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.BM]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.BN]: [ LANG.EN ],
-        [COUNTRY.BO]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.BR]: [ LANG.PT, LANG.EN ],
-        [COUNTRY.BS]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.BT]: [ LANG.EN ],
-        [COUNTRY.BW]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.BY]: [ LANG.EN ],
-        [COUNTRY.BZ]: [ LANG.EN, LANG.ES, LANG.FR, LANG.ZH ],
-        [COUNTRY.C2]: [ LANG.ZH, LANG.EN ],
-        [COUNTRY.CA]: [ LANG.EN, LANG.FR ],
-        [COUNTRY.CD]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.CG]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.CH]: [ LANG.DE, LANG.FR, LANG.EN ],
-        [COUNTRY.CI]: [ LANG.FR, LANG.EN ],
-        [COUNTRY.CK]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.CL]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.CM]: [ LANG.FR, LANG.EN ],
-        [COUNTRY.CN]: [ LANG.ZH ],
-        [COUNTRY.CO]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.CR]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.CV]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.CY]: [ LANG.EN ],
-        [COUNTRY.CZ]: [ LANG.CS, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.DE]: [ LANG.DE, LANG.EN ],
-        [COUNTRY.DJ]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.DK]: [ LANG.DA, LANG.EN ],
-        [COUNTRY.DM]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.DO]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.DZ]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.EC]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.EE]: [ LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.EG]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.ER]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.ES]: [ LANG.ES, LANG.EN ],
-        [COUNTRY.ET]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.FI]: [ LANG.FI, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.FJ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.FK]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.FM]: [ LANG.EN ],
-        [COUNTRY.FO]: [ LANG.DA, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.FR]: [ LANG.FR, LANG.EN ],
-        [COUNTRY.GA]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.GB]: [ LANG.EN ],
-        [COUNTRY.GD]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.GE]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.GF]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.GI]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.GL]: [ LANG.DA, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.GM]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.GN]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.GP]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.GR]: [ LANG.EL, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.GT]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.GW]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.GY]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.HK]: [ LANG.EN, LANG.ZH ],
-        [COUNTRY.HN]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.HR]: [ LANG.EN ],
-        [COUNTRY.HU]: [ LANG.HU, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.ID]: [ LANG.ID, LANG.EN ],
-        [COUNTRY.IE]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.IL]: [ LANG.HE, LANG.EN ],
-        [COUNTRY.IN]: [ LANG.EN ],
-        [COUNTRY.IS]: [ LANG.EN ],
-        [COUNTRY.IT]: [ LANG.IT, LANG.EN ],
-        [COUNTRY.JM]: [ LANG.EN, LANG.ES, LANG.FR, LANG.ZH ],
-        [COUNTRY.JO]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.JP]: [ LANG.JA, LANG.EN ],
-        [COUNTRY.KE]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.KG]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.KH]: [ LANG.EN ],
-        [COUNTRY.KI]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.KM]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.KN]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.KR]: [ LANG.KO, LANG.EN ],
-        [COUNTRY.KW]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.KY]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.KZ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.LA]: [ LANG.EN ],
-        [COUNTRY.LC]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.LI]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.LK]: [ LANG.EN ],
-        [COUNTRY.LS]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.LT]: [ LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.LU]: [ LANG.EN, LANG.DE, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.LV]: [ LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.MA]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.MC]: [ LANG.FR, LANG.EN ],
-        [COUNTRY.MD]: [ LANG.EN ],
-        [COUNTRY.ME]: [ LANG.EN ],
-        [COUNTRY.MG]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.MH]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.MK]: [ LANG.EN ],
-        [COUNTRY.ML]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.MN]: [ LANG.EN ],
-        [COUNTRY.MQ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.MR]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.MS]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.MT]: [ LANG.EN ],
-        [COUNTRY.MU]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.MV]: [ LANG.EN ],
-        [COUNTRY.MW]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.MX]: [ LANG.ES, LANG.EN ],
-        [COUNTRY.MY]: [ LANG.EN ],
-        [COUNTRY.MZ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.NA]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.NC]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.NE]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.NF]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.NG]: [ LANG.EN ],
-        [COUNTRY.NI]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.NL]: [ LANG.NL, LANG.EN ],
-        [COUNTRY.NO]: [ LANG.NO, LANG.EN ],
-        [COUNTRY.NP]: [ LANG.EN ],
-        [COUNTRY.NR]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.NU]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.NZ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.OM]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.PA]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.PE]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.PF]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.PG]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.PH]: [ LANG.EN ],
-        [COUNTRY.PL]: [ LANG.PL, LANG.EN ],
-        [COUNTRY.PM]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.PN]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.PT]: [ LANG.PT, LANG.EN ],
-        [COUNTRY.PW]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.PY]: [ LANG.ES, LANG.EN ],
-        [COUNTRY.QA]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH, LANG.AR ],
-        [COUNTRY.RE]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.RO]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.RS]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.RU]: [ LANG.RU, LANG.EN ],
-        [COUNTRY.RW]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.SA]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SB]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SC]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.SE]: [ LANG.SV, LANG.EN ],
-        [COUNTRY.SG]: [ LANG.EN ],
-        [COUNTRY.SH]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SI]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SJ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SK]: [ LANG.SK, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SL]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SM]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SN]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.SO]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SR]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.ST]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SV]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.SZ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.TC]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.TD]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.TG]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.TH]: [ LANG.TH, LANG.EN ],
-        [COUNTRY.TJ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.TM]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.TN]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.TO]: [ LANG.EN ],
-        [COUNTRY.TR]: [ LANG.TR, LANG.EN ],
-        [COUNTRY.TT]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.TV]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.TW]: [ LANG.ZH, LANG.EN ],
-        [COUNTRY.TZ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.UA]: [ LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.UG]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.US]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.UY]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.VA]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.VC]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.VE]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.VG]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.VN]: [ LANG.EN ],
-        [COUNTRY.VU]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.WF]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.WS]: [ LANG.EN ],
-        [COUNTRY.YE]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.YT]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.ZA]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.ZM]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.ZW]: [ LANG.EN ]
     }
 };

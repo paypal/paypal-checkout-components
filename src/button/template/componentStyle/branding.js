@@ -4,7 +4,7 @@ import { BUTTON_BRANDING } from '../../../constants';
 
 import { CLASS } from './class';
 
-export let brandingStyle = `
+export const brandingStyle = `
 
     .${ CLASS.BUTTON }.${ CLASS.BRANDING }-${ BUTTON_BRANDING.UNBRANDED }  {
         min-width: 60%;

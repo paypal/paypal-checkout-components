@@ -2,7 +2,8 @@
 
 import { beacon } from './lib/beacon';
 import { extendNamespace } from './lib/namespace';
-import { stringifyError, isPayPalDomain } from './lib/util';
+import { stringifyError } from './lib/util';
+import { isPayPalDomain } from './lib/security';
 
 if (!__PAYPAL_CHECKOUT__.__MAJOR__ && !isPayPalDomain() && !__TEST__) {
     throw new Error(`Do not integrate with versioned script url`);
@@ -28,7 +29,7 @@ if (window.paypal && window.paypal.version === __PAYPAL_CHECKOUT__.__MINOR_VERSI
 } else {
 
     try {
-        let _interface = require('./index');
+        const _interface = require('./index');
         extendNamespace(_interface, [ 'paypal', 'PAYPAL', 'ppxo' ], [ 'apps' ]);
 
     } catch (err) {

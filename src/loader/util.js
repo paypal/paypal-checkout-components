@@ -6,37 +6,38 @@ export function loadScript(url : string, prop : string, attrs : Object, callback
         return callback(null, window[prop]);
     }
 
-    let container = document.body || document.head;
+    const container = document.body || document.head;
 
     if (!container) {
         return callback(new Error(`Can not find container to insert script into`));
     }
 
-    let script = document.createElement('script');
+    const script = document.createElement('script');
 
     script.src = url;
 
-    script.onload = () => {
+    script.addEventListener('load', () => {
         if (!window[prop]) {
             return callback(new Error(`Expected ${ prop } to be present on window`));
         }
 
         return callback(null, window[prop]);
-    };
+    });
 
-    script.onerror = (err : Error) => {
+    // $FlowFixMe
+    script.addEventListener('error', (err : Error) => {
         return callback(err);
-    };
+    });
 
-    for (let attr of Object.keys(attrs)) {
+    for (const attr of Object.keys(attrs)) {
         script.setAttribute(attr, attrs[attr]);
     }
 
     container.appendChild(script);
 }
 
-export function warn(...args : Array<string>) {
-    let message = args.join(' ');
+export function warn(...args : $ReadOnlyArray<string>) {
+    const message = args.join(' ');
 
     if (window.console && window.console.warn) {
         window.console.warn(message);
@@ -47,7 +48,7 @@ export function warn(...args : Array<string>) {
 
 export function parseQuery(queryString : string = window.location.search) : Object {
 
-    let params = {};
+    const params = {};
 
     if (queryString && queryString.indexOf('?') === 0) {
         queryString = queryString.slice(1);
@@ -88,8 +89,8 @@ export function stringifyError(err : mixed, level : number = 1) : string {
         }
 
         if (err instanceof Error) {
-            let stack = err && err.stack;
-            let message = err && err.message;
+            const stack = err && err.stack;
+            const message = err && err.message;
 
             if (stack && message) {
                 if (stack.indexOf(message) !== -1) {

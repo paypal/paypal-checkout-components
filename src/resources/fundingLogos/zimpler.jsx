@@ -1,7 +1,7 @@
 /* @flow */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
-import { jsxToHTML, JsxHTMLNode } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, JsxHTMLNode } from '../../lib/jsx';
 import { BUTTON_LOGO_COLOR } from '../../constants';
 
 const ZIMPLER_LOGO_COLORS = {
@@ -22,7 +22,7 @@ export function zimplerLogo({ logoColor } : { logoColor : $Values<typeof BUTTON_
         throw new Error(`No ${ logoColor } zimpler logo available`);
     }
 
-    let { primary } = ZIMPLER_LOGO_COLORS[logoColor];
+    const { primary } = ZIMPLER_LOGO_COLORS[logoColor];
 
     return (
         <svg width="127" height="32" viewBox="0 0 127 32" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">

@@ -2,7 +2,7 @@
 
 export function responder() : { respond : (error : ?Error, result : ?mixed) => void, listen : (callback : (error : ?Error, result : ?mixed) => void) => void } {
 
-    let callbacks = [];
+    const callbacks = [];
     let loaded = false;
 
     let err;

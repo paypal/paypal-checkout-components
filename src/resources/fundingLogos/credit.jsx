@@ -1,8 +1,8 @@
 
 /* @flow */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
-import { jsxToHTML, JsxHTMLNode } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, JsxHTMLNode } from '../../lib/jsx';
 import { BUTTON_LOGO_COLOR, COUNTRY } from '../../constants';
 import type { LocaleType } from '../../types';
 
@@ -27,8 +27,8 @@ export function creditLogo({ logoColor, locale } : { logoColor : $Values<typeof 
         throw new Error(`No ${ logoColor } credit logo available`);
     }
 
-    let { country } = locale || {};
-    let { primary } = CREDIT_LOGO_COLORS[logoColor];
+    const { country } = locale || {};
+    const { primary } = CREDIT_LOGO_COLORS[logoColor];
 
     switch (country) {
     case COUNTRY.DE:

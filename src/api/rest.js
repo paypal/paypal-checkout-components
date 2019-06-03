@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { on, send } from 'post-robot/src';
-import { btoa } from 'Base64';
+import { base64encode } from 'belter/src';
 import { info, track } from 'beaver-logger/client';
 import { getAncestor, isSameDomain } from 'cross-domain-utils/src';
 
@@ -10,21 +10,19 @@ import { config } from '../config';
 import { FPTI, PAYMENT_TYPE } from '../constants';
 import { request, memoize, isPayPalDomain, uniqueID } from '../lib';
 
-import { addPaymentOptions, validateExtraPaymentOptions, removeExtraPaymentOptions } from './hacks';
-
 type ProxyRest = {
-    [string] : (...args : Array<mixed>) => ZalgoPromise<*>
+    [string] : (...args : $ReadOnlyArray<mixed>) => ZalgoPromise<*>
 };
 
 let proxyRest : ProxyRest = {};
 
-let createAccessToken = memoize((env : string, client : { [key : string] : string }) : ZalgoPromise<string> => {
+const createAccessToken = memoize((env : string, client : { [key : string] : string }) : ZalgoPromise<string> => {
 
     info(`rest_api_create_access_token`);
 
     env = env || config.env;
 
-    let clientID : string = client[env];
+    const clientID : string = client[env];
 
     if (!clientID) {
         throw new Error(`Client ID not found for env: ${ env }`);
@@ -34,7 +32,7 @@ let createAccessToken = memoize((env : string, client : { [key : string] : strin
         return proxyRest.createAccessToken(env, client);
     }
 
-    let basicAuth : string = btoa(`${ clientID }:`);
+    const basicAuth : string = base64encode(`${ clientID }:`);
 
     return request({
 
@@ -62,13 +60,13 @@ let createAccessToken = memoize((env : string, client : { [key : string] : strin
 
 }, { time: 10 * 60 * 1000 });
 
-let createExperienceProfile = memoize((env : string, client : { [key : string] : string }, experienceDetails : Object = {}) : ZalgoPromise<string> => {
+const createExperienceProfile = memoize((env : string, client : { [key : string] : string }, experienceDetails : Object = {}) : ZalgoPromise<string> => {
 
     info(`rest_api_create_experience_profile`);
 
     env = env || config.env;
 
-    let clientID = client[env];
+    const clientID = client[env];
 
     if (!clientID) {
         throw new Error(`Client ID not found for env: ${ env }`);
@@ -123,7 +121,7 @@ function logPaymentResponse(res) {
     if (res.links && res.links.length) {
         for (let i = 0; i < res.links.length; i++) {
             if (res.links[i].method === 'REDIRECT' && res.links[i].rel === 'approval_url') {
-                let match = res.links[i].href.match(/token=((EC-)?[A-Z0-9]{17})/);
+                const match = res.links[i].href.match(/token=((EC-)?[A-Z0-9]{17})/);
                 if (match) {
                     paymentToken = match[1];
                 }
@@ -149,17 +147,17 @@ function createTracking(env : string, client : { [key : string] : string }, merc
     
     env = env || config.env;
 
-    let clientID = client[env];
+    const clientID = client[env];
 
     if (!clientID) {
         throw new Error(`Client ID not found for env: ${ env }`);
     }
 
-    let trackingID = uniqueID();
+    const trackingID = uniqueID();
 
     return createAccessToken(env, client).then((accessToken) : ZalgoPromise<Object> => {
 
-        let headers : Object = {
+        const headers : Object = {
             Authorization: `Bearer ${ accessToken }`
         };
 
@@ -184,7 +182,7 @@ function createPayment(env : string, client : { [key : string] : string }, payme
 
     env = env || config.env;
 
-    let clientID = client[env];
+    const clientID = client[env];
 
     if (!clientID) {
         throw new Error(`Client ID not found for env: ${ env }`);
@@ -196,14 +194,8 @@ function createPayment(env : string, client : { [key : string] : string }, payme
         throw new Error(`Expected payment details to be passed`);
     }
 
-    validateExtraPaymentOptions(payment);
-
     if (proxyRest.createPayment && !proxyRest.createPayment.source.closed) {
-        return proxyRest.createPayment(env, client, { payment, experience, meta, tracking })
-            .then(id => {
-                addPaymentOptions(id, payment);
-                return id;
-            });
+        return proxyRest.createPayment(env, client, { payment, experience, meta, tracking });
     }
 
     payment = { ...payment };
@@ -236,7 +228,7 @@ function createPayment(env : string, client : { [key : string] : string }, payme
                     payment.experience_profile_id = experienceID;
                 }
 
-                let headers : Object = {
+                const headers : Object = {
                     Authorization: `Bearer ${ accessToken }`
                 };
 
@@ -252,7 +244,7 @@ function createPayment(env : string, client : { [key : string] : string }, payme
                     method: `post`,
                     url:    config.paymentApiUrls[env],
                     headers,
-                    json:   removeExtraPaymentOptions(payment)
+                    json:   payment
                 });
             });
         });
@@ -267,10 +259,6 @@ function createPayment(env : string, client : { [key : string] : string }, payme
 
         throw new Error(`Payment Api response error:\n\n${ JSON.stringify(res, null, 4) }`);
 
-    }).then(id => {
-
-        addPaymentOptions(id, payment);
-        return id;
     });
 }
 
@@ -280,7 +268,7 @@ function createOrder(env : string, client : { [key : string] : string }, payment
 
     env = env || config.env;
 
-    let clientID = client[env];
+    const clientID = client[env];
 
     if (!clientID) {
         throw new Error(`Client ID not found for env: ${ env }`);
@@ -309,7 +297,7 @@ function createOrder(env : string, client : { [key : string] : string }, payment
 
     return createAccessToken(env, client).then((accessToken) : ZalgoPromise<Object> => {
 
-        let headers : Object = {
+        const headers : Object = {
             Authorization: `Bearer ${ accessToken }`
         };
 
@@ -342,7 +330,7 @@ export function createBillingAgreement(env : string, client : { [key : string] :
 
     env = env || config.env;
 
-    let clientID = client[env];
+    const clientID = client[env];
 
     if (!clientID) {
         throw new Error(`Client ID not found for env: ${ env }`);
@@ -395,7 +383,7 @@ export function createBillingAgreement(env : string, client : { [key : string] :
     });
 }
 
-export let rest = {
+export const rest = {
     payment: {
         create:  createPayment
     },
@@ -411,7 +399,7 @@ export let rest = {
 };
 
 const PROXY_REST = `proxy_rest`;
-let parentWin = getAncestor();
+const parentWin = getAncestor();
 
 on(PROXY_REST, { domain: config.paypal_domain_regex }, ({ data }) => {
     proxyRest = data;

@@ -17,7 +17,7 @@ describe(`paypal button component validate`, () => {
 
     it('should render a button into a container, then disable the button, then click on the button, then complete the payment', (done) => {
 
-        let input = document.createElement('input');
+        const input = document.createElement('input');
         input.type = 'checkbox';
 
         getElement('#testContainer').appendChild(input);

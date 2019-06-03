@@ -9,7 +9,7 @@ import { urlWillRedirectPage, redirect as redir } from '../lib';
 
 import { LOG_PREFIX } from './constants';
 
-let { warn } = prefix(LOG_PREFIX);
+const { warn } = prefix(LOG_PREFIX);
 
 let redirected = false;
 

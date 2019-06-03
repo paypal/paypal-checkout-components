@@ -8,7 +8,7 @@ describe(`paypal checkout auth api`, () => {
 
     it('should call the payment api and get a payment id', () => {
 
-        let paymentApi = getPaymentApiMock().expectCalls();
+        const paymentApi = getPaymentApiMock().expectCalls();
 
         return window.paypal.rest.payment.create('test', { test: MERCHANT_CLIENT_ID }, {
             transactions: [
@@ -29,7 +29,7 @@ describe(`paypal checkout auth api`, () => {
 
     it('should call the payment api and ensure the params are passed over, and get a payment id', () => {
 
-        let paymentApi = getPaymentApiMock({
+        const paymentApi = getPaymentApiMock({
             handler({ data }) : { id : string } {
                 if (!data.transactions) {
                     throw new Error(`Expected data.transactions to be passed`);
@@ -76,9 +76,9 @@ describe(`paypal checkout auth api`, () => {
 
     it('should call the payment api with an experience profile and get a payment id', () => {
 
-        let experienceID = generateExperienceToken();
+        const experienceID = generateExperienceToken();
 
-        let experienceApi = getExperienceApiMock({
+        const experienceApi = getExperienceApiMock({
             handler({ data }) : { id : string } {
                 if (!data.presentation) {
                     throw new Error(`Expected data.presentation to be passed`);
@@ -106,7 +106,7 @@ describe(`paypal checkout auth api`, () => {
             }
         }).expectCalls();
 
-        let paymentApi = getPaymentApiMock({
+        const paymentApi = getPaymentApiMock({
             handler({ data }) : { id : string } {
                 if (data.experience_profile_id !== experienceID) {
                     throw new Error(`Expected data.experience_profile_id to be ${ experienceID }, got ${ data.experience_profile_id }`);
@@ -145,10 +145,10 @@ describe(`paypal checkout auth api`, () => {
 
     it('should call the payment api with an experience profile and bn code in the new style and get a payment id', () => {
 
-        let experienceID = generateExperienceToken();
-        let partnerAttributionID = 'foobarbazmerchant';
+        const experienceID = generateExperienceToken();
+        const partnerAttributionID = 'foobarbazmerchant';
 
-        let experienceApi = getExperienceApiMock({
+        const experienceApi = getExperienceApiMock({
             handler({ data }) : { id : string } {
                 if (!data.presentation) {
                     throw new Error(`Expected data.presentation to be passed`);
@@ -176,7 +176,7 @@ describe(`paypal checkout auth api`, () => {
             }
         }).expectCalls();
 
-        let paymentApi = getPaymentApiMock({
+        const paymentApi = getPaymentApiMock({
             handler({ data, headers }) : { id : string } {
                 if (data.experience_profile_id !== experienceID) {
                     throw new Error(`Expected data.experience_profile_id to be ${ experienceID }, got ${ data.experience_profile_id }`);
@@ -229,7 +229,7 @@ describe(`paypal checkout auth api`, () => {
 
     it('should call the payment api and get a payment id and work even when the api does not return json content-type header', () => {
 
-        let paymentApi = getPaymentApiMock({
+        const paymentApi = getPaymentApiMock({
             headers: {
                 'content-type': 'text/html'
             }
@@ -239,45 +239,6 @@ describe(`paypal checkout auth api`, () => {
             transactions: [
                 {
                     amount: { total: '1.00', currency: 'USD' }
-                }
-            ]
-
-        }).then(paymentID => {
-
-            paymentApi.done();
-
-            if (!paymentID.match(/^PAY-[A-Z0-9]+$/)) {
-                throw new Error(`Expected valid payment ID, got ${ paymentID }`);
-            }
-        });
-    });
-
-    it('should call the payment api and strip out any shipping_options added to the transaction item list', () => {
-
-        let paymentApi = getPaymentApiMock({
-            headers: {
-                'content-type': 'text/html'
-            }
-        }).expectCalls();
-
-        return window.paypal.rest.payment.create('test', { test: MERCHANT_CLIENT_ID }, {
-            transactions: [
-                {
-                    amount:    { total: '1.00', currency: 'USD' },
-                    item_list: {
-                        shipping_options: [
-                            {
-                                id:     'TEST123',
-                                label:  'Premium Shipping',
-                                type:   'SHIP_TO_HOME',
-                                amount: {
-                                    currency_code: 'USD',
-                                    value:         '5.00'
-                                }
-                            }
-
-                        ]
-                    }
                 }
             ]
 

@@ -1,7 +1,7 @@
 /* @flow */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
-import { jsxToHTML, JsxHTMLNode } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, JsxHTMLNode } from '../../lib/jsx';
 import { BUTTON_LOGO_COLOR } from '../../constants';
 
 const IDEAL_LOGO_COLORS = {
@@ -28,7 +28,7 @@ export function idealLogo({ logoColor } : { logoColor : $Values<typeof BUTTON_LO
         throw new Error(`No ${ logoColor } ideal logo available`);
     }
 
-    let { primary, secondary, tertiary } = IDEAL_LOGO_COLORS[logoColor];
+    const { primary, secondary, tertiary } = IDEAL_LOGO_COLORS[logoColor];
 
     return (
         <svg width="38" height="32" viewBox="0 0 38 32" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">

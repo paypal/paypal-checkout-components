@@ -8,7 +8,7 @@ import { generateECToken, createTestContainer, destroyTestContainer,
     setupPopupBridge, destroyPopupBridge, onHashChange,
     generateBillingToken, assert } from '../common';
 
-for (let flow of [ 'popup', 'iframe' ]) {
+for (const flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal button component popup bridge happy path on ${ flow }`, () => {
 
@@ -29,9 +29,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then complete the payment', () => {
             return wrapPromise(({ expect, avoid }) => {
-                let token = generateECToken();
+                const token = generateECToken();
 
-                let openPopupBridge = window.popupBridge.open;
+                const openPopupBridge = window.popupBridge.open;
 
                 window.popupBridge.open = expect('window.popupBridge.open', (url) => {
                     assert.ok(url.indexOf(`token=${ token }`) !== -1);
@@ -66,9 +66,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button into a container and click on the button, then cancel the payment', () => {
             return wrapPromise(({ expect, avoid }) => {
                 setupPopupBridge({ isAuthorize: false });
-                let token = generateECToken();
+                const token = generateECToken();
 
-                let openPopupBridge = window.popupBridge.open;
+                const openPopupBridge = window.popupBridge.open;
 
                 window.popupBridge.open = expect('window.popupBridge.open', (url) => {
                     assert.ok(url.indexOf(`token=${ token }`) !== -1);
@@ -92,9 +92,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on authorize', () => {
             return wrapPromise(({ expect, avoid }) => {
-                let token = generateECToken();
+                const token = generateECToken();
 
-                let openPopupBridge = window.popupBridge.open;
+                const openPopupBridge = window.popupBridge.open;
 
                 window.popupBridge.open = expect('window.popupBridge.open', (url) => {
                     assert.ok(url.indexOf(`token=${ token }`) !== -1);
@@ -125,9 +125,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button then redirect on authorize with a custom url', () => {
             return wrapPromise(({ expect, avoid }) => {
-                let token = generateECToken();
+                const token = generateECToken();
 
-                let openPopupBridge = window.popupBridge.open;
+                const openPopupBridge = window.popupBridge.open;
 
                 window.popupBridge.open = expect('window.popupBridge.open', (url) => {
                     assert.ok(url.indexOf(`token=${ token }`) !== -1);
@@ -159,9 +159,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button into a container and click on the button then redirect on cancel', () => {
             return wrapPromise(({ expect, avoid }) => {
                 setupPopupBridge({ isAuthorize: false });
-                let token = generateECToken();
+                const token = generateECToken();
 
-                let openPopupBridge = window.popupBridge.open;
+                const openPopupBridge = window.popupBridge.open;
 
                 window.popupBridge.open = expect('window.popupBridge.open', (url) => {
                     assert.ok(url.indexOf(`token=${ token }`) !== -1);
@@ -193,9 +193,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button into a container and click on the button then redirect on cancel with a custom url', () => {
             return wrapPromise(({ expect, avoid }) => {
                 setupPopupBridge({ isAuthorize: false });
-                let token = generateECToken();
+                const token = generateECToken();
 
-                let openPopupBridge = window.popupBridge.open;
+                const openPopupBridge = window.popupBridge.open;
 
                 window.popupBridge.open = expect('window.popupBridge.open', (url) => {
                     assert.ok(url.indexOf(`token=${ token }`) !== -1);
@@ -226,9 +226,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
         
         it('should render a button into a container and click on the button, call the billing api to create an agreement, then complete the payment', () => {
             return wrapPromise(({ expect, avoid }) => {
-                let token = generateBillingToken();
+                const token = generateBillingToken();
 
-                let openPopupBridge = window.popupBridge.open;
+                const openPopupBridge = window.popupBridge.open;
 
                 window.popupBridge.open = expect('window.popupBridge.open', (url) => {
                     assert.ok(url.indexOf(`token=`) !== -1);
@@ -252,7 +252,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         
         it('should render a button into a container and set up bridge after the render', () => {
             return wrapPromise(({ expect, avoid }) => {
-                let token = generateECToken();
+                const token = generateECToken();
                 destroyPopupBridge();
 
                 return window.paypal.Button.render({
@@ -267,7 +267,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     setupPopupBridge();
 
-                    let openPopupBridge = window.popupBridge.open;
+                    const openPopupBridge = window.popupBridge.open;
 
                     window.popupBridge.open = expect('window.popupBridge.open', (url) => {
                         assert.ok(url.indexOf(`token=${ token }`) !== -1);
@@ -285,9 +285,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             it('should render a button into a container and click on the button, popout, then complete the payment', () => {
                 return wrapPromise(({ expect, avoid }) => {
-                    let token = generateECToken();
+                    const token = generateECToken();
 
-                    let openPopupBridge = window.popupBridge.open;
+                    const openPopupBridge = window.popupBridge.open;
 
                     window.popupBridge.open = expect('window.popupBridge.open', (url) => {
                         assert.ok(url.indexOf(`token=${ token }`) !== -1);

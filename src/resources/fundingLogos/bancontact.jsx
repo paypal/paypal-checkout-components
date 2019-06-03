@@ -1,7 +1,7 @@
 /* @flow */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
-import { jsxToHTML, JsxHTMLNode } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, JsxHTMLNode } from '../../lib/jsx';
 import { BUTTON_LOGO_COLOR } from '../../constants';
 
 const BANCONTACT_LOGO_COLORS = {
@@ -25,7 +25,7 @@ export function bancontactLogo({ logoColor } : { logoColor : $Values<typeof BUTT
         throw new Error(`No ${ logoColor } bancontact logo available`);
     }
 
-    let { primary, secondary } = BANCONTACT_LOGO_COLORS[logoColor];
+    const { primary, secondary } = BANCONTACT_LOGO_COLORS[logoColor];
 
     return (
         <svg version="1.1" id="Layer_1" x="0px" y="0px" width="226px" height="32px" viewBox="36.09922790527344 36.68461608886719 226 32" style="enable-background:new 0 0 476.9 123.4;" xmlns="http://www.w3.org/2000/svg">

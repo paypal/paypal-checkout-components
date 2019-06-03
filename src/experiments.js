@@ -5,15 +5,15 @@ import { info, track, immediateFlush } from 'beaver-logger/client';
 import { FPTI, PAYMENT_TYPE } from './constants';
 import { getReturnToken, getSessionState, getDomainSetting, eventEmitter } from './lib';
 
-export let onAuthorizeListener = eventEmitter();
+export const onAuthorizeListener = eventEmitter();
 
 function log(experiment : string, treatment : string, token : ?string, state : string) {
 
     getSessionState(session => {
 
         let event        = `${ experiment }_${ treatment }_${ state }`;
-        let loggedEvents = session.loggedExperimentEvents = session.loggedExperimentEvents || [];
-        let duplicate    = loggedEvents.indexOf(event) !== -1;
+        const loggedEvents = session.loggedExperimentEvents = session.loggedExperimentEvents || [];
+        const duplicate    = loggedEvents.indexOf(event) !== -1;
 
         if (duplicate) {
             info(`duplicate_${ event }`);
@@ -22,7 +22,7 @@ function log(experiment : string, treatment : string, token : ?string, state : s
             info(event);
             loggedEvents.push(event);
 
-            let edge = window.navigator && window.navigator.userAgent && window.navigator.userAgent.match(/Edge\/[0-9]{2}/);
+            const edge = window.navigator && window.navigator.userAgent && window.navigator.userAgent.match(/Edge\/[0-9]{2}/);
 
             if (edge) {
                 event = info(`${ edge[0].toLowerCase().replace('/', '_') }_${ event }`);
@@ -63,7 +63,7 @@ export function logExperimentTreatment({ experiment, treatment, state, token } :
 
 function logReturn(token : string) {
 
-    let {
+    const {
         externalExperiment,
         externalExperimentTreatment,
         externalExperimentToken
@@ -89,7 +89,7 @@ if (getDomainSetting('log_authorize')) {
         }, 1);
     });
 
-    let returnToken = getReturnToken();
+    const returnToken = getReturnToken();
 
     if (returnToken) {
         setTimeout(() => {

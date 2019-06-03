@@ -4,7 +4,7 @@ import { BUTTON_LAYOUT } from '../../../constants';
 
 import { CLASS } from './class';
 
-export let layoutStyle = `
+export const layoutStyle = `
 
     .${ CLASS.CONTAINER }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.VERTICAL } .${ CLASS.TAGLINE } {
         display: none;

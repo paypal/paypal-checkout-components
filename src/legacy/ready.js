@@ -8,7 +8,7 @@ import { ENV } from '../constants';
 import { LOG_PREFIX, ATTRIBUTES, CLASSES } from './constants';
 import { setup } from './interface';
 
-let { error, debug } = prefix(LOG_PREFIX);
+const { error, debug } = prefix(LOG_PREFIX);
 
 /*  PayPal Checkout Ready
     ---------------------
@@ -73,7 +73,7 @@ onKey(window, 'paypalCheckoutReady', method => {
 
     if (typeof method === 'function') {
 
-        let oneTimeReady = function () : void {
+        const oneTimeReady = function () : void {
             if (!method.called) {
                 method.called = true;
                 return method.apply(this, arguments);
@@ -95,14 +95,14 @@ onKey(window, 'paypalCheckoutReady', method => {
 
 onDocumentReady(() => {
 
-    let buttons = Array.prototype.slice.call(document.querySelectorAll(`[${ ATTRIBUTES.BUTTON }]`));
+    const buttons = Array.prototype.slice.call(document.querySelectorAll(`[${ ATTRIBUTES.BUTTON }]`));
 
     if (buttons && buttons.length) {
         debug(`data_paypal_button`, { number: buttons.length });
 
-        for (let button of buttons) {
+        for (const button of buttons) {
 
-            let id = button.getAttribute(ATTRIBUTES.MERCHANT_ID);
+            const id = button.getAttribute(ATTRIBUTES.MERCHANT_ID);
 
             let environment;
 

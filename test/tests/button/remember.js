@@ -19,8 +19,8 @@ describe(`paypal button component remembered funding`, () => {
 
     it('isFundingRemembered should return false by default for paypal', () => {
         
-        let source = window.paypal.FUNDING.PAYPAL;
-        let expected = false;
+        const source = window.paypal.FUNDING.PAYPAL;
+        const expected = false;
 
         return window.paypal.isFundingRemembered(source).then(result => {
             if (result !== expected) {
@@ -31,8 +31,8 @@ describe(`paypal button component remembered funding`, () => {
 
     it('isFundingRemembered should return false by default for venmo', () => {
 
-        let source = window.paypal.FUNDING.VENMO;
-        let expected = false;
+        const source = window.paypal.FUNDING.VENMO;
+        const expected = false;
 
         return window.paypal.isFundingRemembered(source).then(result => {
             if (result !== expected) {
@@ -43,8 +43,8 @@ describe(`paypal button component remembered funding`, () => {
 
     it('isFundingRemembered should return true for paypal when funding is remembered', () => {
 
-        let source = window.paypal.FUNDING.PAYPAL;
-        let expected = true;
+        const source = window.paypal.FUNDING.PAYPAL;
+        const expected = true;
         
         window.localStorage.setItem('rememberedFunding', JSON.stringify([ source ]));
 
@@ -57,8 +57,8 @@ describe(`paypal button component remembered funding`, () => {
 
     it('isFundingRemembered should return true for venmo when funding is remembered', () => {
 
-        let source = window.paypal.FUNDING.VENMO;
-        let expected = true;
+        const source = window.paypal.FUNDING.VENMO;
+        const expected = true;
 
         window.localStorage.setItem('rememberedFunding', JSON.stringify([ source ]));
 
@@ -71,8 +71,8 @@ describe(`paypal button component remembered funding`, () => {
 
     it('isFundingRemembered should return false for paypal when venmo is remembered user', () => {
 
-        let source = window.paypal.FUNDING.PAYPAL;
-        let expected = false;
+        const source = window.paypal.FUNDING.PAYPAL;
+        const expected = false;
 
         window.localStorage.setItem('rememberedFunding', JSON.stringify([ window.paypal.FUNDING.VENMO ]));
 
@@ -85,8 +85,8 @@ describe(`paypal button component remembered funding`, () => {
 
     it('isFundingRemembered should return false for venmo when paypal is remembered user', () => {
 
-        let source = window.paypal.FUNDING.VENMO;
-        let expected = false;
+        const source = window.paypal.FUNDING.VENMO;
+        const expected = false;
 
         window.localStorage.setItem('rememberedFunding', JSON.stringify([ window.paypal.FUNDING.PAYPAL ]));
 
@@ -99,8 +99,8 @@ describe(`paypal button component remembered funding`, () => {
 
     it('isFundingRemembered should return true for paypal when multiple funding sources are remembered', () => {
 
-        let source = window.paypal.FUNDING.PAYPAL;
-        let expected = true;
+        const source = window.paypal.FUNDING.PAYPAL;
+        const expected = true;
 
         window.localStorage.setItem('rememberedFunding', JSON.stringify([ window.paypal.FUNDING.VENMO, window.paypal.FUNDING.PAYPAL ]));
 
@@ -113,8 +113,8 @@ describe(`paypal button component remembered funding`, () => {
 
     it('isFundingRemembered should return true for venmo when multiple funding sources are remembered', () => {
 
-        let source = window.paypal.FUNDING.VENMO;
-        let expected = true;
+        const source = window.paypal.FUNDING.VENMO;
+        const expected = true;
 
         window.localStorage.setItem('rememberedFunding', JSON.stringify([ window.paypal.FUNDING.VENMO, window.paypal.FUNDING.PAYPAL ]));
 
@@ -127,14 +127,14 @@ describe(`paypal button component remembered funding`, () => {
 
     it('isFundingRemembered should return true instantly for paypal when funding is remembered and cached', () => {
 
-        let source = window.paypal.FUNDING.PAYPAL;
-        let expected = true;
+        const source = window.paypal.FUNDING.PAYPAL;
+        const expected = true;
 
         window.localStorage.setItem('rememberedFunding', JSON.stringify([ source ]));
 
         let firstThenCalled = false;
 
-        let promise1 =  window.paypal.isFundingRemembered(source).then(result => {
+        const promise1 =  window.paypal.isFundingRemembered(source).then(result => {
             firstThenCalled = true;
 
             if (result !== expected) {
@@ -143,7 +143,7 @@ describe(`paypal button component remembered funding`, () => {
 
             let secondThenCalled = false;
 
-            let promise2 = window.paypal.isFundingRemembered(source).then(result2 => {
+            const promise2 = window.paypal.isFundingRemembered(source).then(result2 => {
                 secondThenCalled = true;
 
                 if (result2 !== expected) {
@@ -167,7 +167,7 @@ describe(`paypal button component remembered funding`, () => {
 
     it('should render a button then get an immediate result for isFundingRemembered', (done) => {
         
-        let source = window.paypal.FUNDING.VENMO;
+        const source = window.paypal.FUNDING.VENMO;
         
         window.paypal.Button.render({
 
@@ -177,9 +177,9 @@ describe(`paypal button component remembered funding`, () => {
                 onRender:   () => {
                     
                     let thenCalled = false;
-                    let expected = true;
+                    const expected = true;
 
-                    let promise = window.paypal.isFundingRemembered(source).then(result => {
+                    const promise = window.paypal.isFundingRemembered(source).then(result => {
                         thenCalled = true;
 
                         if (result !== expected) {

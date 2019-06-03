@@ -1,7 +1,7 @@
 /* @flow */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
-import { jsxToHTML, JsxHTMLNode } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, JsxHTMLNode } from '../../lib/jsx';
 import { BUTTON_LOGO_COLOR } from '../../constants';
 
 const MYBANK_LOGO_COLORS = {
@@ -28,7 +28,7 @@ export function mybankLogo({ logoColor } : { logoColor : $Values<typeof BUTTON_L
         throw new Error(`No ${ logoColor } mybank logo available`);
     }
 
-    let { primary, secondary, tertiary } = MYBANK_LOGO_COLORS[logoColor];
+    const { primary, secondary, tertiary } = MYBANK_LOGO_COLORS[logoColor];
 
     return (
         <svg width="58px" height="32px" viewBox="0 0 58 32" version="1.1" xmlns="http://www.w3.org/2000/svg">

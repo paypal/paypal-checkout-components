@@ -4,7 +4,7 @@ import { config } from './config';
 
 export function isCheckoutXComponent() : boolean {
     if (window.name) {
-        let seg = window.name.split(config.name_separator);
+        const seg = window.name.split(config.name_separator);
 
         if (seg[0] === config.xcomponent && seg[1] === config.ppcheckout) {
             return true;
@@ -29,7 +29,7 @@ export function isLatest() : boolean {
         return false;
     }
 
-    let version = getVersion();
+    const version = getVersion();
 
     return Boolean(version === config.major_version || version === config.latest_version);
 }

@@ -8,7 +8,7 @@ import { isPayPalDomain, noop, getScriptVersion, extendUrl } from '../lib';
 import { config } from '../config';
 
 function match(str : string, pattern : RegExp) : ?string {
-    let regmatch : ?Array<string> = str.match(pattern);
+    const regmatch : ?$ReadOnlyArray<string> = str.match(pattern);
     if (regmatch) {
         return regmatch[1];
     }
@@ -44,9 +44,9 @@ window.onLegacyPaymentAuthorize = onLegacyPaymentAuthorize;
 // Post-Bridge / Button
 
 window.watchForLegacyFallback = (win : SameDomainWindowType) => {
-    let interval = setInterval(() => {
+    const interval = setInterval(() => {
         try {
-            let isLegacy = (win.document.body.innerHTML.indexOf('merchantpaymentweb') !== -1 ||
+            const isLegacy = (win.document.body.innerHTML.indexOf('merchantpaymentweb') !== -1 ||
                             win.document.body.innerHTML.indexOf('wapapp') !== -1);
 
             if (!isLegacy || win.ppxoWatching || win.closed) {
@@ -55,7 +55,7 @@ window.watchForLegacyFallback = (win : SameDomainWindowType) => {
 
             win.ppxoWatching = true;
 
-            let XMLHttpRequestsend = win.XMLHttpRequest.prototype.send;
+            const XMLHttpRequestsend = win.XMLHttpRequest.prototype.send;
 
             win.XMLHttpRequest.prototype.send = function overrideXMLHttpRequestSend() : void {
 
@@ -65,7 +65,7 @@ window.watchForLegacyFallback = (win : SameDomainWindowType) => {
 
                 this._patched = true;
 
-                let self = this;
+                const self = this;
                 let onload = this.onload;
 
                 function listener() : void {
@@ -73,11 +73,11 @@ window.watchForLegacyFallback = (win : SameDomainWindowType) => {
                     if (self.readyState === self.DONE && self.status === 200 && self.responseText) {
 
                         try {
-                            let response = JSON.parse(self.responseText.replace('while (1);', ''));
+                            const response = JSON.parse(self.responseText.replace('while (1);', ''));
 
                             if (response.type === 'redirect' && response.url && onAuthorize) {
 
-                                let url = response.url;
+                                const url = response.url;
 
                                 clearInterval(interval);
                                 win.close();
@@ -118,7 +118,7 @@ window.watchForLegacyFallback = (win : SameDomainWindowType) => {
                     try {
 
                         delete this.onload;
-                        this.onload = listener;
+                        this.addEventListener('load', listener);
 
                         // $FlowFixMe
                         Object.defineProperty(this, 'onload', {

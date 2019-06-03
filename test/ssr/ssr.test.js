@@ -5,12 +5,12 @@ import { BUTTON_RENDER } from '../../webpack.config';
 
 jest.setTimeout(120000);
 
-let buttonExports = {};
+const buttonExports = {};
 
 beforeAll(async () => {
-    let script = await webpackCompileToString(BUTTON_RENDER);
-
-    let exports = buttonExports; // eslint-disable-line no-unused-vars
+    const script = await webpackCompileToString(BUTTON_RENDER);
+    
+    const exports = buttonExports; // eslint-disable-line no-unused-vars
     eval(script); // eslint-disable-line no-eval,security/detect-eval-with-expression
 
     if (typeof buttonExports.componentTemplate !== 'function') {
@@ -20,11 +20,11 @@ beforeAll(async () => {
 
 test(`Button should render with ssr, with minimal options`, () => {
 
-    let locale = 'en_US';
+    const locale = 'en_US';
 
-    let style = {};
+    const style = {};
 
-    let html = buttonExports.componentTemplate({
+    const html = buttonExports.componentTemplate({
         props: { locale, style }
     });
 
@@ -35,11 +35,11 @@ test(`Button should render with ssr, with minimal options`, () => {
 
 test(`Button should render with ssr, with all options`, () => {
 
-    let env = 'production';
+    const env = 'production';
 
-    let locale = 'fr_FR';
+    const locale = 'fr_FR';
 
-    let style = {
+    const style = {
         size:   'medium',
         color:  'blue',
         shape:  'pill',
@@ -54,7 +54,7 @@ test(`Button should render with ssr, with all options`, () => {
         tagline:      false
     };
 
-    let html = buttonExports.componentTemplate({
+    const html = buttonExports.componentTemplate({
         props: { env, locale, style }
     });
 
@@ -65,9 +65,9 @@ test(`Button should render with ssr, with all options`, () => {
 
 test(`Button should fail to render with ssr, with invalid style option`, () => {
 
-    let locale = 'en_US';
+    const locale = 'en_US';
 
-    let style = {
+    const style = {
         color: 'vermillion'
     };
 
@@ -88,9 +88,9 @@ test(`Button should fail to render with ssr, with invalid style option`, () => {
 
 test(`Button should fail to render with ssr, with invalid locale`, () => {
 
-    let locale = 'en_XX';
+    const locale = 'en_XX';
 
-    let style = {};
+    const style = {};
 
     let expectedErr;
 

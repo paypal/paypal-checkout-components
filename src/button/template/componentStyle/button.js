@@ -4,7 +4,7 @@ import { BUTTON_COLOR, ENV } from '../../../constants';
 
 import { CLASS } from './class';
 
-export let buttonStyle = `
+export const buttonStyle = `
 
     .${ CLASS.CONTAINER } {
         display: block;

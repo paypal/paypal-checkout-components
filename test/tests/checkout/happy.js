@@ -7,7 +7,7 @@ import { generateECToken, generateBillingToken, generatePaymentID,
     createTestContainer, destroyTestContainer, onHashChange, createElement,
     getElementRecursive, onWindowOpen, MERCHANT_CLIENT_ID, once, assert } from '../common';
 
-for (let flow of [ 'popup', 'iframe' ]) {
+for (const flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal checkout component happy path on ${ flow }`, () => {
 
@@ -24,7 +24,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout, then complete the payment', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 return window.paypal.Checkout.render({
@@ -49,7 +49,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         
         it('should render checkout, then cancel the payment', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 return window.paypal.Checkout.render({
@@ -76,9 +76,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout then redirect on authorize', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 window.paypal.Checkout.render({
@@ -107,9 +107,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout then redirect on authorize and await the promise', (done) => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 return window.paypal.Checkout.render({
@@ -135,9 +135,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout then redirect on authorize with a custom url', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 window.paypal.Checkout.render({
@@ -166,9 +166,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout then redirect on cancel', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 window.paypal.Checkout.render({
@@ -199,9 +199,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout then redirect on cancel and await the promise', (done) => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 return window.paypal.Checkout.render({
@@ -229,9 +229,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout then redirect on cancel with a custom url', () => {
 
-            let token = generateECToken();
+            const token = generateECToken();
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 window.paypal.Checkout.render({
@@ -262,7 +262,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout, call the REST api to create a payment, then complete the payment', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 return window.paypal.Checkout.render({
@@ -273,8 +273,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     payment() : ZalgoPromise<string> {
 
-                        let env    = this.props.env;
-                        let client = this.props.client;
+                        const env    = this.props.env;
+                        const client = this.props.client;
 
                         return window.paypal.rest.payment.create(env, client, {
                             transactions: [
@@ -300,7 +300,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout, call the REST api to create a payment with an experience profile, then complete the payment', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 return window.paypal.Checkout.render({
@@ -311,8 +311,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     payment() : string | ZalgoPromise<string> {
 
-                        let env    = this.props.env;
-                        let client = this.props.client;
+                        const env    = this.props.env;
+                        const client = this.props.client;
 
                         return window.paypal.rest.payment.create(env, client, {
                             transactions: [
@@ -341,7 +341,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout, call the billing api to create an agreement, then complete the payment', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 return window.paypal.Checkout.render({
@@ -352,8 +352,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     payment() : string | ZalgoPromise<string> {
 
-                        let env    = this.props.env;
-                        let client = this.props.client;
+                        const env    = this.props.env;
+                        const client = this.props.client;
 
                         return window.paypal.rest.billingAgreement.create(env, client, {
                             plan: {
@@ -377,7 +377,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout, with a promise token passed, then complete the payment', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 return window.paypal.Checkout.render({
@@ -403,9 +403,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout with a checkout token on the correct url, then complete the payment', (done) => {
 
-            let checkoutToken = generateECToken();
+            const checkoutToken = generateECToken();
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 return window.paypal.Checkout.render({
@@ -434,9 +434,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout with a payment id on the correct url, then complete the payment', (done) => {
 
-            let paymentID = generatePaymentID();
+            const paymentID = generatePaymentID();
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 return window.paypal.Checkout.render({
@@ -465,9 +465,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout with a new-style payment id on the correct url, then complete the payment', (done) => {
 
-            let paymentID = generatePaymentID().replace('PAY-', 'PAYID-');
+            const paymentID = generatePaymentID().replace('PAY-', 'PAYID-');
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 return window.paypal.Checkout.render({
@@ -496,9 +496,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout with a billing token on the correct url, then complete the payment', (done) => {
 
-            let billingToken = generateBillingToken();
+            const billingToken = generateBillingToken();
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 return window.paypal.Checkout.render({
@@ -528,7 +528,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render checkout, and click the close button to close the window', (done) => {
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 return window.paypal.Checkout.render({
@@ -564,7 +564,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             it('should render checkout, and click the focus button to focus the popup', (done) => {
                 done = once(done);
 
-                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+                const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 let childWindow;
 
@@ -607,7 +607,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             it('should render checkout, then cancel the payment by closing the window', (done) => {
 
-                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+                const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', () => {
                     return window.paypal.Checkout.render({
@@ -643,7 +643,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             window.paypal.postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = false;
 
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
                 return window.paypal.Checkout.render({
@@ -670,7 +670,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             it('should render checkout, popout, then complete the payment', (done) => {
 
-                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+                const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 let paymentCalls = 0;
 
@@ -703,9 +703,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             it('should render checkout, popout, then redirect', () => {
 
-                let token = generateECToken();
+                const token = generateECToken();
 
-                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+                const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', () => {
                     window.paypal.Checkout.render({
@@ -731,9 +731,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             it('should render checkout, popout, then redirect and await the promise', (done) => {
 
-                let token = generateECToken();
+                const token = generateECToken();
 
-                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+                const testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', () => {
                     window.paypal.Checkout.render({

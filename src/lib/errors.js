@@ -61,7 +61,7 @@ export function checkForCommonErrors() {
         warn(`prerender_running_checkoutjs`);
     }
 
-    let context = {};
+    const context = {};
 
     function returnContext() : typeof context {
         return this;
@@ -76,7 +76,7 @@ export function checkForCommonErrors() {
     }
 
     // $FlowFixMe
-    if (Object.assign && JSON.stringify({ a: 1, b: 2, c: 3 }) !== JSON.stringify(Object.assign({ a: 1 }, { b: 2 }, { c: 3 }))) {
+    if (Object.assign && JSON.stringify({ a: 1, b: 2, c: 3 }) !== JSON.stringify({ a: 1, b: 2, c: 3 })) { // eslint-disable-line no-self-compare
         warn(`object_assign_broken`);
     }
 }

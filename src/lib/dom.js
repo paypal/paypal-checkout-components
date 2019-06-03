@@ -4,9 +4,9 @@ import { info } from 'beaver-logger/client';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 
-import { config } from '../config';
-import { LANG_TO_DEFAULT_COUNTRY } from '../constants';
+import { LANG_TO_DEFAULT_COUNTRY, LOCALE } from '../constants';
 import type { LocaleType } from '../types';
+import { config } from '../config';
 
 import { memoize } from './util';
 import { isDevice } from './device';
@@ -15,13 +15,13 @@ function isDocumentReady() : boolean {
     return Boolean(document.body) && document.readyState === 'complete';
 }
 
-export let documentReady : ZalgoPromise<void> = new ZalgoPromise(resolve => {
+export const documentReady : ZalgoPromise<void> = new ZalgoPromise(resolve => {
 
     if (isDocumentReady()) {
         return resolve();
     }
 
-    let interval = setInterval(() => {
+    const interval = setInterval(() => {
         if (isDocumentReady()) {
             clearInterval(interval);
             return resolve();
@@ -29,7 +29,7 @@ export let documentReady : ZalgoPromise<void> = new ZalgoPromise(resolve => {
     }, 10);
 });
 
-export let documentBody : ZalgoPromise<HTMLElement> = documentReady.then(() => {
+export const documentBody : ZalgoPromise<HTMLElement> = documentReady.then(() => {
     if (document.body) {
         return document.body;
     }
@@ -40,11 +40,11 @@ export let documentBody : ZalgoPromise<HTMLElement> = documentReady.then(() => {
 
 export function loadScript(src : string, timeout : number = 0, attrs : Object = {}) : ZalgoPromise<void> {
     return new ZalgoPromise((resolve, reject) => {
-        let script = document.createElement('script');
+        const script = document.createElement('script');
 
-        script.onload = function scriptOnLoad() {
+        script.addEventListener('load', () => {
             resolve();
-        };
+        });
 
         // For Internet explorer 8 support
         script.onreadystatechange = function scriptOnReadyStateChange() {
@@ -53,11 +53,11 @@ export function loadScript(src : string, timeout : number = 0, attrs : Object = 
             }
         };
 
-        let scriptLoadError = new Error('script_loading_error');
+        const scriptLoadError = new Error('script_loading_error');
 
-        script.onerror = () => {
+        script.addEventListener('error', () => {
             return reject(scriptLoadError);
-        };
+        });
 
         if (timeout) {
             setTimeout(() => {
@@ -65,13 +65,13 @@ export function loadScript(src : string, timeout : number = 0, attrs : Object = 
             }, timeout);
         }
 
-        for (let attr of Object.keys(attrs)) {
+        for (const attr of Object.keys(attrs)) {
             script.setAttribute(attr, attrs[attr]);
         }
 
         script.setAttribute('src', src);
 
-        let head = document.getElementsByTagName('head')[0];
+        const head = document.getElementsByTagName('head')[0];
 
         head.appendChild(script);
     });
@@ -80,7 +80,7 @@ export function loadScript(src : string, timeout : number = 0, attrs : Object = 
 
 export function isNodeList(nodes : mixed) : boolean {
 
-    let result = Object.prototype.toString.call(nodes);
+    const result = Object.prototype.toString.call(nodes);
 
     if (result === '[object HTMLCollection]' || result === '[object NodeList]') {
         return true;
@@ -106,7 +106,7 @@ export function getElement(item : mixed) : ?HTMLElement {
     if (typeof item === 'string') {
 
         if (document.querySelector) {
-            let result = document.querySelector(item);
+            const result = document.querySelector(item);
 
             if (result) {
                 return result;
@@ -117,14 +117,14 @@ export function getElement(item : mixed) : ?HTMLElement {
     }
 }
 
-export function getElements(collection : Array<mixed> | NodeList<HTMLElement> | HTMLCollection<HTMLElement> | HTMLElement | string) : Array<HTMLElement> {
+export function getElements(collection : $ReadOnlyArray<mixed> | NodeList<HTMLElement> | HTMLCollection<HTMLElement> | HTMLElement | string) : $ReadOnlyArray<HTMLElement> {
 
     if (!collection) {
         return [];
     }
 
     if (collection instanceof HTMLElement || typeof collection === 'string') {
-        let element = getElement(collection);
+        const element = getElement(collection);
         if (element) {
             return [ element ];
         }
@@ -132,10 +132,10 @@ export function getElements(collection : Array<mixed> | NodeList<HTMLElement> | 
     }
 
     if (Array.isArray(collection) || collection instanceof NodeList || collection instanceof HTMLCollection) {
-        let result = [];
+        const result = [];
 
         for (let i = 0; i < collection.length; i++) {
-            let el = getElement(collection[i]);
+            const el = getElement(collection[i]);
             if (el) {
                 result.push(el);
             }
@@ -151,9 +151,9 @@ export function onDocumentReady(method : () => void) : ZalgoPromise<void> {
     return documentReady.then(method);
 }
 
-export let parseQuery = memoize((queryString : string) : Object => {
+export const parseQuery = memoize((queryString : string) : Object => {
 
-    let params = {};
+    const params = {};
 
     if (!queryString) {
         return params;
@@ -198,7 +198,7 @@ export function urlWillRedirectPage(url : string) : boolean {
 
 export function extendUrl(url : string, params : { [key : string] : string } = {}) : string {
 
-    let hasHash = url.indexOf('#') > 0;
+    const hasHash = url.indexOf('#') > 0;
 
     let [ serverUrl, hash ] = url.split('#');
 
@@ -206,19 +206,19 @@ export function extendUrl(url : string, params : { [key : string] : string } = {
         [ serverUrl, hash ] = [ `#${ hash }`, '' ];
     }
 
-    let [ originalUrl, originalQueryString ] = serverUrl.split('?');
+    const [ originalUrl, originalQueryString ] = serverUrl.split('?');
 
     if (originalQueryString) {
-        let originalQuery = parseQuery(originalQueryString);
+        const originalQuery = parseQuery(originalQueryString);
 
-        for (let key in originalQuery) {
+        for (const key in originalQuery) {
             if (!params.hasOwnProperty(key)) {
                 params[key] = originalQuery[key];
             }
         }
     }
 
-    let newQueryString = Object.keys(params).filter(key => key && params[key]).sort().map(key => {
+    const newQueryString = Object.keys(params).filter(key => key && params[key]).sort().map(key => {
         return `${ encodeURIComponent(key) }=${ encodeURIComponent(params[key]) }`;
     }).join('&');
 
@@ -250,7 +250,7 @@ export function redirect(win : CrossDomainWindowType = window, url : string) : Z
 }
 
 export function hasMetaViewPort() : boolean {
-    let meta = document.querySelector('meta[name=viewport]');
+    const meta = document.querySelector('meta[name=viewport]');
 
     if (isDevice() && window.screen.width < 660 && !meta) {
         return false;
@@ -259,10 +259,10 @@ export function hasMetaViewPort() : boolean {
     return true;
 }
 
-export function getBrowserLocales() : Array<string> {
-    let nav = window.navigator;
+export function getBrowserLocales() : $ReadOnlyArray<string> {
+    const nav = window.navigator;
 
-    let locales = nav.languages
+    const locales = nav.languages
         ? Array.prototype.slice.apply(nav.languages)
         : [];
 
@@ -280,8 +280,8 @@ export function getBrowserLocales() : Array<string> {
 export function normalizeLocale(locale : string) : ?LocaleType {
 
     if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
-        let [ lang, country ] = locale.split(/[-_]/);
-        if (config.locales[country] && config.locales[country].indexOf(lang) !== -1) {
+        const [ lang, country ] = locale.split(/[-_]/);
+        if (LOCALE[country] && LOCALE[country].indexOf(lang) !== -1) {
             return { country, lang };
         }
     }
@@ -296,11 +296,11 @@ export function normalizeLang(lang : string) : ?LocaleType {
     }
 }
 
-export let getBrowserLocale = memoize(() : LocaleType => {
+export const getBrowserLocale = memoize(() : LocaleType => {
 
-    let locales = getBrowserLocales();
+    const locales = getBrowserLocales();
 
-    for (let locale of locales) {
+    for (const locale of locales) {
         let loc = normalizeLocale(locale);
         if (loc) {
             info('better_browser_locale_full');
@@ -321,7 +321,7 @@ export function isElementVisible(el : HTMLElement) : boolean {
     return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
 }
 
-export let enablePerformance = memoize(() : boolean => {
+export const enablePerformance = memoize(() : boolean => {
     /* eslint-disable compat/compat */
     return Boolean(
         window.performance &&
@@ -342,7 +342,7 @@ export function getPageRenderTime() : ZalgoPromise<?number> {
             return;
         }
 
-        let timing = window.performance.timing;
+        const timing = window.performance.timing;
 
         if (timing.connectEnd && timing.domInteractive) {
             return timing.domInteractive - timing.connectEnd;
@@ -360,10 +360,10 @@ export function getResourceLoadTime(url : string) : ?number {
         return;
     }
 
-    let entries = window.performance.getEntries();
+    const entries = window.performance.getEntries();
 
     for (let i = 0; i < entries.length; i++) {
-        let entry = entries[i];
+        const entry = entries[i];
 
         if (entry && entry.name === url && entry.duration && entry.duration >= 0 && entry.duration <= 60000) {
             return Math.floor(entry.duration);

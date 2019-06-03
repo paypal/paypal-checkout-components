@@ -1,7 +1,7 @@
 /* @flow */
-/* @jsx jsxToHTML */
+/** @jsx jsxToHTML */
 
-import { jsxToHTML, JsxHTMLNode } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, JsxHTMLNode } from '../../lib/jsx';
 import { BUTTON_LOGO_COLOR } from '../../constants';
 
 const P24_LOGO_COLORS = {
@@ -25,7 +25,7 @@ export function p24Logo({ logoColor } : { logoColor : $Values<typeof BUTTON_LOGO
         throw new Error(`No ${ logoColor } p24 logo available`);
     }
 
-    let { primary, secondary } = P24_LOGO_COLORS[logoColor];
+    const { primary, secondary } = P24_LOGO_COLORS[logoColor];
 
     return (
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 32" height="32" width="100" preserveAspectRatio="xMinYMin meet">

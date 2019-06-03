@@ -9,7 +9,7 @@ import { getElements } from '../lib';
 import { normalizeLocale } from './common';
 import { LOG_PREFIX } from './constants';
 
-let { info, warn } = prefix(LOG_PREFIX);
+const { info, warn } = prefix(LOG_PREFIX);
 
 export function normalizeOptions(options : Object) {
 
@@ -64,7 +64,7 @@ export function normalizeOptions(options : Object) {
     // Normalize button selectors to elements
 
     if (options.button) {
-        let button = getElements(options.button);
+        const button = getElements(options.button);
 
         if (button.length) {
             options.button = button;
@@ -96,7 +96,7 @@ export function normalizeOptions(options : Object) {
 
     else if (options.buttons && Array.isArray(options.buttons)) {
 
-        let buttons = [];
+        const buttons = [];
 
         options.buttons.forEach(button => {
 
@@ -143,7 +143,7 @@ export function normalizeOptions(options : Object) {
 
     else if (options.container && !Array.isArray(options.buttons)) {
 
-        let buttons = [];
+        const buttons = [];
 
         getElements(options.container).forEach((container, i) => {
             buttons.push({

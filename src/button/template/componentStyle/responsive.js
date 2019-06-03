@@ -12,9 +12,9 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
 
     return Object.keys(BUTTON_STYLE).map(size => {
 
-        let style = BUTTON_STYLE[size];
-        let buttonHeight = height || style.defaultHeight;
-        let minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
+        const style = BUTTON_STYLE[size];
+        const buttonHeight = height || style.defaultHeight;
+        const minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
 
         return `
 

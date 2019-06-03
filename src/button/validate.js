@@ -1,7 +1,6 @@
 /* @flow */
 
-import { config } from '../config';
-import { BUTTON_LABEL, BUTTON_LAYOUT, BUTTON_SIZE, BUTTON_STYLE_OPTIONS, ALLOWED_INSTALLMENT_COUNTRIES, ALLOWED_INSTALLMENT_PERIOD } from '../constants';
+import { BUTTON_LABEL, BUTTON_LAYOUT, BUTTON_SIZE, BUTTON_STYLE_OPTIONS, ALLOWED_INSTALLMENT_COUNTRIES, ALLOWED_INSTALLMENT_PERIOD, LOCALE } from '../constants';
 
 import { BUTTON_CONFIG, BUTTON_STYLE, getButtonConfig } from './config';
 
@@ -15,18 +14,18 @@ export function validateButtonLocale(locale : string) {
         throw new Error(`Expected props.locale to be valid, got ${ locale }`);
     }
 
-    let [ lang, country ] = locale.split('_');
+    const [ lang, country ] = locale.split('_');
 
-    if (!config.locales[country] || config.locales[country].indexOf(lang) === -1) {
+    if (!LOCALE[country] || LOCALE[country].indexOf(lang) === -1) {
         throw new Error(`Expected props.locale to be valid`);
     }
 }
 
 export function validateRegionSpecificButton(style : Object = {}, locale : string = 'en_US') {
 
-    let country = locale.split('_')[1];
+    const country = locale.split('_')[1];
 
-    let isInstallmentAllowedCountry = ALLOWED_INSTALLMENT_COUNTRIES.indexOf(country) !== -1;
+    const isInstallmentAllowedCountry = ALLOWED_INSTALLMENT_COUNTRIES.indexOf(country) !== -1;
 
     if (!isInstallmentAllowedCountry && style.label === BUTTON_LABEL.INSTALLMENT) {
         throw new Error(`Unexpected label: style.${ style.label } for country: ${ country }`);
@@ -58,13 +57,13 @@ export function validateButtonStyle(style : Object = {}, props : Object) {
         throw new Error(`Expected props.style to be set`);
     }
 
-    let label = style[BUTTON_STYLE_OPTIONS.LABEL] || getButtonConfig('DEFAULT', (style[BUTTON_STYLE_OPTIONS.LAYOUT] === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalLabel' : 'defaultLabel');
+    const label = style[BUTTON_STYLE_OPTIONS.LABEL] || getButtonConfig('DEFAULT', (style[BUTTON_STYLE_OPTIONS.LAYOUT] === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalLabel' : 'defaultLabel');
 
     if (!BUTTON_CONFIG[label]) {
         throw new Error(`Invalid button label: ${ label }, expected: ${ Object.keys(BUTTON_CONFIG[label]).join(', ') }`);
     }
 
-    let {
+    const {
         [ BUTTON_STYLE_OPTIONS.COLOR ]:        color,
         [ BUTTON_STYLE_OPTIONS.SHAPE ]:        shape,
         [ BUTTON_STYLE_OPTIONS.SIZE ]:         size,
@@ -109,7 +108,7 @@ export function validateButtonStyle(style : Object = {}, props : Object) {
             throw new Error(`Expected style.${ BUTTON_STYLE_OPTIONS.MAXBUTTONS } to be a at least 1, got: ${ maxbuttons }`);
         }
 
-        let minButtons = (layout === BUTTON_LAYOUT.VERTICAL)
+        const minButtons = (layout === BUTTON_LAYOUT.VERTICAL)
             ? getButtonConfig(label, 'minVerticalButtons')
             : getButtonConfig(label, 'minHorizontalButtons');
 
@@ -123,9 +122,9 @@ export function validateButtonStyle(style : Object = {}, props : Object) {
             throw new TypeError(`Expected style.${ BUTTON_STYLE_OPTIONS.HEIGHT } to be a number, got: ${ maxbuttons }`);
         }
 
-        let buttonSize = size || getButtonConfig(label, (style.layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalSize' : 'defaultSize');
+        const buttonSize = size || getButtonConfig(label, (style.layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalSize' : 'defaultSize');
 
-        let { minHeight, maxHeight } = (size === BUTTON_SIZE.RESPONSIVE) ? {
+        const { minHeight, maxHeight } = (size === BUTTON_SIZE.RESPONSIVE) ? {
             minHeight: BUTTON_STYLE[BUTTON_SIZE.SMALL].minHeight,
             maxHeight: BUTTON_STYLE[BUTTON_SIZE.HUGE].maxHeight
         } : BUTTON_STYLE[buttonSize];
@@ -167,7 +166,7 @@ export function validateButtonProps(props : Object) {
         throw new Error(`Expected props`);
     }
 
-    let { locale, style } = props;
+    const { locale, style } = props;
 
     validateButtonLocale(locale);
     validateButtonStyle(style, props);
