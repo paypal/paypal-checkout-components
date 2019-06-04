@@ -78,9 +78,15 @@ export const testGlobals = {
     },
 
     __PAYPAL_CHECKOUT__: {
-        __REMEMBERED_FUNDING__: () => 'window.__TEST_REMEMBERED_FUNDING__ || []'
+        __REMEMBERED_FUNDING__: () => 'window.__TEST_REMEMBERED_FUNDING__ || []',
+        __URI__:                {
+            __CHECKOUT__:    `/base/test/integration/windows/checkout/index.htm?checkouturl=true`,
+            __BUTTONS__:     `/base/test/integration/windows/button/index.htm`,
+            __CARD_FIELDS__: `/base/test/integration/windows/card-fields/index.htm`
+        }
     },
 
+    __PROTOCOL__:       'http',
     __PORT__:           8000,
     __STAGE_HOST__:     'msmaster.qa.paypal.com',
     __HOST__:           'test.paypal.com',

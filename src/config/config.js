@@ -4,30 +4,16 @@ import { getPayPalDomain } from '@paypal/sdk-client/src';
 
 export const SESSION_LIFETIME = 5 * 60 * 1000;
 
-const URI = __TEST__
-
-    ? {
-        CHECKOUT: `/base/test/integration/windows/checkout/index.htm?checkouturl=true`,
-        BUTTON:   `/base/test/integration/windows/button/index.htm`,
-        CARD:     `/base/test/integration/windows/card-fields/index.htm`
-    }
-
-    : {
-        CHECKOUT: `/checkoutnow`,
-        BUTTON:   `/smart/buttons`,
-        CARD:     `/smart/card-fields`
-    };
-
 export function getCheckoutUrl() : string {
-    return `${ getPayPalDomain() }${ URI.CHECKOUT }`;
+    return `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__CHECKOUT__ }`;
 }
 
 export function getButtonUrl() : string {
-    return `${ getPayPalDomain() }${ URI.BUTTON }`;
+    return `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__BUTTONS__ }`;
 }
 
 export function getCardUrl() : string {
-    return `${ getPayPalDomain() }${ URI.CARD }`;
+    return `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__CARD_FIELDS__ }`;
 }
 
 export const DEFAULT_POPUP_SIZE = {

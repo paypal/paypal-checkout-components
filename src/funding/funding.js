@@ -8,8 +8,8 @@ import type { FundingEligibilityType } from '../types';
 
 import { FUNDING_PRIORITY, getFundingConfig } from './config';
 
-export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, platform, remembered, fundingEligibility, components, onShippingChange } :
-    { layout : $Values<typeof BUTTON_LAYOUT>, platform : $Values<typeof PLATFORM>, remembered : $ReadOnlyArray<$Values<typeof FUNDING>>, fundingEligibility : FundingEligibilityType, components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, onShippingChange : ?Function }) : boolean {
+export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, platform, fundingEligibility, components, onShippingChange } :
+    { layout : $Values<typeof BUTTON_LAYOUT>, platform : $Values<typeof PLATFORM>, fundingEligibility : FundingEligibilityType, components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, onShippingChange : ?Function }) : boolean {
 
     if (!fundingEligibility[source] || !fundingEligibility[source].eligible) {
         return false;
@@ -30,10 +30,6 @@ export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, pl
     }
 
     if (fundingConfig.platforms && fundingConfig.platforms.indexOf(platform) === -1) {
-        return false;
-    }
-
-    if (fundingConfig.remembered && remembered && remembered.indexOf(source) === -1) {
         return false;
     }
 

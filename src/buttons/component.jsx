@@ -529,7 +529,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     queryParam: true,
                     value:      () => {
                         return getStorageState(storage => {
-                            storage.rememberedFunding = storage.rememberedFunding || getRememberedFunding();
+                            storage.rememberedFunding = [ ...storage.rememberedFunding, ...getRememberedFunding() ].filter(Boolean);
                             return storage.rememberedFunding;
                         });
                     }
@@ -540,7 +540,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     value() : Function {
                         return (sources : $ReadOnlyArray<$Values<typeof FUNDING>>) => {
                             return getStorageState(storage => {
-                                storage.rememberedFunding = storage.rememberedFunding || getRememberedFunding();
+                                storage.rememberedFunding = [ ...storage.rememberedFunding, ...getRememberedFunding() ].filter(Boolean);
                                 for (const source of sources) {
                                     if (storage.rememberedFunding.indexOf(source) === -1) {
                                         storage.rememberedFunding.push(source);

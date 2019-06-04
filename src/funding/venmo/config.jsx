@@ -21,8 +21,6 @@ export function getVenmoConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.HORIZONTAL,
             BUTTON_LAYOUT.VERTICAL
         ],
-
-        remembered: true,
     
         labels: {
             [ BUTTON_LABEL.VENMO ]: {
