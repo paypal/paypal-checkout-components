@@ -570,7 +570,7 @@ describe(`paypal button component funding mix`, () => {
             locale: 'en_US',
 
             funding: {
-                allowed: [ window.paypal.FUNDING.VENMO ]
+                allowed: [ window.paypal.FUNDING.ITAU ]
             },
 
             payment() : string | ZalgoPromise<string> {
