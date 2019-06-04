@@ -535,16 +535,6 @@ export const Button : Component<ButtonOptions> = create({
                     }
                 }
 
-                if (getDomainSetting('disable_itau')) {
-                    if (remembered && remembered.indexOf(FUNDING.ITAU) !== -1) {
-                        remembered = remembered.filter(source => (source !== FUNDING.ITAU));
-                    }
-
-                    if (disallowed && disallowed.indexOf(FUNDING.ITAU) === -1) {
-                        disallowed = [ ...disallowed, FUNDING.ITAU ];
-                    }
-                }
-
                 return {
                     allowed,
                     disallowed,

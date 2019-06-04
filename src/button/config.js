@@ -262,9 +262,9 @@ export const BUTTON_CONFIG : ButtonConfig = {
         },
 
         secondaryColors: {
-            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.BLUE,
+            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.SILVER,
             [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.BLUE,
+            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
             [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
             [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER,
             [ BUTTON_COLOR.WHITE ]:      BUTTON_COLOR.WHITE

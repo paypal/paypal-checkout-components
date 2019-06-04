@@ -16,7 +16,7 @@ import pp_black     from './pp_black.svg';
 import { paypalLogo } from './paypal';
 import { creditLogo } from './credit';
 import venmo_white  from './venmo_white.svg';
-import itau  from './itau_horizontal.svg';
+import itau  from './itau.svg';
 import venmo_blue   from './venmo_blue.svg';
 import elv          from './elv.svg';
 import elv_white    from './elv_white.svg';
