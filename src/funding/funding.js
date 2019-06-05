@@ -40,10 +40,8 @@ export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, pl
     return true;
 }
 
-export function determineEligibleFunding({ style, platform, remembered, fundingEligibility, components, onShippingChange } :
-    {| remembered : $ReadOnlyArray<$Values<typeof FUNDING>>, style : { layout : $Values<typeof BUTTON_LAYOUT> }, platform : $Values<typeof PLATFORM>, fundingEligibility : FundingEligibilityType, components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, onShippingChange : ?Function |}) : $ReadOnlyArray<$Values<typeof FUNDING>> {
-
-    const { layout } = style;
+export function determineEligibleFunding({ layout, platform, remembered, fundingEligibility, components, onShippingChange } :
+    {| remembered : $ReadOnlyArray<$Values<typeof FUNDING>>, layout : $Values<typeof BUTTON_LAYOUT>, platform : $Values<typeof PLATFORM>, fundingEligibility : FundingEligibilityType, components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, onShippingChange? : ?Function |}) : $ReadOnlyArray<$Values<typeof FUNDING>> {
 
     let eligibleFunding = FUNDING_PRIORITY.filter(source =>
         isFundingEligible(source, { layout, platform, remembered, fundingEligibility, components, onShippingChange }));

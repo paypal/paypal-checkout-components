@@ -9,5 +9,10 @@ module.exports = {
         setupHandler:    'setupButtons',
         staticNamespace: '__paypal_checkout__',
         globals
+    },
+    marks: {
+        entry:           './src/interface/marks',
+        staticNamespace: '__paypal_checkout__',
+        globals
     }
 };

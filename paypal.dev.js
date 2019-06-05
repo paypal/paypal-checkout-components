@@ -2,11 +2,16 @@
 
 import { setupSDK } from '@paypal/sdk-client/src';
 
-import * as paypalCheckout from './src/interface/button'; // eslint-disable-line import/no-namespace
+import * as paypalButtons from './src/interface/button'; // eslint-disable-line import/no-namespace
+import * as paypalMarks from './src/interface/marks'; // eslint-disable-line import/no-namespace
 
 setupSDK([
     {
-        name:     'paypal-checkout',
-        requirer: () => paypalCheckout
+        name:     'buttons',
+        requirer: () => paypalButtons
+    },
+    {
+        name:     'marks',
+        requirer: () => paypalMarks
     }
 ]);

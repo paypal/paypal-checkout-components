@@ -47,6 +47,20 @@ const WEBPACK_CONFIG_DEV = getWebpackConfig({
                     },
                     venmo: {
                         eligible: true
+                    },
+                    card: {
+                        eligible: true,
+                        vendors:  {
+                            visa: {
+                                eligible: true
+                            },
+                            mastercard: {
+                                eligible: true
+                            },
+                            amex: {
+                                eligible: true
+                            }
+                        }
                     }
                 }
             }

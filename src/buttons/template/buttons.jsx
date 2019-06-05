@@ -19,15 +19,15 @@ type ButtonsProps = ButtonPropsInputs & {|
 export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick } = props;
     const { style, locale, remembered, env, fundingEligibility, platform, nonce, components, onShippingChange } = normalizeButtonProps(props);
+    const { layout, shape } = style;
 
-    const fundingSources = determineEligibleFunding({ style, remembered, platform, fundingEligibility, components, onShippingChange });
+    const fundingSources = determineEligibleFunding({ layout, remembered, platform, fundingEligibility, components, onShippingChange });
     const multiple = fundingSources.length > 1;
 
     if (!fundingSources.length) {
         throw new Error(`No eligible funding fundingSources found to render buttons:\n\n${ JSON.stringify(fundingEligibility, null, 4) }`);
     }
-
-    const { layout, shape } = style;
+    
     const vaultedFunding = determineVaultedFunding({ fundingEligibility, layout });
 
     return (
