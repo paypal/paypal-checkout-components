@@ -3,6 +3,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
+import { rememberFunding } from '@paypal/funding-components/src';
 import { once } from 'belter/src';
 
 import { generateOrderID, createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, assert, mockProp, WEBVIEW_USER_AGENT } from '../common';
@@ -68,7 +69,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
                 const mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[source], 'eligible', true);
 
                 if (source === FUNDING.VENMO) {
-                    window.__TEST_REMEMBERED_FUNDING__.push(FUNDING.VENMO);
+                    rememberFunding([ FUNDING.VENMO ], { cookie: false });
                 }
                 
                 window.paypal.Buttons({
@@ -99,10 +100,6 @@ for (const flow of [ 'popup', 'iframe' ]) {
                 }).render('#testContainer');
 
                 mockEligibility.cancel();
-
-                if (source === FUNDING.VENMO) {
-                    window.__TEST_REMEMBERED_FUNDING__.splice(window.__TEST_REMEMBERED_FUNDING__.indexOf(FUNDING.VENMO), 1);
-                }
             });
         }
     });

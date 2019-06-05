@@ -78,7 +78,6 @@ export const testGlobals = {
     },
 
     __PAYPAL_CHECKOUT__: {
-        __REMEMBERED_FUNDING__: () => 'window.__TEST_REMEMBERED_FUNDING__ || []',
         __URI__:                {
             __CHECKOUT__:    `/base/test/integration/windows/checkout/index.htm?checkouturl=true`,
             __BUTTONS__:     `/base/test/integration/windows/button/index.htm`,
