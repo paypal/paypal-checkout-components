@@ -5,7 +5,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { isWindowClosed, type CrossDomainWindowType, type SameDomainWindowType } from 'cross-domain-utils/src';
 import { getPayPalLoggerUrl, getAuthAPIUrl, getOrderAPIUrl } from '@paypal/sdk-client/src';
-import { extendUrl, getElement, uniqueID, createElement, destroyElement } from 'belter/src';
+import { extendUrl, getElement, uniqueID, createElement, destroyElement, stringify } from 'belter/src';
 import { SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
 
 export function onHashChange() : ZalgoPromise<string> {
@@ -333,7 +333,7 @@ export function onWindowOpen({ time = 500 } : { time? : number } = {}) : ZalgoPr
     });
 }
 
-export function errorOnWindowOpen(win : CrossDomainWindowType = window) {
+export function errorOnWindowOpen(win : SameDomainWindowType = window) {
 
     if (win.open.reset) {
         win.open.reset();
@@ -413,18 +413,6 @@ export function mockProp<T>(namespace : Object, name : string, value : T) : { ca
             Object.defineProperty(namespace, name, descriptor);
         }
     };
-}
-
-export function stringify(item : mixed) : string {
-    if (typeof item === 'string') {
-        return item;
-    }
-
-    if (item && typeof item.toString === 'function') {
-        return item.toString();
-    }
-
-    return Object.prototype.toString.call(item);
 }
 
 export const assert = {

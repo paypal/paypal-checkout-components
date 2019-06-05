@@ -20,7 +20,7 @@ export function getSepaConfig() : FundingSourceConfig {
             [ BUTTON_LABEL.SEPA ]: {
                 ...DEFAULT_LABEL_CONFIG,
     
-                Label: SepaLogo
+                Label: ({ logoColor, optional }) => SepaLogo({ logoColor, optional })
             }
         }
     };

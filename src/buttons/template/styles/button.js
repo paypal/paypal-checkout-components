@@ -113,7 +113,7 @@ export const buttonStyle = `
     }
 
     .${ CLASS.BUTTON }.${ CLASS.LOADING } * {
-        display: none;
+        display: none !important;
     }
 
     .${ CLASS.BUTTON }.${ CLASS.LOADING } .${ CLASS.SPINNER } {

@@ -16,6 +16,11 @@ function getComponentScript() : () => void {
             HIDDEN:       'hidden'
         };
 
+        const SELECTOR = {
+            IMG:      'img',
+            OPTIONAL: '[optional]'
+        };
+
         function getElements(selector, parent) : $ReadOnlyArray<HTMLElement> {
             parent = parent || document;
             return Array.prototype.slice.call(parent.querySelectorAll(selector));
@@ -92,6 +97,10 @@ function getComponentScript() : () => void {
 
         function isOverflowing(el : HTMLElement) : boolean {
 
+            if (!el.offsetWidth || !el.offsetHeight) {
+                return false;
+            }
+
             if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) {
                 return true;
             }
@@ -124,14 +133,14 @@ function getComponentScript() : () => void {
             return false;
         }
 
-        const allImages = getElements('img');
-        const optionals = getElements('[optional]');
+        const allImages = getElements(SELECTOR.IMG);
+        const optionals = getElements(SELECTOR.OPTIONAL);
         const optionalParents = unique(optionals.map(optional => optional.parentElement).filter(Boolean));
 
         function toggleOptionals() {
             optionalParents.forEach(optionalParent => {
                 const parentChildren = Array.prototype.slice.call(optionalParent.children);
-                const optionalChildren = getElements('[optional]', optionalParent);
+                const optionalChildren = getElements(SELECTOR.OPTIONAL, optionalParent);
 
                 parentChildren.forEach(el => showElement(el));
 

@@ -152,7 +152,8 @@ export type RenderButtonProps = {|
     sessionID : string,
     buttonSessionID : string,
     nonce : string,
-    components : $ReadOnlyArray<$Values<typeof COMPONENTS>>
+    components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
+    onShippingChange : ?Function
 |};
 
 export type PrerenderDetails = {|
@@ -181,9 +182,11 @@ export type ButtonProps = {|
     platform : $Values<typeof PLATFORM>,
     fundingEligibility : FundingEligibilityType,
     remembered : $ReadOnlyArray<$Values<typeof FUNDING>>,
+    remember : ($ReadOnlyArray<$Values<typeof FUNDING>>) => void,
     clientID : string,
     sessionID : string,
     buttonSessionID : string,
+    onShippingChange : ?Function,
     nonce : string
 |};
 
@@ -199,10 +202,12 @@ export type ButtonPropsInputs = {|
     platform? : $PropertyType<ButtonProps, 'platform'> | void,
     fundingEligibility? : $PropertyType<ButtonProps, 'fundingEligibility'> | void,
     remembered? : $PropertyType<ButtonProps, 'remembered'> | void,
+    remember? : $PropertyType<ButtonProps, 'remember'> | void,
     sessionID? : $PropertyType<ButtonProps, 'sessionID'> | void,
     buttonSessionID? : $PropertyType<ButtonProps, 'buttonSessionID'> | void,
     nonce? : string,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
+    onShippingChange : ?Function,
     csp? : {
         nonce? : string
     }
@@ -315,7 +320,8 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         buttonSessionID = uniqueID(),
         csp = {},
         components = [ COMPONENTS.BUTTONS ],
-        nonce = ''
+        nonce = '',
+        onShippingChange
     } = props;
 
     const { country, lang } = locale;
@@ -350,5 +356,5 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
 
     style = normalizeButtonStyle(style);
 
-    return { clientID, style, locale, remembered, env, fundingEligibility, platform, buttonSessionID, commit, sessionID, nonce, components };
+    return { clientID, style, locale, remembered, env, fundingEligibility, platform, buttonSessionID, commit, sessionID, nonce, components, onShippingChange };
 }

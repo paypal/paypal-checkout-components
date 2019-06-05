@@ -6,7 +6,12 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 import type { FundingEligibilityType } from './types';
 
 declare var __PAYPAL_CHECKOUT__ : {
-    __REMEMBERED_FUNDING__ : Array<$Values<typeof FUNDING>> // eslint-disable-line flowtype/no-mutable-array
+    __REMEMBERED_FUNDING__ : $ReadOnlyArray<$Values<typeof FUNDING>>,
+    __URI__ : {
+        __BUTTONS__ : string,
+        __CHECKOUT__ : string,
+        __CARD_FIELDS__ : string
+    }
 };
 
 declare var __paypal_checkout__ : {

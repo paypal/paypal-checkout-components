@@ -1,3 +1,54 @@
+## <small>5.0.38 (2019-06-03)</small>
+
+* Add SKIP_TEST flag ([ce238e5](http://github.paypal.com/paypal/paypal-checkout/commit/ce238e5))
+* Ensure content does not display at the same time as loading spinner ([b7a022f](http://github.paypal.com/paypal/paypal-checkout/commit/b7a022f))
+* Pass in context for button render webpack config ([3ba160f](http://github.paypal.com/paypal/paypal-checkout/commit/3ba160f))
+* Upgrade flow ([8a4d79b](http://github.paypal.com/paypal/paypal-checkout/commit/8a4d79b))
+
+
+
+## <small>5.0.37 (2019-05-31)</small>
+
+* Fix fundingEligibility type to make everything optional ([d6e34c2](http://github.paypal.com/paypal/paypal-checkout/commit/d6e34c2))
+* Force card to be ineligible if passed in disableFunding ([d23e5ac](http://github.paypal.com/paypal/paypal-checkout/commit/d23e5ac))
+
+
+
+## <small>5.0.36 (2019-05-30)</small>
+
+* Fix jsx logos integration ([d0e71a7](http://github.paypal.com/paypal/paypal-checkout/commit/d0e71a7))
+
+
+
+## <small>5.0.35 (2019-05-29)</small>
+
+
+
+
+## <small>5.0.34 (2019-05-29)</small>
+
+* fix card tree shaking ([9cc3513](http://github.paypal.com/paypal/paypal-checkout/commit/9cc3513))
+
+
+
+## <small>5.0.33 (2019-05-23)</small>
+
+* Null checks for eligibility tree shaking ([75c9270](http://github.paypal.com/paypal/paypal-checkout/commit/75c9270))
+
+
+
+## <small>5.0.32 (2019-05-21)</small>
+
+* Pass along data to onClick ([8b49fa4](http://github.paypal.com/paypal/paypal-checkout/commit/8b49fa4))
+
+
+
+## <small>5.0.31 (2019-05-21)</small>
+
+* Disable apms when onShippingChange passed ([d1e1f02](http://github.paypal.com/paypal/paypal-checkout/commit/d1e1f02))
+
+
+
 ## <small>5.0.30 (2019-05-14)</small>
 
 * chore(release): 5.0.29 :tada: ([5229fa8](http://github.paypal.com/paypal/paypal-checkout/commit/5229fa8))

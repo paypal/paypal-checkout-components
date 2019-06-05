@@ -18,6 +18,11 @@ module.exports = {
     },
 
     __PAYPAL_CHECKOUT__: {
-        __REMEMBERED_FUNDING__: []
+        __REMEMBERED_FUNDING__: [],
+        __URI__:                {
+            __CHECKOUT__:    '/checkoutnow',
+            __BUTTONS__:     '/smart/buttons',
+            __CARD_FIELDS__: '/smart/card-fields'
+        }
     }
 };

@@ -11,6 +11,8 @@ export function getIdealConfig() : FundingSourceConfig {
         ...DEFAULT_FUNDING_CONFIG,
 
         defaultLabel: BUTTON_LABEL.IDEAL,
+
+        shippingChange: false,
     
         layouts: [
             BUTTON_LAYOUT.VERTICAL
@@ -20,7 +22,7 @@ export function getIdealConfig() : FundingSourceConfig {
             [ BUTTON_LABEL.IDEAL ]: {
                 ...DEFAULT_LABEL_CONFIG,
     
-                Label: IdealLogo
+                Label: ({ logoColor, optional }) => IdealLogo({ logoColor, optional })
             }
         }
     };

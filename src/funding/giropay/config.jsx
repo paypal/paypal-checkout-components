@@ -11,6 +11,8 @@ export function getGiropayConfig() : FundingSourceConfig {
         ...DEFAULT_FUNDING_CONFIG,
 
         defaultLabel: BUTTON_LABEL.GIROPAY,
+
+        shippingChange: false,
     
         layouts: [
             BUTTON_LAYOUT.VERTICAL
@@ -20,7 +22,7 @@ export function getGiropayConfig() : FundingSourceConfig {
             [ BUTTON_LABEL.GIROPAY ]: {
                 ...DEFAULT_LABEL_CONFIG,
     
-                Label: GiropayLogo
+                Label: ({ logoColor, optional }) => GiropayLogo({ logoColor, optional })
             }
         }
     };

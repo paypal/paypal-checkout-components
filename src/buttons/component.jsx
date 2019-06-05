@@ -4,7 +4,8 @@
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken,
-    getPartnerAttributionID, getCorrelationID, getStorageState, getEventEmitter, getEnableThreeDomainSecure, getDebug } from '@paypal/sdk-client/src';
+    getPartnerAttributionID, getCorrelationID, getEventEmitter, getEnableThreeDomainSecure, getDebug } from '@paypal/sdk-client/src';
+import { rememberFunding, getRememberedFunding } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { isIEIntranet, isDevice, uniqueID, redirect, supportsPopups, popup, writeElementToWindow, noop, inlineMemoize } from 'belter/src';
@@ -12,7 +13,7 @@ import { FUNDING, PLATFORM, INTENT, FPTI_KEY, CARD } from '@paypal/sdk-constants
 import { node, dom } from 'jsx-pragmatic/src';
 
 import { getButtonUrl, DEFAULT_POPUP_SIZE } from '../config';
-import { getFundingEligibility, getRememberedFunding } from '../globals';
+import { getFundingEligibility } from '../globals';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_CONTEXT_TYPE, EVENT } from '../constants';
 import { getSessionID } from '../lib';
 import { componentTemplate } from '../checkout/template';
@@ -21,7 +22,6 @@ import { containerTemplate, Buttons as ButtonsTemplate } from './template';
 import { normalizeButtonStyle, type ButtonProps, type PrerenderDetails, type ButtonStyle, type CreateOrder, type OnCancel, type OnClick,
     type CreateOrderData, type CreateOrderActions, type OnApprove, type OnApproveActions,
     type OnApproveData, type OnShippingChange, type GetPrerenderDetails, type OnClickData, type OnClickActions } from './props';
-
 
 export function getButtonsComponent() : ZoidComponent<ButtonProps> {
     return inlineMemoize(getButtonsComponent, () => {
@@ -107,6 +107,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     },
 
                     validate({ value = {} }) {
+                        // $FlowFixMe
                         normalizeButtonStyle(value);
                     },
 
@@ -387,7 +388,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                                 [ FPTI_KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                             }).flush();
 
-                            return value({}, actions);
+                            return value(data, actions);
                         };
                     },
 
@@ -502,7 +503,15 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
 
                 fundingEligibility: {
                     type:          'object',
-                    value:         () => getFundingEligibility(),
+                    value:         () => {
+                        const fundingEligibility = getFundingEligibility();
+                        
+                        if (fundingEligibility && fundingEligibility.card && fundingEligibility.card.eligible && getDisableFunding().indexOf(FUNDING.CARD) !== -1) {
+                            fundingEligibility.card.eligible = false;
+                        }
+
+                        return fundingEligibility;
+                    },
                     queryParam:    true,
                     serialization: 'base64'
                 },
@@ -518,27 +527,15 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 remembered: {
                     type:       'array',
                     queryParam: true,
-                    value:      () => {
-                        return getStorageState(storage => {
-                            storage.rememberedFunding = storage.rememberedFunding || getRememberedFunding();
-                            return storage.rememberedFunding;
-                        });
-                    }
+                    value:      getRememberedFunding
                 },
 
                 remember: {
-                    type: 'function',
-                    value() : Function {
-                        return (sources : $ReadOnlyArray<$Values<typeof FUNDING>>) => {
-                            return getStorageState(storage => {
-                                storage.rememberedFunding = storage.rememberedFunding || getRememberedFunding();
-                                for (const source of sources) {
-                                    if (storage.rememberedFunding.indexOf(source) === -1) {
-                                        storage.rememberedFunding.push(source);
-                                    }
-                                }
-                            });
-                        };
+                    type:  'function',
+                    value: () => {
+                        // $FlowFixMe
+                        return (fundingSources : $ReadOnlyArray<$Values<typeof FUNDING>>) =>
+                            rememberFunding(fundingSources, { cookie: false });
                     }
                 },
 

@@ -21,14 +21,12 @@ export function getVenmoConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.HORIZONTAL,
             BUTTON_LAYOUT.VERTICAL
         ],
-
-        remembered: true,
     
         labels: {
             [ BUTTON_LABEL.VENMO ]: {
                 ...DEFAULT_LABEL_CONFIG,
     
-                Label: VenmoLogo,
+                Label: ({ logoColor, optional }) => VenmoLogo({ logoColor, optional }),
     
                 colors: [
                     BUTTON_COLOR.BLUE,
