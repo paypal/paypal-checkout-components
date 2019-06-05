@@ -1199,7 +1199,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: getSessionID(),
-                    ver: "4.0.273"
+                    ver: "4.0.274"
                 };
             }), Object(client.a)(function() {
                 return {
@@ -1447,7 +1447,7 @@
             });
         });
         function getScriptVersion() {
-            return "4.0.273";
+            return "4.0.274";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
@@ -1456,7 +1456,7 @@
                 return 0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://")), 
                 scriptUrl;
             }
-            return "https://www.paypalobjects.com/api/checkout.4.0.273.js";
+            return "https://www.paypalobjects.com/api/checkout.4.0.274.js";
         }
         function getDomainSetting(name, def) {
             var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.g)();
@@ -1480,7 +1480,7 @@
                         domain: metaFrameDomain
                     });
                     return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                        version: "4.0.273"
+                        version: "4.0.274"
                     }), metaFrameDomain).then(function() {
                         return metaListener;
                     }).then(function(_ref) {
@@ -1661,7 +1661,7 @@
             locales: constants.z,
             scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.273",
+            version: "4.0.274",
             cors: !0,
             env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -6954,8 +6954,11 @@
                         return _this2.switchPrerender();
                     }), tasks.open = _this2.driver.openOnClick ? _this2.open() : tasks.openContainer.then(function() {
                         return _this2.open();
-                    }), tasks.listen = zalgo_promise_src.a.all([ tasks.getDomain, tasks.open ]).then(function(_ref2) {
-                        _this2.listen(_this2.window, _ref2[0]);
+                    }), tasks.listen = zalgo_promise_src.a.hash({
+                        domain: tasks.getDomain,
+                        open: tasks.open
+                    }).then(function(_ref2) {
+                        _this2.listen(_this2.window, _ref2.domain);
                     }), tasks.watchForClose = tasks.open.then(function() {
                         return _this2.watchForClose();
                     }), tasks.linkDomain = zalgo_promise_src.a.all([ tasks.getDomain, tasks.open ]).then(function(_ref3) {
@@ -20086,7 +20089,7 @@
                     logoColor: "blue"
                 })));
             }(normalizeProps(props)) : null;
-            return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.273", 
+            return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.274", 
             _ref18), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -20097,6 +20100,7 @@
                 })
             }), styleNode, buttonNodes, taglineNode || fundingiconNode, labelPowerByPayPal, scriptNode).toString();
         }
+        var clientConfigThrottle = Object(lib.x)("client_config", 1);
         pptm.listenForLoadWithNoContent();
         var creditThrottle, isDomainAllowed = Object(lib.I)(function() {
             var domain = Object(cross_domain_utils_src.g)().replace(/^https?:\/\//, "").replace(/^www\./, "");
@@ -20259,7 +20263,7 @@
                     type: "boolean",
                     required: !1,
                     def: function() {
-                        return !1;
+                        return clientConfigThrottle.isEnabled();
                     }
                 },
                 stageUrl: {
@@ -20620,11 +20624,12 @@
                     noop: !0,
                     decorate: function(original) {
                         return function(data) {
-                            var _track8, _track9, _creditThrottle$log;
+                            var _track8, _clientConfigThrottle, _track9, _creditThrottle$log;
                             Object(beaver_logger_client.k)("button_click"), Object(beaver_logger_client.p)(((_track8 = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
                             _track8[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_CLICK, _track8[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, 
                             _track8[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track8[constants.u.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
-                            _track8)), Object(lib.E)() && (Object(beaver_logger_client.q)("button_click_intranet_mode"), 
+                            _track8)), clientConfigThrottle.logStart(((_clientConfigThrottle = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                            _clientConfigThrottle)), Object(lib.E)() && (Object(beaver_logger_client.q)("button_click_intranet_mode"), 
                             Object(beaver_logger_client.p)(((_track9 = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
                             _track9[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_CLICK_INTRANET_MODE, 
                             _track9[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, _track9[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
@@ -21160,7 +21165,7 @@
             }), Object(beaver_logger_client.p)(((setup_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
             setup_track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, setup_track3));
         }
-        var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.273", legacy = __webpack_require__(58);
+        var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.274", legacy = __webpack_require__(58);
         interface_checkout = legacy.checkout, apps = legacy.apps, Object(lib.G)() && (interface_Checkout = src_checkout.a, 
         interface_BillingPage = BillingPage, interface_ThreeDomainSecure = ThreeDomainSecure, 
         PayPalCheckout = src_checkout.a, enableCheckoutIframe = function() {

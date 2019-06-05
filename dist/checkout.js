@@ -929,7 +929,7 @@
                 country: config.a.locale.country,
                 lang: config.a.locale.lang,
                 uid: Object(session.c)(),
-                ver: "4.0.273"
+                ver: "4.0.274"
             };
         }), Object(client.a)(function() {
             return {
@@ -1174,7 +1174,7 @@
         });
     });
     function getScriptVersion() {
-        return Boolean(getCurrentScript()) ? "4" : "4.0.273";
+        return Boolean(getCurrentScript()) ? "4" : "4.0.274";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -1183,7 +1183,7 @@
             return 0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://")), 
             scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.273.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.274.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.g)();
@@ -1387,7 +1387,7 @@
         locales: constants.z,
         scriptUrl: "//www.paypalobjects.com/api/checkout.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.273",
+        version: "4.0.274",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -6746,8 +6746,11 @@
                     return _this2.switchPrerender();
                 }), tasks.open = _this2.driver.openOnClick ? _this2.open() : tasks.openContainer.then(function() {
                     return _this2.open();
-                }), tasks.listen = zalgo_promise_src.a.all([ tasks.getDomain, tasks.open ]).then(function(_ref2) {
-                    _this2.listen(_this2.window, _ref2[0]);
+                }), tasks.listen = zalgo_promise_src.a.hash({
+                    domain: tasks.getDomain,
+                    open: tasks.open
+                }).then(function(_ref2) {
+                    _this2.listen(_this2.window, _ref2.domain);
                 }), tasks.watchForClose = tasks.open.then(function() {
                     return _this2.watchForClose();
                 }), tasks.linkDomain = zalgo_promise_src.a.all([ tasks.getDomain, tasks.open ]).then(function(_ref3) {
@@ -8582,7 +8585,7 @@
     function beacon(event, payload) {
         void 0 === payload && (payload = {});
         try {
-            payload.event = "ppxo_" + event, payload.version = "4.0.273", payload.host = window.location.host, 
+            payload.event = "ppxo_" + event, payload.version = "4.0.274", payload.host = window.location.host, 
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)(), payload.appName = APP_NAME;
             var query = [];
             for (var key in payload) payload.hasOwnProperty(key) && query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
@@ -12642,13 +12645,13 @@
     "use strict";
     __webpack_require__.r(__webpack_exports__);
     var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29), _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32), _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
-    if (__webpack_require__(26), window.paypal && "4.0.273" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-        version: "4.0.273"
-    }), new Error("PayPal Checkout Integration Script with same version (4.0.273) already loaded on page");
-    if (window.paypal && window.paypal.version && "4.0.273" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
+    if (__webpack_require__(26), window.paypal && "4.0.274" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
+        version: "4.0.274"
+    }), new Error("PayPal Checkout Integration Script with same version (4.0.274) already loaded on page");
+    if (window.paypal && window.paypal.version && "4.0.274" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
         existingVersion: window.paypal.version,
-        version: "4.0.273"
-    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.273");
+        version: "4.0.274"
+    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.274");
     try {
         var _interface = __webpack_require__(64);
         Object(_lib_namespace__WEBPACK_IMPORTED_MODULE_1__.a)(_interface, [ "paypal", "PAYPAL", "ppxo" ], [ "apps" ]);
@@ -20219,7 +20222,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.273", 
+        return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.274", 
         _ref18), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -20230,6 +20233,7 @@
             })
         }), styleNode, buttonNodes, taglineNode || fundingiconNode, labelPowerByPayPal, scriptNode).toString();
     }
+    var clientConfigThrottle = Object(lib.x)("client_config", 1);
     pptm.listenForLoadWithNoContent();
     var creditThrottle, isDomainAllowed = Object(lib.I)(function() {
         var domain = Object(cross_domain_utils_src.g)().replace(/^https?:\/\//, "").replace(/^www\./, "");
@@ -20392,7 +20396,7 @@
                 type: "boolean",
                 required: !1,
                 def: function() {
-                    return !1;
+                    return clientConfigThrottle.isEnabled();
                 }
             },
             stageUrl: {
@@ -20753,11 +20757,12 @@
                 noop: !0,
                 decorate: function(original) {
                     return function(data) {
-                        var _track8, _track9, _creditThrottle$log;
+                        var _track8, _clientConfigThrottle, _track9, _creditThrottle$log;
                         Object(beaver_logger_client.k)("button_click"), Object(beaver_logger_client.p)(((_track8 = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
                         _track8[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_CLICK, _track8[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, 
                         _track8[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track8[constants.u.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
-                        _track8)), Object(lib.E)() && (Object(beaver_logger_client.q)("button_click_intranet_mode"), 
+                        _track8)), clientConfigThrottle.logStart(((_clientConfigThrottle = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                        _clientConfigThrottle)), Object(lib.E)() && (Object(beaver_logger_client.q)("button_click_intranet_mode"), 
                         Object(beaver_logger_client.p)(((_track9 = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
                         _track9[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_CLICK_INTRANET_MODE, 
                         _track9[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, _track9[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
@@ -21293,7 +21298,7 @@
         }), Object(beaver_logger_client.p)(((setup_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
         setup_track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, setup_track3));
     }
-    var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.273", legacy = __webpack_require__(65);
+    var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.274", legacy = __webpack_require__(65);
     interface_checkout = legacy.checkout, apps = legacy.apps, Object(lib.G)() && (interface_Checkout = src_checkout.a, 
     interface_BillingPage = BillingPage, interface_ThreeDomainSecure = ThreeDomainSecure, 
     PayPalCheckout = src_checkout.a, enableCheckoutIframe = function() {
