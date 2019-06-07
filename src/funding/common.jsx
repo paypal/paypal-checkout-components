@@ -110,6 +110,7 @@ export type FundingSourceConfig = {|
         sepa? : FundingLabelConfig,
         sofort? : FundingLabelConfig,
         venmo? : FundingLabelConfig,
+        itau? : FundingLabelConfig,
         wechatpay? : FundingLabelConfig,
         zimpler? : FundingLabelConfig
     |}
