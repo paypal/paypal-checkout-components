@@ -31,6 +31,7 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
 
     const {
         env,
+        buttonSessionID,
 
         vault,
         commit,
@@ -46,6 +47,7 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
         partnerAttributionID,
         correlationID,
         enableThreeDomainSecure,
+        merchantDomain,
 
         getPopupBridge,
         getPrerenderDetails,
@@ -58,7 +60,8 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
     // eslint-disable-next-line prefer-const
     let init;
 
-    setupLogger({ env, sessionID, clientID, partnerAttributionID, commit, correlationID, locale, merchantID });
+    setupLogger({ env, sessionID, clientID, partnerAttributionID, commit,
+        correlationID, locale, merchantID, buttonSessionID, merchantDomain });
 
     let buttonProcessing = false;
     let popupBridge;
@@ -105,7 +108,7 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
 
                 if (isCardFields) {
                     return initCardFields({
-                        fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
+                        buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
                         onAuth, onShippingChange, cspNonce, locale, commit, onError, vault,
                         clientAccessToken, fundingEligibility, createBillingAgreement, createSubscription
                     });
@@ -118,7 +121,7 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
                 }
 
                 return initCheckout({
-                    win, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
+                    win, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
                     onAuth, onShippingChange, cspNonce, locale, commit, onError, vault,
                     clientAccessToken, fundingEligibility, validationPromise, createBillingAgreement, createSubscription
                 });
@@ -132,15 +135,13 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
                     ]).then(noop);
                 }
 
-                createOrder().then(orderID => {
-                    return updateButtonClientConfig({ orderID, fundingSource, isCardFields });
-                });
+                createOrder().then(orderID =>
+                    updateButtonClientConfig({ orderID, fundingSource, isCardFields }));
 
                 return start()
-                    .then(() => createOrder())
-                    .then((orderID) => validateOrder(orderID))
+                    .then(createOrder)
+                    .then(validateOrder)
                     .catch(err => {
-                        // $FlowFixMe
                         return ZalgoPromise.all([
                             triggerError(err),
                             close()
@@ -162,7 +163,9 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
         onElementClick(button, event => {
             event.preventDefault();
             event.stopPropagation();
-            pay({ button, fundingSource, card, paymentMethodID });
+            const payPromise = pay({ button, fundingSource, card, paymentMethodID });
+            // $FlowFixMe
+            button.payPromise = payPromise;
         });
 
         button.addEventListener('mousedown', () => {

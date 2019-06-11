@@ -42,8 +42,6 @@ export const TARGET_ELEMENT = {
     BODY: 'body'
 };
 
-export const ORDER_ID_PATTERN = /^(EC-)?[A-Z0-9]+$/;
-
 export const INTEGRATION_ARTIFACT = {
     PAYPAL_JS_SDK: 'PAYPAL_JS_SDK'
 };
@@ -67,8 +65,13 @@ export const FPTI_STATE = {
 };
 
 export const FPTI_TRANSITION = {
-    BUTTON_LOAD:  ('process_button_load' : 'process_button_load'),
-    CREATE_ORDER: ('process_create_order' : 'process_create_order')
+    BUTTON_LOAD:              ('process_button_load' : 'process_button_load'),
+    BUTTON_CLICK:             ('process_button_click' : 'process_button_click'),
+    CREATE_ORDER:             ('process_create_order' : 'process_create_order'),
+    RECEIVE_ORDER:            ('process_receive_order' : 'process_receive_order'),
+    CHECKOUT_SHIPPING_CHANGE: ('process_checkout_shipping_change' : 'process_checkout_shipping_change'),
+    CHECKOUT_AUTHORIZE:       ('process_checkout_authorize' : 'process_checkout_authorize'),
+    CHECKOUT_CANCEL:          ('process_checkout_cancel' : 'process_checkout_cancel')
 };
 
 export const FPTI_BUTTON_TYPE = {

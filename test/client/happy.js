@@ -61,7 +61,7 @@ describe('happy cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -119,7 +119,7 @@ describe('happy cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -130,8 +130,9 @@ describe('happy cases', () => {
             const billingToken = 'BA-ZZZZZZZZZZZ';
             const payerID = 'YYYYYYYYYY';
 
-            window.xprops.createOrder = avoid('createOrder');
+            delete window.xprops.createOrder;
 
+            window.xprops.vault = true;
             window.xprops.createBillingAgreement = expect('createBillingAgreement', async () => {
                 return ZalgoPromise.try(() => {
                     return billingToken;
@@ -175,7 +176,7 @@ describe('happy cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -186,8 +187,8 @@ describe('happy cases', () => {
             const subscriptionID = 'I-SUBSCRIPTIONID';
             const payerID = 'YYYYYYYYYY';
 
-            window.xprops.createOrder = avoid('createOrder');
-
+            window.xprops.vault = true;
+            delete window.xprops.createOrder;
             window.xprops.createSubscription = expect('createSubscription', async () => {
                 return ZalgoPromise.try(() => {
                     return subscriptionID;
@@ -231,7 +232,7 @@ describe('happy cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -296,7 +297,7 @@ describe('happy cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
     
@@ -351,7 +352,7 @@ describe('happy cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -418,7 +419,7 @@ describe('happy cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 });

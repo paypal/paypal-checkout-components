@@ -118,7 +118,8 @@ export function setupMocks() {
             return ZalgoPromise.resolve();
         },
         getPrerenderDetails: () => ZalgoPromise.resolve(),
-        getParent:           () => window
+        getParent:           () => window,
+        getParentDomain:     () => 'https://www.merchant.com'
     };
 
     window.Promise.try = (method) => {
@@ -154,12 +155,14 @@ export function mockFunction<T, A>(obj : mixed, prop : string, mock : ({ args : 
     };
 }
 
-export function clickButton(fundingSource? : string = FUNDING.PAYPAL, card? : string = CARD.VISA) {
+export async function clickButton(fundingSource? : string = FUNDING.PAYPAL, card? : string = CARD.VISA) : ZalgoPromise<void> {
     let selector = `button[data-funding-source=${ fundingSource }]`;
     if (fundingSource === FUNDING.CARD) {
         selector = `${ selector }[data-card=${ card }]`;
     }
-    window.document.querySelector(selector).click();
+    const button = window.document.querySelector(selector);
+    button.click();
+    await button.payPromise;
 }
 
 export function enterButton(fundingSource? : string = FUNDING.PAYPAL) {
@@ -394,13 +397,7 @@ export function getGraphQLApiMock(options : Object = {}) : MockEndpoint {
             data: {
                 checkoutSession: {
                     cart: {
-                        intent:    'capture',
-                        returnUrl: {
-                            href: 'https://www.paypal.com/checkoutnow/error'
-                        },
-                        cancelUrl: {
-                            href: 'https://www.paypal.com/checkoutnow/error'
-                        },
+                        intent:  'capture',
                         amounts: {
                             total: {
                                 currencyCode: 'USD'

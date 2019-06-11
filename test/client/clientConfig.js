@@ -55,7 +55,7 @@ describe('client config cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -117,7 +117,7 @@ describe('client config cases', () => {
 
             await setupButton({ fundingEligibility });
 
-            clickButton(FUNDING.CARD, CARD.VISA);
+            await clickButton(FUNDING.CARD, CARD.VISA);
         });
     });
 
@@ -162,7 +162,7 @@ describe('client config cases', () => {
 
             await setupButton({ fundingEligibility });
 
-            clickButton(fundingSource);
+            await clickButton(fundingSource);
         });
     });
 
@@ -207,7 +207,7 @@ describe('client config cases', () => {
 
             await setupButton({ fundingEligibility });
 
-            clickButton(fundingSource);
+            await clickButton(fundingSource);
         });
     });
 
@@ -252,7 +252,7 @@ describe('client config cases', () => {
 
             await setupButton({ fundingEligibility });
 
-            clickButton(fundingSource);
+            await clickButton(fundingSource);
         });
     });
 });

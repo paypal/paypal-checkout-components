@@ -34,7 +34,7 @@ describe('error cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -68,7 +68,7 @@ describe('error cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 

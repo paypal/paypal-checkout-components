@@ -3,11 +3,11 @@
 
 import { wrapPromise } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { FUNDING } from '@paypal/sdk-constants/src';
+import { FUNDING, INTENT } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, getCaptureOrderApiMock, getAuthorizeOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton } from './mocks';
+import { createButtonHTML, getCaptureOrderApiMock, getAuthorizeOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, getGraphQLApiMock } from './mocks';
 
 describe('contingency cases', () => {
 
@@ -94,7 +94,7 @@ describe('contingency cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -181,7 +181,7 @@ describe('contingency cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -190,6 +190,25 @@ describe('contingency cases', () => {
 
             const orderID = 'XXXXXXXXXX';
             const payerID = 'YYYYYYYYYY';
+
+            window.xprops.intent = INTENT.AUTHORIZE;
+
+            const gqlMock = getGraphQLApiMock({
+                data: {
+                    data: {
+                        checkoutSession: {
+                            cart: {
+                                intent:  INTENT.AUTHORIZE,
+                                amounts: {
+                                    total: {
+                                        currencyCode: 'USD'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }).expectCalls();
 
             window.xprops.createOrder = expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -268,7 +287,9 @@ describe('contingency cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
+
+            gqlMock.done();
         });
     });
 
@@ -277,6 +298,25 @@ describe('contingency cases', () => {
 
             const orderID = 'XXXXXXXXXX';
             const payerID = 'YYYYYYYYYY';
+
+            window.xprops.intent = INTENT.AUTHORIZE;
+
+            const gqlMock = getGraphQLApiMock({
+                data: {
+                    data: {
+                        checkoutSession: {
+                            cart: {
+                                intent:  INTENT.AUTHORIZE,
+                                amounts: {
+                                    total: {
+                                        currencyCode: 'USD'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }).expectCalls();
 
             window.xprops.createOrder = expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -355,7 +395,9 @@ describe('contingency cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
+
+            gqlMock.done();
         });
     });
 });

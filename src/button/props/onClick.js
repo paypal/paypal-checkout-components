@@ -2,8 +2,10 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants';
+import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
-import { promiseNoop } from '../../lib';
+import { promiseNoop, getLogger } from '../../lib';
+import { FPTI_STATE, FPTI_TRANSITION } from '../../constants';
 
 import type { XProps } from './types';
 
@@ -19,7 +21,6 @@ export type XOnClickActionsType = {|
 export type XOnClick = (XOnClickDataType, XOnClickActionsType) => ZalgoPromise<boolean | void>;
 
 export function buildXOnClickData({ fundingSource } : { fundingSource : $Values<typeof FUNDING> }) : XOnClickDataType {
-    // $FlowFixMe
     return { fundingSource };
 }
 
@@ -37,9 +38,16 @@ export type OnClickDataType = {|
 export type OnClick = (OnClickDataType) => ZalgoPromise<boolean>;
 
 export function getOnClick(xprops : XProps) : OnClick {
-    const { onClick = promiseNoop } = xprops;
+    const { onClick = promiseNoop, buttonSessionID } = xprops;
 
     return ({ fundingSource } : { fundingSource : $Values<typeof FUNDING> }) => {
+        getLogger().info('button_click').track({
+            [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
+            [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.BUTTON_CLICK,
+            [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
+            [FPTI_KEY.CHOSEN_FUNDING]:     fundingSource
+        }).flush();
+        
         return onClick(buildXOnClickData({ fundingSource }), buildXOnClickActions()).then(valid => {
             return (valid !== false);
         });

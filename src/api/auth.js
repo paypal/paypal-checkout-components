@@ -50,7 +50,7 @@ addHeaderBuilder(() => {
     };
 });
 
-export const persistAccessToken = memoize((accessToken) : ZalgoPromise<void> => {
+export const persistAccessToken = memoize((accessToken : string) : ZalgoPromise<void> => {
     return ZalgoPromise.try(() => {
         if (accessToken) {
             persistedAccessToken = accessToken;

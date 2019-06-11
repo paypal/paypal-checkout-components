@@ -1,7 +1,11 @@
 /* @flow */
 
-import { memoize } from 'belter/src';
+import { memoize, redirect as redir, noop } from 'belter/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
+import { FPTI_KEY } from '@paypal/sdk-constants/src';
+
+import { getLogger } from '../../lib';
+import { FPTI_STATE, FPTI_TRANSITION } from '../../constants';
 
 import type { CreateOrder } from './createOrder';
 import type { XProps } from './types';
@@ -23,17 +27,34 @@ export function buildXOnCancelData({ orderID } : { orderID : string }) : XOnCanc
 }
 
 export function buildXOnCancelActions() : XOnCancelActionsType {
+    const redirect = (url) => {
+        if (!url) {
+            throw new Error(`Expected redirect url`);
+        }
+        return redir(url, window.top);
+    };
+    
     // $FlowFixMe
-    return {};
+    return {
+        redirect
+    };
 }
 
 export type OnCancel = () => ZalgoPromise<void>;
 
 export function getOnCancel(xprops : XProps, { createOrder } : { createOrder : CreateOrder }) : OnCancel {
-    const { onCancel, onError } = xprops;
+    const { onCancel = noop, onError, buttonSessionID } = xprops;
 
     return memoize(() => {
         return createOrder().then(orderID => {
+            getLogger()
+                .info('button_cancel')
+                .track({
+                    [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
+                    [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.CHECKOUT_CANCEL,
+                    [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID
+                }).flush();
+
             return onCancel(buildXOnCancelData({ orderID }), buildXOnCancelActions());
         }).catch(err => {
             return onError(err);

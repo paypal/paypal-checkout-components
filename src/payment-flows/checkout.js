@@ -99,6 +99,7 @@ export function getDefaultContext() : $Values<typeof CONTEXT> {
 
 type CheckoutProps= {|
     win? : ?ProxyWindow,
+    buttonSessionID : string,
     context? : $Values<typeof CONTEXT>,
     fundingSource : $Values<typeof FUNDING>,
     card : ?$Values<typeof CARD>,
@@ -127,7 +128,7 @@ type CheckoutInstance = {|
 |};
 
 export function initCheckout(props : CheckoutProps) : CheckoutInstance {
-    const { win, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
+    const { win, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
         onAuth, onShippingChange, cspNonce, context, locale, commit, onError, vault,
         clientAccessToken, fundingEligibility, createBillingAgreement, createSubscription, validationPromise = ZalgoPromise.resolve(true) } = props;
 
@@ -151,6 +152,7 @@ export function initCheckout(props : CheckoutProps) : CheckoutInstance {
 
     const { renderTo, close: closeCheckout, onError: triggerError } = window.paypal.Checkout({
         window: win,
+        buttonSessionID,
 
         createOrder: () => {
             return validationPromise.then(valid => {

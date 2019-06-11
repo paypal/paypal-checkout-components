@@ -48,7 +48,13 @@ export function getCreateSubscription(xprops : XProps) : ?CreateSubscription {
     const { clientID } = xprops;
     if (createSubscriptionFunc) {
         return memoize(() => {
-            return createSubscriptionFunc(buildXCreateSubscriptionData(), buildXCreateSubscriptionActions({ clientID }));
+            return createSubscriptionFunc(buildXCreateSubscriptionData(), buildXCreateSubscriptionActions({ clientID })).then(subscriptionID => {
+                if (!subscriptionID || typeof subscriptionID !== 'string') {
+                    throw new Error(`Expected an subscription id to be passed to createSubscription`);
+                }
+
+                return subscriptionID;
+            });
         });
     }
 }

@@ -23,6 +23,7 @@ import { initCheckout } from './checkout';
 let cardFieldsOpen = false;
 
 type CardFieldsProps = {|
+    buttonSessionID : string,
     fundingSource : $Values<typeof FUNDING>,
     card : ?$Values<typeof CARD>,
     buyerCountry : $Values<typeof COUNTRY>,

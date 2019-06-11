@@ -49,9 +49,10 @@ export type XProps = {|
     getPopupBridge : XGetPopupBridge,
     remember : ($ReadOnlyArray<$Values<typeof FUNDING>>) => ZalgoPromise<void>,
     enableThreeDomainSecure : boolean,
+    getParentDomain : () => string,
     
     onInit : XOnInit,
-    onApprove : XOnApprove,
+    onApprove : ?XOnApprove,
     onCancel : XOnCancel,
     onClick : XOnClick,
     onError : XOnError,
@@ -80,6 +81,7 @@ export type GlobalProps = {|
     getPopupBridge : GetPopupBridge,
     rememberFunding : ($ReadOnlyArray<$Values<typeof FUNDING>>) => ZalgoPromise<void>,
     enableThreeDomainSecure : boolean,
+    merchantDomain : string,
 
     onInit : OnInit,
     onError : OnError

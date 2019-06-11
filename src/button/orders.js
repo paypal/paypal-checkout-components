@@ -3,7 +3,7 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { INTENT, SDK_QUERY_KEYS, FUNDING } from '@paypal/sdk-constants/src';
 
-import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW, ORDER_ID_PATTERN } from '../constants';
+import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW } from '../constants';
 import { updateClientConfig } from '../api';
 import { callGraphQL } from '../api/api';
 
@@ -22,10 +22,6 @@ export function updateButtonClientConfig({ orderID, fundingSource, isCardFields 
 }
 
 export function validateOrder(orderID : string) : ZalgoPromise<void> {
-    if (!orderID.match(ORDER_ID_PATTERN)) {
-        throw new Error(`${ orderID } does not match pattern for order-id, ec-token or cart-id`);
-    }
-
     return callGraphQL({
         query: `
             query GetCheckoutDetails($orderID: String!) {

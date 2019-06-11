@@ -1,12 +1,12 @@
 /* @flow */
 
 import { type ZalgoPromise } from 'zalgo-promise/src';
-import { memoize } from 'belter/src';
-import { INTENT, SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
+import { memoize, redirect as redir, noop } from 'belter/src';
+import { INTENT, SDK_QUERY_KEYS, FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { type OrderResponse, getOrder, captureOrder, authorizeOrder, patchOrder, getSubscription, activateSubscription, type SubscriptionResponse } from '../../api';
-import { ORDER_API_ERROR } from '../../constants';
-import { unresolvedPromise } from '../../lib';
+import { ORDER_API_ERROR, FPTI_STATE, FPTI_TRANSITION } from '../../constants';
+import { unresolvedPromise, getLogger } from '../../lib';
 
 import type { CreateOrder } from './createOrder';
 import type { XProps } from './types';
@@ -30,7 +30,8 @@ export type XOnApproveActionsType = {|
         get : () => ZalgoPromise<SubscriptionResponse>,
         activate : () => ZalgoPromise<SubscriptionResponse>
     },
-    restart : () => ZalgoPromise<void>
+    restart : () => ZalgoPromise<void>,
+    redirect : (string) => ZalgoPromise<void>
 |};
 
 export type XOnApprove = (XOnApproveDataType, XOnApproveActionsType) => ZalgoPromise<void>;
@@ -50,8 +51,7 @@ function buildXApproveActions({ intent, orderID, restart, subscriptionID } : { o
         throw new Error('Order could not be captured');
     };
 
-    const get = memoize(() =>
-        getOrder(orderID));
+    const get = memoize(() => getOrder(orderID));
 
     const capture = memoize(() => {
         if (intent !== INTENT.CAPTURE) {
@@ -64,11 +64,16 @@ function buildXApproveActions({ intent, orderID, restart, subscriptionID } : { o
             .catch(handleProcessorError);
     });
 
-    const authorize = memoize(() =>
-        authorizeOrder(orderID)
+    const authorize = memoize(() => {
+        if (intent !== INTENT.AUTHORIZE) {
+            throw new Error(`Use ${ SDK_QUERY_KEYS.INTENT }=${ INTENT.AUTHORIZE } to use client-side authorize`);
+        }
+
+        return authorizeOrder(orderID)
             .finally(get.reset)
             .finally(authorize.reset)
-            .catch(handleProcessorError));
+            .catch(handleProcessorError);
+    });
 
     const patch = (data = []) =>
         patchOrder(orderID, data).catch(() => {
@@ -79,10 +84,18 @@ function buildXApproveActions({ intent, orderID, restart, subscriptionID } : { o
     const getSubscriptionApi = memoize(() => getSubscription(subscriptionID));
     const activateSubscriptionApi = memoize(() => activateSubscription(subscriptionID));
 
+    const redirect = (url) => {
+        if (!url) {
+            throw new Error(`Expected redirect url`);
+        }
+        return redir(url, window.top);
+    };
+
     return {
-        order:         { capture, authorize, patch, get },
+        order:        { capture, authorize, patch, get },
         subscription: { get: getSubscriptionApi, activate: activateSubscriptionApi },
-        restart
+        restart,
+        redirect
     };
 }
 
@@ -100,12 +113,31 @@ export type OnApproveActions = {|
 export type OnApprove = (OnApproveData, OnApproveActions) => ZalgoPromise<void>;
 
 export function getOnApprove(xprops : XProps, { createOrder } : { createOrder : CreateOrder }) : OnApprove {
-    const { onApprove, onError, intent } = xprops;
+    const { onApprove, onError, intent, buttonSessionID } = xprops;
+
     return memoize(({ payerID, paymentID, billingToken, subscriptionID }, { restart }) => {
         return createOrder().then(orderID => {
-            return onApprove({ orderID, payerID, paymentID, billingToken, subscriptionID }, buildXApproveActions({ orderID, intent, restart, subscriptionID })).catch(err => {
-                return onError(err);
-            });
+
+            getLogger()
+                .info('button_authorize')
+                .track({
+                    [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
+                    [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.CHECKOUT_AUTHORIZE,
+                    [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID
+                }).flush();
+
+            const data = { orderID, payerID, paymentID, billingToken, subscriptionID };
+            const actions = buildXApproveActions({ orderID, intent, restart, subscriptionID });
+
+            if (onApprove) {
+                return onApprove(data, actions).catch(onError);
+            } else {
+                if (intent === INTENT.CAPTURE) {
+                    return actions.order.capture().then(noop);
+                } else if (intent === INTENT.AUTHORIZE) {
+                    return actions.order.authorize().then(noop);
+                }
+            }
         });
     });
 }

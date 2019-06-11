@@ -93,7 +93,9 @@ export function createOrderID(accessToken : string, order : OrderCreateRequest) 
         json:   order
     }).then(({ body }) : string => {
 
-        if (!body || !body.id) {
+        const orderID = body && body.id;
+
+        if (!orderID) {
             throw new Error(`Order Api response error:\n\n${ JSON.stringify(body, null, 4) }`);
         }
 
@@ -101,11 +103,11 @@ export function createOrderID(accessToken : string, order : OrderCreateRequest) 
             [FPTI_KEY.STATE]:        FPTI_STATE.BUTTON,
             [FPTI_KEY.TRANSITION]:   FPTI_TRANSITION.CREATE_ORDER,
             [FPTI_KEY.CONTEXT_TYPE]: FPTI_CONTEXT_TYPE.ORDER_ID,
-            [FPTI_KEY.TOKEN]:        body.id,
-            [FPTI_KEY.CONTEXT_ID]:   body.id
+            [FPTI_KEY.TOKEN]:        orderID,
+            [FPTI_KEY.CONTEXT_ID]:   orderID
         });
 
-        return body.id;
+        return orderID;
     });
 }
 

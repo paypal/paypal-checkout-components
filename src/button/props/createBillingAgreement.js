@@ -32,7 +32,13 @@ export function getCreateBillingAgreement(xprops : XProps) : ?CreateBillingAgree
 
     if (createBillingAgreement) {
         return memoize(() => {
-            return createBillingAgreement(buildXCreateBillingAgreementData(), buildXCreateBillingAgreementActions());
+            return createBillingAgreement(buildXCreateBillingAgreementData(), buildXCreateBillingAgreementActions()).then(billingToken => {
+                if (!billingToken || typeof billingToken !== 'string') {
+                    throw new Error(`Expected a billing token to be passed to createBillingAgreement`);
+                }
+
+                return billingToken;
+            });
         });
     }
 }

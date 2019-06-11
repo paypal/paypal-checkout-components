@@ -47,7 +47,7 @@ describe('vault cases', () => {
             createButtonHTML();
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -94,7 +94,7 @@ describe('vault cases', () => {
             createButtonHTML(fundingEligibility);
             await setupButton({ fundingEligibility });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -141,7 +141,7 @@ describe('vault cases', () => {
             createButtonHTML(fundingEligibility);
             await setupButton({ fundingEligibility });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -165,7 +165,6 @@ describe('vault cases', () => {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
 
-                // $FlowFixMe
                 vpmCall.done();
             });
 
@@ -210,7 +209,6 @@ describe('vault cases', () => {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
 
-                // $FlowFixMe
                 vpmCall.done();
             });
 

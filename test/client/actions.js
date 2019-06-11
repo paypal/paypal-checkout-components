@@ -3,7 +3,7 @@
 
 import { wrapPromise } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { FUNDING } from '@paypal/sdk-constants/src';
+import { FUNDING, INTENT } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
@@ -21,7 +21,8 @@ import {
     getSubscriptionIdToCartIdApiMock,
     getGetSubscriptionApiMock,
     getActivateSubscriptionIdApiMock,
-    getReviseSubscriptionIdApiMock
+    getReviseSubscriptionIdApiMock,
+    getGraphQLApiMock
 } from './mocks';
 
 describe('actions cases', () => {
@@ -86,7 +87,7 @@ describe('actions cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -142,7 +143,7 @@ describe('actions cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -198,7 +199,7 @@ describe('actions cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -207,6 +208,25 @@ describe('actions cases', () => {
 
             const orderID = 'XXXXXXXXXX';
             const payerID = 'YYYYYYYYYY';
+
+            window.xprops.intent = INTENT.AUTHORIZE;
+
+            const gqlMock = getGraphQLApiMock({
+                data: {
+                    data: {
+                        checkoutSession: {
+                            cart: {
+                                intent:  INTENT.AUTHORIZE,
+                                amounts: {
+                                    total: {
+                                        currencyCode: 'USD'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }).expectCalls();
 
             window.xprops.createOrder = expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
@@ -254,12 +274,14 @@ describe('actions cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
+
+            gqlMock.done();
         });
     });
 
     it('should render a button, click the button, and render checkout, then pass onShippingChange callback to the parent with actions.order.patch', async () => {
-        return await wrapPromise(async ({ expect }) => {
+        return await wrapPromise(async ({ expect, avoid }) => {
 
             const orderID = 'XXXXXXXXXX';
             const payerID = 'YYYYYYYYYY';
@@ -291,7 +313,7 @@ describe('actions cases', () => {
                             throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
                         }
 
-                        return props.onShippingChange({ orderID }).then(() => {
+                        return props.onShippingChange({ orderID }, { reject: avoid('reject') }).then(() => {
                             return renderToOriginal(...args);
                         });
                     });
@@ -304,7 +326,7 @@ describe('actions cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -330,7 +352,7 @@ describe('actions cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -341,7 +363,8 @@ describe('actions cases', () => {
             let subscriptionID;
             const payerID = 'YYYYYYYYYY';
 
-
+            window.xprops.vault = true;
+            delete window.xprops.createOrder;
             window.xprops.createSubscription = expect('createSubscription', async (data, actions) => {
                 const createSubscriptionIdApiMock = getCreateSubscriptionIdApiMock({}, mockSubscriptionID);
                 createSubscriptionIdApiMock.expectCalls();
@@ -387,10 +410,8 @@ describe('actions cases', () => {
                 const checkoutInstance = CheckoutOriginal(props);
 
                 mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
-                    const subscriptionIdToCartIdApiMock = getSubscriptionIdToCartIdApiMock({}, mockSubscriptionID, mockCartID);
-                    subscriptionIdToCartIdApiMock.expectCalls();
                     const id = await props.createOrder();
-                    subscriptionIdToCartIdApiMock.done();
+                    
                     if (id !== mockCartID) {
                         throw new Error(`Expected orderID to be ${ subscriptionID }, got ${ id }`);
                     }
@@ -404,7 +425,12 @@ describe('actions cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            const subscriptionIdToCartIdApiMock = getSubscriptionIdToCartIdApiMock({}, mockSubscriptionID, mockCartID);
+            subscriptionIdToCartIdApiMock.expectCalls();
+
+            await clickButton(FUNDING.PAYPAL);
+
+            subscriptionIdToCartIdApiMock.done();
         });
     });
 
@@ -415,7 +441,8 @@ describe('actions cases', () => {
             let subscriptionID;
             const payerID = 'YYYYYYYYYY';
 
-
+            window.xprops.vault = true;
+            delete window.xprops.createOrder;
             window.xprops.createSubscription = expect('createSubscription', async (data, actions) => {
                 const reviseSubscriptionIdApiMock = getReviseSubscriptionIdApiMock({}, mockSubscriptionID);
                 reviseSubscriptionIdApiMock.expectCalls();
@@ -454,10 +481,8 @@ describe('actions cases', () => {
                 const checkoutInstance = CheckoutOriginal(props);
 
                 mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
-                    const subscriptionIdToCartIdApiMock = getSubscriptionIdToCartIdApiMock({}, mockSubscriptionID, mockCartID);
-                    subscriptionIdToCartIdApiMock.expectCalls();
                     const id = await props.createOrder();
-                    subscriptionIdToCartIdApiMock.done();
+                    
                     if (id !== mockCartID) {
                         throw new Error(`Expected orderID to be ${ subscriptionID }, got ${ id }`);
                     }
@@ -471,7 +496,12 @@ describe('actions cases', () => {
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(FUNDING.PAYPAL);
+            const subscriptionIdToCartIdApiMock = getSubscriptionIdToCartIdApiMock({}, mockSubscriptionID, mockCartID);
+            subscriptionIdToCartIdApiMock.expectCalls();
+
+            await clickButton(FUNDING.PAYPAL);
+
+            subscriptionIdToCartIdApiMock.done();
         });
     });
 

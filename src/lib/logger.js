@@ -7,7 +7,7 @@ import { FPTI_KEY, FPTI_FEED, FPTI_DATA_SOURCE, FPTI_SDK_NAME, FPTI_USER_ACTION,
 
 import type { LocaleType } from '../types';
 import { LOGGER_URL } from '../config';
-import { FPTI_STATE } from '../constants';
+import { FPTI_STATE, FPTI_CONTEXT_TYPE } from '../constants';
 
 export function getLogger() : LoggerType {
     return inlineMemoize(getLogger, () =>
@@ -24,10 +24,12 @@ type LoggerOptions = {|
     commit : boolean,
     correlationID : string,
     locale : LocaleType,
-    merchantID : ?string
+    buttonSessionID : string,
+    merchantID : ?string,
+    merchantDomain : string
 |};
 
-export function setupLogger({ env, sessionID, clientID, partnerAttributionID, commit, correlationID, locale, merchantID } : LoggerOptions) {
+export function setupLogger({ env, sessionID, buttonSessionID, clientID, partnerAttributionID, commit, correlationID, locale, merchantID, merchantDomain } : LoggerOptions) {
     const logger = getLogger();
 
     logger.addPayloadBuilder(() => {
@@ -43,6 +45,8 @@ export function setupLogger({ env, sessionID, clientID, partnerAttributionID, co
         const mID = merchantID;
 
         return {
+            [FPTI_KEY.CONTEXT_TYPE]:           FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID,
+            [FPTI_KEY.CONTEXT_ID]:             buttonSessionID,
             [FPTI_KEY.STATE]:                  FPTI_STATE.BUTTON,
             [FPTI_KEY.FEED]:                   FPTI_FEED.PAYMENTS_SDK,
             [FPTI_KEY.DATA_SOURCE]:            FPTI_DATA_SOURCE.PAYMENTS_SDK,
@@ -50,6 +54,7 @@ export function setupLogger({ env, sessionID, clientID, partnerAttributionID, co
             [FPTI_KEY.SELLER_ID]:              mID && mID[0],
             [FPTI_KEY.SESSION_UID]:            sessionID,
             [FPTI_KEY.REFERER]:                window.location.host,
+            [FPTI_KEY.MERCHANT_DOMAIN]:        merchantDomain,
             [FPTI_KEY.LOCALE]:                 `${ lang }_${ country }`,
             [FPTI_KEY.INTEGRATION_IDENTIFIER]: clientID,
             [FPTI_KEY.PARTNER_ATTRIBUTION_ID]: partnerAttributionID,

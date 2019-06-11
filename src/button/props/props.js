@@ -28,6 +28,7 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
         merchantID,
         partnerAttributionID,
         correlationID,
+        getParentDomain,
         clientAccessToken,
         buyerCountry = buyerGeoCountry || COUNTRY.US,
         getPopupBridge,
@@ -39,6 +40,7 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
 
     cspNonce = cspNonce || getNonce();
     const onInit = getOnInit(xprops);
+    const merchantDomain = getParentDomain();
 
     return {
         env,
@@ -57,6 +59,7 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
         merchantID,
         partnerAttributionID,
         correlationID,
+        merchantDomain,
 
         getPopupBridge,
         getPrerenderDetails,
@@ -69,6 +72,30 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
 }
 
 export function getButtonCallbackProps({ xprops } : {| xprops : XProps |}) : ButtonCallbackProps {
+
+    if (xprops.createBillingAgreement) {
+        if (xprops.createOrder) {
+            throw new Error(`Do not pass both createBillingAgreement and createOrder`);
+        }
+
+        if (!xprops.vault) {
+            throw new Error(`Must pass vault=true to sdk to use createBillingAgreement`);
+        }
+    }
+
+    if (xprops.createSubscription) {
+        if (xprops.createOrder) {
+            throw new Error(`Do not pass both createSubscription and createOrder`);
+        }
+
+        if (xprops.createOrder) {
+            throw new Error(`Do not pass both createSubscription and createBillingAgreement`);
+        }
+
+        if (!xprops.vault) {
+            throw new Error(`Must pass vault=true to sdk to use createSubscription`);
+        }
+    }
 
     const createBillingAgreement = getCreateBillingAgreement(xprops);
     const createSubscription = getCreateSubscription(xprops);

@@ -4,6 +4,7 @@ import { FUNDING } from '@paypal/sdk-constants';
 import { wrapPromise } from 'belter/src';
 
 import { setupButton } from '../../src';
+import { promiseNoop } from '../../src/lib';
 
 import { createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton } from './mocks';
 
@@ -17,13 +18,17 @@ describe('funding source cases', () => {
                 if (props.fundingSource !== fundingSource) {
                     throw new Error(`Expected fundingSource to be ${ fundingSource }, got ${ props.fundingSource }`);
                 }
+
+                return {
+                    renderTo: promiseNoop
+                };
             }));
 
             createButtonHTML();
 
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
-            clickButton(fundingSource);
+            await clickButton(fundingSource);
         });
     });
     
@@ -35,6 +40,10 @@ describe('funding source cases', () => {
                 if (props.fundingSource !== fundingSource) {
                     throw new Error(`Expected fundingSource to be ${ fundingSource }, got ${ props.fundingSource }`);
                 }
+
+                return {
+                    renderTo: promiseNoop
+                };
             }));
 
             const fundingEligibility = {
@@ -47,7 +56,7 @@ describe('funding source cases', () => {
 
             await setupButton({ fundingEligibility });
 
-            clickButton(fundingSource);
+            await clickButton(fundingSource);
         });
     });
 });

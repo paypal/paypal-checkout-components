@@ -26,7 +26,7 @@ describe('validation cases', () => {
 
             createButtonHTML();
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -43,7 +43,7 @@ describe('validation cases', () => {
 
             createButtonHTML();
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -53,24 +53,24 @@ describe('validation cases', () => {
             const orderID = 'XXXXXXXXXX';
 
             window.xprops.onInit = expect('onInit', (data, actions) => {
-                return actions.disable().then(() => {
+                return actions.disable().then(async () => {
                     
                     window.xprops.onClick = expect('onClick', () => ZalgoPromise.resolve());
                     window.xprops.createOrder = avoid('createOrder', () => ZalgoPromise.delay(50).then(() => orderID));
                     window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.resolve());
 
-                    clickButton(FUNDING.PAYPAL);
+                    await clickButton(FUNDING.PAYPAL);
 
                     return ZalgoPromise.delay(2000);
                 }).then(() => {
                     return actions.enable();
-                }).then(() => {
+                }).then(async () => {
 
                     window.xprops.onClick = expect('onClick2', () => ZalgoPromise.resolve());
                     window.xprops.createOrder = expect('createOrder2', () => ZalgoPromise.delay(50).then(() => orderID));
                     window.xprops.onApprove = expect('onApprove2', () => ZalgoPromise.resolve());
 
-                    clickButton(FUNDING.PAYPAL);
+                    await clickButton(FUNDING.PAYPAL);
                 });
             });
 
@@ -93,7 +93,7 @@ describe('validation cases', () => {
             
             createButtonHTML();
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -108,7 +108,7 @@ describe('validation cases', () => {
 
             createButtonHTML();
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 
@@ -123,7 +123,7 @@ describe('validation cases', () => {
 
             createButtonHTML();
             await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
 
             await ZalgoPromise.delay(300);
 
@@ -135,7 +135,7 @@ describe('validation cases', () => {
             window.xprops.createOrder = expect('createOrder2', () => ZalgoPromise.delay(50).then(() => orderID));
             window.xprops.onApprove = expect('onApprove2', () => ZalgoPromise.resolve());
 
-            clickButton(FUNDING.PAYPAL);
+            await clickButton(FUNDING.PAYPAL);
         });
     });
 });
