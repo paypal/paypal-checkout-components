@@ -75,6 +75,7 @@
     "sync-browser-mocks": "^2.0.0"
   },
   "dependencies": {
+    "@paypal/common-components": "^1.0.3",
     "@paypal/funding-components": "^1.0.7",
     "@paypal/sdk-client": "^4.0.0",
     "@paypal/sdk-constants": "^1.0.1",

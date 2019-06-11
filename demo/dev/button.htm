@@ -16,14 +16,21 @@
 
         document.querySelectorAll('[data-funding-source]').forEach(button => {
             button.addEventListener('click', () => {
-                paypal.Checkout({
+                const instance = paypal.Checkout({
                     createOrder: () => {
                         return 'EC-XXXXXXXXXX';
                     },
                     onApprove: () => {
-
+                        console.log('Approved');
+                        instance.close();
+                    },
+                    onCancel: () => {
+                        console.log('Cancelled');
+                        instance.close();
                     }
-                }).renderTo(window.parent, 'body');
+                });
+                
+                instance.renderTo(window.parent, 'body');
             });
         });
     </script>

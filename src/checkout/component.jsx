@@ -1,17 +1,21 @@
 /* @flow */
+/** @jsx node */
 /* eslint max-lines: 0 */
 
+import { node, dom } from 'jsx-pragmatic/src';
 import { getPayPalDomainRegex, getLogger, getLocale,
     getEnv, getClientID, getCommit, getSDKMeta, getCSPNonce, getBuyerCountry, getVersion } from '@paypal/sdk-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONTEXT, type ZoidComponent } from 'zoid/src';
 import { isDevice, memoize, noop, supportsPopups, inlineMemoize } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
+import { Overlay } from '@paypal/common-components/src';
 
 import { getSessionID } from '../lib';
 import { DEFAULT_POPUP_SIZE, getCheckoutUrl } from '../config';
 
-import { containerTemplate, componentTemplate } from './template';
+import { containerContent } from './template/containerContent';
+import { componentTemplate } from './template';
 import type { CheckoutPropsType } from './props';
 
 export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
@@ -35,7 +39,22 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
             logger: getLogger(),
         
             prerenderTemplate: componentTemplate,
-            containerTemplate,
+            containerTemplate: ({ props, context, close, focus, doc, event, frame, prerenderFrame }) => {
+                const { locale: { lang } } = props;
+                const content = containerContent[lang];
+
+                return (
+                    <Overlay
+                        context={ context }
+                        close={ close }
+                        focus={ focus }
+                        event={ event }
+                        frame={ frame }
+                        prerenderFrame={ prerenderFrame }
+                        content={ content }
+                    />
+                ).render(dom({ doc }));
+            },
         
             props: {
                 clientID: {
