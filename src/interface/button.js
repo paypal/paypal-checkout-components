@@ -3,7 +3,7 @@
 import { isPayPalDomain } from '@paypal/sdk-client/src';
 import { PopupOpenError as _PopupOpenError, destroy as zoidDestroy, destroyComponents } from 'zoid/src';
 
-import { setupLogger, allowIframe as _allowIframe } from '../lib';
+import { allowIframe as _allowIframe } from '../lib';
 import { getCheckoutComponent } from '../checkout';
 import { getButtonsComponent } from '../buttons';
 import { Buttons as _ButtonsTemplate } from '../buttons/template';
@@ -48,7 +48,6 @@ export const destroyAll = {
 };
 
 export function setup() {
-    setupLogger();
     getButtonsComponent();
     getCheckoutComponent();
 }

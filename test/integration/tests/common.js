@@ -299,7 +299,6 @@ export function onWindowOpen({ time = 500 } : { time? : number } = {}) : ZalgoPr
                 let timeout = null;
 
                 interval = setInterval(() => {
-                    // $FlowFixMe
                     if (el.contentWindow) {
                         reset();
                         if (timeout) {
@@ -308,7 +307,6 @@ export function onWindowOpen({ time = 500 } : { time? : number } = {}) : ZalgoPr
                         if (interval) {
                             clearInterval(interval);
                         }
-                        // $FlowFixMe
                         resolve(el.contentWindow);
                     }
                 }, 10);

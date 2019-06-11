@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { noop, supportsPopups, getElement } from 'belter/src';
+import { noop, supportsPopups, getElement, memoize } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { node, dom } from 'jsx-pragmatic/src';
 import { CONTEXT } from 'zoid/src';
@@ -24,48 +24,46 @@ if (bridge) {
 }
 
 function renderCheckout(props = {}, context = CONTEXT.POPUP) {
+    let approved = false;
 
+    const payment = memoize(() => {
+        if (window.xprops.createSubscription) {
+            return window.xprops.createSubscription({}, {}).then(generateOrderID);
+        } else if (window.xprops.createBillingAgreement) {
+            return window.xprops.createBillingAgreement({}, {}).then(generateOrderID);
+        } else if (window.xprops.createOrder) {
+            return window.xprops.createOrder({}, {
+                order: {
+                    create: generateOrderID
+                }
+            });
+        } else {
+            return ZalgoPromise.try(generateOrderID);
+        }
+    });
 
     window.paypal.Checkout({
 
-        payment: window.xprops.createBillingAgreement
-            ? () => {
-                return window.xprops.createBillingAgreement().then(() => {
-                    return generateOrderID();
-                });
-            }
-            : () => {
-                return window.xprops.createOrder({}, {
-                    order: {
-                        create: () => {
-                            return ZalgoPromise.resolve(generateOrderID());
-                        }
-                    }
-                });
-            },
+        payment,
         
         onAuthorize(data, actions) : void | ZalgoPromise<void> {
+            approved = true;
 
-            return window.xprops.onApprove({
-                ...data,
-
-                order: {}
-
-            }, {
+            actions = {
                 ...actions,
-
                 order: {
                     capture: captureOrder,
-
-                    get() : Object {
-                        return {};
-                    }
+                    get:     () => ({})
                 },
+                restart:  () => renderCheckout(props, CONTEXT.IFRAME)
+            };
 
-                restart() {
-                    renderCheckout(props, CONTEXT.IFRAME);
+            return ZalgoPromise.try(() => {
+                if (window.xprops.onApprove) {
+                    return window.xprops.onApprove(data, actions);
+                } else {
+                    return actions.order.capture();
                 }
-
             }).catch(err => {
                 return window.props.onError(err);
             });
@@ -77,6 +75,12 @@ function renderCheckout(props = {}, context = CONTEXT.POPUP) {
 
         onShippingChange(data, actions) : ZalgoPromise<void> {
             return window.xprops.onShippingChange(data, actions);
+        },
+
+        onClose:  () => {
+            if (!approved) {
+                return window.xprops.onCancel();
+            }
         },
 
         onCancel: window.xprops.onCancel,

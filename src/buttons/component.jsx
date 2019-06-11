@@ -4,28 +4,26 @@
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken,
-    getPartnerAttributionID, getCorrelationID, getEventEmitter, getEnableThreeDomainSecure, getDebug } from '@paypal/sdk-client/src';
+    getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug,
+    getComponents } from '@paypal/sdk-client/src';
 import { rememberFunding, getRememberedFunding } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { isIEIntranet, isDevice, uniqueID, redirect, supportsPopups, popup, writeElementToWindow, noop, inlineMemoize } from 'belter/src';
-import { FUNDING, PLATFORM, INTENT, FPTI_KEY, CARD } from '@paypal/sdk-constants/src';
+import { isDevice, uniqueID, supportsPopups, popup, writeElementToWindow, inlineMemoize } from 'belter/src';
+import { FUNDING, PLATFORM, CARD } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
 import { getButtonUrl, DEFAULT_POPUP_SIZE } from '../config';
 import { getFundingEligibility } from '../globals';
-import { FPTI_STATE, FPTI_TRANSITION, FPTI_CONTEXT_TYPE, EVENT } from '../constants';
 import { getSessionID } from '../lib';
 import { componentTemplate } from '../checkout/template';
 
 import { containerTemplate, Buttons as ButtonsTemplate } from './template';
-import { normalizeButtonStyle, type ButtonProps, type PrerenderDetails, type ButtonStyle, type CreateOrder, type OnCancel, type OnClick,
-    type CreateOrderData, type CreateOrderActions, type OnApprove, type OnApproveActions,
-    type OnApproveData, type OnShippingChange, type GetPrerenderDetails, type OnClickData, type OnClickActions } from './props';
+import { normalizeButtonStyle, type ButtonProps } from './props';
 
 export function getButtonsComponent() : ZoidComponent<ButtonProps> {
     return inlineMemoize(getButtonsComponent, () => {
-        const component = create({
+        return create({
             tag:  'paypal-buttons',
 
             url:    getButtonUrl,
@@ -40,7 +38,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
 
             logger: getLogger(),
 
-            prerenderTemplate({ state, props, doc }) : HTMLElement {
+            prerenderTemplate: ({ state, props, doc }) => {
 
                 const handleClick = (event, { fundingSource, card } : {| fundingSource : $Values<typeof FUNDING>, card : ?$Values<typeof CARD> |}) => {
                     let win;
@@ -80,347 +78,81 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 }
             },
 
-            validate() {
-                if (isIEIntranet()) {
-                    getLogger().warn('button_render_intranet_mode');
-                }
-            },
-
             props: {
                 style: {
                     type:       'object',
                     queryParam: true,
                     required:   false,
-
-                    decorate({ value }) : ButtonStyle {
+                    decorate:   ({ value }) => {
                         // $FlowFixMe
-                        const { label, layout, color, shape, tagline, height, period } = normalizeButtonStyle(value);
-
-                        const logger = getLogger();
-                        logger.info(`button_render_color_${ color }`);
-                        logger.info(`button_render_shape_${ shape }`);
-                        logger.info(`button_render_label_${ label }`);
-                        logger.info(`button_render_layout_${ label }`);
-                        logger.info(`button_render_tagline_${ tagline.toString() }`);
-
-                        return { label, layout, color, shape, tagline, height, period };
+                        return normalizeButtonStyle(value);
                     },
 
-                    validate({ value = {} }) {
+                    validate: ({ value = {} }) => {
                         // $FlowFixMe
                         normalizeButtonStyle(value);
                     },
 
-                    default: () => {
-                        return {};
-                    }
+                    default: () => ({})
                 },
 
                 components: {
                     type:       'array',
                     queryParam: true,
-                    // $FlowFixMe
-                    value:      () => __COMPONENTS__
+                    value:      getComponents
                 },
 
                 locale: {
                     type:       'object',
                     queryParam: true,
-                    value:      () => getLocale()
+                    value:      getLocale
                 },
 
                 sdkMeta: {
                     type:        'string',
                     queryParam:  true,
                     sendToChild: false,
-                    value:       () => getSDKMeta()
+                    value:       getSDKMeta
                 },
 
                 createOrder: {
                     type:     'function',
-                    required: false,
-                    decorate({ value, props }) : Function {
-                        return function decoratedCreateOrder(data, actions) : ZalgoPromise<string> {
-                            return ZalgoPromise.try(() => {
-                                return value(data, actions);
-
-                            }).then(orderID => {
-                                if (!orderID || typeof orderID !== 'string')  {
-                                    throw new Error(`Expected a promise for a string order id to be passed to createOrder`);
-                                }
-
-                                getLogger().track({
-                                    [ FPTI_KEY.STATE ]:              FPTI_STATE.CHECKOUT,
-                                    [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.RECIEVE_ORDER,
-                                    [ FPTI_KEY.CONTEXT_TYPE ]:       FPTI_CONTEXT_TYPE.ORDER_ID,
-                                    [ FPTI_KEY.CONTEXT_ID ]:         orderID,
-                                    [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
-                                }).flush();
-
-                                return orderID;
-                            });
-                        };
-                    },
-                    default({ props }) : ?CreateOrder {
-                        if (props.createBillingAgreement || props.createSubscription) {
-                            return;
-                        }
-
-                        return (data : CreateOrderData, actions : CreateOrderActions) => {
-                            return actions.order.create({
-                                purchase_units: [
-                                    {
-                                        amount: {
-                                            currency_code: 'USD',
-                                            value:         '0.01'
-                                        }
-                                    }
-                                ]
-                            });
-                        };
-                    }
+                    required: false
                 },
 
                 createBillingAgreement: {
                     type:     'function',
-                    required: false,
-                    validate: ({ props }) => {
-                        if (props.createOrder) {
-                            throw new Error(`Do not pass both createOrder and createBillingAgreement`);
-                        }
-                    },
-                    decorate({ value }) : Function {
-                        return function decoratedCreateBillingAgreement() : ZalgoPromise<string> {
-                            return ZalgoPromise.try(() => {
-                                if (!getVault()) {
-                                    throw new Error(`Must pass vault=true to sdk to use billing agreement flow`);
-                                }
-
-                                // $FlowFixMe
-                                return value();
-
-                            }).then(billingToken => {
-
-                                const logger = getLogger();
-
-                                if (!billingToken || typeof billingToken !== 'string') {
-                                    logger.error(`no_billing_token_passed_to_createbillingagreement`);
-                                    throw new Error(`Expected a promise for a string billing token to be passed to createBillingAgreement`);
-                                }
-
-                                logger.flush();
-
-                                return billingToken;
-                            });
-                        };
-                    }
+                    required: false
                 },
 
                 createSubscription: {
                     type:     'function',
-                    required: false,
-                    validate: ({ props }) => {
-                        if (props.createOrder || props.createBillingAgreement) {
-                            throw new Error(`Do not pass both createOrder or createBillingAgreement with createSubscription`);
-                        }
-                    },
-                    decorate({ value }) : Function {
-                        return function decoratedCreateSubscription(data, actions) : ZalgoPromise<string> {
-                            return ZalgoPromise.try(() => {
-                                if (!getVault()) {
-                                    throw new Error(`Must pass vault=true to sdk to use subscription flow`);
-                                }
-
-                                // $FlowFixMe
-                                return value(data, actions);
-                            }).then(subscriptionID => {
-                                const logger = getLogger();
-                                if (!subscriptionID || typeof subscriptionID !== 'string')  {
-                                    logger.error(`no_subscription_id_passed_to_createsubscription`);
-                                    throw new Error(`Expected a promise for a string subscriptionID to be passed to createSubscription`);
-                                }
-                                logger.flush();
-                                return subscriptionID;
-                            });
-                        };
-                    }
+                    required: false
                 },
 
                 onApprove: {
                     type:     'function',
-                    required: false,
-
-                    decorate({ value, props, close }) : OnApprove {
-                        return function decorateOnApprove(data : OnApproveData, actions : OnApproveActions) : ZalgoPromise<void> {
-                            getLogger().info('button_authorize').track({
-                                [ FPTI_KEY.STATE ]:              FPTI_STATE.CHECKOUT,
-                                [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.CHECKOUT_AUTHORIZE,
-                                [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
-                            }).flush();
-
-                            actions = {
-                                ...actions,
-                                redirect: (url, win) => {
-                                    if (!url) {
-                                        throw new Error(`Expected redirect url`);
-                                    }
-                                    return ZalgoPromise.try(() => {
-                                        return close();
-                                    }).then(() => {
-                                        return redirect(url, win || window.top);
-                                    });
-                                }
-                            };
-
-                            return ZalgoPromise.try(() => {
-                                return value(data, actions);
-                            }).catch(err => {
-                                if (props.onError) {
-                                    return props.onError(err);
-                                }
-                                throw err;
-                            });
-                        };
-                    },
-
-                    default({ props } : { props : ButtonProps }) : OnApprove {
-                        return function onApproveDefault(data : OnApproveData, actions : OnApproveActions) : ZalgoPromise<void> {
-                            if (props.intent === INTENT.CAPTURE) {
-                                if (props.intent === INTENT.CAPTURE) {
-                                    return actions.order.capture().then(noop);
-                                } else if (props.intent === INTENT.AUTHORIZE) {
-                                    return actions.order.authorize().then(noop);
-                                }
-                            }
-
-                            throw new Error(`Please specify onApprove callback to handle buyer approval success`);
-                        };
-                    }
+                    required: false
                 },
 
                 onShippingChange: {
                     type:     'function',
-                    required: false,
-
-                    decorate({ value, props, onError }) : OnShippingChange {
-                        return function decorateOnShippingChange(data, actions = {}) : void | ZalgoPromise<void> {
-                            const logger = getLogger();
-                            logger.info('button_shipping_change');
-
-                            logger.track({
-                                [ FPTI_KEY.STATE ]:              FPTI_STATE.CHECKOUT,
-                                [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.CHECKOUT_SHIPPING_CHANGE,
-                                [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
-                            });
-
-                            logger.flush();
-
-                            const resolve = () => ZalgoPromise.resolve();
-                            const reject = actions.reject || function reject() {
-                                throw new Error(`Missing reject action callback`);
-                            };
-
-                            return ZalgoPromise.try(() => {
-                                return value(data, { ...actions, resolve, reject });
-                            }).catch(err => {
-                                if (onError) {
-                                    onError(err);
-                                }
-                                throw err;
-                            });
-                        };
-                    }
+                    required: false
                 },
 
                 onCancel: {
                     type:     'function',
-                    required: false,
-
-                    decorate({ value, props, close }) : OnCancel {
-                        return function decorateOnCancel(data, actions = {}) : void | ZalgoPromise<void> {
-                            const logger = getLogger();
-                            logger.info('button_cancel');
-
-                            logger.track({
-                                [ FPTI_KEY.STATE ]:              FPTI_STATE.CHECKOUT,
-                                [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.CHECKOUT_CANCEL,
-                                [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
-                            });
-
-                            logger.flush();
-
-                            actions = {
-                                ...actions,
-                                redirect: (url, win) => {
-                                    if (!url) {
-                                        throw new Error(`Expected redirect url`);
-                                    }
-                                    return ZalgoPromise.all([
-                                        redirect(url, win || window.top),
-                                        close()
-                                    ]);
-                                }
-                            };
-
-                            return ZalgoPromise.try(() => {
-                                return value(data, actions);
-                            }).catch(err => {
-                                if (props.onError) {
-                                    return props.onError(err);
-                                }
-                                throw err;
-                            });
-                        };
-                    },
-
-                    default: () => noop
+                    required: false
                 },
 
                 onClick: {
                     type:     'function',
-                    required: false,
-                    decorate({ value, props }) : OnClick {
-                        return (data : OnClickData, actions : OnClickActions) => {
-                            getLogger().info('button_click').track({
-                                [ FPTI_KEY.STATE ]:              FPTI_STATE.BUTTON,
-                                [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.BUTTON_CLICK,
-                                [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID,
-                                [ FPTI_KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
-                            }).flush();
-
-                            return value(data, actions);
-                        };
-                    },
-
-                    default: () => noop
-                },
-
-                onRender: {
-                    type:     'function',
-                    required: false,
-                    decorate({ value, props }) : Function {
-                        return () => {
-                            getLogger().track({
-                                [ FPTI_KEY.STATE ]:              FPTI_STATE.BUTTON,
-                                [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.BUTTON_RENDER,
-                                [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID
-                            }).flush();
-
-                            getEventEmitter().trigger(EVENT.BUTTON_RENDER);
-
-                            return value();
-                        };
-                    },
-                    default: () => noop
+                    required: false
                 },
 
                 getPrerenderDetails: {
-                    type: 'function',
-                    value({ state } : { state : Object }) : GetPrerenderDetails {
-                        return () : PrerenderDetails => {
-                            return state.prerenderDetails;
-                        };
-                    }
+                    type:  'function',
+                    value: ({ state }) => () => state.prerenderDetails
                 },
 
                 getPopupBridge: {
@@ -447,7 +179,7 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
 
                 clientID: {
                     type:       'string',
-                    value:      () => getClientID(),
+                    value:      getClientID,
                     queryParam: true
                 },
 
@@ -477,15 +209,13 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
 
                 sessionID: {
                     type:       'string',
-                    value:      () => getSessionID(),
+                    value:      getSessionID,
                     queryParam: true
                 },
 
                 buttonSessionID: {
-                    type: 'string',
-                    value() : string {
-                        return uniqueID();
-                    },
+                    type:       'string',
+                    value:      uniqueID,
                     queryParam: true
                 },
 
@@ -498,20 +228,12 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 env: {
                     type:       'string',
                     queryParam: true,
-                    value:      () => getEnv()
+                    value:      getEnv
                 },
 
                 fundingEligibility: {
                     type:          'object',
-                    value:         () => {
-                        const fundingEligibility = getFundingEligibility();
-                        
-                        if (fundingEligibility && fundingEligibility.card && fundingEligibility.card.eligible && getDisableFunding().indexOf(FUNDING.CARD) !== -1) {
-                            fundingEligibility.card.eligible = false;
-                        }
-
-                        return fundingEligibility;
-                    },
+                    value:         getFundingEligibility,
                     queryParam:    true,
                     serialization: 'base64'
                 },
@@ -533,7 +255,6 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 remember: {
                     type:  'function',
                     value: () => {
-                        // $FlowFixMe
                         return (fundingSources : $ReadOnlyArray<$Values<typeof FUNDING>>) =>
                             rememberFunding(fundingSources, { cookie: false });
                     }
@@ -542,13 +263,13 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 currency: {
                     type:       'string',
                     queryParam: true,
-                    value:      () => getCurrency()
+                    value:      getCurrency
                 },
 
                 intent: {
                     type:       'string',
                     queryParam: true,
-                    value:      () => getIntent()
+                    value:      getIntent
                 },
 
                 buyerCountry: {
@@ -561,34 +282,31 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 commit: {
                     type:       'boolean',
                     queryParam: true,
-                    value:      () => getCommit()
+                    value:      getCommit
                 },
 
                 vault: {
                     type:       'boolean',
                     queryParam: true,
-                    value:      () => getVault()
+                    value:      getVault
                 },
                 
                 disableFunding: {
                     type:       'array',
                     queryParam: true,
-                    // $FlowFixMe
-                    value:      () => getDisableFunding()
+                    value:      getDisableFunding
                 },
                 
                 disableCard: {
                     type:       'array',
                     queryParam: true,
-                    // $FlowFixMe
-                    value:      () => getDisableCard()
+                    value:      getDisableCard
                 },
                 
                 merchantID: {
                     type:       'array',
                     queryParam: true,
-                    // $FlowFixMe
-                    value:      () => getMerchantID()
+                    value:      getMerchantID
                 },
 
                 csp: {
@@ -610,12 +328,12 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 test: {
                     type: 'object',
                     default() : Object {
-                        return { action: 'checkout' };
+                        return {
+                            action: 'checkout'
+                        };
                     }
                 }
             }
         });
-
-        return component;
     });
 }

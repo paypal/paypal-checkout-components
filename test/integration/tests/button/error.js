@@ -21,62 +21,6 @@ for (const flow of [ 'popup', 'iframe' ]) {
             destroyTestContainer();
         });
 
-        it('should render button, render checkout, and return a blank string in createOrder', (done) => {
-            done = once(done);
-
-
-            window.paypal.Buttons({
-
-                test: { flow, action: 'checkout' },
-
-                createOrder() : string | ZalgoPromise<string> {
-                    return '';
-                },
-
-                onError(err) : void {
-                    assert.ok(err instanceof Error);
-                    return done();
-                },
-
-                onApprove() : void {
-                    return done(new Error('Expected onCancel to not be called'));
-                },
-
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
-                }
-
-            }).render('#testContainer');
-        });
-
-        it('should render button, render checkout, and return a blank string promise in createOrder', (done) => {
-            done = once(done);
-
-
-            window.paypal.Buttons({
-
-                test: { flow, action: 'checkout' },
-
-                createOrder() : string | ZalgoPromise<string> {
-                    return ZalgoPromise.resolve('');
-                },
-
-                onError(err) : void {
-                    assert.ok(err instanceof Error);
-                    return done();
-                },
-
-                onApprove() : void {
-                    return done(new Error('Expected onCancel to not be called'));
-                },
-
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
-                }
-
-            }).render('#testContainer');
-        });
-
         it('should render button, render checkout, and throw an error in createOrder', (done) => {
             done = once(done);
 
@@ -188,62 +132,7 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
             }).render('#testContainer');
         });
-
-        it('should render button, render checkout, and throw an error in onShippingChange', (done) => {
-            done = once(done);
-
-            window.paypal.Buttons({
-
-                test: { flow, action: 'shippingChange' },
-
-                onShippingChange() {
-                    throw new Error('error');
-                },
-
-                onError(err) : void {
-                    assert.ok(err instanceof Error);
-                    return done();
-                },
-
-                onApprove() : void {
-                    return done(new Error('Expected onCancel to not be called'));
-                },
-
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
-                }
-
-            }).render('#testContainer');
-        });
-
-        it('should render button, render checkout, call reject in onShippingChange with no reject action', (done) => {
-            done = once(done);
-
-            window.paypal.Buttons({
-
-                test: { flow, action: 'shippingChange', type: 'noReject' },
-
-                onShippingChange(data, actions) : () => void {
-                    return actions.reject();
-                },
-
-                onError(err) : void {
-                    assert.ok(err instanceof Error);
-                    assert.ok(err.message === 'Missing reject action callback');
-                    return done();
-                },
-
-                onApprove() : void {
-                    return done(new Error('Expected onCancel to not be called'));
-                },
-
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
-                }
-
-            }).render('#testContainer');
-        });
-
+        
         it('should render button, render checkout, then error out', (done) => {
             done = once(done);
 

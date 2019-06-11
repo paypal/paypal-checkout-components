@@ -5,10 +5,10 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
-import { noop, once, inlineMemoize } from 'belter/src';
+import { inlineMemoize } from 'belter/src';
 import { getLocale, getEnv, getCommit, getSDKMeta } from '@paypal/sdk-client/src';
 
-import { getButtonSessionID, getSessionID } from '../lib';
+import { getSessionID } from '../lib';
 import { getCardUrl } from '../config';
 
 type CardProps = {|
@@ -30,7 +30,7 @@ type CardProps = {|
 export function getCardFieldsComponent() : ZoidComponent<CardProps> {
     return inlineMemoize(getCardFieldsComponent, () => {
         // $FlowFixMe
-        const cardFields = create({
+        return create({
             tag:  'card-fields',
             name: 'ppcard',
 
@@ -55,30 +55,21 @@ export function getCardFieldsComponent() : ZoidComponent<CardProps> {
 
             props: {
                 sessionID: {
-                    type:     'string',
-                    required: false,
-                    def() : string {
-                        return getSessionID();
-                    },
+                    type:       'string',
+                    required:   false,
+                    def:        getSessionID,
                     queryParam: true
                 },
 
-                // $FlowFixMe
                 createOrder: {
                     type:       'function',
                     queryParam: 'token',
                     alias:      'payment',
-                    queryValue: ({ value }) => {
-                        return ZalgoPromise.try(value);
-                    }
+                    queryValue: ({ value }) => ZalgoPromise.try(value)
                 },
 
                 buttonSessionID: {
-                    type:     'string',
-                    required: false,
-                    def() : ?string {
-                        return getButtonSessionID();
-                    },
+                    type:       'string',
                     queryParam: true
                 },
 
@@ -91,7 +82,6 @@ export function getCardFieldsComponent() : ZoidComponent<CardProps> {
                 env: {
                     type:       'string',
                     queryParam: true,
-                    // $FlowFixMe
                     value:      getEnv
                 },
 
@@ -103,8 +93,7 @@ export function getCardFieldsComponent() : ZoidComponent<CardProps> {
                         const { lang, country } = value;
                         return `${ lang }_${ country }`;
                     },
-                    // $FlowFixMe
-                    value: () => getLocale()
+                    value: getLocale
                 },
 
                 onApprove: {
@@ -120,52 +109,21 @@ export function getCardFieldsComponent() : ZoidComponent<CardProps> {
 
                 onCancel: {
                     type:     'function',
-                    required: false,
-                    decorate: ({ value, close, onError }) => {
-                        return once((data, actions = {}) : ZalgoPromise<void> => {
-                            return ZalgoPromise.try(() => {
-                                // $FlowFixMe
-                                return value(data, actions);
-                            }).catch(err => {
-                                return onError(err);
-                            }).finally(() => {
-                                close();
-                            });
-                        });
-                    },
-
-                    // $FlowFixMe
-                    default: () => noop
+                    required: false
                 },
 
                 sdkMeta: {
                     type:       'string',
                     queryParam: true,
-                    // $FlowFixMe
                     value:      getSDKMeta
                 },
 
                 style: {
                     type:       'object',
                     required:   false,
-                    queryParam: true,
-                    def() : Object {
-                        return {
-                            cardIcons: {
-                                display: false
-                            },
-                            submitButton: {
-                                display: true
-                            },
-                            currencyConversion: {
-                                display: true
-                            }
-                        };
-                    }
+                    queryParam: true
                 }
             }
         });
-
-        return cardFields;
     });
 }

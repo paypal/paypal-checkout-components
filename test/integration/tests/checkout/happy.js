@@ -2,7 +2,8 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { wrapPromise } from 'belter/src';
+import { wrapPromise, uniqueID } from 'belter/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { generateOrderID, runOnClick,
     createTestContainer, destroyTestContainer,
@@ -22,9 +23,11 @@ describe(`paypal checkout component happy path`, () => {
         return wrapPromise(({ expect, error }) => {
             return runOnClick(() => {
                 return window.paypal.Checkout({
-                    createOrder: expect('createOrder', generateOrderID),
-                    onApprove:   expect('onApprove'),
-                    onCancel:    error('onCancel')
+                    buttonSessionID: uniqueID(),
+                    fundingSource:   FUNDING.PAYPAL,
+                    createOrder:     expect('createOrder', generateOrderID),
+                    onApprove:       expect('onApprove'),
+                    onCancel:        error('onCancel')
                 }).render('body');
             });
         });
@@ -34,10 +37,12 @@ describe(`paypal checkout component happy path`, () => {
         return wrapPromise(({ expect, error }) => {
             return runOnClick(() => {
                 return window.paypal.Checkout({
-                    test:        { action: 'cancel' },
-                    createOrder: expect('createOrder', generateOrderID),
-                    onApprove:   error('onApprove'),
-                    onCancel:    expect('onCancel')
+                    test:            { action: 'cancel' },
+                    buttonSessionID: uniqueID(),
+                    fundingSource:   FUNDING.PAYPAL,
+                    createOrder:     expect('createOrder', generateOrderID),
+                    onApprove:       error('onApprove'),
+                    onCancel:        expect('onCancel')
                 }).render('body');
             });
         });
@@ -47,9 +52,11 @@ describe(`paypal checkout component happy path`, () => {
         return wrapPromise(({ expect, error }) => {
             return runOnClick(() => {
                 return window.paypal.Checkout({
-                    createOrder: expect('createOrder', () => ZalgoPromise.try(generateOrderID)),
-                    onApprove:   expect('onApprove'),
-                    onCancel:    error('onCancel')
+                    buttonSessionID: uniqueID(),
+                    fundingSource:   FUNDING.PAYPAL,
+                    createOrder:     expect('createOrder', () => ZalgoPromise.try(generateOrderID)),
+                    onApprove:       expect('onApprove'),
+                    onCancel:        error('onCancel')
                 }).render('body');
             });
         });
@@ -61,8 +68,10 @@ describe(`paypal checkout component happy path`, () => {
                 const orderID = generateOrderID();
 
                 return window.paypal.Checkout({
-                    createOrder: expect('createOrder', () => orderID),
-                    onApprove:   expect('onApprove', (data) => {
+                    buttonSessionID: uniqueID(),
+                    fundingSource:   FUNDING.PAYPAL,
+                    createOrder:     expect('createOrder', () => orderID),
+                    onApprove:       expect('onApprove', (data) => {
                         if (data.currentUrl.indexOf(`token=${ orderID }`) === -1) {
                             throw new Error(`Expected to find order id in url, got ${ data.currentUrl }`);
                         }
@@ -81,10 +90,12 @@ describe(`paypal checkout component happy path`, () => {
         return wrapPromise(({ expect, error }) => {
             return runOnClick(() => {
                 return window.paypal.Checkout({
-                    test:        { action: 'init' },
-                    createOrder: expect('createOrder', generateOrderID),
-                    onApprove:   error('onApprove'),
-                    onCancel:    expect('onCancel')
+                    test:            { action: 'init' },
+                    buttonSessionID: uniqueID(),
+                    fundingSource:   FUNDING.PAYPAL,
+                    createOrder:     expect('createOrder', generateOrderID),
+                    onApprove:       error('onApprove'),
+                    onClose:         expect('onClose')
                 }).render('body').then(() => {
 
                     // eslint-disable-next-line max-nested-callbacks
@@ -105,10 +116,12 @@ describe(`paypal checkout component happy path`, () => {
                 }));
 
                 return window.paypal.Checkout({
-                    test:        { action: 'init' },
-                    createOrder: expect('createOrder', generateOrderID),
-                    onApprove:   error('onApprove'),
-                    onCancel:    error('onCancel')
+                    test:            { action: 'init' },
+                    buttonSessionID: uniqueID(),
+                    fundingSource:   FUNDING.PAYPAL,
+                    createOrder:     expect('createOrder', generateOrderID),
+                    onApprove:       error('onApprove'),
+                    onCancel:        error('onCancel')
                 }).render('body').then(() => {
 
                     childWindow.focus = expect('windowFocus');
@@ -132,9 +145,11 @@ describe(`paypal checkout component happy path`, () => {
                             actions.close();
                         }
                     },
-                    createOrder: expect('createOrder', generateOrderID),
-                    onApprove:   error('onApprove'),
-                    onCancel:    expect('onCancel')
+                    buttonSessionID: uniqueID(),
+                    fundingSource:   FUNDING.PAYPAL,
+                    createOrder:     expect('createOrder', generateOrderID),
+                    onApprove:       error('onApprove'),
+                    onClose:         expect('onClose')
                 }).render('body');
             });
         }, { timeout: 5000 });
@@ -143,21 +158,17 @@ describe(`paypal checkout component happy path`, () => {
     it('should render checkout to an iframe, popout, then complete the payment', () => {
         return wrapPromise(({ expect, error }) => {
             return runOnClick(() => {
-                let createOrderCalls = 0;
                 window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
 
                 return window.paypal.Checkout({
-                    test:        { action: 'popout' },
-                    createOrder: expect('createOrder', () => {
-                        createOrderCalls += 1;
+                    test:            { action: 'popout' },
+                    buttonSessionID: uniqueID(),
+                    fundingSource:   FUNDING.PAYPAL,
+                    createOrder:     expect('createOrder', () => {
                         return generateOrderID();
                     }),
-                    onApprove: expect('onApprove', () => {
-                        if (createOrderCalls !== 1) {
-                            throw new Error(`Expected payment to be called one time, got ${ createOrderCalls } calls`);
-                        }
-                    }),
-                    onCancel: error('onCancel')
+                    onApprove: expect('onApprove'),
+                    onCancel:  error('onCancel')
                 }).render('body', 'iframe');
             });
         }, { timeout: 8000 });

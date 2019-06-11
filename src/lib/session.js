@@ -9,9 +9,3 @@ export function getSessionID() : string {
 
     return getSDKSessionID();
 }
-
-export function getButtonSessionID() : ?string {
-    if (window.xprops && window.xprops.buttonSessionID) {
-        return window.xprops.buttonSessionID;
-    }
-}

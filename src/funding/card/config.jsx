@@ -101,7 +101,6 @@ export function getCardConfig() : FundingSourceConfig {
     
                     // $FlowFixMe
                     if (maxCardForCountry[locale.country]) {
-                        // $FlowFixMe
                         maxCards = maxCardForCountry[locale.country];
                     }
     

@@ -2,8 +2,6 @@
 
 import { getPayPalDomain } from '@paypal/sdk-client/src';
 
-export const SESSION_LIFETIME = 5 * 60 * 1000;
-
 export function getCheckoutUrl() : string {
     return `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__CHECKOUT__ }`;
 }

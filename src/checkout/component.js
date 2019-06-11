@@ -2,13 +2,13 @@
 /* eslint max-lines: 0 */
 
 import { getPayPalDomainRegex, getLogger, getLocale,
-    getEnv, getClientID, getCommit, getSDKMeta, getCSPNonce, getBuyerCountry } from '@paypal/sdk-client/src';
-import { FUNDING } from '@paypal/sdk-constants/src';
+    getEnv, getClientID, getCommit, getSDKMeta, getCSPNonce, getBuyerCountry, getVersion } from '@paypal/sdk-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONTEXT, type ZoidComponent } from 'zoid/src';
-import { isDevice, memoize, isIEIntranet, noop, once, supportsPopups, inlineMemoize } from 'belter/src';
+import { isDevice, memoize, noop, supportsPopups, inlineMemoize } from 'belter/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 
-import { getSessionID, getButtonSessionID } from '../lib';
+import { getSessionID } from '../lib';
 import { DEFAULT_POPUP_SIZE, getCheckoutUrl } from '../config';
 
 import { containerTemplate, componentTemplate } from './template';
@@ -34,17 +34,10 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
         
             logger: getLogger(),
         
-            validate() {
-                if (isIEIntranet()) {
-                    getLogger().warn('checkout_render_intranet_mode');
-                }
-            },
-        
             prerenderTemplate: componentTemplate,
             containerTemplate,
         
             props: {
-        
                 clientID: {
                     type:       'string',
                     value:      () => getClientID(),
@@ -52,49 +45,33 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
                 },
         
                 sessionID: {
-                    type: 'string',
-                    // $FlowFixMe
-                    value() : string {
-                        return getSessionID();
-                    },
+                    type:       'string',
+                    value:      getSessionID,
                     queryParam: true
                 },
         
                 buttonSessionID: {
-                    type:     'string',
-                    required: false,
-                    default() : ?string {
-                        return getButtonSessionID();
-                    },
-                    queryParam: true
+                    type:       'string',
+                    queryParam: true,
+                    required:   false
                 },
                 
                 env: {
                     type:       'string',
                     queryParam: true,
-                    // $FlowFixMe
-                    value:      () => getEnv()
+                    value:      getEnv
                 },
         
                 sdkMeta: {
                     type:       'string',
                     queryParam: true,
-                    // $FlowFixMe
-                    value:      () => getSDKMeta()
+                    value:      getSDKMeta
                 },
         
                 nonce: {
                     type:     'string',
                     required: false,
                     value:    getCSPNonce
-                },
-        
-                meta: {
-                    type:    'object',
-                    default:  () => {
-                        const meta = window.xprops && window.xprops.meta;
-                        return meta || {};
-                    }
                 },
 
                 buyerCountry: {
@@ -108,53 +85,28 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
                     type:          'object',
                     queryParam:    'locale.x',
                     allowDelegate: true,
-                    queryValue({ value }) : string {
-                        const { lang, country } = value;
-                        return `${ lang }_${ country }`;
-                    },
-                    // $FlowFixMe
-                    value: () => getLocale()
+                    queryValue:    ({ value }) => `${ value.lang }_${ value.country }`,
+                    value:         getLocale
                 },
-                
-                // $FlowFixMe
+
                 createOrder: {
                     type:       'function',
                     queryParam: 'token',
                     alias:      'payment',
-                    queryValue: ({ value }) => {
-                        return ZalgoPromise.try(value);
-                    },
-                    decorate: ({ value: payment }) => {
-                        return memoize(() => {
-                            return ZalgoPromise.try(payment)
-                                .then(orderID => {
-        
-                                    if (!orderID) {
-                                        throw new Error(`No order id passed`);
-                                    }
-        
-                                    return orderID;
-                                });
-                        });
-                    }
+                    queryValue: ({ value }) => ZalgoPromise.try(value),
+                    decorate:   ({ value }) => memoize(value)
                 },
         
                 xcomponent: {
                     type:       'string',
                     queryParam: true,
-                    // $FlowFixMe
-                    value() : string {
-                        return '1';
-                    }
+                    value:      () => '1'
                 },
         
                 version: {
                     type:       'string',
                     queryParam: true,
-                    // $FlowFixMe
-                    value() : string {
-                        return '5';
-                    }
+                    value:      getVersion
                 },
         
                 commit: {
@@ -162,35 +114,16 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
                     queryParam: true,
                     value:      getCommit
                 },
-        
-                // $FlowFixMe
+    
                 fundingSource: {
                     type:       'string',
                     queryParam: true,
-                    default() : $Values<typeof FUNDING> {
-                        return FUNDING.PAYPAL;
-                    }
+                    default:    () => FUNDING.PAYPAL
                 },
-        
-                // $FlowFixMe
+                
                 onApprove: {
                     type:     'function',
-                    alias:    'onAuthorize',
-        
-                    decorate: ({ value, state, close, onError }) => {
-                        return function decorateOnApprove(data, actions) : ZalgoPromise<void> {
-                            return ZalgoPromise.try(() => {
-                                state.approved = true;
-        
-                                // $FlowFixMe
-                                return value(data, actions);
-                            }).catch(err => {
-                                return onError(err);
-                            }).finally(() => {
-                                return close();
-                            });
-                        };
-                    }
+                    alias:    'onAuthorize'
                 },
         
                 onShippingChange: {
@@ -211,68 +144,12 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
         
                 onCancel: {
                     type:     'function',
-                    required: false,
-        
-                    decorate: ({ value, close, onError }) => {
-                        return once((data, actions = {}) : ZalgoPromise<void> => {
-                            return ZalgoPromise.try(() => {
-                                // $FlowFixMe
-                                return value(data, actions);
-                            }).catch(err => {
-                                return onError(err);
-                            }).finally(() => {
-                                close();
-                            });
-                        });
-                    },
-        
-                    // $FlowFixMe
-                    default: () => noop
-                },
-        
-                onClose: {
-                    type:          'function',
-                    required:      false,
-                    allowDelegate: true,
-        
-                    decorate: ({ value, props, state }) => {
-                        return once((reason, ...args) : ZalgoPromise<void> => {
-                            return ZalgoPromise.try(() => {
-                                if (!state.approved) {
-                                    // $FlowFixMe
-                                    return ZalgoPromise.try(() => props.onCancel())
-                                        .then(() => value(...args));
-                                }
-        
-                                return value(...args);
-                            });
-                        });
-                    },
-        
-                    default: () => noop
-                },
-        
-                onDisplay: {
-                    type:          'function',
-                    required:      false,
-                    allowDelegate: true,
-        
-                    decorate: ({ value }) => {
-                        return once(function decorateOnDisplay() : ZalgoPromise<void> {
-                            return ZalgoPromise.try(() => {
-                                return value.apply(this, arguments);
-                            });
-                        });
-                    },
-        
-                    default: () => noop
+                    required: false
                 },
         
                 test: {
-                    type: 'object',
-                    default() : Object {
-                        return window.__test__ || { action: 'checkout' };
-                    }
+                    type:    'object',
+                    default: () => (window.__test__ || { action: 'checkout' })
                 }
             },
         
