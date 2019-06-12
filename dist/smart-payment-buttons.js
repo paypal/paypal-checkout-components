@@ -45,716 +45,6 @@ window.spb = function(modules) {
     }, __webpack_require__.p = "", __webpack_require__(__webpack_require__.s = 27);
 }([ function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    function utils_isPromise(item) {
-        try {
-            if (!item) return !1;
-            if ("undefined" != typeof Promise && item instanceof Promise) return !0;
-            if ("undefined" != typeof window && window.Window && item instanceof window.Window) return !1;
-            if ("undefined" != typeof window && window.constructor && item instanceof window.constructor) return !1;
-            var _toString = {}.toString;
-            if (_toString) {
-                var name = _toString.call(item);
-                if ("[object Window]" === name || "[object global]" === name || "[object DOMWindow]" === name) return !1;
-            }
-            if ("function" == typeof item.then) return !0;
-        } catch (err) {
-            return !1;
-        }
-        return !1;
-    }
-    var flushPromise, dispatchedErrors = [], possiblyUnhandledPromiseHandlers = [], activeCount = 0;
-    function flushActive() {
-        if (!activeCount && flushPromise) {
-            var promise = flushPromise;
-            flushPromise = null, promise.resolve();
-        }
-    }
-    function startActive() {
-        activeCount += 1;
-    }
-    function endActive() {
-        activeCount -= 1, flushActive();
-    }
-    var promise_ZalgoPromise = function() {
-        function ZalgoPromise(handler) {
-            var _this = this;
-            if (this.resolved = void 0, this.rejected = void 0, this.errorHandled = void 0, 
-            this.value = void 0, this.error = void 0, this.handlers = void 0, this.dispatching = void 0, 
-            this.stack = void 0, this.resolved = !1, this.rejected = !1, this.errorHandled = !1, 
-            this.handlers = [], handler) {
-                var _result, _error, resolved = !1, rejected = !1, isAsync = !1;
-                startActive();
-                try {
-                    handler(function(res) {
-                        isAsync ? _this.resolve(res) : (resolved = !0, _result = res);
-                    }, function(err) {
-                        isAsync ? _this.reject(err) : (rejected = !0, _error = err);
-                    });
-                } catch (err) {
-                    return endActive(), void this.reject(err);
-                }
-                endActive(), isAsync = !0, resolved ? this.resolve(_result) : rejected && this.reject(_error);
-            }
-        }
-        var _proto = ZalgoPromise.prototype;
-        return _proto.resolve = function(result) {
-            if (this.resolved || this.rejected) return this;
-            if (utils_isPromise(result)) throw new Error("Can not resolve promise with another promise");
-            return this.resolved = !0, this.value = result, this.dispatch(), this;
-        }, _proto.reject = function(error) {
-            var _this2 = this;
-            if (this.resolved || this.rejected) return this;
-            if (utils_isPromise(error)) throw new Error("Can not reject promise with another promise");
-            if (!error) {
-                var _err = error && "function" == typeof error.toString ? error.toString() : {}.toString.call(error);
-                error = new Error("Expected reject to be called with Error, got " + _err);
-            }
-            return this.rejected = !0, this.error = error, this.errorHandled || setTimeout(function() {
-                _this2.errorHandled || function(err, promise) {
-                    if (-1 === dispatchedErrors.indexOf(err)) {
-                        dispatchedErrors.push(err), setTimeout(function() {
-                            throw err;
-                        }, 1);
-                        for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) possiblyUnhandledPromiseHandlers[j](err, promise);
-                    }
-                }(error, _this2);
-            }, 1), this.dispatch(), this;
-        }, _proto.asyncReject = function(error) {
-            return this.errorHandled = !0, this.reject(error), this;
-        }, _proto.dispatch = function() {
-            var _this3 = this, resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
-            if (!this.dispatching && (resolved || rejected)) {
-                this.dispatching = !0, startActive();
-                for (var _loop = function(i) {
-                    var _handlers$i = handlers[i], onSuccess = _handlers$i.onSuccess, onError = _handlers$i.onError, promise = _handlers$i.promise, result = void 0;
-                    if (resolved) try {
-                        result = onSuccess ? onSuccess(_this3.value) : _this3.value;
-                    } catch (err) {
-                        return promise.reject(err), "continue";
-                    } else if (rejected) {
-                        if (!onError) return promise.reject(_this3.error), "continue";
-                        try {
-                            result = onError(_this3.error);
-                        } catch (err) {
-                            return promise.reject(err), "continue";
-                        }
-                    }
-                    result instanceof ZalgoPromise && (result.resolved || result.rejected) ? (result.resolved ? promise.resolve(result.value) : promise.reject(result.error), 
-                    result.errorHandled = !0) : utils_isPromise(result) ? result instanceof ZalgoPromise && (result.resolved || result.rejected) ? result.resolved ? promise.resolve(result.value) : promise.reject(result.error) : result.then(function(res) {
-                        promise.resolve(res);
-                    }, function(err) {
-                        promise.reject(err);
-                    }) : promise.resolve(result);
-                }, i = 0; i < handlers.length; i++) _loop(i);
-                handlers.length = 0, this.dispatching = !1, endActive();
-            }
-        }, _proto.then = function(onSuccess, onError) {
-            if (onSuccess && "function" != typeof onSuccess && !onSuccess.call) throw new Error("Promise.then expected a function for success handler");
-            if (onError && "function" != typeof onError && !onError.call) throw new Error("Promise.then expected a function for error handler");
-            var promise = new ZalgoPromise();
-            return this.handlers.push({
-                promise: promise,
-                onSuccess: onSuccess,
-                onError: onError
-            }), this.errorHandled = !0, this.dispatch(), promise;
-        }, _proto.catch = function(onError) {
-            return this.then(void 0, onError);
-        }, _proto.finally = function(onFinally) {
-            if (onFinally && "function" != typeof onFinally && !onFinally.call) throw new Error("Promise.finally expected a function");
-            return this.then(function(result) {
-                return ZalgoPromise.try(onFinally).then(function() {
-                    return result;
-                });
-            }, function(err) {
-                return ZalgoPromise.try(onFinally).then(function() {
-                    throw err;
-                });
-            });
-        }, _proto.timeout = function(time, err) {
-            var _this4 = this;
-            if (this.resolved || this.rejected) return this;
-            var timeout = setTimeout(function() {
-                _this4.resolved || _this4.rejected || _this4.reject(err || new Error("Promise timed out after " + time + "ms"));
-            }, time);
-            return this.then(function(result) {
-                return clearTimeout(timeout), result;
-            });
-        }, _proto.toPromise = function() {
-            if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
-            return Promise.resolve(this);
-        }, ZalgoPromise.resolve = function(value) {
-            return value instanceof ZalgoPromise ? value : utils_isPromise(value) ? new ZalgoPromise(function(resolve, reject) {
-                return value.then(resolve, reject);
-            }) : new ZalgoPromise().resolve(value);
-        }, ZalgoPromise.reject = function(error) {
-            return new ZalgoPromise().reject(error);
-        }, ZalgoPromise.asyncReject = function(error) {
-            return new ZalgoPromise().asyncReject(error);
-        }, ZalgoPromise.all = function(promises) {
-            var promise = new ZalgoPromise(), count = promises.length, results = [];
-            if (!count) return promise.resolve(results), promise;
-            for (var _loop2 = function(i) {
-                var prom = promises[i];
-                if (prom instanceof ZalgoPromise) {
-                    if (prom.resolved) return results[i] = prom.value, count -= 1, "continue";
-                } else if (!utils_isPromise(prom)) return results[i] = prom, count -= 1, "continue";
-                ZalgoPromise.resolve(prom).then(function(result) {
-                    results[i] = result, 0 == (count -= 1) && promise.resolve(results);
-                }, function(err) {
-                    promise.reject(err);
-                });
-            }, i = 0; i < promises.length; i++) _loop2(i);
-            return 0 === count && promise.resolve(results), promise;
-        }, ZalgoPromise.hash = function(promises) {
-            var result = {};
-            return ZalgoPromise.all(Object.keys(promises).map(function(key) {
-                return ZalgoPromise.resolve(promises[key]).then(function(value) {
-                    result[key] = value;
-                });
-            })).then(function() {
-                return result;
-            });
-        }, ZalgoPromise.map = function(items, method) {
-            return ZalgoPromise.all(items.map(method));
-        }, ZalgoPromise.onPossiblyUnhandledException = function(handler) {
-            return function(handler) {
-                return possiblyUnhandledPromiseHandlers.push(handler), {
-                    cancel: function() {
-                        possiblyUnhandledPromiseHandlers.splice(possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
-                    }
-                };
-            }(handler);
-        }, ZalgoPromise.try = function(method, context, args) {
-            if (method && "function" != typeof method && !method.call) throw new Error("Promise.try expected a function");
-            var result;
-            startActive();
-            try {
-                result = method.apply(context, args || []);
-            } catch (err) {
-                return endActive(), ZalgoPromise.reject(err);
-            }
-            return endActive(), ZalgoPromise.resolve(result);
-        }, ZalgoPromise.delay = function(_delay) {
-            return new ZalgoPromise(function(resolve) {
-                setTimeout(resolve, _delay);
-            });
-        }, ZalgoPromise.isPromise = function(value) {
-            return !!(value && value instanceof ZalgoPromise) || utils_isPromise(value);
-        }, ZalgoPromise.flush = function() {
-            return promise = flushPromise = flushPromise || new ZalgoPromise(), flushActive(), 
-            promise;
-            var promise;
-        }, ZalgoPromise;
-    }();
-    __webpack_require__.d(__webpack_exports__, "a", function() {
-        return promise_ZalgoPromise;
-    });
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    var interface_namespaceObject = {};
-    function getUserAgent() {
-        return window.navigator.mockUserAgent || window.navigator.userAgent;
-    }
-    function isOperaMini(ua) {
-        return void 0 === ua && (ua = getUserAgent()), ua.indexOf("Opera Mini") > -1;
-    }
-    function isIEIntranet() {
-        if (window.document.documentMode) try {
-            var status = window.status;
-            return window.status = "testIntranetMode", "testIntranetMode" === window.status && (window.status = status, 
-            !0);
-        } catch (err) {
-            return !1;
-        }
-        return !1;
-    }
-    function supportsPopups(ua) {
-        return void 0 === ua && (ua = getUserAgent()), !(function(ua) {
-            return void 0 === ua && (ua = getUserAgent()), !!function(ua) {
-                return void 0 === ua && (ua = getUserAgent()), /iPhone|iPod|iPad/.test(ua);
-            }(ua) && (!!function(ua) {
-                return void 0 === ua && (ua = getUserAgent()), /\bGSA\b/.test(ua);
-            }(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
-        }(ua) || function(ua) {
-            return void 0 === ua && (ua = getUserAgent()), !!function(ua) {
-                return void 0 === ua && (ua = getUserAgent()), /Android/.test(ua);
-            }(ua) && /Version\/[\d.]+/.test(ua) && !isOperaMini(ua);
-        }(ua) || isOperaMini(ua) || function(ua) {
-            return void 0 === ua && (ua = getUserAgent()), /FxiOS/i.test(ua);
-        }(ua) || function(ua) {
-            return void 0 === ua && (ua = getUserAgent()), /EdgiOS/i.test(ua);
-        }(ua) || function(ua) {
-            return void 0 === ua && (ua = getUserAgent()), -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
-        }(ua) || function(ua) {
-            return void 0 === ua && (ua = getUserAgent()), /QQBrowser/.test(ua);
-        }(ua) || "undefined" != typeof process && process.versions && process.versions.electron || (userAgent = getUserAgent(), 
-        /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent)) || !0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches);
-        var userAgent;
-    }
-    __webpack_require__.r(interface_namespaceObject), __webpack_require__.d(interface_namespaceObject, "WeakMap", function() {
-        return weakmap_CrossDomainSafeWeakMap;
-    });
-    var esm_extends = __webpack_require__(7), src = __webpack_require__(0), cross_domain_utils_src = __webpack_require__(9);
-    function safeIndexOf(collection, item) {
-        for (var i = 0; i < collection.length; i++) try {
-            if (collection[i] === item) return i;
-        } catch (err) {}
-        return -1;
-    }
-    var objectIDs, defineProperty = Object.defineProperty, counter = Date.now() % 1e9, weakmap_CrossDomainSafeWeakMap = function() {
-        function CrossDomainSafeWeakMap() {
-            if (this.name = void 0, this.weakmap = void 0, this.keys = void 0, this.values = void 0, 
-            counter += 1, this.name = "__weakmap_" + (1e9 * Math.random() >>> 0) + "__" + counter, 
-            function() {
-                if ("undefined" == typeof WeakMap) return !1;
-                if (void 0 === Object.freeze) return !1;
-                try {
-                    var testWeakMap = new WeakMap(), testKey = {};
-                    return Object.freeze(testKey), testWeakMap.set(testKey, "__testvalue__"), "__testvalue__" === testWeakMap.get(testKey);
-                } catch (err) {
-                    return !1;
-                }
-            }()) try {
-                this.weakmap = new WeakMap();
-            } catch (err) {}
-            this.keys = [], this.values = [];
-        }
-        var _proto = CrossDomainSafeWeakMap.prototype;
-        return _proto._cleanupClosedWindows = function() {
-            for (var weakmap = this.weakmap, keys = this.keys, i = 0; i < keys.length; i++) {
-                var value = keys[i];
-                if (Object(cross_domain_utils_src.d)(value) && Object(cross_domain_utils_src.e)(value)) {
-                    if (weakmap) try {
-                        weakmap.delete(value);
-                    } catch (err) {}
-                    keys.splice(i, 1), this.values.splice(i, 1), i -= 1;
-                }
-            }
-        }, _proto.isSafeToReadWrite = function(key) {
-            return !Object(cross_domain_utils_src.d)(key);
-        }, _proto.set = function(key, value) {
-            if (!key) throw new Error("WeakMap expected key");
-            var weakmap = this.weakmap;
-            if (weakmap) try {
-                weakmap.set(key, value);
-            } catch (err) {
-                delete this.weakmap;
-            }
-            if (this.isSafeToReadWrite(key)) {
-                var name = this.name, entry = key[name];
-                entry && entry[0] === key ? entry[1] = value : defineProperty(key, name, {
-                    value: [ key, value ],
-                    writable: !0
-                });
-            } else {
-                this._cleanupClosedWindows();
-                var keys = this.keys, values = this.values, index = safeIndexOf(keys, key);
-                -1 === index ? (keys.push(key), values.push(value)) : values[index] = value;
-            }
-        }, _proto.get = function(key) {
-            if (!key) throw new Error("WeakMap expected key");
-            var weakmap = this.weakmap;
-            if (weakmap) try {
-                if (weakmap.has(key)) return weakmap.get(key);
-            } catch (err) {
-                delete this.weakmap;
-            }
-            if (!this.isSafeToReadWrite(key)) {
-                this._cleanupClosedWindows();
-                var index = safeIndexOf(this.keys, key);
-                if (-1 === index) return;
-                return this.values[index];
-            }
-            var entry = key[this.name];
-            if (entry && entry[0] === key) return entry[1];
-        }, _proto.delete = function(key) {
-            if (!key) throw new Error("WeakMap expected key");
-            var weakmap = this.weakmap;
-            if (weakmap) try {
-                weakmap.delete(key);
-            } catch (err) {
-                delete this.weakmap;
-            }
-            if (this.isSafeToReadWrite(key)) {
-                var entry = key[this.name];
-                entry && entry[0] === key && (entry[0] = entry[1] = void 0);
-            } else {
-                this._cleanupClosedWindows();
-                var keys = this.keys, index = safeIndexOf(keys, key);
-                -1 !== index && (keys.splice(index, 1), this.values.splice(index, 1));
-            }
-        }, _proto.has = function(key) {
-            if (!key) throw new Error("WeakMap expected key");
-            var weakmap = this.weakmap;
-            if (weakmap) try {
-                if (weakmap.has(key)) return !0;
-            } catch (err) {
-                delete this.weakmap;
-            }
-            if (this.isSafeToReadWrite(key)) {
-                var entry = key[this.name];
-                return !(!entry || entry[0] !== key);
-            }
-            return this._cleanupClosedWindows(), -1 !== safeIndexOf(this.keys, key);
-        }, _proto.getOrSet = function(key, getter) {
-            if (this.has(key)) return this.get(key);
-            var value = getter();
-            return this.set(key, value), value;
-        }, CrossDomainSafeWeakMap;
-    }();
-    function base64encode(str) {
-        if ("function" == typeof btoa) return btoa(str);
-        if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
-        throw new Error("Can not find window.btoa or Buffer");
-    }
-    function serializeArgs(args) {
-        try {
-            return JSON.stringify([].slice.call(args), function(subkey, val) {
-                return "function" == typeof val ? "memoize[" + function(obj) {
-                    if (objectIDs = objectIDs || new weakmap_CrossDomainSafeWeakMap(), null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
-                    var chars, uid = objectIDs.get(obj);
-                    return uid || (uid = typeof obj + ":" + (chars = "0123456789abcdef", "xxxxxxxxxx".replace(/./g, function() {
-                        return chars.charAt(Math.floor(Math.random() * chars.length));
-                    }) + "_" + base64encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase()), 
-                    objectIDs.set(obj, uid)), uid;
-                }(val) + "]" : val;
-            });
-        } catch (err) {
-            throw new Error("Arguments not serializable -- can not be used to memoize");
-        }
-    }
-    function memoize(method, options) {
-        var _this = this;
-        void 0 === options && (options = {});
-        var cacheMap = new weakmap_CrossDomainSafeWeakMap();
-        function memoizedFunction() {
-            for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-            var cache = cacheMap.getOrSet(options.thisNamespace ? this : method, function() {
-                return {};
-            }), key = serializeArgs(args), cacheTime = options.time;
-            if (cache[key] && cacheTime && Date.now() - cache[key].time < cacheTime && delete cache[key], 
-            cache[key]) return cache[key].value;
-            var time = Date.now(), value = method.apply(this, arguments);
-            return cache[key] = {
-                time: time,
-                value: value
-            }, cache[key].value;
-        }
-        return memoizedFunction.reset = function() {
-            cacheMap.delete(options.thisNamespace ? _this : method);
-        }, options.name && (memoizedFunction.displayName = options.name + ":memoized"), 
-        memoizedFunction;
-    }
-    function inlineMemoize(method, logic, args) {
-        void 0 === args && (args = []);
-        var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {}, key = serializeArgs(args);
-        return cache.hasOwnProperty(key) ? cache[key] : cache[key] = logic.apply(void 0, args);
-    }
-    function util_noop() {}
-    function stringifyError(err, level) {
-        if (void 0 === level && (level = 1), level >= 3) return "stringifyError stack overflow";
-        try {
-            if (!err) return "<unknown error: " + {}.toString.call(err) + ">";
-            if ("string" == typeof err) return err;
-            if (err instanceof Error) {
-                var stack = err && err.stack, message = err && err.message;
-                if (stack && message) return -1 !== stack.indexOf(message) ? stack : message + "\n" + stack;
-                if (stack) return stack;
-                if (message) return message;
-            }
-            return "function" == typeof err.toString ? err.toString() : {}.toString.call(err);
-        } catch (newErr) {
-            return "Error while stringifying error: " + stringifyError(newErr, level + 1);
-        }
-    }
-    function stringifyErrorMessage(err) {
-        var defaultMessage = "<unknown error: " + {}.toString.call(err) + ">";
-        return err ? err instanceof Error ? err.message || defaultMessage : "string" == typeof err.message && err.message || defaultMessage : defaultMessage;
-    }
-    function objFilter(obj, filter) {
-        void 0 === filter && (filter = Boolean);
-        var result = {};
-        for (var key in obj) obj.hasOwnProperty(key) && filter(obj[key], key) && (result[key] = obj[key]);
-        return result;
-    }
-    function promiseDebounce(method, delay) {
-        var promise, timeout;
-        return void 0 === delay && (delay = 50), function() {
-            timeout && clearTimeout(timeout);
-            var localPromise = promise = promise || new src.a();
-            return timeout = setTimeout(function() {
-                promise = null, timeout = null, src.a.try(method).then(function(result) {
-                    localPromise.resolve(result);
-                }, function(err) {
-                    localPromise.reject(err);
-                });
-            }, delay), localPromise;
-        };
-    }
-    function safeInterval(method, time) {
-        var timeout;
-        return function loop() {
-            timeout = setTimeout(function() {
-                method(), loop();
-            }, time);
-        }(), {
-            cancel: function() {
-                clearTimeout(timeout);
-            }
-        };
-    }
-    var KEY_CODES = {
-        ENTER: 13
-    };
-    function isDocumentReady() {
-        return Boolean(document.body) && "complete" === document.readyState;
-    }
-    function urlEncode(str) {
-        return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B");
-    }
-    function waitForDocumentReady() {
-        return inlineMemoize(waitForDocumentReady, function() {
-            return new src.a(function(resolve) {
-                if (isDocumentReady()) return resolve();
-                var interval = setInterval(function() {
-                    if (isDocumentReady()) return clearInterval(interval), resolve();
-                }, 10);
-            });
-        });
-    }
-    function parseQuery(queryString) {
-        return inlineMemoize(parseQuery, function() {
-            var params = {};
-            if (!queryString) return params;
-            if (-1 === queryString.indexOf("=")) return params;
-            for (var _i2 = 0, _queryString$split2 = queryString.split("&"); _i2 < _queryString$split2.length; _i2++) {
-                var pair = _queryString$split2[_i2];
-                (pair = pair.split("="))[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
-            }
-            return params;
-        }, [ queryString ]);
-    }
-    function extendQuery(originalQuery, props) {
-        return void 0 === props && (props = {}), props && Object.keys(props).length ? (void 0 === (obj = Object(esm_extends.a)({}, parseQuery(originalQuery), props)) && (obj = {}), 
-        Object.keys(obj).filter(function(key) {
-            return "string" == typeof obj[key];
-        }).map(function(key) {
-            return urlEncode(key) + "=" + urlEncode(obj[key]);
-        }).join("&")) : originalQuery;
-        var obj;
-    }
-    function extendUrl(url, options) {
-        void 0 === options && (options = {});
-        var originalUrl, originalHash, query = options.query || {}, hash = options.hash || {}, _url$split = url.split("#");
-        originalHash = _url$split[1];
-        var _originalUrl$split = (originalUrl = _url$split[0]).split("?");
-        originalUrl = _originalUrl$split[0];
-        var queryString = extendQuery(_originalUrl$split[1], query), hashString = extendQuery(originalHash, hash);
-        return queryString && (originalUrl = originalUrl + "?" + queryString), hashString && (originalUrl = originalUrl + "#" + hashString), 
-        originalUrl;
-    }
-    function enablePerformance() {
-        return inlineMemoize(enablePerformance, function() {
-            return Boolean(window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0);
-        });
-    }
-    function getPageRenderTime() {
-        return waitForDocumentReady().then(function() {
-            if (enablePerformance()) {
-                var timing = window.performance.timing;
-                return timing.connectEnd && timing.domInteractive ? timing.domInteractive - timing.connectEnd : void 0;
-            }
-        });
-    }
-    function isBrowser() {
-        return "undefined" != typeof window;
-    }
-    function querySelectorAll(selector, doc) {
-        return void 0 === doc && (doc = window.document), [].slice.call(doc.querySelectorAll(selector));
-    }
-    function onClick(element, handler) {
-        element.addEventListener("touchstart", util_noop), element.addEventListener("click", handler), 
-        element.addEventListener("keypress", function(event) {
-            if (event.keyCode === KEY_CODES.ENTER) return handler(event);
-        });
-    }
-    Object.create(Error.prototype);
-    var HEADERS = {
-        CONTENT_TYPE: "content-type",
-        ACCEPT: "accept"
-    }, headerBuilders = [];
-    function request(_ref) {
-        var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
-        return new src.a(function(resolve, reject) {
-            if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
-            for (var normalizedHeaders = {}, _i4 = 0, _Object$keys2 = Object.keys(headers); _i4 < _Object$keys2.length; _i4++) {
-                var _key2 = _Object$keys2[_i4];
-                normalizedHeaders[_key2.toLowerCase()] = headers[_key2];
-            }
-            json ? normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || "application/json" : (data || body) && (normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || "application/x-www-form-urlencoded; charset=utf-8"), 
-            normalizedHeaders[HEADERS.ACCEPT] = normalizedHeaders[HEADERS.ACCEPT] || "application/json";
-            for (var _i6 = 0; _i6 < headerBuilders.length; _i6++) for (var builtHeaders = (0, 
-            headerBuilders[_i6])(), _i8 = 0, _Object$keys4 = Object.keys(builtHeaders); _i8 < _Object$keys4.length; _i8++) {
-                var _key3 = _Object$keys4[_i8];
-                normalizedHeaders[_key3.toLowerCase()] = builtHeaders[_key3];
-            }
-            var xhr = new win.XMLHttpRequest();
-            for (var _key4 in xhr.addEventListener("load", function() {
-                var responseHeaders = function(rawHeaders) {
-                    void 0 === rawHeaders && (rawHeaders = "");
-                    for (var result = {}, _i2 = 0, _rawHeaders$trim$spli2 = rawHeaders.trim().split("\n"); _i2 < _rawHeaders$trim$spli2.length; _i2++) {
-                        var _line$split = _rawHeaders$trim$spli2[_i2].split(":"), _key = _line$split[0], values = _line$split.slice(1);
-                        result[_key.toLowerCase()] = values.join(":").trim();
-                    }
-                    return result;
-                }(this.getAllResponseHeaders());
-                if (!this.status) return reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: no response status code."));
-                var contentType = responseHeaders["content-type"], isJSON = contentType && (0 === contentType.indexOf("application/json") || 0 === contentType.indexOf("text/json")), responseBody = this.responseText;
-                try {
-                    responseBody = JSON.parse(responseBody);
-                } catch (err) {
-                    if (isJSON) return reject(new Error("Invalid json: " + this.responseText + "."));
-                }
-                return resolve({
-                    status: this.status,
-                    headers: responseHeaders,
-                    body: responseBody
-                });
-            }, !1), xhr.addEventListener("error", function(evt) {
-                reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + "."));
-            }, !1), xhr.open(method, url, !0), normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
-            json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map(function(key) {
-                return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
-            }).join("&")), xhr.timeout = timeout, xhr.ontimeout = function() {
-                reject(new Error("Request to " + method.toLowerCase() + " " + url + " has timed out"));
-            }, xhr.send(body);
-        });
-    }
-    __webpack_require__.d(__webpack_exports__, "f", function() {
-        return isIEIntranet;
-    }), __webpack_require__.d(__webpack_exports__, "q", function() {
-        return supportsPopups;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
-        return extendUrl;
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
-        return getPageRenderTime;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
-        return isBrowser;
-    }), __webpack_require__.d(__webpack_exports__, "l", function() {
-        return querySelectorAll;
-    }), __webpack_require__.d(__webpack_exports__, "j", function() {
-        return onClick;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
-        return base64encode;
-    }), __webpack_require__.d(__webpack_exports__, "g", function() {
-        return memoize;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
-        return inlineMemoize;
-    }), __webpack_require__.d(__webpack_exports__, "h", function() {
-        return util_noop;
-    }), __webpack_require__.d(__webpack_exports__, "o", function() {
-        return stringifyError;
-    }), __webpack_require__.d(__webpack_exports__, "p", function() {
-        return stringifyErrorMessage;
-    }), __webpack_require__.d(__webpack_exports__, "i", function() {
-        return objFilter;
-    }), __webpack_require__.d(__webpack_exports__, "k", function() {
-        return promiseDebounce;
-    }), __webpack_require__.d(__webpack_exports__, "n", function() {
-        return safeInterval;
-    }), __webpack_require__.d(__webpack_exports__, "m", function() {
-        return request;
-    });
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "o", function() {
-        return SMART_BUTTONS;
-    }), __webpack_require__.d(__webpack_exports__, "p", function() {
-        return SMART_PAYMENT_BUTTONS;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
-        return ACCESS_TOKEN_HEADER;
-    }), __webpack_require__.d(__webpack_exports__, "j", function() {
-        return HEADERS;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
-        return DATA_ATTRIBUTES;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
-        return CLASS;
-    }), __webpack_require__.d(__webpack_exports__, "l", function() {
-        return ORDER_API_ERROR;
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
-        return CONTEXT;
-    }), __webpack_require__.d(__webpack_exports__, "q", function() {
-        return TARGET_ELEMENT;
-    }), __webpack_require__.d(__webpack_exports__, "m", function() {
-        return ORDER_ID_PATTERN;
-    }), __webpack_require__.d(__webpack_exports__, "k", function() {
-        return INTEGRATION_ARTIFACT;
-    }), __webpack_require__.d(__webpack_exports__, "r", function() {
-        return USER_EXPERIENCE_FLOW;
-    }), __webpack_require__.d(__webpack_exports__, "n", function() {
-        return PRODUCT_FLOW;
-    }), __webpack_require__.d(__webpack_exports__, "f", function() {
-        return FPTI_CONTEXT_TYPE;
-    }), __webpack_require__.d(__webpack_exports__, "g", function() {
-        return FPTI_STATE;
-    }), __webpack_require__.d(__webpack_exports__, "h", function() {
-        return FPTI_TRANSITION;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
-        return FPTI_BUTTON_TYPE;
-    }), __webpack_require__.d(__webpack_exports__, "i", function() {
-        return FTPI_BUTTON_KEY;
-    });
-    var SMART_BUTTONS = "smart_buttons", SMART_PAYMENT_BUTTONS = "smart-payment-buttons", ACCESS_TOKEN_HEADER = "x-paypal-internal-euat", HEADERS = {
-        AUTHORIZATION: "authorization",
-        CSRF_TOKEN: "x-csrf-jwt",
-        SOURCE: "x-source",
-        REQUESTED_BY: "x-requested-by",
-        ACCESS_TOKEN: "x-paypal-internal-euat",
-        PARTNER_ATTRIBUTION_ID: "paypal-partner-attribution-id",
-        CLIENT_METADATA_ID: "paypal-client-metadata-id"
-    }, DATA_ATTRIBUTES = {
-        FUNDING_SOURCE: "data-funding-source",
-        CARD: "data-card",
-        PAYMENT_METHOD_ID: "data-payment-method-id"
-    }, CLASS = {
-        LOADING: "paypal-button-loading",
-        CLICKED: "paypal-button-clicked"
-    }, ORDER_API_ERROR = {
-        INSTRUMENT_DECLINED: "INSTRUMENT_DECLINED",
-        PAYER_ACTION_REQUIRED: "PAYER_ACTION_REQUIRED"
-    }, CONTEXT = {
-        IFRAME: "iframe",
-        POPUP: "popup"
-    }, TARGET_ELEMENT = {
-        BODY: "body"
-    }, ORDER_ID_PATTERN = /^(EC-)?[A-Z0-9]+$/, INTEGRATION_ARTIFACT = {
-        PAYPAL_JS_SDK: "PAYPAL_JS_SDK"
-    }, USER_EXPERIENCE_FLOW = {
-        INCONTEXT: "INCONTEXT",
-        INLINE: "INLINE"
-    }, PRODUCT_FLOW = {
-        SMART_PAYMENT_BUTTONS: "SMART_PAYMENT_BUTTONS"
-    }, FPTI_CONTEXT_TYPE = {
-        BUTTON_SESSION_ID: "button_session_id",
-        ORDER_ID: "EC-Token"
-    }, FPTI_STATE = {
-        BUTTON: "smart_button"
-    }, FPTI_TRANSITION = {
-        BUTTON_LOAD: "process_button_load",
-        CREATE_ORDER: "process_create_order"
-    }, FPTI_BUTTON_TYPE = {
-        IFRAME: "iframe"
-    }, FTPI_BUTTON_KEY = {
-        BUTTON_LAYOUT: "button_layout",
-        BUTTON_COLOR: "button_color",
-        BUTTON_SIZE: "button_size",
-        BUTTON_SHAPE: "button_shape",
-        BUTTON_LABEL: "button_label",
-        BUTTON_WIDTH: "button_width",
-        BUTTON_TYPE: "button_type"
-    };
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
     var _COUNTRY_LANGS, COUNTRY = {
         AD: "AD",
         AE: "AE",
@@ -1094,6 +384,7 @@ window.spb = function(modules) {
         CONTEXT_ID: "context_id",
         CONTEXT_TYPE: "context_type",
         REFERER: "referer_url",
+        MERCHANT_DOMAIN: "merchant_domain",
         PAY_ID: "pay_id",
         SELLER_ID: "seller_id",
         CLIENT_ID: "client_id",
@@ -1135,6 +426,7 @@ window.spb = function(modules) {
     }, FUNDING = {
         PAYPAL: "paypal",
         VENMO: "venmo",
+        ITAU: "itau",
         CREDIT: "credit",
         CARD: "card",
         IDEAL: "ideal",
@@ -1171,7 +463,725 @@ window.spb = function(modules) {
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    var src = __webpack_require__(0), belter_src = __webpack_require__(1);
+    __webpack_require__.d(__webpack_exports__, "n", function() {
+        return SMART_BUTTONS;
+    }), __webpack_require__.d(__webpack_exports__, "o", function() {
+        return SMART_PAYMENT_BUTTONS;
+    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+        return ACCESS_TOKEN_HEADER;
+    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+        return HEADERS;
+    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+        return DATA_ATTRIBUTES;
+    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+        return CLASS;
+    }), __webpack_require__.d(__webpack_exports__, "l", function() {
+        return ORDER_API_ERROR;
+    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+        return CONTEXT;
+    }), __webpack_require__.d(__webpack_exports__, "p", function() {
+        return TARGET_ELEMENT;
+    }), __webpack_require__.d(__webpack_exports__, "k", function() {
+        return INTEGRATION_ARTIFACT;
+    }), __webpack_require__.d(__webpack_exports__, "q", function() {
+        return USER_EXPERIENCE_FLOW;
+    }), __webpack_require__.d(__webpack_exports__, "m", function() {
+        return PRODUCT_FLOW;
+    }), __webpack_require__.d(__webpack_exports__, "f", function() {
+        return FPTI_CONTEXT_TYPE;
+    }), __webpack_require__.d(__webpack_exports__, "g", function() {
+        return FPTI_STATE;
+    }), __webpack_require__.d(__webpack_exports__, "h", function() {
+        return FPTI_TRANSITION;
+    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+        return FPTI_BUTTON_TYPE;
+    }), __webpack_require__.d(__webpack_exports__, "i", function() {
+        return FTPI_BUTTON_KEY;
+    });
+    var SMART_BUTTONS = "smart_buttons", SMART_PAYMENT_BUTTONS = "smart-payment-buttons", ACCESS_TOKEN_HEADER = "x-paypal-internal-euat", HEADERS = {
+        AUTHORIZATION: "authorization",
+        CSRF_TOKEN: "x-csrf-jwt",
+        SOURCE: "x-source",
+        REQUESTED_BY: "x-requested-by",
+        ACCESS_TOKEN: "x-paypal-internal-euat",
+        PARTNER_ATTRIBUTION_ID: "paypal-partner-attribution-id",
+        CLIENT_METADATA_ID: "paypal-client-metadata-id"
+    }, DATA_ATTRIBUTES = {
+        FUNDING_SOURCE: "data-funding-source",
+        CARD: "data-card",
+        PAYMENT_METHOD_ID: "data-payment-method-id"
+    }, CLASS = {
+        LOADING: "paypal-button-loading",
+        CLICKED: "paypal-button-clicked"
+    }, ORDER_API_ERROR = {
+        INSTRUMENT_DECLINED: "INSTRUMENT_DECLINED",
+        PAYER_ACTION_REQUIRED: "PAYER_ACTION_REQUIRED"
+    }, CONTEXT = {
+        IFRAME: "iframe",
+        POPUP: "popup"
+    }, TARGET_ELEMENT = {
+        BODY: "body"
+    }, INTEGRATION_ARTIFACT = {
+        PAYPAL_JS_SDK: "PAYPAL_JS_SDK"
+    }, USER_EXPERIENCE_FLOW = {
+        INCONTEXT: "INCONTEXT",
+        INLINE: "INLINE"
+    }, PRODUCT_FLOW = {
+        SMART_PAYMENT_BUTTONS: "SMART_PAYMENT_BUTTONS"
+    }, FPTI_CONTEXT_TYPE = {
+        BUTTON_SESSION_ID: "button_session_id",
+        ORDER_ID: "EC-Token"
+    }, FPTI_STATE = {
+        BUTTON: "smart_button"
+    }, FPTI_TRANSITION = {
+        BUTTON_LOAD: "process_button_load",
+        BUTTON_CLICK: "process_button_click",
+        CREATE_ORDER: "process_create_order",
+        RECEIVE_ORDER: "process_receive_order",
+        CHECKOUT_SHIPPING_CHANGE: "process_checkout_shipping_change",
+        CHECKOUT_AUTHORIZE: "process_checkout_authorize",
+        CHECKOUT_CANCEL: "process_checkout_cancel"
+    }, FPTI_BUTTON_TYPE = {
+        IFRAME: "iframe"
+    }, FTPI_BUTTON_KEY = {
+        BUTTON_LAYOUT: "button_layout",
+        BUTTON_COLOR: "button_color",
+        BUTTON_SIZE: "button_size",
+        BUTTON_SHAPE: "button_shape",
+        BUTTON_LABEL: "button_label",
+        BUTTON_WIDTH: "button_width",
+        BUTTON_TYPE: "button_type"
+    };
+}, function(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+    var interface_namespaceObject = {};
+    function getUserAgent() {
+        return window.navigator.mockUserAgent || window.navigator.userAgent;
+    }
+    function isOperaMini(ua) {
+        return void 0 === ua && (ua = getUserAgent()), ua.indexOf("Opera Mini") > -1;
+    }
+    function isIEIntranet() {
+        if (window.document.documentMode) try {
+            var status = window.status;
+            return window.status = "testIntranetMode", "testIntranetMode" === window.status && (window.status = status, 
+            !0);
+        } catch (err) {
+            return !1;
+        }
+        return !1;
+    }
+    function supportsPopups(ua) {
+        return void 0 === ua && (ua = getUserAgent()), !(function(ua) {
+            return void 0 === ua && (ua = getUserAgent()), !!function(ua) {
+                return void 0 === ua && (ua = getUserAgent()), /iPhone|iPod|iPad/.test(ua);
+            }(ua) && (!!function(ua) {
+                return void 0 === ua && (ua = getUserAgent()), /\bGSA\b/.test(ua);
+            }(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
+        }(ua) || function(ua) {
+            return void 0 === ua && (ua = getUserAgent()), !!function(ua) {
+                return void 0 === ua && (ua = getUserAgent()), /Android/.test(ua);
+            }(ua) && /Version\/[\d.]+/.test(ua) && !isOperaMini(ua);
+        }(ua) || isOperaMini(ua) || function(ua) {
+            return void 0 === ua && (ua = getUserAgent()), /FxiOS/i.test(ua);
+        }(ua) || function(ua) {
+            return void 0 === ua && (ua = getUserAgent()), /EdgiOS/i.test(ua);
+        }(ua) || function(ua) {
+            return void 0 === ua && (ua = getUserAgent()), -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
+        }(ua) || function(ua) {
+            return void 0 === ua && (ua = getUserAgent()), /QQBrowser/.test(ua);
+        }(ua) || "undefined" != typeof process && process.versions && process.versions.electron || (userAgent = getUserAgent(), 
+        /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent)) || !0 === window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches);
+        var userAgent;
+    }
+    __webpack_require__.r(interface_namespaceObject), __webpack_require__.d(interface_namespaceObject, "WeakMap", function() {
+        return weakmap_CrossDomainSafeWeakMap;
+    });
+    var esm_extends = __webpack_require__(7), src = __webpack_require__(3), cross_domain_utils_src = __webpack_require__(9);
+    function safeIndexOf(collection, item) {
+        for (var i = 0; i < collection.length; i++) try {
+            if (collection[i] === item) return i;
+        } catch (err) {}
+        return -1;
+    }
+    var objectIDs, defineProperty = Object.defineProperty, counter = Date.now() % 1e9, weakmap_CrossDomainSafeWeakMap = function() {
+        function CrossDomainSafeWeakMap() {
+            if (this.name = void 0, this.weakmap = void 0, this.keys = void 0, this.values = void 0, 
+            counter += 1, this.name = "__weakmap_" + (1e9 * Math.random() >>> 0) + "__" + counter, 
+            function() {
+                if ("undefined" == typeof WeakMap) return !1;
+                if (void 0 === Object.freeze) return !1;
+                try {
+                    var testWeakMap = new WeakMap(), testKey = {};
+                    return Object.freeze(testKey), testWeakMap.set(testKey, "__testvalue__"), "__testvalue__" === testWeakMap.get(testKey);
+                } catch (err) {
+                    return !1;
+                }
+            }()) try {
+                this.weakmap = new WeakMap();
+            } catch (err) {}
+            this.keys = [], this.values = [];
+        }
+        var _proto = CrossDomainSafeWeakMap.prototype;
+        return _proto._cleanupClosedWindows = function() {
+            for (var weakmap = this.weakmap, keys = this.keys, i = 0; i < keys.length; i++) {
+                var value = keys[i];
+                if (Object(cross_domain_utils_src.d)(value) && Object(cross_domain_utils_src.e)(value)) {
+                    if (weakmap) try {
+                        weakmap.delete(value);
+                    } catch (err) {}
+                    keys.splice(i, 1), this.values.splice(i, 1), i -= 1;
+                }
+            }
+        }, _proto.isSafeToReadWrite = function(key) {
+            return !Object(cross_domain_utils_src.d)(key);
+        }, _proto.set = function(key, value) {
+            if (!key) throw new Error("WeakMap expected key");
+            var weakmap = this.weakmap;
+            if (weakmap) try {
+                weakmap.set(key, value);
+            } catch (err) {
+                delete this.weakmap;
+            }
+            if (this.isSafeToReadWrite(key)) try {
+                var name = this.name, entry = key[name];
+                return void (entry && entry[0] === key ? entry[1] = value : defineProperty(key, name, {
+                    value: [ key, value ],
+                    writable: !0
+                }));
+            } catch (err) {}
+            this._cleanupClosedWindows();
+            var keys = this.keys, values = this.values, index = safeIndexOf(keys, key);
+            -1 === index ? (keys.push(key), values.push(value)) : values[index] = value;
+        }, _proto.get = function(key) {
+            if (!key) throw new Error("WeakMap expected key");
+            var weakmap = this.weakmap;
+            if (weakmap) try {
+                if (weakmap.has(key)) return weakmap.get(key);
+            } catch (err) {
+                delete this.weakmap;
+            }
+            if (this.isSafeToReadWrite(key)) try {
+                var entry = key[this.name];
+                return entry && entry[0] === key ? entry[1] : void 0;
+            } catch (err) {}
+            this._cleanupClosedWindows();
+            var index = safeIndexOf(this.keys, key);
+            if (-1 !== index) return this.values[index];
+        }, _proto.delete = function(key) {
+            if (!key) throw new Error("WeakMap expected key");
+            var weakmap = this.weakmap;
+            if (weakmap) try {
+                weakmap.delete(key);
+            } catch (err) {
+                delete this.weakmap;
+            }
+            if (this.isSafeToReadWrite(key)) try {
+                var entry = key[this.name];
+                entry && entry[0] === key && (entry[0] = entry[1] = void 0);
+            } catch (err) {}
+            this._cleanupClosedWindows();
+            var keys = this.keys, index = safeIndexOf(keys, key);
+            -1 !== index && (keys.splice(index, 1), this.values.splice(index, 1));
+        }, _proto.has = function(key) {
+            if (!key) throw new Error("WeakMap expected key");
+            var weakmap = this.weakmap;
+            if (weakmap) try {
+                if (weakmap.has(key)) return !0;
+            } catch (err) {
+                delete this.weakmap;
+            }
+            if (this.isSafeToReadWrite(key)) try {
+                var entry = key[this.name];
+                return !(!entry || entry[0] !== key);
+            } catch (err) {}
+            return this._cleanupClosedWindows(), -1 !== safeIndexOf(this.keys, key);
+        }, _proto.getOrSet = function(key, getter) {
+            if (this.has(key)) return this.get(key);
+            var value = getter();
+            return this.set(key, value), value;
+        }, CrossDomainSafeWeakMap;
+    }();
+    function base64encode(str) {
+        if ("function" == typeof btoa) return btoa(str);
+        if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
+        throw new Error("Can not find window.btoa or Buffer");
+    }
+    function serializeArgs(args) {
+        try {
+            return JSON.stringify([].slice.call(args), function(subkey, val) {
+                return "function" == typeof val ? "memoize[" + function(obj) {
+                    if (objectIDs = objectIDs || new weakmap_CrossDomainSafeWeakMap(), null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
+                    var chars, uid = objectIDs.get(obj);
+                    return uid || (uid = typeof obj + ":" + (chars = "0123456789abcdef", "xxxxxxxxxx".replace(/./g, function() {
+                        return chars.charAt(Math.floor(Math.random() * chars.length));
+                    }) + "_" + base64encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase()), 
+                    objectIDs.set(obj, uid)), uid;
+                }(val) + "]" : val;
+            });
+        } catch (err) {
+            throw new Error("Arguments not serializable -- can not be used to memoize");
+        }
+    }
+    function memoize(method, options) {
+        var _this = this;
+        void 0 === options && (options = {});
+        var cacheMap = new weakmap_CrossDomainSafeWeakMap(), memoizedFunction = function() {
+            for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+            var cache = cacheMap.getOrSet(options.thisNamespace ? this : method, function() {
+                return {};
+            }), key = serializeArgs(args), cacheTime = options.time;
+            if (cache[key] && cacheTime && Date.now() - cache[key].time < cacheTime && delete cache[key], 
+            cache[key]) return cache[key].value;
+            var time = Date.now(), value = method.apply(this, arguments);
+            return cache[key] = {
+                time: time,
+                value: value
+            }, cache[key].value;
+        };
+        return memoizedFunction.reset = function() {
+            cacheMap.delete(options.thisNamespace ? _this : method);
+        }, options.name && (memoizedFunction.displayName = options.name + ":memoized"), 
+        memoizedFunction;
+    }
+    function inlineMemoize(method, logic, args) {
+        void 0 === args && (args = []);
+        var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {}, key = serializeArgs(args);
+        return cache.hasOwnProperty(key) ? cache[key] : cache[key] = logic.apply(void 0, args);
+    }
+    function util_noop() {}
+    function stringifyError(err, level) {
+        if (void 0 === level && (level = 1), level >= 3) return "stringifyError stack overflow";
+        try {
+            if (!err) return "<unknown error: " + {}.toString.call(err) + ">";
+            if ("string" == typeof err) return err;
+            if (err instanceof Error) {
+                var stack = err && err.stack, message = err && err.message;
+                if (stack && message) return -1 !== stack.indexOf(message) ? stack : message + "\n" + stack;
+                if (stack) return stack;
+                if (message) return message;
+            }
+            return err && err.toString && "function" == typeof err.toString ? err.toString() : {}.toString.call(err);
+        } catch (newErr) {
+            return "Error while stringifying error: " + stringifyError(newErr, level + 1);
+        }
+    }
+    function stringifyErrorMessage(err) {
+        var defaultMessage = "<unknown error: " + {}.toString.call(err) + ">";
+        return err ? err instanceof Error ? err.message || defaultMessage : "string" == typeof err.message && err.message || defaultMessage : defaultMessage;
+    }
+    function objFilter(obj, filter) {
+        void 0 === filter && (filter = Boolean);
+        var result = {};
+        for (var key in obj) obj.hasOwnProperty(key) && filter(obj[key], key) && (result[key] = obj[key]);
+        return result;
+    }
+    function promiseDebounce(method, delay) {
+        var promise, timeout;
+        return void 0 === delay && (delay = 50), function() {
+            timeout && clearTimeout(timeout);
+            var localPromise = promise = promise || new src.a();
+            return timeout = setTimeout(function() {
+                promise = null, timeout = null, src.a.try(method).then(function(result) {
+                    localPromise.resolve(result);
+                }, function(err) {
+                    localPromise.reject(err);
+                });
+            }, delay), localPromise;
+        };
+    }
+    function safeInterval(method, time) {
+        var timeout;
+        return function loop() {
+            timeout = setTimeout(function() {
+                method(), loop();
+            }, time);
+        }(), {
+            cancel: function() {
+                clearTimeout(timeout);
+            }
+        };
+    }
+    var KEY_CODES = {
+        ENTER: 13
+    };
+    function isDocumentReady() {
+        return Boolean(document.body) && "complete" === document.readyState;
+    }
+    function urlEncode(str) {
+        return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B");
+    }
+    function waitForDocumentReady() {
+        return inlineMemoize(waitForDocumentReady, function() {
+            return new src.a(function(resolve) {
+                if (isDocumentReady()) return resolve();
+                var interval = setInterval(function() {
+                    if (isDocumentReady()) return clearInterval(interval), resolve();
+                }, 10);
+            });
+        });
+    }
+    function parseQuery(queryString) {
+        return inlineMemoize(parseQuery, function() {
+            var params = {};
+            if (!queryString) return params;
+            if (-1 === queryString.indexOf("=")) return params;
+            for (var _i2 = 0, _queryString$split2 = queryString.split("&"); _i2 < _queryString$split2.length; _i2++) {
+                var pair = _queryString$split2[_i2];
+                (pair = pair.split("="))[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
+            }
+            return params;
+        }, [ queryString ]);
+    }
+    function extendQuery(originalQuery, props) {
+        return void 0 === props && (props = {}), props && Object.keys(props).length ? (void 0 === (obj = Object(esm_extends.a)({}, parseQuery(originalQuery), props)) && (obj = {}), 
+        Object.keys(obj).filter(function(key) {
+            return "string" == typeof obj[key];
+        }).map(function(key) {
+            return urlEncode(key) + "=" + urlEncode(obj[key]);
+        }).join("&")) : originalQuery;
+        var obj;
+    }
+    function extendUrl(url, options) {
+        void 0 === options && (options = {});
+        var originalUrl, originalHash, query = options.query || {}, hash = options.hash || {}, _url$split = url.split("#");
+        originalHash = _url$split[1];
+        var _originalUrl$split = (originalUrl = _url$split[0]).split("?");
+        originalUrl = _originalUrl$split[0];
+        var queryString = extendQuery(_originalUrl$split[1], query), hashString = extendQuery(originalHash, hash);
+        return queryString && (originalUrl = originalUrl + "?" + queryString), hashString && (originalUrl = originalUrl + "#" + hashString), 
+        originalUrl;
+    }
+    function redirect(url, win) {
+        return void 0 === win && (win = window), new src.a(function(resolve) {
+            win.location = url, function(url) {
+                return -1 === url.indexOf("#") || 0 !== url.indexOf("#") && url.split("#")[0] !== window.location.href.split("#")[0];
+            }(url) || resolve();
+        });
+    }
+    function enablePerformance() {
+        return inlineMemoize(enablePerformance, function() {
+            return Boolean(window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0);
+        });
+    }
+    function getPageRenderTime() {
+        return waitForDocumentReady().then(function() {
+            if (enablePerformance()) {
+                var timing = window.performance.timing;
+                return timing.connectEnd && timing.domInteractive ? timing.domInteractive - timing.connectEnd : void 0;
+            }
+        });
+    }
+    function isBrowser() {
+        return "undefined" != typeof window;
+    }
+    function querySelectorAll(selector, doc) {
+        return void 0 === doc && (doc = window.document), [].slice.call(doc.querySelectorAll(selector));
+    }
+    function onClick(element, handler) {
+        element.addEventListener("touchstart", util_noop), element.addEventListener("click", handler), 
+        element.addEventListener("keypress", function(event) {
+            if (event.keyCode === KEY_CODES.ENTER) return handler(event);
+        });
+    }
+    Object.create(Error.prototype);
+    var HEADERS = {
+        CONTENT_TYPE: "content-type",
+        ACCEPT: "accept"
+    }, headerBuilders = [];
+    function request(_ref) {
+        var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
+        return new src.a(function(resolve, reject) {
+            if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
+            for (var normalizedHeaders = {}, _i4 = 0, _Object$keys2 = Object.keys(headers); _i4 < _Object$keys2.length; _i4++) {
+                var _key2 = _Object$keys2[_i4];
+                normalizedHeaders[_key2.toLowerCase()] = headers[_key2];
+            }
+            json ? normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || "application/json" : (data || body) && (normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || "application/x-www-form-urlencoded; charset=utf-8"), 
+            normalizedHeaders[HEADERS.ACCEPT] = normalizedHeaders[HEADERS.ACCEPT] || "application/json";
+            for (var _i6 = 0; _i6 < headerBuilders.length; _i6++) for (var builtHeaders = (0, 
+            headerBuilders[_i6])(), _i8 = 0, _Object$keys4 = Object.keys(builtHeaders); _i8 < _Object$keys4.length; _i8++) {
+                var _key3 = _Object$keys4[_i8];
+                normalizedHeaders[_key3.toLowerCase()] = builtHeaders[_key3];
+            }
+            var xhr = new win.XMLHttpRequest();
+            for (var _key4 in xhr.addEventListener("load", function() {
+                var responseHeaders = function(rawHeaders) {
+                    void 0 === rawHeaders && (rawHeaders = "");
+                    for (var result = {}, _i2 = 0, _rawHeaders$trim$spli2 = rawHeaders.trim().split("\n"); _i2 < _rawHeaders$trim$spli2.length; _i2++) {
+                        var _line$split = _rawHeaders$trim$spli2[_i2].split(":"), _key = _line$split[0], values = _line$split.slice(1);
+                        result[_key.toLowerCase()] = values.join(":").trim();
+                    }
+                    return result;
+                }(this.getAllResponseHeaders());
+                if (!this.status) return reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: no response status code."));
+                var contentType = responseHeaders["content-type"], isJSON = contentType && (0 === contentType.indexOf("application/json") || 0 === contentType.indexOf("text/json")), responseBody = this.responseText;
+                try {
+                    responseBody = JSON.parse(responseBody);
+                } catch (err) {
+                    if (isJSON) return reject(new Error("Invalid json: " + this.responseText + "."));
+                }
+                return resolve({
+                    status: this.status,
+                    headers: responseHeaders,
+                    body: responseBody
+                });
+            }, !1), xhr.addEventListener("error", function(evt) {
+                reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + "."));
+            }, !1), xhr.open(method, url, !0), normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
+            json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map(function(key) {
+                return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
+            }).join("&")), xhr.timeout = timeout, xhr.ontimeout = function() {
+                reject(new Error("Request to " + method.toLowerCase() + " " + url + " has timed out"));
+            }, xhr.send(body);
+        });
+    }
+    __webpack_require__.d(__webpack_exports__, "f", function() {
+        return isIEIntranet;
+    }), __webpack_require__.d(__webpack_exports__, "r", function() {
+        return supportsPopups;
+    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+        return extendUrl;
+    }), __webpack_require__.d(__webpack_exports__, "m", function() {
+        return redirect;
+    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+        return getPageRenderTime;
+    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+        return isBrowser;
+    }), __webpack_require__.d(__webpack_exports__, "l", function() {
+        return querySelectorAll;
+    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+        return onClick;
+    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+        return base64encode;
+    }), __webpack_require__.d(__webpack_exports__, "g", function() {
+        return memoize;
+    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+        return inlineMemoize;
+    }), __webpack_require__.d(__webpack_exports__, "h", function() {
+        return util_noop;
+    }), __webpack_require__.d(__webpack_exports__, "p", function() {
+        return stringifyError;
+    }), __webpack_require__.d(__webpack_exports__, "q", function() {
+        return stringifyErrorMessage;
+    }), __webpack_require__.d(__webpack_exports__, "i", function() {
+        return objFilter;
+    }), __webpack_require__.d(__webpack_exports__, "k", function() {
+        return promiseDebounce;
+    }), __webpack_require__.d(__webpack_exports__, "o", function() {
+        return safeInterval;
+    }), __webpack_require__.d(__webpack_exports__, "n", function() {
+        return request;
+    });
+}, function(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+    function utils_isPromise(item) {
+        try {
+            if (!item) return !1;
+            if ("undefined" != typeof Promise && item instanceof Promise) return !0;
+            if ("undefined" != typeof window && window.Window && item instanceof window.Window) return !1;
+            if ("undefined" != typeof window && window.constructor && item instanceof window.constructor) return !1;
+            var _toString = {}.toString;
+            if (_toString) {
+                var name = _toString.call(item);
+                if ("[object Window]" === name || "[object global]" === name || "[object DOMWindow]" === name) return !1;
+            }
+            if ("function" == typeof item.then) return !0;
+        } catch (err) {
+            return !1;
+        }
+        return !1;
+    }
+    var flushPromise, dispatchedErrors = [], possiblyUnhandledPromiseHandlers = [], activeCount = 0;
+    function flushActive() {
+        if (!activeCount && flushPromise) {
+            var promise = flushPromise;
+            flushPromise = null, promise.resolve();
+        }
+    }
+    function startActive() {
+        activeCount += 1;
+    }
+    function endActive() {
+        activeCount -= 1, flushActive();
+    }
+    var promise_ZalgoPromise = function() {
+        function ZalgoPromise(handler) {
+            var _this = this;
+            if (this.resolved = void 0, this.rejected = void 0, this.errorHandled = void 0, 
+            this.value = void 0, this.error = void 0, this.handlers = void 0, this.dispatching = void 0, 
+            this.stack = void 0, this.resolved = !1, this.rejected = !1, this.errorHandled = !1, 
+            this.handlers = [], handler) {
+                var _result, _error, resolved = !1, rejected = !1, isAsync = !1;
+                startActive();
+                try {
+                    handler(function(res) {
+                        isAsync ? _this.resolve(res) : (resolved = !0, _result = res);
+                    }, function(err) {
+                        isAsync ? _this.reject(err) : (rejected = !0, _error = err);
+                    });
+                } catch (err) {
+                    return endActive(), void this.reject(err);
+                }
+                endActive(), isAsync = !0, resolved ? this.resolve(_result) : rejected && this.reject(_error);
+            }
+        }
+        var _proto = ZalgoPromise.prototype;
+        return _proto.resolve = function(result) {
+            if (this.resolved || this.rejected) return this;
+            if (utils_isPromise(result)) throw new Error("Can not resolve promise with another promise");
+            return this.resolved = !0, this.value = result, this.dispatch(), this;
+        }, _proto.reject = function(error) {
+            var _this2 = this;
+            if (this.resolved || this.rejected) return this;
+            if (utils_isPromise(error)) throw new Error("Can not reject promise with another promise");
+            if (!error) {
+                var _err = error && "function" == typeof error.toString ? error.toString() : {}.toString.call(error);
+                error = new Error("Expected reject to be called with Error, got " + _err);
+            }
+            return this.rejected = !0, this.error = error, this.errorHandled || setTimeout(function() {
+                _this2.errorHandled || function(err, promise) {
+                    if (-1 === dispatchedErrors.indexOf(err)) {
+                        dispatchedErrors.push(err), setTimeout(function() {
+                            throw err;
+                        }, 1);
+                        for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) possiblyUnhandledPromiseHandlers[j](err, promise);
+                    }
+                }(error, _this2);
+            }, 1), this.dispatch(), this;
+        }, _proto.asyncReject = function(error) {
+            return this.errorHandled = !0, this.reject(error), this;
+        }, _proto.dispatch = function() {
+            var _this3 = this, resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
+            if (!this.dispatching && (resolved || rejected)) {
+                this.dispatching = !0, startActive();
+                for (var _loop = function(i) {
+                    var _handlers$i = handlers[i], onSuccess = _handlers$i.onSuccess, onError = _handlers$i.onError, promise = _handlers$i.promise, result = void 0;
+                    if (resolved) try {
+                        result = onSuccess ? onSuccess(_this3.value) : _this3.value;
+                    } catch (err) {
+                        return promise.reject(err), "continue";
+                    } else if (rejected) {
+                        if (!onError) return promise.reject(_this3.error), "continue";
+                        try {
+                            result = onError(_this3.error);
+                        } catch (err) {
+                            return promise.reject(err), "continue";
+                        }
+                    }
+                    result instanceof ZalgoPromise && (result.resolved || result.rejected) ? (result.resolved ? promise.resolve(result.value) : promise.reject(result.error), 
+                    result.errorHandled = !0) : utils_isPromise(result) ? result instanceof ZalgoPromise && (result.resolved || result.rejected) ? result.resolved ? promise.resolve(result.value) : promise.reject(result.error) : result.then(function(res) {
+                        promise.resolve(res);
+                    }, function(err) {
+                        promise.reject(err);
+                    }) : promise.resolve(result);
+                }, i = 0; i < handlers.length; i++) _loop(i);
+                handlers.length = 0, this.dispatching = !1, endActive();
+            }
+        }, _proto.then = function(onSuccess, onError) {
+            if (onSuccess && "function" != typeof onSuccess && !onSuccess.call) throw new Error("Promise.then expected a function for success handler");
+            if (onError && "function" != typeof onError && !onError.call) throw new Error("Promise.then expected a function for error handler");
+            var promise = new ZalgoPromise();
+            return this.handlers.push({
+                promise: promise,
+                onSuccess: onSuccess,
+                onError: onError
+            }), this.errorHandled = !0, this.dispatch(), promise;
+        }, _proto.catch = function(onError) {
+            return this.then(void 0, onError);
+        }, _proto.finally = function(onFinally) {
+            if (onFinally && "function" != typeof onFinally && !onFinally.call) throw new Error("Promise.finally expected a function");
+            return this.then(function(result) {
+                return ZalgoPromise.try(onFinally).then(function() {
+                    return result;
+                });
+            }, function(err) {
+                return ZalgoPromise.try(onFinally).then(function() {
+                    throw err;
+                });
+            });
+        }, _proto.timeout = function(time, err) {
+            var _this4 = this;
+            if (this.resolved || this.rejected) return this;
+            var timeout = setTimeout(function() {
+                _this4.resolved || _this4.rejected || _this4.reject(err || new Error("Promise timed out after " + time + "ms"));
+            }, time);
+            return this.then(function(result) {
+                return clearTimeout(timeout), result;
+            });
+        }, _proto.toPromise = function() {
+            if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
+            return Promise.resolve(this);
+        }, ZalgoPromise.resolve = function(value) {
+            return value instanceof ZalgoPromise ? value : utils_isPromise(value) ? new ZalgoPromise(function(resolve, reject) {
+                return value.then(resolve, reject);
+            }) : new ZalgoPromise().resolve(value);
+        }, ZalgoPromise.reject = function(error) {
+            return new ZalgoPromise().reject(error);
+        }, ZalgoPromise.asyncReject = function(error) {
+            return new ZalgoPromise().asyncReject(error);
+        }, ZalgoPromise.all = function(promises) {
+            var promise = new ZalgoPromise(), count = promises.length, results = [];
+            if (!count) return promise.resolve(results), promise;
+            for (var _loop2 = function(i) {
+                var prom = promises[i];
+                if (prom instanceof ZalgoPromise) {
+                    if (prom.resolved) return results[i] = prom.value, count -= 1, "continue";
+                } else if (!utils_isPromise(prom)) return results[i] = prom, count -= 1, "continue";
+                ZalgoPromise.resolve(prom).then(function(result) {
+                    results[i] = result, 0 == (count -= 1) && promise.resolve(results);
+                }, function(err) {
+                    promise.reject(err);
+                });
+            }, i = 0; i < promises.length; i++) _loop2(i);
+            return 0 === count && promise.resolve(results), promise;
+        }, ZalgoPromise.hash = function(promises) {
+            var result = {};
+            return ZalgoPromise.all(Object.keys(promises).map(function(key) {
+                return ZalgoPromise.resolve(promises[key]).then(function(value) {
+                    result[key] = value;
+                });
+            })).then(function() {
+                return result;
+            });
+        }, ZalgoPromise.map = function(items, method) {
+            return ZalgoPromise.all(items.map(method));
+        }, ZalgoPromise.onPossiblyUnhandledException = function(handler) {
+            return function(handler) {
+                return possiblyUnhandledPromiseHandlers.push(handler), {
+                    cancel: function() {
+                        possiblyUnhandledPromiseHandlers.splice(possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
+                    }
+                };
+            }(handler);
+        }, ZalgoPromise.try = function(method, context, args) {
+            if (method && "function" != typeof method && !method.call) throw new Error("Promise.try expected a function");
+            var result;
+            startActive();
+            try {
+                result = method.apply(context, args || []);
+            } catch (err) {
+                return endActive(), ZalgoPromise.reject(err);
+            }
+            return endActive(), ZalgoPromise.resolve(result);
+        }, ZalgoPromise.delay = function(_delay) {
+            return new ZalgoPromise(function(resolve) {
+                setTimeout(resolve, _delay);
+            });
+        }, ZalgoPromise.isPromise = function(value) {
+            return !!(value && value instanceof ZalgoPromise) || utils_isPromise(value);
+        }, ZalgoPromise.flush = function() {
+            return promise = flushPromise = flushPromise || new ZalgoPromise(), flushActive(), 
+            promise;
+            var promise;
+        }, ZalgoPromise;
+    }();
+    __webpack_require__.d(__webpack_exports__, "a", function() {
+        return promise_ZalgoPromise;
+    });
+}, function(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+    var src = __webpack_require__(3), belter_src = __webpack_require__(2);
     function unresolvedPromise() {
         return new src.a(belter_src.h);
     }
@@ -1188,7 +1198,7 @@ window.spb = function(modules) {
     }, AUTO_FLUSH_LEVEL = [ LOG_LEVEL.WARN, LOG_LEVEL.ERROR ], LOG_LEVEL_PRIORITY = [ LOG_LEVEL.ERROR, LOG_LEVEL.WARN, LOG_LEVEL.INFO, LOG_LEVEL.DEBUG ], FLUSH_INTERVAL = 6e4, DEFAULT_LOG_LEVEL = LOG_LEVEL.WARN;
     function httpTransport(_ref) {
         var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json;
-        return Object(belter_src.m)({
+        return Object(belter_src.n)({
             url: url,
             method: method,
             headers: headers,
@@ -1198,7 +1208,7 @@ window.spb = function(modules) {
     function extendIfDefined(target, source) {
         for (var key in source) source.hasOwnProperty(key) && source[key] && (target[key] = source[key]);
     }
-    var sdk_constants_src = __webpack_require__(3), config = __webpack_require__(6), constants = __webpack_require__(2);
+    var sdk_constants_src = __webpack_require__(0), config = __webpack_require__(6), constants = __webpack_require__(1);
     function getLogger() {
         return Object(belter_src.d)(getLogger, function() {
             return function(_ref2) {
@@ -1256,7 +1266,7 @@ window.spb = function(modules) {
                 function addBuilder(builders, builder) {
                     return builders.push(builder), logger;
                 }
-                Object(belter_src.e)() && Object(belter_src.n)(flush, flushInterval);
+                Object(belter_src.e)() && Object(belter_src.o)(flush, flushInterval);
                 var logger = {
                     debug: function(event, payload) {
                         return log(LOG_LEVEL.DEBUG, event, payload);
@@ -1302,7 +1312,7 @@ window.spb = function(modules) {
         });
     }
     function setupLogger(_ref) {
-        var env = _ref.env, sessionID = _ref.sessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, correlationID = _ref.correlationID, locale = _ref.locale, merchantID = _ref.merchantID, logger = getLogger();
+        var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, correlationID = _ref.correlationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, logger = getLogger();
         logger.addPayloadBuilder(function() {
             return {
                 referer: window.location.host,
@@ -1311,10 +1321,12 @@ window.spb = function(modules) {
             };
         }), logger.addTrackingBuilder(function() {
             var _ref2, lang = locale.lang, country = locale.country, mID = merchantID;
-            return (_ref2 = {})[sdk_constants_src.d.STATE] = constants.g.BUTTON, _ref2[sdk_constants_src.d.FEED] = sdk_constants_src.c.PAYMENTS_SDK, 
-            _ref2[sdk_constants_src.d.DATA_SOURCE] = sdk_constants_src.b.PAYMENTS_SDK, _ref2[sdk_constants_src.d.CLIENT_ID] = clientID, 
-            _ref2[sdk_constants_src.d.SELLER_ID] = mID && mID[0], _ref2[sdk_constants_src.d.SESSION_UID] = sessionID, 
-            _ref2[sdk_constants_src.d.REFERER] = window.location.host, _ref2[sdk_constants_src.d.LOCALE] = lang + "_" + country, 
+            return (_ref2 = {})[sdk_constants_src.d.CONTEXT_TYPE] = constants.f.BUTTON_SESSION_ID, 
+            _ref2[sdk_constants_src.d.CONTEXT_ID] = buttonSessionID, _ref2[sdk_constants_src.d.STATE] = constants.g.BUTTON, 
+            _ref2[sdk_constants_src.d.FEED] = sdk_constants_src.c.PAYMENTS_SDK, _ref2[sdk_constants_src.d.DATA_SOURCE] = sdk_constants_src.b.PAYMENTS_SDK, 
+            _ref2[sdk_constants_src.d.CLIENT_ID] = clientID, _ref2[sdk_constants_src.d.SELLER_ID] = mID && mID[0], 
+            _ref2[sdk_constants_src.d.SESSION_UID] = sessionID, _ref2[sdk_constants_src.d.REFERER] = window.location.host, 
+            _ref2[sdk_constants_src.d.MERCHANT_DOMAIN] = merchantDomain, _ref2[sdk_constants_src.d.LOCALE] = lang + "_" + country, 
             _ref2[sdk_constants_src.d.INTEGRATION_IDENTIFIER] = clientID, _ref2[sdk_constants_src.d.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, 
             _ref2[sdk_constants_src.d.SDK_NAME] = sdk_constants_src.e.PAYMENTS_SDK, _ref2[sdk_constants_src.d.SDK_VERSION] = window.paypal.version, 
             _ref2[sdk_constants_src.d.USER_AGENT] = window.navigator && window.navigator.userAgent, 
@@ -1323,9 +1335,9 @@ window.spb = function(modules) {
         }), src.a.onPossiblyUnhandledException(function(err) {
             var _logger$track;
             logger.track(((_logger$track = {})[sdk_constants_src.d.ERROR_CODE] = "payments_sdk_error", 
-            _logger$track[sdk_constants_src.d.ERROR_DESC] = Object(belter_src.p)(err), _logger$track)), 
+            _logger$track[sdk_constants_src.d.ERROR_DESC] = Object(belter_src.q)(err), _logger$track)), 
             logger.error("unhandled_error", {
-                err: Object(belter_src.o)(err)
+                err: Object(belter_src.p)(err)
             }), logger.flush().catch(belter_src.h);
         });
     }
@@ -1340,12 +1352,12 @@ window.spb = function(modules) {
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    var persistedAccessToken, src = __webpack_require__(0), belter_src = __webpack_require__(1), config = __webpack_require__(6), lib = __webpack_require__(4), constants = __webpack_require__(2), api = __webpack_require__(8);
+    var persistedAccessToken, src = __webpack_require__(3), belter_src = __webpack_require__(2), config = __webpack_require__(6), lib = __webpack_require__(4), constants = __webpack_require__(1), api = __webpack_require__(8);
     function createAccessToken(clientID) {
         return Object(belter_src.d)(createAccessToken, function() {
             Object(lib.a)().info("rest_api_create_access_token");
             var basicAuth = Object(belter_src.a)(clientID + ":");
-            return Object(belter_src.m)({
+            return Object(belter_src.n)({
                 method: "post",
                 url: config.b,
                 headers: {
@@ -1370,7 +1382,7 @@ window.spb = function(modules) {
         return src.a.try(function() {
             accessToken && (persistedAccessToken = accessToken);
         });
-    }), esm_extends = __webpack_require__(7), sdk_constants_src = __webpack_require__(3);
+    }), esm_extends = __webpack_require__(7), sdk_constants_src = __webpack_require__(0);
     function createOrderID(accessToken, order) {
         if (Object(lib.a)().info("rest_api_create_order_token"), !accessToken) throw new Error("Access token not passed");
         if (!order) throw new Error("Expected order details to be passed");
@@ -1398,18 +1410,18 @@ window.spb = function(modules) {
             Authorization: "Bearer " + accessToken,
             "PayPal-Partner-Attribution-Id": window.xprops.partnerAttributionID
         };
-        return Object(belter_src.m)({
+        return Object(belter_src.n)({
             method: "post",
             url: config.f,
             headers: headers,
             json: order
         }).then(function(_ref) {
-            var _getLogger$track, body = _ref.body;
-            if (!body || !body.id) throw new Error("Order Api response error:\n\n" + JSON.stringify(body, null, 4));
+            var _getLogger$track, body = _ref.body, orderID = body && body.id;
+            if (!orderID) throw new Error("Order Api response error:\n\n" + JSON.stringify(body, null, 4));
             return Object(lib.a)().track(((_getLogger$track = {})[sdk_constants_src.d.STATE] = constants.g.BUTTON, 
             _getLogger$track[sdk_constants_src.d.TRANSITION] = constants.h.CREATE_ORDER, _getLogger$track[sdk_constants_src.d.CONTEXT_TYPE] = constants.f.ORDER_ID, 
-            _getLogger$track[sdk_constants_src.d.TOKEN] = body.id, _getLogger$track[sdk_constants_src.d.CONTEXT_ID] = body.id, 
-            _getLogger$track)), body.id;
+            _getLogger$track[sdk_constants_src.d.TOKEN] = orderID, _getLogger$track[sdk_constants_src.d.CONTEXT_ID] = orderID, 
+            _getLogger$track)), orderID;
         });
     }
     function getOrder(orderID) {
@@ -1458,7 +1470,7 @@ window.spb = function(modules) {
         var json = {
             payment_source: paymentSource
         };
-        return Object(belter_src.m)({
+        return Object(belter_src.n)({
             method: "post",
             url: config.f + "/" + orderID + "/" + config.g,
             headers: headers,
@@ -1512,7 +1524,7 @@ window.spb = function(modules) {
             Authorization: "Bearer " + accessToken,
             "PayPal-Partner-Attribution-Id": window.xprops.partnerAttributionID
         };
-        return Object(belter_src.m)({
+        return Object(belter_src.n)({
             method: "post",
             url: config.c,
             headers: headers,
@@ -1531,7 +1543,7 @@ window.spb = function(modules) {
             Authorization: "Bearer " + accessToken,
             "PayPal-Partner-Attribution-Id": window.xprops.partnerAttributionID
         };
-        return Object(belter_src.m)({
+        return Object(belter_src.n)({
             method: "post",
             url: config.c + "/" + subscriptionID + "/revise",
             headers: headers,
@@ -1636,19 +1648,19 @@ window.spb = function(modules) {
     }), __webpack_require__.d(__webpack_exports__, "b", function() {
         return callGraphQL;
     });
-    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7), belter_src__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_require__(0), 
-    __webpack_require__(1)), _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6), _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(2), headerBuilders = [];
+    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7), belter_src__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_require__(3), 
+    __webpack_require__(2)), _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6), _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1), headerBuilders = [];
     function addHeaderBuilder(builder) {
         headerBuilders.push(builder);
     }
     function callSmartAPI(_ref) {
-        for (var _reqHeaders, url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, json = _ref.json, reqHeaders = ((_reqHeaders = {})[_constants__WEBPACK_IMPORTED_MODULE_4__.j.SOURCE] = _constants__WEBPACK_IMPORTED_MODULE_4__.o, 
-        _reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__.j.REQUESTED_BY] = _constants__WEBPACK_IMPORTED_MODULE_4__.p, 
+        for (var _reqHeaders, url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, json = _ref.json, reqHeaders = ((_reqHeaders = {})[_constants__WEBPACK_IMPORTED_MODULE_4__.j.SOURCE] = _constants__WEBPACK_IMPORTED_MODULE_4__.n, 
+        _reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__.j.REQUESTED_BY] = _constants__WEBPACK_IMPORTED_MODULE_4__.o, 
         _reqHeaders), _i2 = 0; _i2 < headerBuilders.length; _i2++) {
             var headerBuilder = headerBuilders[_i2];
             reqHeaders = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, reqHeaders, headerBuilder());
         }
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.m)({
+        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.n)({
             url: url,
             method: method,
             headers: reqHeaders,
@@ -1666,7 +1678,7 @@ window.spb = function(modules) {
     }
     function callGraphQL(_ref3) {
         var query = _ref3.query, _ref3$variables = _ref3.variables, variables = void 0 === _ref3$variables ? {} : _ref3$variables, _ref3$headers = _ref3.headers, headers = void 0 === _ref3$headers ? {} : _ref3$headers;
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.m)({
+        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.n)({
             url: _config__WEBPACK_IMPORTED_MODULE_3__.a.GRAPHQL,
             method: "POST",
             json: {
@@ -1695,7 +1707,7 @@ window.spb = function(modules) {
         return void 0 === win && (win = window), win.location.protocol === PROTOCOL.ABOUT;
     }
     function getParent(win) {
-        if (win) try {
+        if (void 0 === win && (win = window), win) try {
             if (win.parent && win.parent !== win) return win.parent;
         } catch (err) {}
     }
@@ -1904,6 +1916,11 @@ window.spb = function(modules) {
         } catch (err) {
             if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
         }
+        try {
+            if (obj && "__unlikely_value__" === obj.__cross_domain_utils_window_check__) return !1;
+        } catch (err) {
+            return !0;
+        }
         return !1;
     }
     __webpack_require__.d(__webpack_exports__, "b", function() {
@@ -1931,8 +1948,8 @@ window.spb = function(modules) {
         return disableLoadingSpinner;
     }), __webpack_require__.d(__webpack_exports__, "d", function() {
         return getNonce;
-    }), __webpack_require__(3);
-    var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1), _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
+    }), __webpack_require__(0);
+    var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2), _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
     function getButtons() {
         return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__.l)("[ " + _constants__WEBPACK_IMPORTED_MODULE_2__.d.FUNDING_SOURCE + " ]");
     }
@@ -1959,7 +1976,7 @@ window.spb = function(modules) {
     "use strict";
     __webpack_require__.d(__webpack_exports__, "a", function() {
         return POPUP_BRIDGE_OPTYPE;
-    }), __webpack_require__(0);
+    }), __webpack_require__(3);
     var POPUP_BRIDGE_OPTYPE = {
         PAYMENT: "payment",
         CANCEL: "cancel"
@@ -2056,7 +2073,7 @@ window.spb = function(modules) {
     }), __webpack_require__.d(__webpack_exports__, "c", function() {
         return getOnInit;
     });
-    var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+    var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
     function buildXOnInitData() {
         return {};
     }
@@ -2099,7 +2116,7 @@ window.spb = function(modules) {
     }), __webpack_require__.d(__webpack_exports__, "c", function() {
         return getCreateOrder;
     });
-    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1), _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
+    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2), _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0), _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5), _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1), _lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4);
     function buildXCreateOrderData() {
         return {};
     }
@@ -2108,22 +2125,36 @@ window.spb = function(modules) {
         return {
             order: {
                 create: function(data) {
-                    return Object(_api__WEBPACK_IMPORTED_MODULE_1__.e)(clientID).then(function(accessToken) {
-                        return Object(_api__WEBPACK_IMPORTED_MODULE_1__.f)(accessToken, data);
+                    return Object(_api__WEBPACK_IMPORTED_MODULE_2__.e)(clientID).then(function(accessToken) {
+                        return Object(_api__WEBPACK_IMPORTED_MODULE_2__.f)(accessToken, data);
                     });
                 }
             }
         };
     }
     function getCreateOrder(xprops, _ref2) {
-        var createBillingAgreement = _ref2.createBillingAgreement, createSubscription = _ref2.createSubscription, createOrder = xprops.createOrder, clientID = xprops.clientID;
+        var createBillingAgreement = _ref2.createBillingAgreement, createSubscription = _ref2.createSubscription, createOrder = xprops.createOrder, buttonSessionID = xprops.buttonSessionID, data = {}, actions = buildXCreateOrderActions({
+            clientID: xprops.clientID
+        });
         return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
-            if (createBillingAgreement) return createBillingAgreement().then(_api__WEBPACK_IMPORTED_MODULE_1__.c);
-            if (createSubscription) return createSubscription().then(_api__WEBPACK_IMPORTED_MODULE_1__.n);
-            if (createOrder) return createOrder({}, buildXCreateOrderActions({
-                clientID: clientID
-            }));
-            throw new Error("No mechanism to create order");
+            return createBillingAgreement ? createBillingAgreement().then(_api__WEBPACK_IMPORTED_MODULE_2__.c) : createSubscription ? createSubscription().then(_api__WEBPACK_IMPORTED_MODULE_2__.n) : createOrder ? createOrder(data, actions).then(function(orderID) {
+                var _getLogger$track;
+                if (!orderID || "string" != typeof orderID) throw new Error("Expected an order id to be passed to createOrder");
+                return Object(_lib__WEBPACK_IMPORTED_MODULE_4__.a)().track((_getLogger$track = {}, 
+                _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.STATE] = _constants__WEBPACK_IMPORTED_MODULE_3__.g.BUTTON, 
+                _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_3__.h.RECEIVE_ORDER, 
+                _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.CONTEXT_TYPE] = _constants__WEBPACK_IMPORTED_MODULE_3__.f.ORDER_ID, 
+                _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.CONTEXT_ID] = orderID, 
+                _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.BUTTON_SESSION_UID] = buttonSessionID, 
+                _getLogger$track)).flush(), orderID;
+            }) : actions.order.create({
+                purchase_units: [ {
+                    amount: {
+                        currency_code: "USD",
+                        value: "0.01"
+                    }
+                } ]
+            });
         });
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
@@ -2131,19 +2162,25 @@ window.spb = function(modules) {
     __webpack_require__.d(__webpack_exports__, "a", function() {
         return getOnApprove;
     });
-    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1), _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3), _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5), _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(2), _lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4);
+    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2), _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0), _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5), _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1), _lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4);
     function getOnApprove(xprops, _ref2) {
-        var createOrder = _ref2.createOrder, onApprove = xprops.onApprove, onError = xprops.onError, intent = xprops.intent;
+        var createOrder = _ref2.createOrder, onApprove = xprops.onApprove, onError = xprops.onError, intent = xprops.intent, buttonSessionID = xprops.buttonSessionID;
         return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function(_ref3, _ref4) {
             var payerID = _ref3.payerID, paymentID = _ref3.paymentID, billingToken = _ref3.billingToken, subscriptionID = _ref3.subscriptionID, restart = _ref4.restart;
             return createOrder().then(function(orderID) {
-                return onApprove({
+                var _getLogger$info$track;
+                Object(_lib__WEBPACK_IMPORTED_MODULE_4__.a)().info("button_authorize").track((_getLogger$info$track = {}, 
+                _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.STATE] = _constants__WEBPACK_IMPORTED_MODULE_3__.g.BUTTON, 
+                _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_3__.h.CHECKOUT_AUTHORIZE, 
+                _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.BUTTON_SESSION_UID] = buttonSessionID, 
+                _getLogger$info$track)).flush();
+                var data = {
                     orderID: orderID,
                     payerID: payerID,
                     paymentID: paymentID,
                     billingToken: billingToken,
                     subscriptionID: subscriptionID
-                }, function(_ref) {
+                }, actions = function(_ref) {
                     var intent = _ref.intent, orderID = _ref.orderID, restart = _ref.restart, subscriptionID = _ref.subscriptionID, handleProcessorError = function(err) {
                         if (err && err.data && err.data.details && err.data.details.some(function(detail) {
                             return detail.issue === _constants__WEBPACK_IMPORTED_MODULE_3__.l.INSTRUMENT_DECLINED || detail.issue === _constants__WEBPACK_IMPORTED_MODULE_3__.l.PAYER_ACTION_REQUIRED;
@@ -2155,6 +2192,7 @@ window.spb = function(modules) {
                         if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.CAPTURE) throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.i.INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.CAPTURE + " to use client-side capture");
                         return Object(_api__WEBPACK_IMPORTED_MODULE_2__.d)(orderID).finally(get.reset).finally(capture.reset).catch(handleProcessorError);
                     }), authorize = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
+                        if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.AUTHORIZE) throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.i.INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.AUTHORIZE + " to use client-side authorize");
                         return Object(_api__WEBPACK_IMPORTED_MODULE_2__.b)(orderID).finally(get.reset).finally(authorize.reset).catch(handleProcessorError);
                     }), getSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
                         return Object(_api__WEBPACK_IMPORTED_MODULE_2__.j)(subscriptionID);
@@ -2176,16 +2214,19 @@ window.spb = function(modules) {
                             get: getSubscriptionApi,
                             activate: activateSubscriptionApi
                         },
-                        restart: restart
+                        restart: restart,
+                        redirect: function(url) {
+                            if (!url) throw new Error("Expected redirect url");
+                            return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.m)(url, window.top);
+                        }
                     };
                 }({
                     orderID: orderID,
                     intent: intent,
                     restart: restart,
                     subscriptionID: subscriptionID
-                })).catch(function(err) {
-                    return onError(err);
                 });
+                return onApprove ? onApprove(data, actions).catch(onError) : intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.CAPTURE ? actions.order.capture().then(belter_src__WEBPACK_IMPORTED_MODULE_0__.h) : intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.AUTHORIZE ? actions.order.authorize().then(belter_src__WEBPACK_IMPORTED_MODULE_0__.h) : void 0;
             });
         });
     }
@@ -2198,22 +2239,32 @@ window.spb = function(modules) {
     }), __webpack_require__.d(__webpack_exports__, "c", function() {
         return getOnCancel;
     });
-    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2), _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0), _lib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4), _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1);
     function buildXOnCancelData(_ref) {
         return {
             orderID: _ref.orderID
         };
     }
     function buildXOnCancelActions() {
-        return {};
+        return {
+            redirect: function(url) {
+                if (!url) throw new Error("Expected redirect url");
+                return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.m)(url, window.top);
+            }
+        };
     }
     function getOnCancel(xprops, _ref2) {
-        var createOrder = _ref2.createOrder, onCancel = xprops.onCancel, onError = xprops.onError;
+        var createOrder = _ref2.createOrder, _xprops$onCancel = xprops.onCancel, onCancel = void 0 === _xprops$onCancel ? belter_src__WEBPACK_IMPORTED_MODULE_0__.h : _xprops$onCancel, onError = xprops.onError, buttonSessionID = xprops.buttonSessionID;
         return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
             return createOrder().then(function(orderID) {
-                return onCancel(buildXOnCancelData({
+                var _getLogger$info$track;
+                return Object(_lib__WEBPACK_IMPORTED_MODULE_2__.a)().info("button_cancel").track((_getLogger$info$track = {}, 
+                _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.STATE] = _constants__WEBPACK_IMPORTED_MODULE_3__.g.BUTTON, 
+                _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_3__.h.CHECKOUT_CANCEL, 
+                _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.BUTTON_SESSION_UID] = buttonSessionID, 
+                _getLogger$info$track)).flush(), onCancel(buildXOnCancelData({
                     orderID: orderID
-                }), {});
+                }), buildXOnCancelActions());
             }).catch(function(err) {
                 return onError(err);
             });
@@ -2228,27 +2279,38 @@ window.spb = function(modules) {
     }), __webpack_require__.d(__webpack_exports__, "c", function() {
         return getOnShippingChange;
     });
-    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7), _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
+    var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3), _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0), _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5), _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1), _lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4);
     function buildXOnShippingChangeData(data) {
         return data;
     }
     function buildXShippingChangeActions(_ref) {
-        var orderID = _ref.orderID, actions = _ref.actions;
-        return Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, actions, {
+        var orderID = _ref.orderID;
+        return {
+            resolve: function() {
+                return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__.a.resolve();
+            },
+            reject: _ref.actions.reject || function() {
+                throw new Error("Missing reject action callback");
+            },
             order: {
                 patch: function(data) {
-                    return void 0 === data && (data = []), Object(_api__WEBPACK_IMPORTED_MODULE_1__.k)(orderID, data).catch(function() {
+                    return void 0 === data && (data = []), Object(_api__WEBPACK_IMPORTED_MODULE_2__.k)(orderID, data).catch(function() {
                         throw new Error("Order could not be patched");
                     });
                 }
             }
-        });
+        };
     }
     function getOnShippingChange(xprops, _ref2) {
-        var createOrder = _ref2.createOrder, onShippingChange = xprops.onShippingChange;
+        var createOrder = _ref2.createOrder, onShippingChange = xprops.onShippingChange, buttonSessionID = xprops.buttonSessionID;
         if (onShippingChange) return function(data, actions) {
             return createOrder().then(function(orderID) {
-                return onShippingChange(buildXOnShippingChangeData(data), buildXShippingChangeActions({
+                var _getLogger$info$track;
+                return Object(_lib__WEBPACK_IMPORTED_MODULE_4__.a)().info("button_shipping_change").track((_getLogger$info$track = {}, 
+                _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.STATE] = _constants__WEBPACK_IMPORTED_MODULE_3__.g.BUTTON, 
+                _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_3__.h.CHECKOUT_SHIPPING_CHANGE, 
+                _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.d.BUTTON_SESSION_UID] = buttonSessionID, 
+                _getLogger$info$track)).flush(), onShippingChange(buildXOnShippingChangeData(data), buildXShippingChangeActions({
                     orderID: orderID,
                     actions: actions
                 }));
@@ -2264,8 +2326,8 @@ window.spb = function(modules) {
     }), __webpack_require__.d(__webpack_exports__, "c", function() {
         return getOnClick;
     });
-    var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0), _lib__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_require__(28), 
-    __webpack_require__(4));
+    var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3), _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_require__(28), 
+    __webpack_require__(0)), _lib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4), _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
     function buildXOnClickData(_ref) {
         return {
             fundingSource: _ref.fundingSource
@@ -2286,10 +2348,16 @@ window.spb = function(modules) {
         };
     }
     function getOnClick(xprops) {
-        var _xprops$onClick = xprops.onClick, onClick = void 0 === _xprops$onClick ? _lib__WEBPACK_IMPORTED_MODULE_2__.b : _xprops$onClick;
+        var _xprops$onClick = xprops.onClick, onClick = void 0 === _xprops$onClick ? _lib__WEBPACK_IMPORTED_MODULE_3__.b : _xprops$onClick, buttonSessionID = xprops.buttonSessionID;
         return function(_ref2) {
-            return onClick(buildXOnClickData({
-                fundingSource: _ref2.fundingSource
+            var _getLogger$info$track, fundingSource = _ref2.fundingSource;
+            return Object(_lib__WEBPACK_IMPORTED_MODULE_3__.a)().info("button_click").track((_getLogger$info$track = {}, 
+            _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.STATE] = _constants__WEBPACK_IMPORTED_MODULE_4__.g.BUTTON, 
+            _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__.h.BUTTON_CLICK, 
+            _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.BUTTON_SESSION_UID] = buttonSessionID, 
+            _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.CHOSEN_FUNDING] = fundingSource, 
+            _getLogger$info$track)).flush(), onClick(buildXOnClickData({
+                fundingSource: fundingSource
             }), buildXOnClickActions()).then(function(valid) {
                 return !1 !== valid;
             });
@@ -2300,7 +2368,7 @@ window.spb = function(modules) {
     __webpack_require__.d(__webpack_exports__, "a", function() {
         return getOnAuth;
     });
-    var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0), _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
+    var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3), _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
     function getOnAuth() {
         return function(_ref) {
             var accessToken = _ref.accessToken;
@@ -2318,7 +2386,7 @@ window.spb = function(modules) {
     }), __webpack_require__.d(__webpack_exports__, "c", function() {
         return getCreateBillingAgreement;
     });
-    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
     function buildXCreateBillingAgreementData() {
         return {};
     }
@@ -2328,7 +2396,10 @@ window.spb = function(modules) {
     function getCreateBillingAgreement(xprops) {
         var createBillingAgreement = xprops.createBillingAgreement;
         if (createBillingAgreement) return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
-            return createBillingAgreement({}, {});
+            return createBillingAgreement({}, {}).then(function(billingToken) {
+                if (!billingToken || "string" != typeof billingToken) throw new Error("Expected a billing token to be passed to createBillingAgreement");
+                return billingToken;
+            });
         });
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
@@ -2340,7 +2411,7 @@ window.spb = function(modules) {
     }), __webpack_require__.d(__webpack_exports__, "c", function() {
         return getCreateSubscription;
     });
-    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1), _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
+    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2), _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
     function buildXCreateSubscriptionData() {
         return {};
     }
@@ -2366,7 +2437,10 @@ window.spb = function(modules) {
         if (createSubscriptionFunc) return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
             return createSubscriptionFunc({}, buildXCreateSubscriptionActions({
                 clientID: clientID
-            }));
+            })).then(function(subscriptionID) {
+                if (!subscriptionID || "string" != typeof subscriptionID) throw new Error("Expected an subscription id to be passed to createSubscription");
+                return subscriptionID;
+            });
         });
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
@@ -2384,7 +2458,7 @@ window.spb = function(modules) {
     }(__WEBPACK_IMPORT_KEY__);
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__(3);
+    __webpack_require__(0);
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.d(__webpack_exports__, "b", function() {
@@ -2392,33 +2466,46 @@ window.spb = function(modules) {
     }), __webpack_require__.d(__webpack_exports__, "a", function() {
         return getButtonCallbackProps;
     });
-    var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3), _dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10), _onInit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13), _createOrder__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14), _onApprove__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(15), _onCancel__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(16), _onShippingChange__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(17), _onClick__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(18), _onAuth__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(19), _createBillingAgreement__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(20), _createSubscription__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(21);
+    var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0), _dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10), _onInit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13), _createOrder__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14), _onApprove__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(15), _onCancel__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(16), _onShippingChange__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(17), _onClick__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(18), _onAuth__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(19), _createBillingAgreement__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(20), _createSubscription__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(21);
     function getGlobalProps(_ref) {
-        var xprops = _ref.xprops, cspNonce = _ref.cspNonce, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, merchantID = xprops.merchantID, partnerAttributionID = xprops.partnerAttributionID, correlationID = xprops.correlationID, _xprops$buyerCountry = xprops.buyerCountry, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, enableThreeDomainSecure = xprops.enableThreeDomainSecure, rememberFunding = xprops.remember, onError = xprops.onError;
+        var xprops = _ref.xprops, cspNonce = _ref.cspNonce, env = xprops.env, vault = xprops.vault, commit = xprops.commit, locale = xprops.locale, sessionID = xprops.sessionID, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID, merchantID = xprops.merchantID, partnerAttributionID = xprops.partnerAttributionID, correlationID = xprops.correlationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, _xprops$buyerCountry = xprops.buyerCountry, buyerCountry = void 0 === _xprops$buyerCountry ? _ref.buyerGeoCountry || _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.a.US : _xprops$buyerCountry, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, enableThreeDomainSecure = xprops.enableThreeDomainSecure, rememberFunding = xprops.remember, onError = xprops.onError;
+        cspNonce = cspNonce || Object(_dom__WEBPACK_IMPORTED_MODULE_1__.d)();
+        var onInit = Object(_onInit__WEBPACK_IMPORTED_MODULE_2__.c)(xprops);
         return {
-            env: xprops.env,
-            vault: xprops.vault,
-            commit: xprops.commit,
-            clientAccessToken: xprops.clientAccessToken,
-            buyerCountry: void 0 === _xprops$buyerCountry ? _ref.buyerGeoCountry || _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.a.US : _xprops$buyerCountry,
-            locale: xprops.locale,
-            cspNonce: cspNonce = cspNonce || Object(_dom__WEBPACK_IMPORTED_MODULE_1__.d)(),
+            env: env,
+            vault: vault,
+            commit: commit,
+            clientAccessToken: clientAccessToken,
+            buyerCountry: buyerCountry,
+            locale: locale,
+            cspNonce: cspNonce,
             sessionID: sessionID,
             buttonSessionID: buttonSessionID,
             clientID: clientID,
             merchantID: merchantID,
             partnerAttributionID: partnerAttributionID,
             correlationID: correlationID,
+            merchantDomain: getParentDomain(),
             getPopupBridge: getPopupBridge,
             getPrerenderDetails: getPrerenderDetails,
             rememberFunding: rememberFunding,
             enableThreeDomainSecure: enableThreeDomainSecure,
-            onInit: Object(_onInit__WEBPACK_IMPORTED_MODULE_2__.c)(xprops),
+            onInit: onInit,
             onError: onError
         };
     }
     function getButtonCallbackProps(_ref2) {
-        var xprops = _ref2.xprops, createBillingAgreement = Object(_createBillingAgreement__WEBPACK_IMPORTED_MODULE_9__.c)(xprops), createSubscription = Object(_createSubscription__WEBPACK_IMPORTED_MODULE_10__.c)(xprops), createOrder = Object(_createOrder__WEBPACK_IMPORTED_MODULE_3__.c)(xprops, {
+        var xprops = _ref2.xprops;
+        if (xprops.createBillingAgreement) {
+            if (xprops.createOrder) throw new Error("Do not pass both createBillingAgreement and createOrder");
+            if (!xprops.vault) throw new Error("Must pass vault=true to sdk to use createBillingAgreement");
+        }
+        if (xprops.createSubscription) {
+            if (xprops.createOrder) throw new Error("Do not pass both createSubscription and createOrder");
+            if (xprops.createOrder) throw new Error("Do not pass both createSubscription and createBillingAgreement");
+            if (!xprops.vault) throw new Error("Must pass vault=true to sdk to use createSubscription");
+        }
+        var createBillingAgreement = Object(_createBillingAgreement__WEBPACK_IMPORTED_MODULE_9__.c)(xprops), createSubscription = Object(_createSubscription__WEBPACK_IMPORTED_MODULE_10__.c)(xprops), createOrder = Object(_createOrder__WEBPACK_IMPORTED_MODULE_3__.c)(xprops, {
             createBillingAgreement: createBillingAgreement,
             createSubscription: createSubscription
         }), onApprove = Object(_onApprove__WEBPACK_IMPORTED_MODULE_4__.a)(xprops, {
@@ -2441,9 +2528,9 @@ window.spb = function(modules) {
     }
 }, function(module, exports) {}, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    var src = __webpack_require__(1), sdk_constants_src = __webpack_require__(3), zalgo_promise_src = __webpack_require__(0), lib = __webpack_require__(4), esm_extends = __webpack_require__(7), cross_domain_utils_src = __webpack_require__(9), api = __webpack_require__(5), constants = __webpack_require__(2), checkoutOpen = !1, canRenderTop = !1;
+    var src = __webpack_require__(2), sdk_constants_src = __webpack_require__(0), zalgo_promise_src = __webpack_require__(3), lib = __webpack_require__(4), esm_extends = __webpack_require__(7), cross_domain_utils_src = __webpack_require__(9), api = __webpack_require__(5), constants = __webpack_require__(1), checkoutOpen = !1, canRenderTop = !1;
     function initCheckout(props) {
-        var win = props.win, fundingSource = props.fundingSource, card = props.card, buyerCountry = props.buyerCountry, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onAuth = props.onAuth, onShippingChange = props.onShippingChange, cspNonce = props.cspNonce, context = props.context, locale = props.locale, commit = props.commit, onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, fundingEligibility = props.fundingEligibility, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, _props$validationProm = props.validationPromise, validationPromise = void 0 === _props$validationProm ? zalgo_promise_src.a.resolve(!0) : _props$validationProm;
+        var win = props.win, buttonSessionID = props.buttonSessionID, fundingSource = props.fundingSource, card = props.card, buyerCountry = props.buyerCountry, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onAuth = props.onAuth, onShippingChange = props.onShippingChange, cspNonce = props.cspNonce, context = props.context, locale = props.locale, commit = props.commit, onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, fundingEligibility = props.fundingEligibility, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, _props$validationProm = props.validationPromise, validationPromise = void 0 === _props$validationProm ? zalgo_promise_src.a.resolve(!0) : _props$validationProm;
         if (checkoutOpen) throw new Error("Checkout already rendered");
         var approved = !1, restart = Object(src.g)(function() {
             return initCheckout(Object(esm_extends.a)({}, props, {
@@ -2451,6 +2538,7 @@ window.spb = function(modules) {
             })).start().finally(lib.d);
         }), _window$paypal$Checko = window.paypal.Checkout({
             window: win,
+            buttonSessionID: buttonSessionID,
             createOrder: function() {
                 return validationPromise.then(function(valid) {
                     return valid ? _createOrder().then(function(orderID) {
@@ -2520,8 +2608,10 @@ window.spb = function(modules) {
             cspNonce: cspNonce
         }), closeCheckout = _window$paypal$Checko.close, triggerError = _window$paypal$Checko.onError;
         checkoutOpen = !0;
-        var top, renderPromise = (0, _window$paypal$Checko.renderTo)((top = Object(cross_domain_utils_src.c)(window), 
-        canRenderTop && top ? top : window.xprops.getParent()), constants.q.BODY, context), close = function() {
+        var renderPromise = (0, _window$paypal$Checko.renderTo)(function() {
+            var top = Object(cross_domain_utils_src.c)(window);
+            return canRenderTop && top ? top : window.xprops.getParent();
+        }(), constants.p.BODY, context), close = function() {
             return checkoutOpen = !1, closeCheckout();
         };
         return {
@@ -2551,6 +2641,18 @@ window.spb = function(modules) {
             buttonsContainer.style.transitionDuration = "0s", recalculateMargin();
         }), recalculateMargin();
     }, config = __webpack_require__(6), props_getPopupBridge = __webpack_require__(11), button_props = __webpack_require__(12), dom = __webpack_require__(10), api_api = __webpack_require__(8);
+    function validateOrder(orderID) {
+        return Object(api_api.b)({
+            query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        intent\n                        amounts {\n                            total {\n                                currencyCode\n                            }\n                        }\n                    }\n                }\n            }\n        ",
+            variables: {
+                orderID: orderID
+            }
+        }).then(function(res) {
+            var cart = res.data.checkoutSession.cart, intent = "sale" === cart.intent.toLowerCase() ? sdk_constants_src.h.CAPTURE : cart.intent.toLowerCase(), currency = cart.amounts && cart.amounts.total.currencyCode, expectedIntent = window.xprops.intent, expectedCurrency = window.xprops.currency;
+            if (intent !== expectedIntent) throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing " + sdk_constants_src.i.INTENT + "=" + intent + " to the sdk");
+            if (currency && currency !== expectedCurrency) throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing " + sdk_constants_src.i.CURRENCY + "=" + currency + " to the sdk");
+        });
+    }
     function setupButton(opts) {
         opts.paypal && (opts = {
             fundingEligibility: opts
@@ -2561,7 +2663,7 @@ window.spb = function(modules) {
             xprops: window.xprops,
             buyerGeoCountry: buyerGeoCountry,
             cspNonce: serverCSPNonce
-        }), env = _getGlobalProps.env, vault = _getGlobalProps.vault, commit = _getGlobalProps.commit, clientAccessToken = _getGlobalProps.clientAccessToken, buyerCountry = _getGlobalProps.buyerCountry, locale = _getGlobalProps.locale, cspNonce = _getGlobalProps.cspNonce, sessionID = _getGlobalProps.sessionID, clientID = _getGlobalProps.clientID, merchantID = _getGlobalProps.merchantID, partnerAttributionID = _getGlobalProps.partnerAttributionID, correlationID = _getGlobalProps.correlationID, enableThreeDomainSecure = _getGlobalProps.enableThreeDomainSecure, getPopupBridge = _getGlobalProps.getPopupBridge, getPrerenderDetails = _getGlobalProps.getPrerenderDetails, rememberFunding = _getGlobalProps.rememberFunding, onError = _getGlobalProps.onError, onInit = _getGlobalProps.onInit;
+        }), env = _getGlobalProps.env, buttonSessionID = _getGlobalProps.buttonSessionID, vault = _getGlobalProps.vault, commit = _getGlobalProps.commit, clientAccessToken = _getGlobalProps.clientAccessToken, buyerCountry = _getGlobalProps.buyerCountry, locale = _getGlobalProps.locale, cspNonce = _getGlobalProps.cspNonce, sessionID = _getGlobalProps.sessionID, clientID = _getGlobalProps.clientID, merchantID = _getGlobalProps.merchantID, partnerAttributionID = _getGlobalProps.partnerAttributionID, correlationID = _getGlobalProps.correlationID, enableThreeDomainSecure = _getGlobalProps.enableThreeDomainSecure, merchantDomain = _getGlobalProps.merchantDomain, getPopupBridge = _getGlobalProps.getPopupBridge, getPrerenderDetails = _getGlobalProps.getPrerenderDetails, rememberFunding = _getGlobalProps.rememberFunding, onError = _getGlobalProps.onError, onInit = _getGlobalProps.onInit;
         Object(lib.c)({
             env: env,
             sessionID: sessionID,
@@ -2570,7 +2672,9 @@ window.spb = function(modules) {
             commit: commit,
             correlationID: correlationID,
             locale: locale,
-            merchantID: merchantID
+            merchantID: merchantID,
+            buttonSessionID: buttonSessionID,
+            merchantDomain: merchantDomain
         });
         var popupBridge, buttonProcessing = !1, pay = function(_ref) {
             var button = _ref.button, win = _ref.win, fundingSource = _ref.fundingSource, card = _ref.card, paymentMethodID = _ref.paymentMethodID;
@@ -2584,12 +2688,14 @@ window.spb = function(modules) {
                         fundingSource: fundingSource
                     });
                     if (!init || !init.isEnabled()) return win ? win.close() : null;
-                    var _ref, isCardFields = !((_ref = {
+                    var isCardFields = function(_ref) {
+                        return !(_ref.win || !window.xprops.enableInlineGuest || _ref.fundingSource !== sdk_constants_src.g.CARD || _ref.vault || _ref.onShippingChange);
+                    }({
                         win: win,
                         vault: vault,
                         onShippingChange: onShippingChange,
                         fundingSource: fundingSource
-                    }).win || !window.xprops.enableInlineGuest || _ref.fundingSource !== sdk_constants_src.g.CARD || _ref.vault || _ref.onShippingChange), isVaultCapture = function(_ref) {
+                    }), isVaultCapture = function(_ref) {
                         return !_ref.win && !!_ref.paymentMethodID && !_ref.onShippingChange;
                     }({
                         win: win,
@@ -2642,7 +2748,7 @@ window.spb = function(modules) {
                                                         return promise.reject(err);
                                                     }
                                                 });
-                                                return instance.renderTo(window.parent, constants.q.BODY).then(function() {
+                                                return instance.renderTo(window.parent, constants.p.BODY).then(function() {
                                                     return promise;
                                                 }).finally(instance.close);
                                             }({
@@ -2727,6 +2833,7 @@ window.spb = function(modules) {
                             triggerError: _window$paypal$CardFi.onError
                         };
                     }({
+                        buttonSessionID: buttonSessionID,
                         fundingSource: fundingSource,
                         card: card,
                         buyerCountry: buyerCountry,
@@ -2782,6 +2889,7 @@ window.spb = function(modules) {
                         onCancel: onCancel
                     }) : initCheckout({
                         win: win,
+                        buttonSessionID: buttonSessionID,
                         fundingSource: fundingSource,
                         card: card,
                         buyerCountry: buyerCountry,
@@ -2810,8 +2918,8 @@ window.spb = function(modules) {
                                         orderID: orderID,
                                         fundingSource: fundingSource,
                                         integrationArtifact: constants.k.PAYPAL_JS_SDK,
-                                        userExperienceFlow: isCardFields ? constants.r.INLINE : constants.r.INCONTEXT,
-                                        productFlow: constants.n.SMART_PAYMENT_BUTTONS
+                                        userExperienceFlow: isCardFields ? constants.q.INLINE : constants.q.INCONTEXT,
+                                        productFlow: constants.m.SMART_PAYMENT_BUTTONS
                                     });
                                 });
                             }({
@@ -2819,23 +2927,7 @@ window.spb = function(modules) {
                                 fundingSource: fundingSource,
                                 isCardFields: isCardFields
                             });
-                        }), start().then(function() {
-                            return createOrder();
-                        }).then(function(orderID) {
-                            return function(orderID) {
-                                if (!orderID.match(constants.m)) throw new Error(orderID + " does not match pattern for order-id, ec-token or cart-id");
-                                return Object(api_api.b)({
-                                    query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        intent\n                        amounts {\n                            total {\n                                currencyCode\n                            }\n                        }\n                    }\n                }\n            }\n        ",
-                                    variables: {
-                                        orderID: orderID
-                                    }
-                                }).then(function(res) {
-                                    var cart = res.data.checkoutSession.cart, intent = "sale" === cart.intent.toLowerCase() ? sdk_constants_src.h.CAPTURE : cart.intent.toLowerCase(), currency = cart.amounts && cart.amounts.total.currencyCode, expectedIntent = window.xprops.intent, expectedCurrency = window.xprops.currency;
-                                    if (intent !== expectedIntent) throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing " + sdk_constants_src.i.INTENT + "=" + intent + " to the sdk");
-                                    if (currency && currency !== expectedCurrency) throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing " + sdk_constants_src.i.CURRENCY + "=" + currency + " to the sdk");
-                                });
-                            }(orderID);
-                        }).catch(function(err) {
+                        }), start().then(createOrder).then(validateOrder).catch(function(err) {
                             return zalgo_promise_src.a.all([ triggerError(err), close() ]);
                         })) : zalgo_promise_src.a.all([ close(), win && win.close() ]).then(src.h);
                     });
@@ -2847,12 +2939,14 @@ window.spb = function(modules) {
         return Object(dom.c)().forEach(function(button) {
             var _getSelectedFunding = Object(dom.e)(button), fundingSource = _getSelectedFunding.fundingSource, card = _getSelectedFunding.card, paymentMethodID = _getSelectedFunding.paymentMethodID;
             Object(src.j)(button, function(event) {
-                event.preventDefault(), event.stopPropagation(), pay({
+                event.preventDefault(), event.stopPropagation();
+                var payPromise = pay({
                     button: button,
                     fundingSource: fundingSource,
                     card: card,
                     paymentMethodID: paymentMethodID
                 });
+                button.payPromise = payPromise;
             }), button.addEventListener("mousedown", function() {
                 button.classList.add(constants.b.CLICKED);
             }), button.addEventListener("focus", function(event) {
@@ -2875,13 +2969,15 @@ window.spb = function(modules) {
                     return el.getAttribute(constants.d.CARD) || el.getAttribute(constants.d.FUNDING_SOURCE);
                 }).filter(function(source) {
                     return source && source !== sdk_constants_src.g.CARD;
-                }), style = xprops.style || {};
-                logger.track(((_logger$track = {})[sdk_constants_src.d.TRANSITION] = constants.h.BUTTON_LOAD, 
+                }), style = xprops.style || {}, layout = style.layout, color = style.color, shape = style.shape, label = style.label, _style$tagline = style.tagline, tagline = void 0 === _style$tagline || _style$tagline;
+                logger.info("button_render_color_" + color), logger.info("button_render_shape_" + shape), 
+                logger.info("button_render_label_" + label), logger.info("button_render_layout_" + layout), 
+                logger.info("button_render_tagline_" + tagline.toString()), logger.track(((_logger$track = {})[sdk_constants_src.d.TRANSITION] = constants.h.BUTTON_LOAD, 
                 _logger$track[sdk_constants_src.d.FUNDING_LIST] = fundingSources.join(":"), _logger$track[sdk_constants_src.d.FUNDING_COUNT] = fundingSources.length.toString(), 
                 _logger$track[sdk_constants_src.d.PAGE_LOAD_TIME] = pageRenderTime ? pageRenderTime.toString() : "", 
-                _logger$track[constants.i.BUTTON_LAYOUT] = style && style.layout, _logger$track[constants.i.BUTTON_COLOR] = style && style.color, 
-                _logger$track[constants.i.BUTTON_SIZE] = style && style.size, _logger$track[constants.i.BUTTON_SHAPE] = style && style.shape, 
-                _logger$track[constants.i.BUTTON_LABEL] = style && style.label, _logger$track[constants.i.BUTTON_WIDTH] = window.innerWidth, 
+                _logger$track[constants.i.BUTTON_LAYOUT] = layout, _logger$track[constants.i.BUTTON_COLOR] = color, 
+                _logger$track[constants.i.BUTTON_SIZE] = "responsive", _logger$track[constants.i.BUTTON_SHAPE] = shape, 
+                _logger$track[constants.i.BUTTON_LABEL] = label, _logger$track[constants.i.BUTTON_WIDTH] = window.innerWidth, 
                 _logger$track[constants.i.BUTTON_TYPE] = constants.e.IFRAME, _logger$track)), logger.flush();
             });
         }(), tasks.setupCheckout = function() {
@@ -3292,7 +3388,8 @@ window.spb = function(modules) {
                 PARTNER_ATTRIBUTION_ID: "data-partner-attribution-id",
                 STAGE_HOST: "data-stage-host",
                 API_STAGE_HOST: "data-api-stage-host",
-                CSP_NONCE: "data-csp-nonce"
+                CSP_NONCE: "data-csp-nonce",
+                ENABLE_3DS: "data-enable-3ds"
             }, SDK_QUERY_KEYS = {
                 COMPONENTS: "components",
                 ENV: "env",
@@ -3330,6 +3427,9 @@ window.spb = function(modules) {
             }, QUERY_BOOL = {
                 TRUE: "true",
                 FALSE: "false"
+            }, PROTOCOL = {
+                HTTP: "http",
+                HTTPS: "https"
             }, ENV = {
                 LOCAL: "local",
                 STAGE: "stage",
@@ -3347,6 +3447,7 @@ window.spb = function(modules) {
                 CONTEXT_ID: "context_id",
                 CONTEXT_TYPE: "context_type",
                 REFERER: "referer_url",
+                MERCHANT_DOMAIN: "merchant_domain",
                 PAY_ID: "pay_id",
                 SELLER_ID: "seller_id",
                 CLIENT_ID: "client_id",
@@ -3403,6 +3504,7 @@ window.spb = function(modules) {
                 INR: "INR",
                 ILS: "ILS",
                 JPY: "JPY",
+                MUR: "MUR",
                 MYR: "MYR",
                 MXN: "MXN",
                 TWD: "TWD",
@@ -3423,6 +3525,7 @@ window.spb = function(modules) {
             }, FUNDING = {
                 PAYPAL: "paypal",
                 VENMO: "venmo",
+                ITAU: "itau",
                 CREDIT: "credit",
                 CARD: "card",
                 IDEAL: "ideal",
@@ -3467,6 +3570,8 @@ window.spb = function(modules) {
                 return QUERY_BOOL;
             }), __webpack_require__.d(__webpack_exports__, "UNKNOWN", function() {
                 return "unknown";
+            }), __webpack_require__.d(__webpack_exports__, "PROTOCOL", function() {
+                return PROTOCOL;
             }), __webpack_require__.d(__webpack_exports__, "ENV", function() {
                 return ENV;
             }), __webpack_require__.d(__webpack_exports__, "FPTI_KEY", function() {
