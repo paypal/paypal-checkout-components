@@ -7,6 +7,7 @@
 
 import os from 'os';
 
+// $FlowFixMe
 import puppeteer from 'puppeteer';
 
 import { createTempFile } from './util';

@@ -3,6 +3,7 @@
 
 import { join } from 'path';
 
+// $FlowFixMe
 import puppeteer from 'puppeteer';
 import { withMock, methods } from 'mocketeer';
 
