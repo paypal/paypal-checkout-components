@@ -1,3 +1,16 @@
+## <small>5.0.39 (2019-06-12)</small>
+
+* Fix credit screenshot ([9483f43](http://github.paypal.com/paypal/paypal-checkout/commit/9483f43))
+* Fix dev server ([d7a56a2](http://github.paypal.com/paypal/paypal-checkout/commit/d7a56a2))
+* Initial Mark component implementation ([b6b60e9](http://github.paypal.com/paypal/paypal-checkout/commit/b6b60e9))
+* Move logic down to smart buttons ([7bb0567](http://github.paypal.com/paypal/paypal-checkout/commit/7bb0567))
+* Point to /checkoutnow on localhost ([f3b39dc](http://github.paypal.com/paypal/paypal-checkout/commit/f3b39dc))
+* Suppress flow checks for puppeteer import ([3caade7](http://github.paypal.com/paypal/paypal-checkout/commit/3caade7))
+* Use @paypal/funding-components module for remembered funding ([fc3b39b](http://github.paypal.com/paypal/paypal-checkout/commit/fc3b39b))
+* Use common overlay component ([3824c08](http://github.paypal.com/paypal/paypal-checkout/commit/3824c08))
+
+
+
 ## <small>5.0.38 (2019-06-03)</small>
 
 * Add SKIP_TEST flag ([ce238e5](http://github.paypal.com/paypal/paypal-checkout/commit/ce238e5))
