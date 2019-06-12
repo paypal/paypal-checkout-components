@@ -1,6 +1,6 @@
 /* @flow */
 
-import { type ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize } from 'belter/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
@@ -49,37 +49,39 @@ export function getCreateOrder(xprops : XProps, { createBillingAgreement, create
     const actions = buildXCreateOrderActions({ clientID });
 
     return memoize(() => {
-        if (createBillingAgreement) {
-            return createBillingAgreement().then(billingTokenToOrderID);
-        }  else if (createSubscription) {
-            return createSubscription().then(subscriptionIdToCartId);
-        } else if (createOrder) {
-            return createOrder(data, actions).then(orderID => {
-                if (!orderID || typeof orderID !== 'string')  {
-                    throw new Error(`Expected an order id to be passed to createOrder`);
-                }
-
-                getLogger().track({
-                    [ FPTI_KEY.STATE ]:              FPTI_STATE.BUTTON,
-                    [ FPTI_KEY.TRANSITION ]:         FPTI_TRANSITION.RECEIVE_ORDER,
-                    [ FPTI_KEY.CONTEXT_TYPE ]:       FPTI_CONTEXT_TYPE.ORDER_ID,
-                    [ FPTI_KEY.CONTEXT_ID ]:         orderID,
-                    [ FPTI_KEY.BUTTON_SESSION_UID ]: buttonSessionID
-                }).flush();
-
-                return orderID;
-            });
-        } else {
-            return actions.order.create({
-                purchase_units: [
-                    {
-                        amount: {
-                            currency_code: 'USD',
-                            value:         '0.01'
+        return ZalgoPromise.try(() => {
+            if (createBillingAgreement) {
+                return createBillingAgreement().then(billingTokenToOrderID);
+            } else if (createSubscription) {
+                return createSubscription().then(subscriptionIdToCartId);
+            } else if (createOrder) {
+                return createOrder(data, actions);
+            } else {
+                return actions.order.create({
+                    purchase_units: [
+                        {
+                            amount: {
+                                currency_code: 'USD',
+                                value:         '0.01'
+                            }
                         }
-                    }
-                ]
-            });
-        }
+                    ]
+                });
+            }
+        }).then(orderID => {
+            if (!orderID || typeof orderID !== 'string') {
+                throw new Error(`Expected an order id to be passed`);
+            }
+
+            getLogger().track({
+                [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
+                [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.RECEIVE_ORDER,
+                [FPTI_KEY.CONTEXT_TYPE]:       FPTI_CONTEXT_TYPE.ORDER_ID,
+                [FPTI_KEY.CONTEXT_ID]:         orderID,
+                [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID
+            }).flush();
+
+            return orderID;
+        });
     });
 }
