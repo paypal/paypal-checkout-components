@@ -24,6 +24,9 @@ export function isFundingIneligible(source : FundingSource, { locale, funding, l
     if (funding.disallowed.indexOf(source) !== -1 && source === FUNDING.VENMO) {
         return FUNDING_ELIGIBILITY_REASON.OPT_OUT;
     }
+    if (funding.disallowed.indexOf(source) !== -1 && source === FUNDING.ITAU) {
+        return FUNDING_ELIGIBILITY_REASON.OPT_OUT;
+    }
 
     if (getFundingConfig(source, 'allowedCountries', [ locale.country ]).indexOf(locale.country) === -1) {
         return FUNDING_ELIGIBILITY_REASON.DISALLOWED_COUNTRY;

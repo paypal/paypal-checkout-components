@@ -16,6 +16,7 @@ import pp_black     from './pp_black.svg';
 import { paypalLogo } from './paypal';
 import { creditLogo } from './credit';
 import venmo_white  from './venmo_white.svg';
+import itau  from './itau.svg';
 import venmo_blue   from './venmo_blue.svg';
 import elv          from './elv.svg';
 import elv_white    from './elv_white.svg';
@@ -35,6 +36,9 @@ export const fundingLogos = {
     [ BUTTON_LOGO.VENMO ]: {
         [ BUTTON_LOGO_COLOR.WHITE ]: venmo_white,
         [ BUTTON_LOGO_COLOR.BLUE ]:  venmo_blue
+    },
+    [ BUTTON_LOGO.ITAU ]: {
+        [ BUTTON_LOGO_COLOR.BLUE ]: itau
     },
 
     [ BUTTON_LOGO.IDEAL ]: idealLogo,

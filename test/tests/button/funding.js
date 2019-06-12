@@ -70,7 +70,7 @@ describe(`paypal button component funding mix`, () => {
                 remembered: [ window.paypal.FUNDING.VENMO ]
             };
         };
-        
+
         window.paypal.Button.render({
 
             test: {
@@ -257,6 +257,7 @@ describe(`paypal button component funding mix`, () => {
         }, '#testContainer');
     });
 
+
     it('should not render venmo for ineligible country', (done) => {
 
         const decorate = window.paypal.Button.props.funding.decorate;
@@ -283,6 +284,293 @@ describe(`paypal button component funding mix`, () => {
 
             funding: {
                 allowed: [ window.paypal.FUNDING.VENMO ]
+            },
+
+            payment() : string | ZalgoPromise<string> {
+                throw new Error('Expected payment to not be called');
+            },
+
+            onAuthorize() {
+                throw new Error('Expected onAuthorize to not be called');
+            },
+
+            onCancel() {
+                throw new Error('Expected onCancel to not be called');
+            },
+
+            onError: done
+
+        }, '#testContainer');
+    });
+
+    it('should render itau alongside default button', (done) => {
+
+        const decorate = window.paypal.Button.props.funding.decorate;
+        window.paypal.Button.props.funding.decorate = (funding) => {
+            return {
+                ...funding,
+                remembered: [ window.paypal.FUNDING.ITAU ]
+            };
+        };
+
+        window.paypal.Button.render({
+
+            test: {
+                onRender({ fundingSources }) {
+                    if (fundingSources.indexOf(window.paypal.FUNDING.ITAU) === -1) {
+                        throw new Error(`Expected ITAU to be offered, got ${ JSON.stringify(fundingSources) }`);
+                    }
+                    window.paypal.Button.props.funding.decorate = decorate;
+                    done();
+                }
+            },
+
+            locale: 'pt_BR',
+
+            funding: {
+                allowed: [ window.paypal.FUNDING.CARD ]
+            },
+
+            payment() : string | ZalgoPromise<string> {
+                throw new Error('Expected payment to not be called');
+            },
+
+            onAuthorize() {
+                throw new Error('Expected onAuthorize to not be called');
+            },
+
+            onCancel() {
+                throw new Error('Expected onCancel to not be called');
+            },
+
+            onError: done
+
+        }, '#testContainer');
+    });
+
+    it('should render itau alongside checkout button', (done) => {
+
+        const decorate = window.paypal.Button.props.funding.decorate;
+        window.paypal.Button.props.funding.decorate = (funding) => {
+            return {
+                ...funding,
+                remembered: [ window.paypal.FUNDING.ITAU ]
+            };
+        };
+
+        window.paypal.Button.render({
+
+            test: {
+                onRender({ fundingSources }) {
+                    if (fundingSources.indexOf(window.paypal.FUNDING.ITAU) === -1) {
+                        throw new Error(`Expected itau to be offered, got ${ JSON.stringify(fundingSources) }`);
+                    }
+                    window.paypal.Button.props.funding.decorate = decorate;
+                    done();
+                }
+            },
+
+            style: {
+                label: 'checkout'
+            },
+
+            locale: 'pt_BR',
+
+            funding: {
+                allowed: [ window.paypal.FUNDING.CARD ]
+            },
+
+            payment() : string | ZalgoPromise<string> {
+                throw new Error('Expected payment to not be called');
+            },
+
+            onAuthorize() {
+                throw new Error('Expected onAuthorize to not be called');
+            },
+
+            onCancel() {
+                throw new Error('Expected onCancel to not be called');
+            },
+
+            onError: done
+
+        }, '#testContainer');
+    });
+
+
+    it('should render itau alongside pay button', (done) => {
+
+        const decorate = window.paypal.Button.props.funding.decorate;
+        window.paypal.Button.props.funding.decorate = (funding) => {
+            return {
+                ...funding,
+                remembered: [ window.paypal.FUNDING.ITAU ]
+            };
+        };
+
+        window.paypal.Button.render({
+
+            test: {
+                onRender({ fundingSources }) {
+                    if (fundingSources.indexOf(window.paypal.FUNDING.ITAU) === -1) {
+                        throw new Error(`Expected itau to be offered, got ${ JSON.stringify(fundingSources) }`);
+                    }
+                    window.paypal.Button.props.funding.decorate = decorate;
+                    done();
+                }
+            },
+
+            style: {
+                label: 'pay'
+            },
+
+            locale: 'pt_BR',
+
+            funding: {
+                allowed: [ window.paypal.FUNDING.CARD ]
+            },
+
+            payment() : string | ZalgoPromise<string> {
+                throw new Error('Expected payment to not be called');
+            },
+
+            onAuthorize() {
+                throw new Error('Expected onAuthorize to not be called');
+            },
+
+            onCancel() {
+                throw new Error('Expected onCancel to not be called');
+            },
+
+            onError: done
+
+        }, '#testContainer');
+    });
+
+    it('should render itau alongside paypal button', (done) => {
+
+        const decorate = window.paypal.Button.props.funding.decorate;
+        window.paypal.Button.props.funding.decorate = (funding) => {
+            return {
+                ...funding,
+                remembered: [ window.paypal.FUNDING.ITAU ]
+            };
+        };
+
+        window.paypal.Button.render({
+
+            test: {
+                onRender({ fundingSources }) {
+                    if (fundingSources.indexOf(window.paypal.FUNDING.ITAU) === -1) {
+                        throw new Error(`Expected itau to be offered, got ${ JSON.stringify(fundingSources) }`);
+                    }
+                    window.paypal.Button.props.funding.decorate = decorate;
+                    done();
+                }
+            },
+
+            style: {
+                label: 'paypal'
+            },
+
+            locale: 'pt_BR',
+
+            funding: {
+                allowed: [ window.paypal.FUNDING.CARD ]
+            },
+
+            payment() : string | ZalgoPromise<string> {
+                throw new Error('Expected payment to not be called');
+            },
+
+            onAuthorize() {
+                throw new Error('Expected onAuthorize to not be called');
+            },
+
+            onCancel() {
+                throw new Error('Expected onCancel to not be called');
+            },
+
+            onError: done
+
+        }, '#testContainer');
+    });
+
+    it('should render itau alongside buynow button', (done) => {
+
+        const decorate = window.paypal.Button.props.funding.decorate;
+        window.paypal.Button.props.funding.decorate = (funding) => {
+            return {
+                ...funding,
+                remembered: [ window.paypal.FUNDING.ITAU ]
+            };
+        };
+
+        window.paypal.Button.render({
+
+            test: {
+                onRender({ fundingSources }) {
+                    if (fundingSources.indexOf(window.paypal.FUNDING.ITAU) === -1) {
+                        throw new Error(`Expected itau to be offered, got ${ JSON.stringify(fundingSources) }`);
+                    }
+                    window.paypal.Button.props.funding.decorate = decorate;
+                    done();
+                }
+            },
+
+            style: {
+                label: 'buynow'
+            },
+
+            locale: 'pt_BR',
+
+            funding: {
+                allowed: [ window.paypal.FUNDING.CARD ]
+            },
+
+            payment() : string | ZalgoPromise<string> {
+                throw new Error('Expected payment to not be called');
+            },
+
+            onAuthorize() {
+                throw new Error('Expected onAuthorize to not be called');
+            },
+
+            onCancel() {
+                throw new Error('Expected onCancel to not be called');
+            },
+
+            onError: done
+
+        }, '#testContainer');
+    });
+
+    it('should not render itau for ineligible country', (done) => {
+
+        const decorate = window.paypal.Button.props.funding.decorate;
+        window.paypal.Button.props.funding.decorate = (funding) => {
+            return {
+                ...funding,
+                remembered: [ window.paypal.FUNDING.ITAU ]
+            };
+        };
+
+        window.paypal.Button.render({
+
+            test: {
+                onRender({ fundingSources }) {
+                    if (fundingSources.indexOf(window.paypal.FUNDING.ITAU) !== -1) {
+                        throw new Error(`Expected itau to not be offered`);
+                    }
+                    window.paypal.Button.props.funding.decorate = decorate;
+                    done();
+                }
+            },
+
+            locale: 'en_US',
+
+            funding: {
+                allowed: [ window.paypal.FUNDING.ITAU ]
             },
 
             payment() : string | ZalgoPromise<string> {

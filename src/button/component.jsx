@@ -509,6 +509,9 @@ export const Button : Component<ButtonOptions> = create({
                 if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1) {
                     allowed = allowed.filter(source => (source !== FUNDING.VENMO));
                 }
+                if (allowed && allowed.indexOf(FUNDING.ITAU) !== -1) {
+                    allowed = allowed.filter(source => (source !== FUNDING.ITAU));
+                }
 
                 if (isCreditDualEligible(props)) {
                     creditThrottle = getThrottle('dual_credit_automatic', 50);
