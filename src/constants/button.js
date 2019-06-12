@@ -9,6 +9,7 @@ export const BUTTON_LABEL = {
     CARD:        ('card' : 'card'),
     INSTALLMENT: ('installment' : 'installment'),
     VENMO:       ('venmo' : 'venmo'),
+    ITAU:        ('itau' : 'itau'),
     IDEAL:       ('ideal' : 'ideal'),
     SEPA:        ('sepa' : 'sepa'),
     BANCONTACT:  ('bancontact' : 'bancontact'),

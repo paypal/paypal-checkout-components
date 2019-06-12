@@ -6,6 +6,7 @@ import { inlineMemoize } from 'belter/src';
 import { type FundingSourceConfig } from './common';
 import { getPayPalConfig } from './paypal';
 import { getVenmoConfig } from './venmo';
+import { getItauConfig } from './itau';
 import { getCreditConfig } from './credit';
 import { getCardConfig } from './card';
 import { getIdealConfig } from './ideal';
@@ -22,6 +23,7 @@ import { getWechatpayConfig } from './wechatpay';
 export const FUNDING_PRIORITY = [
     FUNDING.PAYPAL,
     FUNDING.VENMO,
+    FUNDING.ITAU,
     FUNDING.CREDIT,
     FUNDING.IDEAL,
     FUNDING.SEPA,
@@ -41,6 +43,7 @@ export function getFundingConfig() : { [$Values<typeof FUNDING>] : ?FundingSourc
         return {
             [ FUNDING.PAYPAL ]:     (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.paypal     && __paypal_checkout__.serverConfig.fundingEligibility.paypal.eligible)) ? getPayPalConfig() : null,
             [ FUNDING.VENMO ]:      (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.venmo      && __paypal_checkout__.serverConfig.fundingEligibility.venmo.eligible)) ? getVenmoConfig() : null,
+            [ FUNDING.ITAU ]:       (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.itau       && __paypal_checkout__.serverConfig.fundingEligibility.itau.eligible)) ? getItauConfig() : null,
             [ FUNDING.CREDIT ]:     (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.credit     && __paypal_checkout__.serverConfig.fundingEligibility.credit.eligible)) ? getCreditConfig() : null,
             [ FUNDING.CARD ]:       (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card       && __paypal_checkout__.serverConfig.fundingEligibility.card.eligible)) ? getCardConfig() : null,
             [ FUNDING.IDEAL ]:      (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.ideal      && __paypal_checkout__.serverConfig.fundingEligibility.ideal.eligible)) ? getIdealConfig() : null,
