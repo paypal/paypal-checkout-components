@@ -139,7 +139,7 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
                     updateButtonClientConfig({ orderID, fundingSource, isCardFields }));
 
                 return start()
-                    .then(createOrder)
+                    .then(() => createOrder())
                     .then(validateOrder)
                     .catch(err => {
                         return ZalgoPromise.all([
