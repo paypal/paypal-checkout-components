@@ -18,7 +18,8 @@ export const BUTTON_LABEL = {
     MYBANK:      ('mybank' : 'mybank'),
     P24:         ('p24' : 'p24'),
     ZIMPLER:     ('zimpler' : 'zimpler'),
-    WECHATPAY:   ('wechatpay' : 'wechatpay')
+    WECHATPAY:   ('wechatpay' : 'wechatpay'),
+    PAYU:        ('payu' : 'payu')
 };
 
 export const BUTTON_COLOR = {

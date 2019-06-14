@@ -143,5 +143,9 @@ export type FundingEligibilityType = {|
     zimpler : {
         eligible : boolean,
         branded : boolean
+    },
+    payu : {
+        eligible : boolean,
+        branded : boolean
     }
 |};

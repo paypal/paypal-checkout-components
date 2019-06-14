@@ -18,6 +18,7 @@ import { getMybankConfig } from './mybank';
 import { getP24Config } from './p24';
 import { getZimplerConfig } from './zimpler';
 import { getWechatpayConfig } from './wechatpay';
+import { getPayuConfig } from './payu';
 
 export const FUNDING_PRIORITY = [
     FUNDING.PAYPAL,
@@ -33,6 +34,7 @@ export const FUNDING_PRIORITY = [
     FUNDING.P24,
     FUNDING.ZIMPLER,
     FUNDING.WECHATPAY,
+    FUNDING.PAYU,
     FUNDING.CARD
 ];
 
@@ -52,7 +54,8 @@ export function getFundingConfig() : { [$Values<typeof FUNDING>] : ?FundingSourc
             [ FUNDING.MYBANK ]:     (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.mybank.eligible) ? getMybankConfig() : null,
             [ FUNDING.P24 ]:        (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.p24.eligible) ? getP24Config() : null,
             [ FUNDING.ZIMPLER ]:    (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.zimpler.eligible) ? getZimplerConfig() : null,
-            [ FUNDING.WECHATPAY ]:  (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.wechatpay.eligible) ? getWechatpayConfig() : null
+            [ FUNDING.WECHATPAY ]:  (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.wechatpay.eligible) ? getWechatpayConfig() : null,
+            [ FUNDING.PAYU ]:       (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.payu.eligible) ? getPayuConfig() : null
         };
     });
 }
