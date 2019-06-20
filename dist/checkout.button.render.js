@@ -44,7 +44,7 @@
         return __webpack_require__.d(getter, "a", getter), getter;
     }, __webpack_require__.o = function(object, property) {
         return {}.hasOwnProperty.call(object, property);
-    }, __webpack_require__.p = "", __webpack_require__(__webpack_require__.s = 16);
+    }, __webpack_require__.p = "", __webpack_require__(__webpack_require__.s = 17);
 }([ function(module, exports) {
     module.exports = '<svg width="24" height="32" viewBox="0 0 24 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <path fill="#ffffff" opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 6.378 28.938 C 6.285 29.238 6.659 29.638 6.94 29.638 L 11.153 29.638 C 11.621 29.638 11.995 29.238 12.089 28.739 L 12.182 28.539 L 12.931 23.341 L 13.025 23.041 C 13.119 22.441 13.493 22.141 13.961 22.141 L 14.616 22.141 C 18.642 22.141 21.731 20.342 22.668 15.443 C 23.042 13.344 22.855 11.545 21.825 10.345 C 21.451 10.046 21.076 9.646 20.702 9.446 L 20.702 9.446"></path>\n    <path fill="#ffffff" opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 7.876 18.642 C 8.063 18.043 8.438 17.643 9.093 17.643 L 11.433 17.643 C 16.021 17.643 19.578 15.643 20.608 9.946 C 20.608 9.746 20.608 9.546 20.702 9.446"></path>\n    <path fill="#ffffff" d="M 9.28 9.446 C 9.28 9.146 9.468 8.846 9.842 8.646 C 9.936 8.646 10.123 8.546 10.216 8.546 L 16.489 8.546 C 17.238 8.546 17.893 8.646 18.548 8.746 C 18.736 8.746 18.829 8.746 19.11 8.846 C 19.204 8.946 19.391 8.946 19.578 9.046 C 19.672 9.046 19.672 9.046 19.859 9.146 C 20.14 9.246 20.421 9.346 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.648 C 18.361 3.248 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 3.048 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 9.28 9.446 Z"></path>\n    <g transform="matrix(0.497737, 0, 0, 0.52612, 1.10144, 0.638654)" opacity="0.2">\n        <path fill="#231f20" d="M39.3 16.7c0.9 0.5 1.7 1.1 2.3 1.8 1 1.1 1.6 2.5 1.9 4.1 0.3-3.2-0.2-5.8-1.9-7.8-0.6-0.7-1.3-1.2-2.1-1.7C39.5 14.2 39.5 15.4 39.3 16.7z"></path>\n        <path fill="#231f20" d="M0.4 45.2L6.7 5.6C6.8 4.5 7.8 3.7 8.9 3.7h16c5.5 0 9.8 1.2 12.2 3.9 1.2 1.4 1.9 3 2.2 4.8 0.4-3.6-0.2-6.1-2.2-8.4C34.7 1.2 30.4 0 24.9 0H8.9c-1.1 0-2.1 0.8-2.3 1.9L0 44.1C0 44.5 0.1 44.9 0.4 45.2z"></path>\n        <path fill="#231f20" d="M10.7 49.4l-0.1 0.6c-0.1 0.4 0.1 0.8 0.4 1.1l0.3-1.7H10.7z"></path>\n    </g>\n</svg>\n';
 }, function(module, exports) {
@@ -53,6 +53,8 @@
     module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="24" height="32" viewBox="0 0 24 32" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <path opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 6.378 28.938 C 6.285 29.238 6.659 29.638 6.94 29.638 L 11.153 29.638 C 11.621 29.638 11.995 29.238 12.089 28.739 L 12.182 28.539 L 12.931 23.341 L 13.025 23.041 C 13.119 22.441 13.493 22.141 13.961 22.141 L 14.616 22.141 C 18.642 22.141 21.731 20.342 22.668 15.443 C 23.042 13.344 22.855 11.545 21.825 10.345 C 21.451 10.046 21.076 9.646 20.702 9.446 L 20.702 9.446" style="fill: rgb(99, 99, 99);"/>\n  <path opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 7.876 18.642 C 8.063 18.043 8.438 17.643 9.093 17.643 L 11.433 17.643 C 16.021 17.643 19.578 15.643 20.608 9.946 C 20.608 9.746 20.608 9.546 20.702 9.446"/>\n  <path d="M 9.28 9.446 C 9.28 9.146 9.468 8.846 9.842 8.646 C 9.936 8.646 10.123 8.546 10.216 8.546 L 16.489 8.546 C 17.238 8.546 17.893 8.646 18.548 8.746 C 18.736 8.746 18.829 8.746 19.11 8.846 C 19.204 8.946 19.391 8.946 19.578 9.046 C 19.672 9.046 19.672 9.046 19.859 9.146 C 20.14 9.246 20.421 9.346 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.648 C 18.361 3.248 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 3.048 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 9.28 9.446 Z" style="fill: rgb(51, 48, 48);"/>\n  <g transform="matrix(0.497737, 0, 0, 0.52612, 1.10144, 0.638654)" opacity="0.2">\n    <path fill="#231f20" d="M39.3 16.7c0.9 0.5 1.7 1.1 2.3 1.8 1 1.1 1.6 2.5 1.9 4.1 0.3-3.2-0.2-5.8-1.9-7.8-0.6-0.7-1.3-1.2-2.1-1.7C39.5 14.2 39.5 15.4 39.3 16.7z"/>\n    <path fill="#231f20" d="M0.4 45.2L6.7 5.6C6.8 4.5 7.8 3.7 8.9 3.7h16c5.5 0 9.8 1.2 12.2 3.9 1.2 1.4 1.9 3 2.2 4.8 0.4-3.6-0.2-6.1-2.2-8.4C34.7 1.2 30.4 0 24.9 0H8.9c-1.1 0-2.1 0.8-2.3 1.9L0 44.1C0 44.5 0.1 44.9 0.4 45.2z"/>\n    <path fill="#231f20" d="M10.7 49.4l-0.1 0.6c-0.1 0.4 0.1 0.8 0.4 1.1l0.3-1.7H10.7z"/>\n  </g>\n</svg>';
 }, function(module, exports) {
     module.exports = '<svg width="101" height="32" viewBox="0 0 101 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n        <g id="White" fill="#FFFFFF">\n            <g id="Logo" transform="translate(0.000000, 6.000000)">\n                <path d="M16.6660484,0.18 C17.3466626,1.3390991 17.6535069,2.53297297 17.6535069,4.04108108 C17.6535069,8.85117117 13.671346,15.0998198 10.439346,19.4875676 L3.05725952,19.4875676 L0.0966314879,1.23315315 L6.56045675,0.60036036 L8.12578201,13.5895495 C9.58835986,11.1326126 11.3932543,7.27153153 11.3932543,4.6390991 C11.3932543,3.1981982 11.1538599,2.21675676 10.7797405,1.40864865 L16.6660484,0.18 Z M24.9071592,11.6938739 C24.9071592,13.8367568 26.062718,14.6774775 27.5946678,14.6774775 C29.2629152,14.6774775 30.860218,14.2571171 32.9363097,13.1691892 L32.154346,18.6445045 C30.6915934,19.3814414 28.4119291,19.8731532 26.1991903,19.8731532 C20.5863512,19.8731532 18.5775346,16.3632432 18.5775346,11.9753153 C18.5775346,6.28810811 21.8451817,0.249369369 28.5819516,0.249369369 C32.2909931,0.249369369 34.3649879,2.39207207 34.3649879,5.37567568 C34.3653374,10.1855856 28.3783789,11.6590991 24.9071592,11.6938739 Z M25.0434567,8.2181982 C26.2329152,8.2181982 29.2274429,7.65711712 29.2274429,5.90216216 C29.2274429,5.05945946 28.6495761,4.6390991 27.9686125,4.6390991 C26.7772318,4.6390991 25.2138287,6.11225225 25.0434567,8.2181982 Z M53.0187093,4.4636036 C53.0187093,5.16558559 52.9154377,6.18378378 52.8126903,6.84918919 L50.8730709,19.4873874 L44.5790934,19.4873874 L46.3483408,7.90216216 C46.381891,7.58792793 46.4849879,6.95531532 46.4849879,6.60432432 C46.4849879,5.76162162 45.9743962,5.55135135 45.3605329,5.55135135 C44.5451938,5.55135135 43.7279325,5.93711712 43.1836159,6.21873874 L41.1768962,19.4875676 L34.8474464,19.4875676 L37.7390519,0.565945946 L43.2171661,0.565945946 L43.2865381,2.07621622 C44.5789187,1.19873874 46.2807163,0.24972973 48.6952803,0.24972973 C51.8942543,0.249369369 53.0187093,1.93495495 53.0187093,4.4636036 Z M71.7037093,2.32072072 C73.5063322,0.988108108 75.2084792,0.249369369 77.5554187,0.249369369 C80.7872439,0.249369369 81.9113495,1.93495495 81.9113495,4.4636036 C81.9113495,5.16558559 81.8084273,6.18378378 81.7056799,6.84918919 L79.7683322,19.4873874 L73.4726073,19.4873874 L75.2755796,7.6572973 C75.3087803,7.34108108 75.3785017,6.95531532 75.3785017,6.71063063 C75.3785017,5.7618018 74.8677353,5.55135135 74.2540467,5.55135135 C73.4722578,5.55135135 72.6908183,5.90234234 72.1106799,6.21873874 L70.1043097,19.4875676 L63.8101574,19.4875676 L65.6131298,7.65747748 C65.6463304,7.34126126 65.713955,6.9554955 65.713955,6.71081081 C65.713955,5.76198198 65.2030138,5.55153153 64.5914221,5.55153153 C63.7743356,5.55153153 62.9588218,5.9372973 62.4145052,6.21891892 L60.4062128,19.4877477 L54.0788599,19.4877477 L56.9701159,0.566126126 L62.3813045,0.566126126 L62.551327,2.14576577 C63.8101574,1.1990991 65.5105571,0.25009009 67.7900467,0.25009009 C69.7637405,0.249369369 71.0559464,1.12702703 71.7037093,2.32072072 Z M83.55059,11.7998198 C83.55059,5.83279279 86.6120433,0.249369369 93.6558322,0.249369369 C98.9633997,0.249369369 100.903543,3.47981982 100.903543,7.93873874 C100.903543,13.8365766 97.8751159,19.9443243 90.6614792,19.9443243 C85.3196626,19.9443243 83.55059,16.3281081 83.55059,11.7998198 Z M94.4374464,7.83279279 C94.4374464,6.28810811 94.0628028,5.23495495 92.9409689,5.23495495 C90.4570329,5.23495495 89.9469654,9.76306306 89.9469654,12.0794595 C89.9469654,13.8367568 90.4238322,14.9243243 91.5453166,14.9243243 C93.8931298,14.9243243 94.4374464,10.149009 94.4374464,7.83279279 Z"></path>\n            </g>\n        </g>\n    </g>\n</svg>\n';
+}, function(module, exports) {
+    module.exports = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 105">\n    <title>Asset 3</title>\n    <g id="Layer_2" >\n        <g id="Layer_1-2">\n            <rect width="750" height="105" rx="11" fill="#004995"/>\n            <rect x="452.24" y="19.99" width="55" height="54.14" rx="8.98"\n                  transform="translate(2.52 115.09) rotate(-13.72)" fill="#ff7900"/>\n            <rect x="467.2" y="26.15" width="33.66" height="34.11" rx="5.84" fill="#004995"/>\n            <path d="M394.93,60.57a9.34,9.34,0,0,0-2.36-5.72,12.06,12.06,0,0,0-9.52-4.1c-3.32.08-8.05.62-11,2.78l1.8,5.38s2.69-2.24,8.07-2.24c2.33,0,4.49,1.34,4.94,2.69v.45c-2.87,0-11.88.58-15.26,5.84-4,6.28,2.25,12.11,6.28,12.11,3.2,0,6.57.2,9.43-2.69l.45,2.25h7.18V62.07a3.52,3.52,0,0,1,0-.46Zm-16.16,8.67c.34-3.74,5.56-4.13,8.08-4.11v4.51C384.22,73.24,378.44,72.89,378.77,69.24Z"\n                  fill="#fff"/>\n            <path d="M368,52.63s-15.77-4.29-20.65,6.28c-2.69,5.84-1.35,11.94,1.8,15.26a12.77,12.77,0,0,0,5.38,3.15c4,1.34,11.23.89,13.47-.45L367.1,71s-7.18,2.25-10.77-1.35c-4.72-4.71-.45-12.11,4.49-12.11s6.28.89,6.28.89Z"\n                  fill="#fff"/>\n            <rect x="258.48" y="43.2" width="8.08" height="34.11" fill="#fff"/>\n            <path d="M286.31,58V51.73h-4.49V43.2h-8.08v8.53h-4V58h4V71A6.29,6.29,0,0,0,280,77.32h6.29V71h-2.26a2.23,2.23,0,0,1-2.23-2.23V58Z"\n                  fill="#fff"/>\n            <path d="M313.69,60.57a9.46,9.46,0,0,0-2.36-5.72,12.08,12.08,0,0,0-9.52-4.1c-3.32.08-8.05.62-11,2.78l1.79,5.38s2.7-2.24,8.08-2.24c2.33,0,4.49,1.34,4.94,2.69v.45c-2.87,0-11.89.58-15.26,5.84-4,6.28,2.24,12.11,6.28,12.11,3.2,0,6.57.2,9.43-2.69l.45,2.25h7.18V62.07a3.52,3.52,0,0,1,0-.46Zm-16.16,8.67c.34-3.74,5.56-4.13,8.08-4.11v4.51C303,73.24,297.2,72.89,297.53,69.24Z"\n                  fill="#fff"/>\n            <path d="M334.78,51.73v15a2.81,2.81,0,0,1-.45,1.57c-1,1.53-2.33,2.7-4,2.7A4.38,4.38,0,0,1,326,68.25a2.72,2.72,0,0,1-.23-1.13V51.73h-8.08V69.24c0,4.46,3.62,8.52,8.08,8.52,8.08.45,9.42-3.59,9.42-3.59l0-.1.88,3.25h6.73V51.73Z"\n                  fill="#fff"/>\n            <rect x="469.89" y="43.2" width="2.71" height="11.43" fill="#fff100"/>\n            <path d="M479.22,48.17V46.06h-1.51V43.2H475v2.86h-1.35v2.11H475v4.36a2.11,2.11,0,0,0,2.11,2.1h2.11v-2.1h-.76a.76.76,0,0,1-.75-.75V48.17Z"\n                  fill="#fff100"/>\n            <path d="M488.39,49a3.14,3.14,0,0,0-.79-1.91,4,4,0,0,0-3.19-1.38,7,7,0,0,0-3.69.93l.6,1.81a4.42,4.42,0,0,1,2.71-.75,1.79,1.79,0,0,1,1.65.9v.15c-1,0-4,.19-5.11,1.95-1.35,2.11.75,4.06,2.1,4.06a3.89,3.89,0,0,0,3.16-.9l.15.75h2.41V49ZM483,51.93c.11-1.26,1.86-1.39,2.7-1.38v1.51C484.8,53.27,482.86,53.15,483,51.93Z"\n                  fill="#fff100"/>\n            <path d="M495.46,46.06v5.31a1.88,1.88,0,0,1-1.5,1.16,1.51,1.51,0,0,1-1.51-1.13V46.06h-2.71v5.87a2.84,2.84,0,0,0,2.71,2.85c2.71.15,3.16-1.2,3.16-1.2v0l.3,1.08h2.26V46.06Z"\n                  fill="#fff100"/>\n            <path d="M406.08,56.2l-.38-4.47H399V77.32h8.08V62.94c.71-1.85,2.54-4.48,7.18-4.48V50.83A9.48,9.48,0,0,0,406.08,56.2Z"\n                  fill="#fff"/>\n            <path d="M436.23,40.51V53.84c-1.24-1.44-3.52-3-7.63-3C421,50.83,416,57.57,416,65.2a12.44,12.44,0,0,0,12.12,12.56,16.68,16.68,0,0,0,8.69-3L438,77.32h6.28V40.51Zm-5.62,30.75c-4.93,0-5.83-4-5.83-7.19s1.35-6.73,5.83-6.73c2.66,0,4.53,2,5.62,3.71v6.19C435,69.23,433.12,71.26,430.61,71.26Z"\n                  fill="#fff"/>\n            <polygon points="495.02 45.45 492.78 45.45 494.58 43.2 497.27 43.2 495.02 45.45" fill="#fff100"/>\n        </g>\n    </g>\n</svg>\n';
 }, function(module, exports) {
     module.exports = '<svg width="101" height="32" viewBox="0 0 101 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n        <g id="Blue" fill="#3D93CE">\n            <g id="Logo" transform="translate(0.000000, 6.000000)">\n                <path d="M16.6660484,0.18 C17.3466626,1.3390991 17.6535069,2.53297297 17.6535069,4.04108108 C17.6535069,8.85117117 13.671346,15.0998198 10.439346,19.4875676 L3.05725952,19.4875676 L0.0966314879,1.23315315 L6.56045675,0.60036036 L8.12578201,13.5895495 C9.58835986,11.1326126 11.3932543,7.27153153 11.3932543,4.6390991 C11.3932543,3.1981982 11.1538599,2.21675676 10.7797405,1.40864865 L16.6660484,0.18 Z M24.9071592,11.6938739 C24.9071592,13.8367568 26.062718,14.6774775 27.5946678,14.6774775 C29.2629152,14.6774775 30.860218,14.2571171 32.9363097,13.1691892 L32.154346,18.6445045 C30.6915934,19.3814414 28.4119291,19.8731532 26.1991903,19.8731532 C20.5863512,19.8731532 18.5775346,16.3632432 18.5775346,11.9753153 C18.5775346,6.28810811 21.8451817,0.249369369 28.5819516,0.249369369 C32.2909931,0.249369369 34.3649879,2.39207207 34.3649879,5.37567568 C34.3653374,10.1855856 28.3783789,11.6590991 24.9071592,11.6938739 Z M25.0434567,8.2181982 C26.2329152,8.2181982 29.2274429,7.65711712 29.2274429,5.90216216 C29.2274429,5.05945946 28.6495761,4.6390991 27.9686125,4.6390991 C26.7772318,4.6390991 25.2138287,6.11225225 25.0434567,8.2181982 Z M53.0187093,4.4636036 C53.0187093,5.16558559 52.9154377,6.18378378 52.8126903,6.84918919 L50.8730709,19.4873874 L44.5790934,19.4873874 L46.3483408,7.90216216 C46.381891,7.58792793 46.4849879,6.95531532 46.4849879,6.60432432 C46.4849879,5.76162162 45.9743962,5.55135135 45.3605329,5.55135135 C44.5451938,5.55135135 43.7279325,5.93711712 43.1836159,6.21873874 L41.1768962,19.4875676 L34.8474464,19.4875676 L37.7390519,0.565945946 L43.2171661,0.565945946 L43.2865381,2.07621622 C44.5789187,1.19873874 46.2807163,0.24972973 48.6952803,0.24972973 C51.8942543,0.249369369 53.0187093,1.93495495 53.0187093,4.4636036 Z M71.7037093,2.32072072 C73.5063322,0.988108108 75.2084792,0.249369369 77.5554187,0.249369369 C80.7872439,0.249369369 81.9113495,1.93495495 81.9113495,4.4636036 C81.9113495,5.16558559 81.8084273,6.18378378 81.7056799,6.84918919 L79.7683322,19.4873874 L73.4726073,19.4873874 L75.2755796,7.6572973 C75.3087803,7.34108108 75.3785017,6.95531532 75.3785017,6.71063063 C75.3785017,5.7618018 74.8677353,5.55135135 74.2540467,5.55135135 C73.4722578,5.55135135 72.6908183,5.90234234 72.1106799,6.21873874 L70.1043097,19.4875676 L63.8101574,19.4875676 L65.6131298,7.65747748 C65.6463304,7.34126126 65.713955,6.9554955 65.713955,6.71081081 C65.713955,5.76198198 65.2030138,5.55153153 64.5914221,5.55153153 C63.7743356,5.55153153 62.9588218,5.9372973 62.4145052,6.21891892 L60.4062128,19.4877477 L54.0788599,19.4877477 L56.9701159,0.566126126 L62.3813045,0.566126126 L62.551327,2.14576577 C63.8101574,1.1990991 65.5105571,0.25009009 67.7900467,0.25009009 C69.7637405,0.249369369 71.0559464,1.12702703 71.7037093,2.32072072 Z M83.55059,11.7998198 C83.55059,5.83279279 86.6120433,0.249369369 93.6558322,0.249369369 C98.9633997,0.249369369 100.903543,3.47981982 100.903543,7.93873874 C100.903543,13.8365766 97.8751159,19.9443243 90.6614792,19.9443243 C85.3196626,19.9443243 83.55059,16.3281081 83.55059,11.7998198 Z M94.4374464,7.83279279 C94.4374464,6.28810811 94.0628028,5.23495495 92.9409689,5.23495495 C90.4570329,5.23495495 89.9469654,9.76306306 89.9469654,12.0794595 C89.9469654,13.8367568 90.4238322,14.9243243 91.5453166,14.9243243 C93.8931298,14.9243243 94.4374464,10.149009 94.4374464,7.83279279 Z"></path>\n            </g>\n        </g>\n    </g>\n</svg>\n';
 }, function(module, exports) {
@@ -341,7 +343,7 @@
         throw new Error("Can not find window.btoa or Buffer");
     }
     Object.create(Error.prototype);
-    var _CONTEXT_TYPE, _LANG_TO_DEFAULT_COUN, _LOCALE, _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE, _FUNDING_CONFIG, _CARD_CONFIG, BUTTON_STYLE_OPTIONS = {
+    var _CONTEXT_TYPE, _LANG_TO_DEFAULT_COUN, _LOCALE, _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _logoColors14, _secondaryColors14, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE, _FUNDING_CONFIG, _CARD_CONFIG, BUTTON_STYLE_OPTIONS = {
         LABEL: "label",
         SIZE: "size",
         SHAPE: "shape",
@@ -362,6 +364,7 @@
         BUYNOW: "buynow",
         INSTALLMENT: "installment",
         VENMO: "venmo",
+        ITAU: "itau",
         IDEAL: "ideal",
         ELV: "elv",
         BANCONTACT: "bancontact",
@@ -398,6 +401,7 @@
     }, FUNDING = {
         PAYPAL: "paypal",
         VENMO: "venmo",
+        ITAU: "itau",
         CREDIT: "credit",
         CARD: "card",
         IDEAL: "ideal",
@@ -854,22 +858,23 @@
         allowPrimary: !0,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !0
-    }, _BUTTON_CONFIG[BUTTON_LABEL.IDEAL] = {
-        label: "{ logo: ideal } Online betalen",
-        logoLabel: "{ logo: ideal } Online betalen",
+    }, _BUTTON_CONFIG[BUTTON_LABEL.ITAU] = {
+        label: "{ logo: itau }",
+        logoLabel: "{ logo: itau }",
         defaultColor: "silver",
-        colors: [ "silver", "black", "white" ],
-        logoColors: (_logoColors4 = {}, _logoColors4.silver = BUTTON_LOGO_COLOR.BLACK, _logoColors4.black = BUTTON_LOGO_COLOR.WHITE, 
-        _logoColors4.white = BUTTON_LOGO_COLOR.BLACK, _logoColors4),
+        colors: [ "blue", "silver", "black", "white" ],
+        logoColors: (_logoColors4 = {}, _logoColors4.blue = BUTTON_LOGO_COLOR.BLUE, _logoColors4.silver = BUTTON_LOGO_COLOR.BLUE, 
+        _logoColors4.black = BUTTON_LOGO_COLOR.BLUE, _logoColors4.white = BUTTON_LOGO_COLOR.BLUE, 
+        _logoColors4),
         secondaryColors: (_secondaryColors4 = {}, _secondaryColors4.gold = "silver", _secondaryColors4.blue = "silver", 
         _secondaryColors4.silver = "silver", _secondaryColors4.black = "black", _secondaryColors4.darkblue = "silver", 
         _secondaryColors4.white = "white", _secondaryColors4),
-        allowPrimary: !1,
+        allowPrimary: !0,
         allowPrimaryVertical: !1,
-        allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG[BUTTON_LABEL.ELV] = {
-        label: "{ logo: elv }",
-        logoLabel: "{ logo: elv }",
+        allowPrimaryHorizontal: !0
+    }, _BUTTON_CONFIG[BUTTON_LABEL.IDEAL] = {
+        label: "{ logo: ideal } Online betalen",
+        logoLabel: "{ logo: ideal } Online betalen",
         defaultColor: "silver",
         colors: [ "silver", "black", "white" ],
         logoColors: (_logoColors5 = {}, _logoColors5.silver = BUTTON_LOGO_COLOR.BLACK, _logoColors5.black = BUTTON_LOGO_COLOR.WHITE, 
@@ -880,9 +885,9 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG[BUTTON_LABEL.BANCONTACT] = {
-        label: "{ logo: bancontact }",
-        logoLabel: "{ logo: bancontact }",
+    }, _BUTTON_CONFIG[BUTTON_LABEL.ELV] = {
+        label: "{ logo: elv }",
+        logoLabel: "{ logo: elv }",
         defaultColor: "silver",
         colors: [ "silver", "black", "white" ],
         logoColors: (_logoColors6 = {}, _logoColors6.silver = BUTTON_LOGO_COLOR.BLACK, _logoColors6.black = BUTTON_LOGO_COLOR.WHITE, 
@@ -893,9 +898,9 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG[BUTTON_LABEL.GIROPAY] = {
-        label: "{ logo: giropay }",
-        logoLabel: "{ logo: giropay }",
+    }, _BUTTON_CONFIG[BUTTON_LABEL.BANCONTACT] = {
+        label: "{ logo: bancontact }",
+        logoLabel: "{ logo: bancontact }",
         defaultColor: "silver",
         colors: [ "silver", "black", "white" ],
         logoColors: (_logoColors7 = {}, _logoColors7.silver = BUTTON_LOGO_COLOR.BLACK, _logoColors7.black = BUTTON_LOGO_COLOR.WHITE, 
@@ -906,9 +911,9 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG[BUTTON_LABEL.SOFORT] = {
-        label: "{ logo: sofort }",
-        logoLabel: "{ logo: sofort }",
+    }, _BUTTON_CONFIG[BUTTON_LABEL.GIROPAY] = {
+        label: "{ logo: giropay }",
+        logoLabel: "{ logo: giropay }",
         defaultColor: "silver",
         colors: [ "silver", "black", "white" ],
         logoColors: (_logoColors8 = {}, _logoColors8.silver = BUTTON_LOGO_COLOR.BLACK, _logoColors8.black = BUTTON_LOGO_COLOR.WHITE, 
@@ -919,9 +924,9 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG[BUTTON_LABEL.EPS] = {
-        label: "{ logo: eps }",
-        logoLabel: "{ logo: eps }",
+    }, _BUTTON_CONFIG[BUTTON_LABEL.SOFORT] = {
+        label: "{ logo: sofort }",
+        logoLabel: "{ logo: sofort }",
         defaultColor: "silver",
         colors: [ "silver", "black", "white" ],
         logoColors: (_logoColors9 = {}, _logoColors9.silver = BUTTON_LOGO_COLOR.BLACK, _logoColors9.black = BUTTON_LOGO_COLOR.WHITE, 
@@ -932,9 +937,9 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG[BUTTON_LABEL.MYBANK] = {
-        label: "{ logo: mybank }",
-        logoLabel: "{ logo: mybank }",
+    }, _BUTTON_CONFIG[BUTTON_LABEL.EPS] = {
+        label: "{ logo: eps }",
+        logoLabel: "{ logo: eps }",
         defaultColor: "silver",
         colors: [ "silver", "black", "white" ],
         logoColors: (_logoColors10 = {}, _logoColors10.silver = BUTTON_LOGO_COLOR.BLACK, 
@@ -946,9 +951,9 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG[BUTTON_LABEL.P24] = {
-        label: "{ logo: p24 }",
-        logoLabel: "{ logo: p24 }",
+    }, _BUTTON_CONFIG[BUTTON_LABEL.MYBANK] = {
+        label: "{ logo: mybank }",
+        logoLabel: "{ logo: mybank }",
         defaultColor: "silver",
         colors: [ "silver", "black", "white" ],
         logoColors: (_logoColors11 = {}, _logoColors11.silver = BUTTON_LOGO_COLOR.BLACK, 
@@ -960,9 +965,9 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG[BUTTON_LABEL.ZIMPLER] = {
-        label: "{ logo: zimpler }",
-        logoLabel: "{ logo: zimpler }",
+    }, _BUTTON_CONFIG[BUTTON_LABEL.P24] = {
+        label: "{ logo: p24 }",
+        logoLabel: "{ logo: p24 }",
         defaultColor: "silver",
         colors: [ "silver", "black", "white" ],
         logoColors: (_logoColors12 = {}, _logoColors12.silver = BUTTON_LOGO_COLOR.BLACK, 
@@ -974,36 +979,51 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
+    }, _BUTTON_CONFIG[BUTTON_LABEL.ZIMPLER] = {
+        label: "{ logo: zimpler }",
+        logoLabel: "{ logo: zimpler }",
+        defaultColor: "silver",
+        colors: [ "silver", "black", "white" ],
+        logoColors: (_logoColors13 = {}, _logoColors13.silver = BUTTON_LOGO_COLOR.BLACK, 
+        _logoColors13.black = BUTTON_LOGO_COLOR.WHITE, _logoColors13.white = BUTTON_LOGO_COLOR.BLACK, 
+        _logoColors13),
+        secondaryColors: (_secondaryColors13 = {}, _secondaryColors13.gold = "silver", _secondaryColors13.blue = "silver", 
+        _secondaryColors13.silver = "silver", _secondaryColors13.black = "black", _secondaryColors13.darkblue = "silver", 
+        _secondaryColors13.white = "white", _secondaryColors13),
+        allowPrimary: !1,
+        allowPrimaryVertical: !1,
+        allowPrimaryHorizontal: !1
     }, _BUTTON_CONFIG[BUTTON_LABEL.CARD] = {
         label: "{ cards }",
         logoLabel: "{ cards }",
         defaultColor: "silver",
         colors: [ "transparent" ],
-        logoColors: (_logoColors13 = {}, _logoColors13.transparent = BUTTON_LOGO_COLOR.BLACK, 
-        _logoColors13),
-        secondaryColors: (_secondaryColors13 = {}, _secondaryColors13.gold = "transparent", 
-        _secondaryColors13.blue = "transparent", _secondaryColors13.silver = "transparent", 
-        _secondaryColors13.black = "transparent", _secondaryColors13.darkblue = "transparent", 
-        _secondaryColors13.white = "transparent", _secondaryColors13),
+        logoColors: (_logoColors14 = {}, _logoColors14.transparent = BUTTON_LOGO_COLOR.BLACK, 
+        _logoColors14),
+        secondaryColors: (_secondaryColors14 = {}, _secondaryColors14.gold = "transparent", 
+        _secondaryColors14.blue = "transparent", _secondaryColors14.silver = "transparent", 
+        _secondaryColors14.black = "transparent", _secondaryColors14.darkblue = "transparent", 
+        _secondaryColors14.white = "transparent", _secondaryColors14),
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
     }, _BUTTON_CONFIG), FUNDING_TO_DEFAULT_LABEL = ((_FUNDING_TO_DEFAULT_L = {})[FUNDING.PAYPAL] = BUTTON_LABEL.PAYPAL, 
-    _FUNDING_TO_DEFAULT_L[FUNDING.VENMO] = BUTTON_LABEL.VENMO, _FUNDING_TO_DEFAULT_L[FUNDING.CARD] = BUTTON_LABEL.CARD, 
-    _FUNDING_TO_DEFAULT_L[FUNDING.CREDIT] = BUTTON_LABEL.CREDIT, _FUNDING_TO_DEFAULT_L[FUNDING.IDEAL] = BUTTON_LABEL.IDEAL, 
-    _FUNDING_TO_DEFAULT_L[FUNDING.ELV] = BUTTON_LABEL.ELV, _FUNDING_TO_DEFAULT_L[FUNDING.BANCONTACT] = BUTTON_LABEL.BANCONTACT, 
-    _FUNDING_TO_DEFAULT_L[FUNDING.GIROPAY] = BUTTON_LABEL.GIROPAY, _FUNDING_TO_DEFAULT_L[FUNDING.SOFORT] = BUTTON_LABEL.SOFORT, 
-    _FUNDING_TO_DEFAULT_L[FUNDING.EPS] = BUTTON_LABEL.EPS, _FUNDING_TO_DEFAULT_L[FUNDING.P24] = BUTTON_LABEL.P24, 
-    _FUNDING_TO_DEFAULT_L[FUNDING.ZIMPLER] = BUTTON_LABEL.ZIMPLER, _FUNDING_TO_DEFAULT_L[FUNDING.MYBANK] = BUTTON_LABEL.MYBANK, 
-    _FUNDING_TO_DEFAULT_L), LABEL_TO_FUNDING = ((_LABEL_TO_FUNDING = {})[BUTTON_LABEL.PAYPAL] = FUNDING.PAYPAL, 
+    _FUNDING_TO_DEFAULT_L[FUNDING.VENMO] = BUTTON_LABEL.VENMO, _FUNDING_TO_DEFAULT_L[FUNDING.ITAU] = BUTTON_LABEL.ITAU, 
+    _FUNDING_TO_DEFAULT_L[FUNDING.CARD] = BUTTON_LABEL.CARD, _FUNDING_TO_DEFAULT_L[FUNDING.CREDIT] = BUTTON_LABEL.CREDIT, 
+    _FUNDING_TO_DEFAULT_L[FUNDING.IDEAL] = BUTTON_LABEL.IDEAL, _FUNDING_TO_DEFAULT_L[FUNDING.ELV] = BUTTON_LABEL.ELV, 
+    _FUNDING_TO_DEFAULT_L[FUNDING.BANCONTACT] = BUTTON_LABEL.BANCONTACT, _FUNDING_TO_DEFAULT_L[FUNDING.GIROPAY] = BUTTON_LABEL.GIROPAY, 
+    _FUNDING_TO_DEFAULT_L[FUNDING.SOFORT] = BUTTON_LABEL.SOFORT, _FUNDING_TO_DEFAULT_L[FUNDING.EPS] = BUTTON_LABEL.EPS, 
+    _FUNDING_TO_DEFAULT_L[FUNDING.P24] = BUTTON_LABEL.P24, _FUNDING_TO_DEFAULT_L[FUNDING.ZIMPLER] = BUTTON_LABEL.ZIMPLER, 
+    _FUNDING_TO_DEFAULT_L[FUNDING.MYBANK] = BUTTON_LABEL.MYBANK, _FUNDING_TO_DEFAULT_L), LABEL_TO_FUNDING = ((_LABEL_TO_FUNDING = {})[BUTTON_LABEL.PAYPAL] = FUNDING.PAYPAL, 
     _LABEL_TO_FUNDING[BUTTON_LABEL.CHECKOUT] = FUNDING.PAYPAL, _LABEL_TO_FUNDING[BUTTON_LABEL.PAY] = FUNDING.PAYPAL, 
     _LABEL_TO_FUNDING[BUTTON_LABEL.BUYNOW] = FUNDING.PAYPAL, _LABEL_TO_FUNDING[BUTTON_LABEL.INSTALLMENT] = FUNDING.PAYPAL, 
     _LABEL_TO_FUNDING[BUTTON_LABEL.CARD] = FUNDING.CARD, _LABEL_TO_FUNDING[BUTTON_LABEL.CREDIT] = FUNDING.CREDIT, 
-    _LABEL_TO_FUNDING[BUTTON_LABEL.VENMO] = FUNDING.VENMO, _LABEL_TO_FUNDING[BUTTON_LABEL.IDEAL] = FUNDING.IDEAL, 
-    _LABEL_TO_FUNDING[BUTTON_LABEL.BANCONTACT] = FUNDING.BANCONTACT, _LABEL_TO_FUNDING[BUTTON_LABEL.GIROPAY] = FUNDING.GIROPAY, 
-    _LABEL_TO_FUNDING[BUTTON_LABEL.GIROPAY] = FUNDING.EPS, _LABEL_TO_FUNDING[BUTTON_LABEL.SOFORT] = FUNDING.SOFORT, 
-    _LABEL_TO_FUNDING[BUTTON_LABEL.P24] = FUNDING.P24, _LABEL_TO_FUNDING[BUTTON_LABEL.ZIMPLER] = FUNDING.ZIMPLER, 
-    _LABEL_TO_FUNDING[BUTTON_LABEL.MYBANK] = FUNDING.MYBANK, _LABEL_TO_FUNDING), BUTTON_RELATIVE_STYLE = {
+    _LABEL_TO_FUNDING[BUTTON_LABEL.VENMO] = FUNDING.VENMO, _LABEL_TO_FUNDING[BUTTON_LABEL.ITAU] = FUNDING.ITAU, 
+    _LABEL_TO_FUNDING[BUTTON_LABEL.IDEAL] = FUNDING.IDEAL, _LABEL_TO_FUNDING[BUTTON_LABEL.BANCONTACT] = FUNDING.BANCONTACT, 
+    _LABEL_TO_FUNDING[BUTTON_LABEL.GIROPAY] = FUNDING.GIROPAY, _LABEL_TO_FUNDING[BUTTON_LABEL.GIROPAY] = FUNDING.EPS, 
+    _LABEL_TO_FUNDING[BUTTON_LABEL.SOFORT] = FUNDING.SOFORT, _LABEL_TO_FUNDING[BUTTON_LABEL.P24] = FUNDING.P24, 
+    _LABEL_TO_FUNDING[BUTTON_LABEL.ZIMPLER] = FUNDING.ZIMPLER, _LABEL_TO_FUNDING[BUTTON_LABEL.MYBANK] = FUNDING.MYBANK, 
+    _LABEL_TO_FUNDING), BUTTON_RELATIVE_STYLE = {
         FUNDINGICONS: 100,
         TAGLINE: 50,
         VERTICAL_MARGIN: 30
@@ -1070,7 +1090,7 @@
             throw new Error("No value found for " + category + ":" + key);
         }(BUTTON_CONFIG, label, key, def);
     }
-    var FUNDING_PRIORITY = [ FUNDING.PAYPAL, FUNDING.VENMO, FUNDING.CREDIT, FUNDING.CARD, FUNDING.IDEAL, FUNDING.ELV, FUNDING.BANCONTACT, FUNDING.GIROPAY, FUNDING.EPS, FUNDING.SOFORT, FUNDING.MYBANK, FUNDING.P24, FUNDING.ZIMPLER ], FUNDING_ORDER = [ FUNDING.PAYPAL, FUNDING.VENMO, FUNDING.CREDIT, FUNDING.IDEAL, FUNDING.ELV, FUNDING.BANCONTACT, FUNDING.GIROPAY, FUNDING.EPS, FUNDING.SOFORT, FUNDING.MYBANK, FUNDING.P24, FUNDING.ZIMPLER, FUNDING.CARD ], FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[DEFAULT] = {
+    var FUNDING_PRIORITY = [ FUNDING.PAYPAL, FUNDING.VENMO, FUNDING.ITAU, FUNDING.CREDIT, FUNDING.CARD, FUNDING.IDEAL, FUNDING.ELV, FUNDING.BANCONTACT, FUNDING.GIROPAY, FUNDING.EPS, FUNDING.SOFORT, FUNDING.MYBANK, FUNDING.P24, FUNDING.ZIMPLER ], FUNDING_ORDER = [ FUNDING.PAYPAL, FUNDING.VENMO, FUNDING.ITAU, FUNDING.CREDIT, FUNDING.IDEAL, FUNDING.ELV, FUNDING.BANCONTACT, FUNDING.GIROPAY, FUNDING.EPS, FUNDING.SOFORT, FUNDING.MYBANK, FUNDING.P24, FUNDING.ZIMPLER, FUNDING.CARD ], FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[DEFAULT] = {
         enabled: !0,
         allowOptIn: !0,
         allowOptOut: !0,
@@ -1091,6 +1111,11 @@
     }, _FUNDING_CONFIG[FUNDING.VENMO] = {
         allowOptOut: !1,
         allowedCountries: [ COUNTRY.US ],
+        allowHorizontal: !0,
+        allowVertical: !0
+    }, _FUNDING_CONFIG[FUNDING.ITAU] = {
+        allowOptOut: !0,
+        allowedCountries: [ COUNTRY.BR ],
         allowHorizontal: !0,
         allowVertical: !0
     }, _FUNDING_CONFIG[FUNDING.CREDIT] = {
@@ -1230,7 +1255,7 @@
                     };
                     var ineligibleReason = function(source, _ref) {
                         var locale = _ref.locale, funding = _ref.funding, commit = _ref.commit;
-                        return getFundingConfig(source, _ref.layout === BUTTON_LAYOUT.VERTICAL ? "allowVertical" : "allowHorizontal") ? -1 !== funding.disallowed.indexOf(source) && getFundingConfig(source, "allowOptOut") ? FUNDING_ELIGIBILITY_REASON_OPT_OUT : -1 !== funding.disallowed.indexOf(source) && source === FUNDING.VENMO ? FUNDING_ELIGIBILITY_REASON_OPT_OUT : -1 === getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) ? FUNDING_ELIGIBILITY_REASON_DISALLOWED_COUNTRY : getFundingConfig(source, "requireCommitAsTrue") && !commit ? FUNDING_ELIGIBILITY_REASON_COMMIT_NOT_SET : void 0 : FUNDING_ELIGIBILITY_REASON_SECONDARY_DISALLOWED;
+                        return getFundingConfig(source, _ref.layout === BUTTON_LAYOUT.VERTICAL ? "allowVertical" : "allowHorizontal") ? -1 !== funding.disallowed.indexOf(source) && getFundingConfig(source, "allowOptOut") ? FUNDING_ELIGIBILITY_REASON_OPT_OUT : -1 !== funding.disallowed.indexOf(source) && source === FUNDING.VENMO ? FUNDING_ELIGIBILITY_REASON_OPT_OUT : -1 !== funding.disallowed.indexOf(source) && source === FUNDING.ITAU ? FUNDING_ELIGIBILITY_REASON_OPT_OUT : -1 === getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) ? FUNDING_ELIGIBILITY_REASON_DISALLOWED_COUNTRY : getFundingConfig(source, "requireCommitAsTrue") && !commit ? FUNDING_ELIGIBILITY_REASON_COMMIT_NOT_SET : void 0 : FUNDING_ELIGIBILITY_REASON_SECONDARY_DISALLOWED;
                     }(source, {
                         locale: locale,
                         funding: funding,
@@ -1359,7 +1384,7 @@
         for (var _len = arguments.length, children = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) children[_key - 2] = arguments[_key];
         return new JsxHTMLNode(name, props, children);
     }
-    var _P24_LOGO_COLORS, _SOFORT_LOGO_COLORS, _IDEAL_LOGO_COLORS, _GIROPAY_LOGO_COLORS, _EPS_LOGO_COLORS, _MYBANK_LOGO_COLORS, _BANCONTACT_LOGO_COLO, _PAYPAL_LOGO_COLORS, _CREDIT_LOGO_COLORS, _BUTTON_LOGO$PP, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$ELV, _fundingLogos, _cardLogos, ZIMPLER_LOGO_COLORS = ((_ZIMPLER_LOGO_COLORS = {})[BUTTON_LOGO_COLOR.WHITE] = {
+    var _P24_LOGO_COLORS, _SOFORT_LOGO_COLORS, _IDEAL_LOGO_COLORS, _GIROPAY_LOGO_COLORS, _EPS_LOGO_COLORS, _MYBANK_LOGO_COLORS, _BANCONTACT_LOGO_COLO, _PAYPAL_LOGO_COLORS, _CREDIT_LOGO_COLORS, _BUTTON_LOGO$PP, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$ITAU, _BUTTON_LOGO$ELV, _fundingLogos, _cardLogos, ZIMPLER_LOGO_COLORS = ((_ZIMPLER_LOGO_COLORS = {})[BUTTON_LOGO_COLOR.WHITE] = {
         primary: "#ffffff"
     }, _ZIMPLER_LOGO_COLORS[BUTTON_LOGO_COLOR.BLACK] = {
         primary: "#00A599"
@@ -1458,7 +1483,7 @@
     }, _CREDIT_LOGO_COLORS[BUTTON_LOGO_COLOR.BLACK] = {
         primary: "#333030",
         secondary: "#636363"
-    }, _CREDIT_LOGO_COLORS), venmo_white = __webpack_require__(3), venmo_white_default = __webpack_require__.n(venmo_white), venmo_blue = __webpack_require__(4), venmo_blue_default = __webpack_require__.n(venmo_blue), elv = __webpack_require__(5), elv_default = __webpack_require__.n(elv), elv_white = __webpack_require__(6), elv_white_default = __webpack_require__.n(elv_white), fundingLogos = ((_fundingLogos = {}).pp = ((_BUTTON_LOGO$PP = {})[BUTTON_LOGO_COLOR.WHITE] = pp_white_default.a, 
+    }, _CREDIT_LOGO_COLORS), venmo_white = __webpack_require__(3), venmo_white_default = __webpack_require__.n(venmo_white), itau = __webpack_require__(4), itau_default = __webpack_require__.n(itau), venmo_blue = __webpack_require__(5), venmo_blue_default = __webpack_require__.n(venmo_blue), elv = __webpack_require__(6), elv_default = __webpack_require__.n(elv), elv_white = __webpack_require__(7), elv_white_default = __webpack_require__.n(elv_white), fundingLogos = ((_fundingLogos = {}).pp = ((_BUTTON_LOGO$PP = {})[BUTTON_LOGO_COLOR.WHITE] = pp_white_default.a, 
     _BUTTON_LOGO$PP[BUTTON_LOGO_COLOR.BLUE] = pp_blue_default.a, _BUTTON_LOGO$PP[BUTTON_LOGO_COLOR.BLACK] = pp_black_default.a, 
     _BUTTON_LOGO$PP), _fundingLogos.paypal = function(_ref) {
         var logoColor = _ref.logoColor;
@@ -1539,7 +1564,8 @@
         }
     }, _fundingLogos.venmo = ((_BUTTON_LOGO$VENMO = {})[BUTTON_LOGO_COLOR.WHITE] = venmo_white_default.a, 
     _BUTTON_LOGO$VENMO[BUTTON_LOGO_COLOR.BLUE] = venmo_blue_default.a, _BUTTON_LOGO$VENMO), 
-    _fundingLogos.ideal = function(_ref) {
+    _fundingLogos.itau = ((_BUTTON_LOGO$ITAU = {})[BUTTON_LOGO_COLOR.BLUE] = itau_default.a, 
+    _BUTTON_LOGO$ITAU), _fundingLogos.ideal = function(_ref) {
         var logoColor = _ref.logoColor;
         if (!IDEAL_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " ideal logo available");
         var _IDEAL_LOGO_COLORS$lo = IDEAL_LOGO_COLORS[logoColor], primary = _IDEAL_LOGO_COLORS$lo.primary, secondary = _IDEAL_LOGO_COLORS$lo.secondary, tertiary = _IDEAL_LOGO_COLORS$lo.tertiary;
@@ -1918,7 +1944,7 @@
         }, jsxToHTML("path", {
             d: "m 1.0778133,2.4638268 c 0.6835111,0 1.3287556,-0.5401484 1.4332889,-1.2033255 C 2.6153244,0.59732422 2.1502133,0.05748568 1.4670133,0.04787891 c -0.68351108,0 -1.32875552,0.54014843 -1.43328886,1.20332549 -0.11386666,0.672474 0.35124445,1.2126224 1.04408886,1.2126224"
         }))));
-    }, _fundingLogos), visa = __webpack_require__(7), visa_default = __webpack_require__.n(visa), amex = __webpack_require__(8), amex_default = __webpack_require__.n(amex), mastercard = __webpack_require__(9), mastercard_default = __webpack_require__.n(mastercard), maestro = __webpack_require__(10), maestro_default = __webpack_require__.n(maestro), discover = __webpack_require__(11), discover_default = __webpack_require__.n(discover), hiper = __webpack_require__(12), hiper_default = __webpack_require__.n(hiper), elo = __webpack_require__(13), elo_default = __webpack_require__.n(elo), jcb = __webpack_require__(14), jcb_default = __webpack_require__.n(jcb), cup = __webpack_require__(15), cup_default = __webpack_require__.n(cup), cardLogos = ((_cardLogos = {}).visa = visa_default.a, 
+    }, _fundingLogos), visa = __webpack_require__(8), visa_default = __webpack_require__.n(visa), amex = __webpack_require__(9), amex_default = __webpack_require__.n(amex), mastercard = __webpack_require__(10), mastercard_default = __webpack_require__.n(mastercard), maestro = __webpack_require__(11), maestro_default = __webpack_require__.n(maestro), discover = __webpack_require__(12), discover_default = __webpack_require__.n(discover), hiper = __webpack_require__(13), hiper_default = __webpack_require__.n(hiper), elo = __webpack_require__(14), elo_default = __webpack_require__.n(elo), jcb = __webpack_require__(15), jcb_default = __webpack_require__.n(jcb), cup = __webpack_require__(16), cup_default = __webpack_require__.n(cup), cardLogos = ((_cardLogos = {}).visa = visa_default.a, 
     _cardLogos.amex = amex_default.a, _cardLogos.mastercard = mastercard_default.a, 
     _cardLogos.maestro = maestro_default.a, _cardLogos.discover = discover_default.a, 
     _cardLogos.hiper = hiper_default.a, _cardLogos.elo = elo_default.a, _cardLogos.jcb = jcb_default.a, 
@@ -8224,7 +8250,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return jsxToHTML("div", _extends({}, (_ref18 = {}, _ref18[ATTRIBUTE.VERSION] = "4.0.274", 
+        return jsxToHTML("div", _extends({}, (_ref18 = {}, _ref18[ATTRIBUTE.VERSION] = "4.0.275", 
         _ref18), {
             class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
