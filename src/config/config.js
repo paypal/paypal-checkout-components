@@ -479,6 +479,10 @@ export const config = {
 
         'playsugarhouse.com': {
             disable_venmo: true
+        },
+
+        'lakeshorelearning.com': {
+            disable_venmo: true
         }
     },
 
