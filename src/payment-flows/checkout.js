@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, noop, supportsPopups } from 'belter/src';
-import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
+import { FUNDING, CARD, COUNTRY, SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
 import { getParent, getTop } from 'cross-domain-utils/src';
 
 import { enableVault } from '../api';
@@ -61,11 +61,17 @@ function isVaultAutoSetupEligible({ vault, clientAccessToken, createBillingAgree
         return false;
     }
 
+    const fundingSourceEligible = Boolean(fundingEligibility[fundingSource] && fundingEligibility[fundingSource].vaultable);
+
+    if (vault && !fundingSourceEligible) {
+        throw new Error(`SDK received ${ SDK_QUERY_KEYS.VAULT }=true parameter, but ${ fundingSource } is not vaultable.`);
+    }
+
     if (vault) {
         return true;
     }
 
-    if (fundingEligibility[fundingSource] && fundingEligibility[fundingSource].vaultable) {
+    if (fundingSourceEligible) {
         return true;
     }
 
@@ -84,7 +90,11 @@ type EnableVaultSetupOptions = {|
 
 function enableVaultSetup({ orderID, vault, clientAccessToken, createBillingAgreement, createSubscription, fundingSource, fundingEligibility } : EnableVaultSetupOptions) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
-        if (clientAccessToken && isVaultAutoSetupEligible({ vault, clientAccessToken, createBillingAgreement, createSubscription, fundingSource, fundingEligibility })) {
+        if (!clientAccessToken) {
+            return;
+        }
+        
+        if (isVaultAutoSetupEligible({ vault, clientAccessToken, createBillingAgreement, createSubscription, fundingSource, fundingEligibility })) {
             return enableVault({ orderID, clientAccessToken }).catch(err => {
                 if (vault) {
                     throw err;

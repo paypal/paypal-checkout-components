@@ -6,7 +6,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, getValidatePaymentMethodApiMock, DEFAULT_FUNDING_ELIGIBILITY, clickButton, getGraphQLApiMock } from './mocks';
+import { createButtonHTML, getValidatePaymentMethodApiMock, clickButton, getGraphQLApiMock } from './mocks';
 
 describe('vault cases', () => {
 
@@ -44,10 +44,46 @@ describe('vault cases', () => {
                 }
             });
 
-            createButtonHTML();
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            const fundingEligibility = {
+                [FUNDING.PAYPAL]: {
+                    eligible:  true,
+                    vaultable: true
+                }
+            };
+
+            createButtonHTML(fundingEligibility);
+            await setupButton({ fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL);
+        });
+    });
+
+    it('should set up a new forced-vaulted funding source, and fail because paypal is not vaulable', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+
+            window.xprops.enableVault = true;
+            window.xprops.vault = true;
+            window.xprops.clientAccessToken = 'abc-123';
+
+            const orderID = 'XXXXXXXXXX';
+
+            window.xprops.createOrder = expect('createOrder', async () => {
+                return orderID;
+            });
+
+            window.xprops.onApprove = avoid('onApprove');
+
+            const fundingEligibility = {
+                [FUNDING.PAYPAL]: {
+                    eligible:  true,
+                    vaultable: false
+                }
+            };
+
+            createButtonHTML(fundingEligibility);
+            await setupButton({ fundingEligibility });
+
+            await clickButton(FUNDING.PAYPAL).catch(expect('clickCatch'));
         });
     });
 
