@@ -51,7 +51,7 @@ describe('vault cases', () => {
         });
     });
 
-    it.skip('should set up a new optionally-vaulted funding source', async () => {
+    it('should set up a new optionally-vaulted funding source', async () => {
         return await wrapPromise(async ({ expect }) => {
 
             window.xprops.enableVault = true;
@@ -98,7 +98,7 @@ describe('vault cases', () => {
         });
     });
 
-    it.skip('should not set up a new optionally-vaulted funding source when vaulting is not eligible', async () => {
+    it('should not set up a new optionally-vaulted funding source when vaulting is not eligible', async () => {
         return await wrapPromise(async ({ expect }) => {
 
             window.xprops.enableVault = true;
@@ -135,6 +135,59 @@ describe('vault cases', () => {
                 [FUNDING.PAYPAL]: {
                     eligible:  true,
                     vaultable: false
+                }
+            };
+
+            createButtonHTML(fundingEligibility);
+            await setupButton({ fundingEligibility });
+
+            await clickButton(FUNDING.PAYPAL);
+        });
+    });
+
+    it('should continue with a one time payment for a new optionally-vaulted funding source when enableVault errors out', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            window.xprops.enableVault = true;
+            window.xprops.clientAccessToken = 'abc-123';
+
+            const orderID = 'XXXXXXXXXX';
+
+            window.xprops.createOrder = expect('createOrder', async () => {
+                return orderID;
+            });
+
+            let enableVaultCalled = false;
+
+            const gqlMock = getGraphQLApiMock({
+                handler: expect('graphqlCall', ({ data }) => {
+                    if (!data.query.includes('mutation EnableVault')) {
+                        return {};
+                    }
+
+                    enableVaultCalled = true;
+                    return {
+                        errors: [
+                            {
+                                message: 'enableVault intentionally failed'
+                            }
+                        ]
+                    };
+                })
+            }).expectCalls();
+
+            window.xprops.onApprove = expect('onApprove', async () => {
+                gqlMock.done();
+
+                if (!enableVaultCalled) {
+                    throw new Error(`Expected graphql call with enableVault mutation`);
+                }
+            });
+
+            const fundingEligibility = {
+                [FUNDING.PAYPAL]: {
+                    eligible:  true,
+                    vaultable: true
                 }
             };
 

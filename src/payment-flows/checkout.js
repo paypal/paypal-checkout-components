@@ -39,14 +39,16 @@ export function setupCheckout() : ZalgoPromise<void> {
     return ZalgoPromise.hash(tasks).then(noop);
 }
 
-type VaultSetupEligibleProps = {|
+type VaultAutoSetupEligibleProps = {|
     vault : boolean,
     clientAccessToken : ?string,
     createBillingAgreement : ?CreateBillingAgreement,
-    createSubscription : ?CreateSubscription
+    createSubscription : ?CreateSubscription,
+    fundingSource : $Values<typeof FUNDING>,
+    fundingEligibility : FundingEligibilityType
 |};
 
-function isVaultSetupEligible({ vault, clientAccessToken, createBillingAgreement, createSubscription } : VaultSetupEligibleProps) : boolean {
+function isVaultAutoSetupEligible({ vault, clientAccessToken, createBillingAgreement, createSubscription, fundingSource, fundingEligibility } : VaultAutoSetupEligibleProps) : boolean {
     if (!window.xprops.enableVault) {
         return false;
     }
@@ -55,16 +57,15 @@ function isVaultSetupEligible({ vault, clientAccessToken, createBillingAgreement
         return false;
     }
 
-    if (createBillingAgreement) {
-        return false;
-    }
-
-    // No buyer vault for subscription
-    if (createSubscription) {
+    if (createBillingAgreement || createSubscription) {
         return false;
     }
 
     if (vault) {
+        return true;
+    }
+
+    if (fundingEligibility[fundingSource] && fundingEligibility[fundingSource].vaultable) {
         return true;
     }
 
@@ -81,9 +82,9 @@ type EnableVaultSetupOptions = {|
     createSubscription : ?CreateSubscription
 |};
 
-function enableVaultSetup({ orderID, vault, clientAccessToken, createBillingAgreement, createSubscription } : EnableVaultSetupOptions) : ZalgoPromise<void> {
+function enableVaultSetup({ orderID, vault, clientAccessToken, createBillingAgreement, createSubscription, fundingSource, fundingEligibility } : EnableVaultSetupOptions) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
-        if (clientAccessToken && isVaultSetupEligible({ vault, clientAccessToken, createBillingAgreement, createSubscription })) {
+        if (clientAccessToken && isVaultAutoSetupEligible({ vault, clientAccessToken, createBillingAgreement, createSubscription, fundingSource, fundingEligibility })) {
             return enableVault({ orderID, clientAccessToken }).catch(err => {
                 if (vault) {
                     throw err;

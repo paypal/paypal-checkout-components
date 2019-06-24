@@ -14,11 +14,13 @@ export type LocaleType = {|
 
 export type FundingEligibilityType = {|
     bancontact? : {
-        eligible : boolean
+        eligible : boolean,
+        vaultable? : boolean
     },
     card? : {
         eligible : boolean,
         branded? : boolean,
+        vaultable? : boolean,
         vendors : {
             visa? : {
                 eligible : boolean,
@@ -95,28 +97,36 @@ export type FundingEligibilityType = {|
         }
     },
     credit? : {
-        eligible : boolean
+        eligible : boolean,
+        vaultable? : boolean
     },
     sepa? : {
-        eligible : boolean
+        eligible : boolean,
+        vaultable? : boolean
     },
     eps? : {
-        eligible : boolean
+        eligible : boolean,
+        vaultable? : boolean
     },
     giropay? : {
-        eligible : boolean
+        eligible : boolean,
+        vaultable? : boolean
     },
     ideal? : {
-        eligible : boolean
+        eligible : boolean,
+        vaultable? : boolean
     },
     mybank? : {
-        eligible : boolean
+        eligible : boolean,
+        vaultable? : boolean
     },
     p24? : {
-        eligible : boolean
+        eligible : boolean,
+        vaultable? : boolean
     },
     paypal? : {
         eligible : boolean,
+        vaultable? : boolean,
         vaultedInstruments? : $ReadOnlyArray<{
             id : string,
             label : {
@@ -125,15 +135,23 @@ export type FundingEligibilityType = {|
         }>
     },
     sofort? : {
-        eligible : boolean
+        eligible : boolean,
+        vaultable? : boolean
     },
     venmo? : {
-        eligible : boolean
+        eligible : boolean,
+        vaultable? : boolean
     },
     wechatpay? : {
-        eligible : boolean
+        eligible : boolean,
+        vaultable? : boolean
     },
     zimpler? : {
-        eligible : boolean
+        eligible : boolean,
+        vaultable? : boolean
+    },
+    itau? : {
+        eligible : boolean,
+        vaultable? : boolean
     }
 |};
