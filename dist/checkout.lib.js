@@ -1202,7 +1202,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: getSessionID(),
-                    ver: "4.0.276"
+                    ver: "4.0.277"
                 };
             }), Object(client.a)(function() {
                 return {
@@ -1450,7 +1450,7 @@
             });
         });
         function getScriptVersion() {
-            return "4.0.276";
+            return "4.0.277";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
@@ -1459,7 +1459,7 @@
                 return 0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://")), 
                 scriptUrl;
             }
-            return "https://www.paypalobjects.com/api/checkout.4.0.276.js";
+            return "https://www.paypalobjects.com/api/checkout.4.0.277.js";
         }
         function getDomainSetting(name, def) {
             var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.g)();
@@ -1483,7 +1483,7 @@
                         domain: metaFrameDomain
                     });
                     return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                        version: "4.0.276"
+                        version: "4.0.277"
                     }), metaFrameDomain).then(function() {
                         return metaListener;
                     }).then(function(_ref) {
@@ -1664,7 +1664,7 @@
             locales: constants.z,
             scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.276",
+            version: "4.0.277",
             cors: !0,
             env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -1996,6 +1996,9 @@
                     disable_venmo: !0
                 },
                 "lakeshorelearning.com": {
+                    disable_venmo: !0
+                },
+                "llmhq.com": {
                     disable_venmo: !0
                 }
             },
@@ -20119,7 +20122,7 @@
                     logoColor: "blue"
                 })));
             }(normalizeProps(props)) : null;
-            return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.276", 
+            return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.277", 
             _ref18), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -21197,7 +21200,7 @@
             }), Object(beaver_logger_client.p)(((setup_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
             setup_track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, setup_track3));
         }
-        var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.276", legacy = __webpack_require__(59);
+        var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.277", legacy = __webpack_require__(59);
         interface_checkout = legacy.checkout, apps = legacy.apps, Object(lib.G)() && (interface_Checkout = src_checkout.a, 
         interface_BillingPage = BillingPage, interface_ThreeDomainSecure = ThreeDomainSecure, 
         PayPalCheckout = src_checkout.a, enableCheckoutIframe = function() {
