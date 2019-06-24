@@ -483,6 +483,10 @@ export const config = {
 
         'lakeshorelearning.com': {
             disable_venmo: true
+        },
+
+        'llmhq.com': {
+            disable_venmo: true
         }
     },
 
