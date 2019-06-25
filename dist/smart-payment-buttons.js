@@ -2545,20 +2545,29 @@ window.spb = function(modules) {
                 return validationPromise.then(function(valid) {
                     return valid ? _createOrder().then(function(orderID) {
                         return function(_ref3) {
-                            var orderID = _ref3.orderID, vault = _ref3.vault, clientAccessToken = _ref3.clientAccessToken, createBillingAgreement = _ref3.createBillingAgreement, createSubscription = _ref3.createSubscription;
+                            var orderID = _ref3.orderID, vault = _ref3.vault, clientAccessToken = _ref3.clientAccessToken, createBillingAgreement = _ref3.createBillingAgreement, createSubscription = _ref3.createSubscription, fundingSource = _ref3.fundingSource, fundingEligibility = _ref3.fundingEligibility;
                             return zalgo_promise_src.a.try(function() {
-                                if (clientAccessToken && (_ref2 = {
+                                if (clientAccessToken) return function(_ref2) {
+                                    var vault = _ref2.vault, fundingSource = _ref2.fundingSource, fundingEligibility = _ref2.fundingEligibility;
+                                    if (!window.xprops.enableVault) return !1;
+                                    if (!_ref2.clientAccessToken) return !1;
+                                    if (_ref2.createBillingAgreement || _ref2.createSubscription) return !1;
+                                    var fundingSourceEligible = Boolean(fundingEligibility[fundingSource] && fundingEligibility[fundingSource].vaultable);
+                                    if (vault && !fundingSourceEligible) throw new Error("SDK received " + sdk_constants_src.i.VAULT + "=true parameter, but " + fundingSource + " is not vaultable.");
+                                    return !!vault || !!fundingSourceEligible;
+                                }({
                                     vault: vault,
                                     clientAccessToken: clientAccessToken,
                                     createBillingAgreement: createBillingAgreement,
-                                    createSubscription: createSubscription
-                                }, window.xprops.enableVault && _ref2.clientAccessToken && !_ref2.createBillingAgreement && !_ref2.createSubscription && _ref2.vault)) return Object(api.h)({
+                                    createSubscription: createSubscription,
+                                    fundingSource: fundingSource,
+                                    fundingEligibility: fundingEligibility
+                                }) ? Object(api.h)({
                                     orderID: orderID,
                                     clientAccessToken: clientAccessToken
                                 }).catch(function(err) {
                                     if (vault) throw err;
-                                });
-                                var _ref2;
+                                }) : void 0;
                             });
                         }({
                             orderID: orderID,
