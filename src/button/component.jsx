@@ -5,10 +5,10 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'zoid/src';
 import { type Component } from 'zoid/src/component/component';
-import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/client';
+import { info, warn, track, error, flush as flushLogs, immediateFlush } from 'beaver-logger/client';
 import { getDomain } from 'cross-domain-utils/src';
 import { base64encode } from 'belter/src';
-import { debounce } from 'zoid/src/lib';
+import { debounce, once } from 'zoid/src/lib';
 
 import { pptm } from '../external';
 import { config } from '../config';
@@ -892,17 +892,60 @@ export const Button : Component<ButtonOptions> = create({
             type:     'function',
             required: false,
             get value() : Function {
+                let initialHeight;
+                const logInlineGuestOutOfViewPortOnlyOnce = once((data) => {
+                    info('buttons_expansion_outside_viewport', data);
+                    immediateFlush();
+                });
+
                 return function onResizeHandler() {
                     const container = this.container;
-                    const parentContainer = this.container.parentElement;
-
-                    if (container && parentContainer && container.offsetHeight > parentContainer.offsetHeight) {
-                        info(`button_taller_than_parent`, {
-                            height:       container.offsetHeight,
-                            parentHeight: parentContainer.offsetHeight
-                        });
-                        flushLogs();
+                    if (!initialHeight) {
+                        initialHeight = container.offsetHeight;
                     }
+
+                    const getScrollOffsetY = () => {
+                        if (window.pageYOffset) {
+                            return window.pageYOffset;
+                        }
+
+                        if (document.documentElement) {
+                            return document.documentElement.scrollTop;
+                        }
+
+                        return 0;
+                    };
+
+                    // explanation https://github.com/paypal/paypal-checkout-components/pull/1136#discussion_r298025574
+                    const checkIfExpansionInViewport = () => {
+                        try {
+                            const scrollOffsetY = getScrollOffsetY();
+                            const windowHeight = window.innerHeight;
+
+                            const containerOffsetY = container.getBoundingClientRect().top;
+                            const VISIBLE_THRESHOLD = 200; // 200px, for the first input field to be visible
+
+                            return scrollOffsetY + windowHeight > initialHeight + containerOffsetY + VISIBLE_THRESHOLD;
+                        } catch (err) {
+                            info('cannot_get_the_viewport_information');
+                            return false;
+                        }
+                    };
+
+                    const isContainerExpanded = container && container.offsetHeight > initialHeight;
+                    const isExpansionInViewport = checkIfExpansionInViewport();
+
+                    if (!isContainerExpanded || isExpansionInViewport) {
+                        return;
+                    }
+
+                    logInlineGuestOutOfViewPortOnlyOnce({
+                        height: container.offsetHeight,
+                        window: {
+                            width:  window.innerWidth,
+                            height: window.innerHeight
+                        }
+                    });
                 };
             },
             decorate: (original) => debounce(original)
