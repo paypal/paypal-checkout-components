@@ -8,6 +8,7 @@ import { type Component } from 'zoid/src/component/component';
 import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/client';
 import { getDomain } from 'cross-domain-utils/src';
 import { base64encode } from 'belter/src';
+import { debounce } from 'zoid/src/lib';
 
 import { pptm } from '../external';
 import { config } from '../config';
@@ -885,6 +886,26 @@ export const Button : Component<ButtonOptions> = create({
                     return original.apply(this, arguments);
                 };
             }
+        },
+
+        onResize: {
+            type:     'function',
+            required: false,
+            get value() : Function {
+                return function onResizeHandler() {
+                    const container = this.container;
+                    const parentContainer = this.container.parentElement;
+
+                    if (container && parentContainer && container.offsetHeight > parentContainer.offsetHeight) {
+                        info(`button_taller_than_parent`, {
+                            height:       container.offsetHeight,
+                            parentHeight: parentContainer.offsetHeight
+                        });
+                        flushLogs();
+                    }
+                };
+            },
+            decorate: (original) => debounce(original)
         },
 
         locale: {
