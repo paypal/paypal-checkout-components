@@ -932,7 +932,7 @@
                 country: config.a.locale.country,
                 lang: config.a.locale.lang,
                 uid: Object(session.c)(),
-                ver: "4.0.277"
+                ver: "4.0.278"
             };
         }), Object(client.a)(function() {
             return {
@@ -1177,7 +1177,7 @@
         });
     });
     function getScriptVersion() {
-        return Boolean(getCurrentScript()) ? "4" : "4.0.277";
+        return Boolean(getCurrentScript()) ? "4" : "4.0.278";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -1186,7 +1186,7 @@
             return 0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://")), 
             scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.277.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.278.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.g)();
@@ -1390,7 +1390,7 @@
         locales: constants.z,
         scriptUrl: "//www.paypalobjects.com/api/checkout.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.277",
+        version: "4.0.278",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -2639,6 +2639,15 @@
             results[cacheKey];
         };
     }
+    function debounce(method, time) {
+        var timeout;
+        return void 0 === time && (time = 100), function() {
+            var _this = this, _arguments = arguments;
+            clearTimeout(timeout), timeout = setTimeout(function() {
+                return method.apply(_this, _arguments);
+            }, time);
+        };
+    }
     function serializeFunctions(obj) {
         return replaceObject(obj, {
             function: function() {
@@ -3051,103 +3060,105 @@
     }();
     __webpack_require__.d(__webpack_exports__, "d", function() {
         return appendChild;
-    }), __webpack_require__.d(__webpack_exports__, "t", function() {
+    }), __webpack_require__.d(__webpack_exports__, "u", function() {
         return getElement;
-    }), __webpack_require__.d(__webpack_exports__, "m", function() {
+    }), __webpack_require__.d(__webpack_exports__, "n", function() {
         return elementReady;
-    }), __webpack_require__.d(__webpack_exports__, "H", function() {
+    }), __webpack_require__.d(__webpack_exports__, "I", function() {
         return popup;
-    }), __webpack_require__.d(__webpack_exports__, "X", function() {
+    }), __webpack_require__.d(__webpack_exports__, "Y", function() {
         return writeToWindow;
-    }), __webpack_require__.d(__webpack_exports__, "W", function() {
+    }), __webpack_require__.d(__webpack_exports__, "X", function() {
         return writeElementToWindow;
     }), __webpack_require__.d(__webpack_exports__, "e", function() {
         return awaitFrameLoad;
     }), __webpack_require__.d(__webpack_exports__, "f", function() {
         return awaitFrameWindow;
-    }), __webpack_require__.d(__webpack_exports__, "x", function() {
+    }), __webpack_require__.d(__webpack_exports__, "y", function() {
         return iframe;
     }), __webpack_require__.d(__webpack_exports__, "b", function() {
         return addEventListener;
-    }), __webpack_require__.d(__webpack_exports__, "q", function() {
+    }), __webpack_require__.d(__webpack_exports__, "r", function() {
         return extendUrl;
-    }), __webpack_require__.d(__webpack_exports__, "P", function() {
+    }), __webpack_require__.d(__webpack_exports__, "Q", function() {
         return showElement;
-    }), __webpack_require__.d(__webpack_exports__, "w", function() {
+    }), __webpack_require__.d(__webpack_exports__, "x", function() {
         return hideElement;
-    }), __webpack_require__.d(__webpack_exports__, "k", function() {
+    }), __webpack_require__.d(__webpack_exports__, "l", function() {
         return destroyElement;
-    }), __webpack_require__.d(__webpack_exports__, "O", function() {
+    }), __webpack_require__.d(__webpack_exports__, "P", function() {
         return showAndAnimate;
     }), __webpack_require__.d(__webpack_exports__, "c", function() {
         return animateAndHide;
     }), __webpack_require__.d(__webpack_exports__, "a", function() {
         return addClass;
-    }), __webpack_require__.d(__webpack_exports__, "K", function() {
+    }), __webpack_require__.d(__webpack_exports__, "L", function() {
         return removeClass;
-    }), __webpack_require__.d(__webpack_exports__, "s", function() {
+    }), __webpack_require__.d(__webpack_exports__, "t", function() {
         return getCurrentScriptDir;
-    }), __webpack_require__.d(__webpack_exports__, "V", function() {
+    }), __webpack_require__.d(__webpack_exports__, "W", function() {
         return watchElementForClose;
-    }), __webpack_require__.d(__webpack_exports__, "I", function() {
-        return prefetchPage;
-    }), __webpack_require__.d(__webpack_exports__, "B", function() {
-        return jsxDom;
-    }), __webpack_require__.d(__webpack_exports__, "E", function() {
-        return noop;
-    }), __webpack_require__.d(__webpack_exports__, "G", function() {
-        return once;
-    }), __webpack_require__.d(__webpack_exports__, "C", function() {
-        return memoize;
-    }), __webpack_require__.d(__webpack_exports__, "M", function() {
-        return serializeFunctions;
-    }), __webpack_require__.d(__webpack_exports__, "j", function() {
-        return deserializeFunctions;
-    }), __webpack_require__.d(__webpack_exports__, "i", function() {
-        return denodeify;
     }), __webpack_require__.d(__webpack_exports__, "J", function() {
+        return prefetchPage;
+    }), __webpack_require__.d(__webpack_exports__, "C", function() {
+        return jsxDom;
+    }), __webpack_require__.d(__webpack_exports__, "F", function() {
+        return noop;
+    }), __webpack_require__.d(__webpack_exports__, "H", function() {
+        return once;
+    }), __webpack_require__.d(__webpack_exports__, "D", function() {
+        return memoize;
+    }), __webpack_require__.d(__webpack_exports__, "i", function() {
+        return debounce;
+    }), __webpack_require__.d(__webpack_exports__, "N", function() {
+        return serializeFunctions;
+    }), __webpack_require__.d(__webpack_exports__, "k", function() {
+        return deserializeFunctions;
+    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+        return denodeify;
+    }), __webpack_require__.d(__webpack_exports__, "K", function() {
         return promisify;
     }), __webpack_require__.d(__webpack_exports__, "h", function() {
         return dasherizeToCamel;
-    }), __webpack_require__.d(__webpack_exports__, "p", function() {
+    }), __webpack_require__.d(__webpack_exports__, "q", function() {
         return extend;
-    }), __webpack_require__.d(__webpack_exports__, "T", function() {
+    }), __webpack_require__.d(__webpack_exports__, "U", function() {
         return uniqueID;
-    }), __webpack_require__.d(__webpack_exports__, "r", function() {
+    }), __webpack_require__.d(__webpack_exports__, "s", function() {
         return get;
-    }), __webpack_require__.d(__webpack_exports__, "L", function() {
+    }), __webpack_require__.d(__webpack_exports__, "M", function() {
         return replaceObject;
     }), __webpack_require__.d(__webpack_exports__, "g", function() {
         return copyProp;
-    }), __webpack_require__.d(__webpack_exports__, "l", function() {
+    }), __webpack_require__.d(__webpack_exports__, "m", function() {
         return dotify;
-    }), __webpack_require__.d(__webpack_exports__, "Q", function() {
-        return stringify;
     }), __webpack_require__.d(__webpack_exports__, "R", function() {
-        return stringifyError;
-    }), __webpack_require__.d(__webpack_exports__, "o", function() {
-        return eventEmitter;
-    }), __webpack_require__.d(__webpack_exports__, "z", function() {
-        return isPerc;
-    }), __webpack_require__.d(__webpack_exports__, "A", function() {
-        return isPx;
+        return stringify;
     }), __webpack_require__.d(__webpack_exports__, "S", function() {
+        return stringifyError;
+    }), __webpack_require__.d(__webpack_exports__, "p", function() {
+        return eventEmitter;
+    }), __webpack_require__.d(__webpack_exports__, "A", function() {
+        return isPerc;
+    }), __webpack_require__.d(__webpack_exports__, "B", function() {
+        return isPx;
+    }), __webpack_require__.d(__webpack_exports__, "T", function() {
         return toCSS;
-    }), __webpack_require__.d(__webpack_exports__, "F", function() {
+    }), __webpack_require__.d(__webpack_exports__, "G", function() {
         return normalizeDimension;
-    }), __webpack_require__.d(__webpack_exports__, "D", function() {
+    }), __webpack_require__.d(__webpack_exports__, "E", function() {
         return memoized;
-    }), __webpack_require__.d(__webpack_exports__, "N", function() {
+    }), __webpack_require__.d(__webpack_exports__, "O", function() {
         return setLogLevel;
-    }), __webpack_require__.d(__webpack_exports__, "y", function() {
+    }), __webpack_require__.d(__webpack_exports__, "z", function() {
         return info;
-    }), __webpack_require__.d(__webpack_exports__, "U", function() {
+    }), __webpack_require__.d(__webpack_exports__, "V", function() {
         return warn;
-    }), __webpack_require__.d(__webpack_exports__, "n", function() {
+    }), __webpack_require__.d(__webpack_exports__, "o", function() {
         return logger_error;
-    }), __webpack_require__.d(__webpack_exports__, "v", function() {
+    }), __webpack_require__.d(__webpack_exports__, "w", function() {
         return globalFor;
-    }), __webpack_require__.d(__webpack_exports__, "u", function() {
+    }), __webpack_require__.d(__webpack_exports__, "v", function() {
         return global;
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
@@ -6136,7 +6147,7 @@
     }), __webpack_require__.d(interface_namespaceObject, "getByTag", function() {
         return getByTag;
     }), __webpack_require__.d(interface_namespaceObject, "getCurrentScriptDir", function() {
-        return lib.s;
+        return lib.t;
     }), __webpack_require__.d(interface_namespaceObject, "destroyAll", function() {
         return interface_destroyAll;
     }), __webpack_require__.d(interface_namespaceObject, "postRobot", function() {
@@ -6203,9 +6214,9 @@
                         var item = tasks[_i2];
                         item.name === name && results.push(item.run());
                     }
-                    return zalgo_promise_src.a.all(results).then(lib.E);
+                    return zalgo_promise_src.a.all(results).then(lib.F);
                 }
-            }), this.event = Object(lib.o)();
+            }), this.event = Object(lib.p)();
         }
         var _proto = BaseComponent.prototype;
         return _proto.addProp = function(options, name, def) {
@@ -6215,7 +6226,7 @@
         }, _proto.listeners = function() {
             throw new Error("Expected listeners to be implemented");
         }, _proto.error = function(err) {
-            throw new Error("Expected error to be implemented - got " + Object(lib.R)(err));
+            throw new Error("Expected error to be implemented - got " + Object(lib.S)(err));
         }, _proto.listen = function(win, domain) {
             var _this = this;
             if (!win) throw this.component.createError("window to listen to not set");
@@ -6249,16 +6260,16 @@
     function normalize(str) {
         return str.replace(/^[^a-z0-9A-Z]+|[^a-z0-9A-Z]+$/g, "").replace(/[^a-z0-9A-Z]+/g, "_");
     }
-    var isZoidComponentWindow = Object(lib.C)(function() {
+    var isZoidComponentWindow = Object(lib.D)(function() {
         return !!window.name && "xcomponent" === window.name.split("__")[0];
-    }), getComponentMeta = Object(lib.C)(function() {
+    }), getComponentMeta = Object(lib.D)(function() {
         if (!window.name) throw new Error("Can not get component meta without window name");
         var componentMeta, _window$name$split2 = window.name.split("__"), zoidcomp = _window$name$split2[0], name = _window$name$split2[1], version = _window$name$split2[2], encodedOptions = _window$name$split2[3];
         if ("xcomponent" !== zoidcomp) throw new Error("Window not rendered by zoid - got " + zoidcomp);
         try {
             componentMeta = JSON.parse(base32_default.a.decode(encodedOptions.toUpperCase()));
         } catch (err) {
-            throw new Error("Can not decode component-meta: " + encodedOptions + " " + Object(lib.R)(err));
+            throw new Error("Can not decode component-meta: " + encodedOptions + " " + Object(lib.S)(err));
         }
         return componentMeta.name = name, componentMeta.version = version.replace(/_/g, "."), 
         componentMeta;
@@ -6272,7 +6283,7 @@
         ref === constants.WINDOW_REFERENCES.GLOBAL) {
             var ancestor = Object(cross_domain_utils_src.e)(window);
             if (ancestor) for (var _i2 = 0, _getAllFramesInWindow2 = Object(cross_domain_utils_src.d)(ancestor); _i2 < _getAllFramesInWindow2.length; _i2++) {
-                var frame = _getAllFramesInWindow2[_i2], global = Object(lib.v)(frame);
+                var frame = _getAllFramesInWindow2[_i2], global = Object(lib.w)(frame);
                 if (global && global.windows && global.windows[uid]) {
                     result = global.windows[uid];
                     break;
@@ -6282,11 +6293,11 @@
         if (!result) throw new Error("Unable to find window by ref");
         return result;
     }
-    var window_getParentComponentWindow = Object(lib.C)(function() {
+    var window_getParentComponentWindow = Object(lib.D)(function() {
         var componentMeta = getComponentMeta();
         if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by zoid");
         return getWindowByRef(componentMeta.componentParent);
-    }), window_getParentRenderWindow = Object(lib.C)(function() {
+    }), window_getParentRenderWindow = Object(lib.D)(function() {
         var componentMeta = getComponentMeta();
         if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by zoid");
         return getWindowByRef(componentMeta.renderParent);
@@ -6352,15 +6363,15 @@
                     if ("file:" === window.location.protocol) throw new Error("Can not get props from file:// domain");
                     throw new Error("Parent component window is on a different domain - expected " + Object(cross_domain_utils_src.g)() + " - can not retrieve props");
                 }
-                var global = Object(lib.v)(parentComponentWindow);
+                var global = Object(lib.w)(parentComponentWindow);
                 if (!global) throw new Error("Can not find global for parent component - can not retrieve props");
                 props = JSON.parse(global.props[componentMeta.uid]);
             }
             if (!props) throw new Error("Initial props not found");
-            return Object(lib.j)(props, function(_ref6) {
+            return Object(lib.k)(props, function(_ref6) {
                 var fullKey = _ref6.fullKey, self = _ref6.self, args = _ref6.args;
                 return _this2.onInit.then(function() {
-                    var func = Object(lib.r)(_this2.props, fullKey);
+                    var func = Object(lib.s)(_this2.props, fullKey);
                     if ("function" != typeof func) throw new TypeError("Expected " + fullKey + " to be function, got " + typeof func);
                     return func.apply(self, args);
                 });
@@ -6380,7 +6391,7 @@
                 }
                 return result;
             }(this.component, props, origin, required);
-            Object(lib.p)(this.props, normalizedProps), this.props.logLevel && Object(lib.N)(this.props.logLevel);
+            Object(lib.q)(this.props, normalizedProps), this.props.logLevel && Object(lib.O)(this.props.logLevel);
             for (var _i6 = 0, _this$onPropHandlers2 = this.onPropHandlers; _i6 < _this$onPropHandlers2.length; _i6++) _this$onPropHandlers2[_i6].call(this, this.props);
         }, _proto.sendToParent = function(name, data, options) {
             void 0 === data && (data = {}), void 0 === options && (options = {});
@@ -6412,7 +6423,7 @@
             height = !0), {
                 width: width,
                 height: height,
-                element: autoResize.element ? Object(lib.t)(autoResize.element) : document.body
+                element: autoResize.element ? Object(lib.u)(autoResize.element) : document.body
             };
         }, _proto.watchForResize = function() {
             var _this4 = this, _this$getAutoResize = this.getAutoResize(), width = _this$getAutoResize.width, height = _this$getAutoResize.height, element = _this$getAutoResize.element;
@@ -6442,17 +6453,17 @@
             var _this6 = this;
             return zalgo_promise_src.a.resolve().then(function() {
                 if (_this6.component.log("resize", {
-                    width: Object(lib.Q)(width),
-                    height: Object(lib.Q)(height)
+                    width: Object(lib.R)(width),
+                    height: Object(lib.R)(height)
                 }), _this6.context !== constants.CONTEXT_TYPES.POPUP) return _this6.sendToParent(constants.POST_MESSAGE.RESIZE, {
                     width: width,
                     height: height
-                }).then(lib.E);
+                }).then(lib.F);
             });
         }, _proto.hide = function() {
-            return this.sendToParent(constants.POST_MESSAGE.HIDE).then(lib.E);
+            return this.sendToParent(constants.POST_MESSAGE.HIDE).then(lib.F);
         }, _proto.show = function() {
-            return this.sendToParent(constants.POST_MESSAGE.SHOW).then(lib.E);
+            return this.sendToParent(constants.POST_MESSAGE.SHOW).then(lib.F);
         }, _proto.userClose = function() {
             return this.close(constants.CLOSE_REASONS.USER_CLOSED);
         }, _proto.close = function(reason) {
@@ -6471,12 +6482,12 @@
         }, _proto.focus = function() {
             this.component.log("focus"), window.focus();
         }, _proto.error = function(err) {
-            var stringifiedError = Object(lib.R)(err);
+            var stringifiedError = Object(lib.S)(err);
             return this.component.logError("error", {
                 error: stringifiedError
             }), this.sendToParent(constants.POST_MESSAGE.ERROR, {
                 error: stringifiedError
-            }).then(lib.E);
+            }).then(lib.F);
         }, ChildComponent;
     }(base_BaseComponent);
     function _defineProperties(target, props) {
@@ -6517,14 +6528,14 @@
         decorated = !0);
         var type = prop.type;
         if ("boolean" === type) resultValue = Boolean(resultValue); else if ("function" === type) {
-            if (!resultValue && prop.noop && (resultValue = lib.E, !decorated && prop.decorate && (resultValue = prop.decorate.call(instance, lib.E, props))), 
+            if (!resultValue && prop.noop && (resultValue = lib.F, !decorated && prop.decorate && (resultValue = prop.decorate.call(instance, lib.F, props))), 
             resultValue && "function" == typeof resultValue) {
-                resultValue = resultValue.bind(instance), prop.denodeify && (resultValue = Object(lib.i)(resultValue)), 
-                prop.promisify && (resultValue = Object(lib.J)(resultValue));
+                resultValue = resultValue.bind(instance), prop.denodeify && (resultValue = Object(lib.j)(resultValue)), 
+                prop.promisify && (resultValue = Object(lib.K)(resultValue));
                 var original = resultValue;
                 resultValue = function() {
                     return component.log("call_prop_" + key), original.apply(this, arguments);
-                }, prop.once && (resultValue = Object(lib.G)(resultValue)), prop.memoize && (resultValue = Object(lib.C)(resultValue));
+                }, prop.once && (resultValue = Object(lib.H)(resultValue)), prop.memoize && (resultValue = Object(lib.D)(resultValue));
             }
         } else "string" === type || "object" === type || "number" === type && void 0 !== resultValue && (resultValue = parseInt(resultValue, 10));
         return resultValue;
@@ -6547,7 +6558,7 @@
         needsBridge: !1,
         open: function(url) {
             var _this = this, attributes = this.component.attributes.iframe || {};
-            return this.iframe = Object(lib.x)({
+            return this.iframe = Object(lib.y)({
                 url: url,
                 attributes: Object(esm_extends.a)({
                     name: this.childWindowName,
@@ -6563,16 +6574,16 @@
                     }).finally(function() {
                         return _this.destroy();
                     });
-                }, iframeWatcher = Object(lib.V)(_this.iframe, detectClose), elementWatcher = Object(lib.V)(_this.element, detectClose);
+                }, iframeWatcher = Object(lib.W)(_this.iframe, detectClose), elementWatcher = Object(lib.W)(_this.element, detectClose);
                 _this.clean.register("destroyWindow", function() {
                     iframeWatcher.cancel(), elementWatcher.cancel(), Object(src.cleanUpWindow)(_this.window), 
-                    delete _this.window, _this.iframe && (Object(lib.k)(_this.iframe), delete _this.iframe);
+                    delete _this.window, _this.iframe && (Object(lib.l)(_this.iframe), delete _this.iframe);
                 });
             });
         },
         openPrerender: function() {
             var _this2 = this, attributes = this.component.attributes.iframe || {};
-            return this.prerenderIframe = Object(lib.x)({
+            return this.prerenderIframe = Object(lib.y)({
                 attributes: Object(esm_extends.a)({
                     name: "__prerender__" + this.childWindowName,
                     scrolling: this.component.scrolling ? "yes" : "no"
@@ -6580,16 +6591,16 @@
                 class: [ constants.CLASS_NAMES.PRERENDER_FRAME, constants.CLASS_NAMES.VISIBLE ]
             }, this.element), Object(lib.f)(this.prerenderIframe).then(function(prerenderFrameWindow) {
                 _this2.prerenderWindow = prerenderFrameWindow, _this2.clean.register("destroyPrerender", function() {
-                    _this2.prerenderIframe && (Object(lib.k)(_this2.prerenderIframe), delete _this2.prerenderIframe);
+                    _this2.prerenderIframe && (Object(lib.l)(_this2.prerenderIframe), delete _this2.prerenderIframe);
                 });
             });
         },
         switchPrerender: function() {
             var _this3 = this;
-            Object(lib.a)(this.prerenderIframe, constants.CLASS_NAMES.INVISIBLE), Object(lib.K)(this.prerenderIframe, constants.CLASS_NAMES.VISIBLE), 
-            Object(lib.a)(this.iframe, constants.CLASS_NAMES.VISIBLE), Object(lib.K)(this.iframe, constants.CLASS_NAMES.INVISIBLE), 
+            Object(lib.a)(this.prerenderIframe, constants.CLASS_NAMES.INVISIBLE), Object(lib.L)(this.prerenderIframe, constants.CLASS_NAMES.VISIBLE), 
+            Object(lib.a)(this.iframe, constants.CLASS_NAMES.VISIBLE), Object(lib.L)(this.iframe, constants.CLASS_NAMES.INVISIBLE), 
             setTimeout(function() {
-                _this3.prerenderIframe && Object(lib.k)(_this3.prerenderIframe);
+                _this3.prerenderIframe && Object(lib.l)(_this3.prerenderIframe);
             }, 1e3);
         },
         delegateOverrides: {
@@ -6624,14 +6635,14 @@
             }
         },
         resize: function(width, height) {
-            width && (this.container.style.width = Object(lib.S)(width), this.element.style.width = Object(lib.S)(width)), 
-            height && (this.container.style.height = Object(lib.S)(height), this.element.style.height = Object(lib.S)(height));
+            width && (this.container.style.width = Object(lib.T)(width), this.element.style.width = Object(lib.T)(width)), 
+            height && (this.container.style.height = Object(lib.T)(height), this.element.style.height = Object(lib.T)(height));
         },
         show: function() {
-            Object(lib.P)(this.element);
+            Object(lib.Q)(this.element);
         },
         hide: function() {
-            Object(lib.w)(this.element);
+            Object(lib.x)(this.element);
         },
         loadUrl: function(url) {
             this.iframe.setAttribute("src", url);
@@ -6654,10 +6665,10 @@
                         y: y
                     };
                 }({
-                    width: width = Object(lib.F)(width, window.outerWidth),
-                    height: height = Object(lib.F)(height, window.outerWidth)
+                    width: width = Object(lib.G)(width, window.outerWidth),
+                    height: height = Object(lib.G)(height, window.outerWidth)
                 }), x = _getPosition.x, y = _getPosition.y, attributes = _this5.component.attributes.popup || {};
-                _this5.window = Object(lib.H)(url || "", Object(esm_extends.a)({
+                _this5.window = Object(lib.I)(url || "", Object(esm_extends.a)({
                     name: _this5.childWindowName,
                     width: width,
                     height: height,
@@ -6675,7 +6686,7 @@
             });
         },
         openPrerender: function() {
-            return zalgo_promise_src.a.try(lib.E);
+            return zalgo_promise_src.a.try(lib.F);
         },
         resize: function() {},
         hide: function() {
@@ -6710,7 +6721,7 @@
             } catch (err) {}
             this.window.location = url;
         }
-    }, lib.u.props = lib.u.props || {}, lib.u.windows = lib.u.windows || {};
+    }, lib.v.props = lib.v.props || {}, lib.v.windows = lib.v.windows || {};
     var component_class, component_class2, component_temp, parent_ParentComponent = (_temp = _class2 = function(_BaseComponent) {
         function ParentComponent(component, context, _ref) {
             var _this, props = _ref.props;
@@ -6725,7 +6736,7 @@
             } catch (err) {
                 throw props.onError && props.onError(err), err;
             }
-            return _this.props.logLevel && Object(lib.N)(_this.props.logLevel), _this.childWindowName = _this.buildChildWindowName({
+            return _this.props.logLevel && Object(lib.O)(_this.props.logLevel), _this.childWindowName = _this.buildChildWindowName({
                 renderTo: window
             }), _this.registerActiveComponent(), _this.component.log("construct_parent"), _this.watchForUnload(), 
             _this.onInit = new zalgo_promise_src.a(), _this.onInit.catch(function(err) {
@@ -6740,7 +6751,7 @@
                 _this2.component.log("render_" + _this2.context, {
                     context: _this2.context,
                     element: element,
-                    loadUrl: Object(lib.Q)(loadUrl)
+                    loadUrl: Object(lib.R)(loadUrl)
                 });
                 var tasks = {};
                 return tasks.onRender = _this2.props.onRender(), tasks.getDomain = _this2.getDomain(), 
@@ -6798,7 +6809,7 @@
                 if (!Object(cross_domain_utils_src.v)(window, win)) throw new Error("Can only renderTo an adjacent frame");
                 if (element && "string" != typeof element) throw new Error("Element passed to renderTo must be a string selector, got " + typeof element + " " + element);
                 return _this3.checkAllowRenderTo(win), _this3.component.log("render_" + _this3.context + "_to_win", {
-                    element: Object(lib.Q)(element),
+                    element: Object(lib.R)(element),
                     context: _this3.context
                 }), _this3.childWindowName = _this3.buildChildWindowName({
                     renderTo: win
@@ -6808,7 +6819,7 @@
             var _this4 = this;
             return zalgo_promise_src.a.try(function() {
                 _this4.html = _this4.buildUrl().then(function(url) {
-                    return Object(lib.I)(url).then(function(html) {
+                    return Object(lib.J)(url).then(function(html) {
                         return '\n                        <base href="' + url.split("/").slice(0, 3).join("/") + '">\n\n                        ' + html + "\n\n                        <script>\n                            if (window.history && window.history.pushState) {\n                                window.history.pushState({}, '', '/" + url.split("/").slice(3).join("/") + "');\n                            }\n                        <\/script>\n                    ";
                     });
                 });
@@ -6818,7 +6829,7 @@
             return zalgo_promise_src.a.try(function() {
                 if (!_this5.html) throw new Error("Html not prefetched");
                 return _this5.html.then(function(html) {
-                    return Object(lib.X)(_this5.window, html);
+                    return Object(lib.Y)(_this5.window, html);
                 });
             });
         }, _proto.checkAllowRenderTo = function(win) {
@@ -6835,9 +6846,9 @@
             });
         }, _proto.getComponentParentRef = function() {
             if (this.component.getDomain(null, this.props.env) === Object(cross_domain_utils_src.g)(window)) {
-                var uid = Object(lib.T)();
-                return lib.u.windows = lib.u.windows || {}, lib.u.windows[uid] = window, this.clean.register(function() {
-                    delete lib.u.windows[uid];
+                var uid = Object(lib.U)();
+                return lib.v.windows = lib.v.windows || {}, lib.v.windows[uid] = window, this.clean.register(function() {
+                    delete lib.v.windows[uid];
                 }), {
                     ref: constants.WINDOW_REFERENCES.GLOBAL,
                     uid: uid
@@ -6853,26 +6864,26 @@
             };
         }, _proto.getRenderParentRef = function(renderToWindow) {
             if (void 0 === renderToWindow && (renderToWindow = window), renderToWindow === window) return this.getComponentParentRef();
-            var uid = Object(lib.T)();
-            return lib.u.windows[uid] = renderToWindow, this.clean.register(function() {
-                delete lib.u.windows[uid];
+            var uid = Object(lib.U)();
+            return lib.v.windows[uid] = renderToWindow, this.clean.register(function() {
+                delete lib.v.windows[uid];
             }), {
                 ref: constants.WINDOW_REFERENCES.GLOBAL,
                 uid: uid
             };
         }, _proto.buildChildWindowName = function(_temp2) {
-            var _ref6$renderTo = (void 0 === _temp2 ? {} : _temp2).renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, childDomain = this.component.getDomain(null, this.props.env), sameDomain = Object(cross_domain_utils_src.u)(renderTo), uid = Object(lib.T)(), tag = this.component.tag, sProps = Object(lib.M)(this.getPropsForChild()), componentParent = this.getComponentParentRef(), renderParent = this.getRenderParentRef(renderTo), props = sameDomain || this.component.unsafeRenderTo ? {
+            var _ref6$renderTo = (void 0 === _temp2 ? {} : _temp2).renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, childDomain = this.component.getDomain(null, this.props.env), sameDomain = Object(cross_domain_utils_src.u)(renderTo), uid = Object(lib.U)(), tag = this.component.tag, sProps = Object(lib.N)(this.getPropsForChild()), componentParent = this.getComponentParentRef(), renderParent = this.getRenderParentRef(renderTo), props = sameDomain || this.component.unsafeRenderTo ? {
                 type: constants.INITIAL_PROPS.RAW,
                 value: sProps
             } : {
                 type: constants.INITIAL_PROPS.UID,
                 uid: uid
             };
-            return props.type === constants.INITIAL_PROPS.UID && (lib.u.props[uid] = JSON.stringify(sProps), 
+            return props.type === constants.INITIAL_PROPS.UID && (lib.v.props[uid] = JSON.stringify(sProps), 
             this.clean.register(function() {
-                delete lib.u.props[uid];
+                delete lib.v.props[uid];
             })), function(name, version, options) {
-                void 0 === options && (options = {}), options.id = Object(lib.T)(), options.domain = Object(cross_domain_utils_src.g)(window);
+                void 0 === options && (options = {}), options.id = Object(lib.U)(), options.domain = Object(cross_domain_utils_src.g)(window);
                 var str, encodedName = normalize(name), encodedVersion = normalize(version), encodedOptions = (str = JSON.stringify(options), 
                 base32_default.a.encode(str).replace(/\=/g, "").toLowerCase());
                 if (!encodedName) throw new Error("Invalid name: " + name + " - must contain alphanumeric characters");
@@ -6910,7 +6921,7 @@
                     _prop2 && !props.hasOwnProperty(_key2) && validateProp(_prop2, _key2, _value2, props, required);
                 }
             }(this.component, props, required), this.component.validate && this.component.validate(this.component, props), 
-            this.props = this.props || {}, Object(lib.p)(this.props, function(component, instance, props) {
+            this.props = this.props || {}, Object(lib.q)(this.props, function(component, instance, props) {
                 var result = {};
                 props = props || {};
                 for (var _i2 = 0, _Object$keys2 = Object.keys(props); _i2 < _Object$keys2.length; _i2++) {
@@ -6941,7 +6952,7 @@
                             if ("function" == typeof queryValue) return;
                             if ("object" == typeof queryValue && null !== queryValue) {
                                 if ("json" !== prop.serialization) {
-                                    result = Object(lib.l)(queryValue, key);
+                                    result = Object(lib.m)(queryValue, key);
                                     for (var _i6 = 0, _Object$keys4 = Object.keys(result); _i6 < _Object$keys4.length; _i6++) {
                                         var dotkey = _Object$keys4[_i6];
                                         params[dotkey] = result[dotkey];
@@ -6963,7 +6974,7 @@
                 return url && !_this7.component.getValidDomain(url) ? url : zalgo_promise_src.a.try(function() {
                     return url || _this7.component.getUrl(_this7.props.env, _this7.props);
                 }).then(function(finalUrl) {
-                    return query.xcomponent = "1", Object(lib.q)(finalUrl, {
+                    return query.xcomponent = "1", Object(lib.r)(finalUrl, {
                         query: query
                     });
                 });
@@ -7004,7 +7015,7 @@
                     domain && (needsBridgeParams.domain = domain);
                     var needsBridge = src.bridge.needsBridge(needsBridgeParams), bridgeUrl = _this10.component.getBridgeUrl(_this10.props.env);
                     if (bridgeUrl) {
-                        bridgeUrl = Object(lib.q)(bridgeUrl, {
+                        bridgeUrl = Object(lib.r)(bridgeUrl, {
                             query: {
                                 version: _this10.component.version
                             }
@@ -7036,7 +7047,7 @@
                 if (_this13.prerenderWindow && _this13.driver.switchPrerender) return _this13.driver.switchPrerender.call(_this13);
             });
         }, _proto.elementReady = function(element) {
-            return Object(lib.m)(element).then(lib.E);
+            return Object(lib.n)(element).then(lib.F);
         }, _proto.delegate = function(win) {
             var _this14 = this;
             this.component.log("delegate_" + this.context);
@@ -7081,7 +7092,7 @@
                 var data = _ref8.data;
                 return _this14.clean.register(data.destroy), data;
             }).catch(function(err) {
-                throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.R)(err));
+                throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.S)(err));
             }), overrides = this.driver.delegateOverrides, _loop = function(_i6, _Object$keys4) {
                 var key = _Object$keys4[_i6], val = overrides[key];
                 if (val === constants.DELEGATE.CALL_ORIGINAL) return "continue";
@@ -7106,7 +7117,7 @@
             }, 3e3);
             this.clean.register("destroyCloseWindowListener", closeWindowListener.cancel);
         }, _proto.watchForUnload = function() {
-            var _this17 = this, onunload = Object(lib.G)(function() {
+            var _this17 = this, onunload = Object(lib.H)(function() {
                 _this17.component.log("navigate_away"), Object(client.h)(), _this17.destroyComponent();
             }), unloadWindowListener = Object(lib.b)(window, "unload", onunload);
             this.clean.register("destroyUnloadWindowListener", unloadWindowListener.cancel);
@@ -7114,8 +7125,8 @@
             var _this18 = this;
             return zalgo_promise_src.a.try(function() {
                 var _query;
-                return _this18.component.log("load_url"), window.location.href.split("#")[0] === url.split("#")[0] && (url = Object(lib.q)(url, {
-                    query: (_query = {}, _query[Object(lib.T)()] = "1", _query)
+                return _this18.component.log("load_url"), window.location.href.split("#")[0] === url.split("#")[0] && (url = Object(lib.r)(url, {
+                    query: (_query = {}, _query[Object(lib.U)()] = "1", _query)
                 })), _this18.driver.loadUrl.call(_this18, url);
             });
         }, _proto.hijack = function(targetElement) {
@@ -7162,14 +7173,14 @@
             var _this21 = this;
             return zalgo_promise_src.a.try(function() {
                 _this21.component.log("resize", {
-                    height: Object(lib.Q)(height),
-                    width: Object(lib.Q)(width)
-                }), _this21.driver.resize.call(_this21, width, height);
+                    height: Object(lib.R)(height),
+                    width: Object(lib.R)(width)
+                }), _this21.driver.resize.call(_this21, width, height), _this21.props.onResize && _this21.props.onResize();
             });
         }, _proto.hide = function() {
-            return this.container && Object(lib.w)(this.container), this.driver.hide.call(this);
+            return this.container && Object(lib.x)(this.container), this.driver.hide.call(this);
         }, _proto.show = function() {
-            return this.container && Object(lib.P)(this.container), this.driver.show.call(this);
+            return this.container && Object(lib.Q)(this.container), this.driver.show.call(this);
         }, _proto.checkClose = function() {
             var _this22 = this, closeWindowListener = Object(cross_domain_utils_src.B)(this.window, function() {
                 _this22.userClose();
@@ -7215,7 +7226,7 @@
             }).then(function() {
                 return _this26.destroyComponent();
             }).then(function() {
-                _this26.childExports && _this26.context === constants.CONTEXT_TYPES.POPUP && !Object(cross_domain_utils_src.y)(win) && _this26.childExports.close().catch(lib.E);
+                _this26.childExports && _this26.context === constants.CONTEXT_TYPES.POPUP && !Object(cross_domain_utils_src.y)(win) && _this26.childExports.close().catch(lib.F);
             });
         }, _proto.destroyComponent = function() {
             this.clean.run("destroyUnloadWindowListener"), this.clean.run("destroyCloseWindowListener"), 
@@ -7225,14 +7236,14 @@
             return zalgo_promise_src.a.try(function() {
                 if (_this27.props.onDisplay) return _this27.props.onDisplay();
             }).then(function() {
-                if (_this27.container) return Object(lib.O)(_this27.container, constants.ANIMATION_NAMES.SHOW_CONTAINER, _this27.clean.register);
+                if (_this27.container) return Object(lib.P)(_this27.container, constants.ANIMATION_NAMES.SHOW_CONTAINER, _this27.clean.register);
             });
         }, _proto.showComponent = function() {
             var _this28 = this;
             return zalgo_promise_src.a.try(function() {
                 if (_this28.props.onDisplay) return _this28.props.onDisplay();
             }).then(function() {
-                if (_this28.element) return Object(lib.O)(_this28.element, constants.ANIMATION_NAMES.SHOW_COMPONENT, _this28.clean.register);
+                if (_this28.element) return Object(lib.P)(_this28.element, constants.ANIMATION_NAMES.SHOW_COMPONENT, _this28.clean.register);
             });
         }, _proto.hideContainer = function() {
             var _this29 = this;
@@ -7263,7 +7274,7 @@
                     }
                     try {
                         el = _this31.renderTemplate(_this31.component.prerenderTemplate, {
-                            jsxDom: lib.B.bind(doc),
+                            jsxDom: lib.C.bind(doc),
                             document: doc
                         });
                     } catch (err) {
@@ -7272,7 +7283,7 @@
                         }), void console.error(err.stack ? err.stack : err);
                     }
                     try {
-                        Object(lib.W)(win, el);
+                        Object(lib.X)(win, el);
                     } catch (err) {
                         _this31.component.logError("preprender_error", {
                             err: err.stack ? err.stack : err.toString()
@@ -7313,7 +7324,7 @@
                 on: function(eventName, handler) {
                     return _this32.on(eventName, handler);
                 },
-                jsxDom: lib.B,
+                jsxDom: lib.C,
                 document: document,
                 dimensions: {
                     width: width,
@@ -7324,15 +7335,15 @@
             var _this33 = this;
             return zalgo_promise_src.a.try(function() {
                 var el;
-                if (!(el = element ? Object(lib.t)(element) : document.body)) throw new Error("Could not find element to open container into");
+                if (!(el = element ? Object(lib.u)(element) : document.body)) throw new Error("Could not find element to open container into");
                 if (_this33.component.containerTemplate) {
                     var container = _this33.renderTemplate(_this33.component.containerTemplate, {
                         container: el
                     });
-                    if (_this33.container = container, Object(lib.w)(_this33.container), Object(lib.d)(el, _this33.container), 
+                    if (_this33.container = container, Object(lib.x)(_this33.container), Object(lib.d)(el, _this33.container), 
                     _this33.driver.renderedIntoContainerTemplate) {
-                        if (_this33.element = _this33.getOutlet(), Object(lib.w)(_this33.element), !_this33.element) throw new Error("Could not find element to render component into");
-                        Object(lib.w)(_this33.element);
+                        if (_this33.element = _this33.getOutlet(), Object(lib.x)(_this33.element), !_this33.element) throw new Error("Could not find element to render component into");
+                        Object(lib.x)(_this33.element);
                     }
                     _this33.clean.register("destroyContainerTemplate", function() {
                         _this33.container && _this33.container.parentNode && _this33.container.parentNode.removeChild(_this33.container), 
@@ -7363,13 +7374,13 @@
             }).then(function() {
                 if (_this36.props.onError) return _this36.props.onError(err);
             }).catch(function(errErr) {
-                throw new Error("An error was encountered while handling error:\n\n " + Object(lib.R)(err) + "\n\n" + Object(lib.R)(errErr));
+                throw new Error("An error was encountered while handling error:\n\n " + Object(lib.S)(err) + "\n\n" + Object(lib.S)(errErr));
             }).then(function() {
                 if (!_this36.props.onError) throw err;
             });
         }, ParentComponent.destroyAll = function() {
             for (var results = []; ParentComponent.activeComponents.length; ) results.push(ParentComponent.activeComponents[0].destroy());
-            return zalgo_promise_src.a.all(results).then(lib.E);
+            return zalgo_promise_src.a.all(results).then(lib.F);
         }, _createClass(ParentComponent, [ {
             key: "driver",
             get: function() {
@@ -7377,23 +7388,23 @@
                 return RENDER_DRIVERS[this.context];
             }
         } ]), ParentComponent;
-    }(base_BaseComponent), _class2.activeComponents = [], _applyDecoratedDescriptor((_class = _temp).prototype, "getOutlet", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "getOutlet"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "prefetch", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "prefetch"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "loadHTML", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "loadHTML"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "buildUrl", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "buildUrl"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "open", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "open"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "openPrerender", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "openPrerender"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "switchPrerender", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "switchPrerender"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "close", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "close"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "closeContainer", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "closeContainer"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "destroyContainer", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "destroyContainer"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "closeComponent", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "closeComponent"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "showContainer", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "showContainer"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "showComponent", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "showComponent"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "hideContainer", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "hideContainer"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "hideComponent", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "hideComponent"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "createPrerenderTemplate", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "createPrerenderTemplate"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "openContainer", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "openContainer"), _class.prototype), 
+    }(base_BaseComponent), _class2.activeComponents = [], _applyDecoratedDescriptor((_class = _temp).prototype, "getOutlet", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "getOutlet"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "prefetch", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "prefetch"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "loadHTML", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "loadHTML"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "buildUrl", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "buildUrl"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "open", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "open"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "openPrerender", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "openPrerender"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "switchPrerender", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "switchPrerender"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "close", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "close"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "closeContainer", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "closeContainer"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "destroyContainer", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "destroyContainer"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "closeComponent", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "closeComponent"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "showContainer", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "showContainer"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "showComponent", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "showComponent"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "hideContainer", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "hideContainer"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "hideComponent", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "hideComponent"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "createPrerenderTemplate", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "createPrerenderTemplate"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "openContainer", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "openContainer"), _class.prototype), 
     _class), delegate_DelegateComponent = function(_BaseComponent) {
         function DelegateComponent(component, source, options) {
             var _this;
@@ -7414,9 +7425,9 @@
             _this.focus = function() {
                 return zalgo_promise_src.a.all([ _this.isWindowClosed().then(function(closed) {
                     closed || window.open("", _this.childWindowName);
-                }), options.overrides.focus.call(_assertThisInitialized(_this)) ]).then(lib.E);
+                }), options.overrides.focus.call(_assertThisInitialized(_this)) ]).then(lib.F);
             }, _this.clean.register("destroyFocusOverride", function() {
-                _this.focus = lib.E;
+                _this.focus = lib.F;
             }), _this.userClose = options.overrides.userClose, _this.getDomain = options.overrides.getDomain, 
             _this.error = options.overrides.error, _this.on = options.overrides.on;
             for (var _i4 = 0, _Object$keys2 = Object.keys(RENDER_DRIVERS[options.context].delegateOverrides); _i4 < _Object$keys2.length; _i4++) {
@@ -7499,8 +7510,8 @@
                         if (prop.required && prop.def) throw new Error("Required prop can not have a default value");
                     }
                 }(options), options.dimensions) {
-                    if (options.dimensions && !Object(lib.A)(options.dimensions.width) && !Object(lib.z)(options.dimensions.width)) throw new Error("Expected options.dimensions.width to be a px or % string value");
-                    if (options.dimensions && !Object(lib.A)(options.dimensions.height) && !Object(lib.z)(options.dimensions.height)) throw new Error("Expected options.dimensions.height to be a px or % string value");
+                    if (options.dimensions && !Object(lib.B)(options.dimensions.width) && !Object(lib.A)(options.dimensions.width)) throw new Error("Expected options.dimensions.width to be a px or % string value");
+                    if (options.dimensions && !Object(lib.B)(options.dimensions.height) && !Object(lib.A)(options.dimensions.height)) throw new Error("Expected options.dimensions.height to be a px or % string value");
                 }
                 if (options.contexts) {
                     for (var anyEnabled = !1, _i4 = 0, _Object$keys4 = Object.keys(options.contexts); _i4 < _Object$keys4.length; _i4++) {
@@ -7530,7 +7541,7 @@
                 if (options.prerenderTemplate && "function" != typeof options.prerenderTemplate) throw new Error("Expected options.prerenderTemplate to be a function");
                 if (options.containerTemplate && "function" != typeof options.containerTemplate) throw new Error("Expected options.containerTemplate to be a function");
             }(options), _this.addProp(options, "tag"), _this.addProp(options, "defaultLogLevel", "info"), 
-            _this.addProp(options, "allowedParentDomains", constants.WILDCARD), Object(lib.N)(_this.defaultLogLevel), 
+            _this.addProp(options, "allowedParentDomains", constants.WILDCARD), Object(lib.O)(_this.defaultLogLevel), 
             Component.components[_this.tag]) throw new Error("Can not register multiple components with the same tag");
             return _this.addProp(options, "name", _this.tag.replace(/-/g, "_")), _this.builtinProps = {
                 env: {
@@ -7544,7 +7555,7 @@
                 uid: {
                     type: "string",
                     def: function() {
-                        return Object(lib.T)();
+                        return Object(lib.U)();
                     },
                     queryParam: !0
                 },
@@ -7607,6 +7618,12 @@
                     noop: !0,
                     once: !0,
                     promisify: !0,
+                    sendToChild: !1
+                },
+                onResize: {
+                    type: "function",
+                    required: !1,
+                    noop: !0,
                     sendToChild: !1
                 },
                 onTimeout: {
@@ -7819,15 +7836,15 @@
                 }
             };
         }, _proto.log = function(event, payload) {
-            void 0 === payload && (payload = {}), Object(lib.y)(this.name, event, payload);
+            void 0 === payload && (payload = {}), Object(lib.z)(this.name, event, payload);
         }, _proto.logWarning = function(event, payload) {
-            Object(lib.U)(this.name, event, payload);
+            Object(lib.V)(this.name, event, payload);
         }, _proto.logError = function(event, payload) {
-            Object(lib.n)(this.name, event, payload);
+            Object(lib.o)(this.name, event, payload);
         }, Component.getByTag = function(tag) {
             return Component.components[tag];
         }, Component;
-    }(base_BaseComponent), component_class2.components = {}, _applyDecoratedDescriptor((component_class = component_temp).prototype, "getPropNames", [ lib.C ], Object.getOwnPropertyDescriptor(component_class.prototype, "getPropNames"), component_class.prototype), 
+    }(base_BaseComponent), component_class2.components = {}, _applyDecoratedDescriptor((component_class = component_temp).prototype, "getPropNames", [ lib.D ], Object.getOwnPropertyDescriptor(component_class.prototype, "getPropNames"), component_class.prototype), 
     component_class);
     function create(options) {
         return new component_Component(options);
@@ -8595,7 +8612,7 @@
     function beacon(event, payload) {
         void 0 === payload && (payload = {});
         try {
-            payload.event = "ppxo_" + event, payload.version = "4.0.277", payload.host = window.location.host, 
+            payload.event = "ppxo_" + event, payload.version = "4.0.278", payload.host = window.location.host, 
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)(), payload.appName = APP_NAME;
             var query = [];
             for (var key in payload) payload.hasOwnProperty(key) && query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
@@ -12184,13 +12201,13 @@
                 },
                 componentDidMount: function() {
                     component.log("instantiate_react_component");
-                    var el = ReactDOM.findDOMNode(this), parent = component.init(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.p)({}, this.props), null, el);
+                    var el = ReactDOM.findDOMNode(this), parent = component.init(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.q)({}, this.props), null, el);
                     this.setState({
                         parent: parent
                     }), parent.render(el);
                 },
                 componentDidUpdate: function() {
-                    this.state && this.state.parent && this.state.parent.updateProps(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.p)({}, this.props));
+                    this.state && this.state.parent && this.state.parent.updateProps(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.q)({}, this.props));
                 },
                 componentWillUnmount: function() {
                     this.state && this.state.parent && this.state.parent.destroy();
@@ -12205,12 +12222,12 @@
                     return React.createElement("div", null);
                 }, _proto.componentDidMount = function() {
                     component.log("instantiate_react_component");
-                    var el = ReactDOM.findDOMNode(this), parent = component.init(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.p)({}, this.props), null, el);
+                    var el = ReactDOM.findDOMNode(this), parent = component.init(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.q)({}, this.props), null, el);
                     this.setState({
                         parent: parent
                     }), parent.render(el);
                 }, _proto.componentDidUpdate = function() {
-                    this.state && this.state.parent && this.state.parent.updateProps(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.p)({}, this.props));
+                    this.state && this.state.parent && this.state.parent.updateProps(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.q)({}, this.props));
                 }, _proto.componentWillUnmount = function() {
                     this.state && this.state.parent && this.state.parent.destroy();
                 }, _class;
@@ -12232,11 +12249,11 @@
                 inheritAttrs: !1,
                 mounted: function() {
                     var el = this.$el;
-                    this.parent = component.init(Object(_lib__WEBPACK_IMPORTED_MODULE_0__.p)({}, this.$attrs), null, el), 
+                    this.parent = component.init(Object(_lib__WEBPACK_IMPORTED_MODULE_0__.q)({}, this.$attrs), null, el), 
                     this.parent.render(el);
                 },
                 beforeUpdate: function() {
-                    this.parent && this.$attrs && this.parent.updateProps(Object(_lib__WEBPACK_IMPORTED_MODULE_0__.p)({}, this.$attrs));
+                    this.parent && this.$attrs && this.parent.updateProps(Object(_lib__WEBPACK_IMPORTED_MODULE_0__.q)({}, this.$attrs));
                 }
             };
         }
@@ -12268,7 +12285,7 @@
                                     void 0 !== $scope[_key] && (scopeProps[_key] = $scope[_key]);
                                 }
                             }
-                            return Object(_lib__WEBPACK_IMPORTED_MODULE_0__.L)(scopeProps, {
+                            return Object(_lib__WEBPACK_IMPORTED_MODULE_0__.M)(scopeProps, {
                                 function: function(value) {
                                     return function() {
                                         var result = value.apply(this, arguments);
@@ -12319,7 +12336,7 @@
             var AngularComponent = _ref.Component, NgModule = _ref.NgModule, ElementRef = _ref.ElementRef, NgZone = _ref.NgZone;
             zoid.log("initializing angular2 component");
             var getProps = function(component) {
-                return Object(_lib__WEBPACK_IMPORTED_MODULE_1__.L)(Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, component.internalProps, component.props), {
+                return Object(_lib__WEBPACK_IMPORTED_MODULE_1__.M)(Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, component.internalProps, component.props), {
                     function: function(value) {
                         if ("function" == typeof value) return function() {
                             var _this = this, _arguments = arguments;
@@ -12657,13 +12674,13 @@
     "use strict";
     __webpack_require__.r(__webpack_exports__);
     var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29), _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32), _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
-    if (__webpack_require__(26), window.paypal && "4.0.277" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-        version: "4.0.277"
-    }), new Error("PayPal Checkout Integration Script with same version (4.0.277) already loaded on page");
-    if (window.paypal && window.paypal.version && "4.0.277" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
+    if (__webpack_require__(26), window.paypal && "4.0.278" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
+        version: "4.0.278"
+    }), new Error("PayPal Checkout Integration Script with same version (4.0.278) already loaded on page");
+    if (window.paypal && window.paypal.version && "4.0.278" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
         existingVersion: window.paypal.version,
-        version: "4.0.277"
-    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.277");
+        version: "4.0.278"
+    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.278");
     try {
         var _interface = __webpack_require__(65);
         Object(_lib_namespace__WEBPACK_IMPORTED_MODULE_1__.a)(_interface, [ "paypal", "PAYPAL", "ppxo" ], [ "apps" ]);
@@ -13013,7 +13030,7 @@
             }
         },
         containerTemplate: containerTemplate
-    }), cross_domain_utils_src = __webpack_require__(7), pptm = (noContentFoundInContainer = !1, 
+    }), cross_domain_utils_src = __webpack_require__(7), src_lib = __webpack_require__(5), pptm = (noContentFoundInContainer = !1, 
     callback = "__pptmLoadedWithNoContent", obj = {
         reloadPptmScript: function(clientId) {
             !function tryCreatePptmScript() {
@@ -13321,7 +13338,7 @@
             returnToken && logReturn(returnToken);
         }, 1);
     }
-    var _FUNDING_CONFIG, _CARD_CONFIG, integrations = __webpack_require__(27), src_lib = __webpack_require__(5), integrations_checkout = __webpack_require__(31), OPTYPE = {
+    var _FUNDING_CONFIG, _CARD_CONFIG, integrations = __webpack_require__(27), integrations_checkout = __webpack_require__(31), OPTYPE = {
         PAYMENT: "payment",
         CANCEL: "cancel"
     }, CONTINGENCY = {
@@ -13331,8 +13348,8 @@
         return {
             env: props.env = props.env || config.a.env,
             payment: props.payment,
-            onAuthorize: Object(src_lib.G)(props.onAuthorize),
-            onCancel: Object(src_lib.G)(props.onCancel || src_lib.E)
+            onAuthorize: Object(src_lib.H)(props.onAuthorize),
+            onCancel: Object(src_lib.H)(props.onCancel || src_lib.F)
         };
     }
     function awaitPopupBridge(Button) {
@@ -20255,7 +20272,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.277", 
+        return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.278", 
         _ref18), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -20266,7 +20283,7 @@
             })
         }), styleNode, buttonNodes, taglineNode || fundingiconNode, labelPowerByPayPal, scriptNode).toString();
     }
-    var clientConfigThrottle = Object(lib.x)("client_config", 0);
+    var clientConfigThrottle = Object(lib.x)("client_config", 1);
     pptm.listenForLoadWithNoContent();
     var creditThrottle, isDomainAllowed = Object(lib.I)(function() {
         var domain = Object(cross_domain_utils_src.g)().replace(/^https?:\/\//, "").replace(/^www\./, "");
@@ -20812,6 +20829,37 @@
                     };
                 }
             },
+            onResize: {
+                type: "function",
+                required: !1,
+                get value() {
+                    var initialHeight, logInlineGuestOutOfViewPortOnlyOnce = Object(src_lib.H)(function(data) {
+                        Object(beaver_logger_client.k)("buttons_expansion_outside_viewport", data), Object(beaver_logger_client.j)();
+                    });
+                    return function() {
+                        var container = this.container;
+                        initialHeight || (initialHeight = container.offsetHeight);
+                        var isContainerExpanded = container && container.offsetHeight > initialHeight, isExpansionInViewport = function() {
+                            try {
+                                var scrollOffsetY = window.pageYOffset ? window.pageYOffset : document.documentElement ? document.documentElement.scrollTop : 0, windowHeight = window.innerHeight, containerOffsetY = container.getBoundingClientRect().top;
+                                return scrollOffsetY + windowHeight > initialHeight + containerOffsetY + 200;
+                            } catch (err) {
+                                return Object(beaver_logger_client.k)("cannot_get_the_viewport_information"), !1;
+                            }
+                        }();
+                        isContainerExpanded && !isExpansionInViewport && logInlineGuestOutOfViewPortOnlyOnce({
+                            height: container.offsetHeight,
+                            window: {
+                                width: window.innerWidth,
+                                height: window.innerHeight
+                            }
+                        });
+                    };
+                },
+                decorate: function(original) {
+                    return Object(src_lib.i)(original);
+                }
+            },
             locale: {
                 type: "string",
                 required: !1,
@@ -20923,8 +20971,8 @@
                             data;
                         }(payload.queryItems), actions = function(query) {
                             var actions = {
-                                close: src_lib.E,
-                                closeComponent: src_lib.E
+                                close: src_lib.F,
+                                closeComponent: src_lib.F
                             }, opType = query.opType, return_uri = query.return_uri, cancel_uri = query.cancel_uri;
                             return opType === OPTYPE.PAYMENT ? actions.redirect = function(win, redirectUrl) {
                                 return void 0 === win && (win = window), void 0 === redirectUrl && (redirectUrl = return_uri), 
@@ -21333,7 +21381,7 @@
         }), Object(beaver_logger_client.p)(((setup_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
         setup_track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, setup_track3));
     }
-    var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.277", legacy = __webpack_require__(66);
+    var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.278", legacy = __webpack_require__(66);
     interface_checkout = legacy.checkout, apps = legacy.apps, Object(lib.G)() && (interface_Checkout = src_checkout.a, 
     interface_BillingPage = BillingPage, interface_ThreeDomainSecure = ThreeDomainSecure, 
     PayPalCheckout = src_checkout.a, enableCheckoutIframe = function() {
