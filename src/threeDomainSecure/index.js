@@ -21,8 +21,7 @@ export const ThreeDomainSecure = create({
 
     get domain() : Object {
         return {
-            ...config.paypalDomains,
-            [ ENV.LOCAL ]: /^http:\/\/localhost.paypal.com:\d+$/
+            ...config.paypalDomains
         };
     },
 
