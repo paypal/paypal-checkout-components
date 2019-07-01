@@ -11,6 +11,7 @@ import { Style } from './style';
 import { BasicButton, VaultedButton } from './button';
 import { TagLine } from './tagline';
 import { Script } from './script';
+import { buttonContent } from './content';
 
 type ButtonsProps = ButtonPropsInputs & {|
     onClick? : Function
@@ -20,6 +21,8 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick } = props;
     const { style, locale, remembered, env, fundingEligibility, platform, nonce, components, onShippingChange } = normalizeButtonProps(props);
     const { layout, shape } = style;
+    const { lang } = locale;
+    const content = buttonContent[lang];
 
     const fundingSources = determineEligibleFunding({ layout, remembered, platform, fundingEligibility, components, onShippingChange });
     const multiple = fundingSources.length > 1;
@@ -63,7 +66,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
 
             {
                 vaultedFunding.length
-                    ? <p class={ `${ CLASS.VAULT_HEADER } ${ CLASS.TEXT }` }>Instantly pay with</p>
+                    ? <p class={ `${ CLASS.VAULT_HEADER } ${ CLASS.TEXT }` }>{ content.payInstantly }</p>
                     : null
             }
 
