@@ -49,7 +49,8 @@ export function MarksElement({ fundingEligibility, fundingSources, height } : { 
                         margin: ${ toPx(height / 5) };
                         white-space: nowrap;
                         position: relative;
-                        background: #f3f3f3;
+                        background: #fff;
+                        border: 1px solid #dcdcdc;
                     }
 
                     .paypal-mark:last-child {
