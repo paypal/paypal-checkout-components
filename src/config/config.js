@@ -487,6 +487,10 @@ export const config = {
 
         'llmhq.com': {
             disable_venmo: true
+        },
+
+        'gainful.com': {
+            disable_venmo: true
         }
     },
 
