@@ -1,7 +1,8 @@
 /* @flow */
 
+import { insertMockSDKScript } from '@paypal/sdk-client/src';
+
 import './tests';
-import { setSDKScriptUrl } from './tests/common';
 
 window.mockDomain = 'mock://www.merchant-site.com';
 
@@ -30,7 +31,7 @@ beforeEach(() => {
     window.__CACHE_START_TIME__ = Date.now();
     originalUserAgent = window.navigator.userAgent;
 
-    setSDKScriptUrl();
+    insertMockSDKScript();
 
     delete window.__test__;
 });

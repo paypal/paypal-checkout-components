@@ -4,9 +4,10 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { wrapPromise, createElement, getElement, once } from 'belter/src';
 import { SDK_QUERY_KEYS, QUERY_BOOL } from '@paypal/sdk-constants/src';
+import { insertMockSDKScript } from '@paypal/sdk-client/src';
 
 import { generateOrderID, createTestContainer, generateBillingAgreementToken,
-    destroyTestContainer, assert, WEBVIEW_USER_AGENT, setSDKScriptUrl } from '../common';
+    destroyTestContainer, assert, WEBVIEW_USER_AGENT } from '../common';
 
 for (const flow of [ 'popup', 'iframe' ]) {
 
@@ -43,7 +44,11 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then complete the checkout with createBillingAgreement', () => {
             return wrapPromise(({ expect, avoid }) => {
-                setSDKScriptUrl({ [ SDK_QUERY_KEYS.VAULT ]: QUERY_BOOL.TRUE });
+                insertMockSDKScript({
+                    query: {
+                        [ SDK_QUERY_KEYS.VAULT ]: QUERY_BOOL.TRUE
+                    }
+                });
 
                 return window.paypal.Buttons({
                     test:                   { flow, action: 'checkout', captureOrder: expect('captureOrder') },
