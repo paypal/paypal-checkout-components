@@ -1,3 +1,11 @@
+## <small>5.0.41 (2019-07-02)</small>
+
+* Add pay instantly translations ([9125d03](http://github.paypal.com/paypal/paypal-checkout/commit/9125d03))
+* Adjust marks style ([b359da5](http://github.paypal.com/paypal/paypal-checkout/commit/b359da5))
+* Use insertMockSDKScript helper ([f44c06e](http://github.paypal.com/paypal/paypal-checkout/commit/f44c06e))
+
+
+
 ## <small>5.0.40 (2019-06-17)</small>
 
 * fix(credit-button): Credit button will no longer display if its vendors are all ineligible (#1128) ([61e73f9](http://github.paypal.com/paypal/paypal-checkout/commit/61e73f9)), closes [#1128](http://github.paypal.com/paypal/paypal-checkout/issues/1128)
