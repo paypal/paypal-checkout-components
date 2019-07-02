@@ -13,7 +13,6 @@ describe('vault cases', () => {
     it('should set up a new forced-vaulted funding source', async () => {
         return await wrapPromise(async ({ expect }) => {
 
-            window.xprops.enableVault = true;
             window.xprops.vault = true;
             window.xprops.clientAccessToken = 'abc-123';
 
@@ -61,7 +60,6 @@ describe('vault cases', () => {
     it('should set up a new forced-vaulted funding source, and fail because paypal is not vaulable', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
-            window.xprops.enableVault = true;
             window.xprops.vault = true;
             window.xprops.clientAccessToken = 'abc-123';
 
@@ -90,7 +88,6 @@ describe('vault cases', () => {
     it('should set up a new optionally-vaulted funding source', async () => {
         return await wrapPromise(async ({ expect }) => {
 
-            window.xprops.enableVault = true;
             window.xprops.clientAccessToken = 'abc-123';
 
             const orderID = 'XXXXXXXXXX';
@@ -137,7 +134,6 @@ describe('vault cases', () => {
     it('should not set up a new optionally-vaulted funding source when vaulting is not eligible', async () => {
         return await wrapPromise(async ({ expect }) => {
 
-            window.xprops.enableVault = true;
             window.xprops.clientAccessToken = 'abc-123';
 
             const orderID = 'XXXXXXXXXX';
@@ -184,7 +180,6 @@ describe('vault cases', () => {
     it('should continue with a one time payment for a new optionally-vaulted funding source when enableVault errors out', async () => {
         return await wrapPromise(async ({ expect }) => {
 
-            window.xprops.enableVault = true;
             window.xprops.clientAccessToken = 'abc-123';
 
             const orderID = 'XXXXXXXXXX';
@@ -237,7 +232,6 @@ describe('vault cases', () => {
     it('should pay with an existing vaulted paypal account', async () => {
         return await wrapPromise(async ({ expect }) => {
 
-            window.xprops.enableVault = true;
             window.xprops.clientAccessToken = 'abc-123';
 
             const orderID = 'XXXXXXXXXX';
@@ -281,7 +275,6 @@ describe('vault cases', () => {
     it('should pay with an existing vaulted card', async () => {
         return await wrapPromise(async ({ expect }) => {
 
-            window.xprops.enableVault = true;
             window.xprops.clientAccessToken = 'abc-123';
 
             const orderID = 'XXXXXXXXXX';
