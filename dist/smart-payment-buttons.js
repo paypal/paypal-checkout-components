@@ -2549,7 +2549,6 @@ window.spb = function(modules) {
                             return zalgo_promise_src.a.try(function() {
                                 if (clientAccessToken) return function(_ref2) {
                                     var vault = _ref2.vault, fundingSource = _ref2.fundingSource, fundingEligibility = _ref2.fundingEligibility;
-                                    if (!window.xprops.enableVault) return !1;
                                     if (!_ref2.clientAccessToken) return !1;
                                     if (_ref2.createBillingAgreement || _ref2.createSubscription) return !1;
                                     var fundingSourceEligible = Boolean(fundingEligibility[fundingSource] && fundingEligibility[fundingSource].vaultable);
