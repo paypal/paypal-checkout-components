@@ -5,7 +5,6 @@
 import { create } from 'zoid/src';
 import { base64encode } from 'belter/src';
 
-import { ENV } from '../constants';
 import { getBrowserLocale, getCurrentScriptUrl } from '../lib';
 import { config } from '../config';
 import { containerTemplate } from '../billing/template';
@@ -21,8 +20,7 @@ export const ThreeDomainSecure = create({
 
     get domain() : Object {
         return {
-            ...config.paypalDomains,
-            [ ENV.LOCAL ]: /^http:\/\/localhost.paypal.com:\d+$/
+            ...config.paypalDomains
         };
     },
 

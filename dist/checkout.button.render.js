@@ -1193,6 +1193,9 @@
         });
     }
     var moduleGlobal = {};
+    function util_getGlobal() {
+        return "undefined" != typeof window ? window : "undefined" != typeof window ? window : moduleGlobal;
+    }
     function util_perc(pixels, percentage) {
         return Math.round(pixels * percentage / 100);
     }
@@ -1212,7 +1215,7 @@
             }
             var time = options.time;
             cache[key] && time && Date.now() - cache[key].time < time && delete cache[key];
-            var glob = "undefined" != typeof window ? window : "undefined" != typeof window ? window : moduleGlobal;
+            var glob = util_getGlobal();
             return glob.__CACHE_START_TIME__ && cache[key] && cache[key].time < glob.__CACHE_START_TIME__ && delete cache[key], 
             cache[key] ? cache[key].value : (cache[key] = {
                 time: Date.now(),
@@ -8250,7 +8253,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return jsxToHTML("div", _extends({}, (_ref18 = {}, _ref18[ATTRIBUTE.VERSION] = "4.0.278", 
+        return jsxToHTML("div", _extends({}, (_ref18 = {}, _ref18[ATTRIBUTE.VERSION] = "4.0.279", 
         _ref18), {
             class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
