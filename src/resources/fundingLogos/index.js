@@ -38,7 +38,7 @@ export const fundingLogos = {
         [ BUTTON_LOGO_COLOR.BLUE ]:  venmo_blue
     },
     [ BUTTON_LOGO.ITAU ]: {
-        [ BUTTON_LOGO_COLOR.BLUE ]: itau
+        [ BUTTON_LOGO_COLOR.WHITE ]: itau
     },
 
     [ BUTTON_LOGO.IDEAL ]: idealLogo,

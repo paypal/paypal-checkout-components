@@ -245,29 +245,27 @@ export const BUTTON_CONFIG : ButtonConfig = {
         label:     `{ logo: ${ BUTTON_LOGO.ITAU } }`,
         logoLabel: `{ logo: ${ BUTTON_LOGO.ITAU } }`,
 
-        defaultColor: BUTTON_COLOR.SILVER,
+        defaultColor: BUTTON_COLOR.DARKBLUE,
 
         colors: [
+            BUTTON_COLOR.DARKBLUE,
             BUTTON_COLOR.BLUE,
-            BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK,
-            BUTTON_COLOR.WHITE
+            BUTTON_COLOR.BLACK
         ],
 
         logoColors:  {
-            [ BUTTON_COLOR.BLUE ]:   BUTTON_LOGO_COLOR.BLUE,
-            [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLUE,
-            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.BLUE,
-            [ BUTTON_COLOR.WHITE ]:  BUTTON_LOGO_COLOR.BLUE
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_LOGO_COLOR.WHITE,
+            [ BUTTON_COLOR.BLUE ]:     BUTTON_LOGO_COLOR.WHITE,
+            [ BUTTON_COLOR.BLACK ]:    BUTTON_LOGO_COLOR.WHITE
         },
 
         secondaryColors: {
-            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.DARKBLUE,
+            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.BLUE,
+            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.DARKBLUE,
             [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
-            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.WHITE ]:      BUTTON_COLOR.WHITE
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.DARKBLUE,
+            [ BUTTON_COLOR.WHITE ]:      BUTTON_COLOR.DARKBLUE
         },
 
         allowPrimary: true,
