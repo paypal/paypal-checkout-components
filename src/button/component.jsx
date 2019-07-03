@@ -32,7 +32,7 @@ import { validateButtonLocale, validateButtonStyle } from './validate';
 import { setupButtonChild } from './child';
 import { normalizeProps } from './props';
 
-const clientConfigThrottle = getThrottle('client_config', 10);
+const clientConfigThrottle = getThrottle('client_config', 100);
 
 pptm.listenForLoadWithNoContent();
 
