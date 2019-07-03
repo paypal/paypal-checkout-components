@@ -491,6 +491,10 @@ export const config = {
 
         'gainful.com': {
             disable_venmo: true
+        },
+
+        'modaoperandi.com': {
+            disable_venmo: true
         }
     },
 
