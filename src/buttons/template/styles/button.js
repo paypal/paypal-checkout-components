@@ -123,4 +123,14 @@ export const buttonStyle = `
     .${ CLASS.CONTAINER } .${ CLASS.VAULT_HEADER } {
         margin-top: 20px;
     }
+
+    .${ CLASS.POWERED_BY } > .${ CLASS.TEXT } {
+        vertical-align: top;
+        line-height: 18px;
+    }
+
+    .${ CLASS.POWERED_BY } > .${ LOGO_CLASS.LOGO } {
+        height: 16px;
+        min-height: 16px;
+    }
 `;

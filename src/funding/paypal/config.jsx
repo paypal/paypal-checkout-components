@@ -3,12 +3,13 @@
 
 import { type LocaleType } from '@paypal/sdk-constants/src';
 import { node, Fragment } from 'jsx-pragmatic/src';
-import { LOGO_COLOR, PPLogo } from '@paypal/sdk-logos/src';
+import { LOGO_COLOR, PPLogo, PayPalLogo } from '@paypal/sdk-logos/src';
 
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, CLASS } from '../../constants';
-import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig, Text } from '../common';
+import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
+import { Text } from '../../ui';
 
-import { PayPal, Checkout, BuyNow, Pay, Installment, SaferTag, DualTag } from './labels';
+import { componentContent } from './content';
 
 const DEFAULT_PAYPAL_LABEL = {
     ...DEFAULT_LABEL_CONFIG,
@@ -29,10 +30,12 @@ const DEFAULT_PAYPAL_LABEL = {
         [BUTTON_COLOR.WHITE]:  LOGO_COLOR.BLUE
     },
 
-    Tag: ({ multiple, locale } : { locale : LocaleType, multiple : boolean }) => {
-        return (multiple)
-            ? <DualTag locale={ locale } optional />
-            : <SaferTag locale={ locale } optional />;
+    Tag: ({ multiple, locale: { lang } } : { locale : LocaleType, multiple : boolean }) => {
+        const { DualTag, SaferTag } = componentContent[lang];
+
+        return (multiple && DualTag)
+            ? <DualTag optional />
+            : <SaferTag  optional />;
     }
 };
 
@@ -50,7 +53,13 @@ export function getPayPalConfig() : FundingSourceConfig {
         labels: {
             [ BUTTON_LABEL.PAYPAL ]: {
                 ...DEFAULT_PAYPAL_LABEL,
-                Label:      PayPal,
+                Label:      ({ logoColor }) => {
+                    return (
+                        <Fragment>
+                            <PPLogo logoColor={ logoColor } /> <PayPalLogo logoColor={ logoColor } />
+                        </Fragment>
+                    );
+                },
                 VaultLabel: ({ logoColor, label }) => {
                     return (
                         <Fragment>
@@ -62,22 +71,39 @@ export function getPayPalConfig() : FundingSourceConfig {
     
             [ BUTTON_LABEL.CHECKOUT ]: {
                 ...DEFAULT_PAYPAL_LABEL,
-                Label: Checkout
+                Label: ({ locale: { lang }, logoColor }) => {
+                    const { Checkout } = componentContent[lang];
+                    return <Checkout logoColor={ logoColor } />;
+                }
             },
     
             [ BUTTON_LABEL.PAY ]: {
                 ...DEFAULT_PAYPAL_LABEL,
-                Label: Pay
+                Label: ({ locale: { lang }, logoColor }) => {
+                    const { Pay } = componentContent[lang];
+                    return <Pay logoColor={ logoColor } />;
+                }
             },
 
             [ BUTTON_LABEL.BUYNOW ]: {
                 ...DEFAULT_PAYPAL_LABEL,
-                Label: BuyNow
+                Label: ({ locale: { lang }, logoColor }) => {
+                    const { BuyNow } = componentContent[lang];
+                    return <BuyNow logoColor={ logoColor } />;
+                }
             },
     
             [ BUTTON_LABEL.INSTALLMENT ]: {
                 ...DEFAULT_PAYPAL_LABEL,
-                Label: Installment
+                Label: ({ locale: { lang }, logoColor, period }) => {
+                    const { Installment } = componentContent[lang];
+
+                    if (!Installment) {
+                        throw new Error(`Could not find installment content for ${ lang }`);
+                    }
+
+                    return <Installment logoColor={ logoColor } period={ period } />;
+                }
             }
         }
     };

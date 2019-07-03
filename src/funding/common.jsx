@@ -3,10 +3,10 @@
 /** @jsx node */
 
 import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
-import { node, type ChildType, type ChildrenType } from 'jsx-pragmatic/src';
+import { type ChildType } from 'jsx-pragmatic/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
-import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LABEL, DEFAULT, CLASS } from '../constants';
+import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LABEL, DEFAULT } from '../constants';
 import type { FundingEligibilityType } from '../types';
 
 export const DEFAULT_FUNDING_CONFIG = {
@@ -115,9 +115,3 @@ export type FundingSourceConfig = {|
         zimpler? : FundingLabelConfig
     |}
 |};
-
-export function Text({ optional, className = [] } : { optional? : boolean, className? : $ReadOnlyArray<string> }, children : ChildrenType) : ChildType {
-    return (
-        <span class={ [ CLASS.TEXT, ...className  ].join(' ') } optional={ optional }>{ children }</span>
-    );
-}

@@ -3,215 +3,191 @@
 /** @jsx node */
 /** @jsxFrag Fragment */
 
-import { node, Fragment, type ChildType, type NodePropsType, type ChildrenType, type ComponentNode } from 'jsx-pragmatic/src'; // eslint-disable-line no-unused-vars
+import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 import { LANG } from '@paypal/sdk-constants/src';
 import { PPLogo, PayPalLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
-import { Text } from '../common';
-
-export type Content = string | ({ logoColor : $Values<typeof LOGO_COLOR>, period? : number }) => ChildType;
+import { Text, Space } from '../../ui';
 
 export type ContentMap = {
     [ $Values<typeof LANG> ] : {
-        checkout : Content,
-        pay : Content,
-        installment? : Content,
-        installment_period? : Content,
-        safer_tag : Content,
-        dual_tag? : Content
+        Checkout : ({ logoColor : $Values<typeof LOGO_COLOR> }) => ChildType,
+        Pay : ({ logoColor : $Values<typeof LOGO_COLOR> }) => ChildType,
+        BuyNow : ({ logoColor : $Values<typeof LOGO_COLOR> }) => ChildType,
+        Installment? : ({ logoColor : $Values<typeof LOGO_COLOR>, period? : ?number }) => ChildType,
+        InstallmentPeriod? : ({ logoColor : $Values<typeof LOGO_COLOR>, period? : ?number }) => ChildType,
+        SaferTag : () => ChildType,
+        DualTag? : () => ChildType
     }
 };
 
-const Installment = ({ logoColor } : NodePropsType, children : ChildrenType) : ChildType => {
-    return (
-        // $FlowFixMe
-        <>
-            <PPLogo logoColor={ logoColor } /> <PayPalLogo logoColor={ logoColor } /> <Text>{ children }</Text>
-        </>
-    );
-};
+const PPPayPalLogo = ({ logoColor }) => <Fragment><PPLogo logoColor={ logoColor } /><Space /><PayPalLogo logoColor={ logoColor } /></Fragment>;
 
 export const componentContent : ContentMap = {
     en: {
-        checkout:           '{pp} {paypal} Checkout',
-        safer_tag:          'The safer, easier way to pay',
-        pay:                'Pay with {paypal}',
-        installment:        ({ logoColor }) => <Installment logoColor={ logoColor }> Interest free<br /> payments</Installment>,
-        installment_period: ({ logoColor, period }) => <Installment logoColor={ logoColor }> Pay up to { period ? period.toString() : '' }x<br /> without interest</Installment>,
-        dual_tag:           'Two easy ways to pay',
-        buynow:             '{pp} {paypal} Buy Now',
-        poweredBy:          'Powered by {paypal}'
+        Checkout:           ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Checkout</Text></Fragment>,
+        SaferTag:           () => <Text>The safer, easier way to pay</Text>,
+        Pay:                ({ logoColor }) => <Fragment><Text>Pay with </Text><PayPalLogo logoColor={ logoColor } /></Fragment>,
+        Installment:        ({ period, logoColor }) => {
+            return period
+                ? <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Pay up to { period.toString() }x<br /> without interest</Text></Fragment>
+                : <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Interest free<br /> payments</Text></Fragment>;
+        },
+        DualTag:            () => <Text>Two easy ways to pay</Text>,
+        BuyNow:             ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Buy Now</Text></Fragment>
     },
     fr: {
-        checkout:  '{pp} {paypal} Payer',
-        safer_tag: 'Votre réflexe sécurité pour payer en ligne',
-        pay:       'Payer avec {paypal}',
-        buynow:    '{pp} {paypal} Acheter',
-        poweredBy: 'Optimisé par {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Payer</Text></Fragment>,
+        SaferTag: () => <Text>Votre réflexe sécurité pour payer en ligne</Text>,
+        Pay:       ({ logoColor }) => <Fragment><Text>Payer avec </Text><PayPalLogo logoColor={ logoColor } /></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Acheter</Text></Fragment>
     },
     es: {
-        checkout:           '{pp} {paypal} Pagar',
-        safer_tag:          'La forma rápida y segura de pagar',
-        pay:                'Pagar con {paypal}',
-        installment:        ({ logoColor }) => <Installment logoColor={ logoColor }> Pagos en<br /> mensualidades</Installment>,
-        installment_period: ({ logoColor, period }) => <Installment logoColor={ logoColor }> Pague hasta { period ? period.toString() : '' }x<br /> sin interés</Installment>,
-        buynow:             '{pp} {paypal} Comprar ahora',
-        poweredBy:          'Desarrollado por {paypal}'
+        Checkout:           ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Pagar</Text></Fragment>,
+        SaferTag:           () => <Text>La forma rápida y segura de pagar</Text>,
+        Pay:                ({ logoColor }) => <Fragment><Text>Pagar con </Text><PayPalLogo logoColor={ logoColor } /></Fragment>,
+        Installment:        ({ period, logoColor }) => {
+            return period
+                ? <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Pague hasta { period.toString() }x<br /> sin interés</Text></Fragment>
+                : <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Pagos en<br /> mensualidades</Text></Fragment>;
+        },
+        BuyNow:             ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Comprar ahora</Text></Fragment>
     },
     zh: {
-        checkout:  '{pp} {paypal} 結帳',
-        safer_tag: '更安全、更便捷的付款方式',
-        pay:       '用{paypal}付款',
-        buynow:    '{pp} {paypal} 立即购买',
-        poweredBy: '技术支持提供方： {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> 結帳</Text></Fragment>,
+        SaferTag: () => <Text>更安全、更便捷的付款方式</Text>,
+        Pay:       ({ logoColor }) => <Fragment><Text>用</Text><PayPalLogo logoColor={ logoColor } /><Text>付款</Text></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> 立即购买</Text></Fragment>
     },
     ar: {
-        checkout:  'السداد بواسطة {pp} {paypal}',
-        safer_tag: 'الطريقة الأسهل والأكثر أماناً في الدفع',
-        pay:       'دفع بواسطة {paypal}',
-        buynow:    '{pp} {paypal} شراء الآن',
-        poweredBy: 'مدعوم من {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><Text>السداد بواسطة </Text><PPPayPalLogo logoColor={ logoColor } /></Fragment>,
+        SaferTag: () => <Text>الطريقة الأسهل والأكثر أماناً في الدفع</Text>,
+        Pay:       ({ logoColor }) => <Fragment><Text>دفع بواسطة </Text><PayPalLogo logoColor={ logoColor } /></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> شراء الآن</Text></Fragment>
     },
     de: {
-        checkout:  'Direkt zu {pp} {paypal}',
-        safer_tag: 'Überall schnell und sicher bezahlen',
-        pay:       'Mit {paypal} zahlen',
-        buynow:    '{pp} {paypal} Jetzt kaufen',
-        poweredBy: 'Abgewickelt durch {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><Text>Direkt zu </Text><PPPayPalLogo logoColor={ logoColor } /></Fragment>,
+        SaferTag: () => <Text>Überall schnell und sicher bezahlen</Text>,
+        Pay:       ({ logoColor }) => <Fragment><Text>Mit </Text><PayPalLogo logoColor={ logoColor } /><Text> zahlen</Text></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Jetzt kaufen</Text></Fragment>
     },
     nl: {
-        checkout:  '{pp} {paypal} Betalen',
-        safer_tag: 'De veiligere en snellere manier om te betalen',
-        pay:       'Betalen met {paypal}',
-        buynow:    '{pp} {paypal} Nu kopen',
-        poweredBy: 'Mogelijk gemaakt door {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Betalen</Text></Fragment>,
+        SaferTag: () => <Text>De veiligere en snellere manier om te betalen</Text>,
+        Pay:       ({ logoColor }) => <Fragment><Text>Betalen met </Text><PayPalLogo logoColor={ logoColor } /></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Nu kopen</Text></Fragment>
     },
     pt: {
-        checkout:           '{pp} {paypal} Checkout',
-        safer_tag:          'A maneira fácil e segura de pagar',
-        pay:                'Pague com {paypal}',
-        installment:        ({ logoColor }) => <Installment logoColor={ logoColor }> Pagamentos<br /> parcelados</Installment>,
-        installment_period: ({ logoColor, period }) => <Installment logoColor={ logoColor }> Pague em até<br />{ period ? period.toString() : '' }x sem juros</Installment>,
-        buynow:             '{pp} {paypal} Comprar agora',
-        poweredBy:          'Powered by {paypal}'
+        Checkout:           ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Checkout</Text></Fragment>,
+        SaferTag:           () => <Text>A maneira fácil e segura de pagar</Text>,
+        Pay:                ({ logoColor }) => <Fragment><Text>Pague com </Text><PayPalLogo logoColor={ logoColor } /></Fragment>,
+        Installment:        ({ period, logoColor }) => {
+            return period
+                ? <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Pague em até<br /> { period.toString() }x sem juros</Text></Fragment>
+                : <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Pagamentos<br /> parcelados</Text></Fragment>;
+        },
+        BuyNow:             ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Comprar agora</Text></Fragment>
     },
     cs: {
-        checkout:  'Zaplatit přes {pp} {paypal}',
-        safer_tag: 'Jednodušší a bezpečnější způsob placení',
-        pay:       'Zaplatit přes {paypal}',
-        buynow:    'Koupit ihned přes {pp} {paypal}',
-        poweredBy: 'Využívá službu {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><Text>Zaplatit přes </Text><PPPayPalLogo logoColor={ logoColor } /></Fragment>,
+        SaferTag: () => <Text>Jednodušší a bezpečnější způsob placení</Text>,
+        Pay:       ({ logoColor }) => <Fragment><Text>Zaplatit přes </Text><PayPalLogo logoColor={ logoColor } /></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><Text>Koupit ihned přes </Text><PPPayPalLogo logoColor={ logoColor } /></Fragment>
     },
     da: {
-        checkout:  '{pp} {paypal} Betal',
-        safer_tag: 'Betal nemt og sikkert',
-        pay:       'Betal med {paypal}',
-        buynow:    '{pp} {paypal} Køb nu',
-        poweredBy: 'Leveret af {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Betal</Text></Fragment>,
+        SaferTag: () => <Text>Betal nemt og sikkert</Text>,
+        Pay:       ({ logoColor }) => <Fragment><Text>Betal med </Text><PayPalLogo logoColor={ logoColor } /></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Køb nu</Text></Fragment>
     },
     ru: {
-        checkout:  '{pp} {paypal} Оформить покупку',
-        safer_tag: 'Более безопасный и простой способ оплаты',
-        pay:       'Оплатить через {paypal}',
-        buynow:    '{pp} {paypal} Купить сейчас',
-        poweredBy: 'Обработано {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Оформить покупку</Text></Fragment>,
+        SaferTag: () => <Text>Более безопасный и простой способ оплаты</Text>,
+        Pay:       ({ logoColor }) => <Fragment><Text>Оплатить через </Text><PayPalLogo logoColor={ logoColor } /></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Купить сейчас</Text></Fragment>
     },
     fi: {
-        checkout:  '{pp} {paypal}-maksu',
-        safer_tag: 'Turvallisempi ja helpompi maksutapa',
-        pay:       '{paypal}-maksu',
-        buynow:    '{pp} {paypal} Osta nyt',
-        poweredBy: 'Palvelun tarjoaa {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text>-maksu</Text></Fragment>,
+        SaferTag: () => <Text>Turvallisempi ja helpompi maksutapa</Text>,
+        Pay:       ({ logoColor }) => <Fragment><PayPalLogo logoColor={ logoColor } /><Text>-maksu</Text></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Osta nyt</Text></Fragment>
     },
     el: {
-        checkout:  'Ολοκλήρωση αγοράς μέσω {pp} {paypal}',
-        safer_tag: 'Ο ασφαλέστερος και ευκολότερος τρόπος πληρωμής',
-        pay:       'Πληρωμή μέσω {paypal}',
-        buynow:    '{pp} {paypal} Αγορά τώρα',
-        poweredBy: 'Με την υποστήριξη του {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><Text>Ολοκλήρωση αγοράς μέσω </Text><PPPayPalLogo logoColor={ logoColor } /></Fragment>,
+        SaferTag: () => <Text>Ο ασφαλέστερος και ευκολότερος τρόπος πληρωμής</Text>,
+        Pay:       ({ logoColor }) => <Fragment><Text>Πληρωμή μέσω </Text><PayPalLogo logoColor={ logoColor } /></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Αγορά τώρα</Text></Fragment>
     },
     hu: {
-        checkout:  '{pp} {paypal}-fizetés',
-        safer_tag: 'Biztonságosabb, könnyebb fizetési mód',
-        pay:       '{paypal}-fizetés',
-        buynow:    '{pp} {paypal} Vásárlás',
-        poweredBy: 'Üzemeltető: {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text>-fizetés</Text></Fragment>,
+        SaferTag: () => <Text>Biztonságosabb, könnyebb fizetési mód</Text>,
+        Pay:       ({ logoColor }) => <Fragment><PayPalLogo logoColor={ logoColor } /><Text>-fizetés</Text></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Vásárlás</Text></Fragment>
     },
     id: {
-        checkout:  '{pp} {paypal} Checkout',
-        safer_tag: 'Cara yang lebih mudah dan aman untuk membayar',
-        pay:       'Bayar dengan {paypal}',
-        buynow:    '{pp} {paypal} Beli Sekarang',
-        poweredBy: 'Ditunjang teknologi {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Checkout</Text></Fragment>,
+        SaferTag: () => <Text>Cara yang lebih mudah dan aman untuk membayar</Text>,
+        Pay:       ({ logoColor }) => <Fragment><Text>Bayar dengan </Text><PayPalLogo logoColor={ logoColor } /></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Beli Sekarang</Text></Fragment>
     },
     he: {
-        checkout:  '{pp} {paypal} שלם',
-        safer_tag: '.הדרך הקלה והבטוחה יותר לשלם',
-        pay:       'שלם באמצעות {paypal}‏',
-        buynow:    '{pp} {paypal} קנה עכשיו',
-        poweredBy: '{paypal} מופעל על-ידי'
+        Checkout:  ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> שלם</Text></Fragment>,
+        SaferTag: () => <Text>.הדרך הקלה והבטוחה יותר לשלם</Text>,
+        Pay:       ({ logoColor }) => <Fragment><Text>שלם באמצעות </Text><PayPalLogo logoColor={ logoColor } /><Text>‏</Text></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> קנה עכשיו</Text></Fragment>
     },
     it: {
-        checkout:  '{pp} {paypal} Paga adesso',
-        safer_tag: 'Il modo rapido e sicuro per pagare',
-        pay:       'Paga con {paypal}',
-        buynow:    '{pp} {paypal} Paga adesso',
-        poweredBy: 'Con tecnologia {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Paga adesso</Text></Fragment>,
+        SaferTag: () => <Text>Il modo rapido e sicuro per pagare</Text>,
+        Pay:       ({ logoColor }) => <Fragment><Text>Paga con </Text><PayPalLogo logoColor={ logoColor } /></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Paga adesso</Text></Fragment>
     },
     ja: {
-        checkout:  '{pp} {paypal}で支払う',
-        safer_tag: 'より安全・簡単にお支払い',
-        pay:       '{paypal}で支払う',
-        buynow:    '{pp} {paypal} 購入',
-        poweredBy: 'Powered by {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text>で支払う</Text></Fragment>,
+        SaferTag: () => <Text>より安全・簡単にお支払い</Text>,
+        Pay:       ({ logoColor }) => <Fragment><PayPalLogo logoColor={ logoColor } /><Text>で支払う</Text></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> 購入</Text></Fragment>
     },
     ko: {
-        checkout:  '{pp} {paypal} 체크 아웃',
-        safer_tag: '더 안전하고 빠른 결제 방법',
-        pay:       '{paypal}로 지불하기',
-        buynow:    '{pp} {paypal} 바로 구매',
-        poweredBy: '제공: {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> 체크 아웃</Text></Fragment>,
+        SaferTag: () => <Text>더 안전하고 빠른 결제 방법</Text>,
+        Pay:       ({ logoColor }) => <Fragment><PayPalLogo logoColor={ logoColor } /><Text>로 지불하기</Text></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> 바로 구매</Text></Fragment>
     },
     no: {
-        checkout:  '{pp} {paypal} Betal',
-        safer_tag: 'En trygg og enkel betalingsmetode',
-        pay:       'Betal med {paypal}',
-        buynow:    '{pp} {paypal} Kjøp nå',
-        poweredBy: 'Leveres av {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Betal</Text></Fragment>,
+        SaferTag: () => <Text>En trygg og enkel betalingsmetode</Text>,
+        Pay:       ({ logoColor }) => <Fragment><Text>Betal med </Text><PayPalLogo logoColor={ logoColor } /></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Kjøp nå</Text></Fragment>
     },
     pl: {
-        checkout:  '{pp} {paypal} Do kasy',
-        safer_tag: 'Płać wygodnie i bezpiecznie',
-        pay:       'Zapłać z {paypal}',
-        buynow:    '{pp} {paypal} Kup teraz',
-        poweredBy: 'Powered by {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Do kasy</Text></Fragment>,
+        SaferTag: () => <Text>Płać wygodnie i bezpiecznie</Text>,
+        Pay:       ({ logoColor }) => <Fragment><Text>Zapłać z </Text><PayPalLogo logoColor={ logoColor } /></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Kup teraz</Text></Fragment>
     },
     sv: {
-        checkout:  '{pp} {paypal} Betala',
-        safer_tag: 'Ett tryggt och smidigt sätt att betala',
-        pay:       'Betala med {paypal}',
-        buynow:    '{pp} {paypal} Köp nu',
-        poweredBy: 'Tillhandahålls av {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Betala</Text></Fragment>,
+        SaferTag: () => <Text>Ett tryggt och smidigt sätt att betala</Text>,
+        Pay:       ({ logoColor }) => <Fragment><Text>Betala med </Text><PayPalLogo logoColor={ logoColor } /></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Köp nu</Text></Fragment>
     },
     sk: {
-        checkout:  'Zaplatiť cez {pp} {paypal}',
-        safer_tag: 'Jednoduchší a bezpečnejší spôsob platby',
-        pay:       'Zaplatiť cez {paypal}',
-        buynow:    '{pp} {paypal} Kúpiť',
-        poweredBy: 'Používa technológiu {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><Text>Zaplatiť cez </Text><PPPayPalLogo logoColor={ logoColor } /></Fragment>,
+        SaferTag: () => <Text>Jednoduchší a bezpečnejší spôsob platby</Text>,
+        Pay:       ({ logoColor }) => <Fragment><Text>Zaplatiť cez </Text><PayPalLogo logoColor={ logoColor } /></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Kúpiť</Text></Fragment>
     },
     th: {
-        checkout:  '{pp} {paypal} ชำระเงิน',
-        safer_tag: 'วิธีชำระเงินที่ปลอดภัยและง่ายกว่า',
-        pay:       'ชำระเงินด้วย {paypal}',
-        buynow:    '{pp} {paypal} ซื้อทันที',
-        poweredBy: 'ให้บริการโดย {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> ชำระเงิน</Text></Fragment>,
+        SaferTag: () => <Text>วิธีชำระเงินที่ปลอดภัยและง่ายกว่า</Text>,
+        Pay:       ({ logoColor }) => <Fragment><Text>ชำระเงินด้วย </Text><PayPalLogo logoColor={ logoColor } /></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> ซื้อทันที</Text></Fragment>
     },
     tr: {
-        checkout:  '{pp} {paypal} ile Satın Alın',
-        safer_tag: 'Ödeme yapmanın daha güvenli ve kolay yolu',
-        pay:       '{paypal} ile Öde',
-        buynow:    '{pp} {paypal} Hemen Satın Alın',
-        poweredBy: 'Çalıştıran {paypal}'
+        Checkout:  ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> ile Satın Alın</Text></Fragment>,
+        SaferTag: () => <Text>Ödeme yapmanın daha güvenli ve kolay yolu</Text>,
+        Pay:       ({ logoColor }) => <Fragment><PayPalLogo logoColor={ logoColor } /><Text> ile Öde</Text></Fragment>,
+        BuyNow:    ({ logoColor }) => <Fragment><PPPayPalLogo logoColor={ logoColor } /><Text> Hemen Satın Alın</Text></Fragment>
     }
 };

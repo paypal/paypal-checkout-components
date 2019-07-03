@@ -2,8 +2,9 @@
 /** @jsx node */
 
 import { node, type ElementNode } from 'jsx-pragmatic/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 
-import { CLASS, BUTTON_NUMBER } from '../../constants';
+import { CLASS, BUTTON_NUMBER, BUTTON_LAYOUT } from '../../constants';
 import { determineEligibleFunding, determineVaultedFunding } from '../../funding';
 import { normalizeButtonProps, type ButtonPropsInputs } from '../props';
 
@@ -12,6 +13,7 @@ import { BasicButton, VaultedButton } from './button';
 import { TagLine } from './tagline';
 import { Script } from './script';
 import { buttonContent } from './content';
+import { PoweredByPayPal } from './poweredByPayPal';
 
 type ButtonsProps = ButtonPropsInputs & {|
     onClick? : Function
@@ -20,9 +22,8 @@ type ButtonsProps = ButtonPropsInputs & {|
 export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick } = props;
     const { style, locale, remembered, env, fundingEligibility, platform, nonce, components, onShippingChange } = normalizeButtonProps(props);
-    const { layout, shape } = style;
+    const { layout, shape, tagline } = style;
     const { lang } = locale;
-    const content = buttonContent[lang];
 
     const fundingSources = determineEligibleFunding({ layout, remembered, platform, fundingEligibility, components, onShippingChange });
     const multiple = fundingSources.length > 1;
@@ -32,6 +33,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     }
     
     const vaultedFunding = determineVaultedFunding({ fundingEligibility, layout });
+    const { PayInstantly } = buttonContent[lang];
 
     return (
         <div class={ [
@@ -65,8 +67,26 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             }
 
             {
+                (tagline && layout === BUTTON_LAYOUT.HORIZONTAL)
+                    ? <TagLine
+                        fundingSource={ fundingSources[0] }
+                        style={ style }
+                        locale={ locale }
+                        multiple={ multiple }
+                        nonce={ nonce }
+                    /> : null
+            }
+
+            {
+                (layout === BUTTON_LAYOUT.VERTICAL && fundingSources.indexOf(FUNDING.CARD) !== -1)
+                    ? <PoweredByPayPal
+                        locale={ locale }
+                    /> : null
+            }
+
+            {
                 vaultedFunding.length
-                    ? <p class={ `${ CLASS.VAULT_HEADER } ${ CLASS.TEXT }` }>{ content.payInstantly }</p>
+                    ? <p class={ `${ CLASS.VAULT_HEADER } ${ CLASS.TEXT }` }><PayInstantly /></p>
                     : null
             }
 
@@ -85,14 +105,6 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                     />
                 ))
             }
-            
-            <TagLine
-                fundingSource={ fundingSources[0] }
-                style={ style }
-                locale={ locale }
-                multiple={ multiple }
-                nonce={ nonce }
-            />
 
             <Script
                 nonce={ nonce }

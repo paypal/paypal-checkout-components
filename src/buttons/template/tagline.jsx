@@ -11,11 +11,7 @@ import { type ButtonStyle } from '../props';
 export function TagLine({ fundingSource, style, locale, multiple, nonce } :
     {| fundingSource : $Values<typeof FUNDING>, style : ButtonStyle, locale : LocaleType, multiple : boolean, nonce : string |}) : ?ElementNode {
 
-    const { tagline, label } = style;
-
-    if (!tagline) {
-        return;
-    }
+    const { label } = style;
 
     const fundingConfig = getFundingConfig()[fundingSource];
 
