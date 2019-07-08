@@ -183,8 +183,8 @@
             var namespace = window[_namespaces2[_i2]];
             if (namespace) for (var _i4 = 0, _childnamespaces2 = childnamespaces; _i4 < _childnamespaces2.length; _i4++) {
                 var _extends2, childname = _childnamespaces2[_i4], childnamespace = xports[childname];
-                namespace[childname] && (childnamespace = Object(esm_extends.a)({}, namespace[childname], childnamespace)), 
-                xports = Object(esm_extends.a)({}, namespace, xports, ((_extends2 = {})[childname] = childnamespace, 
+                namespace[childname] && (childnamespace = Object(esm_extends.a)({}, namespace[childname], {}, childnamespace)), 
+                xports = Object(esm_extends.a)({}, namespace, {}, xports, ((_extends2 = {})[childname] = childnamespace, 
                 _extends2));
             }
         }

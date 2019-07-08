@@ -932,7 +932,7 @@
                 country: config.a.locale.country,
                 lang: config.a.locale.lang,
                 uid: Object(session.c)(),
-                ver: "4.0.279"
+                ver: "4.0.280"
             };
         }), Object(client.a)(function() {
             return {
@@ -1177,7 +1177,7 @@
         });
     });
     function getScriptVersion() {
-        return "4.0.279";
+        return "4.0.280";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -1186,7 +1186,7 @@
             return 0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://")), 
             scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.279.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.280.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.g)();
@@ -1210,7 +1210,7 @@
                     domain: metaFrameDomain
                 });
                 return src.bridge.openBridge(Object(dom.a)(metaFrameUrl, {
-                    version: "4.0.279"
+                    version: "4.0.280"
                 }), metaFrameDomain).then(function() {
                     return metaListener;
                 }).then(function(_ref) {
@@ -1388,9 +1388,9 @@
     "use strict";
     var _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, constants = __webpack_require__(0), config = {
         locales: constants.z,
-        scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.279.js",
+        scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.280.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.279",
+        version: "4.0.280",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -1728,6 +1728,9 @@
                 disable_venmo: !0
             },
             "gainful.com": {
+                disable_venmo: !0
+            },
+            "modaoperandi.com": {
                 disable_venmo: !0
             }
         },
@@ -2809,7 +2812,7 @@
         return params;
     });
     function extendQuery(originalQuery, props) {
-        return void 0 === props && (props = {}), props && Object.keys(props).length ? (void 0 === (obj = Object(esm_extends.a)({}, parseQuery(originalQuery), props)) && (obj = {}), 
+        return void 0 === props && (props = {}), props && Object.keys(props).length ? (void 0 === (obj = Object(esm_extends.a)({}, parseQuery(originalQuery), {}, props)) && (obj = {}), 
         Object.keys(obj).filter(function(key) {
             return "string" == typeof obj[key];
         }).map(function(key) {
@@ -4081,7 +4084,7 @@
             if (message = function(win, message, options) {
                 void 0 === options && (options = {});
                 var id = Object(lib.q)(), type = Object(lib.c)(), sourceDomain = Object(src.g)(window);
-                return Object(esm_extends.a)({}, message, options, {
+                return Object(esm_extends.a)({}, message, {}, options, {
                     sourceDomain: sourceDomain,
                     id: message.id || id,
                     windowType: type
@@ -6948,7 +6951,7 @@
             }(this.component, this, props));
         }, _proto.buildUrl = function() {
             var propsDef, props, params, _this7 = this;
-            return zalgo_promise_src.a.all([ this.props.url, (propsDef = Object(esm_extends.a)({}, this.component.props, this.component.builtinProps), 
+            return zalgo_promise_src.a.all([ this.props.url, (propsDef = Object(esm_extends.a)({}, this.component.props, {}, this.component.builtinProps), 
             props = this.props, params = {}, zalgo_promise_src.a.all(Object.keys(props).map(function(key) {
                 var prop = propsDef[key];
                 if (prop) return zalgo_promise_src.a.resolve().then(function() {
@@ -8622,7 +8625,7 @@
     function beacon(event, payload) {
         void 0 === payload && (payload = {});
         try {
-            payload.event = "ppxo_" + event, payload.version = "4.0.279", payload.host = window.location.host, 
+            payload.event = "ppxo_" + event, payload.version = "4.0.280", payload.host = window.location.host, 
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)(), payload.appName = APP_NAME;
             var query = [];
             for (var key in payload) payload.hasOwnProperty(key) && query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
@@ -8769,8 +8772,8 @@
             var namespace = window[_namespaces2[_i2]];
             if (namespace) for (var _i4 = 0, _childnamespaces2 = childnamespaces; _i4 < _childnamespaces2.length; _i4++) {
                 var _extends2, childname = _childnamespaces2[_i4], childnamespace = xports[childname];
-                namespace[childname] && (childnamespace = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, namespace[childname], childnamespace)), 
-                xports = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, namespace, xports, ((_extends2 = {})[childname] = childnamespace, 
+                namespace[childname] && (childnamespace = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, namespace[childname], {}, childnamespace)), 
+                xports = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, namespace, {}, xports, ((_extends2 = {})[childname] = childnamespace, 
                 _extends2));
             }
         }
@@ -12347,7 +12350,7 @@
             var AngularComponent = _ref.Component, NgModule = _ref.NgModule, ElementRef = _ref.ElementRef, NgZone = _ref.NgZone;
             zoid.log("initializing angular2 component");
             var getProps = function(component) {
-                return Object(_lib__WEBPACK_IMPORTED_MODULE_1__.M)(Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, component.internalProps, component.props), {
+                return Object(_lib__WEBPACK_IMPORTED_MODULE_1__.M)(Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, component.internalProps, {}, component.props), {
                     function: function(value) {
                         if ("function" == typeof value) return function() {
                             var _this = this, _arguments = arguments;
@@ -12687,13 +12690,13 @@
     __webpack_require__.r(__webpack_exports__);
     var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29), _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32), _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12), _lib_security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(25);
     if (!Object(_lib_security__WEBPACK_IMPORTED_MODULE_3__.b)()) throw new Error("Do not integrate with versioned script url");
-    if (window.paypal && "4.0.279" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-        version: "4.0.279"
-    }), new Error("PayPal Checkout Integration Script with same version (4.0.279) already loaded on page");
-    if (window.paypal && window.paypal.version && "4.0.279" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
+    if (window.paypal && "4.0.280" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
+        version: "4.0.280"
+    }), new Error("PayPal Checkout Integration Script with same version (4.0.280) already loaded on page");
+    if (window.paypal && window.paypal.version && "4.0.280" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
         existingVersion: window.paypal.version,
-        version: "4.0.279"
-    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.279");
+        version: "4.0.280"
+    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.280");
     try {
         var _interface = __webpack_require__(65);
         Object(_lib_namespace__WEBPACK_IMPORTED_MODULE_1__.a)(_interface, [ "paypal", "PAYPAL", "ppxo" ], [ "apps" ]);
@@ -12982,9 +12985,7 @@
             return config.a.inlinedCardFieldUrls[props.env || config.a.env] + "/init3ds";
         },
         get domain() {
-            var _extends2;
-            return Object(esm_extends.a)({}, config.a.paypalDomains, ((_extends2 = {})[constants.t.LOCAL] = /^http:\/\/localhost.paypal.com:\d+$/, 
-            _extends2));
+            return Object(esm_extends.a)({}, config.a.paypalDomains);
         },
         scrolling: !0,
         props: {
@@ -20285,7 +20286,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.279", 
+        return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.280", 
         _ref18), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -20296,7 +20297,7 @@
             })
         }), styleNode, buttonNodes, taglineNode || fundingiconNode, labelPowerByPayPal, scriptNode).toString();
     }
-    var clientConfigThrottle = Object(lib.x)("client_config", 10);
+    var clientConfigThrottle = Object(lib.x)("client_config", 0);
     pptm.listenForLoadWithNoContent();
     var creditThrottle, isDomainAllowed = Object(lib.I)(function() {
         var domain = Object(cross_domain_utils_src.g)().replace(/^https?:\/\//, "").replace(/^www\./, "");
@@ -21394,7 +21395,7 @@
         }), Object(beaver_logger_client.p)(((setup_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
         setup_track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, setup_track3));
     }
-    var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.279", legacy = __webpack_require__(66);
+    var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.280", legacy = __webpack_require__(66);
     interface_checkout = legacy.checkout, apps = legacy.apps, Object(lib.G)() && (interface_Checkout = src_checkout.a, 
     interface_BillingPage = BillingPage, interface_ThreeDomainSecure = ThreeDomainSecure, 
     PayPalCheckout = src_checkout.a, enableCheckoutIframe = function() {
@@ -21942,4 +21943,4 @@
         return setup;
     });
 } ]);
-//# sourceMappingURL=checkout.4.0.279.js.map
+//# sourceMappingURL=checkout.4.0.280.js.map
