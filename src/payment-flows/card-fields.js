@@ -112,7 +112,7 @@ const openCardFields = () => {
 
 export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
     const { fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
-        onAuth, onShippingChange, cspNonce, locale, commit, onError } = props;
+        onAuth, onShippingChange, cspNonce, locale, commit, onError, buttonSessionID } = props;
 
     if (!card) {
         throw new Error(`Card required to render card fields`);
@@ -158,6 +158,7 @@ export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
         onShippingChange,
         onCardTypeChange,
 
+        buttonSessionID,
         buyerCountry,
         locale,
         commit,
