@@ -10,7 +10,7 @@ import { rememberFunding, getRememberedFunding } from '@paypal/funding-component
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { isDevice, uniqueID, supportsPopups, popup, writeElementToWindow, inlineMemoize } from 'belter/src';
-import { FUNDING, PLATFORM, CARD } from '@paypal/sdk-constants/src';
+import { FUNDING, PLATFORM, CARD, QUERY_BOOL } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
 import { getButtonUrl, DEFAULT_POPUP_SIZE } from '../config';
@@ -136,8 +136,12 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 },
 
                 onShippingChange: {
-                    type:     'function',
-                    required: false
+                    type:       'function',
+                    required:   false,
+                    queryParam: true,
+                    queryValue: ({ value }) => {
+                        return value ? QUERY_BOOL.TRUE : QUERY_BOOL.FALSE;
+                    }
                 },
 
                 onCancel: {
