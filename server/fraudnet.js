@@ -1,7 +1,8 @@
 /* @flow */
 
-import { ENV } from '@paypal/sdk-constants';
+import { ENV, FUNDING, CARD } from '@paypal/sdk-constants';
 
+import type { FundingEligibility } from './types';
 import { FNCLS, FRAUDNET_ID } from './config';
 
 const FRAUDNET_URL = {
@@ -11,6 +12,29 @@ const FRAUDNET_URL = {
     [ ENV.PRODUCTION ]: 'https://c.paypal.com/da/r/fb.js',
     [ ENV.TEST ]:       'https://c.paypal.com/da/r/fb.js'
 };
+
+export function shouldRenderFraudnet({ fundingEligibility } : { fundingEligibility : FundingEligibility }) : boolean {
+    for (const fundingSource of Object.values(FUNDING)) {
+        // $FlowFixMe
+        const fundingConfig = fundingEligibility[fundingSource];
+
+        if (fundingConfig && fundingConfig.vaultedInstruments && fundingConfig.vaultedInstruments.length) {
+            return true;
+        }
+
+        if (fundingSource === FUNDING.CARD && fundingConfig && fundingConfig.vendors) {
+            for (const card of Object.values(CARD)) {
+                const cardConfig = fundingConfig.vendors[card];
+
+                if (cardConfig && cardConfig.vaultedInstruments && cardConfig.vaultedInstruments.length) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
 
 export function renderFraudnetScript({ id, cspNonce, env } : { id : string, cspNonce : string, env : $Values<typeof ENV> }) : string {
 

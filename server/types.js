@@ -9,3 +9,36 @@ export type LoggerType = {|
     +warn : Function,
     +error : Function
 |};
+
+type VaultedInstrument = {|
+    
+|};
+
+type VaultedInstruments = $ReadOnlyArray<VaultedInstrument>;
+
+export type FundingEligibility = {|
+    paypal : {
+        eligible : boolean,
+        vaultedInstruments ? : VaultedInstruments
+    },
+    venmo : {
+        eligible : boolean,
+        vaultedInstruments ? : VaultedInstruments
+    },
+    card : {
+        vendors : {
+            visa : {
+                vaultedInstruments ? : VaultedInstruments
+            },
+            mastercard : {
+                vaultedInstruments ? : VaultedInstruments
+            },
+            amex : {
+                vaultedInstruments ? : VaultedInstruments
+            },
+            discover : {
+                vaultedInstruments ? : VaultedInstruments
+            }
+        }
+    }
+|};

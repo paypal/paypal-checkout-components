@@ -2,16 +2,7 @@
 
 import { ENV, COUNTRY, LANG, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, DEFAULT_COUNTRY, COUNTRY_LANGS } from '@paypal/sdk-constants';
 
-import type { ExpressRequest, ExpressResponse } from './types';
-
-type FundingEligibility = {|
-    paypal : {
-    eligible : boolean
-},
-venmo : {
-    eligible : boolean
-}
-|};
+import type { ExpressRequest, ExpressResponse, FundingEligibility } from './types';
 
 function getFundingEligibility(req : ExpressRequest) : FundingEligibility {
     const encodedFundingEligibility = req.query.fundingEligibility;
