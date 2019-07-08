@@ -2541,6 +2541,7 @@ window.spb = function(modules) {
         }), _window$paypal$Checko = window.paypal.Checkout({
             window: win,
             buttonSessionID: buttonSessionID,
+            clientAccessToken: clientAccessToken,
             createOrder: function() {
                 return validationPromise.then(function(valid) {
                     return valid ? _createOrder().then(function(orderID) {
@@ -2791,7 +2792,7 @@ window.spb = function(modules) {
                         clientAccessToken: clientAccessToken,
                         enableThreeDomainSecure: enableThreeDomainSecure
                     }) : isCardFields ? function(props) {
-                        var fundingSource = props.fundingSource, card = props.card, buyerCountry = props.buyerCountry, createOrder = props.createOrder, _onApprove = props.onApprove, onCancel = props.onCancel, onAuth = props.onAuth, onShippingChange = props.onShippingChange, cspNonce = props.cspNonce, locale = props.locale, commit = props.commit, onError = props.onError;
+                        var fundingSource = props.fundingSource, card = props.card, buyerCountry = props.buyerCountry, createOrder = props.createOrder, _onApprove = props.onApprove, onCancel = props.onCancel, onAuth = props.onAuth, onShippingChange = props.onShippingChange, cspNonce = props.cspNonce, locale = props.locale, commit = props.commit, onError = props.onError, buttonSessionID = props.buttonSessionID;
                         if (!card) throw new Error("Card required to render card fields");
                         if (cardFieldsOpen) return highlightCard(card), {
                             start: lib.b,
@@ -2828,6 +2829,7 @@ window.spb = function(modules) {
                             onCardTypeChange: function(_ref2) {
                                 highlightCard(_ref2.card);
                             },
+                            buttonSessionID: buttonSessionID,
                             buyerCountry: buyerCountry,
                             locale: locale,
                             commit: commit,
