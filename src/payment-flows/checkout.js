@@ -160,6 +160,7 @@ export function initCheckout(props : CheckoutProps) : CheckoutInstance {
     const { renderTo, close: closeCheckout, onError: triggerError } = window.paypal.Checkout({
         window: win,
         buttonSessionID,
+        clientAccessToken,
 
         createOrder: () => {
             return validationPromise.then(valid => {
