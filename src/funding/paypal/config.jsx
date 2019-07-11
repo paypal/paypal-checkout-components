@@ -7,7 +7,7 @@ import { LOGO_COLOR, PPLogo, PayPalLogo } from '@paypal/sdk-logos/src';
 
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, CLASS } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
-import { Text } from '../../ui';
+import { Text, Space } from '../../ui';
 
 import { componentContent } from './content';
 
@@ -38,6 +38,8 @@ const DEFAULT_PAYPAL_LABEL = {
             : <SaferTag  optional />;
     }
 };
+
+const PPPayPalLogo = ({ logoColor }) => <Fragment><PPLogo logoColor={ logoColor } /><Space /><PayPalLogo logoColor={ logoColor } /></Fragment>;
 
 export function getPayPalConfig() : FundingSourceConfig {
     return {
@@ -73,7 +75,7 @@ export function getPayPalConfig() : FundingSourceConfig {
                 ...DEFAULT_PAYPAL_LABEL,
                 Label: ({ locale: { lang }, logoColor }) => {
                     const { Checkout } = componentContent[lang];
-                    return <Checkout logoColor={ logoColor } />;
+                    return <Checkout logo={ <PPPayPalLogo logoColor={ logoColor } /> } />;
                 }
             },
     
@@ -81,7 +83,7 @@ export function getPayPalConfig() : FundingSourceConfig {
                 ...DEFAULT_PAYPAL_LABEL,
                 Label: ({ locale: { lang }, logoColor }) => {
                     const { Pay } = componentContent[lang];
-                    return <Pay logoColor={ logoColor } />;
+                    return <Pay logo={ <PayPalLogo logoColor={ logoColor } /> } />;
                 }
             },
 
@@ -89,7 +91,7 @@ export function getPayPalConfig() : FundingSourceConfig {
                 ...DEFAULT_PAYPAL_LABEL,
                 Label: ({ locale: { lang }, logoColor }) => {
                     const { BuyNow } = componentContent[lang];
-                    return <BuyNow logoColor={ logoColor } />;
+                    return <BuyNow logo={ <PPPayPalLogo logoColor={ logoColor } /> } />;
                 }
             },
     
@@ -102,7 +104,7 @@ export function getPayPalConfig() : FundingSourceConfig {
                         throw new Error(`Could not find installment content for ${ lang }`);
                     }
 
-                    return <Installment logoColor={ logoColor } period={ period } />;
+                    return <Installment logo={ <PPPayPalLogo logoColor={ logoColor } /> } period={ period } />;
                 }
             }
         }
