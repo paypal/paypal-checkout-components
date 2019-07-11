@@ -834,7 +834,7 @@ window.spb = function(modules) {
         }, [ queryString ]);
     }
     function extendQuery(originalQuery, props) {
-        return void 0 === props && (props = {}), props && Object.keys(props).length ? (void 0 === (obj = Object(esm_extends.a)({}, parseQuery(originalQuery), props)) && (obj = {}), 
+        return void 0 === props && (props = {}), props && Object.keys(props).length ? (void 0 === (obj = Object(esm_extends.a)({}, parseQuery(originalQuery), {}, props)) && (obj = {}), 
         Object.keys(obj).filter(function(key) {
             return "string" == typeof obj[key];
         }).map(function(key) {
@@ -1658,7 +1658,7 @@ window.spb = function(modules) {
         _reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__.j.REQUESTED_BY] = _constants__WEBPACK_IMPORTED_MODULE_4__.o, 
         _reqHeaders), _i2 = 0; _i2 < headerBuilders.length; _i2++) {
             var headerBuilder = headerBuilders[_i2];
-            reqHeaders = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, reqHeaders, headerBuilder());
+            reqHeaders = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, reqHeaders, {}, headerBuilder());
         }
         return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.n)({
             url: url,
