@@ -6,8 +6,9 @@ import { node, dom } from 'jsx-pragmatic/src';
 import { EVENT, type RenderOptionsType } from 'zoid/src';
 
 import { BUTTON_SIZE } from '../../constants';
-import { BUTTON_SIZE_STYLE, MINIMUM_SIZE, MAXIMUM_SIZE } from '../config';
 import type { ButtonProps } from '../props';
+
+import { BUTTON_SIZE_STYLE, MINIMUM_SIZE, MAXIMUM_SIZE } from './config';
 
 const CLASS = {
     VISIBLE:         'visible',

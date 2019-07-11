@@ -9,6 +9,7 @@ export const BUTTON_LABEL = {
     CARD:        ('card' : 'card'),
     INSTALLMENT: ('installment' : 'installment'),
     VENMO:       ('venmo' : 'venmo'),
+    ITAU:        ('itau' : 'itau'),
     IDEAL:       ('ideal' : 'ideal'),
     SEPA:        ('sepa' : 'sepa'),
     BANCONTACT:  ('bancontact' : 'bancontact'),
@@ -40,11 +41,6 @@ export const BUTTON_SIZE = {
     LARGE:      ('large' : 'large'),
     HUGE:       ('huge' : 'huge'),
     RESPONSIVE: ('responsive' : 'responsive')
-};
-
-export const BUTTON_TAGLINE_COLOR = {
-    BLACK: ('black' : 'black'),
-    BLUE:  ('blue' : 'blue')
 };
 
 export const BUTTON_SHAPE = {

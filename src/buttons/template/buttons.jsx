@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { node, html, type ElementNode } from 'jsx-pragmatic/src';
+import { node, type ElementNode } from 'jsx-pragmatic/src';
 
 import { CLASS, BUTTON_NUMBER } from '../../constants';
 import { determineEligibleFunding, determineVaultedFunding } from '../../funding';
@@ -18,19 +18,19 @@ type ButtonsProps = ButtonPropsInputs & {|
 
 export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick } = props;
-    const { style, locale, remembered, env, fundingEligibility, platform, nonce, components } = normalizeButtonProps(props);
+    const { style, locale, remembered, env, fundingEligibility, platform, nonce, components, onShippingChange } = normalizeButtonProps(props);
+    const { layout, shape } = style;
 
-    const fundingSources = determineEligibleFunding({ style, remembered, platform, fundingEligibility, components });
+    const fundingSources = determineEligibleFunding({ layout, remembered, platform, fundingEligibility, components, onShippingChange });
     const multiple = fundingSources.length > 1;
 
     if (!fundingSources.length) {
         throw new Error(`No eligible funding fundingSources found to render buttons:\n\n${ JSON.stringify(fundingEligibility, null, 4) }`);
     }
-
-    const { layout, shape } = style;
+    
     const vaultedFunding = determineVaultedFunding({ fundingEligibility, layout });
 
-    const buttonsNode = (
+    return (
         <div class={ [
             CLASS.CONTAINER,
             `${ CLASS.LAYOUT }-${ layout }`,
@@ -63,7 +63,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
 
             {
                 vaultedFunding.length
-                    ? <p class={ `${ CLASS.VAULT_HEADER } ${ CLASS.TEXT }` }>Saved payment methods</p>
+                    ? <p class={ `${ CLASS.VAULT_HEADER } ${ CLASS.TEXT }` }>Instantly pay with</p>
                     : null
             }
 
@@ -96,20 +96,6 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             />
         </div>
     );
-
-    // $FlowFixMe
-    buttonsNode.toString = () => buttonsNode.render(html());
-
-    const render = buttonsNode.render;
-    // $FlowFixMe
-    buttonsNode.render = (renderer) => {
-        if (renderer.length === 3 && typeof window === 'undefined') {
-            return render.call(buttonsNode, html());
-        }
-        return render.call(buttonsNode, renderer);
-    };
-
-    return buttonsNode;
 }
 
 export { DEFAULT_PROPS } from '../props';

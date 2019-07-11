@@ -1,14 +1,17 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { wrapPromise } from 'belter/src';
+import { wrapPromise, uniqueID } from 'belter/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 
 describe(`paypal checkout component validation`, () => {
     it('should attempt to render checkout with createOrder and no onApprove, and error out', () => {
         return wrapPromise(({ expect, avoid }) => {
             return ZalgoPromise.try(() => {
                 window.paypal.Checkout({
-                    createOrder: avoid('createOrder')
+                    buttonSessionID: uniqueID(),
+                    fundingSource:   FUNDING.PAYPAL,
+                    createOrder:     avoid('createOrder')
                 });
             }).catch(expect('catch'));
         });
@@ -18,7 +21,10 @@ describe(`paypal checkout component validation`, () => {
         return wrapPromise(({ expect, avoid }) => {
             return ZalgoPromise.try(() => {
                 window.paypal.Checkout({
-                    onApprove: avoid('onApprove')
+
+                    buttonSessionID: uniqueID(),
+                    fundingSource:   FUNDING.PAYPAL,
+                    onApprove:       avoid('onApprove')
                 });
             }).catch(expect('catch'));
         });

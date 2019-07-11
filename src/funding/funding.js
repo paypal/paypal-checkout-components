@@ -8,8 +8,8 @@ import type { FundingEligibilityType } from '../types';
 
 import { FUNDING_PRIORITY, getFundingConfig } from './config';
 
-export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, platform, remembered, fundingEligibility, components } :
-    { layout : $Values<typeof BUTTON_LAYOUT>, platform : $Values<typeof PLATFORM>, remembered : $ReadOnlyArray<$Values<typeof FUNDING>>, fundingEligibility : FundingEligibilityType, components : $ReadOnlyArray<$Values<typeof COMPONENTS>> }) : boolean {
+export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, platform, fundingEligibility, components, onShippingChange } :
+    { layout : $Values<typeof BUTTON_LAYOUT>, platform : $Values<typeof PLATFORM>, fundingEligibility : FundingEligibilityType, components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, onShippingChange : ?Function }) : boolean {
 
     if (!fundingEligibility[source] || !fundingEligibility[source].eligible) {
         return false;
@@ -33,20 +33,18 @@ export function isFundingEligible(source : $Values<typeof FUNDING>, { layout, pl
         return false;
     }
 
-    if (fundingConfig.remembered && remembered && remembered.indexOf(source) === -1) {
+    if (fundingConfig.shippingChange === false && onShippingChange) {
         return false;
     }
 
     return true;
 }
 
-export function determineEligibleFunding({ style, platform, remembered, fundingEligibility, components } :
-    {| remembered : $ReadOnlyArray<$Values<typeof FUNDING>>, style : { layout : $Values<typeof BUTTON_LAYOUT> }, platform : $Values<typeof PLATFORM>, fundingEligibility : FundingEligibilityType, components : $ReadOnlyArray<$Values<typeof COMPONENTS>> |}) : $ReadOnlyArray<$Values<typeof FUNDING>> {
-
-    const { layout } = style;
+export function determineEligibleFunding({ layout, platform, remembered, fundingEligibility, components, onShippingChange } :
+    {| remembered : $ReadOnlyArray<$Values<typeof FUNDING>>, layout : $Values<typeof BUTTON_LAYOUT>, platform : $Values<typeof PLATFORM>, fundingEligibility : FundingEligibilityType, components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, onShippingChange? : ?Function |}) : $ReadOnlyArray<$Values<typeof FUNDING>> {
 
     let eligibleFunding = FUNDING_PRIORITY.filter(source =>
-        isFundingEligible(source, { layout, platform, remembered, fundingEligibility, components }));
+        isFundingEligible(source, { layout, platform, remembered, fundingEligibility, components, onShippingChange }));
 
     if (layout === BUTTON_LAYOUT.HORIZONTAL) {
         eligibleFunding = eligibleFunding.slice(0, 2);

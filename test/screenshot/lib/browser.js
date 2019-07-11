@@ -14,8 +14,6 @@ import { createTempFile } from './util';
 import { readPNG, type PngType } from './image';
 
 export async function openPage(scriptURL : string, { headless = true, devtools = false } : { headless? : boolean, devtools? : boolean }) : Promise<Object> {
-
-    // $FlowFixMe
     const browser = await puppeteer.launch({ headless, devtools, args: [ '--no-sandbox' ] });
 
     const open = async () => {

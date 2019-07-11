@@ -10,6 +10,8 @@ export function getSofortConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
 
+        shippingChange: false,
+
         layouts: [
             BUTTON_LAYOUT.VERTICAL
         ],
@@ -20,7 +22,7 @@ export function getSofortConfig() : FundingSourceConfig {
             [ BUTTON_LABEL.SOFORT ]: {
                 ...DEFAULT_LABEL_CONFIG,
     
-                Label: SofortLogo
+                Label: ({ logoColor, optional }) => SofortLogo({ logoColor, optional })
             }
         }
     };

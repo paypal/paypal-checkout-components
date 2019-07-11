@@ -12,6 +12,8 @@ export function getZimplerConfig() : FundingSourceConfig {
 
         defaultLabel: BUTTON_LABEL.ZIMPLER,
 
+        shippingChange: false,
+
         layouts: [
             BUTTON_LAYOUT.VERTICAL
         ],
@@ -20,7 +22,7 @@ export function getZimplerConfig() : FundingSourceConfig {
             [ BUTTON_LABEL.ZIMPLER ]: {
                 ...DEFAULT_LABEL_CONFIG,
 
-                Label: ZimplerLogo
+                Label: ({ logoColor, optional }) => ZimplerLogo({ logoColor, optional })
             }
         }
     };

@@ -1,3 +1,105 @@
+## <small>5.0.39 (2019-06-12)</small>
+
+* Fix credit screenshot ([9483f43](http://github.paypal.com/paypal/paypal-checkout/commit/9483f43))
+* Fix dev server ([d7a56a2](http://github.paypal.com/paypal/paypal-checkout/commit/d7a56a2))
+* Initial Mark component implementation ([b6b60e9](http://github.paypal.com/paypal/paypal-checkout/commit/b6b60e9))
+* Move logic down to smart buttons ([7bb0567](http://github.paypal.com/paypal/paypal-checkout/commit/7bb0567))
+* Point to /checkoutnow on localhost ([f3b39dc](http://github.paypal.com/paypal/paypal-checkout/commit/f3b39dc))
+* Suppress flow checks for puppeteer import ([3caade7](http://github.paypal.com/paypal/paypal-checkout/commit/3caade7))
+* Use @paypal/funding-components module for remembered funding ([fc3b39b](http://github.paypal.com/paypal/paypal-checkout/commit/fc3b39b))
+* Use common overlay component ([3824c08](http://github.paypal.com/paypal/paypal-checkout/commit/3824c08))
+
+
+
+## <small>5.0.38 (2019-06-03)</small>
+
+* Add SKIP_TEST flag ([ce238e5](http://github.paypal.com/paypal/paypal-checkout/commit/ce238e5))
+* Ensure content does not display at the same time as loading spinner ([b7a022f](http://github.paypal.com/paypal/paypal-checkout/commit/b7a022f))
+* Pass in context for button render webpack config ([3ba160f](http://github.paypal.com/paypal/paypal-checkout/commit/3ba160f))
+* Upgrade flow ([8a4d79b](http://github.paypal.com/paypal/paypal-checkout/commit/8a4d79b))
+
+
+
+## <small>5.0.37 (2019-05-31)</small>
+
+* Fix fundingEligibility type to make everything optional ([d6e34c2](http://github.paypal.com/paypal/paypal-checkout/commit/d6e34c2))
+* Force card to be ineligible if passed in disableFunding ([d23e5ac](http://github.paypal.com/paypal/paypal-checkout/commit/d23e5ac))
+
+
+
+## <small>5.0.36 (2019-05-30)</small>
+
+* Fix jsx logos integration ([d0e71a7](http://github.paypal.com/paypal/paypal-checkout/commit/d0e71a7))
+
+
+
+## <small>5.0.35 (2019-05-29)</small>
+
+
+
+
+## <small>5.0.34 (2019-05-29)</small>
+
+* fix card tree shaking ([9cc3513](http://github.paypal.com/paypal/paypal-checkout/commit/9cc3513))
+
+
+
+## <small>5.0.33 (2019-05-23)</small>
+
+* Null checks for eligibility tree shaking ([75c9270](http://github.paypal.com/paypal/paypal-checkout/commit/75c9270))
+
+
+
+## <small>5.0.32 (2019-05-21)</small>
+
+* Pass along data to onClick ([8b49fa4](http://github.paypal.com/paypal/paypal-checkout/commit/8b49fa4))
+
+
+
+## <small>5.0.31 (2019-05-21)</small>
+
+* Disable apms when onShippingChange passed ([d1e1f02](http://github.paypal.com/paypal/paypal-checkout/commit/d1e1f02))
+
+
+
+## <small>5.0.30 (2019-05-14)</small>
+
+* chore(release): 5.0.29 :tada: ([5229fa8](http://github.paypal.com/paypal/paypal-checkout/commit/5229fa8))
+* Add debug query param to button ([5c0ec3f](http://github.paypal.com/paypal/paypal-checkout/commit/5c0ec3f))
+* feat(subscriptions) Add Create Subscription Method (#1100) ([44f83b0](http://github.paypal.com/paypal/paypal-checkout/commit/44f83b0)), closes [#1100](http://github.paypal.com/paypal/paypal-checkout/issues/1100)
+
+
+
+## <small>5.0.29 (2019-05-14)</small>
+
+* Add debug query param to button ([5c0ec3f](http://github.paypal.com/paypal/paypal-checkout/commit/5c0ec3f))
+
+
+
+## <small>5.0.28 (2019-05-14)</small>
+
+* Change vault tagline ([df0cda8](http://github.paypal.com/paypal/paypal-checkout/commit/df0cda8))
+* Defocus button on click ([35de8a9](http://github.paypal.com/paypal/paypal-checkout/commit/35de8a9))
+* Disable scrolling in card fields frame ([2b88d4d](http://github.paypal.com/paypal/paypal-checkout/commit/2b88d4d))
+* Fix typo ([ec85149](http://github.paypal.com/paypal/paypal-checkout/commit/ec85149))
+* Pass enableThreeDomainSecure ([1e83cca](http://github.paypal.com/paypal/paypal-checkout/commit/1e83cca))
+* Publish button render event ([162268c](http://github.paypal.com/paypal/paypal-checkout/commit/162268c))
+
+
+
+## <small>5.0.27 (2019-05-09)</small>
+
+* Add fundingSource to card buttons ([cf76a5e](http://github.paypal.com/paypal/paypal-checkout/commit/cf76a5e))
+
+
+
+## <small>5.0.26 (2019-05-09)</small>
+
+* Add card attribute to card buttons ([f918df1](http://github.paypal.com/paypal/paypal-checkout/commit/f918df1))
+* Remove redundant code handled by smart-buttons ([1a2f890](http://github.paypal.com/paypal/paypal-checkout/commit/1a2f890))
+
+
+
 ## <small>5.0.25 (2019-05-03)</small>
 
 * Deanonymize cross-window call ([7e6e274](http://github.paypal.com/paypal/paypal-checkout/commit/7e6e274))

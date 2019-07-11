@@ -72,5 +72,3 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
         eligible: false
     },
 };
-
-window.__TEST_REMEMBERED_FUNDING__ = [];

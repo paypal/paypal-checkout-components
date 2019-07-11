@@ -15,7 +15,7 @@ export const buttonStyle = `
         border: 0;
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         text-transform: none;
-        font-weight: 500;R
+        font-weight: 500;
         font-smoothing: antialiased;
         z-index: 0;
         font-size: 0;
@@ -113,7 +113,7 @@ export const buttonStyle = `
     }
 
     .${ CLASS.BUTTON }.${ CLASS.LOADING } * {
-        display: none;
+        display: none !important;
     }
 
     .${ CLASS.BUTTON }.${ CLASS.LOADING } .${ CLASS.SPINNER } {

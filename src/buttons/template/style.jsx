@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import { FUNDING, type LocaleType } from '@paypal/sdk-constants/src';
-import { node, html, type ElementNode } from 'jsx-pragmatic/src';
+import { node, type ElementNode } from 'jsx-pragmatic/src';
 
 import { type ButtonStyle } from '../props';
 import { getFundingConfig } from '../../funding';
@@ -38,17 +38,7 @@ export function Style({ style, locale, nonce } : StyleProps) : ElementNode {
     const cardNumber = getCardNumber(locale);
     const css = componentStyle({ height, cardNumber });
 
-    const styleTag = (
+    return (
         <style nonce={ nonce } innerHTML={ css } />
     );
-
-    try {
-        styleTag.render(html());
-        return styleTag;
-
-    } catch (err) {
-        return (
-            <style nonce={ nonce }>{ css }</style>
-        );
-    }
 }

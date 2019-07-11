@@ -1,7 +1,8 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { once } from 'belter/src';
+import { once, uniqueID } from 'belter/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { generateOrderID, createTestContainer, destroyTestContainer, assert, WEBVIEW_USER_AGENT, runOnClick } from '../common';
 
@@ -21,62 +22,13 @@ for (const flow of [ 'popup', 'iframe' ]) {
             destroyTestContainer();
         });
 
-        it('should render checkout and return a blank token in payment', (done) => {
-            done = once(done);
-            runOnClick(() => {
-                return window.paypal.Checkout({
-
-                    payment() : string {
-                        return '';
-                    },
-
-                    onError(err) : void {
-                        assert.ok(err instanceof Error);
-                        return done();
-                    },
-
-                    onAuthorize() : void {
-                        return done(new Error('Expected onAuthorize to not be called'));
-                    },
-
-                    onCancel() : void {
-                        return done(new Error('Expected onCancel to not be called'));
-                    }
-
-                }).render('body');
-            });
-        });
-
-        it('should render checkout and return a promise for a blank token in payment', (done) => {
-            done = once(done);
-            runOnClick(() => {
-                return window.paypal.Checkout({
-
-                    payment() : ZalgoPromise<string> {
-                        return ZalgoPromise.resolve('');
-                    },
-
-                    onError(err) : void {
-                        assert.ok(err instanceof Error);
-                        return done();
-                    },
-
-                    onAuthorize() : void {
-                        return done(new Error('Expected onCancel to not be called'));
-                    },
-
-                    onCancel() : void {
-                        return done(new Error('Expected onCancel to not be called'));
-                    }
-
-                }).render('body');
-            });
-        });
-
         it('should render checkout and throw an error in payment', (done) => {
             done = once(done);
             runOnClick(() => {
                 return window.paypal.Checkout({
+
+                    buttonSessionID: uniqueID(),
+                    fundingSource:   FUNDING.PAYPAL,
 
                     payment() {
                         throw new Error('error');
@@ -104,6 +56,9 @@ for (const flow of [ 'popup', 'iframe' ]) {
             runOnClick(() => {
                 return window.paypal.Checkout({
 
+                    buttonSessionID: uniqueID(),
+                    fundingSource:   FUNDING.PAYPAL,
+
                     payment() : string | ZalgoPromise<string> {
                         return ZalgoPromise.reject(new Error('error'));
                     },
@@ -129,6 +84,9 @@ for (const flow of [ 'popup', 'iframe' ]) {
             done = once(done);
             runOnClick(() => {
                 return window.paypal.Checkout({
+
+                    buttonSessionID: uniqueID(),
+                    fundingSource:   FUNDING.PAYPAL,
 
                     test: { action: 'error' },
 
@@ -158,6 +116,9 @@ for (const flow of [ 'popup', 'iframe' ]) {
             runOnClick(() => {
                 return window.paypal.Checkout({
 
+                    buttonSessionID: uniqueID(),
+                    fundingSource:   FUNDING.PAYPAL,
+
                     payment() : string | ZalgoPromise<string> {
                         return generateOrderID();
                     },
@@ -183,6 +144,9 @@ for (const flow of [ 'popup', 'iframe' ]) {
             done = once(done);
             runOnClick(() => {
                 return window.paypal.Checkout({
+
+                    buttonSessionID: uniqueID(),
+                    fundingSource:   FUNDING.PAYPAL,
 
                     payment() : string | ZalgoPromise<string> {
                         return generateOrderID();
@@ -211,6 +175,9 @@ for (const flow of [ 'popup', 'iframe' ]) {
             done = once(done);
             runOnClick(() => {
                 return window.paypal.Checkout({
+
+                    buttonSessionID: uniqueID(),
+                    fundingSource:   FUNDING.PAYPAL,
 
                     payment() : string | ZalgoPromise<string> {
                         return generateOrderID();
@@ -244,6 +211,9 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
                     window.paypal.Checkout({
 
+                        buttonSessionID: uniqueID(),
+                        fundingSource:   FUNDING.PAYPAL,
+
                         onRender() {
                             name = this.childWindowName;
                         },
@@ -270,6 +240,10 @@ for (const flow of [ 'popup', 'iframe' ]) {
             it('should render checkout without a click event and error out', (done) => {
                 done = once(done);
                 window.paypal.Checkout({
+
+                    buttonSessionID: uniqueID(),
+                    fundingSource:   FUNDING.PAYPAL,
+                    
                     payment() : string | ZalgoPromise<string> {
                         return generateOrderID();
                     },

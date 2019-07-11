@@ -4,7 +4,7 @@
 import { FUNDING, type LocaleType } from '@paypal/sdk-constants/src';
 import { node, type ElementNode } from 'jsx-pragmatic/src';
 
-import { CLASS, BUTTON_TAGLINE_COLOR } from '../../constants';
+import { CLASS } from '../../constants';
 import { getFundingConfig } from '../../funding';
 import { type ButtonStyle } from '../props';
 
@@ -29,8 +29,6 @@ export function TagLine({ fundingSource, style, locale, multiple, nonce } :
         throw new Error(`Can not find label config for ${ label }`);
     }
 
-    const tagColor = BUTTON_TAGLINE_COLOR.BLACK;
-
     const { Tag } = labelConfig;
 
     if (!Tag) {
@@ -38,7 +36,7 @@ export function TagLine({ fundingSource, style, locale, multiple, nonce } :
     }
 
     return (
-        <div class={ `${ CLASS.TAGLINE } ${ CLASS.TAGLINE_COLOR }-${ tagColor }` }>
+        <div class={ CLASS.TAGLINE }>
             <Tag
                 nonce={ nonce }
                 locale={ locale }

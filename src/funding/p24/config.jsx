@@ -13,6 +13,8 @@ export function getP24Config() : FundingSourceConfig {
         layouts: [
             BUTTON_LAYOUT.VERTICAL
         ],
+
+        shippingChange: false,
     
         defaultLabel: BUTTON_LABEL.P24,
     
@@ -20,7 +22,7 @@ export function getP24Config() : FundingSourceConfig {
             [ BUTTON_LABEL.P24 ]: {
                 ...DEFAULT_LABEL_CONFIG,
     
-                Label: P24Logo
+                Label: ({ logoColor, optional }) => P24Logo({ logoColor, optional })
             }
         }
     };

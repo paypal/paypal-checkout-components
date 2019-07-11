@@ -6,6 +6,7 @@ import { inlineMemoize } from 'belter/src';
 import { type FundingSourceConfig } from './common';
 import { getPayPalConfig } from './paypal';
 import { getVenmoConfig } from './venmo';
+import { getItauConfig } from './itau';
 import { getCreditConfig } from './credit';
 import { getCardConfig } from './card';
 import { getIdealConfig } from './ideal';
@@ -23,6 +24,7 @@ import { getPayuConfig } from './payu';
 export const FUNDING_PRIORITY = [
     FUNDING.PAYPAL,
     FUNDING.VENMO,
+    FUNDING.ITAU,
     FUNDING.CREDIT,
     FUNDING.IDEAL,
     FUNDING.SEPA,
@@ -41,6 +43,7 @@ export const FUNDING_PRIORITY = [
 export function getFundingConfig() : { [$Values<typeof FUNDING>] : ?FundingSourceConfig } {
     return inlineMemoize(getFundingConfig, () => {
         return {
+<<<<<<< HEAD
             [ FUNDING.PAYPAL ]:     (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.paypal.eligible) ? getPayPalConfig() : null,
             [ FUNDING.VENMO ]:      (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.venmo.eligible) ? getVenmoConfig() : null,
             [ FUNDING.CREDIT ]:     (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.credit.eligible) ? getCreditConfig() : null,
@@ -56,6 +59,23 @@ export function getFundingConfig() : { [$Values<typeof FUNDING>] : ?FundingSourc
             [ FUNDING.ZIMPLER ]:    (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.zimpler.eligible) ? getZimplerConfig() : null,
             [ FUNDING.WECHATPAY ]:  (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.wechatpay.eligible) ? getWechatpayConfig() : null,
             [ FUNDING.PAYU ]:       (!__TREE_SHAKE__ || __paypal_checkout__.serverConfig.fundingEligibility.payu.eligible) ? getPayuConfig() : null
+=======
+            [ FUNDING.PAYPAL ]:     (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.paypal     && __paypal_checkout__.serverConfig.fundingEligibility.paypal.eligible)) ? getPayPalConfig() : null,
+            [ FUNDING.VENMO ]:      (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.venmo      && __paypal_checkout__.serverConfig.fundingEligibility.venmo.eligible)) ? getVenmoConfig() : null,
+            [ FUNDING.ITAU ]:       (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.itau       && __paypal_checkout__.serverConfig.fundingEligibility.itau.eligible)) ? getItauConfig() : null,
+            [ FUNDING.CREDIT ]:     (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.credit     && __paypal_checkout__.serverConfig.fundingEligibility.credit.eligible)) ? getCreditConfig() : null,
+            [ FUNDING.CARD ]:       (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.card       && __paypal_checkout__.serverConfig.fundingEligibility.card.eligible)) ? getCardConfig() : null,
+            [ FUNDING.IDEAL ]:      (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.ideal      && __paypal_checkout__.serverConfig.fundingEligibility.ideal.eligible)) ? getIdealConfig() : null,
+            [ FUNDING.SEPA ]:       (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.sepa       && __paypal_checkout__.serverConfig.fundingEligibility.sepa.eligible)) ? getSepaConfig() : null,
+            [ FUNDING.BANCONTACT ]: (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.bancontact && __paypal_checkout__.serverConfig.fundingEligibility.bancontact.eligible)) ? getBancontactConfig() : null,
+            [ FUNDING.GIROPAY ]:    (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.giropay    && __paypal_checkout__.serverConfig.fundingEligibility.giropay.eligible)) ? getGiropayConfig() : null,
+            [ FUNDING.SOFORT ]:     (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.sofort     && __paypal_checkout__.serverConfig.fundingEligibility.sofort.eligible)) ? getSofortConfig() : null,
+            [ FUNDING.EPS ]:        (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.eps        && __paypal_checkout__.serverConfig.fundingEligibility.eps.eligible)) ? getEpsConfig() : null,
+            [ FUNDING.MYBANK ]:     (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.mybank     && __paypal_checkout__.serverConfig.fundingEligibility.mybank.eligible)) ? getMybankConfig() : null,
+            [ FUNDING.P24 ]:        (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.p24        && __paypal_checkout__.serverConfig.fundingEligibility.p24.eligible)) ? getP24Config() : null,
+            [ FUNDING.ZIMPLER ]:    (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.zimpler    && __paypal_checkout__.serverConfig.fundingEligibility.zimpler.eligible)) ? getZimplerConfig() : null,
+            [ FUNDING.WECHATPAY ]:  (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.wechatpay  && __paypal_checkout__.serverConfig.fundingEligibility.wechatpay.eligible)) ? getWechatpayConfig() : null
+>>>>>>> 91f01f7bc678e67a970dd438f9fe0c4b54995d7f
         };
     });
 }

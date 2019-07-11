@@ -43,7 +43,7 @@ if (action === 'checkout') {
                 cancelUrl:  `#cancel?token=${ orderID }${ hash }`,
                 returnUrl:  `#return?token=${ orderID }&PayerID=YYYYYYYYYYYYY${ hash }`,
                 currentUrl: window.location.href
-            });
+            }).catch(window.xprops.onError);
         });
     });
 
