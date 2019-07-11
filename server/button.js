@@ -2,6 +2,7 @@
 
 import { undotify } from 'belter';
 import { unpackSDKMeta } from '@paypal/sdk-client';
+import { FUNDING, CARD } from '@paypal/sdk-constants';
 import { html } from 'jsx-pragmatic';
 
 import { getSmartButtonClientScript, getSmartButtonRenderScript, startWatchers } from './watcher';
@@ -12,7 +13,7 @@ import type { ExpressRequest, ExpressResponse, LoggerType } from './types';
 import { buttonStyle } from './style';
 import { renderFraudnetScript, shouldRenderFraudnet } from './fraudnet';
 
-export function getButtonMiddleware({ logger = defaultLogger } : { logger? : LoggerType, getFundingEligibility : Function } = {}) : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
+export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibility } : { logger? : LoggerType, getFundingEligibility : Function } = {}) : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
     startWatchers();
 
     return async function buttonMiddleware(req : ExpressRequest, res : ExpressResponse) : Promise<void> {
@@ -20,8 +21,8 @@ export function getButtonMiddleware({ logger = defaultLogger } : { logger? : Log
             logger.info(EVENT.RENDER);
 
             const params = undotify(req.query);
-            const { fundingEligibility, env, clientID, buttonSessionID, cspNonce, debug, buyerCountry = req.get(HTTP_HEADER.PP_GEO_LOC)
-                /* disableFunding, disableCard, merchantID, currency, intent, commit, vault, clientAccessToken */ } = getParams(params, req, res);
+            const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry = req.get(HTTP_HEADER.PP_GEO_LOC),
+                disableFunding, disableCard, merchantID, currency, intent, commit, vault, clientAccessToken } = getParams(params, req, res);
 
             const sdkMeta = req.query.sdkMeta || '';
             let meta;
@@ -47,8 +48,6 @@ export function getButtonMiddleware({ logger = defaultLogger } : { logger? : Log
             logger.info(req, `button_client_version_${ client.version }`);
             logger.info(req, `button_render_version_${ render.version }`);
             logger.info(req, `button_params`, { params: JSON.stringify(params) });
-
-            /*
             
             let fundingEligibility;
             
@@ -65,37 +64,41 @@ export function getButtonMiddleware({ logger = defaultLogger } : { logger? : Log
                     vault, disableFunding, disableCard, userAgent, buttonSessionId, clientAccessToken });
 
             } catch (err) {
-                logger.error(req, 'gql_errored_for_fundingEligibility', { err: err.stack ? err.stack : err.toString() });
+                logger.error(req, 'gql_errored_for_fundingEligibility_fallingback_to_default', { err: err.stack ? err.stack : err.toString() });
+                // we still need to check if the following were requested to be disabled
+                const isCardDisabled = disableFunding ? disableFunding.includes(FUNDING.CARD) : false;
+                const isVisaDisabled = disableCard ? disableCard.includes(CARD.VISA) : false;
+                const isMastercardDisabled = disableCard ? disableCard.includes(CARD.MASTERCARD) : false;
+                const isAmexDisabled = disableCard ? disableCard.includes(CARD.AMEX) : false;
+                
                 fundingEligibility = {
                     paypal: {
                         eligible: true
                     },
                     card: {
-                        eligible: true,
+                        eligible: !isCardDisabled,
                         branded:  true,
                         vendors:  {
                             visa: {
-                                eligible: true
+                                eligible: !isVisaDisabled
                             },
                             mastercard: {
-                                eligible: true
+                                eligible: !isMastercardDisabled
                             },
                             amex: {
-                                eligible: true
+                                eligible: !isAmexDisabled
                             }
                         }
                     }
                 };
             }
 
-            */
-
             if (!clientID) {
                 return clientErrorResponse(res, 'Please provide a clientID query parameter');
             }
 
             if (!fundingEligibility) {
-                return clientErrorResponse(res, 'Please provide a fundingEligibility query parameter');
+                return clientErrorResponse(res, 'fundingEligibility does not exist');
             }
 
             const buttonHTML = render.button.Buttons({ ...params, nonce: cspNonce, csp: { nonce: cspNonce }, fundingEligibility }).render(html());
