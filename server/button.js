@@ -2,7 +2,7 @@
 
 import { undotify } from 'belter';
 import { unpackSDKMeta } from '@paypal/sdk-client';
-import { FUNDING, CARD } from '@paypal/sdk-constants';
+import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants';
 import { html } from 'jsx-pragmatic';
 
 import { getSmartButtonClientScript, getSmartButtonRenderScript, startWatchers } from './watcher';
@@ -21,7 +21,7 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
             logger.info(EVENT.RENDER);
 
             const params = undotify(req.query);
-            const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry = req.get(HTTP_HEADER.PP_GEO_LOC),
+            const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry = (req.get(HTTP_HEADER.PP_GEO_LOC) || COUNTRY.US),
                 disableFunding, disableCard, merchantID, currency, intent, commit, vault, clientAccessToken } = getParams(params, req, res);
 
             const sdkMeta = req.query.sdkMeta || '';
