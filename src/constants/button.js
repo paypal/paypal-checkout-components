@@ -5,21 +5,7 @@ export const BUTTON_LABEL = {
     CHECKOUT:    ('checkout' : 'checkout'),
     BUYNOW:      ('buynow' : 'buynow'),
     PAY:         ('pay' : 'pay'),
-    CREDIT:      ('credit' : 'credit'),
-    CARD:        ('card' : 'card'),
-    INSTALLMENT: ('installment' : 'installment'),
-    VENMO:       ('venmo' : 'venmo'),
-    ITAU:        ('itau' : 'itau'),
-    IDEAL:       ('ideal' : 'ideal'),
-    SEPA:        ('sepa' : 'sepa'),
-    BANCONTACT:  ('bancontact' : 'bancontact'),
-    GIROPAY:     ('giropay' : 'giropay'),
-    SOFORT:      ('sofort' : 'sofort'),
-    EPS:         ('eps' : 'eps'),
-    MYBANK:      ('mybank' : 'mybank'),
-    P24:         ('p24' : 'p24'),
-    ZIMPLER:     ('zimpler' : 'zimpler'),
-    WECHATPAY:   ('wechatpay' : 'wechatpay')
+    INSTALLMENT: ('installment' : 'installment')
 };
 
 export const BUTTON_COLOR = {

@@ -6,7 +6,7 @@
 import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 import { LANG } from '@paypal/sdk-constants/src';
 
-import { Text } from '../../ui';
+import { Text } from '../ui';
 
 export type ContentMap = {
     [ $Values<typeof LANG> ] : {

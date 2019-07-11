@@ -43,7 +43,7 @@ export const buttonStyle = `
         cursor: pointer;
     }
 
-    .${ CLASS.CONTAINER }.${ CLASS.ENV }-${ ENV.TEST } .${ CLASS.TEXT } {
+    .${ CLASS.CONTAINER }.${ CLASS.ENV }-${ ENV.TEST } .${ CLASS.TEXT }:not(.${ CLASS.SPACE }) {
         font-family: Arial !important;
         background: rgba(0, 0, 0, 0.5) !important;
         color: transparent  !important;

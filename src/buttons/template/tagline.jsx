@@ -19,13 +19,7 @@ export function TagLine({ fundingSource, style, locale, multiple, nonce } :
         throw new Error(`Can not get config for ${ fundingSource }`);
     }
 
-    const labelConfig = fundingConfig.labels[label];
-
-    if (!labelConfig) {
-        throw new Error(`Can not find label config for ${ label }`);
-    }
-
-    const { Tag } = labelConfig;
+    const { Tag } = fundingConfig;
 
     if (!Tag) {
         return;
@@ -34,6 +28,7 @@ export function TagLine({ fundingSource, style, locale, multiple, nonce } :
     return (
         <div class={ CLASS.TAGLINE }>
             <Tag
+                label={ label }
                 nonce={ nonce }
                 locale={ locale }
                 multiple={ multiple }

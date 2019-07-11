@@ -3,13 +3,62 @@
 /** @jsx node */
 
 import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
-import { type ChildType } from 'jsx-pragmatic/src';
+import { node, type ChildType } from 'jsx-pragmatic/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
-import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LABEL, DEFAULT } from '../constants';
+import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, DEFAULT, BUTTON_LABEL } from '../constants';
 import type { FundingEligibilityType } from '../types';
 
-export const DEFAULT_FUNDING_CONFIG = {
+export type CardConfig = {|
+    Label : () => ChildType
+|};
+
+export type FundingSourceConfig = {|
+    shippingChange? : boolean,
+    platforms : $ReadOnlyArray<$Values<typeof PLATFORM>>,
+    layouts : $ReadOnlyArray<$Values<typeof BUTTON_LAYOUT>>,
+    maxCards? : { [$Values<typeof COUNTRY>] : number },
+    remembered? : boolean,
+    vendors? : { [$Values<typeof CARD>] : ?CardConfig },
+    eligible? : ({ components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, fundingEligibility : FundingEligibilityType }) => boolean,
+    Logo : ({|
+        locale : LocaleType,
+        label : ?$Values<typeof BUTTON_LABEL>,
+        logoColor : $Values<typeof LOGO_COLOR>,
+        optional? : boolean,
+        fundingEligibility : FundingEligibilityType,
+        onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void
+
+    |}) => ChildType,
+    Label : ({|
+        logo : ChildType,
+        label : ?$Values<typeof BUTTON_LABEL>,
+        locale : LocaleType,
+        logoColor : $Values<typeof LOGO_COLOR>,
+        multiple : boolean,
+        period? : number,
+        fundingEligibility : FundingEligibilityType,
+        optional? : boolean,
+        onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void
+    |}) => ChildType,
+    VaultLabel? : ({|
+        logoColor : $Values<typeof LOGO_COLOR>,
+        label : string,
+        vendor? : $Values<typeof CARD>
+    |}) => ChildType,
+    Tag? : ({|
+        locale : LocaleType,
+        multiple : boolean
+    |}) => ChildType,
+    handleClick : boolean,
+    colors : $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
+    secondaryColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
+    secondaryVaultColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
+    logoColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof LOGO_COLOR> },
+    shapes : $ReadOnlyArray<$Values<typeof BUTTON_SHAPE>>
+|};
+
+export const DEFAULT_FUNDING_CONFIG : FundingSourceConfig = {
 
     layouts: [
         BUTTON_LAYOUT.VERTICAL
@@ -18,10 +67,7 @@ export const DEFAULT_FUNDING_CONFIG = {
     platforms: [
         PLATFORM.DESKTOP,
         PLATFORM.MOBILE
-    ]
-};
-
-export const DEFAULT_LABEL_CONFIG = {
+    ],
 
     handleClick: false,
 
@@ -50,68 +96,13 @@ export const DEFAULT_LABEL_CONFIG = {
         [ DEFAULT ]:            BUTTON_COLOR.SILVER,
         [ BUTTON_COLOR.BLACK ]: BUTTON_COLOR.BLACK,
         [ BUTTON_COLOR.WHITE ]: BUTTON_COLOR.WHITE
+    },
+
+    Logo: () => {
+        return <div />;
+    },
+
+    Label: ({ logo }) => {
+        return logo;
     }
 };
-
-type FundingLabelConfig = {|
-    Label : ({|
-        locale : LocaleType,
-        logoColor : $Values<typeof LOGO_COLOR>,
-        multiple : boolean,
-        period? : number,
-        fundingEligibility : FundingEligibilityType,
-        optional? : boolean,
-        onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void
-    |}) => ChildType,
-    VaultLabel? : ({|
-        logoColor : $Values<typeof LOGO_COLOR>,
-        label : string,
-        vendor? : $Values<typeof CARD>
-    |}) => ChildType,
-    Tag? : ({|
-        locale : LocaleType,
-        multiple : boolean
-    |}) => ChildType,
-    handleClick : boolean,
-    colors : $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
-    secondaryColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
-    secondaryVaultColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
-    logoColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof LOGO_COLOR> },
-    shapes : $ReadOnlyArray<$Values<typeof BUTTON_SHAPE>>
-|};
-
-export type CardConfig = {|
-    Label : () => ChildType
-|};
-
-export type FundingSourceConfig = {|
-    defaultLabel : $Values<typeof BUTTON_LABEL>,
-    shippingChange? : boolean,
-    platforms : $ReadOnlyArray<$Values<typeof PLATFORM>>,
-    layouts : $ReadOnlyArray<$Values<typeof BUTTON_LAYOUT>>,
-    maxCards? : { [$Values<typeof COUNTRY>] : number },
-    remembered? : boolean,
-    vendors? : { [$Values<typeof CARD>] : ?CardConfig },
-    eligible? : ({ components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, fundingEligibility : FundingEligibilityType }) => boolean,
-    labels : {|
-        bancontact? : FundingLabelConfig,
-        card? : FundingLabelConfig,
-        credit? : FundingLabelConfig,
-        eps? : FundingLabelConfig,
-        giropay? : FundingLabelConfig,
-        ideal? : FundingLabelConfig,
-        mybank? : FundingLabelConfig,
-        p24? : FundingLabelConfig,
-        paypal? : FundingLabelConfig,
-        checkout? : FundingLabelConfig,
-        pay? : FundingLabelConfig,
-        buynow? : FundingLabelConfig,
-        installment? : FundingLabelConfig,
-        sepa? : FundingLabelConfig,
-        sofort? : FundingLabelConfig,
-        venmo? : FundingLabelConfig,
-        itau? : FundingLabelConfig,
-        wechatpay? : FundingLabelConfig,
-        zimpler? : FundingLabelConfig
-    |}
-|};
