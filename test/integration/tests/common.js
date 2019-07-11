@@ -32,11 +32,6 @@ export function buildSDKScriptUrl(query? : Object = {}) : string {
     });
 }
 
-export function setSDKScriptUrl(query? : Object = {}) {
-    const script = getElement('#test-sdk-script');
-    script.setAttribute('src', buildSDKScriptUrl(query));
-}
-
 export function generateOrderID() : string {
     return `${ uniqueID().toUpperCase() }`;
 }

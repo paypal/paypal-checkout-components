@@ -3,14 +3,12 @@
 
 import { ZimplerLogo } from '@paypal/sdk-logos/src';
 
-import { BUTTON_LAYOUT, BUTTON_LABEL } from '../../constants';
-import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
+import { BUTTON_LAYOUT } from '../../constants';
+import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 
 export function getZimplerConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
-
-        defaultLabel: BUTTON_LABEL.ZIMPLER,
 
         shippingChange: false,
 
@@ -18,12 +16,6 @@ export function getZimplerConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        labels: {
-            [ BUTTON_LABEL.ZIMPLER ]: {
-                ...DEFAULT_LABEL_CONFIG,
-
-                Label: ({ logoColor, optional }) => ZimplerLogo({ logoColor, optional })
-            }
-        }
+        Logo: ({ logoColor, optional }) => ZimplerLogo({ logoColor, optional })
     };
 }

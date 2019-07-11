@@ -33,7 +33,7 @@ buttonConfigs.push({
     button: {}
 });
 
-for (const label of [ BUTTON_LABEL.PAYPAL, BUTTON_LABEL.PAY, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.CHECKOUT ]) {
+for (const label of [ BUTTON_LABEL.PAY, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.CHECKOUT ]) {
     buttonConfigs.push({
         button: {
             style: {
@@ -75,98 +75,88 @@ for (const fundingSource of Object.values(FUNDING)) {
     });
 }
 
-for (const label of [ BUTTON_LABEL.PAYPAL ]) {
-
-    for (const width of RESPONSIVE_WIDTHS) {
-        buttonConfigs.push({
-            container: {
-                width
-            },
-            button: {
-                style: {
-                    label
-                }
-            }
-        });
-    }
-
-    for (const color of [ BUTTON_COLOR.GOLD, BUTTON_COLOR.BLUE, BUTTON_COLOR.SILVER, BUTTON_COLOR.BLACK, BUTTON_COLOR.WHITE ]) {
-        buttonConfigs.push({
-            button: {
-                style: {
-                    label,
-                    color
-                }
-            }
-        });
-    }
-
-    for (const shape of [ BUTTON_SHAPE.RECT, BUTTON_SHAPE.PILL ]) {
-        buttonConfigs.push({
-            button: {
-                style: {
-                    label,
-                    shape
-                }
-            }
-        });
-
-        buttonConfigs.push({
-            button: {
-                style: {
-                    label,
-                    shape,
-                    height: 45
-                }
-            }
-        });
-    }
-
-    for (const layout of [ BUTTON_LAYOUT.VERTICAL, BUTTON_LAYOUT.HORIZONTAL ]) {
-        buttonConfigs.push({
-            button: {
-                style: {
-                    label,
-                    layout
-                }
-            }
-        });
-    }
-
-    buttonConfigs.push({
-        button: {
-            style: {
-                label,
-                layout:  'horizontal',
-                tagline: false
-            }
-        }
-    });
-
+for (const width of RESPONSIVE_WIDTHS) {
     buttonConfigs.push({
         container: {
-            width: 340
+            width
         },
         button: {
             style: {
-                label,
-                height: 44
-            }
-        }
-    });
 
-    buttonConfigs.push({
-        container: {
-            width: 550
-        },
-        button: {
-            style: {
-                label,
-                height: 55
             }
         }
     });
 }
+
+for (const color of [ BUTTON_COLOR.GOLD, BUTTON_COLOR.BLUE, BUTTON_COLOR.SILVER, BUTTON_COLOR.BLACK, BUTTON_COLOR.WHITE ]) {
+    buttonConfigs.push({
+        button: {
+            style: {
+                color
+            }
+        }
+    });
+}
+
+for (const shape of [ BUTTON_SHAPE.RECT, BUTTON_SHAPE.PILL ]) {
+    buttonConfigs.push({
+        button: {
+            style: {
+                shape
+            }
+        }
+    });
+
+    buttonConfigs.push({
+        button: {
+            style: {
+                shape,
+                height: 45
+            }
+        }
+    });
+}
+
+for (const layout of [ BUTTON_LAYOUT.VERTICAL, BUTTON_LAYOUT.HORIZONTAL ]) {
+    buttonConfigs.push({
+        button: {
+            style: {
+                layout
+            }
+        }
+    });
+}
+
+buttonConfigs.push({
+    button: {
+        style: {
+            layout:  'horizontal',
+            tagline: false
+        }
+    }
+});
+
+buttonConfigs.push({
+    container: {
+        width: 340
+    },
+    button: {
+        style: {
+            height: 44
+        }
+    }
+});
+
+buttonConfigs.push({
+    container: {
+        width: 550
+    },
+    button: {
+        style: {
+            height: 55
+        }
+    }
+});
 
 buttonConfigs.push({
     fundingEligibility: {

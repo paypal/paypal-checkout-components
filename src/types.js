@@ -1,3 +1,4 @@
+
 /* @flow */
 
 export const TYPES = true;
@@ -148,7 +149,11 @@ export type FundingEligibilityType = {|
         eligible : boolean,
         branded : boolean
     },
-    payu : {
+    payu? : {
+        eligible : boolean,
+        branded : boolean
+    },
+    verkkopankki? : {
         eligible : boolean,
         branded : boolean
     }

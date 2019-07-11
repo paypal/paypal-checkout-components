@@ -70,6 +70,9 @@ export const fundingEligibility = {
     },
     payu: {
         eligible: false
+    },
+    verkkopankki: {
+        eligible: false
     }
 };
 

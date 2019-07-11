@@ -3,8 +3,8 @@
 
 import { SofortLogo } from '@paypal/sdk-logos/src';
 
-import { BUTTON_LAYOUT, BUTTON_LABEL } from '../../constants';
-import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
+import { BUTTON_LAYOUT } from '../../constants';
+import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 
 export function getSofortConfig() : FundingSourceConfig {
     return {
@@ -16,14 +16,6 @@ export function getSofortConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
     
-        defaultLabel: BUTTON_LABEL.SOFORT,
-    
-        labels: {
-            [ BUTTON_LABEL.SOFORT ]: {
-                ...DEFAULT_LABEL_CONFIG,
-    
-                Label: ({ logoColor, optional }) => SofortLogo({ logoColor, optional })
-            }
-        }
+        Logo: ({ logoColor, optional }) => SofortLogo({ logoColor, optional })
     };
 }

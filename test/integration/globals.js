@@ -71,4 +71,7 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
     payu: {
         eligible: false
     },
+    verkkopankki: {
+        eligible: false
+    }
 };

@@ -1,10 +1,12 @@
 /* @flow */
 
-import { BUTTON_LABEL, CLASS } from '../../../constants';
+import { FUNDING } from '@paypal/sdk-constants/src';
+
+import { CLASS, ATTRIBUTE } from '../../../constants';
 
 export const labelStyle = `
 
-    .${ CLASS.BUTTON }.${ CLASS.LABEL }-${ BUTTON_LABEL.CARD } {
+    .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.CARD }] {
         border-radius: 0 !important;
     }
 

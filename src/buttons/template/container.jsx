@@ -45,6 +45,7 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
         }, 1);
     });
 
+    // $FlowFixMe
     const { style } = props;
     const { label, layout, height: buttonHeight } = style;
 

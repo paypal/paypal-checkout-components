@@ -43,7 +43,7 @@ export const buttonStyle = `
         cursor: pointer;
     }
 
-    .${ CLASS.CONTAINER }.${ CLASS.ENV }-${ ENV.TEST } .${ CLASS.TEXT } {
+    .${ CLASS.CONTAINER }.${ CLASS.ENV }-${ ENV.TEST } .${ CLASS.TEXT }:not(.${ CLASS.SPACE }) {
         font-family: Arial !important;
         background: rgba(0, 0, 0, 0.5) !important;
         color: transparent  !important;
@@ -122,5 +122,15 @@ export const buttonStyle = `
 
     .${ CLASS.CONTAINER } .${ CLASS.VAULT_HEADER } {
         margin-top: 20px;
+    }
+
+    .${ CLASS.POWERED_BY } > .${ CLASS.TEXT } {
+        vertical-align: top;
+        line-height: 18px;
+    }
+
+    .${ CLASS.POWERED_BY } > .${ LOGO_CLASS.LOGO } {
+        height: 16px;
+        min-height: 16px;
     }
 `;

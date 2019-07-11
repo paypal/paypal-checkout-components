@@ -609,6 +609,20 @@ const buttonConfigs = [
                 layout: `vertical`,
                 label:  `card`,
                 valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `payu`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `verkkopankki`,
+                commit: true,
+                valid:  false
             }
 
         // $FlowFixMe

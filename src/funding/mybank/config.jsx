@@ -3,14 +3,12 @@
 
 import { MybankLogo } from '@paypal/sdk-logos/src';
 
-import { BUTTON_LAYOUT, BUTTON_LABEL } from '../../constants';
-import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
+import { BUTTON_LAYOUT } from '../../constants';
+import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 
 export function getMybankConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
-
-        defaultLabel: BUTTON_LABEL.MYBANK,
 
         shippingChange: false,
     
@@ -18,12 +16,6 @@ export function getMybankConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
     
-        labels: {
-            [ BUTTON_LABEL.MYBANK ]: {
-                ...DEFAULT_LABEL_CONFIG,
-    
-                Label: ({ logoColor, optional }) => MybankLogo({ logoColor, optional })
-            }
-        }
+        Logo: ({ logoColor, optional }) => MybankLogo({ logoColor, optional })
     };
 }

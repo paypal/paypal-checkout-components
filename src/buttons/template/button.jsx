@@ -6,7 +6,7 @@ import { node, type ElementNode } from 'jsx-pragmatic/src';
 import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { noop } from 'belter/src';
 
-import { BUTTON_LABEL, ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER } from '../../constants';
+import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER } from '../../constants';
 import { getFundingConfig } from '../../funding';
 import { type ButtonStyle } from '../props';
 import type { FundingEligibilityType } from '../../types';
@@ -25,58 +25,27 @@ type BasicButtonProps = {|
     nonce : string
 |};
 
-function determineLabel({ fundingSource, style } :
-    {| fundingSource : $Values<typeof FUNDING>, style : ButtonStyle |}) : $Values<typeof BUTTON_LABEL> {
-
-    const fundingConfig = getFundingConfig()[fundingSource];
-
-    if (!fundingConfig) {
-        throw new Error(`Can not find config for ${ fundingSource }`);
-    }
-
-    const labelsConfig = fundingConfig.labels;
-    const { label } = style;
-
-    if (labelsConfig[label]) {
-        return label;
-    }
-
-    if (fundingConfig.defaultLabel) {
-        return fundingConfig.defaultLabel;
-    }
-
-    throw new Error(`Could not determine label for ${ fundingSource }`);
-}
-
 export function BasicButton({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, onClick = noop } : BasicButtonProps) : ElementNode {
 
-    let { color, period } = style;
+    let { color, period, label } = style;
 
-    const buttonLabel = determineLabel({ fundingSource, style });
-    
     const fundingConfig = getFundingConfig()[fundingSource];
 
     if (!fundingConfig) {
         throw new Error(`Can not find funding config for ${ fundingSource }`);
     }
 
-    const labelConfig = fundingConfig.labels[buttonLabel];
-
-    if (!labelConfig) {
-        throw new Error(`Can not find label config for ${ buttonLabel }`);
-    }
-
-    const colors = labelConfig.colors;
-    const secondaryColors = labelConfig.secondaryColors || {};
+    const colors = fundingConfig.colors;
+    const secondaryColors = fundingConfig.secondaryColors || {};
 
     if (multiple && i > 0) {
         color = secondaryColors[color] || secondaryColors[BUTTON_COLOR.DEFAULT] || colors[0];
     }
 
-    const logoColors = labelConfig.logoColors || {};
+    const logoColors = fundingConfig.logoColors || {};
     const logoColor = logoColors[color] || logoColors[LOGO_COLOR.DEFAULT] || LOGO_COLOR.DEFAULT;
 
-    const { Label, handleClick } = labelConfig;
+    const { Label, Logo, handleClick } = fundingConfig;
 
     const clickHandler = (event, opts) => {
         event.preventDefault();
@@ -86,6 +55,16 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
     };
 
     const { layout, shape } = style;
+
+    const logo = (
+        <Logo
+            label={ label }
+            locale={ locale }
+            logoColor={ logoColor }
+            fundingEligibility={ fundingEligibility }
+            onClick={ clickHandler }
+        />
+    );
 
     return (
         <div
@@ -101,7 +80,6 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
                 `${ CLASS.SHAPE }-${ shape }`,
                 `${ CLASS.NUMBER }-${ multiple ? BUTTON_NUMBER.MULTIPLE : BUTTON_NUMBER.SINGLE }`,
                 `${ CLASS.ENV }-${ env }`,
-                `${ CLASS.LABEL }-${ buttonLabel }`,
                 `${ CLASS.COLOR }-${ color }`,
                 `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`
             ].join(' ') }
@@ -110,6 +88,8 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
             tabindex={ handleClick ? '-1' : '0' }>
 
             <Label
+                logo={ logo }
+                label={ label }
                 nonce={ nonce }
                 locale={ locale }
                 logoColor={ logoColor }
@@ -156,13 +136,7 @@ export function VaultedButton({ fundingSource, paymentMethodID, style, multiple,
         throw new Error(`Can not find funding config for ${ fundingSource }`);
     }
 
-    const labelConfig = fundingConfig.labels[fundingConfig.defaultLabel];
-
-    if (!labelConfig) {
-        throw new Error(`Can not find default label config for ${ fundingSource }`);
-    }
-
-    const { VaultLabel, colors, logoColors = {}, secondaryVaultColors = {} } = labelConfig;
+    const { VaultLabel, colors, logoColors = {}, secondaryVaultColors = {} } = fundingConfig;
 
     if (!VaultLabel) {
         throw new Error(`Could not find vault label for ${ fundingSource }`);
