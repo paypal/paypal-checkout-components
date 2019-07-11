@@ -16,17 +16,11 @@ function Mark({ fundingSource, fundingEligibility } : { fundingSource : $Values<
         throw new Error(`Can not find funding config for ${ fundingSource }`);
     }
 
-    const labelConfig = fundingConfig.labels[fundingConfig.defaultLabel];
-
-    if (!labelConfig) {
-        throw new Error(`Can not find funding config for ${ fundingSource }`);
-    }
-
-    const { Label } = labelConfig;
+    const { Logo } = fundingConfig;
 
     return (
         <div class='paypal-mark'>
-            <Label fundingEligibility={ fundingEligibility } locale={ getLocale() } />
+            <Logo fundingEligibility={ fundingEligibility } locale={ getLocale() } />
         </div>
     );
 }

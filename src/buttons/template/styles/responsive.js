@@ -2,8 +2,9 @@
 
 import { max, perc } from 'belter/src';
 import { LOGO_CLASS } from '@paypal/sdk-logos/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 
-import { BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER, BUTTON_LABEL, CLASS } from '../../../constants';
+import { BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER, CLASS, ATTRIBUTE } from '../../../constants';
 import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from '../config';
 
 const DUAL_BUTTON_MIN_RATIO = 2.8;
@@ -44,8 +45,8 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                     min-height: ${ perc(buttonHeight, 40) }px;
                 }
                 
-                .${ LOGO_CLASS.LOGO }.${ LOGO_CLASS.LOGO }-${ BUTTON_LABEL.EPS },
-                .${ LOGO_CLASS.LOGO }.${ LOGO_CLASS.LOGO }-${ BUTTON_LABEL.MYBANK } {
+                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.EPS }] .${ LOGO_CLASS.LOGO },
+                .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.MYBANK }] .${ LOGO_CLASS.LOGO } {
                     height: ${ perc(buttonHeight, 50) + 5 }px;
                     max-height: ${ perc(buttonHeight, 70) }px;
                     min-height: ${ perc(buttonHeight, 40) }px;

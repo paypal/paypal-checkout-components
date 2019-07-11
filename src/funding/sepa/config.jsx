@@ -3,8 +3,8 @@
 
 import { SepaLogo } from '@paypal/sdk-logos/src';
 
-import { BUTTON_LAYOUT, BUTTON_LABEL } from '../../constants';
-import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig } from '../common';
+import { BUTTON_LAYOUT } from '../../constants';
+import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 
 export function getSepaConfig() : FundingSourceConfig {
     return {
@@ -14,14 +14,6 @@ export function getSepaConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
     
-        defaultLabel: BUTTON_LABEL.SEPA,
-    
-        labels: {
-            [ BUTTON_LABEL.SEPA ]: {
-                ...DEFAULT_LABEL_CONFIG,
-    
-                Label: ({ logoColor, optional }) => SepaLogo({ logoColor, optional })
-            }
-        }
+        Logo: ({ logoColor, optional }) => SepaLogo({ logoColor, optional })
     };
 }

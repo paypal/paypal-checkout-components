@@ -119,7 +119,7 @@ export type OnClickActions = {|
 export type OnClick = (OnClickData, OnClickActions) => void;
 
 export type ButtonStyle = {|
-    label : $Values<typeof BUTTON_LABEL>,
+    label : ?$Values<typeof BUTTON_LABEL>,
     color : $Values<typeof BUTTON_COLOR>,
     shape : $Values<typeof BUTTON_SHAPE>,
     tagline : boolean,
@@ -214,7 +214,6 @@ export type ButtonPropsInputs = {|
 |};
 
 export const DEFAULT_STYLE = {
-    LABEL:  BUTTON_LABEL.PAYPAL,
     LAYOUT: BUTTON_LAYOUT.VERTICAL,
     COLOR:  BUTTON_COLOR.GOLD,
     SHAPE:  BUTTON_SHAPE.RECT
@@ -240,7 +239,7 @@ export function normalizeButtonStyle(style : ButtonStyleInputs) : ButtonStyle {
     }
 
     const {
-        label = DEFAULT_STYLE.LABEL,
+        label,
         layout = DEFAULT_STYLE.LAYOUT,
         color = DEFAULT_STYLE.COLOR,
         shape = DEFAULT_STYLE.SHAPE,
@@ -253,6 +252,10 @@ export function normalizeButtonStyle(style : ButtonStyleInputs) : ButtonStyle {
         throw new Error(`Invalid layout: ${ layout }`);
     }
 
+    if (label && values(BUTTON_LABEL).indexOf(label) === -1) {
+        throw new Error(`Invalid label: ${ label }`);
+    }
+
     const FUNDING_CONFIG = getFundingConfig();
     const fundingConfig = FUNDING_CONFIG[FUNDING.PAYPAL];
 
@@ -260,18 +263,12 @@ export function normalizeButtonStyle(style : ButtonStyleInputs) : ButtonStyle {
         throw new Error(`Expected ${ FUNDING.PAYPAL } to be eligible`);
     }
 
-    const labelConfig = fundingConfig.labels[label];
-
-    if (!labelConfig) {
-        throw new Error(`Can not find label config for ${ label }`);
+    if (color && fundingConfig.colors.indexOf(color) === -1) {
+        throw new Error(`Unexpected style.color for ${ FUNDING.PAYPAL } button: ${ color }, expected ${ fundingConfig.colors.join(', ') }`);
     }
 
-    if (color && labelConfig.colors.indexOf(color) === -1) {
-        throw new Error(`Unexpected style.color for ${ label } button: ${ color }, expected ${ labelConfig.colors.join(', ') }`);
-    }
-
-    if (shape && labelConfig.shapes.indexOf(shape) === -1) {
-        throw new Error(`Unexpected style.shape for ${ label } button: ${ shape }, expected ${ labelConfig.shapes.join(', ') }`);
+    if (shape && fundingConfig.shapes.indexOf(shape) === -1) {
+        throw new Error(`Unexpected style.shape for ${ FUNDING.PAYPAL } button: ${ shape }, expected ${ fundingConfig.shapes.join(', ') }`);
     }
 
     if (height !== undefined) {

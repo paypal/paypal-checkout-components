@@ -4,8 +4,8 @@
 import { node, Fragment } from 'jsx-pragmatic/src';
 import { CARD, FUNDING, COUNTRY, COMPONENTS } from '@paypal/sdk-constants/src';
 
-import { BUTTON_LAYOUT, BUTTON_LABEL, BUTTON_COLOR, DEFAULT, CLASS, ATTRIBUTE } from '../../constants';
-import { DEFAULT_FUNDING_CONFIG, DEFAULT_LABEL_CONFIG, type FundingSourceConfig, type CardConfig } from '../common';
+import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS, ATTRIBUTE } from '../../constants';
+import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig } from '../common';
 import { Text } from '../../ui';
 
 import { getVisaConfig } from './visa';
@@ -84,88 +84,82 @@ export function getCardConfig() : FundingSourceConfig {
         layouts: [
             BUTTON_LAYOUT.VERTICAL
         ],
-    
-        defaultLabel: BUTTON_LABEL.CARD,
 
         maxCards: maxCardForCountry,
 
         vendors,
-    
-        labels: {
-            [ BUTTON_LABEL.CARD ]: {
-                ...DEFAULT_LABEL_CONFIG,
 
-                colors: [
-                    BUTTON_COLOR.TRANSPARENT
-                ],
+        colors: [
+            BUTTON_COLOR.TRANSPARENT
+        ],
 
-                secondaryColors: {
-                    [ DEFAULT ]: BUTTON_COLOR.TRANSPARENT
-                },
+        secondaryColors: {
+            [ DEFAULT ]: BUTTON_COLOR.TRANSPARENT
+        },
 
-                handleClick: true,
-    
-                Label: ({ fundingEligibility, locale, onClick }) => {
-                    let maxCards = 4;
-    
-                    // $FlowFixMe
-                    if (maxCardForCountry[locale.country]) {
-                        maxCards = maxCardForCountry[locale.country];
-                    }
-    
-                    return CARD_PRIORITY.map(name => {
-    
-                        const cardEligibility = fundingEligibility[FUNDING.CARD];
+        handleClick: true,
 
-                        if (!cardEligibility || !cardEligibility.vendors || !cardEligibility.vendors[name] || !cardEligibility.vendors[name].eligible) {
-                            return null;
-                        }
-    
-                        const vendorConfig = vendors[name];
-    
-                        if (!vendorConfig) {
-                            return null;
-                        }
-    
-                        const { Label } = vendorConfig;
-                        
-                        return (
-                            <div
-                                class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name }` }
-                                onClick={ event => onClick(event, { card: name }) }
-                                tabindex='0'
-                                role='button'
-                                { ...{
-                                    [ ATTRIBUTE.FUNDING_SOURCE ]: FUNDING.CARD,
-                                    [ ATTRIBUTE.CARD ]:           name
-                                } }
-                            >
-                                <Label />
-                            </div>
-                        );
-                    }).filter(Boolean).slice(0, maxCards);
-                },
+        Logo: ({ fundingEligibility, locale, onClick }) => {
+            let maxCards = 4;
 
-                VaultLabel: ({ vendor, label } : { vendor? : $Values<typeof CARD>, label : string }) => {
-                    if (!vendor) {
-                        throw new Error(`Vendor required for card vault label`);
-                    }
-
-                    const vendorConfig = vendors[vendor];
-
-                    if (!vendorConfig) {
-                        throw new Error(`Could not find vendor config for ${ vendor }`);
-                    }
-
-                    const { Label } = vendorConfig;
-
-                    return (
-                        <Fragment>
-                            <Label optional /> <Text className={ CLASS.VAULT_LABEL }>{ label }</Text>
-                        </Fragment>
-                    );
-                }
+            // $FlowFixMe
+            if (maxCardForCountry[locale.country]) {
+                maxCards = maxCardForCountry[locale.country];
             }
+
+            return CARD_PRIORITY.map(name => {
+
+                const cardEligibility = fundingEligibility[FUNDING.CARD];
+
+                if (!cardEligibility || !cardEligibility.vendors || !cardEligibility.vendors[name] || !cardEligibility.vendors[name].eligible) {
+                    return null;
+                }
+
+                const vendorConfig = vendors[name];
+
+                if (!vendorConfig) {
+                    return null;
+                }
+
+                const { Label } = vendorConfig;
+                
+                return (
+                    <div
+                        class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name }` }
+                        onClick={ event => onClick(event, { card: name }) }
+                        tabindex='0'
+                        role='button'
+                        { ...{
+                            [ ATTRIBUTE.FUNDING_SOURCE ]: FUNDING.CARD,
+                            [ ATTRIBUTE.CARD ]:           name
+                        } }
+                    >
+                        <Label />
+                    </div>
+                );
+            }).filter(Boolean).slice(0, maxCards);
+        },
+
+        Label: ({ logo }) => logo,
+
+        VaultLabel: ({ vendor, label } : { vendor? : $Values<typeof CARD>, label : string }) => {
+            if (!vendor) {
+                throw new Error(`Vendor required for card vault label`);
+            }
+
+            const vendorConfig = vendors[vendor];
+
+            if (!vendorConfig) {
+                throw new Error(`Could not find vendor config for ${ vendor }`);
+            }
+
+            const { Label } = vendorConfig;
+
+            return (
+                <Fragment>
+                    <Label optional /> <Text className={ CLASS.VAULT_LABEL }>{ label }</Text>
+                </Fragment>
+            );
         }
     };
 }
