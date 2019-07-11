@@ -67,6 +67,12 @@ export const fundingEligibility = {
     },
     zimpler: {
         eligible: false
+    },
+    payu: {
+        eligible: false
+    },
+    verkkopankki: {
+        eligible: false
     }
 };
 
