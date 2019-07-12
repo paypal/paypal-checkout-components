@@ -42,7 +42,7 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
 
         setTimeout(() => {
             destroyElement(prerenderFrame);
-        }, 1);
+        }, 1000);
     });
 
     // $FlowFixMe
