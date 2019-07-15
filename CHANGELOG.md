@@ -1,3 +1,15 @@
+## <small>5.0.42 (2019-07-15)</small>
+
+* Accept logo as a parameter for content ([8e893f2](http://github.paypal.com/paypal/paypal-checkout/commit/8e893f2))
+* Add powered by PayPal tagline ([ac23dd1](http://github.paypal.com/paypal/paypal-checkout/commit/ac23dd1))
+* Cleanup ([565d977](http://github.paypal.com/paypal/paypal-checkout/commit/565d977))
+* Fix button prerender transition ([80add1b](http://github.paypal.com/paypal/paypal-checkout/commit/80add1b))
+* Fix popupBridge and add tests ([81318d0](http://github.paypal.com/paypal/paypal-checkout/commit/81318d0))
+* Pass query param for onShippingChange to allow server side eligibility to work ([7155e1a](http://github.paypal.com/paypal/paypal-checkout/commit/7155e1a))
+* Remove label config ([5dca9fa](http://github.paypal.com/paypal/paypal-checkout/commit/5dca9fa))
+
+
+
 ## <small>5.0.41 (2019-07-02)</small>
 
 * Add pay instantly translations ([9125d03](http://github.paypal.com/paypal/paypal-checkout/commit/9125d03))
