@@ -11,7 +11,7 @@ export type LoggerType = {|
 |};
 
 type VaultedInstrument = {|
-    
+
 |};
 
 type VaultedInstruments = $ReadOnlyArray<VaultedInstrument>;
@@ -22,6 +22,10 @@ export type FundingEligibility = {|
         vaultedInstruments ? : VaultedInstruments
     },
     venmo? : {
+        eligible : boolean,
+        vaultedInstruments ? : VaultedInstruments
+    },
+    itau? : {
         eligible : boolean,
         vaultedInstruments ? : VaultedInstruments
     },

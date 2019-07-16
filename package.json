@@ -42,7 +42,7 @@
   "dependencies": {
     "@paypal/checkout-components": "^5.0.30",
     "@paypal/sdk-client": "^4.0.27",
-    "@paypal/sdk-constants": "^1.0.11",
+    "@paypal/sdk-constants": "^1.0.27",
     "belter": "^1.0.19",
     "cross-domain-utils": "^2.0.16",
     "grabthar": "^3",

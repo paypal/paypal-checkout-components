@@ -16,7 +16,7 @@ import { updateButtonClientConfig, validateOrder } from './orders';
 import { triggerButtonLogs } from './logs';
 
 export function setupButton(opts : { fundingEligibility : FundingEligibilityType, buyerCountry? : ?$Values<typeof COUNTRY>, cspNonce? : string }) : ZalgoPromise<void> {
-    
+
     // $FlowFixMe
     if (opts.paypal) {
         // $FlowFixMe
@@ -147,7 +147,7 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
                             close()
                         ]);
                     });
-                    
+
             });
         }).finally(() => {
             buttonProcessing = false;
@@ -182,8 +182,16 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
     });
 
     tasks.remember = ZalgoPromise.try(() => {
+        const fundings = [];
         if (fundingEligibility && fundingEligibility.venmo && fundingEligibility.venmo.eligible) {
-            return rememberFunding([ FUNDING.VENMO ]);
+            fundings.push(FUNDING.VENMO);
+
+        }
+        if (fundingEligibility && fundingEligibility.itau && fundingEligibility.itau.eligible) {
+            fundings.push(FUNDING.ITAU);
+        }
+        if (fundings && fundings.length) {
+            return rememberFunding(fundings);
         }
     });
 
