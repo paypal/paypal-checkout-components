@@ -64,7 +64,7 @@ export function createOrderID(accessToken : string, order : OrderCreateRequest) 
                 throw new Error(`Pass ${ SDK_QUERY_KEYS.MERCHANT_ID }=XYZ in the paypal script tag. Pass ${ SDK_QUERY_KEYS.MERCHANT_ID }=${ UNKNOWN } if you do not have access to the merchant id`);
             }
 
-            if (payee.merchant_id && merchantID[0] !== UNKNOWN && payee.merchant_id !== merchantID) {
+            if (payee.merchant_id && merchantID[0] !== UNKNOWN && payee.merchant_id !== merchantID[0]) {
                 throw new Error(`Expected payee.merchant_id to be "${ merchantID[0] }"`);
             }
         }
