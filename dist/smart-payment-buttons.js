@@ -1395,7 +1395,7 @@ window.spb = function(modules) {
             var payee = unit.payee;
             if (payee) {
                 if (!merchantID) throw new Error("Pass " + sdk_constants_src.i.MERCHANT_ID + "=XYZ in the paypal script tag. Pass " + sdk_constants_src.i.MERCHANT_ID + "=" + sdk_constants_src.j + " if you do not have access to the merchant id");
-                if (payee.merchant_id && merchantID[0] !== sdk_constants_src.j && payee.merchant_id !== merchantID) throw new Error('Expected payee.merchant_id to be "' + merchantID[0] + '"');
+                if (payee.merchant_id && merchantID[0] !== sdk_constants_src.j && payee.merchant_id !== merchantID[0]) throw new Error('Expected payee.merchant_id to be "' + merchantID[0] + '"');
             }
             return merchantID && merchantID[0] !== sdk_constants_src.j && (payee = Object(esm_extends.a)({}, payee, {
                 merchant_id: merchantID[0]
@@ -2968,7 +2968,10 @@ window.spb = function(modules) {
                 button.classList.remove(constants.b.CLICKED));
             });
         }), tasks.remember = zalgo_promise_src.a.try(function() {
-            if (fundingEligibility && fundingEligibility.venmo && fundingEligibility.venmo.eligible) return rememberFunding([ sdk_constants_src.g.VENMO ]);
+            var fundings = [];
+            if (fundingEligibility && fundingEligibility.venmo && fundingEligibility.venmo.eligible && fundings.push(sdk_constants_src.g.VENMO), 
+            fundingEligibility && fundingEligibility.itau && fundingEligibility.itau.eligible && fundings.push(sdk_constants_src.g.ITAU), 
+            fundings && fundings.length) return rememberFunding(fundings);
         }), tasks.getPopupBridge = zalgo_promise_src.a.try(function() {
             if (getPopupBridge) return getPopupBridge().then(function(bridge) {
                 popupBridge = bridge;
