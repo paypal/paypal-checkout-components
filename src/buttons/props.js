@@ -153,7 +153,7 @@ export type RenderButtonProps = {|
     buttonSessionID : string,
     nonce : string,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
-    onShippingChange : ?Function
+    onShippingChange : ?OnShippingChange
 |};
 
 export type PrerenderDetails = {|
@@ -186,7 +186,7 @@ export type ButtonProps = {|
     clientID : string,
     sessionID : string,
     buttonSessionID : string,
-    onShippingChange : ?Function,
+    onShippingChange : ?OnShippingChange,
     nonce : string
 |};
 

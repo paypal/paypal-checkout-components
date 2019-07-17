@@ -5,7 +5,7 @@ import { node, type ElementNode } from 'jsx-pragmatic/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { CLASS, BUTTON_NUMBER, BUTTON_LAYOUT } from '../../constants';
-import { determineEligibleFunding, determineVaultedFunding } from '../../funding';
+import { determineEligibleFunding, determineVaultedFunding, isVaultedFundingEligible } from '../../funding';
 import { normalizeButtonProps, type ButtonPropsInputs } from '../props';
 
 import { Style } from './style';
@@ -32,7 +32,10 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         throw new Error(`No eligible funding fundingSources found to render buttons:\n\n${ JSON.stringify(fundingEligibility, null, 4) }`);
     }
     
-    const vaultedFunding = determineVaultedFunding({ fundingEligibility, layout });
+    const vaultedFunding = isVaultedFundingEligible({ layout, onShippingChange })
+        ? determineVaultedFunding({ fundingEligibility })
+        : [];
+        
     const { PayInstantly } = buttonContent[lang];
 
     return (
