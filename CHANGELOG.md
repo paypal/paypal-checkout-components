@@ -1,3 +1,9 @@
+## <small>5.0.43 (2019-07-17)</small>
+
+* Do not display vaulted funding if onShippingChange passed ([3dd02b1](http://github.paypal.com/paypal/paypal-checkout/commit/3dd02b1))
+
+
+
 ## <small>5.0.42 (2019-07-15)</small>
 
 * Accept logo as a parameter for content ([8e893f2](http://github.paypal.com/paypal/paypal-checkout/commit/8e893f2))
