@@ -11,6 +11,8 @@ import { unresolvedPromise, getLogger } from '../../lib';
 import type { CreateOrder } from './createOrder';
 import type { XProps } from './types';
 
+let captureOrderCalled = false;
+
 export type XOnApproveDataType = {|
     orderID : string,
     payerID : ?string,
@@ -36,7 +38,7 @@ export type XOnApproveActionsType = {|
 
 export type XOnApprove = (XOnApproveDataType, XOnApproveActionsType) => ZalgoPromise<void>;
 
-function buildXApproveActions({ intent, orderID, restart, subscriptionID } : { orderID : string, restart : () => ZalgoPromise<void>, intent : $Values<typeof INTENT>, subscriptionID : string }) : XOnApproveActionsType {
+function buildXApproveActions({ intent, orderID, restart, subscriptionID, clientID } : { clientID : string, orderID : string, restart : () => ZalgoPromise<void>, intent : $Values<typeof INTENT>, subscriptionID : string }) : XOnApproveActionsType {
 
     const handleProcessorError = (err : mixed) : ZalgoPromise<OrderResponse> => {
         // $FlowFixMe
@@ -57,6 +59,12 @@ function buildXApproveActions({ intent, orderID, restart, subscriptionID } : { o
         if (intent !== INTENT.CAPTURE) {
             throw new Error(`Use ${ SDK_QUERY_KEYS.INTENT }=${ INTENT.CAPTURE } to use client-side capture`);
         }
+
+        getLogger()
+            .info(`client_pre_capture_order_${ clientID }`)
+            .flush();
+
+        captureOrderCalled = true;
 
         return captureOrder(orderID)
             .finally(get.reset)
@@ -113,7 +121,7 @@ export type OnApproveActions = {|
 export type OnApprove = (OnApproveData, OnApproveActions) => ZalgoPromise<void>;
 
 export function getOnApprove(xprops : XProps, { createOrder } : { createOrder : CreateOrder }) : OnApprove {
-    const { onApprove, onError, intent, buttonSessionID } = xprops;
+    const { onApprove, onError, intent, buttonSessionID, clientID } = xprops;
 
     return memoize(({ payerID, paymentID, billingToken, subscriptionID }, { restart }) => {
         return createOrder().then(orderID => {
@@ -127,7 +135,7 @@ export function getOnApprove(xprops : XProps, { createOrder } : { createOrder : 
                 }).flush();
 
             const data = { orderID, payerID, paymentID, billingToken, subscriptionID };
-            const actions = buildXApproveActions({ orderID, intent, restart, subscriptionID });
+            const actions = buildXApproveActions({ orderID, intent, restart, subscriptionID, clientID });
 
             if (onApprove) {
                 return onApprove(data, actions).catch(onError);
@@ -138,6 +146,10 @@ export function getOnApprove(xprops : XProps, { createOrder } : { createOrder : 
                     return actions.order.authorize().then(noop);
                 }
             }
+        }).then(() => {
+            getLogger()
+                .info(`${ captureOrderCalled ? 'client' : 'server' }_capture_order_${ clientID }`)
+                .flush();
         });
     });
 }
