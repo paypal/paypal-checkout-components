@@ -23,6 +23,12 @@ if (bridge) {
     delay = 100;
 }
 
+let popupBridge;
+
+const popupBridgePromise = window.xprops.getPopupBridge().then(_popupBridge => {
+    popupBridge = _popupBridge;
+});
+
 function renderCheckout(props = {}, context = CONTEXT.POPUP) {
     let approved = false;
 
@@ -111,6 +117,20 @@ getElements('.paypal-button', document).forEach(el => {
             window.xprops.onClick();
         }
 
+        if (popupBridge) {
+            return window.xprops.createOrder().then(orderID => {
+                return popupBridge.start(`${ popupBridge.nativeUrl }?token=${ orderID }`).then(params => {
+                    const data = {
+                        orderID: params.token,
+                        payerID: params.payerId
+                    };
+                    const actions = {};
+
+                    return window.xprops.onApprove(data, actions);
+                }).catch(window.xprops.onError);
+            });
+        }
+
         renderCheckout({
             fundingSource: el.getAttribute('data-funding-source')
         });
@@ -129,13 +149,16 @@ if (action === 'auth') {
 
 } else if (action === 'checkout' || action === 'shippingChange' ||  action === 'cancel' || action === 'error' || action === 'popout') {
 
-    if (delay) {
-        setTimeout(() => {
+    popupBridgePromise.then(() => {
+        if (delay) {
+            setTimeout(() => {
+                getElement(selector || '.paypal-button', document).click();
+            }, delay);
+        } else {
             getElement(selector || '.paypal-button', document).click();
-        }, delay);
-    } else {
-        getElement(selector || '.paypal-button', document).click();
-    }
+        }
+    });
+
 } else {
     window.xprops.getPrerenderDetails().then(prerenderDetails => {
         if (!prerenderDetails) {

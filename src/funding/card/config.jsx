@@ -76,7 +76,7 @@ export function getCardConfig() : FundingSourceConfig {
             if (hostedFieldsRequested) {
                 return false;
             }
-
+            
             // Otherwise default to show card buttons
             return true;
         },

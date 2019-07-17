@@ -5,6 +5,7 @@ import { values } from 'belter/src';
 
 import { BUTTON_LAYOUT } from '../constants';
 import type { FundingEligibilityType } from '../types';
+import type { OnShippingChange } from '../buttons/props';
 
 import { FUNDING_PRIORITY, getFundingConfig } from './config';
 
@@ -53,14 +54,22 @@ export function determineEligibleFunding({ layout, platform, remembered, funding
     return eligibleFunding;
 }
 
-export function determineVaultedFunding({ fundingEligibility, layout } : {| fundingEligibility : FundingEligibilityType, layout : $Values<typeof BUTTON_LAYOUT> |}) :
+export function isVaultedFundingEligible({ layout, onShippingChange } : { layout : $Values<typeof BUTTON_LAYOUT>, onShippingChange : ?OnShippingChange }) : boolean {
+    if (layout !== BUTTON_LAYOUT.VERTICAL) {
+        return false;
+    }
+
+    if (onShippingChange) {
+        return false;
+    }
+
+    return true;
+}
+
+export function determineVaultedFunding({ fundingEligibility } : {| fundingEligibility : FundingEligibilityType |}) :
     $ReadOnlyArray<{ fundingSource : $Values<typeof FUNDING>, paymentMethodID : string, vendor? : $Values<typeof CARD>, label : string }>  {
     
     const vaultedFunding = [];
-
-    if (layout !== BUTTON_LAYOUT.VERTICAL) {
-        return vaultedFunding;
-    }
 
     for (const fundingSource of values(FUNDING)) {
         const fundingConfig = fundingEligibility[fundingSource];

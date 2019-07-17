@@ -160,23 +160,25 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 },
 
                 getPopupBridge: {
-                    type:     'object',
+                    type:     'function',
                     required: false,
                     value:    () => {
-                        if (!window.popupBridge) {
-                            return;
-                        }
-
-                        return {
-                            nativeUrl: window.popupBridge.getReturnUrlPrefix(),
-                            start:     (url) => {
-                                return new ZalgoPromise((resolve, reject) => {
-                                    window.popupBridge.onComplete = (err, result) => {
-                                        return err ? reject(err) : resolve(result);
-                                    };
-                                    window.popupBridge.open(url);
-                                });
+                        return () => {
+                            if (!window.popupBridge) {
+                                return;
                             }
+
+                            return {
+                                nativeUrl: window.popupBridge.getReturnUrlPrefix(),
+                                start:     (url) => {
+                                    return new ZalgoPromise((resolve, reject) => {
+                                        window.popupBridge.onComplete = (err, result) => {
+                                            return err ? reject(err) : resolve(result.queryItems);
+                                        };
+                                        window.popupBridge.open(url);
+                                    });
+                                }
+                            };
                         };
                     }
                 },
