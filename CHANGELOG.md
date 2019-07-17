@@ -1,3 +1,9 @@
+## <small>5.0.44 (2019-07-17)</small>
+
+* Add text to ideal button ([24724c1](http://github.paypal.com/paypal/paypal-checkout/commit/24724c1))
+
+
+
 ## <small>5.0.43 (2019-07-17)</small>
 
 * Do not display vaulted funding if onShippingChange passed ([3dd02b1](http://github.paypal.com/paypal/paypal-checkout/commit/3dd02b1))
