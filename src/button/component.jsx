@@ -657,7 +657,9 @@ export const Button : Component<ButtonOptions> = create({
 
                     actions.redirect = (win, url) => {
                         return ZalgoPromise.try(() => {
-                            return actions.close();
+                            if (actions.close) {
+                                return actions.close();
+                            }
                         }).then(() => {
                             return redir(win || window.top, url || data.returnUrl);
                         });
