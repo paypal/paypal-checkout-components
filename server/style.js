@@ -6,9 +6,7 @@ export const buttonStyle = `
     }
 
     .card-fields-container {
-        min-height: 300px;
         margin-top: 10px;
-        display: none;
     }
 
     iframe[title=pbf], iframe[title=ppfniframe] {

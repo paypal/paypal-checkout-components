@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
-import { memoize, querySelectorAll } from 'belter/src';
+import { memoize, querySelectorAll, debounce } from 'belter/src';
 
 import { CONTEXT, DATA_ATTRIBUTES } from '../constants';
 import type { LocaleType, FundingEligibilityType, ProxyWindow } from '../types';
@@ -86,28 +86,51 @@ function highlightCard(card : $Values<typeof CARD>) {
     });
 }
 
-const openCardFields = () => {
+function unhighlightCards() {
+    querySelectorAll(`[${ DATA_ATTRIBUTES.CARD }]`).forEach(el => {
+        el.style.opacity = '1';
+    });
+}
+
+const getElements = () : { buttonsContainer : HTMLElement, cardButtonsContainer : HTMLElement, cardFieldsContainer : HTMLElement } => {
     const buttonsContainer = document.querySelector('#buttons-container');
     const cardButtonsContainer = document.querySelector(`[data-funding-source="${ FUNDING.CARD }"]`);
     const cardFieldsContainer = document.querySelector('#card-fields-container');
 
     if (!buttonsContainer || !cardButtonsContainer || !cardFieldsContainer) {
+        throw new Error(`Did not find card fields elements`);
+    }
+
+    return { buttonsContainer, cardButtonsContainer, cardFieldsContainer };
+};
+
+const slideUpButtons = () => {
+    const { buttonsContainer, cardButtonsContainer, cardFieldsContainer } = getElements();
+
+    if (!buttonsContainer || !cardButtonsContainer || !cardFieldsContainer) {
         throw new Error(`Required elements not found`);
     }
 
+    cardFieldsContainer.style.minHeight = '0px';
     cardFieldsContainer.style.display = 'block';
 
     const recalculateMargin = () => {
-        const margin = -(buttonsContainer.offsetHeight - cardButtonsContainer.offsetHeight);
-        buttonsContainer.style.marginTop = `${ margin }px`;
+        buttonsContainer.style.marginTop = `${ buttonsContainer.offsetTop - cardButtonsContainer.offsetTop }px`;
     };
 
-    window.addEventListener('resize', () => {
+    window.addEventListener('resize', debounce(() => {
         buttonsContainer.style.transitionDuration = '0s';
         recalculateMargin();
-    });
+    }));
 
     recalculateMargin();
+};
+
+const slideDownButtons = () => {
+    const { buttonsContainer } = getElements();
+
+    unhighlightCards();
+    buttonsContainer.style.marginTop = `0px`;
 };
 
 export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
@@ -139,13 +162,14 @@ export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
         highlightCard(cardType);
     };
 
-    const { render, close, onError: triggerError } = window.paypal.CardFields({
+    const { render, close: closeCardFields, onError: triggerError } = window.paypal.CardFields({
         createOrder,
 
         fundingSource,
         card,
 
         onApprove: ({ payerID, paymentID, billingToken }) => {
+            // eslint-disable-next-line no-use-before-define
             return close().then(() => {
                 return onApprove({ payerID, paymentID, billingToken }, { restart });
             });
@@ -170,9 +194,14 @@ export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
     const start = () => {
         cardFieldsOpen = true;
         const renderPromise = render('#card-fields-container');
-        openCardFields();
+        slideUpButtons();
         highlightCard(card);
         return renderPromise;
+    };
+
+    const close = () => {
+        slideDownButtons();
+        return closeCardFields();
     };
 
     return { start, close, triggerError };
