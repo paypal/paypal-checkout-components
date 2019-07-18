@@ -119,7 +119,8 @@ export function setupMocks() {
         },
         getPrerenderDetails: () => ZalgoPromise.resolve(),
         getParent:           () => window,
-        getParentDomain:     () => 'https://www.merchant.com'
+        getParentDomain:     () => 'https://www.merchant.com',
+        merchantID:          [ 'xyz' ]
     };
 
     window.Promise.try = (method) => {
@@ -433,6 +434,22 @@ export function getValidatePaymentMethodApiMock(options : Object = {}) : MockEnd
     });
 }
 
+export function getPayeeApiMock(options : Object = {}) : MockEndpoint {
+    return $mockEndpoint.register({
+        method: 'GET',
+        uri:    new RegExp('/smart/api/checkout/[^/]+/payee'),
+        data:   {
+            ack:  'success',
+            data: {
+                merchant: {
+                    id: 'xyz'
+                }
+            }
+        },
+        ...options
+    });
+}
+
 getCreateAccessTokenMock().listen();
 getCreateOrderApiMock().listen();
 getGetOrderApiMock().listen();
@@ -444,3 +461,4 @@ getSubscriptionIdToCartIdApiMock().listen();
 getGraphQLApiMock().listen();
 getLoggerApiMock().listen();
 getValidatePaymentMethodApiMock().listen();
+getPayeeApiMock().listen();
