@@ -11,8 +11,7 @@ import { getLogger } from '../../lib';
 import type { CreateSubscription } from './createSubscription';
 import type { CreateBillingAgreement } from './createBillingAgreement';
 import type { XProps } from './types';
-
-let createOrderCalled = false;
+ 
 
 export type XCreateOrderDataType = {||};
 
@@ -31,7 +30,6 @@ export function buildXCreateOrderData() : XCreateOrderDataType {
 
 export function buildXCreateOrderActions({ clientID } : { clientID : string }) : XCreateOrderActionsType {
     const create = (data) => {
-        createOrderCalled = true;
         return createAccessToken(clientID).then(accessToken => {
             return createOrderID(accessToken, data);
         });
@@ -75,7 +73,7 @@ export function getCreateOrder(xprops : XProps, { createBillingAgreement, create
                 throw new Error(`Expected an order id to be passed`);
             }
 
-            getLogger().info(`${ createOrderCalled ? 'client' : 'server' }_create_order_${ clientID }`).track({
+            getLogger().track({
                 [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
                 [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.RECEIVE_ORDER,
                 [FPTI_KEY.CONTEXT_TYPE]:       FPTI_CONTEXT_TYPE.ORDER_ID,
