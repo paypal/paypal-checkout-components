@@ -94,6 +94,7 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
                 locale={ locale }
                 logoColor={ logoColor }
                 period={ period }
+                layout={ layout }
                 multiple={ multiple }
                 fundingEligibility={ fundingEligibility }
                 onClick={ clickHandler }

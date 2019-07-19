@@ -42,7 +42,8 @@ export type FundingSourceConfig = {|
         period? : number,
         fundingEligibility : FundingEligibilityType,
         optional? : boolean,
-        onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void
+        onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void,
+        layout : $Values<typeof BUTTON_LAYOUT>
     |}) => ChildType,
     VaultLabel? : ({|
         logoColor : $Values<typeof LOGO_COLOR>,
@@ -105,8 +106,13 @@ export const DEFAULT_FUNDING_CONFIG : FundingSourceConfig = {
         throw new Error(`Not implemented`);
     },
 
-    Label: ({ logo, label, locale: { lang }, period }) => {
+    Label: ({ logo, label, locale: { lang }, period, layout, multiple }) => {
         if (__WEB__) {
+
+            if (layout === BUTTON_LAYOUT.HORIZONTAL && multiple) {
+                return logo;
+            }
+
             return (
                 <Fragment>
                     { logo }
