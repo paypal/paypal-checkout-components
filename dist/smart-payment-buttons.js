@@ -802,6 +802,15 @@ window.spb = function(modules) {
             }
         };
     }
+    function debounce(method, time) {
+        var timeout;
+        return void 0 === time && (time = 100), function() {
+            var _this3 = this, _arguments2 = arguments;
+            clearTimeout(timeout), timeout = setTimeout(function() {
+                return method.apply(_this3, _arguments2);
+            }, time);
+        };
+    }
     var KEY_CODES = {
         ENTER: 13
     };
@@ -936,41 +945,43 @@ window.spb = function(modules) {
             }, xhr.send(body);
         });
     }
-    __webpack_require__.d(__webpack_exports__, "f", function() {
+    __webpack_require__.d(__webpack_exports__, "g", function() {
         return isIEIntranet;
-    }), __webpack_require__.d(__webpack_exports__, "r", function() {
+    }), __webpack_require__.d(__webpack_exports__, "s", function() {
         return supportsPopups;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
-        return extendUrl;
-    }), __webpack_require__.d(__webpack_exports__, "m", function() {
-        return redirect;
     }), __webpack_require__.d(__webpack_exports__, "c", function() {
+        return extendUrl;
+    }), __webpack_require__.d(__webpack_exports__, "n", function() {
+        return redirect;
+    }), __webpack_require__.d(__webpack_exports__, "d", function() {
         return getPageRenderTime;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+    }), __webpack_require__.d(__webpack_exports__, "f", function() {
         return isBrowser;
-    }), __webpack_require__.d(__webpack_exports__, "l", function() {
+    }), __webpack_require__.d(__webpack_exports__, "m", function() {
         return querySelectorAll;
-    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+    }), __webpack_require__.d(__webpack_exports__, "k", function() {
         return onClick;
     }), __webpack_require__.d(__webpack_exports__, "a", function() {
         return base64encode;
-    }), __webpack_require__.d(__webpack_exports__, "g", function() {
-        return memoize;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
-        return inlineMemoize;
     }), __webpack_require__.d(__webpack_exports__, "h", function() {
-        return util_noop;
-    }), __webpack_require__.d(__webpack_exports__, "p", function() {
-        return stringifyError;
-    }), __webpack_require__.d(__webpack_exports__, "q", function() {
-        return stringifyErrorMessage;
+        return memoize;
+    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+        return inlineMemoize;
     }), __webpack_require__.d(__webpack_exports__, "i", function() {
+        return util_noop;
+    }), __webpack_require__.d(__webpack_exports__, "q", function() {
+        return stringifyError;
+    }), __webpack_require__.d(__webpack_exports__, "r", function() {
+        return stringifyErrorMessage;
+    }), __webpack_require__.d(__webpack_exports__, "j", function() {
         return objFilter;
-    }), __webpack_require__.d(__webpack_exports__, "k", function() {
+    }), __webpack_require__.d(__webpack_exports__, "l", function() {
         return promiseDebounce;
-    }), __webpack_require__.d(__webpack_exports__, "o", function() {
+    }), __webpack_require__.d(__webpack_exports__, "p", function() {
         return safeInterval;
-    }), __webpack_require__.d(__webpack_exports__, "n", function() {
+    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+        return debounce;
+    }), __webpack_require__.d(__webpack_exports__, "o", function() {
         return request;
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
@@ -1183,7 +1194,7 @@ window.spb = function(modules) {
     "use strict";
     var src = __webpack_require__(3), belter_src = __webpack_require__(2);
     function unresolvedPromise() {
-        return new src.a(belter_src.h);
+        return new src.a(belter_src.i);
     }
     function promiseNoop() {
         return src.a.resolve();
@@ -1198,23 +1209,23 @@ window.spb = function(modules) {
     }, AUTO_FLUSH_LEVEL = [ LOG_LEVEL.WARN, LOG_LEVEL.ERROR ], LOG_LEVEL_PRIORITY = [ LOG_LEVEL.ERROR, LOG_LEVEL.WARN, LOG_LEVEL.INFO, LOG_LEVEL.DEBUG ], FLUSH_INTERVAL = 6e4, DEFAULT_LOG_LEVEL = LOG_LEVEL.WARN;
     function httpTransport(_ref) {
         var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json;
-        return Object(belter_src.n)({
+        return Object(belter_src.o)({
             url: url,
             method: method,
             headers: headers,
             json: json
-        }).then(belter_src.h);
+        }).then(belter_src.i);
     }
     function extendIfDefined(target, source) {
         for (var key in source) source.hasOwnProperty(key) && source[key] && !target[key] && (target[key] = source[key]);
     }
     var sdk_constants_src = __webpack_require__(0), config = __webpack_require__(6), constants = __webpack_require__(1);
     function getLogger() {
-        return Object(belter_src.d)(getLogger, function() {
+        return Object(belter_src.e)(getLogger, function() {
             return function(_ref2) {
                 var url = _ref2.url, prefix = _ref2.prefix, _ref2$logLevel = _ref2.logLevel, logLevel = void 0 === _ref2$logLevel ? DEFAULT_LOG_LEVEL : _ref2$logLevel, _ref2$transport = _ref2.transport, transport = void 0 === _ref2$transport ? httpTransport : _ref2$transport, _ref2$flushInterval = _ref2.flushInterval, flushInterval = void 0 === _ref2$flushInterval ? FLUSH_INTERVAL : _ref2$flushInterval, events = [], tracking = [], payloadBuilders = [], metaBuilders = [], trackingBuilders = [], headerBuilders = [];
                 function print(level, event, payload) {
-                    if (Object(belter_src.e)() && window.console && window.console.log) {
+                    if (Object(belter_src.f)() && window.console && window.console.log) {
                         var consoleLogLevel = logLevel;
                         if (window.LOG_LEVEL && -1 !== LOG_LEVEL_PRIORITY.indexOf(window.LOG_LEVEL) && (consoleLogLevel = window.LOG_LEVEL), 
                         !(LOG_LEVEL_PRIORITY.indexOf(level) > LOG_LEVEL_PRIORITY.indexOf(consoleLogLevel))) {
@@ -1228,7 +1239,7 @@ window.spb = function(modules) {
                 }
                 function immediateFlush() {
                     return src.a.try(function() {
-                        if (Object(belter_src.e)() && window.location.protocol !== PROTOCOL.FILE && (events.length || tracking.length)) {
+                        if (Object(belter_src.f)() && window.location.protocol !== PROTOCOL.FILE && (events.length || tracking.length)) {
                             for (var meta = {}, _i2 = 0; _i2 < metaBuilders.length; _i2++) extendIfDefined(meta, (0, 
                             metaBuilders[_i2])(meta));
                             for (var headers = {}, _i4 = 0; _i4 < headerBuilders.length; _i4++) extendIfDefined(headers, (0, 
@@ -1243,15 +1254,15 @@ window.spb = function(modules) {
                                     tracking: tracking
                                 }
                             });
-                            return events = [], tracking = [], req.then(belter_src.h);
+                            return events = [], tracking = [], req.then(belter_src.i);
                         }
                     });
                 }
-                var flush = Object(belter_src.k)(immediateFlush);
+                var flush = Object(belter_src.l)(immediateFlush);
                 function log(level, event, payload) {
-                    if (void 0 === payload && (payload = {}), !Object(belter_src.e)()) return logger;
+                    if (void 0 === payload && (payload = {}), !Object(belter_src.f)()) return logger;
                     prefix && (event = prefix + "_" + event);
-                    for (var logPayload = Object(esm_extends.a)({}, Object(belter_src.i)(payload), {
+                    for (var logPayload = Object(esm_extends.a)({}, Object(belter_src.j)(payload), {
                         timestamp: Date.now().toString()
                     }), _i6 = 0; _i6 < payloadBuilders.length; _i6++) extendIfDefined(logPayload, (0, 
                     payloadBuilders[_i6])(logPayload));
@@ -1266,7 +1277,7 @@ window.spb = function(modules) {
                 function addBuilder(builders, builder) {
                     return builders.push(builder), logger;
                 }
-                Object(belter_src.e)() && Object(belter_src.o)(flush, flushInterval);
+                Object(belter_src.f)() && Object(belter_src.p)(flush, flushInterval);
                 var logger = {
                     debug: function(event, payload) {
                         return log(LOG_LEVEL.DEBUG, event, payload);
@@ -1281,8 +1292,8 @@ window.spb = function(modules) {
                         return log(LOG_LEVEL.ERROR, event, payload);
                     },
                     track: function(payload) {
-                        if (void 0 === payload && (payload = {}), !Object(belter_src.e)()) return logger;
-                        for (var trackingPayload = Object(belter_src.i)(payload), _i8 = 0; _i8 < trackingBuilders.length; _i8++) extendIfDefined(trackingPayload, (0, 
+                        if (void 0 === payload && (payload = {}), !Object(belter_src.f)()) return logger;
+                        for (var trackingPayload = Object(belter_src.j)(payload), _i8 = 0; _i8 < trackingBuilders.length; _i8++) extendIfDefined(trackingPayload, (0, 
                         trackingBuilders[_i8])(trackingPayload));
                         return print(LOG_LEVEL.DEBUG, "track", trackingPayload), tracking.push(trackingPayload), 
                         logger;
@@ -1335,10 +1346,10 @@ window.spb = function(modules) {
         }), src.a.onPossiblyUnhandledException(function(err) {
             var _logger$track;
             logger.track(((_logger$track = {})[sdk_constants_src.d.ERROR_CODE] = "payments_sdk_error", 
-            _logger$track[sdk_constants_src.d.ERROR_DESC] = Object(belter_src.q)(err), _logger$track)), 
+            _logger$track[sdk_constants_src.d.ERROR_DESC] = Object(belter_src.r)(err), _logger$track)), 
             logger.error("unhandled_error", {
-                err: Object(belter_src.p)(err)
-            }), logger.flush().catch(belter_src.h);
+                err: Object(belter_src.q)(err)
+            }), logger.flush().catch(belter_src.i);
         });
     }
     __webpack_require__.d(__webpack_exports__, "d", function() {
@@ -1354,10 +1365,10 @@ window.spb = function(modules) {
     "use strict";
     var persistedAccessToken, src = __webpack_require__(3), belter_src = __webpack_require__(2), config = __webpack_require__(6), lib = __webpack_require__(4), constants = __webpack_require__(1), api = __webpack_require__(8);
     function createAccessToken(clientID) {
-        return Object(belter_src.d)(createAccessToken, function() {
+        return Object(belter_src.e)(createAccessToken, function() {
             Object(lib.a)().info("rest_api_create_access_token");
             var basicAuth = Object(belter_src.a)(clientID + ":");
-            return Object(belter_src.n)({
+            return Object(belter_src.o)({
                 method: "post",
                 url: config.b,
                 headers: {
@@ -1378,7 +1389,7 @@ window.spb = function(modules) {
         var _ref2;
         return (_ref2 = {})[constants.a] = persistedAccessToken, _ref2;
     });
-    var persistAccessToken = Object(belter_src.g)(function(accessToken) {
+    var persistAccessToken = Object(belter_src.h)(function(accessToken) {
         return src.a.try(function() {
             accessToken && (persistedAccessToken = accessToken);
         });
@@ -1410,7 +1421,7 @@ window.spb = function(modules) {
             Authorization: "Bearer " + accessToken,
             "PayPal-Partner-Attribution-Id": window.xprops.partnerAttributionID
         };
-        return Object(belter_src.n)({
+        return Object(belter_src.o)({
             method: "post",
             url: config.f,
             headers: headers,
@@ -1452,6 +1463,11 @@ window.spb = function(modules) {
             }
         });
     }
+    function getPayee(orderID) {
+        return Object(api.c)({
+            url: config.a.CHECKOUT + "/" + orderID + "/payee"
+        });
+    }
     var VALIDATE_CONTINGENCIES = {
         THREE_DOMAIN_SECURE: "3D_SECURE"
     };
@@ -1470,7 +1486,7 @@ window.spb = function(modules) {
         var json = {
             payment_source: paymentSource
         };
-        return Object(belter_src.n)({
+        return Object(belter_src.o)({
             method: "post",
             url: config.f + "/" + orderID + "/" + config.g,
             headers: headers,
@@ -1515,7 +1531,7 @@ window.spb = function(modules) {
                 userExperienceFlow: userExperienceFlow,
                 productFlow: productFlow
             }
-        }).then(belter_src.h);
+        }).then(belter_src.i);
     }
     function createSubscription(accessToken, subscriptionPayload) {
         if (Object(lib.a)().info("rest_api_create_subscription_id"), !accessToken) throw new Error("Access token not passed");
@@ -1524,7 +1540,7 @@ window.spb = function(modules) {
             Authorization: "Bearer " + accessToken,
             "PayPal-Partner-Attribution-Id": window.xprops.partnerAttributionID
         };
-        return Object(belter_src.n)({
+        return Object(belter_src.o)({
             method: "post",
             url: config.c,
             headers: headers,
@@ -1543,7 +1559,7 @@ window.spb = function(modules) {
             Authorization: "Bearer " + accessToken,
             "PayPal-Partner-Attribution-Id": window.xprops.partnerAttributionID
         };
-        return Object(belter_src.n)({
+        return Object(belter_src.o)({
             method: "post",
             url: config.c + "/" + subscriptionID + "/revise",
             headers: headers,
@@ -1567,7 +1583,7 @@ window.spb = function(modules) {
     }
     __webpack_require__.d(__webpack_exports__, "e", function() {
         return createAccessToken;
-    }), __webpack_require__.d(__webpack_exports__, "l", function() {
+    }), __webpack_require__.d(__webpack_exports__, "m", function() {
         return persistAccessToken;
     }), __webpack_require__.d(__webpack_exports__, "f", function() {
         return createOrderID;
@@ -1577,25 +1593,27 @@ window.spb = function(modules) {
         return captureOrder;
     }), __webpack_require__.d(__webpack_exports__, "b", function() {
         return authorizeOrder;
-    }), __webpack_require__.d(__webpack_exports__, "k", function() {
+    }), __webpack_require__.d(__webpack_exports__, "l", function() {
         return patchOrder;
-    }), __webpack_require__.d(__webpack_exports__, "p", function() {
+    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+        return getPayee;
+    }), __webpack_require__.d(__webpack_exports__, "q", function() {
         return validatePaymentMethod;
     }), __webpack_require__.d(__webpack_exports__, "c", function() {
         return billingTokenToOrderID;
-    }), __webpack_require__.d(__webpack_exports__, "n", function() {
+    }), __webpack_require__.d(__webpack_exports__, "o", function() {
         return subscriptionIdToCartId;
     }), __webpack_require__.d(__webpack_exports__, "h", function() {
         return enableVault;
-    }), __webpack_require__.d(__webpack_exports__, "o", function() {
+    }), __webpack_require__.d(__webpack_exports__, "p", function() {
         return updateClientConfig;
     }), __webpack_require__.d(__webpack_exports__, "g", function() {
         return createSubscription;
-    }), __webpack_require__.d(__webpack_exports__, "m", function() {
+    }), __webpack_require__.d(__webpack_exports__, "n", function() {
         return reviseSubscription;
     }), __webpack_require__.d(__webpack_exports__, "a", function() {
         return activateSubscription;
-    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+    }), __webpack_require__.d(__webpack_exports__, "k", function() {
         return getSubscription;
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
@@ -1660,7 +1678,7 @@ window.spb = function(modules) {
             var headerBuilder = headerBuilders[_i2];
             reqHeaders = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, reqHeaders, {}, headerBuilder());
         }
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.n)({
+        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.o)({
             url: url,
             method: method,
             headers: reqHeaders,
@@ -1678,7 +1696,7 @@ window.spb = function(modules) {
     }
     function callGraphQL(_ref3) {
         var query = _ref3.query, _ref3$variables = _ref3.variables, variables = void 0 === _ref3$variables ? {} : _ref3$variables, _ref3$headers = _ref3.headers, headers = void 0 === _ref3$headers ? {} : _ref3$headers;
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.n)({
+        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.o)({
             url: _config__WEBPACK_IMPORTED_MODULE_3__.a.GRAPHQL,
             method: "POST",
             json: {
@@ -1951,7 +1969,7 @@ window.spb = function(modules) {
     }), __webpack_require__(0);
     var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2), _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
     function getButtons() {
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__.l)("[ " + _constants__WEBPACK_IMPORTED_MODULE_2__.d.FUNDING_SOURCE + " ]");
+        return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__.m)("[ " + _constants__WEBPACK_IMPORTED_MODULE_2__.d.FUNDING_SOURCE + " ]");
     }
     function getSelectedFunding(button) {
         var fundingSource = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__.d.FUNDING_SOURCE), paymentMethodID = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__.d.PAYMENT_METHOD_ID);
@@ -2116,7 +2134,7 @@ window.spb = function(modules) {
     }), __webpack_require__.d(__webpack_exports__, "c", function() {
         return getCreateOrder;
     });
-    var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3), belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2), _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0), _api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5), _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1), _lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4), createOrderCalled = !1;
+    var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3), belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2), _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0), _api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5), _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1), _lib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4);
     function buildXCreateOrderData() {
         return {};
     }
@@ -2125,7 +2143,7 @@ window.spb = function(modules) {
         return {
             order: {
                 create: function(data) {
-                    return createOrderCalled = !0, Object(_api__WEBPACK_IMPORTED_MODULE_3__.e)(clientID).then(function(accessToken) {
+                    return Object(_api__WEBPACK_IMPORTED_MODULE_3__.e)(clientID).then(function(accessToken) {
                         return Object(_api__WEBPACK_IMPORTED_MODULE_3__.f)(accessToken, data);
                     });
                 }
@@ -2133,12 +2151,12 @@ window.spb = function(modules) {
         };
     }
     function getCreateOrder(xprops, _ref2) {
-        var createBillingAgreement = _ref2.createBillingAgreement, createSubscription = _ref2.createSubscription, createOrder = xprops.createOrder, clientID = xprops.clientID, buttonSessionID = xprops.buttonSessionID, data = {}, actions = buildXCreateOrderActions({
-            clientID: clientID
+        var createBillingAgreement = _ref2.createBillingAgreement, createSubscription = _ref2.createSubscription, createOrder = xprops.createOrder, buttonSessionID = xprops.buttonSessionID, data = {}, actions = buildXCreateOrderActions({
+            clientID: xprops.clientID
         });
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__.g)(function() {
+        return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__.h)(function() {
             return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__.a.try(function() {
-                return createBillingAgreement ? createBillingAgreement().then(_api__WEBPACK_IMPORTED_MODULE_3__.c) : createSubscription ? createSubscription().then(_api__WEBPACK_IMPORTED_MODULE_3__.n) : createOrder ? createOrder(data, actions) : actions.order.create({
+                return createBillingAgreement ? createBillingAgreement().then(_api__WEBPACK_IMPORTED_MODULE_3__.c) : createSubscription ? createSubscription().then(_api__WEBPACK_IMPORTED_MODULE_3__.o) : createOrder ? createOrder(data, actions) : actions.order.create({
                     purchase_units: [ {
                         amount: {
                             currency_code: "USD",
@@ -2147,15 +2165,15 @@ window.spb = function(modules) {
                     } ]
                 });
             }).then(function(orderID) {
-                var _getLogger$info$track;
+                var _getLogger$track;
                 if (!orderID || "string" != typeof orderID) throw new Error("Expected an order id to be passed");
-                return Object(_lib__WEBPACK_IMPORTED_MODULE_5__.a)().info((createOrderCalled ? "client" : "server") + "_create_order_" + clientID).track((_getLogger$info$track = {}, 
-                _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.STATE] = _constants__WEBPACK_IMPORTED_MODULE_4__.g.BUTTON, 
-                _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__.h.RECEIVE_ORDER, 
-                _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.CONTEXT_TYPE] = _constants__WEBPACK_IMPORTED_MODULE_4__.f.ORDER_ID, 
-                _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.CONTEXT_ID] = orderID, 
-                _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.BUTTON_SESSION_UID] = buttonSessionID, 
-                _getLogger$info$track)).flush(), orderID;
+                return Object(_lib__WEBPACK_IMPORTED_MODULE_5__.a)().track((_getLogger$track = {}, 
+                _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.STATE] = _constants__WEBPACK_IMPORTED_MODULE_4__.g.BUTTON, 
+                _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__.h.RECEIVE_ORDER, 
+                _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.CONTEXT_TYPE] = _constants__WEBPACK_IMPORTED_MODULE_4__.f.ORDER_ID, 
+                _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.CONTEXT_ID] = orderID, 
+                _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.BUTTON_SESSION_UID] = buttonSessionID, 
+                _getLogger$track)).flush(), orderID;
             });
         });
     }
@@ -2164,10 +2182,10 @@ window.spb = function(modules) {
     __webpack_require__.d(__webpack_exports__, "a", function() {
         return getOnApprove;
     });
-    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2), _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0), _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5), _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1), _lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4), captureOrderCalled = !1;
+    var belter_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2), _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0), _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5), _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1), _lib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4);
     function getOnApprove(xprops, _ref2) {
-        var createOrder = _ref2.createOrder, onApprove = xprops.onApprove, onError = xprops.onError, intent = xprops.intent, buttonSessionID = xprops.buttonSessionID, clientID = xprops.clientID;
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function(_ref3, _ref4) {
+        var createOrder = _ref2.createOrder, onApprove = xprops.onApprove, onError = xprops.onError, intent = xprops.intent, buttonSessionID = xprops.buttonSessionID;
+        return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.h)(function(_ref3, _ref4) {
             var payerID = _ref3.payerID, paymentID = _ref3.paymentID, billingToken = _ref3.billingToken, subscriptionID = _ref3.subscriptionID, restart = _ref4.restart;
             return createOrder().then(function(orderID) {
                 var _getLogger$info$track;
@@ -2183,23 +2201,22 @@ window.spb = function(modules) {
                     billingToken: billingToken,
                     subscriptionID: subscriptionID
                 }, actions = function(_ref) {
-                    var intent = _ref.intent, orderID = _ref.orderID, restart = _ref.restart, subscriptionID = _ref.subscriptionID, clientID = _ref.clientID, handleProcessorError = function(err) {
+                    var intent = _ref.intent, orderID = _ref.orderID, restart = _ref.restart, subscriptionID = _ref.subscriptionID, handleProcessorError = function(err) {
                         if (err && err.data && err.data.details && err.data.details.some(function(detail) {
                             return detail.issue === _constants__WEBPACK_IMPORTED_MODULE_3__.l.INSTRUMENT_DECLINED || detail.issue === _constants__WEBPACK_IMPORTED_MODULE_3__.l.PAYER_ACTION_REQUIRED;
                         })) return restart().then(_lib__WEBPACK_IMPORTED_MODULE_4__.d);
                         throw new Error("Order could not be captured");
-                    }, get = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
+                    }, get = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.h)(function() {
                         return Object(_api__WEBPACK_IMPORTED_MODULE_2__.i)(orderID);
-                    }), capture = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
+                    }), capture = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.h)(function() {
                         if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.CAPTURE) throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.i.INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.CAPTURE + " to use client-side capture");
-                        return Object(_lib__WEBPACK_IMPORTED_MODULE_4__.a)().info("client_pre_capture_order_" + clientID).flush(), 
-                        captureOrderCalled = !0, Object(_api__WEBPACK_IMPORTED_MODULE_2__.d)(orderID).finally(get.reset).finally(capture.reset).catch(handleProcessorError);
-                    }), authorize = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
+                        return Object(_api__WEBPACK_IMPORTED_MODULE_2__.d)(orderID).finally(get.reset).finally(capture.reset).catch(handleProcessorError);
+                    }), authorize = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.h)(function() {
                         if (intent !== _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.AUTHORIZE) throw new Error("Use " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.i.INTENT + "=" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.AUTHORIZE + " to use client-side authorize");
                         return Object(_api__WEBPACK_IMPORTED_MODULE_2__.b)(orderID).finally(get.reset).finally(authorize.reset).catch(handleProcessorError);
-                    }), getSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
-                        return Object(_api__WEBPACK_IMPORTED_MODULE_2__.j)(subscriptionID);
-                    }), activateSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
+                    }), getSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.h)(function() {
+                        return Object(_api__WEBPACK_IMPORTED_MODULE_2__.k)(subscriptionID);
+                    }), activateSubscriptionApi = Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.h)(function() {
                         return Object(_api__WEBPACK_IMPORTED_MODULE_2__.a)(subscriptionID);
                     });
                     return {
@@ -2207,7 +2224,7 @@ window.spb = function(modules) {
                             capture: capture,
                             authorize: authorize,
                             patch: function(data) {
-                                return void 0 === data && (data = []), Object(_api__WEBPACK_IMPORTED_MODULE_2__.k)(orderID, data).catch(function() {
+                                return void 0 === data && (data = []), Object(_api__WEBPACK_IMPORTED_MODULE_2__.l)(orderID, data).catch(function() {
                                     throw new Error("Order could not be patched");
                                 });
                             },
@@ -2220,19 +2237,16 @@ window.spb = function(modules) {
                         restart: restart,
                         redirect: function(url) {
                             if (!url) throw new Error("Expected redirect url");
-                            return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.m)(url, window.top);
+                            return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.n)(url, window.top);
                         }
                     };
                 }({
                     orderID: orderID,
                     intent: intent,
                     restart: restart,
-                    subscriptionID: subscriptionID,
-                    clientID: clientID
+                    subscriptionID: subscriptionID
                 });
-                return onApprove ? onApprove(data, actions).catch(onError) : intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.CAPTURE ? actions.order.capture().then(belter_src__WEBPACK_IMPORTED_MODULE_0__.h) : intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.AUTHORIZE ? actions.order.authorize().then(belter_src__WEBPACK_IMPORTED_MODULE_0__.h) : void 0;
-            }).then(function() {
-                Object(_lib__WEBPACK_IMPORTED_MODULE_4__.a)().info((captureOrderCalled ? "client" : "server") + "_capture_order_" + clientID).flush();
+                return onApprove ? onApprove(data, actions).catch(onError) : intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.CAPTURE ? actions.order.capture().then(belter_src__WEBPACK_IMPORTED_MODULE_0__.i) : intent === _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_1__.h.AUTHORIZE ? actions.order.authorize().then(belter_src__WEBPACK_IMPORTED_MODULE_0__.i) : void 0;
             });
         });
     }
@@ -2255,13 +2269,13 @@ window.spb = function(modules) {
         return {
             redirect: function(url) {
                 if (!url) throw new Error("Expected redirect url");
-                return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.m)(url, window.top);
+                return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.n)(url, window.top);
             }
         };
     }
     function getOnCancel(xprops, _ref2) {
-        var createOrder = _ref2.createOrder, _xprops$onCancel = xprops.onCancel, onCancel = void 0 === _xprops$onCancel ? belter_src__WEBPACK_IMPORTED_MODULE_0__.h : _xprops$onCancel, onError = xprops.onError, buttonSessionID = xprops.buttonSessionID;
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
+        var createOrder = _ref2.createOrder, _xprops$onCancel = xprops.onCancel, onCancel = void 0 === _xprops$onCancel ? belter_src__WEBPACK_IMPORTED_MODULE_0__.i : _xprops$onCancel, onError = xprops.onError, buttonSessionID = xprops.buttonSessionID;
+        return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.h)(function() {
             return createOrder().then(function(orderID) {
                 var _getLogger$info$track;
                 return Object(_lib__WEBPACK_IMPORTED_MODULE_2__.a)().info("button_cancel").track((_getLogger$info$track = {}, 
@@ -2300,7 +2314,7 @@ window.spb = function(modules) {
             },
             order: {
                 patch: function(data) {
-                    return void 0 === data && (data = []), Object(_api__WEBPACK_IMPORTED_MODULE_2__.k)(orderID, data).catch(function() {
+                    return void 0 === data && (data = []), Object(_api__WEBPACK_IMPORTED_MODULE_2__.l)(orderID, data).catch(function() {
                         throw new Error("Order could not be patched");
                     });
                 }
@@ -2379,7 +2393,7 @@ window.spb = function(modules) {
         return function(_ref) {
             var accessToken = _ref.accessToken;
             return zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__.a.try(function() {
-                return Object(_api__WEBPACK_IMPORTED_MODULE_1__.l)(accessToken);
+                return Object(_api__WEBPACK_IMPORTED_MODULE_1__.m)(accessToken);
             });
         };
     }
@@ -2401,7 +2415,7 @@ window.spb = function(modules) {
     }
     function getCreateBillingAgreement(xprops) {
         var createBillingAgreement = xprops.createBillingAgreement;
-        if (createBillingAgreement) return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
+        if (createBillingAgreement) return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.h)(function() {
             return createBillingAgreement({}, {}).then(function(billingToken) {
                 if (!billingToken || "string" != typeof billingToken) throw new Error("Expected a billing token to be passed to createBillingAgreement");
                 return billingToken;
@@ -2432,7 +2446,7 @@ window.spb = function(modules) {
                 },
                 revise: function(subscriptionID, data) {
                     return Object(_api__WEBPACK_IMPORTED_MODULE_1__.e)(clientID).then(function(accessToken) {
-                        return Object(_api__WEBPACK_IMPORTED_MODULE_1__.m)(accessToken, subscriptionID, data);
+                        return Object(_api__WEBPACK_IMPORTED_MODULE_1__.n)(accessToken, subscriptionID, data);
                     });
                 }
             }
@@ -2440,7 +2454,7 @@ window.spb = function(modules) {
     }
     function getCreateSubscription(xprops) {
         var createSubscriptionFunc = xprops.createSubscription, clientID = xprops.clientID;
-        if (createSubscriptionFunc) return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.g)(function() {
+        if (createSubscriptionFunc) return Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.h)(function() {
             return createSubscriptionFunc({}, buildXCreateSubscriptionActions({
                 clientID: clientID
             })).then(function(subscriptionID) {
@@ -2538,7 +2552,7 @@ window.spb = function(modules) {
     function initCheckout(props) {
         var win = props.win, buttonSessionID = props.buttonSessionID, fundingSource = props.fundingSource, card = props.card, buyerCountry = props.buyerCountry, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onAuth = props.onAuth, onShippingChange = props.onShippingChange, cspNonce = props.cspNonce, context = props.context, locale = props.locale, commit = props.commit, onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, fundingEligibility = props.fundingEligibility, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, _props$validationProm = props.validationPromise, validationPromise = void 0 === _props$validationProm ? zalgo_promise_src.a.resolve(!0) : _props$validationProm;
         if (checkoutOpen) throw new Error("Checkout already rendered");
-        var approved = !1, restart = Object(src.g)(function() {
+        var approved = !1, restart = Object(src.h)(function() {
             return initCheckout(Object(esm_extends.a)({}, props, {
                 context: constants.c.IFRAME
             })).start().finally(lib.d);
@@ -2633,7 +2647,7 @@ window.spb = function(modules) {
             start: function() {
                 return validationPromise.then(function(valid) {
                     return valid ? renderPromise : close();
-                }).then(src.h);
+                }).then(src.i);
             },
             close: close,
             triggerError: triggerError
@@ -2641,31 +2655,62 @@ window.spb = function(modules) {
     }
     var cardFieldsOpen = !1;
     function highlightCard(card) {
-        Object(src.l)("[" + constants.d.CARD + "]").forEach(function(el) {
+        Object(src.m)("[" + constants.d.CARD + "]").forEach(function(el) {
             el.style.opacity = el.getAttribute(constants.d.CARD) === card ? "1" : "0.1";
         });
     }
-    var card_fields_openCardFields = function() {
+    var card_fields_getElements = function() {
         var buttonsContainer = document.querySelector("#buttons-container"), cardButtonsContainer = document.querySelector('[data-funding-source="' + sdk_constants_src.g.CARD + '"]'), cardFieldsContainer = document.querySelector("#card-fields-container");
-        if (!buttonsContainer || !cardButtonsContainer || !cardFieldsContainer) throw new Error("Required elements not found");
-        cardFieldsContainer.style.display = "block";
-        var recalculateMargin = function() {
-            buttonsContainer.style.marginTop = -(buttonsContainer.offsetHeight - cardButtonsContainer.offsetHeight) + "px";
+        if (!buttonsContainer || !cardButtonsContainer || !cardFieldsContainer) throw new Error("Did not find card fields elements");
+        return {
+            buttonsContainer: buttonsContainer,
+            cardButtonsContainer: cardButtonsContainer,
+            cardFieldsContainer: cardFieldsContainer
         };
-        window.addEventListener("resize", function() {
+    }, card_fields_slideUpButtons = function() {
+        var _getElements = card_fields_getElements(), buttonsContainer = _getElements.buttonsContainer, cardButtonsContainer = _getElements.cardButtonsContainer, cardFieldsContainer = _getElements.cardFieldsContainer;
+        if (!buttonsContainer || !cardButtonsContainer || !cardFieldsContainer) throw new Error("Required elements not found");
+        cardFieldsContainer.style.minHeight = "0px", cardFieldsContainer.style.display = "block";
+        var recalculateMargin = function() {
+            buttonsContainer.style.marginTop = buttonsContainer.offsetTop - cardButtonsContainer.offsetTop + "px";
+        };
+        window.addEventListener("resize", Object(src.b)(function() {
             buttonsContainer.style.transitionDuration = "0s", recalculateMargin();
-        }), recalculateMargin();
+        })), recalculateMargin();
+    }, slideDownButtons = function() {
+        var buttonsContainer = card_fields_getElements().buttonsContainer;
+        Object(src.m)("[" + constants.d.CARD + "]").forEach(function(el) {
+            el.style.opacity = "1";
+        }), buttonsContainer.style.marginTop = "0px";
     }, config = __webpack_require__(6), props_getPopupBridge = __webpack_require__(11), button_props = __webpack_require__(12), dom = __webpack_require__(10), api_api = __webpack_require__(8);
     function validateOrder(orderID) {
-        return Object(api_api.b)({
-            query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        intent\n                        amounts {\n                            total {\n                                currencyCode\n                            }\n                        }\n                    }\n                }\n            }\n        ",
+        return zalgo_promise_src.a.all([ Object(api_api.b)({
+            query: "\n                query GetCheckoutDetails($orderID: String!) {\n                    checkoutSession(token: $orderID) {\n                        cart {\n                            intent\n                            amounts {\n                                total {\n                                    currencyCode\n                                }\n                            }\n                        }\n                    }\n                }\n            ",
             variables: {
                 orderID: orderID
             }
-        }).then(function(res) {
-            var cart = res.data.checkoutSession.cart, intent = "sale" === cart.intent.toLowerCase() ? sdk_constants_src.h.CAPTURE : cart.intent.toLowerCase(), currency = cart.amounts && cart.amounts.total.currencyCode, expectedIntent = window.xprops.intent, expectedCurrency = window.xprops.currency;
+        }), Object(api.j)(orderID) ]).then(function(_ref2) {
+            var payee = _ref2[1], cart = _ref2[0].data.checkoutSession.cart, intent = "sale" === cart.intent.toLowerCase() ? sdk_constants_src.h.CAPTURE : cart.intent.toLowerCase(), currency = cart.amounts && cart.amounts.total.currencyCode, expectedIntent = window.xprops.intent, expectedCurrency = window.xprops.currency;
             if (intent !== expectedIntent) throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing " + sdk_constants_src.i.INTENT + "=" + intent + " to the sdk");
             if (currency && currency !== expectedCurrency) throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing " + sdk_constants_src.i.CURRENCY + "=" + currency + " to the sdk");
+            var merchantID = window.xprops.merchantID;
+            merchantID && merchantID.length ? payee && payee.merchant && payee.merchant.id ? payee.merchant.id !== merchantID[0] ? Object(lib.a)().info("payee_merchant_id_no_match", {
+                orderID: orderID,
+                merchantID: merchantID[0],
+                payee: JSON.stringify(payee)
+            }).flush() : Object(lib.a)().info("payee_merchant_id_match", {
+                orderID: orderID,
+                merchantID: merchantID[0],
+                payee: JSON.stringify(payee)
+            }).flush() : Object(lib.a)().info("payee_merchant_id_absent", {
+                orderID: orderID,
+                merchantID: merchantID[0],
+                payee: JSON.stringify(payee)
+            }).flush() : Object(lib.a)().info("payee_merchant_id_not_passed", {
+                orderID: orderID,
+                merchantID: merchantID[0],
+                payee: JSON.stringify(payee)
+            }).flush();
         });
     }
     function setupButton(opts) {
@@ -2738,7 +2783,7 @@ window.spb = function(modules) {
                                 return zalgo_promise_src.a.try(function() {
                                     return createOrder();
                                 }).then(function(orderID) {
-                                    return Object(api.p)({
+                                    return Object(api.q)({
                                         clientAccessToken: clientAccessToken,
                                         orderID: orderID,
                                         paymentMethodID: paymentMethodID,
@@ -2803,7 +2848,7 @@ window.spb = function(modules) {
                             close: lib.b,
                             triggerError: lib.b
                         };
-                        var restart = Object(src.g)(function() {
+                        var restart = Object(src.h)(function() {
                             return initCheckout(Object(esm_extends.a)({}, props, {
                                 context: constants.c.IFRAME
                             })).start().finally(lib.d);
@@ -2838,12 +2883,16 @@ window.spb = function(modules) {
                             locale: locale,
                             commit: commit,
                             cspNonce: cspNonce
-                        }), render = _window$paypal$CardFi.render, close = _window$paypal$CardFi.close;
-                        return cardFieldsOpen = !0, {
+                        }), render = _window$paypal$CardFi.render, closeCardFields = _window$paypal$CardFi.close;
+                        cardFieldsOpen = !0;
+                        var close = function() {
+                            return slideDownButtons(), closeCardFields();
+                        };
+                        return {
                             start: function() {
                                 cardFieldsOpen = !0;
                                 var renderPromise = render("#card-fields-container");
-                                return card_fields_openCardFields(), highlightCard(card), renderPromise;
+                                return card_fields_slideUpButtons(), highlightCard(card), renderPromise;
                             },
                             close: close,
                             triggerError: _window$paypal$CardFi.onError
@@ -2873,7 +2922,7 @@ window.spb = function(modules) {
                         return {
                             start: function start() {
                                 return createOrder().then(function(orderID) {
-                                    var url = Object(src.b)("" + Object(cross_domain_utils_src.a)() + config.d.CHECKOUT, {
+                                    var url = Object(src.c)("" + Object(cross_domain_utils_src.a)() + config.d.CHECKOUT, {
                                         query: {
                                             token: orderID,
                                             redirect_uri: popupBridge.nativeUrl
@@ -2930,7 +2979,7 @@ window.spb = function(modules) {
                             return function(_ref) {
                                 var orderID = _ref.orderID, fundingSource = _ref.fundingSource, isCardFields = _ref.isCardFields;
                                 return zalgo_promise_src.a.try(function() {
-                                    if (window.xprops.updateClientConfiguration) return Object(api.o)({
+                                    if (window.xprops.updateClientConfiguration) return Object(api.p)({
                                         orderID: orderID,
                                         fundingSource: fundingSource,
                                         integrationArtifact: constants.k.PAYPAL_JS_SDK,
@@ -2947,7 +2996,7 @@ window.spb = function(modules) {
                             return createOrder();
                         }).then(validateOrder).catch(function(err) {
                             return zalgo_promise_src.a.all([ triggerError(err), close() ]);
-                        })) : zalgo_promise_src.a.all([ close(), win && win.close() ]).then(src.h);
+                        })) : zalgo_promise_src.a.all([ close(), win && win.close() ]).then(src.i);
                     });
                 }
             }).finally(function() {
@@ -2956,7 +3005,7 @@ window.spb = function(modules) {
         }, tasks = {};
         return Object(dom.c)().forEach(function(button) {
             var _getSelectedFunding = Object(dom.e)(button), fundingSource = _getSelectedFunding.fundingSource, card = _getSelectedFunding.card, paymentMethodID = _getSelectedFunding.paymentMethodID;
-            Object(src.j)(button, function(event) {
+            Object(src.k)(button, function(event) {
                 event.preventDefault(), event.stopPropagation();
                 var payPromise = pay({
                     button: button,
@@ -2982,10 +3031,10 @@ window.spb = function(modules) {
             });
         }), function() {
             var logger = Object(lib.a)();
-            Object(src.f)() && logger.warn("button_child_intranet_mode");
+            Object(src.g)() && logger.warn("button_child_intranet_mode");
             var xprops = window.xprops;
             if (!xprops) throw new Error("No xprops found");
-            Object(src.c)().then(function(pageRenderTime) {
+            Object(src.d)().then(function(pageRenderTime) {
                 var _logger$track, fundingSources = [].slice.call(document.querySelectorAll("[" + constants.d.FUNDING_SOURCE + "]")).map(function(el) {
                     return el.getAttribute(constants.d.CARD) || el.getAttribute(constants.d.FUNDING_SOURCE);
                 }).filter(function(source) {
@@ -3006,7 +3055,7 @@ window.spb = function(modules) {
             var _ref = [ Object(cross_domain_utils_src.b)(window), Object(cross_domain_utils_src.c)(window) ], parent = _ref[0], top = _ref[1], tasks = {};
             return top && parent && parent !== top && (tasks.canRenderTo = window.paypal.Checkout.canRenderTo(top).then(function(result) {
                 canRenderTop = result;
-            })), zalgo_promise_src.a.hash(tasks).then(src.h);
+            })), zalgo_promise_src.a.hash(tasks).then(src.i);
         }(), init = onInit(), tasks.onInit = init.promise, tasks.prerender = tasks.onInit.then(function() {
             return getPrerenderDetails().then(function(prerenderDetails) {
                 if (prerenderDetails) {
@@ -3020,7 +3069,7 @@ window.spb = function(modules) {
                     });
                 }
             });
-        }), zalgo_promise_src.a.hash(tasks).then(src.h);
+        }), zalgo_promise_src.a.hash(tasks).then(src.i);
     }
     __webpack_require__.d(__webpack_exports__, "a", function() {
         return setupButton;
