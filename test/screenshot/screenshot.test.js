@@ -31,6 +31,7 @@ const setupBrowserPage = (async () => {
         entry:         './test/paypal.js',
         libraryTarget: 'window',
         test:          true,
+        web:           false,
         vars:          { ...globals, ...testGlobals }
     })), { headless: HEADLESS, devtools: DEVTOOLS });
 

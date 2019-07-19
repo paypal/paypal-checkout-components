@@ -6,7 +6,7 @@ import { node, Fragment } from 'jsx-pragmatic/src';
 import { LOGO_COLOR, PPLogo, PayPalLogo } from '@paypal/sdk-logos/src';
 
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, CLASS } from '../../constants';
-import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, LogoLabel } from '../common';
+import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 import { componentContent } from '../content';
 import { Text, Space } from '../../ui';
 
@@ -43,10 +43,6 @@ export function getPayPalConfig() : FundingSourceConfig {
             }
 
             return <PPPayPalLogo logoColor={ logoColor } />;
-        },
-
-        Label: ({ logo, label, locale: { lang }, period }) => {
-            return <LogoLabel label={ label } logo={ logo } lang={ lang } period={ period } />;
         },
     
         Tag: ({ multiple, locale: { lang } } : { locale : LocaleType, multiple : boolean }) => {

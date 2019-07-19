@@ -75,6 +75,7 @@ const WEBPACK_CONFIG_BUTTON_RENDER = getWebpackConfig({
     modulename:    'button',
     debug:         true,
     minify:        false,
+    web:           false,
     libraryTarget: 'global'
 });
 
