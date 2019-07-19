@@ -495,6 +495,10 @@ export const config = {
 
         'modaoperandi.com': {
             disable_venmo: true
+        },
+        
+        'play.jackpocket.com': {
+            disable_venmo: true
         }
     },
 
