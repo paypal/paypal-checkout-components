@@ -2167,6 +2167,7 @@ window.spb = function(modules) {
             }).then(function(orderID) {
                 var _getLogger$track;
                 if (!orderID || "string" != typeof orderID) throw new Error("Expected an order id to be passed");
+                if (0 === orderID.indexOf("PAY-") || 0 === orderID.indexOf("PAYID-")) throw new Error("Do not pass PAY-XXX or PAYID-XXX directly into createOrder. Pass the EC-XXX token instead");
                 return Object(_lib__WEBPACK_IMPORTED_MODULE_5__.a)().track((_getLogger$track = {}, 
                 _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.STATE] = _constants__WEBPACK_IMPORTED_MODULE_4__.g.BUTTON, 
                 _getLogger$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.d.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__.h.RECEIVE_ORDER, 
