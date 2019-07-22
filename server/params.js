@@ -26,7 +26,7 @@ type ParamsType = {|
     vault : $Values<typeof VAULT>,
     disableFunding : $ReadOnlyArray<?$Values<typeof FUNDING>>,
     disableCard : $ReadOnlyArray<?$Values<typeof CARD>>,
-    merchantID? : string,
+    merchantID? : $ReadOnlyArray<string>,
     buttonSessionID : string,
     clientAccessToken? : string,
     debug? : boolean
@@ -42,7 +42,7 @@ type RequestParams = {|
     vault : $Values<typeof VAULT>,
     disableFunding : $ReadOnlyArray<?$Values<typeof FUNDING>>,
     disableCard : $ReadOnlyArray<?$Values<typeof CARD>>,
-    merchantID : ?string,
+    merchantID : ?$ReadOnlyArray<string>,
     buttonSessionID : string,
     clientAccessToken : ?string,
     cspNonce : string,

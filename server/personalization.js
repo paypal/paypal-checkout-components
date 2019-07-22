@@ -5,6 +5,8 @@ import { COUNTRY } from '@paypal/sdk-constants';
 import type { ExpressRequest, FundingEligibility, LocaleType, LoggerType } from './types';
 
 export type GetPersonalization = (ExpressRequest, {
+    clientID : string,
+    merchantID : ?$ReadOnlyArray<string>,
     locale : LocaleType,
     buyerCountry : $Values<typeof COUNTRY>,
     tracking? : { [string] : string }
@@ -13,6 +15,8 @@ export type GetPersonalization = (ExpressRequest, {
 export type PersonalizationOptions = {|
     getPersonalization : GetPersonalization,
     logger : LoggerType,
+    clientID : string,
+    merchantID : ?$ReadOnlyArray<string>,
     locale : LocaleType,
     buyerCountry : $Values<typeof COUNTRY>,
     buttonSessionID : string
@@ -25,10 +29,12 @@ export type Personalization = {
     |}
 };
 
-export async function resolvePersonalization(req : ExpressRequest, { getPersonalization, logger, locale, buyerCountry, buttonSessionID } : PersonalizationOptions) : Promise<Personalization> {
+export async function resolvePersonalization(req : ExpressRequest, { getPersonalization, logger, clientID, merchantID, locale, buyerCountry, buttonSessionID } : PersonalizationOptions) : Promise<Personalization> {
             
     try {
         return await getPersonalization(req, {
+            clientID,
+            merchantID,
             locale,
             buyerCountry,
             tracking: {

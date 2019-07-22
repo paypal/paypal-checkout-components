@@ -6,7 +6,7 @@ import type { ExpressRequest, FundingEligibility, LoggerType } from './types';
 
 export type GetFundingEligibility = (ExpressRequest, {
     clientId : string,
-    merchantId : ?string,
+    merchantId : ?$ReadOnlyArray<string>,
     buyerCountry : ?$Values<typeof COUNTRY>,
     cookies : string,
     ip : string,
@@ -32,7 +32,7 @@ export type FundingEligibilityOptions = {|
     vault : $Values<typeof VAULT>,
     disableFunding : $ReadOnlyArray<?$Values<typeof FUNDING>>,
     disableCard : $ReadOnlyArray<?$Values<typeof CARD>>,
-    merchantID : ?string,
+    merchantID : ?$ReadOnlyArray<string>,
     buttonSessionID : string,
     clientAccessToken : ?string,
     defaultFundingEligibility : FundingEligibility
