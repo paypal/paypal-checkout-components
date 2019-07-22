@@ -2694,23 +2694,10 @@ window.spb = function(modules) {
             if (intent !== expectedIntent) throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing " + sdk_constants_src.i.INTENT + "=" + intent + " to the sdk");
             if (currency && currency !== expectedCurrency) throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing " + sdk_constants_src.i.CURRENCY + "=" + currency + " to the sdk");
             var merchantID = window.xprops.merchantID;
-            merchantID && merchantID.length ? payee && payee.merchant && payee.merchant.id ? payee.merchant.id !== merchantID[0] ? Object(lib.a)().info("payee_merchant_id_no_match", {
-                orderID: orderID,
-                merchantID: merchantID[0],
-                payee: JSON.stringify(payee)
-            }).flush() : Object(lib.a)().info("payee_merchant_id_match", {
-                orderID: orderID,
-                merchantID: merchantID[0],
-                payee: JSON.stringify(payee)
-            }).flush() : Object(lib.a)().info("payee_merchant_id_absent", {
-                orderID: orderID,
-                merchantID: merchantID[0],
-                payee: JSON.stringify(payee)
-            }).flush() : Object(lib.a)().info("payee_merchant_id_not_passed", {
-                orderID: orderID,
-                merchantID: merchantID[0],
-                payee: JSON.stringify(payee)
-            }).flush();
+            if (merchantID && merchantID.length) {
+                if (!(payee && payee.merchant && payee.merchant.id)) throw new Error("No payee passed in transaction. Expected " + merchantID[0]);
+                if (payee.merchant.id !== merchantID[0]) throw new Error("Incorrect payee passed in transaction. Got " + payee.merchant.id + ", expected " + merchantID[0]);
+            }
         });
     }
     function setupButton(opts) {
@@ -2978,14 +2965,12 @@ window.spb = function(modules) {
                         return valid ? (createOrder().then(function(orderID) {
                             return function(_ref) {
                                 var orderID = _ref.orderID, fundingSource = _ref.fundingSource, isCardFields = _ref.isCardFields;
-                                return zalgo_promise_src.a.try(function() {
-                                    if (window.xprops.updateClientConfiguration) return Object(api.p)({
-                                        orderID: orderID,
-                                        fundingSource: fundingSource,
-                                        integrationArtifact: constants.k.PAYPAL_JS_SDK,
-                                        userExperienceFlow: isCardFields ? constants.q.INLINE : constants.q.INCONTEXT,
-                                        productFlow: constants.m.SMART_PAYMENT_BUTTONS
-                                    });
+                                return Object(api.p)({
+                                    orderID: orderID,
+                                    fundingSource: fundingSource,
+                                    integrationArtifact: constants.k.PAYPAL_JS_SDK,
+                                    userExperienceFlow: isCardFields ? constants.q.INLINE : constants.q.INCONTEXT,
+                                    productFlow: constants.m.SMART_PAYMENT_BUTTONS
                                 });
                             }({
                                 orderID: orderID,
