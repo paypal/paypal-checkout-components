@@ -1,8 +1,9 @@
 /* @flow */
 
-import { ENV, COUNTRY, LANG, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, DEFAULT_COUNTRY, COUNTRY_LANGS } from '@paypal/sdk-constants';
+import { ENV, COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, DEFAULT_COUNTRY, COUNTRY_LANGS } from '@paypal/sdk-constants';
 
-import type { ExpressRequest, ExpressResponse } from './types';
+import type { ExpressRequest, ExpressResponse, FundingEligibility, LocaleType } from './types';
+import { HTTP_HEADER } from './constants';
 
 function getNonce(res : ExpressResponse) : string {
     let nonce = res.locals && res.locals.nonce;
@@ -17,10 +18,7 @@ function getNonce(res : ExpressResponse) : string {
 type ParamsType = {|
     env : $Values<typeof ENV>,
     clientID : string,
-    locale? : {
-        country : $Values<typeof COUNTRY>,
-        lang : $Values<typeof LANG>
-    },
+    locale? : LocaleType,
     buyerCountry : ?$Values<typeof COUNTRY>,
     currency : $Values<typeof CURRENCY>,
     intent : $Values<typeof INTENT>,
@@ -37,9 +35,7 @@ type ParamsType = {|
 type RequestParams = {|
     env : $Values<typeof ENV>,
     clientID : ?string,
-    country : $Values<typeof COUNTRY>,
-    buyerCountry : ?$Values<typeof COUNTRY>,
-    lang : $Values<typeof LANG>,
+    buyerCountry : $Values<typeof COUNTRY>,
     currency : $Values<typeof CURRENCY>,
     intent : $Values<typeof INTENT>,
     commit : $Values<typeof COMMIT>,
@@ -50,16 +46,34 @@ type RequestParams = {|
     buttonSessionID : string,
     clientAccessToken : ?string,
     cspNonce : string,
-    // fundingEligibility : FundingEligibility,
+    defaultFundingEligibility : FundingEligibility,
+    locale : LocaleType,
     debug : boolean
 |};
+
+function getFundingEligibilityParam(req : ExpressRequest) : FundingEligibility {
+    const encodedFundingEligibility = req.query.fundingEligibility;
+
+    if (encodedFundingEligibility && typeof encodedFundingEligibility === 'string') {
+        return JSON.parse(
+            Buffer.from(encodedFundingEligibility, 'base64').toString('utf8')
+        );
+    }
+
+    // $FlowFixMe
+    return {
+        [ FUNDING.PAYPAL ]: {
+            eligible: true
+        }
+    };
+}
 
 export function getParams(params : ParamsType, req : ExpressRequest, res : ExpressResponse) : RequestParams {
     const {
         env,
         clientID,
         locale = {},
-        buyerCountry,
+        buyerCountry = (req.get(HTTP_HEADER.PP_GEO_LOC) || COUNTRY.US),
         currency,
         intent,
         commit,
@@ -79,14 +93,12 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
 
     const cspNonce = getNonce(res);
 
-    // const fundingEligibility = getFundingEligibility(req);
+    const defaultFundingEligibility = getFundingEligibilityParam(req);
 
     return {
         env,
         clientID,
         // $FlowFixMe
-        lang,
-        country,
         buyerCountry,
         currency,
         intent,
@@ -97,8 +109,10 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         merchantID,
         buttonSessionID,
         clientAccessToken,
-        // fundingEligibility,
+        defaultFundingEligibility,
         cspNonce,
-        debug
+        debug,
+        // $FlowFixMe
+        locale: { country, lang }
     };
 }

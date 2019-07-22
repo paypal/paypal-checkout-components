@@ -5,17 +5,17 @@ import { FUNDING } from '@paypal/sdk-constants';
 
 import { getButtonMiddleware, cancelWatchers } from '../../server';
 
-import { mockReq, mockRes, getFundingEligibility } from './mock';
+import { mockReq, mockRes, getFundingEligibility, getPersonalization } from './mock';
 
 function getRenderedFundingSources(template) : $ReadOnlyArray<string> {
-    return regexMap(template, /data-funding-source="([^"]+)"/g, (result, group1) => group1);
+    return regexMap(template, / data-funding-source="([^"]+)"/g, (result, group1) => group1);
 }
 
 jest.setTimeout(300000);
 
 afterAll(cancelWatchers);
 
-const buttonMiddleware = getButtonMiddleware({ getFundingEligibility });
+const buttonMiddleware = getButtonMiddleware({ getFundingEligibility, getPersonalization });
 
 test('should do a basic button render and succeed', async () => {
 
@@ -59,14 +59,33 @@ test('should do a basic button render and succeed when graphql fundingEligibilit
     
     const req = mockReq({
         query: {
-            clientID: 'xyz'
+            clientID:           'xyz',
+            fundingEligibility: Buffer.from(JSON.stringify({
+                paypal: {
+                    eligible: true
+                },
+                card: {
+                    eligible: true,
+                    vendors:  {
+                        visa: {
+                            eligible: true
+                        },
+                        mastercard: {
+                            eligible: true
+                        }
+                    }
+                }
+            }), 'utf8').toString('base64')
         }
     });
+
     const res = mockRes();
     
-    const errButtonMiddleware = getButtonMiddleware({ getFundingEligibility: () => {
-        throw new Error('error');
-    }
+    const errButtonMiddleware = getButtonMiddleware({
+        getFundingEligibility: () => {
+            throw new Error('error');
+        },
+        getPersonalization
     });
     // $FlowFixMe
     await errButtonMiddleware(req, res);
@@ -95,6 +114,7 @@ test('should do a basic button render and succeed when graphql fundingEligibilit
     if (fundingSources.indexOf(FUNDING.PAYPAL) === -1) {
         throw new Error(`Expected paypal button to be rendered, got: ${ fundingSources.join(', ') }`);
     }
+
     if (fundingSources.indexOf(FUNDING.CARD) === -1) {
         throw new Error(`Expected paypal button to be rendered, got: ${ fundingSources.join(', ') }`);
     }

@@ -1,5 +1,8 @@
 /* @flow */
 
+import { COUNTRY, LANG } from '@paypal/sdk-constants';
+
+
 export type ExpressRequest = express$Request; // eslint-disable-line no-undef
 export type ExpressResponse = express$Response; // eslint-disable-line no-undef
 
@@ -45,4 +48,9 @@ export type FundingEligibility = {|
             }
         }
     }
+|};
+
+export type LocaleType = {|
+    country : $Values<typeof COUNTRY>,
+    lang : $Values<typeof LANG>
 |};

@@ -2,18 +2,21 @@
 
 import { undotify } from 'belter';
 import { unpackSDKMeta } from '@paypal/sdk-client';
-import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants';
 import { html } from 'jsx-pragmatic';
 
 import { getSmartButtonClientScript, getSmartButtonRenderScript, startWatchers } from './watcher';
 import { getParams } from './params';
-import { EVENT, HTTP_HEADER } from './constants';
+import { EVENT } from './constants';
 import { serverErrorResponse, clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON } from './util';
 import type { ExpressRequest, ExpressResponse, LoggerType } from './types';
 import { buttonStyle } from './style';
 import { renderFraudnetScript, shouldRenderFraudnet } from './fraudnet';
+import { resolveFundingEligibility } from './fundingEligibility';
+import { resolvePersonalization } from './personalization';
 
-export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibility } : { logger? : LoggerType, getFundingEligibility : Function } = {}) : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
+export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibility, getPersonalization } :
+    { logger? : LoggerType, getFundingEligibility : Function, getPersonalization : Function } = {}) : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
+    
     startWatchers();
 
     return async function buttonMiddleware(req : ExpressRequest, res : ExpressResponse) : Promise<void> {
@@ -21,8 +24,8 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
             logger.info(EVENT.RENDER);
 
             const params = undotify(req.query);
-            const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry = (req.get(HTTP_HEADER.PP_GEO_LOC) || COUNTRY.US),
-                disableFunding, disableCard, merchantID, currency, intent, commit, vault, clientAccessToken } = getParams(params, req, res);
+            const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard,
+                merchantID, currency, intent, commit, vault, clientAccessToken, defaultFundingEligibility, locale } = getParams(params, req, res);
 
             const sdkMeta = req.query.sdkMeta || '';
             let meta;
@@ -48,60 +51,21 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
             logger.info(req, `button_client_version_${ client.version }`);
             logger.info(req, `button_render_version_${ render.version }`);
             logger.info(req, `button_params`, { params: JSON.stringify(params) });
-            
-            let fundingEligibility;
-            
-            try {
-                const ip = req.ip;
-                const cookies = req.get('cookie');
-                const userAgent = req.get('user-agent');
-                const clientId = clientID;
-                const merchantId = merchantID;
-                const buttonSessionId = buttonSessionID;
-
-                fundingEligibility = await getFundingEligibility(req, {
-                    clientId, merchantId, buyerCountry, cookies, ip, currency, intent, commit,
-                    vault, disableFunding, disableCard, userAgent, buttonSessionId, clientAccessToken });
-
-            } catch (err) {
-                logger.error(req, 'gql_errored_for_fundingEligibility_fallingback_to_default', { err: err.stack ? err.stack : err.toString() });
-                // we still need to check if the following were requested to be disabled
-                const isCardDisabled = disableFunding ? disableFunding.includes(FUNDING.CARD) : false;
-                const isVisaDisabled = disableCard ? disableCard.includes(CARD.VISA) : false;
-                const isMastercardDisabled = disableCard ? disableCard.includes(CARD.MASTERCARD) : false;
-                const isAmexDisabled = disableCard ? disableCard.includes(CARD.AMEX) : false;
-                
-                fundingEligibility = {
-                    paypal: {
-                        eligible: true
-                    },
-                    card: {
-                        eligible: !isCardDisabled,
-                        branded:  true,
-                        vendors:  {
-                            visa: {
-                                eligible: !isVisaDisabled
-                            },
-                            mastercard: {
-                                eligible: !isMastercardDisabled
-                            },
-                            amex: {
-                                eligible: !isAmexDisabled
-                            }
-                        }
-                    }
-                };
-            }
 
             if (!clientID) {
                 return clientErrorResponse(res, 'Please provide a clientID query parameter');
             }
 
-            if (!fundingEligibility) {
-                return clientErrorResponse(res, 'fundingEligibility does not exist');
-            }
+            const [ fundingEligibility, personalization ] = await Promise.all([
+                resolveFundingEligibility(req, { getFundingEligibility, logger, clientID, merchantID, buttonSessionID,
+                    currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, defaultFundingEligibility }),
 
-            const buttonHTML = render.button.Buttons({ ...params, nonce: cspNonce, csp: { nonce: cspNonce }, fundingEligibility }).render(html());
+                resolvePersonalization(req, { getPersonalization, logger, buyerCountry, locale, buttonSessionID })
+            ]);
+
+            const buttonHTML = render.button.Buttons({
+                ...params, nonce: cspNonce, csp:   { nonce: cspNonce }, fundingEligibility, personalization
+            }).render(html());
 
             const pageHTML = `
                 <body data-nonce="${ cspNonce }" data-client-version="${ client.version }" data-render-version="${ render.version }">

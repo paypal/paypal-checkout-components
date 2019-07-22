@@ -136,3 +136,10 @@ export async function getFundingEligibility() : Object {
     };
 }
 
+export function getPersonalization() : Object {
+    return {
+        tagline: {
+            text: 'This is the tagline'
+        }
+    };
+}
