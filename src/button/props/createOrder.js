@@ -73,6 +73,10 @@ export function getCreateOrder(xprops : XProps, { createBillingAgreement, create
                 throw new Error(`Expected an order id to be passed`);
             }
 
+            if (orderID.indexOf('PAY-') === 0 || orderID.indexOf('PAYID-') === 0) {
+                throw new Error(`Do not pass PAY-XXX or PAYID-XXX directly into createOrder. Pass the EC-XXX token instead`);
+            }
+
             getLogger().track({
                 [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
                 [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.RECEIVE_ORDER,
