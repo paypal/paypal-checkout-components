@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint no-restricted-globals: off, promise/no-native: off, compat/compat: off */
 
 type MockReq = {|
     query : { [string] : string }
@@ -64,8 +65,8 @@ export function mockRes(opts : Object = {}) : MockRes {
 }
 
 // eslint-disable-next-line require-await
-export async function getFundingEligibility() : Object {
-    return {
+export async function getFundingEligibility() : Promise<Object> {
+    return Promise.resolve({
         bancontact: {
             eligible: false
         },
@@ -133,13 +134,17 @@ export async function getFundingEligibility() : Object {
         zimpler: {
             eligible: false
         }
-    };
+    });
 }
 
-export function getPersonalization() : Object {
-    return {
+export function getPersonalization() : Promise<Object> {
+    return Promise.resolve({
         tagline: {
             text: 'This is the tagline'
         }
-    };
+    });
+}
+
+export function clientIDToMerchantID() : Promise<string> {
+    return Promise.resolve('ABCDEF12345');
 }

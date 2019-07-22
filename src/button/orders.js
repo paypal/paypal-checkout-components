@@ -6,6 +6,7 @@ import { INTENT, SDK_QUERY_KEYS, FUNDING } from '@paypal/sdk-constants/src';
 import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW } from '../constants';
 import { updateClientConfig, getPayee } from '../api';
 import { callGraphQL } from '../api/api';
+import { getLogger } from '../lib';
 
 export function updateButtonClientConfig({ orderID, fundingSource, isCardFields } : { orderID : string, fundingSource : $Values<typeof FUNDING>, isCardFields : boolean }) : ZalgoPromise<void> {
     return updateClientConfig({
@@ -17,7 +18,7 @@ export function updateButtonClientConfig({ orderID, fundingSource, isCardFields 
     });
 }
 
-export function validateOrder(orderID : string) : ZalgoPromise<void> {
+export function validateOrder(orderID : string, { serverMerchantID } : { serverMerchantID : ?$ReadOnlyArray<string> }) : ZalgoPromise<void> {
     
     // $FlowFixMe
     return ZalgoPromise.all([
@@ -67,6 +68,33 @@ export function validateOrder(orderID : string) : ZalgoPromise<void> {
             } else if (payee.merchant.id !== merchantID[0]) {
                 throw new Error(`Incorrect payee passed in transaction. Got ${ payee.merchant.id }, expected ${ merchantID[0] }`);
             }
+        }
+
+        if (serverMerchantID && serverMerchantID.length) {
+            if (!payee || !payee.merchant || !payee.merchant.id) {
+                getLogger().info('s_payee_merchant_id_absent', {
+                    orderID,
+                    merchantID: serverMerchantID[0],
+                    payee:      JSON.stringify(payee)
+                }).flush();
+            } else if (payee.merchant.id !== serverMerchantID[0]) {
+                getLogger().info('s_payee_merchant_id_no_match', {
+                    orderID,
+                    merchantID: serverMerchantID[0],
+                    payee:      JSON.stringify(payee)
+                }).flush();
+            } else {
+                getLogger().info('s_payee_merchant_id_match', {
+                    orderID,
+                    merchantID: serverMerchantID[0],
+                    payee:      JSON.stringify(payee)
+                }).flush();
+            }
+        } else {
+            getLogger().info('s_payee_merchant_id_not_passed', {
+                orderID,
+                payee:      JSON.stringify(payee)
+            }).flush();
         }
     });
 }

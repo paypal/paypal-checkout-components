@@ -15,16 +15,14 @@ import { getSelectedFunding, enableLoadingSpinner, getButtons, disableLoadingSpi
 import { updateButtonClientConfig, validateOrder } from './orders';
 import { triggerButtonLogs } from './logs';
 
-export function setupButton(opts : { fundingEligibility : FundingEligibilityType, buyerCountry? : ?$Values<typeof COUNTRY>, cspNonce? : string }) : ZalgoPromise<void> {
+type ButtonOpts = {|
+    fundingEligibility : FundingEligibilityType,
+    buyerCountry? : ?$Values<typeof COUNTRY>,
+    cspNonce? : string,
+    merchantID? : $ReadOnlyArray<string>
+|};
 
-    // $FlowFixMe
-    if (opts.paypal) {
-        // $FlowFixMe
-        opts = { fundingEligibility: opts };
-    }
-
-    const { fundingEligibility, buyerCountry: buyerGeoCountry, cspNonce: serverCSPNonce } = opts;
-
+export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry, cspNonce: serverCSPNonce, merchantID: serverMerchantID } : ButtonOpts) : ZalgoPromise<void> {
     if (!window.paypal) {
         throw new Error(`PayPal library not loaded`);
     }
@@ -140,7 +138,7 @@ export function setupButton(opts : { fundingEligibility : FundingEligibilityType
 
                 return start()
                     .then(() => createOrder())
-                    .then(validateOrder)
+                    .then(orderID => validateOrder(orderID, { serverMerchantID }))
                     .catch(err => {
                         return ZalgoPromise.all([
                             triggerError(err),

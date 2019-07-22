@@ -54,3 +54,5 @@ export type LocaleType = {|
     country : $Values<typeof COUNTRY>,
     lang : $Values<typeof LANG>
 |};
+
+export type ClientIDToMerchantID = (string) => Promise<string>;

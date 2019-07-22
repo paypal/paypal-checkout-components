@@ -8,14 +8,20 @@ import { getSmartButtonClientScript, getSmartButtonRenderScript, startWatchers }
 import { getParams } from './params';
 import { EVENT } from './constants';
 import { serverErrorResponse, clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON } from './util';
-import type { ExpressRequest, ExpressResponse, LoggerType } from './types';
+import type { ExpressRequest, ExpressResponse, LoggerType, ClientIDToMerchantID } from './types';
 import { buttonStyle } from './style';
 import { renderFraudnetScript, shouldRenderFraudnet } from './fraudnet';
 import { resolveFundingEligibility } from './fundingEligibility';
 import { resolvePersonalization } from './personalization';
 
-export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibility, getPersonalization } :
-    { logger? : LoggerType, getFundingEligibility : Function, getPersonalization : Function } = {}) : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
+type ButtonMiddlewareOptions = {|
+    logger? : LoggerType,
+    getFundingEligibility : Function,
+    getPersonalization : Function,
+    clientIDToMerchantID : ClientIDToMerchantID
+|};
+
+export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibility, getPersonalization, clientIDToMerchantID } : ButtonMiddlewareOptions = {}) : (req : ExpressRequest, res : ExpressResponse) => Promise<void> {
     
     startWatchers();
 
@@ -24,7 +30,7 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
             logger.info(EVENT.RENDER);
 
             const params = undotify(req.query);
-            const { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard,
+            let { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard,
                 merchantID, currency, intent, commit, vault, clientAccessToken, defaultFundingEligibility, locale } = getParams(params, req, res);
 
             const sdkMeta = req.query.sdkMeta || '';
@@ -56,12 +62,18 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
                 return clientErrorResponse(res, 'Please provide a clientID query parameter');
             }
 
-            const [ fundingEligibility, personalization ] = await Promise.all([
+            const [ fundingEligibility, personalization, clientMerchantID ] = await Promise.all([
                 resolveFundingEligibility(req, { getFundingEligibility, logger, clientID, merchantID, buttonSessionID,
                     currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, defaultFundingEligibility }),
 
-                resolvePersonalization(req, { getPersonalization, logger, clientID, merchantID, buyerCountry, locale, buttonSessionID })
+                resolvePersonalization(req, { getPersonalization, logger, clientID, merchantID, buyerCountry, locale, buttonSessionID }),
+
+                merchantID ? null : clientIDToMerchantID(clientID)
             ]);
+
+            if (!merchantID && clientMerchantID) {
+                merchantID = [ clientMerchantID ];
+            }
 
             const buttonHTML = render.button.Buttons({
                 ...params, nonce: cspNonce, csp:   { nonce: cspNonce }, fundingEligibility, personalization
@@ -78,7 +90,7 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
                     <div id="card-fields-container" class="card-fields-container"></div>
                     ${ getSDKLoader({ nonce: cspNonce }) }
                     <script nonce="${ cspNonce }">${ client.script }</script>
-                    <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON({ fundingEligibility, buyerCountry, cspNonce }) })</script>
+                    <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON({ fundingEligibility, buyerCountry, cspNonce, merchantID }) })</script>
                     ${ shouldRenderFraudnet({ fundingEligibility }) ? renderFraudnetScript({ id: buttonSessionID, cspNonce, env }) : '' }
                 </body>
             `;
