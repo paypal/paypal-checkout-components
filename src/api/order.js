@@ -139,7 +139,13 @@ export function patchOrder(orderID : string, patch : []) : ZalgoPromise<OrderRes
     });
 }
 
-export function getPayee(orderID : string) : ZalgoPromise<OrderResponse> {
+type PayeeResponse = {|
+    merchant? : {|
+        id? : string
+    |}
+|};
+
+export function getPayee(orderID : string) : ZalgoPromise<PayeeResponse> {
     return callSmartAPI({
         url: `${ API_URI.CHECKOUT }/${ orderID }/payee`
     });

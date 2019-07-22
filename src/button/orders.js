@@ -6,7 +6,6 @@ import { INTENT, SDK_QUERY_KEYS, FUNDING } from '@paypal/sdk-constants/src';
 import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW } from '../constants';
 import { updateClientConfig, getPayee } from '../api';
 import { callGraphQL } from '../api/api';
-import { getLogger } from '../lib';
 
 export function updateButtonClientConfig({ orderID, fundingSource, isCardFields } : { orderID : string, fundingSource : $Values<typeof FUNDING>, isCardFields : boolean }) : ZalgoPromise<void> {
     return updateClientConfig({
@@ -63,32 +62,11 @@ export function validateOrder(orderID : string) : ZalgoPromise<void> {
 
         const merchantID = window.xprops.merchantID;
         if (merchantID && merchantID.length) {
-            // $FlowFixMe
             if (!payee || !payee.merchant || !payee.merchant.id) {
-                getLogger().info('payee_merchant_id_absent', {
-                    orderID,
-                    merchantID: merchantID[0],
-                    payee:      JSON.stringify(payee)
-                }).flush();
+                throw new Error(`No payee passed in transaction. Expected ${ merchantID[0] }`);
             } else if (payee.merchant.id !== merchantID[0]) {
-                getLogger().info('payee_merchant_id_no_match', {
-                    orderID,
-                    merchantID: merchantID[0],
-                    payee:      JSON.stringify(payee)
-                }).flush();
-            } else {
-                getLogger().info('payee_merchant_id_match', {
-                    orderID,
-                    merchantID: merchantID[0],
-                    payee:      JSON.stringify(payee)
-                }).flush();
+                throw new Error(`Incorrect payee passed in transaction. Got ${ payee.merchant.id }, expected ${ merchantID[0] }`);
             }
-        } else {
-            getLogger().info('payee_merchant_id_not_passed', {
-                orderID,
-                merchantID: merchantID[0],
-                payee:      JSON.stringify(payee)
-            }).flush();
         }
     });
 }
