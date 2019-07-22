@@ -9,16 +9,12 @@ import { callGraphQL } from '../api/api';
 import { getLogger } from '../lib';
 
 export function updateButtonClientConfig({ orderID, fundingSource, isCardFields } : { orderID : string, fundingSource : $Values<typeof FUNDING>, isCardFields : boolean }) : ZalgoPromise<void> {
-    return ZalgoPromise.try(() => {
-        if (window.xprops.updateClientConfiguration) {
-            return updateClientConfig({
-                orderID,
-                fundingSource,
-                integrationArtifact: INTEGRATION_ARTIFACT.PAYPAL_JS_SDK,
-                userExperienceFlow:  isCardFields ? USER_EXPERIENCE_FLOW.INLINE : USER_EXPERIENCE_FLOW.INCONTEXT,
-                productFlow:         PRODUCT_FLOW.SMART_PAYMENT_BUTTONS
-            });
-        }
+    return updateClientConfig({
+        orderID,
+        fundingSource,
+        integrationArtifact: INTEGRATION_ARTIFACT.PAYPAL_JS_SDK,
+        userExperienceFlow:  isCardFields ? USER_EXPERIENCE_FLOW.INLINE : USER_EXPERIENCE_FLOW.INCONTEXT,
+        productFlow:         PRODUCT_FLOW.SMART_PAYMENT_BUTTONS
     });
 }
 

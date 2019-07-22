@@ -12,8 +12,6 @@ describe('client config cases', () => {
 
     it('should pass the correct basic values for incontext checkout', async () => {
         return await wrapPromise(async ({ expect }) => {
-
-            window.xprops.updateClientConfiguration = true;
             let clientConfigCalled = false;
 
             const gqlMock = getGraphQLApiMock({
@@ -61,8 +59,6 @@ describe('client config cases', () => {
 
     it('should pass the correct basic values for inline card fields', async () => {
         return await wrapPromise(async ({ expect }) => {
-
-            window.xprops.updateClientConfiguration = true;
             window.xprops.enableInlineGuest = true;
 
             let clientConfigCalled = false;
@@ -126,7 +122,6 @@ describe('client config cases', () => {
 
             const fundingSource = FUNDING.PAYPAL;
 
-            window.xprops.updateClientConfiguration = true;
             let clientConfigCalled = false;
 
             const gqlMock = getGraphQLApiMock({
@@ -170,8 +165,6 @@ describe('client config cases', () => {
         return await wrapPromise(async ({ expect }) => {
 
             const fundingSource = FUNDING.VENMO;
-
-            window.xprops.updateClientConfiguration = true;
             let clientConfigCalled = false;
 
             const gqlMock = getGraphQLApiMock({
@@ -215,8 +208,6 @@ describe('client config cases', () => {
         return await wrapPromise(async ({ expect }) => {
 
             const fundingSource = FUNDING.CREDIT;
-
-            window.xprops.updateClientConfiguration = true;
             let clientConfigCalled = false;
 
             const gqlMock = getGraphQLApiMock({
