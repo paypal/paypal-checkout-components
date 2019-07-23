@@ -119,12 +119,10 @@ export const FUNDING_CONFIG = {
 
     [ FUNDING.ELV ]: {
         allowedCountries: [
-            COUNTRY.DE,
-            COUNTRY.AT
+            COUNTRY.DE
         ],
         defaultVerticalCountries: [
-            COUNTRY.DE,
-            COUNTRY.AT
+            COUNTRY.DE
         ],
 
         allowHorizontal: false,

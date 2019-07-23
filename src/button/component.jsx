@@ -32,8 +32,6 @@ import { validateButtonLocale, validateButtonStyle } from './validate';
 import { setupButtonChild } from './child';
 import { normalizeProps } from './props';
 
-const clientConfigThrottle = getThrottle('client_config', 0);
-
 pptm.listenForLoadWithNoContent();
 
 function isCreditDualEligible(props) : boolean {
@@ -343,7 +341,7 @@ export const Button : Component<ButtonOptions> = create({
             type:     'boolean',
             required: false,
             def:      () => {
-                return clientConfigThrottle.isEnabled();
+                return true;
             }
         },
 
@@ -657,7 +655,9 @@ export const Button : Component<ButtonOptions> = create({
 
                     actions.redirect = (win, url) => {
                         return ZalgoPromise.try(() => {
-                            return actions.close();
+                            if (actions.close) {
+                                return actions.close();
+                            }
                         }).then(() => {
                             return redir(win || window.top, url || data.returnUrl);
                         });
@@ -852,10 +852,6 @@ export const Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.BUTTON_TYPE ]:        FPTI.BUTTON_TYPE.IFRAME,
                         [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
                         [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
-                    });
-
-                    clientConfigThrottle.logStart({
-                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
                     });
 
                     if (isIEIntranet()) {
