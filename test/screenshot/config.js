@@ -484,3 +484,27 @@ buttonConfigs.push({
         }
     }
 });
+
+buttonConfigs.push({
+    button: {
+        locale: 'pt_BR',
+        style:  {
+            layout: 'horizontal'
+        },
+        funding: {
+            allowed: [ FUNDING.ITAU ]
+        }
+    }
+});
+
+buttonConfigs.push({
+    button: {
+        locale: 'pt_BR',
+        style:  {
+            layout: 'vertical'
+        },
+        funding: {
+            allowed: [ FUNDING.ITAU ]
+        }
+    }
+});

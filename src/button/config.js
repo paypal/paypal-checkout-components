@@ -268,7 +268,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
             [ BUTTON_COLOR.WHITE ]:      BUTTON_COLOR.DARKBLUE
         },
 
-        allowPrimary: true,
+        allowPrimary: false,
 
         allowPrimaryVertical:   false,
         allowPrimaryHorizontal: true
