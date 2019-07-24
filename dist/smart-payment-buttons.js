@@ -2684,28 +2684,8 @@ window.spb = function(modules) {
             el.style.opacity = "1";
         }), buttonsContainer.style.marginTop = "0px";
     }, config = __webpack_require__(6), props_getPopupBridge = __webpack_require__(11), button_props = __webpack_require__(12), dom = __webpack_require__(10), api_api = __webpack_require__(8);
-    function validateOrder(orderID) {
-        return zalgo_promise_src.a.all([ Object(api_api.b)({
-            query: "\n                query GetCheckoutDetails($orderID: String!) {\n                    checkoutSession(token: $orderID) {\n                        cart {\n                            intent\n                            amounts {\n                                total {\n                                    currencyCode\n                                }\n                            }\n                        }\n                    }\n                }\n            ",
-            variables: {
-                orderID: orderID
-            }
-        }), Object(api.j)(orderID) ]).then(function(_ref2) {
-            var payee = _ref2[1], cart = _ref2[0].data.checkoutSession.cart, intent = "sale" === cart.intent.toLowerCase() ? sdk_constants_src.h.CAPTURE : cart.intent.toLowerCase(), currency = cart.amounts && cart.amounts.total.currencyCode, expectedIntent = window.xprops.intent, expectedCurrency = window.xprops.currency;
-            if (intent !== expectedIntent) throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing " + sdk_constants_src.i.INTENT + "=" + intent + " to the sdk");
-            if (currency && currency !== expectedCurrency) throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing " + sdk_constants_src.i.CURRENCY + "=" + currency + " to the sdk");
-            var merchantID = window.xprops.merchantID;
-            if (merchantID && merchantID.length) {
-                if (!(payee && payee.merchant && payee.merchant.id)) throw new Error("No payee passed in transaction. Expected " + merchantID[0]);
-                if (payee.merchant.id !== merchantID[0]) throw new Error("Incorrect payee passed in transaction. Got " + payee.merchant.id + ", expected " + merchantID[0]);
-            }
-        });
-    }
-    function setupButton(opts) {
-        opts.paypal && (opts = {
-            fundingEligibility: opts
-        });
-        var fundingEligibility = opts.fundingEligibility, buyerGeoCountry = opts.buyerCountry, serverCSPNonce = opts.cspNonce;
+    function setupButton(_ref) {
+        var fundingEligibility = _ref.fundingEligibility, buyerGeoCountry = _ref.buyerCountry, serverCSPNonce = _ref.cspNonce, serverMerchantID = _ref.merchantID;
         if (!window.paypal) throw new Error("PayPal library not loaded");
         var init, _getGlobalProps = Object(button_props.getGlobalProps)({
             xprops: window.xprops,
@@ -2724,8 +2704,8 @@ window.spb = function(modules) {
             buttonSessionID: buttonSessionID,
             merchantDomain: merchantDomain
         });
-        var popupBridge, buttonProcessing = !1, pay = function(_ref) {
-            var button = _ref.button, win = _ref.win, fundingSource = _ref.fundingSource, card = _ref.card, paymentMethodID = _ref.paymentMethodID;
+        var popupBridge, buttonProcessing = !1, pay = function(_ref2) {
+            var button = _ref2.button, win = _ref2.win, fundingSource = _ref2.fundingSource, card = _ref2.card, paymentMethodID = _ref2.paymentMethodID;
             return zalgo_promise_src.a.try(function() {
                 if (!buttonProcessing) {
                     buttonProcessing = !0;
@@ -2757,7 +2737,7 @@ window.spb = function(modules) {
                         onShippingChange: onShippingChange
                     });
                     (isVaultCapture || isPopupBridge) && Object(dom.b)(button);
-                    var _ref2 = isVaultCapture ? function(props) {
+                    var _ref3 = isVaultCapture ? function(props) {
                         var createOrder = props.createOrder, paymentMethodID = props.paymentMethodID, onApprove = props.onApprove, clientAccessToken = props.clientAccessToken, enableThreeDomainSecure = props.enableThreeDomainSecure;
                         if (!paymentMethodID) throw new Error("Payment method id required for vault capture");
                         if (!clientAccessToken) throw new Error("Client access token required for vault capture");
@@ -2961,7 +2941,7 @@ window.spb = function(modules) {
                         validationPromise: validationPromise,
                         createBillingAgreement: createBillingAgreement,
                         createSubscription: createSubscription
-                    }), start = _ref2.start, close = _ref2.close, triggerError = _ref2.triggerError;
+                    }), start = _ref3.start, close = _ref3.close, triggerError = _ref3.triggerError;
                     return validationPromise.then(function(valid) {
                         return valid ? (createOrder().then(function(orderID) {
                             return function(_ref) {
@@ -2980,7 +2960,44 @@ window.spb = function(modules) {
                             });
                         }), start().then(function() {
                             return createOrder();
-                        }).then(validateOrder).catch(function(err) {
+                        }).then(function(orderID) {
+                            return function(orderID, _ref2) {
+                                var serverMerchantID = _ref2.serverMerchantID;
+                                return zalgo_promise_src.a.all([ Object(api_api.b)({
+                                    query: "\n                query GetCheckoutDetails($orderID: String!) {\n                    checkoutSession(token: $orderID) {\n                        cart {\n                            intent\n                            amounts {\n                                total {\n                                    currencyCode\n                                }\n                            }\n                        }\n                    }\n                }\n            ",
+                                    variables: {
+                                        orderID: orderID
+                                    }
+                                }), Object(api.j)(orderID) ]).then(function(_ref3) {
+                                    var payee = _ref3[1], cart = _ref3[0].data.checkoutSession.cart, intent = "sale" === cart.intent.toLowerCase() ? sdk_constants_src.h.CAPTURE : cart.intent.toLowerCase(), currency = cart.amounts && cart.amounts.total.currencyCode, expectedIntent = window.xprops.intent, expectedCurrency = window.xprops.currency;
+                                    if (intent !== expectedIntent) throw new Error("Expected intent from order api call to be " + expectedIntent + ", got " + intent + ". Please ensure you are passing " + sdk_constants_src.i.INTENT + "=" + intent + " to the sdk");
+                                    if (currency && currency !== expectedCurrency) throw new Error("Expected currency from order api call to be " + expectedCurrency + ", got " + currency + ". Please ensure you are passing " + sdk_constants_src.i.CURRENCY + "=" + currency + " to the sdk");
+                                    var merchantID = window.xprops.merchantID;
+                                    if (merchantID && merchantID.length) {
+                                        if (!(payee && payee.merchant && payee.merchant.id)) throw new Error("No payee passed in transaction. Expected " + merchantID[0]);
+                                        if (payee.merchant.id !== merchantID[0]) throw new Error("Incorrect payee passed in transaction. Got " + payee.merchant.id + ", expected " + merchantID[0]);
+                                    }
+                                    serverMerchantID && serverMerchantID.length ? payee && payee.merchant && payee.merchant.id ? payee.merchant.id !== serverMerchantID[0] ? Object(lib.a)().info("s_payee_merchant_id_no_match", {
+                                        orderID: orderID,
+                                        merchantID: serverMerchantID[0],
+                                        payee: JSON.stringify(payee)
+                                    }).flush() : Object(lib.a)().info("s_payee_merchant_id_match", {
+                                        orderID: orderID,
+                                        merchantID: serverMerchantID[0],
+                                        payee: JSON.stringify(payee)
+                                    }).flush() : Object(lib.a)().info("s_payee_merchant_id_absent", {
+                                        orderID: orderID,
+                                        merchantID: serverMerchantID[0],
+                                        payee: JSON.stringify(payee)
+                                    }).flush() : Object(lib.a)().info("s_payee_merchant_id_not_passed", {
+                                        orderID: orderID,
+                                        payee: JSON.stringify(payee)
+                                    }).flush();
+                                });
+                            }(orderID, {
+                                serverMerchantID: serverMerchantID
+                            });
+                        }).catch(function(err) {
                             return zalgo_promise_src.a.all([ triggerError(err), close() ]);
                         })) : zalgo_promise_src.a.all([ close(), win && win.close() ]).then(src.i);
                     });
