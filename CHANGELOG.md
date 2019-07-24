@@ -1,3 +1,11 @@
+## <small>5.0.45 (2019-07-24)</small>
+
+* Add loader for localized content in first render ([4b9a8fb](http://github.paypal.com/paypal/paypal-checkout/commit/4b9a8fb))
+* Add personalization of the tagline ([8649279](http://github.paypal.com/paypal/paypal-checkout/commit/8649279))
+* Making darkblue as default for Itau (#1165) ([a4d2764](http://github.paypal.com/paypal/paypal-checkout/commit/a4d2764)), closes [#1165](http://github.paypal.com/paypal/paypal-checkout/issues/1165)
+
+
+
 ## <small>5.0.44 (2019-07-17)</small>
 
 * Add text to ideal button ([24724c1](http://github.paypal.com/paypal/paypal-checkout/commit/24724c1))
