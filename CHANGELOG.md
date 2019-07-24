@@ -1,3 +1,9 @@
+## <small>5.0.46 (2019-07-24)</small>
+
+* Do not show loading dots if label or client token (for vault) not passed ([295db21](http://github.paypal.com/paypal/paypal-checkout/commit/295db21))
+
+
+
 ## <small>5.0.45 (2019-07-24)</small>
 
 * Add loader for localized content in first render ([4b9a8fb](http://github.paypal.com/paypal/paypal-checkout/commit/4b9a8fb))
