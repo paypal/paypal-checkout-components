@@ -55,4 +55,4 @@ export type LocaleType = {|
     lang : $Values<typeof LANG>
 |};
 
-export type ClientIDToMerchantID = (string) => Promise<string>;
+export type ClientIDToMerchantID = (ExpressRequest, string) => Promise<string>;

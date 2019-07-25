@@ -68,7 +68,7 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
 
                 resolvePersonalization(req, { getPersonalization, logger, clientID, merchantID, buyerCountry, locale, buttonSessionID }),
 
-                merchantID ? null : clientIDToMerchantID(clientID)
+                merchantID ? null : clientIDToMerchantID(req, clientID)
             ]);
 
             if (!merchantID && clientMerchantID) {
