@@ -42,11 +42,17 @@ type PopupBridgeProps = {|
     popupBridge : ?PopupBridge,
     createOrder : CreateOrder,
     onApprove : OnApprove,
-    onCancel : OnCancel
+    onCancel : OnCancel,
+    commit : boolean
 |};
 
+const USER_ACTION = {
+    COMMIT:   'commit',
+    CONTINUE: 'continue'
+};
+
 export function initPopupBridge(props : PopupBridgeProps) : PopupBridgeInstance {
-    const { popupBridge, createOrder, onApprove, onCancel } = props;
+    const { popupBridge, createOrder, onApprove, onCancel, commit } = props;
 
     if (!popupBridge) {
         throw new Error(`Popup bridge required`);
@@ -57,6 +63,7 @@ export function initPopupBridge(props : PopupBridgeProps) : PopupBridgeInstance 
             const url = extendUrl(`${ getDomain() }${ EXPERIENCE_URI.CHECKOUT }`, {
                 query: {
                     token:        orderID,
+                    useraction:   commit ? USER_ACTION.COMMIT : USER_ACTION.CONTINUE,
                     redirect_uri: popupBridge.nativeUrl
                 }
             });

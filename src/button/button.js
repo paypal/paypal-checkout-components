@@ -114,7 +114,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
 
                 if (isPopupBridge) {
                     return initPopupBridge({
-                        popupBridge, createOrder, onApprove, onCancel
+                        popupBridge, createOrder, onApprove, onCancel, commit
                     });
                 }
 
