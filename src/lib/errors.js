@@ -76,7 +76,7 @@ export function checkForCommonErrors() {
     }
 
     // $FlowFixMe
-    if (Object.assign && JSON.stringify({ a: 1, b: 2, c: 3 }) !== JSON.stringify({ a: 1, b: 2, c: 3 })) { // eslint-disable-line no-self-compare
+    if (Object.assign && JSON.stringify({ a: 1, b: 2, c: 3 }) !== JSON.stringify({ a: 1, b: 2, c: 3 })) { // eslint-disable-line no-self-compare, compat/compat
         warn(`object_assign_broken`);
     }
 }

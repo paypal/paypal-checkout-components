@@ -156,7 +156,7 @@ export function logFundingEligibility() {
     fundingEligibilityReasons.forEach((reasons, i) => {
         console.log(`\nButton ${ i + 1 }:\n`); // eslint-disable-line no-console
 
-        console.table(Object.keys(reasons).map(source => {  // eslint-disable-line no-console
+        console.table(Object.keys(reasons).map(source => {  // eslint-disable-line no-console, compat/compat
             const { reason, eligible, factors } = reasons[source];
 
             return {

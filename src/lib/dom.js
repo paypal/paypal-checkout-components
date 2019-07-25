@@ -342,7 +342,7 @@ export function getPageRenderTime() : ZalgoPromise<?number> {
             return;
         }
 
-        const timing = window.performance.timing;
+        const timing = window.performance.timing; // eslint-disable-line compat/compat
 
         if (timing.connectEnd && timing.domInteractive) {
             return timing.domInteractive - timing.connectEnd;
@@ -356,11 +356,11 @@ export function getResourceLoadTime(url : string) : ?number {
         return;
     }
 
-    if (!window.performance || typeof window.performance.getEntries !== 'function') {
+    if (!window.performance || typeof window.performance.getEntries !== 'function') { // eslint-disable-line compat/compat
         return;
     }
 
-    const entries = window.performance.getEntries();
+    const entries = window.performance.getEntries(); // eslint-disable-line compat/compat
 
     for (let i = 0; i < entries.length; i++) {
         const entry = entries[i];

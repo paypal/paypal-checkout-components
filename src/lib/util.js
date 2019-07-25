@@ -276,8 +276,8 @@ export function extend<T : Object | Function>(obj : T, source : Object) : T {
         return obj;
     }
 
-    if (Object.assign) {
-        return Object.assign(obj, source);
+    if (Object.assign) { // eslint-disable-line compat/compat
+        return Object.assign(obj, source); // eslint-disable-line compat/compat
     }
 
     for (const key in source) {
