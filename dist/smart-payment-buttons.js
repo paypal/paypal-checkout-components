@@ -2683,7 +2683,10 @@ window.spb = function(modules) {
         Object(src.m)("[" + constants.d.CARD + "]").forEach(function(el) {
             el.style.opacity = "1";
         }), buttonsContainer.style.marginTop = "0px";
-    }, config = __webpack_require__(6), props_getPopupBridge = __webpack_require__(11), button_props = __webpack_require__(12), dom = __webpack_require__(10), api_api = __webpack_require__(8);
+    }, config = __webpack_require__(6), props_getPopupBridge = __webpack_require__(11), USER_ACTION = {
+        COMMIT: "commit",
+        CONTINUE: "continue"
+    }, button_props = __webpack_require__(12), dom = __webpack_require__(10), api_api = __webpack_require__(8);
     function setupButton(_ref) {
         var fundingEligibility = _ref.fundingEligibility, buyerGeoCountry = _ref.buyerCountry, serverCSPNonce = _ref.cspNonce, serverMerchantID = _ref.merchantID;
         if (!window.paypal) throw new Error("PayPal library not loaded");
@@ -2885,7 +2888,7 @@ window.spb = function(modules) {
                         createBillingAgreement: createBillingAgreement,
                         createSubscription: createSubscription
                     }) : isPopupBridge ? function(props) {
-                        var popupBridge = props.popupBridge, createOrder = props.createOrder, onApprove = props.onApprove, onCancel = props.onCancel;
+                        var popupBridge = props.popupBridge, createOrder = props.createOrder, onApprove = props.onApprove, onCancel = props.onCancel, commit = props.commit;
                         if (!popupBridge) throw new Error("Popup bridge required");
                         return {
                             start: function start() {
@@ -2893,6 +2896,7 @@ window.spb = function(modules) {
                                     var url = Object(src.c)("" + Object(cross_domain_utils_src.a)() + config.d.CHECKOUT, {
                                         query: {
                                             token: orderID,
+                                            useraction: commit ? USER_ACTION.COMMIT : USER_ACTION.CONTINUE,
                                             redirect_uri: popupBridge.nativeUrl
                                         }
                                     });
@@ -2919,7 +2923,8 @@ window.spb = function(modules) {
                         popupBridge: popupBridge,
                         createOrder: createOrder,
                         onApprove: onApprove,
-                        onCancel: onCancel
+                        onCancel: onCancel,
+                        commit: commit
                     }) : initCheckout({
                         win: win,
                         buttonSessionID: buttonSessionID,
