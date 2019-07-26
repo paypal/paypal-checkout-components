@@ -932,7 +932,7 @@
                 country: config.a.locale.country,
                 lang: config.a.locale.lang,
                 uid: Object(session.c)(),
-                ver: "4.0.282"
+                ver: "4.0.283"
             };
         }), Object(client.a)(function() {
             return {
@@ -1177,7 +1177,7 @@
         });
     });
     function getScriptVersion() {
-        return "4.0.282";
+        return "4.0.283";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -1186,7 +1186,7 @@
             return 0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://")), 
             scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.282.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.283.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.g)();
@@ -1210,7 +1210,7 @@
                     domain: metaFrameDomain
                 });
                 return src.bridge.openBridge(Object(dom.a)(metaFrameUrl, {
-                    version: "4.0.282"
+                    version: "4.0.283"
                 }), metaFrameDomain).then(function() {
                     return metaListener;
                 }).then(function(_ref) {
@@ -1388,9 +1388,9 @@
     "use strict";
     var _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, constants = __webpack_require__(0), config = {
         locales: constants.z,
-        scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.282.js",
+        scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.283.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.282",
+        version: "4.0.283",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -5697,7 +5697,7 @@
         }
     }, _fundingLogos[constants.h.VENMO] = ((_BUTTON_LOGO$VENMO = {})[constants.i.WHITE] = venmo_white_default.a, 
     _BUTTON_LOGO$VENMO[constants.i.BLUE] = venmo_blue_default.a, _BUTTON_LOGO$VENMO), 
-    _fundingLogos[constants.h.ITAU] = ((_BUTTON_LOGO$ITAU = {})[constants.i.BLUE] = itau_default.a, 
+    _fundingLogos[constants.h.ITAU] = ((_BUTTON_LOGO$ITAU = {})[constants.i.WHITE] = itau_default.a, 
     _BUTTON_LOGO$ITAU), _fundingLogos[constants.h.IDEAL] = function(_ref) {
         var logoColor = _ref.logoColor;
         if (!IDEAL_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " ideal logo available");
@@ -8628,7 +8628,7 @@
     function beacon(event, payload) {
         void 0 === payload && (payload = {});
         try {
-            payload.event = "ppxo_" + event, payload.version = "4.0.282", payload.host = window.location.host, 
+            payload.event = "ppxo_" + event, payload.version = "4.0.283", payload.host = window.location.host, 
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)(), payload.appName = APP_NAME;
             var query = [];
             for (var key in payload) payload.hasOwnProperty(key) && query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
@@ -12663,7 +12663,7 @@
 }, function(module, exports) {
     module.exports = '<svg width="101" height="32" viewBox="0 0 101 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n        <g id="White" fill="#FFFFFF">\n            <g id="Logo" transform="translate(0.000000, 6.000000)">\n                <path d="M16.6660484,0.18 C17.3466626,1.3390991 17.6535069,2.53297297 17.6535069,4.04108108 C17.6535069,8.85117117 13.671346,15.0998198 10.439346,19.4875676 L3.05725952,19.4875676 L0.0966314879,1.23315315 L6.56045675,0.60036036 L8.12578201,13.5895495 C9.58835986,11.1326126 11.3932543,7.27153153 11.3932543,4.6390991 C11.3932543,3.1981982 11.1538599,2.21675676 10.7797405,1.40864865 L16.6660484,0.18 Z M24.9071592,11.6938739 C24.9071592,13.8367568 26.062718,14.6774775 27.5946678,14.6774775 C29.2629152,14.6774775 30.860218,14.2571171 32.9363097,13.1691892 L32.154346,18.6445045 C30.6915934,19.3814414 28.4119291,19.8731532 26.1991903,19.8731532 C20.5863512,19.8731532 18.5775346,16.3632432 18.5775346,11.9753153 C18.5775346,6.28810811 21.8451817,0.249369369 28.5819516,0.249369369 C32.2909931,0.249369369 34.3649879,2.39207207 34.3649879,5.37567568 C34.3653374,10.1855856 28.3783789,11.6590991 24.9071592,11.6938739 Z M25.0434567,8.2181982 C26.2329152,8.2181982 29.2274429,7.65711712 29.2274429,5.90216216 C29.2274429,5.05945946 28.6495761,4.6390991 27.9686125,4.6390991 C26.7772318,4.6390991 25.2138287,6.11225225 25.0434567,8.2181982 Z M53.0187093,4.4636036 C53.0187093,5.16558559 52.9154377,6.18378378 52.8126903,6.84918919 L50.8730709,19.4873874 L44.5790934,19.4873874 L46.3483408,7.90216216 C46.381891,7.58792793 46.4849879,6.95531532 46.4849879,6.60432432 C46.4849879,5.76162162 45.9743962,5.55135135 45.3605329,5.55135135 C44.5451938,5.55135135 43.7279325,5.93711712 43.1836159,6.21873874 L41.1768962,19.4875676 L34.8474464,19.4875676 L37.7390519,0.565945946 L43.2171661,0.565945946 L43.2865381,2.07621622 C44.5789187,1.19873874 46.2807163,0.24972973 48.6952803,0.24972973 C51.8942543,0.249369369 53.0187093,1.93495495 53.0187093,4.4636036 Z M71.7037093,2.32072072 C73.5063322,0.988108108 75.2084792,0.249369369 77.5554187,0.249369369 C80.7872439,0.249369369 81.9113495,1.93495495 81.9113495,4.4636036 C81.9113495,5.16558559 81.8084273,6.18378378 81.7056799,6.84918919 L79.7683322,19.4873874 L73.4726073,19.4873874 L75.2755796,7.6572973 C75.3087803,7.34108108 75.3785017,6.95531532 75.3785017,6.71063063 C75.3785017,5.7618018 74.8677353,5.55135135 74.2540467,5.55135135 C73.4722578,5.55135135 72.6908183,5.90234234 72.1106799,6.21873874 L70.1043097,19.4875676 L63.8101574,19.4875676 L65.6131298,7.65747748 C65.6463304,7.34126126 65.713955,6.9554955 65.713955,6.71081081 C65.713955,5.76198198 65.2030138,5.55153153 64.5914221,5.55153153 C63.7743356,5.55153153 62.9588218,5.9372973 62.4145052,6.21891892 L60.4062128,19.4877477 L54.0788599,19.4877477 L56.9701159,0.566126126 L62.3813045,0.566126126 L62.551327,2.14576577 C63.8101574,1.1990991 65.5105571,0.25009009 67.7900467,0.25009009 C69.7637405,0.249369369 71.0559464,1.12702703 71.7037093,2.32072072 Z M83.55059,11.7998198 C83.55059,5.83279279 86.6120433,0.249369369 93.6558322,0.249369369 C98.9633997,0.249369369 100.903543,3.47981982 100.903543,7.93873874 C100.903543,13.8365766 97.8751159,19.9443243 90.6614792,19.9443243 C85.3196626,19.9443243 83.55059,16.3281081 83.55059,11.7998198 Z M94.4374464,7.83279279 C94.4374464,6.28810811 94.0628028,5.23495495 92.9409689,5.23495495 C90.4570329,5.23495495 89.9469654,9.76306306 89.9469654,12.0794595 C89.9469654,13.8367568 90.4238322,14.9243243 91.5453166,14.9243243 C93.8931298,14.9243243 94.4374464,10.149009 94.4374464,7.83279279 Z"></path>\n            </g>\n        </g>\n    </g>\n</svg>\n';
 }, function(module, exports) {
-    module.exports = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 105">\n    <title>Asset 3</title>\n    <g id="Layer_2" >\n        <g id="Layer_1-2">\n            <rect width="750" height="105" rx="11" fill="#004995"/>\n            <rect x="452.24" y="19.99" width="55" height="54.14" rx="8.98"\n                  transform="translate(2.52 115.09) rotate(-13.72)" fill="#ff7900"/>\n            <rect x="467.2" y="26.15" width="33.66" height="34.11" rx="5.84" fill="#004995"/>\n            <path d="M394.93,60.57a9.34,9.34,0,0,0-2.36-5.72,12.06,12.06,0,0,0-9.52-4.1c-3.32.08-8.05.62-11,2.78l1.8,5.38s2.69-2.24,8.07-2.24c2.33,0,4.49,1.34,4.94,2.69v.45c-2.87,0-11.88.58-15.26,5.84-4,6.28,2.25,12.11,6.28,12.11,3.2,0,6.57.2,9.43-2.69l.45,2.25h7.18V62.07a3.52,3.52,0,0,1,0-.46Zm-16.16,8.67c.34-3.74,5.56-4.13,8.08-4.11v4.51C384.22,73.24,378.44,72.89,378.77,69.24Z"\n                  fill="#fff"/>\n            <path d="M368,52.63s-15.77-4.29-20.65,6.28c-2.69,5.84-1.35,11.94,1.8,15.26a12.77,12.77,0,0,0,5.38,3.15c4,1.34,11.23.89,13.47-.45L367.1,71s-7.18,2.25-10.77-1.35c-4.72-4.71-.45-12.11,4.49-12.11s6.28.89,6.28.89Z"\n                  fill="#fff"/>\n            <rect x="258.48" y="43.2" width="8.08" height="34.11" fill="#fff"/>\n            <path d="M286.31,58V51.73h-4.49V43.2h-8.08v8.53h-4V58h4V71A6.29,6.29,0,0,0,280,77.32h6.29V71h-2.26a2.23,2.23,0,0,1-2.23-2.23V58Z"\n                  fill="#fff"/>\n            <path d="M313.69,60.57a9.46,9.46,0,0,0-2.36-5.72,12.08,12.08,0,0,0-9.52-4.1c-3.32.08-8.05.62-11,2.78l1.79,5.38s2.7-2.24,8.08-2.24c2.33,0,4.49,1.34,4.94,2.69v.45c-2.87,0-11.89.58-15.26,5.84-4,6.28,2.24,12.11,6.28,12.11,3.2,0,6.57.2,9.43-2.69l.45,2.25h7.18V62.07a3.52,3.52,0,0,1,0-.46Zm-16.16,8.67c.34-3.74,5.56-4.13,8.08-4.11v4.51C303,73.24,297.2,72.89,297.53,69.24Z"\n                  fill="#fff"/>\n            <path d="M334.78,51.73v15a2.81,2.81,0,0,1-.45,1.57c-1,1.53-2.33,2.7-4,2.7A4.38,4.38,0,0,1,326,68.25a2.72,2.72,0,0,1-.23-1.13V51.73h-8.08V69.24c0,4.46,3.62,8.52,8.08,8.52,8.08.45,9.42-3.59,9.42-3.59l0-.1.88,3.25h6.73V51.73Z"\n                  fill="#fff"/>\n            <rect x="469.89" y="43.2" width="2.71" height="11.43" fill="#fff100"/>\n            <path d="M479.22,48.17V46.06h-1.51V43.2H475v2.86h-1.35v2.11H475v4.36a2.11,2.11,0,0,0,2.11,2.1h2.11v-2.1h-.76a.76.76,0,0,1-.75-.75V48.17Z"\n                  fill="#fff100"/>\n            <path d="M488.39,49a3.14,3.14,0,0,0-.79-1.91,4,4,0,0,0-3.19-1.38,7,7,0,0,0-3.69.93l.6,1.81a4.42,4.42,0,0,1,2.71-.75,1.79,1.79,0,0,1,1.65.9v.15c-1,0-4,.19-5.11,1.95-1.35,2.11.75,4.06,2.1,4.06a3.89,3.89,0,0,0,3.16-.9l.15.75h2.41V49ZM483,51.93c.11-1.26,1.86-1.39,2.7-1.38v1.51C484.8,53.27,482.86,53.15,483,51.93Z"\n                  fill="#fff100"/>\n            <path d="M495.46,46.06v5.31a1.88,1.88,0,0,1-1.5,1.16,1.51,1.51,0,0,1-1.51-1.13V46.06h-2.71v5.87a2.84,2.84,0,0,0,2.71,2.85c2.71.15,3.16-1.2,3.16-1.2v0l.3,1.08h2.26V46.06Z"\n                  fill="#fff100"/>\n            <path d="M406.08,56.2l-.38-4.47H399V77.32h8.08V62.94c.71-1.85,2.54-4.48,7.18-4.48V50.83A9.48,9.48,0,0,0,406.08,56.2Z"\n                  fill="#fff"/>\n            <path d="M436.23,40.51V53.84c-1.24-1.44-3.52-3-7.63-3C421,50.83,416,57.57,416,65.2a12.44,12.44,0,0,0,12.12,12.56,16.68,16.68,0,0,0,8.69-3L438,77.32h6.28V40.51Zm-5.62,30.75c-4.93,0-5.83-4-5.83-7.19s1.35-6.73,5.83-6.73c2.66,0,4.53,2,5.62,3.71v6.19C435,69.23,433.12,71.26,430.61,71.26Z"\n                  fill="#fff"/>\n            <polygon points="495.02 45.45 492.78 45.45 494.58 43.2 497.27 43.2 495.02 45.45" fill="#fff100"/>\n        </g>\n    </g>\n</svg>\n';
+    module.exports = '<?xml version="1.0" encoding="UTF-8"?>\n\x3c!-- Generator: Adobe Illustrator 23.0.4, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --\x3e\n<svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 181 33" preserveAspectRatio="xMinYMin meet">\n   <path fill="#FF7900" d="M136.5,5.6L153,1.8c2.2-0.5,4.4,0.8,5,2.9l4,15.2c0.5,2.1-0.8,4.2-3,4.7l-16.5,3.8c-2.2,0.5-4.4-0.8-5-2.9  l-4-15.2C132.8,8.3,134.2,6.1,136.5,5.6z" />\n   <path fill="#004995" d="M144.5,6.1h10.1c1.5,0,2.7,1.2,2.7,2.5v9.7c0,1.3-1.2,2.5-2.7,2.5h-10.1c-1.5,0-2.7-1.2-2.7-2.5V8.6  C141.9,7.2,143.1,6.1,144.5,6.1z" />\n   <path fill="#FFFFFF" d="M108.2,19.9c-0.1-1-0.5-1.9-1.1-2.8c-1.1-1.3-2.8-2-4.6-1.9c-1.6,0.1-3.9,0.3-5.3,1.3L98,19  c0,0,1.3-1.1,3.9-1.1c1.1,0,2.1,0.6,2.3,1.3v0.2c-1.4,0-5.7,0.3-7.4,2.8c-2,3,1.1,5.8,3.1,5.8c1.6,0,3.2,0.1,4.6-1.3l0.2,1.1h3.4  v-7.3c0-0.1,0-0.2,0-0.2L108.2,19.9L108.2,19.9z M100.4,24.1c0.2-1.8,2.7-1.9,3.9-1.9v2.1C103,26,100.2,25.8,100.4,24.1z" />\n   <path fill="#FFFFFF" d="M95.2,16.1c0,0-7.6-2-10,3c-1.3,2.8-0.7,5.7,0.8,7.3c0.7,0.7,1.6,1.2,2.6,1.5c2,0.6,5.4,0.4,6.5-0.2l-0.4-2.8  c0,0-3.4,1.1-5.2-0.6c-2.2-2.2-0.2-5.7,2.1-5.7c2.3,0,3.1,0.4,3.1,0.4L95.2,16.1z" />\n   <rect fill="#FFFFFF" x="42.3" y="11.7" width="3.9" height="16.3" />\n   <path fill="#FFFFFF" d="M55.7,18.7v-3h-2.1v-4.1h-3.9v4.1h-2v3h2v6.2c0,1.7,1.3,3,3,3l0,0h3.1v-3h-1.1c-0.7,0-1.1-0.5-1.1-1.1l0,0v-5.2  L55.7,18.7L55.7,18.7z" />\n   <path fill="#FFFFFF" d="M69,19.9c-0.1-1-0.5-1.9-1.1-2.8c-1.2-1.3-2.8-2-4.6-1.9c-1.6,0.1-3.9,0.3-5.3,1.3l0.8,2.5c0,0,1.3-1.1,3.9-1.1  c1.1,0,2.1,0.6,2.3,1.3v0.2c-1.4,0-5.8,0.3-7.4,2.8c-2,3,1.1,5.8,3.1,5.8c1.6,0,3.2,0.1,4.6-1.3l0.2,1.1H69V19.9L69,19.9z   M61.1,24.1c0.2-1.8,2.7-1.9,3.9-1.9v2.1C63.8,26,60.9,25.8,61.1,24.1L61.1,24.1z" />\n   <path fill="#FFFFFF" d="M79.1,15.7v7.2c0,0.3-0.1,0.5-0.2,0.7c-0.5,0.7-1.1,1.3-2,1.3c-0.9,0.1-1.8-0.5-2.1-1.3  c-0.1-0.2-0.1-0.4-0.1-0.6v-7.3h-3.9V24c0,2.1,1.8,4.1,3.9,4.1c3.9,0.2,4.6-1.8,4.6-1.8v-0.1l0.4,1.5H83V15.6L79.1,15.7z" />\n   <rect fill="#FFF100" x="143.1" y="13.5" width="1.2" height="5" />\n   <path fill="#FFF100" d="M147.3,15.7v-0.9h-0.7v-1.3h-1.2v1.3h-0.6v0.9h0.6v1.9c0,0.5,0.4,0.9,1,0.9h1v-0.9H147c-0.2,0-0.4-0.2-0.4-0.3  l0,0v-1.6C146.6,15.7,147.3,15.7,147.3,15.7z" />\n   <path fill="#FFF100" d="M151.6,16c0-0.3-0.2-0.6-0.4-0.8c-0.4-0.4-0.9-0.6-1.5-0.6s-1.1,0.2-1.7,0.4l0.3,0.8c0.4-0.3,0.8-0.3,1.2-0.3  c0.3,0,0.6,0.2,0.7,0.3v0.1c-0.4,0-1.9,0.1-2.3,0.8c-0.4,0.6-0.2,1.3,0.4,1.6c0.2,0.1,0.4,0.2,0.5,0.2c0.5,0.1,1.1-0.1,1.5-0.3  l0.1,0.3h1.1L151.6,16L151.6,16z M149.1,17.3c0.1-0.6,0.9-0.6,1.2-0.6v0.7C149.9,17.9,149,17.8,149.1,17.3L149.1,17.3z" />\n   <path fill="#FFF100" d="M154.8,14.8V17c-0.1,0.3-0.4,0.4-0.7,0.5c-0.4,0-0.6-0.2-0.7-0.5v-2.3h-1.2v2.5c0,0.7,0.5,1.2,1.2,1.3  c1.2,0.1,1.5-0.5,1.5-0.5l0,0l0.2,0.4h1.1v-3.8L154.8,14.8L154.8,14.8z" />\n   <path fill="#FFFFFF" d="M113.5,17.9l-0.2-2.1H110V28h3.9v-6.8c0.4-0.8,1.2-2.1,3.4-2.1v-3.6C115.9,15.4,114.4,16.3,113.5,17.9z" />\n   <path fill="#FFFFFF" d="M128.1,10.4v6.4c-0.7-0.6-1.7-1.4-3.7-1.4c-3.6,0-6.1,3.2-6.1,6.8c-0.1,3.2,2.6,5.9,5.9,6  c1.5-0.1,3-0.6,4.2-1.4L129,28h3.1V10.5L128.1,10.4L128.1,10.4z M125.4,25.1c-2.3,0-2.8-1.9-2.8-3.4s0.7-3.2,2.8-3.2  c1.3,0,2.1,0.9,2.7,1.8v3C127.5,24.1,126.6,25.1,125.4,25.1z" />\n   <polygon fill="#FFF100" points="154.6,14.4 153.5,14.4 154.4,13.5 155.7,13.5 " />\n   <line fill="none" x1="35.6" y1="8.3" x2="35.6" y2="28.2" />\n   <rect fill="#D8D8D8" x="22.4" y="32.2" width="0.1" height="0.1" />\n   <path fill="#FFFFFF" opacity="0.7" enable-background="new    " d="M25.3,12.9c0.2-1.6,0-2.6-0.9-3.7s-2.6-1.5-4.6-1.5h-6.1c-0.4,0-0.8,0.3-0.9,0.8l-2.5,16.8  c-0.1,0.4,0.1,0.7,0.5,0.7h3.8l-0.3,1.7c-0.1,0.2,0.2,0.5,0.4,0.5H18c0.4,0,0.6-0.3,0.7-0.7l0.1-0.2l0.6-3.9l0.1-0.2  c0.1-0.5,0.4-0.7,0.7-0.7h0.5c3.1,0,5.4-1.4,6.1-5.1c0.3-1.6,0.1-2.9-0.6-3.8C25.9,13.4,25.6,13.1,25.3,12.9L25.3,12.9" />\n   <path fill="#FFFFFF" opacity="0.7" enable-background="new    " d="M25.3,12.9c0.2-1.6,0-2.6-0.9-3.7s-2.6-1.5-4.6-1.5h-6.1c-0.4,0-0.8,0.3-0.9,0.8l-2.5,16.8  c-0.1,0.4,0.1,0.7,0.5,0.7h3.8l0.9-6.3l-0.1,0.2c0.1-0.5,0.4-0.8,0.9-0.8h1.8c3.5,0,6.2-1.5,7-5.8C25.2,13.2,25.2,13,25.3,12.9" />\n   <path fill="#FFFFFF" d="M16.6,12.9c0-0.2,0.1-0.5,0.4-0.6c0.1,0,0.2-0.1,0.3-0.1h4.8c0.6,0,1.1,0.1,1.6,0.1c0.1,0,0.2,0,0.4,0.1  c0.1,0.1,0.2,0.1,0.4,0.2c0.1,0,0.1,0,0.2,0.1c0.2,0.1,0.4,0.2,0.6,0.2c0.2-1.6,0-2.6-0.9-3.6c-0.9-1.1-2.6-1.6-4.6-1.6h-6.1  c-0.4,0-0.8,0.4-0.9,0.8l-2.5,16.8c-0.1,0.4,0.1,0.7,0.5,0.7h3.8l0.9-6.3L16.6,12.9z" />\n   <g transform="matrix(0.379173, 0, 0, 0.397443, 9.686229, 4.778377)" opacity="0.2">\n      <path fill="#231F20" d="M41.1,20.5c0.9,0.5,1.7,1.1,2.3,1.8c1,1.1,1.6,2.5,1.9,4.1c0.3-3.2-0.2-5.8-1.9-7.8c-0.6-0.7-1.3-1.2-2.1-1.7   C41.3,18,41.3,19.2,41.1,20.5z" />\n      <path fill="#231F20" d="M2.2,49L8.5,9.4c0.1-1.1,1.1-1.9,2.2-1.9h16c5.5,0,9.8,1.2,12.2,3.9c1.2,1.4,1.9,3,2.2,4.8   c0.4-3.6-0.2-6.1-2.2-8.4c-2.4-2.8-6.7-4-12.2-4h-16c-1.1,0-2.1,0.8-2.3,1.9L1.8,47.9C1.8,48.3,1.9,48.7,2.2,49z" />\n      <path fill="#231F20" d="M12.5,53.2l-0.1,0.6c-0.1,0.4,0.1,0.8,0.4,1.1l0.3-1.7C13.1,53.2,12.5,53.2,12.5,53.2z" />\n   </g>\n   <rect fill="#FFFFFF" x="35.5" y="6.7" width="1.1" height="21.5" />\n</svg>';
 }, function(module, exports) {
     module.exports = '<svg width="101" height="32" viewBox="0 0 101 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n        <g id="Blue" fill="#3D93CE">\n            <g id="Logo" transform="translate(0.000000, 6.000000)">\n                <path d="M16.6660484,0.18 C17.3466626,1.3390991 17.6535069,2.53297297 17.6535069,4.04108108 C17.6535069,8.85117117 13.671346,15.0998198 10.439346,19.4875676 L3.05725952,19.4875676 L0.0966314879,1.23315315 L6.56045675,0.60036036 L8.12578201,13.5895495 C9.58835986,11.1326126 11.3932543,7.27153153 11.3932543,4.6390991 C11.3932543,3.1981982 11.1538599,2.21675676 10.7797405,1.40864865 L16.6660484,0.18 Z M24.9071592,11.6938739 C24.9071592,13.8367568 26.062718,14.6774775 27.5946678,14.6774775 C29.2629152,14.6774775 30.860218,14.2571171 32.9363097,13.1691892 L32.154346,18.6445045 C30.6915934,19.3814414 28.4119291,19.8731532 26.1991903,19.8731532 C20.5863512,19.8731532 18.5775346,16.3632432 18.5775346,11.9753153 C18.5775346,6.28810811 21.8451817,0.249369369 28.5819516,0.249369369 C32.2909931,0.249369369 34.3649879,2.39207207 34.3649879,5.37567568 C34.3653374,10.1855856 28.3783789,11.6590991 24.9071592,11.6938739 Z M25.0434567,8.2181982 C26.2329152,8.2181982 29.2274429,7.65711712 29.2274429,5.90216216 C29.2274429,5.05945946 28.6495761,4.6390991 27.9686125,4.6390991 C26.7772318,4.6390991 25.2138287,6.11225225 25.0434567,8.2181982 Z M53.0187093,4.4636036 C53.0187093,5.16558559 52.9154377,6.18378378 52.8126903,6.84918919 L50.8730709,19.4873874 L44.5790934,19.4873874 L46.3483408,7.90216216 C46.381891,7.58792793 46.4849879,6.95531532 46.4849879,6.60432432 C46.4849879,5.76162162 45.9743962,5.55135135 45.3605329,5.55135135 C44.5451938,5.55135135 43.7279325,5.93711712 43.1836159,6.21873874 L41.1768962,19.4875676 L34.8474464,19.4875676 L37.7390519,0.565945946 L43.2171661,0.565945946 L43.2865381,2.07621622 C44.5789187,1.19873874 46.2807163,0.24972973 48.6952803,0.24972973 C51.8942543,0.249369369 53.0187093,1.93495495 53.0187093,4.4636036 Z M71.7037093,2.32072072 C73.5063322,0.988108108 75.2084792,0.249369369 77.5554187,0.249369369 C80.7872439,0.249369369 81.9113495,1.93495495 81.9113495,4.4636036 C81.9113495,5.16558559 81.8084273,6.18378378 81.7056799,6.84918919 L79.7683322,19.4873874 L73.4726073,19.4873874 L75.2755796,7.6572973 C75.3087803,7.34108108 75.3785017,6.95531532 75.3785017,6.71063063 C75.3785017,5.7618018 74.8677353,5.55135135 74.2540467,5.55135135 C73.4722578,5.55135135 72.6908183,5.90234234 72.1106799,6.21873874 L70.1043097,19.4875676 L63.8101574,19.4875676 L65.6131298,7.65747748 C65.6463304,7.34126126 65.713955,6.9554955 65.713955,6.71081081 C65.713955,5.76198198 65.2030138,5.55153153 64.5914221,5.55153153 C63.7743356,5.55153153 62.9588218,5.9372973 62.4145052,6.21891892 L60.4062128,19.4877477 L54.0788599,19.4877477 L56.9701159,0.566126126 L62.3813045,0.566126126 L62.551327,2.14576577 C63.8101574,1.1990991 65.5105571,0.25009009 67.7900467,0.25009009 C69.7637405,0.249369369 71.0559464,1.12702703 71.7037093,2.32072072 Z M83.55059,11.7998198 C83.55059,5.83279279 86.6120433,0.249369369 93.6558322,0.249369369 C98.9633997,0.249369369 100.903543,3.47981982 100.903543,7.93873874 C100.903543,13.8365766 97.8751159,19.9443243 90.6614792,19.9443243 C85.3196626,19.9443243 83.55059,16.3281081 83.55059,11.7998198 Z M94.4374464,7.83279279 C94.4374464,6.28810811 94.0628028,5.23495495 92.9409689,5.23495495 C90.4570329,5.23495495 89.9469654,9.76306306 89.9469654,12.0794595 C89.9469654,13.8367568 90.4238322,14.9243243 91.5453166,14.9243243 C93.8931298,14.9243243 94.4374464,10.149009 94.4374464,7.83279279 Z"></path>\n            </g>\n        </g>\n    </g>\n</svg>\n';
 }, function(module, exports) {
@@ -12693,13 +12693,13 @@
     __webpack_require__.r(__webpack_exports__);
     var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29), _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32), _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12), _lib_security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(25);
     if (!Object(_lib_security__WEBPACK_IMPORTED_MODULE_3__.b)()) throw new Error("Do not integrate with versioned script url");
-    if (window.paypal && "4.0.282" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-        version: "4.0.282"
-    }), new Error("PayPal Checkout Integration Script with same version (4.0.282) already loaded on page");
-    if (window.paypal && window.paypal.version && "4.0.282" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
+    if (window.paypal && "4.0.283" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
+        version: "4.0.283"
+    }), new Error("PayPal Checkout Integration Script with same version (4.0.283) already loaded on page");
+    if (window.paypal && window.paypal.version && "4.0.283" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
         existingVersion: window.paypal.version,
-        version: "4.0.282"
-    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.282");
+        version: "4.0.283"
+    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.283");
     try {
         var _interface = __webpack_require__(65);
         Object(_lib_namespace__WEBPACK_IMPORTED_MODULE_1__.a)(_interface, [ "paypal", "PAYPAL", "ppxo" ], [ "apps" ]);
@@ -13429,8 +13429,8 @@
         allowHorizontal: !1,
         allowVertical: !0
     }, _FUNDING_CONFIG[constants.v.ELV] = {
-        allowedCountries: [ constants.r.DE, constants.r.AT ],
-        defaultVerticalCountries: [ constants.r.DE, constants.r.AT ],
+        allowedCountries: [ constants.r.DE ],
+        defaultVerticalCountries: [ constants.r.DE ],
         allowHorizontal: !1,
         allowVertical: !0
     }, _FUNDING_CONFIG[constants.v.BANCONTACT] = {
@@ -13632,16 +13632,16 @@
     }, _BUTTON_CONFIG[constants.f.ITAU] = {
         label: "{ logo: " + constants.h.ITAU + " }",
         logoLabel: "{ logo: " + constants.h.ITAU + " }",
-        defaultColor: constants.e.SILVER,
-        colors: [ constants.e.BLUE, constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
-        logoColors: (_logoColors4 = {}, _logoColors4[constants.e.BLUE] = constants.i.BLUE, 
-        _logoColors4[constants.e.SILVER] = constants.i.BLUE, _logoColors4[constants.e.BLACK] = constants.i.BLUE, 
-        _logoColors4[constants.e.WHITE] = constants.i.BLUE, _logoColors4),
-        secondaryColors: (_secondaryColors4 = {}, _secondaryColors4[constants.e.GOLD] = constants.e.SILVER, 
-        _secondaryColors4[constants.e.BLUE] = constants.e.SILVER, _secondaryColors4[constants.e.SILVER] = constants.e.SILVER, 
-        _secondaryColors4[constants.e.BLACK] = constants.e.BLACK, _secondaryColors4[constants.e.DARKBLUE] = constants.e.SILVER, 
-        _secondaryColors4[constants.e.WHITE] = constants.e.WHITE, _secondaryColors4),
-        allowPrimary: !0,
+        defaultColor: constants.e.DARKBLUE,
+        colors: [ constants.e.DARKBLUE, constants.e.BLUE, constants.e.BLACK ],
+        logoColors: (_logoColors4 = {}, _logoColors4[constants.e.DARKBLUE] = constants.i.WHITE, 
+        _logoColors4[constants.e.BLUE] = constants.i.WHITE, _logoColors4[constants.e.BLACK] = constants.i.WHITE, 
+        _logoColors4),
+        secondaryColors: (_secondaryColors4 = {}, _secondaryColors4[constants.e.GOLD] = constants.e.DARKBLUE, 
+        _secondaryColors4[constants.e.BLUE] = constants.e.BLUE, _secondaryColors4[constants.e.SILVER] = constants.e.DARKBLUE, 
+        _secondaryColors4[constants.e.BLACK] = constants.e.BLACK, _secondaryColors4[constants.e.DARKBLUE] = constants.e.DARKBLUE, 
+        _secondaryColors4[constants.e.WHITE] = constants.e.DARKBLUE, _secondaryColors4),
+        allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !0
     }, _BUTTON_CONFIG[constants.f.IDEAL] = {
@@ -19954,14 +19954,13 @@
         return labelToFunding(label) === source ? multiple && layout === constants.g.HORIZONTAL ? defaultLabel : label : defaultLabel;
     }
     function renderCards(_ref5) {
-        var button = _ref5.button, layout = _ref5.layout, size = _ref5.size;
+        var layout = _ref5.layout, size = _ref5.size;
         return _ref5.cards.map(function(name) {
             var _ref6, _ref7, _ref8, logo = resources.a[name];
             return Object(jsx.b)("div", Object(esm_extends.a)({}, ((_ref6 = {})[constants.c.LAYOUT] = layout || "", 
-            _ref6), ((_ref7 = {})[constants.c.SIZE] = size || "", _ref7), ((_ref8 = {})[constants.c.BUTTON] = button || !1, 
-            _ref8[constants.c.FUNDING_SOURCE] = "" + constants.v.CARD, _ref8[constants.c.CARD] = "" + name, 
-            _ref8), {
-                class: (button ? class_CLASS.BUTTON : "") + " " + class_CLASS.CARD + " " + class_CLASS.CARD + "-" + name,
+            _ref6), ((_ref7 = {})[constants.c.SIZE] = size || "", _ref7), ((_ref8 = {})[constants.c.FUNDING_SOURCE] = "" + constants.v.CARD, 
+            _ref8[constants.c.CARD] = "" + name, _ref8), {
+                class: class_CLASS.CARD + " " + class_CLASS.CARD + "-" + name,
                 tabindex: "0"
             }), Object(jsx.b)("img", {
                 style: " display: block; ",
@@ -20027,7 +20026,6 @@
                 if (!funding) throw new Error("Can not determine card types without funding");
                 return renderCards({
                     cards: _cards,
-                    button: !1,
                     layout: layout,
                     size: size
                 });
@@ -20167,7 +20165,6 @@
                 class: "" + class_CLASS.FUNDINGICONS
             }, renderCards({
                 cards: cards,
-                button: !0,
                 size: size,
                 layout: layout
             }));
@@ -20289,7 +20286,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.282", 
+        return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.283", 
         _ref18), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -21396,7 +21393,7 @@
         }), Object(beaver_logger_client.p)(((setup_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
         setup_track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, setup_track3));
     }
-    var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.282", legacy = __webpack_require__(66);
+    var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.283", legacy = __webpack_require__(66);
     interface_checkout = legacy.checkout, apps = legacy.apps, Object(lib.G)() && (interface_Checkout = src_checkout.a, 
     interface_BillingPage = BillingPage, interface_ThreeDomainSecure = ThreeDomainSecure, 
     PayPalCheckout = src_checkout.a, enableCheckoutIframe = function() {
@@ -21944,4 +21941,4 @@
         return setup;
     });
 } ]);
-//# sourceMappingURL=checkout.4.0.282.js.map
+//# sourceMappingURL=checkout.4.0.283.js.map
