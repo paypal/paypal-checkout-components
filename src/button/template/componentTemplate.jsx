@@ -76,8 +76,8 @@ function determineButtons({ label, color, sources, multiple, layout } : { label 
     });
 }
 
-function renderCards({ cards, button, layout, size } :
-  { cards : $ReadOnlyArray<string>, button : ?boolean, layout? : string, size? : string }) : $ReadOnlyArray<JsxHTMLNode> {
+function renderCards({ cards, layout, size } :
+  { cards : $ReadOnlyArray<string>, layout? : string, size? : string }) : $ReadOnlyArray<JsxHTMLNode> {
     return cards.map(name => {
         const logo = cardLogos[name];
 
@@ -85,8 +85,8 @@ function renderCards({ cards, button, layout, size } :
             <div
                 { ...{ [ATTRIBUTE.LAYOUT]: layout ? layout : '' } }
                 { ...{ [ATTRIBUTE.SIZE]: size ? size : '' } }
-                { ...{ [ATTRIBUTE.BUTTON]: (button || false), [ATTRIBUTE.FUNDING_SOURCE]: `${ FUNDING.CARD }`, [ATTRIBUTE.CARD]: `${ name }` } }
-                class={ `${ button ? CLASS.BUTTON : '' } ${ CLASS.CARD } ${ CLASS.CARD }-${ name }` }
+                { ...{ [ATTRIBUTE.FUNDING_SOURCE]: `${ FUNDING.CARD }`, [ATTRIBUTE.CARD]: `${ name }` } }
+                class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name }` }
                 tabindex='0'>
                 <img
                     style={ ` display: block; ` }
@@ -104,7 +104,7 @@ function renderFundingIcons({ cards, fundingicons, size, layout } :
         return;
     }
 
-    return <div class={ `${ CLASS.FUNDINGICONS }` }>{ renderCards({ cards, button: true, size, layout }) }</div>;
+    return <div class={ `${ CLASS.FUNDINGICONS }` }>{ renderCards({ cards, size, layout }) }</div>;
 }
 
 function renderContent(text : string, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size } :
@@ -171,7 +171,7 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
                 throw new Error(`Can not determine card types without funding`);
             }
 
-            return renderCards({ cards, button: false, layout, size });
+            return renderCards({ cards, layout, size });
         },
 
         separator() : JsxHTMLNode {
