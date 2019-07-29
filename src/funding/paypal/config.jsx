@@ -8,7 +8,7 @@ import { LOGO_COLOR, PPLogo, PayPalLogo } from '@paypal/sdk-logos/src';
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, CLASS } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 import { componentContent } from '../content';
-import { Text, Space } from '../../ui';
+import { Text, Space, LoadingDots } from '../../ui';
 
 const PPPayPalLogo = ({ logoColor }) => <Fragment><PPLogo logoColor={ logoColor } /><Space /><PayPalLogo logoColor={ logoColor } /></Fragment>;
 
@@ -46,6 +46,10 @@ export function getPayPalConfig() : FundingSourceConfig {
         },
     
         Tag: ({ multiple, locale: { lang } } : { locale : LocaleType, multiple : boolean }) => {
+            if (__WEB__) {
+                return <LoadingDots />;
+            }
+            
             const { DualTag, SaferTag } = componentContent[lang];
     
             return (multiple && DualTag)

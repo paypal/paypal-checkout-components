@@ -7,7 +7,6 @@ import { node, type ElementNode } from 'jsx-pragmatic/src';
 import { CLASS } from '../../constants';
 import { getFundingConfig } from '../../funding';
 import { type ButtonStyle, type Personalization } from '../props';
-import { LoadingDots } from '../../ui';
 
 export function TagLine({ fundingSource, style, locale, multiple, nonce, personalization } :
     {| fundingSource : $Values<typeof FUNDING>, style : ButtonStyle, locale : LocaleType, multiple : boolean, nonce : string, personalization : ?Personalization |}) : ?ElementNode {
@@ -24,14 +23,6 @@ export function TagLine({ fundingSource, style, locale, multiple, nonce, persona
 
     if (!Tag) {
         return;
-    }
-
-    if (__WEB__) {
-        return (
-            <div class={ CLASS.TAGLINE }>
-                <LoadingDots />
-            </div>
-        );
     }
 
     return (
