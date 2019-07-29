@@ -3,6 +3,7 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { getDomain } from 'cross-domain-utils/src';
 import { extendUrl } from 'belter/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 
 import type { PopupBridge, CreateOrder, OnApprove, OnCancel, OnShippingChange } from '../button/props';
 import type { ProxyWindow } from '../types';
@@ -43,7 +44,8 @@ type PopupBridgeProps = {|
     createOrder : CreateOrder,
     onApprove : OnApprove,
     onCancel : OnCancel,
-    commit : boolean
+    commit : boolean,
+    fundingSource : $Values<typeof FUNDING>
 |};
 
 const USER_ACTION = {
@@ -52,7 +54,7 @@ const USER_ACTION = {
 };
 
 export function initPopupBridge(props : PopupBridgeProps) : PopupBridgeInstance {
-    const { popupBridge, createOrder, onApprove, onCancel, commit } = props;
+    const { popupBridge, createOrder, onApprove, onCancel, commit, fundingSource } = props;
 
     if (!popupBridge) {
         throw new Error(`Popup bridge required`);
@@ -62,6 +64,7 @@ export function initPopupBridge(props : PopupBridgeProps) : PopupBridgeInstance 
         return createOrder().then(orderID => {
             const url = extendUrl(`${ getDomain() }${ EXPERIENCE_URI.CHECKOUT }`, {
                 query: {
+                    fundingSource,
                     token:        orderID,
                     useraction:   commit ? USER_ACTION.COMMIT : USER_ACTION.CONTINUE,
                     redirect_uri: popupBridge.nativeUrl
