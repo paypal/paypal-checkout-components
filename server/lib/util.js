@@ -5,8 +5,8 @@ import { dirname, resolve } from 'path';
 import { webpackCompile } from 'webpack-mem-compile';
 import webpack from 'webpack';
 
-import { HTTP_HEADER, HTTP_CONTENT_TYPE, HTTP_STATUS_CODE } from './constants';
-import type { ExpressRequest, ExpressResponse } from './types';
+import { HTTP_HEADER, HTTP_CONTENT_TYPE, HTTP_STATUS_CODE } from '../config';
+import type { ExpressRequest, ExpressResponse } from '../types';
 
 function response(res : ExpressResponse, status : $Values<typeof HTTP_STATUS_CODE>, type : $Values<typeof HTTP_CONTENT_TYPE>, message : string) {
     res.status(status)

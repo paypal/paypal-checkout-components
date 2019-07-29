@@ -2,7 +2,9 @@
 
 import { COUNTRY } from '@paypal/sdk-constants';
 
-import type { ExpressRequest, FundingEligibility, LocaleType, LoggerType } from './types';
+import type { ExpressRequest, LocaleType, LoggerType } from '../types';
+
+import type { FundingEligibility } from './fundingEligibility';
 
 export type GetPersonalization = (ExpressRequest, {
     clientID : string,

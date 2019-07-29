@@ -2,7 +2,44 @@
 
 import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING } from '@paypal/sdk-constants';
 
-import type { ExpressRequest, FundingEligibility, LoggerType } from './types';
+import type { ExpressRequest, LoggerType } from '../types';
+
+type VaultedInstrument = {|
+
+|};
+
+type VaultedInstruments = $ReadOnlyArray<VaultedInstrument>;
+
+export type FundingEligibility = {|
+    paypal : {
+    eligible : boolean,
+        vaultedInstruments ? : VaultedInstruments
+},
+venmo ? : {
+    eligible : boolean,
+    vaultedInstruments? : VaultedInstruments
+},
+    itau ? : {
+        eligible : boolean,
+        vaultedInstruments? : VaultedInstruments
+    },
+    card : {
+    vendors : {
+        visa : {
+            vaultedInstruments ? : VaultedInstruments
+        },
+        mastercard : {
+            vaultedInstruments ? : VaultedInstruments
+        },
+        amex : {
+            vaultedInstruments ? : VaultedInstruments
+        },
+        discover ? : {
+            vaultedInstruments? : VaultedInstruments
+        }
+    }
+}
+|};
 
 export type GetFundingEligibility = (ExpressRequest, {
     clientId : string,

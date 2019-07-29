@@ -14,7 +14,7 @@
     "coverageDirectory": "./server-coverage/"
   },
   "scripts": {
-    "start": "babel-node ./server/server",
+    "start": "babel-node ./server/devServer",
     "setup": "npm install && npm run flow-typed",
     "lint": "eslint src/ server/ test/ *.js",
     "flow-typed": "rm -rf ./flow-typed && flow-typed install --ignoreDeps peer && flow-typed install jest@22 mocha@3 && flow-typed install express@4.16 && sed -i -e 's/http$IncomingMessage,/http$IncomingMessage<>,/g' ./flow-typed/npm/express_v4.16.x.js",

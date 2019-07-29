@@ -2,8 +2,9 @@
 
 import { ENV, FUNDING, CARD } from '@paypal/sdk-constants';
 
-import type { FundingEligibility } from './types';
-import { FNCLS, FRAUDNET_ID } from './config';
+import { FNCLS, FRAUDNET_ID } from '../config';
+
+import type { FundingEligibility } from './fundingEligibility';
 
 const FRAUDNET_URL = {
     [ ENV.LOCAL ]:      'https://www.msmaster.qa.paypal.com/en_US/m/fb-raw.js',

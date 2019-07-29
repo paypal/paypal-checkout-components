@@ -4,7 +4,7 @@ import { randomBytes } from 'crypto';
 
 import express from 'express';
 
-import { getButtonMiddleware } from './button';
+import { getButtonMiddleware } from './buttons';
 import type { ExpressRequest, ExpressResponse } from './types';
 
 const app = express();

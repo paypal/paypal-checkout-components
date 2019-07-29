@@ -1,4 +1,3 @@
 /* @flow */
 
-export * from './button';
-export * from './watcher';
+export * from './buttons';

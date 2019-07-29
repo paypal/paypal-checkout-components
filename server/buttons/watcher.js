@@ -6,8 +6,8 @@ import { poll } from 'grabthar';
 import { memoize } from 'belter';
 import { ENV } from '@paypal/sdk-constants';
 
-import { isLocal, compileWebpack, requireScript } from './util';
-import { BUTTON_RENDER_MODULE, BUTTON_CLIENT_MODULE, BUTTON_RENDER_JS, BUTTON_CLIENT_JS, BUTTON_CLIENT_MIN_JS } from './config';
+import { isLocal, compileWebpack, requireScript } from '../lib';
+import { BUTTON_RENDER_MODULE, BUTTON_CLIENT_MODULE, BUTTON_RENDER_JS, BUTTON_CLIENT_JS, BUTTON_CLIENT_MIN_JS } from '../config';
 
 const WEBPACK_CONFIG = 'webpack.config';
 
