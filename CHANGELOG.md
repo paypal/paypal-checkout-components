@@ -1,3 +1,11 @@
+## <small>5.0.47 (2019-07-29)</small>
+
+* Add missing types ([ff0c7a2](http://github.paypal.com/paypal/paypal-checkout/commit/ff0c7a2))
+* Fix label logic for multiple buttons ([13c5c32](http://github.paypal.com/paypal/paypal-checkout/commit/13c5c32))
+* Remove web static dependency on localization content ([9c11c7c](http://github.paypal.com/paypal/paypal-checkout/commit/9c11c7c))
+
+
+
 ## <small>5.0.46 (2019-07-24)</small>
 
 * Do not show loading dots if label or client token (for vault) not passed ([295db21](http://github.paypal.com/paypal/paypal-checkout/commit/295db21))
