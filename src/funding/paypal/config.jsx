@@ -63,6 +63,45 @@ export function getPayPalConfig() : FundingSourceConfig {
                     <PPLogo logoColor={ logoColor } optional /> <Text className={ CLASS.VAULT_LABEL }>{ label }</Text>
                 </Fragment>
             );
+        },
+
+        Label: ({ logo, label, locale: { lang }, period, layout, multiple, clientAccessToken }) => {
+            if (layout === BUTTON_LAYOUT.HORIZONTAL && multiple) {
+                return logo;
+            }
+
+            if (__WEB__) {
+                if (label || clientAccessToken) {
+                    return (
+                        <Fragment>
+                            {logo}
+                            <Text> <LoadingDots /></Text>
+                        </Fragment>
+                    );
+                }
+
+                return logo;
+            }
+
+            const { Checkout, Pay, BuyNow, Installment } = componentContent[lang];
+
+            if (label === BUTTON_LABEL.CHECKOUT) {
+                return <Checkout logo={ logo } />;
+            }
+
+            if (label === BUTTON_LABEL.PAY) {
+                return <Pay logo={ logo } />;
+            }
+
+            if (label === BUTTON_LABEL.BUYNOW) {
+                return <BuyNow logo={ logo } />;
+            }
+
+            if (label === BUTTON_LABEL.INSTALLMENT && Installment) {
+                return <Installment logo={ logo } period={ period } />;
+            }
+
+            return logo;
         }
     };
 }

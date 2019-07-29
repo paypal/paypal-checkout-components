@@ -3,14 +3,12 @@
 /** @jsx node */
 
 import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
-import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
+import { type ChildType } from 'jsx-pragmatic/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, DEFAULT, BUTTON_LABEL } from '../constants';
 import type { FundingEligibilityType } from '../types';
-import { LoadingDots, Text } from '../ui';
 
-import { componentContent } from './content';
 
 export type CardConfig = {|
     Label : () => ChildType
@@ -107,46 +105,7 @@ export const DEFAULT_FUNDING_CONFIG : FundingSourceConfig = {
         throw new Error(`Not implemented`);
     },
 
-    Label: ({ logo, label, locale: { lang }, period, layout, multiple, clientAccessToken }) => {
-        if (__WEB__) {
-            if (!label && !clientAccessToken) {
-                return logo;
-            }
-
-            if (layout === BUTTON_LAYOUT.HORIZONTAL && multiple) {
-                return logo;
-            }
-
-            return (
-                <Fragment>
-                    { logo }
-                    <Text> <LoadingDots /></Text>
-                </Fragment>
-            );
-        }
-        
-        if (!label || label === BUTTON_LABEL.PAYPAL) {
-            return logo;
-        }
-        
-        const { Checkout, Pay, BuyNow, Installment } = componentContent[lang];
-    
-        if (label === BUTTON_LABEL.CHECKOUT) {
-            return <Checkout logo={ logo } />;
-        }
-    
-        if (label === BUTTON_LABEL.PAY) {
-            return <Pay logo={ logo } />;
-        }
-    
-        if (label === BUTTON_LABEL.BUYNOW) {
-            return <BuyNow logo={ logo } />;
-        }
-    
-        if (label === BUTTON_LABEL.INSTALLMENT && Installment) {
-            return <Installment logo={ logo } period={ period } />;
-        }
-    
-        throw new Error(`Label ${ label } not supported`);
+    Label: ({ logo }) => {
+        return logo;
     }
 };
