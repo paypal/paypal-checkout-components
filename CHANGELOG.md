@@ -1,3 +1,8 @@
+## <small>5.0.49 (2019-07-30)</small>
+
+
+
+
 ## <small>5.0.48 (2019-07-30)</small>
 
 * Add impression beacon for tagline personalization ([2286fe8](http://github.paypal.com/paypal/paypal-checkout/commit/2286fe8))
