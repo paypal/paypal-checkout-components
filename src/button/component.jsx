@@ -524,6 +524,11 @@ export const Button : Component<ButtonOptions> = create({
 
                 const apmFunding = APM_FUNDING.filter(source => (isApmEligible(source, props)));
 
+                const fundingCommit = props.commit;
+
+                if (fundingCommit === false) {
+                    allowed = [];
+                }
                 allowed = allowed.concat(apmFunding);
 
                 let remembered = getRememberedFunding(sources => sources);
