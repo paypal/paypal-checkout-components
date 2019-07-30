@@ -46,7 +46,7 @@ export async function getSmartButtonRenderScript() : Promise<{ button : Object, 
 }
 
 export async function compileLocalSmartButtonClientScript() : Promise<{ script : string, version : string }> {
-    const script = await compileWebpack(join(__dirname, '..', WEBPACK_CONFIG), 'WEBPACK_CONFIG_DEBUG');
+    const script = await compileWebpack(join(__dirname, '../..', WEBPACK_CONFIG), 'WEBPACK_CONFIG_DEBUG');
     return { script, version: ENV.LOCAL };
 }
 
