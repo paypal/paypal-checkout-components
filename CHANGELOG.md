@@ -1,3 +1,9 @@
+## <small>5.0.48 (2019-07-30)</small>
+
+* Add impression beacon for tagline personalization ([2286fe8](http://github.paypal.com/paypal/paypal-checkout/commit/2286fe8))
+
+
+
 ## <small>5.0.47 (2019-07-29)</small>
 
 * Add missing types ([ff0c7a2](http://github.paypal.com/paypal/paypal-checkout/commit/ff0c7a2))
