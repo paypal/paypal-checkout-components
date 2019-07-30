@@ -1,3 +1,9 @@
+## <small>5.0.51 (2019-07-30)</small>
+
+* Fix typo ([1f7ca26](http://github.paypal.com/paypal/paypal-checkout/commit/1f7ca26))
+
+
+
 ## <small>5.0.50 (2019-07-30)</small>
 
 * Add nonce to style tag ([49ac557](http://github.paypal.com/paypal/paypal-checkout/commit/49ac557))
