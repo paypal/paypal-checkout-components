@@ -9,7 +9,7 @@ export function TrackingBeacon({ url, nonce } : { url : string, nonce : ?string 
             <style
                 nonce={ nonce }
                 innerHTML={ `
-                    .tracking-beacon: {
+                    .tracking-beacon {
                         visibility: hidden;
                         position: absolute;
                         height: 1px;
