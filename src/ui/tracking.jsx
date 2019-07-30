@@ -6,7 +6,9 @@ import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 export function TrackingBeacon({ url, nonce } : { url : string, nonce : ?string }) : ChildType {
     return (
         <Fragment>
-            <style innerHTML={ `
+            <style
+                nonce={ nonce }
+                innerHTML={ `
                     .tracking-beacon: {
                         visibility: hidden;
                         position: absolute;
@@ -14,7 +16,7 @@ export function TrackingBeacon({ url, nonce } : { url : string, nonce : ?string 
                         width: 1px;
                     }
                 ` } />
-            <img class='tracking-beacon' src={ url } nonce={ nonce } />
+            <img class='tracking-beacon' src={ url } />
         </Fragment>
     );
 }
