@@ -120,7 +120,7 @@ type ButtonOptions = {|
     client : {
         [string] : (string | ZalgoPromise<string>)
     },
-    commit: Boolean,
+    commit : boolean,
     funding? : { allowed? : $ReadOnlyArray<string>, disallowed? : $ReadOnlyArray<string> },
     env? : string,
     locale? : string,
