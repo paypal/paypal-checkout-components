@@ -140,7 +140,10 @@ export type ButtonStyleInputs = {|
 
 export type Personalization = {|
     tagline? : {|
-        text : string
+        text : string,
+        tracking : {
+            impression : ?string
+        }
     |}
 |};
 
