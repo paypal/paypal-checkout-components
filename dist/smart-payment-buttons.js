@@ -2689,7 +2689,7 @@ window.spb = function(modules) {
     }, button_props = __webpack_require__(12), dom = __webpack_require__(10), api_api = __webpack_require__(8);
     function setupButton(_ref) {
         var fundingEligibility = _ref.fundingEligibility, buyerGeoCountry = _ref.buyerCountry, serverCSPNonce = _ref.cspNonce, serverMerchantID = _ref.merchantID;
-        if (!window.paypal) throw new Error("PayPal library not loaded... zerk");
+        if (!window.paypal) throw new Error("PayPal library not loaded");
         var init, _getGlobalProps = Object(button_props.getGlobalProps)({
             xprops: window.xprops,
             buyerGeoCountry: buyerGeoCountry,
