@@ -31,7 +31,7 @@ export function TagLine({ fundingSource, style, locale, multiple, nonce, persona
     return (
         <div class={ CLASS.TAGLINE }>
             {
-                tagline
+                (tagline && !multiple)
                     ? (
                         <Fragment>
                             <span>{ tagline.text }</span>
