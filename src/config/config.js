@@ -499,6 +499,38 @@ export const config = {
         
         'play.jackpocket.com': {
             disable_venmo: true
+        },
+
+        'crepeerase.com': {
+            disable_venmo: true
+        },
+
+        'specificbeauty.com': {
+            disable_venmo: true
+        },
+
+        'meaningfulbeauty.com': {
+            disable_venmo: true
+        },
+
+        'smileactives.com ': {
+            disable_venmo: true
+        },
+
+        'mally.com': {
+            disable_venmo: true
+        },
+
+        'westmorebeauty.com': {
+            disable_venmo: true
+        },
+
+        'subd.com': {
+            disable_venmo: true
+        },
+
+        'seacalmskin.com': {
+            disable_venmo: true
         }
     },
 
