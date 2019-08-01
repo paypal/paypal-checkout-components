@@ -31,7 +31,8 @@ const WEBPACK_CONFIG_DEV = getWebpackConfig({
             ...testGlobals.__PAYPAL_CHECKOUT__,
             __URI__:                {
                 __CHECKOUT__: `/demo/dev/checkout.htm`,
-                __BUTTONS__:  `/demo/dev/button.htm`
+                __BUTTONS__:  `/demo/dev/button.htm`,
+                __MENU__:     `/demo/dev/menu.htm`
             }
         },
         __paypal_checkout__: {

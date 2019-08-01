@@ -22,6 +22,7 @@ module.exports = {
         __URI__:                {
             __CHECKOUT__:    '/checkoutnow',
             __BUTTONS__:     '/smart/buttons',
+            __MENU__:        '/smart/menu',
             __CARD_FIELDS__: '/smart/card-fields'
         }
     }
