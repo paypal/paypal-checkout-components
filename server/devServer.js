@@ -11,7 +11,28 @@ const app = express();
 const PORT = process.env.PORT || 8003;
 const URI = '/smart/buttons';
 
-const buttonMiddleware = getButtonMiddleware();
+const buttonMiddleware = getButtonMiddleware({
+    getFundingEligibility: () => {
+        return Promise.resolve({
+            paypal: {
+                eligible: true
+            }
+        });
+    },
+    clientIDToMerchantID: () => {
+        return Promise.resolve('XYZ12345');
+    },
+    getPersonalization: () => {
+        return Promise.resolve({
+            tagline: {
+                text:     'foo',
+                tracking: {
+                    impression: 'https://www.google.com/foobar'
+                }
+            }
+        });
+    }
+});
 
 app.get(URI, (req : ExpressRequest, res : ExpressResponse) => {
     const nonce = randomBytes(16).toString('base64').replace(/[^a-zA-Z0-9_]/g, '');
