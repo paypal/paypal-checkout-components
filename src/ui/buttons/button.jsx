@@ -8,7 +8,7 @@ import { noop } from 'belter/src';
 
 import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER } from '../../constants';
 import { getFundingConfig } from '../../funding';
-import { type ButtonStyle } from '../props';
+import { type ButtonStyle } from '../../zoid/buttons/props';
 import type { FundingEligibilityType } from '../../types';
 
 import { Spinner } from './spinner';

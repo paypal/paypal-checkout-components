@@ -8,11 +8,10 @@ import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
     ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 
-import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE } from '../constants';
-import { getFundingConfig } from '../funding';
-import type { FundingEligibilityType } from '../types';
-
-import { BUTTON_SIZE_STYLE } from './template/config';
+import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE } from '../../constants';
+import { getFundingConfig } from '../../funding';
+import type { FundingEligibilityType } from '../../types';
+import { BUTTON_SIZE_STYLE } from '../../ui/buttons/config';
 
 export type CreateOrderData = {|
 

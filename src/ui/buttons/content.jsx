@@ -6,7 +6,7 @@ import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 import { LANG } from '@paypal/sdk-constants/src';
 import { PayPalLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
-import { Text } from '../../ui';
+import { Text } from '../text';
 
 type ButtonContentMap = {
     [ $Values<typeof LANG> ] : {

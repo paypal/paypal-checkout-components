@@ -9,17 +9,17 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVau
 import { rememberFunding, getRememberedFunding } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { isDevice, uniqueID, supportsPopups, popup, writeElementToWindow, inlineMemoize } from 'belter/src';
-import { FUNDING, PLATFORM, CARD, QUERY_BOOL } from '@paypal/sdk-constants/src';
+import { isDevice, uniqueID, inlineMemoize } from 'belter/src';
+import { FUNDING, PLATFORM, QUERY_BOOL } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
-import { getButtonUrl, DEFAULT_POPUP_SIZE } from '../config';
-import { getFundingEligibility } from '../globals';
-import { getSessionID } from '../lib';
-import { componentTemplate } from '../checkout/template';
+import { getButtonUrl } from '../../config';
+import { getFundingEligibility } from '../../globals';
+import { getSessionID } from '../../lib';
 
-import { containerTemplate, Buttons as ButtonsTemplate } from './template';
 import { normalizeButtonStyle, type ButtonProps } from './props';
+import { containerTemplate } from './container';
+import { PrerenderedButtons } from './prerender';
 
 export function getButtonsComponent() : ZoidComponent<ButtonProps> {
     return inlineMemoize(getButtonsComponent, () => {
@@ -39,35 +39,14 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
             logger: getLogger(),
 
             prerenderTemplate: ({ state, props, doc }) => {
-
-                const handleClick = (event, { fundingSource, card } : {| fundingSource : $Values<typeof FUNDING>, card : ?$Values<typeof CARD> |}) => {
-                    let win;
-
-                    if (supportsPopups()) {
-                        win = popup('', {
-                            width:  DEFAULT_POPUP_SIZE.WIDTH,
-                            height: DEFAULT_POPUP_SIZE.HEIGHT
-                        });
-
-                        // $FlowFixMe
-                        writeElementToWindow(win, componentTemplate({
-                            // $FlowFixMe
-                            doc:   win.document,
-                            props: { nonce: props.nonce }
-                        }));
-                    }
-
-                    state.prerenderDetails = { win, fundingSource, card };
-                };
-
                 return (
-                    <html>
-                        <body>
-                            <div>
-                                <ButtonsTemplate { ...props } onClick={ handleClick } />
-                            </div>
-                        </body>
-                    </html>
+                    <PrerenderedButtons
+                        nonce={ props.nonce }
+                        props={ props }
+                        onRenderCheckout={ ({ win, fundingSource, card }) => {
+                            state.prerenderDetails = { win, fundingSource, card };
+                        } }
+                    />
                 ).render(dom({ doc }));
             },
 

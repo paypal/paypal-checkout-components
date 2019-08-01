@@ -6,7 +6,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { CLASS, BUTTON_NUMBER, BUTTON_LAYOUT } from '../../constants';
 import { determineEligibleFunding, determineVaultedFunding, isVaultedFundingEligible } from '../../funding';
-import { normalizeButtonProps, type ButtonPropsInputs } from '../props';
+import { normalizeButtonProps, type ButtonPropsInputs } from '../../zoid/buttons/props';
 
 import { Style } from './style';
 import { BasicButton, VaultedButton } from './button';
@@ -119,4 +119,4 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     );
 }
 
-export { DEFAULT_PROPS } from '../props';
+export { DEFAULT_PROPS } from '../../zoid/buttons/props';

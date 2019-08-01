@@ -70,7 +70,7 @@ const WEBPACK_CONFIG_DEV = getWebpackConfig({
 
 const WEBPACK_CONFIG_BUTTON_RENDER = getWebpackConfig({
     context:       __dirname,
-    entry:         './src/buttons/template/buttons',
+    entry:         './src/ui/buttons',
     filename:      'button.js',
     modulename:    'button',
     debug:         true,
