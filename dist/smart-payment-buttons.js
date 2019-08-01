@@ -2689,7 +2689,7 @@ window.spb = function(modules) {
     }, button_props = __webpack_require__(12), dom = __webpack_require__(10), api_api = __webpack_require__(8);
     function setupButton(_ref) {
         var fundingEligibility = _ref.fundingEligibility, buyerGeoCountry = _ref.buyerCountry, serverCSPNonce = _ref.cspNonce, serverMerchantID = _ref.merchantID;
-        if (!window.paypal) throw new Error("PayPal library not loaded");
+        if (!window.paypal) throw new Error("PayPal library not loaded... zerk");
         var init, _getGlobalProps = Object(button_props.getGlobalProps)({
             xprops: window.xprops,
             buyerGeoCountry: buyerGeoCountry,
@@ -2888,13 +2888,14 @@ window.spb = function(modules) {
                         createBillingAgreement: createBillingAgreement,
                         createSubscription: createSubscription
                     }) : isPopupBridge ? function(props) {
-                        var popupBridge = props.popupBridge, createOrder = props.createOrder, onApprove = props.onApprove, onCancel = props.onCancel, commit = props.commit;
+                        var popupBridge = props.popupBridge, createOrder = props.createOrder, onApprove = props.onApprove, onCancel = props.onCancel, commit = props.commit, fundingSource = props.fundingSource;
                         if (!popupBridge) throw new Error("Popup bridge required");
                         return {
                             start: function start() {
                                 return createOrder().then(function(orderID) {
                                     var url = Object(src.c)("" + Object(cross_domain_utils_src.a)() + config.d.CHECKOUT, {
                                         query: {
+                                            fundingSource: fundingSource,
                                             token: orderID,
                                             useraction: commit ? USER_ACTION.COMMIT : USER_ACTION.CONTINUE,
                                             redirect_uri: popupBridge.nativeUrl
@@ -2921,6 +2922,7 @@ window.spb = function(modules) {
                         };
                     }({
                         popupBridge: popupBridge,
+                        fundingSource: fundingSource,
                         createOrder: createOrder,
                         onApprove: onApprove,
                         onCancel: onCancel,
@@ -3029,10 +3031,7 @@ window.spb = function(modules) {
                 button.classList.remove(constants.b.CLICKED));
             });
         }), tasks.remember = zalgo_promise_src.a.try(function() {
-            var fundings = [];
-            if (fundingEligibility && fundingEligibility.venmo && fundingEligibility.venmo.eligible && fundings.push(sdk_constants_src.g.VENMO), 
-            fundingEligibility && fundingEligibility.itau && fundingEligibility.itau.eligible && fundings.push(sdk_constants_src.g.ITAU), 
-            fundings && fundings.length) return rememberFunding(fundings);
+            if (fundingEligibility && fundingEligibility.venmo && fundingEligibility.venmo.eligible) return rememberFunding([ sdk_constants_src.g.VENMO ]);
         }), tasks.getPopupBridge = zalgo_promise_src.a.try(function() {
             if (getPopupBridge) return getPopupBridge().then(function(bridge) {
                 popupBridge = bridge;
