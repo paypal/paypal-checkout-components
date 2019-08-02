@@ -38,17 +38,18 @@ export function triggerButtonLogs() {
         logger.info(`button_render_tagline_${ tagline.toString() }`);
 
         logger.track({
-            [FPTI_KEY.TRANSITION]:            FPTI_TRANSITION.BUTTON_LOAD,
-            [FPTI_KEY.FUNDING_LIST]:          fundingSources.join(':'),
-            [FPTI_KEY.FUNDING_COUNT]:         fundingSources.length.toString(),
-            [FPTI_KEY.PAGE_LOAD_TIME]:        pageRenderTime ? pageRenderTime.toString() : '',
-            [FTPI_BUTTON_KEY.BUTTON_LAYOUT]:  layout,
-            [FTPI_BUTTON_KEY.BUTTON_COLOR]:   color,
-            [FTPI_BUTTON_KEY.BUTTON_SIZE]:    'responsive',
-            [FTPI_BUTTON_KEY.BUTTON_SHAPE]:   shape,
-            [FTPI_BUTTON_KEY.BUTTON_LABEL]:   label,
-            [FTPI_BUTTON_KEY.BUTTON_WIDTH]:   window.innerWidth,
-            [FTPI_BUTTON_KEY.BUTTON_TYPE]:    FPTI_BUTTON_TYPE.IFRAME
+            [FPTI_KEY.TRANSITION]:                    FPTI_TRANSITION.BUTTON_LOAD,
+            [FPTI_KEY.FUNDING_LIST]:                  fundingSources.join(':'),
+            [FPTI_KEY.FUNDING_COUNT]:                 fundingSources.length.toString(),
+            [FPTI_KEY.PAGE_LOAD_TIME]:                pageRenderTime ? pageRenderTime.toString() : '',
+            [FTPI_BUTTON_KEY.BUTTON_LAYOUT]:          layout,
+            [FTPI_BUTTON_KEY.BUTTON_COLOR]:           color,
+            [FTPI_BUTTON_KEY.BUTTON_SIZE]:            'responsive',
+            [FTPI_BUTTON_KEY.BUTTON_SHAPE]:           shape,
+            [FTPI_BUTTON_KEY.BUTTON_LABEL]:           label,
+            [FTPI_BUTTON_KEY.BUTTON_WIDTH]:           window.innerWidth,
+            [FTPI_BUTTON_KEY.BUTTON_TYPE]:            FPTI_BUTTON_TYPE.IFRAME,
+            [FTPI_BUTTON_KEY.BUTTON_TAGLINE_ENABLED]: tagline ? '1' : '0'
         });
 
         logger.flush();

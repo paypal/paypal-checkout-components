@@ -79,11 +79,12 @@ export const FPTI_BUTTON_TYPE = {
 };
 
 export const FTPI_BUTTON_KEY = {
-    BUTTON_LAYOUT: ('button_layout' : 'button_layout'),
-    BUTTON_COLOR:  ('button_color' : 'button_color'),
-    BUTTON_SIZE:   ('button_size' : 'button_size'),
-    BUTTON_SHAPE:  ('button_shape' : 'button_shape'),
-    BUTTON_LABEL:  ('button_label' : 'button_label'),
-    BUTTON_WIDTH:  ('button_width' : 'button_width'),
-    BUTTON_TYPE:   ('button_type' : 'button_type')
+    BUTTON_LAYOUT:          ('button_layout' : 'button_layout'),
+    BUTTON_COLOR:           ('button_color' : 'button_color'),
+    BUTTON_SIZE:            ('button_size' : 'button_size'),
+    BUTTON_SHAPE:           ('button_shape' : 'button_shape'),
+    BUTTON_LABEL:           ('button_label' : 'button_label'),
+    BUTTON_WIDTH:           ('button_width' : 'button_width'),
+    BUTTON_TYPE:            ('button_type' : 'button_type'),
+    BUTTON_TAGLINE_ENABLED: ('button_tagline_enabled' : 'button_tagline_enabled')
 };
