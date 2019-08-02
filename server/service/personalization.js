@@ -1,6 +1,6 @@
 /* @flow */
 
-import { COUNTRY } from '@paypal/sdk-constants';
+import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT } from '@paypal/sdk-constants';
 
 import type { ExpressRequest, LocaleType, LoggerType } from '../types';
 
@@ -11,7 +11,11 @@ export type GetPersonalization = (ExpressRequest, {
     merchantID : ?$ReadOnlyArray<string>,
     locale : LocaleType,
     buyerCountry : $Values<typeof COUNTRY>,
-    tracking? : { [string] : string }
+    tracking? : { [string] : string },
+    currency : $Values<typeof CURRENCY>,
+    intent : $Values<typeof INTENT>,
+    commit : $Values<typeof COMMIT>,
+    vault : $Values<typeof VAULT>
 }) => Promise<FundingEligibility>;
 
 export type PersonalizationOptions = {|
@@ -21,7 +25,11 @@ export type PersonalizationOptions = {|
     merchantID : ?$ReadOnlyArray<string>,
     locale : LocaleType,
     buyerCountry : $Values<typeof COUNTRY>,
-    buttonSessionID : string
+    buttonSessionID : string,
+    currency : $Values<typeof CURRENCY>,
+    intent : $Values<typeof INTENT>,
+    commit : $Values<typeof COMMIT>,
+    vault : $Values<typeof VAULT>
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -31,7 +39,7 @@ export type Personalization = {
     |}
 };
 
-export async function resolvePersonalization(req : ExpressRequest, { getPersonalization, logger, clientID, merchantID, locale, buyerCountry, buttonSessionID } : PersonalizationOptions) : Promise<Personalization> {
+export async function resolvePersonalization(req : ExpressRequest, { getPersonalization, logger, clientID, merchantID, locale, buyerCountry, buttonSessionID, currency, intent, commit, vault } : PersonalizationOptions) : Promise<Personalization> {
             
     try {
         return await getPersonalization(req, {
@@ -39,6 +47,10 @@ export async function resolvePersonalization(req : ExpressRequest, { getPersonal
             merchantID,
             locale,
             buyerCountry,
+            currency,
+            intent,
+            commit,
+            vault,
             tracking: {
                 button_session_id: buttonSessionID
             }

@@ -65,7 +65,8 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
                 resolveFundingEligibility(req, { getFundingEligibility, logger, clientID, merchantID, buttonSessionID,
                     currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, defaultFundingEligibility }),
 
-                resolvePersonalization(req, { getPersonalization, logger, clientID, merchantID, buyerCountry, locale, buttonSessionID }),
+                resolvePersonalization(req, { getPersonalization, logger, clientID, merchantID, buyerCountry, locale, buttonSessionID,
+                    currency, intent, commit, vault }),
 
                 merchantID ? null : clientIDToMerchantID(req, clientID)
             ]);
