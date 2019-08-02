@@ -7,21 +7,23 @@ import { memoize } from 'belter';
 import { ENV } from '@paypal/sdk-constants';
 
 import { isLocal, compileWebpack, requireScript } from '../lib';
-import { BUTTON_RENDER_MODULE, BUTTON_CLIENT_MODULE, BUTTON_RENDER_JS, BUTTON_CLIENT_JS, BUTTON_CLIENT_MIN_JS } from '../config';
+import { BUTTON_RENDER_MODULE, BUTTON_CLIENT_MODULE, BUTTON_RENDER_JS, BUTTON_CLIENT_JS, BUTTON_CLIENT_MIN_JS, MODULE_POLL_INTERVAL } from '../config';
 
 const WEBPACK_CONFIG = 'webpack.config';
 
 const getPayPalCheckoutComponentsWatcher = memoize(() => {
     return poll({
-        name: BUTTON_RENDER_MODULE,
-        flat: true
+        name:   BUTTON_RENDER_MODULE,
+        period: MODULE_POLL_INTERVAL,
+        flat:   true
     });
 });
 
 const getSmartButtonWatcher = memoize(() => {
     return poll({
-        name: BUTTON_CLIENT_MODULE,
-        flat: true
+        name:   BUTTON_CLIENT_MODULE,
+        period: MODULE_POLL_INTERVAL,
+        flat:   true
     });
 });
 

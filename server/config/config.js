@@ -4,6 +4,8 @@ import { join } from 'path';
 
 import pkg from '../../package.json';
 
+export const MODULE_POLL_INTERVAL = 10 * 60;
+
 export const FNCLS = 'fnparams-dede7cc5-15fd-4c75-a9f4-36c430ee3a99';
 export const FRAUDNET_ID = 'SMART_PAYMENT_BUTTONS';
 
