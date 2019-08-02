@@ -7,6 +7,7 @@ import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW } from '../con
 import { updateClientConfig, getPayee } from '../api';
 import { callGraphQL } from '../api/api';
 import { getLogger } from '../lib';
+import { CLIENT_ID_PAYEE_NO_MATCH } from '../config';
 
 export function updateButtonClientConfig({ orderID, fundingSource, isCardFields } : { orderID : string, fundingSource : $Values<typeof FUNDING>, isCardFields : boolean }) : ZalgoPromise<void> {
     return updateClientConfig({
@@ -18,7 +19,7 @@ export function updateButtonClientConfig({ orderID, fundingSource, isCardFields 
     });
 }
 
-export function validateOrder(orderID : string, { serverMerchantID } : { serverMerchantID : ?$ReadOnlyArray<string> }) : ZalgoPromise<void> {
+export function validateOrder(orderID : string, { clientID, serverMerchantID } : { clientID : string, serverMerchantID : ?$ReadOnlyArray<string> }) : ZalgoPromise<void> {
     
     // $FlowFixMe
     return ZalgoPromise.all([
@@ -74,26 +75,44 @@ export function validateOrder(orderID : string, { serverMerchantID } : { serverM
             if (!payee || !payee.merchant || !payee.merchant.id) {
                 getLogger().info('s_payee_merchant_id_absent', {
                     orderID,
+                    clientID,
                     merchantID: serverMerchantID[0],
-                    payee:      JSON.stringify(payee)
+                    payee:      JSON.stringify(payee),
+                    domain:     window.xprops.getParentDomain()
                 }).flush();
             } else if (payee.merchant.id !== serverMerchantID[0]) {
-                getLogger().info('s_payee_merchant_id_no_match', {
-                    orderID,
-                    merchantID: serverMerchantID[0],
-                    payee:      JSON.stringify(payee)
-                }).flush();
+                if (CLIENT_ID_PAYEE_NO_MATCH.indexOf(clientID) !== -1) {
+                    getLogger().info('s_payee_whitelist_merchant_id_no_match', {
+                        orderID,
+                        clientID,
+                        merchantID: serverMerchantID[0],
+                        payee:      JSON.stringify(payee),
+                        domain:     window.xprops.getParentDomain()
+                    }).flush();
+                } else {
+                    getLogger().info(`s_payee_no_match_${ window.xprops.getParentDomain() }`).info('s_payee_merchant_id_no_match', {
+                        orderID,
+                        clientID,
+                        merchantID: serverMerchantID[0],
+                        payee:      JSON.stringify(payee),
+                        domain:     window.xprops.getParentDomain()
+                    }).flush();
+                }
             } else {
                 getLogger().info('s_payee_merchant_id_match', {
                     orderID,
+                    clientID,
                     merchantID: serverMerchantID[0],
-                    payee:      JSON.stringify(payee)
+                    payee:      JSON.stringify(payee),
+                    domain:     window.xprops.getParentDomain()
                 }).flush();
             }
         } else {
             getLogger().info('s_payee_merchant_id_not_passed', {
                 orderID,
-                payee:      JSON.stringify(payee)
+                clientID,
+                payee:  JSON.stringify(payee),
+                domain: window.xprops.getParentDomain()
             }).flush();
         }
     });

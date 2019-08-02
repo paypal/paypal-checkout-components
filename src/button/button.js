@@ -138,7 +138,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
 
                 return start()
                     .then(() => createOrder())
-                    .then(orderID => validateOrder(orderID, { serverMerchantID }))
+                    .then(orderID => validateOrder(orderID, { clientID, serverMerchantID }))
                     .catch(err => {
                         return ZalgoPromise.all([
                             triggerError(err),
