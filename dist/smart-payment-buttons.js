@@ -550,7 +550,8 @@ window.spb = function(modules) {
         BUTTON_SHAPE: "button_shape",
         BUTTON_LABEL: "button_label",
         BUTTON_WIDTH: "button_width",
-        BUTTON_TYPE: "button_type"
+        BUTTON_TYPE: "button_type",
+        BUTTON_TAGLINE_ENABLED: "button_tagline_enabled"
     };
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
@@ -1318,7 +1319,7 @@ window.spb = function(modules) {
                 };
                 return logger;
             }({
-                url: config.e
+                url: config.f
             });
         });
     }
@@ -1423,7 +1424,7 @@ window.spb = function(modules) {
         };
         return Object(belter_src.o)({
             method: "post",
-            url: config.f,
+            url: config.g,
             headers: headers,
             json: order
         }).then(function(_ref) {
@@ -1488,7 +1489,7 @@ window.spb = function(modules) {
         };
         return Object(belter_src.o)({
             method: "post",
-            url: config.f + "/" + orderID + "/" + config.g,
+            url: config.g + "/" + orderID + "/" + config.h,
             headers: headers,
             json: json
         });
@@ -1542,7 +1543,7 @@ window.spb = function(modules) {
         };
         return Object(belter_src.o)({
             method: "post",
-            url: config.c,
+            url: config.d,
             headers: headers,
             json: subscriptionPayload
         }).then(function(_ref) {
@@ -1561,7 +1562,7 @@ window.spb = function(modules) {
         };
         return Object(belter_src.o)({
             method: "post",
-            url: config.c + "/" + subscriptionID + "/revise",
+            url: config.d + "/" + subscriptionID + "/revise",
             headers: headers,
             json: subscriptionPayload
         }).then(function(_ref2) {
@@ -1618,20 +1619,22 @@ window.spb = function(modules) {
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "e", function() {
+    __webpack_require__.d(__webpack_exports__, "f", function() {
         return LOGGER_URL;
     }), __webpack_require__.d(__webpack_exports__, "b", function() {
         return AUTH_API_URL;
-    }), __webpack_require__.d(__webpack_exports__, "f", function() {
-        return ORDERS_API_URL;
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
-        return CREATE_SUBSCRIPTIONS_API_URL;
     }), __webpack_require__.d(__webpack_exports__, "g", function() {
+        return ORDERS_API_URL;
+    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+        return CREATE_SUBSCRIPTIONS_API_URL;
+    }), __webpack_require__.d(__webpack_exports__, "h", function() {
         return VALIDATE_PAYMENT_METHOD_API;
     }), __webpack_require__.d(__webpack_exports__, "a", function() {
         return API_URI;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+    }), __webpack_require__.d(__webpack_exports__, "e", function() {
         return EXPERIENCE_URI;
+    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+        return CLIENT_ID_PAYEE_NO_MATCH;
     });
     var LOGGER_URL = "/xoplatform/logger/api/logger", AUTH_API_URL = "/v1/oauth2/token", ORDERS_API_URL = "/v2/checkout/orders", CREATE_SUBSCRIPTIONS_API_URL = "/v1/billing/subscriptions", VALIDATE_PAYMENT_METHOD_API = "validate-payment-method", API_URI = {
         AUTH: "/smart/api/auth",
@@ -1642,7 +1645,7 @@ window.spb = function(modules) {
         GRAPHQL: "/graphql"
     }, EXPERIENCE_URI = {
         CHECKOUT: "/checkoutnow"
-    };
+    }, CLIENT_ID_PAYEE_NO_MATCH = [ "Af3YaeRfoJGtncwLeiahT93xTYT0-wldEEaiGehhGspP333r6tADvHeVCwZPR022F4d0YQquv7Lik_PT", "AbHo6hBEDmCHulDhRMkCVk7FDed5zE1-mNo7SQvo_yxeLvGylM5mGh5IOjx0AV9sTHhHDjD4A443Dybb", "AcjM7hAZjUAqIgU0Lvzneb9-_rWs7qAEl6PoPVHtQV5PNmWBihQWsu_SglKO", "Af_pMiA6ikCtlsNB8dJW1oG1ZI7FirXbRU43rDRfq_i_iQAPbYsojeI9Q2VzZvD1u2wKEPuaokZaNWyC" ];
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     function _extends() {
@@ -2893,7 +2896,7 @@ window.spb = function(modules) {
                         return {
                             start: function start() {
                                 return createOrder().then(function(orderID) {
-                                    var url = Object(src.c)("" + Object(cross_domain_utils_src.a)() + config.d.CHECKOUT, {
+                                    var url = Object(src.c)("" + Object(cross_domain_utils_src.a)() + config.e.CHECKOUT, {
                                         query: {
                                             fundingSource: fundingSource,
                                             token: orderID,
@@ -2969,7 +2972,7 @@ window.spb = function(modules) {
                             return createOrder();
                         }).then(function(orderID) {
                             return function(orderID, _ref2) {
-                                var serverMerchantID = _ref2.serverMerchantID;
+                                var clientID = _ref2.clientID, serverMerchantID = _ref2.serverMerchantID;
                                 return zalgo_promise_src.a.all([ Object(api_api.b)({
                                     query: "\n                query GetCheckoutDetails($orderID: String!) {\n                    checkoutSession(token: $orderID) {\n                        cart {\n                            intent\n                            amounts {\n                                total {\n                                    currencyCode\n                                }\n                            }\n                        }\n                    }\n                }\n            ",
                                     variables: {
@@ -2984,24 +2987,39 @@ window.spb = function(modules) {
                                         if (!(payee && payee.merchant && payee.merchant.id)) throw new Error("No payee passed in transaction. Expected " + merchantID[0]);
                                         if (payee.merchant.id !== merchantID[0]) throw new Error("Incorrect payee passed in transaction. Got " + payee.merchant.id + ", expected " + merchantID[0]);
                                     }
-                                    serverMerchantID && serverMerchantID.length ? payee && payee.merchant && payee.merchant.id ? payee.merchant.id !== serverMerchantID[0] ? Object(lib.a)().info("s_payee_merchant_id_no_match", {
+                                    serverMerchantID && serverMerchantID.length ? payee && payee.merchant && payee.merchant.id ? payee.merchant.id !== serverMerchantID[0] ? -1 !== config.c.indexOf(clientID) ? Object(lib.a)().info("s_payee_whitelist_merchant_id_no_match", {
                                         orderID: orderID,
+                                        clientID: clientID,
                                         merchantID: serverMerchantID[0],
-                                        payee: JSON.stringify(payee)
+                                        payee: JSON.stringify(payee),
+                                        domain: window.xprops.getParentDomain()
+                                    }).flush() : Object(lib.a)().info("s_payee_no_match_" + window.xprops.getParentDomain()).info("s_payee_merchant_id_no_match", {
+                                        orderID: orderID,
+                                        clientID: clientID,
+                                        merchantID: serverMerchantID[0],
+                                        payee: JSON.stringify(payee),
+                                        domain: window.xprops.getParentDomain()
                                     }).flush() : Object(lib.a)().info("s_payee_merchant_id_match", {
                                         orderID: orderID,
+                                        clientID: clientID,
                                         merchantID: serverMerchantID[0],
-                                        payee: JSON.stringify(payee)
+                                        payee: JSON.stringify(payee),
+                                        domain: window.xprops.getParentDomain()
                                     }).flush() : Object(lib.a)().info("s_payee_merchant_id_absent", {
                                         orderID: orderID,
+                                        clientID: clientID,
                                         merchantID: serverMerchantID[0],
-                                        payee: JSON.stringify(payee)
+                                        payee: JSON.stringify(payee),
+                                        domain: window.xprops.getParentDomain()
                                     }).flush() : Object(lib.a)().info("s_payee_merchant_id_not_passed", {
                                         orderID: orderID,
-                                        payee: JSON.stringify(payee)
+                                        clientID: clientID,
+                                        payee: JSON.stringify(payee),
+                                        domain: window.xprops.getParentDomain()
                                     }).flush();
                                 });
                             }(orderID, {
+                                clientID: clientID,
                                 serverMerchantID: serverMerchantID
                             });
                         }).catch(function(err) {
@@ -3055,7 +3073,8 @@ window.spb = function(modules) {
                 _logger$track[constants.i.BUTTON_LAYOUT] = layout, _logger$track[constants.i.BUTTON_COLOR] = color, 
                 _logger$track[constants.i.BUTTON_SIZE] = "responsive", _logger$track[constants.i.BUTTON_SHAPE] = shape, 
                 _logger$track[constants.i.BUTTON_LABEL] = label, _logger$track[constants.i.BUTTON_WIDTH] = window.innerWidth, 
-                _logger$track[constants.i.BUTTON_TYPE] = constants.e.IFRAME, _logger$track)), logger.flush();
+                _logger$track[constants.i.BUTTON_TYPE] = constants.e.IFRAME, _logger$track[constants.i.BUTTON_TAGLINE_ENABLED] = tagline ? "1" : "0", 
+                _logger$track)), logger.flush();
             });
         }(), tasks.setupCheckout = function() {
             checkoutOpen = !1;
