@@ -22,21 +22,36 @@ export function setupButtonChild(ButtonComponent : Button) {
         });
 
         const xprops = ButtonComponent.xprops;
+        
+        if (!xprops) {
+            return;
+        }
+
+        const {
+            layout = BUTTON_LAYOUT.HORIZONTAL,
+            color = BUTTON_COLOR.GOLD,
+            size = BUTTON_SIZE.SMALL,
+            shape = BUTTON_SHAPE.PILL,
+            label = BUTTON_LABEL.CHECKOUT,
+            maxbuttons,
+            tagline
+        } = (xprops.style || {});
 
         track({
-            [FPTI.KEY.STATE]:          FPTI.STATE.BUTTON,
-            [FPTI.KEY.TRANSITION]:     FPTI.TRANSITION.BUTTON_LOAD,
-            [FPTI.KEY.BUTTON_TYPE]:    FPTI.BUTTON_TYPE.IFRAME,
-            [FPTI.KEY.FUNDING_LIST]:   fundingSources.join(':'),
-            [FPTI.KEY.FUNDING_COUNT]:  fundingSources.length,
-            [FPTI.KEY.PAGE_LOAD_TIME]: pageRenderTime,
-            [FPTI.KEY.BUTTON_LAYOUT]:  (xprops && xprops.style && xprops.style.layout) || BUTTON_LAYOUT.HORIZONTAL,
-            [FPTI.KEY.BUTTON_COLOR]:   (xprops && xprops.style && xprops.style.color)  || BUTTON_COLOR.GOLD,
-            [FPTI.KEY.BUTTON_SIZE]:    (xprops && xprops.style && xprops.style.size)   || BUTTON_SIZE.SMALL,
-            [FPTI.KEY.BUTTON_SHAPE]:   (xprops && xprops.style && xprops.style.shape)  || BUTTON_SHAPE.PILL,
-            [FPTI.KEY.BUTTON_LABEL]:   (xprops && xprops.style && xprops.style.label)  || BUTTON_LABEL.CHECKOUT,
-            [FPTI.KEY.BUTTON_WIDTH]:   window.innerWidth,
-            [FPTI.KEY.MAX_BUTTONS]:    (xprops && xprops.style && xprops.style.maxbuttons)
+            [FPTI.KEY.STATE]:                  FPTI.STATE.BUTTON,
+            [FPTI.KEY.TRANSITION]:             FPTI.TRANSITION.BUTTON_LOAD,
+            [FPTI.KEY.BUTTON_TYPE]:            FPTI.BUTTON_TYPE.IFRAME,
+            [FPTI.KEY.FUNDING_LIST]:           fundingSources.join(':'),
+            [FPTI.KEY.FUNDING_COUNT]:          fundingSources.length,
+            [FPTI.KEY.PAGE_LOAD_TIME]:         pageRenderTime,
+            [FPTI.KEY.BUTTON_LAYOUT]:          layout,
+            [FPTI.KEY.BUTTON_COLOR]:           color,
+            [FPTI.KEY.BUTTON_SIZE]:            size,
+            [FPTI.KEY.BUTTON_SHAPE]:           shape,
+            [FPTI.KEY.BUTTON_LABEL]:           label,
+            [FPTI.KEY.BUTTON_WIDTH]:           window.innerWidth,
+            [FPTI.KEY.MAX_BUTTONS]:            maxbuttons,
+            [FPTI.KEY.BUTTON_TAGLINE_ENABLED]: tagline ? '1' : '0'
         });
 
         flushLogs();

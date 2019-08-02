@@ -115,7 +115,8 @@ type ButtonOptions = {|
         label? : string,
         size? : string,
         shape? : string,
-        color? : string
+        color? : string,
+        tagline? : boolean
     |},
     client : {
         [string] : (string | ZalgoPromise<string>)
