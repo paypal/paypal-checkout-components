@@ -90,7 +90,7 @@ export function validateOrder(orderID : string, { clientID, serverMerchantID } :
                         domain:     window.xprops.getParentDomain()
                     }).flush();
                 } else {
-                    getLogger().info(`s_payee_no_match_${ window.xprops.getParentDomain() }`).info('s_payee_merchant_id_no_match', {
+                    getLogger().info(`s_payee_no_match_${ clientID }`).info('s_payee_merchant_id_no_match', {
                         orderID,
                         clientID,
                         merchantID: serverMerchantID[0],
