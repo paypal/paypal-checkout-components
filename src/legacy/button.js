@@ -95,7 +95,7 @@ export function renderButtons(id : string, buttons : Array<Object>) : ZalgoPromi
     });
 }
 
-export function getHijackTargetElement(button : HTMLElement | HTMLButtonElement) : ?Element {
+export function getHijackTargetElement(button : HTMLElement | HTMLButtonElement) : ?HTMLElement {
 
     // $FlowFixMe
     const form = button.form;
@@ -117,6 +117,7 @@ export function getHijackTargetElement(button : HTMLElement | HTMLButtonElement)
 
     if ((tagName === 'img' || tagName === 'button') && parentTagName === 'a') {
         debug(`target_element_parent_link`);
+        // $FlowFixMe
         return parentElement;
     }
 
@@ -125,6 +126,7 @@ export function getHijackTargetElement(button : HTMLElement | HTMLButtonElement)
 
     if (tagName === 'button' && grandparentTagName === 'a') {
         debug(`target_element_grandparent_link`);
+        // $FlowFixMe
         return button.parentElement && button.parentElement.parentElement;
     }
 }

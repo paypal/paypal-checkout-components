@@ -3,11 +3,12 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { prefix, flush as flushLogs } from 'beaver-logger/client';
+import formSerialize from 'form-serialize';
 
 import { Checkout } from '../checkout';
 import { config } from '../config';
 import { ENV, FPTI } from '../constants';
-import { supportsPopups, once, safeJSON, extendUrl, stringifyError } from '../lib';
+import { supportsPopups, once, safeJSON, extendUrl, stringifyError, request } from '../lib';
 
 import { setupPostBridge } from './postBridge';
 import { isLegacyEligible } from './eligibility';
@@ -125,9 +126,60 @@ function checkUrlAgainstEnv(url : string) {
     global methods.
 */
 
-function awaitPaymentTokenAndUrl() : { url : ZalgoPromise<string>, paymentToken : ZalgoPromise<?string> } {
+function awaitPaymentTokenAndUrl(event? : ?Event, targetElement? : ?HTMLElement) : { url : ZalgoPromise<string>, paymentToken : ZalgoPromise<?string> } {
 
     const paymentTokenAndUrl = new ZalgoPromise((resolve) => {
+
+        if (event && targetElement && (Math.random() < 0.001 || window.enablev3ajax)) {
+            let method;
+            let url;
+            let body;
+            let contentType;
+
+            info('gettoken_targetelement_start');
+            flushLogs();
+    
+            if (targetElement.tagName.toLowerCase() === 'a') {
+                method = 'get';
+                url = targetElement.getAttribute('href');
+            } else if (targetElement.tagName.toLowerCase() === 'form') {
+                method = (targetElement.getAttribute('method') || 'get').toLowerCase();
+                url = targetElement.getAttribute('action');
+                body = formSerialize(targetElement);
+                contentType = targetElement.getAttribute('enctype') || 'application/x-www-form-urlencoded';
+            }
+    
+            if (method && url) {
+                event.preventDefault();
+
+                request({
+                    method,
+                    url,
+                    body,
+                    headers: {
+                        'Accept':       'application/paypal-json-token',
+                        'Content-type': contentType || ''
+                    }
+                }).then(json => {
+                    const urlAndPaymentToken = matchUrlAndPaymentToken(json.token);
+                    resolve(urlAndPaymentToken);
+                    info('gettoken_targetelement_success', urlAndPaymentToken);
+                    flushLogs();
+
+                }).catch(err => {
+                    warn('gettoken_targetelement_error', {
+                        // $FlowFixMe
+                        err: err.stack || err.toString()
+                    });
+                    flushLogs();
+                });
+                
+            } else {
+                warn('gettoken_targetelement_no_method_or_url');
+                flushLogs();
+            }
+        }
+
 
         checkout.initXO = () => {
             warn(`gettoken_initxo`);
@@ -296,7 +348,7 @@ function handleClick(clickHandler, event) {
     }
 }
 
-function handleClickHijack(element) : void {
+function handleClickHijack(event, element) : void {
 
     const targetElement = getHijackTargetElement(element);
 
@@ -306,7 +358,7 @@ function handleClickHijack(element) : void {
 
     info(`init_paypal_checkout_hijack`);
 
-    const { url, paymentToken } = awaitPaymentTokenAndUrl();
+    const { url, paymentToken } = awaitPaymentTokenAndUrl(event, targetElement);
 
     let token;
     
@@ -376,7 +428,7 @@ function listenClick(container, button, clickHandler, condition, tracker) : void
             return handleClick(clickHandler, event);
 
         } else {
-            return handleClickHijack(element);
+            return handleClickHijack(event, element);
         }
     });
 }

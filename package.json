@@ -88,6 +88,7 @@
     "belter": "^1.0.96",
     "bowser": "^1.7.1",
     "cross-domain-utils": "^2.0.1",
+    "form-serialize": "^0.7.2",
     "hi-base32": "^0.5.0",
     "post-robot": "^8.0.0",
     "zalgo-promise": "^1.0.10",
