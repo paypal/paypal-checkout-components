@@ -1,7 +1,5 @@
 /* @flow */
 
-import { dirname, resolve } from 'path';
-
 import { webpackCompile } from 'webpack-mem-compile';
 import webpack from 'webpack';
 
@@ -56,25 +54,19 @@ export function babelRegister(dir : string) {
     });
 }
 
-export async function compileWebpack(configPath : string, configKey? : string) : Promise<string> {
-    configPath = resolve(configPath);
-    const dir = dirname(configPath);
-
-    babelRegister(dir);
+export function babelRequire<T>(path : string) : T {
+    babelRegister(path);
 
     // $FlowFixMe
-    let config = require(configPath); // eslint-disable-line security/detect-non-literal-require
+    return require(path); // eslint-disable-line security/detect-non-literal-require
+}
 
-    if (configKey) {
-        config = config[configKey];
-    }
-
-    config.context = dir;
-
+export async function compileWebpack(config : Object, context : string) : Promise<string> {
+    config.context = context;
     return await webpackCompile({ webpack, config });
 }
 
-export function requireScript<T>(script : string) : T {
+export function evalRequireScript<T>(script : string) : T {
     const module = {
         exports: {}
     };
@@ -82,4 +74,14 @@ export function requireScript<T>(script : string) : T {
     eval(script);
     // $FlowFixMe
     return module.exports; // eslint-disable-line import/no-commonjs
+}
+
+export function getNonce(res : ExpressResponse) : string {
+    let nonce = res.locals && res.locals.nonce;
+
+    if (!nonce || typeof nonce !== 'string') {
+        nonce = '';
+    }
+
+    return nonce;
 }

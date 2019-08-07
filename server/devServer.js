@@ -4,12 +4,12 @@ import { randomBytes } from 'crypto';
 
 import express from 'express';
 
-import { getButtonMiddleware } from './buttons';
 import type { ExpressRequest, ExpressResponse } from './types';
+import { getButtonMiddleware } from './buttons';
+import { getMenuMiddleware } from './menu';
 
 const app = express();
 const PORT = process.env.PORT || 8003;
-const URI = '/smart/buttons';
 
 const buttonMiddleware = getButtonMiddleware({
     getFundingEligibility: () => {
@@ -34,7 +34,9 @@ const buttonMiddleware = getButtonMiddleware({
     }
 });
 
-app.get(URI, (req : ExpressRequest, res : ExpressResponse) => {
+const menuMiddleware = getMenuMiddleware({});
+
+app.get('/smart/buttons', (req : ExpressRequest, res : ExpressResponse) => {
     const nonce = randomBytes(16).toString('base64').replace(/[^a-zA-Z0-9_]/g, '');
 
     res.locals = res.locals || {};
@@ -45,6 +47,24 @@ app.get(URI, (req : ExpressRequest, res : ExpressResponse) => {
     return buttonMiddleware(req, res);
 });
 
+app.get('/smart/menu', (req : ExpressRequest, res : ExpressResponse) => {
+    const nonce = randomBytes(16).toString('base64').replace(/[^a-zA-Z0-9_]/g, '');
+
+    res.locals = res.locals || {};
+    res.locals.nonce = nonce;
+
+    res.header('content-security-policy', `style-src self 'nonce-${ nonce }'; script-src self 'nonce-${ nonce }';`);
+
+    return menuMiddleware(req, res);
+});
+
+
 app.listen(PORT, () => {
-    console.log(`Smart Button server listening on http://localhost.paypal.com:${ PORT }${ URI }?clientID=alc_client1`); // eslint-disable-line no-console
+    // eslint-disable-next-line no-console
+    console.log(`
+        Smart Button server listening
+          - http://localhost.paypal.com:${ PORT }/smart/buttons?clientID=alc_client1
+          - http://localhost.paypal.com:${ PORT }/smart/menu?clientID=alc_client1
+    
+    `);
 });

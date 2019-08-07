@@ -4,12 +4,14 @@ import { undotify } from 'belter';
 import { unpackSDKMeta } from '@paypal/sdk-client';
 import { html } from 'jsx-pragmatic';
 
-import { EVENT } from '../config';
+
 import { serverErrorResponse, clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON } from '../lib';
 import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolvePersonalization } from '../service';
 import type { ExpressRequest, ExpressResponse, LoggerType, ClientIDToMerchantID } from '../types';
+import { startWatchers } from '../watchers';
 
-import { getSmartButtonClientScript, getSmartButtonRenderScript, startWatchers } from './watcher';
+import { getSmartPaymentButtonsClientScript, getPayPalSmartPaymentButtonsRenderScript } from './script';
+import { EVENT } from './constants';
 import { getParams } from './params';
 import { buttonStyle } from './style';
 
@@ -49,8 +51,8 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
             const { getSDKLoader } = meta;
 
             const [ client, render ] = await Promise.all([
-                getSmartButtonClientScript({ debug }),
-                getSmartButtonRenderScript()
+                getSmartPaymentButtonsClientScript({ debug }),
+                getPayPalSmartPaymentButtonsRenderScript()
             ]);
 
             logger.info(req, `button_client_version_${ client.version }`);

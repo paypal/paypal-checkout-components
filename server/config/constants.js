@@ -17,9 +17,3 @@ export const HTTP_STATUS_CODE = {
     CLIENT_ERROR: 400,
     SERVER_ERROR: 500
 };
-
-export const EVENT = {
-    RENDER:      'smart_button_render',
-    ERROR:       'smart_button_error',
-    FETCH_ERROR: 'smart_button_fetch_error'
-};
