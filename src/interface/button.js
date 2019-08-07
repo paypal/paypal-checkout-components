@@ -7,6 +7,7 @@ import { allowIframe as _allowIframe } from '../lib';
 import { getCheckoutComponent } from '../zoid/checkout';
 import { getButtonsComponent } from '../zoid/buttons';
 import { getCardFieldsComponent } from '../zoid/card-fields';
+import { getMenuComponent } from '../zoid/menu';
 import { Buttons as _ButtonsTemplate } from '../ui/buttons';
 
 function protectedExport<T>(xport : T) : ?T {
@@ -25,6 +26,10 @@ export const Checkout = {
 
 export const CardFields = {
     __get__: () => protectedExport(getCardFieldsComponent())
+};
+
+export const Menu = {
+    __get__: () => protectedExport(getMenuComponent())
 };
 
 export const ButtonsTemplate = {
