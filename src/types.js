@@ -153,5 +153,13 @@ export type FundingEligibilityType = {|
     itau? : {
         eligible : boolean,
         vaultable? : boolean
+    },
+    payu? : {
+        eligible : boolean,
+        vaultable? : boolean
+    },
+    verkkopankki? : {
+        eligible : boolean,
+        vaultable? : boolean
     }
 |};

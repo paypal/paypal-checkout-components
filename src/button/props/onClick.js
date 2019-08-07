@@ -1,8 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { FUNDING } from '@paypal/sdk-constants';
-import { FPTI_KEY } from '@paypal/sdk-constants/src';
+import { FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
 
 import { promiseNoop, getLogger } from '../../lib';
 import { FPTI_STATE, FPTI_TRANSITION } from '../../constants';
