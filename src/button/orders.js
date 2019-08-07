@@ -6,7 +6,6 @@ import { INTENT, SDK_QUERY_KEYS, FUNDING } from '@paypal/sdk-constants/src';
 import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW } from '../constants';
 import { updateClientConfig, getPayee } from '../api';
 import { callGraphQL } from '../api/api';
-import { getLogger } from '../lib';
 import { CLIENT_ID_PAYEE_NO_MATCH } from '../config';
 
 export function updateButtonClientConfig({ orderID, fundingSource, isCardFields } : { orderID : string, fundingSource : $Values<typeof FUNDING>, isCardFields : boolean }) : ZalgoPromise<void> {
@@ -19,7 +18,7 @@ export function updateButtonClientConfig({ orderID, fundingSource, isCardFields 
     });
 }
 
-export function validateOrder(orderID : string, { clientID, serverMerchantID } : { clientID : string, serverMerchantID : ?$ReadOnlyArray<string> }) : ZalgoPromise<void> {
+export function validateOrder(orderID : string, { clientID, merchantID } : { clientID : string, merchantID : $ReadOnlyArray<string> }) : ZalgoPromise<void> {
     
     // $FlowFixMe
     return ZalgoPromise.all([
@@ -62,58 +61,21 @@ export function validateOrder(orderID : string, { clientID, serverMerchantID } :
             throw new Error(`Expected currency from order api call to be ${ expectedCurrency }, got ${ currency }. Please ensure you are passing ${ SDK_QUERY_KEYS.CURRENCY }=${ currency } to the sdk`);
         }
 
-        const merchantID = window.xprops.merchantID;
-        if (merchantID && merchantID.length) {
-            if (!payee || !payee.merchant || !payee.merchant.id) {
-                throw new Error(`No payee passed in transaction. Expected ${ merchantID[0] }`);
-            } else if (payee.merchant.id !== merchantID[0]) {
-                throw new Error(`Incorrect payee passed in transaction. Got ${ payee.merchant.id }, expected ${ merchantID[0] }`);
-            }
+        const payeeMerchantID = payee && payee.merchant && payee.merchant.id;
+        const actualMerchantID = merchantID && merchantID.length && merchantID[0];
+
+        if (!actualMerchantID) {
+            throw new Error(`Could not determine correct merchant id`);
         }
 
-        if (serverMerchantID && serverMerchantID.length) {
-            if (!payee || !payee.merchant || !payee.merchant.id) {
-                getLogger().info('s_payee_merchant_id_absent', {
-                    orderID,
-                    clientID,
-                    merchantID: serverMerchantID[0],
-                    payee:      JSON.stringify(payee),
-                    domain:     window.xprops.getParentDomain()
-                }).flush();
-            } else if (payee.merchant.id !== serverMerchantID[0]) {
-                if (CLIENT_ID_PAYEE_NO_MATCH.indexOf(clientID) !== -1) {
-                    getLogger().info('s_payee_whitelist_merchant_id_no_match', {
-                        orderID,
-                        clientID,
-                        merchantID: serverMerchantID[0],
-                        payee:      JSON.stringify(payee),
-                        domain:     window.xprops.getParentDomain()
-                    }).flush();
-                } else {
-                    getLogger().info(`s_payee_no_match_${ clientID }`).info('s_payee_merchant_id_no_match', {
-                        orderID,
-                        clientID,
-                        merchantID: serverMerchantID[0],
-                        payee:      JSON.stringify(payee),
-                        domain:     window.xprops.getParentDomain()
-                    }).flush();
-                }
-            } else {
-                getLogger().info('s_payee_merchant_id_match', {
-                    orderID,
-                    clientID,
-                    merchantID: serverMerchantID[0],
-                    payee:      JSON.stringify(payee),
-                    domain:     window.xprops.getParentDomain()
-                }).flush();
+        if (!payeeMerchantID) {
+            throw new Error(`No payee found in transaction. Expected ${ actualMerchantID }`);
+        }
+
+        if (payeeMerchantID !== actualMerchantID) {
+            if (CLIENT_ID_PAYEE_NO_MATCH.indexOf(clientID) === -1) {
+                throw new Error(`Payee ${ payeeMerchantID } does not match expected merchant id: ${ actualMerchantID }`);
             }
-        } else {
-            getLogger().info('s_payee_merchant_id_not_passed', {
-                orderID,
-                clientID,
-                payee:  JSON.stringify(payee),
-                domain: window.xprops.getParentDomain()
-            }).flush();
         }
     });
 }

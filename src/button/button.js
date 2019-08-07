@@ -19,11 +19,11 @@ type ButtonOpts = {|
     fundingEligibility : FundingEligibilityType,
     buyerCountry? : ?$Values<typeof COUNTRY>,
     cspNonce? : string,
-    merchantID? : $ReadOnlyArray<string>,
+    merchantID : $ReadOnlyArray<string>,
     personalization? : PersonalizationType
 |};
 
-export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry, cspNonce: serverCSPNonce, merchantID: serverMerchantID, personalization } : ButtonOpts) : ZalgoPromise<void> {
+export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry, cspNonce: serverCSPNonce, merchantID, personalization } : ButtonOpts) : ZalgoPromise<void> {
     if (!window.paypal) {
         throw new Error(`PayPal library not loaded`);
     }
@@ -42,7 +42,6 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
 
         sessionID,
         clientID,
-        merchantID,
         partnerAttributionID,
         correlationID,
         enableThreeDomainSecure,
@@ -139,7 +138,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
 
                 return start()
                     .then(() => createOrder())
-                    .then(orderID => validateOrder(orderID, { clientID, serverMerchantID }))
+                    .then(orderID => validateOrder(orderID, { clientID, merchantID }))
                     .catch(err => {
                         return ZalgoPromise.all([
                             triggerError(err),

@@ -18,6 +18,7 @@ describe('eligibility cases', () => {
             });
 
             await setupButton({
+                merchantID:         [ 'XYZ12345' ],
                 fundingEligibility: {
                     [ FUNDING.VENMO ]: {
                         eligible: true

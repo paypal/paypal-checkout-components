@@ -40,7 +40,7 @@ describe('prerender cases', () => {
             });
 
             createButtonHTML();
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 
@@ -71,7 +71,7 @@ describe('prerender cases', () => {
             window.xprops.createOrder = expect('createOrder', async () => ZalgoPromise.resolve(orderID));
 
             createButtonHTML();
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 
@@ -101,7 +101,7 @@ describe('prerender cases', () => {
             window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.reject(new Error(`Avoid onApprove`)));
 
             createButtonHTML();
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 
@@ -135,7 +135,7 @@ describe('prerender cases', () => {
             window.xprops.createOrder = expect('createOrder', async () => ZalgoPromise.resolve(orderID));
 
             createButtonHTML();
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 
@@ -165,7 +165,7 @@ describe('prerender cases', () => {
             window.xprops.onApprove = expect('onApprove', () => ZalgoPromise.resolve());
 
             createButtonHTML();
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 
@@ -193,7 +193,7 @@ describe('prerender cases', () => {
             window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.reject(new Error(`Avoid onApprove`)));
 
             createButtonHTML();
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 });

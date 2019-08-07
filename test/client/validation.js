@@ -25,7 +25,7 @@ describe('validation cases', () => {
             window.xprops.onApprove = expect('onApprove', () => ZalgoPromise.resolve());
 
             createButtonHTML();
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
             await clickButton(FUNDING.PAYPAL);
         });
     });
@@ -42,7 +42,7 @@ describe('validation cases', () => {
             window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.reject(new Error(`Avoid onApprove`)));
 
             createButtonHTML();
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
             await clickButton(FUNDING.PAYPAL);
         });
     });
@@ -76,7 +76,7 @@ describe('validation cases', () => {
 
 
             createButtonHTML();
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
         });
     });
 
@@ -92,7 +92,7 @@ describe('validation cases', () => {
             window.xprops.onApprove = expect('onApprove', () => ZalgoPromise.resolve());
             
             createButtonHTML();
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
             await clickButton(FUNDING.PAYPAL);
         });
     });
@@ -107,7 +107,7 @@ describe('validation cases', () => {
             window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.reject(new Error(`Avoid onApprove`)));
 
             createButtonHTML();
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
             await clickButton(FUNDING.PAYPAL);
         });
     });
@@ -122,7 +122,7 @@ describe('validation cases', () => {
             window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.reject(new Error(`Avoid onApprove`)));
 
             createButtonHTML();
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
             await clickButton(FUNDING.PAYPAL);
 
             await ZalgoPromise.delay(300);

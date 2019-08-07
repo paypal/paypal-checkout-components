@@ -26,7 +26,7 @@ describe('funding source cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             await clickButton(fundingSource);
         });
@@ -54,7 +54,7 @@ describe('funding source cases', () => {
 
             createButtonHTML(fundingEligibility);
 
-            await setupButton({ fundingEligibility });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(fundingSource);
         });

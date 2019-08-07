@@ -85,7 +85,7 @@ describe('actions cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -141,7 +141,7 @@ describe('actions cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -197,7 +197,7 @@ describe('actions cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -272,7 +272,7 @@ describe('actions cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             await clickButton(FUNDING.PAYPAL);
 
@@ -324,7 +324,7 @@ describe('actions cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -350,7 +350,7 @@ describe('actions cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -423,7 +423,7 @@ describe('actions cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             const subscriptionIdToCartIdApiMock = getSubscriptionIdToCartIdApiMock({}, mockSubscriptionID, mockCartID);
             subscriptionIdToCartIdApiMock.expectCalls();
@@ -494,7 +494,7 @@ describe('actions cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             const subscriptionIdToCartIdApiMock = getSubscriptionIdToCartIdApiMock({}, mockSubscriptionID, mockCartID);
             subscriptionIdToCartIdApiMock.expectCalls();

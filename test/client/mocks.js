@@ -442,7 +442,7 @@ export function getPayeeApiMock(options : Object = {}) : MockEndpoint {
             ack:  'success',
             data: {
                 merchant: {
-                    id: 'xyz'
+                    id: 'XYZ12345'
                 }
             }
         },

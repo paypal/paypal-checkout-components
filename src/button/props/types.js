@@ -30,7 +30,6 @@ export type XProps = {|
     sessionID : string,
     buttonSessionID : string,
     clientID : string,
-    merchantID : string,
     partnerAttributionID : string,
     correlationID : string,
 
@@ -66,7 +65,6 @@ export type GlobalProps = {|
     sessionID : string,
     buttonSessionID : string,
     clientID : string,
-    merchantID : string,
     partnerAttributionID : string,
     correlationID : string,
 

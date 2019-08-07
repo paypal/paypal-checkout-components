@@ -25,7 +25,7 @@ type LoggerOptions = {|
     correlationID : string,
     locale : LocaleType,
     buttonSessionID : string,
-    merchantID : ?string,
+    merchantID : $ReadOnlyArray<string>,
     merchantDomain : string
 |};
 
@@ -42,7 +42,6 @@ export function setupLogger({ env, sessionID, buttonSessionID, clientID, partner
 
     logger.addTrackingBuilder(() => {
         const { lang, country } = locale;
-        const mID = merchantID;
 
         return {
             [FPTI_KEY.CONTEXT_TYPE]:           FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID,
@@ -51,7 +50,7 @@ export function setupLogger({ env, sessionID, buttonSessionID, clientID, partner
             [FPTI_KEY.FEED]:                   FPTI_FEED.PAYMENTS_SDK,
             [FPTI_KEY.DATA_SOURCE]:            FPTI_DATA_SOURCE.PAYMENTS_SDK,
             [FPTI_KEY.CLIENT_ID]:              clientID,
-            [FPTI_KEY.SELLER_ID]:              mID && mID[0],
+            [FPTI_KEY.SELLER_ID]:              merchantID[0],
             [FPTI_KEY.SESSION_UID]:            sessionID,
             [FPTI_KEY.REFERER]:                window.location.host,
             [FPTI_KEY.MERCHANT_DOMAIN]:        merchantDomain,

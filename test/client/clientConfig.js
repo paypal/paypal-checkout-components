@@ -51,7 +51,7 @@ describe('client config cases', () => {
 
             createButtonHTML();
 
-            await setupButton({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -111,7 +111,7 @@ describe('client config cases', () => {
 
             createButtonHTML(fundingEligibility);
 
-            await setupButton({ fundingEligibility });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.CARD, CARD.VISA);
         });
@@ -155,7 +155,7 @@ describe('client config cases', () => {
 
             createButtonHTML(fundingEligibility);
 
-            await setupButton({ fundingEligibility });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(fundingSource);
         });
@@ -198,7 +198,7 @@ describe('client config cases', () => {
 
             createButtonHTML(fundingEligibility);
 
-            await setupButton({ fundingEligibility });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(fundingSource);
         });
@@ -241,7 +241,7 @@ describe('client config cases', () => {
 
             createButtonHTML(fundingEligibility);
 
-            await setupButton({ fundingEligibility });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(fundingSource);
         });

@@ -51,7 +51,7 @@ describe('vault cases', () => {
             };
 
             createButtonHTML(fundingEligibility);
-            await setupButton({ fundingEligibility });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -79,7 +79,7 @@ describe('vault cases', () => {
             };
 
             createButtonHTML(fundingEligibility);
-            await setupButton({ fundingEligibility });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL).catch(expect('clickCatch'));
         });
@@ -125,7 +125,7 @@ describe('vault cases', () => {
             };
 
             createButtonHTML(fundingEligibility);
-            await setupButton({ fundingEligibility });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -171,7 +171,7 @@ describe('vault cases', () => {
             };
 
             createButtonHTML(fundingEligibility);
-            await setupButton({ fundingEligibility });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -223,7 +223,7 @@ describe('vault cases', () => {
             };
 
             createButtonHTML(fundingEligibility);
-            await setupButton({ fundingEligibility });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             await clickButton(FUNDING.PAYPAL);
         });
@@ -266,7 +266,7 @@ describe('vault cases', () => {
             };
 
             createButtonHTML(fundingEligibility);
-            await setupButton({ fundingEligibility });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             window.document.querySelector(`button[data-funding-source=${ FUNDING.PAYPAL }][data-payment-method-id]`).click();
         });
@@ -317,7 +317,7 @@ describe('vault cases', () => {
             };
 
             createButtonHTML(fundingEligibility);
-            await setupButton({ fundingEligibility });
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
 
             window.document.querySelector(`button[data-funding-source=${ FUNDING.CARD }][data-payment-method-id]`).click();
         });
