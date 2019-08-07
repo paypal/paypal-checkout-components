@@ -1,3 +1,14 @@
+## <small>5.0.52 (2019-08-07)</small>
+
+* Add export for menu component ([36dc656](http://github.paypal.com/paypal/paypal-checkout/commit/36dc656))
+* Add menu zoid component ([44e8c3b](http://github.paypal.com/paypal/paypal-checkout/commit/44e8c3b))
+* Add puppeteer download host ([ecac208](http://github.paypal.com/paypal/paypal-checkout/commit/ecac208))
+* Fix circular dependency ([b69c149](http://github.paypal.com/paypal/paypal-checkout/commit/b69c149))
+* Only show personalization if single button ([f15a804](http://github.paypal.com/paypal/paypal-checkout/commit/f15a804))
+* Re-organize directory structure ([1ee9116](http://github.paypal.com/paypal/paypal-checkout/commit/1ee9116))
+
+
+
 ## <small>5.0.51 (2019-07-30)</small>
 
 * Fix typo ([1f7ca26](http://github.paypal.com/paypal/paypal-checkout/commit/1f7ca26))
