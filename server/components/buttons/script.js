@@ -4,9 +4,9 @@ import { join } from 'path';
 
 import { ENV } from '@paypal/sdk-constants';
 
-import { BUTTON_RENDER_JS, BUTTON_CLIENT_JS, BUTTON_CLIENT_MIN_JS, WEBPACK_CONFIG } from '../config';
-import { isLocal, compileWebpack, babelRequire, evalRequireScript } from '../lib';
-import { getPayPalCheckoutComponentsWatcher, getPayPalSmartPaymentButtonsWatcher } from '../watchers';
+import { BUTTON_RENDER_JS, BUTTON_CLIENT_JS, BUTTON_CLIENT_MIN_JS, WEBPACK_CONFIG } from '../../config';
+import { isLocal, compileWebpack, babelRequire, evalRequireScript } from '../../lib';
+import { getPayPalCheckoutComponentsWatcher, getPayPalSmartPaymentButtonsWatcher } from '../../watchers';
 
 
 export async function compileLocalSmartPaymentButtonRenderScript(dir : string) : Promise<{ button : Object, version : string }> {

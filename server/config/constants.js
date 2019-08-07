@@ -17,3 +17,8 @@ export const HTTP_STATUS_CODE = {
     CLIENT_ERROR: 400,
     SERVER_ERROR: 500
 };
+
+export const EVENT = {
+    RENDER: 'render',
+    ERROR:  'error'
+};

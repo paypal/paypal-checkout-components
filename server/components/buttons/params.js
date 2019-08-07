@@ -2,9 +2,9 @@
 
 import { ENV, COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, DEFAULT_COUNTRY, COUNTRY_LANGS } from '@paypal/sdk-constants';
 
-import { HTTP_HEADER } from '../config';
-import type { FundingEligibility } from '../service';
-import type { ExpressRequest, ExpressResponse, LocaleType } from '../types';
+import { HTTP_HEADER } from '../../config';
+import type { FundingEligibility } from '../../service';
+import type { ExpressRequest, ExpressResponse, LocaleType } from '../../types';
 
 function getNonce(res : ExpressResponse) : string {
     let nonce = res.locals && res.locals.nonce;

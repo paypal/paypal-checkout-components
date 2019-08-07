@@ -1,5 +1,4 @@
 /* @flow */
 
-export * from './buttons';
-export * from './menu';
+export * from './components';
 export * from './watchers';

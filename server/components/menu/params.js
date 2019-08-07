@@ -2,7 +2,7 @@
 
 import { ENV, DEFAULT_COUNTRY, COUNTRY_LANGS } from '@paypal/sdk-constants';
 
-import type { ExpressRequest, ExpressResponse, LocaleType } from '../types';
+import type { ExpressRequest, ExpressResponse, LocaleType } from '../../types';
 
 function getNonce(res : ExpressResponse) : string {
     let nonce = res.locals && res.locals.nonce;

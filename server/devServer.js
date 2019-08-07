@@ -5,8 +5,7 @@ import { randomBytes } from 'crypto';
 import express from 'express';
 
 import type { ExpressRequest, ExpressResponse } from './types';
-import { getButtonMiddleware } from './buttons';
-import { getMenuMiddleware } from './menu';
+import { getButtonMiddleware, getMenuMiddleware } from './components';
 
 const app = express();
 const PORT = process.env.PORT || 8003;
