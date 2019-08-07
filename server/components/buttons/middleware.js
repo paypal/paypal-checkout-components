@@ -62,16 +62,14 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
 
         const pageHTML = `
                 <body data-nonce="${ cspNonce }" data-client-version="${ client.version }" data-render-version="${ render.version }">
-                    <style nonce="${ cspNonce }">
-                        ${ buttonStyle }
-                    </style>
-                    <div id="buttons-container" class="buttons-container">
-                        ${ buttonHTML }
-                    </div>
+                    <style nonce="${ cspNonce }">${ buttonStyle }</style>
+                    
+                    <div id="buttons-container" class="buttons-container">${ buttonHTML }</div>
                     <div id="card-fields-container" class="card-fields-container"></div>
+
                     ${ meta.getSDKLoader({ nonce: cspNonce }) }
                     <script nonce="${ cspNonce }">${ client.script }</script>
-                    <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON({ fundingEligibility, buyerCountry, cspNonce, merchantID }) })</script>
+                    <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON({ fundingEligibility, buyerCountry, cspNonce, merchantID, personalization }) })</script>
                     ${ shouldRenderFraudnet({ fundingEligibility }) ? renderFraudnetScript({ id: buttonSessionID, cspNonce, env }) : '' }
                 </body>
             `;

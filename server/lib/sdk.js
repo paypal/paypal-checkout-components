@@ -44,7 +44,6 @@ export function sdkMiddleware({ logger } : SDKMiddlewareOptions, middleware : SD
 
     return async (req : ExpressRequest, res : ExpressResponse) : Promise<void> => {
         try {
-            // $FlowFixMe
             const params = undotify(req.query);
             
             let meta;

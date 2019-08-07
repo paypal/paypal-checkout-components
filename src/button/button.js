@@ -4,10 +4,10 @@ import { onClick as onElementClick, noop } from 'belter/src';
 import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { setupLogger } from '../lib';
+import type { FundingEligibilityType, ProxyWindow, PersonalizationType } from '../types';
+import { setupLogger, sendBeacon } from '../lib';
 import { initCheckout, setupCheckout, isVaultCaptureEligible, isCardFieldsEligible, initVault, initCardFields } from '../payment-flows';
 import { DATA_ATTRIBUTES, CLASS } from '../constants';
-import type { FundingEligibilityType, ProxyWindow } from '../types';
 import { isPopupBridgeEligible, initPopupBridge } from '../payment-flows/popup-bridge';
 
 import { getGlobalProps, getButtonCallbackProps } from './props';
@@ -19,10 +19,11 @@ type ButtonOpts = {|
     fundingEligibility : FundingEligibilityType,
     buyerCountry? : ?$Values<typeof COUNTRY>,
     cspNonce? : string,
-    merchantID? : $ReadOnlyArray<string>
+    merchantID? : $ReadOnlyArray<string>,
+    personalization? : PersonalizationType
 |};
 
-export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry, cspNonce: serverCSPNonce, merchantID: serverMerchantID } : ButtonOpts) : ZalgoPromise<void> {
+export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry, cspNonce: serverCSPNonce, merchantID: serverMerchantID, personalization } : ButtonOpts) : ZalgoPromise<void> {
     if (!window.paypal) {
         throw new Error(`PayPal library not loaded`);
     }
@@ -164,6 +165,10 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
             const payPromise = pay({ button, fundingSource, card, paymentMethodID });
             // $FlowFixMe
             button.payPromise = payPromise;
+
+            if (personalization && personalization.tagline) {
+                sendBeacon(personalization.tagline.tracking.click);
+            }
         });
 
         button.addEventListener('mousedown', () => {

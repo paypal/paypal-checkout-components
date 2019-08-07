@@ -20,3 +20,13 @@ export function getBody() : HTMLBodyElement {
 
     return body;
 }
+
+export function sendBeacon(url : string) {
+    const img = document.createElement('img');
+    img.src = url;
+    img.style.visibility = 'hidden';
+    img.style.position = 'absolute';
+    if (document.body) {
+        document.body.appendChild(img);
+    }
+}

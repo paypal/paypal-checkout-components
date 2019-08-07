@@ -12,6 +12,16 @@ export type LocaleType = {|
     lang : $Values<typeof LANG>
 |};
 
+export type PersonalizationType = {|
+    tagline? : {|
+        text : string,
+        tracking : {
+            impression : string,
+            click : string
+        }
+    |}
+|};
+
 export type FundingEligibilityType = {|
     bancontact? : {
         eligible : boolean,
