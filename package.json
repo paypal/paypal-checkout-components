@@ -55,7 +55,7 @@
     "flow-bin": "^0.100.0",
     "grumbler-scripts": "^3.0.18",
     "post-robot": "^10.0.13",
-    "preact": "^8.5.0",
+    "preact": "10.0.0-rc.1",
     "sync-browser-mocks": "^1.0.44",
     "webpack-mem-compile": "^1.0.2"
   },
