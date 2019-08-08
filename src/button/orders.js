@@ -74,7 +74,7 @@ export function validateOrder(orderID : string, { clientID, merchantID } : { cli
 
         if (payeeMerchantID !== actualMerchantID) {
             if (CLIENT_ID_PAYEE_NO_MATCH.indexOf(clientID) === -1) {
-                throw new Error(`Payee ${ payeeMerchantID } does not match expected merchant id: ${ actualMerchantID }`);
+                throw new Error(`Payee passed in transaction does not match expected merchant id: ${ actualMerchantID }`);
             }
         }
     });
