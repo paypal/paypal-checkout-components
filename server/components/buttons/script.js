@@ -28,7 +28,7 @@ export async function getPayPalSmartPaymentButtonsRenderScript() : Promise<{ but
 
 
 export async function compileLocalSmartButtonsClientScript() : Promise<{ script : string, version : string }> {
-    const root = join(__dirname, '../..');
+    const root = join(__dirname, '../../..');
     const { WEBPACK_CONFIG_BUTTONS_DEBUG } = babelRequire(join(root, WEBPACK_CONFIG));
     const script = await compileWebpack(WEBPACK_CONFIG_BUTTONS_DEBUG, root);
     return { script, version: ENV.LOCAL };

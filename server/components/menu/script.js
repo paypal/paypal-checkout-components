@@ -9,7 +9,7 @@ import { isLocal, compileWebpack, babelRequire } from '../../lib';
 import { getPayPalSmartPaymentButtonsWatcher } from '../../watchers';
 
 export async function compileLocalSmartMenuClientScript() : Promise<{ script : string, version : string }> {
-    const root = join(__dirname, '../..');
+    const root = join(__dirname, '../../..');
     const { WEBPACK_CONFIG_MENU_DEBUG } = babelRequire(join(root, WEBPACK_CONFIG));
     const script = await compileWebpack(WEBPACK_CONFIG_MENU_DEBUG, root);
     return { script, version: ENV.LOCAL };
