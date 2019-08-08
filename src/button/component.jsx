@@ -897,6 +897,11 @@ export const Button : Component<ButtonOptions> = create({
 
                 return function onResizeHandler() {
                     const container = this.container;
+
+                    if (!container) {
+                        return;
+                    }
+
                     if (!initialHeight) {
                         initialHeight = container.offsetHeight;
                     }
