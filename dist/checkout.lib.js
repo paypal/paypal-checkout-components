@@ -45,7 +45,7 @@
             return __webpack_require__.d(getter, "a", getter), getter;
         }, __webpack_require__.o = function(object, property) {
             return {}.hasOwnProperty.call(object, property);
-        }, __webpack_require__.p = "", __webpack_require__(__webpack_require__.s = 58);
+        }, __webpack_require__.p = "", __webpack_require__(__webpack_require__.s = 59);
     }([ function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         var _CONTEXT_TYPE, _LANG_TO_DEFAULT_COUN, _LOCALE, BUTTON_STYLE_OPTIONS = {
@@ -239,7 +239,8 @@
                 BUTTON_WIDTH: "button_width",
                 VERSION: "checkoutjs_version",
                 MAX_BUTTONS: "max_buttons",
-                FUNDING_REMEMBERED: "funding_remembered"
+                FUNDING_REMEMBERED: "funding_remembered",
+                BUTTON_TAGLINE_ENABLED: "button_tagline_enabled"
             },
             BUTTON_TYPE: {
                 IFRAME: "iframe",
@@ -1202,7 +1203,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: getSessionID(),
-                    ver: "4.0.283"
+                    ver: "4.0.284"
                 };
             }), Object(client.a)(function() {
                 return {
@@ -1450,7 +1451,7 @@
             });
         });
         function getScriptVersion() {
-            return "4.0.283";
+            return "4.0.284";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
@@ -1459,7 +1460,7 @@
                 return 0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://")), 
                 scriptUrl;
             }
-            return "https://www.paypalobjects.com/api/checkout.4.0.283.js";
+            return "https://www.paypalobjects.com/api/checkout.4.0.284.js";
         }
         function getDomainSetting(name, def) {
             var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.g)();
@@ -1483,7 +1484,7 @@
                         domain: metaFrameDomain
                     });
                     return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                        version: "4.0.283"
+                        version: "4.0.284"
                     }), metaFrameDomain).then(function() {
                         return metaListener;
                     }).then(function(_ref) {
@@ -1664,7 +1665,7 @@
             locales: constants.z,
             scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.283",
+            version: "4.0.284",
             cors: !0,
             env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -2008,6 +2009,30 @@
                     disable_venmo: !0
                 },
                 "play.jackpocket.com": {
+                    disable_venmo: !0
+                },
+                "crepeerase.com": {
+                    disable_venmo: !0
+                },
+                "specificbeauty.com": {
+                    disable_venmo: !0
+                },
+                "meaningfulbeauty.com": {
+                    disable_venmo: !0
+                },
+                "smileactives.com ": {
+                    disable_venmo: !0
+                },
+                "mally.com": {
+                    disable_venmo: !0
+                },
+                "westmorebeauty.com": {
+                    disable_venmo: !0
+                },
+                "subd.com": {
+                    disable_venmo: !0
+                },
+                "seacalmskin.com": {
                     disable_venmo: !0
                 }
             },
@@ -4758,7 +4783,7 @@
             global.a.popupWindowsByWin && global.a.popupWindowsByWin.delete(win), global.a.remoteWindows && global.a.remoteWindows.delete(win), 
             global.a.requestPromises.delete(win), global.a.methods.delete(win), global.a.readyPromises.delete(win);
         }
-        var bridge = __webpack_require__(55);
+        var bridge = __webpack_require__(56);
         function init() {
             global.a.initialized || (Object(lib.a)(window, "message", messageListener), __webpack_require__(21).openTunnelToOpener(), 
             Object(lib.d)(), Object(lib.h)({
@@ -5677,10 +5702,6 @@
         });
     }, function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var interface_namespaceObject = {};
-        __webpack_require__.r(interface_namespaceObject), __webpack_require__.d(interface_namespaceObject, "WeakMap", function() {
-            return weakmap_CrossDomainSafeWeakMap;
-        });
         var src = __webpack_require__(7);
         function safeIndexOf(collection, item) {
             for (var i = 0; i < collection.length; i++) try {
@@ -5688,11 +5709,10 @@
             } catch (err) {}
             return -1;
         }
-        var defineProperty = Object.defineProperty, counter = Date.now() % 1e9, weakmap_CrossDomainSafeWeakMap = function() {
+        var weakmap_CrossDomainSafeWeakMap = function() {
             function CrossDomainSafeWeakMap() {
                 if (this.name = void 0, this.weakmap = void 0, this.keys = void 0, this.values = void 0, 
-                counter += 1, this.name = "__weakmap_" + (1e9 * Math.random() >>> 0) + "__" + counter, 
-                function() {
+                this.name = "__weakmap_" + (1e9 * Math.random() >>> 0) + "__", function() {
                     if ("undefined" == typeof WeakMap) return !1;
                     if (void 0 === Object.freeze) return !1;
                     try {
@@ -5729,7 +5749,7 @@
                 }
                 if (this.isSafeToReadWrite(key)) try {
                     var name = this.name, entry = key[name];
-                    return void (entry && entry[0] === key ? entry[1] = value : defineProperty(key, name, {
+                    return void (entry && entry[0] === key ? entry[1] = value : Object.defineProperty(key, name, {
                         value: [ key, value ],
                         writable: !0
                     }));
@@ -11913,7 +11933,7 @@
             "use strict";
             var root = "object" == typeof window ? window : {};
             !root.HI_BASE32_NO_NODE_JS && "object" == typeof process && process.versions && process.versions.node && (root = window);
-            var COMMON_JS = !root.HI_BASE32_NO_COMMON_JS && "object" == typeof module && module.exports, AMD = __webpack_require__(56), BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split(""), BASE32_DECODE_CHAR = {
+            var COMMON_JS = !root.HI_BASE32_NO_COMMON_JS && "object" == typeof module && module.exports, AMD = __webpack_require__(57), BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split(""), BASE32_DECODE_CHAR = {
                 A: 0,
                 B: 1,
                 C: 2,
@@ -12276,7 +12296,7 @@
         };
     }, function(module, exports, __webpack_require__) {
         !function(e, t, n) {
-            module.exports ? module.exports = n() : __webpack_require__(57)("bowser", n);
+            module.exports ? module.exports = n() : __webpack_require__(58)("bowser", n);
         }(0, 0, function() {
             function t(t) {
                 function n(e) {
@@ -12575,6 +12595,60 @@
         module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="40" height="24" viewBox="0 0 40 24" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <defs>\n    <pattern id="pattern-0" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse" viewBox="0 0 100 100">\n      <path d="M 0 0 L 50 0 L 50 100 L 0 100 Z" style="fill: black;"/>\n    </pattern>\n  </defs>\n  <path d="M38.333 24H1.667C.75 24 0 23.28 0 22.4V1.6C0 .72.75 0 1.667 0h36.666C39.25 0 40 .72 40 1.6v20.8c0 .88-.75 1.6-1.667 1.6z" style="fill: rgb(255, 255, 255); stroke: rgb(233, 234, 231);"/>\n  <g transform="matrix(0.100306, 0, 0, 0.100306, 4.733743, 10.105099)" id="g6321">\n    <g transform="matrix(1.8215159,0,0,1.8215159,-8.5437653,-109.83667)" id="g6323">\n      <path style="fill:#ffffff" id="path6325" d="m 174,108.3 c 0,14 -11.4,25.4 -25.4,25.4 l -138.2,0 0,-100.6 c 0,-14 11.4,-25.4 25.4,-25.4 l 138.2,0 0,100.6 z" class="st0"/>\n      <g id="g6327">\n        <linearGradient gradientTransform="matrix(1.125,0,0,1.125,-11.9755,-13.8615)" y2="81.398598" x2="157.3299" y1="81.398598" x1="117.3856" gradientUnits="userSpaceOnUse" id="SVGID_1_">\n          <stop id="stop6330" style="stop-color:#007940" offset="0"/>\n          <stop id="stop6332" style="stop-color:#00873F" offset="0.2285"/>\n          <stop id="stop6334" style="stop-color:#40A737" offset="0.7433"/>\n          <stop id="stop6336" style="stop-color:#5CB531" offset="1"/>\n        </linearGradient>\n        <path style="fill:url(#SVGID_1_)" id="path6338" d="m 129,82.5 10.5,0 c 0.3,0 1,-0.1 1.3,-0.1 2,-0.4 3.7,-2.2 3.7,-4.7 0,-2.4 -1.7,-4.2 -3.7,-4.7 -0.3,-0.1 -0.9,-0.1 -1.3,-0.1 l -10.5,0 0,9.6 z" class="st1"/>\n        <linearGradient gradientTransform="matrix(1.125,0,0,1.125,-11.9755,-13.8615)" y2="75.171402" x2="157.3318" y1="75.171402" x1="117.3844" gradientUnits="userSpaceOnUse" id="SVGID_2_">\n          <stop id="stop6341" style="stop-color:#007940" offset="0"/>\n          <stop id="stop6343" style="stop-color:#00873F" offset="0.2285"/>\n          <stop id="stop6345" style="stop-color:#40A737" offset="0.7433"/>\n          <stop id="stop6347" style="stop-color:#5CB531" offset="1"/>\n        </linearGradient>\n        <path style="fill:url(#SVGID_2_)" id="path6349" d="m 138.3,16.2 c -10,0 -18.2,8.1 -18.2,18.2 l 0,18.9 25.7,0 c 0.6,0 1.3,0 1.8,0.1 5.8,0.3 10.1,3.3 10.1,8.5 0,4.1 -2.9,7.6 -8.3,8.3 l 0,0.2 c 5.9,0.4 10.4,3.7 10.4,8.8 0,5.5 -5,9.1 -11.6,9.1 l -28.2,0 0,37 26.7,0 c 10,0 18.2,-8.1 18.2,-18.2 l 0,-90.9 -26.6,0 z" class="st2"/>\n        <linearGradient gradientTransform="matrix(1.125,0,0,1.125,-11.9755,-13.8615)" y2="68.399101" x2="157.33051" y1="68.399101" x1="117.3846" gradientUnits="userSpaceOnUse" id="SVGID_3_">\n          <stop id="stop6352" style="stop-color:#007940" offset="0"/>\n          <stop id="stop6354" style="stop-color:#00873F" offset="0.2285"/>\n          <stop id="stop6356" style="stop-color:#40A737" offset="0.7433"/>\n          <stop id="stop6358" style="stop-color:#5CB531" offset="1"/>\n        </linearGradient>\n        <path style="fill:url(#SVGID_3_)" id="path6360" d="m 143.2,63.1 c 0,-2.4 -1.7,-4 -3.7,-4.3 -0.2,0 -0.7,-0.1 -1,-0.1 l -9.5,0 0,8.8 9.5,0 c 0.3,0 0.9,0 1,-0.1 2,-0.3 3.7,-1.9 3.7,-4.3 z" class="st3"/>\n      </g>\n      <linearGradient gradientTransform="matrix(1.125,0,0,1.125,-11.9755,-13.8615)" y2="75.171402" x2="68.522102" y1="75.171402" x1="27.9594" gradientUnits="userSpaceOnUse" id="SVGID_4_">\n        <stop id="stop6363" style="stop-color:#1F286F" offset="0"/>\n        <stop id="stop6365" style="stop-color:#004E94" offset="0.4751"/>\n        <stop id="stop6367" style="stop-color:#0066B1" offset="0.8261"/>\n        <stop id="stop6369" style="stop-color:#006FBC" offset="1"/>\n      </linearGradient>\n      <path style="fill:url(#SVGID_4_)" id="path6371" d="m 37.7,16.2 c -10,0 -18.2,8.1 -18.2,18.2 l 0,44.9 c 5.1,2.5 10.4,4.1 15.7,4.1 6.3,0 9.7,-3.8 9.7,-9 l 0,-21.2 15.6,0 0,21.1 c 0,8.2 -5.1,14.9 -22.4,14.9 -10.5,0 -18.7,-2.3 -18.7,-2.3 l 0,38.3 26.7,0 c 10,0 18.2,-8.1 18.2,-18.2 l 0,-90.8 -26.6,0 z" class="st4"/>\n      <linearGradient gradientTransform="matrix(1.125,0,0,1.125,-11.9755,-13.8615)" y2="75.171402" x2="111.8553" y1="75.171402" x1="72.459503" gradientUnits="userSpaceOnUse" id="SVGID_5_">\n        <stop id="stop6374" style="stop-color:#6C2C2F" offset="0"/>\n        <stop id="stop6376" style="stop-color:#882730" offset="0.1735"/>\n        <stop id="stop6378" style="stop-color:#BE1833" offset="0.5731"/>\n        <stop id="stop6380" style="stop-color:#DC0436" offset="0.8585"/>\n        <stop id="stop6382" style="stop-color:#E60039" offset="1"/>\n      </linearGradient>\n      <path style="fill:url(#SVGID_5_)" id="path6384" d="m 88,16.2 c -10,0 -18.2,8.1 -18.2,18.2 l 0,23.8 c 4.6,-3.9 12.6,-6.4 25.5,-5.8 6.9,0.3 14.3,2.2 14.3,2.2 l 0,7.7 c -3.7,-1.9 -8.1,-3.6 -13.8,-4 -9.8,-0.7 -15.7,4.1 -15.7,12.5 0,8.5 5.9,13.3 15.7,12.5 5.7,-0.4 10.1,-2.2 13.8,-4 l 0,7.7 c 0,0 -7.3,1.9 -14.3,2.2 -12.9,0.6 -20.9,-1.9 -25.5,-5.8 l 0,42 26.7,0 c 10,0 18.2,-8.1 18.2,-18.2 l 0,-91 -26.7,0 z" class="st5"/>\n    </g>\n    <g id="g6386"/>\n  </g>\n</svg>';
     }, function(module, exports) {
         module.exports = '<?xml version="1.0" encoding="UTF-8"?>\n<svg width="40px" height="24px" viewBox="0 0 40 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n    \x3c!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch --\x3e\n    <title>unionpay</title>\n    <desc>Created with Sketch.</desc>\n    <defs></defs>\n    <g id="unionpay" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n        <g>\n            <path d="M38,24 L2,24 C0.9,24 0,23.1 0,22 L0,2 C0,0.9 0.9,0 2,0 L38,0 C39.1,0 40,0.9 40,2 L40,22 C40,23.1 39.1,24 38,24" id="Fill-1" fill="#FFFFFF"></path>\n            <path d="M38,0 L2,0 C0.9,0 0,0.9 0,2 L0,22 C0,23.1 0.9,24 2,24 L38,24 C39.1,24 40,23.1 40,22 L40,2 C40,0.9 39.1,0 38,0 M38,1 C38.551,1 39,1.449 39,2 L39,22 C39,22.551 38.551,23 38,23 L2,23 C1.449,23 1,22.551 1,22 L1,2 C1,1.449 1.449,1 2,1 L38,1" id="Fill-3" fill="#C8C8C8"></path>\n            <path d="M11.6294,3.3945 L18.4974,3.3945 C19.4564,3.3945 20.0524,4.1755 19.8284,5.1375 L16.6294,18.8655 C16.4054,19.8245 15.4474,20.6055 14.4904,20.6055 L7.6204,20.6055 C6.6624,20.6055 6.0664,19.8245 6.2894,18.8655 L9.4894,5.1375 C9.7124,4.1755 10.6694,3.3945 11.6294,3.3945" id="Fill-5" fill="#D80029"></path>\n            <path d="M17.9287,3.3945 L24.7967,3.3945 C25.7537,3.3945 26.3547,4.1755 26.1257,5.1375 L22.9297,18.8655 C22.7037,19.8245 21.7437,20.6055 20.7837,20.6055 L13.9177,20.6055 C12.9587,20.6055 12.3627,19.8245 12.5877,18.8655 L15.7837,5.1375 C16.0077,4.1755 16.9697,3.3945 17.9287,3.3945" id="Fill-7" fill="#0E2E62"></path>\n            <path d="M25.5161,3.3945 L32.3771,3.3945 C33.3361,3.3945 33.9351,4.1755 33.7091,5.1375 L30.5121,18.8655 C30.2891,19.8245 29.3291,20.6055 28.3711,20.6055 L21.5001,20.6055 C20.5421,20.6055 19.9431,19.8245 20.1691,18.8655 L23.3661,5.1375 C23.5901,4.1755 24.5511,3.3945 25.5161,3.3945" id="Fill-9" fill="#0C606C"></path>\n            <path d="M24.4546,16.3071 L25.1006,16.3071 L25.2466,15.6821 L24.5976,15.6821 L24.4546,16.3071 Z M24.8526,14.5921 L24.6816,15.3221 C24.6816,15.3221 24.9176,15.1981 25.0506,15.1611 C25.1796,15.1271 25.3786,15.1051 25.3786,15.1051 L25.5006,14.5921 L24.8526,14.5921 Z M25.1026,13.5291 L24.9406,14.2371 C24.9406,14.2371 25.1706,14.1281 25.3006,14.0941 C25.4316,14.0581 25.6296,14.0401 25.6296,14.0401 L25.7516,13.5291 L25.1026,13.5291 Z M26.5356,13.5291 L25.8886,16.2961 L26.1126,16.2961 L25.9756,16.8721 L25.7516,16.8721 L25.7106,17.0491 L24.9126,17.0491 L24.9556,16.8721 L23.3366,16.8721 L23.4636,16.3421 L23.6286,16.3401 L24.2886,13.5291 L24.4186,12.9631 L25.2336,12.9631 L25.1686,13.2481 C25.1686,13.2481 25.3736,13.0911 25.5716,13.0391 C25.7756,12.9841 26.9526,12.9641 26.9526,12.9641 L26.8176,13.5291 L26.5356,13.5291 Z" id="Fill-11" fill="#FFFFFF"></path>\n            <path d="M26.9966,12.9678 L27.8616,12.9678 L27.8726,13.2878 C27.8666,13.3418 27.9146,13.3668 28.0136,13.3688 L28.1616,13.3688 L28.0306,13.9018 L27.5596,13.9018 C27.1566,13.9318 27.0016,13.7578 27.0136,13.5618 L26.9966,12.9678" id="Fill-13" fill="#FFFFFF"></path>\n            <path d="M27.1436,15.4956 L26.3166,15.4956 L26.4276,15.0226 L27.3706,15.0226 L27.4736,14.5886 L26.5416,14.5886 L26.6686,14.0536 L29.2616,14.0536 L29.1336,14.5886 L28.2656,14.5886 L28.1616,15.0226 L29.0326,15.0226 L28.9216,15.4956 L27.9786,15.4956 L27.8216,15.6976 L28.2056,15.6976 L28.3396,16.2966 C28.3516,16.3536 28.3596,16.3926 28.3786,16.4196 C28.3956,16.4386 28.5126,16.4486 28.5806,16.4486 L28.6976,16.4486 L28.5596,17.0356 L28.2656,17.0356 C28.2206,17.0356 28.1526,17.0346 28.0576,17.0246 C27.9706,17.0176 27.9036,16.9636 27.8406,16.9376 C27.7836,16.9106 27.6996,16.8476 27.6706,16.7326 L27.5386,16.1376 L27.1546,16.7246 C27.0266,16.9106 26.8526,17.0496 26.5396,17.0496 L25.9386,17.0496 L26.0596,16.5326 L26.2906,16.5326 C26.3556,16.5326 26.4156,16.5056 26.4546,16.4836 C26.4986,16.4646 26.5356,16.4426 26.5796,16.3806 L27.1436,15.4956" id="Fill-15" fill="#FFFFFF"></path>\n            <path d="M18.0044,14.1973 L20.1934,14.1973 L20.0684,14.7183 L19.1874,14.7183 L19.0834,15.1663 L19.9734,15.1663 L19.8434,15.7033 L18.9514,15.7033 L18.7794,16.4263 C18.7584,16.5053 18.9974,16.5203 19.0834,16.5203 L19.5254,16.4583 L19.3824,17.0503 L18.3764,17.0503 C18.2934,17.0503 18.2344,17.0433 18.1454,17.0223 C18.0594,17.0003 18.0184,16.9613 17.9734,16.9053 C17.9374,16.8493 17.8764,16.7963 17.9074,16.6723 L18.1364,15.7123 L17.6394,15.7123 L17.7704,15.1663 L18.2714,15.1663 L18.3764,14.7183 L17.8784,14.7183 L18.0044,14.1973" id="Fill-17" fill="#FFFFFF"></path>\n            <path d="M19.4194,13.2588 L20.3174,13.2588 L20.1894,13.8018 L18.9614,13.8018 L18.8354,13.9198 C18.7844,13.9738 18.7614,13.9518 18.6914,13.9888 C18.6234,14.0278 18.4814,14.0938 18.2914,14.0938 L17.9004,14.0938 L18.0264,13.5718 L18.1414,13.5718 C18.2444,13.5718 18.3104,13.5588 18.3434,13.5378 C18.3804,13.5158 18.4214,13.4598 18.4644,13.3688 L18.6664,12.9618 L19.5584,12.9618 L19.4194,13.2588" id="Fill-19" fill="#FFFFFF"></path>\n            <path d="M21.1973,14.1572 C21.1973,14.1572 21.4273,13.9322 21.8443,13.8582 C21.9383,13.8422 22.5393,13.8462 22.5393,13.8462 L22.6063,13.5452 L21.3453,13.5452 L21.1973,14.1572 Z M22.3963,14.3842 L21.1463,14.3842 L21.0853,14.6352 L22.1703,14.6352 C22.2953,14.6232 22.3233,14.6392 22.3313,14.6342 L22.3963,14.3842 Z M20.6843,12.9632 L21.4543,12.9632 L21.3633,13.3512 C21.3633,13.3512 21.5903,13.1552 21.7603,13.0912 C21.9223,13.0252 22.3023,12.9702 22.3023,12.9702 L23.5393,12.9632 L23.2033,14.3672 C23.1463,14.6112 23.0763,14.7642 23.0263,14.8342 C22.9833,14.9052 22.9343,14.9662 22.8283,15.0262 C22.7283,15.0832 22.6333,15.1142 22.5453,15.1222 C22.4663,15.1322 22.3403,15.1322 22.1653,15.1332 L20.9773,15.1332 L20.7093,16.2452 C20.6813,16.3562 20.6723,16.4072 20.6943,16.4382 C20.7123,16.4622 20.7553,16.4932 20.8113,16.4932 L21.3323,16.4422 L21.1933,17.0552 L20.6003,17.0552 C20.4153,17.0552 20.2773,17.0502 20.1853,17.0422 C20.0933,17.0352 19.9953,17.0422 19.9293,16.9922 C19.8733,16.9412 19.7873,16.8822 19.7843,16.8172 C19.7873,16.7572 19.8063,16.6562 19.8333,16.5212 L20.6843,12.9632 Z" id="Fill-21" fill="#FFFFFF"></path>\n            <path d="M23.0562,15.2319 L23.0082,15.5689 C22.9802,15.6729 22.9602,15.7539 22.8882,15.8259 C22.8062,15.8939 22.7132,15.9679 22.4822,15.9679 L22.0622,15.9839 L22.0792,16.3649 C22.0832,16.4769 22.1092,16.4639 22.1282,16.4819 C22.1512,16.5019 22.1652,16.5079 22.1862,16.5139 L22.3222,16.5079 L22.7222,16.4829 L22.5922,17.0439 L22.1282,17.0439 C21.8022,17.0439 21.5562,17.0339 21.4752,16.9709 C21.3932,16.9189 21.3802,16.8579 21.3752,16.7559 L21.3112,15.2649 L22.0562,15.2649 L22.0642,15.5689 L22.2422,15.5689 C22.3052,15.5689 22.3442,15.5649 22.3702,15.5479 C22.3892,15.5289 22.4032,15.5069 22.4162,15.4709 L22.4692,15.2319 L23.0562,15.2319" id="Fill-23" fill="#FFFFFF"></path>\n            <path d="M12.4448,7.7773 C12.4168,7.9033 11.9418,10.0983 11.9398,10.1003 C11.8368,10.5433 11.7588,10.8603 11.5118,11.0673 C11.3628,11.1853 11.1948,11.2413 11.0048,11.2413 C10.6918,11.2413 10.5078,11.0883 10.4738,10.7923 L10.4658,10.6903 C10.4658,10.6903 10.5628,10.0983 10.5628,10.0963 C10.5628,10.0963 11.0648,8.0893 11.1558,7.8233 C11.1578,7.8083 11.1608,7.7983 11.1638,7.7903 C10.1898,7.8023 10.0168,7.7953 10.0048,7.7773 C9.9988,7.7983 9.9738,7.9253 9.9738,7.9253 L9.4628,10.1823 L9.4148,10.3743 L9.3348,10.9983 C9.3348,11.1853 9.3698,11.3383 9.4428,11.4663 C9.6748,11.8713 10.3408,11.9313 10.7158,11.9313 C11.1998,11.9313 11.6508,11.8263 11.9588,11.6443 C12.4908,11.3253 12.6318,10.8333 12.7528,10.3993 L12.8108,10.1743 C12.8108,10.1743 13.3288,8.0923 13.4158,7.8233 C13.4178,7.8083 13.4218,7.7983 13.4238,7.7903 C12.7188,7.8013 12.5118,7.7953 12.4448,7.7773" id="Fill-25" fill="#FFFFFF"></path>\n            <path d="M15.2935,11.9106 C14.9485,11.9056 14.8275,11.9056 14.4245,11.9246 L14.4055,11.8966 C14.4425,11.7416 14.4815,11.5876 14.5165,11.4346 L14.5645,11.2266 C14.6395,10.8986 14.7155,10.5206 14.7195,10.4026 C14.7285,10.3336 14.7505,10.1606 14.5525,10.1606 C14.4695,10.1606 14.3815,10.1996 14.2925,10.2416 C14.2475,10.4136 14.1445,10.9026 14.0985,11.1246 C14.0005,11.5956 13.9905,11.6496 13.9475,11.8796 L13.9185,11.9106 C13.5605,11.9056 13.4395,11.9056 13.0315,11.9246 L13.0135,11.8926 C13.0795,11.6086 13.1485,11.3326 13.2115,11.0526 C13.3855,10.2976 13.4265,10.0106 13.4725,9.6276 L13.5045,9.6006 C13.9065,9.5466 14.0015,9.5326 14.4355,9.4436 L14.4695,9.4836 L14.4035,9.7266 C14.4785,9.6846 14.5505,9.6406 14.6255,9.6006 C14.8275,9.5026 15.0535,9.4706 15.1805,9.4706 C15.3675,9.4706 15.5725,9.5256 15.6605,9.7426 C15.7475,9.9376 15.6885,10.1786 15.5805,10.6526 L15.5275,10.8916 C15.4135,11.4216 15.3975,11.5196 15.3345,11.8796 L15.2935,11.9106" id="Fill-27" fill="#FFFFFF"></path>\n            <path d="M16.6963,11.9106 C16.4873,11.9056 16.3543,11.9056 16.2243,11.9106 C16.0943,11.9106 15.9663,11.9146 15.7733,11.9246 L15.7623,11.9056 L15.7513,11.8926 C15.8033,11.6936 15.8313,11.6216 15.8583,11.5526 C15.8843,11.4806 15.9093,11.4106 15.9553,11.2066 C16.0143,10.9436 16.0533,10.7546 16.0783,10.5966 C16.1083,10.4366 16.1223,10.3066 16.1423,10.1526 L16.1613,10.1396 L16.1743,10.1236 C16.3833,10.0986 16.5133,10.0776 16.6503,10.0546 C16.7823,10.0356 16.9213,10.0106 17.1363,9.9716 L17.1423,9.9866 L17.1523,10.0046 C17.1083,10.1696 17.0713,10.3336 17.0303,10.4996 C16.9913,10.6646 16.9533,10.8296 16.9173,10.9926 C16.8353,11.3386 16.8083,11.4716 16.7883,11.5626 C16.7723,11.6526 16.7673,11.6976 16.7363,11.8796 L16.7173,11.8966 L16.6963,11.9106" id="Fill-29" fill="#FFFFFF"></path>\n            <path d="M18.8965,10.6846 C18.8765,10.7706 18.7985,11.1066 18.6915,11.2486 C18.6185,11.3496 18.5295,11.4126 18.4375,11.4126 C18.4085,11.4126 18.2365,11.4126 18.2325,11.1616 C18.2325,11.0356 18.2545,10.9076 18.2875,10.7676 C18.3775,10.3706 18.4865,10.0316 18.7585,10.0316 C18.9745,10.0316 18.9875,10.2766 18.8965,10.6846 M19.7975,10.7226 C19.9195,10.1886 19.8285,9.9396 19.7085,9.7916 C19.5255,9.5596 19.2115,9.4836 18.8795,9.4836 C18.6825,9.4836 18.2135,9.5056 17.8445,9.8486 C17.5825,10.0906 17.4525,10.4256 17.3825,10.7426 C17.3075,11.0676 17.2205,11.6586 17.7575,11.8716 C17.9245,11.9426 18.1635,11.9656 18.3155,11.9656 C18.7125,11.9656 19.1165,11.8536 19.4175,11.5286 C19.6555,11.2726 19.7605,10.8806 19.7975,10.7226" id="Fill-31" fill="#FFFFFF"></path>\n            <path d="M28.7817,9.5107 C28.3477,9.5897 28.2337,9.6107 27.8217,9.6667 L27.7857,9.6907 C27.7837,9.7247 27.7777,9.7567 27.7717,9.7927 C27.7097,9.6877 27.6207,9.5947 27.4737,9.5377 C27.2867,9.4687 26.8547,9.5587 26.4857,9.9007 C26.2207,10.1417 26.0987,10.4697 26.0217,10.7907 C25.9497,11.1087 25.8627,11.6977 26.3987,11.9057 C26.5687,11.9777 26.7237,11.9987 26.8767,11.9907 C27.0457,11.9847 27.1937,11.8967 27.3367,11.7747 C27.3217,11.8257 27.3107,11.8767 27.2967,11.9287 L27.3217,11.9577 C27.7077,11.9427 27.8277,11.9427 28.2447,11.9477 L28.2827,11.9147 C28.3417,11.5587 28.4027,11.2087 28.5587,10.5227 C28.6347,10.1967 28.7127,9.8717 28.7937,9.5467 L28.7817,9.5107 M27.4107,11.2907 C27.3417,11.3917 27.1717,11.4537 27.0787,11.4537 C27.0507,11.4537 26.8807,11.4537 26.8767,11.2057 C26.8747,11.0787 26.8977,10.9507 26.9297,10.8127 C27.0187,10.4157 27.1277,10.0797 27.4047,10.0797 C27.5797,10.0797 27.6667,10.2537 27.6427,10.5387 C27.6267,10.6017 27.6187,10.6597 27.6017,10.7337 C27.5717,10.8587 27.5367,10.9807 27.5067,11.1027 C27.4797,11.1767 27.4487,11.2457 27.4107,11.2907" id="Fill-33" fill="#FFFFFF"></path>\n            <path d="M22.1577,11.9106 C21.8087,11.9056 21.6947,11.9056 21.2867,11.9246 L21.2717,11.8966 C21.3087,11.7416 21.3477,11.5876 21.3827,11.4346 L21.4317,11.2266 C21.5037,10.8986 21.5797,10.5206 21.5897,10.4026 C21.5927,10.3336 21.6147,10.1606 21.4167,10.1606 C21.3367,10.1606 21.2457,10.1996 21.1567,10.2416 C21.1117,10.4136 21.0117,10.9026 20.9637,11.1246 C20.8677,11.5956 20.8597,11.6496 20.8157,11.8796 L20.7837,11.9106 C20.4287,11.9056 20.3077,11.9056 19.8967,11.9246 L19.8777,11.8926 C19.9477,11.6086 20.0137,11.3326 20.0777,11.0526 C20.2507,10.2976 20.2907,10.0106 20.3407,9.6276 L20.3727,9.6006 C20.7727,9.5466 20.8677,9.5326 21.3027,9.4436 L21.3367,9.4836 L21.2717,9.7266 C21.3407,9.6846 21.4147,9.6406 21.4887,9.6006 C21.6927,9.5026 21.9187,9.4706 22.0427,9.4706 C22.2317,9.4706 22.4397,9.5256 22.5257,9.7426 C22.6087,9.9376 22.5547,10.1786 22.4457,10.6526 L22.3907,10.8916 C22.2787,11.4216 22.2607,11.5196 22.1987,11.8796 L22.1577,11.9106" id="Fill-35" fill="#FFFFFF"></path>\n            <path d="M25.1504,7.7729 L24.8644,7.7789 C24.1174,7.7889 23.8204,7.7859 23.6934,7.7679 C23.6834,7.8229 23.6634,7.9199 23.6634,7.9199 L23.3994,9.1629 C23.3994,9.1629 22.7584,11.7979 22.7284,11.9239 C23.3774,11.9119 23.6474,11.9119 23.7574,11.9259 C23.7834,11.8019 23.9354,11.0669 23.9374,11.0629 C23.9374,11.0629 24.0654,10.5229 24.0744,10.5089 C24.0744,10.5089 24.1104,10.4499 24.1544,10.4269 L24.2154,10.4269 C24.7754,10.4269 25.4114,10.4269 25.9104,10.0589 C26.2474,9.8139 26.4764,9.4389 26.5834,8.9909 C26.6084,8.8799 26.6294,8.7489 26.6294,8.6159 C26.6294,8.4449 26.5944,8.2749 26.4944,8.1349 C26.2434,7.7809 25.7364,7.7789 25.1504,7.7729 M25.5254,9.0659 C25.4634,9.3409 25.2884,9.5699 25.0564,9.6849 C24.8664,9.7799 24.6384,9.7869 24.3974,9.7869 L24.2404,9.7869 L24.2554,9.7249 C24.2554,9.7249 24.5394,8.4899 24.5394,8.4919 L24.5454,8.4289 L24.5514,8.3809 L24.6664,8.3889 C24.6664,8.3889 25.2534,8.4409 25.2664,8.4449 C25.4964,8.5349 25.5934,8.7639 25.5254,9.0659" id="Fill-37" fill="#FFFFFF"></path>\n            <path d="M17.0757,9.7915 C17.3027,9.6335 17.3337,9.4145 17.1407,9.2965 C16.9457,9.1865 16.6047,9.2195 16.3747,9.3795 C16.1427,9.5355 16.1177,9.7565 16.3117,9.8725 C16.5047,9.9865 16.8457,9.9485 17.0757,9.7915" id="Fill-39" fill="#FFFFFF"></path>\n            <path d="M31.6587,9.5098 L31.6217,9.4688 C31.1967,9.5568 31.1197,9.5698 30.7267,9.6218 L30.6967,9.6478 C30.6967,9.6548 30.6967,9.6628 30.6957,9.6688 L30.6927,9.6628 C30.3997,10.3378 30.4117,10.1908 30.1737,10.7218 C30.1707,10.6958 30.1707,10.6768 30.1707,10.6558 L30.1107,9.5098 L30.0747,9.4688 C29.6287,9.5568 29.6167,9.5698 29.2057,9.6218 L29.1727,9.6478 C29.1687,9.6668 29.1667,9.6788 29.1637,9.6958 L29.1687,9.7008 C29.2187,9.9658 29.2067,9.9058 29.2597,10.3208 C29.2817,10.5228 29.3147,10.7308 29.3377,10.9338 C29.3807,11.2698 29.4037,11.4368 29.4507,11.9478 C29.1727,12.4128 29.1077,12.5858 28.8417,12.9888 L28.6527,13.2908 C28.6307,13.3238 28.6117,13.3418 28.5827,13.3548 C28.5547,13.3668 28.5127,13.3738 28.4587,13.3738 L28.3167,13.3738 L28.1927,13.9118 L28.7297,13.9018 C29.0437,13.9018 29.2417,13.7458 29.3477,13.5498 L29.6807,12.9768 L31.6587,9.5098" id="Fill-41" fill="#FFFFFF"></path>\n        </g>\n    </g>\n</svg>';
+    }, function(module, exports) {
+        var k_r_submitter = /^(?:submit|button|image|reset|file)$/i, k_r_success_contrls = /^(?:input|select|textarea|keygen)/i, brackets = /(\[[^\[\]]*\])/g;
+        function hash_serializer(result, key, value) {
+            if (key.match(brackets)) !function hash_assign(result, keys, value) {
+                if (0 === keys.length) return value;
+                var key = keys.shift(), between = key.match(/^\[(.+?)\]$/);
+                if ("[]" === key) return result = result || [], Array.isArray(result) ? result.push(hash_assign(null, keys, value)) : (result._values = result._values || [], 
+                result._values.push(hash_assign(null, keys, value))), result;
+                if (between) {
+                    var string = between[1], index = +string;
+                    isNaN(index) ? (result = result || {})[string] = hash_assign(result[string], keys, value) : (result = result || [])[index] = hash_assign(result[index], keys, value);
+                } else result[key] = hash_assign(result[key], keys, value);
+                return result;
+            }(result, function(string) {
+                var keys = [], children = new RegExp(brackets), match = /^([^\[\]]*)/.exec(string);
+                for (match[1] && keys.push(match[1]); null !== (match = children.exec(string)); ) keys.push(match[1]);
+                return keys;
+            }(key), value); else {
+                var existing = result[key];
+                existing ? (Array.isArray(existing) || (result[key] = [ existing ]), result[key].push(value)) : result[key] = value;
+            }
+            return result;
+        }
+        function str_serialize(result, key, value) {
+            return value = value.replace(/(\r)?\n/g, "\r\n"), value = (value = encodeURIComponent(value)).replace(/%20/g, "+"), 
+            result + (result ? "&" : "") + encodeURIComponent(key) + "=" + value;
+        }
+        module.exports = function(form, options) {
+            "object" != typeof options ? options = {
+                hash: !!options
+            } : void 0 === options.hash && (options.hash = !0);
+            for (var result = options.hash ? {} : "", serializer = options.serializer || (options.hash ? hash_serializer : str_serialize), elements = form && form.elements ? form.elements : [], radio_store = Object.create(null), i = 0; i < elements.length; ++i) {
+                var element = elements[i];
+                if ((options.disabled || !element.disabled) && element.name && k_r_success_contrls.test(element.nodeName) && !k_r_submitter.test(element.type)) {
+                    var key = element.name, val = element.value;
+                    if ("checkbox" !== element.type && "radio" !== element.type || element.checked || (val = void 0), 
+                    options.empty) {
+                        if ("checkbox" !== element.type || element.checked || (val = ""), "radio" === element.type && (radio_store[element.name] || element.checked ? element.checked && (radio_store[element.name] = !0) : radio_store[element.name] = !1), 
+                        null == val && "radio" == element.type) continue;
+                    } else if (!val) continue;
+                    if ("select-multiple" !== element.type) result = serializer(result, key, val); else {
+                        val = [];
+                        for (var selectOptions = element.options, isSelectedOptions = !1, j = 0; j < selectOptions.length; ++j) {
+                            var option = selectOptions[j];
+                            option.selected && (option.value || options.empty && !option.value) && (isSelectedOptions = !0, 
+                            result = options.hash && "[]" !== key.slice(key.length - 2) ? serializer(result, key + "[]", option.value) : serializer(result, key, option.value));
+                        }
+                        !isSelectedOptions && options.empty && (result = serializer(result, key, ""));
+                    }
+                }
+            }
+            if (options.empty) for (var key in radio_store) radio_store[key] || (result = serializer(result, key, ""));
+            return result;
+        };
     }, function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.r(__webpack_exports__);
@@ -20152,7 +20226,7 @@
                     logoColor: "blue"
                 })));
             }(normalizeProps(props)) : null;
-            return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.283", 
+            return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.284", 
             _ref18), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -20716,22 +20790,24 @@
                         });
                         return function() {
                             var container = this.container;
-                            initialHeight || (initialHeight = container.offsetHeight);
-                            var isContainerExpanded = container && container.offsetHeight > initialHeight, isExpansionInViewport = function() {
-                                try {
-                                    var scrollOffsetY = window.pageYOffset ? window.pageYOffset : document.documentElement ? document.documentElement.scrollTop : 0, windowHeight = window.innerHeight, containerOffsetY = container.getBoundingClientRect().top;
-                                    return scrollOffsetY + windowHeight > initialHeight + containerOffsetY + 200;
-                                } catch (err) {
-                                    return Object(beaver_logger_client.k)("cannot_get_the_viewport_information"), !1;
-                                }
-                            }();
-                            isContainerExpanded && !isExpansionInViewport && logInlineGuestOutOfViewPortOnlyOnce({
-                                height: container.offsetHeight,
-                                window: {
-                                    width: window.innerWidth,
-                                    height: window.innerHeight
-                                }
-                            });
+                            if (container) {
+                                initialHeight || (initialHeight = container.offsetHeight);
+                                var isContainerExpanded = container && container.offsetHeight > initialHeight, isExpansionInViewport = function() {
+                                    try {
+                                        var scrollOffsetY = window.pageYOffset ? window.pageYOffset : document.documentElement ? document.documentElement.scrollTop : 0, windowHeight = window.innerHeight, containerOffsetY = container.getBoundingClientRect().top;
+                                        return scrollOffsetY + windowHeight > initialHeight + containerOffsetY + 200;
+                                    } catch (err) {
+                                        return Object(beaver_logger_client.k)("cannot_get_the_viewport_information"), !1;
+                                    }
+                                }();
+                                isContainerExpanded && !isExpansionInViewport && logInlineGuestOutOfViewPortOnlyOnce({
+                                    height: container.offsetHeight,
+                                    window: {
+                                        width: window.innerWidth,
+                                        height: window.innerHeight
+                                    }
+                                });
+                            }
                         };
                     },
                     decorate: function(original) {
@@ -20903,16 +20979,18 @@
                 }).filter(function(source) {
                     return source && source !== constants.v.CARD;
                 }), xprops = ButtonComponent.xprops;
-                Object(beaver_logger_client.p)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
-                _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_LOAD, _track[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, 
-                _track[constants.u.KEY.FUNDING_LIST] = fundingSources.join(":"), _track[constants.u.KEY.FUNDING_COUNT] = fundingSources.length, 
-                _track[constants.u.KEY.PAGE_LOAD_TIME] = pageRenderTime, _track[constants.u.KEY.BUTTON_LAYOUT] = xprops && xprops.style && xprops.style.layout || constants.g.HORIZONTAL, 
-                _track[constants.u.KEY.BUTTON_COLOR] = xprops && xprops.style && xprops.style.color || constants.e.GOLD, 
-                _track[constants.u.KEY.BUTTON_SIZE] = xprops && xprops.style && xprops.style.size || constants.l.SMALL, 
-                _track[constants.u.KEY.BUTTON_SHAPE] = xprops && xprops.style && xprops.style.shape || constants.k.PILL, 
-                _track[constants.u.KEY.BUTTON_LABEL] = xprops && xprops.style && xprops.style.label || constants.f.CHECKOUT, 
-                _track[constants.u.KEY.BUTTON_WIDTH] = window.innerWidth, _track[constants.u.KEY.MAX_BUTTONS] = xprops && xprops.style && xprops.style.maxbuttons, 
-                _track)), Object(beaver_logger_client.h)();
+                if (xprops) {
+                    var _ref = xprops.style || {}, _ref$layout = _ref.layout, layout = void 0 === _ref$layout ? constants.g.HORIZONTAL : _ref$layout, _ref$color = _ref.color, color = void 0 === _ref$color ? constants.e.GOLD : _ref$color, _ref$size = _ref.size, size = void 0 === _ref$size ? constants.l.SMALL : _ref$size, _ref$shape = _ref.shape, shape = void 0 === _ref$shape ? constants.k.PILL : _ref$shape, _ref$label = _ref.label, label = void 0 === _ref$label ? constants.f.CHECKOUT : _ref$label, maxbuttons = _ref.maxbuttons, tagline = _ref.tagline;
+                    Object(beaver_logger_client.p)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
+                    _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_LOAD, _track[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, 
+                    _track[constants.u.KEY.FUNDING_LIST] = fundingSources.join(":"), _track[constants.u.KEY.FUNDING_COUNT] = fundingSources.length, 
+                    _track[constants.u.KEY.PAGE_LOAD_TIME] = pageRenderTime, _track[constants.u.KEY.BUTTON_LAYOUT] = layout, 
+                    _track[constants.u.KEY.BUTTON_COLOR] = color, _track[constants.u.KEY.BUTTON_SIZE] = size, 
+                    _track[constants.u.KEY.BUTTON_SHAPE] = shape, _track[constants.u.KEY.BUTTON_LABEL] = label, 
+                    _track[constants.u.KEY.BUTTON_WIDTH] = window.innerWidth, _track[constants.u.KEY.MAX_BUTTONS] = maxbuttons, 
+                    _track[constants.u.KEY.BUTTON_TAGLINE_ENABLED] = tagline ? "1" : "0", _track)), 
+                    Object(beaver_logger_client.h)();
+                }
             });
             var xprops = ButtonComponent.xprops || src_checkout.a.xprops;
             xprops && xprops.logLevel && Object(lib.T)(xprops.logLevel);
@@ -21259,7 +21337,7 @@
             }), Object(beaver_logger_client.p)(((setup_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
             setup_track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, setup_track3));
         }
-        var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.283", legacy = __webpack_require__(59);
+        var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.284", legacy = __webpack_require__(60);
         interface_checkout = legacy.checkout, apps = legacy.apps, Object(lib.G)() && (interface_Checkout = src_checkout.a, 
         interface_BillingPage = BillingPage, interface_ThreeDomainSecure = ThreeDomainSecure, 
         PayPalCheckout = src_checkout.a, enableCheckoutIframe = function() {
@@ -21346,7 +21424,7 @@
             SANDBOX: "data-sandbox"
         }, CLASSES = {
             HIDDEN_BUTTON: "paypal-button-hidden"
-        }, esm_extends = __webpack_require__(11), src = __webpack_require__(1), checkout = __webpack_require__(15), config = __webpack_require__(3), post_robot_src = __webpack_require__(13);
+        }, esm_extends = __webpack_require__(11), src = __webpack_require__(1), form_serialize = __webpack_require__(55), form_serialize_default = __webpack_require__.n(form_serialize), checkout = __webpack_require__(15), config = __webpack_require__(3), post_robot_src = __webpack_require__(13);
         function isLegacyEligible() {
             return !!Object(lib.B)() && !!Object(lib.W)() && !Object(lib.z)();
         }
@@ -21495,8 +21573,31 @@
                 }), redirect(url), new Error(url + " is not a " + config.a.env + " url");
             }
         }
-        function awaitPaymentTokenAndUrl() {
+        function awaitPaymentTokenAndUrl(event, targetElement) {
             var paymentTokenAndUrl = new src.a(function(resolve) {
+                var method, _url, body, contentType;
+                event && targetElement && (Math.random() < .001 || window.enablev3ajax) && (interface_info("gettoken_targetelement_start"), 
+                Object(client.h)(), "a" === targetElement.tagName.toLowerCase() ? (method = "get", 
+                _url = targetElement.getAttribute("href")) : "form" === targetElement.tagName.toLowerCase() && (method = (targetElement.getAttribute("method") || "get").toLowerCase(), 
+                _url = targetElement.getAttribute("action"), body = form_serialize_default()(targetElement), 
+                contentType = targetElement.getAttribute("enctype") || "application/x-www-form-urlencoded"), 
+                method && _url ? (event.preventDefault(), Object(lib.R)({
+                    method: method,
+                    url: _url,
+                    body: body,
+                    headers: {
+                        Accept: "application/paypal-json-token",
+                        "Content-type": contentType || ""
+                    }
+                }).then(function(json) {
+                    var urlAndPaymentToken = matchUrlAndPaymentToken(json.token);
+                    resolve(urlAndPaymentToken), interface_info("gettoken_targetelement_success", urlAndPaymentToken), 
+                    Object(client.h)();
+                }).catch(function(err) {
+                    interface_warn("gettoken_targetelement_error", {
+                        err: err.stack || err.toString()
+                    }), Object(client.h)();
+                })) : (interface_warn("gettoken_targetelement_no_method_or_url"), Object(client.h)())), 
                 interface_checkout.initXO = function() {
                     interface_warn("gettoken_initxo");
                 }, interface_checkout.startFlow = Object(lib.L)(function(item) {
@@ -21682,11 +21783,11 @@
                                             error: Object(lib.U)(err)
                                         });
                                     }
-                                }(clickHandler, event) : function(element) {
+                                }(clickHandler, event) : function(event, element) {
                                     var targetElement = getHijackTargetElement(element);
                                     if (!targetElement) return interface_error("target_element_not_found");
                                     interface_info("init_paypal_checkout_hijack");
-                                    var token, _awaitPaymentTokenAnd = awaitPaymentTokenAndUrl(), url = _awaitPaymentTokenAnd.url;
+                                    var token, _awaitPaymentTokenAnd = awaitPaymentTokenAndUrl(event, targetElement), url = _awaitPaymentTokenAnd.url;
                                     _awaitPaymentTokenAnd.paymentToken.then(function(result) {
                                         token = result;
                                     }), renderPayPalCheckout({
@@ -21695,7 +21796,7 @@
                                             return src.a.resolve(token);
                                         }
                                     }, targetElement);
-                                }(element);
+                                }(event, element);
                             });
                         }(button.container, button.element, button.click, button.condition, function() {
                             var type, _track2;
