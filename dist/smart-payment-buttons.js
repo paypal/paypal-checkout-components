@@ -2621,7 +2621,7 @@ window.spb = function(modules) {
                     });
                     if (!init || !init.isEnabled()) return win ? win.close() : null;
                     var isCardFields = function(_ref) {
-                        return !(_ref.win || !window.xprops.enableInlineGuest || _ref.fundingSource !== sdk_constants_src.g.CARD || _ref.vault || _ref.onShippingChange);
+                        return !(_ref.win || !window.xprops.enableStandardCardFields || _ref.fundingSource !== sdk_constants_src.g.CARD || _ref.vault || _ref.onShippingChange);
                     }({
                         win: win,
                         vault: vault,
