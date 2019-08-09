@@ -61,7 +61,7 @@ export function isCardFieldsEligible({ win, vault, onShippingChange, fundingSour
         return false;
     }
 
-    if (!window.xprops.enableInlineGuest) {
+    if (!window.xprops.enableStandardCardFields) {
         return false;
     }
 

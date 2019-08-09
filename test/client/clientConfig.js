@@ -59,7 +59,7 @@ describe('client config cases', () => {
 
     it('should pass the correct basic values for inline card fields', async () => {
         return await wrapPromise(async ({ expect }) => {
-            window.xprops.enableInlineGuest = true;
+            window.xprops.enableStandardCardFields = true;
 
             let clientConfigCalled = false;
 
