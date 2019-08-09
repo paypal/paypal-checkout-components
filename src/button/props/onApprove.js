@@ -88,6 +88,14 @@ function buildXApproveActions({ intent, orderID, restart, subscriptionID } : { o
         if (!url) {
             throw new Error(`Expected redirect url`);
         }
+
+        if (url.indexOf('://') === -1) {
+            getLogger().warn('redir_url_non_scheme', { url }).flush();
+            throw new Error(`Invalid redirect url: ${ url } - must be fully qualified url`);
+        } else if (!url.match(/^https?:\/\//)) {
+            getLogger().warn('redir_url_non_http', { url }).flush();
+        }
+
         return redir(url, window.top);
     };
 
