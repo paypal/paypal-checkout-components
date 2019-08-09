@@ -1220,7 +1220,7 @@ window.spb = function(modules) {
                 };
                 return logger;
             }({
-                url: config.f
+                url: config.e
             });
         });
     }
@@ -1327,7 +1327,7 @@ window.spb = function(modules) {
         };
         return Object(belter_src.o)({
             method: "post",
-            url: config.g,
+            url: config.f,
             headers: headers,
             json: order
         }).then(function(_ref) {
@@ -1392,7 +1392,7 @@ window.spb = function(modules) {
         };
         return Object(belter_src.o)({
             method: "post",
-            url: config.g + "/" + orderID + "/" + config.h,
+            url: config.f + "/" + orderID + "/" + config.g,
             headers: headers,
             json: json
         });
@@ -1446,7 +1446,7 @@ window.spb = function(modules) {
         };
         return Object(belter_src.o)({
             method: "post",
-            url: config.d,
+            url: config.c,
             headers: headers,
             json: subscriptionPayload
         }).then(function(_ref) {
@@ -1465,7 +1465,7 @@ window.spb = function(modules) {
         };
         return Object(belter_src.o)({
             method: "post",
-            url: config.d + "/" + subscriptionID + "/revise",
+            url: config.c + "/" + subscriptionID + "/revise",
             headers: headers,
             json: subscriptionPayload
         }).then(function(_ref2) {
@@ -1522,22 +1522,20 @@ window.spb = function(modules) {
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "f", function() {
+    __webpack_require__.d(__webpack_exports__, "e", function() {
         return LOGGER_URL;
     }), __webpack_require__.d(__webpack_exports__, "b", function() {
         return AUTH_API_URL;
-    }), __webpack_require__.d(__webpack_exports__, "g", function() {
+    }), __webpack_require__.d(__webpack_exports__, "f", function() {
         return ORDERS_API_URL;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+    }), __webpack_require__.d(__webpack_exports__, "c", function() {
         return CREATE_SUBSCRIPTIONS_API_URL;
-    }), __webpack_require__.d(__webpack_exports__, "h", function() {
+    }), __webpack_require__.d(__webpack_exports__, "g", function() {
         return VALIDATE_PAYMENT_METHOD_API;
     }), __webpack_require__.d(__webpack_exports__, "a", function() {
         return API_URI;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+    }), __webpack_require__.d(__webpack_exports__, "d", function() {
         return EXPERIENCE_URI;
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
-        return CLIENT_ID_PAYEE_NO_MATCH;
     });
     var LOGGER_URL = "/xoplatform/logger/api/logger", AUTH_API_URL = "/v1/oauth2/token", ORDERS_API_URL = "/v2/checkout/orders", CREATE_SUBSCRIPTIONS_API_URL = "/v1/billing/subscriptions", VALIDATE_PAYMENT_METHOD_API = "validate-payment-method", API_URI = {
         AUTH: "/smart/api/auth",
@@ -1548,7 +1546,7 @@ window.spb = function(modules) {
         GRAPHQL: "/graphql"
     }, EXPERIENCE_URI = {
         CHECKOUT: "/checkoutnow"
-    }, CLIENT_ID_PAYEE_NO_MATCH = [ "Af3YaeRfoJGtncwLeiahT93xTYT0-wldEEaiGehhGspP333r6tADvHeVCwZPR022F4d0YQquv7Lik_PT", "AbHo6hBEDmCHulDhRMkCVk7FDed5zE1-mNo7SQvo_yxeLvGylM5mGh5IOjx0AV9sTHhHDjD4A443Dybb", "AcjM7hAZjUAqIgU0Lvzneb9-_rWs7qAEl6PoPVHtQV5PNmWBihQWsu_SglKO", "Af_pMiA6ikCtlsNB8dJW1oG1ZI7FirXbRU43rDRfq_i_iQAPbYsojeI9Q2VzZvD1u2wKEPuaokZaNWyC", "AQAZZuAP5V0b8Wzs1t3KJM3opK8ueK6Txnlm7pw6kMFHrcAdFogBw3pBmeNP-234aHAZ2BlHeijkU2Tt", "Aef8KpflK3t-pTjstogUtqzAuk1IRGHpkdBTxyTWeARwqXyuRrX5Uj-Bs6KdMwK1g8ZhitjzfJ5jh6K7", "ARcLSr40hevzVXTnnNpHochqg9lsyznO2UugwjyCpt4MPnAmxgyLGC2Ia7aufLH1jS8BhOIZBnXqhOfP", "AYiXLQVgLszolhHbiYAm2HZERgDF5BOPXG7i4m9BNsTTSdmWhVu2Np4_GqDJLrl5VA50VDAlMMpCMArb", "ARbpxmp0udlm2zBPu6bqW6PAMV-UfCTktgWFtJ0cy1rKQUUtIRffwg1A-i0wRyFg9BhbfZM3M6ci6czP", "AeHvO7dLYAlLLnkZWxCTvHgSBMoFRn-bu1Wy9kjEXZVb8wYZPRpEykxDhLQ0WjgUPQz_MeF1e1FnH4mT", "Abi2EEJv7o1v6GKAE1nNVgeNqBWLYXSiDoAKi-ADKU6uRPi_41GJEMr5rjZC8fuQxAC-MVEPYSfYsfzD", "AW9fGl1zpjGSB474VARpj8j0hyEzrwNY7WgJCtwStaVVYkiyixnX4Z3KSe9A0jPLOcKj_2B9lHon1nAR", "ARBlYB7bfFnpO5IgprEW0PqtBSZOn1Q0Jly-3r_IzMEU8sPq0fdNrk1D4JgHAitxDBxfuL6wDpDvTZgU", "AZNQsMt_Ho-GClAUCvZVuKyz-n5rRhZyEBL2yTTetPV-lTqQE2_4quG6-ADlBMZoAgnG-yccas62Hqg2" ];
+    };
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     function _extends() {
@@ -2784,7 +2782,7 @@ window.spb = function(modules) {
                         return {
                             start: function start() {
                                 return createOrder().then(function(orderID) {
-                                    var url = Object(src.c)("" + Object(cross_domain_utils_src.a)() + config.e.CHECKOUT, {
+                                    var url = Object(src.c)("" + Object(cross_domain_utils_src.a)() + config.d.CHECKOUT, {
                                         query: {
                                             fundingSource: fundingSource,
                                             token: orderID,
@@ -2860,7 +2858,7 @@ window.spb = function(modules) {
                             return createOrder();
                         }).then(function(orderID) {
                             return function(orderID, _ref2) {
-                                var clientID = _ref2.clientID, merchantID = _ref2.merchantID;
+                                var merchantID = _ref2.merchantID;
                                 return zalgo_promise_src.a.all([ Object(api_api.b)({
                                     query: "\n                query GetCheckoutDetails($orderID: String!) {\n                    checkoutSession(token: $orderID) {\n                        cart {\n                            intent\n                            amounts {\n                                total {\n                                    currencyCode\n                                }\n                            }\n                        }\n                    }\n                }\n            ",
                                     variables: {
@@ -2873,7 +2871,6 @@ window.spb = function(modules) {
                                     var payeeMerchantID = payee && payee.merchant && payee.merchant.id, actualMerchantID = merchantID && merchantID.length && merchantID[0];
                                     if (!actualMerchantID) throw new Error("Could not determine correct merchant id");
                                     if (!payeeMerchantID) throw new Error("No payee found in transaction. Expected " + actualMerchantID);
-                                    if (payeeMerchantID !== actualMerchantID && -1 === config.c.indexOf(clientID)) throw new Error("Payee " + payeeMerchantID + " does not match expected merchant id: " + actualMerchantID);
                                 });
                             }(orderID, {
                                 clientID: clientID,
