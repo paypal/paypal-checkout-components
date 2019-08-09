@@ -6,6 +6,8 @@ import { INTENT, SDK_QUERY_KEYS, FUNDING } from '@paypal/sdk-constants/src';
 import { INTEGRATION_ARTIFACT, USER_EXPERIENCE_FLOW, PRODUCT_FLOW } from '../constants';
 import { updateClientConfig, getPayee } from '../api';
 import { callGraphQL } from '../api/api';
+import { getLogger } from '../lib';
+import { CLIENT_ID_PAYEE_NO_MATCH } from '../config';
 
 export function updateButtonClientConfig({ orderID, fundingSource, isCardFields } : { orderID : string, fundingSource : $Values<typeof FUNDING>, isCardFields : boolean }) : ZalgoPromise<void> {
     return updateClientConfig({
@@ -17,7 +19,7 @@ export function updateButtonClientConfig({ orderID, fundingSource, isCardFields 
     });
 }
 
-export function validateOrder(orderID : string, { merchantID } : { clientID : string, merchantID : $ReadOnlyArray<string> }) : ZalgoPromise<void> {
+export function validateOrder(orderID : string, { clientID, merchantID } : { clientID : string, merchantID : $ReadOnlyArray<string> }) : ZalgoPromise<void> {
     
     // $FlowFixMe
     return ZalgoPromise.all([
@@ -71,14 +73,16 @@ export function validateOrder(orderID : string, { merchantID } : { clientID : st
             throw new Error(`No payee found in transaction. Expected ${ actualMerchantID }`);
         }
 
-        /*
-
         if (payeeMerchantID !== actualMerchantID) {
             if (CLIENT_ID_PAYEE_NO_MATCH.indexOf(clientID) === -1) {
-                throw new Error(`Payee passed in transaction does not match expected merchant id: ${ actualMerchantID }`);
+                getLogger().info(`client_id_payee_no_match_${ clientID }`).flush();
+                // throw new Error(`Payee passed in transaction does not match expected merchant id: ${ actualMerchantID }`);
             }
         }
 
-        */
+        const xpropMerchantID = window.xprops.merchantID && window.xprops.merchantID[0];
+        if (xpropMerchantID && payeeMerchantID !== xpropMerchantID) {
+            throw new Error(`Payee passed in transaction does not match expected merchant id: ${ xpropMerchantID }`);
+        }
     });
 }

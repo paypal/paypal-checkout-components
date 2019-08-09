@@ -120,7 +120,7 @@ export function setupMocks() {
         getPrerenderDetails: () => ZalgoPromise.resolve(),
         getParent:           () => window,
         getParentDomain:     () => 'https://www.merchant.com',
-        merchantID:          [ 'xyz' ]
+        merchantID:          [ 'XYZ12345' ]
     };
 
     window.Promise.try = (method) => {
