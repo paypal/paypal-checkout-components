@@ -11,12 +11,12 @@ import { isDevice, memoize, noop, supportsPopups, inlineMemoize } from 'belter/s
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { Overlay } from '@paypal/common-components/src';
 
-import { getSessionID } from '../lib';
-import { DEFAULT_POPUP_SIZE, getCheckoutUrl } from '../config';
+import { getSessionID } from '../../lib';
+import { DEFAULT_POPUP_SIZE, getCheckoutUrl } from '../../config';
+import { SpinnerPage } from '../../ui/spinner';
 
-import { containerContent } from './template/containerContent';
-import { componentTemplate } from './template';
 import type { CheckoutPropsType } from './props';
+import { containerContent } from './content';
 
 export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
     return inlineMemoize(getCheckoutComponent, () => {
@@ -38,7 +38,14 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
         
             logger: getLogger(),
         
-            prerenderTemplate: componentTemplate,
+            prerenderTemplate: ({ doc, props }) => {
+                return (
+                    <SpinnerPage
+                        nonce={ props.nonce }
+                    />
+                ).render(dom({ doc }));
+            },
+
             containerTemplate: ({ props, context, close, focus, doc, event, frame, prerenderFrame }) => {
                 const { locale: { lang } } = props;
                 const content = containerContent[lang];

@@ -6,7 +6,8 @@ import { type LocaleType } from '@paypal/sdk-constants/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { CLASS } from '../../constants';
-import { LoadingDots, Text } from '../../ui';
+
+import { LoadingDots, Text } from '..';
 
 import { buttonContent } from './content';
 

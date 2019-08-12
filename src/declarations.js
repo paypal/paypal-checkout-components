@@ -10,7 +10,8 @@ declare var __PAYPAL_CHECKOUT__ : {
     __URI__ : {
         __BUTTONS__ : string,
         __CHECKOUT__ : string,
-        __CARD_FIELDS__ : string
+        __CARD_FIELDS__ : string,
+        __MENU__ : string
     }
 };
 

@@ -1,12 +1,9 @@
 /* @flow */
 /** @jsx node */
 
-import { node, dom } from 'jsx-pragmatic/src';
-import type { RenderOptionsType } from 'zoid/src/parent';
+import { node, type ElementNode } from 'jsx-pragmatic/src';
 
-import type { CheckoutPropsType } from '../props';
-
-const checkoutComponentStyle = `
+const spinnerStyle = `
 
     body {
         width: 100%;
@@ -72,9 +69,7 @@ const checkoutComponentStyle = `
     }
 `;
 
-export function componentTemplate({ doc, props } : RenderOptionsType<CheckoutPropsType>) : HTMLElement {
-    const { nonce } = props;
-
+export function SpinnerPage({ nonce } : { nonce : ?string }) : ElementNode {
     return (
         <html>
             <head>
@@ -84,7 +79,7 @@ export function componentTemplate({ doc, props } : RenderOptionsType<CheckoutPro
             <body>
                 <div class="preloader spinner">
                     <style nonce={ nonce }>
-                        { checkoutComponentStyle }
+                        { spinnerStyle }
                     </style>
 
                     <div class="spinWrap">
@@ -94,5 +89,5 @@ export function componentTemplate({ doc, props } : RenderOptionsType<CheckoutPro
                 </div>
             </body>
         </html>
-    ).render(dom({ doc }));
+    );
 }

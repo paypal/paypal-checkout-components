@@ -5,7 +5,7 @@ import { values } from 'belter/src';
 
 import { BUTTON_LAYOUT } from '../constants';
 import type { FundingEligibilityType } from '../types';
-import type { OnShippingChange } from '../buttons/props';
+import type { OnShippingChange } from '../zoid/buttons/props';
 
 import { FUNDING_PRIORITY, getFundingConfig } from './config';
 
