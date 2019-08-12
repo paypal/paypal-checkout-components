@@ -20,7 +20,7 @@ type ButtonsProps = ButtonPropsInputs & {|
 |};
 
 export function Buttons(props : ButtonsProps) : ElementNode {
-    const { onClick } = props;
+    const { onClick, keyboardAccessibility } = props;
     const { style, locale, remembered, env, fundingEligibility, platform,
         nonce, components, onShippingChange, personalization, clientAccessToken } = normalizeButtonProps(props);
     const { layout, shape, tagline } = style;
@@ -66,6 +66,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         nonce={ nonce }
                         fundingEligibility={ fundingEligibility }
                         onClick={ onClick }
+                        keyboardAccessibility={ keyboardAccessibility }
                         clientAccessToken={ clientAccessToken }
                     />
                 ))
@@ -105,6 +106,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         env={ env }
                         nonce={ nonce }
                         onClick={ onClick }
+                        keyboardAccessibility={ keyboardAccessibility }
                         vendor={ vendor }
                         label={ label }
                         paymentMethodID={ paymentMethodID }

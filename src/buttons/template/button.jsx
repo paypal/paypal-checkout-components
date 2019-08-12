@@ -23,13 +23,12 @@ type BasicButtonProps = {|
     fundingEligibility : FundingEligibilityType,
     i : number,
     nonce : string,
-    clientAccessToken : ?string
+    clientAccessToken : ?string,
+    keyboardAccessibility : ?$ReadOnlyArray<number>
 |};
 
-export function BasicButton({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, clientAccessToken, onClick = noop } : BasicButtonProps) : ElementNode {
-
+export function BasicButton({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, clientAccessToken, keyboardAccessibility, onClick = noop } : BasicButtonProps) : ElementNode {
     let { color, period, label } = style;
-
     const fundingConfig = getFundingConfig()[fundingSource];
 
     if (!fundingConfig) {
@@ -55,6 +54,12 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
         onClick(event, { fundingSource, ...opts });
     };
 
+    const keyboardAccessibilityHandler = (event, opts) => {
+        if (keyboardAccessibility && keyboardAccessibility.includes(event.keyCode)) {
+            clickHandler(event, opts);
+        }
+    };
+
     const { layout, shape } = style;
 
     const logo = (
@@ -64,6 +69,7 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
             logoColor={ logoColor }
             fundingEligibility={ fundingEligibility }
             onClick={ clickHandler }
+            onKeyPress={ keyboardAccessibilityHandler }
         />
     );
 
@@ -86,8 +92,8 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
             ].join(' ') }
             aria-label={ fundingSource }
             onClick={ handleClick ? null : clickHandler }
+            onKeyPress={ handleClick ? null : keyboardAccessibilityHandler }
             tabindex={ handleClick ? '-1' : '0' }>
-
             <Label
                 logo={ logo }
                 label={ label }
@@ -99,6 +105,7 @@ export function BasicButton({ fundingSource, style, multiple, locale, env, fundi
                 multiple={ multiple }
                 fundingEligibility={ fundingEligibility }
                 onClick={ clickHandler }
+                onKeyPress={ keyboardAccessibilityHandler }
                 clientAccessToken={ clientAccessToken }
             />
 
@@ -119,16 +126,25 @@ type VaultedButtonProps = {|
     nonce : string,
     vendor : $Values<typeof CARD>,
     label : string,
-    paymentMethodID : string
+    paymentMethodID : string,
+    keyboardAccessibility : ?$ReadOnlyArray<number>
 |};
 
-export function VaultedButton({ fundingSource, paymentMethodID, style, multiple, env, nonce, vendor, label, onClick = noop } : VaultedButtonProps) : ElementNode {
+export function VaultedButton({ fundingSource, paymentMethodID, style, multiple, env, nonce, vendor, label, keyboardAccessibility, onClick = noop } : VaultedButtonProps) : ElementNode {
 
     const clickHandler = (event, opts) => {
         event.preventDefault();
         event.stopPropagation();
         event.target.blur();
         onClick(event, { fundingSource, ...opts });
+    };
+
+    const keyboardAccessibilityHandler = (event, opts) => {
+        if (keyboardAccessibility && keyboardAccessibility.includes(event.keyCode)) {
+            if (keyboardAccessibility && keyboardAccessibility.includes(event.keyCode)) {
+                clickHandler(event, opts);
+            }
+        }
     };
 
     let { layout, shape, color } = style;
@@ -166,7 +182,8 @@ export function VaultedButton({ fundingSource, paymentMethodID, style, multiple,
             ].join(' ') }
             aria-label={ fundingSource }
             tabIndex='0'
-            onClick={ clickHandler } >
+            onClick={ clickHandler }
+            onKeyPress={ keyboardAccessibilityHandler } >
 
             <VaultLabel
                 nonce={ nonce }
