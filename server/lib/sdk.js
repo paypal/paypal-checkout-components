@@ -44,7 +44,13 @@ export function sdkMiddleware({ logger } : SDKMiddlewareOptions, middleware : SD
 
     return async (req : ExpressRequest, res : ExpressResponse) : Promise<void> => {
         try {
-            const params = undotify(req.query);
+            let params;
+
+            try {
+                params = undotify(req.query);
+            } catch (err) {
+                return clientErrorResponse(res, `Invalid params: ${ JSON.stringify(req.query) }`);
+            }
             
             let meta;
 
