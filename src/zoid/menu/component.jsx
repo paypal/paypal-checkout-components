@@ -2,7 +2,7 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
-import { getLogger, getPayPalDomainRegex } from '@paypal/sdk-client/src';
+import { getLogger, getPayPalDomainRegex, getSDKMeta } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize } from 'belter/src';
 
@@ -31,7 +31,17 @@ export function getMenuComponent() : ZoidComponent<MenuProps> {
             },
 
             props: {
+                sdkMeta: {
+                    type:        'string',
+                    queryParam:  true,
+                    sendToChild: false,
+                    value:       getSDKMeta
+                },
                 
+                clientID: {
+                    type:       'string',
+                    queryParam: true
+                }
             }
         });
     });
