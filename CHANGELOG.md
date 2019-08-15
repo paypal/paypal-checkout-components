@@ -1,3 +1,9 @@
+## <small>5.0.53 (2019-08-15)</small>
+
+* Add extra params to menu component ([883d307](http://github.paypal.com/paypal/paypal-checkout/commit/883d307))
+
+
+
 ## <small>5.0.52 (2019-08-07)</small>
 
 * Add export for menu component ([36dc656](http://github.paypal.com/paypal/paypal-checkout/commit/36dc656))
