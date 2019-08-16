@@ -9,7 +9,7 @@ import { normalizeProps } from '../props';
 import { jsxToHTML, type JsxHTMLNode, type ChildType, jsxRender } from '../../lib/jsx';
 import { fundingLogos, cardLogos } from '../../resources';
 import { validateButtonProps } from '../validate';
-import type { LocaleType, FundingSource, FundingSelection, FundingList } from '../../types';
+import type { LocaleType, FundingSource, FundingSelection, FundingList, CheckoutCustomizationType } from '../../types';
 
 import { componentStyle, CLASS } from './componentStyle';
 import { getComponentScript } from './componentScript';
@@ -228,7 +228,7 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     );
 }
 
-function renderTagline({ label, tagline, color, locale, multiple, env, cards, checkoutCustomization } : { label : string, color : string, tagline : boolean, locale : LocaleType, multiple : boolean, env : string, cards : $ReadOnlyArray<string> }) : ?JsxHTMLNode {
+function renderTagline({ label, tagline, color, locale, multiple, env, cards, checkoutCustomization } : { label : string, color : string, tagline : boolean, locale : LocaleType, multiple : boolean, env : string, cards : $ReadOnlyArray<string>, checkoutCustomization : ?CheckoutCustomizationType }) : ?JsxHTMLNode {
     const delay = 0.2;
 
     if (__WEB__) {
