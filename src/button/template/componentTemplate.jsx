@@ -233,8 +233,8 @@ function renderTagline({ label, tagline, color, locale, multiple, env, cards, ch
 
     if (__WEB__) {
         return (
-        <div>
-            <style innerHTML={ `
+            <div>
+                <style innerHTML={ `
                 .loading-dots {
                     color: rgba(0, 0, 0, 0.5);
                     font-size: inherit;
@@ -281,14 +281,14 @@ function renderTagline({ label, tagline, color, locale, multiple, env, cards, ch
                         opacity: 0;
                     }
                 }
-            ` }/>
-            <div class='loading-dots'>
-                {
-                    [ 0, 1, 2 ].map(i =>
-                        <div class={ `loading-dot loading-dot-${ i }` }>•</div>)
-                }
+            ` } />
+                <div class='loading-dots'>
+                    {
+                        [ 0, 1, 2 ].map(i =>
+                            <div class={ `loading-dot loading-dot-${ i }` }>•</div>)
+                    }
+                </div>
             </div>
-        </div>
         );
     }
     
@@ -309,8 +309,8 @@ function renderTagline({ label, tagline, color, locale, multiple, env, cards, ch
     const tagColor = getButtonConfig(label, 'tagLineColors')[color];
 
     return (
-    <div>
-        <style innerHTML={ `
+        <div>
+            <style innerHTML={ `
             .tracking-beacon: {
                 visibility: hidden;
                 position: absolute;
@@ -318,13 +318,13 @@ function renderTagline({ label, tagline, color, locale, multiple, env, cards, ch
                 width: 1px;
             }
         ` } />
-        <div class={ `${ CLASS.TAGLINE } ${ CLASS.TAGLINE_COLOR }-${ tagColor }` }>
-            <span>{ text }</span>
-            {
-                impression  && <img class='tracking-beacon' src={ impression } />
-            }
+            <div class={ `${ CLASS.TAGLINE } ${ CLASS.TAGLINE_COLOR }-${ tagColor }` }>
+                <span>{ text }</span>
+                {
+                    impression  && <img class='tracking-beacon' src={ impression } />
+                }
+            </div>
         </div>
-    </div>
     );
 }
 

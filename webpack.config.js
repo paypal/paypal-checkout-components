@@ -87,7 +87,7 @@ export const LIB = getWebpackConfig({
 export const BUTTON_RENDER = getWebpackConfig({
     entry:         './src/button/template/componentTemplate.jsx',
     filename:      `${ FILE_NAME }.button.render.js`,
-    web: false,
+    web:           false,
     libraryTarget: `commonjs`,
     minify:        false,
     vars:          globals
