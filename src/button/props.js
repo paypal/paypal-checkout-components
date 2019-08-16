@@ -63,7 +63,8 @@ export const normalizeProps = memoize((props : Object, defs? : { locale? : Local
         locale,
         style   = {},
         funding,
-        commit
+        commit,
+        checkoutCustomization
     } = props;
 
     locale = locale ? parseLocale(locale) : (defs.locale || getButtonConfig('DEFAULT', 'defaultLocale'));
@@ -105,5 +106,5 @@ export const normalizeProps = memoize((props : Object, defs? : { locale? : Local
     const cards = determineEligibleCards({ funding, locale });
 
     return { size, label, locale, color, shape, branding, fundingicons,
-        tagline, funding, layout, sources, max, multiple, env, height, cards, installmentperiod };
+        tagline, funding, layout, sources, max, multiple, env, height, cards, installmentperiod, checkoutCustomization };
 });
