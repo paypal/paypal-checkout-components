@@ -20,10 +20,12 @@ type ButtonOpts = {|
     buyerCountry? : ?$Values<typeof COUNTRY>,
     cspNonce? : string,
     merchantID : $ReadOnlyArray<string>,
-    personalization? : PersonalizationType
+    personalization? : PersonalizationType,
+    isCardFieldsExperimentEnabled? : boolean
 |};
 
-export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry, cspNonce: serverCSPNonce, merchantID, personalization } : ButtonOpts) : ZalgoPromise<void> {
+
+export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry, cspNonce: serverCSPNonce, merchantID, personalization, isCardFieldsExperimentEnabled } : ButtonOpts) : ZalgoPromise<void> {
     if (!window.paypal) {
         throw new Error(`PayPal library not loaded`);
     }
@@ -89,7 +91,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
                 return win ? win.close() : null;
             }
 
-            const isCardFields = isCardFieldsEligible({ win, vault, onShippingChange, fundingSource });
+            const isCardFields = isCardFieldsEligible({ win, vault, onShippingChange, fundingSource, isCardFieldsExperimentEnabled });
             const isVaultCapture = isVaultCaptureEligible({ win, paymentMethodID, onShippingChange });
             const isPopupBridge = isPopupBridgeEligible({ win, popupBridge, onShippingChange });
 

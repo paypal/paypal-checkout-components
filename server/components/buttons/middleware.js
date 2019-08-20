@@ -4,7 +4,7 @@ import { html } from 'jsx-pragmatic';
 
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware } from '../../lib';
 import { renderFraudnetScript, shouldRenderFraudnet, resolveFundingEligibility, resolvePersonalization } from '../../service';
-import type { LoggerType, ClientIDToMerchantID } from '../../types';
+import type { LoggerType, ClientIDToMerchantID, ExpressRequest } from '../../types';
 
 import { getSmartPaymentButtonsClientScript, getPayPalSmartPaymentButtonsRenderScript } from './script';
 import { EVENT } from './constants';
@@ -15,19 +15,24 @@ type ButtonMiddlewareOptions = {|
     logger? : LoggerType,
     getFundingEligibility : Function,
     getPersonalization : Function,
-    clientIDToMerchantID : ClientIDToMerchantID
+    clientIDToMerchantID : ClientIDToMerchantID,
+    getInlineGuestExperiment? : (req : ExpressRequest, params : Object) => Promise<boolean>
 |};
 
-export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibility, getPersonalization, clientIDToMerchantID } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
+export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibility, getPersonalization, clientIDToMerchantID, getInlineGuestExperiment = () => Promise.resolve(false) } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
     return sdkMiddleware({ logger }, async ({ req, res, params, meta }) => {
         logger.info(EVENT.RENDER);
 
         let { env, clientID, buttonSessionID, cspNonce, debug, buyerCountry, disableFunding, disableCard,
             merchantID, currency, intent, commit, vault, clientAccessToken, defaultFundingEligibility, locale } = getParams(params, req, res);
 
-        const [ client, render ] = await Promise.all([
+        const [ client, render, isCardFieldsExperimentEnabled ] = await Promise.all([
             getSmartPaymentButtonsClientScript({ debug }),
-            getPayPalSmartPaymentButtonsRenderScript()
+            getPayPalSmartPaymentButtonsRenderScript(),
+            getInlineGuestExperiment(
+                req,
+                getParams(params, req, res),
+            )
         ]);
 
         logger.info(req, `button_client_version_${ client.version }`);
@@ -69,7 +74,7 @@ export function getButtonMiddleware({ logger = defaultLogger, getFundingEligibil
 
                     ${ meta.getSDKLoader({ nonce: cspNonce }) }
                     <script nonce="${ cspNonce }">${ client.script }</script>
-                    <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON({ fundingEligibility, buyerCountry, cspNonce, merchantID, personalization }) })</script>
+                    <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON({ fundingEligibility, buyerCountry, cspNonce, merchantID, personalization, isCardFieldsExperimentEnabled }) })</script>
                     ${ shouldRenderFraudnet({ fundingEligibility }) ? renderFraudnetScript({ id: buttonSessionID, cspNonce, env }) : '' }
                 </body>
             `;
