@@ -256,6 +256,7 @@ window.spb = function(modules) {
         CACHEBUST: "cachebust",
         CLIENT_ID: "client-id",
         MERCHANT_ID: "merchant-id",
+        MERCHANT_EMAIL_HASH: "merchant-email-hash",
         LOCALE: "locale",
         CURRENCY: "currency",
         INTENT: "intent",
@@ -308,7 +309,9 @@ window.spb = function(modules) {
         SDK_VERSION: "sdk_version",
         USER_AGENT: "user_agent",
         USER_ACTION: "user_action",
-        CONTEXT_CORRID: "context_correlation_id"
+        CONTEXT_CORRID: "context_correlation_id",
+        SDK_CACHE: "sdk_cache",
+        SDK_LOAD_TIME: "sdk_load_time"
     }, FPTI_USER_ACTION = {
         COMMIT: "commit",
         CONTINUE: "continue"
@@ -702,9 +705,9 @@ window.spb = function(modules) {
     function debounce(method, time) {
         var timeout;
         return void 0 === time && (time = 100), function() {
-            var _this3 = this, _arguments2 = arguments;
+            var _this4 = this, _arguments3 = arguments;
             clearTimeout(timeout), timeout = setTimeout(function() {
-                return method.apply(_this3, _arguments2);
+                return method.apply(_this4, _arguments3);
             }, time);
         };
     }
@@ -2589,7 +2592,7 @@ window.spb = function(modules) {
         CONTINUE: "continue"
     }, button_props = __webpack_require__(12), dom = __webpack_require__(10), api_api = __webpack_require__(8);
     function setupButton(_ref) {
-        var fundingEligibility = _ref.fundingEligibility, buyerGeoCountry = _ref.buyerCountry, serverCSPNonce = _ref.cspNonce, merchantID = _ref.merchantID, personalization = _ref.personalization;
+        var fundingEligibility = _ref.fundingEligibility, buyerGeoCountry = _ref.buyerCountry, serverCSPNonce = _ref.cspNonce, merchantID = _ref.merchantID, personalization = _ref.personalization, isCardFieldsExperimentEnabled = _ref.isCardFieldsExperimentEnabled;
         if (!window.paypal) throw new Error("PayPal library not loaded");
         var init, _getGlobalProps = Object(button_props.getGlobalProps)({
             xprops: window.xprops,
@@ -2621,12 +2624,13 @@ window.spb = function(modules) {
                     });
                     if (!init || !init.isEnabled()) return win ? win.close() : null;
                     var isCardFields = function(_ref) {
-                        return !(_ref.win || !window.xprops.enableStandardCardFields || _ref.fundingSource !== sdk_constants_src.g.CARD || _ref.vault || _ref.onShippingChange);
+                        return !(_ref.win || _ref.fundingSource !== sdk_constants_src.g.CARD || _ref.vault || _ref.onShippingChange || !0 !== window.xprops.enableStandardCardFields && !window.xprops.enableStandardCardFields && !_ref.isCardFieldsExperimentEnabled);
                     }({
                         win: win,
                         vault: vault,
                         onShippingChange: onShippingChange,
-                        fundingSource: fundingSource
+                        fundingSource: fundingSource,
+                        isCardFieldsExperimentEnabled: isCardFieldsExperimentEnabled
                     }), isVaultCapture = function(_ref) {
                         return !_ref.win && !!_ref.paymentMethodID && !_ref.onShippingChange;
                     }({
