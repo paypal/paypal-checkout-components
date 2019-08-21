@@ -15,6 +15,88 @@ import { componentStyle, CLASS } from './componentStyle';
 import { getComponentScript } from './componentScript';
 import { componentContent } from './content';
 
+function LoadingDots(delay) : JsxHTMLNode {
+    return (
+        <div>
+            <style innerHTML={ `
+                .loading-dots {
+                    color: rgba(0, 0, 0, 0.5);
+                    font-size: inherit;
+                    font-family: Arial, Helvetica, sans-serif;
+                    display: inline-block;
+                }
+
+                .loading-dot {
+                    opacity: 0;
+                    display: inline-block;
+                    animation-name: loading-dot;
+                    animation-duration: 1s;
+                    animation-fill-mode: forwards;
+                    animation-iteration-count: infinite;
+                    margin-right: 2px;
+                }
+
+                .loading-dot-0 {
+                    animation-delay: ${ delay.toFixed(1) }s;
+                }
+
+                .loading-dot-1 {
+                    animation-delay: ${ (delay * 2).toFixed(1) }s;
+                }
+
+                .loading-dot-2 {
+                    animation-delay: ${ (delay * 3).toFixed(1) }s;
+                }
+
+                @keyframes loading-dot {
+                    0% {
+                        opacity: 0;
+                    }
+                    20% {
+                        opacity: 1;
+                    }
+                    30% {
+                        opacity: 1;
+                    }
+                    40% {
+                        opacity: 0;
+                    }
+                    100% {
+                        opacity: 0;
+                    }
+                }
+            ` } />
+            <div class='loading-dots'>
+                {
+                    [ 0, 1, 2 ].map(i =>
+                        <div class={ `loading-dot loading-dot-${ i }` }>•</div>)
+                }
+            </div>
+        </div>
+    );
+}
+
+function Tagline(tagColor : string, impression : ?string, text : string | JsxHTMLNode) : JsxHTMLNode {
+    return (
+        <div>
+            <style innerHTML={ `
+            .tracking-beacon: {
+                visibility: hidden;
+                position: absolute;
+                height: 1px;
+                width: 1px;
+            }
+        ` } />
+            <div class={ `${ CLASS.TAGLINE } ${ CLASS.TAGLINE_COLOR }-${ tagColor }` }>
+                <span>{ text }</span>
+                {
+                    impression  && <img class='tracking-beacon' src={ impression } />
+                }
+            </div>
+        </div>
+    );
+}
+
 function getCommonButtonClasses({ layout, shape, branding, multiple, env }) : string {
     return [
         `${ CLASS.LAYOUT }-${ layout }`,
@@ -232,64 +314,7 @@ function renderTagline({ label, tagline, color, locale, multiple, env, cards, ch
     const delay = 0.2;
 
     if (__WEB__) {
-        return (
-            <div>
-                <style innerHTML={ `
-                .loading-dots {
-                    color: rgba(0, 0, 0, 0.5);
-                    font-size: inherit;
-                    font-family: Arial, Helvetica, sans-serif;
-                    display: inline-block;
-                }
-
-                .loading-dot {
-                    opacity: 0;
-                    display: inline-block;
-                    animation-name: loading-dot;
-                    animation-duration: 1s;
-                    animation-fill-mode: forwards;
-                    animation-iteration-count: infinite;
-                    margin-right: 2px;
-                }
-
-                .loading-dot-0 {
-                    animation-delay: ${ delay.toFixed(1) }s;
-                }
-
-                .loading-dot-1 {
-                    animation-delay: ${ (delay * 2).toFixed(1) }s;
-                }
-
-                .loading-dot-2 {
-                    animation-delay: ${ (delay * 3).toFixed(1) }s;
-                }
-
-                @keyframes loading-dot {
-                    0% {
-                        opacity: 0;
-                    }
-                    20% {
-                        opacity: 1;
-                    }
-                    30% {
-                        opacity: 1;
-                    }
-                    40% {
-                        opacity: 0;
-                    }
-                    100% {
-                        opacity: 0;
-                    }
-                }
-            ` } />
-                <div class='loading-dots'>
-                    {
-                        [ 0, 1, 2 ].map(i =>
-                            <div class={ `loading-dot loading-dot-${ i }` }>•</div>)
-                    }
-                </div>
-            </div>
-        );
+        return LoadingDots(delay);
     }
     
     if (!tagline) {
@@ -308,24 +333,7 @@ function renderTagline({ label, tagline, color, locale, multiple, env, cards, ch
 
     const tagColor = getButtonConfig(label, 'tagLineColors')[color];
 
-    return (
-        <div>
-            <style innerHTML={ `
-            .tracking-beacon: {
-                visibility: hidden;
-                position: absolute;
-                height: 1px;
-                width: 1px;
-            }
-        ` } />
-            <div class={ `${ CLASS.TAGLINE } ${ CLASS.TAGLINE_COLOR }-${ tagColor }` }>
-                <span>{ text }</span>
-                {
-                    impression  && <img class='tracking-beacon' src={ impression } />
-                }
-            </div>
-        </div>
-    );
+    return Tagline(tagColor, impression, text);
 }
 
 function renderScript() : JsxHTMLNode {
@@ -388,7 +396,6 @@ function renderPowerByPaypalLogo(props) : ChildType {
 }
 
 export function componentTemplate({ props } : { props : Object }) : string {
-
     if (props && props.style) {
         const style = props.style;
 
