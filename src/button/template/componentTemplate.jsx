@@ -80,7 +80,7 @@ function Tagline(tagColor : string, impression : ?string, text : string | JsxHTM
     return (
         <div>
             <style innerHTML={ `
-            .tracking-beacon: {
+            .tracking-beacon {
                 visibility: hidden;
                 position: absolute;
                 height: 1px;
