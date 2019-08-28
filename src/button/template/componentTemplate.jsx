@@ -9,11 +9,93 @@ import { normalizeProps } from '../props';
 import { jsxToHTML, type JsxHTMLNode, type ChildType, jsxRender } from '../../lib/jsx';
 import { fundingLogos, cardLogos } from '../../resources';
 import { validateButtonProps } from '../validate';
-import type { LocaleType, FundingSource, FundingSelection, FundingList } from '../../types';
+import type { LocaleType, FundingSource, FundingSelection, FundingList, CheckoutCustomizationType } from '../../types';
 
 import { componentStyle, CLASS } from './componentStyle';
 import { getComponentScript } from './componentScript';
 import { componentContent } from './content';
+
+function LoadingDots(delay) : JsxHTMLNode {
+    return (
+        <div>
+            <style innerHTML={ `
+                .loading-dots {
+                    color: rgba(0, 0, 0, 0.5);
+                    font-size: inherit;
+                    font-family: Arial, Helvetica, sans-serif;
+                    display: inline-block;
+                }
+
+                .loading-dot {
+                    opacity: 0;
+                    display: inline-block;
+                    animation-name: loading-dot;
+                    animation-duration: 1s;
+                    animation-fill-mode: forwards;
+                    animation-iteration-count: infinite;
+                    margin-right: 2px;
+                }
+
+                .loading-dot-0 {
+                    animation-delay: ${ delay.toFixed(1) }s;
+                }
+
+                .loading-dot-1 {
+                    animation-delay: ${ (delay * 2).toFixed(1) }s;
+                }
+
+                .loading-dot-2 {
+                    animation-delay: ${ (delay * 3).toFixed(1) }s;
+                }
+
+                @keyframes loading-dot {
+                    0% {
+                        opacity: 0;
+                    }
+                    20% {
+                        opacity: 1;
+                    }
+                    30% {
+                        opacity: 1;
+                    }
+                    40% {
+                        opacity: 0;
+                    }
+                    100% {
+                        opacity: 0;
+                    }
+                }
+            ` } />
+            <div class='loading-dots'>
+                {
+                    [ 0, 1, 2 ].map(i =>
+                        <div class={ `loading-dot loading-dot-${ i }` }>•</div>)
+                }
+            </div>
+        </div>
+    );
+}
+
+function Tagline(tagColor : string, impression : ?string, text : string | JsxHTMLNode) : JsxHTMLNode {
+    return (
+        <div>
+            <style innerHTML={ `
+            .tracking-beacon {
+                visibility: hidden;
+                position: absolute;
+                height: 1px;
+                width: 1px;
+            }
+        ` } />
+            <div class={ `${ CLASS.TAGLINE } ${ CLASS.TAGLINE_COLOR }-${ tagColor }` }>
+                <span>{ text }</span>
+                {
+                    impression  && <img class='tracking-beacon' src={ impression } />
+                }
+            </div>
+        </div>
+    );
+}
 
 function getCommonButtonClasses({ layout, shape, branding, multiple, env }) : string {
     return [
@@ -228,29 +310,30 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     );
 }
 
-function renderTagline({ label, tagline, color, locale, multiple, env, cards } : { label : string, color : string, tagline : boolean, locale : LocaleType, multiple : boolean, env : string, cards : $ReadOnlyArray<string> }) : ?JsxHTMLNode {
+function renderTagline({ label, tagline, color, locale, multiple, env, cards, checkoutCustomization } : { label : string, color : string, tagline : boolean, locale : LocaleType, multiple : boolean, env : string, cards : $ReadOnlyArray<string>, checkoutCustomization : ?CheckoutCustomizationType }) : ?JsxHTMLNode {
+    const delay = 0.2;
 
+    if (__WEB__) {
+        return LoadingDots(delay);
+    }
+    
     if (!tagline) {
         return;
     }
-
+    
     const tag = multiple
         ? (getButtonConfig(label, 'dualTag') || getButtonConfig(label, 'tag'))
         : getButtonConfig(label, 'tag');
-
-    const text = renderContent(tag, { locale, color, env, cards });
-
+    const text = checkoutCustomization && checkoutCustomization.tagline && checkoutCustomization.tagline.text ? checkoutCustomization.tagline.text : renderContent(tag, { locale, color, env, cards });
+    const impression = checkoutCustomization && checkoutCustomization.tagline && checkoutCustomization.tagline.tracking && checkoutCustomization.tagline.tracking.impression;
+    
     if (!text) {
         return;
     }
 
     const tagColor = getButtonConfig(label, 'tagLineColors')[color];
 
-    return (
-        <div class={ `${ CLASS.TAGLINE } ${ CLASS.TAGLINE_COLOR }-${ tagColor }` }>
-            { text }
-        </div>
-    );
+    return Tagline(tagColor, impression, text);
 }
 
 function renderScript() : JsxHTMLNode {
@@ -313,7 +396,6 @@ function renderPowerByPaypalLogo(props) : ChildType {
 }
 
 export function componentTemplate({ props } : { props : Object }) : string {
-
     if (props && props.style) {
         const style = props.style;
 
@@ -337,7 +419,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     const { label, locale, color, shape, branding,
         tagline, funding, layout, sources, multiple,
-        env, height, cards, installmentperiod, fundingicons, size } = normalizeProps(props);
+        env, height, cards, installmentperiod, fundingicons, size, checkoutCustomization } = normalizeProps(props);
 
     const buttonNodes = determineButtons({ label, color, sources, multiple, layout })
         .map((button, i) => renderButton({
@@ -357,7 +439,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
             size
         }));
 
-    const taglineNode     = renderTagline({ label, tagline, color, locale, multiple, env, cards });
+    const taglineNode     = renderTagline({ label, tagline, color, locale, multiple, env, cards, checkoutCustomization });
     const fundingiconNode = renderFundingIcons({ cards, fundingicons, size, layout });
 
     const styleNode  = renderStyle({ height, cardNumber: cards.length });

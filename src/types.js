@@ -22,3 +22,13 @@ export type FundingSelection = {|
     disallowed : FundingList,
     remembered : FundingList
 |};
+
+export type CheckoutCustomizationType = {|
+    tagline : {
+        text : string,
+        tracking : {
+            impression : string,
+            click : string
+        }
+    }
+|};
