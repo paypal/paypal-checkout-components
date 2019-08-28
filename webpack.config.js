@@ -15,6 +15,15 @@ export const BASE = getWebpackConfig({
     vars:          globals
 });
 
+export const BASE_SCREENSHOT_TEST = getWebpackConfig({
+    entry:         './src/load.js',
+    filename:      `${ FILE_NAME }.js`,
+    web:           false,
+    minify:        false,
+    libraryTarget: null,
+    vars:          globals
+});
+
 export const MAJOR = getWebpackConfig({
     entry:         './src/load.js',
     filename:      `${ FILE_NAME }.v${ globals.__PAYPAL_CHECKOUT__.__MAJOR_VERSION__ }.js`,
