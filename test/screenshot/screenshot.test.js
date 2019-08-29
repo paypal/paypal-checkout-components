@@ -6,7 +6,7 @@
 
 import fs from 'fs-extra';
 
-import { BASE } from '../../webpack.config';
+import { BASE_SCREENSHOT_TEST } from '../../webpack.config';
 
 import { webpackCompile } from './lib/compile';
 import { openPage, takeScreenshot } from './lib/browser';
@@ -25,7 +25,7 @@ const USER_AGENTS = {
 jest.setTimeout(120000);
 
 const setupBrowserPage = (async () => {
-    const { browser, page } = await openPage(await webpackCompile(BASE));
+    const { browser, page } = await openPage(await webpackCompile(BASE_SCREENSHOT_TEST));
 
     for (const filename of await fs.readdir(IMAGE_DIR)) {
         if (filename.endsWith('-old.png')) {

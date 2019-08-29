@@ -3,7 +3,7 @@
 import { BUTTON_LAYOUT, BUTTON_STYLE_OPTIONS, BUTTON_LABEL, BUTTON_COLOR, BUTTON_SIZE, BUTTON_SHAPE } from '../constants';
 import { determineEligibleFunding, determineEligibleCards } from '../funding';
 import { memoize, sortBy } from '../lib/util';
-import type { LocaleType, FundingSelection, FundingList } from '../types';
+import type { LocaleType, FundingSelection, FundingList, CheckoutCustomizationType } from '../types';
 import { FUNDING_ORDER } from '../funding/config';
 
 import { getButtonConfig, labelToFunding } from './config';
@@ -53,7 +53,8 @@ type NormalizedProps = {|
     env : string,
     height : ?number,
     cards : $ReadOnlyArray<string>,
-    installmentperiod : number
+    installmentperiod : number,
+    checkoutCustomization : ?CheckoutCustomizationType
 |};
 
 export const normalizeProps = memoize((props : Object, defs? : { locale? : LocaleType } = {}) : NormalizedProps => {
@@ -63,7 +64,8 @@ export const normalizeProps = memoize((props : Object, defs? : { locale? : Local
         locale,
         style   = {},
         funding,
-        commit
+        commit,
+        checkoutCustomization
     } = props;
 
     locale = locale ? parseLocale(locale) : (defs.locale || getButtonConfig('DEFAULT', 'defaultLocale'));
@@ -105,5 +107,5 @@ export const normalizeProps = memoize((props : Object, defs? : { locale? : Local
     const cards = determineEligibleCards({ funding, locale });
 
     return { size, label, locale, color, shape, branding, fundingicons,
-        tagline, funding, layout, sources, max, multiple, env, height, cards, installmentperiod };
+        tagline, funding, layout, sources, max, multiple, env, height, cards, installmentperiod, checkoutCustomization };
 });

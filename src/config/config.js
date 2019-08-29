@@ -531,6 +531,10 @@ export const config = {
 
         'seacalmskin.com': {
             disable_venmo: true
+        },
+ 
+        'whittier.edu': {
+            disable_venmo: true
         }
     },
 

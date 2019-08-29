@@ -15,6 +15,15 @@ export const BASE = getWebpackConfig({
     vars:          globals
 });
 
+export const BASE_SCREENSHOT_TEST = getWebpackConfig({
+    entry:         './src/load.js',
+    filename:      `${ FILE_NAME }.js`,
+    web:           false,
+    minify:        false,
+    libraryTarget: null,
+    vars:          globals
+});
+
 export const MAJOR = getWebpackConfig({
     entry:         './src/load.js',
     filename:      `${ FILE_NAME }.v${ globals.__PAYPAL_CHECKOUT__.__MAJOR_VERSION__ }.js`,
@@ -87,6 +96,7 @@ export const LIB = getWebpackConfig({
 export const BUTTON_RENDER = getWebpackConfig({
     entry:         './src/button/template/componentTemplate.jsx',
     filename:      `${ FILE_NAME }.button.render.js`,
+    web:           false,
     libraryTarget: `commonjs`,
     minify:        false,
     vars:          globals
