@@ -17,8 +17,12 @@ export const FUNDING_PRIORITY = [
     FUNDING.SOFORT,
     FUNDING.MYBANK,
     FUNDING.P24,
-    FUNDING.ZIMPLER
-
+    FUNDING.PAYU,
+    FUNDING.VERKKOPANKKI,
+    FUNDING.BLIK,
+    FUNDING.TRUSTLY,
+    FUNDING.MAXIMA,
+    FUNDING.BOLETO
 ];
 
 export const FUNDING_ORDER = [
@@ -34,7 +38,12 @@ export const FUNDING_ORDER = [
     FUNDING.SOFORT,
     FUNDING.MYBANK,
     FUNDING.P24,
-    FUNDING.ZIMPLER,
+    FUNDING.PAYU,
+    FUNDING.VERKKOPANKKI,
+    FUNDING.BLIK,
+    FUNDING.TRUSTLY,
+    FUNDING.MAXIMA,
+    FUNDING.BOLETO,
     FUNDING.CARD
 ];
 
@@ -186,9 +195,61 @@ export const FUNDING_CONFIG = {
         allowHorizontal: false,
         allowVertical:   true
     },
-    [ FUNDING.ZIMPLER ]: {
+    [ FUNDING.PAYU ]: {
+        allowedCountries: [
+            COUNTRY.PL,
+            COUNTRY.CZ
+        ],
+
+        allowHorizontal: false,
+        allowVertical:   true
+    },
+    [ FUNDING.VERKKOPANKKI ]: {
         allowedCountries: [
             COUNTRY.FI
+        ],
+
+        allowHorizontal: false,
+        allowVertical:   true
+    },
+    [ FUNDING.BLIK ]: {
+        allowedCountries: [
+            COUNTRY.PL
+        ],
+
+        allowHorizontal: false,
+        allowVertical:   true
+    },
+    [ FUNDING.TRUSTLY ]: {
+        allowedCountries: [
+            COUNTRY.DE,
+            COUNTRY.DK,
+            COUNTRY.EE,
+            COUNTRY.ES,
+            COUNTRY.FI,
+            COUNTRY.GB,
+            COUNTRY.IT,
+            COUNTRY.MT,
+            COUNTRY.NL,
+            COUNTRY.NO,
+            COUNTRY.PL,
+            COUNTRY.SE
+        ],
+
+        allowHorizontal: false,
+        allowVertical:   true
+    },
+    [ FUNDING.MAXIMA ]: {
+        allowedCountries: [
+            COUNTRY.LT
+        ],
+
+        allowHorizontal: false,
+        allowVertical:   true
+    },
+    [ FUNDING.BOLETO ]: {
+        allowedCountries: [
+            COUNTRY.BR
         ],
 
         allowHorizontal: false,

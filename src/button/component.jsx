@@ -521,7 +521,7 @@ export const Button : Component<ButtonOptions> = create({
                     }
                 }
 
-                const APM_FUNDING = [ FUNDING.IDEAL, FUNDING.SOFORT, FUNDING.GIROPAY, FUNDING.BANCONTACT, FUNDING.P24, FUNDING.MYBANK, FUNDING.ZIMPLER, FUNDING.EPS ];
+                const APM_FUNDING = [ FUNDING.IDEAL, FUNDING.SOFORT, FUNDING.GIROPAY, FUNDING.BANCONTACT, FUNDING.P24, FUNDING.MYBANK, FUNDING.EPS, FUNDING.PAYU, FUNDING.VERKKOPANKKI, FUNDING.BLIK, FUNDING.TRUSTLY, FUNDING.MAXIMA, FUNDING.BOLETO ];
 
                 const apmFunding = APM_FUNDING.filter(source => (isApmEligible(source, props)));
 

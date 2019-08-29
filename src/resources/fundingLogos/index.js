@@ -2,7 +2,6 @@
 
 import { BUTTON_LOGO, BUTTON_LOGO_COLOR } from '../../constants';
 
-import { zimplerLogo }      from './zimpler';
 import { p24Logo }          from './p24';
 import { sofortLogo }       from './sofort';
 import { idealLogo }        from './ideal';
@@ -10,6 +9,12 @@ import { giropayLogo }      from './giropay';
 import { epsLogo }          from './eps';
 import { mybankLogo }       from './mybank';
 import { bancontactLogo }   from './bancontact';
+import { payuLogo }         from './payu';
+import { verkkopankkiLogo } from './verkkopankki';
+import { blikLogo }         from './blik';
+import { trustlyLogo }      from './trustly';
+import { maximaLogo }       from './maxima';
+import { boletoLogo }       from './boleto';
 import pp_white     from './pp_white.svg';
 import pp_blue      from './pp_blue.svg';
 import pp_black     from './pp_black.svg';
@@ -60,5 +65,16 @@ export const fundingLogos = {
 
     [ BUTTON_LOGO.P24 ]: p24Logo,
 
-    [ BUTTON_LOGO.ZIMPLER ]: zimplerLogo
+    [ BUTTON_LOGO.PAYU ]: payuLogo,
+
+    [ BUTTON_LOGO.VERKKOPANKKI ]: verkkopankkiLogo,
+
+    [ BUTTON_LOGO.BLIK ]: blikLogo,
+
+    [ BUTTON_LOGO.TRUSTLY ]: trustlyLogo,
+
+    [ BUTTON_LOGO.MAXIMA ]: maximaLogo,
+
+    [ BUTTON_LOGO.BOLETO ]: boletoLogo
+
 };

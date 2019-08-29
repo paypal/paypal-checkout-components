@@ -765,7 +765,42 @@ const buttonConfigs = [
 
             {
                 layout: `vertical`,
-                label:  `zimpler`,
+                label:  `payu`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `verkkopankki`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `trustly`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `blik`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `maxima`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `boleto`,
                 commit: true,
                 valid:  false
             },

@@ -14,7 +14,12 @@ export const FUNDING = {
     EPS:         'eps',
     MYBANK:      'mybank',
     P24:         'p24',
-    ZIMPLER:     'zimpler'
+    PAYU:        'payu',
+    VERKKOPANKKI:'verkkopankki',
+    BLIK:        'blik',
+    TRUSTLY:     'trustly',
+    MAXIMA:      'maxima',
+    BOLETO:      'boleto'
 };
 
 export const CARD = {
