@@ -528,7 +528,7 @@ export const Button : Component<ButtonOptions> = create({
                 const fundingCommit = props.commit;
 
                 if (fundingCommit === false) {
-                    allowed = [];
+                    allowed = allowed.filter(source => APM_FUNDING.indexOf(source) === -1);
                 }
                 allowed = allowed.concat(apmFunding);
 
