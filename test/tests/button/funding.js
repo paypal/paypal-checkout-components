@@ -754,7 +754,7 @@ describe(`paypal button component funding mix`, () => {
         }, '#testContainer');
     });
 
-    it('should not render ideal in vertical layout if commit equals false and domain is not whitelisted', (done) => {
+    it('should not render ideal in vertical layout if commit equals false and APM domain is not whitelisted', (done) => {
 
         window.paypal.Button.render({
 
