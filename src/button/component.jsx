@@ -528,6 +528,7 @@ export const Button : Component<ButtonOptions> = create({
                 const fundingCommit = props.commit;
 
                 if (fundingCommit === false) {
+                    // Removing any APM funding sources from allowed if commit equals false.
                     allowed = allowed.filter(source => APM_FUNDING.indexOf(source) === -1);
                 }
                 allowed = allowed.concat(apmFunding);

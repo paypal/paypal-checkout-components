@@ -754,49 +754,6 @@ describe(`paypal button component funding mix`, () => {
         }, '#testContainer');
     });
 
-    it('should not render ideal in vertical layout if commit equals false and APM domain is not whitelisted', (done) => {
-
-        window.paypal.Button.render({
-
-            test: {
-                onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.IDEAL) !== -1) {
-                        throw new Error(`Expected ideal not to be offered, got ${ JSON.stringify(fundingSources) }`);
-                    }
-
-                    done();
-                }
-            },
-
-            commit: false,
-
-            style: {
-                layout: 'vertical'
-            },
-
-            locale: 'nl_NL',
-
-            funding: {
-                allowed: [ window.paypal.FUNDING.IDEAL ]
-            },
-
-            payment() : string | ZalgoPromise<string> {
-                throw new Error('Expected payment to not be called');
-            },
-
-            onAuthorize() {
-                throw new Error('Expected onAuthorize to not be called');
-            },
-
-            onCancel() {
-                throw new Error('Expected onCancel to not be called');
-            },
-
-            onError: done
-
-        }, '#testContainer');
-    });
-
     it('should not render ideal in horizontal layout', (done) => {
 
         window.paypal.Button.render({
