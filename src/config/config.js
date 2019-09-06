@@ -535,6 +535,10 @@ export const config = {
  
         'whittier.edu': {
             disable_venmo: true
+        },
+        
+        'curology.com': {
+            disable_venmo: true
         }
     },
 
