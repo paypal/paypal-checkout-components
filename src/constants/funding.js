@@ -1,20 +1,25 @@
 /* @flow */
 
 export const FUNDING = {
-    PAYPAL:      'paypal',
-    VENMO:       'venmo',
-    ITAU:        'itau',
-    CREDIT:      'credit',
-    CARD:        'card',
-    IDEAL:       'ideal',
-    ELV:         'elv',
-    BANCONTACT:  'bancontact',
-    GIROPAY:     'giropay',
-    SOFORT:      'sofort',
-    EPS:         'eps',
-    MYBANK:      'mybank',
-    P24:         'p24',
-    ZIMPLER:     'zimpler'
+    PAYPAL:       'paypal',
+    VENMO:        'venmo',
+    ITAU:         'itau',
+    CREDIT:       'credit',
+    CARD:         'card',
+    IDEAL:        'ideal',
+    ELV:          'elv',
+    BANCONTACT:   'bancontact',
+    GIROPAY:      'giropay',
+    SOFORT:       'sofort',
+    EPS:          'eps',
+    MYBANK:       'mybank',
+    P24:          'p24',
+    PAYU:         'payu',
+    VERKKOPANKKI: 'verkkopankki',
+    BLIK:         'blik',
+    TRUSTLY:      'trustly',
+    MAXIMA:       'maxima',
+    BOLETO:       'boleto'
 };
 
 export const CARD = {

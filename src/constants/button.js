@@ -22,27 +22,32 @@ export const BUTTON_STYLE_OPTIONS : BUTTON_STYLE_OPTIONS_ENUM = {
 
 type BUTTON_LABEL_ENUM =
     Enum<'paypal' | 'checkout' | 'pay' | 'credit' |
-    'card' | 'buynow' | 'installment' | 'venmo' | 'itau' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'sofort' | 'eps' | 'mybank' | 'p24' | 'zimpler'>;
+    'card' | 'buynow' | 'installment' | 'venmo' | 'itau' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'sofort' | 'eps' | 'mybank' | 'p24' | 'payu' | 'verkkopankki' | 'blik' | 'trustly' | 'maxima' | 'boleto'>;
 
 export const BUTTON_LABEL : BUTTON_LABEL_ENUM = {
-    PAYPAL:      'paypal',
-    CHECKOUT:    'checkout',
-    PAY:         'pay',
-    CREDIT:      'credit',
-    CARD:        'card',
-    BUYNOW:      'buynow',
-    INSTALLMENT: 'installment',
-    VENMO:       'venmo',
-    ITAU:        'itau',
-    IDEAL:       'ideal',
-    ELV:         'elv',
-    BANCONTACT:  'bancontact',
-    GIROPAY:     'giropay',
-    SOFORT:      'sofort',
-    EPS:         'eps',
-    MYBANK:      'mybank',
-    P24:         'p24',
-    ZIMPLER:     'zimpler'
+    PAYPAL:       'paypal',
+    CHECKOUT:     'checkout',
+    PAY:          'pay',
+    CREDIT:       'credit',
+    CARD:         'card',
+    BUYNOW:       'buynow',
+    INSTALLMENT:  'installment',
+    VENMO:        'venmo',
+    ITAU:         'itau',
+    IDEAL:        'ideal',
+    ELV:          'elv',
+    BANCONTACT:   'bancontact',
+    GIROPAY:      'giropay',
+    SOFORT:       'sofort',
+    EPS:          'eps',
+    MYBANK:       'mybank',
+    P24:          'p24',
+    PAYU:         'payu',
+    VERKKOPANKKI: 'verkkopankki',
+    BLIK:         'blik',
+    TRUSTLY:      'trustly',
+    MAXIMA:       'maxima',
+    BOLETO:       'boleto'
 };
 
 type BUTTON_COLOR_ENUM =
@@ -121,21 +126,26 @@ export const BUTTON_NUMBER : BUTTON_NUMBER_ENUM = {
 };
 
 type BUTTON_LOGO_ENUM =
-    Enum<'pp' | 'paypal' | 'venmo' | 'itau' | 'credit' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'sofort' | 'eps' | 'mybank' | 'p24' | 'zimpler'>;
+    Enum<'pp' | 'paypal' | 'venmo' | 'itau' | 'credit' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'sofort' | 'eps' | 'mybank' | 'p24' | 'payu' | 'verkkopankki' | 'blik' | 'trustly' | 'maxima' | 'boleto'>;
 
 export const BUTTON_LOGO : BUTTON_LOGO_ENUM = {
-    PP:         'pp',
-    PAYPAL:     'paypal',
-    VENMO:      'venmo',
-    ITAU:       'itau',
-    CREDIT:     'credit',
-    IDEAL:      'ideal',
-    ELV:        'elv',
-    BANCONTACT: 'bancontact',
-    GIROPAY:    'giropay',
-    SOFORT:     'sofort',
-    EPS:        'eps',
-    MYBANK:     'mybank',
-    P24:        'p24',
-    ZIMPLER:    'zimpler'
+    PP:           'pp',
+    PAYPAL:       'paypal',
+    VENMO:        'venmo',
+    ITAU:         'itau',
+    CREDIT:       'credit',
+    IDEAL:        'ideal',
+    ELV:          'elv',
+    BANCONTACT:   'bancontact',
+    GIROPAY:      'giropay',
+    SOFORT:       'sofort',
+    EPS:          'eps',
+    MYBANK:       'mybank',
+    P24:          'p24',
+    PAYU:         'payu',
+    VERKKOPANKKI: 'verkkopankki',
+    BLIK:         'blik',
+    TRUSTLY:      'trustly',
+    MAXIMA:       'maxima',
+    BOLETO:       'boleto'
 };
