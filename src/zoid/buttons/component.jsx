@@ -303,6 +303,11 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                         };
                     }
                 },
+                
+                getPageUrl: {
+                    type:  'string',
+                    value: () => window.location.href
+                },
 
                 debug: {
                     type:       'boolean',
