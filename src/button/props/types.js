@@ -1,6 +1,6 @@
 /* @flow */
 
-import { ENV, INTENT, COUNTRY, FUNDING, CARD } from '@paypal/sdk-constants/src';
+import { ENV, INTENT, COUNTRY, FUNDING, CARD, PLATFORM } from '@paypal/sdk-constants/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { LocaleType, ProxyWindow } from '../../types';
@@ -16,6 +16,8 @@ import type { OnAuth } from './onAuth';
 import type { XOnError, OnError } from './onError';
 import type { XGetPopupBridge, GetPopupBridge } from './getPopupBridge';
 import type { XCreateSubscription } from './createSubscription';
+import type { RememberFunding } from './rememberFunding';
+import type { GetPageURL } from './getPageUrl';
 
 export type PrerenderDetailsType = {|
     win ? : ? ProxyWindow,
@@ -32,6 +34,7 @@ export type XProps = {|
     clientID : string,
     partnerAttributionID : string,
     correlationID : string,
+    platform : $Values<typeof PLATFORM>,
 
     vault : boolean,
     commit : boolean,
@@ -46,9 +49,10 @@ export type XProps = {|
 
     getPrerenderDetails : () => ZalgoPromise<PrerenderDetailsType>,
     getPopupBridge : XGetPopupBridge,
-    remember : ($ReadOnlyArray<$Values<typeof FUNDING>>) => ZalgoPromise<void>,
+    remember : RememberFunding,
     enableThreeDomainSecure : boolean,
     getParentDomain : () => string,
+    getPageUrl : GetPageURL,
     
     onInit : XOnInit,
     onApprove : ?XOnApprove,
@@ -67,6 +71,7 @@ export type GlobalProps = {|
     clientID : string,
     partnerAttributionID : string,
     correlationID : string,
+    platform : $Values<typeof PLATFORM>,
 
     vault : boolean,
     commit : boolean,
@@ -77,9 +82,10 @@ export type GlobalProps = {|
 
     getPrerenderDetails : () => ZalgoPromise<PrerenderDetailsType>,
     getPopupBridge : GetPopupBridge,
-    rememberFunding : ($ReadOnlyArray<$Values<typeof FUNDING>>) => ZalgoPromise<void>,
+    rememberFunding : RememberFunding,
     enableThreeDomainSecure : boolean,
     merchantDomain : string,
+    getPageUrl : GetPageURL,
 
     onInit : OnInit,
     onError : OnError

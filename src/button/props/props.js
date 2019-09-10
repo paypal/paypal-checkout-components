@@ -22,6 +22,7 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
         vault,
         commit,
         locale,
+        platform,
         sessionID,
         buttonSessionID,
         clientID,
@@ -32,6 +33,7 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
         buyerCountry = buyerGeoCountry || COUNTRY.US,
         getPopupBridge,
         getPrerenderDetails,
+        getPageUrl,
         enableThreeDomainSecure,
         remember: rememberFunding,
         onError
@@ -58,9 +60,11 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
         partnerAttributionID,
         correlationID,
         merchantDomain,
+        platform,
 
         getPopupBridge,
         getPrerenderDetails,
+        getPageUrl,
         rememberFunding,
         enableThreeDomainSecure,
 

@@ -6,7 +6,7 @@ import { FUNDING, CARD } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, clickButton, getGraphQLApiMock, DEFAULT_FUNDING_ELIGIBILITY } from './mocks';
+import { mockAsyncProp, createButtonHTML, clickButton, getGraphQLApiMock, DEFAULT_FUNDING_ELIGIBILITY } from './mocks';
 
 describe('client config cases', () => {
 
@@ -41,13 +41,13 @@ describe('client config cases', () => {
                 })
             }).expectCalls();
 
-            window.xprops.onApprove = expect('onApprove', async () => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async () => {
                 gqlMock.disable();
 
                 if (!clientConfigCalled) {
                     throw new Error(`Expected clientConfig mutation to be called`);
                 }
-            });
+            }));
 
             createButtonHTML();
 
@@ -90,13 +90,13 @@ describe('client config cases', () => {
                 })
             }).expectCalls();
 
-            window.xprops.onApprove = expect('onApprove', async () => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async () => {
                 gqlMock.disable();
 
                 if (!clientConfigCalled) {
                     throw new Error(`Expected clientConfig mutation to be called`);
                 }
-            });
+            }));
 
             const fundingEligibility = {
                 [ FUNDING.CARD ]: {
@@ -139,13 +139,13 @@ describe('client config cases', () => {
                 })
             }).expectCalls();
 
-            window.xprops.onApprove = expect('onApprove', async () => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async () => {
                 gqlMock.disable();
 
                 if (!clientConfigCalled) {
                     throw new Error(`Expected clientConfig mutation to be called`);
                 }
-            });
+            }));
 
             const fundingEligibility = {
                 [fundingSource]: {
@@ -182,13 +182,13 @@ describe('client config cases', () => {
                 })
             }).expectCalls();
 
-            window.xprops.onApprove = expect('onApprove', async () => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async () => {
                 gqlMock.disable();
 
                 if (!clientConfigCalled) {
                     throw new Error(`Expected clientConfig mutation to be called`);
                 }
-            });
+            }));
 
             const fundingEligibility = {
                 [ fundingSource ]: {
@@ -225,13 +225,13 @@ describe('client config cases', () => {
                 })
             }).expectCalls();
 
-            window.xprops.onApprove = expect('onApprove', async () => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async () => {
                 gqlMock.disable();
 
                 if (!clientConfigCalled) {
                     throw new Error(`Expected clientConfig mutation to be called`);
                 }
-            });
+            }));
 
             const fundingEligibility = {
                 [fundingSource]: {

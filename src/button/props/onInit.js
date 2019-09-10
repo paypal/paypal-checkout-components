@@ -28,7 +28,7 @@ export function buildXOnInitActions(set : (boolean) => void) : XOnInitActionsTyp
 }
 
 export type OnInit = () => {|
-    promise : ZalgoPromise<void>,
+    initPromise : ZalgoPromise<void>,
     isEnabled : () => boolean
 |};
 
@@ -38,7 +38,7 @@ export function getOnInit(xprops : XProps) : OnInit {
     return () => {
         let enabled = true;
 
-        const promise = ZalgoPromise.try(() => {
+        const initPromise = ZalgoPromise.try(() => {
             if (onInit) {
                 return onInit(buildXOnInitData(), buildXOnInitActions(val => {
                     enabled = val;
@@ -47,7 +47,7 @@ export function getOnInit(xprops : XProps) : OnInit {
         });
 
         return {
-            promise,
+            initPromise,
             isEnabled: () => enabled
         };
     };

@@ -7,7 +7,7 @@ import { FUNDING, INTENT } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, getCaptureOrderApiMock, getAuthorizeOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, getGraphQLApiMock } from './mocks';
+import { mockAsyncProp, createButtonHTML, getCaptureOrderApiMock, getAuthorizeOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, getGraphQLApiMock } from './mocks';
 
 describe('contingency cases', () => {
 
@@ -17,11 +17,11 @@ describe('contingency cases', () => {
             const orderID = 'XXXXXXXXXX';
             const payerID = 'YYYYYYYYYY';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
-            });
+            }));
 
             let onApprove = expect('onApprove', async (data, actions) => {
 
@@ -67,7 +67,7 @@ describe('contingency cases', () => {
                 captureOrderMock.done();
             });
 
-            window.xprops.onApprove = expect('onApprove', (data, actions) => onApprove(data, actions));
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data, actions) => onApprove(data, actions)));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
@@ -104,11 +104,11 @@ describe('contingency cases', () => {
             const orderID = 'XXXXXXXXXX';
             const payerID = 'YYYYYYYYYY';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
-            });
+            }));
 
             let onApprove = expect('onApprove', async (data, actions) => {
 
@@ -154,7 +154,7 @@ describe('contingency cases', () => {
                 captureOrderMock.done();
             });
 
-            window.xprops.onApprove = expect('onApprove', (data, actions) => onApprove(data, actions));
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data, actions) => onApprove(data, actions)));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
@@ -210,11 +210,11 @@ describe('contingency cases', () => {
                 }
             }).expectCalls();
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
-            });
+            }));
 
             let onApprove = expect('onApprove', async (data, actions) => {
 
@@ -260,7 +260,7 @@ describe('contingency cases', () => {
                 captureOrderMock.done();
             });
 
-            window.xprops.onApprove = expect('onApprove', (data, actions) => onApprove(data, actions));
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data, actions) => onApprove(data, actions)));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
@@ -318,11 +318,11 @@ describe('contingency cases', () => {
                 }
             }).expectCalls();
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
-            });
+            }));
 
             let onApprove = expect('onApprove', async (data, actions) => {
 
@@ -368,7 +368,7 @@ describe('contingency cases', () => {
                 captureOrderMock.done();
             });
 
-            window.xprops.onApprove = expect('onApprove', (data, actions) => onApprove(data, actions));
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data, actions) => onApprove(data, actions)));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 

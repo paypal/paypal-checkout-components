@@ -6,7 +6,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, getValidatePaymentMethodApiMock, clickButton, getGraphQLApiMock } from './mocks';
+import { mockAsyncProp, createButtonHTML, getValidatePaymentMethodApiMock, clickButton, getGraphQLApiMock } from './mocks';
 
 describe('vault cases', () => {
 
@@ -18,9 +18,9 @@ describe('vault cases', () => {
 
             const orderID = 'XXXXXXXXXX';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return orderID;
-            });
+            }));
 
             let enableVaultCalled = false;
 
@@ -35,13 +35,13 @@ describe('vault cases', () => {
                 })
             }).expectCalls();
 
-            window.xprops.onApprove = expect('onApprove', async () => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async () => {
                 gqlMock.done();
 
                 if (!enableVaultCalled) {
                     throw new Error(`Expected graphql call with enableVault mutation`);
                 }
-            });
+            }));
 
             const fundingEligibility = {
                 [FUNDING.PAYPAL]: {
@@ -65,9 +65,9 @@ describe('vault cases', () => {
 
             const orderID = 'XXXXXXXXXX';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return orderID;
-            });
+            }));
 
             window.xprops.onApprove = avoid('onApprove');
 
@@ -92,9 +92,9 @@ describe('vault cases', () => {
 
             const orderID = 'XXXXXXXXXX';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return orderID;
-            });
+            }));
 
             let enableVaultCalled = false;
 
@@ -109,13 +109,13 @@ describe('vault cases', () => {
                 })
             }).expectCalls();
 
-            window.xprops.onApprove = expect('onApprove', async () => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async () => {
                 gqlMock.done();
 
                 if (!enableVaultCalled) {
                     throw new Error(`Expected graphql call with enableVault mutation`);
                 }
-            });
+            }));
 
             const fundingEligibility = {
                 [FUNDING.PAYPAL]: {
@@ -138,9 +138,9 @@ describe('vault cases', () => {
 
             const orderID = 'XXXXXXXXXX';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return orderID;
-            });
+            }));
 
             let enableVaultCalled = false;
 
@@ -155,13 +155,13 @@ describe('vault cases', () => {
                 }
             }).enable();
 
-            window.xprops.onApprove = expect('onApprove', async () => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async () => {
                 gqlMock.disable();
 
                 if (enableVaultCalled) {
                     throw new Error(`Expected graphql to not be called with enableVault mutation`);
                 }
-            });
+            }));
 
             const fundingEligibility = {
                 [FUNDING.PAYPAL]: {
@@ -184,9 +184,9 @@ describe('vault cases', () => {
 
             const orderID = 'XXXXXXXXXX';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return orderID;
-            });
+            }));
 
             let enableVaultCalled = false;
 
@@ -207,13 +207,13 @@ describe('vault cases', () => {
                 })
             }).expectCalls();
 
-            window.xprops.onApprove = expect('onApprove', async () => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async () => {
                 gqlMock.done();
 
                 if (!enableVaultCalled) {
                     throw new Error(`Expected graphql call with enableVault mutation`);
                 }
-            });
+            }));
 
             const fundingEligibility = {
                 [FUNDING.PAYPAL]: {
@@ -237,19 +237,19 @@ describe('vault cases', () => {
             const orderID = 'XXXXXXXXXX';
             const paymentMethodID = 'xyz123';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return orderID;
-            });
+            }));
 
             const vpmCall = getValidatePaymentMethodApiMock().expectCalls();
 
-            window.xprops.onApprove = expect('onApprove', async (data) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
 
                 vpmCall.done();
-            });
+            }));
 
             const fundingEligibility = {
                 [ FUNDING.PAYPAL ]: {
@@ -280,19 +280,19 @@ describe('vault cases', () => {
             const orderID = 'XXXXXXXXXX';
             const paymentMethodID = 'xyz123';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return orderID;
-            });
+            }));
 
             const vpmCall = getValidatePaymentMethodApiMock().expectCalls();
 
-            window.xprops.onApprove = expect('onApprove', async (data) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
 
                 vpmCall.done();
-            });
+            }));
 
             const fundingEligibility = {
                 [ FUNDING.PAYPAL ]: {

@@ -7,7 +7,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY } from './mocks';
+import { mockAsyncProp, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY } from './mocks';
 
 describe('prerender cases', () => {
 
@@ -20,24 +20,24 @@ describe('prerender cases', () => {
                 close: avoid('close')
             };
 
-            window.xprops.getPrerenderDetails = expect('getPrerenderDetails', () => {
+            window.xprops.getPrerenderDetails = mockAsyncProp(expect('getPrerenderDetails', () => {
                 return ZalgoPromise.try(() => {
                     return {
                         win,
                         fundingSource: FUNDING.PAYPAL
                     };
                 });
-            });
+            }));
 
-            window.xprops.createOrder = expect('createOrder', async () => ZalgoPromise.resolve(orderID));
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => ZalgoPromise.resolve(orderID)));
 
-            window.xprops.onApprove = expect('onApprove', async (data) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 return ZalgoPromise.try(() => {
                     if (data.orderID !== orderID) {
                         throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                     }
                 });
-            });
+            }));
 
             createButtonHTML();
             await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
@@ -53,22 +53,22 @@ describe('prerender cases', () => {
                 close: avoid('close')
             };
 
-            window.xprops.getPrerenderDetails = expect('getPrerenderDetails', () => {
+            window.xprops.getPrerenderDetails = mockAsyncProp(expect('getPrerenderDetails', () => {
                 return ZalgoPromise.try(() => {
                     return {
                         win,
                         fundingSource: FUNDING.PAYPAL
                     };
                 });
-            });
+            }));
 
-            window.xprops.onInit = expect('onInit', (data, actions) => {
+            window.xprops.onInit = mockAsyncProp(expect('onInit', (data, actions) => {
                 return actions.enable();
-            });
+            }));
 
-            window.xprops.onClick = expect('onClick', () => ZalgoPromise.resolve());
+            window.xprops.onClick = mockAsyncProp(expect('onClick', () => ZalgoPromise.resolve()));
 
-            window.xprops.createOrder = expect('createOrder', async () => ZalgoPromise.resolve(orderID));
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => ZalgoPromise.resolve(orderID)));
 
             createButtonHTML();
             await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
@@ -82,20 +82,20 @@ describe('prerender cases', () => {
                 close: expect('close')
             };
 
-            window.xprops.getPrerenderDetails = expect('getPrerenderDetails', () => {
+            window.xprops.getPrerenderDetails = mockAsyncProp(expect('getPrerenderDetails', () => {
                 return ZalgoPromise.try(() => {
                     return {
                         win,
                         fundingSource: FUNDING.PAYPAL
                     };
                 });
-            });
+            }));
 
-            window.xprops.onInit = expect('onInit', (data, actions) => {
+            window.xprops.onInit = mockAsyncProp(expect('onInit', (data, actions) => {
                 return actions.disable();
-            });
+            }));
 
-            window.xprops.onClick = expect('onClick', () => ZalgoPromise.resolve());
+            window.xprops.onClick = mockAsyncProp(expect('onClick', () => ZalgoPromise.resolve()));
 
             window.xprops.createOrder = avoid('createOrder', () => ZalgoPromise.reject(new Error(`Avoid createOrder`)));
             window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.reject(new Error(`Avoid onApprove`)));
@@ -114,25 +114,25 @@ describe('prerender cases', () => {
                 close: avoid('close')
             };
 
-            window.xprops.getPrerenderDetails = expect('getPrerenderDetails', () => {
+            window.xprops.getPrerenderDetails = mockAsyncProp(expect('getPrerenderDetails', () => {
                 return ZalgoPromise.try(() => {
                     return {
                         win,
                         fundingSource: FUNDING.PAYPAL
                     };
                 });
-            });
+            }));
 
-            window.xprops.onInit = (data, actions) => {
+            window.xprops.onInit = mockAsyncProp((data, actions) => {
                 return actions.disable().then(() => {
                     return ZalgoPromise.delay(50);
                 }).then(() => {
                     return actions.enable();
                 });
-            };
+            });
 
-            window.xprops.onClick = expect('onClick', () => ZalgoPromise.resolve());
-            window.xprops.createOrder = expect('createOrder', async () => ZalgoPromise.resolve(orderID));
+            window.xprops.onClick = mockAsyncProp(expect('onClick', () => ZalgoPromise.resolve()));
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => ZalgoPromise.resolve(orderID)));
 
             createButtonHTML();
             await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
@@ -148,21 +148,21 @@ describe('prerender cases', () => {
                 close: avoid('close')
             };
 
-            window.xprops.getPrerenderDetails = expect('getPrerenderDetails', () => {
+            window.xprops.getPrerenderDetails = mockAsyncProp(expect('getPrerenderDetails', () => {
                 return ZalgoPromise.try(() => {
                     return {
                         win,
                         fundingSource: FUNDING.PAYPAL
                     };
                 });
-            });
+            }));
 
-            window.xprops.onClick = expect('onClick', (data, actions) => {
+            window.xprops.onClick = mockAsyncProp(expect('onClick', (data, actions) => {
                 return ZalgoPromise.delay(50).then(() => actions.resolve());
-            });
+            }));
 
-            window.xprops.createOrder = expect('createOrder', async () => ZalgoPromise.resolve(orderID));
-            window.xprops.onApprove = expect('onApprove', () => ZalgoPromise.resolve());
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => ZalgoPromise.resolve(orderID)));
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', () => ZalgoPromise.resolve()));
 
             createButtonHTML();
             await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
@@ -176,18 +176,18 @@ describe('prerender cases', () => {
                 close: expect('close')
             };
 
-            window.xprops.getPrerenderDetails = expect('getPrerenderDetails', () => {
+            window.xprops.getPrerenderDetails = mockAsyncProp(expect('getPrerenderDetails', () => {
                 return ZalgoPromise.try(() => {
                     return {
                         win,
                         fundingSource: FUNDING.PAYPAL
                     };
                 });
-            });
+            }));
 
-            window.xprops.onClick = expect('onClick', (data, actions) => {
+            window.xprops.onClick = mockAsyncProp(expect('onClick', (data, actions) => {
                 return ZalgoPromise.delay(50).then(() => actions.reject());
-            });
+            }));
 
             window.xprops.createOrder = avoid('createOrder', () => ZalgoPromise.reject(new Error(`Avoid createOrder`)));
             window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.reject(new Error(`Avoid onApprove`)));

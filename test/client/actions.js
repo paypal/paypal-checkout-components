@@ -8,6 +8,7 @@ import { FUNDING, INTENT } from '@paypal/sdk-constants/src';
 import { setupButton } from '../../src';
 
 import {
+    mockAsyncProp,
     createButtonHTML,
     getGetOrderApiMock,
     getCaptureOrderApiMock,
@@ -33,7 +34,7 @@ describe('actions cases', () => {
             let orderID;
             const payerID = 'YYYYYYYYYY';
 
-            window.xprops.createOrder = expect('createOrder', async (data, actions) => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async (data, actions) => {
                 const createOrderMock = getCreateOrderApiMock();
                 createOrderMock.expectCalls();
                 orderID = await actions.order.create({
@@ -50,9 +51,9 @@ describe('actions cases', () => {
                 }
 
                 return orderID;
-            });
+            }));
 
-            window.xprops.onApprove = expect('onApprove', async (data) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
@@ -60,7 +61,7 @@ describe('actions cases', () => {
                 if (data.payerID !== payerID) {
                     throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                 }
-            });
+            }));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
@@ -97,13 +98,13 @@ describe('actions cases', () => {
             const orderID = 'XXXXXXXXXX';
             const payerID = 'YYYYYYYYYY';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
-            });
+            }));
 
-            window.xprops.onApprove = expect('onApprove', async (data, actions) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
                 const getOrderMock = getGetOrderApiMock();
                 getOrderMock.expectCalls();
                 await actions.order.get();
@@ -116,7 +117,7 @@ describe('actions cases', () => {
                 if (data.payerID !== payerID) {
                     throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                 }
-            });
+            }));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
@@ -153,13 +154,13 @@ describe('actions cases', () => {
             const orderID = 'XXXXXXXXXX';
             const payerID = 'YYYYYYYYYY';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
-            });
+            }));
 
-            window.xprops.onApprove = expect('onApprove', async (data, actions) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
                 const captureOrderMock = getCaptureOrderApiMock();
                 captureOrderMock.expectCalls();
                 await actions.order.capture();
@@ -172,7 +173,7 @@ describe('actions cases', () => {
                 if (data.payerID !== payerID) {
                     throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                 }
-            });
+            }));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
@@ -228,13 +229,13 @@ describe('actions cases', () => {
                 }
             }).expectCalls();
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
-            });
+            }));
 
-            window.xprops.onApprove = expect('onApprove', async (data, actions) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
                 const authorizeOrderMock = getAuthorizeOrderApiMock();
                 authorizeOrderMock.expectCalls();
                 await actions.order.authorize();
@@ -247,7 +248,7 @@ describe('actions cases', () => {
                 if (data.payerID !== payerID) {
                     throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                 }
-            });
+            }));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
@@ -286,18 +287,18 @@ describe('actions cases', () => {
             const orderID = 'XXXXXXXXXX';
             const payerID = 'YYYYYYYYYY';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
-            });
+            }));
 
-            window.xprops.onShippingChange = expect('onShippingChange', async (data, actions) => {
+            window.xprops.onShippingChange = mockAsyncProp(expect('onShippingChange', async (data, actions) => {
                 const patchOrderMock = getPatchOrderApiMock();
                 patchOrderMock.expectCalls();
                 await actions.order.patch();
                 patchOrderMock.done();
-            });
+            }));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
@@ -335,18 +336,18 @@ describe('actions cases', () => {
 
             const orderID = 'XXXXXXXXXX';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
-            });
+            }));
 
-            window.xprops.onApprove = expect('onApprove', async (data, actions) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
                 const patchOrderMock = getPatchOrderApiMock();
                 patchOrderMock.expectCalls();
                 await actions.order.patch();
                 patchOrderMock.done();
-            });
+            }));
 
             createButtonHTML();
 
@@ -365,7 +366,7 @@ describe('actions cases', () => {
 
             window.xprops.vault = true;
             delete window.xprops.createOrder;
-            window.xprops.createSubscription = expect('createSubscription', async (data, actions) => {
+            window.xprops.createSubscription = mockAsyncProp(expect('createSubscription', async (data, actions) => {
                 const createSubscriptionIdApiMock = getCreateSubscriptionIdApiMock({}, mockSubscriptionID);
                 createSubscriptionIdApiMock.expectCalls();
                 subscriptionID = await actions.subscription.create({
@@ -377,9 +378,9 @@ describe('actions cases', () => {
                 }
 
                 return subscriptionID;
-            });
+            }));
 
-            window.xprops.onApprove = expect('onApprove', async (data, actions) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
 
                 if (data.subscriptionID !== subscriptionID) {
                     throw new Error(`Expected subscriptionID to be ${ subscriptionID }, got ${ data.subscriptionID }`);
@@ -399,7 +400,7 @@ describe('actions cases', () => {
                     throw new Error(`Expected activate response to be 204 NO CONTENT , got ${ JSON.stringify(activateResponse) } in Activate Subscriptions`);
                 }
                 activateSubscriptionIdApiMock.done();
-            });
+            }));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
@@ -443,7 +444,7 @@ describe('actions cases', () => {
 
             window.xprops.vault = true;
             delete window.xprops.createOrder;
-            window.xprops.createSubscription = expect('createSubscription', async (data, actions) => {
+            window.xprops.createSubscription = mockAsyncProp(expect('createSubscription', async (data, actions) => {
                 const reviseSubscriptionIdApiMock = getReviseSubscriptionIdApiMock({}, mockSubscriptionID);
                 reviseSubscriptionIdApiMock.expectCalls();
                 subscriptionID = await actions.subscription.revise(mockSubscriptionID, {
@@ -455,9 +456,9 @@ describe('actions cases', () => {
                 }
 
                 return subscriptionID;
-            });
+            }));
 
-            window.xprops.onApprove = expect('onApprove', async (data, actions) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
 
                 if (data.subscriptionID !== subscriptionID) {
                     throw new Error(`Expected subscriptionID to be ${ subscriptionID }, got ${ data.subscriptionID }`);
@@ -470,7 +471,7 @@ describe('actions cases', () => {
                     throw new Error(`Expected subscriptionID to be ${ subscriptionID }, got ${ response.id } in Get Subscriptions response`);
                 }
                 getSubscriptionApiMock.done();
-            });
+            }));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 

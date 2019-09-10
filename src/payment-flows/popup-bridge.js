@@ -5,19 +5,31 @@ import { getDomain } from 'cross-domain-utils/src';
 import { extendUrl } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
-import type { PopupBridge, CreateOrder, OnApprove, OnCancel, OnShippingChange } from '../button/props';
+import type { PopupBridge, CreateOrder, OnApprove, OnCancel, OnShippingChange, GetPopupBridge } from '../button/props';
 import type { ProxyWindow } from '../types';
 import { EXPERIENCE_URI } from '../config';
 import { promiseNoop } from '../lib';
 import { POPUP_BRIDGE_OPTYPE } from '../button/props/getPopupBridge';
+import { USER_ACTION } from '../constants';
+
+let popupBridge;
+
+export function setupPopupBridge({ getPopupBridge } : { getPopupBridge : GetPopupBridge }) : ZalgoPromise<void> {
+    return ZalgoPromise.try(() => {
+        if (getPopupBridge) {
+            return getPopupBridge().then(bridge => {
+                popupBridge = bridge;
+            });
+        }
+    });
+}
 
 type PopupBridgeEligibleProps = {|
     win : ?ProxyWindow,
-    popupBridge : ?PopupBridge,
     onShippingChange : ?OnShippingChange
 |};
 
-export function isPopupBridgeEligible({ win, popupBridge, onShippingChange } : PopupBridgeEligibleProps) : boolean {
+export function isPopupBridgeEligible({ win, onShippingChange } : PopupBridgeEligibleProps) : boolean {
     if (win) {
         return false;
     }
@@ -48,20 +60,15 @@ type PopupBridgeProps = {|
     fundingSource : $Values<typeof FUNDING>
 |};
 
-const USER_ACTION = {
-    COMMIT:   'commit',
-    CONTINUE: 'continue'
-};
-
 export function initPopupBridge(props : PopupBridgeProps) : PopupBridgeInstance {
-    const { popupBridge, createOrder, onApprove, onCancel, commit, fundingSource } = props;
-
-    if (!popupBridge) {
-        throw new Error(`Popup bridge required`);
-    }
+    const { createOrder, onApprove, onCancel, commit, fundingSource } = props;
 
     const start = () => {
         return createOrder().then(orderID => {
+            if (!popupBridge) {
+                throw new Error(`Popup bridge required`);
+            }
+            
             const url = extendUrl(`${ getDomain() }${ EXPERIENCE_URI.CHECKOUT }`, {
                 query: {
                     fundingSource,

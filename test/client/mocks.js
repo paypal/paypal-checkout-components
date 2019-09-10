@@ -1,12 +1,18 @@
 /* @flow */
+/* eslint max-lines: off */
 
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
+import { mockWebSocket, patchWebSocket } from 'sync-browser-mocks/src/webSocket';
 import { ZalgoPromise } from 'zalgo-promise';
-import { values, destroyElement } from 'belter/src';
+import { values, destroyElement, noop, uniqueID } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants';
-import { INTENT, CURRENCY, CARD } from '@paypal/sdk-constants/src';
+import { INTENT, CURRENCY, CARD, PLATFORM } from '@paypal/sdk-constants/src';
 
 import { triggerKeyPress } from './util';
+
+export function mockAsyncProp(handler : Function) : Function {
+    return (...args) => ZalgoPromise.delay(1).then(() => handler(...args));
+}
 
 export function setupMocks() {
     const body = document.body;
@@ -87,11 +93,12 @@ export function setupMocks() {
     };
 
     window.xprops = {
+        platform:    PLATFORM.DESKTOP,
         intent:      INTENT.CAPTURE,
         currency:    CURRENCY.USD,
-        createOrder: () => {
-            return ZalgoPromise.resolve('XXXXXXXXXX');
-        },
+        createOrder: mockAsyncProp(() => {
+            return 'XXXXXXXXXX';
+        }),
         style: {
 
         },
@@ -99,28 +106,22 @@ export function setupMocks() {
             country: 'US',
             lang:    'en'
         },
-        onInit: () => {
-            return ZalgoPromise.resolve();
-        },
-        onClick: () => {
-            return ZalgoPromise.resolve();
-        },
-        onApprove: () => {
-            return ZalgoPromise.resolve();
-        },
-        onCancel: () => {
-            return ZalgoPromise.resolve();
-        },
-        onError: (err) => {
+        onInit:    mockAsyncProp(noop),
+        onClick:   mockAsyncProp(noop),
+        onApprove: mockAsyncProp(noop),
+        onCancel:  mockAsyncProp(noop),
+        onError:   mockAsyncProp((err) => {
             throw err;
-        },
-        remember: () => {
-            return ZalgoPromise.resolve();
-        },
-        getPrerenderDetails: () => ZalgoPromise.resolve(),
-        getParent:           () => window,
-        getParentDomain:     () => 'https://www.merchant.com',
-        merchantID:          [ 'XYZ12345' ]
+        }),
+        remember:                 mockAsyncProp(noop),
+        getPrerenderDetails:      mockAsyncProp(noop),
+        getPageUrl:               mockAsyncProp(() => 'https://www.merchant.com/foo/bar?baz=1'),
+        getPopupBridge:           mockAsyncProp(noop),
+        getParent:                () => window,
+        getParentDomain:          () => 'https://www.merchant.com',
+        merchantID:               [ 'XYZ12345' ],
+        enableStandardCardFields: false,
+        enableNativeCheckout:     false
     };
 
     window.Promise.try = (method) => {
@@ -140,6 +141,7 @@ export function setupMocks() {
 
 setupMocks();
 patchXmlHttpRequest();
+patchWebSocket();
 
 export function mockFunction<T, A>(obj : mixed, prop : string, mock : ({ args : $ReadOnlyArray<A>, original : (...args: $ReadOnlyArray<A>) => T }) => T) : { cancel : () => void } {
     // $FlowFixMe
@@ -462,3 +464,73 @@ getGraphQLApiMock().listen();
 getLoggerApiMock().listen();
 getValidatePaymentMethodApiMock().listen();
 getPayeeApiMock().listen();
+
+type MockWebSocket = {|
+    listen : () => MockEndpoint,
+    expect : () => {|
+        done : () => void
+    |}
+|};
+
+export function getNativeWebSocketMock({ getSessionUID } : { getSessionUID : () => ?string }) : MockWebSocket {
+    let props;
+
+    return mockWebSocket({
+        uri:     'wss://127.0.0.1/paypal/native',
+        handler: ({ data, send }) => {
+            const json = JSON.parse(data);
+
+            if (json.type === 'request' && json.name === 'detectApp') {
+
+                send(JSON.stringify({
+                    type:   'response',
+                    id:     json.id,
+                    status: 'success',
+                    name:   'detectApp'
+                }));
+
+                setTimeout(() => {
+                    send(JSON.stringify({
+                        type:        'request',
+                        id:          uniqueID(),
+                        name:        'getProps',
+                        session_uid: getSessionUID()
+                    }));
+                }, 50);
+
+                return;
+            }
+
+            if (json.type === 'response' && json.name === 'getProps') {
+                props = json.data;
+
+                setTimeout(() => {
+                    send(JSON.stringify({
+                        type:        'request',
+                        id:          uniqueID(),
+                        name:        'onApprove',
+                        session_uid: getSessionUID(),
+                        data:        {
+                            orderID: props.orderID,
+                            payerID: 'XXYYZZ123456'
+                        }
+                    }));
+                }, 50);
+
+                return;
+            }
+
+            if (json.type === 'response' && json.name === 'onApprove') {
+                // pass
+            }
+
+            if (json.type === 'response' && json.name === 'onCancel') {
+                // pass
+            }
+
+            if (json.type === 'response' && json.name === 'onError') {
+                // pass
+            }
+        }
+    });
+}

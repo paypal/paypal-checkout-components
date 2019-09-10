@@ -20,6 +20,9 @@ export const EXPERIENCE_URI = {
     CHECKOUT: '/checkoutnow'
 };
 
+export const NATIVE_WEBSOCKET_URL = 'wss://127.0.0.1/paypal/native';
+export const HTTP_SOCKET_URL = 'https://www.paypal.com/smart/api/messages';
+
 export const CLIENT_ID_PAYEE_NO_MATCH = [
     'Af3YaeRfoJGtncwLeiahT93xTYT0-wldEEaiGehhGspP333r6tADvHeVCwZPR022F4d0YQquv7Lik_PT',
     'AbHo6hBEDmCHulDhRMkCVk7FDed5zE1-mNo7SQvo_yxeLvGylM5mGh5IOjx0AV9sTHhHDjD4A443Dybb',

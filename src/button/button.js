@@ -5,15 +5,17 @@ import { FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { FundingEligibilityType, ProxyWindow, PersonalizationType } from '../types';
-import { setupLogger, sendBeacon } from '../lib';
+import { setupLogger, sendBeacon, fixClickFocus } from '../lib';
 import { initCheckout, setupCheckout, isVaultCaptureEligible, isCardFieldsEligible, initVault, initCardFields } from '../payment-flows';
-import { DATA_ATTRIBUTES, CLASS } from '../constants';
-import { isPopupBridgeEligible, initPopupBridge } from '../payment-flows/popup-bridge';
+import { DATA_ATTRIBUTES } from '../constants';
+import { isPopupBridgeEligible, initPopupBridge, setupPopupBridge } from '../payment-flows/popup-bridge';
+import { isNativeEligible, initNative, setupNative } from '../payment-flows/native';
 
 import { getGlobalProps, getButtonCallbackProps } from './props';
 import { getSelectedFunding, enableLoadingSpinner, getButtons, disableLoadingSpinner } from './dom';
 import { updateButtonClientConfig, validateOrder } from './orders';
-import { triggerButtonLogs } from './logs';
+import { setupButtonLogs } from './logs';
+import { setupRemember } from './remember';
 
 type ButtonOpts = {|
     fundingEligibility : FundingEligibilityType,
@@ -24,10 +26,17 @@ type ButtonOpts = {|
     isCardFieldsExperimentEnabled? : boolean
 |};
 
+type PayOptions = {|
+    button : HTMLElement,
+    win? : ?ProxyWindow,
+    fundingSource : $Values<typeof FUNDING>,
+    card : ?$Values<typeof CARD>,
+    paymentMethodID? : ?string
+|};
 
 export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry, cspNonce: serverCSPNonce, merchantID, personalization, isCardFieldsExperimentEnabled } : ButtonOpts) : ZalgoPromise<void> {
     if (!window.paypal) {
-        throw new Error(`PayPal library not loaded`);
+        throw new Error(`PayPal SDK not loaded`);
     }
 
     const {
@@ -41,6 +50,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
         buyerCountry,
         locale,
         cspNonce,
+        platform,
 
         sessionID,
         clientID,
@@ -51,22 +61,22 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
 
         getPopupBridge,
         getPrerenderDetails,
+        getPageUrl,
         rememberFunding,
 
         onError,
         onInit
     } = getGlobalProps({ xprops: window.xprops, buyerGeoCountry, cspNonce: serverCSPNonce });
 
-    // eslint-disable-next-line prefer-const
-    let init;
-
     setupLogger({ env, sessionID, clientID, partnerAttributionID, commit,
         correlationID, locale, merchantID, buttonSessionID, merchantDomain });
+
+    const { initPromise, isEnabled } = onInit();
 
     let buttonProcessing = false;
     let popupBridge;
 
-    const pay = ({ button, win, fundingSource, card, paymentMethodID } : { button : HTMLElement, win? : ?ProxyWindow, fundingSource : $Values<typeof FUNDING>, card : ?$Values<typeof CARD>, paymentMethodID? : ?string }) => {
+    const pay = ({ button, win, fundingSource, card, paymentMethodID } : PayOptions) => {
         return ZalgoPromise.try(() => {
             if (buttonProcessing) {
                 return;
@@ -87,20 +97,28 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
 
             const validationPromise = onClick({ fundingSource });
 
-            if (!init || !init.isEnabled()) {
+            if (!isEnabled()) {
                 return win ? win.close() : null;
             }
 
             const isCardFields = isCardFieldsEligible({ win, vault, onShippingChange, fundingSource, isCardFieldsExperimentEnabled });
             const isVaultCapture = isVaultCaptureEligible({ win, paymentMethodID, onShippingChange });
-            const isPopupBridge = isPopupBridgeEligible({ win, popupBridge, onShippingChange });
-
-            if (isVaultCapture || isPopupBridge) {
-                enableLoadingSpinner(button);
-            }
+            const isPopupBridge = isPopupBridgeEligible({ win, onShippingChange });
+            const isNative = isNativeEligible({ win, platform, fundingSource, onShippingChange, createBillingAgreement, createSubscription });
+            const isCheckout = !isCardFields && !isVaultCapture && !isPopupBridge && !isNative;
 
             const { start, close, triggerError } = (() => {
+                if (isCheckout) {
+                    return initCheckout({
+                        win, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
+                        onAuth, onShippingChange, cspNonce, locale, commit, onError, vault,
+                        clientAccessToken, fundingEligibility, validationPromise, createBillingAgreement, createSubscription
+                    });
+                }
+
                 if (isVaultCapture) {
+                    enableLoadingSpinner(button);
+
                     return initVault({
                         createOrder, paymentMethodID, onApprove, clientAccessToken, enableThreeDomainSecure
                     });
@@ -115,16 +133,22 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
                 }
 
                 if (isPopupBridge) {
+                    enableLoadingSpinner(button);
+
                     return initPopupBridge({
                         popupBridge, fundingSource, createOrder, onApprove, onCancel, commit
                     });
                 }
 
-                return initCheckout({
-                    win, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
-                    onAuth, onShippingChange, cspNonce, locale, commit, onError, vault,
-                    clientAccessToken, fundingEligibility, validationPromise, createBillingAgreement, createSubscription
-                });
+                if (isNative) {
+                    enableLoadingSpinner(button);
+
+                    return initNative({
+                        createOrder, onApprove, onCancel, onError, commit, fundingSource, clientID, getPageUrl
+                    });
+                }
+
+                throw new Error(`No valid flow found`);
             })();
 
             return validationPromise.then(valid => {
@@ -155,14 +179,15 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
         });
     };
 
-    const tasks = {};
-
     getButtons().forEach(button => {
+        fixClickFocus(button);
+
         const { fundingSource, card, paymentMethodID } = getSelectedFunding(button);
 
         onElementClick(button, event => {
             event.preventDefault();
             event.stopPropagation();
+
             const payPromise = pay({ button, fundingSource, card, paymentMethodID });
             // $FlowFixMe
             button.payPromise = payPromise;
@@ -171,42 +196,9 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
                 sendBeacon(personalization.tagline.tracking.click);
             }
         });
-
-        button.addEventListener('mousedown', () => {
-            button.classList.add(CLASS.CLICKED);
-        });
-
-        button.addEventListener('focus', (event : Event) => {
-            if (button.classList.contains(CLASS.CLICKED)) {
-                event.preventDefault();
-                button.blur();
-                button.classList.remove(CLASS.CLICKED);
-            }
-        });
     });
 
-    tasks.remember = ZalgoPromise.try(() => {
-        if (fundingEligibility && fundingEligibility.venmo && fundingEligibility.venmo.eligible) {
-            return rememberFunding([ FUNDING.VENMO ]);
-        }
-    });
-
-    tasks.getPopupBridge = ZalgoPromise.try(() => {
-        if (getPopupBridge) {
-            return getPopupBridge().then(bridge => {
-                popupBridge = bridge;
-            });
-        }
-    });
-
-    triggerButtonLogs();
-
-    tasks.setupCheckout = setupCheckout();
-
-    init = onInit();
-    tasks.onInit = init.promise;
-
-    tasks.prerender = tasks.onInit.then(() => {
+    const setupPrerenderTask = initPromise.then(() => {
         return getPrerenderDetails().then((prerenderDetails) => {
             if (prerenderDetails) {
                 const { win, fundingSource, card } = prerenderDetails;
@@ -221,5 +213,15 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
         });
     });
 
-    return ZalgoPromise.hash(tasks).then(noop);
+    const setupRememberTask = setupRemember({ rememberFunding, fundingEligibility });
+    const setupButtonLogsTask = setupButtonLogs();
+
+    const setupCheckoutFlow = setupCheckout();
+    const setupPopupBridgeFlow = setupPopupBridge({ getPopupBridge });
+    const setupNativeFlow = setupNative({ platform });
+
+    return ZalgoPromise.hash({
+        initPromise, setupButtonLogsTask, setupPrerenderTask, setupRememberTask,
+        setupCheckoutFlow, setupNativeFlow, setupPopupBridgeFlow
+    }).then(noop);
 }

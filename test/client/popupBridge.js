@@ -7,7 +7,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, clickButton } from './mocks';
+import { mockAsyncProp, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, clickButton } from './mocks';
 
 describe('popup bridge cases', () => {
 
@@ -18,13 +18,13 @@ describe('popup bridge cases', () => {
             const orderID = 'XXXXXXXXXX';
             const payerID = 'YYYYYYYYYY';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
-            });
+            }));
 
-            window.xprops.onApprove = expect('onApprove', async (data) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
@@ -32,9 +32,9 @@ describe('popup bridge cases', () => {
                 if (data.payerID !== payerID) {
                     throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                 }
-            });
+            }));
 
-            window.xprops.getPopupBridge = expect('getPopupBridge', async () => {
+            window.xprops.getPopupBridge = mockAsyncProp(expect('getPopupBridge', async () => {
                 return {
                     nativeUrl,
                     start: expect('start', async () => {
@@ -45,7 +45,7 @@ describe('popup bridge cases', () => {
                         };
                     })
                 };
-            });
+            }));
 
             createButtonHTML();
 
@@ -61,19 +61,19 @@ describe('popup bridge cases', () => {
             const nativeUrl = 'native://foobar';
             const orderID = 'XXXXXXXXXX';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
-            });
+            }));
 
-            window.xprops.onCancel = expect('onCancel', async (data) => {
+            window.xprops.onCancel = mockAsyncProp(expect('onCancel', async (data) => {
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
-            });
+            }));
 
-            window.xprops.getPopupBridge = expect('getPopupBridge', async () => {
+            window.xprops.getPopupBridge = mockAsyncProp(expect('getPopupBridge', async () => {
                 return {
                     nativeUrl,
                     start: expect('start', async () => {
@@ -83,7 +83,7 @@ describe('popup bridge cases', () => {
                         };
                     })
                 };
-            });
+            }));
 
             createButtonHTML();
 
@@ -101,13 +101,13 @@ describe('popup bridge cases', () => {
             const payerID = 'YYYYYYYYYY';
             const paymentID = 'ZZZZZZZZZZ';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
-            });
+            }));
 
-            window.xprops.onApprove = expect('onApprove', async (data) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
@@ -119,9 +119,9 @@ describe('popup bridge cases', () => {
                 if (data.paymentID !== paymentID) {
                     throw new Error(`Expected paymentID to be ${ paymentID }, got ${ data.paymentID }`);
                 }
-            });
+            }));
 
-            window.xprops.getPopupBridge = expect('getPopupBridge', async () => {
+            window.xprops.getPopupBridge = mockAsyncProp(expect('getPopupBridge', async () => {
                 return {
                     nativeUrl,
                     start: expect('start', async () => {
@@ -133,7 +133,7 @@ describe('popup bridge cases', () => {
                         };
                     })
                 };
-            });
+            }));
 
             createButtonHTML();
 
@@ -151,13 +151,13 @@ describe('popup bridge cases', () => {
             const payerID = 'YYYYYYYYYY';
             const billingToken = 'BA-QQQQQQQQQQQ';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
-            });
+            }));
 
-            window.xprops.onApprove = expect('onApprove', async (data) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
@@ -169,9 +169,9 @@ describe('popup bridge cases', () => {
                 if (data.billingToken !== billingToken) {
                     throw new Error(`Expected paymentID to be ${ billingToken }, got ${ data.billingToken }`);
                 }
-            });
+            }));
 
-            window.xprops.getPopupBridge = expect('getPopupBridge', async () => {
+            window.xprops.getPopupBridge = mockAsyncProp(expect('getPopupBridge', async () => {
                 return {
                     nativeUrl,
                     start: expect('start', async () => {
@@ -183,7 +183,7 @@ describe('popup bridge cases', () => {
                         };
                     })
                 };
-            });
+            }));
 
             createButtonHTML();
 

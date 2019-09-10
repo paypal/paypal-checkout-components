@@ -166,7 +166,6 @@ export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
 
     const onClose = () => {
         cardFieldsOpen = false;
-        return onCancel();
     };
 
     const onCardTypeChange = ({ card: cardType }) => {

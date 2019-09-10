@@ -2,11 +2,12 @@
 
 import { isIEIntranet, getPageRenderTime } from 'belter/src';
 import { FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { getLogger } from '../lib';
 import { DATA_ATTRIBUTES, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FTPI_BUTTON_KEY } from '../constants';
 
-export function triggerButtonLogs() {
+export function setupButtonLogs() : ZalgoPromise<void> {
     const logger = getLogger();
 
     if (isIEIntranet()) {
@@ -19,7 +20,7 @@ export function triggerButtonLogs() {
         throw new Error(`No xprops found`);
     }
 
-    getPageRenderTime().then(pageRenderTime => {
+    return getPageRenderTime().then(pageRenderTime => {
 
         const fundingSources = Array.prototype.slice.call(document.querySelectorAll(`[${ DATA_ATTRIBUTES.FUNDING_SOURCE }]`)).map(el => {
             return el.getAttribute(DATA_ATTRIBUTES.CARD) || el.getAttribute(DATA_ATTRIBUTES.FUNDING_SOURCE);

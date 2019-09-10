@@ -7,7 +7,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, clickButton } from './mocks';
+import { mockAsyncProp, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, clickButton } from './mocks';
 
 describe('validation cases', () => {
 
@@ -16,13 +16,13 @@ describe('validation cases', () => {
 
             const orderID = 'XXXXXXXXXX';
 
-            window.xprops.onInit = expect('onInit', (data, actions) => {
+            window.xprops.onInit = mockAsyncProp(expect('onInit', (data, actions) => {
                 return actions.enable();
-            });
+            }));
 
-            window.xprops.onClick = expect('onClick', () => ZalgoPromise.resolve());
-            window.xprops.createOrder = expect('createOrder', () => ZalgoPromise.delay(50).then(() => orderID));
-            window.xprops.onApprove = expect('onApprove', () => ZalgoPromise.resolve());
+            window.xprops.onClick = mockAsyncProp(expect('onClick', () => ZalgoPromise.resolve()));
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', () => ZalgoPromise.delay(50).then(() => orderID)));
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', () => ZalgoPromise.resolve()));
 
             createButtonHTML();
             await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
@@ -33,11 +33,11 @@ describe('validation cases', () => {
     it('should render a button, disable the button, click, and not call Checkout or createOrder or onApprove', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
-            window.xprops.onInit = expect('onInit', (data, actions) => {
+            window.xprops.onInit = mockAsyncProp(expect('onInit', (data, actions) => {
                 return actions.disable();
-            });
+            }));
 
-            window.xprops.onClick = expect('onClick', () => ZalgoPromise.resolve());
+            window.xprops.onClick = mockAsyncProp(expect('onClick', () => ZalgoPromise.resolve()));
             window.xprops.createOrder = avoid('createOrder', () => ZalgoPromise.reject(new Error(`Avoid createOrder`)));
             window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.reject(new Error(`Avoid onApprove`)));
 
@@ -52,10 +52,10 @@ describe('validation cases', () => {
 
             const orderID = 'XXXXXXXXXX';
 
-            window.xprops.onInit = expect('onInit', (data, actions) => {
+            window.xprops.onInit = mockAsyncProp(expect('onInit', (data, actions) => {
                 return actions.disable().then(async () => {
                     
-                    window.xprops.onClick = expect('onClick', () => ZalgoPromise.resolve());
+                    window.xprops.onClick = mockAsyncProp(expect('onClick', () => ZalgoPromise.resolve()));
                     window.xprops.createOrder = avoid('createOrder', () => ZalgoPromise.delay(50).then(() => orderID));
                     window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.resolve());
 
@@ -66,13 +66,13 @@ describe('validation cases', () => {
                     return actions.enable();
                 }).then(async () => {
 
-                    window.xprops.onClick = expect('onClick2', () => ZalgoPromise.resolve());
-                    window.xprops.createOrder = expect('createOrder2', () => ZalgoPromise.delay(50).then(() => orderID));
-                    window.xprops.onApprove = expect('onApprove2', () => ZalgoPromise.resolve());
+                    window.xprops.onClick = mockAsyncProp(expect('onClick2', () => ZalgoPromise.resolve()));
+                    window.xprops.createOrder = mockAsyncProp(expect('createOrder2', () => ZalgoPromise.delay(50).then(() => orderID)));
+                    window.xprops.onApprove = mockAsyncProp(expect('onApprove2', () => ZalgoPromise.resolve()));
 
                     await clickButton(FUNDING.PAYPAL);
                 });
-            });
+            }));
 
 
             createButtonHTML();
@@ -85,11 +85,11 @@ describe('validation cases', () => {
 
             const orderID = 'XXXXXXXXXX';
 
-            window.xprops.onClick = expect('onClick', (data, actions) => {
+            window.xprops.onClick = mockAsyncProp(expect('onClick', (data, actions) => {
                 return ZalgoPromise.delay(50).then(() => actions.resolve());
-            });
-            window.xprops.createOrder = expect('createOrder', () => ZalgoPromise.delay(50).then(() => orderID));
-            window.xprops.onApprove = expect('onApprove', () => ZalgoPromise.resolve());
+            }));
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', () => ZalgoPromise.delay(50).then(() => orderID)));
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', () => ZalgoPromise.resolve()));
             
             createButtonHTML();
             await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
@@ -99,9 +99,9 @@ describe('validation cases', () => {
 
     it('should render a button, and reject in onClick', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.xprops.onClick = expect('onClick', (data, actions) => {
+            window.xprops.onClick = mockAsyncProp(expect('onClick', (data, actions) => {
                 return ZalgoPromise.delay(50).then(() => actions.reject());
-            });
+            }));
 
             window.xprops.createOrder = avoid('createOrder', () => ZalgoPromise.reject(new Error(`Avoid createOrder`)));
             window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.reject(new Error(`Avoid onApprove`)));
@@ -114,9 +114,9 @@ describe('validation cases', () => {
 
     it('should render a button, and reject in onClick, then click again and resolve', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.xprops.onClick = expect('onClick', (data, actions) => {
+            window.xprops.onClick = mockAsyncProp(expect('onClick', (data, actions) => {
                 return ZalgoPromise.delay(50).then(() => actions.reject());
-            });
+            }));
 
             window.xprops.createOrder = avoid('createOrder', () => ZalgoPromise.reject(new Error(`Avoid createOrder`)));
             window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.reject(new Error(`Avoid onApprove`)));
@@ -129,11 +129,11 @@ describe('validation cases', () => {
 
             const orderID = 'XXXXXXXXXX';
 
-            window.xprops.onClick = expect('onClick2', (data, actions) => {
+            window.xprops.onClick = mockAsyncProp(expect('onClick2', (data, actions) => {
                 return ZalgoPromise.delay(50).then(() => actions.resolve());
-            });
-            window.xprops.createOrder = expect('createOrder2', () => ZalgoPromise.delay(50).then(() => orderID));
-            window.xprops.onApprove = expect('onApprove2', () => ZalgoPromise.resolve());
+            }));
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder2', () => ZalgoPromise.delay(50).then(() => orderID)));
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove2', () => ZalgoPromise.resolve()));
 
             await clickButton(FUNDING.PAYPAL);
         });

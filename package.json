@@ -56,7 +56,7 @@
     "grumbler-scripts": "^3.0.18",
     "post-robot": "^10.0.13",
     "preact": "10.0.0-rc.1",
-    "sync-browser-mocks": "^1.0.44",
+    "sync-browser-mocks": "^2.0.1",
     "webpack-mem-compile": "^1.0.2"
   },
   "license": "PayPal",

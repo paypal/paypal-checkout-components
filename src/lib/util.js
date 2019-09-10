@@ -3,6 +3,8 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { noop } from 'belter/src';
 
+import { DOM_EVENT, CLASS } from '../constants';
+
 export function unresolvedPromise<T>() : ZalgoPromise<T> {
     return new ZalgoPromise(noop);
 }
@@ -28,5 +30,33 @@ export function sendBeacon(url : string) {
     img.style.position = 'absolute';
     if (document.body) {
         document.body.appendChild(img);
+    }
+}
+
+export function fixClickFocus(el : HTMLElement) {
+    el.addEventListener(DOM_EVENT.MOUSEDOWN, () => {
+        el.classList.add(CLASS.CLICKED);
+    });
+
+    el.addEventListener(DOM_EVENT.HOVER, (event : Event) => {
+        if (el.classList.contains(CLASS.CLICKED)) {
+            event.preventDefault();
+            el.blur();
+            el.classList.remove(CLASS.CLICKED);
+        }
+    });
+}
+
+export function sleep(time : number) : ZalgoPromise<void> {
+    return new ZalgoPromise(resolve => {
+        setTimeout(resolve, time);
+    });
+}
+
+export function redirectTop(url : string) {
+    if (__TEST__) {
+        window.location.hash = url;
+    } else {
+        window.top.location = url;
     }
 }

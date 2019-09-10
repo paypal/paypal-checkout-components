@@ -14,3 +14,5 @@ export * from './onClick';
 export * from './onAuth';
 export * from './onError';
 export * from './getPopupBridge';
+export * from './rememberFunding';
+export * from './getPageUrl';

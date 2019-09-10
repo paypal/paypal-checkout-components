@@ -6,7 +6,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, getGetOrderApiMock, getCaptureOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton } from './mocks';
+import { mockAsyncProp, createButtonHTML, getGetOrderApiMock, getCaptureOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton } from './mocks';
 
 describe('auth cases', () => {
 
@@ -14,7 +14,7 @@ describe('auth cases', () => {
         return await wrapPromise(async ({ expect }) => {
             const accessToken = 'abc123xxxyyyzzz';
 
-            window.xprops.onApprove = expect('onApprove', async (data, actions) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
                 const getOrderMock = getGetOrderApiMock({
                     handler: expect('getOrder', ({ headers }) => {
                         if (headers['x-paypal-internal-euat'] !== accessToken) {
@@ -46,7 +46,7 @@ describe('auth cases', () => {
                 captureOrderApiMock.expectCalls();
                 await actions.order.capture();
                 captureOrderApiMock.done();
-            });
+            }));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
                 props.onAuth({ accessToken });

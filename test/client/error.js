@@ -6,7 +6,7 @@ import { wrapPromise, noop } from 'belter/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, clickButton, mockFunction } from './mocks';
+import { mockAsyncProp, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, clickButton, mockFunction } from './mocks';
 
 describe('error cases', () => {
 
@@ -24,11 +24,11 @@ describe('error cases', () => {
                 throw error;
             });
 
-            window.xprops.onError = expect('onError', (err) => {
+            window.xprops.onError = mockAsyncProp(expect('onError', (err) => {
                 if (err !== error) {
                     throw new Error(`Expected errors to match`);
                 }
-            });
+            }));
 
             createButtonHTML();
 
@@ -48,11 +48,11 @@ describe('error cases', () => {
                 throw error;
             });
 
-            window.xprops.onError = expect('onError', (err) => {
+            window.xprops.onError = mockAsyncProp(expect('onError', (err) => {
                 if (err !== error) {
                     throw new Error(`Expected errors to match`);
                 }
-            });
+            }));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
                 const checkoutInstance = CheckoutOriginal(props);

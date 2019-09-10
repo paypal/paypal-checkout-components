@@ -7,7 +7,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, enterButton } from './mocks';
+import { mockAsyncProp, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, enterButton } from './mocks';
 import { triggerKeyPress } from './util';
 
 describe('happy cases', () => {
@@ -18,15 +18,15 @@ describe('happy cases', () => {
             const orderID = 'XXXXXXXXXX';
             const payerID = 'YYYYYYYYYY';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
-            });
+            }));
 
             window.xprops.onCancel = avoid('onCancel');
 
-            window.xprops.onApprove = expect('onApprove', async (data) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
@@ -34,7 +34,7 @@ describe('happy cases', () => {
                 if (data.payerID !== payerID) {
                     throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                 }
-            });
+            }));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
@@ -72,15 +72,15 @@ describe('happy cases', () => {
             const payerID = 'YYYYYYYYYY';
             const paymentID = 'ZZZZZZ';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
-            });
+            }));
 
             window.xprops.onCancel = avoid('onCancel');
 
-            window.xprops.onApprove = expect('onApprove', async (data) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
@@ -92,7 +92,7 @@ describe('happy cases', () => {
                 if (data.paymentID !== paymentID) {
                     throw new Error(`Expected paymentID to be ${ paymentID }, got ${ data.paymentID }`);
                 }
-            });
+            }));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
@@ -133,15 +133,15 @@ describe('happy cases', () => {
             delete window.xprops.createOrder;
 
             window.xprops.vault = true;
-            window.xprops.createBillingAgreement = expect('createBillingAgreement', async () => {
+            window.xprops.createBillingAgreement = mockAsyncProp(expect('createBillingAgreement', async () => {
                 return ZalgoPromise.try(() => {
                     return billingToken;
                 });
-            });
+            }));
 
             window.xprops.onCancel = avoid('onCancel');
 
-            window.xprops.onApprove = expect('onApprove', async (data) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.billingToken !== billingToken) {
                     throw new Error(`Expected billingToken to be ${ billingToken }, got ${ data.billingToken }`);
                 }
@@ -149,7 +149,7 @@ describe('happy cases', () => {
                 if (data.payerID !== payerID) {
                     throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                 }
-            });
+            }));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
@@ -189,15 +189,15 @@ describe('happy cases', () => {
 
             window.xprops.vault = true;
             delete window.xprops.createOrder;
-            window.xprops.createSubscription = expect('createSubscription', async () => {
+            window.xprops.createSubscription = mockAsyncProp(expect('createSubscription', async () => {
                 return ZalgoPromise.try(() => {
                     return subscriptionID;
                 });
-            });
+            }));
 
             window.xprops.onCancel = avoid('onCancel');
 
-            window.xprops.onApprove = expect('onApprove', async (data) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.subscriptionID !== subscriptionID) {
                     throw new Error(`Expected billingToken to be ${ subscriptionID }, got ${ data.subscriptionID }`);
                 }
@@ -205,7 +205,7 @@ describe('happy cases', () => {
                 if (data.payerID !== payerID) {
                     throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                 }
-            });
+            }));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
@@ -242,15 +242,15 @@ describe('happy cases', () => {
             const orderID = 'XXXXXXXXXX';
             const payerID = 'YYYYYYYYYY';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
-            });
+            }));
 
             window.xprops.onCancel = avoid('onCancel');
 
-            window.xprops.onApprove = expect('onApprove', async (data) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
@@ -258,7 +258,7 @@ describe('happy cases', () => {
                 if (data.payerID !== payerID) {
                     throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                 }
-            });
+            }));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
@@ -291,7 +291,7 @@ describe('happy cases', () => {
     
     it('should render a button, click the button, and call onClick', async () => {
         return await wrapPromise(async ({ expect }) => {
-            window.xprops.onClick = expect('onClick', () => ZalgoPromise.resolve());
+            window.xprops.onClick = mockAsyncProp(expect('onClick', () => ZalgoPromise.resolve()));
 
             createButtonHTML();
 
@@ -303,7 +303,7 @@ describe('happy cases', () => {
     
     it('should render a button, press enter on the button, and call onClick', async () => {
         return await wrapPromise(async ({ expect }) => {
-            window.xprops.onClick = expect('onClick', () => ZalgoPromise.resolve());
+            window.xprops.onClick = mockAsyncProp(expect('onClick', () => ZalgoPromise.resolve()));
 
             createButtonHTML();
 
@@ -318,17 +318,17 @@ describe('happy cases', () => {
 
             const orderID = 'XXXXXXXXXX';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
-            });
+            }));
 
-            window.xprops.onCancel = expect('onCancel', async (data) => {
+            window.xprops.onCancel = mockAsyncProp(expect('onCancel', async (data) => {
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
-            });
+            }));
 
             window.xprops.onApprove = avoid('onApprove');
 
@@ -362,11 +362,11 @@ describe('happy cases', () => {
             const orderID = 'XXXXXXXXXX';
             const payerID = 'YYYYYYYYYY';
 
-            window.xprops.createOrder = expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
-            });
+            }));
 
             window.xprops.onCancel = avoid('onCancel');
 
@@ -392,7 +392,7 @@ describe('happy cases', () => {
                 actions.restart().then(avoid('restartThen'));
             };
 
-            window.xprops.onApprove = expect('onApprove', (data, actions) => onApprove(data, actions));
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data, actions) => onApprove(data, actions)));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 

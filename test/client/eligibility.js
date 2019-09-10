@@ -6,16 +6,18 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
+import { mockAsyncProp } from './mocks';
+
 describe('eligibility cases', () => {
 
     it('should call xprops.remember with venmo if venmo is eligible', async () => {
         return await wrapPromise(async ({ expect }) => {
 
-            window.xprops.remember = expect('remember', (sources) => {
+            window.xprops.remember = mockAsyncProp(expect('remember', (sources) => {
                 if (!sources || sources.indexOf(FUNDING.VENMO) === -1) {
                     throw new Error(`Expected venmo to be remembered`);
                 }
-            });
+            }));
 
             await setupButton({
                 merchantID:         [ 'XYZ12345' ],

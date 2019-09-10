@@ -14,6 +14,8 @@ import './prerender';
 import './vault';
 import './clientConfig';
 import './popupBridge';
+import './card';
+import './native';
 
 beforeEach(() => {
     setupMocks();

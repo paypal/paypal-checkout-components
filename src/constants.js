@@ -51,6 +51,11 @@ export const USER_EXPERIENCE_FLOW = {
     INLINE:    'INLINE'
 };
 
+export const DOM_EVENT = {
+    MOUSEDOWN: 'mousedown',
+    HOVER:     'hover'
+};
+
 export const PRODUCT_FLOW = {
     SMART_PAYMENT_BUTTONS: 'SMART_PAYMENT_BUTTONS'
 };
@@ -87,4 +92,9 @@ export const FTPI_BUTTON_KEY = {
     BUTTON_WIDTH:           ('button_width' : 'button_width'),
     BUTTON_TYPE:            ('button_type' : 'button_type'),
     BUTTON_TAGLINE_ENABLED: ('button_tagline_enabled' : 'button_tagline_enabled')
+};
+
+export const USER_ACTION = {
+    COMMIT:   'commit',
+    CONTINUE: 'continue'
 };
