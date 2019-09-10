@@ -254,6 +254,12 @@ export const FUNDING_CONFIG = {
 
         allowHorizontal: false,
         allowVertical:   true
+    },
+    [ FUNDING.ZIMPLER ]: {
+        allowedCountries: [],
+
+        allowHorizontal: false,
+        allowVertical:   false
     }
 };
 
