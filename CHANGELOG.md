@@ -1,3 +1,10 @@
+## <small>5.0.54 (2019-09-10)</small>
+
+* Add getPageUrl prop to buttons ([fb336e0](http://github.paypal.com/paypal/paypal-checkout/commit/fb336e0))
+* Add stageHost and apiStageHost props to button ([60553d9](http://github.paypal.com/paypal/paypal-checkout/commit/60553d9))
+
+
+
 ## <small>5.0.53 (2019-08-15)</small>
 
 * Add extra params to menu component ([883d307](http://github.paypal.com/paypal/paypal-checkout/commit/883d307))
