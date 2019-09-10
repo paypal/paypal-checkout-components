@@ -4,8 +4,7 @@
 
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken,
-    getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug,
-    getComponents } from '@paypal/sdk-client/src';
+    getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost } from '@paypal/sdk-client/src';
 import { rememberFunding, getRememberedFunding } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
@@ -214,6 +213,16 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                     type:       'string',
                     queryParam: true,
                     value:      getEnv
+                },
+
+                stageHost: {
+                    type:       'string',
+                    value:      getStageHost
+                },
+
+                apiStageHost: {
+                    type:       'string',
+                    value:      getAPIStageHost
                 },
 
                 fundingEligibility: {
