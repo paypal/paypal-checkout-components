@@ -114,8 +114,6 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
                 }
 
                 if (isNative) {
-                    enableLoadingSpinner(button);
-
                     return initNative({
                         createOrder, onApprove, onCancel, onError, commit, fundingSource,
                         clientID, getPageUrl, env, stageHost, apiStageHost
