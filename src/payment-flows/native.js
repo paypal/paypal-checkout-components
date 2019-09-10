@@ -2,7 +2,7 @@
 
 import { memoize, extendUrl, uniqueID, getUserAgent } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { PLATFORM, FUNDING } from '@paypal/sdk-constants/src';
+import { ENV, PLATFORM, FUNDING } from '@paypal/sdk-constants/src';
 
 import type { CreateOrder, CreateBillingAgreement, CreateSubscription, OnApprove, OnCancel, OnShippingChange, OnError, GetPageURL } from '../button/props';
 import type { ProxyWindow } from '../types';
@@ -104,8 +104,6 @@ export function setupNative({ platform } : SetupNativeProps) : ZalgoPromise<void
             isNativeCheckoutWebsocketAvailable = false;
         });
     });
-
-
 }
 
 type NativeProps = {|
@@ -116,7 +114,10 @@ type NativeProps = {|
     commit : boolean,
     clientID : string,
     fundingSource : $Values<typeof FUNDING>,
-    getPageUrl : GetPageURL
+    getPageUrl : GetPageURL,
+    env : $Values<typeof ENV>,
+    stageHost : string,
+    apiStageHost : string
 |};
 
 type NativeInstance = {|
@@ -126,7 +127,7 @@ type NativeInstance = {|
 |};
 
 export function initNative(props : NativeProps) : NativeInstance {
-    const { createOrder, onApprove, onCancel, onError, commit, clientID, getPageUrl } = props;
+    const { createOrder, onApprove, onCancel, onError, commit, clientID, getPageUrl, env, stageHost, apiStageHost } = props;
 
     const start = () => {
         return ZalgoPromise.try(() => {
@@ -147,7 +148,10 @@ export function initNative(props : NativeProps) : NativeInstance {
                         facilitatorAccessToken,
                         pageUrl,
                         commit,
-                        userAgent
+                        userAgent,
+                        env,
+                        stageHost,
+                        apiStageHost
                     };
                 });
             });

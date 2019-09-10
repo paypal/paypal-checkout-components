@@ -36,7 +36,9 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
         getPageUrl,
         enableThreeDomainSecure,
         remember: rememberFunding,
-        onError
+        onError,
+        stageHost,
+        apiStageHost
     } = xprops;
 
     cspNonce = cspNonce || getNonce();
@@ -69,7 +71,9 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
         enableThreeDomainSecure,
 
         onInit,
-        onError
+        onError,
+        stageHost,
+        apiStageHost
     };
 }
 

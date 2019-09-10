@@ -40,32 +40,11 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
     }
 
     const {
-        env,
-        buttonSessionID,
-
-        vault,
-        commit,
-
-        clientAccessToken,
-        buyerCountry,
-        locale,
-        cspNonce,
-        platform,
-
-        sessionID,
-        clientID,
-        partnerAttributionID,
-        correlationID,
-        enableThreeDomainSecure,
-        merchantDomain,
-
-        getPopupBridge,
-        getPrerenderDetails,
-        getPageUrl,
-        rememberFunding,
-
-        onError,
-        onInit
+        env, stageHost, apiStageHost, buttonSessionID,
+        vault, commit, clientAccessToken, buyerCountry, locale, cspNonce, platform,
+        sessionID, clientID, partnerAttributionID, correlationID, enableThreeDomainSecure,
+        merchantDomain, getPopupBridge, getPrerenderDetails, getPageUrl, rememberFunding,
+        onError, onInit
     } = getGlobalProps({ xprops: window.xprops, buyerGeoCountry, cspNonce: serverCSPNonce });
 
     setupLogger({ env, sessionID, clientID, partnerAttributionID, commit,
@@ -85,14 +64,8 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
             buttonProcessing = true;
 
             const {
-                createOrder,
-                createBillingAgreement,
-                onApprove,
-                onCancel,
-                onClick,
-                onAuth,
-                onShippingChange,
-                createSubscription
+                createOrder, createBillingAgreement, createSubscription,
+                onApprove, onCancel, onClick, onAuth, onShippingChange
             } = getButtonCallbackProps({ xprops: window.xprops });
 
             const validationPromise = onClick({ fundingSource });
@@ -144,7 +117,8 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
                     enableLoadingSpinner(button);
 
                     return initNative({
-                        createOrder, onApprove, onCancel, onError, commit, fundingSource, clientID, getPageUrl
+                        createOrder, onApprove, onCancel, onError, commit, fundingSource,
+                        clientID, getPageUrl, env, stageHost, apiStageHost
                     });
                 }
 
