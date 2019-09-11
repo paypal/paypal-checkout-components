@@ -539,6 +539,10 @@ export const config = {
         
         'curology.com': {
             disable_venmo: true
+        },
+        
+        'monoprice.com': {
+            disable_venmo: true
         }
     },
 
