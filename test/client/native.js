@@ -35,7 +35,7 @@ describe('native cases', () => {
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 mockWebSocketServer.done();
-                
+
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }

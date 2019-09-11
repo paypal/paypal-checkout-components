@@ -11,30 +11,34 @@ const MESSAGE_TYPE = {
     RESPONSE: ('response' : 'response')
 };
 
-const MESSAGE_STATUS = {
+const RESPONSE_STATUS = {
     SUCCESS: ('success' : 'success'),
     ERROR:   ('error' : 'error')
 };
 
 type RequestMessage<T> = {|
-    app_name : string,
-    app_version : string,
-    type : typeof MESSAGE_TYPE.REQUEST,
-    id : string,
+    source_app : string,
+    source_app_version : string,
+    target_app : string,
+    message_type : typeof MESSAGE_TYPE.REQUEST,
+    message_uid : string,
+    request_uid : string,
     session_uid? : string,
-    name : string,
-    data : T
+    message_name : string,
+    message_data : T
 |};
 
 type ResponseMessage<T> = {|
-    app_name : string,
-    app_version : string,
-    type : typeof MESSAGE_TYPE.RESPONSE,
-    status : $Values<typeof MESSAGE_STATUS>,
-    id : string,
+    source_app : string,
+    source_app_version : string,
+    target_app : string,
+    message_type : typeof MESSAGE_TYPE.RESPONSE,
+    message_uid : string,
+    request_uid : string,
     session_uid? : string,
-    name : string,
-    data : T
+    message_name : string,
+    message_status : string,
+    message_data : T
 |};
 
 type MessageSocketDriver = {|
@@ -49,8 +53,9 @@ type MessageSocketDriver = {|
 export type MessageSocketOptions = {|
     sessionUID : string,
     driver : MessageSocketDriver,
-    appName : string,
-    appVersion : string
+    sourceApp : string,
+    sourceAppVersion : string,
+    targetApp : string
 |};
 
 export type MessageSocket = {|
@@ -64,10 +69,11 @@ export type MessageSocket = {|
     ) => ZalgoPromise<R> // eslint-disable-line no-undef
 |};
 
-export function messageSocket({ sessionUID, driver, appName, appVersion } : MessageSocketOptions) : MessageSocket {
+export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion, targetApp } : MessageSocketOptions) : MessageSocket {
     
     const socketPromise = new ZalgoPromise();
 
+    const receivedMessages = {};
     const requestListeners = {};
     const responseListeners = {};
 
@@ -77,36 +83,55 @@ export function messageSocket({ sessionUID, driver, appName, appVersion } : Mess
         socketPromise.resolve(driver);
     });
 
-    driver.onMessage(<T>(messageData) => {
+    driver.onMessage(<T>(rawData) => {
         let parsedData : RequestMessage<T> | ResponseMessage<T>;
 
         try {
-            parsedData = JSON.parse(messageData);
+            parsedData = JSON.parse(rawData);
         } catch (err) {
-            throw new Error(`Could not parse socket message: ${ messageData }`);
+            throw new Error(`Could not parse socket message: ${ rawData }`);
         }
 
         if (!parsedData) {
             throw new Error(`No data passed from socket message`);
         }
         
-        const { id, name, type, data, session_uid } = parsedData;
+        const {
+            session_uid:  messageSessionUID,
+            request_uid:  requestUID,
+            message_uid:  messageUID,
+            message_name: messageName,
+            message_type: messageType,
+            message_data: messageData,
+            target_app:   messageTargetApp
+        } = parsedData;
 
-        if (!id || !name || !type) {
-            throw new Error(`Incomplete message: ${ messageData }`);
+        if (!messageUID || !requestUID || !messageName || !messageType || !messageTargetApp) {
+            throw new Error(`Incomplete message: ${ rawData }`);
         }
 
-        if (type === MESSAGE_TYPE.REQUEST) {
+        if (receivedMessages[messageUID] || messageTargetApp !== sourceApp) {
+            return;
+        }
+
+        receivedMessages[messageUID] = true;
+
+        if (messageType === MESSAGE_TYPE.REQUEST) {
             
-            const sendResponse = <R>(status, responseData : R) => {
+            const sendResponse = <R>({ responseStatus, responseData } : { responseStatus : $Values<typeof RESPONSE_STATUS>, responseData : R }) => {
+                const responseMessageUID = uniqueID();
+                
                 const response : ResponseMessage<R> = {
-                    id,
-                    name,
-                    status,
-                    type:        MESSAGE_TYPE.RESPONSE,
-                    data:        responseData,
-                    app_name:    appName,
-                    app_version: appVersion
+                    session_uid:        messageSessionUID,
+                    request_uid:        requestUID,
+                    message_uid:        responseMessageUID,
+                    message_name:       messageName,
+                    message_status:     responseStatus,
+                    message_type:       MESSAGE_TYPE.RESPONSE,
+                    message_data:       responseData,
+                    source_app:         sourceApp,
+                    source_app_version: sourceAppVersion,
+                    target_app:         targetApp
                 };
 
                 return socketPromise.then(socket => {
@@ -115,46 +140,46 @@ export function messageSocket({ sessionUID, driver, appName, appVersion } : Mess
             };
 
             ZalgoPromise.try(() => {
-                const requestListener = requestListeners[name];
+                const requestListener = requestListeners[messageName];
 
                 if (!requestListener) {
-                    throw new Error(`No listener found for name: ${ name }`);
+                    throw new Error(`No listener found for name: ${ messageName }`);
                 }
 
-                if (session_uid !== sessionUID) {
-                    throw new Error(`Incorrect sessionUID: ${ session_uid || 'undefined' }`);
+                if (messageSessionUID !== sessionUID) {
+                    throw new Error(`Incorrect sessionUID: ${ messageSessionUID || 'undefined' }`);
                 }
 
-                return requestListener({ data });
+                return requestListener({ data: messageData });
             }).then(res => {
-                sendResponse(MESSAGE_STATUS.SUCCESS, res);
+                sendResponse({ responseStatus: RESPONSE_STATUS.SUCCESS, responseData: res });
             }, err => {
-                sendResponse(MESSAGE_STATUS.ERROR, { message: (err && err.message) ? err.message : 'Unknown error' });
+                const res = { message: (err && err.message) ? err.message : 'Unknown error' };
+                sendResponse({ responseStatus: RESPONSE_STATUS.ERROR, responseData: res });
             });
 
-        } else if (type === MESSAGE_TYPE.RESPONSE) {
-            const responseListener = responseListeners[id];
-            const { status } = parsedData;
+        } else if (messageType === MESSAGE_TYPE.RESPONSE) {
+            const responseListener = responseListeners[requestUID];
+            const {
+                message_status: responseStatus
+            } = parsedData;
 
             if (!responseListener) {
-                throw new Error(`Could not find response listener with id: ${ id }`);
+                throw new Error(`Could not find response listener with id: ${ requestUID }`);
             }
 
-            delete responseListeners[id];
+            delete responseListeners[requestUID];
 
-            if (status === MESSAGE_STATUS.SUCCESS) {
-                responseListener.resolve({ data });
-            } else if (status === MESSAGE_STATUS.ERROR) {
-                responseListener.reject(new Error(data.message));
+            if (responseStatus === RESPONSE_STATUS.SUCCESS) {
+                responseListener.resolve({ data: messageData });
+            } else if (responseStatus === RESPONSE_STATUS.ERROR) {
+                responseListener.reject(new Error(messageData.message));
             } else {
                 throw new Error(`Can not handle response status: ${ status || 'undefined' }`);
             }
-
-            delete responseListeners[id];
-            responseListener.resolve({ data, sessionUID: session_uid });
             
         } else {
-            throw new Error(`Unhandleable message type: ${ type }`);
+            throw new Error(`Unhandleable message type: ${ messageType }`);
         }
     });
 
@@ -174,21 +199,24 @@ export function messageSocket({ sessionUID, driver, appName, appVersion } : Mess
         requestListeners[name] = handler;
     };
 
-    const send = <T, R>(name, data : T) : ZalgoPromise<R> => {
+    const send = <T, R>(messageName, messageData : T) : ZalgoPromise<R> => {
         return socketPromise.then(socket => {
-            const id = uniqueID();
+            const requestUID = uniqueID();
+            const messageUID = uniqueID();
 
             const message : RequestMessage<T> = {
-                id,
-                name,
-                data,
-                app_name:    appName,
-                app_version: appVersion,
-                type:        MESSAGE_TYPE.REQUEST
+                request_uid:        requestUID,
+                message_uid:        messageUID,
+                message_name:       messageName,
+                message_type:       MESSAGE_TYPE.REQUEST,
+                message_data:       messageData,
+                source_app:         sourceApp,
+                source_app_version: sourceAppVersion,
+                target_app:         targetApp
             };
 
             const responseListener = new ZalgoPromise();
-            responseListeners[id] = responseListener;
+            responseListeners[requestUID] = responseListener;
 
             socket.send(JSON.stringify(message));
 
@@ -202,11 +230,12 @@ export function messageSocket({ sessionUID, driver, appName, appVersion } : Mess
 type WebSocketOptions = {|
     sessionUID : string,
     url : string,
-    appName : string,
-    appVersion : string
+    sourceApp : string,
+    sourceAppVersion : string,
+    targetApp : string
 |};
  
-export function webSocket({ sessionUID, url, appName, appVersion } : WebSocketOptions) : MessageSocket {
+export function webSocket({ sessionUID, url, sourceApp, sourceAppVersion, targetApp } : WebSocketOptions) : MessageSocket {
     let socket;
 
     const driver = {
@@ -240,10 +269,10 @@ export function webSocket({ sessionUID, url, appName, appVersion } : WebSocketOp
         }
     };
 
-    return messageSocket({ sessionUID, driver, appName, appVersion });
+    return messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion, targetApp });
 }
 
-export function httpSocket({ url, appName, appVersion, sessionUID } : WebSocketOptions) : MessageSocket {
+export function httpSocket({ url, sourceApp, sourceAppVersion, targetApp, sessionUID } : WebSocketOptions) : MessageSocket {
     const onMessageHandlers = [];
     const onErrorHandlers = [];
     const onOpenHandlers = [];
@@ -336,5 +365,5 @@ export function httpSocket({ url, appName, appVersion, sessionUID } : WebSocketO
         }
     };
 
-    return messageSocket({ sessionUID, driver, appName, appVersion });
+    return messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion, targetApp });
 }

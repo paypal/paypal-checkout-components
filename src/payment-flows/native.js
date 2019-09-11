@@ -9,7 +9,10 @@ import type { ProxyWindow } from '../types';
 import { NATIVE_WEBSOCKET_URL, HTTP_SOCKET_URL, EXPERIENCE_URI } from '../config';
 import { webSocket, httpSocket, promiseNoop, getLogger, redirectTop, type MessageSocket } from '../lib';
 import { createAccessToken } from '../api';
-import { SMART_PAYMENT_BUTTONS } from '../constants';
+
+const SOURCE_APP = 'paypal_smart_payment_buttons';
+const SOURCE_APP_VERSION = window.paypal ? window.paypal.version : 'unknown';
+const TARGET_APP = 'paypal_native_checkout_sdk';
 
 const MESSAGE = {
     DETECT_APP: 'detectApp',
@@ -64,22 +67,17 @@ export function isNativeEligible({ win, platform, fundingSource, onShippingChang
 }
 
 const getNativeSocket = memoize(() : { socket : MessageSocket, sessionUID : string } => {
-
     const sessionUID = uniqueID();
+    const socketParams = {
+        sessionUID,
+        sourceApp:        SOURCE_APP,
+        sourceAppVersion: SOURCE_APP_VERSION,
+        targetApp:        TARGET_APP
+    };
 
     const socket = isNativeCheckoutWebsocketAvailable
-        ? webSocket({
-            sessionUID,
-            url:        NATIVE_WEBSOCKET_URL,
-            appName:    SMART_PAYMENT_BUTTONS,
-            appVersion: window.paypal.version
-        })
-        : httpSocket({
-            sessionUID,
-            url:        HTTP_SOCKET_URL,
-            appName:    SMART_PAYMENT_BUTTONS,
-            appVersion: window.paypal.version
-        });
+        ? webSocket({ url: NATIVE_WEBSOCKET_URL, ...socketParams })
+        : httpSocket({ url: HTTP_SOCKET_URL, ...socketParams });
 
     return { socket, sessionUID };
 });

@@ -478,39 +478,56 @@ export function getNativeWebSocketMock({ getSessionUID } : { getSessionUID : () 
     return mockWebSocket({
         uri:     'wss://127.0.0.1/paypal/native',
         handler: ({ data, send }) => {
-            const json = JSON.parse(data);
+            const {
+                request_uid:  requestUID,
+                message_type: messageType,
+                message_name: messageName,
+                message_data: messageData
+            } = JSON.parse(data);
 
-            if (json.type === 'request' && json.name === 'detectApp') {
+            if (messageType === 'request' && messageName === 'detectApp') {
 
                 send(JSON.stringify({
-                    type:   'response',
-                    id:     json.id,
-                    status: 'success',
-                    name:   'detectApp'
+                    source_app:         'paypal_native_checkout_sdk',
+                    source_app_version: '1.2.3',
+                    target_app:         'paypal_smart_payment_buttons',
+                    request_uid:        requestUID,
+                    message_uid:        uniqueID(),
+                    message_type:       'response',
+                    message_status:     'success',
+                    message_name:       'detectApp'
                 }));
 
                 setTimeout(() => {
                     send(JSON.stringify({
-                        type:        'request',
-                        id:          uniqueID(),
-                        name:        'getProps',
-                        session_uid: getSessionUID()
+                        session_uid:        getSessionUID(),
+                        source_app:         'paypal_native_checkout_sdk',
+                        source_app_version: '1.2.3',
+                        target_app:         'paypal_smart_payment_buttons',
+                        request_uid:        uniqueID(),
+                        message_uid:        uniqueID(),
+                        message_type:       'request',
+                        message_name:       'getProps'
                     }));
                 }, 50);
 
                 return;
             }
 
-            if (json.type === 'response' && json.name === 'getProps') {
-                props = json.data;
+            if (messageType === 'response' && messageName === 'getProps') {
+                props = messageData;
 
                 setTimeout(() => {
                     send(JSON.stringify({
-                        type:        'request',
-                        id:          uniqueID(),
-                        name:        'onApprove',
-                        session_uid: getSessionUID(),
-                        data:        {
+                        session_uid:        getSessionUID(),
+                        source_app:         'paypal_native_checkout_sdk',
+                        source_app_version: '1.2.3',
+                        target_app:         'paypal_smart_payment_buttons',
+                        request_uid:        uniqueID(),
+                        message_uid:        uniqueID(),
+                        message_type:       'request',
+                        message_name:       'onApprove',
+                        message_data:       {
                             orderID: props.orderID,
                             payerID: 'XXYYZZ123456'
                         }
@@ -520,15 +537,15 @@ export function getNativeWebSocketMock({ getSessionUID } : { getSessionUID : () 
                 return;
             }
 
-            if (json.type === 'response' && json.name === 'onApprove') {
+            if (messageType === 'response' && messageName === 'onApprove') {
                 // pass
             }
 
-            if (json.type === 'response' && json.name === 'onCancel') {
+            if (messageType === 'response' && messageName === 'onCancel') {
                 // pass
             }
 
-            if (json.type === 'response' && json.name === 'onError') {
+            if (messageType === 'response' && messageName === 'onError') {
                 // pass
             }
         }
