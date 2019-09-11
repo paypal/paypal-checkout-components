@@ -316,8 +316,10 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
                 },
                 
                 getPageUrl: {
-                    type:  'string',
-                    value: () => window.location.href
+                    type:  'function',
+                    value: () => {
+                        return () => window.location.href;
+                    }
                 },
 
                 debug: {
