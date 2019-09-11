@@ -217,12 +217,14 @@ export function getButtonsComponent() : ZoidComponent<ButtonProps> {
 
                 stageHost: {
                     type:       'string',
-                    value:      getStageHost
+                    value:      getStageHost,
+                    required:   false
                 },
 
                 apiStageHost: {
                     type:       'string',
-                    value:      getAPIStageHost
+                    value:      getAPIStageHost,
+                    required:   false
                 },
 
                 fundingEligibility: {
