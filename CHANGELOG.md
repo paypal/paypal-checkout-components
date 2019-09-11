@@ -1,3 +1,9 @@
+## <small>5.0.55 (2019-09-11)</small>
+
+* Make stage host props optional ([dd9cea2](http://github.paypal.com/paypal/paypal-checkout/commit/dd9cea2))
+
+
+
 ## <small>5.0.54 (2019-09-10)</small>
 
 * Add getPageUrl prop to buttons ([fb336e0](http://github.paypal.com/paypal/paypal-checkout/commit/fb336e0))
