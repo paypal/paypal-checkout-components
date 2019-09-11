@@ -74,7 +74,12 @@
         EPS: "eps",
         MYBANK: "mybank",
         P24: "p24",
-        ZIMPLER: "zimpler"
+        PAYU: "payu",
+        VERKKOPANKKI: "verkkopankki",
+        BLIK: "blik",
+        TRUSTLY: "trustly",
+        MAXIMA: "maxima",
+        BOLETO: "boleto"
     }, BUTTON_COLOR = {
         GOLD: "gold",
         BLUE: "blue",
@@ -124,7 +129,12 @@
         EPS: "eps",
         MYBANK: "mybank",
         P24: "p24",
-        ZIMPLER: "zimpler"
+        PAYU: "payu",
+        VERKKOPANKKI: "verkkopankki",
+        BLIK: "blik",
+        TRUSTLY: "trustly",
+        MAXIMA: "maxima",
+        BOLETO: "boleto"
     }, CHECKOUT_OVERLAY_COLOR = {
         BLACK: "black",
         WHITE: "white"
@@ -142,7 +152,13 @@
         EPS: "eps",
         MYBANK: "mybank",
         P24: "p24",
-        ZIMPLER: "zimpler"
+        ZIMPLER: "zimpler",
+        PAYU: "payu",
+        VERKKOPANKKI: "verkkopankki",
+        BLIK: "blik",
+        TRUSTLY: "trustly",
+        MAXIMA: "maxima",
+        BOLETO: "boleto"
     }, CARD = {
         VISA: "visa",
         MASTERCARD: "mastercard",
@@ -626,71 +642,131 @@
     _LOCALE[COUNTRY.YT] = [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ], _LOCALE[COUNTRY.ZA] = [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ], 
     _LOCALE[COUNTRY.ZM] = [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ], _LOCALE[COUNTRY.ZW] = [ LANG.EN ], 
     _LOCALE);
-    __webpack_require__.d(__webpack_exports__, "m", function() {
+    __webpack_require__.d(__webpack_exports__, "m", (function() {
         return BUTTON_STYLE_OPTIONS;
-    }), __webpack_require__.d(__webpack_exports__, "f", function() {
+    })), __webpack_require__.d(__webpack_exports__, "f", (function() {
         return BUTTON_LABEL;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+    })), __webpack_require__.d(__webpack_exports__, "e", (function() {
         return BUTTON_COLOR;
-    }), __webpack_require__.d(__webpack_exports__, "i", function() {
+    })), __webpack_require__.d(__webpack_exports__, "i", (function() {
         return BUTTON_LOGO_COLOR;
-    }), __webpack_require__.d(__webpack_exports__, "l", function() {
+    })), __webpack_require__.d(__webpack_exports__, "l", (function() {
         return BUTTON_SIZE;
-    }), __webpack_require__.d(__webpack_exports__, "n", function() {
+    })), __webpack_require__.d(__webpack_exports__, "n", (function() {
         return BUTTON_TAGLINE_COLOR;
-    }), __webpack_require__.d(__webpack_exports__, "k", function() {
+    })), __webpack_require__.d(__webpack_exports__, "k", (function() {
         return BUTTON_SHAPE;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
         return BUTTON_BRANDING;
-    }), __webpack_require__.d(__webpack_exports__, "g", function() {
+    })), __webpack_require__.d(__webpack_exports__, "g", (function() {
         return BUTTON_LAYOUT;
-    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+    })), __webpack_require__.d(__webpack_exports__, "j", (function() {
         return BUTTON_NUMBER;
-    }), __webpack_require__.d(__webpack_exports__, "h", function() {
+    })), __webpack_require__.d(__webpack_exports__, "h", (function() {
         return BUTTON_LOGO;
-    }), __webpack_require__.d(__webpack_exports__, "q", function() {
+    })), __webpack_require__.d(__webpack_exports__, "q", (function() {
         return CHECKOUT_OVERLAY_COLOR;
-    }), __webpack_require__.d(__webpack_exports__, "v", function() {
+    })), __webpack_require__.d(__webpack_exports__, "v", (function() {
         return FUNDING;
-    }), __webpack_require__.d(__webpack_exports__, "o", function() {
+    })), __webpack_require__.d(__webpack_exports__, "o", (function() {
         return CARD;
-    }), __webpack_require__.d(__webpack_exports__, "w", function() {
+    })), __webpack_require__.d(__webpack_exports__, "w", (function() {
         return FUNDING_ELIGIBILITY_REASON;
-    }), __webpack_require__.d(__webpack_exports__, "p", function() {
+    })), __webpack_require__.d(__webpack_exports__, "p", (function() {
         return CARD_PRIORITY;
-    }), __webpack_require__.d(__webpack_exports__, "u", function() {
+    })), __webpack_require__.d(__webpack_exports__, "u", (function() {
         return FPTI;
-    }), __webpack_require__.d(__webpack_exports__, "r", function() {
+    })), __webpack_require__.d(__webpack_exports__, "r", (function() {
         return COUNTRY;
-    }), __webpack_require__.d(__webpack_exports__, "x", function() {
+    })), __webpack_require__.d(__webpack_exports__, "x", (function() {
         return LANG;
-    }), __webpack_require__.d(__webpack_exports__, "y", function() {
+    })), __webpack_require__.d(__webpack_exports__, "y", (function() {
         return LANG_TO_DEFAULT_COUNTRY;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
         return ALLOWED_INSTALLMENT_COUNTRIES;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
         return ALLOWED_INSTALLMENT_PERIOD;
-    }), __webpack_require__.d(__webpack_exports__, "t", function() {
+    })), __webpack_require__.d(__webpack_exports__, "t", (function() {
         return ENV;
-    }), __webpack_require__.d(__webpack_exports__, "F", function() {
+    })), __webpack_require__.d(__webpack_exports__, "F", (function() {
         return USERS;
-    }), __webpack_require__.d(__webpack_exports__, "E", function() {
+    })), __webpack_require__.d(__webpack_exports__, "E", (function() {
         return SOURCE;
-    }), __webpack_require__.d(__webpack_exports__, "A", function() {
+    })), __webpack_require__.d(__webpack_exports__, "A", (function() {
         return LOG_LEVEL;
-    }), __webpack_require__.d(__webpack_exports__, "B", function() {
+    })), __webpack_require__.d(__webpack_exports__, "B", (function() {
         return PAYMENT_TYPE;
-    }), __webpack_require__.d(__webpack_exports__, "D", function() {
+    })), __webpack_require__.d(__webpack_exports__, "D", (function() {
         return "xo-pptm";
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
         return ATTRIBUTE;
-    }), __webpack_require__.d(__webpack_exports__, "C", function() {
+    })), __webpack_require__.d(__webpack_exports__, "C", (function() {
         return PLATFORM;
-    }), __webpack_require__.d(__webpack_exports__, "s", function() {
+    })), __webpack_require__.d(__webpack_exports__, "s", (function() {
         return "default";
-    }), __webpack_require__.d(__webpack_exports__, "z", function() {
+    })), __webpack_require__.d(__webpack_exports__, "z", (function() {
         return LOCALE;
-    });
+    }));
+}, function(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+    __webpack_require__.d(__webpack_exports__, "b", (function() {
+        return jsxToHTML;
+    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
+        return jsxRender;
+    }));
+    var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22), _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
+    function htmlEncode(html) {
+        return void 0 === html && (html = ""), html.toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").replace(/\//g, "&#x2F;");
+    }
+    var JsxHTMLNode = function() {
+        function JsxHTMLNode(name, props, children) {
+            this.name = void 0, this.props = void 0, this.children = void 0, this.name = name, 
+            this.props = props, this.children = children;
+        }
+        var _proto = JsxHTMLNode.prototype;
+        return _proto.toString = function() {
+            return "<" + this.name + (this.props ? " " : "") + (this.props ? this.propsToString() : "") + ">" + this.childrenToString() + "</" + this.name + ">";
+        }, _proto.propsToString = function() {
+            var props = this.props;
+            return props ? Object.keys(props).filter((function(key) {
+                return "innerHTML" !== key && props && !1 !== props[key];
+            })).map((function(key) {
+                return props && !0 === props[key] ? "" + htmlEncode(key) : props ? htmlEncode(key) + '="' + htmlEncode(props[key]) + '"' : "";
+            })).join(" ") : "";
+        }, _proto.childrenToString = function() {
+            if (this.props && this.props.innerHTML) return this.props.innerHTML;
+            if (!this.children) return "";
+            var result = "";
+            return function iterate(children) {
+                for (var _i2 = 0; _i2 < children.length; _i2++) {
+                    var child = children[_i2];
+                    null != child && (Array.isArray(child) ? iterate(child) : result += child instanceof JsxHTMLNode ? child.toString() : htmlEncode(child));
+                }
+            }(this.children), result;
+        }, JsxHTMLNode;
+    }(), JsxHTMLNodeContainer = function(_JsxHTMLNode) {
+        function JsxHTMLNodeContainer(children) {
+            return _JsxHTMLNode.call(this, "", {}, children) || this;
+        }
+        return Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__.a)(JsxHTMLNodeContainer, _JsxHTMLNode), 
+        JsxHTMLNodeContainer.prototype.toString = function() {
+            return this.childrenToString();
+        }, JsxHTMLNodeContainer;
+    }(JsxHTMLNode);
+    function jsxToHTML(name, props) {
+        for (var _len = arguments.length, children = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) children[_key - 2] = arguments[_key];
+        return new JsxHTMLNode(name, props, children);
+    }
+    function jsxRender(template, renderers) {
+        var nodes = Object(_util__WEBPACK_IMPORTED_MODULE_1__.n)(template, /\{\s*([a-z]+)(?::\s*([^} ]+))?\s*\}|([^${}]+)/g, (function(match, type, value, text) {
+            if (type) {
+                if (!renderers[type]) throw new Error("Can not render type: " + type);
+                return renderers[type](value);
+            }
+            return text && text.trim() && renderers.text ? /<br>/.test(text) ? renderers.break(text) : renderers.text(text) : text;
+        }));
+        return new JsxHTMLNodeContainer(nodes);
+    }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     function utils_isPromise(item) {
@@ -733,11 +809,11 @@
                 var _result, _error, resolved = !1, rejected = !1, isAsync = !1;
                 startActive();
                 try {
-                    handler(function(res) {
+                    handler((function(res) {
                         isAsync ? _this.resolve(res) : (resolved = !0, _result = res);
-                    }, function(err) {
+                    }), (function(err) {
                         isAsync ? _this.reject(err) : (rejected = !0, _error = err);
-                    });
+                    }));
                 } catch (err) {
                     return endActive(), void this.reject(err);
                 }
@@ -757,16 +833,16 @@
                 var _err = error && "function" == typeof error.toString ? error.toString() : {}.toString.call(error);
                 error = new Error("Expected reject to be called with Error, got " + _err);
             }
-            return this.rejected = !0, this.error = error, this.errorHandled || setTimeout(function() {
+            return this.rejected = !0, this.error = error, this.errorHandled || setTimeout((function() {
                 _this2.errorHandled || function(err, promise) {
                     if (-1 === dispatchedErrors.indexOf(err)) {
-                        dispatchedErrors.push(err), setTimeout(function() {
+                        dispatchedErrors.push(err), setTimeout((function() {
                             throw err;
-                        }, 1);
+                        }), 1);
                         for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) possiblyUnhandledPromiseHandlers[j](err, promise);
                     }
                 }(error, _this2);
-            }, 1), this.dispatch(), this;
+            }), 1), this.dispatch(), this;
         }, _proto.asyncReject = function(error) {
             return this.errorHandled = !0, this.reject(error), this;
         }, _proto.dispatch = function() {
@@ -788,18 +864,18 @@
                         }
                     }
                     result instanceof ZalgoPromise && (result.resolved || result.rejected) ? (result.resolved ? promise.resolve(result.value) : promise.reject(result.error), 
-                    result.errorHandled = !0) : utils_isPromise(result) ? result instanceof ZalgoPromise && (result.resolved || result.rejected) ? result.resolved ? promise.resolve(result.value) : promise.reject(result.error) : result.then(function(res) {
+                    result.errorHandled = !0) : utils_isPromise(result) ? result instanceof ZalgoPromise && (result.resolved || result.rejected) ? result.resolved ? promise.resolve(result.value) : promise.reject(result.error) : result.then((function(res) {
                         promise.resolve(res);
-                    }, function(err) {
+                    }), (function(err) {
                         promise.reject(err);
-                    }) : promise.resolve(result);
+                    })) : promise.resolve(result);
                 }, i = 0; i < handlers.length; i++) _loop(i);
                 handlers.length = 0, this.dispatching = !1, endActive();
             }
         }, _proto.then = function(onSuccess, onError) {
             if (onSuccess && "function" != typeof onSuccess && !onSuccess.call) throw new Error("Promise.then expected a function for success handler");
             if (onError && "function" != typeof onError && !onError.call) throw new Error("Promise.then expected a function for error handler");
-            var promise = new ZalgoPromise();
+            var promise = new ZalgoPromise;
             return this.handlers.push({
                 promise: promise,
                 onSuccess: onSuccess,
@@ -809,59 +885,59 @@
             return this.then(void 0, onError);
         }, _proto.finally = function(onFinally) {
             if (onFinally && "function" != typeof onFinally && !onFinally.call) throw new Error("Promise.finally expected a function");
-            return this.then(function(result) {
-                return ZalgoPromise.try(onFinally).then(function() {
+            return this.then((function(result) {
+                return ZalgoPromise.try(onFinally).then((function() {
                     return result;
-                });
-            }, function(err) {
-                return ZalgoPromise.try(onFinally).then(function() {
+                }));
+            }), (function(err) {
+                return ZalgoPromise.try(onFinally).then((function() {
                     throw err;
-                });
-            });
+                }));
+            }));
         }, _proto.timeout = function(time, err) {
             var _this4 = this;
             if (this.resolved || this.rejected) return this;
-            var timeout = setTimeout(function() {
+            var timeout = setTimeout((function() {
                 _this4.resolved || _this4.rejected || _this4.reject(err || new Error("Promise timed out after " + time + "ms"));
-            }, time);
-            return this.then(function(result) {
+            }), time);
+            return this.then((function(result) {
                 return clearTimeout(timeout), result;
-            });
+            }));
         }, _proto.toPromise = function() {
             if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
             return Promise.resolve(this);
         }, ZalgoPromise.resolve = function(value) {
-            return value instanceof ZalgoPromise ? value : utils_isPromise(value) ? new ZalgoPromise(function(resolve, reject) {
+            return value instanceof ZalgoPromise ? value : utils_isPromise(value) ? new ZalgoPromise((function(resolve, reject) {
                 return value.then(resolve, reject);
-            }) : new ZalgoPromise().resolve(value);
+            })) : (new ZalgoPromise).resolve(value);
         }, ZalgoPromise.reject = function(error) {
-            return new ZalgoPromise().reject(error);
+            return (new ZalgoPromise).reject(error);
         }, ZalgoPromise.asyncReject = function(error) {
-            return new ZalgoPromise().asyncReject(error);
+            return (new ZalgoPromise).asyncReject(error);
         }, ZalgoPromise.all = function(promises) {
-            var promise = new ZalgoPromise(), count = promises.length, results = [];
+            var promise = new ZalgoPromise, count = promises.length, results = [];
             if (!count) return promise.resolve(results), promise;
             for (var _loop2 = function(i) {
                 var prom = promises[i];
                 if (prom instanceof ZalgoPromise) {
                     if (prom.resolved) return results[i] = prom.value, count -= 1, "continue";
                 } else if (!utils_isPromise(prom)) return results[i] = prom, count -= 1, "continue";
-                ZalgoPromise.resolve(prom).then(function(result) {
+                ZalgoPromise.resolve(prom).then((function(result) {
                     results[i] = result, 0 == (count -= 1) && promise.resolve(results);
-                }, function(err) {
+                }), (function(err) {
                     promise.reject(err);
-                });
+                }));
             }, i = 0; i < promises.length; i++) _loop2(i);
             return 0 === count && promise.resolve(results), promise;
         }, ZalgoPromise.hash = function(promises) {
             var result = {};
-            return ZalgoPromise.all(Object.keys(promises).map(function(key) {
-                return ZalgoPromise.resolve(promises[key]).then(function(value) {
+            return ZalgoPromise.all(Object.keys(promises).map((function(key) {
+                return ZalgoPromise.resolve(promises[key]).then((function(value) {
                     result[key] = value;
-                });
-            })).then(function() {
+                }));
+            }))).then((function() {
                 return result;
-            });
+            }));
         }, ZalgoPromise.map = function(items, method) {
             return ZalgoPromise.all(items.map(method));
         }, ZalgoPromise.onPossiblyUnhandledException = function(handler) {
@@ -883,27 +959,27 @@
             }
             return endActive(), ZalgoPromise.resolve(result);
         }, ZalgoPromise.delay = function(_delay) {
-            return new ZalgoPromise(function(resolve) {
+            return new ZalgoPromise((function(resolve) {
                 setTimeout(resolve, _delay);
-            });
+            }));
         }, ZalgoPromise.isPromise = function(value) {
             return !!(value && value instanceof ZalgoPromise) || utils_isPromise(value);
         }, ZalgoPromise.flush = function() {
-            return promise = flushPromise = flushPromise || new ZalgoPromise(), flushActive(), 
+            return promise = flushPromise = flushPromise || new ZalgoPromise, flushActive(), 
             promise;
             var promise;
         }, ZalgoPromise;
     }();
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return promise_ZalgoPromise;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    var device = __webpack_require__(21), util = __webpack_require__(12), src = __webpack_require__(13), client = __webpack_require__(4), cross_domain_utils_src = __webpack_require__(7), config = __webpack_require__(3), constants = __webpack_require__(0), session = __webpack_require__(19), dom = __webpack_require__(24), security = __webpack_require__(25);
+    var device = __webpack_require__(21), util = __webpack_require__(12), src = __webpack_require__(13), client = __webpack_require__(5), cross_domain_utils_src = __webpack_require__(7), config = __webpack_require__(4), constants = __webpack_require__(0), session = __webpack_require__(19), dom = __webpack_require__(24), security = __webpack_require__(25);
     function getRefererDomain() {
         return window.xchild && window.xchild.getParentDomain ? window.xchild.getParentDomain() : window.location.host;
     }
-    var setupProxyLogTransport = Object(util.k)(function() {
+    var setupProxyLogTransport = Object(util.k)((function() {
         Object(client.o)(function(name, win, originalMethod) {
             if (win && Object(cross_domain_utils_src.g)() === config.a.paypalDomain && !Object(cross_domain_utils_src.u)(win)) return win && Object(src.send)(win, "proxy_log", {
                 originalMethod: originalMethod
@@ -911,20 +987,20 @@
             var methods = [];
             return Object(src.on)("proxy_log", {
                 domain: config.a.paypal_domain_regex
-            }, function(_ref) {
+            }, (function(_ref) {
                 methods.push(_ref.data.originalMethod);
-            }), function() {
+            })), function() {
                 var _this = this, _arguments = arguments;
-                return (methods = methods.filter(function(method) {
+                return (methods = methods.filter((function(method) {
                     return !Object(cross_domain_utils_src.y)(method.source);
-                })).length ? methods[methods.length - 1].apply(this, arguments).catch(function() {
+                }))).length ? methods[methods.length - 1].apply(this, arguments).catch((function() {
                     return originalMethod.apply(_this, _arguments);
-                }) : originalMethod.apply(this, arguments);
+                })) : originalMethod.apply(this, arguments);
             };
         }(0, Object(cross_domain_utils_src.m)(window), Object(client.i)()));
-    });
+    }));
     function initLogger() {
-        setupProxyLogTransport(), Object(client.c)(function() {
+        setupProxyLogTransport(), Object(client.c)((function() {
             return {
                 referer: getRefererDomain(),
                 host: window.location.host,
@@ -933,17 +1009,17 @@
                 country: config.a.locale.country,
                 lang: config.a.locale.lang,
                 uid: Object(session.c)(),
-                ver: "4.0.284"
+                ver: "4.0.285"
             };
-        }), Object(client.a)(function() {
+        })), Object(client.a)((function() {
             return {
                 "x-app-name": "checkoutjs"
             };
-        }), Object(client.b)(function() {
+        })), Object(client.b)((function() {
             return {
                 state: config.a.state
             };
-        }), Object(client.d)(function(payload) {
+        })), Object(client.d)((function(payload) {
             var _ref;
             void 0 === payload && (payload = {});
             var contextType, contextID, sessionID = Object(session.c)(), paymentToken = function() {
@@ -962,7 +1038,7 @@
             _ref[constants.u.KEY.SESSION_UID] = sessionID, _ref[constants.u.KEY.BUTTON_SESSION_UID] = buttonSessionID, 
             _ref[constants.u.KEY.VERSION] = config.a.version, _ref[constants.u.KEY.TOKEN] = paymentToken, 
             _ref[constants.u.KEY.REFERER] = getRefererDomain(), _ref;
-        }), window.location.protocol !== cross_domain_utils_src.a.FILE && Object(client.l)({
+        })), window.location.protocol !== cross_domain_utils_src.a.FILE && Object(client.l)({
             uri: config.a.loggerUrl,
             heartbeat: !1,
             logPerformance: !1,
@@ -1005,7 +1081,7 @@
         }();
         return eligibilityResults[userAgent] = result, result;
     }
-    var checkRecognizedBrowser = Object(util.k)(function(state) {
+    var checkRecognizedBrowser = Object(util.k)((function(state) {
         if (!getBrowser().browser) {
             var _getBowser = getBowser(), name = _getBowser.name, version = _getBowser.version, mobile = _getBowser.mobile, android = _getBowser.android, ios = _getBowser.ios;
             Object(client.k)("unrecognized_browser_" + state, {
@@ -1016,7 +1092,7 @@
                 ios: ios
             }), Object(client.h)();
         }
-    });
+    }));
     function logWarn(err) {
         if (window.console) {
             if (window.console.warn) return window.console.warn(err);
@@ -1047,13 +1123,13 @@
             c: 3
         }) && Object(client.q)("object_assign_broken");
     }
-    var esm_extends = __webpack_require__(11), zalgo_promise_src = __webpack_require__(1), HEADERS = {
+    var esm_extends = __webpack_require__(11), zalgo_promise_src = __webpack_require__(2), HEADERS = {
         CONTENT_TYPE: "content-type",
         ACCEPT: "accept"
     }, headerBuilders = [], corrids = [];
     function request(_ref) {
         var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
-        return "/demo/checkout/api/braintree/client-token/" === url ? zalgo_promise_src.a.resolve("eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiJjMDFhZmRkM2Y1OTJmNWVhNTNlMzE5MWQwYmIyMWVjYjM5NzNlZGM1MzkwNDZiMjJmNTA2ODEyNzIzZmRlMTJifGNsaWVudF9pZD1jbGllbnRfaWQkc2FuZGJveCQ0ZHByYmZjNnBoNTk1Y2NqXHUwMDI2Y3JlYXRlZF9hdD0yMDE3LTA0LTI2VDIzOjI2OjU5Ljg3OTA3ODYwNiswMDAwXHUwMDI2bWVyY2hhbnRfaWQ9M3cydHR2d2QyNDY1NDhoZCIsImNvbmZpZ1VybCI6Imh0dHBzOi8vYXBpLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb206NDQzL21lcmNoYW50cy8zdzJ0dHZ3ZDI0NjU0OGhkL2NsaWVudF9hcGkvdjEvY29uZmlndXJhdGlvbiIsImNoYWxsZW5nZXMiOltdLCJlbnZpcm9ubWVudCI6InNhbmRib3giLCJjbGllbnRBcGlVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvM3cydHR2d2QyNDY1NDhoZC9jbGllbnRfYXBpIiwiYXNzZXRzVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhdXRoVXJsIjoiaHR0cHM6Ly9hdXRoLnZlbm1vLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhbmFseXRpY3MiOnsidXJsIjoiaHR0cHM6Ly9jbGllbnQtYW5hbHl0aWNzLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20vM3cydHR2d2QyNDY1NDhoZCJ9LCJ0aHJlZURTZWN1cmVFbmFibGVkIjpmYWxzZSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiYmFyY28uMDMtZmFjaWxpdGF0b3JAZ21haWwuY29tIiwiY2xpZW50SWQiOiJBV3VZdnFnMGtaN2Y5S0V4TVpqZU53T3RjQV8yZVhnOWpMZy1QSnBGX0pnYk44M0YyVml5aEdnV2JCNDg4RGU3MFpucGRBZEI2TUNqekNqSyIsInByaXZhY3lVcmwiOiJodHRwczovL2V4YW1wbGUuY29tIiwidXNlckFncmVlbWVudFVybCI6Imh0dHBzOi8vZXhhbXBsZS5jb20iLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjpmYWxzZSwiZW52aXJvbm1lbnQiOiJvZmZsaW5lIiwidW52ZXR0ZWRNZXJjaGFudCI6ZmFsc2UsImJyYWludHJlZUNsaWVudElkIjoibWFzdGVyY2xpZW50MyIsImJpbGxpbmdBZ3JlZW1lbnRzRW5hYmxlZCI6dHJ1ZSwibWVyY2hhbnRBY2NvdW50SWQiOiJVU0QiLCJjdXJyZW5jeUlzb0NvZGUiOiJVU0QifSwiY29pbmJhc2VFbmFibGVkIjpmYWxzZSwibWVyY2hhbnRJZCI6IjN3MnR0dndkMjQ2NTQ4aGQiLCJ2ZW5tbyI6Im9mZiJ9") : new zalgo_promise_src.a(function(resolve, reject) {
+        return "/demo/checkout/api/braintree/client-token/" === url ? zalgo_promise_src.a.resolve("eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiJjMDFhZmRkM2Y1OTJmNWVhNTNlMzE5MWQwYmIyMWVjYjM5NzNlZGM1MzkwNDZiMjJmNTA2ODEyNzIzZmRlMTJifGNsaWVudF9pZD1jbGllbnRfaWQkc2FuZGJveCQ0ZHByYmZjNnBoNTk1Y2NqXHUwMDI2Y3JlYXRlZF9hdD0yMDE3LTA0LTI2VDIzOjI2OjU5Ljg3OTA3ODYwNiswMDAwXHUwMDI2bWVyY2hhbnRfaWQ9M3cydHR2d2QyNDY1NDhoZCIsImNvbmZpZ1VybCI6Imh0dHBzOi8vYXBpLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb206NDQzL21lcmNoYW50cy8zdzJ0dHZ3ZDI0NjU0OGhkL2NsaWVudF9hcGkvdjEvY29uZmlndXJhdGlvbiIsImNoYWxsZW5nZXMiOltdLCJlbnZpcm9ubWVudCI6InNhbmRib3giLCJjbGllbnRBcGlVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvM3cydHR2d2QyNDY1NDhoZC9jbGllbnRfYXBpIiwiYXNzZXRzVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhdXRoVXJsIjoiaHR0cHM6Ly9hdXRoLnZlbm1vLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhbmFseXRpY3MiOnsidXJsIjoiaHR0cHM6Ly9jbGllbnQtYW5hbHl0aWNzLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20vM3cydHR2d2QyNDY1NDhoZCJ9LCJ0aHJlZURTZWN1cmVFbmFibGVkIjpmYWxzZSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiYmFyY28uMDMtZmFjaWxpdGF0b3JAZ21haWwuY29tIiwiY2xpZW50SWQiOiJBV3VZdnFnMGtaN2Y5S0V4TVpqZU53T3RjQV8yZVhnOWpMZy1QSnBGX0pnYk44M0YyVml5aEdnV2JCNDg4RGU3MFpucGRBZEI2TUNqekNqSyIsInByaXZhY3lVcmwiOiJodHRwczovL2V4YW1wbGUuY29tIiwidXNlckFncmVlbWVudFVybCI6Imh0dHBzOi8vZXhhbXBsZS5jb20iLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjpmYWxzZSwiZW52aXJvbm1lbnQiOiJvZmZsaW5lIiwidW52ZXR0ZWRNZXJjaGFudCI6ZmFsc2UsImJyYWludHJlZUNsaWVudElkIjoibWFzdGVyY2xpZW50MyIsImJpbGxpbmdBZ3JlZW1lbnRzRW5hYmxlZCI6dHJ1ZSwibWVyY2hhbnRBY2NvdW50SWQiOiJVU0QiLCJjdXJyZW5jeUlzb0NvZGUiOiJVU0QifSwiY29pbmJhc2VFbmFibGVkIjpmYWxzZSwibWVyY2hhbnRJZCI6IjN3MnR0dndkMjQ2NTQ4aGQiLCJ2ZW5tbyI6Im9mZiJ9") : new zalgo_promise_src.a((function(resolve, reject) {
             if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
             for (var normalizedHeaders = {}, _i4 = 0, _Object$keys2 = Object.keys(headers); _i4 < _Object$keys2.length; _i4++) {
                 var _key2 = _Object$keys2[_i4];
@@ -1066,8 +1142,8 @@
                 var _key3 = _Object$keys4[_i8];
                 normalizedHeaders[_key3.toLowerCase()] = builtHeaders[_key3];
             }
-            var xhr = new win.XMLHttpRequest();
-            for (var _key4 in xhr.addEventListener("load", function() {
+            var xhr = new win.XMLHttpRequest;
+            for (var _key4 in xhr.addEventListener("load", (function() {
                 var responseHeaders = function(rawHeaders) {
                     void 0 === rawHeaders && (rawHeaders = "");
                     for (var result = {}, _i2 = 0, _rawHeaders$trim$spli2 = rawHeaders.trim().split("\n"); _i2 < _rawHeaders$trim$spli2.length; _i2++) {
@@ -1090,22 +1166,22 @@
                     message = message + "\n\n" + res + "\n"), reject(new Error(message));
                 }
                 return resolve(res);
-            }, !1), xhr.addEventListener("error", function(evt) {
+            }), !1), xhr.addEventListener("error", (function(evt) {
                 var corrID = this.getResponseHeader("paypal-debug-id");
                 reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + ". Correlation id: " + corrID));
-            }, !1), xhr.open(method, url, !0), normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
-            json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map(function(key) {
+            }), !1), xhr.open(method, url, !0), normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
+            json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map((function(key) {
                 return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
-            }).join("&")), xhr.timeout = timeout, xhr.ontimeout = function() {
+            })).join("&")), xhr.timeout = timeout, xhr.ontimeout = function() {
                 reject(new Error("Request to " + method.toLowerCase() + " " + url + " has timed out"));
             }, xhr.send(body);
-        });
+        }));
     }
-    Object(client.c)(function() {
+    Object(client.c)((function() {
         return {
             prev_corr_ids: corrids.join(",")
         };
-    }), request.get = function(url, options) {
+    })), request.get = function(url, options) {
         return void 0 === options && (options = {}), request(Object(esm_extends.a)({
             method: "get",
             url: url
@@ -1126,10 +1202,10 @@
     };
     function getThrottle(name, sample) {
         var group, uid = Object(session.e)(), throttle = function(name) {
-            return Object(session.f)(function(storage) {
+            return Object(session.f)((function(storage) {
                 return storage.throttlePercentiles = storage.throttlePercentiles || {}, storage.throttlePercentiles[name] = storage.throttlePercentiles[name] || Math.floor(100 * Math.random()), 
                 storage.throttlePercentiles[name];
-            });
+            }));
         }(name), treatment = name + "_" + (group = throttle < sample ? THROTTLE_GROUP.TEST : sample >= 50 || sample <= throttle && throttle < 2 * sample ? THROTTLE_GROUP.CONTROL : THROTTLE_GROUP.THROTTLE), started = !1, forced = !1;
         try {
             window.localStorage && window.localStorage.getItem(name) && (forced = !0);
@@ -1167,7 +1243,7 @@
         if (token && payer) return token;
     }
     __webpack_require__(32);
-    var getCurrentScript = Object(util.i)(function() {
+    var getCurrentScript = Object(util.i)((function() {
         for (var scripts = [].slice.call(document.getElementsByTagName("script")), _i2 = 0; _i2 < scripts.length; _i2++) {
             var script = scripts[_i2];
             if (script.src && (script.src.replace(/^https?:/, "").split("?")[0] === config.a.scriptUrl || script.hasAttribute("data-paypal-checkout"))) return script;
@@ -1176,9 +1252,9 @@
         document.currentScript && Object(client.f)("current_script_not_recognized", {
             src: document.currentScript.src
         });
-    });
+    }));
     function getScriptVersion() {
-        return "4.0.284";
+        return "4.0.285";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -1187,7 +1263,7 @@
             return 0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://")), 
             scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.284.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.285.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.g)();
@@ -1197,201 +1273,201 @@
         }
         return def;
     }
-    var openMetaFrame = Object(util.i)(function(env) {
-        return void 0 === env && (env = config.a.env), zalgo_promise_src.a.try(function() {
+    var openMetaFrame = Object(util.i)((function(env) {
+        return void 0 === env && (env = config.a.env), zalgo_promise_src.a.try((function() {
             if (Object(device.e)()) return {
                 iframeEligible: !1,
                 iframeEligibleReason: "ie_intranet",
                 rememberedFunding: []
             };
             var metaFrameUrl = config.a.metaFrameUrls[env], metaFrameDomain = config.a.paypalDomains[env];
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 if (!src.bridge) throw new Error("Opening meta window without bridge support is not currently supported");
                 var metaListener = Object(src.once)("meta", {
                     domain: metaFrameDomain
                 });
                 return src.bridge.openBridge(Object(dom.a)(metaFrameUrl, {
-                    version: "4.0.284"
-                }), metaFrameDomain).then(function() {
+                    version: "4.0.285"
+                }), metaFrameDomain).then((function() {
                     return metaListener;
-                }).then(function(_ref) {
+                })).then((function(_ref) {
                     return _ref.data;
-                });
-            });
-        });
-    });
+                }));
+            }));
+        }));
+    }));
     function getRememberedFunding(handler) {
-        return void 0 === handler && (handler = util.e), Object(session.f)(function(storage) {
+        return void 0 === handler && (handler = util.e), Object(session.f)((function(storage) {
             return storage.rememberedFunding = storage.rememberedFunding || [], handler(storage.rememberedFunding);
-        });
+        }));
     }
     function hasRememberedFunding(source) {
-        return !!getRememberedFunding(function(rememberedFunding) {
+        return !!getRememberedFunding((function(rememberedFunding) {
             return -1 !== rememberedFunding.indexOf(source);
-        }) || !!Object(session.d)(function(session) {
+        })) || !!Object(session.d)((function(session) {
             return session.recentlyCheckedRemembered;
-        });
+        }));
     }
     function getRememberedFundingPromises() {
-        return Object(session.b)(function(global) {
+        return Object(session.b)((function(global) {
             return global.rememberFundingPromises = global.rememberFundingPromises || {}, global.rememberFundingPromises;
-        });
+        }));
     }
     function getRememberedFundingPromise(source) {
-        var promises = getRememberedFundingPromises(), promise = promises[source] = promises[source] || new zalgo_promise_src.a();
+        var promises = getRememberedFundingPromises(), promise = promises[source] = promises[source] || new zalgo_promise_src.a;
         return hasRememberedFunding(source) && promise.resolve(function(source) {
-            if (getRememberedFunding(function(rememberedFunding) {
+            if (getRememberedFunding((function(rememberedFunding) {
                 return -1 !== rememberedFunding.indexOf(source);
-            })) return !0;
-            if (Object(session.d)(function(session) {
+            }))) return !0;
+            if (Object(session.d)((function(session) {
                 return session.recentlyCheckedRemembered;
-            })) return !1;
+            }))) return !1;
             throw new Error("Can not find remembered funding result");
         }(source)), promise;
     }
     function rememberFunding(sources) {
-        getRememberedFunding(function(rememberedFunding) {
+        getRememberedFunding((function(rememberedFunding) {
             for (var _i4 = 0; _i4 < sources.length; _i4++) {
                 var source = sources[_i4];
                 (source !== constants.v.VENMO || Object(device.b)()) && -1 === rememberedFunding.indexOf(source) && rememberedFunding.push(source);
             }
             !function() {
-                for (var promises = getRememberedFundingPromises(), rememberedFunding = getRememberedFunding(function(sources) {
+                for (var promises = getRememberedFundingPromises(), rememberedFunding = getRememberedFunding((function(sources) {
                     return sources;
-                }), _i2 = 0, _Object$keys2 = Object.keys(promises); _i2 < _Object$keys2.length; _i2++) {
+                })), _i2 = 0, _Object$keys2 = Object.keys(promises); _i2 < _Object$keys2.length; _i2++) {
                     var source = _Object$keys2[_i2];
                     promises[source].resolve(-1 !== rememberedFunding.indexOf(source));
                 }
             }();
-        }), Object(session.d)(function(session) {
+        })), Object(session.d)((function(session) {
             session.recentlyCheckedRemembered = !0;
-        });
+        }));
     }
     function loadMeta() {
-        return openMetaFrame().then(function(_ref) {
+        return openMetaFrame().then((function(_ref) {
             rememberFunding(_ref.rememberedFunding || []);
-        });
+        }));
     }
     function isFundingRemembered(source) {
-        return void 0 === source && (source = constants.v.PAYPAL), hasRememberedFunding(source) ? getRememberedFundingPromise(source) : loadMeta().then(function() {
+        return void 0 === source && (source = constants.v.PAYPAL), hasRememberedFunding(source) ? getRememberedFundingPromise(source) : loadMeta().then((function() {
             return getRememberedFundingPromise(source);
-        });
+        }));
     }
     function precacheRememberedFunding() {
-        return Object(session.d)(function(session) {
+        return Object(session.d)((function(session) {
             return session.recentlyCheckedRemembered;
-        }) ? zalgo_promise_src.a.resolve() : loadMeta();
+        })) ? zalgo_promise_src.a.resolve() : loadMeta();
     }
-    __webpack_require__(6), __webpack_require__.d(__webpack_exports__, "z", function() {
+    __webpack_require__(1), __webpack_require__.d(__webpack_exports__, "z", (function() {
         return device.b;
-    }), __webpack_require__.d(__webpack_exports__, "F", function() {
+    })), __webpack_require__.d(__webpack_exports__, "F", (function() {
         return device.f;
-    }), __webpack_require__.d(__webpack_exports__, "D", function() {
+    })), __webpack_require__.d(__webpack_exports__, "D", (function() {
         return device.c;
-    }), __webpack_require__.d(__webpack_exports__, "E", function() {
+    })), __webpack_require__.d(__webpack_exports__, "E", (function() {
         return device.e;
-    }), __webpack_require__.d(__webpack_exports__, "W", function() {
+    })), __webpack_require__.d(__webpack_exports__, "W", (function() {
         return device.g;
-    }), __webpack_require__.d(__webpack_exports__, "J", function() {
+    })), __webpack_require__.d(__webpack_exports__, "J", (function() {
         return util.j;
-    }), __webpack_require__.d(__webpack_exports__, "L", function() {
+    })), __webpack_require__.d(__webpack_exports__, "L", (function() {
         return util.k;
-    }), __webpack_require__.d(__webpack_exports__, "X", function() {
+    })), __webpack_require__.d(__webpack_exports__, "X", (function() {
         return util.s;
-    }), __webpack_require__.d(__webpack_exports__, "I", function() {
+    })), __webpack_require__.d(__webpack_exports__, "I", (function() {
         return util.i;
-    }), __webpack_require__.d(__webpack_exports__, "S", function() {
+    })), __webpack_require__.d(__webpack_exports__, "S", (function() {
         return util.o;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+    })), __webpack_require__.d(__webpack_exports__, "e", (function() {
         return util.c;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
         return util.a;
-    }), __webpack_require__.d(__webpack_exports__, "U", function() {
+    })), __webpack_require__.d(__webpack_exports__, "U", (function() {
         return util.q;
-    }), __webpack_require__.d(__webpack_exports__, "V", function() {
+    })), __webpack_require__.d(__webpack_exports__, "V", (function() {
         return util.r;
-    }), __webpack_require__.d(__webpack_exports__, "N", function() {
+    })), __webpack_require__.d(__webpack_exports__, "N", (function() {
         return util.l;
-    }), __webpack_require__.d(__webpack_exports__, "f", function() {
+    })), __webpack_require__.d(__webpack_exports__, "f", (function() {
         return util.d;
-    }), __webpack_require__.d(__webpack_exports__, "y", function() {
+    })), __webpack_require__.d(__webpack_exports__, "y", (function() {
         return initLogger;
-    }), __webpack_require__.d(__webpack_exports__, "T", function() {
+    })), __webpack_require__.d(__webpack_exports__, "T", (function() {
         return setLogLevel;
-    }), __webpack_require__.d(__webpack_exports__, "h", function() {
+    })), __webpack_require__.d(__webpack_exports__, "h", (function() {
         return getBrowser;
-    }), __webpack_require__.d(__webpack_exports__, "B", function() {
+    })), __webpack_require__.d(__webpack_exports__, "B", (function() {
         return isEligible;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
         return checkRecognizedBrowser;
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
         return checkForCommonErrors;
-    }), __webpack_require__.d(__webpack_exports__, "H", function() {
+    })), __webpack_require__.d(__webpack_exports__, "H", (function() {
         return dom.i;
-    }), __webpack_require__.d(__webpack_exports__, "n", function() {
+    })), __webpack_require__.d(__webpack_exports__, "n", (function() {
         return dom.c;
-    }), __webpack_require__.d(__webpack_exports__, "o", function() {
+    })), __webpack_require__.d(__webpack_exports__, "o", (function() {
         return dom.d;
-    }), __webpack_require__.d(__webpack_exports__, "K", function() {
+    })), __webpack_require__.d(__webpack_exports__, "K", (function() {
         return dom.j;
-    }), __webpack_require__.d(__webpack_exports__, "q", function() {
+    })), __webpack_require__.d(__webpack_exports__, "q", (function() {
         return dom.f;
-    }), __webpack_require__.d(__webpack_exports__, "Y", function() {
+    })), __webpack_require__.d(__webpack_exports__, "Y", (function() {
         return dom.l;
-    }), __webpack_require__.d(__webpack_exports__, "g", function() {
+    })), __webpack_require__.d(__webpack_exports__, "g", (function() {
         return dom.a;
-    }), __webpack_require__.d(__webpack_exports__, "P", function() {
+    })), __webpack_require__.d(__webpack_exports__, "P", (function() {
         return dom.k;
-    }), __webpack_require__.d(__webpack_exports__, "i", function() {
+    })), __webpack_require__.d(__webpack_exports__, "i", (function() {
         return dom.b;
-    }), __webpack_require__.d(__webpack_exports__, "A", function() {
+    })), __webpack_require__.d(__webpack_exports__, "A", (function() {
         return dom.h;
-    }), __webpack_require__.d(__webpack_exports__, "p", function() {
+    })), __webpack_require__.d(__webpack_exports__, "p", (function() {
         return dom.e;
-    }), __webpack_require__.d(__webpack_exports__, "s", function() {
+    })), __webpack_require__.d(__webpack_exports__, "s", (function() {
         return dom.g;
-    }), __webpack_require__.d(__webpack_exports__, "R", function() {
+    })), __webpack_require__.d(__webpack_exports__, "R", (function() {
         return request;
-    }), __webpack_require__.d(__webpack_exports__, "x", function() {
+    })), __webpack_require__.d(__webpack_exports__, "x", (function() {
         return getThrottle;
-    }), __webpack_require__.d(__webpack_exports__, "t", function() {
+    })), __webpack_require__.d(__webpack_exports__, "t", (function() {
         return getReturnToken;
-    }), __webpack_require__.d(__webpack_exports__, "w", function() {
+    })), __webpack_require__.d(__webpack_exports__, "w", (function() {
         return session.d;
-    }), __webpack_require__.d(__webpack_exports__, "v", function() {
+    })), __webpack_require__.d(__webpack_exports__, "v", (function() {
         return session.c;
-    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+    })), __webpack_require__.d(__webpack_exports__, "j", (function() {
         return session.a;
-    }), __webpack_require__.d(__webpack_exports__, "M", function() {
+    })), __webpack_require__.d(__webpack_exports__, "M", (function() {
         return openMetaFrame;
-    }), __webpack_require__.d(__webpack_exports__, "r", function() {
+    })), __webpack_require__.d(__webpack_exports__, "r", (function() {
         return getRememberedFunding;
-    }), __webpack_require__.d(__webpack_exports__, "Q", function() {
+    })), __webpack_require__.d(__webpack_exports__, "Q", (function() {
         return rememberFunding;
-    }), __webpack_require__.d(__webpack_exports__, "C", function() {
+    })), __webpack_require__.d(__webpack_exports__, "C", (function() {
         return isFundingRemembered;
-    }), __webpack_require__.d(__webpack_exports__, "O", function() {
+    })), __webpack_require__.d(__webpack_exports__, "O", (function() {
         return precacheRememberedFunding;
-    }), __webpack_require__.d(__webpack_exports__, "k", function() {
+    })), __webpack_require__.d(__webpack_exports__, "k", (function() {
         return getCurrentScript;
-    }), __webpack_require__.d(__webpack_exports__, "u", function() {
+    })), __webpack_require__.d(__webpack_exports__, "u", (function() {
         return getScriptVersion;
-    }), __webpack_require__.d(__webpack_exports__, "l", function() {
+    })), __webpack_require__.d(__webpack_exports__, "l", (function() {
         return getCurrentScriptUrl;
-    }), __webpack_require__.d(__webpack_exports__, "m", function() {
+    })), __webpack_require__.d(__webpack_exports__, "m", (function() {
         return getDomainSetting;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
         return security.a;
-    }), __webpack_require__.d(__webpack_exports__, "G", function() {
+    })), __webpack_require__.d(__webpack_exports__, "G", (function() {
         return security.b;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     var _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, constants = __webpack_require__(0), config = {
         locales: constants.z,
-        scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.284.js",
+        scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.285.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.284",
+        version: "4.0.285",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -1760,6 +1836,18 @@
             },
             "seacalmskin.com": {
                 disable_venmo: !0
+            },
+            "whittier.edu": {
+                disable_venmo: !0
+            },
+            "curology.com": {
+                disable_venmo: !0
+            },
+            "monoprice.com": {
+                disable_venmo: !0
+            },
+            "dominos.com": {
+                disable_venmo: !0
             }
         },
         creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
@@ -2084,79 +2172,79 @@
             lang: constants.x.EN
         }
     };
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return config;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     var interface_namespaceObject = {};
-    __webpack_require__.r(interface_namespaceObject), __webpack_require__.d(interface_namespaceObject, "buffer", function() {
+    __webpack_require__.r(interface_namespaceObject), __webpack_require__.d(interface_namespaceObject, "buffer", (function() {
         return buffer;
-    }), __webpack_require__.d(interface_namespaceObject, "tracking", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "tracking", (function() {
         return tracking;
-    }), __webpack_require__.d(interface_namespaceObject, "getTransport", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "getTransport", (function() {
         return getTransport;
-    }), __webpack_require__.d(interface_namespaceObject, "setTransport", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "setTransport", (function() {
         return setTransport;
-    }), __webpack_require__.d(interface_namespaceObject, "print", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "print", (function() {
         return print;
-    }), __webpack_require__.d(interface_namespaceObject, "immediateFlush", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "immediateFlush", (function() {
         return immediateFlush;
-    }), __webpack_require__.d(interface_namespaceObject, "flush", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "flush", (function() {
         return _flush;
-    }), __webpack_require__.d(interface_namespaceObject, "log", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "log", (function() {
         return log;
-    }), __webpack_require__.d(interface_namespaceObject, "prefix", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "prefix", (function() {
         return prefix;
-    }), __webpack_require__.d(interface_namespaceObject, "debug", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "debug", (function() {
         return debug;
-    }), __webpack_require__.d(interface_namespaceObject, "info", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "info", (function() {
         return info;
-    }), __webpack_require__.d(interface_namespaceObject, "warn", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "warn", (function() {
         return warn;
-    }), __webpack_require__.d(interface_namespaceObject, "error", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "error", (function() {
         return error;
-    }), __webpack_require__.d(interface_namespaceObject, "track", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "track", (function() {
         return _track;
-    }), __webpack_require__.d(interface_namespaceObject, "init", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "init", (function() {
         return init;
-    }), __webpack_require__.d(interface_namespaceObject, "startTransition", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "startTransition", (function() {
         return startTransition;
-    }), __webpack_require__.d(interface_namespaceObject, "endTransition", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "endTransition", (function() {
         return endTransition;
-    }), __webpack_require__.d(interface_namespaceObject, "transition", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "transition", (function() {
         return transition;
-    }), __webpack_require__.d(interface_namespaceObject, "payloadBuilders", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "payloadBuilders", (function() {
         return payloadBuilders;
-    }), __webpack_require__.d(interface_namespaceObject, "metaBuilders", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "metaBuilders", (function() {
         return metaBuilders;
-    }), __webpack_require__.d(interface_namespaceObject, "trackingBuilders", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "trackingBuilders", (function() {
         return trackingBuilders;
-    }), __webpack_require__.d(interface_namespaceObject, "headerBuilders", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "headerBuilders", (function() {
         return headerBuilders;
-    }), __webpack_require__.d(interface_namespaceObject, "addPayloadBuilder", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "addPayloadBuilder", (function() {
         return addPayloadBuilder;
-    }), __webpack_require__.d(interface_namespaceObject, "addMetaBuilder", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "addMetaBuilder", (function() {
         return addMetaBuilder;
-    }), __webpack_require__.d(interface_namespaceObject, "addTrackingBuilder", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "addTrackingBuilder", (function() {
         return addTrackingBuilder;
-    }), __webpack_require__.d(interface_namespaceObject, "addHeaderBuilder", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "addHeaderBuilder", (function() {
         return addHeaderBuilder;
-    }), __webpack_require__.d(interface_namespaceObject, "config", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "config", (function() {
         return config;
-    }), __webpack_require__.d(interface_namespaceObject, "logLevels", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "logLevels", (function() {
         return logLevels;
-    });
-    var src = __webpack_require__(1);
+    }));
+    var src = __webpack_require__(2);
     function extend(dest, src, over) {
         for (var i in void 0 === over && (over = !0), dest = dest || {}, src = src || {}) src.hasOwnProperty(i) && (!over && dest.hasOwnProperty(i) || (dest[i] = src[i]));
         return dest;
     }
     function uniqueID() {
         var chars = "0123456789abcdef";
-        return "xxxxxxxxxx".replace(/./g, function() {
+        return "xxxxxxxxxx".replace(/./g, (function() {
             return chars.charAt(Math.floor(Math.random() * chars.length));
-        });
+        }));
     }
     var payloadBuilders = [], metaBuilders = [], trackingBuilders = [], headerBuilders = [];
     function addPayloadBuilder(builder) {
@@ -2191,8 +2279,8 @@
     }, logLevels = [ "error", "warn", "info", "debug" ], buffer = [], tracking = [], logger_transport = function(headers, data, options) {
         return function(method, url, headers, data, _temp) {
             void 0 === headers && (headers = {}), void 0 === data && (data = {});
-            var _ref$fireAndForget = (void 0 === options ? {} : options).fireAndForget, fireAndForget = void 0 !== _ref$fireAndForget && _ref$fireAndForget;
-            return new src.a(function(resolve) {
+            var _ref$fireAndForget = (void 0 === _temp ? {} : _temp).fireAndForget, fireAndForget = void 0 !== _ref$fireAndForget && _ref$fireAndForget;
+            return new src.a((function(resolve) {
                 var XRequest = window.XMLHttpRequest || window.ActiveXObject;
                 if (window.XDomainRequest && !function(url) {
                     var match = url.match(/https?:\/\/[^\/]+/);
@@ -2209,8 +2297,8 @@
                 fireAndForget ? resolve() : req.onreadystatechange = function() {
                     req.readyState > 3 && resolve();
                 }, req.send(JSON.stringify(data).replace(/&/g, "%26"));
-            });
-        }(0, config.uri, headers, data);
+            }));
+        }(0, config.uri, headers, data, options);
     };
     function getTransport() {
         return logger_transport;
@@ -2221,9 +2309,9 @@
     var loaded = !1;
     function print(level, event, payload) {
         if ("undefined" != typeof window && window.console && window.console.log) {
-            if (!loaded) return setTimeout(function() {
+            if (!loaded) return setTimeout((function() {
                 return print(level, event, payload);
-            }, 1);
+            }), 1);
             var logLevel = config.logLevel;
             if (window.LOG_LEVEL && (logLevel = window.LOG_LEVEL), !(logLevels.indexOf(level) > logLevels.indexOf(logLevel))) {
                 payload = payload || {};
@@ -2265,22 +2353,22 @@
             return buffer = [], tracking = [], req;
         }
     }
-    setTimeout(function() {
+    setTimeout((function() {
         loaded = !0;
-    }, 1);
+    }), 1);
     var method, interval, debounce, _flush = (method = immediateFlush, interval = config.debounceInterval, 
     debounce = {}, function() {
         var args = arguments;
         return debounce.timeout && (clearTimeout(debounce.timeout), delete debounce.timeout), 
-        debounce.timeout = setTimeout(function() {
+        debounce.timeout = setTimeout((function() {
             var resolver = debounce.resolver, rejector = debounce.rejector;
             return delete debounce.promise, delete debounce.resolver, delete debounce.rejector, 
-            delete debounce.timeout, src.a.resolve().then(function() {
+            delete debounce.timeout, src.a.resolve().then((function() {
                 return method.apply(null, args);
-            }).then(resolver, rejector);
-        }, interval), debounce.promise = debounce.promise || new src.a(function(resolver, rejector) {
+            })).then(resolver, rejector);
+        }), interval), debounce.promise = debounce.promise || new src.a((function(resolver, rejector) {
             debounce.resolver = resolver, debounce.rejector = rejector;
-        }), debounce.promise;
+        })), debounce.promise;
     });
     function enqueue(level, event, payload) {
         buffer.push({
@@ -2392,33 +2480,33 @@
         var time, heartBeatTimer, heartbeatCount;
         extend(config, conf || {}), initiated || (initiated = !0, config.logPerformance && function() {
             if (!enablePerformance) return info("no_performance_data");
-            addPayloadBuilder(function() {
+            addPayloadBuilder((function() {
                 var payload = {};
                 return payload.client_elapsed = clientTimer.elapsed(), enablePerformance && (payload.req_elapsed = reqTimer.elapsed()), 
                 payload;
-            }), new src.a(function(resolve) {
+            })), new src.a((function(resolve) {
                 "undefined" != typeof document && "complete" === document.readyState && resolve(), 
                 window.addEventListener("load", resolve);
-            }).then(function() {
+            })).then((function() {
                 var timing = {};
-                [ "connectEnd", "connectStart", "domComplete", "domContentLoadedEventEnd", "domContentLoadedEventStart", "domInteractive", "domLoading", "domainLookupEnd", "domainLookupStart", "fetchStart", "loadEventEnd", "loadEventStart", "navigationStart", "redirectEnd", "redirectStart", "requestStart", "responseEnd", "responseStart", "secureConnectionStart", "unloadEventEnd", "unloadEventStart" ].forEach(function(key) {
+                [ "connectEnd", "connectStart", "domComplete", "domContentLoadedEventEnd", "domContentLoadedEventStart", "domInteractive", "domLoading", "domainLookupEnd", "domainLookupStart", "fetchStart", "loadEventEnd", "loadEventStart", "navigationStart", "redirectEnd", "redirectStart", "requestStart", "responseEnd", "responseStart", "secureConnectionStart", "unloadEventEnd", "unloadEventStart" ].forEach((function(key) {
                     timing[key] = parseInt(window.performance.timing[key], 10) || 0;
-                });
+                }));
                 var offset = timing.connectEnd - timing.navigationStart;
-                timing.connectEnd && Object.keys(timing).forEach(function(name) {
+                timing.connectEnd && Object.keys(timing).forEach((function(name) {
                     var time = timing[name];
                     time && info("timing_" + name, {
                         client_elapsed: parseInt(time - timing.connectEnd - (clientTimer.startTime - offset), 10),
                         req_elapsed: parseInt(time - timing.connectEnd, 10)
                     });
-                }), info("timing", timing), info("memory", window.performance.memory), info("navigation", window.performance.navigation), 
-                window.performance.getEntries && window.performance.getEntries().forEach(function(resource) {
+                })), info("timing", timing), info("memory", window.performance.memory), info("navigation", window.performance.navigation), 
+                window.performance.getEntries && window.performance.getEntries().forEach((function(resource) {
                     [ "link", "script", "img", "css" ].indexOf(resource.initiatorType) > -1 && info(resource.initiatorType, resource);
-                });
-            });
+                }));
+            }));
         }(), config.heartbeat && (heartBeatTimer = timer(), heartbeatCount = 0, time = config.heartbeatInterval, 
         function loop() {
-            setTimeout(function() {
+            setTimeout((function() {
                 (function() {
                     if (!(config.heartbeatMaxThreshold && heartbeatCount > config.heartbeatMaxThreshold)) {
                         heartbeatCount += 1;
@@ -2430,18 +2518,18 @@
                         info("heartbeat", heartbeatPayload);
                     }
                 })(), loop();
-            }, time);
-        }()), config.logUnload && (window.addEventListener("beforeunload", function() {
+            }), time);
+        }()), config.logUnload && (window.addEventListener("beforeunload", (function() {
             info("window_beforeunload"), immediateFlush({
                 fireAndForget: !0
             });
-        }), window.addEventListener("unload", function() {
+        })), window.addEventListener("unload", (function() {
             info("window_unload"), immediateFlush({
                 fireAndForget: !0
             });
-        })), config.flushInterval && setInterval(_flush, config.flushInterval), window.beaverLogQueue && (window.beaverLogQueue.forEach(function(payload) {
+        }))), config.flushInterval && setInterval(_flush, config.flushInterval), window.beaverLogQueue && (window.beaverLogQueue.forEach((function(payload) {
             log(payload.level, payload.event, payload);
-        }), delete window.beaverLogQueue));
+        })), delete window.beaverLogQueue));
     }
     var startTime, windowID = uniqueID(), pageID = uniqueID(), currentState = config.initial_state_name;
     function startTransition() {
@@ -2462,60 +2550,60 @@
     function transition(toState) {
         startTransition(), endTransition(toState);
     }
-    addPayloadBuilder(function() {
+    addPayloadBuilder((function() {
         return {
             windowID: windowID,
             pageID: pageID
         };
-    }), addMetaBuilder(function() {
+    })), addMetaBuilder((function() {
         return {
             state: "ui_" + currentState
         };
-    }), __webpack_require__.d(__webpack_exports__, "i", function() {
+    })), __webpack_require__.d(__webpack_exports__, "i", (function() {
         return getTransport;
-    }), __webpack_require__.d(__webpack_exports__, "o", function() {
+    })), __webpack_require__.d(__webpack_exports__, "o", (function() {
         return setTransport;
-    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+    })), __webpack_require__.d(__webpack_exports__, "j", (function() {
         return immediateFlush;
-    }), __webpack_require__.d(__webpack_exports__, "h", function() {
+    })), __webpack_require__.d(__webpack_exports__, "h", (function() {
         return _flush;
-    }), __webpack_require__.d(__webpack_exports__, "n", function() {
+    })), __webpack_require__.d(__webpack_exports__, "n", (function() {
         return prefix;
-    }), __webpack_require__.d(__webpack_exports__, "f", function() {
+    })), __webpack_require__.d(__webpack_exports__, "f", (function() {
         return debug;
-    }), __webpack_require__.d(__webpack_exports__, "k", function() {
+    })), __webpack_require__.d(__webpack_exports__, "k", (function() {
         return info;
-    }), __webpack_require__.d(__webpack_exports__, "q", function() {
+    })), __webpack_require__.d(__webpack_exports__, "q", (function() {
         return warn;
-    }), __webpack_require__.d(__webpack_exports__, "g", function() {
+    })), __webpack_require__.d(__webpack_exports__, "g", (function() {
         return error;
-    }), __webpack_require__.d(__webpack_exports__, "p", function() {
+    })), __webpack_require__.d(__webpack_exports__, "p", (function() {
         return _track;
-    }), __webpack_require__.d(__webpack_exports__, "l", function() {
+    })), __webpack_require__.d(__webpack_exports__, "l", (function() {
         return init;
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
         return addPayloadBuilder;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
         return addMetaBuilder;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
         return addTrackingBuilder;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
         return addHeaderBuilder;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+    })), __webpack_require__.d(__webpack_exports__, "e", (function() {
         return config;
-    }), __webpack_require__.d(__webpack_exports__, "m", function() {
+    })), __webpack_require__.d(__webpack_exports__, "m", (function() {
         return logLevels;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    var esm_extends = __webpack_require__(11), src = __webpack_require__(7), zalgo_promise_src = __webpack_require__(1), cross_domain_safe_weakmap_src = __webpack_require__(17), error = __webpack_require__(26);
+    var esm_extends = __webpack_require__(11), src = __webpack_require__(7), zalgo_promise_src = __webpack_require__(2), cross_domain_safe_weakmap_src = __webpack_require__(17), error = __webpack_require__(26);
     function urlEncode(str) {
         return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B");
     }
     function dasherizeToCamel(string) {
-        return string.replace(/-([a-z])/g, function(g) {
+        return string.replace(/-([a-z])/g, (function(g) {
             return g[1].toUpperCase();
-        });
+        }));
     }
     function extend(obj, source) {
         if (!source) return obj;
@@ -2524,9 +2612,9 @@
     }
     function uniqueID() {
         var chars = "0123456789abcdef";
-        return "xxxxxxxxxx".replace(/./g, function() {
+        return "xxxxxxxxxx".replace(/./g, (function() {
             return chars.charAt(Math.floor(Math.random() * chars.length));
-        });
+        }));
     }
     function get(item, path, def) {
         if (!path) return def;
@@ -2600,12 +2688,12 @@
     }
     function dotify(obj, prefix, newobj) {
         for (var key in void 0 === prefix && (prefix = ""), void 0 === newobj && (newobj = {}), 
-        prefix = prefix ? prefix + "." : prefix, obj) null != obj[key] && "function" != typeof obj[key] && (obj[key] && Array.isArray(obj[key]) && obj[key].length && obj[key].every(function(val) {
+        prefix = prefix ? prefix + "." : prefix, obj) null != obj[key] && "function" != typeof obj[key] && (obj[key] && Array.isArray(obj[key]) && obj[key].length && obj[key].every((function(val) {
             return "object" != typeof val;
-        }) ? newobj["" + prefix + key] = obj[key].join(",") : obj[key] && "object" == typeof obj[key] ? newobj = dotify(obj[key], "" + prefix + key, newobj) : newobj["" + prefix + key] = obj[key].toString());
+        })) ? newobj["" + prefix + key] = obj[key].join(",") : obj[key] && "object" == typeof obj[key] ? newobj = dotify(obj[key], "" + prefix + key, newobj) : newobj["" + prefix + key] = obj[key].toString());
         return newobj;
     }
-    var objectIDs = new cross_domain_safe_weakmap_src.a();
+    var objectIDs = new cross_domain_safe_weakmap_src.a;
     function getObjectID(obj) {
         if (null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
         var uid = objectIDs.get(obj);
@@ -2636,9 +2724,9 @@
                 };
             },
             once: function(eventName, handler) {
-                var listener = this.on(eventName, function() {
+                var listener = this.on(eventName, (function() {
                     listener.cancel(), handler();
-                });
+                }));
                 return listener;
             },
             trigger: function(eventName) {
@@ -2664,9 +2752,9 @@
             for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) args[_key2] = arguments[_key2];
             var cacheKey;
             try {
-                cacheKey = JSON.stringify([].slice.call(arguments), function(key, val) {
+                cacheKey = JSON.stringify([].slice.call(arguments), (function(key, val) {
                     return "function" == typeof val ? "zoid:memoize[" + getObjectID(val) + "]" : val;
-                });
+                }));
             } catch (err) {
                 throw new Error("Arguments not serializable -- can not be used to memoize");
             }
@@ -2678,9 +2766,9 @@
         var timeout;
         return void 0 === time && (time = 100), function() {
             var _this = this, _arguments = arguments;
-            clearTimeout(timeout), timeout = setTimeout(function() {
+            clearTimeout(timeout), timeout = setTimeout((function() {
                 return method.apply(_this, _arguments);
-            }, time);
+            }), time);
         };
     }
     function serializeFunctions(obj) {
@@ -2710,7 +2798,9 @@
         container.appendChild(child);
     }
     function getElementSafe(id) {
-        if (id instanceof window.Element || null !== id && "object" == typeof id && 1 === id.nodeType && "object" == typeof id.style && "object" == typeof id.ownerDocument) return id;
+        if (function(element) {
+            return element instanceof window.Element || null !== element && "object" == typeof element && 1 === element.nodeType && "object" == typeof element.style && "object" == typeof element.ownerDocument;
+        }(id)) return id;
         if ("string" == typeof id) {
             var element = document.getElementById(id);
             if (element) return element;
@@ -2726,20 +2816,20 @@
         return "complete" === window.document.readyState;
     }
     function elementReady(id) {
-        return new zalgo_promise_src.a(function(resolve, reject) {
+        return new zalgo_promise_src.a((function(resolve, reject) {
             var name = stringify(id), el = getElementSafe(id);
             if (el) return resolve(el);
             if (isDocumentReady()) return reject(new Error("Document is ready and element " + name + " does not exist"));
-            var interval = setInterval(function() {
+            var interval = setInterval((function() {
                 return (el = getElementSafe(id)) ? (clearInterval(interval), resolve(el)) : isDocumentReady() ? (clearInterval(interval), 
                 reject(new Error("Document is ready and element " + name + " does not exist"))) : void 0;
-            }, 10);
-        });
+            }), 10);
+        }));
     }
     function popup(url, options) {
-        var win, err, params = Object.keys(options).map(function(key) {
+        var win, err, params = Object.keys(options).map((function(key) {
             if (options[key]) return key + "=" + stringify(options[key]);
-        }).filter(Boolean).join(",");
+        })).filter(Boolean).join(",");
         try {
             win = window.open(url, options.name, params, !0);
         } catch (err) {
@@ -2766,32 +2856,32 @@
     function setStyle(el, styleText, doc) {
         void 0 === doc && (doc = window.document), el.styleSheet ? el.styleSheet.cssText = styleText : el.appendChild(doc.createTextNode(styleText));
     }
-    new zalgo_promise_src.a(function(resolve) {
+    new zalgo_promise_src.a((function(resolve) {
         if ("complete" === window.document.readyState) return resolve(window.document);
-        var interval = setInterval(function() {
+        var interval = setInterval((function() {
             if ("complete" === window.document.readyState) return clearInterval(interval), resolve(window.document);
-        }, 10);
-    });
-    var awaitFrameLoadPromises = new cross_domain_safe_weakmap_src.a();
+        }), 10);
+    }));
+    var awaitFrameLoadPromises = new cross_domain_safe_weakmap_src.a;
     function awaitFrameLoad(frame) {
         if (awaitFrameLoadPromises.has(frame)) {
             var _promise = awaitFrameLoadPromises.get(frame);
             if (_promise) return _promise;
         }
-        var promise = new zalgo_promise_src.a(function(resolve, reject) {
-            frame.addEventListener("load", function() {
+        var promise = new zalgo_promise_src.a((function(resolve, reject) {
+            frame.addEventListener("load", (function() {
                 Object(src.z)(frame), resolve(frame);
-            }), frame.addEventListener("error", function(err) {
+            })), frame.addEventListener("error", (function(err) {
                 frame.contentWindow ? resolve(frame) : reject(err);
-            });
-        });
+            }));
+        }));
         return awaitFrameLoadPromises.set(frame, promise), promise;
     }
     function awaitFrameWindow(frame) {
-        return frame.contentWindow ? zalgo_promise_src.a.resolve(frame.contentWindow) : awaitFrameLoad(frame).then(function(loadedFrame) {
+        return frame.contentWindow ? zalgo_promise_src.a.resolve(frame.contentWindow) : awaitFrameLoad(frame).then((function(loadedFrame) {
             if (!loadedFrame.contentWindow) throw new Error("Could not find window in iframe");
             return loadedFrame.contentWindow;
-        });
+        }));
     }
     function iframe(options, container) {
         void 0 === options && (options = {});
@@ -2829,7 +2919,7 @@
             }
         };
     }
-    var parseQuery = memoize(function(queryString) {
+    var parseQuery = memoize((function(queryString) {
         var params = {};
         if (!queryString) return params;
         if (-1 === queryString.indexOf("=")) throw new Error("Can not parse query string params: " + queryString);
@@ -2838,14 +2928,14 @@
             (pair = pair.split("="))[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
         }
         return params;
-    });
+    }));
     function extendQuery(originalQuery, props) {
         return void 0 === props && (props = {}), props && Object.keys(props).length ? (void 0 === (obj = Object(esm_extends.a)({}, parseQuery(originalQuery), {}, props)) && (obj = {}), 
-        Object.keys(obj).filter(function(key) {
+        Object.keys(obj).filter((function(key) {
             return "string" == typeof obj[key];
-        }).map(function(key) {
+        })).map((function(key) {
             return urlEncode(key) + "=" + urlEncode(obj[key]);
-        }).join("&")) : originalQuery;
+        })).join("&")) : originalQuery;
         var obj;
     }
     function extendUrl(url, options) {
@@ -2862,9 +2952,9 @@
         handler = once(handler);
         for (var _i8 = 0; _i8 < eventNames.length; _i8++) element.addEventListener(eventNames[_i8], handler);
         return {
-            cancel: once(function() {
+            cancel: once((function() {
                 for (var _i10 = 0; _i10 < eventNames.length; _i10++) element.removeEventListener(eventNames[_i10], handler);
-            })
+            }))
         };
     }
     var VENDOR_PREFIXES = [ "webkit", "moz", "ms", "o" ];
@@ -2874,10 +2964,10 @@
     }
     var CSSRule = window.CSSRule, KEYFRAMES_RULE = CSSRule.KEYFRAMES_RULE || CSSRule.WEBKIT_KEYFRAMES_RULE || CSSRule.MOZ_KEYFRAMES_RULE || CSSRule.O_KEYFRAMES_RULE || CSSRule.MS_KEYFRAMES_RULE, ANIMATION_START_EVENTS = [ "animationstart", "webkitAnimationStart", "oAnimationStart", "MSAnimationStart" ], ANIMATION_END_EVENTS = [ "animationend", "webkitAnimationEnd", "oAnimationEnd", "MSAnimationEnd" ];
     function animate(element, name, clean, timeout) {
-        return void 0 === timeout && (timeout = 1e3), new zalgo_promise_src.a(function(resolve, reject) {
+        return void 0 === timeout && (timeout = 1e3), new zalgo_promise_src.a((function(resolve, reject) {
             var el = getElement(element);
             if (!el || !function(element, name) {
-                var stylesheets = el.ownerDocument.styleSheets;
+                var stylesheets = element.ownerDocument.styleSheets;
                 try {
                     for (var i = 0; i < stylesheets.length; i++) {
                         var cssRules = stylesheets[i].cssRules;
@@ -2890,23 +2980,23 @@
                     return !1;
                 }
                 return !1;
-            }(0, name)) return resolve();
+            }(el, name)) return resolve();
             var startTimeout, endTimeout, startEvent, endEvent, hasStarted = !1;
             function cleanUp() {
                 setVendorCSS(el, "animationName", ""), clearTimeout(startTimeout), clearTimeout(endTimeout), 
                 startEvent.cancel(), endEvent.cancel();
             }
-            startEvent = bindEvents(el, ANIMATION_START_EVENTS, function(event) {
+            startEvent = bindEvents(el, ANIMATION_START_EVENTS, (function(event) {
                 event.target === el && event.animationName === name && (clearTimeout(startTimeout), 
-                event.stopPropagation(), startEvent.cancel(), hasStarted = !0, endTimeout = setTimeout(function() {
+                event.stopPropagation(), startEvent.cancel(), hasStarted = !0, endTimeout = setTimeout((function() {
                     cleanUp(), resolve();
-                }, timeout));
-            }), endEvent = bindEvents(el, ANIMATION_END_EVENTS, function(event) {
+                }), timeout));
+            })), endEvent = bindEvents(el, ANIMATION_END_EVENTS, (function(event) {
                 if (event.target === el && event.animationName === name) return cleanUp(), "string" == typeof event.animationName && event.animationName !== name ? reject("Expected animation name to be " + name + ", found " + event.animationName) : resolve();
-            }), setVendorCSS(el, "animationName", name), startTimeout = setTimeout(function() {
+            })), setVendorCSS(el, "animationName", name), startTimeout = setTimeout((function() {
                 if (!hasStarted) return cleanUp(), resolve();
-            }, 200), clean && clean(cleanUp);
-        });
+            }), 200), clean && clean(cleanUp);
+        }));
     }
     var STYLE = {
         DISPLAY: {
@@ -2933,9 +3023,9 @@
         return showElement(element), animation;
     }
     function animateAndHide(element, name, clean) {
-        return animate(element, name, clean).then(function() {
+        return animate(element, name, clean).then((function() {
             hideElement(element);
-        });
+        }));
     }
     function addClass(element, name) {
         element.classList ? element.classList.add(name) : -1 === element.className.split(/\s+/).indexOf(name) && (element.className += " " + name);
@@ -2954,9 +3044,9 @@
         var interval, method, timeout;
         return handler = once(handler), isElementClosed(element) ? handler() : (method = function() {
             isElementClosed(element) && (interval.cancel(), handler());
-        }, 50, timeout = setTimeout(function runInterval() {
+        }, 50, timeout = setTimeout((function runInterval() {
             timeout = setTimeout(runInterval, 50), method.call();
-        }, 50), interval = {
+        }), 50), interval = {
             cancel: function() {
                 clearTimeout(timeout);
             }
@@ -2969,15 +3059,15 @@
     function prefetchPage(url) {
         return function(url) {
             return function(contentType, url) {
-                return new zalgo_promise_src.a(function(resolve, reject) {
-                    var req = new window.XMLHttpRequest();
+                return new zalgo_promise_src.a((function(resolve, reject) {
+                    var req = new window.XMLHttpRequest;
                     req.open("GET", url), req.setRequestHeader("Accept", "text/html"), req.send(null), 
                     req.onload = function() {
                         resolve(req.responseText);
                     }, req.onerror = function() {
                         return reject(new Error("prefetch failed"));
                     };
-                });
+                }));
             }(0, url);
         }(url);
     }
@@ -3004,11 +3094,11 @@
             setStyle(el, content, doc);
         } else if ("iframe" === name) {
             if (arguments.length > 3) throw new Error("Expected only single child node for iframe");
-            el.addEventListener("load", function() {
+            el.addEventListener("load", (function() {
                 var win = el.contentWindow;
                 if (!win) throw new Error("Expected frame to have contentWindow");
                 "string" == typeof content ? writeToWindow(win, content) : writeElementToWindow(win, content);
-            });
+            }));
         } else if ("script" === name) {
             if ("string" != typeof content) throw new TypeError("Expected " + name + " tag content to be string, got " + typeof content);
             if (arguments.length > 3) throw new Error("Expected only text content for " + name + " tag");
@@ -3022,20 +3112,20 @@
     function denodeify(method) {
         return function() {
             var self = this, args = [].slice.call(arguments);
-            return args.length >= method.length ? zalgo_promise_src.a.resolve(method.apply(self, args)) : new zalgo_promise_src.a(function(resolve, reject) {
-                args.push(function(err, result) {
+            return args.length >= method.length ? zalgo_promise_src.a.resolve(method.apply(self, args)) : new zalgo_promise_src.a((function(resolve, reject) {
+                args.push((function(err, result) {
                     if (err && !(err instanceof Error)) throw new Error("Passed non-Error object in callback: [ " + err + " ] -- callbacks should either be called with callback(new Error(...)) or callback(null, result).");
                     return err ? reject(err) : resolve(result);
-                }), method.apply(self, args);
-            });
+                })), method.apply(self, args);
+            }));
         };
     }
     function promisify(method) {
         return function() {
             var _this = this, _arguments = arguments;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 return method.apply(_this, _arguments);
-            });
+            }));
         };
     }
     function isPerc(str) {
@@ -3069,7 +3159,7 @@
             this.__memoized__[name];
         }, descriptor.value.displayName = name + ":memoized";
     }
-    var post_robot_src = __webpack_require__(13), client = __webpack_require__(4);
+    var post_robot_src = __webpack_require__(13), client = __webpack_require__(5);
     function setLogLevel(logLevel) {
         if (-1 === client.m.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
         client.e.logLevel = logLevel, post_robot_src.CONFIG.LOG_LEVEL = logLevel, window.LOG_LEVEL = logLevel;
@@ -3093,169 +3183,109 @@
         if (!global) throw new Error("Could not get local global");
         return global;
     }();
-    __webpack_require__.d(__webpack_exports__, "d", function() {
+    __webpack_require__.d(__webpack_exports__, "d", (function() {
         return appendChild;
-    }), __webpack_require__.d(__webpack_exports__, "u", function() {
+    })), __webpack_require__.d(__webpack_exports__, "u", (function() {
         return getElement;
-    }), __webpack_require__.d(__webpack_exports__, "n", function() {
+    })), __webpack_require__.d(__webpack_exports__, "n", (function() {
         return elementReady;
-    }), __webpack_require__.d(__webpack_exports__, "I", function() {
+    })), __webpack_require__.d(__webpack_exports__, "I", (function() {
         return popup;
-    }), __webpack_require__.d(__webpack_exports__, "Y", function() {
+    })), __webpack_require__.d(__webpack_exports__, "Y", (function() {
         return writeToWindow;
-    }), __webpack_require__.d(__webpack_exports__, "X", function() {
+    })), __webpack_require__.d(__webpack_exports__, "X", (function() {
         return writeElementToWindow;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+    })), __webpack_require__.d(__webpack_exports__, "e", (function() {
         return awaitFrameLoad;
-    }), __webpack_require__.d(__webpack_exports__, "f", function() {
+    })), __webpack_require__.d(__webpack_exports__, "f", (function() {
         return awaitFrameWindow;
-    }), __webpack_require__.d(__webpack_exports__, "y", function() {
+    })), __webpack_require__.d(__webpack_exports__, "y", (function() {
         return iframe;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
         return addEventListener;
-    }), __webpack_require__.d(__webpack_exports__, "r", function() {
+    })), __webpack_require__.d(__webpack_exports__, "r", (function() {
         return extendUrl;
-    }), __webpack_require__.d(__webpack_exports__, "Q", function() {
+    })), __webpack_require__.d(__webpack_exports__, "Q", (function() {
         return showElement;
-    }), __webpack_require__.d(__webpack_exports__, "x", function() {
+    })), __webpack_require__.d(__webpack_exports__, "x", (function() {
         return hideElement;
-    }), __webpack_require__.d(__webpack_exports__, "l", function() {
+    })), __webpack_require__.d(__webpack_exports__, "l", (function() {
         return destroyElement;
-    }), __webpack_require__.d(__webpack_exports__, "P", function() {
+    })), __webpack_require__.d(__webpack_exports__, "P", (function() {
         return showAndAnimate;
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
         return animateAndHide;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
         return addClass;
-    }), __webpack_require__.d(__webpack_exports__, "L", function() {
+    })), __webpack_require__.d(__webpack_exports__, "L", (function() {
         return removeClass;
-    }), __webpack_require__.d(__webpack_exports__, "t", function() {
+    })), __webpack_require__.d(__webpack_exports__, "t", (function() {
         return getCurrentScriptDir;
-    }), __webpack_require__.d(__webpack_exports__, "W", function() {
+    })), __webpack_require__.d(__webpack_exports__, "W", (function() {
         return watchElementForClose;
-    }), __webpack_require__.d(__webpack_exports__, "J", function() {
+    })), __webpack_require__.d(__webpack_exports__, "J", (function() {
         return prefetchPage;
-    }), __webpack_require__.d(__webpack_exports__, "C", function() {
+    })), __webpack_require__.d(__webpack_exports__, "C", (function() {
         return jsxDom;
-    }), __webpack_require__.d(__webpack_exports__, "F", function() {
+    })), __webpack_require__.d(__webpack_exports__, "F", (function() {
         return noop;
-    }), __webpack_require__.d(__webpack_exports__, "H", function() {
+    })), __webpack_require__.d(__webpack_exports__, "H", (function() {
         return once;
-    }), __webpack_require__.d(__webpack_exports__, "D", function() {
+    })), __webpack_require__.d(__webpack_exports__, "D", (function() {
         return memoize;
-    }), __webpack_require__.d(__webpack_exports__, "i", function() {
+    })), __webpack_require__.d(__webpack_exports__, "i", (function() {
         return debounce;
-    }), __webpack_require__.d(__webpack_exports__, "N", function() {
+    })), __webpack_require__.d(__webpack_exports__, "N", (function() {
         return serializeFunctions;
-    }), __webpack_require__.d(__webpack_exports__, "k", function() {
+    })), __webpack_require__.d(__webpack_exports__, "k", (function() {
         return deserializeFunctions;
-    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+    })), __webpack_require__.d(__webpack_exports__, "j", (function() {
         return denodeify;
-    }), __webpack_require__.d(__webpack_exports__, "K", function() {
+    })), __webpack_require__.d(__webpack_exports__, "K", (function() {
         return promisify;
-    }), __webpack_require__.d(__webpack_exports__, "h", function() {
+    })), __webpack_require__.d(__webpack_exports__, "h", (function() {
         return dasherizeToCamel;
-    }), __webpack_require__.d(__webpack_exports__, "q", function() {
+    })), __webpack_require__.d(__webpack_exports__, "q", (function() {
         return extend;
-    }), __webpack_require__.d(__webpack_exports__, "U", function() {
+    })), __webpack_require__.d(__webpack_exports__, "U", (function() {
         return uniqueID;
-    }), __webpack_require__.d(__webpack_exports__, "s", function() {
+    })), __webpack_require__.d(__webpack_exports__, "s", (function() {
         return get;
-    }), __webpack_require__.d(__webpack_exports__, "M", function() {
+    })), __webpack_require__.d(__webpack_exports__, "M", (function() {
         return replaceObject;
-    }), __webpack_require__.d(__webpack_exports__, "g", function() {
+    })), __webpack_require__.d(__webpack_exports__, "g", (function() {
         return copyProp;
-    }), __webpack_require__.d(__webpack_exports__, "m", function() {
+    })), __webpack_require__.d(__webpack_exports__, "m", (function() {
         return dotify;
-    }), __webpack_require__.d(__webpack_exports__, "R", function() {
+    })), __webpack_require__.d(__webpack_exports__, "R", (function() {
         return stringify;
-    }), __webpack_require__.d(__webpack_exports__, "S", function() {
+    })), __webpack_require__.d(__webpack_exports__, "S", (function() {
         return stringifyError;
-    }), __webpack_require__.d(__webpack_exports__, "p", function() {
+    })), __webpack_require__.d(__webpack_exports__, "p", (function() {
         return eventEmitter;
-    }), __webpack_require__.d(__webpack_exports__, "A", function() {
+    })), __webpack_require__.d(__webpack_exports__, "A", (function() {
         return isPerc;
-    }), __webpack_require__.d(__webpack_exports__, "B", function() {
+    })), __webpack_require__.d(__webpack_exports__, "B", (function() {
         return isPx;
-    }), __webpack_require__.d(__webpack_exports__, "T", function() {
+    })), __webpack_require__.d(__webpack_exports__, "T", (function() {
         return toCSS;
-    }), __webpack_require__.d(__webpack_exports__, "G", function() {
+    })), __webpack_require__.d(__webpack_exports__, "G", (function() {
         return normalizeDimension;
-    }), __webpack_require__.d(__webpack_exports__, "E", function() {
+    })), __webpack_require__.d(__webpack_exports__, "E", (function() {
         return memoized;
-    }), __webpack_require__.d(__webpack_exports__, "O", function() {
+    })), __webpack_require__.d(__webpack_exports__, "O", (function() {
         return setLogLevel;
-    }), __webpack_require__.d(__webpack_exports__, "z", function() {
+    })), __webpack_require__.d(__webpack_exports__, "z", (function() {
         return info;
-    }), __webpack_require__.d(__webpack_exports__, "V", function() {
+    })), __webpack_require__.d(__webpack_exports__, "V", (function() {
         return warn;
-    }), __webpack_require__.d(__webpack_exports__, "o", function() {
+    })), __webpack_require__.d(__webpack_exports__, "o", (function() {
         return logger_error;
-    }), __webpack_require__.d(__webpack_exports__, "w", function() {
+    })), __webpack_require__.d(__webpack_exports__, "w", (function() {
         return globalFor;
-    }), __webpack_require__.d(__webpack_exports__, "v", function() {
+    })), __webpack_require__.d(__webpack_exports__, "v", (function() {
         return global;
-    });
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "b", function() {
-        return jsxToHTML;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
-        return jsxRender;
-    });
-    var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22), _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
-    function htmlEncode(html) {
-        return void 0 === html && (html = ""), html.toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").replace(/\//g, "&#x2F;");
-    }
-    var JsxHTMLNode = function() {
-        function JsxHTMLNode(name, props, children) {
-            this.name = void 0, this.props = void 0, this.children = void 0, this.name = name, 
-            this.props = props, this.children = children;
-        }
-        var _proto = JsxHTMLNode.prototype;
-        return _proto.toString = function() {
-            return "<" + this.name + (this.props ? " " : "") + (this.props ? this.propsToString() : "") + ">" + this.childrenToString() + "</" + this.name + ">";
-        }, _proto.propsToString = function() {
-            var props = this.props;
-            return props ? Object.keys(props).filter(function(key) {
-                return "innerHTML" !== key && props && !1 !== props[key];
-            }).map(function(key) {
-                return props && !0 === props[key] ? "" + htmlEncode(key) : props ? htmlEncode(key) + '="' + htmlEncode(props[key]) + '"' : "";
-            }).join(" ") : "";
-        }, _proto.childrenToString = function() {
-            if (this.props && this.props.innerHTML) return this.props.innerHTML;
-            if (!this.children) return "";
-            var result = "";
-            return function iterate(children) {
-                for (var _i2 = 0; _i2 < children.length; _i2++) {
-                    var child = children[_i2];
-                    null != child && (Array.isArray(child) ? iterate(child) : result += child instanceof JsxHTMLNode ? child.toString() : htmlEncode(child));
-                }
-            }(this.children), result;
-        }, JsxHTMLNode;
-    }(), JsxHTMLNodeContainer = function(_JsxHTMLNode) {
-        function JsxHTMLNodeContainer(children) {
-            return _JsxHTMLNode.call(this, "", {}, children) || this;
-        }
-        return Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__.a)(JsxHTMLNodeContainer, _JsxHTMLNode), 
-        JsxHTMLNodeContainer.prototype.toString = function() {
-            return this.childrenToString();
-        }, JsxHTMLNodeContainer;
-    }(JsxHTMLNode);
-    function jsxToHTML(name, props) {
-        for (var _len = arguments.length, children = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) children[_key - 2] = arguments[_key];
-        return new JsxHTMLNode(name, props, children);
-    }
-    function jsxRender(template, renderers) {
-        var nodes = Object(_util__WEBPACK_IMPORTED_MODULE_1__.n)(template, /\{\s*([a-z]+)(?::\s*([^} ]+))?\s*\}|([^${}]+)/g, function(match, type, value, text) {
-            if (type) {
-                if (!renderers[type]) throw new Error("Can not render type: " + type);
-                return renderers[type](value);
-            }
-            return text && text.trim() && renderers.text ? /<br>/.test(text) ? renderers.break(text) : renderers.text(text) : text;
-        });
-        return new JsxHTMLNodeContainer(nodes);
-    }
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     function isRegex(item) {
@@ -3549,9 +3579,9 @@
             if (isRegex(origin)) return !1;
             if (Array.isArray(origin)) return !1;
         }
-        return isRegex(pattern) ? isRegex(origin) ? pattern.toString() === origin.toString() : !Array.isArray(origin) && Boolean(origin.match(pattern)) : !!Array.isArray(pattern) && (Array.isArray(origin) ? JSON.stringify(pattern) === JSON.stringify(origin) : !isRegex(origin) && pattern.some(function(subpattern) {
+        return isRegex(pattern) ? isRegex(origin) ? pattern.toString() === origin.toString() : !Array.isArray(origin) && Boolean(origin.match(pattern)) : !!Array.isArray(pattern) && (Array.isArray(origin) ? JSON.stringify(pattern) === JSON.stringify(origin) : !isRegex(origin) && pattern.some((function(subpattern) {
             return matchDomain(subpattern, origin);
-        }));
+        })));
     }
     function stringifyDomainPattern(pattern) {
         return Array.isArray(pattern) ? "(" + pattern.join(" | ") + ")" : isRegex(pattern) ? "RegExp(" + pattern.toString() : pattern.toString();
@@ -3609,104 +3639,104 @@
         }
         return !1;
     }
-    __webpack_require__.d(__webpack_exports__, "m", function() {
+    __webpack_require__.d(__webpack_exports__, "m", (function() {
         return getParent;
-    }), __webpack_require__.d(__webpack_exports__, "l", function() {
+    })), __webpack_require__.d(__webpack_exports__, "l", (function() {
         return getOpener;
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
         return getActualDomain;
-    }), __webpack_require__.d(__webpack_exports__, "g", function() {
+    })), __webpack_require__.d(__webpack_exports__, "g", (function() {
         return getDomain;
-    }), __webpack_require__.d(__webpack_exports__, "p", function() {
+    })), __webpack_require__.d(__webpack_exports__, "p", (function() {
         return isActuallySameDomain;
-    }), __webpack_require__.d(__webpack_exports__, "u", function() {
+    })), __webpack_require__.d(__webpack_exports__, "u", (function() {
         return isSameDomain;
-    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+    })), __webpack_require__.d(__webpack_exports__, "j", (function() {
         return getFrames;
-    }), __webpack_require__.d(__webpack_exports__, "n", function() {
+    })), __webpack_require__.d(__webpack_exports__, "n", (function() {
         return getTop;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
         return getAllFramesInWindow;
-    }), __webpack_require__.d(__webpack_exports__, "w", function() {
+    })), __webpack_require__.d(__webpack_exports__, "w", (function() {
         return isTop;
-    }), __webpack_require__.d(__webpack_exports__, "y", function() {
+    })), __webpack_require__.d(__webpack_exports__, "y", (function() {
         return isWindowClosed;
-    }), __webpack_require__.d(__webpack_exports__, "z", function() {
+    })), __webpack_require__.d(__webpack_exports__, "z", (function() {
         return linkFrameWindow;
-    }), __webpack_require__.d(__webpack_exports__, "o", function() {
+    })), __webpack_require__.d(__webpack_exports__, "o", (function() {
         return getUserAgent;
-    }), __webpack_require__.d(__webpack_exports__, "i", function() {
+    })), __webpack_require__.d(__webpack_exports__, "i", (function() {
         return getFrameByName;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
         return findFrameByName;
-    }), __webpack_require__.d(__webpack_exports__, "s", function() {
+    })), __webpack_require__.d(__webpack_exports__, "s", (function() {
         return isOpener;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+    })), __webpack_require__.d(__webpack_exports__, "e", (function() {
         return getAncestor;
-    }), __webpack_require__.d(__webpack_exports__, "q", function() {
+    })), __webpack_require__.d(__webpack_exports__, "q", (function() {
         return isAncestor;
-    }), __webpack_require__.d(__webpack_exports__, "t", function() {
+    })), __webpack_require__.d(__webpack_exports__, "t", (function() {
         return isPopup;
-    }), __webpack_require__.d(__webpack_exports__, "r", function() {
+    })), __webpack_require__.d(__webpack_exports__, "r", (function() {
         return isIframe;
-    }), __webpack_require__.d(__webpack_exports__, "f", function() {
+    })), __webpack_require__.d(__webpack_exports__, "f", (function() {
         return getDistanceFromTop;
-    }), __webpack_require__.d(__webpack_exports__, "k", function() {
+    })), __webpack_require__.d(__webpack_exports__, "k", (function() {
         return getNthParentFromTop;
-    }), __webpack_require__.d(__webpack_exports__, "v", function() {
+    })), __webpack_require__.d(__webpack_exports__, "v", (function() {
         return isSameTopWindow;
-    }), __webpack_require__.d(__webpack_exports__, "A", function() {
+    })), __webpack_require__.d(__webpack_exports__, "A", (function() {
         return matchDomain;
-    }), __webpack_require__.d(__webpack_exports__, "C", function() {
+    })), __webpack_require__.d(__webpack_exports__, "C", (function() {
         return stringifyDomainPattern;
-    }), __webpack_require__.d(__webpack_exports__, "h", function() {
+    })), __webpack_require__.d(__webpack_exports__, "h", (function() {
         return getDomainFromUrl;
-    }), __webpack_require__.d(__webpack_exports__, "B", function() {
+    })), __webpack_require__.d(__webpack_exports__, "B", (function() {
         return onCloseWindow;
-    }), __webpack_require__.d(__webpack_exports__, "x", function() {
+    })), __webpack_require__.d(__webpack_exports__, "x", (function() {
         return isWindow;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
         return PROTOCOL;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.r(__webpack_exports__), __webpack_require__.d(__webpack_exports__, "ZOID", function() {
+    __webpack_require__.r(__webpack_exports__), __webpack_require__.d(__webpack_exports__, "ZOID", (function() {
         return ZOID;
-    }), __webpack_require__.d(__webpack_exports__, "__ZOID__", function() {
+    })), __webpack_require__.d(__webpack_exports__, "__ZOID__", (function() {
         return __ZOID__;
-    }), __webpack_require__.d(__webpack_exports__, "POST_MESSAGE", function() {
+    })), __webpack_require__.d(__webpack_exports__, "POST_MESSAGE", (function() {
         return POST_MESSAGE;
-    }), __webpack_require__.d(__webpack_exports__, "PROP_TYPES", function() {
+    })), __webpack_require__.d(__webpack_exports__, "PROP_TYPES", (function() {
         return PROP_TYPES;
-    }), __webpack_require__.d(__webpack_exports__, "INITIAL_PROPS", function() {
+    })), __webpack_require__.d(__webpack_exports__, "INITIAL_PROPS", (function() {
         return INITIAL_PROPS;
-    }), __webpack_require__.d(__webpack_exports__, "WINDOW_REFERENCES", function() {
+    })), __webpack_require__.d(__webpack_exports__, "WINDOW_REFERENCES", (function() {
         return WINDOW_REFERENCES;
-    }), __webpack_require__.d(__webpack_exports__, "PROP_TYPES_LIST", function() {
+    })), __webpack_require__.d(__webpack_exports__, "PROP_TYPES_LIST", (function() {
         return PROP_TYPES_LIST;
-    }), __webpack_require__.d(__webpack_exports__, "CONTEXT_TYPES", function() {
+    })), __webpack_require__.d(__webpack_exports__, "CONTEXT_TYPES", (function() {
         return CONTEXT_TYPES;
-    }), __webpack_require__.d(__webpack_exports__, "CLASS_NAMES", function() {
+    })), __webpack_require__.d(__webpack_exports__, "CLASS_NAMES", (function() {
         return CLASS_NAMES;
-    }), __webpack_require__.d(__webpack_exports__, "EVENTS", function() {
+    })), __webpack_require__.d(__webpack_exports__, "EVENTS", (function() {
         return EVENTS;
-    }), __webpack_require__.d(__webpack_exports__, "ATTRIBUTES", function() {
+    })), __webpack_require__.d(__webpack_exports__, "ATTRIBUTES", (function() {
         return ATTRIBUTES;
-    }), __webpack_require__.d(__webpack_exports__, "ANIMATION_NAMES", function() {
+    })), __webpack_require__.d(__webpack_exports__, "ANIMATION_NAMES", (function() {
         return ANIMATION_NAMES;
-    }), __webpack_require__.d(__webpack_exports__, "EVENT_NAMES", function() {
+    })), __webpack_require__.d(__webpack_exports__, "EVENT_NAMES", (function() {
         return EVENT_NAMES;
-    }), __webpack_require__.d(__webpack_exports__, "CLOSE_REASONS", function() {
+    })), __webpack_require__.d(__webpack_exports__, "CLOSE_REASONS", (function() {
         return CLOSE_REASONS;
-    }), __webpack_require__.d(__webpack_exports__, "CONTEXT_TYPES_LIST", function() {
+    })), __webpack_require__.d(__webpack_exports__, "CONTEXT_TYPES_LIST", (function() {
         return CONTEXT_TYPES_LIST;
-    }), __webpack_require__.d(__webpack_exports__, "DELEGATE", function() {
+    })), __webpack_require__.d(__webpack_exports__, "DELEGATE", (function() {
         return DELEGATE;
-    }), __webpack_require__.d(__webpack_exports__, "WILDCARD", function() {
+    })), __webpack_require__.d(__webpack_exports__, "WILDCARD", (function() {
         return WILDCARD;
-    }), __webpack_require__.d(__webpack_exports__, "DEFAULT_DIMENSIONS", function() {
+    })), __webpack_require__.d(__webpack_exports__, "DEFAULT_DIMENSIONS", (function() {
         return DEFAULT_DIMENSIONS;
-    });
+    }));
     var ZOID = "zoid", __ZOID__ = "__" + ZOID + "__", POST_MESSAGE = {
         INIT: ZOID + "_init",
         PROPS: ZOID + "_props",
@@ -3734,9 +3764,9 @@
         TOP: "top",
         PARENT: "parent",
         GLOBAL: "global"
-    }, PROP_TYPES_LIST = Object.keys(PROP_TYPES).map(function(key) {
+    }, PROP_TYPES_LIST = Object.keys(PROP_TYPES).map((function(key) {
         return PROP_TYPES[key];
-    }), CONTEXT_TYPES = {
+    })), CONTEXT_TYPES = {
         IFRAME: "iframe",
         POPUP: "popup"
     }, CLASS_NAMES = {
@@ -3763,9 +3793,9 @@
         CLOSE_DETECTED: "close_detected",
         USER_CLOSED: "user_closed",
         PARENT_CLOSE_DETECTED: "parent_close_detected"
-    }, CONTEXT_TYPES_LIST = Object.keys(CONTEXT_TYPES).map(function(key) {
+    }, CONTEXT_TYPES_LIST = Object.keys(CONTEXT_TYPES).map((function(key) {
         return CONTEXT_TYPES[key];
-    }), DELEGATE = {
+    })), DELEGATE = {
         CALL_ORIGINAL: "call_original",
         CALL_DELEGATE: "call_delegate"
     }, WILDCARD = "*", DEFAULT_DIMENSIONS = {
@@ -3774,9 +3804,9 @@
     };
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return global;
-    });
+    }));
     var _conf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10), global = window[_conf__WEBPACK_IMPORTED_MODULE_0__.b.WINDOW_PROPS.POSTROBOT] = window[_conf__WEBPACK_IMPORTED_MODULE_0__.b.WINDOW_PROPS.POSTROBOT] || {};
     global.registerSelf = function() {};
 }, function(module, __webpack_exports__, __webpack_require__) {
@@ -3825,9 +3855,9 @@
         METHOD: "postrobot_method",
         HELLO: "postrobot_hello",
         OPEN_TUNNEL: "postrobot_open_tunnel"
-    }, CONFIG = (Object.keys(POST_MESSAGE_NAMES).map(function(key) {
+    }, CONFIG = (Object.keys(POST_MESSAGE_NAMES).map((function(key) {
         return POST_MESSAGE_NAMES[key];
-    }), {
+    })), {
         ALLOW_POSTMESSAGE_POPUP: !("__ALLOW_POSTMESSAGE_POPUP__" in window) || window.__ALLOW_POSTMESSAGE_POPUP__,
         BRIDGE_TIMEOUT: 5e3,
         CHILD_WINDOW_TIMEOUT: 5e3,
@@ -3839,11 +3869,11 @@
         ALLOW_SAME_ORIGIN: !1
     });
     0 === window.location.href.indexOf(CONSTANTS.FILE_PROTOCOL) && (CONFIG.ALLOW_POSTMESSAGE_POPUP = !0), 
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return CONFIG;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
         return CONSTANTS;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     function _extends() {
@@ -3855,54 +3885,54 @@
             return target;
         }).apply(this, arguments);
     }
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return _extends;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "i", function() {
+    __webpack_require__.d(__webpack_exports__, "i", (function() {
         return memoize;
-    }), __webpack_require__.d(__webpack_exports__, "g", function() {
+    })), __webpack_require__.d(__webpack_exports__, "g", (function() {
         return match;
-    }), __webpack_require__.d(__webpack_exports__, "o", function() {
+    })), __webpack_require__.d(__webpack_exports__, "o", (function() {
         return safeJSON;
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
         return eventEmitter;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
         return awaitKey;
-    }), __webpack_require__.d(__webpack_exports__, "q", function() {
+    })), __webpack_require__.d(__webpack_exports__, "q", (function() {
         return stringifyError;
-    }), __webpack_require__.d(__webpack_exports__, "r", function() {
+    })), __webpack_require__.d(__webpack_exports__, "r", (function() {
         return stringifyErrorMessage;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
         return domainMatches;
-    }), __webpack_require__.d(__webpack_exports__, "l", function() {
+    })), __webpack_require__.d(__webpack_exports__, "l", (function() {
         return patchMethod;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
         return extend;
-    }), __webpack_require__.d(__webpack_exports__, "p", function() {
+    })), __webpack_require__.d(__webpack_exports__, "p", (function() {
         return sortBy;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+    })), __webpack_require__.d(__webpack_exports__, "e", (function() {
         return identity;
-    }), __webpack_require__.d(__webpack_exports__, "t", function() {
+    })), __webpack_require__.d(__webpack_exports__, "t", (function() {
         return values;
-    }), __webpack_require__.d(__webpack_exports__, "m", function() {
+    })), __webpack_require__.d(__webpack_exports__, "m", (function() {
         return perc;
-    }), __webpack_require__.d(__webpack_exports__, "h", function() {
+    })), __webpack_require__.d(__webpack_exports__, "h", (function() {
         return max;
-    }), __webpack_require__.d(__webpack_exports__, "n", function() {
+    })), __webpack_require__.d(__webpack_exports__, "n", (function() {
         return regexMap;
-    });
-    var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1), belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(16);
-    __webpack_require__.d(__webpack_exports__, "j", function() {
+    }));
+    var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2), belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(16);
+    __webpack_require__.d(__webpack_exports__, "j", (function() {
         return belter_src__WEBPACK_IMPORTED_MODULE_1__.d;
-    }), __webpack_require__.d(__webpack_exports__, "k", function() {
+    })), __webpack_require__.d(__webpack_exports__, "k", (function() {
         return belter_src__WEBPACK_IMPORTED_MODULE_1__.f;
-    }), __webpack_require__.d(__webpack_exports__, "s", function() {
+    })), __webpack_require__.d(__webpack_exports__, "s", (function() {
         return belter_src__WEBPACK_IMPORTED_MODULE_1__.g;
-    }), __webpack_require__.d(__webpack_exports__, "f", function() {
+    })), __webpack_require__.d(__webpack_exports__, "f", (function() {
         return belter_src__WEBPACK_IMPORTED_MODULE_1__.c;
-    });
+    }));
     var moduleGlobal = {};
     function getGlobal() {
         return "undefined" != typeof window ? window : "undefined" != typeof window ? window : moduleGlobal;
@@ -3933,7 +3963,7 @@
         if (regmatch) return regmatch[1];
     }
     function safeJSON(item) {
-        return JSON.stringify(item, function(key, val) {
+        return JSON.stringify(item, (function(key, val) {
             if ("function" == typeof val) return "<" + typeof val + ">";
             try {
                 JSON.stringify(val);
@@ -3941,7 +3971,7 @@
                 return "<" + typeof val + ">";
             }
             return val;
-        });
+        }));
     }
     function eventEmitter() {
         var listeners = [];
@@ -3954,9 +3984,9 @@
                 };
             },
             once: function(method) {
-                var listener = this.listen(function() {
+                var listener = this.listen((function() {
                     method.apply(null, arguments), listener.cancel();
-                });
+                }));
             },
             trigger: function() {
                 for (var _i2 = 0; _i2 < listeners.length; _i2++) {
@@ -3967,7 +3997,7 @@
         };
     }
     function awaitKey(obj, key) {
-        return new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__.a(function(resolve) {
+        return new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__.a((function(resolve) {
             var value = obj[key];
             if (value) return resolve(value);
             delete obj[key], Object.defineProperty(obj, key, {
@@ -3979,7 +4009,7 @@
                     return value;
                 }
             });
-        });
+        }));
     }
     function stringifyError(err, level) {
         if (void 0 === level && (level = 1), level >= 3) return "stringifyError stack overflow";
@@ -4026,9 +4056,9 @@
         return obj;
     }
     function sortBy(arr, order) {
-        return arr.sort(function(a, b) {
+        return arr.sort((function(a, b) {
             return order.indexOf(a) - order.indexOf(b);
-        });
+        }));
     }
     function identity(item) {
         return item;
@@ -4046,68 +4076,68 @@
     }
     function regexMap(str, regex, handler) {
         var results = [];
-        return str.replace(regex, function() {
+        return str.replace(regex, (function() {
             results.push(handler.apply(null, arguments));
-        }), results;
+        })), results;
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
     var interface_namespaceObject = {};
-    __webpack_require__.r(interface_namespaceObject), __webpack_require__.d(interface_namespaceObject, "cleanUpWindow", function() {
+    __webpack_require__.r(interface_namespaceObject), __webpack_require__.d(interface_namespaceObject, "cleanUpWindow", (function() {
         return cleanUpWindow;
-    }), __webpack_require__.d(interface_namespaceObject, "Promise", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "Promise", (function() {
         return zalgo_promise_src.a;
-    }), __webpack_require__.d(interface_namespaceObject, "bridge", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "bridge", (function() {
         return bridge;
-    }), __webpack_require__.d(interface_namespaceObject, "init", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "init", (function() {
         return init;
-    }), __webpack_require__.d(interface_namespaceObject, "parent", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "parent", (function() {
         return public_parent;
-    }), __webpack_require__.d(interface_namespaceObject, "request", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "request", (function() {
         return request;
-    }), __webpack_require__.d(interface_namespaceObject, "send", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "send", (function() {
         return _send;
-    }), __webpack_require__.d(interface_namespaceObject, "sendToParent", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "sendToParent", (function() {
         return sendToParent;
-    }), __webpack_require__.d(interface_namespaceObject, "client", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "client", (function() {
         return client;
-    }), __webpack_require__.d(interface_namespaceObject, "listen", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "listen", (function() {
         return listen;
-    }), __webpack_require__.d(interface_namespaceObject, "on", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "on", (function() {
         return _on;
-    }), __webpack_require__.d(interface_namespaceObject, "once", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "once", (function() {
         return once;
-    }), __webpack_require__.d(interface_namespaceObject, "listener", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "listener", (function() {
         return server_listener;
-    }), __webpack_require__.d(interface_namespaceObject, "CONFIG", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "CONFIG", (function() {
         return conf.a;
-    }), __webpack_require__.d(interface_namespaceObject, "CONSTANTS", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "CONSTANTS", (function() {
         return conf.b;
-    }), __webpack_require__.d(interface_namespaceObject, "disable", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "disable", (function() {
         return disable;
-    });
-    var lib = __webpack_require__(14), src = __webpack_require__(7), conf = __webpack_require__(10), global = __webpack_require__(9), esm_extends = __webpack_require__(11), zalgo_promise_src = __webpack_require__(1), SEND_MESSAGE_STRATEGIES = {};
+    }));
+    var lib = __webpack_require__(14), src = __webpack_require__(7), conf = __webpack_require__(10), global = __webpack_require__(9), esm_extends = __webpack_require__(11), zalgo_promise_src = __webpack_require__(2), SEND_MESSAGE_STRATEGIES = {};
     SEND_MESSAGE_STRATEGIES[conf.b.SEND_STRATEGIES.POST_MESSAGE] = function(win, serializedMessage, domain) {
         try {
             __webpack_require__(43).emulateIERestrictions(window, win);
         } catch (err) {
             return;
         }
-        (Array.isArray(domain) ? domain : "string" == typeof domain ? [ domain ] : [ conf.b.WILDCARD ]).map(function(dom) {
+        (Array.isArray(domain) ? domain : "string" == typeof domain ? [ domain ] : [ conf.b.WILDCARD ]).map((function(dom) {
             if (0 === dom.indexOf(conf.b.MOCK_PROTOCOL)) {
                 if (window.location.protocol === conf.b.FILE_PROTOCOL) return conf.b.WILDCARD;
                 if (!Object(src.p)(win)) throw new Error("Attempting to send messsage to mock domain " + dom + ", but window is actually cross-domain");
                 return Object(src.c)(win);
             }
             return 0 === dom.indexOf(conf.b.FILE_PROTOCOL) ? conf.b.WILDCARD : dom;
-        }).forEach(function(dom) {
+        })).forEach((function(dom) {
             return win.postMessage(serializedMessage, dom);
-        });
+        }));
     };
     var _require = __webpack_require__(23), sendBridgeMessage = _require.sendBridgeMessage, needsBridgeForBrowser = _require.needsBridgeForBrowser, isBridge = _require.isBridge;
     function sendMessage(win, message, domain) {
-        return zalgo_promise_src.a.try(function() {
+        return zalgo_promise_src.a.try((function() {
             var _jsonStringify;
             if (message = function(win, message, options) {
                 void 0 === options && (options = {});
@@ -4124,20 +4154,20 @@
             if (Object(src.y)(win)) throw new Error("Window is closed");
             var messages = [], serializedMessage = Object(lib.g)(((_jsonStringify = {})[conf.b.WINDOW_PROPS.POSTROBOT] = message, 
             _jsonStringify), null, 2);
-            return zalgo_promise_src.a.map(Object.keys(SEND_MESSAGE_STRATEGIES), function(strategyName) {
-                return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.map(Object.keys(SEND_MESSAGE_STRATEGIES), (function(strategyName) {
+                return zalgo_promise_src.a.try((function() {
                     if (!conf.a.ALLOWED_POST_MESSAGE_METHODS[strategyName]) throw new Error("Strategy disallowed: " + strategyName);
                     return SEND_MESSAGE_STRATEGIES[strategyName](win, serializedMessage, domain);
-                }).then(function() {
+                })).then((function() {
                     return messages.push(strategyName + ": success"), !0;
-                }, function(err) {
+                }), (function(err) {
                     return messages.push(strategyName + ": " + Object(lib.p)(err) + "\n"), !1;
-                });
-            }).then(function(results) {
+                }));
+            })).then((function(results) {
                 var success = results.some(Boolean), status = message.type + " " + message.name + " " + (success ? "success" : "error") + ":\n  - " + messages.join("\n  - ") + "\n";
                 if (!success) throw new Error(status);
-            });
-        });
+            }));
+        }));
     }
     SEND_MESSAGE_STRATEGIES[conf.b.SEND_STRATEGIES.BRIDGE] = function(win, serializedMessage, domain) {
         if (needsBridgeForBrowser() || isBridge()) {
@@ -4160,7 +4190,7 @@
     };
     var cross_domain_safe_weakmap_src = __webpack_require__(17);
     global.a.responseListeners = global.a.responseListeners || {}, global.a.requestListeners = global.a.requestListeners || {}, 
-    global.a.WINDOW_WILDCARD = global.a.WINDOW_WILDCARD || new function() {}(), global.a.erroredResponseListeners = global.a.erroredResponseListeners || {};
+    global.a.WINDOW_WILDCARD = global.a.WINDOW_WILDCARD || new function() {}, global.a.erroredResponseListeners = global.a.erroredResponseListeners || {};
     var _RECEIVE_MESSAGE_TYPE, __DOMAIN_REGEX__ = "__domain_regex__";
     function getResponseListener(hash) {
         return global.a.responseListeners[hash];
@@ -4212,7 +4242,7 @@
         }
         return zalgo_promise_src.a.all([ respond({
             type: conf.b.POST_MESSAGE_TYPE.ACK
-        }), zalgo_promise_src.a.try(function() {
+        }), zalgo_promise_src.a.try((function() {
             if (!options) throw new Error("No handler found for post message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
             if (!Object(src.A)(options.domain, origin)) throw new Error("Request origin " + origin + " does not match domain " + options.domain.toString());
             return options.handler({
@@ -4220,13 +4250,13 @@
                 origin: origin,
                 data: message.data
             });
-        }).then(function(data) {
+        })).then((function(data) {
             return respond({
                 type: conf.b.POST_MESSAGE_TYPE.RESPONSE,
                 ack: conf.b.POST_MESSAGE_ACK.SUCCESS,
                 data: data
             });
-        }, function(err) {
+        }), (function(err) {
             var error = Object(lib.p)(err).replace(/^Error: /, "");
             return respond({
                 type: conf.b.POST_MESSAGE_TYPE.RESPONSE,
@@ -4234,10 +4264,10 @@
                 error: error,
                 code: err.code
             });
-        }) ]).then(lib.j).catch(function(err) {
+        })) ]).then(lib.j).catch((function(err) {
             if (options && options.handleError) return options.handleError(err);
             throw err;
-        });
+        }));
     }, _RECEIVE_MESSAGE_TYPE[conf.b.POST_MESSAGE_TYPE.RESPONSE] = function(source, origin, message) {
         if (!isResponseListenerErrored(message.hash)) {
             var options = getResponseListener(message.hash);
@@ -4297,7 +4327,7 @@
         receiveMessage(messageEvent);
     }
     function request(options) {
-        return zalgo_promise_src.a.try(function() {
+        return zalgo_promise_src.a.try((function() {
             if (!options.name) throw new Error("Expected options.name");
             var targetWindow, domain, name = options.name;
             if ("string" == typeof options.window) {
@@ -4318,12 +4348,12 @@
             if (Object(src.y)(win)) throw new Error("Target window is closed");
             var hasResult = !1, requestPromises = global.a.requestPromises.get(win);
             requestPromises || global.a.requestPromises.set(win, requestPromises = []);
-            var requestPromise = zalgo_promise_src.a.try(function() {
+            var requestPromise = zalgo_promise_src.a.try((function() {
                 if (Object(src.q)(window, win)) return Object(lib.k)(win, options.timeout || conf.a.CHILD_WINDOW_TIMEOUT);
-            }).then(function(_temp) {
+            })).then((function(_temp) {
                 var origin = (void 0 === _temp ? {} : _temp).origin;
                 if (Object(lib.e)(domain) && !origin) return Object(lib.n)(win);
-            }).then(function(_temp2) {
+            })).then((function(_temp2) {
                 var origin = (void 0 === _temp2 ? {} : _temp2).origin;
                 if (Object(lib.e)(domain)) {
                     if (!Object(src.A)(domain, origin)) throw new Error("Remote window domain " + origin + " does not match regex: " + domain.toString());
@@ -4331,7 +4361,7 @@
                 }
                 if ("string" != typeof domain && !Array.isArray(domain)) throw new TypeError("Expected domain to be a string or array");
                 var actualDomain = domain;
-                return new zalgo_promise_src.a(function(resolve, reject) {
+                return new zalgo_promise_src.a((function(resolve, reject) {
                     var responseListener;
                     if (options.fireAndForget || function(hash, listener) {
                         global.a.responseListeners[hash] = listener;
@@ -4351,7 +4381,7 @@
                         fireAndForget: options.fireAndForget
                     }, actualDomain).catch(reject), options.fireAndForget) return resolve();
                     var ackTimeout = conf.a.ACK_TIMEOUT, resTimeout = options.timeout || conf.a.RES_TIMEOUT, cycleTime = 100;
-                    setTimeout(function cycle() {
+                    setTimeout((function cycle() {
                         if (!hasResult) {
                             if (Object(src.y)(win)) return reject(responseListener.ack ? new Error("Window closed for " + name + " before response") : new Error("Window closed for " + name + " before ack"));
                             if (ackTimeout = Math.max(ackTimeout - cycleTime, 0), -1 !== resTimeout && (resTimeout = Math.max(resTimeout - cycleTime, 0)), 
@@ -4364,15 +4394,15 @@
                             }
                             setTimeout(cycle, cycleTime);
                         }
-                    }, cycleTime);
-                });
-            });
-            return requestPromise.catch(function() {
+                    }), cycleTime);
+                }));
+            }));
+            return requestPromise.catch((function() {
                 !function(hash) {
                     global.a.erroredResponseListeners[hash] = !0;
                 }(hash), deleteResponseListener(hash);
-            }), requestPromises.push(requestPromise), requestPromise;
-        });
+            })), requestPromises.push(requestPromise), requestPromise;
+        }));
     }
     function _send(window, name, data, options) {
         return (options = options || {}).window = window, options.name = name, options.data = data, 
@@ -4380,9 +4410,9 @@
     }
     function sendToParent(name, data, options) {
         var win = Object(src.e)();
-        return win ? _send(win, name, data, options) : new zalgo_promise_src.a(function(resolve, reject) {
+        return win ? _send(win, name, data, options) : new zalgo_promise_src.a((function(resolve, reject) {
             return reject(new Error("Window does not have a parent"));
-        });
+        }));
     }
     function client(options) {
         if (void 0 === options && (options = {}), !options.window) throw new Error("Expected options.window");
@@ -4439,7 +4469,7 @@
             if (win && win !== conf.b.WILDCARD || (win = global.a.WINDOW_WILDCARD), domain = domain || conf.b.WILDCARD, 
             existingListener) throw win && domain ? new Error("Request listener already exists for " + name + " on domain " + domain.toString() + " for " + (win === global.a.WINDOW_WILDCARD ? "wildcard" : "specified") + " window") : win ? new Error("Request listener already exists for " + name + " for " + (win === global.a.WINDOW_WILDCARD ? "wildcard" : "specified") + " window") : domain ? new Error("Request listener already exists for " + name + " on domain " + domain.toString()) : new Error("Request listener already exists for " + name);
             var requestListeners = global.a.requestListeners, nameListeners = requestListeners[name];
-            nameListeners || (nameListeners = new cross_domain_safe_weakmap_src.a(), requestListeners[name] = nameListeners);
+            nameListeners || (nameListeners = new cross_domain_safe_weakmap_src.a, requestListeners[name] = nameListeners);
             var winListeners = nameListeners.get(win);
             winListeners || nameListeners.set(win, winListeners = {});
             var regexListener, strDomain = domain.toString(), regexListeners = winListeners[__DOMAIN_REGEX__];
@@ -4460,13 +4490,13 @@
         }, listenerOptions);
         if (options.once) {
             var _handler = listenerOptions.handler;
-            listenerOptions.handler = Object(lib.l)(function() {
+            listenerOptions.handler = Object(lib.l)((function() {
                 return requestListener.cancel(), _handler.apply(this, arguments);
-            });
+            }));
         }
-        if (listenerOptions.window && options.errorOnClose) var interval = Object(lib.m)(function() {
+        if (listenerOptions.window && options.errorOnClose) var interval = Object(lib.m)((function() {
             win && "object" == typeof win && Object(src.y)(win) && (interval.cancel(), listenerOptions.handleError(new Error("Post message target window is closed")));
-        }, 50);
+        }), 50);
         return {
             cancel: function() {
                 requestListener.cancel();
@@ -4480,13 +4510,13 @@
     function once(name, options, handler) {
         void 0 === options && (options = {}), "function" == typeof options && (handler = options, 
         options = {}), options = options || {}, handler = handler || options.handler;
-        var errorHandler = options.errorHandler, promise = new zalgo_promise_src.a(function(resolve, reject) {
+        var errorHandler = options.errorHandler, promise = new zalgo_promise_src.a((function(resolve, reject) {
             (options = options || {}).name = name, options.once = !0, options.handler = function(event) {
                 if (resolve(event), handler) return handler(event);
             }, options.errorHandler = function(err) {
                 if (reject(err), errorHandler) return errorHandler(err);
             };
-        }), onceListener = listen(options);
+        })), onceListener = listen(options);
         return promise.cancel = onceListener.cancel, promise;
     }
     function server_listener(options) {
@@ -4500,7 +4530,7 @@
         delete window[conf.b.WINDOW_PROPS.POSTROBOT], window.removeEventListener("message", messageListener);
     }
     global.a.receivedMessages = global.a.receivedMessages || [], global.a.receiveMessage = receiveMessage, 
-    global.a.requestPromises = global.a.requestPromises || new cross_domain_safe_weakmap_src.a(), 
+    global.a.requestPromises = global.a.requestPromises || new cross_domain_safe_weakmap_src.a, 
     global.a.send = _send, global.a.on = _on;
     var public_parent = Object(src.e)();
     function cleanUpWindow(win) {
@@ -4517,39 +4547,39 @@
             send: _send
         })), global.a.initialized = !0;
     }
-    init(), __webpack_require__.d(__webpack_exports__, "cleanUpWindow", function() {
+    init(), __webpack_require__.d(__webpack_exports__, "cleanUpWindow", (function() {
         return cleanUpWindow;
-    }), __webpack_require__.d(__webpack_exports__, "Promise", function() {
+    })), __webpack_require__.d(__webpack_exports__, "Promise", (function() {
         return zalgo_promise_src.a;
-    }), __webpack_require__.d(__webpack_exports__, "bridge", function() {
+    })), __webpack_require__.d(__webpack_exports__, "bridge", (function() {
         return bridge;
-    }), __webpack_require__.d(__webpack_exports__, "init", function() {
+    })), __webpack_require__.d(__webpack_exports__, "init", (function() {
         return init;
-    }), __webpack_require__.d(__webpack_exports__, "parent", function() {
+    })), __webpack_require__.d(__webpack_exports__, "parent", (function() {
         return public_parent;
-    }), __webpack_require__.d(__webpack_exports__, "request", function() {
+    })), __webpack_require__.d(__webpack_exports__, "request", (function() {
         return request;
-    }), __webpack_require__.d(__webpack_exports__, "send", function() {
+    })), __webpack_require__.d(__webpack_exports__, "send", (function() {
         return _send;
-    }), __webpack_require__.d(__webpack_exports__, "sendToParent", function() {
+    })), __webpack_require__.d(__webpack_exports__, "sendToParent", (function() {
         return sendToParent;
-    }), __webpack_require__.d(__webpack_exports__, "client", function() {
+    })), __webpack_require__.d(__webpack_exports__, "client", (function() {
         return client;
-    }), __webpack_require__.d(__webpack_exports__, "listen", function() {
+    })), __webpack_require__.d(__webpack_exports__, "listen", (function() {
         return listen;
-    }), __webpack_require__.d(__webpack_exports__, "on", function() {
+    })), __webpack_require__.d(__webpack_exports__, "on", (function() {
         return _on;
-    }), __webpack_require__.d(__webpack_exports__, "once", function() {
+    })), __webpack_require__.d(__webpack_exports__, "once", (function() {
         return once;
-    }), __webpack_require__.d(__webpack_exports__, "listener", function() {
+    })), __webpack_require__.d(__webpack_exports__, "listener", (function() {
         return server_listener;
-    }), __webpack_require__.d(__webpack_exports__, "CONFIG", function() {
+    })), __webpack_require__.d(__webpack_exports__, "CONFIG", (function() {
         return conf.a;
-    }), __webpack_require__.d(__webpack_exports__, "CONSTANTS", function() {
+    })), __webpack_require__.d(__webpack_exports__, "CONSTANTS", (function() {
         return conf.b;
-    }), __webpack_require__.d(__webpack_exports__, "disable", function() {
+    })), __webpack_require__.d(__webpack_exports__, "disable", (function() {
         return disable;
-    }), __webpack_exports__.default = interface_namespaceObject;
+    })), __webpack_exports__.default = interface_namespaceObject;
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     var src = __webpack_require__(17), cross_domain_utils_src = __webpack_require__(7), conf = __webpack_require__(10);
@@ -4587,9 +4617,9 @@
     }
     function uniqueID() {
         var chars = "0123456789abcdef";
-        return "xxxxxxxxxx".replace(/./g, function() {
+        return "xxxxxxxxxx".replace(/./g, (function() {
             return chars.charAt(Math.floor(Math.random() * chars.length));
-        });
+        }));
     }
     function replaceObject(item, callback, depth) {
         if (void 0 === depth && (depth = 1), depth >= 100) throw new Error("Self-referential object passed, or object contained too many layers");
@@ -4604,16 +4634,16 @@
             }(item, callback) : "object" == typeof item && null !== item && function(item, callback) {
                 for (var _key in item) item.hasOwnProperty(_key) && callback(item[_key], _key);
             }(item, callback);
-        }(item, function(childItem, key) {
+        }(item, (function(childItem, key) {
             var result = callback(childItem, key);
             newobj[key] = void 0 !== result ? result : "object" == typeof childItem && null !== childItem ? replaceObject(childItem, callback, depth + 1) : childItem;
-        }), newobj;
+        })), newobj;
     }
     function safeInterval(method, time) {
         var timeout;
-        return timeout = setTimeout(function runInterval() {
+        return timeout = setTimeout((function runInterval() {
             timeout = setTimeout(runInterval, time), method.call();
-        }, time), {
+        }), time), {
             cancel: function() {
                 clearTimeout(timeout);
             }
@@ -4623,7 +4653,7 @@
         return "[object RegExp]" === {}.toString.call(item);
     }
     var util_weakMapMemoize = function(method) {
-        var weakmap = new src.a();
+        var weakmap = new src.a;
         return function(arg) {
             var result = weakmap.get(arg);
             return void 0 !== result ? result : (void 0 !== (result = method.call(this, arg)) && weakmap.set(arg, result), 
@@ -4657,32 +4687,32 @@
     function needsGlobalMessagingForBrowser() {
         return !!Object(cross_domain_utils_src.o)(window).match(/MSIE|trident|edge\/12|edge\/13/i) || !conf.a.ALLOW_POSTMESSAGE_POPUP;
     }
-    var zalgo_promise_src = __webpack_require__(1), global = __webpack_require__(9);
-    global.a.methods = global.a.methods || new src.a();
-    var listenForMethods = once(function() {
+    var zalgo_promise_src = __webpack_require__(2), global = __webpack_require__(9);
+    global.a.methods = global.a.methods || new src.a;
+    var listenForMethods = once((function() {
         global.a.on(conf.b.POST_MESSAGE_NAMES.METHOD, {
             origin: conf.b.WILDCARD
-        }, function(_ref) {
+        }, (function(_ref) {
             var source = _ref.source, origin = _ref.origin, data = _ref.data, methods = global.a.methods.get(source);
             if (!methods) throw new Error("Could not find any methods this window has privileges to call");
             var meth = methods[data.id];
             if (!meth) throw new Error("Could not find method with id: " + data.id);
             if (!Object(cross_domain_utils_src.A)(meth.domain, origin)) throw new Error("Method domain " + meth.domain + " does not match origin " + origin);
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 return meth.method.apply({
                     source: source,
                     origin: origin,
                     data: data
                 }, data.args);
-            }).then(function(result) {
+            })).then((function(result) {
                 return {
                     result: result,
                     id: data.id,
                     name: data.name
                 };
-            });
-        });
-    });
+            }));
+        }));
+    }));
     function isSerialized(item, type) {
         return "object" == typeof item && null !== item && item.__type__ === type;
     }
@@ -4700,7 +4730,7 @@
     function serializeMethods(destination, domain, obj) {
         return replaceObject({
             obj: obj
-        }, function(item, key) {
+        }, (function(item, key) {
             return "function" == typeof item ? serializeMethod(destination, domain, item, key.toString()) : item instanceof Error ? {
                 __type__: conf.b.SERIALIZATION_TYPES.ERROR,
                 __message__: stringifyError(err = item),
@@ -4708,23 +4738,23 @@
             } : window.Promise && item instanceof window.Promise ? function(destination, domain, promise, name) {
                 return {
                     __type__: conf.b.SERIALIZATION_TYPES.PROMISE,
-                    __then__: serializeMethod(destination, domain, function(resolve, reject) {
+                    __then__: serializeMethod(destination, domain, (function(resolve, reject) {
                         return promise.then(resolve, reject);
-                    }, name + ".then")
+                    }), name + ".then")
                 };
             }(destination, domain, item, key.toString()) : zalgo_promise_src.a.isPromise(item) ? function(destination, domain, promise, name) {
                 return {
                     __type__: conf.b.SERIALIZATION_TYPES.ZALGO_PROMISE,
-                    __then__: serializeMethod(destination, domain, function(resolve, reject) {
+                    __then__: serializeMethod(destination, domain, (function(resolve, reject) {
                         return promise.then(resolve, reject);
-                    }, name + ".then")
+                    }), name + ".then")
                 };
             }(destination, domain, item, key.toString()) : isRegex(item) ? {
                 __type__: conf.b.SERIALIZATION_TYPES.REGEX,
                 __source__: item.source
             } : void 0;
             var err;
-        }).obj;
+        })).obj;
     }
     function deserializeMethod(source, origin, obj) {
         function wrapper() {
@@ -4736,135 +4766,135 @@
             }, {
                 domain: origin,
                 timeout: -1
-            }).then(function(_ref2) {
+            }).then((function(_ref2) {
                 return _ref2.data.result;
-            }, function(err) {
+            }), (function(err) {
                 throw err;
-            });
+            }));
         }
         return wrapper.__name__ = obj.__name__, wrapper.__xdomain__ = !0, wrapper.source = source, 
         wrapper.origin = origin, wrapper;
     }
     function deserializeZalgoPromise(source, origin, prom) {
-        return new zalgo_promise_src.a(function(resolve, reject) {
+        return new zalgo_promise_src.a((function(resolve, reject) {
             return deserializeMethod(source, origin, prom.__then__)(resolve, reject);
-        });
+        }));
     }
     function deserializeMethods(source, origin, obj) {
         return replaceObject({
             obj: obj
-        }, function(item) {
+        }, (function(item) {
             if ("object" == typeof item && null !== item) return isSerialized(item, conf.b.SERIALIZATION_TYPES.METHOD) ? deserializeMethod(source, origin, item) : isSerialized(item, conf.b.SERIALIZATION_TYPES.ERROR) ? function(source, origin, obj) {
                 var err = new Error(obj.__message__);
                 return obj.__code__ && (err.code = obj.__code__), err;
             }(0, 0, item) : isSerialized(item, conf.b.SERIALIZATION_TYPES.PROMISE) ? function(source, origin, prom) {
-                return window.Promise ? new window.Promise(function(resolve, reject) {
+                return window.Promise ? new window.Promise((function(resolve, reject) {
                     return deserializeMethod(source, origin, prom.__then__)(resolve, reject);
-                }) : deserializeZalgoPromise(source, origin, prom);
+                })) : deserializeZalgoPromise(source, origin, prom);
             }(source, origin, item) : isSerialized(item, conf.b.SERIALIZATION_TYPES.ZALGO_PROMISE) ? deserializeZalgoPromise(source, origin, item) : isSerialized(item, conf.b.SERIALIZATION_TYPES.REGEX) ? function(source, origin, item) {
                 return new RegExp(item.__source__);
             }(0, 0, item) : void 0;
-        }).obj;
+        })).obj;
     }
     function sayHello(win) {
         return global.a.send(win, conf.b.POST_MESSAGE_NAMES.HELLO, {}, {
             domain: conf.b.WILDCARD,
             timeout: -1
-        }).then(function(_ref2) {
+        }).then((function(_ref2) {
             return {
                 origin: _ref2.origin
             };
-        });
+        }));
     }
     function initOnReady() {
         var handler;
         handler = function(_ref3) {
-            var source = _ref3.source, origin = _ref3.origin, promise = global.a.readyPromises.get(source) || new zalgo_promise_src.a();
+            var source = _ref3.source, origin = _ref3.origin, promise = global.a.readyPromises.get(source) || new zalgo_promise_src.a;
             promise.resolve({
                 origin: origin
             }), global.a.readyPromises.set(source, promise);
         }, global.a.on(conf.b.POST_MESSAGE_NAMES.HELLO, {
             domain: conf.b.WILDCARD
-        }, function(_ref) {
+        }, (function(_ref) {
             return handler({
                 source: _ref.source,
                 origin: _ref.origin
             });
-        });
+        }));
         var parent = Object(cross_domain_utils_src.e)();
         parent && sayHello(parent).catch(noop);
     }
     function onChildWindowReady(win, timeout, name) {
         void 0 === timeout && (timeout = 5e3), void 0 === name && (name = "Window");
         var promise = global.a.readyPromises.get(win);
-        return promise || (promise = new zalgo_promise_src.a(), global.a.readyPromises.set(win, promise), 
-        -1 !== timeout && setTimeout(function() {
+        return promise || (promise = new zalgo_promise_src.a, global.a.readyPromises.set(win, promise), 
+        -1 !== timeout && setTimeout((function() {
             return promise.reject(new Error(name + " did not load after " + timeout + "ms"));
-        }, timeout), promise);
+        }), timeout), promise);
     }
-    global.a.readyPromises = global.a.readyPromises || new src.a(), __webpack_require__.d(__webpack_exports__, "p", function() {
+    global.a.readyPromises = global.a.readyPromises || new src.a, __webpack_require__.d(__webpack_exports__, "p", (function() {
         return stringifyError;
-    }), __webpack_require__.d(__webpack_exports__, "l", function() {
+    })), __webpack_require__.d(__webpack_exports__, "l", (function() {
         return once;
-    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+    })), __webpack_require__.d(__webpack_exports__, "j", (function() {
         return noop;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
         return addEventListener;
-    }), __webpack_require__.d(__webpack_exports__, "q", function() {
+    })), __webpack_require__.d(__webpack_exports__, "q", (function() {
         return uniqueID;
-    }), __webpack_require__.d(__webpack_exports__, "m", function() {
+    })), __webpack_require__.d(__webpack_exports__, "m", (function() {
         return safeInterval;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+    })), __webpack_require__.d(__webpack_exports__, "e", (function() {
         return isRegex;
-    }), __webpack_require__.d(__webpack_exports__, "r", function() {
+    })), __webpack_require__.d(__webpack_exports__, "r", (function() {
         return util_weakMapMemoize;
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
         return getWindowType;
-    }), __webpack_require__.d(__webpack_exports__, "g", function() {
+    })), __webpack_require__.d(__webpack_exports__, "g", (function() {
         return jsonStringify;
-    }), __webpack_require__.d(__webpack_exports__, "f", function() {
+    })), __webpack_require__.d(__webpack_exports__, "f", (function() {
         return jsonParse;
-    }), __webpack_require__.d(__webpack_exports__, "i", function() {
+    })), __webpack_require__.d(__webpack_exports__, "i", (function() {
         return needsGlobalMessagingForBrowser;
-    }), __webpack_require__.d(__webpack_exports__, "h", function() {
+    })), __webpack_require__.d(__webpack_exports__, "h", (function() {
         return listenForMethods;
-    }), __webpack_require__.d(__webpack_exports__, "o", function() {
+    })), __webpack_require__.d(__webpack_exports__, "o", (function() {
         return serializeMethods;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
         return deserializeMethods;
-    }), __webpack_require__.d(__webpack_exports__, "n", function() {
+    })), __webpack_require__.d(__webpack_exports__, "n", (function() {
         return sayHello;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
         return initOnReady;
-    }), __webpack_require__.d(__webpack_exports__, "k", function() {
+    })), __webpack_require__.d(__webpack_exports__, "k", (function() {
         return onChildWindowReady;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    var onAuthorize, esm_extends = __webpack_require__(11), src = __webpack_require__(1), beaver_logger_client = __webpack_require__(4), zoid_src = __webpack_require__(20), belter_src = __webpack_require__(16), lib = __webpack_require__(2), config = __webpack_require__(3), constants = __webpack_require__(0), post_robot_src = __webpack_require__(13);
+    var onAuthorize, esm_extends = __webpack_require__(11), src = __webpack_require__(2), beaver_logger_client = __webpack_require__(5), zoid_src = __webpack_require__(20), belter_src = __webpack_require__(16), lib = __webpack_require__(3), config = __webpack_require__(4), constants = __webpack_require__(0), post_robot_src = __webpack_require__(13);
     function match(str, pattern) {
         var regmatch = str.match(pattern);
         if (regmatch) return regmatch[1];
     }
     function onLegacyPaymentAuthorize(method) {
-        return onAuthorize = method, src.a.try(function() {
+        return onAuthorize = method, src.a.try((function() {
             if (post_robot_src.bridge && !Object(lib.G)()) return post_robot_src.bridge.openBridge(Object(lib.g)(config.a.postBridgeUrl, {
                 version: Object(lib.u)()
-            }), config.a.postBridgeDomain).then(function(postBridge) {
+            }), config.a.postBridgeDomain).then((function(postBridge) {
                 return Object(post_robot_src.send)(postBridge, "onLegacyPaymentAuthorize", {
                     method: method
                 }, {
                     domain: config.a.paypalDomain
                 }).then(lib.J);
-            });
-        });
+            }));
+        }));
     }
     Object(lib.G)() && Object(post_robot_src.on)("onLegacyPaymentAuthorize", {
         window: window.parent
-    }, function(_ref) {
+    }, (function(_ref) {
         onAuthorize = _ref.data.method;
-    }), window.onLegacyPaymentAuthorize = onLegacyPaymentAuthorize, window.watchForLegacyFallback = function(win) {
-        var interval = setInterval(function() {
+    })), window.onLegacyPaymentAuthorize = onLegacyPaymentAuthorize, window.watchForLegacyFallback = function(win) {
+        var interval = setInterval((function() {
             try {
                 if (-1 === win.document.body.innerHTML.indexOf("merchantpaymentweb") && -1 === win.document.body.innerHTML.indexOf("wapapp") || win.ppxoWatching || win.closed) return;
                 win.ppxoWatching = !0;
@@ -4906,7 +4936,7 @@
                     return XMLHttpRequestsend.apply(this, arguments);
                 };
             } catch (err) {}
-        }, 100);
+        }), 100);
     }, window.onLegacyFallback = window.watchForLegacyFallback;
     var integrations = __webpack_require__(27), template = __webpack_require__(30), Checkout = Object(zoid_src.c)({
         tag: "paypal-checkout",
@@ -4915,10 +4945,10 @@
         buildUrl: function(props) {
             var env = props.env || config.a.env;
             if (!props.payment) throw new Error("Can not build url without payment prop");
-            return props.payment().then(function(token) {
+            return props.payment().then((function(token) {
                 if (!token) throw new Error("Expected payment id or token to be passed, got " + token);
                 return Object(integrations.c)(env, props.fundingSource, token);
-            });
+            }));
         },
         get unsafeRenderTo() {
             return config.a.env === constants.t.LOCAL;
@@ -5050,18 +5080,18 @@
                 memoize: !0,
                 promisify: !0,
                 queryParam: function(payment) {
-                    return payment().then(function(token) {
+                    return payment().then((function(token) {
                         return Object(integrations.b)(token);
-                    });
+                    }));
                 },
                 queryValue: function(payment) {
                     return payment();
                 },
                 childDecorate: function(payment) {
                     var token = Object(lib.q)("token");
-                    return token ? Object(lib.I)(function() {
+                    return token ? Object(lib.I)((function() {
                         return src.a.resolve(token);
-                    }) : payment;
+                    })) : payment;
                 },
                 validate: function(payment, props) {
                     if (!payment && !props.url) throw new Error("Expected either props.payment or props.url to be passed");
@@ -5100,9 +5130,9 @@
                 required: !1,
                 queryParam: !0,
                 def: function() {
-                    return [].slice.call(document.querySelectorAll("[" + constants.c.FUNDING_SOURCE + "]")).map(function(el) {
+                    return [].slice.call(document.querySelectorAll("[" + constants.c.FUNDING_SOURCE + "]")).map((function(el) {
                         return el.getAttribute(constants.c.FUNDING_SOURCE);
-                    });
+                    }));
                 },
                 queryValue: function(val) {
                     return val.join(",");
@@ -5120,35 +5150,35 @@
                             token: data.paymentToken
                         });
                         var close = function() {
-                            return src.a.try(function() {
+                            return src.a.try((function() {
                                 if (actions.close) return actions.close();
-                            }).then(function() {
+                            })).then((function() {
                                 return _this.closeComponent();
-                            });
+                            }));
                         }, redirect = function(win, url) {
                             return src.a.all([ Object(lib.P)(win || window.top, url || data.returnUrl), close() ]);
                         };
-                        return src.a.try(function() {
+                        return src.a.try((function() {
                             try {
                                 var isButton = -1 !== window.location.href.indexOf("/webapps/hermes/button"), isGuest = -1 !== _this.window.location.href.indexOf("/webapps/xoonboarding");
                                 if (isButton && isGuest) return Object(lib.R)({
                                     win: _this.window,
                                     method: "get",
                                     url: "/webapps/xoonboarding/api/auth"
-                                }).then(function(result) {
-                                    result && result.data && result.data.access_token && window.$Api && window.$Api.addHeader && window.$Api.addHeader("x-paypal-internal-euat", result.data.access_token);
-                                }).catch(function() {});
+                                }).then((function(result) {
+                                    result && result.data && result.data.access_token && (window.$Api && window.$Api.addHeader && window.$Api.addHeader("x-paypal-internal-euat", result.data.access_token));
+                                })).catch((function() {}));
                             } catch (err) {}
-                        }).then(function() {
+                        })).then((function() {
                             return original.call(_this, data, Object(esm_extends.a)({}, actions, {
                                 close: close,
                                 redirect: redirect
                             }));
-                        }).catch(function(err) {
+                        })).catch((function(err) {
                             return _this.error(err);
-                        }).finally(function() {
+                        })).finally((function() {
                             return _this.close();
-                        });
+                        }));
                     };
                 }
             },
@@ -5182,22 +5212,22 @@
                         var _this2 = this;
                         void 0 === actions && (actions = {});
                         var close = function() {
-                            return src.a.try(function() {
+                            return src.a.try((function() {
                                 if (actions.close) return actions.close();
-                            }).then(function() {
+                            })).then((function() {
                                 return _this2.closeComponent();
-                            });
+                            }));
                         }, redirect = function(win, url) {
                             return src.a.all([ Object(lib.P)(win || window.top, url || data.cancelUrl), close() ]);
                         };
-                        return src.a.try(function() {
+                        return src.a.try((function() {
                             return original.call(_this2, data, Object(esm_extends.a)({}, actions, {
                                 close: close,
                                 redirect: redirect
                             }));
-                        }).finally(function() {
+                        })).finally((function() {
                             _this2.close();
-                        });
+                        }));
                     };
                 }
             },
@@ -5229,9 +5259,9 @@
                         return shouldCancel ? (Object(beaver_logger_client.k)("close_trigger_cancel"), this.props.onCancel({
                             paymentToken: this.paymentToken,
                             cancelUrl: this.cancelUrl
-                        }).then(function() {
+                        }).then((function() {
                             return onClose;
-                        })) : onClose;
+                        }))) : onClose;
                     };
                 }
             },
@@ -5292,8 +5322,8 @@
         }
     });
     Checkout.isChild() && Checkout.xchild && Checkout.xprops && (Checkout.xprops && Checkout.xprops.logLevel && Object(lib.T)(Checkout.xprops.logLevel), 
-    Checkout.xchild.onProps(function(xprops) {
-        Object(lib.N)(xprops, "onAuthorize", function(_ref) {
+    Checkout.xchild.onProps((function(xprops) {
+        Object(lib.N)(xprops, "onAuthorize", (function(_ref) {
             var callOriginal = _ref.callOriginal, data = _ref.args[0];
             if (data && !data.intent) {
                 Object(beaver_logger_client.q)("hermes_authorize_no_intent", {
@@ -5311,38 +5341,40 @@
                 Object(beaver_logger_client.j)();
             }
             return callOriginal();
-        });
-    })), Object(lib.N)(Checkout, "init", function(_ref2) {
+        }));
+    }))), Object(lib.N)(Checkout, "init", (function(_ref2) {
         var _ref2$args = _ref2.args;
         return _ref2.original.call(_ref2.context, _ref2$args[0], _ref2$args[1], "body");
-    }), Object(lib.N)(Checkout, "render", function(_ref3) {
+    })), Object(lib.N)(Checkout, "render", (function(_ref3) {
         return _ref3.original.call(_ref3.context, _ref3.args[0], "body");
-    }), Object(lib.N)(Checkout, "renderTo", function(_ref4) {
+    })), Object(lib.N)(Checkout, "renderTo", (function(_ref4) {
         var _ref4$args = _ref4.args, win = _ref4$args[0], props = _ref4$args[1], original = _ref4.original, context = _ref4.context, payment = props.payment();
         return props.payment = function() {
             return payment;
-        }, original.call(context, win, props, "body").catch(function(err) {
+        }, original.call(context, win, props, "body").catch((function(err) {
             if (err instanceof zoid_src.b && Object(lib.G)()) return Checkout.contexts.iframe = !0, 
             original.call(context, win, props, "body");
             throw err;
-        });
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+        }));
+    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
         return Checkout;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__(11), __webpack_require__(1), __webpack_require__(7);
+    __webpack_require__(11), __webpack_require__(2), __webpack_require__(7);
     var objectIDs, cross_domain_safe_weakmap_src = __webpack_require__(17);
     function base64encode(str) {
-        if ("function" == typeof btoa) return btoa(str);
+        if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
+            return String.fromCharCode(parseInt(p1, 16));
+        })));
         if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
         throw new Error("Can not find window.btoa or Buffer");
     }
     function uniqueID() {
         var chars = "0123456789abcdef";
-        return "xxxxxxxxxx".replace(/./g, function() {
+        return "xxxxxxxxxx".replace(/./g, (function() {
             return chars.charAt(Math.floor(Math.random() * chars.length));
-        }) + "_" + base64encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+        })) + "_" + base64encode((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
     }
     function noop() {}
     function once(method) {
@@ -5356,19 +5388,19 @@
             void 0 === args && (args = []);
             var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {}, key = function(args) {
                 try {
-                    return JSON.stringify([].slice.call(args), function(subkey, val) {
+                    return JSON.stringify([].slice.call(args), (function(subkey, val) {
                         return "function" == typeof val ? "memoize[" + function(obj) {
-                            if (objectIDs = objectIDs || new cross_domain_safe_weakmap_src.a(), null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
+                            if (objectIDs = objectIDs || new cross_domain_safe_weakmap_src.a, null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
                             var uid = objectIDs.get(obj);
                             return uid || (uid = typeof obj + ":" + uniqueID(), objectIDs.set(obj, uid)), uid;
                         }(val) + "]" : val;
-                    });
+                    }));
                 } catch (err) {
                     throw new Error("Arguments not serializable -- can not be used to memoize");
                 }
             }(args);
             return cache.hasOwnProperty(key) ? cache[key] : cache[key] = logic.apply(void 0, args);
-        }(isLocalStorageEnabled, function() {
+        }(isLocalStorageEnabled, (function() {
             try {
                 if ("undefined" == typeof window) return !1;
                 if (window.localStorage) {
@@ -5379,7 +5411,7 @@
                 }
             } catch (err) {}
             return !1;
-        });
+        }));
     }
     function getElementSafe(id, doc) {
         return void 0 === doc && (doc = document), (element = id) instanceof window.Element || null !== element && "object" == typeof element && 1 === element.nodeType && "object" == typeof element.style && "object" == typeof element.ownerDocument ? id : "string" == typeof id ? doc.querySelector(id) : void 0;
@@ -5411,21 +5443,21 @@
             }
         };
     }
-    Object.create(Error.prototype), __webpack_require__.d(__webpack_exports__, "c", function() {
+    Object.create(Error.prototype), __webpack_require__.d(__webpack_exports__, "c", (function() {
         return isLocalStorageEnabled;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
         return getElementSafe;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+    })), __webpack_require__.d(__webpack_exports__, "e", (function() {
         return onResize;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
         return base64encode;
-    }), __webpack_require__.d(__webpack_exports__, "g", function() {
+    })), __webpack_require__.d(__webpack_exports__, "g", (function() {
         return uniqueID;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
         return noop;
-    }), __webpack_require__.d(__webpack_exports__, "f", function() {
+    })), __webpack_require__.d(__webpack_exports__, "f", (function() {
         return once;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     var src = __webpack_require__(7);
@@ -5442,13 +5474,13 @@
                 if ("undefined" == typeof WeakMap) return !1;
                 if (void 0 === Object.freeze) return !1;
                 try {
-                    var testWeakMap = new WeakMap(), testKey = {};
+                    var testWeakMap = new WeakMap, testKey = {};
                     return Object.freeze(testKey), testWeakMap.set(testKey, "__testvalue__"), "__testvalue__" === testWeakMap.get(testKey);
                 } catch (err) {
                     return !1;
                 }
             }()) try {
-                this.weakmap = new WeakMap();
+                this.weakmap = new WeakMap;
             } catch (err) {}
             this.keys = [], this.values = [];
         }
@@ -5532,18 +5564,12 @@
             return this.set(key, value), value;
         }, CrossDomainSafeWeakMap;
     }();
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return weakmap_CrossDomainSafeWeakMap;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    var _ZIMPLER_LOGO_COLORS, _P24_LOGO_COLORS, _SOFORT_LOGO_COLORS, _IDEAL_LOGO_COLORS, _GIROPAY_LOGO_COLORS, _EPS_LOGO_COLORS, _MYBANK_LOGO_COLORS, _BANCONTACT_LOGO_COLO, _PAYPAL_LOGO_COLORS, _CREDIT_LOGO_COLORS, _BUTTON_LOGO$PP, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$ITAU, _BUTTON_LOGO$ELV, _fundingLogos, _cardLogos, constants = __webpack_require__(0), jsx = __webpack_require__(6), ZIMPLER_LOGO_COLORS = ((_ZIMPLER_LOGO_COLORS = {})[constants.i.WHITE] = {
-        primary: "#ffffff"
-    }, _ZIMPLER_LOGO_COLORS[constants.i.BLACK] = {
-        primary: "#00A599"
-    }, _ZIMPLER_LOGO_COLORS[constants.i.ANY] = {
-        primary: "#00A599"
-    }, _ZIMPLER_LOGO_COLORS), P24_LOGO_COLORS = ((_P24_LOGO_COLORS = {})[constants.i.WHITE] = {
+    var _P24_LOGO_COLORS, _SOFORT_LOGO_COLORS, _IDEAL_LOGO_COLORS, _GIROPAY_LOGO_COLORS, _EPS_LOGO_COLORS, _MYBANK_LOGO_COLORS, _BANCONTACT_LOGO_COLO, _PAYU_LOGO_COLORS, _VERKKOPANKKI_LOGO_CO, _BLIK_LOGO_COLORS, _TRUSTLY_LOGO_COLORS, _MAXIMA_LOGO_COLORS, _BOLETO_LOGO_COLORS, _PAYPAL_LOGO_COLORS, _CREDIT_LOGO_COLORS, _BUTTON_LOGO$PP, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$ITAU, _BUTTON_LOGO$ELV, _fundingLogos, _cardLogos, constants = __webpack_require__(0), jsx = __webpack_require__(1), P24_LOGO_COLORS = ((_P24_LOGO_COLORS = {})[constants.i.WHITE] = {
         primary: "#ffffff",
         secondary: "#ffffff"
     }, _P24_LOGO_COLORS[constants.i.ANY] = {
@@ -5618,7 +5644,58 @@
     }, _BANCONTACT_LOGO_COLO[constants.i.BLACK] = {
         primary: "#005498",
         secondary: "#FFD800"
-    }, _BANCONTACT_LOGO_COLO), pp_white = __webpack_require__(44), pp_white_default = __webpack_require__.n(pp_white), pp_blue = __webpack_require__(45), pp_blue_default = __webpack_require__.n(pp_blue), pp_black = __webpack_require__(46), pp_black_default = __webpack_require__.n(pp_black), PAYPAL_LOGO_COLORS = ((_PAYPAL_LOGO_COLORS = {})[constants.i.BLUE] = {
+    }, _BANCONTACT_LOGO_COLO), PAYU_LOGO_COLORS = ((_PAYU_LOGO_COLORS = {})[constants.i.DEFAULT] = {
+        primary: "#B2D235",
+        secondary: "#7CAD0B"
+    }, _PAYU_LOGO_COLORS[constants.i.WHITE] = {
+        primary: "#B2D235",
+        secondary: "#7CAD0B"
+    }, _PAYU_LOGO_COLORS[constants.i.BLACK] = {
+        primary: "#B2D235",
+        secondary: "#7CAD0B"
+    }, _PAYU_LOGO_COLORS), VERKKOPANKKI_LOGO_COLORS = ((_VERKKOPANKKI_LOGO_CO = {})[constants.i.WHITE] = {
+        primary: "#4E4E4E",
+        secondary: "#1B4482"
+    }, _VERKKOPANKKI_LOGO_CO[constants.i.ANY] = {
+        primary: "#4E4E4E",
+        secondary: "#1B4482"
+    }, _VERKKOPANKKI_LOGO_CO[constants.i.BLACK] = {
+        primary: "#4E4E4E",
+        secondary: "#1B4482"
+    }, _VERKKOPANKKI_LOGO_CO), BLIK_LOGO_COLORS = ((_BLIK_LOGO_COLORS = {})[constants.i.WHITE] = {
+        primary: "#ffffff"
+    }, _BLIK_LOGO_COLORS[constants.i.ANY] = {
+        primary: "#FFFFFF"
+    }, _BLIK_LOGO_COLORS[constants.i.BLACK] = {
+        primary: "#FFFFFF"
+    }, _BLIK_LOGO_COLORS), TRUSTLY_LOGO_COLORS = ((_TRUSTLY_LOGO_COLORS = {})[constants.i.WHITE] = {
+        primary: "#020202",
+        secondary: "#64CC07"
+    }, _TRUSTLY_LOGO_COLORS[constants.i.ANY] = {
+        primary: "#020202",
+        secondary: "#64CC07"
+    }, _TRUSTLY_LOGO_COLORS[constants.i.BLACK] = {
+        primary: "#020202",
+        secondary: "#64CC07"
+    }, _TRUSTLY_LOGO_COLORS), MAXIMA_LOGO_COLORS = ((_MAXIMA_LOGO_COLORS = {})[constants.i.WHITE] = {
+        primary: "#004A91",
+        secondary: "#ED1921"
+    }, _MAXIMA_LOGO_COLORS[constants.i.ANY] = {
+        primary: "#004A91",
+        secondary: "#ED1921"
+    }, _MAXIMA_LOGO_COLORS[constants.i.BLACK] = {
+        primary: "#004A91",
+        secondary: "#ED1921"
+    }, _MAXIMA_LOGO_COLORS), BOLETO_LOGO_COLORS = ((_BOLETO_LOGO_COLORS = {})[constants.i.WHITE] = {
+        primary: "#1A1919",
+        secondary: "#FFFFFE"
+    }, _BOLETO_LOGO_COLORS[constants.i.ANY] = {
+        primary: "#1A1919",
+        secondary: "#FFFFFE"
+    }, _BOLETO_LOGO_COLORS[constants.i.BLACK] = {
+        primary: "#1A1919",
+        secondary: "#FFFFFE"
+    }, _BOLETO_LOGO_COLORS), pp_white = __webpack_require__(44), pp_white_default = __webpack_require__.n(pp_white), pp_blue = __webpack_require__(45), pp_blue_default = __webpack_require__.n(pp_blue), pp_black = __webpack_require__(46), pp_black_default = __webpack_require__.n(pp_black), PAYPAL_LOGO_COLORS = ((_PAYPAL_LOGO_COLORS = {})[constants.i.BLUE] = {
         primary: "#003087",
         secondary: "#009cde"
     }, _PAYPAL_LOGO_COLORS[constants.i.WHITE] = {
@@ -6076,54 +6153,895 @@
             d: "M 4.7408782,5.7106164 1.839113,5.7061141 5.3711256,1.8647573 Z M 6.112171,5.7095319 7.0417209,0.01876197 5.3948175,0.01774319 0.26289873,5.6444944 0.02981113,7.0693723 4.5178982,7.0688465 4.1894639,9.0682502 l 1.376733,0.00181 0.3251187,-2.001047 1.2714396,0.00269 0.2297076,-1.3639812 z",
             fill: secondary
         })))));
-    }, _fundingLogos[constants.h.ZIMPLER] = function(_ref) {
+    }, _fundingLogos[constants.h.PAYU] = function(_ref) {
         var logoColor = _ref.logoColor;
-        if (!ZIMPLER_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " zimpler logo available");
-        var primary = ZIMPLER_LOGO_COLORS[logoColor].primary;
+        if (!PAYU_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " payu logo available");
+        var _PAYU_LOGO_COLORS$log = PAYU_LOGO_COLORS[logoColor], primary = _PAYU_LOGO_COLORS$log.primary, secondary = _PAYU_LOGO_COLORS$log.secondary;
         return Object(jsx.b)("svg", {
-            width: "127",
-            height: "32",
-            viewBox: "0 0 127 32",
+            width: "64px",
+            height: "32px",
+            viewBox: "0 0 64 32",
             version: "1.1",
-            xmlns: "http://www.w3.org/2000/svg",
-            preserveAspectRatio: "xMinYMin meet"
+            xmlns: "http://www.w3.org/2000/svg"
+        }, Object(jsx.b)("defs", null, Object(jsx.b)("path", {
+            d: "M3.16476404,0.248177778 C0.975820225,0.248177778 0,1.21315556 0,3.37777778 L0,3.37777778 L0,17.2807111 C0,18.1166222 0.271101124,18.3850667 1.1171236,18.3850667 L1.1171236,18.3850667 L1.39361798,18.3850667 C2.2392809,18.3850667 2.51074157,18.1166222 2.51074157,17.2807111 L2.51074157,17.2807111 L2.51074157,11.8716444 L7.26076404,11.8716444 C11.4782921,11.8716444 13.4421573,10.0248889 13.4421573,6.06008889 L13.4421573,6.06008889 C13.4421573,2.09493333 11.4782921,0.248177778 7.26076404,0.248177778 L7.26076404,0.248177778 L3.16476404,0.248177778 Z M2.51074157,3.70631111 C2.51074157,2.89564444 2.81564045,2.59413333 3.63541573,2.59413333 L3.63541573,2.59413333 L7.26076404,2.59413333 C9.58561798,2.59413333 10.9317753,3.16124444 10.9317753,6.06008889 L10.9317753,6.06008889 C10.9317753,8.32568889 10.3467865,9.55271111 7.26076404,9.55271111 L7.26076404,9.55271111 L2.51074157,9.55271111 L2.51074157,3.70631111 Z M54.168809,0.251733333 C52.4566292,0.251733333 51.8195056,0.530844444 51.8195056,2.07324444 L51.8195056,2.07324444 L51.8195056,5.68213333 C51.8191461,5.68995556 51.8187865,5.69742222 51.8187865,5.70524444 L51.8187865,5.70524444 L51.8187865,6.496 C51.8180674,6.52373333 51.8162697,6.54897778 51.8162697,6.57706667 L51.8162697,6.57706667 L51.8162697,11.6199111 C51.8162697,12.2360889 51.6961798,12.7264 51.448809,13.1072 L51.448809,13.1072 C50.9817528,13.8183111 50.0577079,14.1418667 48.5788764,14.1436444 L48.5788764,14.1436444 C47.100764,14.1418667 46.1763596,13.8190222 45.7096629,13.1079111 L45.7096629,13.1079111 C45.4612135,12.7267556 45.340764,12.2364444 45.340764,11.6199111 L45.340764,11.6199111 L45.340764,6.57706667 C45.340764,6.54897778 45.3393258,6.52373333 45.3389663,6.496 L45.3389663,6.496 L45.3389663,5.70524444 C45.3389663,5.69742222 45.3378876,5.68995556 45.3375281,5.68213333 L45.3375281,5.68213333 L45.3375281,2.07324444 C45.3375281,0.530844444 44.700764,0.251733333 42.9885843,0.251733333 L42.9885843,0.251733333 L42.449618,0.251733333 C40.7370787,0.251733333 40.1006742,0.530844444 40.1006742,2.07324444 L40.1006742,2.07324444 L40.1006742,5.70524444 L40.1006742,9.52604444 L40.1006742,11.6199111 C40.1006742,13.1555556 40.4508764,14.4561778 41.127191,15.504 L41.127191,15.504 C42.4345169,17.5352889 44.9661124,18.6172444 48.565573,18.6172444 L48.565573,18.6172444 C48.5698876,18.6172444 48.5742022,18.6168889 48.5788764,18.6168889 L48.5788764,18.6168889 C48.5828315,18.6168889 48.5875056,18.6172444 48.5918202,18.6172444 L48.5918202,18.6172444 C52.1909213,18.6172444 54.7228764,17.5352889 56.0294831,15.504 L56.0294831,15.504 C56.7065169,14.4561778 57.0567191,13.1555556 57.0567191,11.6199111 L57.0567191,11.6199111 L57.0567191,9.52604444 L57.0567191,5.70524444 L57.0567191,2.07324444 C57.0567191,0.530844444 56.4203146,0.251733333 54.7077753,0.251733333 L54.7077753,0.251733333 L54.168809,0.251733333 Z M15.6911461,4.51235556 C15.008,4.6592 14.7225169,4.8448 14.7225169,5.6128 L14.7225169,5.6128 L14.7225169,5.83217778 C14.7225169,6.13297778 14.7674607,6.34168889 14.8641798,6.48853333 L14.8641798,6.48853333 C14.9770787,6.6592 15.1582921,6.74595556 15.4035056,6.74595556 L15.4035056,6.74595556 C15.5228764,6.74595556 15.6616629,6.72604444 15.8270562,6.68515556 L15.8270562,6.68515556 C16.2171685,6.5888 17.4640899,6.38933333 18.8285843,6.38933333 L18.8285843,6.38933333 C21.2782022,6.38933333 22.2777528,7.06026667 22.2777528,8.70577778 L22.2777528,8.70577778 L22.2777528,10.1731556 L19.1881348,10.1731556 C15.2165393,10.1731556 13.3662921,11.4983111 13.3662921,14.3431111 L13.3662921,14.3431111 C13.3662921,17.1029333 15.2765843,18.6222222 18.7451685,18.6222222 L18.7451685,18.6222222 C22.8670562,18.6222222 24.7054382,17.2352 24.7054382,14.1244444 L24.7054382,14.1244444 L24.7054382,8.70577778 C24.7054382,5.69742222 22.7469663,4.23466667 18.7178427,4.23466667 L18.7178427,4.23466667 C17.0941124,4.23466667 16.0773034,4.43626667 15.6911461,4.51235556 L15.6911461,4.51235556 Z M15.7939775,14.3431111 C15.7939775,12.7552 16.753618,12.1365333 19.2158202,12.1365333 L19.2158202,12.1365333 L22.2777528,12.1365333 L22.2777528,14.0419556 C22.2777528,15.5960889 21.6952809,16.4952889 18.7178427,16.4952889 L18.7178427,16.4952889 C16.750382,16.4952889 15.7939775,15.7916444 15.7939775,14.3431111 L15.7939775,14.3431111 Z M37.2037753,4.63573333 C36.3775281,4.63573333 36.0532135,4.88746667 35.8702022,5.67217778 L35.8702022,5.67217778 L33.5737528,15.1132444 C33.2868315,16.2734222 32.8841348,16.4856889 32.1948764,16.4856889 L32.1948764,16.4856889 C31.3510112,16.4856889 31.0130337,16.2862222 30.6764944,15.1089778 L30.6764944,15.1089778 L28.0751461,5.6672 C27.8601348,4.87644444 27.5422921,4.63573333 26.7149663,4.63573333 L26.7149663,4.63573333 L26.4938427,4.63573333 C26.1601798,4.63573333 25.8275955,4.6656 25.656809,4.88604444 L25.656809,4.88604444 C25.486382,5.10648889 25.5439101,5.43573333 25.632,5.75857778 L25.632,5.75857778 L28.2610337,15.2814222 C28.7539775,17.1036444 29.3404045,18.6126222 31.530427,18.6126222 L31.530427,18.6126222 C31.9395955,18.6126222 32.3178427,18.5564444 32.6320899,18.4515556 L32.6320899,18.4515556 C31.968,20.5176889 31.2920449,21.4289778 29.2994157,21.6316444 L29.2994157,21.6316444 C28.8949213,21.6647111 28.6320899,21.7216 28.4853933,21.9160889 L28.4853933,21.9160889 C28.3333034,22.1176889 28.3678202,22.4056889 28.4224719,22.6631111 L28.4224719,22.6631111 L28.4774831,22.9073778 C28.5961348,23.4723556 28.7985618,23.8222222 29.4396404,23.8222222 L29.4396404,23.8222222 C29.5068764,23.8222222 29.5795056,23.8190222 29.6575281,23.8122667 L29.6575281,23.8122667 C32.632809,23.6195556 34.2274157,22.0352 35.1604494,18.3438222 L35.1604494,18.3438222 L38.3442697,5.75182222 C38.4194157,5.42897778 38.4650787,5.09973333 38.2903371,4.88284444 L38.2903371,4.88284444 C38.1155955,4.6656 37.784809,4.63573333 37.4529438,4.63573333 L37.4529438,4.63573333 L37.2037753,4.63573333 Z",
+            id: "path-1"
+        }), Object(jsx.b)("linearGradient", {
+            x1: "50.000037%",
+            y1: "21.1036869%",
+            x2: "50.000037%",
+            y2: "122.837593%",
+            id: "linearGradient-3"
+        }, Object(jsx.b)("stop", {
+            "stop-color": "#B1D134",
+            offset: "0%"
+        }), Object(jsx.b)("stop", {
+            "stop-color": "#3B9138",
+            offset: "100%"
+        }))), Object(jsx.b)("g", {
+            id: "Page-1",
+            stroke: "none",
+            "stroke-width": "1",
+            fill: "none",
+            "fill-rule": "evenodd"
         }, Object(jsx.b)("g", {
-            transform: "matrix(2.2546708,0,0,2.0580615,0.70028058,1.3242473)",
+            id: "SPB_&_AltPay_NewAssets",
+            transform: "translate(-228.000000, -536.000000)"
+        }, Object(jsx.b)("g", {
+            id: "Group-14-Copy",
+            transform: "translate(228.000000, 536.000000)"
+        }, Object(jsx.b)("g", {
+            id: "Group-5",
+            transform: "translate(56.808989, 0.124978)",
             fill: primary
         }, Object(jsx.b)("path", {
-            d: "m 44.363387,6.5973104 c 0.2184,-1.0706901 1.091377,-1.9895312 2.0692,-1.9895312 0.550355,0 0.9492,0.4072031 0.806711,0.8621302 L 44.211564,7.544662 c 0.05693,-0.5305417 0.151823,-0.9473516 0.151823,-0.9473516 z m -14.0476,2.5296797 0.474755,-2.719026 c 0.208756,-0.6442735 0.968178,-1.5064037 1.755911,-1.5538178 0.303645,-0.018904 0.664534,-0.00961 1.006134,0.2652709 0.294311,0.3315885 0.446133,0.8243229 0.446133,1.4400859 0,1.9421172 -0.9492,3.287375 -2.2876,3.287375 -0.664222,-0.0093 -1.186267,-0.3504922 -1.395333,-0.719888 z M 55.857698,2.8454016 c -1.138978,-0.056711 -2.6292,1.3359609 -2.6292,1.3359609 l -0.474756,-1.184112 h -1.300133 l -0.626578,3.543349 c -0.04729,0.2460573 -0.1708,0.4642239 -0.370222,0.615763 l -1.717956,1.3452578 c 0,0 -0.702177,0.5401484 -1.68,1.1652083 -0.445822,0.2181667 -0.806711,0.3126849 -1.176933,0.3126849 -0.787733,0 -1.281156,-0.3030781 -1.508889,-0.8243229 -0.03827,-0.094518 -0.06658,-0.1989531 -0.0952,-0.2934713 l 4.404089,-2.975 C 49.317831,5.441399 49.308498,4.8352427 49.222942,4.5318547 48.938276,3.5845031 48.083964,2.873912 46.669964,2.873912 c -2.638844,0 -4.451688,2.2455052 -4.451688,5.438362 0,0.2178567 0.0096,0.4261067 0.03795,0.6250599 l -1.252844,0.8813437 c -0.246711,0.1515391 -0.597956,0.2841744 -0.816356,0.2841744 -0.379555,0 -0.541022,-0.2937812 -0.417511,-0.9284478 L 41.40192,0.04115417 39.361342,0.02225052 38.544987,4.5699719 c -0.03796,0.1893463 -0.1232,0.3693958 -0.256045,0.5113281 l -2.249644,2.3685338 c 0.05693,-0.3882994 0.08555,-0.8051093 0.08555,-1.2408229 0,-1.9235234 -0.892266,-3.3443958 -2.391822,-3.3443958 -1.452267,0 -2.534311,1.2219193 -2.534311,1.2219193 L 30.629076,2.9972505 H 29.34792 L 28.645431,7.0048234 C 28.616809,7.184563 28.540898,7.3457088 28.417698,7.4783443 L 27.10792,9.0225552 C 26.747031,9.4111646 26.367476,9.8942922 26.177698,9.903899 25.835787,9.96061 25.683964,9.837581 25.797831,9.2026047 l 0.522045,-2.8990755 c 0.408177,-2.2926094 -0.294,-3.4485209 -2.268312,-3.4485209 -1.176933,0 -2.562622,1.3170573 -2.562622,1.3170573 -0.294311,-0.8624401 -1.015778,-1.3170573 -2.107155,-1.3170573 -1.195911,0 -2.487023,1.3926719 -2.487023,1.3926719 L 16.363387,3.0065474 H 15.062942 L 14.39872,6.7962635 C 14.370098,6.976313 14.294187,7.1374588 14.170987,7.2700943 L 12.680764,9.032162 c -0.360888,0.3886094 -0.740444,0.871737 -0.930222,0.8810338 -0.3416,0.057021 -0.493733,-0.066318 -0.379555,-0.7009843 L 12.50032,3.0065474 h -2.059556 l -0.332266,1.8286953 c -0.0476,0.2367604 -0.1518224,0.464224 -0.3132891,0.6439635 L 6.7864533,8.9469406 C 6.0080533,9.7805604 5.0305422,9.903899 4.83112,9.9131958 H 2.7049867 L 7.5362311,4.4562401 7.7829422,2.978037 H 1.5756533 L 1.2813422,4.6362896 H 4.8880533 L 0.22792,10.093245 -1.2444444e-4,11.637456 c 0,0 4.36613334444,0.01921 4.44204444444,0 1.2814667,0 2.4204444,-1.127401 2.8759111,-1.591625 L 9.6433867,7.3079016 9.2258756,9.6101177 c -0.266,1.4967973 0.3129777,2.2073883 1.5471554,2.1791873 0.759111,-0.01921 1.281156,-0.521245 1.8032,-1.04218 l 1.404667,-1.6390385 -0.465111,2.6431015 h 2.059866 l 0.9016,-5.182388 c 0.113867,-0.6442734 0.939556,-1.7335573 1.803511,-1.7335573 0.911245,0 1.347734,0.4450104 1.138978,1.6672396 l -0.920889,5.2394087 h 2.040889 l 0.987156,-5.5709973 c 0.05693,-0.3693958 0.721155,-1.4115755 1.642044,-1.4115755 0.958534,0 1.271822,0.5209349 1.063067,1.7431641 l -0.569645,3.0980286 c -0.265688,1.4971071 0.313289,2.2076981 1.547156,2.1791871 0.759422,-0.0189 1.281467,-0.520934 1.803511,-1.042179 l 1.214889,-1.4211825 -0.427156,2.4348515 -0.493733,2.813854 h 2.059867 l 0.664222,-3.827523 c 0.284667,0.360099 0.683511,0.65388 1.176933,0.805419 0.113867,0.03781 0.227734,0.06632 0.351245,0.08522 1.328755,0.06632 2.515333,-0.577955 3.568755,-1.676846 l 0.0096,-0.00961 2.989778,-3.0887317 -0.484089,2.7004323 c -0.265689,1.4967974 0.303644,2.1788774 1.547155,2.1884844 0.806711,0 1.556489,-0.397906 2.344222,-0.928448 l 1.044089,-0.748708 c 0.01898,0.03812 0.03796,0.08553 0.05693,0.123338 0.474755,0.918842 1.348044,1.525308 2.638844,1.534915 h 0.0093 c 1.357378,0 2.686134,-1.279251 3.454889,-1.8190892 0.199423,-0.1422422 0.939867,-0.7391016 1.736934,-1.383375 L 49.906371,11.73228 h 2.059556 L 52.86792,6.5498963 c 0.113867,-0.6442734 0.939556,-1.7338671 1.8032,-1.7338671 0.332267,0 0.597956,0.057021 0.797378,0.1896562 z"
-        }), Object(jsx.b)("g", {
-            transform: "translate(10.577778,-0.309896)"
+            d: "M6.2990382,6.81365333 L3.48267865,6.81258667 C3.17562247,6.81258667 2.92681348,6.56618667 2.92681348,6.26218667 L2.92789213,3.44298667 C2.92789213,3.13898667 3.17706067,2.89294222 3.48411685,2.89329739 L6.3004764,2.89400889 C6.60753258,2.89436444 6.85670112,3.14040889 6.85634196,3.44405333 L6.85562247,6.26360889 C6.85526292,6.56760889 6.60609438,6.81365333 6.2990382,6.81365333",
+            id: "Fill-1"
+        }), Object(jsx.b)("path", {
+            d: "M2.54622921,2.89315612 L0.633420225,2.8928 C0.424880899,2.89244444 0.255532584,2.72533333 0.255891563,2.51875556 L0.256251685,0.604088889 C0.256611236,0.397511111 0.4256,0.230755556 0.634498876,0.230755556 L2.54694831,0.231466667 C2.75584719,0.231466667 2.92483596,0.398577778 2.92483596,0.6048 L2.92411685,2.51982222 C2.92411685,2.72604444 2.75476854,2.89351111 2.54622921,2.89315612",
+            id: "Fill-3"
+        })), Object(jsx.b)("g", {
+            id: "Group-8",
+            transform: "translate(0.000000, 7.947200)"
+        }, Object(jsx.b)("mask", {
+            id: "mask-2",
+            fill: "white"
+        }, Object(jsx.b)("use", {
+            href: "#path-1"
+        })), Object(jsx.b)("g", {
+            id: "Clip-7"
+        }), Object(jsx.b)("path", {
+            d: "M3.16476404,0.248177778 C0.975820225,0.248177778 0,1.21315556 0,3.37777778 L0,3.37777778 L0,17.2807111 C0,18.1166222 0.271101124,18.3850667 1.1171236,18.3850667 L1.1171236,18.3850667 L1.39361798,18.3850667 C2.2392809,18.3850667 2.51074157,18.1166222 2.51074157,17.2807111 L2.51074157,17.2807111 L2.51074157,11.8716444 L7.26076404,11.8716444 C11.4782921,11.8716444 13.4421573,10.0248889 13.4421573,6.06008889 L13.4421573,6.06008889 C13.4421573,2.09493333 11.4782921,0.248177778 7.26076404,0.248177778 L7.26076404,0.248177778 L3.16476404,0.248177778 Z M2.51074157,3.70631111 C2.51074157,2.89564444 2.81564045,2.59413333 3.63541573,2.59413333 L3.63541573,2.59413333 L7.26076404,2.59413333 C9.58561798,2.59413333 10.9317753,3.16124444 10.9317753,6.06008889 L10.9317753,6.06008889 C10.9317753,8.32568889 10.3467865,9.55271111 7.26076404,9.55271111 L7.26076404,9.55271111 L2.51074157,9.55271111 L2.51074157,3.70631111 Z M54.168809,0.251733333 C52.4566292,0.251733333 51.8195056,0.530844444 51.8195056,2.07324444 L51.8195056,2.07324444 L51.8195056,5.68213333 C51.8191461,5.68995556 51.8187865,5.69742222 51.8187865,5.70524444 L51.8187865,5.70524444 L51.8187865,6.496 C51.8180674,6.52373333 51.8162697,6.54897778 51.8162697,6.57706667 L51.8162697,6.57706667 L51.8162697,11.6199111 C51.8162697,12.2360889 51.6961798,12.7264 51.448809,13.1072 L51.448809,13.1072 C50.9817528,13.8183111 50.0577079,14.1418667 48.5788764,14.1436444 L48.5788764,14.1436444 C47.100764,14.1418667 46.1763596,13.8190222 45.7096629,13.1079111 L45.7096629,13.1079111 C45.4612135,12.7267556 45.340764,12.2364444 45.340764,11.6199111 L45.340764,11.6199111 L45.340764,6.57706667 C45.340764,6.54897778 45.3393258,6.52373333 45.3389663,6.496 L45.3389663,6.496 L45.3389663,5.70524444 C45.3389663,5.69742222 45.3378876,5.68995556 45.3375281,5.68213333 L45.3375281,5.68213333 L45.3375281,2.07324444 C45.3375281,0.530844444 44.700764,0.251733333 42.9885843,0.251733333 L42.9885843,0.251733333 L42.449618,0.251733333 C40.7370787,0.251733333 40.1006742,0.530844444 40.1006742,2.07324444 L40.1006742,2.07324444 L40.1006742,5.70524444 L40.1006742,9.52604444 L40.1006742,11.6199111 C40.1006742,13.1555556 40.4508764,14.4561778 41.127191,15.504 L41.127191,15.504 C42.4345169,17.5352889 44.9661124,18.6172444 48.565573,18.6172444 L48.565573,18.6172444 C48.5698876,18.6172444 48.5742022,18.6168889 48.5788764,18.6168889 L48.5788764,18.6168889 C48.5828315,18.6168889 48.5875056,18.6172444 48.5918202,18.6172444 L48.5918202,18.6172444 C52.1909213,18.6172444 54.7228764,17.5352889 56.0294831,15.504 L56.0294831,15.504 C56.7065169,14.4561778 57.0567191,13.1555556 57.0567191,11.6199111 L57.0567191,11.6199111 L57.0567191,9.52604444 L57.0567191,5.70524444 L57.0567191,2.07324444 C57.0567191,0.530844444 56.4203146,0.251733333 54.7077753,0.251733333 L54.7077753,0.251733333 L54.168809,0.251733333 Z M15.6911461,4.51235556 C15.008,4.6592 14.7225169,4.8448 14.7225169,5.6128 L14.7225169,5.6128 L14.7225169,5.83217778 C14.7225169,6.13297778 14.7674607,6.34168889 14.8641798,6.48853333 L14.8641798,6.48853333 C14.9770787,6.6592 15.1582921,6.74595556 15.4035056,6.74595556 L15.4035056,6.74595556 C15.5228764,6.74595556 15.6616629,6.72604444 15.8270562,6.68515556 L15.8270562,6.68515556 C16.2171685,6.5888 17.4640899,6.38933333 18.8285843,6.38933333 L18.8285843,6.38933333 C21.2782022,6.38933333 22.2777528,7.06026667 22.2777528,8.70577778 L22.2777528,8.70577778 L22.2777528,10.1731556 L19.1881348,10.1731556 C15.2165393,10.1731556 13.3662921,11.4983111 13.3662921,14.3431111 L13.3662921,14.3431111 C13.3662921,17.1029333 15.2765843,18.6222222 18.7451685,18.6222222 L18.7451685,18.6222222 C22.8670562,18.6222222 24.7054382,17.2352 24.7054382,14.1244444 L24.7054382,14.1244444 L24.7054382,8.70577778 C24.7054382,5.69742222 22.7469663,4.23466667 18.7178427,4.23466667 L18.7178427,4.23466667 C17.0941124,4.23466667 16.0773034,4.43626667 15.6911461,4.51235556 L15.6911461,4.51235556 Z M15.7939775,14.3431111 C15.7939775,12.7552 16.753618,12.1365333 19.2158202,12.1365333 L19.2158202,12.1365333 L22.2777528,12.1365333 L22.2777528,14.0419556 C22.2777528,15.5960889 21.6952809,16.4952889 18.7178427,16.4952889 L18.7178427,16.4952889 C16.750382,16.4952889 15.7939775,15.7916444 15.7939775,14.3431111 L15.7939775,14.3431111 Z M37.2037753,4.63573333 C36.3775281,4.63573333 36.0532135,4.88746667 35.8702022,5.67217778 L35.8702022,5.67217778 L33.5737528,15.1132444 C33.2868315,16.2734222 32.8841348,16.4856889 32.1948764,16.4856889 L32.1948764,16.4856889 C31.3510112,16.4856889 31.0130337,16.2862222 30.6764944,15.1089778 L30.6764944,15.1089778 L28.0751461,5.6672 C27.8601348,4.87644444 27.5422921,4.63573333 26.7149663,4.63573333 L26.7149663,4.63573333 L26.4938427,4.63573333 C26.1601798,4.63573333 25.8275955,4.6656 25.656809,4.88604444 L25.656809,4.88604444 C25.486382,5.10648889 25.5439101,5.43573333 25.632,5.75857778 L25.632,5.75857778 L28.2610337,15.2814222 C28.7539775,17.1036444 29.3404045,18.6126222 31.530427,18.6126222 L31.530427,18.6126222 C31.9395955,18.6126222 32.3178427,18.5564444 32.6320899,18.4515556 L32.6320899,18.4515556 C31.968,20.5176889 31.2920449,21.4289778 29.2994157,21.6316444 L29.2994157,21.6316444 C28.8949213,21.6647111 28.6320899,21.7216 28.4853933,21.9160889 L28.4853933,21.9160889 C28.3333034,22.1176889 28.3678202,22.4056889 28.4224719,22.6631111 L28.4224719,22.6631111 L28.4774831,22.9073778 C28.5961348,23.4723556 28.7985618,23.8222222 29.4396404,23.8222222 L29.4396404,23.8222222 C29.5068764,23.8222222 29.5795056,23.8190222 29.6575281,23.8122667 L29.6575281,23.8122667 C32.632809,23.6195556 34.2274157,22.0352 35.1604494,18.3438222 L35.1604494,18.3438222 L38.3442697,5.75182222 C38.4194157,5.42897778 38.4650787,5.09973333 38.2903371,4.88284444 L38.2903371,4.88284444 C38.1155955,4.6656 37.784809,4.63573333 37.4529438,4.63573333 L37.4529438,4.63573333 L37.2037753,4.63573333 Z",
+            id: "Fill-6",
+            fill: "url(#linearGradient-3)",
+            mask: "url(#mask-2)"
+        })), Object(jsx.b)("g", {
+            id: "Group-13",
+            transform: "translate(54.292135, 6.880533)"
         }, Object(jsx.b)("path", {
-            d: "m 1.0778133,2.4638268 c 0.6835111,0 1.3287556,-0.5401484 1.4332889,-1.2033255 C 2.6153244,0.59732422 2.1502133,0.05748568 1.4670133,0.04787891 c -0.68351108,0 -1.32875552,0.54014843 -1.43328886,1.20332549 -0.11386666,0.672474 0.35124445,1.2126224 1.04408886,1.2126224"
-        }))));
+            d: "M4.69195506,5.33308444 L0.900134831,5.33166222 C0.486651685,5.33166222 0.151191011,4.99992889 0.151550273,4.59104 L0.152629213,0.794773333 C0.152988764,0.385884444 0.488449438,0.0541511111 0.901932584,0.0545063811 L4.69375281,0.0559288889 C5.10723596,0.0559288889 5.44233708,0.387662222 5.44233708,0.796551111 L5.44089888,4.59281778 C5.44089888,5.00170667 5.1054382,5.33308444 4.69195506,5.33308444",
+            id: "Fill-9",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M0.415640449,1.31818667 L0.152808989,1.31818667 L0.151370787,4.59107556 C0.151370787,4.99996444 0.48647191,5.33169778 0.899955056,5.33169778 L2.76458427,5.33240889 L2.76458427,3.13969778 C2.76458427,1.59729778 2.12782022,1.31818667 0.415640449,1.31818667",
+            id: "Fill-11",
+            fill: secondary
+        }))))));
+    }, _fundingLogos[constants.h.VERKKOPANKKI] = function(_ref) {
+        var logoColor = _ref.logoColor;
+        if (!VERKKOPANKKI_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " verkkopankki logo available");
+        var _VERKKOPANKKI_LOGO_CO2 = VERKKOPANKKI_LOGO_COLORS[logoColor], primary = _VERKKOPANKKI_LOGO_CO2.primary, secondary = _VERKKOPANKKI_LOGO_CO2.secondary;
+        return Object(jsx.b)("svg", {
+            width: "83px",
+            height: "32px",
+            viewBox: "0 0 83 32",
+            version: "1.1",
+            xmlns: "http://www.w3.org/2000/svg"
+        }, Object(jsx.b)("defs", null, Object(jsx.b)("path", {
+            d: "M6.75,0.0879407407 C3.0375,0.0879407407 0,2.96794074 0,6.48794074 L0,6.48794074 L0,24.5027556 C0,28.0227556 3.0375,30.9027556 6.75,30.9027556 L6.75,30.9027556 L25.75025,30.9027556 C29.4625,30.9027556 32.5,28.0227556 32.5,24.5027556 L32.5,24.5027556 L32.5,6.48794074 C32.5,2.96794074 29.4625,0.0879407407 25.75025,0.0879407407 L25.75025,0.0879407407 L6.75,0.0879407407 Z",
+            id: "path-1"
+        }), Object(jsx.b)("linearGradient", {
+            x1: "80.3415915%",
+            y1: "2.75555705%",
+            x2: "19.6584085%",
+            y2: "97.2445831%",
+            id: "linearGradient-3"
+        }, Object(jsx.b)("stop", {
+            "stop-color": "#FFFFFF",
+            offset: "0%"
+        }), Object(jsx.b)("stop", {
+            "stop-color": "#CACCC8",
+            offset: "100%"
+        })), Object(jsx.b)("path", {
+            d: "M6.6155,0.206459259 C3.04575,0.206459259 0.125,2.97576296 0.125,6.36041481 L0.125,6.36041481 L0.125,23.6821333 C0.125,27.0670222 3.04575,29.8360889 6.6155,29.8360889 L6.6155,29.8360889 L24.8845,29.8360889 C28.45425,29.8360889 31.375,27.0670222 31.375,23.6821333 L31.375,23.6821333 L31.375,6.36041481 C31.375,2.97576296 28.45425,0.206459259 24.8845,0.206459259 L24.8845,0.206459259 L6.6155,0.206459259 Z",
+            id: "path-4"
+        }), Object(jsx.b)("linearGradient", {
+            x1: "6.10096128%",
+            y1: "89.4646408%",
+            x2: "93.8990386%",
+            y2: "10.5354941%",
+            id: "linearGradient-6"
+        }, Object(jsx.b)("stop", {
+            "stop-color": "#FFFFFF",
+            offset: "0%"
+        }), Object(jsx.b)("stop", {
+            "stop-color": "#CACCC8",
+            offset: "100%"
+        })), Object(jsx.b)("polygon", {
+            id: "path-7",
+            points: "6.5 0.206459259 6.5 10.8330667 0.125 10.8330667 0.125 19.129363 6.5 19.129363 6.5 29.8360889 15.25 29.8360889 15.25 19.129363 31.375 19.129363 31.375 10.8330667 15.25 10.8330667 15.25 0.206459259"
+        }), Object(jsx.b)("linearGradient", {
+            x1: "6.26612168%",
+            y1: "82.243184%",
+            x2: "78.1338463%",
+            y2: "17.635184%",
+            id: "linearGradient-9"
+        }, Object(jsx.b)("stop", {
+            "stop-color": "#2D59A1",
+            offset: "0%"
+        }), Object(jsx.b)("stop", {
+            "stop-color": "#1F3364",
+            offset: "100%"
+        })), Object(jsx.b)("polygon", {
+            id: "path-10",
+            points: "0.106675 0.228266667 3.17249309 0.228266667 3.17249309 6.24822519 0.106675 6.24822519"
+        }), Object(jsx.b)("polygon", {
+            id: "path-12",
+            points: "0.2434 0.228266667 3.30921809 0.228266667 3.30921809 6.24822519 0.2434 6.24822519"
+        }), Object(jsx.b)("polygon", {
+            id: "path-14",
+            points: "0.0454 0.228266667 3.11102683 0.228266667 3.11102683 6.24822519 0.0454 6.24822519"
+        }), Object(jsx.b)("polygon", {
+            id: "path-16",
+            points: "0.181875 0.228266667 3.24775183 0.228266667 3.24775183 6.24822519 0.181875 6.24822519"
+        }), Object(jsx.b)("polygon", {
+            id: "path-18",
+            points: "0.1455 0.211057778 0.90525 0.211057778 0.90525 1.20969481 0.1455 1.20969481"
+        }), Object(jsx.b)("polygon", {
+            id: "path-20",
+            points: "0 31.762963 82.90525 31.762963 82.90525 0.228266667 0 0.228266667"
+        })), Object(jsx.b)("g", {
+            id: "Page-1",
+            stroke: "none",
+            "stroke-width": "1",
+            fill: "none",
+            "fill-rule": "evenodd"
+        }, Object(jsx.b)("g", {
+            id: "SPB_&_AltPay_NewAssets",
+            transform: "translate(-219.000000, -536.000000)"
+        }, Object(jsx.b)("g", {
+            id: "Group-70-Copy-2",
+            transform: "translate(219.000000, 536.000000)"
+        }, Object(jsx.b)("g", {
+            id: "Group-3",
+            transform: "translate(0.000000, 0.482844)"
+        }, Object(jsx.b)("mask", {
+            id: "mask-2",
+            fill: "white"
+        }, Object(jsx.b)("use", {
+            href: "#path-1"
+        })), Object(jsx.b)("g", {
+            id: "Clip-2"
+        }), Object(jsx.b)("path", {
+            d: "M6.75,0.0879407407 C3.0375,0.0879407407 0,2.96794074 0,6.48794074 L0,6.48794074 L0,24.5027556 C0,28.0227556 3.0375,30.9027556 6.75,30.9027556 L6.75,30.9027556 L25.75025,30.9027556 C29.4625,30.9027556 32.5,28.0227556 32.5,24.5027556 L32.5,24.5027556 L32.5,6.48794074 C32.5,2.96794074 29.4625,0.0879407407 25.75025,0.0879407407 L25.75025,0.0879407407 L6.75,0.0879407407 Z",
+            id: "Fill-1",
+            fill: "url(#linearGradient-3)",
+            mask: "url(#mask-2)"
+        })), Object(jsx.b)("g", {
+            id: "Group-6",
+            transform: "translate(0.500000, 0.956919)"
+        }, Object(jsx.b)("mask", {
+            id: "mask-5",
+            fill: "white"
+        }, Object(jsx.b)("use", {
+            href: "#path-4"
+        })), Object(jsx.b)("g", {
+            id: "Clip-5"
+        }), Object(jsx.b)("path", {
+            d: "M6.6155,0.206459259 C3.04575,0.206459259 0.125,2.97576296 0.125,6.36041481 L0.125,6.36041481 L0.125,23.6821333 C0.125,27.0670222 3.04575,29.8360889 6.6155,29.8360889 L6.6155,29.8360889 L24.8845,29.8360889 C28.45425,29.8360889 31.375,27.0670222 31.375,23.6821333 L31.375,23.6821333 L31.375,6.36041481 C31.375,2.97576296 28.45425,0.206459259 24.8845,0.206459259 L24.8845,0.206459259 L6.6155,0.206459259 Z",
+            id: "Fill-4",
+            fill: "url(#linearGradient-6)",
+            mask: "url(#mask-5)"
+        })), Object(jsx.b)("g", {
+            id: "Group-9",
+            transform: "translate(0.500000, 0.956919)"
+        }, Object(jsx.b)("mask", {
+            id: "mask-8",
+            fill: "white"
+        }, Object(jsx.b)("use", {
+            href: "#path-7"
+        })), Object(jsx.b)("g", {
+            id: "Clip-8"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-7",
+            fill: "url(#linearGradient-9)",
+            mask: "url(#mask-8)",
+            points: "6.5 0.206459259 6.5 10.8330667 0.125 10.8330667 0.125 19.129363 6.5 19.129363 6.5 29.8360889 15.25 29.8360889 15.25 19.129363 31.375 19.129363 31.375 10.8330667 15.25 10.8330667 15.25 0.206459259"
+        })), Object(jsx.b)("g", {
+            id: "Group-69",
+            transform: "translate(0.000000, 0.008770)"
+        }, Object(jsx.b)("path", {
+            d: "M41.86625,0.448142222 L41.4055,0.448142222 C41.353,0.448142222 41.30625,0.480142222 41.2895,0.527312593 L39.593,5.31949037 L37.89675,0.527312593 C37.88,0.480142222 37.83325,0.448142222 37.7805,0.448142222 L37.312,0.448142222 C37.2725,0.448142222 37.2355,0.466157037 37.2125,0.496734815 C37.1895,0.527075556 37.1835,0.566186667 37.196,0.601505185 L39.18525,6.16926815 C39.202,6.21643852 39.24875,6.24820148 39.30125,6.24820148 L39.877,6.24820148 C39.9295,6.24820148 39.97625,6.21643852 39.993,6.16926815 L41.98225,0.601505185 C41.995,0.566186667 41.9887546,0.527075556 41.96575,0.496734815 C41.94275,0.466157037 41.90575,0.448142222 41.86625,0.448142222",
+            id: "Fill-10",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M42.770925,3.87662222 C42.776925,3.51656296 42.812175,3.23591111 42.875675,3.04106667 C42.940925,2.84148148 43.045425,2.7058963 43.194675,2.62648889 C43.352175,2.54305185 43.589175,2.50085926 43.899175,2.50085926 C44.163925,2.50085926 44.371675,2.52764444 44.515675,2.58026667 C44.645425,2.62767407 44.736675,2.70684444 44.795175,2.82228148 C44.858175,2.94625185 44.890175,3.12853333 44.890175,3.3632 C44.890175,3.5634963 44.845925,3.69884444 44.758675,3.76616296 C44.663925,3.83964444 44.498675,3.87662222 44.267925,3.87662222 L42.770925,3.87662222 Z M45.209425,4.16983704 C45.430425,3.99845926 45.542675,3.72681481 45.542675,3.3632 C45.542675,3.01238519 45.483675,2.72865185 45.366925,2.52005926 C45.245425,2.30364444 45.058675,2.14767407 44.811175,2.05641481 C44.578175,1.97084444 44.271425,1.92722963 43.899175,1.92722963 C43.455925,1.92722963 43.099425,1.99312593 42.840175,2.12278519 C42.569425,2.25742222 42.372675,2.48995556 42.255175,2.81374815 C42.143675,3.12047407 42.087175,3.55306667 42.087175,4.09896296 C42.087175,4.64035556 42.140925,5.07105185 42.246925,5.37896296 C42.358175,5.70417778 42.548675,5.94168889 42.813175,6.08462222 C43.068925,6.22305185 43.426425,6.29345185 43.876175,6.29345185 C44.339425,6.29345185 44.832675,6.26500741 45.341925,6.2093037 C45.403675,6.20266667 45.450425,6.15312593 45.450425,6.09386667 L45.450425,5.82838519 C45.450425,5.76438519 45.395425,5.71223704 45.327925,5.71223704 L43.975925,5.71223704 C43.640425,5.71223704 43.385175,5.66767407 43.217675,5.57925926 C43.057675,5.49463704 42.949425,5.36260741 42.886925,5.17511111 C42.826425,4.99377778 42.790425,4.74014815 42.780175,4.41991111 L44.298675,4.41991111 C44.689925,4.41991111 44.996175,4.33576296 45.209425,4.16983704 L45.209425,4.16983704 Z",
+            id: "Fill-12",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M48.8798,1.97755259 C48.7618,1.94413037 48.6158,1.92730074 48.4458,1.92730074 C48.1323,1.92730074 47.8433,2.00196741 47.58705,2.14893037 C47.40355,2.25441185 47.2248,2.39118222 47.0538,2.55734519 L46.97705,2.0716563 C46.96805,2.01476741 46.9163,1.97257481 46.8558,1.97257481 L46.52555,1.97257481 C46.4578,1.97257481 46.40305,2.02472296 46.40305,2.08896 L46.40305,6.1318637 C46.40305,6.19610074 46.4578,6.24824889 46.52555,6.24824889 L46.97105,6.24824889 C47.0388,6.24824889 47.09355,6.19610074 47.09355,6.1318637 L47.09355,3.20730074 C47.32605,2.99610074 47.5388,2.84178963 47.7263,2.74934519 C47.9178,2.65476741 48.1468,2.60712296 48.40705,2.60712296 C48.5178,2.60712296 48.65755,2.62181926 48.82255,2.65073778 C48.85805,2.65713778 48.8953,2.64789333 48.9233,2.62584889 C48.95105,2.60380444 48.96755,2.57109333 48.96755,2.53648593 L48.96755,2.08896 C48.96755,2.03752296 48.9318,1.99224889 48.8798,1.97755259",
+            id: "Fill-14",
+            fill: primary
+        }), Object(jsx.b)("g", {
+            id: "Group-18",
+            transform: "translate(49.500000, 0.000000)"
+        }, Object(jsx.b)("mask", {
+            id: "mask-11",
+            fill: "white"
+        }, Object(jsx.b)("use", {
+            href: "#path-10"
+        })), Object(jsx.b)("g", {
+            id: "Clip-17"
+        }), Object(jsx.b)("path", {
+            d: "M1.301675,3.9731437 L3.039925,2.16715852 C3.072675,2.13302519 3.080925,2.08395852 3.061425,2.04200296 C3.041925,2.00004741 2.997925,1.97278815 2.949425,1.97278815 L2.373425,1.97278815 C2.338925,1.97278815 2.306425,1.98629926 2.283175,2.01047704 L0.797175,3.54979556 L0.797175,0.344343704 C0.797175,0.280343704 0.742425,0.228195556 0.674675,0.228195556 L0.229175,0.228195556 C0.161425,0.228195556 0.106675,0.280343704 0.106675,0.344343704 L0.106675,6.13184 C0.106675,6.19607704 0.161425,6.24822519 0.229175,6.24822519 L0.674675,6.24822519 C0.742425,6.24822519 0.797175,6.19607704 0.797175,6.13184 L0.797175,4.41948444 L2.370925,6.20650667 C2.394175,6.23281778 2.428675,6.24822519 2.464925,6.24822519 L3.049925,6.24822519 C3.097675,6.24822519 3.140675,6.22191407 3.160925,6.18090667 C3.181175,6.14037333 3.174425,6.09178074 3.143925,6.05741037 L1.301675,3.9731437 Z",
+            id: "Fill-16",
+            fill: primary,
+            mask: "url(#mask-11)"
+        })), Object(jsx.b)("g", {
+            id: "Group-21",
+            transform: "translate(53.250000, 0.000000)"
+        }, Object(jsx.b)("mask", {
+            id: "mask-13",
+            fill: "white"
+        }, Object(jsx.b)("use", {
+            href: "#path-12"
+        })), Object(jsx.b)("g", {
+            id: "Clip-20"
+        }), Object(jsx.b)("path", {
+            d: "M1.4384,3.9731437 L3.1764,2.16715852 C3.20915,2.13302519 3.2174,2.08395852 3.1979,2.04200296 C3.1784,2.00004741 3.1344,1.97278815 3.0859,1.97278815 L2.51015,1.97278815 C2.47565,1.97278815 2.44315,1.98629926 2.4199,2.01047704 L0.9339,3.54979556 L0.9339,0.344343704 C0.9339,0.280343704 0.87915,0.228195556 0.8114,0.228195556 L0.3659,0.228195556 C0.29815,0.228195556 0.2434,0.280343704 0.2434,0.344343704 L0.2434,6.13184 C0.2434,6.19607704 0.29815,6.24822519 0.3659,6.24822519 L0.8114,6.24822519 C0.87915,6.24822519 0.9339,6.19607704 0.9339,6.13184 L0.9339,4.41948444 L2.5074,6.20650667 C2.53065,6.23281778 2.56515,6.24822519 2.6014,6.24822519 L3.18665,6.24822519 C3.2344,6.24822519 3.2774,6.22191407 3.29765,6.18090667 C3.3179,6.14037333 3.31115,6.09178074 3.28065,6.05741037 L1.4384,3.9731437 Z",
+            id: "Fill-19",
+            fill: primary,
+            mask: "url(#mask-13)"
+        })), Object(jsx.b)("g", {
+            id: "Group-24",
+            transform: "translate(74.500000, 0.000000)"
+        }, Object(jsx.b)("mask", {
+            id: "mask-15",
+            fill: "white"
+        }, Object(jsx.b)("use", {
+            href: "#path-14"
+        })), Object(jsx.b)("g", {
+            id: "Clip-23"
+        }), Object(jsx.b)("path", {
+            d: "M1.2404,3.9731437 L2.9784,2.16715852 C3.01115,2.13302519 3.0194,2.08395852 2.9999,2.04200296 C2.9804,2.00004741 2.9364,1.97278815 2.8879,1.97278815 L2.3119,1.97278815 C2.2774,1.97278815 2.2449,1.98629926 2.22165,2.01047704 L0.7359,3.54955852 L0.7359,0.344343704 C0.7359,0.280343704 0.68115,0.228195556 0.6134,0.228195556 L0.1679,0.228195556 C0.10015,0.228195556 0.0454,0.280343704 0.0454,0.344343704 L0.0454,6.13184 C0.0454,6.19607704 0.10015,6.24822519 0.1679,6.24822519 L0.6134,6.24822519 C0.68115,6.24822519 0.7359,6.19607704 0.7359,6.13184 L0.7359,4.41995852 L2.3094,6.20650667 C2.33265,6.23281778 2.36715,6.24822519 2.4034,6.24822519 L2.9884,6.24822519 C3.03615,6.24822519 3.07915,6.22191407 3.09965,6.18090667 C3.11965,6.14037333 3.1129,6.09178074 3.0824,6.05741037 L1.2404,3.9731437 Z",
+            id: "Fill-22",
+            fill: primary,
+            mask: "url(#mask-15)"
+        })), Object(jsx.b)("g", {
+            id: "Group-27",
+            transform: "translate(78.250000, 0.000000)"
+        }, Object(jsx.b)("mask", {
+            id: "mask-17",
+            fill: "white"
+        }, Object(jsx.b)("use", {
+            href: "#path-16"
+        })), Object(jsx.b)("g", {
+            id: "Clip-26"
+        }), Object(jsx.b)("path", {
+            d: "M1.377125,3.9731437 L3.115125,2.16715852 C3.147875,2.13302519 3.156125,2.08395852 3.136625,2.04200296 C3.117125,2.00004741 3.073125,1.97278815 3.024625,1.97278815 L2.448625,1.97278815 C2.414125,1.97278815 2.381625,1.98629926 2.358375,2.01047704 L0.872375,3.54979556 L0.872375,0.344343704 C0.872375,0.280343704 0.817625,0.228195556 0.749875,0.228195556 L0.304375,0.228195556 C0.236625,0.228195556 0.181875,0.280343704 0.181875,0.344343704 L0.181875,6.13184 C0.181875,6.19607704 0.236625,6.24822519 0.304375,6.24822519 L0.749875,6.24822519 C0.817625,6.24822519 0.872375,6.19607704 0.872375,6.13184 L0.872375,4.41948444 L2.446125,6.20650667 C2.469375,6.23281778 2.503875,6.24822519 2.540125,6.24822519 L3.125125,6.24822519 C3.172875,6.24822519 3.215875,6.22191407 3.236375,6.18090667 C3.256375,6.14037333 3.249625,6.09178074 3.219125,6.05741037 L1.377125,3.9731437 Z",
+            id: "Fill-25",
+            fill: primary,
+            mask: "url(#mask-17)"
+        })), Object(jsx.b)("path", {
+            d: "M58.732575,5.68936296 C58.439825,5.68936296 58.209325,5.65238519 58.047825,5.57937778 C57.899325,5.51253333 57.782075,5.37078519 57.699325,5.15863704 C57.610075,4.9298963 57.564825,4.576 57.564825,4.10642963 C57.564825,3.63733333 57.610075,3.28201481 57.699325,3.05042963 C57.781825,2.83685926 57.898825,2.69534815 58.046575,2.63063704 C58.209075,2.55952593 58.439825,2.52373333 58.732575,2.52373333 C59.020325,2.52373333 59.250075,2.55952593 59.415075,2.63063704 C59.565825,2.69582222 59.685075,2.83757037 59.769575,3.05161481 C59.861575,3.28248889 59.907825,3.63733333 59.907825,4.10642963 C59.907825,4.57576296 59.861575,4.92942222 59.769825,5.15768889 C59.685075,5.37007407 59.565075,5.51205926 59.414325,5.57914074 C59.249825,5.65238519 59.020575,5.68936296 58.732575,5.68936296 M59.771825,2.10512593 C59.508075,1.98731852 59.158325,1.92734815 58.732575,1.92734815 C58.306325,1.92734815 57.958325,1.9858963 57.697825,2.1010963 C57.424575,2.22222222 57.215075,2.44835556 57.075325,2.77333333 C56.942075,3.08432593 56.874325,3.5328 56.874325,4.10642963 C56.874325,4.6701037 56.942075,5.11478519 57.075325,5.42814815 C57.214825,5.7554963 57.425075,5.98542222 57.700075,6.11128889 C57.964575,6.23217778 58.311575,6.29357037 58.732575,6.29357037 C59.158575,6.29357037 59.508575,6.23217778 59.772825,6.11128889 C60.048325,5.98518519 60.258325,5.75668148 60.397325,5.43217778 C60.530575,5.12118519 60.598575,4.67508148 60.598575,4.10642963 C60.598575,3.53848889 60.530575,3.09238519 60.397325,2.78068148 C60.258075,2.45617778 60.047825,2.22885926 59.771825,2.10512593",
+            id: "Fill-28",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M64.20645,4.09908148 C64.20645,5.1693037 63.87745,5.68936296 63.19995,5.68936296 C62.8272,5.68936296 62.43195,5.5808 62.0247,5.36651852 L62.0247,2.85771852 C62.2282,2.75958519 62.4192,2.67922963 62.59295,2.61902222 C62.7757,2.5554963 62.97995,2.52373333 63.19995,2.52373333 C63.4832,2.52373333 63.7147,2.64557037 63.90745,2.89682963 C64.10595,3.15591111 64.20645,3.56077037 64.20645,4.09908148 M63.2997,1.92734815 C63.0547,1.92734815 62.78745,1.98115556 62.5057,2.08734815 C62.30445,2.16296296 62.12945,2.24284444 61.9832,2.32533333 L61.92195,2.06364444 C61.9097,2.01031111 61.8597,1.97262222 61.80245,1.97262222 L61.4567,1.97262222 C61.38895,1.97262222 61.3342,2.02477037 61.3342,2.08900741 L61.3342,7.9296 C61.3342,7.99383704 61.38895,8.04574815 61.4567,8.04574815 L61.9022,8.04574815 C61.96995,8.04574815 62.0247,7.99383704 62.0247,7.9296 L62.0247,5.96077037 C62.19345,6.04562963 62.3712,6.11721481 62.55545,6.17386667 C62.8122,6.25327407 63.0627,6.29357037 63.2997,6.29357037 C64.35945,6.29357037 64.8972,5.5552 64.8972,4.09908148 C64.8972,3.49985185 64.77145,2.98808889 64.52345,2.57754074 C64.2632,2.14613333 63.85145,1.92734815 63.2997,1.92734815",
+            id: "Fill-30",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M67.38835,5.62915556 C66.91085,5.75265185 66.61485,5.74459259 66.3756,5.56325926 C66.2516,5.46915556 66.19135,5.31531852 66.19135,5.0925037 L66.19135,4.90311111 C66.19135,4.69973333 66.25035,4.54234074 66.37235,4.42216296 C66.4921,4.30364444 66.6886,4.23917037 66.95685,4.23016296 L68.2581,4.18204444 L68.2581,5.35348148 L67.9846,5.45042963 C67.8086,5.51253333 67.6081,5.5725037 67.38835,5.62915556 M67.4206,1.90435556 C66.95785,1.90435556 66.46885,1.93801481 65.96735,2.00414815 C65.90685,2.01220741 65.86185,2.06127407 65.86185,2.11911111 L65.86185,2.38459259 C65.86185,2.44882963 65.9166,2.50097778 65.98435,2.50097778 L67.26685,2.50097778 C67.6521,2.50097778 67.9166,2.56379259 68.05385,2.68847407 C68.18935,2.8114963 68.2581,3.00562963 68.2581,3.26447407 L68.2581,3.70962963 L66.8831,3.70962963 C66.4486,3.70962963 66.1066,3.81700741 65.86635,4.02915556 C65.62385,4.2432 65.50085,4.53475556 65.50085,4.89528889 L65.50085,5.16859259 C65.50085,5.51324444 65.61035,5.7901037 65.8256,5.99087407 C66.04035,6.19164444 66.3211,6.29357037 66.66035,6.29357037 C66.8921,6.29357037 67.14185,6.2546963 67.40285,6.17813333 C67.65735,6.10394074 67.88985,6.02168889 68.0931,5.93422222 C68.1851,5.89463704 68.2541,5.86405926 68.30635,5.83988148 L68.3676,6.15324444 C68.37835,6.208 68.42885,6.24805926 68.48785,6.24805926 L68.82585,6.24805926 C68.8936,6.24805926 68.94835,6.19614815 68.94835,6.13191111 L68.94835,3.24195556 C68.94835,2.79585185 68.8216,2.45712593 68.5716,2.23573333 C68.32385,2.016 67.93635,1.90435556 67.4206,1.90435556",
+            id: "Fill-32",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M72.05925,1.90440296 C71.77425,1.90440296 71.48575,1.95702519 71.20125,2.0601363 C70.9805,2.14049185 70.7715,2.2393363 70.5785,2.35477333 L70.50425,2.06179556 C70.49125,2.00941037 70.44175,1.97266963 70.38525,1.97266963 L70.055,1.97266963 C69.9875,1.97266963 69.9325,2.02481778 69.9325,2.08881778 L69.9325,6.13195852 C69.9325,6.19595852 69.9875,6.24810667 70.055,6.24810667 L70.5005,6.24810667 C70.568,6.24810667 70.623,6.19595852 70.623,6.13195852 L70.623,2.91536593 C70.86175,2.78926222 71.07525,2.69515852 71.2585,2.63471407 C71.4525,2.57118815 71.6805,2.53895111 71.9365,2.53895111 C72.18875,2.53895111 72.3835,2.61646222 72.53225,2.77646222 C72.68475,2.94049185 72.75875,3.14481778 72.75875,3.40105481 L72.75875,6.13195852 C72.75875,6.19595852 72.81375,6.24810667 72.88125,6.24810667 L73.3265,6.24810667 C73.39425,6.24810667 73.44925,6.19595852 73.44925,6.13195852 L73.44925,3.3555437 C73.44925,2.9561363 73.33025,2.61243259 73.096,2.33462519 C72.855,2.04923259 72.506,1.90440296 72.05925,1.90440296",
+            id: "Fill-34",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M82.751875,1.97269333 L82.306375,1.97269333 C82.238625,1.97269333 82.183875,2.02484148 82.183875,2.08884148 L82.183875,6.13198222 C82.183875,6.19598222 82.238625,6.24813037 82.306375,6.24813037 L82.751875,6.24813037 C82.819625,6.24813037 82.874375,6.19598222 82.874375,6.13198222 L82.874375,2.08884148 C82.874375,2.02484148 82.819625,1.97269333 82.751875,1.97269333",
+            id: "Fill-36",
+            fill: primary
+        }), Object(jsx.b)("g", {
+            id: "Group-40",
+            transform: "translate(82.000000, 0.237037)"
+        }, Object(jsx.b)("mask", {
+            id: "mask-19",
+            fill: "white"
+        }, Object(jsx.b)("use", {
+            href: "#path-18"
+        })), Object(jsx.b)("g", {
+            id: "Clip-39"
+        }), Object(jsx.b)("path", {
+            d: "M0.68275,0.211057778 L0.38325,0.211057778 C0.239,0.211057778 0.1455,0.301368889 0.1455,0.441220741 L0.1455,0.979531852 C0.1455,1.0617837 0.1805,1.11393185 0.21,1.14308741 C0.2405,1.17342815 0.29525,1.20969481 0.38325,1.20969481 L0.68275,1.20969481 C0.78525,1.20969481 0.90525,1.14925037 0.90525,0.979531852 L0.90525,0.441220741 C0.90525,0.271502222 0.78525,0.211057778 0.68275,0.211057778 L0.68275,0.211057778 Z",
+            id: "Fill-38",
+            fill: primary,
+            mask: "url(#mask-19)"
+        })), Object(jsx.b)("polygon", {
+            id: "Fill-41",
+            fill: secondary,
+            points: "54.410575 25.6368119 53.503075 25.6368119 51.980825 27.2138193 51.980825 23.8924563 51.290325 23.8924563 51.290325 29.9122489 51.980825 29.9122489 51.980825 28.0835081 53.591325 29.9122489 54.496075 29.9122489 52.485575 27.6371674"
+        }), Object(jsx.b)("path", {
+            d: "M38.2935,12.7641126 L40.91225,12.7261867 L40.91225,12.171283 L38.2935,12.133357 L38.2935,10.654957 C38.2935,10.4489719 38.344,10.2948978 38.4435,10.1967644 C38.5435,10.098157 38.68275,10.0505126 38.86975,10.0505126 L41.235,10.0505126 L41.235,9.48233481 L41.1185,9.47688296 C40.2725,9.43658667 39.47975,9.41596444 38.76225,9.41596444 C38.44075,9.41596444 38.16525,9.51149037 37.9435,9.69969778 C37.7175,9.89146074 37.603,10.1948681 37.603,10.6016237 L37.603,15.2160237 L38.2935,15.2160237 L38.2935,12.7641126 Z",
+            id: "Fill-43",
+            fill: secondary
+        }), Object(jsx.b)("path", {
+            d: "M42.21085,10.3483733 C42.24135,10.3787141 42.2961,10.4145067 42.3836,10.4145067 L42.68335,10.4145067 C42.78585,10.4145067 42.9056,10.3540622 42.9056,10.1845807 L42.9056,9.64603259 C42.9056,9.47631407 42.78585,9.41586963 42.68335,9.41586963 L42.3836,9.41586963 C42.23935,9.41586963 42.1461,9.50618074 42.1461,9.64603259 L42.1461,10.1845807 C42.1461,10.2665956 42.1811,10.3189807 42.2106,10.3481363 L42.21085,10.3483733 Z",
+            id: "Fill-45",
+            fill: secondary
+        }), Object(jsx.b)("mask", {
+            id: "mask-21",
+            fill: "white"
+        }, Object(jsx.b)("use", {
+            href: "#path-20"
+        })), Object(jsx.b)("g", {
+            id: "Clip-48"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-47",
+            fill: secondary,
+            mask: "url(#mask-21)",
+            points: "42.1845 15.2158815 42.875 15.2158815 42.875 10.9404444 42.1845 10.9404444"
+        }), Object(jsx.b)("path", {
+            d: "M47.4611,15.2159763 L47.4611,12.3236504 C47.4611,11.9240059 47.3421,11.5805393 47.10785,11.3027319 C46.86635,11.0171022 46.5176,10.8722726 46.07085,10.8722726 C45.78635,10.8722726 45.4976,10.9246578 45.21335,11.0280059 C44.9921,11.1083615 44.7831,11.2072059 44.59035,11.322643 L44.49335,10.9405393 L43.94435,10.9405393 L43.94435,15.2159763 L44.6346,15.2159763 L44.6346,11.8829985 C44.8736,11.7568948 45.08735,11.6627911 45.2701,11.6028207 C45.46435,11.5388207 45.6926,11.5068207 45.9481,11.5068207 C46.20035,11.5068207 46.39535,11.5843319 46.5441,11.7443319 C46.6966,11.9083615 46.7706,12.1126874 46.7706,12.3689244 L46.7706,15.2159763 L47.4611,15.2159763 Z",
+            id: "Fill-49",
+            fill: secondary,
+            mask: "url(#mask-21)"
+        }), Object(jsx.b)("path", {
+            d: "M51.33365,15.2159763 L52.02415,15.2159763 L52.02415,12.3236504 C52.02415,11.9240059 51.90515,11.5805393 51.67115,11.3027319 C51.42965,11.0171022 51.0809,10.8722726 50.63415,10.8722726 C50.34915,10.8722726 50.06065,10.9246578 49.7764,11.0280059 C49.5554,11.1083615 49.3464,11.2072059 49.1534,11.322643 L49.05665,10.9405393 L48.50715,10.9405393 L48.50715,15.2159763 L49.1979,15.2159763 L49.1979,11.8829985 C49.4369,11.7568948 49.65065,11.6627911 49.83365,11.6028207 C50.02715,11.5388207 50.2554,11.5068207 50.5114,11.5068207 C50.76365,11.5068207 50.9584,11.5843319 51.10715,11.7443319 C51.25965,11.9083615 51.33365,12.1126874 51.33365,12.3689244 L51.33365,15.2159763 Z",
+            id: "Fill-50",
+            fill: secondary,
+            mask: "url(#mask-21)"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-51",
+            fill: secondary,
+            mask: "url(#mask-21)",
+            points: "53.07025 15.2158815 53.761 15.2158815 53.761 10.9404444 53.07025 10.9404444"
+        }), Object(jsx.b)("path", {
+            d: "M53.2697,10.4145778 L53.5692,10.4145778 C53.6717,10.4145778 53.7917,10.3541333 53.7917,10.1844148 L53.7917,9.6461037 C53.7917,9.47638519 53.6717,9.41594074 53.5692,9.41594074 L53.2697,9.41594074 C53.12545,9.41594074 53.03195,9.50625185 53.03195,9.6461037 L53.03195,10.1844148 C53.03195,10.2666667 53.06695,10.3190519 53.0967,10.3482074 C53.1272,10.3785481 53.1817,10.4145778 53.2697,10.4145778",
+            id: "Fill-52",
+            fill: secondary,
+            mask: "url(#mask-21)"
+        }), Object(jsx.b)("path", {
+            d: "M55.15935,13.1527822 C55.3896,13.3137304 55.7216,13.3952711 56.1461,13.3952711 L56.6991,13.3952711 C56.9451,13.3952711 57.12785,13.4412563 57.24285,13.5318044 C57.3526,13.6180859 57.40585,13.7439526 57.40585,13.9165156 L57.40585,14.1137304 C57.40585,14.3467378 57.34735,14.4984415 57.23135,14.5638637 C57.0951,14.6409007 56.87735,14.6800119 56.5836,14.6800119 L54.82535,14.6800119 L54.82535,15.1588267 L54.9261,15.1761304 C55.0501,15.1972267 55.28985,15.2164267 55.65985,15.2346785 C56.0211,15.2522193 56.3111,15.2614637 56.52235,15.2614637 C56.99485,15.2614637 57.36685,15.1813452 57.6286,15.0234785 C57.90835,14.8549452 58.05035,14.5565156 58.05035,14.1362489 L58.05035,13.8785896 C58.05035,13.5313304 57.93135,13.2580267 57.6966,13.0662637 C57.46735,12.8790044 57.15235,12.7837156 56.76035,12.7837156 L56.19985,12.7837156 C55.9266,12.7837156 55.7246,12.7474489 55.59885,12.6751526 C55.49285,12.6147081 55.43935,12.4812563 55.43935,12.2781156 L55.43935,12.1034193 C55.43935,11.8753896 55.4986,11.717997 55.6161,11.6357452 C55.74485,11.54496 55.95435,11.4989748 56.2381,11.4989748 L57.8966,11.4989748 L57.8966,11.0111526 L57.7936,10.9952711 C57.6266,10.9696711 57.3876,10.9473896 57.08285,10.9293748 C56.77935,10.9118341 56.5161,10.9028267 56.29985,10.9028267 C55.78935,10.9028267 55.42085,10.9971674 55.17335,11.1910637 C54.92235,11.3880415 54.79485,11.6950044 54.79485,12.1034193 L54.79485,12.3082193 C54.79485,12.6998044 54.9176,12.9840119 55.15935,13.1527822",
+            id: "Fill-53",
+            fill: secondary,
+            mask: "url(#mask-21)"
+        }), Object(jsx.b)("path", {
+            d: "M61.668375,12.3615763 L61.668375,15.2159763 L62.358875,15.2159763 L62.358875,12.3236504 C62.358875,11.9138133 62.238125,11.5672652 62.000375,11.2939615 C61.756875,11.0140207 61.409875,10.8722726 60.968875,10.8722726 C60.683875,10.8722726 60.394125,10.9246578 60.107625,11.0277689 C59.902625,11.1017244 59.709875,11.1910874 59.532625,11.2944356 L59.532625,9.1961837 L58.841875,9.1961837 L58.841875,15.2159763 L59.532625,15.2159763 L59.532625,11.8829985 C59.771625,11.7571319 59.985125,11.6630281 60.167875,11.6028207 C60.361625,11.5388207 60.590125,11.5068207 60.846125,11.5068207 C61.098375,11.5068207 61.293125,11.5843319 61.441625,11.7440948 C61.594125,11.9085985 61.668375,12.1105541 61.668375,12.3615763",
+            id: "Fill-54",
+            fill: secondary,
+            mask: "url(#mask-21)"
+        }), Object(jsx.b)("path", {
+            d: "M41.2896,19.6944356 C41.2896,20.3666726 41.2346,20.874643 41.1261,21.2031763 C41.0241,21.5127467 40.8696,21.7208652 40.66735,21.821843 C40.45385,21.9285096 40.13585,21.9825541 39.72235,21.9825541 C39.2936,21.9825541 38.96785,21.9285096 38.7541,21.821843 C38.5526,21.7211022 38.40235,21.515117 38.3076,21.2093393 C38.20635,20.8829393 38.1551,20.3730726 38.1551,19.6944356 C38.1551,19.0020504 38.2151,18.4784356 38.33335,18.1380504 C38.44535,17.815443 38.6046,17.6018726 38.80685,17.5032652 C39.0211,17.3982578 39.3291,17.3453985 39.72235,17.3453985 C40.13585,17.3453985 40.4541,17.3982578 40.6686,17.5032652 C40.86985,17.6013985 41.02385,17.8116504 41.12585,18.1280948 C41.23435,18.4646874 41.2896,18.9916207 41.2896,19.6944356 M41.01035,16.9474133 C40.6946,16.7957096 40.26135,16.7184356 39.72235,16.7184356 C39.19885,16.7184356 38.77185,16.7957096 38.45385,16.9471763 C38.1241,17.1045689 37.87285,17.4070281 37.70635,17.8460207 C37.5461,18.2684207 37.46485,18.8904059 37.46485,19.6944356 C37.46485,20.4982281 37.54485,21.1149985 37.7026,21.527917 C37.86685,21.9579022 38.11535,22.2501689 38.44085,22.3971319 C38.75285,22.5379319 39.18385,22.609517 39.72235,22.609517 C40.2606,22.609517 40.6916,22.5379319 41.00385,22.3971319 C41.3296,22.2499319 41.57785,21.9576652 41.7421,21.527917 C41.89985,21.1149985 41.97985,20.4982281 41.97985,19.6944356 C41.97985,18.8863763 41.90135,18.263443 41.74635,17.8429393 C41.5851,17.406317 41.3376,17.1048059 41.01035,16.9474133",
+            id: "Fill-55",
+            fill: secondary,
+            mask: "url(#mask-21)"
+        }), Object(jsx.b)("path", {
+            d: "M45.212575,18.2203733 C44.927325,18.2203733 44.638825,18.2729956 44.354825,18.3761067 C44.133575,18.4564622 43.924825,18.5553067 43.731825,18.6705067 L43.634825,18.28864 L43.085575,18.28864 L43.085575,22.564077 L43.776325,22.564077 L43.776325,19.2313363 C44.015325,19.1049956 44.228825,19.0108919 44.411825,18.9509215 C44.605575,18.8871585 44.833825,18.8549215 45.089825,18.8549215 C45.342325,18.8549215 45.536825,18.9324326 45.685575,19.0924326 C45.838075,19.2566993 45.912325,19.4610252 45.912325,19.7170252 L45.912325,22.564077 L46.602825,22.564077 L46.602825,19.6717511 C46.602825,19.2723437 46.483825,18.928877 46.249075,18.6508326 C46.007825,18.365203 45.658825,18.2203733 45.212575,18.2203733",
+            id: "Fill-56",
+            fill: secondary,
+            mask: "url(#mask-21)"
+        }), Object(jsx.b)("path", {
+            d: "M50.09245,16.7641126 L49.79295,16.7641126 C49.64845,16.7641126 49.55495,16.8544237 49.55495,16.9942756 L49.55495,17.5325867 C49.55495,17.6143644 49.5897,17.6665126 49.61895,17.6959052 L49.61995,17.6968533 C49.65045,17.726957 49.70545,17.7627496 49.79295,17.7627496 L50.09245,17.7627496 C50.19495,17.7627496 50.31495,17.7023052 50.31495,17.5325867 L50.31495,16.9942756 C50.31495,16.824557 50.19495,16.7641126 50.09245,16.7641126",
+            id: "Fill-57",
+            fill: secondary,
+            mask: "url(#mask-21)"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-58",
+            fill: secondary,
+            mask: "url(#mask-21)",
+            points: "49.59325 22.5640296 50.284 22.5640296 50.284 18.2885926 49.59325 18.2885926"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-59",
+            fill: secondary,
+            mask: "url(#mask-21)",
+            points: "47.71725 22.5640296 48.408 22.5640296 48.408 16.544 47.71725 16.544"
+        }), Object(jsx.b)("path", {
+            d: "M53.753575,18.2203733 C53.468325,18.2203733 53.179825,18.2729956 52.895825,18.3761067 C52.674575,18.4564622 52.465825,18.5553067 52.272825,18.6705067 L52.175825,18.28864 L51.626575,18.28864 L51.626575,22.564077 L52.317325,22.564077 L52.317325,19.2313363 C52.556325,19.1052326 52.769575,19.0111289 52.952575,18.9509215 C53.146325,18.8871585 53.374575,18.8549215 53.630825,18.8549215 C53.883075,18.8549215 54.077575,18.9324326 54.226325,19.0924326 C54.378825,19.2566993 54.453075,19.4610252 54.453075,19.7170252 L54.453075,22.564077 L55.143575,22.564077 L55.143575,19.6717511 C55.143575,19.2723437 55.024575,18.928877 54.790075,18.6508326 C54.548825,18.365203 54.200075,18.2203733 53.753575,18.2203733",
+            id: "Fill-60",
+            fill: secondary,
+            mask: "url(#mask-21)"
+        }), Object(jsx.b)("path", {
+            d: "M58.651775,19.6791704 C58.651775,19.8792296 58.607525,20.0148148 58.520275,20.0821333 C58.425525,20.1556148 58.260275,20.1925926 58.029275,20.1925926 L56.532025,20.1925926 C56.538275,19.8330074 56.573525,19.5523556 56.637025,19.357037 C56.702275,19.1572148 56.806525,19.0218667 56.956025,18.9426963 C57.114025,18.8590222 57.351025,18.8168296 57.660775,18.8168296 C57.925525,18.8168296 58.133025,18.8436148 58.276775,18.896237 C58.406775,18.9438815 58.498025,19.0230519 58.556275,19.1382519 C58.619775,19.2629333 58.651775,19.4452148 58.651775,19.6791704 M59.103275,22.5252741 L59.211525,22.5134222 L59.211525,22.0282074 L57.737525,22.0282074 C57.401775,22.0282074 57.146525,21.9836444 56.979025,21.8952296 C56.818775,21.8106074 56.710775,21.6785778 56.648275,21.4913185 C56.588025,21.3095111 56.552275,21.0558815 56.541775,20.7361185 L58.060275,20.7361185 C58.451025,20.7361185 58.757525,20.6519704 58.970775,20.4858074 C59.191775,20.3146667 59.303775,20.0430222 59.303775,19.6791704 C59.303775,19.3285926 59.244775,19.0446222 59.128275,18.8360296 C59.007025,18.6196148 58.820275,18.4636444 58.572775,18.3723852 C58.339025,18.2868148 58.032275,18.2432 57.660775,18.2432 C57.217775,18.2432 56.861275,18.3090963 56.601275,18.4387556 C56.330525,18.5741037 56.133775,18.8064 56.016775,19.1294815 C55.905275,19.4359704 55.848525,19.868563 55.848525,20.4149333 C55.848525,20.9563259 55.902275,21.3867852 56.008275,21.6949333 C56.119775,22.0203852 56.310525,22.2578963 56.574525,22.4008296 C56.830275,22.5392593 57.188025,22.6094222 57.637525,22.6094222 C58.101025,22.6094222 58.594025,22.5809778 59.103275,22.5252741",
+            id: "Fill-61",
+            fill: secondary,
+            mask: "url(#mask-21)"
+        }), Object(jsx.b)("path", {
+            d: "M38.2935,26.6307793 L38.2935,24.7392237 L39.707,24.7392237 C40.294,24.7392237 40.5675,25.0253274 40.5675,25.6392533 C40.5675,25.94432 40.489,26.1901274 40.334,26.3700385 C40.183,26.545683 39.993,26.6307793 39.753,26.6307793 L38.2935,26.6307793 Z M38.2935,27.2195793 L39.7685,27.2195793 C40.061,27.2195793 40.29575,27.3034904 40.4865,27.4755793 C40.6755,27.646483 40.76725,27.87712 40.76725,28.1805274 C40.76725,28.6060089 40.68275,28.8994607 40.51625,29.0528237 C40.349,29.2071348 40.09725,29.285357 39.7685,29.285357 L38.2935,29.285357 L38.2935,27.2195793 Z M40.63425,26.8919941 C40.76925,26.8064237 40.88875,26.6893274 40.99175,26.5416533 C41.158,26.3034311 41.2425,26.0023941 41.2425,25.6470756 C41.2425,24.6429867 40.71425,24.1124978 39.71475,24.1124978 L37.603,24.1124978 L37.603,29.91232 L39.77625,29.91232 C40.313,29.91232 40.7285,29.7857422 41.0115,29.5361422 C41.29725,29.2844089 41.44225,28.8513422 41.44225,28.2487941 C41.44225,27.8166756 41.327,27.4762904 41.0995,27.2380681 C40.95575,27.0873126 40.80025,26.9714015 40.63425,26.8919941 L40.63425,26.8919941 Z",
+            id: "Fill-62",
+            fill: secondary,
+            mask: "url(#mask-21)"
+        }), Object(jsx.b)("path", {
+            d: "M44.049475,29.2935111 C43.567225,29.4170074 43.274725,29.4084741 43.036725,29.2276148 C42.912725,29.1337481 42.852725,28.9801481 42.852725,28.7568593 L42.852725,28.5674667 C42.852725,28.3636148 42.911725,28.2064593 43.033475,28.0862815 C43.152975,27.968 43.349475,27.9035259 43.617975,27.8945185 L44.919225,27.8464 L44.919225,29.017837 L44.645225,29.1145481 C44.471975,29.1759407 44.271725,29.2361481 44.049475,29.2935111 M44.081725,25.5687111 C43.617225,25.5687111 43.128225,25.6023704 42.628475,25.6685037 L42.522975,25.6827259 L42.522975,26.1653333 L43.927975,26.1653333 C44.313225,26.1653333 44.577975,26.2281481 44.714975,26.3528296 C44.850475,26.4758519 44.919225,26.6699852 44.919225,26.9288296 L44.919225,27.3739852 L43.544225,27.3739852 C43.109475,27.3739852 42.767475,27.4816 42.527475,27.6935111 C42.284975,27.9073185 42.161975,28.1988741 42.161975,28.5596444 L42.161975,28.8329481 C42.161975,29.1771259 42.271225,29.4537481 42.486475,29.6549926 C42.701475,29.856 42.982475,29.9579259 43.321475,29.9579259 C43.552225,29.9579259 43.801975,29.9190519 44.063975,29.8424889 C44.318475,29.7682963 44.550975,29.6860444 44.754475,29.5985778 C44.846475,29.5589926 44.915225,29.5281778 44.967475,29.504237 L45.047225,29.9121778 L45.609475,29.9121778 L45.609475,26.9063111 C45.609475,26.4602074 45.482725,26.1214815 45.232725,25.8998519 C44.984975,25.6801185 44.597725,25.5687111 44.081725,25.5687111",
+            id: "Fill-63",
+            fill: secondary,
+            mask: "url(#mask-21)"
+        }), Object(jsx.b)("path", {
+            d: "M48.907625,25.5687585 C48.622625,25.5687585 48.334125,25.6213807 48.049875,25.7244919 C47.828875,25.8046104 47.620125,25.9034548 47.426875,26.0191289 L47.329875,25.6370252 L46.780625,25.6370252 L46.780625,29.9122252 L47.471375,29.9122252 L47.471375,26.5797215 C47.709125,26.4538548 47.922875,26.3597511 48.107125,26.2990696 C48.300125,26.2355437 48.528125,26.2033067 48.784875,26.2033067 C49.037125,26.2033067 49.231875,26.2808178 49.380625,26.4408178 C49.533125,26.6046104 49.607125,26.8089363 49.607125,27.0654104 L49.607125,29.9122252 L50.297625,29.9122252 L50.297625,27.0198993 C50.297625,26.6204919 50.178625,26.2772622 49.944375,25.9989807 C49.703375,25.7135881 49.354375,25.5687585 48.907625,25.5687585",
+            id: "Fill-64",
+            fill: secondary,
+            mask: "url(#mask-21)"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-65",
+            fill: secondary,
+            mask: "url(#mask-21)",
+            points: "55.21725 29.9121778 55.908 29.9121778 55.908 25.6369778 55.21725 25.6369778"
+        }), Object(jsx.b)("path", {
+            d: "M55.716225,24.1124978 L55.416725,24.1124978 C55.272475,24.1124978 55.178975,24.2028089 55.178975,24.3424237 L55.178975,24.8809719 C55.178975,24.9632237 55.213975,25.0153719 55.243475,25.0445274 C55.273975,25.0751052 55.328475,25.1108978 55.416725,25.1108978 L55.716225,25.1108978 C55.818725,25.1108978 55.938725,25.0506904 55.938725,24.8809719 L55.938725,24.3424237 C55.938725,24.1727052 55.818725,24.1124978 55.716225,24.1124978",
+            id: "Fill-66",
+            fill: secondary,
+            mask: "url(#mask-21)"
+        }), Object(jsx.b)("path", {
+            d: "M59.166675,25.5687585 C58.881425,25.5687585 58.592925,25.6213807 58.308925,25.7244919 C58.087675,25.8048474 57.878675,25.9036919 57.685675,26.0191289 L57.588675,25.6370252 L57.039675,25.6370252 L57.039675,29.9122252 L57.730425,29.9122252 L57.730425,26.5797215 C57.967675,26.4540919 58.181175,26.3599881 58.365675,26.2990696 C58.559175,26.2355437 58.787175,26.2033067 59.043925,26.2033067 C59.296175,26.2033067 59.490675,26.2808178 59.639425,26.4408178 C59.791925,26.6046104 59.865925,26.8089363 59.865925,27.0654104 L59.865925,29.9122252 L60.556425,29.9122252 L60.556425,27.0198993 C60.556425,26.6204919 60.437425,26.2767881 60.203175,25.9989807 C59.962175,25.7135881 59.613175,25.5687585 59.166675,25.5687585",
+            id: "Fill-67",
+            fill: secondary,
+            mask: "url(#mask-21)"
+        }), Object(jsx.b)("path", {
+            d: "M62.08805,30.3800889 C62.08805,30.1537185 62.16505,29.9894519 62.32305,29.8778074 C62.49205,29.7581037 62.6943,29.7000296 62.94105,29.7000296 L64.07005,29.7000296 C64.4113,29.7000296 64.65005,29.7550222 64.7798,29.8640593 C64.90705,29.9707259 64.9688,30.1274074 64.9688,30.342163 L64.9688,30.5166222 C64.9688,30.7420444 64.89005,30.9063111 64.7278,31.0179556 C64.55505,31.1367111 64.3028,31.1969185 63.97805,31.1969185 L62.98705,31.1969185 C62.6868,31.1969185 62.4558,31.1454815 62.30055,31.0433185 C62.1573,30.9489778 62.08805,30.7941926 62.08805,30.5697185 L62.08805,30.3800889 Z M64.54655,27.1184593 C64.54655,27.6655407 64.2463,27.9201185 63.60155,27.9201185 L63.13305,27.9201185 C62.5773,27.9201185 62.31855,27.6463407 62.31855,27.0577778 C62.31855,26.7550815 62.3953,26.5367704 62.5463,26.4087704 C62.7018,26.2772148 62.93555,26.2106074 63.24055,26.2106074 L63.6783,26.2106074 C64.27055,26.2106074 64.54655,26.4990815 64.54655,27.1184593 L64.54655,27.1184593 Z M65.62855,25.6293926 L63.3248,25.6293926 C61.9478,25.6293926 61.6588,26.3978667 61.6588,27.0426074 C61.6588,27.3180444 61.72155,27.5721481 61.8453,27.7980444 C61.9318,27.9552 62.05855,28.0865185 62.22355,28.1912889 C61.8153,28.3617185 61.72005,28.6679704 61.72005,28.9161481 C61.72005,29.0702222 61.76205,29.2079407 61.8443,29.3257481 C61.88505,29.3838222 61.9348,29.4359704 61.9928,29.4814815 C61.85355,29.561363 61.73455,29.6623407 61.6378,29.7825185 C61.4938,29.9614815 61.42055,30.1831111 61.42055,30.4407704 L61.42055,30.6379852 C61.42055,31.0037333 61.56005,31.2874667 61.8348,31.481837 C62.0983,31.6683852 62.45505,31.762963 62.89505,31.762963 L64.01605,31.762963 C64.52405,31.762963 64.92255,31.6532148 65.20005,31.4368 C65.4843,31.2146963 65.62855,30.8977778 65.62855,30.4938667 L65.62855,30.3118222 C65.62855,29.9185778 65.50005,29.6168296 65.24705,29.4153481 C64.99955,29.2183704 64.6218,29.1185778 64.1238,29.1185778 L62.6953,29.1185778 C62.59755,29.1185778 62.51655,29.0958222 62.4473,29.049363 C62.41205,29.0251852 62.36455,28.9796741 62.36455,28.8632889 C62.36455,28.6926222 62.4413,28.6312296 62.49905,28.5997037 C62.61005,28.5394963 62.78455,28.5089185 63.01805,28.5089185 L63.64755,28.5089185 C64.1883,28.5089185 64.58855,28.3761778 64.8368,28.1137778 C65.08205,27.8554074 65.2063,27.5358815 65.2063,27.1642074 C65.2063,26.918163 65.1723,26.7121778 65.1053,26.5521778 C65.03605,26.3872 64.95555,26.2665481 64.85905,26.1833481 C64.8503,26.1755259 64.8413,26.1677037 64.83205,26.1601185 L65.62855,26.1124741 L65.62855,25.6293926 Z",
+            id: "Fill-68",
+            fill: secondary,
+            mask: "url(#mask-21)"
+        }))))));
+    }, _fundingLogos[constants.h.BLIK] = function(_ref) {
+        var logoColor = _ref.logoColor;
+        if (!BLIK_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " blik logo available");
+        var primary = BLIK_LOGO_COLORS[logoColor].primary;
+        return Object(jsx.b)("svg", {
+            width: "58px",
+            height: "30px",
+            viewBox: "0 0 58 30",
+            version: "1.1",
+            xmlns: "http://www.w3.org/2000/svg"
+        }, Object(jsx.b)("defs", null, Object(jsx.b)("path", {
+            d: "M4.81760131,0 C2.15699346,0 0,2.12049689 0,4.73608696 L0,4.73608696 L0,25.263913 C0,27.8795031 2.15699346,30 4.81760131,30 L4.81760131,30 L53.1823987,30 C55.8430065,30 58,27.8795031 58,25.263913 L58,25.263913 L58,4.73608696 C58,2.12049689 55.8430065,0 53.1823987,0 L53.1823987,0 L4.81760131,0 Z",
+            id: "path-1"
+        }), Object(jsx.b)("linearGradient", {
+            x1: "50%",
+            y1: "100%",
+            x2: "50%",
+            y2: "0%",
+            id: "linearGradient-3"
+        }, Object(jsx.b)("stop", {
+            "stop-color": "#4D4D4F",
+            offset: "0%"
+        }), Object(jsx.b)("stop", {
+            "stop-color": "#000000",
+            offset: "100%"
+        })), Object(jsx.b)("radialGradient", {
+            cx: "20.3705659%",
+            cy: "18.0870534%",
+            fx: "20.3705659%",
+            fy: "18.0870534%",
+            r: "117.639519%",
+            gradientTransform: "translate(0.203706,0.180871),scale(0.983106,1.000000),rotate(54.479781),translate(-0.203706,-0.180871)",
+            id: "radialGradient-4"
+        }, Object(jsx.b)("stop", {
+            "stop-color": "#FF0000",
+            offset: "0%"
+        }), Object(jsx.b)("stop", {
+            "stop-color": "#E83E49",
+            offset: "55.9042441%"
+        }), Object(jsx.b)("stop", {
+            "stop-color": "#FF00FF",
+            offset: "100%"
+        })), Object(jsx.b)("path", {
+            d: "M3.67238562,6.95664596 C5.60913072,6.95664596 7.17892157,5.41322981 7.17892157,3.50925466 C7.17892157,1.60546584 5.60913072,0.0620496894 3.67238562,0.0620496894 C1.73564052,0.0620496894 0.165849673,1.60546584 0.165849673,3.50925466 C0.165849673,5.41322981 1.73564052,6.95664596 3.67238562,6.95664596 Z",
+            id: "path-5"
+        })), Object(jsx.b)("g", {
+            id: "Page-1",
+            stroke: "none",
+            "stroke-width": "1",
+            fill: "none",
+            "fill-rule": "evenodd"
+        }, Object(jsx.b)("g", {
+            id: "SPB_&_AltPay_NewAssets",
+            transform: "translate(-100.000000, -159.000000)"
+        }, Object(jsx.b)("g", {
+            id: "Blik-logo",
+            transform: "translate(100.000000, 159.000000)"
+        }, Object(jsx.b)("g", {
+            id: "Group-3"
+        }, Object(jsx.b)("mask", {
+            id: "mask-2",
+            fill: "white"
+        }, Object(jsx.b)("use", {
+            href: "#path-1"
+        })), Object(jsx.b)("g", {
+            id: "Clip-2"
+        }), Object(jsx.b)("path", {
+            d: "M4.81760131,0 C2.15699346,0 0,2.12049689 0,4.73608696 L0,4.73608696 L0,25.263913 C0,27.8795031 2.15699346,30 4.81760131,30 L4.81760131,30 L53.1823987,30 C55.8430065,30 58,27.8795031 58,25.263913 L58,25.263913 L58,4.73608696 C58,2.12049689 55.8430065,0 53.1823987,0 L53.1823987,0 L4.81760131,0 Z",
+            id: "Fill-1",
+            fill: "url(#linearGradient-3)",
+            mask: "url(#mask-2)"
+        })), Object(jsx.b)("g", {
+            id: "Group-9",
+            transform: "translate(6.254902, 4.472050)",
+            fill: primary
+        }, Object(jsx.b)("polygon", {
+            id: "Fill-4",
+            points: "17.627451 21.6769565 21.5604575 21.6769565 21.5604575 0.0154658385 17.627451 0.0154658385"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-6",
+            points: "24.9248366 21.6769565 28.8578431 21.6769565 28.8578431 7.32913043 24.9248366 7.32913043"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-7",
+            points: "46.4852941 21.6770124 40.5751699 14.0838447 46.0114379 7.32918634 41.3676471 7.32918634 36.1552288 13.8822298 36.1552288 0.0155217391 32.2222222 0.0155217391 32.2222222 21.6770124 36.1552288 21.6770124 36.1552288 14.3106149 41.3676471 21.6770124"
+        }), Object(jsx.b)("path", {
+            d: "M7.60539216,17.9735963 C5.65575817,17.9735963 4.0751634,16.4197453 4.0751634,14.5030994 C4.0751634,12.5864534 5.65575817,11.0326025 7.60539216,11.0326025 C9.55502614,11.0326025 11.1356209,12.5864534 11.1356209,14.5030994 C11.1356209,16.4197453 9.55502614,17.9735963 7.60539216,17.9735963 M7.60539216,7.16614286 C6.3282549,7.16614286 5.12636601,7.4821677 4.0751634,8.03800621 L4.0751634,0.0155217391 L0.142156863,0.0155217391 L0.142156863,14.5030994 C0.142156863,18.5551491 3.48360131,21.8400559 7.60539216,21.8400559 C11.727183,21.8400559 15.0686275,18.5551491 15.0686275,14.5030994 C15.0686275,10.4510497 11.727183,7.16614286 7.60539216,7.16614286",
+            id: "Fill-8"
+        })), Object(jsx.b)("g", {
+            id: "Group-12",
+            transform: "translate(14.026144, 3.354037)"
+        }, Object(jsx.b)("mask", {
+            id: "mask-6",
+            fill: "white"
+        }, Object(jsx.b)("use", {
+            href: "#path-5"
+        })), Object(jsx.b)("use", {
+            id: "Clip-11",
+            fill: "url(#radialGradient-4)",
+            href: "#path-5"
+        }), Object(jsx.b)("path", {
+            d: "M3.67238562,6.95664596 C5.60913072,6.95664596 7.17892157,5.41322981 7.17892157,3.50925466 C7.17892157,1.60546584 5.60913072,0.0620496894 3.67238562,0.0620496894 C1.73564052,0.0620496894 0.165849673,1.60546584 0.165849673,3.50925466 C0.165849673,5.41322981 1.73564052,6.95664596 3.67238562,6.95664596 Z",
+            id: "Fill-10",
+            mask: "url(#mask-6)"
+        }))))));
+    }, _fundingLogos[constants.h.TRUSTLY] = function(_ref) {
+        var logoColor = _ref.logoColor;
+        if (!TRUSTLY_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " trustly logo available");
+        var _TRUSTLY_LOGO_COLORS$ = TRUSTLY_LOGO_COLORS[logoColor], primary = _TRUSTLY_LOGO_COLORS$.primary, secondary = _TRUSTLY_LOGO_COLORS$.secondary;
+        return Object(jsx.b)("svg", {
+            width: "70px",
+            height: "22px",
+            viewBox: "0 0 70 22",
+            version: "1.1",
+            xmlns: "http://www.w3.org/2000/svg"
+        }, Object(jsx.b)("defs", null, Object(jsx.b)("polygon", {
+            id: "path-1",
+            points: "0.0103141832 0.0376094598 8.42702073 0.0376094598 8.42702073 10.4348955 0.0103141832 10.4348955"
+        }), Object(jsx.b)("polygon", {
+            id: "path-3",
+            points: "0.0163296552 0.144733127 4.23050511 0.144733127 4.23050511 4.4 0.0163296552 4.4"
+        })), Object(jsx.b)("g", {
+            id: "Page-1",
+            stroke: "none",
+            "stroke-width": "1",
+            fill: "none",
+            "fill-rule": "evenodd"
+        }, Object(jsx.b)("g", {
+            id: "SPB_&_AltPay_NewAssets",
+            transform: "translate(-100.000000, -159.000000)"
+        }, Object(jsx.b)("g", {
+            id: "Group-23",
+            transform: "translate(100.000000, 159.000000)"
+        }, Object(jsx.b)("path", {
+            d: "M57.9530181,6.77372667 C58.0233808,6.75539333 58.0971891,6.75631 58.1704534,6.75539333 C58.8242098,6.75667667 59.4772409,6.75502667 60.1309974,6.75631 C60.2972927,6.75906 60.4775518,6.76016 60.6211788,6.85861 C60.7218264,6.93249333 60.7421373,7.06852667 60.7428627,7.18604333 C60.7428627,10.36266 60.7425,13.5390933 60.7428627,16.7153433 C60.7421373,16.84936 60.7318005,16.9985933 60.6360492,17.10181 C60.5343135,17.19916 60.3876036,17.2160267 60.2541321,17.2165767 C59.5459715,17.2160267 58.8374482,17.2176767 58.1294689,17.2158433 C58.0048834,17.2110767 57.863614,17.2141933 57.7655052,17.12491 C57.6782772,17.00666 57.6904275,16.84991 57.6857124,16.7105767 C57.6853497,13.5363433 57.6857124,10.3619267 57.6857124,7.18714333 C57.6715674,7.00857667 57.776386,6.82212667 57.9530181,6.77372667",
+            id: "Fill-1",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M20.3658109,6.94398833 C20.6247746,6.89118833 20.8913549,6.905855 21.1544896,6.90383833 C21.7431425,6.914655 22.3307073,6.90154646 22.9199041,6.90347167 C23.3788938,6.91813833 23.8380648,6.893205 24.2974171,6.907505 C24.5192047,6.92858833 24.7413549,6.888805 24.9636865,6.91263833 C25.3952927,6.91703833 25.8263549,6.91098833 26.2577798,6.903105 C26.6892047,6.90897167 27.1206295,6.89393833 27.5516917,6.91263833 C27.9025984,6.905855 28.2565881,6.88202167 28.6051373,6.936105 C28.7476762,6.95792167 28.8847746,7.07342167 28.8791528,7.22888833 C28.8838679,7.83682167 28.8787902,8.44438833 28.8818731,9.05232167 C28.8773394,9.138855 28.8913031,9.241705 28.8265622,9.31027167 C28.7513031,9.38727167 28.6374171,9.399555 28.536044,9.401205 C27.8282461,9.403955 27.1202668,9.39918833 26.4128316,9.40322167 C26.2891528,9.39717167 26.1348264,9.45987167 26.1491528,9.60947167 C26.1438938,11.977405 26.1482461,14.3455217 26.146614,16.713455 C26.1408109,16.8502217 26.1272098,17.0097217 26.0086088,17.0982717 C25.8550078,17.2093717 25.6564326,17.2121217 25.4750855,17.216155 C24.7798005,17.2168883 24.0846969,17.216155 23.3894119,17.2165217 C23.2191269,17.2121217 23.0405,17.2223883 22.8812772,17.1510717 C22.7434534,17.0942383 22.7091788,16.9272217 22.7100855,16.792655 C22.7091788,14.411155 22.7120803,12.030205 22.7088161,9.648705 C22.7225984,9.51578833 22.6185052,9.401205 22.4853964,9.40762167 C21.793013,9.391305 21.0989974,9.411105 20.4062513,9.39808833 C20.2586347,9.40432167 20.1059404,9.29322167 20.1188161,9.13262167 C20.1122876,8.510205 20.1153705,7.88797167 20.117728,7.26573833 C20.1090233,7.11338833 20.2181943,6.97332167 20.3658109,6.94398833",
+            id: "Fill-3",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M53.4974456,8.01104333 C53.9424715,7.94156 54.3849585,7.85392667 54.8314352,7.79471 C54.9973679,7.76427667 55.2260466,7.81377667 55.239285,8.02021 C55.2715648,8.56434333 55.2441813,9.11104333 55.2539741,9.65646 C55.5600881,9.65829333 55.8665648,9.65352667 56.1728601,9.65829333 C56.3115907,9.65719333 56.4323679,9.75637667 56.4913057,9.87866 C56.5622124,10.0280767 56.5790777,10.19766 56.5770829,10.3619267 C56.5758135,10.67946 56.5770829,10.99681 56.5767202,11.3143433 C56.5732746,11.4281933 56.5687409,11.55451 56.4954767,11.64801 C56.4245699,11.7273933 56.3119534,11.73931 56.2125751,11.7385767 C55.9264093,11.7385767 55.6396995,11.73821 55.3535337,11.73821 C55.3528083,12.7615767 55.3522642,13.7851267 55.3540777,14.8084933 C55.344285,14.9426933 55.4356839,15.0653433 55.5551917,15.1161267 C55.7249326,15.1914767 55.9142591,15.17406 56.0946995,15.1615933 C56.1779378,15.2336433 56.1977047,15.3509767 56.2290777,15.45181 C56.3237409,15.85056 56.3737927,16.2601267 56.3931969,16.67006 C56.3953731,16.81966 56.407342,16.9723767 56.3766943,17.1201433 C56.175399,17.2495767 55.922057,17.2609433 55.694285,17.3161267 C54.8791295,17.4462933 53.9821865,17.51211 53.2335855,17.0939267 C52.6318756,16.7661267 52.2800622,16.0811933 52.2671865,15.40176 C52.2548549,14.1668267 52.2622902,12.9318933 52.2671865,11.6967767 C52.0606321,11.6885267 51.8515389,11.7158433 51.6477047,11.67991 C51.4250104,11.6195933 51.3865648,11.3552267 51.3914611,11.15796 C51.394544,10.79496 51.385114,10.43141 51.3959948,10.0685933 C51.3959948,9.88581 51.5135078,9.70119333 51.700658,9.67186 C51.9385855,9.64014333 52.1803212,9.66397667 52.4198808,9.65682667 C52.4229637,9.32261 52.4182487,8.98857667 52.4216943,8.65436 C52.4191554,8.46296 52.5533523,8.30071 52.7118497,8.21179333 C52.9501399,8.07172667 53.2328601,8.06219333 53.4974456,8.01104333",
+            id: "Fill-5",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M45.7866373,9.817885 C46.6879326,9.40446833 47.6974922,9.330585 48.6745907,9.361935 C49.1888912,9.39255167 49.7160674,9.398785 50.2082435,9.569835 C50.3063523,9.589635 50.3623886,9.67946833 50.3694611,9.77590167 C50.4120777,10.1838183 50.3366373,10.5965017 50.2216632,10.986635 C50.1594611,11.157685 50.1014301,11.3604517 49.9335026,11.4545017 C49.6157824,11.4495517 49.3027772,11.376585 48.9870518,11.3437683 C48.6163782,11.3052683 48.2333731,11.2449517 47.8672332,11.3401017 C47.7156269,11.369435 47.5712746,11.5599183 47.6838912,11.701635 C47.8246166,11.8499517 48.0166632,11.9330017 48.1952902,12.0257683 C48.788114,12.3007683 49.3921813,12.5801683 49.8887098,13.017235 C50.2086062,13.2981017 50.4829845,13.6433183 50.6349534,14.0470183 C50.7404974,14.3112017 50.7829326,14.5959183 50.7970777,14.8791683 C50.800886,15.4038683 50.6969741,15.9511183 50.3821554,16.379935 C49.9855492,16.9328683 49.3201865,17.203835 48.6754974,17.320435 C47.7910674,17.4720517 46.8861451,17.4192517 45.9989948,17.3189683 C45.4518705,17.2403183 44.8960415,17.164235 44.3777513,16.9605517 C44.2990466,16.742385 44.2887098,16.508635 44.2691244,16.2796517 C44.2542539,15.958085 44.2518964,15.633585 44.3106528,15.3164183 C44.3374922,15.1994517 44.3665078,15.064885 44.4716891,14.9930183 C44.5485803,14.974685 44.6252902,15.0100683 44.7009119,15.0251017 C45.2641762,15.1811183 45.8502902,15.2407017 46.4335026,15.2377683 C46.7347202,15.2328183 47.0557047,15.2594017 47.3337098,15.1195183 C47.4880363,15.0482017 47.5480622,14.811335 47.4015337,14.7009683 C47.1779326,14.5084683 46.8885026,14.422485 46.6259119,14.298185 C46.1973886,14.1137517 45.7677772,13.919235 45.3909378,13.6391017 C45.0093834,13.356035 44.6867668,12.9730517 44.5391503,12.512885 C44.3610674,11.952985 44.3661451,11.308385 44.6601088,10.7884517 C44.9089171,10.3429517 45.3341762,10.0281683 45.7866373,9.817885",
+            id: "Fill-7",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M31.1743912,9.64921833 C31.8377591,9.622635 32.5023964,9.642435 33.1664896,9.63216833 C33.6505052,9.63601833 34.1348834,9.62336833 34.618899,9.63051833 C34.7394948,9.62226833 34.8662565,9.71155167 34.863899,9.84171833 C34.8673446,10.4005183 34.8655311,10.9598683 34.8646244,11.519035 C34.868614,11.6611183 34.7688731,11.8079683 34.6212565,11.817135 C34.1843912,11.838585 33.7371891,11.8222683 33.3121114,11.9438183 C33.0451684,12.0369517 32.772785,12.1731683 32.6070337,12.4131517 C32.4721114,12.613535 32.4383808,12.8628683 32.4391062,13.1001017 C32.4387435,14.276735 32.4391062,15.4533683 32.4387435,16.6300017 C32.4367487,16.783635 32.4218782,16.9510183 32.3232254,17.0760517 C32.2318264,17.1827517 32.085842,17.218135 31.9512824,17.2161183 C31.3094948,17.216485 30.6671632,17.2174017 30.025013,17.2157517 C29.8433031,17.2141017 29.6474482,17.1633183 29.5241321,17.020135 C29.4060751,16.8811683 29.3805052,16.6886683 29.3825,16.5117517 C29.3835881,14.765685 29.381956,13.019985 29.3832254,11.2739183 C29.3828627,10.8616017 29.4829663,10.4183017 29.7907124,10.1266183 C30.1619301,9.779385 30.6860233,9.679835 31.1743912,9.64921833",
+            id: "Fill-9",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M36.1322047,9.67501333 C36.237386,9.63174667 36.3527228,9.63614667 36.464614,9.63688 C37.0811943,9.63963 37.6985,9.63486333 38.315443,9.63926333 C38.6204689,9.64879667 38.9517902,9.87576333 38.9604948,10.20723 C38.9619456,11.4357467 38.9601321,12.6648133 38.9612202,13.89333 C38.9623083,14.1120467 39.0081891,14.3621133 39.190443,14.50218 C39.4341736,14.6680967 39.8213497,14.61438 39.9794845,14.3522133 C40.0556503,14.2275467 40.0853912,14.0783133 40.0877487,13.9331133 C40.0877487,12.71523 40.0870233,11.4971633 40.0881114,10.27928 C40.0924637,10.11043 40.0908316,9.91939667 40.2056244,9.78299667 C40.2966606,9.66988 40.4486295,9.63926333 40.5864534,9.63724667 C41.2146399,9.63724667 41.8431891,9.63761333 42.4717383,9.63724667 C42.6494585,9.64091333 42.8409611,9.67703 42.9747953,9.80481333 C43.1102617,9.93773 43.1445363,10.13848 43.1452617,10.3214467 C43.1445363,11.8828967 43.144899,13.4441633 43.1452617,15.0057967 C43.1345622,15.4831967 43.0651062,15.9752633 42.8293549,16.3967467 C42.6278782,16.76103 42.2856762,17.04593 41.8867124,17.1594133 C41.5798731,17.2578633 41.2547176,17.2332967 40.9380855,17.23568 L38.5832927,17.23568 C37.9979041,17.22523 37.3807798,17.2974633 36.8331114,17.0402467 C36.3991477,16.8514133 36.0756244,16.4565133 35.9309093,16.0066133 C35.7408575,15.46853 35.7863756,14.89103 35.7820233,14.3307633 C35.7827487,12.9953633 35.7809352,11.6595967 35.7831114,10.3241967 C35.7938109,10.07468 35.8817642,9.77694667 36.1322047,9.67501333",
+            id: "Fill-11",
+            fill: primary
+        }), Object(jsx.b)("g", {
+            id: "Group-15",
+            transform: "translate(61.476684, 9.598600)"
+        }, Object(jsx.b)("mask", {
+            id: "mask-2",
+            fill: "white"
+        }, Object(jsx.b)("use", {
+            href: "#path-1"
+        })), Object(jsx.b)("g", {
+            id: "Clip-14"
+        }), Object(jsx.b)("path", {
+            d: "M0.065738342,0.1661 C0.16511658,0.0570166667 0.323795337,0.0462 0.461619171,0.03905 C1.15599741,0.0383166667 1.85037565,0.0396 2.54475389,0.0386833333 C2.6867487,0.04015 2.83708549,0.0227333333 2.9701943,0.0878166667 C3.18490933,0.192316667 3.34703368,0.393066667 3.42591969,0.618933333 C3.75959845,1.56841667 4.08656736,2.52083333 4.4240544,3.4694 C4.73832902,2.6697 5.05895078,1.8733 5.37485751,1.07451667 C5.46516839,0.8646 5.53081606,0.643133333 5.64306995,0.44385 C5.77055699,0.23595 5.9771114,0.0399666667 6.23335492,0.03905 C6.82182642,0.03905 7.41066062,0.03795 7.99949482,0.0396 C8.13840674,0.0515166667 8.31159326,0.0553666667 8.40299223,0.181133333 C8.44923575,0.281966667 8.42130829,0.4015 8.38286269,0.50105 C7.08876943,3.5761 5.79340674,6.65041667 4.49949482,9.72546667 C4.38252591,10.0419 4.16037565,10.39775 3.79641192,10.4327667 C3.22534974,10.4338667 2.65410622,10.4379 2.08340674,10.43075 C1.94050518,10.42195 1.74156736,10.3906 1.70910622,10.2202833 C1.69641192,10.1097333 1.74555699,10.0059667 1.78472798,9.90641667 C2.11840674,9.10965 2.44900259,8.3116 2.78286269,7.5152 C2.80226684,7.46991667 2.81876943,7.42023333 2.79229275,7.37421667 C1.88428756,5.104 0.976463731,2.8336 0.0682772021,0.563383333 C0.0205829016,0.44 -0.0327331606,0.27885 0.065738342,0.1661",
+            id: "Fill-13",
+            fill: primary,
+            mask: "url(#mask-2)"
+        })), Object(jsx.b)("path", {
+            d: "M5.64392228,6.89753167 C5.66314508,6.26649833 5.63920725,5.636015 5.6616943,5.00534833 C5.70195337,4.226365 6.02275648,3.467915 6.54358549,2.89389833 C7.05679793,2.32043167 7.7651399,1.92864833 8.52117617,1.80764833 C9.37931088,1.662815 10.2893109,1.86649833 11.0049067,2.367915 C11.8978601,2.976765 12.4681969,4.03423167 12.4906839,5.12323167 C12.4926788,5.71539833 12.4906839,6.30738167 12.4914093,6.89954833 C10.2087927,6.898265 7.92653886,6.90303167 5.64392228,6.89753167 M11.3588964,10.277465 C11.3668756,10.3702317 11.2665907,10.410015 11.1904249,10.410015 C10.7760466,10.4222983 10.3607617,10.4002983 9.94656477,10.421565 C9.93042487,10.4928817 9.9159171,10.565115 9.91646114,10.6389983 C9.91827461,11.7628317 9.9159171,12.8870317 9.91754922,14.010865 C9.91428497,14.1353483 9.92843005,14.2629483 9.90177202,14.385965 C9.85788601,14.5005483 9.72278238,14.5175983 9.61723834,14.5199817 C9.30205699,14.5260317 8.98723834,14.5199817 8.67205699,14.522365 C8.49488083,14.5199817 8.30881865,14.541065 8.1436114,14.4620483 C8.12674611,14.3663483 8.11187565,14.269915 8.11187565,14.1727483 C8.11387047,13.0476317 8.11133161,11.9223317 8.11296373,10.797215 C8.11133161,10.685015 8.12166839,10.570615 8.10172021,10.459515 C8.0128601,10.378115 7.87666839,10.4250483 7.7678601,10.4118483 C7.43581347,10.3980983 7.09705699,10.4499817 6.77008808,10.3749983 C6.74143523,10.013465 6.75956995,9.64918167 6.75757513,9.286915 C6.74107254,9.13933167 6.91135751,9.099915 7.02415544,9.104315 C8.3728342,9.103215 9.7216943,9.104315 11.0703731,9.10394833 C11.1779119,9.10229833 11.3400363,9.11788167 11.3565389,9.25354833 C11.3668756,9.594365 11.3625233,9.936465 11.3588964,10.277465 M17.8946477,7.30544833 C17.5986891,7.006615 17.1638187,6.912565 16.7590518,6.90028167 C15.9665648,6.89863167 15.173715,6.90064833 14.3806839,6.89954833 C14.3830415,6.40069833 14.3748808,5.90148167 14.3873938,5.40263167 C14.4019016,4.26138167 14.0348549,3.12123167 13.3660466,2.20218167 C12.6558912,1.21823167 11.607342,0.488565 10.4407358,0.180198333 C9.59565803,-0.0475016667 8.69599482,-0.0590516667 7.84456995,0.144081667 C6.71078756,0.411565 5.67420725,1.07229833 4.9428342,1.98694833 C4.18716062,2.919565 3.76371503,4.11618167 3.75428497,5.32049833 L3.75428497,6.899915 C2.9601658,6.90064833 2.16604663,6.898265 1.37192746,6.90064833 C0.942860104,6.915315 0.468637306,7.025315 0.186823834,7.37969833 C-0.00866839378,7.61693167 -0.0289792746,7.947665 0.0274196891,8.239165 C0.60519171,10.850015 1.18115026,13.4615983 1.75892228,16.0724483 C1.83907772,16.445165 2.04780829,16.802665 2.37640933,17.0013983 C2.64879275,17.1740983 2.97775648,17.2252483 3.29456995,17.2144317 C7.18120207,17.2133317 11.0676528,17.214065 14.9541036,17.2138817 C15.3244145,17.2180983 15.7106839,17.1038817 15.9783523,16.835665 C16.1994145,16.6259317 16.3305285,16.337915 16.3927306,16.0418317 C16.9674197,13.4359317 17.5446477,10.8305817 18.1200622,8.22449833 C18.1929637,7.90549833 18.1302176,7.54249833 17.8946477,7.30544833",
+            id: "Fill-16",
+            fill: secondary
+        }), Object(jsx.b)("path", {
+            d: "M5.15798446,17.6518833 C5.64272539,17.57085 6.15466839,17.66545 6.57666321,17.9208333 C7.1854456,18.2827333 7.59692228,18.9696833 7.60472021,19.68725 C7.62466839,20.1604333 7.47668912,20.6363667 7.19723316,21.0164167 C6.87806218,21.4575167 6.3831658,21.7647833 5.84927979,21.8515 C5.30233679,21.9486667 4.72021244,21.8087833 4.2704715,21.48025 C3.83197409,21.16125 3.51951295,20.6686333 3.4273886,20.12945 C3.32601554,19.5726667 3.45712953,18.97665 3.78482383,18.5174 C4.10472021,18.0594333 4.61031606,17.7408 5.15798446,17.6518833",
+            id: "Fill-18",
+            fill: secondary
+        }), Object(jsx.b)("g", {
+            id: "Group-22",
+            transform: "translate(10.518135, 17.481933)"
+        }, Object(jsx.b)("mask", {
+            id: "mask-4",
+            fill: "white"
+        }, Object(jsx.b)("use", {
+            href: "#path-3"
+        })), Object(jsx.b)("g", {
+            id: "Clip-21"
+        }), Object(jsx.b)("path", {
+            d: "M1.78171762,0.16951 C2.21695078,0.106443333 2.6739456,0.160893333 3.06728756,0.366043333 C3.5901114,0.629126667 3.99632902,1.12027667 4.15228756,1.69007667 C4.31513731,2.27436 4.22210622,2.92904333 3.88806477,3.43559333 C3.57959326,3.91647667 3.07037047,4.26096 2.51182124,4.36271 C1.96342746,4.47124333 1.37495596,4.33961 0.917779793,4.01602667 C0.465862694,3.69702667 0.142520725,3.19542667 0.0494896373,2.64487667 C-0.0529715026,2.07929333 0.0848523316,1.47447667 0.423608808,1.01247667 C0.7455,0.56716 1.24275389,0.25696 1.78171762,0.16951",
+            id: "Fill-20",
+            fill: secondary,
+            mask: "url(#mask-4)"
+        }))))));
+    }, _fundingLogos[constants.h.MAXIMA] = function(_ref) {
+        var logoColor = _ref.logoColor;
+        if (!MAXIMA_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " maxima logo available");
+        var _MAXIMA_LOGO_COLORS$l = MAXIMA_LOGO_COLORS[logoColor], primary = _MAXIMA_LOGO_COLORS$l.primary, secondary = _MAXIMA_LOGO_COLORS$l.secondary;
+        return Object(jsx.b)("svg", {
+            width: "93px",
+            height: "20px",
+            viewBox: "0 0 93 20",
+            version: "1.1",
+            xmlns: "http://www.w3.org/2000/svg"
+        }, Object(jsx.b)("defs", null, Object(jsx.b)("polygon", {
+            id: "path-1",
+            points: "0.126046849 0.210564103 13.9960414 0.210564103 13.9960414 19.7435897 0.126046849 19.7435897"
+        })), Object(jsx.b)("g", {
+            id: "Page-1",
+            stroke: "none",
+            "stroke-width": "1",
+            fill: "none",
+            "fill-rule": "evenodd"
+        }, Object(jsx.b)("g", {
+            id: "SPB_&_AltPay_NewAssets",
+            transform: "translate(-101.000000, -153.000000)"
+        }, Object(jsx.b)("g", {
+            id: "logo-maxima",
+            transform: "translate(101.000000, 153.000000)"
+        }, Object(jsx.b)("path", {
+            d: "M24.7684479,3.31769231 L31.0927027,3.31769231 C31.6107,4.85923077 32.1393986,6.37589744 32.679563,7.86205128 C33.3708205,9.79794872 33.9293301,11.3192308 34.3477027,12.4258974 C34.4990507,12.8233333 34.6516726,13.2235897 34.8042945,13.6202564 L34.6631384,16.9894872 L30.5446397,16.9894872 C30.4111274,16.4687179 30.2518808,15.9366667 30.0765822,15.3917949 C29.8329986,14.6961538 29.656426,14.1761538 29.5481384,13.8374359 L24.6869137,13.8374359 L23.3049082,16.9894872 L17.5085877,16.9894872 C18.7168233,14.9294872 19.9696479,12.6705128 21.2706288,10.2146154 C22.4380973,8.01717949 23.6025082,5.72051282 24.7684479,3.31769231 Z M26.1713466,10.3571795 L28.6736836,10.3571795 L27.6769274,7.00128205 L26.1713466,10.3571795 Z",
+            id: "Fill-1",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M81.6723452,3.31769231 L87.9971096,3.31769231 C88.5140877,4.85923077 89.0417671,6.37589744 89.5832055,7.86205128 C90.2754822,9.79794872 90.8309342,11.3192308 91.2516,12.4258974 C91.8325315,13.9528205 92.4188137,15.4738462 93,16.9894872 L87.4470082,16.9894872 C87.3114575,16.4687179 87.1555233,15.9366667 86.9781863,15.3917949 C86.7371507,14.6961538 86.5605781,14.1761538 86.4505068,13.8374359 L81.5915753,13.8374359 L80.2067671,16.9894872 L74.4119753,16.9894872 C75.618937,14.9294872 76.872526,12.6705128 78.174526,10.2146154 C79.3419945,8.01717949 80.5038575,5.72051282 81.6723452,3.31769231 Z M83.076263,10.3571795 L85.5747781,10.3571795 L84.5803151,7.00128205 L83.076263,10.3571795 Z",
+            id: "Fill-3",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M58.2832529,3.31807692 L64.9953049,3.31807692 C65.0651186,3.78217949 65.2523926,4.97474359 65.5637515,6.89858974 C65.8231323,8.46730769 65.9920611,9.69115385 66.0746145,10.5621795 C66.3449515,9.41653846 66.7452337,7.9024359 67.2734227,6.01935897 C67.7088666,4.47730769 67.9565268,3.57576923 68.0248118,3.31807692 L74.8996775,3.31807692 C74.8996775,4.79141026 74.8619679,6.30371795 74.7875679,7.85192308 C74.7154611,9.39782051 74.6372392,11.0239744 74.5656419,12.7219231 C74.4904775,14.4196154 74.4530227,15.8429487 74.4530227,16.9888462 L69.9372995,16.9888462 C69.9372995,16.0196154 69.9696584,14.9288462 70.0379433,13.7142308 C70.202031,10.7967949 70.2830556,8.96705128 70.2830556,8.22884615 L67.8235241,16.9888462 L63.3681871,16.9888462 L61.9469433,8.22884615 C61.7958501,9.62141026 61.6679433,11.1034615 61.5588912,12.670641 C61.4498392,14.2398718 61.3950584,15.6798718 61.3950584,16.9888462 L57.1058474,16.9888462 C57.2806364,15.4737179 57.4635789,13.9188462 57.65442,12.3237179 C57.8439871,10.7267949 57.9960995,9.18371795 58.1097378,7.69730769 C58.2251597,6.21192308 58.2832529,4.75064103 58.2832529,3.31807692",
+            id: "Fill-5",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M50.0900038,3.31807692 L55.5584038,3.31807692 C55.1650011,7.91525641 54.9698285,12.4742308 54.9698285,16.9888462 L50.1251655,16.9888462 L49.461171,16.3744872 C49.4754395,15.2557692 49.525634,14.0047436 49.6109901,12.6201282 C49.7131627,10.9747436 49.8178833,9.27397436 49.9259162,7.51397436 C50.0342038,5.75346154 50.0900038,4.355 50.0900038,3.31807692",
+            id: "Fill-7",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M1.17743096,3.31807692 L7.8899926,3.31807692 C7.95878712,3.78217949 8.14631589,4.97474359 8.45869397,6.89858974 C8.71552685,8.46730769 8.88522,9.69115385 8.96726384,10.5621795 C9.23963918,9.41653846 9.6386474,7.9024359 10.1676008,6.01935897 C10.6030447,4.47730769 10.8507049,3.57576923 10.9194995,3.31807692 L17.7938556,3.31807692 C17.7938556,4.79141026 17.7556364,6.30371795 17.6812364,7.85192308 C17.6091296,9.39782051 17.5314173,11.0239744 17.4580364,12.7219231 C17.3836364,14.4196154 17.3464364,15.8429487 17.3464364,16.9888462 L12.8304584,16.9888462 C12.8304584,16.0196154 12.8630721,14.9288462 12.932631,13.7142308 C13.0949351,10.7967949 13.1764693,8.96705128 13.1764693,8.22884615 L10.716683,16.9888462 L6.26185562,16.9888462 L4.83882822,8.22884615 C4.68900904,9.62141026 4.56110219,11.1034615 4.45230493,12.670641 C4.3422337,14.2398718 4.29025562,15.6798718 4.29025562,16.9888462 L2.54794521e-05,16.9888462 C0.174050137,15.4737179 0.356992603,13.9188462 0.54732411,12.3237179 C0.737655616,10.7267949 0.890277534,9.18371795 1.00569945,7.69730769 C1.12010219,6.21192308 1.17743096,4.75064103 1.17743096,3.31807692",
+            id: "Fill-9",
+            fill: primary
+        }), Object(jsx.b)("g", {
+            id: "Group-13",
+            transform: "translate(35.161644, 0.045846)"
+        }, Object(jsx.b)("mask", {
+            id: "mask-2",
+            fill: "white"
+        }, Object(jsx.b)("use", {
+            href: "#path-1"
+        })), Object(jsx.b)("g", {
+            id: "Clip-12"
+        }), Object(jsx.b)("path", {
+            d: "M13.9960414,17.0754359 L13.5193208,17.5531282 C13.4044085,17.5285128 13.3037647,17.5190256 13.2135674,17.5190256 C13.0303701,17.5190256 12.8729071,17.6226154 12.7373564,17.828 C12.6698359,17.9638974 12.7513701,18.1431282 12.9760989,18.3746667 C13.065277,18.4656923 13.3167592,18.6572308 13.7239208,18.9572308 L13.7239208,19.0251795 C13.7239208,19.092359 13.7585729,19.3331282 13.825329,19.743641 C12.4433236,19.743641 11.2075701,19.4695385 10.1203619,18.9218462 C9.4420989,18.5805641 8.38674,17.8482564 6.95887151,16.7321026 C6.32596192,16.1867179 5.79955644,15.6851795 5.37940027,15.228 C4.95669616,14.7695385 4.52303589,14.2005641 4.07001123,13.5174872 L0.126046849,16.8015897 L0.228983836,14.338 L2.8113263,11.1905641 C2.33664411,10.6656923 1.91495918,10.0977436 1.55493452,9.48005128 C1.30345233,8.95466667 1.09961671,8.44979487 0.942663288,7.95825641 C0.784945479,7.46569231 0.670287945,6.96235897 0.602512603,6.4354359 C0.716660548,6.21005128 0.772460548,6.04748718 0.772460548,5.958 L0.670287945,5.51312821 L4.34085781,1.74953846 L7.26564411,6.57261538 L12.8387647,0.414666667 C12.9541866,0.27825641 13.0446386,0.210564103 13.11114,0.210564103 C13.2688578,0.210564103 13.3501373,0.518769231 13.3501373,1.13364103 C13.3501373,1.63441026 13.3167592,2.15928205 13.2484742,2.70697436 C13.1801893,3.25517949 13.1330523,3.63158974 13.11114,3.83748718 C12.907814,4.88312821 12.1250852,5.96723077 10.7655016,7.08671795 C9.8607263,7.83953846 9.20259205,8.49005128 8.79517562,9.03594872 C8.92970712,9.35133333 9.04461945,9.60441026 9.13379753,9.78902564 C9.67727425,10.9254359 10.1422742,11.8277436 10.5277784,12.4910769 C11.0931674,13.4482564 11.6287455,14.2572308 12.1250852,14.9192821 C12.6221893,15.578 13.2484742,16.2956923 13.9960414,17.0754359",
+            id: "Fill-11",
+            fill: secondary,
+            mask: "url(#mask-2)"
+        }))))));
+    }, _fundingLogos[constants.h.BOLETO] = function(_ref) {
+        var logoColor = _ref.logoColor;
+        if (!BOLETO_LOGO_COLORS[logoColor]) throw new Error("No " + logoColor + " boleto logo available");
+        var _BOLETO_LOGO_COLORS$l = BOLETO_LOGO_COLORS[logoColor], primary = _BOLETO_LOGO_COLORS$l.primary, secondary = _BOLETO_LOGO_COLORS$l.secondary;
+        return Object(jsx.b)("svg", {
+            width: "50px",
+            height: "23px",
+            viewBox: "0 0 50 23",
+            version: "1.1",
+            xmlns: "http://www.w3.org/2000/svg"
+        }, Object(jsx.b)("g", {
+            id: "Page-1",
+            stroke: "none",
+            "stroke-width": "1",
+            fill: "none",
+            "fill-rule": "evenodd"
+        }, Object(jsx.b)("g", {
+            id: "SPB_&_AltPay_NewAssets",
+            transform: "translate(-100.000000, -159.000000)"
+        }, Object(jsx.b)("g", {
+            id: "Group-38-Copy-2",
+            transform: "translate(100.000000, 159.000000)"
+        }, Object(jsx.b)("polygon", {
+            id: "Fill-1",
+            fill: primary,
+            points: "3.77543103 22.2594828 6.12112069 22.2594828 6.12112069 0.294827586 3.77543103 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-3",
+            fill: primary,
+            points: "6.86077586 22.2594828 7.58793103 22.2594828 7.58793103 0.294827586 6.86077586 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-4",
+            fill: primary,
+            points: "8.22112069 22.2594828 9.52241379 22.2594828 9.52241379 0.294827586 8.22112069 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-5",
+            fill: primary,
+            points: "10.7771552 22.2594828 11.5043103 22.2594828 11.5043103 0.294827586 10.7771552 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-6",
+            fill: primary,
+            points: "11.8202586 22.2594828 12.3806034 22.2594828 12.3806034 0.294827586 11.8202586 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-7",
+            fill: primary,
+            points: "1.99181034 22.2594828 2.71896552 22.2594828 2.71896552 0.294827586 1.99181034 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-8",
+            fill: primary,
+            points: "0.388793103 22.2594828 1.69008621 22.2594828 1.69008621 0.294827586 0.388793103 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-9",
+            fill: primary,
+            points: "16.2655172 22.2594828 18.6112069 22.2594828 18.6112069 0.294827586 16.2655172 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-10",
+            fill: primary,
+            points: "19.350431 22.2594828 20.0775862 22.2594828 20.0775862 0.294827586 19.350431 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-11",
+            fill: primary,
+            points: "20.7112069 22.2594828 22.0125 22.2594828 22.0125 0.294827586 20.7112069 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-12",
+            fill: primary,
+            points: "23.2668103 22.2594828 23.9939655 22.2594828 23.9939655 0.294827586 23.2668103 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-13",
+            fill: primary,
+            points: "24.3099138 22.2594828 24.8702586 22.2594828 24.8702586 0.294827586 24.3099138 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-14",
+            fill: primary,
+            points: "14.4814655 22.2594828 15.2086207 22.2594828 15.2086207 0.294827586 14.4814655 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-15",
+            fill: primary,
+            points: "12.8784483 22.2594828 14.1797414 22.2594828 14.1797414 0.294827586 12.8784483 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-16",
+            fill: primary,
+            points: "25.7918103 22.2594828 27.0931034 22.2594828 27.0931034 0.294827586 25.7918103 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-17",
+            fill: primary,
+            points: "28.3474138 22.2594828 29.074569 22.2594828 29.074569 0.294827586 28.3474138 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-18",
+            fill: primary,
+            points: "29.3909483 22.2594828 29.9512931 22.2594828 29.9512931 0.294827586 29.3909483 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-19",
+            fill: primary,
+            points: "32.0521552 22.2594828 32.7793103 22.2594828 32.7793103 0.294827586 32.0521552 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-20",
+            fill: primary,
+            points: "30.4491379 22.2594828 31.750431 22.2594828 31.750431 0.294827586 30.4491379 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-21",
+            fill: primary,
+            points: "33.7456897 22.2594828 34.4728448 22.2594828 34.4728448 0.294827586 33.7456897 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-22",
+            fill: primary,
+            points: "34.7887931 22.2594828 35.3491379 22.2594828 35.3491379 0.294827586 34.7887931 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-23",
+            fill: primary,
+            points: "37.450431 22.2594828 38.1775862 22.2594828 38.1775862 0.294827586 37.450431 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-24",
+            fill: primary,
+            points: "35.8474138 22.2594828 37.1487069 22.2594828 37.1487069 0.294827586 35.8474138 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-25",
+            fill: primary,
+            points: "38.8112069 22.2594828 41.1568966 22.2594828 41.1568966 0.294827586 38.8112069 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-26",
+            fill: primary,
+            points: "41.8961207 22.2594828 42.6232759 22.2594828 42.6232759 0.294827586 41.8961207 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-27",
+            fill: primary,
+            points: "43.2564655 22.2594828 44.5577586 22.2594828 44.5577586 0.294827586 43.2564655 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-28",
+            fill: primary,
+            points: "45.8125 22.2594828 46.5396552 22.2594828 46.5396552 0.294827586 45.8125 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-29",
+            fill: primary,
+            points: "46.8556034 22.2594828 47.4159483 22.2594828 47.4159483 0.294827586 46.8556034 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-30",
+            fill: primary,
+            points: "48.3375 22.2594828 49.6387931 22.2594828 49.6387931 0.294827586 48.3375 0.294827586"
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-31",
+            fill: secondary,
+            points: "3.04224138 22.3090517 48.0056034 22.3090517 48.0056034 9.9987069 3.04224138 9.9987069"
+        }), Object(jsx.b)("path", {
+            d: "M3.89008621,21.837069 L3.89008621,10.6991379 L8.06939655,10.6991379 C8.91982759,10.6991379 9.6012931,10.8107759 10.1172414,11.0362069 C10.6306034,11.2616379 11.0327586,11.6090517 11.3228448,12.0784483 C11.6159483,12.5452586 11.7612069,13.0349138 11.7612069,13.5482759 C11.7612069,14.0228448 11.6314655,14.4715517 11.375,14.8913793 C11.1181034,15.3116379 10.7293103,15.6512931 10.2081897,15.9103448 C10.8823276,16.1073276 11.4008621,16.4443966 11.7612069,16.9215517 C12.1241379,17.3956897 12.3056034,17.9586207 12.3056034,18.6068966 C12.3056034,19.1301724 12.1939655,19.6150862 11.9737069,20.0637931 C11.7534483,20.512069 11.4810345,20.8568966 11.1568966,21.1008621 C10.8327586,21.3418103 10.4258621,21.5258621 9.93836207,21.650431 C9.44827586,21.775 8.84956897,21.837069 8.13922414,21.837069 L3.89008621,21.837069 Z M5.36767241,15.3814655 L7.7762931,15.3814655 C8.42974138,15.3814655 8.8987069,15.3375 9.18146552,15.2517241 C9.55732759,15.1400862 9.84008621,14.9538793 10.0293103,14.6943966 C10.2185345,14.4353448 10.3146552,14.1112069 10.3146552,13.7193966 C10.3146552,13.3487069 10.2262931,13.0219828 10.0474138,12.7422414 C9.87112069,12.4594828 9.61724138,12.2650862 9.28793103,12.1612069 C8.95862069,12.0577586 8.39310345,12.0056034 7.59482759,12.0056034 L5.36767241,12.0056034 L5.36767241,15.3814655 Z M5.36767241,20.5301724 L8.14181034,20.5301724 C8.61896552,20.5301724 8.95344828,20.512069 9.14784483,20.4758621 C9.48491379,20.4163793 9.77025862,20.3150862 9.99827586,20.1724138 C10.2262931,20.0301724 10.412931,19.8228448 10.5607759,19.550431 C10.7086207,19.2780172 10.7810345,18.9646552 10.7810345,18.6094828 C10.7810345,18.1918103 10.675,17.8314655 10.4594828,17.5228448 C10.2469828,17.2142241 9.9512931,16.9991379 9.57284483,16.874569 C9.19698276,16.750431 8.65258621,16.687931 7.94482759,16.687931 L5.36767241,16.687931 L5.36767241,20.5301724 Z",
+            id: "Fill-32",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M13.6435345,17.800431 C13.6435345,16.3094828 14.0581897,15.2051724 14.8905172,14.487069 C15.5827586,13.8905172 16.4306034,13.5926724 17.4288793,13.5926724 C18.5357759,13.5926724 19.4431034,13.9556034 20.1482759,14.6814655 C20.8508621,15.4047414 21.2034483,16.4081897 21.2034483,17.6862069 C21.2034483,18.7232759 21.0478448,19.5375 20.737069,20.1310345 C20.4258621,20.725 19.9719828,21.1862069 19.3758621,21.5155172 C18.7818966,21.8448276 18.1314655,22.0081897 17.4288793,22.0081897 C16.2982759,22.0081897 15.3857759,21.6478448 14.6883621,20.924569 C13.9909483,20.2012931 13.6435345,19.1590517 13.6435345,17.800431 Z M15.0435345,17.8030172 C15.0435345,18.8349138 15.2689655,19.6073276 15.7202586,20.1181034 C16.1737069,20.6314655 16.7418103,20.8883621 17.4288793,20.8883621 C18.1077586,20.8883621 18.6732759,20.6314655 19.1267241,20.1155172 C19.5780172,19.599569 19.8034483,18.8142241 19.8034483,17.7590517 C19.8034483,16.7633621 19.575431,16.0090517 19.1215517,15.4982759 C18.6681034,14.9849138 18.1030172,14.7280172 17.4288793,14.7280172 C16.7418103,14.7280172 16.1737069,14.9823276 15.7202586,15.4926724 C15.2689655,16.0034483 15.0435345,16.7737069 15.0435345,17.8030172 Z",
+            id: "Fill-33",
+            fill: primary
+        }), Object(jsx.b)("polygon", {
+            id: "Fill-34",
+            fill: primary,
+            points: "22.7771552 21.837069 24.1461207 21.837069 24.1461207 10.6991379 22.7771552 10.6991379"
+        }), Object(jsx.b)("path", {
+            d: "M31.7711207,19.2237069 L33.1866379,19.4103448 C32.9663793,20.2323276 32.5543103,20.8724138 31.9525862,21.3262931 C31.3512931,21.7801724 30.5836207,22.0081897 29.6478448,22.0081897 C28.4706897,22.0081897 27.5375,21.6452586 26.8478448,20.9193966 C26.1581897,20.1961207 25.8133621,19.1771552 25.8133621,17.8676724 C25.8133621,16.5146552 26.1607759,15.4616379 26.8581897,14.7150862 C27.5556034,13.9659483 28.4603448,13.5926724 29.5724138,13.5926724 C30.6487069,13.5926724 31.5275862,13.9581897 32.2094828,14.6918103 C32.8909483,15.425431 33.2331897,16.4573276 33.2331897,17.7875 C33.2331897,17.8676724 33.2306034,17.9896552 33.225431,18.150431 L27.2133621,18.150431 C27.2650862,19.0344828 27.5142241,19.7137931 27.9650862,20.1831897 C28.4137931,20.6521552 28.9762931,20.8883621 29.6478448,20.8883621 C30.1482759,20.8883621 30.5758621,20.7560345 30.9284483,20.4913793 C31.2836207,20.2271552 31.5637931,19.8043103 31.7711207,19.2237069 Z M27.2909483,17.0301724 L31.7866379,17.0301724 C31.7271552,16.3512931 31.5534483,15.8431034 31.2706897,15.5034483 C30.837931,14.9771552 30.2724138,14.7125 29.5801724,14.7125 C28.9530172,14.7125 28.4267241,14.9224138 27.9987069,15.3426724 C27.5737069,15.7625 27.337931,16.325 27.2909483,17.0301724 Z",
+            id: "Fill-35",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M37.887069,20.6159483 L38.0737069,21.8241379 C37.6900862,21.9047414 37.3452586,21.9461207 37.0443966,21.9461207 C36.549569,21.9461207 36.1655172,21.8681034 35.8909483,21.7099138 C35.6185345,21.5517241 35.4267241,21.3469828 35.3155172,21.0905172 C35.2038793,20.8336207 35.149569,20.2943966 35.149569,19.4724138 L35.149569,14.8215517 L34.1383621,14.8215517 L34.1383621,13.7637931 L35.149569,13.7637931 L35.149569,11.7672414 L36.5181034,10.9456897 L36.5181034,13.7637931 L37.887069,13.7637931 L37.887069,14.8215517 L36.5181034,14.8215517 L36.5181034,19.550431 C36.5181034,19.9418103 36.5413793,20.1935345 36.5909483,20.3047414 C36.6375,20.4163793 36.7155172,20.5043103 36.8241379,20.5719828 C36.9331897,20.6366379 37.0887931,20.6702586 37.2909483,20.6702586 C37.4413793,20.6702586 37.6409483,20.6521552 37.887069,20.6159483",
+            id: "Fill-36",
+            fill: primary
+        }), Object(jsx.b)("path", {
+            d: "M38.724569,17.800431 C38.724569,16.3094828 39.1396552,15.2051724 39.9715517,14.487069 C40.6637931,13.8905172 41.5116379,13.5926724 42.5099138,13.5926724 C43.6168103,13.5926724 44.524569,13.9556034 45.2297414,14.6814655 C45.9323276,15.4047414 46.2849138,16.4081897 46.2849138,17.6862069 C46.2849138,18.7232759 46.1293103,19.5375 45.8181034,20.1310345 C45.5068966,20.725 45.0534483,21.1862069 44.4568966,21.5155172 C43.8633621,21.8448276 43.2125,22.0081897 42.5099138,22.0081897 C41.3797414,22.0081897 40.4668103,21.6478448 39.7693966,20.924569 C39.0719828,20.2012931 38.724569,19.1590517 38.724569,17.800431 Z M40.124569,17.8030172 C40.124569,18.8349138 40.350431,19.6073276 40.8012931,20.1181034 C41.2551724,20.6314655 41.8228448,20.8883621 42.5099138,20.8883621 C43.1892241,20.8883621 43.7543103,20.6314655 44.2081897,20.1155172 C44.6590517,19.599569 44.8849138,18.8142241 44.8849138,17.7590517 C44.8849138,16.7633621 44.6564655,16.0090517 44.2030172,15.4982759 C43.7491379,14.9849138 43.1840517,14.7280172 42.5099138,14.7280172 C41.8228448,14.7280172 41.2551724,14.9823276 40.8012931,15.4926724 C40.350431,16.0034483 40.124569,16.7737069 40.124569,17.8030172 Z",
+            id: "Fill-37",
+            fill: primary
+        })))));
     }, _fundingLogos), visa = __webpack_require__(52), visa_default = __webpack_require__.n(visa), amex = __webpack_require__(53), amex_default = __webpack_require__.n(amex), mastercard = __webpack_require__(54), mastercard_default = __webpack_require__.n(mastercard), maestro = __webpack_require__(55), maestro_default = __webpack_require__.n(maestro), discover = __webpack_require__(56), discover_default = __webpack_require__.n(discover), hiper = __webpack_require__(57), hiper_default = __webpack_require__.n(hiper), elo = __webpack_require__(58), elo_default = __webpack_require__.n(elo), jcb = __webpack_require__(59), jcb_default = __webpack_require__.n(jcb), cup = __webpack_require__(60), cup_default = __webpack_require__.n(cup), cardLogos = ((_cardLogos = {})[constants.o.VISA] = visa_default.a, 
     _cardLogos[constants.o.AMEX] = amex_default.a, _cardLogos[constants.o.MASTERCARD] = mastercard_default.a, 
     _cardLogos[constants.o.MAESTRO] = maestro_default.a, _cardLogos[constants.o.DISCOVER] = discover_default.a, 
     _cardLogos[constants.o.HIPER] = hiper_default.a, _cardLogos[constants.o.ELO] = elo_default.a, 
     _cardLogos[constants.o.JCB] = jcb_default.a, _cardLogos[constants.o.CUP] = cup_default.a, 
     _cardLogos);
-    __webpack_require__.d(__webpack_exports__, "b", function() {
+    __webpack_require__.d(__webpack_exports__, "b", (function() {
         return fundingLogos;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
         return cardLogos;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "f", function() {
+    __webpack_require__.d(__webpack_exports__, "f", (function() {
         return getStorageState;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+    })), __webpack_require__.d(__webpack_exports__, "e", (function() {
         return getStorageID;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
         return getSessionState;
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
         return getSessionID;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
         return getButtonSessionID;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
         return getGlobalState;
-    });
-    var accessedStorage, _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3), _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12), _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(24), _security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(25), LOCAL_STORAGE_KEY = "__paypal_storage__", SESSION_KEY = "__paypal_session__", GLOBAL_KEY = "__paypal_global__";
+    }));
+    var accessedStorage, _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4), _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12), _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(24), _security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(25), LOCAL_STORAGE_KEY = "__paypal_storage__", SESSION_KEY = "__paypal_session__", GLOBAL_KEY = "__paypal_global__";
     function getStorageState(handler) {
         var storage, localStorageEnabled = Object(_util__WEBPACK_IMPORTED_MODULE_1__.f)();
         if (accessedStorage && (storage = accessedStorage), !storage && localStorageEnabled) {
@@ -6139,32 +7057,32 @@
         accessedStorage = null, result;
     }
     function getStorageID() {
-        return getStorageState(function(storage) {
+        return getStorageState((function(storage) {
             return storage.id;
-        });
+        }));
     }
     function getSession(handler) {
-        return getStorageState(function(storage) {
+        return getStorageState((function(storage) {
             var session = storage[SESSION_KEY], now = Date.now();
             return session && now - session.created > _config__WEBPACK_IMPORTED_MODULE_0__.a.session_uid_lifetime && (session = null), 
             session || (session = {
                 guid: Object(_util__WEBPACK_IMPORTED_MODULE_1__.s)(),
                 created: now
             }), storage[SESSION_KEY] = session, handler(session);
-        });
+        }));
     }
     function getSessionState(handler) {
-        return getSession(function(session) {
+        return getSession((function(session) {
             return session.state = session.state || {}, handler(session.state);
-        });
+        }));
     }
     function getSessionID() {
         var xprops = window.xprops;
         if (xprops && xprops.sessionID) return xprops.sessionID;
         var querySessionID = Object(_dom__WEBPACK_IMPORTED_MODULE_2__.f)("sessionID");
-        return Object(_security__WEBPACK_IMPORTED_MODULE_3__.b)() && querySessionID ? querySessionID : getSession(function(session) {
+        return Object(_security__WEBPACK_IMPORTED_MODULE_3__.b)() && querySessionID ? querySessionID : getSession((function(session) {
             return session.guid;
-        });
+        }));
     }
     function getButtonSessionID() {
         if (window.xprops && window.xprops.buttonSessionID) return window.xprops.buttonSessionID;
@@ -6177,25 +7095,25 @@
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     var interface_namespaceObject = {};
-    __webpack_require__.r(interface_namespaceObject), __webpack_require__.d(interface_namespaceObject, "create", function() {
+    __webpack_require__.r(interface_namespaceObject), __webpack_require__.d(interface_namespaceObject, "create", (function() {
         return create;
-    }), __webpack_require__.d(interface_namespaceObject, "getByTag", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "getByTag", (function() {
         return getByTag;
-    }), __webpack_require__.d(interface_namespaceObject, "getCurrentScriptDir", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "getCurrentScriptDir", (function() {
         return lib.t;
-    }), __webpack_require__.d(interface_namespaceObject, "destroyAll", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "destroyAll", (function() {
         return interface_destroyAll;
-    }), __webpack_require__.d(interface_namespaceObject, "postRobot", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "postRobot", (function() {
         return postRobot;
-    }), __webpack_require__.d(interface_namespaceObject, "CONSTANTS", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "CONSTANTS", (function() {
         return CONSTANTS;
-    }), __webpack_require__.d(interface_namespaceObject, "PopupOpenError", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "PopupOpenError", (function() {
         return src_error.b;
-    }), __webpack_require__.d(interface_namespaceObject, "IntegrationError", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "IntegrationError", (function() {
         return src_error.a;
-    }), __webpack_require__.d(interface_namespaceObject, "RenderError", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "RenderError", (function() {
         return src_error.c;
-    });
+    }));
     var src = __webpack_require__(13);
     function _assertThisInitialized(self) {
         if (void 0 === self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -6204,24 +7122,24 @@
     var inheritsLoose = __webpack_require__(22);
     function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
         var desc = {};
-        return Object.keys(descriptor).forEach(function(key) {
+        return Object.keys(descriptor).forEach((function(key) {
             desc[key] = descriptor[key];
-        }), desc.enumerable = !!desc.enumerable, desc.configurable = !!desc.configurable, 
-        ("value" in desc || desc.initializer) && (desc.writable = !0), desc = decorators.slice().reverse().reduce(function(desc, decorator) {
+        })), desc.enumerable = !!desc.enumerable, desc.configurable = !!desc.configurable, 
+        ("value" in desc || desc.initializer) && (desc.writable = !0), desc = decorators.slice().reverse().reduce((function(desc, decorator) {
             return decorator(target, property, desc) || desc;
-        }, desc), context && void 0 !== desc.initializer && (desc.value = desc.initializer ? desc.initializer.call(context) : void 0, 
+        }), desc), context && void 0 !== desc.initializer && (desc.value = desc.initializer ? desc.initializer.call(context) : void 0, 
         desc.initializer = void 0), void 0 === desc.initializer && (Object.defineProperty(target, property, desc), 
         desc = null), desc;
     }
-    var zalgo_promise_src = __webpack_require__(1), cross_domain_utils_src = __webpack_require__(7), lib = __webpack_require__(5), base_BaseComponent = function() {
+    var zalgo_promise_src = __webpack_require__(2), cross_domain_utils_src = __webpack_require__(7), lib = __webpack_require__(6), base_BaseComponent = function() {
         function BaseComponent() {
             var obj, tasks, cleaned;
             this.clean = void 0, this.event = void 0, this.component = void 0, this.clean = (obj = this, 
             tasks = [], cleaned = !1, {
                 set: function(name, item) {
-                    return cleaned ? item : (obj[name] = item, this.register(function() {
+                    return cleaned ? item : (obj[name] = item, this.register((function() {
                         delete obj[name];
-                    }), item);
+                    })), item);
                 },
                 register: function(name, method) {
                     if ("function" == typeof name && (method = name, name = "<anonymous-cleanup-handler>"), 
@@ -6235,14 +7153,14 @@
                     });
                 },
                 hasTasks: function() {
-                    return Boolean(tasks.filter(function(item) {
+                    return Boolean(tasks.filter((function(item) {
                         return !item.complete;
-                    }).length);
+                    })).length);
                 },
                 all: function() {
                     var results = [];
                     for (cleaned = !0; tasks.length; ) results.push(tasks.pop().run());
-                    return zalgo_promise_src.a.all(results).then(function() {});
+                    return zalgo_promise_src.a.all(results).then((function() {}));
                 },
                 run: function(name) {
                     for (var results = [], _i2 = 0; _i2 < tasks.length; _i2++) {
@@ -6273,31 +7191,31 @@
                     window: win,
                     domain: domain,
                     errorHandler: errorHandler
-                }, function(_ref) {
+                }, (function(_ref) {
                     var source = _ref.source, data = _ref.data;
                     return _this.component.log("listener_" + name), listeners[listenerName].call(_this, source, data);
-                }), errorListener = Object(src.on)(listenerName, {
+                })), errorListener = Object(src.on)(listenerName, {
                     window: win,
                     errorHandler: errorHandler
-                }, function(_ref2) {
+                }, (function(_ref2) {
                     var origin = _ref2.origin;
                     _this.component.logError("unexpected_listener_" + name, {
                         origin: origin,
                         domain: domain.toString()
                     }), _this.error(new Error("Unexpected " + name + " message from domain " + origin + " -- expected message from " + domain.toString()));
-                });
-                _this.clean.register(function() {
+                }));
+                _this.clean.register((function() {
                     listener.cancel(), errorListener.cancel();
-                });
+                }));
             }, _i4 = 0, _Object$keys2 = Object.keys(listeners); _i4 < _Object$keys2.length; _i4++) _loop(_i4, _Object$keys2);
         }, BaseComponent;
-    }(), esm_extends = __webpack_require__(11), client = __webpack_require__(4), belter_src = __webpack_require__(16), base32 = __webpack_require__(34), base32_default = __webpack_require__.n(base32), constants = __webpack_require__(8);
+    }(), esm_extends = __webpack_require__(11), client = __webpack_require__(5), belter_src = __webpack_require__(16), base32 = __webpack_require__(34), base32_default = __webpack_require__.n(base32), constants = __webpack_require__(8);
     function normalize(str) {
         return str.replace(/^[^a-z0-9A-Z]+|[^a-z0-9A-Z]+$/g, "").replace(/[^a-z0-9A-Z]+/g, "_");
     }
-    var isZoidComponentWindow = Object(lib.D)(function() {
+    var isZoidComponentWindow = Object(lib.D)((function() {
         return !!window.name && "xcomponent" === window.name.split("__")[0];
-    }), getComponentMeta = Object(lib.D)(function() {
+    })), getComponentMeta = Object(lib.D)((function() {
         if (!window.name) throw new Error("Can not get component meta without window name");
         var componentMeta, _window$name$split2 = window.name.split("__"), zoidcomp = _window$name$split2[0], name = _window$name$split2[1], version = _window$name$split2[2], encodedOptions = _window$name$split2[3];
         if ("xcomponent" !== zoidcomp) throw new Error("Window not rendered by zoid - got " + zoidcomp);
@@ -6308,7 +7226,7 @@
         }
         return componentMeta.name = name, componentMeta.version = version.replace(/_/g, "."), 
         componentMeta;
-    });
+    }));
     function window_getParentDomain() {
         return getComponentMeta().domain;
     }
@@ -6328,15 +7246,15 @@
         if (!result) throw new Error("Unable to find window by ref");
         return result;
     }
-    var window_getParentComponentWindow = Object(lib.D)(function() {
+    var window_getParentComponentWindow = Object(lib.D)((function() {
         var componentMeta = getComponentMeta();
         if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by zoid");
         return getWindowByRef(componentMeta.componentParent);
-    }), window_getParentRenderWindow = Object(lib.D)(function() {
+    })), window_getParentRenderWindow = Object(lib.D)((function() {
         var componentMeta = getComponentMeta();
         if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by zoid");
         return getWindowByRef(componentMeta.renderParent);
-    }), src_error = __webpack_require__(26);
+    })), src_error = __webpack_require__(26);
     function normalizeChildProp(component, props, key, value) {
         var prop = component.getProp(key);
         return prop ? "function" == typeof prop.childDecorate ? prop.childDecorate(value) : value : component.looseProps ? value : void 0;
@@ -6367,13 +7285,13 @@
             }, _i2 = 0, _ref2 = [ _this.component, window ]; _i2 < _ref2.length; _i2++) _loop(_i2, _ref2);
             return _this.component.log("init_child"), _this.setWindows(), _this.onInit = _this.sendToParent(constants.POST_MESSAGE.INIT, {
                 exports: _this.exports()
-            }).then(function(_ref5) {
+            }).then((function(_ref5) {
                 var origin = _ref5.origin, data = _ref5.data;
                 return _this.context = data.context, _this.setProps(data.props, origin), _this.watchForResize(), 
                 _assertThisInitialized(_this);
-            }).catch(function(err) {
+            })).catch((function(err) {
                 throw _this.error(err), err;
-            }), _this;
+            })), _this;
         }
         Object(inheritsLoose.a)(ChildComponent, _BaseComponent);
         var _proto = ChildComponent.prototype;
@@ -6403,14 +7321,14 @@
                 props = JSON.parse(global.props[componentMeta.uid]);
             }
             if (!props) throw new Error("Initial props not found");
-            return Object(lib.k)(props, function(_ref6) {
+            return Object(lib.k)(props, (function(_ref6) {
                 var fullKey = _ref6.fullKey, self = _ref6.self, args = _ref6.args;
-                return _this2.onInit.then(function() {
+                return _this2.onInit.then((function() {
                     var func = Object(lib.s)(_this2.props, fullKey);
                     if ("function" != typeof func) throw new TypeError("Expected " + fullKey + " to be function, got " + typeof func);
                     return func.apply(self, args);
-                });
-            });
+                }));
+            }));
         }, _proto.setProps = function(props, origin, required) {
             void 0 === required && (required = !0), this.props = this.props || {};
             var normalizedProps = function(component, props, origin, required) {
@@ -6443,9 +7361,9 @@
             this.watchForClose();
         }, _proto.watchForClose = function() {
             var _this3 = this;
-            window.addEventListener("unload", function() {
+            window.addEventListener("unload", (function() {
                 return _this3.checkClose();
-            });
+            }));
         }, _proto.enableAutoResize = function(_temp) {
             var _ref7 = void 0 === _temp ? {} : _temp, _ref7$width = _ref7.width, _ref7$height = _ref7.height;
             this.autoResize = {
@@ -6463,9 +7381,9 @@
         }, _proto.watchForResize = function() {
             var _this4 = this, _this$getAutoResize = this.getAutoResize(), width = _this$getAutoResize.width, height = _this$getAutoResize.height, element = _this$getAutoResize.element;
             (width || height) && this.context !== constants.CONTEXT_TYPES.POPUP && (this.watchingForResize || (this.watchingForResize = !0, 
-            Object(belter_src.e)(element, function(_ref8) {
+            Object(belter_src.e)(element, (function(_ref8) {
                 _this4.resize(width ? _ref8.width : void 0, height ? _ref8.height : void 0);
-            }, {
+            }), {
                 width: width,
                 height: height
             })));
@@ -6474,19 +7392,19 @@
             return {
                 updateProps: function(props) {
                     var _this5 = this;
-                    return zalgo_promise_src.a.try(function() {
+                    return zalgo_promise_src.a.try((function() {
                         return self.setProps(props, _this5.origin, !1);
-                    });
+                    }));
                 },
                 close: function() {
-                    return zalgo_promise_src.a.try(function() {
+                    return zalgo_promise_src.a.try((function() {
                         return self.destroy();
-                    });
+                    }));
                 }
             };
         }, _proto.resize = function(width, height) {
             var _this6 = this;
-            return zalgo_promise_src.a.resolve().then(function() {
+            return zalgo_promise_src.a.resolve().then((function() {
                 if (_this6.component.log("resize", {
                     width: Object(lib.R)(width),
                     height: Object(lib.R)(height)
@@ -6494,7 +7412,7 @@
                     width: width,
                     height: height
                 }).then(lib.F);
-            });
+            }));
         }, _proto.hide = function() {
             return this.sendToParent(constants.POST_MESSAGE.HIDE).then(lib.F);
         }, _proto.show = function() {
@@ -6511,9 +7429,9 @@
                 fireAndForget: !0
             });
         }, _proto.destroy = function() {
-            return Object(client.h)().then(function() {
+            return Object(client.h)().then((function() {
                 window.close();
-            });
+            }));
         }, _proto.focus = function() {
             this.component.log("focus"), window.focus();
         }, _proto.error = function(err) {
@@ -6576,14 +7494,14 @@
         return resultValue;
     }
     function getQueryParam(prop, key, value) {
-        return zalgo_promise_src.a.try(function() {
+        return zalgo_promise_src.a.try((function() {
             return "function" == typeof prop.queryParam ? prop.queryParam(value) : "string" == typeof prop.queryParam ? prop.queryParam : key;
-        });
+        }));
     }
     function getQueryValue(prop, key, value) {
-        return zalgo_promise_src.a.try(function() {
+        return zalgo_promise_src.a.try((function() {
             return "function" == typeof prop.queryValue ? prop.queryValue(value) : value;
-        });
+        }));
     }
     RENDER_DRIVERS[constants.CONTEXT_TYPES.IFRAME] = {
         focusable: !1,
@@ -6601,20 +7519,20 @@
                     scrolling: this.component.scrolling ? "yes" : "no"
                 }, attributes),
                 class: [ constants.CLASS_NAMES.COMPONENT_FRAME, constants.CLASS_NAMES.INVISIBLE ]
-            }, this.element), Object(lib.f)(this.iframe).then(function(frameWindow) {
+            }, this.element), Object(lib.f)(this.iframe).then((function(frameWindow) {
                 _this.window = frameWindow;
                 var detectClose = function() {
-                    return zalgo_promise_src.a.try(function() {
+                    return zalgo_promise_src.a.try((function() {
                         return _this.props.onClose(constants.CLOSE_REASONS.CLOSE_DETECTED);
-                    }).finally(function() {
+                    })).finally((function() {
                         return _this.destroy();
-                    });
+                    }));
                 }, iframeWatcher = Object(lib.W)(_this.iframe, detectClose), elementWatcher = Object(lib.W)(_this.element, detectClose);
-                _this.clean.register("destroyWindow", function() {
+                _this.clean.register("destroyWindow", (function() {
                     iframeWatcher.cancel(), elementWatcher.cancel(), Object(src.cleanUpWindow)(_this.window), 
                     delete _this.window, _this.iframe && (Object(lib.l)(_this.iframe), delete _this.iframe);
-                });
-            });
+                }));
+            }));
         },
         openPrerender: function() {
             var _this2 = this, attributes = this.component.attributes.iframe || {};
@@ -6624,19 +7542,19 @@
                     scrolling: this.component.scrolling ? "yes" : "no"
                 }, attributes),
                 class: [ constants.CLASS_NAMES.PRERENDER_FRAME, constants.CLASS_NAMES.VISIBLE ]
-            }, this.element), Object(lib.f)(this.prerenderIframe).then(function(prerenderFrameWindow) {
-                _this2.prerenderWindow = prerenderFrameWindow, _this2.clean.register("destroyPrerender", function() {
+            }, this.element), Object(lib.f)(this.prerenderIframe).then((function(prerenderFrameWindow) {
+                _this2.prerenderWindow = prerenderFrameWindow, _this2.clean.register("destroyPrerender", (function() {
                     _this2.prerenderIframe && (Object(lib.l)(_this2.prerenderIframe), delete _this2.prerenderIframe);
-                });
-            });
+                }));
+            }));
         },
         switchPrerender: function() {
             var _this3 = this;
             Object(lib.a)(this.prerenderIframe, constants.CLASS_NAMES.INVISIBLE), Object(lib.L)(this.prerenderIframe, constants.CLASS_NAMES.VISIBLE), 
             Object(lib.a)(this.iframe, constants.CLASS_NAMES.VISIBLE), Object(lib.L)(this.iframe, constants.CLASS_NAMES.INVISIBLE), 
-            setTimeout(function() {
+            setTimeout((function() {
                 _this3.prerenderIframe && Object(lib.l)(_this3.prerenderIframe);
-            }, 1e3);
+            }), 1e3);
         },
         delegateOverrides: {
             openContainer: constants.DELEGATE.CALL_DELEGATE,
@@ -6662,10 +7580,10 @@
             open: function(original, override) {
                 return function() {
                     var _this4 = this;
-                    return override.apply(this, arguments).then(function() {
+                    return override.apply(this, arguments).then((function() {
                         if (_this4.clean.set("window", Object(cross_domain_utils_src.b)(window_getParentComponentWindow(), _this4.childWindowName)), 
                         !_this4.window) throw new Error("Unable to find parent component iframe window");
-                    });
+                    }));
                 };
             }
         },
@@ -6690,7 +7608,7 @@
         needsBridge: !0,
         open: function(url) {
             var _this5 = this;
-            return void 0 === url && (url = ""), zalgo_promise_src.a.try(function() {
+            return void 0 === url && (url = ""), zalgo_promise_src.a.try((function() {
                 var _ref = _this5.component.dimensions || {}, _ref$width = _ref.width, width = void 0 === _ref$width ? constants.DEFAULT_DIMENSIONS.WIDTH : _ref$width, _ref$height = _ref.height, height = void 0 === _ref$height ? constants.DEFAULT_DIMENSIONS.HEIGHT : _ref$height, _getPosition = function(_ref2) {
                     var width = _ref2.width, height = _ref2.height, x = 0, y = 0;
                     return width && (window.outerWidth ? x = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (x = Math.round((window.screen.width - width) / 2))), 
@@ -6714,11 +7632,11 @@
                     menubar: 0,
                     resizable: 1,
                     scrollbars: 1
-                }, attributes)), _this5.prerenderWindow = _this5.window, _this5.clean.register("destroyWindow", function() {
+                }, attributes)), _this5.prerenderWindow = _this5.window, _this5.clean.register("destroyWindow", (function() {
                     _this5.window && (_this5.window.close(), Object(src.cleanUpWindow)(_this5.window), 
                     delete _this5.window, delete _this5.prerenderWindow);
-                }), _this5.resize(width, height);
-            });
+                })), _this5.resize(width, height);
+            }));
         },
         openPrerender: function() {
             return zalgo_promise_src.a.try(lib.F);
@@ -6774,15 +7692,15 @@
             return _this.props.logLevel && Object(lib.O)(_this.props.logLevel), _this.childWindowName = _this.buildChildWindowName({
                 renderTo: window
             }), _this.registerActiveComponent(), _this.component.log("construct_parent"), _this.watchForUnload(), 
-            _this.onInit = new zalgo_promise_src.a(), _this.onInit.catch(function(err) {
+            _this.onInit = new zalgo_promise_src.a, _this.onInit.catch((function(err) {
                 return _this.error(err);
-            }), _this;
+            })), _this;
         }
         Object(inheritsLoose.a)(ParentComponent, _BaseComponent);
         var _proto = ParentComponent.prototype;
         return _proto.render = function(element, loadUrl) {
             var _this2 = this;
-            return void 0 === loadUrl && (loadUrl = !0), this.tryInit(function() {
+            return void 0 === loadUrl && (loadUrl = !0), this.tryInit((function() {
                 _this2.component.log("render_" + _this2.context, {
                     context: _this2.context,
                     element: element,
@@ -6790,47 +7708,47 @@
                 });
                 var tasks = {};
                 return tasks.onRender = _this2.props.onRender(), tasks.getDomain = _this2.getDomain(), 
-                tasks.elementReady = zalgo_promise_src.a.try(function() {
+                tasks.elementReady = zalgo_promise_src.a.try((function() {
                     if (element) return _this2.elementReady(element);
-                }), tasks.openContainer = tasks.elementReady.then(function() {
+                })), tasks.openContainer = tasks.elementReady.then((function() {
                     return _this2.openContainer(element);
-                }), tasks.showContainer = tasks.openContainer.then(function() {
+                })), tasks.showContainer = tasks.openContainer.then((function() {
                     return _this2.showContainer();
-                }), tasks.openPrerender = tasks.openContainer.then(function() {
+                })), tasks.openPrerender = tasks.openContainer.then((function() {
                     return _this2.openPrerender();
-                }), tasks.switchPrerender = zalgo_promise_src.a.all([ tasks.openPrerender, _this2.onInit ]).then(function() {
+                })), tasks.switchPrerender = zalgo_promise_src.a.all([ tasks.openPrerender, _this2.onInit ]).then((function() {
                     return _this2.switchPrerender();
-                }), tasks.open = _this2.driver.openOnClick ? _this2.open() : tasks.openContainer.then(function() {
+                })), tasks.open = _this2.driver.openOnClick ? _this2.open() : tasks.openContainer.then((function() {
                     return _this2.open();
-                }), tasks.listen = zalgo_promise_src.a.hash({
+                })), tasks.listen = zalgo_promise_src.a.hash({
                     domain: tasks.getDomain,
                     open: tasks.open
-                }).then(function(_ref2) {
+                }).then((function(_ref2) {
                     _this2.listen(_this2.window, _ref2.domain);
-                }), tasks.watchForClose = tasks.open.then(function() {
+                })), tasks.watchForClose = tasks.open.then((function() {
                     return _this2.watchForClose();
-                }), tasks.linkDomain = zalgo_promise_src.a.all([ tasks.getDomain, tasks.open ]).then(function(_ref3) {
+                })), tasks.linkDomain = zalgo_promise_src.a.all([ tasks.getDomain, tasks.open ]).then((function(_ref3) {
                     var domain = _ref3[0];
                     if (src.bridge && "string" == typeof domain) return src.bridge.linkUrl(_this2.window, domain);
-                }), _this2.html || (tasks.createPrerenderTemplate = tasks.openPrerender.then(function() {
+                })), _this2.html || (tasks.createPrerenderTemplate = tasks.openPrerender.then((function() {
                     return _this2.createPrerenderTemplate();
-                }), tasks.showComponent = tasks.createPrerenderTemplate.then(function() {
+                })), tasks.showComponent = tasks.createPrerenderTemplate.then((function() {
                     return _this2.showComponent();
-                })), tasks.openBridge = zalgo_promise_src.a.all([ tasks.getDomain, tasks.open ]).then(function(_ref4) {
+                }))), tasks.openBridge = zalgo_promise_src.a.all([ tasks.getDomain, tasks.open ]).then((function(_ref4) {
                     var domain = _ref4[0];
                     return _this2.openBridge("string" == typeof domain ? domain : null);
-                }), _this2.html ? tasks.loadHTML = tasks.open.then(function() {
+                })), _this2.html ? tasks.loadHTML = tasks.open.then((function() {
                     return _this2.loadHTML();
-                }) : loadUrl && (tasks.buildUrl = _this2.buildUrl(), tasks.loadUrl = zalgo_promise_src.a.all([ tasks.buildUrl, tasks.open, tasks.linkDomain, tasks.listen, tasks.open, tasks.openBridge, tasks.createPrerenderTemplate ]).then(function(_ref5) {
+                })) : loadUrl && (tasks.buildUrl = _this2.buildUrl(), tasks.loadUrl = zalgo_promise_src.a.all([ tasks.buildUrl, tasks.open, tasks.linkDomain, tasks.listen, tasks.open, tasks.openBridge, tasks.createPrerenderTemplate ]).then((function(_ref5) {
                     return _this2.loadUrl(_ref5[0]);
-                }), tasks.runTimeout = tasks.loadUrl.then(function() {
+                })), tasks.runTimeout = tasks.loadUrl.then((function() {
                     return _this2.runTimeout();
-                })), zalgo_promise_src.a.hash(tasks);
-            }).then(function() {
+                }))), zalgo_promise_src.a.hash(tasks);
+            })).then((function() {
                 return _this2.props.onEnter();
-            }).then(function() {
+            })).then((function() {
                 return _this2;
-            });
+            }));
         }, _proto.getOutlet = function() {
             var outlet = document.createElement("div");
             return Object(lib.a)(outlet, constants.CLASS_NAMES.OUTLET), outlet;
@@ -6839,7 +7757,7 @@
             if (!Object(cross_domain_utils_src.A)(this.component.allowedParentDomains, domain)) throw new src_error.c("Can not be rendered by domain: " + domain);
         }, _proto.renderTo = function(win, element) {
             var _this3 = this;
-            return this.tryInit(function() {
+            return this.tryInit((function() {
                 if (win === window) return _this3.render(element);
                 if (!Object(cross_domain_utils_src.v)(window, win)) throw new Error("Can only renderTo an adjacent frame");
                 if (element && "string" != typeof element) throw new Error("Element passed to renderTo must be a string selector, got " + typeof element + " " + element);
@@ -6849,24 +7767,24 @@
                 }), _this3.childWindowName = _this3.buildChildWindowName({
                     renderTo: win
                 }), _this3.delegate(win), _this3.render(element);
-            });
+            }));
         }, _proto.prefetch = function() {
             var _this4 = this;
-            return zalgo_promise_src.a.try(function() {
-                _this4.html = _this4.buildUrl().then(function(url) {
-                    return Object(lib.J)(url).then(function(html) {
+            return zalgo_promise_src.a.try((function() {
+                _this4.html = _this4.buildUrl().then((function(url) {
+                    return Object(lib.J)(url).then((function(html) {
                         return '\n                        <base href="' + url.split("/").slice(0, 3).join("/") + '">\n\n                        ' + html + "\n\n                        <script>\n                            if (window.history && window.history.pushState) {\n                                window.history.pushState({}, '', '/" + url.split("/").slice(3).join("/") + "');\n                            }\n                        <\/script>\n                    ";
-                    });
-                });
-            });
+                    }));
+                }));
+            }));
         }, _proto.loadHTML = function() {
             var _this5 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 if (!_this5.html) throw new Error("Html not prefetched");
-                return _this5.html.then(function(html) {
+                return _this5.html.then((function(html) {
                     return Object(lib.Y)(_this5.window, html);
-                });
-            });
+                }));
+            }));
         }, _proto.checkAllowRenderTo = function(win) {
             if (!win) throw this.component.createError("Must pass window to renderTo");
             if (!Object(cross_domain_utils_src.u)(win)) {
@@ -6876,15 +7794,15 @@
             }
         }, _proto.registerActiveComponent = function() {
             var _this6 = this;
-            ParentComponent.activeComponents.push(this), this.clean.register(function() {
+            ParentComponent.activeComponents.push(this), this.clean.register((function() {
                 ParentComponent.activeComponents.splice(ParentComponent.activeComponents.indexOf(_this6), 1);
-            });
+            }));
         }, _proto.getComponentParentRef = function() {
             if (this.component.getDomain(null, this.props.env) === Object(cross_domain_utils_src.g)(window)) {
                 var uid = Object(lib.U)();
-                return lib.v.windows = lib.v.windows || {}, lib.v.windows[uid] = window, this.clean.register(function() {
+                return lib.v.windows = lib.v.windows || {}, lib.v.windows[uid] = window, this.clean.register((function() {
                     delete lib.v.windows[uid];
-                }), {
+                })), {
                     ref: constants.WINDOW_REFERENCES.GLOBAL,
                     uid: uid
                 };
@@ -6900,9 +7818,9 @@
         }, _proto.getRenderParentRef = function(renderToWindow) {
             if (void 0 === renderToWindow && (renderToWindow = window), renderToWindow === window) return this.getComponentParentRef();
             var uid = Object(lib.U)();
-            return lib.v.windows[uid] = renderToWindow, this.clean.register(function() {
+            return lib.v.windows[uid] = renderToWindow, this.clean.register((function() {
                 delete lib.v.windows[uid];
-            }), {
+            })), {
                 ref: constants.WINDOW_REFERENCES.GLOBAL,
                 uid: uid
             };
@@ -6915,9 +7833,9 @@
                 uid: uid
             };
             return props.type === constants.INITIAL_PROPS.UID && (lib.v.props[uid] = JSON.stringify(sProps), 
-            this.clean.register(function() {
+            this.clean.register((function() {
                 delete lib.v.props[uid];
-            })), function(name, version, options) {
+            }))), function(name, version, options) {
                 void 0 === options && (options = {}), options.id = Object(lib.U)(), options.domain = Object(cross_domain_utils_src.g)(window);
                 var str, encodedName = normalize(name), encodedVersion = normalize(version), encodedOptions = (str = JSON.stringify(options), 
                 base32_default.a.encode(str).replace(/\=/g, "").toLowerCase());
@@ -6975,13 +7893,13 @@
         }, _proto.buildUrl = function() {
             var propsDef, props, params, _this7 = this;
             return zalgo_promise_src.a.all([ this.props.url, (propsDef = Object(esm_extends.a)({}, this.component.props, {}, this.component.builtinProps), 
-            props = this.props, params = {}, zalgo_promise_src.a.all(Object.keys(props).map(function(key) {
+            props = this.props, params = {}, zalgo_promise_src.a.all(Object.keys(props).map((function(key) {
                 var prop = propsDef[key];
-                if (prop) return zalgo_promise_src.a.resolve().then(function() {
+                if (prop) return zalgo_promise_src.a.resolve().then((function() {
                     var value = props[key];
                     if (value && prop.queryParam) return value;
-                }).then(function(value) {
-                    if (value) return zalgo_promise_src.a.all([ getQueryParam(prop, key, value), getQueryValue(prop, 0, value) ]).then(function(_ref) {
+                })).then((function(value) {
+                    if (value) return zalgo_promise_src.a.all([ getQueryParam(prop, key, value), getQueryValue(prop, 0, value) ]).then((function(_ref) {
                         var result, queryParam = _ref[0], queryValue = _ref[1];
                         if ("boolean" == typeof queryValue) result = "1"; else if ("string" == typeof queryValue) result = queryValue.toString(); else {
                             if ("function" == typeof queryValue) return;
@@ -6998,36 +7916,36 @@
                             } else "number" == typeof queryValue && (result = queryValue.toString());
                         }
                         params[queryParam] = result;
-                    });
-                });
-            })).then(function() {
-                return Object.keys(params).forEach(function(key) {
+                    }));
+                }));
+            }))).then((function() {
+                return Object.keys(params).forEach((function(key) {
                     params[key] = escape(params[key]);
-                }), params;
-            })) ]).then(function(_ref7) {
+                })), params;
+            }))) ]).then((function(_ref7) {
                 var url = _ref7[0], query = _ref7[1];
-                return url && !_this7.component.getValidDomain(url) ? url : zalgo_promise_src.a.try(function() {
+                return url && !_this7.component.getValidDomain(url) ? url : zalgo_promise_src.a.try((function() {
                     return url || _this7.component.getUrl(_this7.props.env, _this7.props);
-                }).then(function(finalUrl) {
+                })).then((function(finalUrl) {
                     return query.xcomponent = "1", Object(lib.r)(finalUrl, {
                         query: query
                     });
-                });
-            });
+                }));
+            }));
         }, _proto.getDomain = function() {
             var _this8 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 return _this8.props.url;
-            }).then(function(url) {
-                return _this8.component.getDomain(url, _this8.props.env) || (_this8.component.buildUrl ? zalgo_promise_src.a.try(function() {
+            })).then((function(url) {
+                return _this8.component.getDomain(url, _this8.props.env) || (_this8.component.buildUrl ? zalgo_promise_src.a.try((function() {
                     return _this8.component.buildUrl(_this8.props);
-                }).then(function(builtUrl) {
+                })).then((function(builtUrl) {
                     return _this8.component.getDomain(builtUrl, _this8.props.env);
-                }) : void 0);
-            }).then(function(domain) {
+                })) : void 0);
+            })).then((function(domain) {
                 if (!domain) throw new Error("Could not determine domain");
                 return domain;
-            });
+            }));
         }, _proto.getPropsForChild = function() {
             for (var result = {}, _i2 = 0, _Object$keys2 = Object.keys(this.props); _i2 < _Object$keys2.length; _i2++) {
                 var key = _Object$keys2[_i2], prop = this.component.getProp(key);
@@ -7036,13 +7954,13 @@
             return result;
         }, _proto.updateProps = function(props) {
             var _this9 = this;
-            return this.setProps(props, !1), this.onInit.then(function() {
+            return this.setProps(props, !1), this.onInit.then((function() {
                 if (_this9.childExports) return _this9.childExports.updateProps(_this9.getPropsForChild());
                 throw new Error("Child exports were not available");
-            });
+            }));
         }, _proto.openBridge = function(domain) {
             var _this10 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 if (src.bridge && _this10.driver.needsBridge) {
                     var needsBridgeParams = {
                         win: _this10.window
@@ -7057,30 +7975,30 @@
                         });
                         var bridgeDomain = _this10.component.getBridgeDomain(_this10.props.env);
                         if (!bridgeDomain) throw new Error("Can not determine domain for bridge");
-                        return needsBridge ? src.bridge.openBridge(bridgeUrl, bridgeDomain).then(function(result) {
+                        return needsBridge ? src.bridge.openBridge(bridgeUrl, bridgeDomain).then((function(result) {
                             if (result) return result;
-                        }) : void 0;
+                        })) : void 0;
                     }
                     if (needsBridge && domain && !src.bridge.hasBridge(domain, domain)) throw new Error("Bridge url needed to render " + _this10.context);
                 }
-            });
+            }));
         }, _proto.open = function() {
             var _this11 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 return _this11.component.log("open_" + _this11.context, {
                     windowName: _this11.childWindowName
                 }), _this11.driver.open.call(_this11);
-            });
+            }));
         }, _proto.openPrerender = function() {
             var _this12 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 if (_this12.component.prerenderTemplate) return _this12.driver.openPrerender.call(_this12);
-            });
+            }));
         }, _proto.switchPrerender = function() {
             var _this13 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 if (_this13.prerenderWindow && _this13.driver.switchPrerender) return _this13.driver.switchPrerender.call(_this13);
-            });
+            }));
         }, _proto.elementReady = function(element) {
             return Object(lib.n)(element).then(lib.F);
         }, _proto.delegate = function(win) {
@@ -7123,62 +8041,62 @@
                         }
                     }
                 }
-            }).then(function(_ref8) {
+            }).then((function(_ref8) {
                 var data = _ref8.data;
                 return _this14.clean.register(data.destroy), data;
-            }).catch(function(err) {
+            })).catch((function(err) {
                 throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.S)(err));
-            }), overrides = this.driver.delegateOverrides, _loop = function(_i6, _Object$keys4) {
+            })), overrides = this.driver.delegateOverrides, _loop = function(_i6, _Object$keys4) {
                 var key = _Object$keys4[_i6], val = overrides[key];
                 if (val === constants.DELEGATE.CALL_ORIGINAL) return "continue";
                 var original = _this14[key];
                 _this14[key] = function() {
                     var _this15 = this, _arguments = arguments;
-                    return delegate.then(function(data) {
+                    return delegate.then((function(data) {
                         var override = data.overrides[key];
                         if (val === constants.DELEGATE.CALL_DELEGATE) return override.apply(_this15, _arguments);
                         if ("function" == typeof val) return val(original, override).apply(_this15, _arguments);
                         throw new Error("Expected delgate to be CALL_ORIGINAL, CALL_DELEGATE, or factory method");
-                    });
+                    }));
                 };
             }, _i6 = 0, _Object$keys4 = Object.keys(overrides); _i6 < _Object$keys4.length; _i6++) _loop(_i6, _Object$keys4);
         }, _proto.watchForClose = function() {
-            var _this16 = this, closeWindowListener = Object(cross_domain_utils_src.B)(this.window, function() {
-                return _this16.component.log("detect_close_child"), zalgo_promise_src.a.try(function() {
+            var _this16 = this, closeWindowListener = Object(cross_domain_utils_src.B)(this.window, (function() {
+                return _this16.component.log("detect_close_child"), zalgo_promise_src.a.try((function() {
                     return _this16.props.onClose(constants.CLOSE_REASONS.CLOSE_DETECTED);
-                }).finally(function() {
+                })).finally((function() {
                     return _this16.destroy();
-                });
-            }, 3e3);
+                }));
+            }), 3e3);
             this.clean.register("destroyCloseWindowListener", closeWindowListener.cancel);
         }, _proto.watchForUnload = function() {
-            var _this17 = this, onunload = Object(lib.H)(function() {
+            var _this17 = this, onunload = Object(lib.H)((function() {
                 _this17.component.log("navigate_away"), Object(client.h)(), _this17.destroyComponent();
-            }), unloadWindowListener = Object(lib.b)(window, "unload", onunload);
+            })), unloadWindowListener = Object(lib.b)(window, "unload", onunload);
             this.clean.register("destroyUnloadWindowListener", unloadWindowListener.cancel);
         }, _proto.loadUrl = function(url) {
             var _this18 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 var _query;
                 return _this18.component.log("load_url"), window.location.href.split("#")[0] === url.split("#")[0] && (url = Object(lib.r)(url, {
                     query: (_query = {}, _query[Object(lib.U)()] = "1", _query)
                 })), _this18.driver.loadUrl.call(_this18, url);
-            });
+            }));
         }, _proto.hijack = function(targetElement) {
             targetElement.target = this.childWindowName;
         }, _proto.runTimeout = function() {
             var _this19 = this, timeout = this.props.timeout;
             if (timeout) {
-                var id = this.timeout = setTimeout(function() {
+                var id = this.timeout = setTimeout((function() {
                     _this19.component.log("timed_out", {
                         timeout: timeout.toString()
                     });
                     var error = _this19.component.createError("Loading component timed out after " + timeout + " milliseconds");
                     _this19.onInit.reject(error), _this19.props.onTimeout(error);
-                }, timeout);
-                this.clean.register(function() {
+                }), timeout);
+                this.clean.register((function() {
                     clearTimeout(id), delete _this19.timeout;
-                });
+                }));
             }
         }, _proto.listeners = function() {
             var _ref9;
@@ -7194,9 +8112,9 @@
                 this.checkClose();
             }, _ref9[constants.POST_MESSAGE.RESIZE] = function(source, data) {
                 var _this20 = this;
-                return zalgo_promise_src.a.try(function() {
+                return zalgo_promise_src.a.try((function() {
                     if (_this20.driver.allowResize) return _this20.resize(data.width, data.height);
-                });
+                }));
             }, _ref9[constants.POST_MESSAGE.HIDE] = function() {
                 this.hide();
             }, _ref9[constants.POST_MESSAGE.SHOW] = function() {
@@ -7206,101 +8124,101 @@
             }, _ref9;
         }, _proto.resize = function(width, height) {
             var _this21 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 _this21.component.log("resize", {
                     height: Object(lib.R)(height),
                     width: Object(lib.R)(width)
                 }), _this21.driver.resize.call(_this21, width, height), _this21.props.onResize && _this21.props.onResize();
-            });
+            }));
         }, _proto.hide = function() {
             return this.container && Object(lib.x)(this.container), this.driver.hide.call(this);
         }, _proto.show = function() {
             return this.container && Object(lib.Q)(this.container), this.driver.show.call(this);
         }, _proto.checkClose = function() {
-            var _this22 = this, closeWindowListener = Object(cross_domain_utils_src.B)(this.window, function() {
+            var _this22 = this, closeWindowListener = Object(cross_domain_utils_src.B)(this.window, (function() {
                 _this22.userClose();
-            }, 50, 500);
+            }), 50, 500);
             this.clean.register(closeWindowListener.cancel);
         }, _proto.userClose = function() {
             return this.close(constants.CLOSE_REASONS.USER_CLOSED);
         }, _proto.close = function(reason) {
             var _this23 = this;
-            return void 0 === reason && (reason = constants.CLOSE_REASONS.PARENT_CALL), zalgo_promise_src.a.try(function() {
+            return void 0 === reason && (reason = constants.CLOSE_REASONS.PARENT_CALL), zalgo_promise_src.a.try((function() {
                 return _this23.component.log("close", {
                     reason: reason
                 }), _this23.event.triggerOnce(constants.EVENTS.CLOSE), _this23.props.onClose(reason);
-            }).then(function() {
+            })).then((function() {
                 return zalgo_promise_src.a.all([ _this23.closeComponent(), _this23.closeContainer() ]);
-            }).then(function() {
+            })).then((function() {
                 return _this23.destroy();
-            });
+            }));
         }, _proto.closeContainer = function(reason) {
             var _this24 = this;
-            return void 0 === reason && (reason = constants.CLOSE_REASONS.PARENT_CALL), zalgo_promise_src.a.try(function() {
+            return void 0 === reason && (reason = constants.CLOSE_REASONS.PARENT_CALL), zalgo_promise_src.a.try((function() {
                 return _this24.event.triggerOnce(constants.EVENTS.CLOSE), _this24.props.onClose(reason);
-            }).then(function() {
+            })).then((function() {
                 return zalgo_promise_src.a.all([ _this24.closeComponent(reason), _this24.hideContainer() ]);
-            }).then(function() {
+            })).then((function() {
                 return _this24.destroyContainer();
-            });
+            }));
         }, _proto.destroyContainer = function() {
             var _this25 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 _this25.clean.run("destroyContainerEvents"), _this25.clean.run("destroyContainerTemplate");
-            });
+            }));
         }, _proto.closeComponent = function(reason) {
             var _this26 = this;
             void 0 === reason && (reason = constants.CLOSE_REASONS.PARENT_CALL);
             var win = this.window;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 return _this26.cancelContainerEvents();
-            }).then(function() {
+            })).then((function() {
                 return _this26.event.triggerOnce(constants.EVENTS.CLOSE), _this26.props.onClose(reason);
-            }).then(function() {
+            })).then((function() {
                 return _this26.hideComponent();
-            }).then(function() {
+            })).then((function() {
                 return _this26.destroyComponent();
-            }).then(function() {
+            })).then((function() {
                 _this26.childExports && _this26.context === constants.CONTEXT_TYPES.POPUP && !Object(cross_domain_utils_src.y)(win) && _this26.childExports.close().catch(lib.F);
-            });
+            }));
         }, _proto.destroyComponent = function() {
             this.clean.run("destroyUnloadWindowListener"), this.clean.run("destroyCloseWindowListener"), 
             this.clean.run("destroyContainerEvents"), this.clean.run("destroyWindow");
         }, _proto.showContainer = function() {
             var _this27 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 if (_this27.props.onDisplay) return _this27.props.onDisplay();
-            }).then(function() {
+            })).then((function() {
                 if (_this27.container) return Object(lib.P)(_this27.container, constants.ANIMATION_NAMES.SHOW_CONTAINER, _this27.clean.register);
-            });
+            }));
         }, _proto.showComponent = function() {
             var _this28 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 if (_this28.props.onDisplay) return _this28.props.onDisplay();
-            }).then(function() {
+            })).then((function() {
                 if (_this28.element) return Object(lib.P)(_this28.element, constants.ANIMATION_NAMES.SHOW_COMPONENT, _this28.clean.register);
-            });
+            }));
         }, _proto.hideContainer = function() {
             var _this29 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 return _this29.container ? Object(lib.c)(_this29.container, constants.ANIMATION_NAMES.HIDE_CONTAINER, _this29.clean.register) : zalgo_promise_src.a.resolve();
-            });
+            }));
         }, _proto.hideComponent = function() {
             var _this30 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 return _this30.element ? Object(lib.c)(_this30.element, constants.ANIMATION_NAMES.HIDE_COMPONENT, _this30.clean.register) : zalgo_promise_src.a.resolve();
-            });
+            }));
         }, _proto.focus = function() {
             if (!this.window || Object(cross_domain_utils_src.y)(this.window)) throw new Error("No window to focus");
             this.component.log("focus"), this.window.focus();
         }, _proto.createPrerenderTemplate = function() {
             var _this31 = this;
-            return zalgo_promise_src.a.try(function() {
-                return _this31.component.prerenderTemplate ? zalgo_promise_src.a.try(function() {
-                    return _this31.prerenderIframe ? Object(lib.e)(_this31.prerenderIframe).then(function() {
+            return zalgo_promise_src.a.try((function() {
+                return _this31.component.prerenderTemplate ? zalgo_promise_src.a.try((function() {
+                    return _this31.prerenderIframe ? Object(lib.e)(_this31.prerenderIframe).then((function() {
                         return _this31.prerenderWindow;
-                    }) : _this31.prerenderWindow;
-                }).then(function(win) {
+                    })) : _this31.prerenderWindow;
+                })).then((function(win) {
                     var doc, el;
                     try {
                         doc = win.document;
@@ -7325,15 +8243,15 @@
                         }), console.error(err.stack ? err.stack : err);
                     }
                     var _ref10 = "object" == typeof _this31.component.autoResize && null !== _this31.component.autoResize ? _this31.component.autoResize : {}, _ref10$width = _ref10.width, width = void 0 !== _ref10$width && _ref10$width, _ref10$height = _ref10.height, height = void 0 !== _ref10$height && _ref10$height, _ref10$element = _ref10.element, element = void 0 === _ref10$element ? "body" : _ref10$element;
-                    (element = Object(belter_src.b)(element, doc)) && (width || height) && Object(belter_src.e)(element, function(_ref11) {
+                    (element = Object(belter_src.b)(element, doc)) && (width || height) && Object(belter_src.e)(element, (function(_ref11) {
                         _this31.resize(width ? _ref11.width : void 0, height ? _ref11.height : void 0);
-                    }, {
+                    }), {
                         width: width,
                         height: height,
                         win: win
                     });
-                }) : zalgo_promise_src.a.resolve();
-            });
+                })) : zalgo_promise_src.a.resolve();
+            }));
         }, _proto.renderTemplate = function(renderer, options) {
             var _this32 = this;
             void 0 === options && (options = {});
@@ -7368,7 +8286,7 @@
             }, options));
         }, _proto.openContainer = function(element) {
             var _this33 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 var el;
                 if (!(el = element ? Object(lib.u)(element) : document.body)) throw new Error("Could not find element to open container into");
                 if (_this33.component.containerTemplate) {
@@ -7380,39 +8298,39 @@
                         if (_this33.element = _this33.getOutlet(), Object(lib.x)(_this33.element), !_this33.element) throw new Error("Could not find element to render component into");
                         Object(lib.x)(_this33.element);
                     }
-                    _this33.clean.register("destroyContainerTemplate", function() {
+                    _this33.clean.register("destroyContainerTemplate", (function() {
                         _this33.container && _this33.container.parentNode && _this33.container.parentNode.removeChild(_this33.container), 
                         delete _this33.container;
-                    });
+                    }));
                 } else if (_this33.driver.renderedIntoContainerTemplate) throw new Error("containerTemplate needed to render " + _this33.context);
-            });
+            }));
         }, _proto.cancelContainerEvents = function() {
             this.clean.run("destroyContainerEvents");
         }, _proto.destroy = function() {
             var _this34 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 if (_this34.clean.hasTasks()) return _this34.component.log("destroy"), Object(client.h)(), 
                 _this34.clean.all();
-            });
+            }));
         }, _proto.tryInit = function(method) {
             var _this35 = this;
-            return zalgo_promise_src.a.try(method).catch(function(err) {
+            return zalgo_promise_src.a.try(method).catch((function(err) {
                 _this35.onInit.reject(err);
-            }).then(function() {
+            })).then((function() {
                 return _this35.onInit;
-            });
+            }));
         }, _proto.error = function(err) {
             var _this36 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 if (_this36.handledErrors = _this36.handledErrors || [], -1 === _this36.handledErrors.indexOf(err)) return _this36.handledErrors.push(err), 
                 _this36.onInit.reject(err), _this36.destroy();
-            }).then(function() {
+            })).then((function() {
                 if (_this36.props.onError) return _this36.props.onError(err);
-            }).catch(function(errErr) {
+            })).catch((function(errErr) {
                 throw new Error("An error was encountered while handling error:\n\n " + Object(lib.S)(err) + "\n\n" + Object(lib.S)(errErr));
-            }).then(function() {
+            })).then((function() {
                 if (!_this36.props.onError) throw err;
-            });
+            }));
         }, ParentComponent.destroyAll = function() {
             for (var results = []; ParentComponent.activeComponents.length; ) results.push(ParentComponent.activeComponents[0].destroy());
             return zalgo_promise_src.a.all(results).then(lib.F);
@@ -7458,12 +8376,12 @@
                 _this.component.getProp(propName).allowDelegate && (_this.props[propName] = options.props[propName]);
             }
             _this.focus = function() {
-                return zalgo_promise_src.a.all([ _this.isWindowClosed().then(function(closed) {
+                return zalgo_promise_src.a.all([ _this.isWindowClosed().then((function(closed) {
                     closed || window.open("", _this.childWindowName);
-                }), options.overrides.focus.call(_assertThisInitialized(_this)) ]).then(lib.F);
-            }, _this.clean.register("destroyFocusOverride", function() {
+                })), options.overrides.focus.call(_assertThisInitialized(_this)) ]).then(lib.F);
+            }, _this.clean.register("destroyFocusOverride", (function() {
                 _this.focus = lib.F;
-            }), _this.userClose = options.overrides.userClose, _this.getDomain = options.overrides.getDomain, 
+            })), _this.userClose = options.overrides.userClose, _this.getDomain = options.overrides.getDomain, 
             _this.error = options.overrides.error, _this.on = options.overrides.on;
             for (var _i4 = 0, _Object$keys2 = Object.keys(RENDER_DRIVERS[options.context].delegateOverrides); _i4 < _Object$keys2.length; _i4++) {
                 var key = _Object$keys2[_i4];
@@ -7476,9 +8394,9 @@
         Object(inheritsLoose.a)(DelegateComponent, _BaseComponent);
         var _proto = DelegateComponent.prototype;
         return _proto.watchForClose = function() {
-            var _this2 = this, closeWindowListener = Object(cross_domain_utils_src.B)(this.source, function() {
+            var _this2 = this, closeWindowListener = Object(cross_domain_utils_src.B)(this.source, (function() {
                 return _this2.destroy();
-            }, 3e3);
+            }), 3e3);
             this.clean.register("destroyCloseWindowListener", closeWindowListener.cancel);
         }, _proto.getOverrides = function(context) {
             for (var overrides = {}, self = this, _loop = function(_i6, _Object$keys4) {
@@ -7682,9 +8600,9 @@
                     once: !0,
                     def: function() {
                         return function(err) {
-                            setTimeout(function() {
+                            setTimeout((function() {
                                 throw err;
-                            });
+                            }));
                         };
                     }
                 }
@@ -7727,14 +8645,14 @@
             this.driverCache[name];
         }, _proto.registerChild = function() {
             var _this2 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 if (_this2.isChild()) return new child_ChildComponent(_this2);
-            });
+            }));
         }, _proto.listenDelegate = function() {
             var _this3 = this;
-            Object(src.on)(constants.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name, function() {
+            Object(src.on)(constants.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name, (function() {
                 return !0;
-            }), Object(src.on)(constants.POST_MESSAGE.DELEGATE + "_" + this.name, function(_ref) {
+            })), Object(src.on)(constants.POST_MESSAGE.DELEGATE + "_" + this.name, (function(_ref) {
                 var source = _ref.source, origin = _ref.origin, data = _ref.data, domain = _this3.getDomain(null, data.env || _this3.defaultEnv);
                 if (!domain) throw new Error("Could not determine domain to allow remote render");
                 if (!Object(cross_domain_utils_src.A)(domain, origin)) throw new Error("Can not render from " + origin + " - expected " + domain.toString());
@@ -7745,13 +8663,13 @@
                         return delegate.destroy();
                     }
                 };
-            });
+            }));
         }, _proto.canRenderTo = function(win) {
-            return Object(src.send)(win, constants.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name).then(function(_ref2) {
+            return Object(src.send)(win, constants.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name).then((function(_ref2) {
                 return _ref2.data;
-            }).catch(function() {
+            })).catch((function() {
                 return !1;
-            });
+            }));
         }, _proto.getValidDomain = function(url) {
             if (url) {
                 var domain = Object(cross_domain_utils_src.h)(url);
@@ -7812,46 +8730,46 @@
             context;
         }, _proto.render = function(props, element) {
             var _this4 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 return new parent_ParentComponent(_this4, _this4.getRenderContext(null, element), {
                     props: props
                 }).render(element);
-            });
+            }));
         }, _proto.renderIframe = function(props, element) {
             var _this5 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 return new parent_ParentComponent(_this5, _this5.getRenderContext(constants.CONTEXT_TYPES.IFRAME, element), {
                     props: props
                 }).render(element);
-            });
+            }));
         }, _proto.renderPopup = function(props) {
             var _this6 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 return new parent_ParentComponent(_this6, _this6.getRenderContext(constants.CONTEXT_TYPES.POPUP), {
                     props: props
                 }).render();
-            });
+            }));
         }, _proto.renderTo = function(win, props, element) {
             var _this7 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 return new parent_ParentComponent(_this7, _this7.getRenderContext(null, element), {
                     props: props
                 }).renderTo(win, element);
-            });
+            }));
         }, _proto.renderIframeTo = function(win, props, element) {
             var _this8 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 return new parent_ParentComponent(_this8, _this8.getRenderContext(constants.CONTEXT_TYPES.IFRAME, element), {
                     props: props
                 }).renderTo(win, element);
-            });
+            }));
         }, _proto.renderPopupTo = function(win, props) {
             var _this9 = this;
-            return zalgo_promise_src.a.try(function() {
+            return zalgo_promise_src.a.try((function() {
                 return new parent_ParentComponent(_this9, _this9.getRenderContext(constants.CONTEXT_TYPES.POPUP), {
                     props: props
                 }).renderTo(win);
-            });
+            }));
         }, _proto.prerender = function(props, element) {
             var instance = new parent_ParentComponent(this, this.getRenderContext(null, element), {
                 props: props
@@ -7891,32 +8809,32 @@
         return parent_ParentComponent.destroyAll();
     }
     var postRobot = src, CONSTANTS = constants;
-    __webpack_require__.d(__webpack_exports__, "c", function() {
+    __webpack_require__.d(__webpack_exports__, "c", (function() {
         return create;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
         return interface_destroyAll;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
         return CONSTANTS;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
         return src_error.b;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return getUserAgent;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
         return isDevice;
-    }), __webpack_require__.d(__webpack_exports__, "f", function() {
+    })), __webpack_require__.d(__webpack_exports__, "f", (function() {
         return isIos;
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
         return isIE;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
         return isIECompHeader;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+    })), __webpack_require__.d(__webpack_exports__, "e", (function() {
         return isIEIntranet;
-    }), __webpack_require__.d(__webpack_exports__, "g", function() {
+    })), __webpack_require__.d(__webpack_exports__, "g", (function() {
         return supportsPopups;
-    });
+    }));
     var cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
     function getUserAgent() {
         return window.navigator.mockUserAgent || window.navigator.userAgent;
@@ -7984,9 +8902,9 @@
         subClass.prototype = Object.create(superClass.prototype), subClass.prototype.constructor = subClass, 
         subClass.__proto__ = superClass;
     }
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return _inheritsLoose;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
@@ -8051,7 +8969,7 @@
             domain: conf.b.WILDCARD
         });
     };
-    var zalgo_promise_src = __webpack_require__(1), cross_domain_safe_weakmap_src = __webpack_require__(17);
+    var zalgo_promise_src = __webpack_require__(2), cross_domain_safe_weakmap_src = __webpack_require__(17);
     function needsBridgeForBrowser() {
         return !!Object(src.o)(window).match(/MSIE|trident|edge\/12|edge\/13/i) || !conf.a.ALLOW_POSTMESSAGE_POPUP;
     }
@@ -8075,15 +8993,15 @@
     function isBridge() {
         return Boolean(window.name && window.name === getBridgeName(Object(src.g)()));
     }
-    var documentBodyReady = new zalgo_promise_src.a(function(resolve) {
+    var documentBodyReady = new zalgo_promise_src.a((function(resolve) {
         if (window.document && window.document.body) return resolve(window.document.body);
-        var interval = setInterval(function() {
+        var interval = setInterval((function() {
             if (window.document && window.document.body) return clearInterval(interval), resolve(window.document.body);
-        }, 10);
-    });
+        }), 10);
+    }));
     function registerRemoteWindow(win) {
         global.a.remoteWindows.set(win, {
-            sendMessagePromise: new zalgo_promise_src.a()
+            sendMessagePromise: new zalgo_promise_src.a
         });
     }
     function findRemoteWindow(win) {
@@ -8109,13 +9027,13 @@
         if (!messagingChild && !messagingParent) throw new Error("Can only send messages to and from parent and popup windows");
         var remoteWindow = findRemoteWindow(win);
         if (!remoteWindow) throw new Error("Window not found to send message to");
-        return remoteWindow.sendMessagePromise.then(function(sendMessage) {
+        return remoteWindow.sendMessagePromise.then((function(sendMessage) {
             return sendMessage(win, message, domain);
-        });
+        }));
     }
-    global.a.remoteWindows = global.a.remoteWindows || new cross_domain_safe_weakmap_src.a();
-    var awaitRemoteBridgeForWindow = Object(lib.r)(function(win) {
-        return zalgo_promise_src.a.try(function() {
+    global.a.remoteWindows = global.a.remoteWindows || new cross_domain_safe_weakmap_src.a;
+    var awaitRemoteBridgeForWindow = Object(lib.r)((function(win) {
+        return zalgo_promise_src.a.try((function() {
             for (var _i2 = 0, _getFrames2 = Object(src.j)(win); _i2 < _getFrames2.length; _i2++) {
                 var frame = _getFrames2[_i2];
                 try {
@@ -8127,24 +9045,24 @@
             try {
                 var _frame = Object(src.i)(win, getBridgeName(Object(src.g)()));
                 if (!_frame) return;
-                return Object(src.u)(_frame) && _frame[conf.b.WINDOW_PROPS.POSTROBOT] ? _frame : new zalgo_promise_src.a(function(resolve) {
+                return Object(src.u)(_frame) && _frame[conf.b.WINDOW_PROPS.POSTROBOT] ? _frame : new zalgo_promise_src.a((function(resolve) {
                     var interval, timeout;
-                    interval = setInterval(function() {
+                    interval = setInterval((function() {
                         if (_frame && Object(src.u)(_frame) && _frame[conf.b.WINDOW_PROPS.POSTROBOT]) return clearInterval(interval), 
                         clearTimeout(timeout), resolve(_frame);
-                    }, 100), timeout = setTimeout(function() {
+                    }), 100), timeout = setTimeout((function() {
                         return clearInterval(interval), resolve();
-                    }, 2e3);
-                });
+                    }), 2e3);
+                }));
             } catch (err) {}
-        });
-    });
+        }));
+    }));
     function openTunnelToOpener() {
-        return zalgo_promise_src.a.try(function() {
+        return zalgo_promise_src.a.try((function() {
             var opener = Object(src.l)(window);
             if (opener && needsBridge({
                 win: opener
-            })) return registerRemoteWindow(opener), awaitRemoteBridgeForWindow(opener).then(function(bridge) {
+            })) return registerRemoteWindow(opener), awaitRemoteBridgeForWindow(opener).then((function(bridge) {
                 return bridge ? window.name ? bridge[conf.b.WINDOW_PROPS.POSTROBOT].openTunnelToParent({
                     name: window.name,
                     source: window,
@@ -8165,21 +9083,21 @@
                             zalgo_promise_src.a.reject(err);
                         }
                     }
-                }).then(function(_ref) {
+                }).then((function(_ref) {
                     var source = _ref.source, origin = _ref.origin, data = _ref.data;
                     if (source !== opener) throw new Error("Source does not match opener");
                     registerRemoteSendMessage(source, origin, data.sendMessage);
-                }).catch(function(err) {
+                })).catch((function(err) {
                     throw rejectRemoteSendMessage(opener, err), err;
-                }) : rejectRemoteSendMessage(opener, new Error("Can not register with opener: window does not have a name")) : rejectRemoteSendMessage(opener, new Error("Can not register with opener: no bridge found in opener"));
-            });
-        });
+                })) : rejectRemoteSendMessage(opener, new Error("Can not register with opener: window does not have a name")) : rejectRemoteSendMessage(opener, new Error("Can not register with opener: no bridge found in opener"));
+            }));
+        }));
     }
     function hasBridge(url, domain) {
         return domain = domain || Object(src.h)(url), Boolean(global.a.bridges[domain]);
     }
     function openBridge(url, domain) {
-        return domain = domain || Object(src.h)(url), global.a.bridges[domain] ? global.a.bridges[domain] : (global.a.bridges[domain] = zalgo_promise_src.a.try(function() {
+        return domain = domain || Object(src.h)(url), global.a.bridges[domain] ? global.a.bridges[domain] : (global.a.bridges[domain] = zalgo_promise_src.a.try((function() {
             if (Object(src.g)() === domain) throw new Error("Can not open bridge on the same domain as current domain: " + domain);
             var name = getBridgeName(domain);
             if (Object(src.i)(window, name)) throw new Error("Frame with name " + name + " already exists on page");
@@ -8191,14 +9109,14 @@
                 iframe.setAttribute("hidden", "true"), iframe.setAttribute("title", ""), iframe.setAttribute("role", "presentation"), 
                 iframe.src = url, iframe;
             }(name, url);
-            return global.a.bridgeFrames[domain] = iframe, documentBodyReady.then(function(body) {
+            return global.a.bridgeFrames[domain] = iframe, documentBodyReady.then((function(body) {
                 body.appendChild(iframe);
                 var bridge = iframe.contentWindow;
                 return function(source, domain) {
                     global.a.on(conf.b.POST_MESSAGE_NAMES.OPEN_TUNNEL, {
-                        window: bridge,
+                        window: source,
                         domain: domain
-                    }, function(_ref) {
+                    }, (function(_ref) {
                         var origin = _ref.origin, data = _ref.data;
                         if (origin !== domain) throw new Error("Domain " + domain + " does not match origin " + origin);
                         if (!data.name) throw new Error("Register window expected to be passed window name");
@@ -8223,19 +9141,19 @@
                                 }
                             }
                         };
-                    });
-                }(0, domain), new zalgo_promise_src.a(function(resolve, reject) {
+                    }));
+                }(bridge, domain), new zalgo_promise_src.a((function(resolve, reject) {
                     iframe.onload = resolve, iframe.onerror = reject;
-                }).then(function() {
+                })).then((function() {
                     return Object(lib.k)(bridge, conf.a.BRIDGE_TIMEOUT, "Bridge " + url);
-                }).then(function() {
+                })).then((function() {
                     return bridge;
-                });
-            });
-        }), global.a.bridges[domain]);
+                }));
+            }));
+        })), global.a.bridges[domain]);
     }
     global.a.bridges = global.a.bridges || {}, global.a.bridgeFrames = global.a.bridgeFrames || {}, 
-    global.a.popupWindowsByWin = global.a.popupWindowsByWin || new cross_domain_safe_weakmap_src.a(), 
+    global.a.popupWindowsByWin = global.a.popupWindowsByWin || new cross_domain_safe_weakmap_src.a, 
     global.a.popupWindowsByName = global.a.popupWindowsByName || {};
     var windowOpen = window.open;
     function linkUrl(win, url) {
@@ -8270,99 +9188,99 @@
             global.a.popupWindowsByName[name] = winOptions;
         }
         return win;
-    }, __webpack_require__.d(__webpack_exports__, "openTunnelToOpener", function() {
+    }, __webpack_require__.d(__webpack_exports__, "openTunnelToOpener", (function() {
         return openTunnelToOpener;
-    }), __webpack_require__.d(__webpack_exports__, "needsBridgeForBrowser", function() {
+    })), __webpack_require__.d(__webpack_exports__, "needsBridgeForBrowser", (function() {
         return needsBridgeForBrowser;
-    }), __webpack_require__.d(__webpack_exports__, "needsBridgeForWin", function() {
+    })), __webpack_require__.d(__webpack_exports__, "needsBridgeForWin", (function() {
         return needsBridgeForWin;
-    }), __webpack_require__.d(__webpack_exports__, "needsBridgeForDomain", function() {
+    })), __webpack_require__.d(__webpack_exports__, "needsBridgeForDomain", (function() {
         return needsBridgeForDomain;
-    }), __webpack_require__.d(__webpack_exports__, "needsBridge", function() {
+    })), __webpack_require__.d(__webpack_exports__, "needsBridge", (function() {
         return needsBridge;
-    }), __webpack_require__.d(__webpack_exports__, "getBridgeName", function() {
+    })), __webpack_require__.d(__webpack_exports__, "getBridgeName", (function() {
         return getBridgeName;
-    }), __webpack_require__.d(__webpack_exports__, "isBridge", function() {
+    })), __webpack_require__.d(__webpack_exports__, "isBridge", (function() {
         return isBridge;
-    }), __webpack_require__.d(__webpack_exports__, "documentBodyReady", function() {
+    })), __webpack_require__.d(__webpack_exports__, "documentBodyReady", (function() {
         return documentBodyReady;
-    }), __webpack_require__.d(__webpack_exports__, "registerRemoteWindow", function() {
+    })), __webpack_require__.d(__webpack_exports__, "registerRemoteWindow", (function() {
         return registerRemoteWindow;
-    }), __webpack_require__.d(__webpack_exports__, "findRemoteWindow", function() {
+    })), __webpack_require__.d(__webpack_exports__, "findRemoteWindow", (function() {
         return findRemoteWindow;
-    }), __webpack_require__.d(__webpack_exports__, "registerRemoteSendMessage", function() {
+    })), __webpack_require__.d(__webpack_exports__, "registerRemoteSendMessage", (function() {
         return registerRemoteSendMessage;
-    }), __webpack_require__.d(__webpack_exports__, "rejectRemoteSendMessage", function() {
+    })), __webpack_require__.d(__webpack_exports__, "rejectRemoteSendMessage", (function() {
         return rejectRemoteSendMessage;
-    }), __webpack_require__.d(__webpack_exports__, "sendBridgeMessage", function() {
+    })), __webpack_require__.d(__webpack_exports__, "sendBridgeMessage", (function() {
         return sendBridgeMessage;
-    }), __webpack_require__.d(__webpack_exports__, "hasBridge", function() {
+    })), __webpack_require__.d(__webpack_exports__, "hasBridge", (function() {
         return hasBridge;
-    }), __webpack_require__.d(__webpack_exports__, "openBridge", function() {
+    })), __webpack_require__.d(__webpack_exports__, "openBridge", (function() {
         return openBridge;
-    }), __webpack_require__.d(__webpack_exports__, "linkUrl", function() {
+    })), __webpack_require__.d(__webpack_exports__, "linkUrl", (function() {
         return linkUrl;
-    }), __webpack_require__.d(__webpack_exports__, "destroyBridges", function() {
+    })), __webpack_require__.d(__webpack_exports__, "destroyBridges", (function() {
         return destroyBridges;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "i", function() {
+    __webpack_require__.d(__webpack_exports__, "i", (function() {
         return loadScript;
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
         return getElement;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
         return getElements;
-    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+    })), __webpack_require__.d(__webpack_exports__, "j", (function() {
         return onDocumentReady;
-    }), __webpack_require__.d(__webpack_exports__, "f", function() {
+    })), __webpack_require__.d(__webpack_exports__, "f", (function() {
         return getQueryParam;
-    }), __webpack_require__.d(__webpack_exports__, "l", function() {
+    })), __webpack_require__.d(__webpack_exports__, "l", (function() {
         return urlWillRedirectPage;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
         return extendUrl;
-    }), __webpack_require__.d(__webpack_exports__, "k", function() {
+    })), __webpack_require__.d(__webpack_exports__, "k", (function() {
         return redirect;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
         return getBrowserLocale;
-    }), __webpack_require__.d(__webpack_exports__, "h", function() {
+    })), __webpack_require__.d(__webpack_exports__, "h", (function() {
         return isElementVisible;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+    })), __webpack_require__.d(__webpack_exports__, "e", (function() {
         return getPageRenderTime;
-    }), __webpack_require__.d(__webpack_exports__, "g", function() {
+    })), __webpack_require__.d(__webpack_exports__, "g", (function() {
         return getResourceLoadTime;
-    });
-    var beaver_logger_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4), zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1), _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0), _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(3), _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(12);
+    }));
+    var beaver_logger_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5), zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2), _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0), _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4), _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(12);
     function isDocumentReady() {
         return Boolean(document.body) && "complete" === document.readyState;
     }
     __webpack_require__(21);
-    var documentReady = new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__.a(function(resolve) {
+    var documentReady = new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__.a((function(resolve) {
         if (isDocumentReady()) return resolve();
-        var interval = setInterval(function() {
+        var interval = setInterval((function() {
             if (isDocumentReady()) return clearInterval(interval), resolve();
-        }, 10);
-    });
+        }), 10);
+    }));
     function loadScript(src, timeout, attrs) {
-        return void 0 === timeout && (timeout = 0), void 0 === attrs && (attrs = {}), new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__.a(function(resolve, reject) {
+        return void 0 === timeout && (timeout = 0), void 0 === attrs && (attrs = {}), new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__.a((function(resolve, reject) {
             var script = document.createElement("script");
-            script.addEventListener("load", function() {
+            script.addEventListener("load", (function() {
                 resolve();
-            }), script.onreadystatechange = function() {
+            })), script.onreadystatechange = function() {
                 "complete" !== this.readyState && "loaded" !== this.readyState || resolve();
             };
             var scriptLoadError = new Error("script_loading_error");
-            script.addEventListener("error", function() {
+            script.addEventListener("error", (function() {
                 return reject(scriptLoadError);
-            }), timeout && setTimeout(function() {
+            })), timeout && setTimeout((function() {
                 return reject(new Error("script_loading_timed_out"));
-            }, timeout);
+            }), timeout);
             for (var _i2 = 0, _Object$keys2 = Object.keys(attrs); _i2 < _Object$keys2.length; _i2++) {
                 var attr = _Object$keys2[_i2];
                 script.setAttribute(attr, attrs[attr]);
             }
             script.setAttribute("src", src), document.getElementsByTagName("head")[0].appendChild(script);
-        });
+        }));
     }
     function getElement(item) {
         if (item) {
@@ -8394,11 +9312,11 @@
     function onDocumentReady(method) {
         return documentReady.then(method);
     }
-    documentReady.then(function() {
+    documentReady.then((function() {
         if (document.body) return document.body;
         throw new Error("Document ready but document.body not present");
-    });
-    var parseQuery = Object(_util__WEBPACK_IMPORTED_MODULE_4__.i)(function(queryString) {
+    }));
+    var parseQuery = Object(_util__WEBPACK_IMPORTED_MODULE_4__.i)((function(queryString) {
         var params = {};
         if (!queryString) return params;
         if (-1 === queryString.indexOf("=")) return params;
@@ -8407,7 +9325,7 @@
             (pair = pair.split("="))[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
         }
         return params;
-    });
+    }));
     function getQueryParam(name) {
         return parseQuery(window.location.search.slice(1))[name];
     }
@@ -8426,22 +9344,22 @@
             var originalQuery = parseQuery(originalQueryString);
             for (var _key in originalQuery) params.hasOwnProperty(_key) || (params[_key] = originalQuery[_key]);
         }
-        var newQueryString = Object.keys(params).filter(function(key) {
+        var newQueryString = Object.keys(params).filter((function(key) {
             return key && params[key];
-        }).sort().map(function(key) {
+        })).sort().map((function(key) {
             return encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
-        }).join("&"), newUrl = originalUrl;
+        })).join("&"), newUrl = originalUrl;
         return newQueryString && (newUrl = newUrl + "?" + newQueryString), hasHash && (newUrl = newUrl + "#" + (hash || "")), 
         newUrl;
     }
     function redirect(win, url) {
-        return void 0 === win && (win = window), new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__.a(function(resolve) {
+        return void 0 === win && (win = window), new zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__.a((function(resolve) {
             Object(beaver_logger_client__WEBPACK_IMPORTED_MODULE_0__.k)("redirect", {
                 url: url
-            }), setTimeout(function() {
+            }), setTimeout((function() {
                 win.location = url, urlWillRedirectPage(url) || resolve();
-            }, 1);
-        });
+            }), 1);
+        }));
     }
     function normalizeLocale(locale) {
         if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
@@ -8458,7 +9376,7 @@
             lang: lang
         };
     }
-    var getBrowserLocale = Object(_util__WEBPACK_IMPORTED_MODULE_4__.i)(function() {
+    var getBrowserLocale = Object(_util__WEBPACK_IMPORTED_MODULE_4__.i)((function() {
         for (var locales = function() {
             var nav = window.navigator, locales = nav.languages ? [].slice.apply(nav.languages) : [];
             return nav.language && locales.push(nav.language), nav.userLanguage && locales.push(nav.userLanguage), 
@@ -8471,20 +9389,20 @@
             loc;
         }
         return _config__WEBPACK_IMPORTED_MODULE_3__.a.defaultLocale;
-    });
+    }));
     function isElementVisible(el) {
         return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
     }
-    var enablePerformance = Object(_util__WEBPACK_IMPORTED_MODULE_4__.i)(function() {
+    var enablePerformance = Object(_util__WEBPACK_IMPORTED_MODULE_4__.i)((function() {
         return Boolean(window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0);
-    });
+    }));
     function getPageRenderTime() {
-        return documentReady.then(function() {
+        return documentReady.then((function() {
             if (enablePerformance()) {
                 var timing = window.performance.timing;
                 return timing.connectEnd && timing.domInteractive ? timing.domInteractive - timing.connectEnd : void 0;
             }
-        });
+        }));
     }
     function getResourceLoadTime(url) {
         if (enablePerformance() && window.performance && "function" == typeof window.performance.getEntries) for (var entries = window.performance.getEntries(), i = 0; i < entries.length; i++) {
@@ -8494,12 +9412,12 @@
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return allowIframe;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
         return isPayPalDomain;
-    });
-    var cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7), _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3), _device__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(21);
+    }));
+    var cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7), _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4), _device__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(21);
     function allowIframe() {
         if (!Object(_device__WEBPACK_IMPORTED_MODULE_2__.g)()) return !0;
         var parentWindow = Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__.m)(window);
@@ -8521,27 +9439,27 @@
     function RenderError(message) {
         this.message = message;
     }
-    __webpack_require__.d(__webpack_exports__, "b", function() {
+    __webpack_require__.d(__webpack_exports__, "b", (function() {
         return PopupOpenError;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
         return IntegrationError;
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
         return RenderError;
-    }), PopupOpenError.prototype = Object.create(Error.prototype), IntegrationError.prototype = Object.create(Error.prototype), 
+    })), PopupOpenError.prototype = Object.create(Error.prototype), IntegrationError.prototype = Object.create(Error.prototype), 
     RenderError.prototype = Object.create(Error.prototype);
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    var checkout = __webpack_require__(31), src = __webpack_require__(1);
+    var checkout = __webpack_require__(31), src = __webpack_require__(2);
     function awaitBraintreeClient(braintree, auth) {
-        return src.a.resolve(auth).then(function(authorization) {
+        return src.a.resolve(auth).then((function(authorization) {
             return braintree.client.create({
                 authorization: authorization
             });
-        }).then(function(client) {
+        })).then((function(client) {
             return braintree.paypalCheckout.create({
                 client: client
             });
-        });
+        }));
     }
     var SUPPORTED_REST_FIELDS = {
         intent: 1,
@@ -8596,65 +9514,65 @@
         btPayment.shippingAddressEditable = !0) : "SET_PROVIDED_ADDRESS" === payment.application_context.shipping_preference && (btPayment.enableShippingAddress = !0, 
         btPayment.shippingAddressEditable = !1))), btPayment;
     }
-    __webpack_require__.d(__webpack_exports__, "b", function() {
+    __webpack_require__.d(__webpack_exports__, "b", (function() {
         return checkout.a;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
         return checkout.c;
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
         return checkout.b;
-    }), __webpack_require__.d(__webpack_exports__, "a", function() {
+    })), __webpack_require__.d(__webpack_exports__, "a", (function() {
         return awaitBraintreeClient;
-    }), __webpack_require__.d(__webpack_exports__, "e", function() {
+    })), __webpack_require__.d(__webpack_exports__, "e", (function() {
         return mapPaymentToBraintree;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     var _script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(35);
-    __webpack_require__.d(__webpack_exports__, "script", function() {
+    __webpack_require__.d(__webpack_exports__, "script", (function() {
         return _script__WEBPACK_IMPORTED_MODULE_0__.a;
-    });
+    }));
     var _react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(36);
-    __webpack_require__.d(__webpack_exports__, "react", function() {
+    __webpack_require__.d(__webpack_exports__, "react", (function() {
         return _react__WEBPACK_IMPORTED_MODULE_1__.a;
-    });
+    }));
     var _vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(37);
-    __webpack_require__.d(__webpack_exports__, "vue", function() {
+    __webpack_require__.d(__webpack_exports__, "vue", (function() {
         return _vue__WEBPACK_IMPORTED_MODULE_2__.a;
-    });
+    }));
     var _angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(38);
-    __webpack_require__.d(__webpack_exports__, "angular", function() {
+    __webpack_require__.d(__webpack_exports__, "angular", (function() {
         return _angular__WEBPACK_IMPORTED_MODULE_3__.a;
-    });
+    }));
     var _ember__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(39);
-    __webpack_require__.o(_ember__WEBPACK_IMPORTED_MODULE_4__, "angular2") && __webpack_require__.d(__webpack_exports__, "angular2", function() {
+    __webpack_require__.o(_ember__WEBPACK_IMPORTED_MODULE_4__, "angular2") && __webpack_require__.d(__webpack_exports__, "angular2", (function() {
         return _ember__WEBPACK_IMPORTED_MODULE_4__.angular2;
-    }), __webpack_require__.o(_ember__WEBPACK_IMPORTED_MODULE_4__, "glimmer") && __webpack_require__.d(__webpack_exports__, "glimmer", function() {
+    })), __webpack_require__.o(_ember__WEBPACK_IMPORTED_MODULE_4__, "glimmer") && __webpack_require__.d(__webpack_exports__, "glimmer", (function() {
         return _ember__WEBPACK_IMPORTED_MODULE_4__.glimmer;
-    });
+    }));
     var _glimmer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(40);
-    __webpack_require__.d(__webpack_exports__, "glimmer", function() {
+    __webpack_require__.d(__webpack_exports__, "glimmer", (function() {
         return _glimmer__WEBPACK_IMPORTED_MODULE_5__.a;
-    });
+    }));
     var _angular2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(41);
-    __webpack_require__.d(__webpack_exports__, "angular2", function() {
+    __webpack_require__.d(__webpack_exports__, "angular2", (function() {
         return _angular2__WEBPACK_IMPORTED_MODULE_6__.a;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return beacon;
-    }), __webpack_require__(11);
-    var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3), _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0), _session__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(19), BEACON_URL = _config__WEBPACK_IMPORTED_MODULE_1__.a.loggerUrl, APP_NAME = "checkoutjs";
+    })), __webpack_require__(11);
+    var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4), _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0), _session__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(19), BEACON_URL = _config__WEBPACK_IMPORTED_MODULE_1__.a.loggerUrl, APP_NAME = "checkoutjs";
     function beacon(event, payload) {
         void 0 === payload && (payload = {});
         try {
-            payload.event = "ppxo_" + event, payload.version = "4.0.284", payload.host = window.location.host, 
+            payload.event = "ppxo_" + event, payload.version = "4.0.285", payload.host = window.location.host, 
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)(), payload.appName = APP_NAME;
             var query = [];
             for (var key in payload) payload.hasOwnProperty(key) && query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
-            query = query.join("&"), new window.Image().src = BEACON_URL + "?" + query, setTimeout(function() {
+            query = query.join("&"), (new window.Image).src = BEACON_URL + "?" + query, setTimeout((function() {
                 _config__WEBPACK_IMPORTED_MODULE_1__.a.logLevel === _constants__WEBPACK_IMPORTED_MODULE_2__.A.DEBUG && window.console && window.console.log && window.console.log("*", event, payload);
-            }, 1);
+            }), 1);
         } catch (err) {}
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
@@ -8675,7 +9593,7 @@
             class: "loader"
         })))));
     }
-    var _LOGO_COLOR, src = __webpack_require__(16), zalgo_promise_src = __webpack_require__(1), resources = __webpack_require__(18), constants = __webpack_require__(0), lib = __webpack_require__(2), containerContent = __webpack_require__(33);
+    var _LOGO_COLOR, src = __webpack_require__(16), zalgo_promise_src = __webpack_require__(2), resources = __webpack_require__(18), constants = __webpack_require__(0), lib = __webpack_require__(3), containerContent = __webpack_require__(33);
     function getContainerStyle(_ref) {
         var id = _ref.id, tag = _ref.tag, CONTEXT = _ref.CONTEXT, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION;
         return "\n        #" + id + " {\n            position: absolute;\n            z-index: 2147483647;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n\n            -webkit-transform: translate3d(0, 0, 0);\n            -moz-transform: translate3d(0, 0, 0);\n            -ms-transform: translate3d(0, 0, 0);\n            -o-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " {\n            background-color: black;\n            background-color: rgba(0, 0, 0, 0.75);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " {\n            background-color: white;\n            background-color: rgba(255, 255, 255, 0.4);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " a {\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " a {\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " .paypal-checkout-close:after {\n            background-color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " .paypal-checkout-close:after {\n            background-color: #111;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + " a {\n            text-decoration: none;\n        }\n\n        #" + id + ' .paypal-checkout-modal {\n            font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n            font-size: 14px;\n            text-align: center;\n\n            -webkit-box-sizing: border-box;\n            -moz-box-sizing: border-box;\n            -ms-box-sizing: border-box;\n            box-sizing: border-box;\n            max-width: 350px;\n            top: 50%;\n            left: 50%;\n            position: absolute;\n            transform: translateX(-50%) translateY(-50%);\n            -webkit-transform: translateX(-50%) translateY(-50%);\n            -moz-transform: translateX(-50%) translateY(-50%);\n            -o-transform: translateX(-50%) translateY(-50%);\n            -ms-transform: translateX(-50%) translateY(-50%);\n            cursor: pointer;\n            text-align: center;\n        }\n\n        #' + id + "." + tag + "-loading .paypal-checkout-message, #" + id + "." + tag + "-loading .paypal-checkout-continue {\n            display: none;\n        }\n\n        .paypal-checkout-loader {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-loader {\n            display: block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo {\n            cursor: pointer;\n            margin-bottom: 30px;\n            display: inline-block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img {\n            height: 36px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img.paypal-checkout-logo-pp {\n            margin-right: 10px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-message {\n            font-size: 15px;\n            line-height: 1.5;\n            padding: 10px 0;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-message, #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-continue {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue {\n            font-size: 15px;\n            line-height: 1.35;\n            padding: 10px 0;\n            font-weight: bold;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue a {\n            border-bottom: 1px solid currentColor;\n        }\n\n        #" + id + " .paypal-checkout-close {\n            position: absolute;\n            right: 16px;\n            top: 16px;\n            width: 16px;\n            height: 16px;\n            opacity: 0.6;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-close {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-close:hover {\n            opacity: 1;\n        }\n\n        #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n            position: absolute;\n            left: 8px;\n            content: ' ';\n            height: 16px;\n            width: 2px;\n        }\n\n        #" + id + " .paypal-checkout-close:before {\n            transform: rotate(45deg);\n            -webkit-transform: rotate(45deg);\n            -moz-transform: rotate(45deg);\n            -o-transform: rotate(45deg);\n            -ms-transform: rotate(45deg);\n        }\n\n        #" + id + " .paypal-checkout-close:after {\n            transform: rotate(-45deg);\n            -webkit-transform: rotate(-45deg);\n            -moz-transform: rotate(-45deg);\n            -o-transform: rotate(-45deg);\n            -ms-transform: rotate(-45deg);\n        }\n\n        #" + id + " .paypal-checkout-iframe-container {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + ",\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + " > iframe {\n            max-height: calc(95vh - 60px);\n            max-width: 95vw;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container {\n\n            display: block;\n\n            position: absolute;\n\n            top: 50%;\n            left: 50%;\n\n            min-width: 450px;\n\n            transform: translate(-50%, -50%);\n            -webkit-transform: translate(-50%, -50%);\n            -moz-transform: translate(-50%, -50%);\n            -o-transform: translate(-50%, -50%);\n            -ms-transform: translate(-50%, -50%);\n\n            transform: translate3d(-50%, -50%, 0);\n            -webkit-transform: translate3d(-50%, -50%, 0);\n            -moz-transform: translate3d(-50%, -50%, 0);\n            -o-transform: translate3d(-50%, -50%, 0);\n            -ms-transform: translate3d(-50%, -50%, 0);\n\n            border-radius: 10px;\n            overflow: hidden;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n\n            position: relative;\n\n            -webkit-transition: all 0.3s ease;\n            -moz-transition: all 0.3s ease;\n            -ms-transition: all 0.3s ease;\n            -o-transition: all 0.3 ease;\n            transition: all 0.3s ease;\n\n            -webkit-animation-duration: 0.3s;\n            animation-duration: 0.3s;\n            -webkit-animation-fill-mode: both;\n            animation-fill-mode: both;\n\n            min-width: 450px;\n            max-width: 450px;\n            width: 450px;\n            height: 535px;\n\n            background-color: white;\n\n            overflow: auto;\n            -webkit-overflow-scrolling: touch;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            transition: opacity .4s ease-in-out;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n            z-index: 100;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n            opacity: 1;\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n            opacity: 0;\n            z-index: 100;\n        }\n\n        @media screen and (-ms-high-contrast: active) {\n            #" + id + " .paypal-checkout-close {\n                opacity: 1;\n            }\n\n            #" + id + " .paypal-checkout-close:before , .paypal-checkout-close:after {\n                background-color: currentColor;\n            }\n        }\n\n        @media screen and (max-width: 470px) {\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                min-width: 100%;\n                min-width: calc(100% - 20px);\n                min-width: -webkit-calc(100% - 20px);\n                min-width: -moz-calc(100% - 20px);\n                min-width: -o-calc(100% - 20px);\n                min-width: -ms-calc(100% - 20px);\n\n                max-width: 100%;\n                max-width: calc(100% - 20px);\n                max-width: -webkit-calc(100% - 20px);\n                max-width: -moz-calc(100% - 20px);\n                max-width: -o-calc(100% - 20px);\n                max-width: -ms-calc(100% - 20px);\n            }\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " iframe {\n            width: 1px;\n            min-width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        .paypal-spinner {\n            height: 30px;\n            width: 30px;\n            display: inline-block;\n            box-sizing: content-box;\n            opacity: 1;\n            filter: alpha(opacity=100);\n            -webkit-animation: rotation .7s infinite linear;\n            -moz-animation: rotation .7s infinite linear;\n            -o-animation: rotation .7s infinite linear;\n            animation: rotation .7s infinite linear;\n            border-left: 8px solid rgba(0, 0, 0, .2);\n            border-right: 8px solid rgba(0, 0, 0, .2);\n            border-bottom: 8px solid rgba(0, 0, 0, .2);\n            border-top: 8px solid #fff;\n            border-radius: 100%\n        }\n\n        @-webkit-keyframes rotation {\n            from {\n                -webkit-transform: rotate(0deg)\n            }\n            to {\n                -webkit-transform: rotate(359deg)\n            }\n        }\n        @-moz-keyframes rotation {\n            from {\n                -moz-transform: rotate(0deg)\n            }\n            to {\n                -moz-transform: rotate(359deg)\n            }\n        }\n        @-o-keyframes rotation {\n            from {\n                -o-transform: rotate(0deg)\n            }\n            to {\n                -o-transform: rotate(359deg)\n            }\n        }\n        @keyframes rotation {\n            from {\n                transform: rotate(0deg)\n            }\n            to {\n                transform: rotate(359deg)\n            }\n        }\n    ";
@@ -8739,9 +9657,9 @@
             CLASS: CLASS,
             ANIMATION: ANIMATION
         }))), container = jsxDom("html", null, jsxDom("body", null, el));
-        return on(EVENT.CLOSE, function() {
+        return on(EVENT.CLOSE, (function() {
             el.className += " " + tag + "-loading";
-        }), jsxDom("div", {
+        })), jsxDom("div", {
             id: id,
             class: "paypal-checkout-sandbox"
         }, jsxDom("style", null, getSandboxStyle({
@@ -8754,25 +9672,25 @@
             class: "paypal-checkout-sandbox-iframe"
         }, container));
     }
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return componentTemplate;
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
         return getContainerStyle;
-    }), __webpack_require__.d(__webpack_exports__, "d", function() {
+    })), __webpack_require__.d(__webpack_exports__, "d", (function() {
         return getSandboxStyle;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
         return containerTemplate;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return determineParameterFromToken;
-    }), __webpack_require__.d(__webpack_exports__, "c", function() {
+    })), __webpack_require__.d(__webpack_exports__, "c", (function() {
         return getPaymentType;
-    }), __webpack_require__.d(__webpack_exports__, "b", function() {
+    })), __webpack_require__.d(__webpack_exports__, "b", (function() {
         return determineUrl;
-    });
-    var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3), _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
+    }));
+    var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4), _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
     function determineParameterFromToken(token) {
         return token && 0 === token.indexOf("BA-") ? "ba_token" : "token";
     }
@@ -8781,13 +9699,13 @@
         _constants__WEBPACK_IMPORTED_MODULE_1__.B.EC_TOKEN);
     }
     function determineUrl(env, fundingSource, payment) {
-        return getPaymentType(payment) === _constants__WEBPACK_IMPORTED_MODULE_1__.B.BA_TOKEN ? _config__WEBPACK_IMPORTED_MODULE_0__.a.billingUrls[env] : fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.CARD || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.ELV ? _config__WEBPACK_IMPORTED_MODULE_0__.a.guestUrls[env] : fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.IDEAL || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BANCONTACT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.GIROPAY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.SOFORT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.EPS || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MYBANK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.P24 || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.ZIMPLER ? _config__WEBPACK_IMPORTED_MODULE_0__.a.altpayUrls[env] : _config__WEBPACK_IMPORTED_MODULE_0__.a.checkoutUrls[env];
+        return getPaymentType(payment) === _constants__WEBPACK_IMPORTED_MODULE_1__.B.BA_TOKEN ? _config__WEBPACK_IMPORTED_MODULE_0__.a.billingUrls[env] : fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.CARD || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.ELV ? _config__WEBPACK_IMPORTED_MODULE_0__.a.guestUrls[env] : fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.IDEAL || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BANCONTACT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.GIROPAY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.SOFORT || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.EPS || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MYBANK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.P24 || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.PAYU || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.VERKKOPANKKI || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BLIK || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.TRUSTLY || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.MAXIMA || fundingSource === _constants__WEBPACK_IMPORTED_MODULE_1__.v.BOLETO ? _config__WEBPACK_IMPORTED_MODULE_0__.a.altpayUrls[env] : _config__WEBPACK_IMPORTED_MODULE_0__.a.checkoutUrls[env];
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return extendNamespace;
-    });
+    }));
     var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11);
     function extendNamespace(xports, namespaces, childnamespaces) {
         void 0 === namespaces && (namespaces = []), void 0 === childnamespaces && (childnamespaces = []);
@@ -8805,9 +9723,9 @@
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return containerContent;
-    });
+    }));
     var containerContent = {
         AT: {
             de: {
@@ -12188,9 +13106,9 @@
     }();
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return script;
-    });
+    }));
     var script = {
         global: function() {
             return window.document;
@@ -12211,17 +13129,17 @@
                 for (var scriptTags = [].slice.call(document.getElementsByTagName("script")), _i2 = 0; _i2 < scriptTags.length; _i2++) render(scriptTags[_i2]);
             }
             scan(), document.addEventListener("DOMContentLoaded", scan), window.addEventListener("load", scan), 
-            document.addEventListener("DOMNodeInserted", function(event) {
+            document.addEventListener("DOMNodeInserted", (function(event) {
                 render(event.target);
-            });
+            }));
         }
     };
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return react;
-    });
-    var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22), _lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5), react = {
+    }));
+    var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22), _lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6), react = {
         global: function() {
             if (window.React && window.ReactDOM) return {
                 React: window.React,
@@ -12272,10 +13190,10 @@
     };
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return vue;
-    });
-    var _lib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5), vue = {
+    }));
+    var _lib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6), vue = {
         global: function() {},
         register: function(component) {
             return {
@@ -12296,15 +13214,15 @@
     };
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return angular;
-    });
-    var _lib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5), angular = {
+    }));
+    var _lib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6), angular = {
         global: function() {
             return window.angular;
         },
         register: function(component, ng) {
-            return ng.module(component.tag, []).directive(Object(_lib__WEBPACK_IMPORTED_MODULE_0__.h)(component.tag), function() {
+            return ng.module(component.tag, []).directive(Object(_lib__WEBPACK_IMPORTED_MODULE_0__.h)(component.tag), (function() {
                 for (var scope = {}, _i2 = 0, _component$getPropNam2 = component.getPropNames(); _i2 < _component$getPropNam2.length; _i2++) scope[_component$getPropNam2[_i2]] = "=";
                 return component.looseProps && (scope.props = "="), {
                     scope: scope,
@@ -12335,19 +13253,19 @@
                                 }
                             });
                         }, parent = component.init(getProps(), null, $element[0]);
-                        parent.render($element[0]), $scope.$watch(function() {
+                        parent.render($element[0]), $scope.$watch((function() {
                             parent.updateProps(getProps());
-                        });
+                        }));
                     } ]
                 };
-            });
+            }));
         }
     };
 }, function(module, exports) {}, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return glimmer;
-    });
+    }));
     var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11), _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(22), glimmer = {
         global: function() {},
         register: function(component, GlimmerComponent) {
@@ -12364,10 +13282,10 @@
     };
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return angular2;
-    });
-    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11), _lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5), angular2 = {
+    }));
+    var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11), _lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6), angular2 = {
         global: function() {},
         register: function(zoid, _ref) {
             var AngularComponent = _ref.Component, NgModule = _ref.NgModule, ElementRef = _ref.ElementRef, NgZone = _ref.NgZone;
@@ -12377,9 +13295,9 @@
                     function: function(value) {
                         if ("function" == typeof value) return function() {
                             var _this = this, _arguments = arguments;
-                            return component.zone.run(function() {
+                            return component.zone.run((function() {
                                 return value.apply(_this, _arguments);
-                            });
+                            }));
                         };
                     }
                 });
@@ -12410,7 +13328,7 @@
 }, function(module, exports, __webpack_require__) {
     !function(e, t, n) {
         module.exports ? module.exports = n() : __webpack_require__(65)("bowser", n);
-    }(0, 0, function() {
+    }(0, 0, (function() {
         function t(t) {
             function n(e) {
                 var n = t.match(e);
@@ -12581,7 +13499,7 @@
             N.osname = "Linux") : (N.android = e, N.osname = "Android");
             var k = "";
             N.windows ? k = function(e) {
-                switch (n(/Windows ((NT|XP)( \d\d?.\d)?)/i)) {
+                switch (e) {
                   case "NT":
                     return "NT";
 
@@ -12615,7 +13533,7 @@
                   default:
                     return;
                 }
-            }() : N.windowsphone ? k = n(/windows phone (?:os)?\s?(\d+(\.\d+)*)/i) : N.mac ? k = (k = n(/Mac OS X (\d+([_\.\s]\d+)*)/i)).replace(/[_\s]/g, ".") : i ? k = (k = n(/os (\d+([_\s]\d+)*) like mac os x/i)).replace(/[_\s]/g, ".") : u ? k = n(/android[ \/-](\d+(\.\d+)*)/i) : N.webos ? k = n(/(?:web|hpw)os\/(\d+(\.\d+)*)/i) : N.blackberry ? k = n(/rim\stablet\sos\s(\d+(\.\d+)*)/i) : N.bada ? k = n(/bada\/(\d+(\.\d+)*)/i) : N.tizen && (k = n(/tizen[\/\s](\d+(\.\d+)*)/i)), 
+            }(n(/Windows ((NT|XP)( \d\d?.\d)?)/i)) : N.windowsphone ? k = n(/windows phone (?:os)?\s?(\d+(\.\d+)*)/i) : N.mac ? k = (k = n(/Mac OS X (\d+([_\.\s]\d+)*)/i)).replace(/[_\s]/g, ".") : i ? k = (k = n(/os (\d+([_\s]\d+)*) like mac os x/i)).replace(/[_\s]/g, ".") : u ? k = n(/android[ \/-](\d+(\.\d+)*)/i) : N.webos ? k = n(/(?:web|hpw)os\/(\d+(\.\d+)*)/i) : N.blackberry ? k = n(/rim\stablet\sos\s(\d+(\.\d+)*)/i) : N.bada ? k = n(/bada\/(\d+(\.\d+)*)/i) : N.tizen && (k = n(/tizen[\/\s](\d+(\.\d+)*)/i)), 
             k && (N.osversion = k);
             var L = !N.windows && k.split(".")[0];
             return S || f || "ipad" == i || u && (3 == L || L >= 4 && !x) || N.silk ? N.tablet = e : (x || "iphone" == i || "ipod" == i || u || a || N.blackberry || N.webos || N.bada) && (N.mobile = e), 
@@ -12632,12 +13550,12 @@
             return n;
         }
         function s(e) {
-            for (var t = Math.max(r(e[0]), r(e[1])), n = i(e, function(e) {
+            for (var t = Math.max(r(e[0]), r(e[1])), n = i(e, (function(e) {
                 var n = t - r(e);
-                return i((e += new Array(n + 1).join(".0")).split("."), function(e) {
+                return i((e += new Array(n + 1).join(".0")).split("."), (function(e) {
                     return new Array(20 - e.length).join("0") + e;
-                }).reverse();
-            }); --t >= 0; ) {
+                })).reverse();
+            })); --t >= 0; ) {
                 if (n[0][t] > n[1][t]) return 1;
                 if (n[0][t] !== n[1][t]) return -1;
                 if (0 === t) return 0;
@@ -12663,7 +13581,7 @@
         }, n.isUnsupportedBrowser = o, n.compareVersions = s, n.check = function(e, t, n) {
             return !o(e, t, n);
         }, n._detect = t, n.detect = t, n;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
@@ -12671,9 +13589,9 @@
     function emulateIERestrictions(sourceWindow, targetWindow) {
         if (!conf.a.ALLOW_POSTMESSAGE_POPUP && !1 === Object(src.v)(sourceWindow, targetWindow)) throw new Error("Can not send and receive post messages between two different windows (disabled to emulate IE)");
     }
-    __webpack_require__.d(__webpack_exports__, "emulateIERestrictions", function() {
+    __webpack_require__.d(__webpack_exports__, "emulateIERestrictions", (function() {
         return emulateIERestrictions;
-    });
+    }));
 }, function(module, exports) {
     module.exports = '<svg width="24" height="32" viewBox="0 0 24 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <path fill="#ffffff" opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 6.378 28.938 C 6.285 29.238 6.659 29.638 6.94 29.638 L 11.153 29.638 C 11.621 29.638 11.995 29.238 12.089 28.739 L 12.182 28.539 L 12.931 23.341 L 13.025 23.041 C 13.119 22.441 13.493 22.141 13.961 22.141 L 14.616 22.141 C 18.642 22.141 21.731 20.342 22.668 15.443 C 23.042 13.344 22.855 11.545 21.825 10.345 C 21.451 10.046 21.076 9.646 20.702 9.446 L 20.702 9.446"></path>\n    <path fill="#ffffff" opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 7.876 18.642 C 8.063 18.043 8.438 17.643 9.093 17.643 L 11.433 17.643 C 16.021 17.643 19.578 15.643 20.608 9.946 C 20.608 9.746 20.608 9.546 20.702 9.446"></path>\n    <path fill="#ffffff" d="M 9.28 9.446 C 9.28 9.146 9.468 8.846 9.842 8.646 C 9.936 8.646 10.123 8.546 10.216 8.546 L 16.489 8.546 C 17.238 8.546 17.893 8.646 18.548 8.746 C 18.736 8.746 18.829 8.746 19.11 8.846 C 19.204 8.946 19.391 8.946 19.578 9.046 C 19.672 9.046 19.672 9.046 19.859 9.146 C 20.14 9.246 20.421 9.346 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.648 C 18.361 3.248 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 3.048 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 9.28 9.446 Z"></path>\n    <g transform="matrix(0.497737, 0, 0, 0.52612, 1.10144, 0.638654)" opacity="0.2">\n        <path fill="#231f20" d="M39.3 16.7c0.9 0.5 1.7 1.1 2.3 1.8 1 1.1 1.6 2.5 1.9 4.1 0.3-3.2-0.2-5.8-1.9-7.8-0.6-0.7-1.3-1.2-2.1-1.7C39.5 14.2 39.5 15.4 39.3 16.7z"></path>\n        <path fill="#231f20" d="M0.4 45.2L6.7 5.6C6.8 4.5 7.8 3.7 8.9 3.7h16c5.5 0 9.8 1.2 12.2 3.9 1.2 1.4 1.9 3 2.2 4.8 0.4-3.6-0.2-6.1-2.2-8.4C34.7 1.2 30.4 0 24.9 0H8.9c-1.1 0-2.1 0.8-2.3 1.9L0 44.1C0 44.5 0.1 44.9 0.4 45.2z"></path>\n        <path fill="#231f20" d="M10.7 49.4l-0.1 0.6c-0.1 0.4 0.1 0.8 0.4 1.1l0.3-1.7H10.7z"></path>\n    </g>\n</svg>\n';
 }, function(module, exports) {
@@ -12767,13 +13685,13 @@
     __webpack_require__.r(__webpack_exports__);
     var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29), _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32), _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12), _lib_security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(25);
     if (!Object(_lib_security__WEBPACK_IMPORTED_MODULE_3__.b)()) throw new Error("Do not integrate with versioned script url");
-    if (window.paypal && "4.0.284" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-        version: "4.0.284"
-    }), new Error("PayPal Checkout Integration Script with same version (4.0.284) already loaded on page");
-    if (window.paypal && window.paypal.version && "4.0.284" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
+    if (window.paypal && "4.0.285" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
+        version: "4.0.285"
+    }), new Error("PayPal Checkout Integration Script with same version (4.0.285) already loaded on page");
+    if (window.paypal && window.paypal.version && "4.0.285" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
         existingVersion: window.paypal.version,
-        version: "4.0.284"
-    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.284");
+        version: "4.0.285"
+    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.285");
     try {
         var _interface = __webpack_require__(66);
         Object(_lib_namespace__WEBPACK_IMPORTED_MODULE_1__.a)(_interface, [ "paypal", "PAYPAL", "ppxo" ], [ "apps" ]);
@@ -12787,27 +13705,27 @@
     "use strict";
     __webpack_require__.r(__webpack_exports__);
     var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
-    __webpack_require__.d(__webpack_exports__, "openBridge", function() {
+    __webpack_require__.d(__webpack_exports__, "openBridge", (function() {
         return _index__WEBPACK_IMPORTED_MODULE_0__.openBridge;
-    }), __webpack_require__.d(__webpack_exports__, "linkUrl", function() {
+    })), __webpack_require__.d(__webpack_exports__, "linkUrl", (function() {
         return _index__WEBPACK_IMPORTED_MODULE_0__.linkUrl;
-    }), __webpack_require__.d(__webpack_exports__, "isBridge", function() {
+    })), __webpack_require__.d(__webpack_exports__, "isBridge", (function() {
         return _index__WEBPACK_IMPORTED_MODULE_0__.isBridge;
-    }), __webpack_require__.d(__webpack_exports__, "needsBridge", function() {
+    })), __webpack_require__.d(__webpack_exports__, "needsBridge", (function() {
         return _index__WEBPACK_IMPORTED_MODULE_0__.needsBridge;
-    }), __webpack_require__.d(__webpack_exports__, "needsBridgeForBrowser", function() {
+    })), __webpack_require__.d(__webpack_exports__, "needsBridgeForBrowser", (function() {
         return _index__WEBPACK_IMPORTED_MODULE_0__.needsBridgeForBrowser;
-    }), __webpack_require__.d(__webpack_exports__, "hasBridge", function() {
+    })), __webpack_require__.d(__webpack_exports__, "hasBridge", (function() {
         return _index__WEBPACK_IMPORTED_MODULE_0__.hasBridge;
-    }), __webpack_require__.d(__webpack_exports__, "needsBridgeForWin", function() {
+    })), __webpack_require__.d(__webpack_exports__, "needsBridgeForWin", (function() {
         return _index__WEBPACK_IMPORTED_MODULE_0__.needsBridgeForWin;
-    }), __webpack_require__.d(__webpack_exports__, "needsBridgeForDomain", function() {
+    })), __webpack_require__.d(__webpack_exports__, "needsBridgeForDomain", (function() {
         return _index__WEBPACK_IMPORTED_MODULE_0__.needsBridgeForDomain;
-    }), __webpack_require__.d(__webpack_exports__, "openTunnelToOpener", function() {
+    })), __webpack_require__.d(__webpack_exports__, "openTunnelToOpener", (function() {
         return _index__WEBPACK_IMPORTED_MODULE_0__.openTunnelToOpener;
-    }), __webpack_require__.d(__webpack_exports__, "destroyBridges", function() {
+    })), __webpack_require__.d(__webpack_exports__, "destroyBridges", (function() {
         return _index__WEBPACK_IMPORTED_MODULE_0__.destroyBridges;
-    });
+    }));
 }, function(module, exports) {
     (function(__webpack_amd_options__) {
         module.exports = __webpack_amd_options__;
@@ -12820,72 +13738,72 @@
     "use strict";
     __webpack_require__.r(__webpack_exports__);
     var interface_namespaceObject = {};
-    __webpack_require__.r(interface_namespaceObject), __webpack_require__.d(interface_namespaceObject, "postRobot", function() {
+    __webpack_require__.r(interface_namespaceObject), __webpack_require__.d(interface_namespaceObject, "postRobot", (function() {
         return postRobot;
-    }), __webpack_require__.d(interface_namespaceObject, "Promise", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "Promise", (function() {
         return zalgo_promise_src.a;
-    }), __webpack_require__.d(interface_namespaceObject, "PopupOpenError", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "PopupOpenError", (function() {
         return src.b;
-    }), __webpack_require__.d(interface_namespaceObject, "rest", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "rest", (function() {
         return rest;
-    }), __webpack_require__.d(interface_namespaceObject, "Button", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "Button", (function() {
         return component_Button;
-    }), __webpack_require__.d(interface_namespaceObject, "Card", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "Card", (function() {
         return Card;
-    }), __webpack_require__.d(interface_namespaceObject, "setup", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "setup", (function() {
         return setup;
-    }), __webpack_require__.d(interface_namespaceObject, "config", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "config", (function() {
         return config.a;
-    }), __webpack_require__.d(interface_namespaceObject, "ENV", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "ENV", (function() {
         return constants.t;
-    }), __webpack_require__.d(interface_namespaceObject, "USERS", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "USERS", (function() {
         return constants.F;
-    }), __webpack_require__.d(interface_namespaceObject, "SOURCE", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "SOURCE", (function() {
         return constants.E;
-    }), __webpack_require__.d(interface_namespaceObject, "FUNDING", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "FUNDING", (function() {
         return constants.v;
-    }), __webpack_require__.d(interface_namespaceObject, "CARD", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "CARD", (function() {
         return constants.o;
-    }), __webpack_require__.d(interface_namespaceObject, "request", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "request", (function() {
         return lib.R;
-    }), __webpack_require__.d(interface_namespaceObject, "isEligible", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "isEligible", (function() {
         return lib.B;
-    }), __webpack_require__.d(interface_namespaceObject, "isFundingRemembered", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "isFundingRemembered", (function() {
         return lib.C;
-    }), __webpack_require__.d(interface_namespaceObject, "forceIframe", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "forceIframe", (function() {
         return lib.a;
-    }), __webpack_require__.d(interface_namespaceObject, "isWebView", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "isWebView", (function() {
         return lib.a;
-    }), __webpack_require__.d(interface_namespaceObject, "allowIframe", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "allowIframe", (function() {
         return lib.a;
-    }), __webpack_require__.d(interface_namespaceObject, "logExperimentTreatment", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "logExperimentTreatment", (function() {
         return logExperimentTreatment;
-    }), __webpack_require__.d(interface_namespaceObject, "logFundingEligibility", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "logFundingEligibility", (function() {
         return logFundingEligibility;
-    }), __webpack_require__.d(interface_namespaceObject, "onPossiblyUnhandledException", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "onPossiblyUnhandledException", (function() {
         return onPossiblyUnhandledException;
-    }), __webpack_require__.d(interface_namespaceObject, "version", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "version", (function() {
         return interface_version;
-    }), __webpack_require__.d(interface_namespaceObject, "checkout", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "checkout", (function() {
         return interface_checkout;
-    }), __webpack_require__.d(interface_namespaceObject, "apps", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "apps", (function() {
         return apps;
-    }), __webpack_require__.d(interface_namespaceObject, "Checkout", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "Checkout", (function() {
         return interface_Checkout;
-    }), __webpack_require__.d(interface_namespaceObject, "BillingPage", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "BillingPage", (function() {
         return interface_BillingPage;
-    }), __webpack_require__.d(interface_namespaceObject, "PayPalCheckout", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "PayPalCheckout", (function() {
         return PayPalCheckout;
-    }), __webpack_require__.d(interface_namespaceObject, "destroyAll", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "destroyAll", (function() {
         return destroyAll;
-    }), __webpack_require__.d(interface_namespaceObject, "enableCheckoutIframe", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "enableCheckoutIframe", (function() {
         return enableCheckoutIframe;
-    }), __webpack_require__.d(interface_namespaceObject, "logger", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "logger", (function() {
         return logger;
-    }), __webpack_require__.d(interface_namespaceObject, "ThreeDomainSecure", function() {
+    })), __webpack_require__.d(interface_namespaceObject, "ThreeDomainSecure", (function() {
         return interface_ThreeDomainSecure;
-    });
-    var _LOGO_COLOR, beaver_logger_client = __webpack_require__(4), src = __webpack_require__(20), zalgo_promise_src = __webpack_require__(1), post_robot_src = __webpack_require__(13), lib = __webpack_require__(2), src_checkout = __webpack_require__(15), esm_extends = __webpack_require__(11), belter_src = __webpack_require__(16), constants = __webpack_require__(0), config = __webpack_require__(3), resources = __webpack_require__(18), containerContent = __webpack_require__(33), checkout_template = __webpack_require__(30), LOGO_COLOR = ((_LOGO_COLOR = {})[constants.q.BLACK] = constants.i.WHITE, 
+    }));
+    var _LOGO_COLOR, beaver_logger_client = __webpack_require__(5), src = __webpack_require__(20), zalgo_promise_src = __webpack_require__(2), post_robot_src = __webpack_require__(13), lib = __webpack_require__(3), src_checkout = __webpack_require__(15), esm_extends = __webpack_require__(11), belter_src = __webpack_require__(16), constants = __webpack_require__(0), config = __webpack_require__(4), resources = __webpack_require__(18), containerContent = __webpack_require__(33), checkout_template = __webpack_require__(30), LOGO_COLOR = ((_LOGO_COLOR = {})[constants.q.BLACK] = constants.i.WHITE, 
     _LOGO_COLOR[constants.q.WHITE] = constants.i.BLACK, _LOGO_COLOR);
     function containerTemplate(_ref) {
         var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION, CONTEXT = _ref.CONTEXT, EVENT = _ref.EVENT, on = _ref.on, tag = _ref.tag, context = _ref.context, actions = _ref.actions, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _props$locale$split = props.locale.split("_"), lang = _props$locale$split[0], country = _props$locale$split[1], containerStyle = "\n        " + Object(checkout_template.c)({
@@ -12944,9 +13862,9 @@
         }))), jsxDom("div", {
             class: "paypal-checkout-iframe-container"
         }, outlet), jsxDom("style", null, containerStyle)), container = jsxDom("html", null, jsxDom("body", null, el));
-        return on(EVENT.CLOSE, function() {
+        return on(EVENT.CLOSE, (function() {
             el.className += " " + tag + "-loading";
-        }), jsxDom("div", {
+        })), jsxDom("div", {
             id: id,
             class: "paypal-checkout-sandbox"
         }, jsxDom("style", null, Object(checkout_template.d)({
@@ -13121,7 +14039,7 @@
             }
         },
         containerTemplate: containerTemplate
-    }), cross_domain_utils_src = __webpack_require__(7), src_lib = __webpack_require__(5), pptm = (noContentFoundInContainer = !1, 
+    }), cross_domain_utils_src = __webpack_require__(7), src_lib = __webpack_require__(6), pptm = (noContentFoundInContainer = !1, 
     callback = "__pptmLoadedWithNoContent", obj = {
         reloadPptmScript: function(clientId) {
             !function tryCreatePptmScript() {
@@ -13134,9 +14052,9 @@
             };
         },
         listenForButtonRender: function() {
-            window.paypalDDL = window.paypalDDL || [], 0 === window.paypalDDL.filter(function(e) {
+            window.paypalDDL = window.paypalDDL || [], 0 === window.paypalDDL.filter((function(e) {
                 return "paypalButtonRender" === e.event;
-            }).length && window.paypalDDL.push({
+            })).length && window.paypalDDL.push({
                 event: "paypalButtonRender"
             });
         },
@@ -13163,16 +14081,16 @@
             Object(lib.H)(fullUrl, 0, {
                 async: !0,
                 id: constants.D
-            }).then(function() {
+            }).then((function() {
                 var _track2;
                 window.paypalDDL && window.paypalDDL[0] && "snippetRun" === window.paypalDDL[0].event || window[callback](), 
                 Object(beaver_logger_client.p)(((_track2 = {})[constants.u.KEY.STATE] = constants.u.STATE.PPTM, 
                 _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PPTM_LOADED, _track2));
-            }).catch(function(err) {
+            })).catch((function(err) {
                 Object(beaver_logger_client.k)("pptm_script_error", {
                     error: Object(lib.U)(err)
                 });
-            });
+            }));
         },
         shouldCreateInitialPptmScript: function() {
             if (!window.location.hostname) return !1;
@@ -13188,7 +14106,7 @@
             var script = Object(lib.n)(constants.D);
             script && script.parentNode.removeChild(script);
         }
-    }), proxyRest = {}, createAccessToken = Object(lib.I)(function(env, client) {
+    }), proxyRest = {}, createAccessToken = Object(lib.I)((function(env, client) {
         Object(beaver_logger_client.k)("rest_api_create_access_token");
         var clientID = client[env = env || config.a.env];
         if (!clientID) throw new Error("Client ID not found for env: " + env);
@@ -13203,19 +14121,19 @@
             data: {
                 grant_type: "client_credentials"
             }
-        }).then(function(res) {
+        }).then((function(res) {
             if (res && "invalid_client" === res.error) throw new Error("Auth Api invalid " + env + " client id: " + clientID + ":\n\n" + JSON.stringify(res, null, 4));
             if (!res || !res.access_token) throw new Error("Auth Api response error:\n\n" + JSON.stringify(res, null, 4));
             return res.access_token;
-        });
-    }, {
+        }));
+    }), {
         time: 6e5
-    }), createExperienceProfile = Object(lib.I)(function(env, client, experienceDetails) {
+    }), createExperienceProfile = Object(lib.I)((function(env, client, experienceDetails) {
         if (void 0 === experienceDetails && (experienceDetails = {}), Object(beaver_logger_client.k)("rest_api_create_experience_profile"), 
         !client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
         return proxyRest.createExperienceProfile && !proxyRest.createExperienceProfile.source.closed ? proxyRest.createExperienceProfile(env, client, experienceDetails) : (experienceDetails.temporary = !0, 
         experienceDetails.name = experienceDetails.name ? experienceDetails.name + "_" + Math.random().toString() : Math.random().toString(), 
-        createAccessToken(env, client).then(function(accessToken) {
+        createAccessToken(env, client).then((function(accessToken) {
             return Object(lib.R)({
                 method: "post",
                 url: config.a.experienceApiUrls[env],
@@ -13224,12 +14142,12 @@
                 },
                 json: experienceDetails
             });
-        }).then(function(res) {
+        })).then((function(res) {
             if (res && res.error) throw new Error(res.error);
             if (!res.id) throw new Error("No id in experience profile response:\n\n" + JSON.stringify(res, null, 4));
             return res.id;
-        }));
-    }, {
+        })));
+    }), {
         time: 6e5
     });
     function logPaymentResponse(res) {
@@ -13259,15 +14177,15 @@
         payment.redirect_urls = payment.redirect_urls || {}, payment.redirect_urls.return_url = payment.redirect_urls.return_url || "https://www.paypal.com/checkoutnow/error", 
         payment.redirect_urls.cancel_url = payment.redirect_urls.cancel_url || "https://www.paypal.com/checkoutnow/error", 
         payment.payer = payment.payer || {}, payment.payer.payment_method = payment.payer.payment_method || "paypal", 
-        createAccessToken(env, client).then(function(accessToken) {
-            return zalgo_promise_src.a.try(function() {
+        createAccessToken(env, client).then((function(accessToken) {
+            return zalgo_promise_src.a.try((function() {
                 if (experience) return zalgo_promise_src.a.resolve(createExperienceProfile(env, client, experience));
-            }).then(function(experienceID) {
-                return zalgo_promise_src.a.try(function() {
+            })).then((function(experienceID) {
+                return zalgo_promise_src.a.try((function() {
                     if (tracking) return zalgo_promise_src.a.resolve(function(env, client, merchantID, trackingData) {
                         if (!client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
                         var trackingID = Object(lib.X)();
-                        return createAccessToken(env, client).then(function(accessToken) {
+                        return createAccessToken(env, client).then((function(accessToken) {
                             var headers = {
                                 Authorization: "Bearer " + accessToken
                             };
@@ -13280,11 +14198,11 @@
                                     additional_data: trackingData
                                 }
                             });
-                        }).then(function() {
+                        })).then((function() {
                             return trackingID;
-                        });
+                        }));
                     }(env, client, tracking.id, tracking.data));
-                }).then(function(trackingID) {
+                })).then((function(trackingID) {
                     experienceID && (payment.experience_profile_id = experienceID);
                     var headers = {
                         Authorization: "Bearer " + accessToken
@@ -13296,12 +14214,12 @@
                         headers: headers,
                         json: payment
                     });
-                });
-            });
-        }).then(function(res) {
+                }));
+            }));
+        })).then((function(res) {
             if (logPaymentResponse(res), res && res.id) return res.id;
             throw new Error("Payment Api response error:\n\n" + JSON.stringify(res, null, 4));
-        }));
+        })));
     }
     function createOrder(env, client, paymentDetails) {
         if (Object(beaver_logger_client.k)("rest_api_create_order_token"), !client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
@@ -13314,9 +14232,9 @@
         order.application_context = order.application_context || {}, order.application_context.return_url = order.application_context.return_url || "https://www.paypal.com/checkoutnow/error", 
         order.application_context.cancel_url = order.application_context.cancel_url || "https://www.paypal.com/checkoutnow/error", 
         order.purchase_units = order.purchase_units || [], order.purchase_units[0] = order.purchase_units[0] || {}, 
-        order.purchase_units.forEach(function(unit) {
+        order.purchase_units.forEach((function(unit) {
             unit.reference_id = unit.reference_id || Math.random().toString();
-        }), createAccessToken(env, client).then(function(accessToken) {
+        })), createAccessToken(env, client).then((function(accessToken) {
             var headers = {
                 Authorization: "Bearer " + accessToken
             };
@@ -13327,10 +14245,10 @@
                 headers: headers,
                 json: order
             });
-        }).then(function(res) {
+        })).then((function(res) {
             if (logPaymentResponse(res), res && res.id) return res.id;
             throw new Error("Payment Api response error:\n\n" + JSON.stringify(res, null, 4));
-        }));
+        })));
     }
     function createBillingAgreement(env, client, billingDetails, experienceDetails) {
         if (Object(beaver_logger_client.k)("rest_api_create_billing_token"), !client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
@@ -13339,10 +14257,10 @@
         billingDetails.plan.merchant_preferences.return_url = billingDetails.plan.merchant_preferences.return_url || "https://www.paypal.com/checkoutnow/error", 
         billingDetails.plan.merchant_preferences.cancel_url = billingDetails.plan.merchant_preferences.cancel_url || "https://www.paypal.com/checkoutnow/error", 
         billingDetails.payer = billingDetails.payer || {}, billingDetails.payer.payment_method = billingDetails.payer.payment_method || "paypal", 
-        createAccessToken(env, client).then(function(accessToken) {
-            return zalgo_promise_src.a.try(function() {
+        createAccessToken(env, client).then((function(accessToken) {
+            return zalgo_promise_src.a.try((function() {
                 if (experienceDetails) return zalgo_promise_src.a.resolve(createExperienceProfile(env, client, experienceDetails));
-            }).then(function(experienceID) {
+            })).then((function(experienceID) {
                 return experienceID && (billingDetails.experience_profile_id = experienceID), Object(lib.R)({
                     method: "post",
                     url: config.a.billingApiUrls[env],
@@ -13351,11 +14269,11 @@
                     },
                     json: billingDetails
                 });
-            });
-        }).then(function(res) {
+            }));
+        })).then((function(res) {
             if (res && res.token_id) return res.token_id;
             throw new Error("Billing Api response error:\n\n" + JSON.stringify(res, null, 4));
-        }));
+        })));
     }
     var rest = {
         payment: {
@@ -13373,18 +14291,18 @@
     }, parentWin = Object(cross_domain_utils_src.e)();
     Object(post_robot_src.on)("proxy_rest", {
         domain: config.a.paypal_domain_regex
-    }, function(_ref) {
+    }, (function(_ref) {
         proxyRest = _ref.data;
-    }), parentWin && Object(lib.G)() && !Object(cross_domain_utils_src.u)(parentWin) && Object(post_robot_src.send)(parentWin, "proxy_rest", {
+    })), parentWin && Object(lib.G)() && !Object(cross_domain_utils_src.u)(parentWin) && Object(post_robot_src.send)(parentWin, "proxy_rest", {
         createAccessToken: createAccessToken,
         createExperienceProfile: createExperienceProfile,
         createPayment: createPayment,
         createBillingAgreement: createBillingAgreement,
         createOrder: createOrder
-    }).catch(function() {});
+    }).catch((function() {}));
     var onAuthorizeListener = Object(lib.e)();
     function log(experiment, treatment, token, state) {
-        Object(lib.w)(function(session) {
+        Object(lib.w)((function(session) {
             var event = experiment + "_" + treatment + "_" + state, loggedEvents = session.loggedExperimentEvents = session.loggedExperimentEvents || [];
             if (-1 !== loggedEvents.indexOf(event)) Object(beaver_logger_client.k)("duplicate_" + event); else {
                 var _track;
@@ -13397,19 +14315,19 @@
                 _track[constants.u.KEY.CONTEXT_ID] = token, _track[constants.u.KEY.CONTEXT_TYPE] = token ? constants.u.CONTEXT_TYPE[constants.B.EC_TOKEN] : constants.u.CONTEXT_TYPE.BUTTON_SESSION_ID, 
                 _track)), Object(beaver_logger_client.j)();
             }
-        });
+        }));
     }
     function logExperimentTreatment(_ref) {
         var experiment = _ref.experiment, treatment = _ref.treatment, state = _ref.state, token = _ref.token;
-        experiment && treatment && (Object(lib.w)(function(session) {
+        experiment && treatment && (Object(lib.w)((function(session) {
             session.externalExperiment = experiment, session.externalExperimentTreatment = treatment, 
             token && (session.externalExperimentToken = token);
-        }), log(experiment, treatment, token, state));
+        })), log(experiment, treatment, token, state));
     }
     function logReturn(token) {
-        var _getSessionState = Object(lib.w)(function(session) {
+        var _getSessionState = Object(lib.w)((function(session) {
             return session;
-        }), externalExperiment = _getSessionState.externalExperiment, externalExperimentTreatment = _getSessionState.externalExperimentTreatment, externalExperimentToken = _getSessionState.externalExperimentToken;
+        })), externalExperiment = _getSessionState.externalExperiment, externalExperimentTreatment = _getSessionState.externalExperimentTreatment, externalExperimentToken = _getSessionState.externalExperimentToken;
         externalExperiment && externalExperimentTreatment && externalExperimentToken === token ? log(externalExperiment, externalExperimentTreatment, token, "complete") : Object(beaver_logger_client.k)("experiment_mismatch", {
             token: token,
             externalExperiment: externalExperiment,
@@ -13418,16 +14336,16 @@
         });
     }
     if (Object(lib.m)("log_authorize")) {
-        onAuthorizeListener.once(function(_ref2) {
+        onAuthorizeListener.once((function(_ref2) {
             var paymentToken = _ref2.paymentToken;
-            setTimeout(function() {
+            setTimeout((function() {
                 logReturn(paymentToken);
-            }, 1);
-        });
+            }), 1);
+        }));
         var returnToken = Object(lib.t)();
-        returnToken && setTimeout(function() {
+        returnToken && setTimeout((function() {
             returnToken && logReturn(returnToken);
-        }, 1);
+        }), 1);
     }
     var _FUNDING_CONFIG, _CARD_CONFIG, integrations = __webpack_require__(27), integrations_checkout = __webpack_require__(31), OPTYPE = {
         PAYMENT: "payment",
@@ -13444,11 +14362,11 @@
         };
     }
     function awaitPopupBridge(Button) {
-        return Button.xprops && Button.xprops.awaitPopupBridge ? Button.xprops.awaitPopupBridge() : Object(lib.b)(window, "popupBridge").then(function(popupBridge) {
+        return Button.xprops && Button.xprops.awaitPopupBridge ? Button.xprops.awaitPopupBridge() : Object(lib.b)(window, "popupBridge").then((function(popupBridge) {
             return function(popupBridge) {
                 return {
                     open: function(url) {
-                        return new zalgo_promise_src.a(function(resolve, reject) {
+                        return new zalgo_promise_src.a((function(resolve, reject) {
                             popupBridge.onComplete = function(err, result) {
                                 return result ? err ? reject(err) : resolve(result) : reject(new Error("No payload passed in popupBridge.onComplete"));
                             }, popupBridge.onCancel = function() {
@@ -13457,13 +14375,13 @@
                             }, popupBridge.open(Object(lib.g)(url, {
                                 redirect_uri: popupBridge.getReturnUrlPrefix()
                             }));
-                        });
+                        }));
                     }
                 };
             }(popupBridge);
-        });
+        }));
     }
-    var FUNDING_PRIORITY = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.ITAU, constants.v.CREDIT, constants.v.CARD, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.SOFORT, constants.v.MYBANK, constants.v.P24, constants.v.ZIMPLER ], FUNDING_ORDER = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.ITAU, constants.v.CREDIT, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.SOFORT, constants.v.MYBANK, constants.v.P24, constants.v.ZIMPLER, constants.v.CARD ], FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[constants.s] = {
+    var FUNDING_PRIORITY = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.ITAU, constants.v.CREDIT, constants.v.CARD, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.SOFORT, constants.v.MYBANK, constants.v.P24, constants.v.PAYU, constants.v.VERKKOPANKKI, constants.v.BLIK, constants.v.TRUSTLY, constants.v.MAXIMA, constants.v.BOLETO ], FUNDING_ORDER = [ constants.v.PAYPAL, constants.v.VENMO, constants.v.ITAU, constants.v.CREDIT, constants.v.IDEAL, constants.v.ELV, constants.v.BANCONTACT, constants.v.GIROPAY, constants.v.EPS, constants.v.SOFORT, constants.v.MYBANK, constants.v.P24, constants.v.PAYU, constants.v.VERKKOPANKKI, constants.v.BLIK, constants.v.TRUSTLY, constants.v.MAXIMA, constants.v.BOLETO, constants.v.CARD ], FUNDING_CONFIG = ((_FUNDING_CONFIG = {})[constants.s] = {
         enabled: !0,
         allowOptIn: !0,
         allowOptOut: !0,
@@ -13531,10 +14449,34 @@
         allowedCountries: [ constants.r.PL ],
         allowHorizontal: !1,
         allowVertical: !0
-    }, _FUNDING_CONFIG[constants.v.ZIMPLER] = {
+    }, _FUNDING_CONFIG[constants.v.PAYU] = {
+        allowedCountries: [ constants.r.PL, constants.r.CZ ],
+        allowHorizontal: !1,
+        allowVertical: !0
+    }, _FUNDING_CONFIG[constants.v.VERKKOPANKKI] = {
         allowedCountries: [ constants.r.FI ],
         allowHorizontal: !1,
         allowVertical: !0
+    }, _FUNDING_CONFIG[constants.v.BLIK] = {
+        allowedCountries: [ constants.r.PL ],
+        allowHorizontal: !1,
+        allowVertical: !0
+    }, _FUNDING_CONFIG[constants.v.TRUSTLY] = {
+        allowedCountries: [ constants.r.DE, constants.r.DK, constants.r.EE, constants.r.ES, constants.r.FI, constants.r.GB, constants.r.IT, constants.r.MT, constants.r.NL, constants.r.NO, constants.r.PL, constants.r.SE ],
+        allowHorizontal: !1,
+        allowVertical: !0
+    }, _FUNDING_CONFIG[constants.v.MAXIMA] = {
+        allowedCountries: [ constants.r.LT ],
+        allowHorizontal: !1,
+        allowVertical: !0
+    }, _FUNDING_CONFIG[constants.v.BOLETO] = {
+        allowedCountries: [ constants.r.BR ],
+        allowHorizontal: !1,
+        allowVertical: !0
+    }, _FUNDING_CONFIG[constants.v.ZIMPLER] = {
+        allowedCountries: [],
+        allowHorizontal: !1,
+        allowVertical: !1
     }, _FUNDING_CONFIG), CARD_CONFIG = ((_CARD_CONFIG = {})[constants.s] = {
         priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX ]
     }, _CARD_CONFIG[constants.r.GB] = {
@@ -13558,7 +14500,7 @@
     function getFundingConfig(source, key, def) {
         return getConfig(FUNDING_CONFIG, source, key, def);
     }
-    var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _logoColors14, _secondaryColors14, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE, fundingEligibilityReasons = [];
+    var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _logoColors14, _secondaryColors14, _logoColors15, _secondaryColors15, _logoColors16, _secondaryColors16, _logoColors17, _secondaryColors17, _logoColors18, _secondaryColors18, _logoColors19, _secondaryColors19, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE, fundingEligibilityReasons = [];
     function isFundingIneligible(source, _ref) {
         var locale = _ref.locale, funding = _ref.funding, commit = _ref.commit;
         return getFundingConfig(source, _ref.layout === constants.g.VERTICAL ? "allowVertical" : "allowHorizontal") ? -1 !== funding.disallowed.indexOf(source) && getFundingConfig(source, "allowOptOut") ? constants.w.OPT_OUT : -1 !== funding.disallowed.indexOf(source) && source === constants.v.VENMO ? constants.w.OPT_OUT : -1 !== funding.disallowed.indexOf(source) && source === constants.v.ITAU ? constants.w.OPT_OUT : -1 === getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) ? constants.w.DISALLOWED_COUNTRY : getFundingConfig(source, "requireCommitAsTrue") && !commit ? constants.w.COMMIT_NOT_SET : void 0 : constants.w.SECONDARY_DISALLOWED;
@@ -13569,13 +14511,13 @@
     }
     function determineEligibleCards(_ref5) {
         var source, funding = _ref5.funding;
-        return (source = _ref5.locale.country, getConfig(CARD_CONFIG, source, "priority", void 0)).filter(function(card) {
+        return (source = _ref5.locale.country, getConfig(CARD_CONFIG, source, "priority", void 0)).filter((function(card) {
             return -1 === funding.disallowed.indexOf(card);
-        });
+        }));
     }
     function logFundingEligibility() {
-        fundingEligibilityReasons.forEach(function(reasons, i) {
-            console.log("\nButton " + (i + 1) + ":\n"), console.table(Object.keys(reasons).map(function(source) {
+        fundingEligibilityReasons.forEach((function(reasons, i) {
+            console.log("\nButton " + (i + 1) + ":\n"), console.table(Object.keys(reasons).map((function(source) {
                 var _reasons$source = reasons[source];
                 return {
                     Funding: source,
@@ -13583,8 +14525,8 @@
                     Eligibility: _reasons$source.eligible ? "eligible" : "ineligible",
                     Factors: JSON.stringify(_reasons$source.factors)
                 };
-            }));
-        });
+            })));
+        }));
     }
     var BUTTON_CONFIG = ((_BUTTON_CONFIG = {})[constants.s] = {
         colors: [ constants.e.GOLD, constants.e.BLUE, constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
@@ -13838,9 +14780,9 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG[constants.f.ZIMPLER] = {
-        label: "{ logo: " + constants.h.ZIMPLER + " }",
-        logoLabel: "{ logo: " + constants.h.ZIMPLER + " }",
+    }, _BUTTON_CONFIG[constants.f.PAYU] = {
+        label: "{ logo: " + constants.h.PAYU + " }",
+        logoLabel: "{ logo: " + constants.h.PAYU + " }",
         defaultColor: constants.e.SILVER,
         colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
         logoColors: (_logoColors13 = {}, _logoColors13[constants.e.SILVER] = constants.i.BLACK, 
@@ -13853,17 +14795,92 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
+    }, _BUTTON_CONFIG[constants.f.VERKKOPANKKI] = {
+        label: "{ logo: " + constants.h.VERKKOPANKKI + " }",
+        logoLabel: "{ logo: " + constants.h.VERKKOPANKKI + " }",
+        defaultColor: constants.e.SILVER,
+        colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
+        logoColors: (_logoColors14 = {}, _logoColors14[constants.e.SILVER] = constants.i.BLACK, 
+        _logoColors14[constants.e.BLACK] = constants.i.WHITE, _logoColors14[constants.e.WHITE] = constants.i.BLACK, 
+        _logoColors14),
+        secondaryColors: (_secondaryColors14 = {}, _secondaryColors14[constants.e.GOLD] = constants.e.SILVER, 
+        _secondaryColors14[constants.e.BLUE] = constants.e.SILVER, _secondaryColors14[constants.e.SILVER] = constants.e.SILVER, 
+        _secondaryColors14[constants.e.BLACK] = constants.e.BLACK, _secondaryColors14[constants.e.DARKBLUE] = constants.e.SILVER, 
+        _secondaryColors14[constants.e.WHITE] = constants.e.WHITE, _secondaryColors14),
+        allowPrimary: !1,
+        allowPrimaryVertical: !1,
+        allowPrimaryHorizontal: !1
+    }, _BUTTON_CONFIG[constants.f.BLIK] = {
+        label: "{ logo: " + constants.h.BLIK + " }",
+        logoLabel: "{ logo: " + constants.h.BLIK + " }",
+        defaultColor: constants.e.SILVER,
+        colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
+        logoColors: (_logoColors15 = {}, _logoColors15[constants.e.SILVER] = constants.i.BLACK, 
+        _logoColors15[constants.e.BLACK] = constants.i.WHITE, _logoColors15[constants.e.WHITE] = constants.i.BLACK, 
+        _logoColors15),
+        secondaryColors: (_secondaryColors15 = {}, _secondaryColors15[constants.e.GOLD] = constants.e.SILVER, 
+        _secondaryColors15[constants.e.BLUE] = constants.e.SILVER, _secondaryColors15[constants.e.SILVER] = constants.e.SILVER, 
+        _secondaryColors15[constants.e.BLACK] = constants.e.BLACK, _secondaryColors15[constants.e.DARKBLUE] = constants.e.SILVER, 
+        _secondaryColors15[constants.e.WHITE] = constants.e.WHITE, _secondaryColors15),
+        allowPrimary: !1,
+        allowPrimaryVertical: !1,
+        allowPrimaryHorizontal: !1
+    }, _BUTTON_CONFIG[constants.f.TRUSTLY] = {
+        label: "{ logo: " + constants.h.TRUSTLY + " }",
+        logoLabel: "{ logo: " + constants.h.TRUSTLY + " }",
+        defaultColor: constants.e.SILVER,
+        colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
+        logoColors: (_logoColors16 = {}, _logoColors16[constants.e.SILVER] = constants.i.BLACK, 
+        _logoColors16[constants.e.BLACK] = constants.i.WHITE, _logoColors16[constants.e.WHITE] = constants.i.BLACK, 
+        _logoColors16),
+        secondaryColors: (_secondaryColors16 = {}, _secondaryColors16[constants.e.GOLD] = constants.e.SILVER, 
+        _secondaryColors16[constants.e.BLUE] = constants.e.SILVER, _secondaryColors16[constants.e.SILVER] = constants.e.SILVER, 
+        _secondaryColors16[constants.e.BLACK] = constants.e.BLACK, _secondaryColors16[constants.e.DARKBLUE] = constants.e.SILVER, 
+        _secondaryColors16[constants.e.WHITE] = constants.e.WHITE, _secondaryColors16),
+        allowPrimary: !1,
+        allowPrimaryVertical: !1,
+        allowPrimaryHorizontal: !1
+    }, _BUTTON_CONFIG[constants.f.MAXIMA] = {
+        label: "{ logo: " + constants.h.MAXIMA + " }",
+        logoLabel: "{ logo: " + constants.h.MAXIMA + " }",
+        defaultColor: constants.e.SILVER,
+        colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
+        logoColors: (_logoColors17 = {}, _logoColors17[constants.e.SILVER] = constants.i.BLACK, 
+        _logoColors17[constants.e.BLACK] = constants.i.WHITE, _logoColors17[constants.e.WHITE] = constants.i.BLACK, 
+        _logoColors17),
+        secondaryColors: (_secondaryColors17 = {}, _secondaryColors17[constants.e.GOLD] = constants.e.SILVER, 
+        _secondaryColors17[constants.e.BLUE] = constants.e.SILVER, _secondaryColors17[constants.e.SILVER] = constants.e.SILVER, 
+        _secondaryColors17[constants.e.BLACK] = constants.e.BLACK, _secondaryColors17[constants.e.DARKBLUE] = constants.e.SILVER, 
+        _secondaryColors17[constants.e.WHITE] = constants.e.WHITE, _secondaryColors17),
+        allowPrimary: !1,
+        allowPrimaryVertical: !1,
+        allowPrimaryHorizontal: !1
+    }, _BUTTON_CONFIG[constants.f.BOLETO] = {
+        label: "{ logo: " + constants.h.BOLETO + " }",
+        logoLabel: "{ logo: " + constants.h.BOLETO + " }",
+        defaultColor: constants.e.SILVER,
+        colors: [ constants.e.SILVER, constants.e.BLACK, constants.e.WHITE ],
+        logoColors: (_logoColors18 = {}, _logoColors18[constants.e.SILVER] = constants.i.BLACK, 
+        _logoColors18[constants.e.BLACK] = constants.i.WHITE, _logoColors18[constants.e.WHITE] = constants.i.BLACK, 
+        _logoColors18),
+        secondaryColors: (_secondaryColors18 = {}, _secondaryColors18[constants.e.GOLD] = constants.e.SILVER, 
+        _secondaryColors18[constants.e.BLUE] = constants.e.SILVER, _secondaryColors18[constants.e.SILVER] = constants.e.SILVER, 
+        _secondaryColors18[constants.e.BLACK] = constants.e.BLACK, _secondaryColors18[constants.e.DARKBLUE] = constants.e.SILVER, 
+        _secondaryColors18[constants.e.WHITE] = constants.e.WHITE, _secondaryColors18),
+        allowPrimary: !1,
+        allowPrimaryVertical: !1,
+        allowPrimaryHorizontal: !1
     }, _BUTTON_CONFIG[constants.f.CARD] = {
         label: "{ cards }",
         logoLabel: "{ cards }",
         defaultColor: constants.e.SILVER,
         colors: [ constants.e.TRANSPARENT ],
-        logoColors: (_logoColors14 = {}, _logoColors14[constants.e.TRANSPARENT] = constants.i.BLACK, 
-        _logoColors14),
-        secondaryColors: (_secondaryColors14 = {}, _secondaryColors14[constants.e.GOLD] = constants.e.TRANSPARENT, 
-        _secondaryColors14[constants.e.BLUE] = constants.e.TRANSPARENT, _secondaryColors14[constants.e.SILVER] = constants.e.TRANSPARENT, 
-        _secondaryColors14[constants.e.BLACK] = constants.e.TRANSPARENT, _secondaryColors14[constants.e.DARKBLUE] = constants.e.TRANSPARENT, 
-        _secondaryColors14[constants.e.WHITE] = constants.e.TRANSPARENT, _secondaryColors14),
+        logoColors: (_logoColors19 = {}, _logoColors19[constants.e.TRANSPARENT] = constants.i.BLACK, 
+        _logoColors19),
+        secondaryColors: (_secondaryColors19 = {}, _secondaryColors19[constants.e.GOLD] = constants.e.TRANSPARENT, 
+        _secondaryColors19[constants.e.BLUE] = constants.e.TRANSPARENT, _secondaryColors19[constants.e.SILVER] = constants.e.TRANSPARENT, 
+        _secondaryColors19[constants.e.BLACK] = constants.e.TRANSPARENT, _secondaryColors19[constants.e.DARKBLUE] = constants.e.TRANSPARENT, 
+        _secondaryColors19[constants.e.WHITE] = constants.e.TRANSPARENT, _secondaryColors19),
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
@@ -13873,17 +14890,22 @@
     _FUNDING_TO_DEFAULT_L[constants.v.IDEAL] = constants.f.IDEAL, _FUNDING_TO_DEFAULT_L[constants.v.ELV] = constants.f.ELV, 
     _FUNDING_TO_DEFAULT_L[constants.v.BANCONTACT] = constants.f.BANCONTACT, _FUNDING_TO_DEFAULT_L[constants.v.GIROPAY] = constants.f.GIROPAY, 
     _FUNDING_TO_DEFAULT_L[constants.v.SOFORT] = constants.f.SOFORT, _FUNDING_TO_DEFAULT_L[constants.v.EPS] = constants.f.EPS, 
-    _FUNDING_TO_DEFAULT_L[constants.v.P24] = constants.f.P24, _FUNDING_TO_DEFAULT_L[constants.v.ZIMPLER] = constants.f.ZIMPLER, 
-    _FUNDING_TO_DEFAULT_L[constants.v.MYBANK] = constants.f.MYBANK, _FUNDING_TO_DEFAULT_L), LABEL_TO_FUNDING = ((_LABEL_TO_FUNDING = {})[constants.f.PAYPAL] = constants.v.PAYPAL, 
+    _FUNDING_TO_DEFAULT_L[constants.v.P24] = constants.f.P24, _FUNDING_TO_DEFAULT_L[constants.v.MYBANK] = constants.f.MYBANK, 
+    _FUNDING_TO_DEFAULT_L[constants.v.PAYU] = constants.f.PAYU, _FUNDING_TO_DEFAULT_L[constants.v.VERKKOPANKKI] = constants.f.VERKKOPANKKI, 
+    _FUNDING_TO_DEFAULT_L[constants.v.BLIK] = constants.f.BLIK, _FUNDING_TO_DEFAULT_L[constants.v.TRUSTLY] = constants.f.TRUSTLY, 
+    _FUNDING_TO_DEFAULT_L[constants.v.MAXIMA] = constants.f.MAXIMA, _FUNDING_TO_DEFAULT_L[constants.v.BOLETO] = constants.f.BOLETO, 
+    _FUNDING_TO_DEFAULT_L), LABEL_TO_FUNDING = ((_LABEL_TO_FUNDING = {})[constants.f.PAYPAL] = constants.v.PAYPAL, 
     _LABEL_TO_FUNDING[constants.f.CHECKOUT] = constants.v.PAYPAL, _LABEL_TO_FUNDING[constants.f.PAY] = constants.v.PAYPAL, 
     _LABEL_TO_FUNDING[constants.f.BUYNOW] = constants.v.PAYPAL, _LABEL_TO_FUNDING[constants.f.INSTALLMENT] = constants.v.PAYPAL, 
     _LABEL_TO_FUNDING[constants.f.CARD] = constants.v.CARD, _LABEL_TO_FUNDING[constants.f.CREDIT] = constants.v.CREDIT, 
     _LABEL_TO_FUNDING[constants.f.VENMO] = constants.v.VENMO, _LABEL_TO_FUNDING[constants.f.ITAU] = constants.v.ITAU, 
     _LABEL_TO_FUNDING[constants.f.IDEAL] = constants.v.IDEAL, _LABEL_TO_FUNDING[constants.f.BANCONTACT] = constants.v.BANCONTACT, 
-    _LABEL_TO_FUNDING[constants.f.GIROPAY] = constants.v.GIROPAY, _LABEL_TO_FUNDING[constants.f.GIROPAY] = constants.v.EPS, 
+    _LABEL_TO_FUNDING[constants.f.GIROPAY] = constants.v.GIROPAY, _LABEL_TO_FUNDING[constants.f.EPS] = constants.v.EPS, 
     _LABEL_TO_FUNDING[constants.f.SOFORT] = constants.v.SOFORT, _LABEL_TO_FUNDING[constants.f.P24] = constants.v.P24, 
-    _LABEL_TO_FUNDING[constants.f.ZIMPLER] = constants.v.ZIMPLER, _LABEL_TO_FUNDING[constants.f.MYBANK] = constants.v.MYBANK, 
-    _LABEL_TO_FUNDING), BUTTON_RELATIVE_STYLE = {
+    _LABEL_TO_FUNDING[constants.f.MYBANK] = constants.v.MYBANK, _LABEL_TO_FUNDING[constants.f.PAYU] = constants.v.PAYU, 
+    _LABEL_TO_FUNDING[constants.f.VERKKOPANKKI] = constants.v.VERKKOPANKKI, _LABEL_TO_FUNDING[constants.f.BLIK] = constants.v.BLIK, 
+    _LABEL_TO_FUNDING[constants.f.TRUSTLY] = constants.v.TRUSTLY, _LABEL_TO_FUNDING[constants.f.MAXIMA] = constants.v.MAXIMA, 
+    _LABEL_TO_FUNDING[constants.f.BOLETO] = constants.v.BOLETO, _LABEL_TO_FUNDING), BUTTON_RELATIVE_STYLE = {
         FUNDINGICONS: 100,
         TAGLINE: 50,
         VERTICAL_MARGIN: 30
@@ -13950,9 +14972,9 @@
             throw new Error("No value found for " + category + ":" + key);
         }(BUTTON_CONFIG, label, key, def);
     }
-    var util = __webpack_require__(12), normalizeProps = Object(util.i)(function(props, defs) {
+    var util = __webpack_require__(12), normalizeProps = Object(util.i)((function(props, defs) {
         void 0 === defs && (defs = {});
-        var env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit;
+        var env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit, checkoutCustomization = props.checkoutCustomization;
         locale = locale ? function(locale) {
             var _locale$split = locale.split("_");
             return {
@@ -13973,7 +14995,7 @@
             max: max
         });
         var _ref2, sources = function(_ref4) {
-            var funding = _ref4.funding, selected = _ref4.selected, locale = _ref4.locale, env = _ref4.env, layout = _ref4.layout, commit = _ref4.commit, reasons = {}, eligibleFunding = FUNDING_PRIORITY.filter(function(source) {
+            var funding = _ref4.funding, selected = _ref4.selected, locale = _ref4.locale, env = _ref4.env, layout = _ref4.layout, commit = _ref4.commit, reasons = {}, eligibleFunding = FUNDING_PRIORITY.filter((function(source) {
                 var _isFundingEligible = function(source, _ref3) {
                     var locale = _ref3.locale, funding = _ref3.funding, env = _ref3.env, layout = _ref3.layout, selected = _ref3.selected, commit = _ref3.commit;
                     if (selected && source === selected) return {
@@ -14023,7 +15045,7 @@
                         layout: layout
                     }
                 }, eligible;
-            });
+            }));
             return fundingEligibilityReasons.push(reasons), eligibleFunding.splice(eligibleFunding.indexOf(selected), 1), 
             eligibleFunding.unshift(selected), eligibleFunding;
         }({
@@ -14059,9 +15081,10 @@
                 funding: funding,
                 locale: locale
             }),
-            installmentperiod: installmentperiod
+            installmentperiod: installmentperiod,
+            checkoutCustomization: checkoutCustomization
         };
-    }), jsx = __webpack_require__(6);
+    })), jsx = __webpack_require__(1);
     function validateButtonLocale(locale) {
         if (!locale) throw new Error("Expected props.locale to be set");
         if (!locale.match(/^[a-z]{2}[_][A-Z][A-Z0-9]$/)) throw new Error("Expected props.locale to be valid, got " + locale);
@@ -20029,7 +21052,7 @@
     }
     function renderCards(_ref5) {
         var layout = _ref5.layout, size = _ref5.size;
-        return _ref5.cards.map(function(name) {
+        return _ref5.cards.map((function(name) {
             var _ref6, _ref7, _ref8, logo = resources.a[name];
             return Object(jsx.b)("div", Object(esm_extends.a)({}, ((_ref6 = {})[constants.c.LAYOUT] = layout || "", 
             _ref6), ((_ref7 = {})[constants.c.SIZE] = size || "", _ref7), ((_ref8 = {})[constants.c.FUNDING_SOURCE] = "" + constants.v.CARD, 
@@ -20041,7 +21064,7 @@
                 src: "data:image/svg+xml;base64," + Object(belter_src.a)(logo.toString()),
                 alt: name
             }));
-        });
+        }));
     }
     function renderContent(text, _ref10) {
         var label = _ref10.label, locale = _ref10.locale, color = _ref10.color, branding = _ref10.branding, logoColor = _ref10.logoColor, funding = _ref10.funding, env = _ref10.env, _cards = _ref10.cards, dynamicContent = _ref10.dynamicContent, layout = _ref10.layout, size = _ref10.size, _content = function(locale) {
@@ -20082,9 +21105,9 @@
                         break;
                     }
                 }
-                if (!(contentString = contentString && contentString.replace(/\[([a-z]+)\]/g, function(match, contentVariable) {
+                if (!(contentString = contentString && contentString.replace(/\[([a-z]+)\]/g, (function(match, contentVariable) {
                     if (match && contentVariable) return dynamicContent && dynamicContent[contentVariable];
-                })) && env === constants.t.TEST) throw new Error("Could not find content " + name + " for " + locale.lang + "_" + locale.country);
+                }))) && env === constants.t.TEST) throw new Error("Could not find content " + name + " for " + locale.lang + "_" + locale.country);
                 return renderContent(contentString || "", {
                     label: label,
                     locale: locale,
@@ -20129,9 +21152,9 @@
             var style = props.style;
             validateButtonLocale(props.locale), validateButtonStyle(style, props);
         }(props);
-        var script, _normalizeProps = normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, buttonNodes = function(_ref4) {
+        var script, _normalizeProps = normalizeProps(props), locale = _normalizeProps.locale, shape = _normalizeProps.shape, branding = _normalizeProps.branding, funding = _normalizeProps.funding, layout = _normalizeProps.layout, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, buttonNodes = function(_ref4) {
             var label = _ref4.label, color = _ref4.color, multiple = _ref4.multiple, layout = _ref4.layout;
-            return _ref4.sources.map(function(source, i) {
+            return _ref4.sources.map((function(source, i) {
                 var buttonLabel = determineLabel({
                     label: label,
                     source: source,
@@ -20143,14 +21166,14 @@
                     label: buttonLabel,
                     color: multiple && i > 0 ? getButtonConfig(buttonLabel, "secondaryColors")[color] : color
                 };
-            });
+            }));
         }({
-            label: label,
-            color: color,
+            label: _normalizeProps.label,
+            color: _normalizeProps.color,
             sources: _normalizeProps.sources,
             multiple: multiple,
             layout: layout
-        }).map(function(button, i) {
+        }).map((function(button, i) {
             return function(_ref11) {
                 var _ref12, _ref13, _ref14, size = _ref11.size, label = _ref11.label, color = _ref11.color, locale = _ref11.locale, branding = _ref11.branding, multiple = _ref11.multiple, layout = _ref11.layout, shape = _ref11.shape, source = _ref11.source, funding = _ref11.funding, i = _ref11.i, env = _ref11.env, cards = _ref11.cards, installmentperiod = _ref11.installmentperiod, logoColor = getButtonConfig(label, "logoColors")[color], contentText = getButtonConfig(label, determineLabel({
                     label: label,
@@ -20209,31 +21232,15 @@
                 installmentperiod: installmentperiod,
                 size: size
             });
-        }), taglineNode = function(_ref15) {
-            var label = _ref15.label, color = _ref15.color, locale = _ref15.locale, env = _ref15.env, cards = _ref15.cards;
-            if (_ref15.tagline) {
-                var text = renderContent(_ref15.multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag"), {
-                    locale: locale,
-                    color: color,
-                    env: env,
-                    cards: cards
-                });
-                if (text) {
-                    var tagColor = getButtonConfig(label, "tagLineColors")[color];
-                    return Object(jsx.b)("div", {
-                        class: class_CLASS.TAGLINE + " " + class_CLASS.TAGLINE_COLOR + "-" + tagColor
-                    }, text);
-                }
-            }
-        }({
-            label: label,
-            tagline: tagline,
-            color: color,
-            locale: locale,
-            multiple: multiple,
-            env: env,
-            cards: cards
-        }), fundingiconNode = function(_ref9) {
+        })), taglineNode = Object(jsx.b)("div", null, Object(jsx.b)("style", {
+            innerHTML: "\n                .loading-dots {\n                    color: rgba(0, 0, 0, 0.5);\n                    font-size: inherit;\n                    font-family: Arial, Helvetica, sans-serif;\n                    display: inline-block;\n                }\n\n                .loading-dot {\n                    opacity: 0;\n                    display: inline-block;\n                    animation-name: loading-dot;\n                    animation-duration: 1s;\n                    animation-fill-mode: forwards;\n                    animation-iteration-count: infinite;\n                    margin-right: 2px;\n                }\n\n                .loading-dot-0 {\n                    animation-delay: " + .2.toFixed(1) + "s;\n                }\n\n                .loading-dot-1 {\n                    animation-delay: " + .4.toFixed(1) + "s;\n                }\n\n                .loading-dot-2 {\n                    animation-delay: " + (3 * .2).toFixed(1) + "s;\n                }\n\n                @keyframes loading-dot {\n                    0% {\n                        opacity: 0;\n                    }\n                    20% {\n                        opacity: 1;\n                    }\n                    30% {\n                        opacity: 1;\n                    }\n                    40% {\n                        opacity: 0;\n                    }\n                    100% {\n                        opacity: 0;\n                    }\n                }\n            "
+        }), Object(jsx.b)("div", {
+            class: "loading-dots"
+        }, [ 0, 1, 2 ].map((function(i) {
+            return Object(jsx.b)("div", {
+                class: "loading-dot loading-dot-" + i
+            }, "•");
+        })))), fundingiconNode = function(_ref9) {
             var cards = _ref9.cards, size = _ref9.size, layout = _ref9.layout;
             if (_ref9.fundingicons) return Object(jsx.b)("div", {
                 class: "" + class_CLASS.FUNDINGICONS
@@ -20255,10 +21262,10 @@
                     cardNumber: cardNumber
                 }, "\n        " + pageStyle + "\n        " + buttonStyle + "\n        " + buttonColorStyle + "\n        " + layoutStyle + "\n        " + brandingStyle + "\n        " + labelStyle + "\n        " + function(_ref) {
                     var height = _ref.height, _ref$cardNumber = _ref.cardNumber, cardNumber = void 0 === _ref$cardNumber ? 4 : _ref$cardNumber;
-                    return Object.keys(BUTTON_STYLE).map(function(size) {
+                    return Object.keys(BUTTON_STYLE).map((function(size) {
                         var style = BUTTON_STYLE[size], buttonHeight = height || style.defaultHeight, minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
                         return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + class_CLASS.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(util.h)(Object(util.m)(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + (height || style.minHeight) + "px;\n                    max-height: " + (height || style.maxHeight) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.d.UNBRANDED + " {\n                    font-size: " + Object(util.h)(Object(util.m)(buttonHeight, 45), 10) + "px;\n                }\n\n                ." + class_CLASS.LOGO + " {\n                    height: " + (Object(util.m)(buttonHeight, 35) + 5) + "px;\n                    max-height: " + Object(util.m)(buttonHeight, 60) + "px;\n                    min-height: " + Object(util.m)(buttonHeight, 40) + "px;\n                }\n                \n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.f.EPS + ",\n                ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.f.MYBANK + " {\n                    height: " + (Object(util.m)(buttonHeight, 50) + 5) + "px;\n                    max-height: " + Object(util.m)(buttonHeight, 70) + "px;\n                    min-height: " + Object(util.m)(buttonHeight, 40) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + constants.k.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.SHAPE + "-" + constants.k.RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.VERTICAL + " {\n                    margin-bottom: " + Object(util.m)(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + class_CLASS.SEPARATOR + " {\n                    margin: 0 " + Object(util.m)(buttonHeight, 5) + "px;\n                }\n\n                ." + class_CLASS.TAGLINE + " {\n                    display: " + (style.allowTagline ? "block" : "none") + ";\n                    height: " + Object(util.m)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                    line-height: " + Object(util.m)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " {\n                    display: " + (style.allowFunding ? "block" : "none") + ";\n                    height: " + Object(util.m)(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) + "px;\n                }\n\n                ." + class_CLASS.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n                    width: " + (90 / cardNumber).toFixed(2) + "%;\n                    max-width: " + Object(util.m)(buttonHeight, 160) + "px;\n                    margin-top: 0;\n                    margin-left: " + (5 / cardNumber).toFixed(2) + "%;\n                    margin-right: " + (5 / cardNumber).toFixed(2) + "%;\n                }\n\n                ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " {\n                    height: " + Object(util.m)(buttonHeight, 70) + "px;\n                    margin-top: " + Object(util.m)(buttonHeight, 15) + "px;\n                    margin-left: " + Object(util.m)(buttonHeight, 7) + "px;\n                    margin-right: " + Object(util.m)(buttonHeight, 7) + "px;\n                }\n\n                ." + class_CLASS.FUNDINGICONS + " ." + class_CLASS.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(util.h)(style.minWidth, minDualWidth) + "px) {\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + " ." + class_CLASS.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
-                    }).join("\n");
+                    })).join("\n");
                 }({
                     height: _ref.height,
                     cardNumber: _ref.cardNumber
@@ -20291,7 +21298,7 @@
                 el.style.visibility = STYLE.HIDDEN;
             }
             function displayedElementsHaveDimensions(elements) {
-                return elements.every(function(el) {
+                return elements.every((function(el) {
                     return function(el) {
                         var rect = el.getBoundingClientRect();
                         return Boolean(rect.height && rect.width);
@@ -20299,7 +21306,7 @@
                         var computedStyle = window.getComputedStyle(el);
                         return !computedStyle || computedStyle.display === STYLE.NONE;
                     }(el);
-                });
+                }));
             }
             function isOverflowing(el) {
                 if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) return !0;
@@ -20311,16 +21318,16 @@
             var images = getElements(".{ CLASS.BUTTON } .{ CLASS.LOGO }"), text = getElements(".{ CLASS.BUTTON } .{ CLASS.TEXT }"), tagline = getElements(".{ CLASS.TAGLINE }"), cards = getElements(".{ CLASS.FUNDINGICONS } .{ CLASS.CARD }"), optionals = getElements(".{ CLASS.BUTTON }-label-credit .{ CLASS.BUTTON }-logo-paypal");
             function toggleOptionals() {
                 tagline.some(isOverflowing) ? tagline.forEach(makeElementInvisible) : tagline.forEach(makeElementVisible), 
-                cards.forEach(function(el) {
+                cards.forEach((function(el) {
                     return showElement(el);
-                }), cards.filter(isOverflowing).forEach(hideElement), text.forEach(function(el) {
+                })), cards.filter(isOverflowing).forEach(hideElement), text.forEach((function(el) {
                     return showElement(el);
-                }), optionals.forEach(function(el) {
+                })), optionals.forEach((function(el) {
                     return showElement(el);
-                }), images.some(isOverflowing) || text.some(isOverflowing) ? (text.forEach(hideElement), 
-                optionals.forEach(hideElement)) : (text.forEach(makeElementVisible), optionals.forEach(function(el) {
+                })), images.some(isOverflowing) || text.some(isOverflowing) ? (text.forEach(hideElement), 
+                optionals.forEach(hideElement)) : (text.forEach(makeElementVisible), optionals.forEach((function(el) {
                     return showElement(el);
-                }));
+                })));
             }
             toggleOptionals(), function() {
                 var buttonsContainer = document.getElementsByClassName("{ CLASS.CONTAINER }")[0], tabKeyCode = 9;
@@ -20334,21 +21341,21 @@
                 }
                 buttonsContainer.classList.add("{ CLASS.SHOULD_FOCUS }"), window.addEventListener("keydown", handleFirstTab);
             }(), function(elements, method) {
-                if (displayedElementsHaveDimensions(elements)) method(); else var interval = setInterval(function() {
+                if (displayedElementsHaveDimensions(elements)) method(); else var interval = setInterval((function() {
                     displayedElementsHaveDimensions(elements) && (clearInterval(interval), method());
-                }, 5);
-            }(images, function() {
+                }), 5);
+            }(images, (function() {
                 images.forEach(makeElementVisible), toggleOptionals(), document.addEventListener("DOMContentLoaded", toggleOptionals), 
                 window.addEventListener("load", toggleOptionals), window.addEventListener("resize", toggleOptionals), 
                 function loop(method, delay, instances) {
-                    setTimeout(function() {
+                    setTimeout((function() {
                         method(), (instances -= 1) && loop(method, delay, instances);
-                    }, delay);
+                    }), delay);
                 }(toggleOptionals, 10, 10);
-            });
-        }.toString()).replace(/\{\s*CLASS\.([A-Z0-9_]+)\s*\}/g, function(match, name) {
+            }));
+        }.toString()).replace(/\{\s*CLASS\.([A-Z0-9_]+)\s*\}/g, (function(match, name) {
             return class_CLASS[name];
-        }), Object(jsx.b)("script", {
+        })), Object(jsx.b)("script", {
             innerHTML: "(" + script + ")();"
         })), labelPowerByPayPal = cards.length > 0 ? function(props) {
             if (!props) return null;
@@ -20360,7 +21367,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.284", 
+        return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.285", 
         _ref18), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -20372,13 +21379,13 @@
         }), styleNode, buttonNodes, taglineNode || fundingiconNode, labelPowerByPayPal, scriptNode).toString();
     }
     pptm.listenForLoadWithNoContent();
-    var creditThrottle, isDomainAllowed = Object(lib.I)(function() {
+    var creditThrottle, isDomainAllowed = Object(lib.I)((function() {
         var domain = Object(cross_domain_utils_src.g)().replace(/^https?:\/\//, "").replace(/^www\./, "");
-        return !!config.a.apmTestDomains.some(function(allowDomain) {
+        return !!config.a.apmTestDomains.some((function(allowDomain) {
             var regex = new RegExp("[^a-zA-Z\\d\\-]*" + allowDomain.replace(/\./g, "\\.") + "$");
             return null !== domain.match(regex);
-        });
-    }), component_Button = Object(src.c)({
+        }));
+    })), component_Button = Object(src.c)({
         tag: "paypal-button",
         name: "ppbutton",
         buildUrl: function(props) {
@@ -20393,17 +21400,17 @@
         containerTemplate: function(_ref) {
             var id = _ref.id, CLASS = _ref.CLASS, tag = _ref.tag, context = _ref.context, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _normalizeProps = normalizeProps(_ref.props), size = _normalizeProps.size, label = _normalizeProps.label, layout = _normalizeProps.layout, buttonHeight = _normalizeProps.height, minimumSize = getButtonConfig(label, layout === constants.g.VERTICAL ? "minimumVerticalSize" : "minimumSize"), maximumSize = getButtonConfig(label, layout === constants.g.VERTICAL ? "maximumVerticalSize" : "maximumSize");
             if (buttonHeight) {
-                var possibleSizes = Object(util.t)(constants.l).filter(function(possibleSize) {
+                var possibleSizes = Object(util.t)(constants.l).filter((function(possibleSize) {
                     return BUTTON_STYLE[possibleSize] && buttonHeight && BUTTON_STYLE[possibleSize].minHeight <= buttonHeight && BUTTON_STYLE[possibleSize].maxHeight >= buttonHeight;
-                });
-                possibleSizes.sort(function(sizeA, sizeB) {
+                }));
+                possibleSizes.sort((function(sizeA, sizeB) {
                     return BUTTON_STYLE[sizeA].defaultWidth - BUTTON_STYLE[sizeB].defaultWidth;
-                }), minimumSize = possibleSizes[0], maximumSize = possibleSizes[possibleSizes.length - 1];
+                })), minimumSize = possibleSizes[0], maximumSize = possibleSizes[possibleSizes.length - 1];
             }
             var _ref2 = BUTTON_STYLE[size] || BUTTON_STYLE[constants.l.SMALL], defaultWidth = _ref2.defaultWidth, defaultHeight = _ref2.defaultHeight;
-            return setTimeout(function() {
+            return setTimeout((function() {
                 outlet.style.transition = "all 0.5s ease-in-out 0.3s";
-            }, 3e3), jsxDom("div", {
+            }), 3e3), jsxDom("div", {
                 id: id,
                 class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
             }, jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
@@ -20418,7 +21425,7 @@
                     props: _ref.props
                 })
             });
-            return template.addEventListener("click", function() {
+            return template.addEventListener("click", (function() {
                 var _track;
                 Object(beaver_logger_client.q)("button_pre_template_click"), Object(lib.E)() && (Object(beaver_logger_client.q)("button_pre_template_click_intranet_mode"), 
                 Object(beaver_logger_client.p)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
@@ -20426,12 +21433,12 @@
                 _track[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, _track[constants.u.KEY.BUTTON_SESSION_UID] = _this.props.buttonSessionID, 
                 _track)), Object(beaver_logger_client.h)(), alert("IE Intranet mode is not supported by PayPal. Please disable intranet mode, or continue in an alternate browser.")), 
                 Object(lib.m)("allow_full_page_fallback") && (Object(beaver_logger_client.k)("pre_template_force_full_page"), 
-                _this.props.payment().then(function(token) {
+                _this.props.payment().then((function(token) {
                     window.top.location = Object(lib.g)(config.a.checkoutUrl, {
                         token: token
                     });
-                }));
-            }), jsxDom("html", null, jsxDom("body", null, template));
+                })));
+            })), jsxDom("html", null, jsxDom("body", null, template));
         },
         get version() {
             return Object(lib.u)();
@@ -20570,9 +21577,9 @@
                 },
                 decorate: function(braintree, props) {
                     var env = props.env || config.a.env;
-                    return zalgo_promise_src.a.hash(props.client).then(function(client) {
+                    return zalgo_promise_src.a.hash(props.client).then((function(client) {
                         return Object(integrations.a)(braintree, client[env]);
-                    });
+                    }));
                 }
             },
             payment: {
@@ -20587,31 +21594,31 @@
                             request: lib.R,
                             payment: {
                                 create: function(options) {
-                                    return _this2.props.braintree ? _this2.props.braintree.then(function(client) {
+                                    return _this2.props.braintree ? _this2.props.braintree.then((function(client) {
                                         return client.createPayment(Object(integrations.e)(options.payment || options));
-                                    }) : zalgo_promise_src.a.hash(_this2.props.client).then(function(client) {
+                                    })) : zalgo_promise_src.a.hash(_this2.props.client).then((function(client) {
                                         return rest.payment.create(_this2.props.env, client, options);
-                                    });
+                                    }));
                                 }
                             },
                             order: {
                                 create: function(options) {
-                                    return zalgo_promise_src.a.hash(_this2.props.client).then(function(client) {
+                                    return zalgo_promise_src.a.hash(_this2.props.client).then((function(client) {
                                         return rest.order.create(_this2.props.env, client, options);
-                                    });
+                                    }));
                                 }
                             },
                             braintree: {
                                 create: function(options) {
                                     if (!_this2.props.braintree) throw new Error("Can not create using Braintree - no braintree client provided");
-                                    return _this2.props.braintree.then(function(client) {
+                                    return _this2.props.braintree.then((function(client) {
                                         return client.createPayment(options);
-                                    });
+                                    }));
                                 }
                             }
                         };
                         return Object(lib.m)("memoize_payment") && this.memoizedToken ? this.memoizedToken : (this.memoizedToken = zalgo_promise_src.a.try(original, this, [ {}, actions ]), 
-                        this.memoizedToken = this.memoizedToken.then(function(token) {
+                        this.memoizedToken = this.memoizedToken.then((function(token) {
                             var _track2;
                             if (!token) throw Object(beaver_logger_client.g)("no_token_passed_to_payment"), 
                             new Error("No value passed to payment");
@@ -20619,7 +21626,7 @@
                             _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.RECIEVE_PAYMENT, _track2[constants.u.KEY.CONTEXT_TYPE] = constants.u.CONTEXT_TYPE[Object(integrations.d)(token)], 
                             _track2[constants.u.KEY.CONTEXT_ID] = token, _track2[constants.u.KEY.BUTTON_SESSION_UID] = _this2.props.buttonSessionID, 
                             _track2)), Object(beaver_logger_client.h)(), token;
-                        }), this.memoizedToken);
+                        })), this.memoizedToken);
                     };
                 }
             },
@@ -20668,11 +21675,11 @@
                 decorate: function(_temp2, props) {
                     var _ref3 = void 0 === _temp2 ? {} : _temp2, _ref3$allowed = _ref3.allowed, allowed = void 0 === _ref3$allowed ? [] : _ref3$allowed, _ref3$disallowed = _ref3.disallowed, disallowed = void 0 === _ref3$disallowed ? [] : _ref3$disallowed;
                     allowed = Array.isArray(allowed) ? allowed : [], disallowed = Array.isArray(disallowed) ? disallowed : [], 
-                    allowed && -1 !== allowed.indexOf(constants.v.VENMO) && (allowed = allowed.filter(function(source) {
+                    allowed && -1 !== allowed.indexOf(constants.v.VENMO) && (allowed = allowed.filter((function(source) {
                         return source !== constants.v.VENMO;
-                    })), allowed && -1 !== allowed.indexOf(constants.v.ITAU) && (allowed = allowed.filter(function(source) {
+                    }))), allowed && -1 !== allowed.indexOf(constants.v.ITAU) && (allowed = allowed.filter((function(source) {
                         return source !== constants.v.ITAU;
-                    })), function(props) {
+                    }))), function(props) {
                         var _normalizeProps = normalizeProps(props, {
                             locale: Object(lib.i)()
                         }), label = _normalizeProps.label, funding = _normalizeProps.funding, layout = _normalizeProps.layout, locale = _normalizeProps.locale, max = _normalizeProps.max, sources = _normalizeProps.sources, allowed = funding.allowed, country = locale.country;
@@ -20695,21 +21702,21 @@
                         var domain = Object(cross_domain_utils_src.g)().replace(/^https?:\/\//, "").replace(/^www\./, "");
                         return -1 !== config.a.creditTestDomains.indexOf(domain);
                     }(props) && (creditThrottle = Object(lib.x)("dual_credit_automatic", 50)).isEnabled() && (allowed = [].concat(allowed, [ constants.v.CREDIT ]));
-                    var apmFunding = [ constants.v.IDEAL, constants.v.SOFORT, constants.v.GIROPAY, constants.v.BANCONTACT, constants.v.P24, constants.v.MYBANK, constants.v.ZIMPLER, constants.v.EPS ].filter(function(source) {
+                    var apmFunding = [ constants.v.IDEAL, constants.v.SOFORT, constants.v.GIROPAY, constants.v.BANCONTACT, constants.v.P24, constants.v.MYBANK, constants.v.EPS, constants.v.PAYU, constants.v.VERKKOPANKKI, constants.v.BLIK, constants.v.TRUSTLY, constants.v.MAXIMA, constants.v.BOLETO ].filter((function(source) {
                         return function(source, props) {
                             var locale = normalizeProps(props, {
                                 locale: Object(lib.i)()
                             }).locale;
                             return -1 !== getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) && isDomainAllowed();
                         }(source, props);
-                    });
+                    }));
                     allowed = allowed.concat(apmFunding);
-                    var remembered = Object(lib.r)(function(sources) {
+                    var remembered = Object(lib.r)((function(sources) {
                         return sources;
-                    });
-                    return Object(lib.z)() && !Object(lib.m)("disable_venmo") || (remembered && -1 !== remembered.indexOf(constants.v.VENMO) && (remembered = remembered.filter(function(source) {
+                    }));
+                    return Object(lib.z)() && !Object(lib.m)("disable_venmo") || (remembered && -1 !== remembered.indexOf(constants.v.VENMO) && (remembered = remembered.filter((function(source) {
                         return source !== constants.v.VENMO;
-                    })), disallowed && -1 === disallowed.indexOf(constants.v.VENMO) && (disallowed = [].concat(disallowed, [ constants.v.VENMO ]))), 
+                    }))), disallowed && -1 === disallowed.indexOf(constants.v.VENMO) && (disallowed = [].concat(disallowed, [ constants.v.VENMO ]))), 
                     {
                         allowed: allowed,
                         disallowed: disallowed,
@@ -20775,39 +21782,39 @@
                         Object(lib.d)("authorize"), Object(beaver_logger_client.h)();
                         var restart = actions.restart;
                         actions.restart = function() {
-                            return restart().then(function() {
-                                return new zalgo_promise_src.a();
-                            });
+                            return restart().then((function() {
+                                return new zalgo_promise_src.a;
+                            }));
                         }, actions.redirect = function(win, url) {
-                            return zalgo_promise_src.a.try(function() {
+                            return zalgo_promise_src.a.try((function() {
                                 if (actions.close) return actions.close();
-                            }).then(function() {
+                            })).then((function() {
                                 return Object(lib.P)(win || window.top, url || data.returnUrl);
-                            });
-                        }, actions.payment.tokenize = Object(lib.I)(function() {
+                            }));
+                        }, actions.payment.tokenize = Object(lib.I)((function() {
                             if (!_this3.props.braintree) throw new Error("Must pass in Braintree client to tokenize payment");
-                            return _this3.props.braintree.then(function(client) {
+                            return _this3.props.braintree.then((function(client) {
                                 return client.tokenizePayment(data);
-                            });
-                        });
+                            }));
+                        }));
                         var execute = actions.payment.execute;
                         actions.payment.execute = function() {
-                            return execute().then(function(result) {
+                            return execute().then((function(result) {
                                 return result && result.id && result.intent && result.state ? result : (Object(beaver_logger_client.q)("execute_result_missing_data"), 
-                                new zalgo_promise_src.a());
-                            });
+                                new zalgo_promise_src.a);
+                            }));
                         };
                         var _creditThrottle$logCo, get = actions.payment.get;
                         return actions.payment.get = function() {
-                            return get().then(function(result) {
+                            return get().then((function(result) {
                                 return result && result.id && result.intent && result.state ? result : (Object(beaver_logger_client.q)("get_result_missing_data"), 
-                                new zalgo_promise_src.a());
-                            });
+                                new zalgo_promise_src.a);
+                            }));
                         }, actions.request = lib.R, onAuthorizeListener.trigger({
                             paymentToken: data.paymentToken
                         }), creditThrottle && creditThrottle.logComplete(((_creditThrottle$logCo = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
-                        _creditThrottle$logCo)), zalgo_promise_src.a.try(function() {
-                            if (_this3.props.braintree) return actions.payment.tokenize().then(function(_ref4) {
+                        _creditThrottle$logCo)), zalgo_promise_src.a.try((function() {
+                            if (_this3.props.braintree) return actions.payment.tokenize().then((function(_ref4) {
                                 var nonce = _ref4.nonce;
                                 Object.defineProperty(data, "nonce", {
                                     get: function() {
@@ -20815,13 +21822,13 @@
                                         nonce;
                                     }
                                 });
-                            });
-                        }).then(function() {
+                            }));
+                        })).then((function() {
                             return original.call(_this3, data, actions);
-                        }).catch(function(err) {
+                        })).catch((function(err) {
                             if (_this3.props.onError) return _this3.props.onError(err);
                             throw err;
-                        });
+                        }));
                     };
                 }
             },
@@ -20837,23 +21844,23 @@
                         Object(beaver_logger_client.h)();
                         var patch = actions.payment.patch;
                         actions.payment.patch = function(patchObject) {
-                            return zalgo_promise_src.a.try(function() {
+                            return zalgo_promise_src.a.try((function() {
                                 return patch(patchObject);
-                            });
+                            }));
                         };
                         var resolve = function() {
                             return zalgo_promise_src.a.resolve();
                         }, reject = actions.reject || function() {
                             throw new Error("Missing reject action callback");
                         };
-                        return zalgo_promise_src.a.try(function() {
+                        return zalgo_promise_src.a.try((function() {
                             return original.call(_this4, data, Object(esm_extends.a)({}, actions, {
                                 resolve: resolve,
                                 reject: reject
                             }));
-                        }).timeout(1e4, new Error("Timed out waiting 10000ms for payment")).catch(function(err) {
+                        })).timeout(1e4, new Error("Timed out waiting 10000ms for payment")).catch((function(err) {
                             throw _this4.props.onError && _this4.props.onError(err), err;
-                        });
+                        }));
                     };
                 }
             },
@@ -20867,9 +21874,9 @@
                     return function(err) {
                         Object(lib.E)() && (Object(beaver_logger_client.q)("button_error_intranet_mode"), 
                         Object(beaver_logger_client.h)(), alert("IE Intranet mode is not supported by PayPal. Please disable intranet mode, or continue in an alternate browser.")), 
-                        setTimeout(function() {
+                        setTimeout((function() {
                             throw err;
-                        });
+                        }));
                     };
                 }
             },
@@ -20919,9 +21926,9 @@
                 type: "function",
                 required: !1,
                 get value() {
-                    var initialHeight, logInlineGuestOutOfViewPortOnlyOnce = Object(src_lib.H)(function(data) {
+                    var initialHeight, logInlineGuestOutOfViewPortOnlyOnce = Object(src_lib.H)((function(data) {
                         Object(beaver_logger_client.k)("buttons_expansion_outside_viewport", data), Object(beaver_logger_client.j)();
-                    });
+                    }));
                     return function() {
                         var container = this.container;
                         if (container) {
@@ -21025,28 +22032,28 @@
             var popupBridge;
             function doRender(props, original) {
                 return popupBridge ? function(props, popupBridge) {
-                    return zalgo_promise_src.a.try(function() {
+                    return zalgo_promise_src.a.try((function() {
                         !function(props) {
                             if (!props.payment) throw new Error("Expected props.payment to be passed");
                             if (!props.onAuthorize) throw new Error("Expected props.onAuthorize to be passed");
                             if (props.env && !config.a.checkoutUrls[props.env]) throw new Error("Invalid props.env: " + props.env);
                         }(props);
-                    }).then(function() {
+                    })).then((function() {
                         return function(props) {
                             var _normalizeCheckoutPro = normalizeCheckoutProps(props), env = _normalizeCheckoutPro.env;
                             return zalgo_promise_src.a.try(_normalizeCheckoutPro.payment, {
                                 props: props
-                            }).then(function(token) {
+                            }).then((function(token) {
                                 var _extendUrl;
                                 if (!token) throw new Error("Expected props.payment to return a payment id or token");
                                 return Object(lib.g)(Object(integrations_checkout.b)(env, constants.v.PAYPAL, token), ((_extendUrl = {})[Object(integrations_checkout.a)(token)] = token, 
                                 _extendUrl.useraction = props.commit ? "commit" : "", _extendUrl.native_xo = "1", 
                                 _extendUrl));
-                            });
+                            }));
                         }(props);
-                    }).then(function(url) {
+                    })).then((function(url) {
                         return popupBridge.open(url);
-                    }).then(function(payload) {
+                    })).then((function(payload) {
                         var opType = payload.queryItems.opType, _normalizeCheckoutPro2 = normalizeCheckoutProps(props), onAuthorize = _normalizeCheckoutPro2.onAuthorize, onCancel = _normalizeCheckoutPro2.onCancel, data = function(query) {
                             var data = {
                                 paymentToken: query.token,
@@ -21073,46 +22080,46 @@
                         if (opType === OPTYPE.PAYMENT) return onAuthorize(data, actions);
                         if (opType === OPTYPE.CANCEL) return onCancel(data, actions);
                         throw new Error("Invalid opType: " + opType);
-                    }).catch(function(err) {
+                    })).catch((function(err) {
                         if (err && err.code === CONTINGENCY.PAYMENT_CANCELLED) return (0, normalizeCheckoutProps(props).onCancel)({}, {});
                         throw err;
-                    });
-                }(props, popupBridge).catch(function(err) {
+                    }));
+                }(props, popupBridge).catch((function(err) {
                     return Object(beaver_logger_client.g)("popup_bridge_error", {
                         err: Object(lib.U)(err)
                     }), original();
-                }) : original();
+                })) : original();
             }
-            awaitPopupBridge(ButtonComponent).then(function(bridge) {
+            awaitPopupBridge(Button).then((function(bridge) {
                 popupBridge = bridge;
-            });
+            }));
             var render = Checkout.render;
             Checkout.render = function(props) {
                 var _this = this, _arguments = arguments;
-                return doRender(props, function() {
+                return doRender(props, (function() {
                     return render.apply(_this, _arguments);
-                });
+                }));
             };
             var renderTo = Checkout.renderTo;
             Checkout.renderTo = function(win, props) {
                 var _this2 = this, _arguments2 = arguments;
-                return doRender(props, function() {
+                return doRender(props, (function() {
                     return renderTo.apply(_this2, _arguments2);
-                });
+                }));
             };
             var renderPopupTo = Checkout.renderPopupTo;
             Checkout.renderPopupTo = function(win, props) {
                 var _this3 = this, _arguments3 = arguments;
-                return doRender(props, function() {
+                return doRender(props, (function() {
                     return renderPopupTo.apply(_this3, _arguments3);
-                });
+                }));
             };
-        }(src_checkout.a), Object(lib.p)().then(function(pageRenderTime) {
-            var _track, fundingSources = [].slice.call(document.querySelectorAll("[" + constants.c.FUNDING_SOURCE + "]")).map(function(el) {
+        }(src_checkout.a, ButtonComponent), Object(lib.p)().then((function(pageRenderTime) {
+            var _track, fundingSources = [].slice.call(document.querySelectorAll("[" + constants.c.FUNDING_SOURCE + "]")).map((function(el) {
                 return el.getAttribute(constants.c.CARD) || el.getAttribute(constants.c.FUNDING_SOURCE);
-            }).filter(function(source) {
+            })).filter((function(source) {
                 return source && source !== constants.v.CARD;
-            }), xprops = ButtonComponent.xprops;
+            })), xprops = ButtonComponent.xprops;
             if (xprops) {
                 var _ref = xprops.style || {}, _ref$layout = _ref.layout, layout = void 0 === _ref$layout ? constants.g.HORIZONTAL : _ref$layout, _ref$color = _ref.color, color = void 0 === _ref$color ? constants.e.GOLD : _ref$color, _ref$size = _ref.size, size = void 0 === _ref$size ? constants.l.SMALL : _ref$size, _ref$shape = _ref.shape, shape = void 0 === _ref$shape ? constants.k.PILL : _ref$shape, _ref$label = _ref.label, label = void 0 === _ref$label ? constants.f.CHECKOUT : _ref$label, maxbuttons = _ref.maxbuttons, tagline = _ref.tagline;
                 Object(beaver_logger_client.p)(((_track = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
@@ -21125,7 +22132,7 @@
                 _track[constants.u.KEY.BUTTON_TAGLINE_ENABLED] = tagline ? "1" : "0", _track)), 
                 Object(beaver_logger_client.h)();
             }
-        });
+        }));
         var xprops = ButtonComponent.xprops || src_checkout.a.xprops;
         xprops && xprops.logLevel && Object(lib.T)(xprops.logLevel);
         try {
@@ -21136,45 +22143,45 @@
         var checkout = src_checkout.a.init({
             onAuthorize: lib.J
         });
-        checkout.delegate(win), checkout.openContainer().then(function() {
+        checkout.delegate(win), checkout.openContainer().then((function() {
             checkout.event.triggerOnce(src.a.EVENTS.CLOSE), checkout.showContainer();
-        }), component_Button.xprops.payment().then(function(token) {
+        })), component_Button.xprops.payment().then((function(token) {
             window.top.location = Object(lib.g)(config.a.checkoutUrl, {
                 token: token
             });
-        }).catch(function(err) {
+        })).catch((function(err) {
             checkout.error(err);
-        });
+        }));
     });
     var hacks_parent = Object(cross_domain_utils_src.m)(window), hacks_top = Object(cross_domain_utils_src.n)(window);
     if (hacks_top && hacks_parent) {
         var canRenderTop = hacks_top === hacks_parent;
-        canRenderTop || (src_checkout.a.canRenderTo(hacks_top).then(function(result) {
+        canRenderTop || (src_checkout.a.canRenderTo(hacks_top).then((function(result) {
             canRenderTop = result;
-        }), Object(lib.N)(src_checkout.a, "renderTo", function(_ref) {
+        })), Object(lib.N)(src_checkout.a, "renderTo", (function(_ref) {
             var _ref$args = _ref.args, win = _ref$args[0], props = _ref$args[1], el = _ref$args[2], original = _ref.original, context = _ref.context;
             return canRenderTop || (win = Object(cross_domain_utils_src.m)(window)), original.call(context, win, props, el);
-        }));
+        })));
     }
-    Object(lib.N)(src_checkout.a, "renderTo", function(_ref2) {
+    Object(lib.N)(src_checkout.a, "renderTo", (function(_ref2) {
         var callOriginal = _ref2.callOriginal, props = _ref2.args[1];
         if (Object(lib.m)("allow_full_page_fallback")) {
-            var handleError = Object(lib.L)(function(err) {
+            var handleError = Object(lib.L)((function(err) {
                 try {
                     console.error(err && err.stack);
                 } catch (err2) {}
-                return component_Button.xprops.payment().then(function(token) {
+                return component_Button.xprops.payment().then((function(token) {
                     window.top.location = Object(lib.g)(config.a.checkoutUrl, {
                         token: token
                     });
-                });
-            });
+                }));
+            }));
             return props.onError = handleError, callOriginal().catch(handleError);
         }
         return callOriginal();
-    });
+    }));
     var debounce = !1;
-    Object(lib.N)(src_checkout.a, "renderTo", function(_ref3) {
+    Object(lib.N)(src_checkout.a, "renderTo", (function(_ref3) {
         var callOriginal = _ref3.callOriginal, props = _ref3.args[1];
         if (debounce) return Object(beaver_logger_client.q)("button_mutliple_click_debounce"), 
         new zalgo_promise_src.a(lib.J);
@@ -21186,39 +22193,39 @@
             };
         }, _i2 = 0, _ref5 = [ "onAuthorize", "onCancel", "onError", "onClose" ]; _i2 < _ref5.length; _i2++) _loop(_i2, _ref5);
         return callOriginal();
-    }), Object(lib.N)(rest.payment, "create", function(_ref6) {
+    })), Object(lib.N)(rest.payment, "create", (function(_ref6) {
         var _ref6$args = _ref6.args, options = _ref6$args[2];
         return options.payment || (options = {
             payment: options,
             experience: _ref6$args[3]
         }), _ref6.original.call(_ref6.context, _ref6$args[0], _ref6$args[1], options);
-    }), Object(lib.N)(component_Button.props.style, "validate", function(_ref7) {
+    })), Object(lib.N)(component_Button.props.style, "validate", (function(_ref7) {
         var callOriginal = _ref7.callOriginal, style = _ref7.args[0];
         return style ? (style && "creditblue" === style.color && (style.color = constants.e.DARKBLUE), 
         style && "generic" === style.label && (style.label = constants.f.PAYPAL), !style || style.label && style.label !== constants.f.CHECKOUT || "tiny" !== style.size || (Object(beaver_logger_client.q)("unsupported_button_size_tiny"), 
         style.size = constants.l.SMALL), callOriginal()) : callOriginal();
-    }), Object(lib.N)(component_Button, "render", function(_ref8) {
+    })), Object(lib.N)(component_Button, "render", (function(_ref8) {
         var callOriginal = _ref8.callOriginal, props = _ref8.args[0];
         return props.billingAgreement && (props.payment = props.billingAgreement, delete props.billingAgreement), 
         callOriginal();
-    }), Object(lib.N)(component_Button.props.payment, "decorate", function(_ref9) {
+    })), Object(lib.N)(component_Button.props.payment, "decorate", (function(_ref9) {
         var originalPayment = _ref9.args[0];
-        return _ref9.original.call(_ref9.context, function(data, actions) {
+        return _ref9.original.call(_ref9.context, (function(data, actions) {
             var _this = this;
-            return new zalgo_promise_src.a(function(resolve, reject) {
+            return new zalgo_promise_src.a((function(resolve, reject) {
                 function resolveData(token) {
                     resolve(token);
                 }
                 function rejectActions(err) {
                     reject(err);
                 }
-                Object(lib.N)(actions.payment, "create", function(_ref10) {
+                Object(lib.N)(actions.payment, "create", (function(_ref10) {
                     var _ref10$args = _ref10.args, options = _ref10$args[0];
                     return options.payment || (options = {
                         payment: options,
                         experience: _ref10$args[1]
                     }), _ref10.original.call(_ref10.context, options);
-                }), Object(lib.f)(resolveData, data), Object(lib.f)(resolveData, actions), Object(lib.f)(rejectActions, actions);
+                })), Object(lib.f)(resolveData, data), Object(lib.f)(resolveData, actions), Object(lib.f)(rejectActions, actions);
                 var result, ctx = {
                     props: {
                         env: _this.props.env,
@@ -21231,9 +22238,9 @@
                     return reject(err);
                 }
                 return result && "function" == typeof result.then ? result.then(resolve, reject) : void 0 !== result ? resolve(result) : void 0;
-            });
-        });
-    }), component_Button.isChild() && (window.Promise || (window.Promise = zalgo_promise_src.a));
+            }));
+        }));
+    })), component_Button.isChild() && (window.Promise || (window.Promise = zalgo_promise_src.a));
     var currentDomainEnv, Card = Object(src.c)({
         tag: "card-fields",
         name: "ppcard",
@@ -21371,32 +22378,32 @@
             if (config.a.paypalUrls[env] === domain) return env;
         }
     }(window.location.protocol + "//" + window.location.host)) && "test" !== currentDomainEnv && (config.a.env = currentDomainEnv), 
-    zalgo_promise_src.a.onPossiblyUnhandledException(function(err) {
+    zalgo_promise_src.a.onPossiblyUnhandledException((function(err) {
         var _track;
         return Object(beaver_logger_client.g)("unhandled_error", {
             stack: Object(lib.U)(err),
             errtype: {}.toString.call(err)
         }), Object(beaver_logger_client.p)(((_track = {})[constants.u.KEY.ERROR_CODE] = "checkoutjs_error", 
-        _track[constants.u.KEY.ERROR_DESC] = Object(lib.V)(err), _track)), Object(beaver_logger_client.h)().catch(function(err2) {
+        _track[constants.u.KEY.ERROR_DESC] = Object(lib.V)(err), _track)), Object(beaver_logger_client.h)().catch((function(err2) {
             if (window.console) try {
                 window.console.error ? window.console.error("Error flushing:", Object(lib.U)(err2)) : window.console.log && window.console.log("Error flushing:", Object(lib.U)(err2));
             } catch (err3) {
-                setTimeout(function() {
+                setTimeout((function() {
                     throw err3;
-                }, 1);
+                }), 1);
             }
-        });
-    });
-    var currentScript = Object(lib.k)(), currentProtocol = window.location.protocol.split(":")[0], init = Object(lib.L)(function(_ref2) {
+        }));
+    }));
+    var currentScript = Object(lib.k)(), currentProtocol = window.location.protocol.split(":")[0], init = Object(lib.L)((function(_ref2) {
         var precacheRemembered = _ref2.precacheRemembered;
         Object(lib.B)() || Object(beaver_logger_client.q)("ineligible"), Object(lib.c)(), 
         Object(lib.y)(), pptm.shouldCreateInitialPptmScript() && pptm.createPptmScript(), 
         precacheRemembered && Object(lib.O)(), Object(lib.m)("force_bridge") && !Object(lib.G)() && Object(lib.M)(config.a.env), 
         Object(beaver_logger_client.k)("setup_" + config.a.env), Object(beaver_logger_client.f)("current_protocol_" + currentProtocol);
-    });
+    }));
     function setup(options) {
         void 0 === options && (options = {}), function(_temp) {
-            var _ref = void 0 === options ? {} : options, env = _ref.env, stage = _ref.stage, stageUrl = _ref.stageUrl, apiStage = _ref.apiStage, localhostUrl = _ref.localhostUrl, checkoutUri = _ref.checkoutUri, state = _ref.state, logLevel = _ref.logLevel, merchantID = _ref.merchantID, authCode = _ref.authCode;
+            var _ref = void 0 === _temp ? {} : _temp, env = _ref.env, stage = _ref.stage, stageUrl = _ref.stageUrl, apiStage = _ref.apiStage, localhostUrl = _ref.localhostUrl, checkoutUri = _ref.checkoutUri, state = _ref.state, logLevel = _ref.logLevel, merchantID = _ref.merchantID, authCode = _ref.authCode;
             if (env) {
                 if (!config.a.paypalUrls[env]) throw new Error("Invalid env: " + env);
                 delete config.a.env, config.a.env = env;
@@ -21414,7 +22421,7 @@
             (checkoutUri = checkoutUri || component_Button.xprops && component_Button.xprops.checkoutUri || src_checkout.a.xprops && src_checkout.a.xprops.checkoutUri) && (config.a.checkoutUri = checkoutUri), 
             state && (delete config.a.state, config.a.state = state), merchantID && (config.a.merchantID = merchantID), 
             logLevel ? Object(lib.T)(logLevel) : Object(lib.T)(config.a.logLevel);
-        }(), init(options);
+        }(options), init(options);
     }
     if (currentScript ? setup({
         env: currentScript.getAttribute("data-env"),
@@ -21441,7 +22448,7 @@
         try {
             var applePay = "unavailable", paymentRequest = "unavailable";
             window.ApplePaySession && window.ApplePaySession.canMakePayments && window.ApplePaySession.canMakePayments() && (applePay = "available"), 
-            window.PaymentRequest && (paymentRequest = "available"), zalgo_promise_src.a.try(function() {
+            window.PaymentRequest && (paymentRequest = "available"), zalgo_promise_src.a.try((function() {
                 return !!window.PaymentRequest && new window.PaymentRequest([ {
                     supportedMethods: "basic-card"
                 } ], {
@@ -21453,15 +22460,15 @@
                         }
                     }
                 }).canMakePayment();
-            }).catch(function() {
+            })).catch((function() {
                 return !1;
-            }).then(function(result) {
+            })).then((function(result) {
                 result && (paymentRequest = "available_with_funding_sources"), Object(beaver_logger_client.p)({
                     apple_pay: applePay,
                     payment_request_api: paymentRequest
                 }), Object(beaver_logger_client.k)("apple_pay_" + applePay), Object(beaver_logger_client.k)("payment_request_" + paymentRequest), 
                 Object(beaver_logger_client.h)();
-            }).catch(lib.J);
+            })).catch(lib.J);
         } catch (err) {}
     } else {
         var setup_track3;
@@ -21471,7 +22478,7 @@
         }), Object(beaver_logger_client.p)(((setup_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
         setup_track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, setup_track3));
     }
-    var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.284", legacy = __webpack_require__(67);
+    var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.285", legacy = __webpack_require__(67);
     interface_checkout = legacy.checkout, apps = legacy.apps, Object(lib.G)() && (interface_Checkout = src_checkout.a, 
     interface_BillingPage = BillingPage, interface_ThreeDomainSecure = ThreeDomainSecure, 
     PayPalCheckout = src_checkout.a, enableCheckoutIframe = function() {
@@ -21483,82 +22490,82 @@
         error: beaver_logger_client.g,
         track: beaver_logger_client.p,
         flush: beaver_logger_client.h
-    }), __webpack_require__.d(__webpack_exports__, "postRobot", function() {
+    }), __webpack_require__.d(__webpack_exports__, "postRobot", (function() {
         return postRobot;
-    }), __webpack_require__.d(__webpack_exports__, "Promise", function() {
+    })), __webpack_require__.d(__webpack_exports__, "Promise", (function() {
         return zalgo_promise_src.a;
-    }), __webpack_require__.d(__webpack_exports__, "PopupOpenError", function() {
+    })), __webpack_require__.d(__webpack_exports__, "PopupOpenError", (function() {
         return src.b;
-    }), __webpack_require__.d(__webpack_exports__, "rest", function() {
+    })), __webpack_require__.d(__webpack_exports__, "rest", (function() {
         return rest;
-    }), __webpack_require__.d(__webpack_exports__, "Button", function() {
+    })), __webpack_require__.d(__webpack_exports__, "Button", (function() {
         return component_Button;
-    }), __webpack_require__.d(__webpack_exports__, "Card", function() {
+    })), __webpack_require__.d(__webpack_exports__, "Card", (function() {
         return Card;
-    }), __webpack_require__.d(__webpack_exports__, "setup", function() {
+    })), __webpack_require__.d(__webpack_exports__, "setup", (function() {
         return setup;
-    }), __webpack_require__.d(__webpack_exports__, "config", function() {
+    })), __webpack_require__.d(__webpack_exports__, "config", (function() {
         return config.a;
-    }), __webpack_require__.d(__webpack_exports__, "ENV", function() {
+    })), __webpack_require__.d(__webpack_exports__, "ENV", (function() {
         return constants.t;
-    }), __webpack_require__.d(__webpack_exports__, "USERS", function() {
+    })), __webpack_require__.d(__webpack_exports__, "USERS", (function() {
         return constants.F;
-    }), __webpack_require__.d(__webpack_exports__, "SOURCE", function() {
+    })), __webpack_require__.d(__webpack_exports__, "SOURCE", (function() {
         return constants.E;
-    }), __webpack_require__.d(__webpack_exports__, "FUNDING", function() {
+    })), __webpack_require__.d(__webpack_exports__, "FUNDING", (function() {
         return constants.v;
-    }), __webpack_require__.d(__webpack_exports__, "CARD", function() {
+    })), __webpack_require__.d(__webpack_exports__, "CARD", (function() {
         return constants.o;
-    }), __webpack_require__.d(__webpack_exports__, "request", function() {
+    })), __webpack_require__.d(__webpack_exports__, "request", (function() {
         return lib.R;
-    }), __webpack_require__.d(__webpack_exports__, "isEligible", function() {
+    })), __webpack_require__.d(__webpack_exports__, "isEligible", (function() {
         return lib.B;
-    }), __webpack_require__.d(__webpack_exports__, "isFundingRemembered", function() {
+    })), __webpack_require__.d(__webpack_exports__, "isFundingRemembered", (function() {
         return lib.C;
-    }), __webpack_require__.d(__webpack_exports__, "forceIframe", function() {
+    })), __webpack_require__.d(__webpack_exports__, "forceIframe", (function() {
         return lib.a;
-    }), __webpack_require__.d(__webpack_exports__, "isWebView", function() {
+    })), __webpack_require__.d(__webpack_exports__, "isWebView", (function() {
         return lib.a;
-    }), __webpack_require__.d(__webpack_exports__, "allowIframe", function() {
+    })), __webpack_require__.d(__webpack_exports__, "allowIframe", (function() {
         return lib.a;
-    }), __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
+    })), __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", (function() {
         return logExperimentTreatment;
-    }), __webpack_require__.d(__webpack_exports__, "logFundingEligibility", function() {
+    })), __webpack_require__.d(__webpack_exports__, "logFundingEligibility", (function() {
         return logFundingEligibility;
-    }), __webpack_require__.d(__webpack_exports__, "onPossiblyUnhandledException", function() {
+    })), __webpack_require__.d(__webpack_exports__, "onPossiblyUnhandledException", (function() {
         return onPossiblyUnhandledException;
-    }), __webpack_require__.d(__webpack_exports__, "version", function() {
+    })), __webpack_require__.d(__webpack_exports__, "version", (function() {
         return interface_version;
-    }), __webpack_require__.d(__webpack_exports__, "checkout", function() {
+    })), __webpack_require__.d(__webpack_exports__, "checkout", (function() {
         return interface_checkout;
-    }), __webpack_require__.d(__webpack_exports__, "apps", function() {
+    })), __webpack_require__.d(__webpack_exports__, "apps", (function() {
         return apps;
-    }), __webpack_require__.d(__webpack_exports__, "Checkout", function() {
+    })), __webpack_require__.d(__webpack_exports__, "Checkout", (function() {
         return interface_Checkout;
-    }), __webpack_require__.d(__webpack_exports__, "BillingPage", function() {
+    })), __webpack_require__.d(__webpack_exports__, "BillingPage", (function() {
         return interface_BillingPage;
-    }), __webpack_require__.d(__webpack_exports__, "PayPalCheckout", function() {
+    })), __webpack_require__.d(__webpack_exports__, "PayPalCheckout", (function() {
         return PayPalCheckout;
-    }), __webpack_require__.d(__webpack_exports__, "destroyAll", function() {
+    })), __webpack_require__.d(__webpack_exports__, "destroyAll", (function() {
         return destroyAll;
-    }), __webpack_require__.d(__webpack_exports__, "enableCheckoutIframe", function() {
+    })), __webpack_require__.d(__webpack_exports__, "enableCheckoutIframe", (function() {
         return enableCheckoutIframe;
-    }), __webpack_require__.d(__webpack_exports__, "logger", function() {
+    })), __webpack_require__.d(__webpack_exports__, "logger", (function() {
         return logger;
-    }), __webpack_require__.d(__webpack_exports__, "ThreeDomainSecure", function() {
+    })), __webpack_require__.d(__webpack_exports__, "ThreeDomainSecure", (function() {
         return interface_ThreeDomainSecure;
-    }), __webpack_exports__.default = interface_namespaceObject;
+    })), __webpack_exports__.default = interface_namespaceObject;
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
-    var client = __webpack_require__(4), lib = __webpack_require__(2), constants = __webpack_require__(0), LOG_PREFIX = "paypal_legacy", ATTRIBUTES = {
+    var client = __webpack_require__(5), lib = __webpack_require__(3), constants = __webpack_require__(0), LOG_PREFIX = "paypal_legacy", ATTRIBUTES = {
         BUTTON: "data-paypal-button",
         MERCHANT_ID: "data-paypal-id",
         ENV: "data-env",
         SANDBOX: "data-sandbox"
     }, CLASSES = {
         HIDDEN_BUTTON: "paypal-button-hidden"
-    }, esm_extends = __webpack_require__(11), src = __webpack_require__(1), form_serialize = __webpack_require__(61), form_serialize_default = __webpack_require__.n(form_serialize), checkout = __webpack_require__(15), config = __webpack_require__(3), post_robot_src = __webpack_require__(13);
+    }, esm_extends = __webpack_require__(11), src = __webpack_require__(2), form_serialize = __webpack_require__(61), form_serialize_default = __webpack_require__.n(form_serialize), checkout = __webpack_require__(15), config = __webpack_require__(4), post_robot_src = __webpack_require__(13);
     function isLegacyEligible() {
         return !!Object(lib.B)() && !!Object(lib.W)() && !Object(lib.z)();
     }
@@ -21576,25 +22583,25 @@
             lang: lang
         };
     }
-    var button_prefix = Object(client.n)(LOG_PREFIX), info = button_prefix.info, debug = button_prefix.debug, error = button_prefix.error, loadButtonJS = Object(lib.I)(function() {
-        return debug("buttonjs_load"), Object(lib.H)(config.a.buttonJSUrl).catch(function(err) {
+    var button_prefix = Object(client.n)(LOG_PREFIX), info = button_prefix.info, debug = button_prefix.debug, error = button_prefix.error, loadButtonJS = Object(lib.I)((function() {
+        return debug("buttonjs_load"), Object(lib.H)(config.a.buttonJSUrl).catch((function(err) {
             return info("buttonjs_load_error_retry", {
                 error: Object(lib.U)(err)
             }), Object(lib.H)(config.a.buttonJSUrl);
-        }).then(function(result) {
+        })).then((function(result) {
             return debug("buttonjs_load_success"), result;
-        }).catch(function(err) {
+        })).catch((function(err) {
             throw error("buttonjs_load_error", {
                 error: Object(lib.U)(err)
             }), err;
-        });
-    });
+        }));
+    }));
     function renderButtons(id, buttons) {
-        return src.a.map(buttons, function(button) {
-            return src.a.try(function() {
+        return src.a.map(buttons, (function(button) {
+            return src.a.try((function() {
                 return button.container ? function(id, _ref) {
-                    var container = button.container, locale = button.locale, type = button.type, color = button.color, shape = button.shape, size = button.size;
-                    return loadButtonJS().then(function() {
+                    var container = _ref.container, locale = _ref.locale, type = _ref.type, color = _ref.color, shape = _ref.shape, size = _ref.size;
+                    return loadButtonJS().then((function() {
                         if (locale) {
                             var _normalizeLocale = normalizeLocale(locale);
                             locale = _normalizeLocale.lang + "_" + _normalizeLocale.country;
@@ -21617,9 +22624,9 @@
                             info("in_page_button_" + (Object(lib.A)(el) ? "visible" : "not_visible"));
                         } catch (err) {}
                         return el.childNodes[0];
-                    });
-                }(id) : button.button;
-            }).then(function(element) {
+                    }));
+                }(id, button) : button.button;
+            })).then((function(element) {
                 var container, type;
                 return button.container ? (container = button.container, type = constants.u.BUTTON_TYPE.HTML) : (container = button.button, 
                 type = constants.u.BUTTON_TYPE.CUSTOM), {
@@ -21629,8 +22636,8 @@
                     condition: button.condition,
                     click: button.click
                 };
-            });
-        });
+            }));
+        }));
     }
     function getHijackTargetElement(button) {
         var form = button.form;
@@ -21650,11 +22657,11 @@
         Object(client.h)();
     }
     function redirect(url) {
-        return src.a.try(function() {
+        return src.a.try((function() {
             if (!url) throw new Error("Redirect url undefined");
             return config.a.env === constants.t.TEST && Object(lib.Y)(url) ? Object(lib.P)(window, "#fullpageRedirect?url=" + url) : (logRedirect(url), 
             Object(lib.P)(window, url));
-        });
+        }));
     }
     var options_prefix = Object(client.n)(LOG_PREFIX), options_info = options_prefix.info, options_warn = options_prefix.warn, interface_prefix = Object(client.n)(LOG_PREFIX), interface_info = interface_prefix.info, interface_debug = interface_prefix.debug, interface_warn = interface_prefix.warn, interface_error = interface_prefix.error, track = interface_prefix.track, interface_checkout = {}, apps = {
         checkout: interface_checkout,
@@ -21708,7 +22715,7 @@
         }
     }
     function awaitPaymentTokenAndUrl(event, targetElement) {
-        var paymentTokenAndUrl = new src.a(function(resolve) {
+        var paymentTokenAndUrl = new src.a((function(resolve) {
             var method, _url, body, contentType;
             event && targetElement && (Math.random() < .001 || window.enablev3ajax) && (interface_info("gettoken_targetelement_start"), 
             Object(client.h)(), "a" === targetElement.tagName.toLowerCase() ? (method = "get", 
@@ -21723,18 +22730,18 @@
                     Accept: "application/paypal-json-token",
                     "Content-type": contentType || ""
                 }
-            }).then(function(json) {
+            }).then((function(json) {
                 var urlAndPaymentToken = matchUrlAndPaymentToken(json.token);
                 resolve(urlAndPaymentToken), interface_info("gettoken_targetelement_success", urlAndPaymentToken), 
                 Object(client.h)();
-            }).catch(function(err) {
+            })).catch((function(err) {
                 interface_warn("gettoken_targetelement_error", {
                     err: err.stack || err.toString()
                 }), Object(client.h)();
-            })) : (interface_warn("gettoken_targetelement_no_method_or_url"), Object(client.h)())), 
+            }))) : (interface_warn("gettoken_targetelement_no_method_or_url"), Object(client.h)())), 
             interface_checkout.initXO = function() {
                 interface_warn("gettoken_initxo");
-            }, interface_checkout.startFlow = Object(lib.L)(function(item) {
+            }, interface_checkout.startFlow = Object(lib.L)((function(item) {
                 interface_debug("gettoken_startflow", {
                     item: item
                 });
@@ -21743,15 +22750,15 @@
                     url: url,
                     paymentToken: paymentToken
                 });
-            });
-        });
+            }));
+        }));
         return {
-            url: paymentTokenAndUrl.then(function(result) {
+            url: paymentTokenAndUrl.then((function(result) {
                 return result.url;
-            }),
-            paymentToken: paymentTokenAndUrl.then(function(result) {
+            })),
+            paymentToken: paymentTokenAndUrl.then((function(result) {
                 return result.paymentToken;
-            })
+            }))
         };
     }
     interface_checkout.reset = interface_reset, Object.defineProperty(interface_checkout, "urlPrefix", {
@@ -21786,26 +22793,26 @@
     }
     function renderPayPalCheckout(props, hijackTarget) {
         void 0 === props && (props = {});
-        var paypalCheckout, urlProp = src.a.resolve(props.url), paymentToken = new src.a(function(resolve) {
+        var paypalCheckout, urlProp = src.a.resolve(props.url), paymentToken = new src.a((function(resolve) {
             props.init = function(data) {
                 resolve(data.paymentToken);
             };
-        }), errorHandler = Object(lib.L)(function(err) {
+        })), errorHandler = Object(lib.L)((function(err) {
             interface_error("component_error", {
                 error: Object(lib.U)(err)
             }), hijackTarget && (interface_warn("render_error_hijack_revert_target"), hijackTarget.removeAttribute("target")), 
-            urlProp.then(function(url) {
+            urlProp.then((function(url) {
                 return interface_warn("render_error_redirect_using_url"), redirect(url);
-            }), paymentToken.then(function(token) {
+            })), paymentToken.then((function(token) {
                 return interface_warn("render_error_redirect_using_token"), redirect(Object(lib.g)(config.a.checkoutUrl, {
                     token: token
                 }));
-            });
-        });
+            }));
+        }));
         props.onError = errorHandler, hijackTarget ? (delete props.url, (paypalCheckout = initPayPalCheckout(props)).hijack(hijackTarget), 
-        paypalCheckout.runTimeout(), urlProp.then(function(url) {
+        paypalCheckout.runTimeout(), urlProp.then((function(url) {
             interface_warn("hijack_then_url_passed"), paypalCheckout.loadUrl(url);
-        })) : paypalCheckout = initPayPalCheckout(props);
+        }))) : paypalCheckout = initPayPalCheckout(props);
         var render = paypalCheckout.render(null, !hijackTarget);
         return interface_checkout.win = paypalCheckout.window, render.catch(errorHandler);
     }
@@ -21840,32 +22847,32 @@
                     element: JSON.stringify(options.button)
                 }), delete options.button);
             }
-            if (options.button) options.buttons = options.button.map(function(button) {
+            if (options.button) options.buttons = options.button.map((function(button) {
                 return {
                     button: button,
                     click: options.click,
                     condition: options.condition
                 };
-            }), delete options.click, delete options.condition, delete options.button; else if (options.buttons && Array.isArray(options.buttons)) {
+            })), delete options.click, delete options.condition, delete options.button; else if (options.buttons && Array.isArray(options.buttons)) {
                 var buttons = [];
-                options.buttons.forEach(function(button) {
+                options.buttons.forEach((function(button) {
                     button && (button.container && button.container !== options.container && options_warn("mismatched_container_and_button_passed", {
                         options: options.container,
                         button: button.container
-                    }), Object(lib.o)(button.container || button.button).forEach(function(element) {
+                    }), Object(lib.o)(button.container || button.button).forEach((function(element) {
                         var _buttons$push;
                         buttons.push(((_buttons$push = {})[button.container ? "container" : "button"] = element, 
                         _buttons$push.click = button.click || options.click, _buttons$push.condition = button.condition || options.condition, 
                         _buttons$push.type = button.type || options.type, _buttons$push.locale = button.locale || options.locale, 
                         _buttons$push.color = button.color || options.color, _buttons$push.shape = button.shape || options.shape, 
                         _buttons$push.size = button.size || options.size, _buttons$push));
-                    }));
-                }), delete options.buttons, delete options.click, delete options.condition, delete options.button, 
+                    })));
+                })), delete options.buttons, delete options.click, delete options.condition, delete options.button, 
                 delete options.type, delete options.locale, delete options.color, delete options.shape, 
                 delete options.size, buttons.length && (options.buttons = buttons);
             } else if (options.container && !Array.isArray(options.buttons)) {
                 var _buttons = [];
-                Object(lib.o)(options.container).forEach(function(container, i) {
+                Object(lib.o)(options.container).forEach((function(container, i) {
                     _buttons.push({
                         container: container,
                         click: options.click,
@@ -21876,7 +22883,7 @@
                         shape: Array.isArray(options.shape) ? options.shape[i] : options.shape,
                         size: Array.isArray(options.size) ? options.size[i] : options.size
                     });
-                }), delete options.container, delete options.buttons, delete options.click, delete options.condition, 
+                })), delete options.container, delete options.buttons, delete options.click, delete options.condition, 
                 delete options.button, delete options.type, delete options.locale, delete options.color, 
                 delete options.shape, delete options.size, _buttons.length && (options.buttons = _buttons);
             }
@@ -21884,7 +22891,7 @@
         }(options), function(options) {
             options.environment && config.a.paypalUrls[options.environment] && (config.a.env = options.environment), 
             options.locale && (config.a.locale = normalizeLocale(options.locale), config.a.customCountry = !0);
-        }(options), env = config.a.env, src.a.try(function() {
+        }(options), env = config.a.env, src.a.try((function() {
             return post_robot_src.bridge && post_robot_src.bridge.needsBridge({
                 domain: config.a.paypalDomains[env]
             }) ? (Object(client.f)("setup_post_bridge", {
@@ -21892,14 +22899,14 @@
             }), Object(lib.M)(env).then(lib.J)) : Object(client.f)("post_bridge_not_required", {
                 env: env
             });
-        }), src.a.try(function() {
-            return options.buttons.length ? renderButtons(id, options.buttons).then(function(buttons) {
-                buttons.forEach(function(button) {
+        })), src.a.try((function() {
+            return options.buttons.length ? renderButtons(id, options.buttons).then((function(buttons) {
+                buttons.forEach((function(button) {
                     instrumentButtonRender(button.type), function(container, button, clickHandler, condition, tracker) {
                         var element = "a" === container.tagName.toLowerCase() ? container : button, isClick = "function" == typeof clickHandler;
                         if (element.hasAttribute("data-paypal-click-listener")) return interface_warn("button_already_has_paypal_click_listener");
                         element.setAttribute("data-paypal-click-listener", ""), getHijackTargetElement(element) && isClick && interface_info("button_link_or_form"), 
-                        element.addEventListener("click", function(event) {
+                        element.addEventListener("click", (function(event) {
                             tracker();
                             var eligible = isLegacyEligible();
                             if (Object(lib.W)() ? (interface_debug("click_popups_supported"), eligible || interface_debug("click_popups_supported_but_ineligible")) : (interface_debug("click_popups_not_supported"), 
@@ -21922,25 +22929,25 @@
                                 if (!targetElement) return interface_error("target_element_not_found");
                                 interface_info("init_paypal_checkout_hijack");
                                 var token, _awaitPaymentTokenAnd = awaitPaymentTokenAndUrl(event, targetElement), url = _awaitPaymentTokenAnd.url;
-                                _awaitPaymentTokenAnd.paymentToken.then(function(result) {
+                                _awaitPaymentTokenAnd.paymentToken.then((function(result) {
                                     token = result;
-                                }), renderPayPalCheckout({
+                                })), renderPayPalCheckout({
                                     url: url,
                                     payment: function() {
                                         return src.a.resolve(token);
                                     }
                                 }, targetElement);
                             }(event, element);
-                        });
-                    }(button.container, button.element, button.click, button.condition, function() {
+                        }));
+                    }(button.container, button.element, button.click, button.condition, (function() {
                         var type, _track2;
                         type = button.type, track(((_track2 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
                         _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_CLICK, _track2[constants.u.KEY.BUTTON_TYPE] = type, 
                         _track2)), Object(client.h)();
-                    });
-                });
-            }) : instrumentButtonRender(constants.u.BUTTON_TYPE.CUSTOM);
-        });
+                    }));
+                }));
+            })) : instrumentButtonRender(constants.u.BUTTON_TYPE.CUSTOM);
+        }));
     }
     function initXO() {
         if (interface_debug("initxo"), !isLegacyEligible()) return interface_debug("ineligible_initxo");
@@ -21991,20 +22998,20 @@
                 });
             } catch (err) {}
         }
-    }(window, "paypalCheckoutReady", function(method) {
+    }(window, "paypalCheckoutReady", (function(method) {
         if ("function" == typeof method) {
             var oneTimeReady = function() {
                 if (!method.called) return method.called = !0, method.apply(this, arguments);
             };
             return function(method) {
-                Object(lib.K)(function() {
-                    ready_debug("paypal_checkout_ready"), setTimeout(function() {
+                Object(lib.K)((function() {
+                    ready_debug("paypal_checkout_ready"), setTimeout((function() {
                         window.paypal || ready_error("paypal_checkout_ready_no_window_paypal"), method();
-                    }, 1);
-                });
+                    }), 1);
+                }));
             }(oneTimeReady), oneTimeReady;
         }
-    }), Object(lib.K)(function() {
+    })), Object(lib.K)((function() {
         var buttons = [].slice.call(document.querySelectorAll("[" + ATTRIBUTES.BUTTON + "]"));
         if (buttons && buttons.length) {
             ready_debug("data_paypal_button", {
@@ -22019,27 +23026,27 @@
                 });
             }
         }
-        [].slice.call(document.getElementsByClassName(CLASSES.HIDDEN_BUTTON)).forEach(function(el) {
+        [].slice.call(document.getElementsByClassName(CLASSES.HIDDEN_BUTTON)).forEach((function(el) {
             el.className = el.className.replace(CLASSES.HIDDEN_BUTTON, "");
-        });
-    }), __webpack_require__.d(__webpack_exports__, "renderButtons", function() {
+        }));
+    })), __webpack_require__.d(__webpack_exports__, "renderButtons", (function() {
         return renderButtons;
-    }), __webpack_require__.d(__webpack_exports__, "getHijackTargetElement", function() {
+    })), __webpack_require__.d(__webpack_exports__, "getHijackTargetElement", (function() {
         return getHijackTargetElement;
-    }), __webpack_require__.d(__webpack_exports__, "LOG_PREFIX", function() {
+    })), __webpack_require__.d(__webpack_exports__, "LOG_PREFIX", (function() {
         return LOG_PREFIX;
-    }), __webpack_require__.d(__webpack_exports__, "ATTRIBUTES", function() {
+    })), __webpack_require__.d(__webpack_exports__, "ATTRIBUTES", (function() {
         return ATTRIBUTES;
-    }), __webpack_require__.d(__webpack_exports__, "CLASSES", function() {
+    })), __webpack_require__.d(__webpack_exports__, "CLASSES", (function() {
         return CLASSES;
-    }), __webpack_require__.d(__webpack_exports__, "checkout", function() {
+    })), __webpack_require__.d(__webpack_exports__, "checkout", (function() {
         return interface_checkout;
-    }), __webpack_require__.d(__webpack_exports__, "apps", function() {
+    })), __webpack_require__.d(__webpack_exports__, "apps", (function() {
         return apps;
-    }), __webpack_require__.d(__webpack_exports__, "reset", function() {
+    })), __webpack_require__.d(__webpack_exports__, "reset", (function() {
         return interface_reset;
-    }), __webpack_require__.d(__webpack_exports__, "setup", function() {
+    })), __webpack_require__.d(__webpack_exports__, "setup", (function() {
         return setup;
-    });
+    }));
 } ]);
-//# sourceMappingURL=checkout.4.0.284.js.map
+//# sourceMappingURL=checkout.4.0.285.js.map

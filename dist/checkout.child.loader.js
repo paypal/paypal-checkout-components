@@ -53,9 +53,9 @@
             return target;
         }).apply(this, arguments);
     }
-    __webpack_require__.d(__webpack_exports__, "a", function() {
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return _extends;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
@@ -94,11 +94,11 @@
         var container = document.body || document.head;
         if (!container) return callback(new Error("Can not find container to insert script into"));
         var script = document.createElement("script");
-        script.src = url, script.addEventListener("load", function() {
+        script.src = url, script.addEventListener("load", (function() {
             return window[prop] ? callback(null, window[prop]) : callback(new Error("Expected " + prop + " to be present on window"));
-        }), script.addEventListener("error", function(err) {
+        })), script.addEventListener("error", (function(err) {
             return callback(err);
-        });
+        }));
         for (var _i2 = 0, _Object$keys2 = Object.keys(attrs); _i2 < _Object$keys2.length; _i2++) {
             var attr = _Object$keys2[_i2];
             script.setAttribute(attr, attrs[attr]);
@@ -144,10 +144,10 @@
             return query.env && (props["data-env"] = query.env), query.stage && (props["data-stage"] = query.stage), 
             props;
         }();
-        loadScript(urls.latest ? urls.major : urls.minor, config.xchild_global, props, function(err, result) {
+        loadScript(urls.latest ? urls.major : urls.minor, config.xchild_global, props, (function(err, result) {
             return err && !urls.latest ? loadScript(urls.major + "?t=" + Date.now(), config.xchild_global, props, callback) : callback(err, result);
-        });
-    }(function(err, result) {
+        }));
+    }((function(err, result) {
         if (err && function() {
             for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
             var message = args.join(" ");
@@ -168,11 +168,11 @@
                 return "Error while stringifying error: " + stringifyError(newErr, level + 1);
             }
         }(err)), err || result) return integrationResponder.respond(err, result);
-    }), __webpack_require__.d(__webpack_exports__, "onLoadCheckoutIntegration", function() {
+    })), __webpack_require__.d(__webpack_exports__, "onLoadCheckoutIntegration", (function() {
         return onLoadCheckoutIntegration;
-    }), __webpack_require__.d(__webpack_exports__, "isCheckoutXComponent", function() {
+    })), __webpack_require__.d(__webpack_exports__, "isCheckoutXComponent", (function() {
         return isCheckoutXComponent;
-    });
+    }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
