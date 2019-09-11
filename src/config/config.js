@@ -543,6 +543,10 @@ export const config = {
         
         'monoprice.com': {
             disable_venmo: true
+        },
+        
+        'dominos.com': {
+            disable_venmo: true
         }
     },
 
