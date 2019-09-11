@@ -1,3 +1,9 @@
+## <small>5.0.56 (2019-09-11)</small>
+
+* Return a function from getPageUrl ([f6f77fe](http://github.paypal.com/paypal/paypal-checkout/commit/f6f77fe))
+
+
+
 ## <small>5.0.55 (2019-09-11)</small>
 
 * Make stage host props optional ([dd9cea2](http://github.paypal.com/paypal/paypal-checkout/commit/dd9cea2))
