@@ -6,7 +6,7 @@ import { node, dom } from 'jsx-pragmatic/src';
 import { getPayPalDomainRegex, getLogger, getLocale,
     getEnv, getClientID, getCommit, getSDKMeta, getCSPNonce, getBuyerCountry, getVersion } from '@paypal/sdk-client/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { create, CONTEXT, type ZoidComponent } from 'zoid/src';
+import { create, CONTEXT, type ZoidComponent, EVENT } from 'zoid/src';
 import { isDevice, memoize, noop, supportsPopups, inlineMemoize } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { Overlay } from '@paypal/common-components/src';
@@ -172,7 +172,14 @@ export function getCheckoutComponent() : ZoidComponent<CheckoutPropsType> {
                     type:     'function',
                     required: false
                 },
-        
+
+                onFocused: {
+                    type:  'function',
+                    value: ({ event }) => {
+                        return (handler) => event.on(EVENT.FOCUS, handler);
+                    }
+                },
+                
                 test: {
                     type:    'object',
                     default: () => (window.__test__ || { action: 'checkout' })
