@@ -1,6 +1,6 @@
 /* @flow */
 
-import { ENV, INTENT, COUNTRY, FUNDING, CARD, PLATFORM } from '@paypal/sdk-constants/src';
+import { ENV, INTENT, COUNTRY, FUNDING, CARD, PLATFORM, CURRENCY } from '@paypal/sdk-constants/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { LocaleType, ProxyWindow } from '../../types';
@@ -12,7 +12,6 @@ import type { OnApprove, XOnApprove } from './onApprove';
 import type { OnCancel, XOnCancel } from './onCancel';
 import type { OnClick, XOnClick } from './onClick';
 import type { OnShippingChange, XOnShippingChange } from './onShippingChange';
-import type { OnAuth } from './onAuth';
 import type { XOnError, OnError } from './onError';
 import type { XGetPopupBridge, GetPopupBridge } from './getPopupBridge';
 import type { XCreateSubscription } from './createSubscription';
@@ -35,10 +34,12 @@ export type XProps = {|
     partnerAttributionID : string,
     correlationID : string,
     platform : $Values<typeof PLATFORM>,
+    merchantID : $ReadOnlyArray<string>,
 
     vault : boolean,
     commit : boolean,
     intent : $Values<typeof INTENT>,
+    currency : $Values<typeof CURRENCY>,
 
     clientAccessToken : ?string,
     buyerCountry : $Values<typeof COUNTRY>,
@@ -106,6 +107,5 @@ export type ButtonCallbackProps = {|
 
     onCancel : OnCancel,
     onClick : OnClick,
-    onAuth : OnAuth,
     onShippingChange : ?OnShippingChange
 |};

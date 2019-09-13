@@ -7,14 +7,15 @@ export const CREATE_SUBSCRIPTIONS_API_URL = '/v1/billing/subscriptions';
 export const VALIDATE_PAYMENT_METHOD_API = 'validate-payment-method';
 
 export const BASE_SMART_API_URL = '/smart/api';
-export const API_URI = {
+export const SMART_API_URI = {
     AUTH:           `${ BASE_SMART_API_URL }/auth`,
     CHECKOUT:       `${ BASE_SMART_API_URL }/checkout`,
     ORDER:          `${ BASE_SMART_API_URL }/order`,
     PAYMENT:        `${ BASE_SMART_API_URL }/payment`,
-    SUBSCRIPTION:   `${ BASE_SMART_API_URL }/billagmt/subscriptions`,
-    GRAPHQL:        '/graphql'
+    SUBSCRIPTION:   `${ BASE_SMART_API_URL }/billagmt/subscriptions`
 };
+
+export const GRAPHQL_URI = '/graphql';
 
 export const EXPERIENCE_URI = {
     CHECKOUT: '/checkoutnow'

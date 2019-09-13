@@ -6,13 +6,13 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { setupButton } from '../../src';
 
-import { mockAsyncProp, createButtonHTML, getGetOrderApiMock, getCaptureOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton } from './mocks';
+import { mockAsyncProp, createButtonHTML, getGetOrderApiMock, getCaptureOrderApiMock, DEFAULT_FUNDING_ELIGIBILITY, mockFunction, clickButton, MOCK_BUYER_ACCESS_TOKEN } from './mocks';
 
 describe('auth cases', () => {
 
     it('should render a button, call onAuth, and pass the access token to order get', async () => {
         return await wrapPromise(async ({ expect }) => {
-            const accessToken = 'abc123xxxyyyzzz';
+            const accessToken = MOCK_BUYER_ACCESS_TOKEN;
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data, actions) => {
                 const getOrderMock = getGetOrderApiMock({

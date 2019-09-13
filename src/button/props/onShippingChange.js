@@ -29,17 +29,18 @@ export function buildXOnShippingChangeData(data : XOnShippingChangeDataType) : X
 }
 
 export type OnShippingChangeData = {|
-    
+    facilitatorAccessToken : string,
+    buyerAccessToken : ?string
 |};
 
 export type OnShippingChangeActionsType = {|
     reject : () => ZalgoPromise<void>
 |};
 
-export function buildXShippingChangeActions({ orderID, actions } : { orderID : string, actions : OnShippingChangeActionsType }) : XOnShippingChangeActionsType {
+export function buildXShippingChangeActions({ orderID, actions, facilitatorAccessToken, buyerAccessToken, partnerAttributionID } : { orderID : string, actions : OnShippingChangeActionsType, facilitatorAccessToken : string, buyerAccessToken : ?string, partnerAttributionID : ?string }) : XOnShippingChangeActionsType {
 
-    const patch = (data = []) =>
-        patchOrder(orderID, data).catch(() => {
+    const patch = (data = {}) =>
+        patchOrder(orderID, data, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID }).catch(() => {
             throw new Error('Order could not be patched');
         });
 
@@ -58,10 +59,10 @@ export function buildXShippingChangeActions({ orderID, actions } : { orderID : s
 export type OnShippingChange = (OnShippingChangeData, OnShippingChangeActionsType) => ZalgoPromise<void>;
 
 export function getOnShippingChange(xprops : XProps, { createOrder } : { createOrder : CreateOrder }) : ?OnShippingChange {
-    const { onShippingChange, buttonSessionID } = xprops;
+    const { onShippingChange, buttonSessionID, partnerAttributionID } = xprops;
 
     if (onShippingChange) {
-        return (data, actions) => {
+        return ({ facilitatorAccessToken, buyerAccessToken, ...data }, actions) => {
             return createOrder().then(orderID => {
                 getLogger()
                     .info('button_shipping_change')
@@ -71,7 +72,7 @@ export function getOnShippingChange(xprops : XProps, { createOrder } : { createO
                         [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID
                     }).flush();
 
-                return onShippingChange(buildXOnShippingChangeData(data), buildXShippingChangeActions({ orderID, actions }));
+                return onShippingChange(buildXOnShippingChangeData(data), buildXShippingChangeActions({ orderID, facilitatorAccessToken, buyerAccessToken, actions, partnerAttributionID }));
             });
         };
     }

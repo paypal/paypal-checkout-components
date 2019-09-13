@@ -10,6 +10,8 @@ import { INTENT, CURRENCY, CARD, PLATFORM } from '@paypal/sdk-constants/src';
 
 import { triggerKeyPress } from './util';
 
+export const MOCK_BUYER_ACCESS_TOKEN = 'abc123xxxyyyzzz456';
+
 export function mockAsyncProp(handler : Function) : Function {
     return (...args) => ZalgoPromise.delay(1).then(() => handler(...args));
 }
@@ -45,6 +47,8 @@ export function setupMocks() {
         Checkout: (props) => {
             return {
                 renderTo: () => {
+                    props.onAuth({ accessToken: MOCK_BUYER_ACCESS_TOKEN });
+
                     return props.createOrder().then(orderID => {
                         return ZalgoPromise.delay(50).then(() => {
                             return props.onApprove({
@@ -69,6 +73,8 @@ export function setupMocks() {
         CardFields: (props) => {
             return {
                 render: () => {
+                    props.onAuth({ accessToken: MOCK_BUYER_ACCESS_TOKEN });
+
                     return props.createOrder().then(orderID => {
                         return ZalgoPromise.delay(50).then(() => {
                             return props.onApprove({

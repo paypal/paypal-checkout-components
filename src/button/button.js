@@ -65,7 +65,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
 
             const {
                 createOrder, createBillingAgreement, createSubscription,
-                onApprove, onCancel, onClick, onAuth, onShippingChange
+                onApprove, onCancel, onClick, onShippingChange
             } = getButtonCallbackProps({ xprops: window.xprops });
 
             const validationPromise = onClick({ fundingSource });
@@ -83,8 +83,8 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
             const { start, close, triggerError } = (() => {
                 if (isCheckout) {
                     return initCheckout({
-                        win, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
-                        onAuth, onShippingChange, cspNonce, locale, commit, onError, vault,
+                        clientID, win, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
+                        onShippingChange, cspNonce, locale, commit, onError, vault,
                         clientAccessToken, fundingEligibility, validationPromise, createBillingAgreement, createSubscription
                     });
                 }
@@ -93,14 +93,14 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
                     enableLoadingSpinner(button);
 
                     return initVault({
-                        createOrder, paymentMethodID, onApprove, clientAccessToken, enableThreeDomainSecure
+                        clientID, createOrder, paymentMethodID, onApprove, clientAccessToken, enableThreeDomainSecure
                     });
                 }
 
                 if (isCardFields) {
                     return initCardFields({
-                        buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
-                        onAuth, onShippingChange, cspNonce, locale, commit, onError, vault,
+                        clientID, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
+                        onShippingChange, cspNonce, locale, commit, onError, vault,
                         clientAccessToken, fundingEligibility, createBillingAgreement, createSubscription
                     });
                 }
@@ -109,7 +109,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
                     enableLoadingSpinner(button);
 
                     return initPopupBridge({
-                        popupBridge, fundingSource, createOrder, onApprove, onCancel, commit
+                        clientID, popupBridge, fundingSource, createOrder, onApprove, onCancel, commit
                     });
                 }
 

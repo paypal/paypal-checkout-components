@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize } from 'belter/src';
-import { FPTI_KEY } from '@paypal/sdk-constants/src';
+import { FPTI_KEY, SDK_QUERY_KEYS, INTENT, CURRENCY } from '@paypal/sdk-constants/src';
 
 import { createAccessToken, createOrderID, billingTokenToOrderID, subscriptionIdToCartId } from '../../api';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../../constants';
@@ -23,30 +23,80 @@ export type XCreateOrderActionsType = {|
 
 export type XCreateOrder = (XCreateOrderDataType, XCreateOrderActionsType) => ZalgoPromise<string>;
 
+export type CreateOrder = () => ZalgoPromise<string>;
+
 export function buildXCreateOrderData() : XCreateOrderDataType {
     // $FlowFixMe
     return {};
 }
 
-export function buildXCreateOrderActions({ clientID } : { clientID : string }) : XCreateOrderActionsType {
-    const create = (data) => {
-        return createAccessToken(clientID).then(accessToken => {
-            return createOrderID(accessToken, data);
+type OrderOptions = {|
+    clientID : string,
+    intent : $Values<typeof INTENT>,
+    currency : $Values<typeof CURRENCY>,
+    merchantID : $ReadOnlyArray<string>,
+    partnerAttributionID : ?string
+|};
+
+export function buildCreateOrder({ clientID, intent, currency, merchantID, partnerAttributionID } : OrderOptions) : CreateOrder {
+    return (data) => {
+    
+        let order : Object = { ...data };
+    
+        if (order.intent && order.intent.toLowerCase() !== intent) {
+            throw new Error(`Unexpected intent: ${ order.intent } passed to order.create. Please ensure you are passing /sdk/js?${ SDK_QUERY_KEYS.INTENT }=${ order.intent.toLowerCase() } in the paypal script tag.`);
+        }
+
+        order = { ...order, intent: intent.toUpperCase() };
+    
+        order.purchase_units = order.purchase_units.map(unit => {
+            if (unit.amount.currency_code && unit.amount.currency_code !== currency) {
+                throw new Error(`Unexpected currency: ${ unit.amount.currency_code } passed to order.create. Please ensure you are passing /sdk/js?${ SDK_QUERY_KEYS.CURRENCY }=${ unit.amount.currency_code } in the paypal script tag.`);
+            }
+    
+            let payee = unit.payee;
+    
+            if (payee) {
+                if (!merchantID[0]) {
+                    throw new Error(`Pass ${ SDK_QUERY_KEYS.MERCHANT_ID }=XYZ in the paypal script tag.`);
+                }
+    
+                if (payee.merchant_id && payee.merchant_id !== merchantID[0]) {
+                    throw new Error(`Expected payee.merchant_id to be "${ merchantID[0] }"`);
+                }
+            }
+    
+            if (merchantID) {
+                payee = {
+                    ...payee,
+                    merchant_id: merchantID[0]
+                };
+            }
+    
+            return { ...unit, payee, amount: { ...unit.amount, currency_code: currency } };
+        });
+    
+        order.application_context = order.application_context || {};
+
+        return createAccessToken(clientID).then(facilitatorAccessToken => {
+            return createOrderID(order, { facilitatorAccessToken, partnerAttributionID });
         });
     };
+}
+
+export function buildXCreateOrderActions({ clientID, intent, currency, merchantID, partnerAttributionID } : OrderOptions) : XCreateOrderActionsType {
+    const create = buildCreateOrder({ clientID, intent, currency, merchantID, partnerAttributionID });
 
     return {
         order: { create }
     };
 }
 
-export type CreateOrder = () => ZalgoPromise<string>;
-
 export function getCreateOrder(xprops : XProps, { createBillingAgreement, createSubscription } : { createBillingAgreement : ?CreateBillingAgreement, createSubscription : ?CreateSubscription }) : CreateOrder {
-    const { createOrder, clientID, buttonSessionID } = xprops;
+    const { createOrder, clientID, buttonSessionID, intent, currency, merchantID, partnerAttributionID } = xprops;
 
     const data = buildXCreateOrderData();
-    const actions = buildXCreateOrderActions({ clientID });
+    const actions = buildXCreateOrderActions({ clientID, intent, currency, merchantID, partnerAttributionID });
 
     return memoize(() => {
         return ZalgoPromise.try(() => {

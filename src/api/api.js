@@ -3,37 +3,62 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { request } from 'belter/src';
 
-import { API_URI } from '../config';
+import { GRAPHQL_URI } from '../config';
 import { HEADERS, SMART_BUTTONS, SMART_PAYMENT_BUTTONS } from '../constants';
 
-const headerBuilders = [];
+type RESTAPIParams<D> = {|
+    accessToken : string,
+    method? : string,
+    url : string,
+    data? : D,
+    headers? : { [string] : string }
+|};
 
-export function addHeaderBuilder(builder : () => { [string] : string }) {
-    headerBuilders.push(builder);
+export function callRestAPI<D, T>({ accessToken, method, url, data, headers } : RESTAPIParams<D>) : ZalgoPromise<T> {
+
+    if (!accessToken) {
+        throw new Error(`No access token passed to ${ url }`);
+    }
+
+    const requestHeaders = {
+        [ HEADERS.AUTHORIZATION ]:          `Bearer ${ accessToken }`,
+        ...headers
+    };
+
+    return request({
+        method,
+        url,
+        headers: requestHeaders,
+        json:    data
+    }).then(({ status, body, headers: responseHeaders }) : T => {
+        if (status >= 300) {
+            throw new Error(`${ url } returned status: ${ status } (Corr ID: ${ responseHeaders[HEADERS.PAYPAL_DEBUG_ID] })`);
+        }
+
+        return body;
+    });
 }
 
 type APIRequest = {|
+    accessToken? : ?string,
     url : string,
     method? : string,
     json? : $ReadOnlyArray<mixed> | Object
 |};
 
-export function callSmartAPI({ url, method = 'get', json } : APIRequest) : ZalgoPromise<Object> {
+export function callSmartAPI({ accessToken, url, method = 'get', json } : APIRequest) : ZalgoPromise<Object> {
 
-    let reqHeaders = {
+    const reqHeaders : { [string] : string } = {
         [ HEADERS.SOURCE ]:       SMART_BUTTONS,
         [ HEADERS.REQUESTED_BY ]: SMART_PAYMENT_BUTTONS
     };
 
-    for (const headerBuilder of headerBuilders) {
-        reqHeaders = {
-            ...reqHeaders,
-            ...headerBuilder()
-        };
+    if (accessToken) {
+        reqHeaders[HEADERS.ACCESS_TOKEN] = accessToken;
     }
     
     return request({ url, method, headers: reqHeaders, json })
-        .then(({ status, body }) => {
+        .then(({ status, body, headers }) => {
             if (body.ack === 'contingency') {
                 const err = new Error(body.contingency);
                 // $FlowFixMe
@@ -42,11 +67,11 @@ export function callSmartAPI({ url, method = 'get', json } : APIRequest) : Zalgo
             }
 
             if (status > 400) {
-                throw new Error(`Api: ${ url } returned status code: ${ status }`);
+                throw new Error(`Api: ${ url } returned status code: ${ status } (Corr ID: ${ headers[HEADERS.PAYPAL_DEBUG_ID] })`);
             }
 
             if (body.ack !== 'success') {
-                throw new Error(`Api: ${ url } returned ack: ${ body.ack }`);
+                throw new Error(`Api: ${ url } returned ack: ${ body.ack } (Corr ID: ${ headers[HEADERS.PAYPAL_DEBUG_ID] })`);
             }
 
             return body.data;
@@ -55,7 +80,7 @@ export function callSmartAPI({ url, method = 'get', json } : APIRequest) : Zalgo
 
 export function callGraphQL<T>({ query, variables = {}, headers = {} } : { query : string, variables? : { [string] : mixed }, headers? : { [string] : string } }) : ZalgoPromise<T> {
     return request({
-        url:     API_URI.GRAPHQL,
+        url:     GRAPHQL_URI,
         method:  'POST',
         json:    {
             query,
@@ -73,7 +98,7 @@ export function callGraphQL<T>({ query, variables = {}, headers = {} } : { query
         }
 
         if (status !== 200) {
-            throw new Error(`${ API_URI.GRAPHQL } returned status ${ status }`);
+            throw new Error(`${ GRAPHQL_URI } returned status ${ status }`);
         }
 
         return body;

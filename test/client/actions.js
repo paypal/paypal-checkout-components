@@ -314,8 +314,8 @@ describe('actions cases', () => {
                             throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
                         }
 
-                        return props.onShippingChange({ orderID }, { reject: avoid('reject') }).then(() => {
-                            return renderToOriginal(...args);
+                        return renderToOriginal(...args).then(() => {
+                            return props.onShippingChange({ orderID }, { reject: avoid('reject') });
                         });
                     });
                 }));

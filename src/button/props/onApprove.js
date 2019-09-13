@@ -36,7 +36,7 @@ export type XOnApproveActionsType = {|
 
 export type XOnApprove = (XOnApproveDataType, XOnApproveActionsType) => ZalgoPromise<void>;
 
-function buildXApproveActions({ intent, orderID, restart, subscriptionID } : { orderID : string, restart : () => ZalgoPromise<void>, intent : $Values<typeof INTENT>, subscriptionID : string }) : XOnApproveActionsType {
+function buildXApproveActions({ intent, orderID, restart, subscriptionID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID } : { orderID : string, restart : () => ZalgoPromise<void>, intent : $Values<typeof INTENT>, subscriptionID : string, facilitatorAccessToken : string, buyerAccessToken : ?string, partnerAttributionID : ?string }) : XOnApproveActionsType {
 
     const handleProcessorError = (err : mixed) : ZalgoPromise<OrderResponse> => {
         // $FlowFixMe
@@ -51,14 +51,14 @@ function buildXApproveActions({ intent, orderID, restart, subscriptionID } : { o
         throw new Error('Order could not be captured');
     };
 
-    const get = memoize(() => getOrder(orderID));
+    const get = memoize(() => getOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID }));
 
     const capture = memoize(() => {
         if (intent !== INTENT.CAPTURE) {
             throw new Error(`Use ${ SDK_QUERY_KEYS.INTENT }=${ INTENT.CAPTURE } to use client-side capture`);
         }
 
-        return captureOrder(orderID)
+        return captureOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID })
             .finally(get.reset)
             .finally(capture.reset)
             .catch(handleProcessorError);
@@ -69,20 +69,20 @@ function buildXApproveActions({ intent, orderID, restart, subscriptionID } : { o
             throw new Error(`Use ${ SDK_QUERY_KEYS.INTENT }=${ INTENT.AUTHORIZE } to use client-side authorize`);
         }
 
-        return authorizeOrder(orderID)
+        return authorizeOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID })
             .finally(get.reset)
             .finally(authorize.reset)
             .catch(handleProcessorError);
     });
 
-    const patch = (data = []) =>
-        patchOrder(orderID, data).catch(() => {
+    const patch = (data = {}) =>
+        patchOrder(orderID, data, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID }).catch(() => {
             throw new Error('Order could not be patched');
         });
 
     // Subscription GET Actions
-    const getSubscriptionApi = memoize(() => getSubscription(subscriptionID));
-    const activateSubscriptionApi = memoize(() => activateSubscription(subscriptionID));
+    const getSubscriptionApi = memoize(() => getSubscription(subscriptionID, { buyerAccessToken }));
+    const activateSubscriptionApi = memoize(() => activateSubscription(subscriptionID, { buyerAccessToken }));
 
     const redirect = (url) => {
         if (!url) {
@@ -111,7 +111,9 @@ export type OnApproveData = {|
     payerID? : ?string,
     paymentID ? : ? string,
     billingToken ? : ? string,
-    subscriptionID ? : ?string
+    subscriptionID ? : ?string,
+    facilitatorAccessToken : string,
+    buyerAccessToken? : ?string
 |};
 
 export type OnApproveActions = {|
@@ -121,9 +123,9 @@ export type OnApproveActions = {|
 export type OnApprove = (OnApproveData, OnApproveActions) => ZalgoPromise<void>;
 
 export function getOnApprove(xprops : XProps, { createOrder } : { createOrder : CreateOrder }) : OnApprove {
-    const { onApprove, onError, intent, buttonSessionID } = xprops;
+    const { onApprove, onError, intent, buttonSessionID, partnerAttributionID } = xprops;
 
-    return memoize(({ payerID, paymentID, billingToken, subscriptionID }, { restart }) => {
+    return memoize(({ payerID, paymentID, billingToken, subscriptionID, facilitatorAccessToken, buyerAccessToken }, { restart }) => {
         return createOrder().then(orderID => {
 
             getLogger()
@@ -135,7 +137,7 @@ export function getOnApprove(xprops : XProps, { createOrder } : { createOrder : 
                 }).flush();
 
             const data = { orderID, payerID, paymentID, billingToken, subscriptionID };
-            const actions = buildXApproveActions({ orderID, intent, restart, subscriptionID });
+            const actions = buildXApproveActions({ orderID, intent, restart, subscriptionID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID });
 
             if (onApprove) {
                 return onApprove(data, actions).catch(onError);

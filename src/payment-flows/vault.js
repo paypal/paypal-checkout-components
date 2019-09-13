@@ -3,7 +3,7 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { ProxyWindow } from '../types';
-import { validatePaymentMethod, type ValidatePaymentMethodResponse } from '../api';
+import { validatePaymentMethod, type ValidatePaymentMethodResponse, createAccessToken } from '../api';
 import type { CreateOrder, OnApprove, OnShippingChange } from '../button/props';
 import { TARGET_ELEMENT } from '../constants';
 
@@ -36,6 +36,7 @@ type VaultInstance = {|
 |};
 
 type VaultProps = {|
+    clientID : string,
     createOrder : CreateOrder,
     paymentMethodID : ?string,
     onApprove : OnApprove,
@@ -82,7 +83,7 @@ function handleValidateResponse({ status, body, createOrder } : HandleValidateRe
 }
 
 export function initVault(props : VaultProps) : VaultInstance {
-    const { createOrder, paymentMethodID, onApprove, clientAccessToken, enableThreeDomainSecure } = props;
+    const { clientID, createOrder, paymentMethodID, onApprove, clientAccessToken, enableThreeDomainSecure } = props;
 
     if (!paymentMethodID) {
         throw new Error(`Payment method id required for vault capture`);
@@ -99,6 +100,8 @@ export function initVault(props : VaultProps) : VaultInstance {
     };
 
     const start = () => {
+        const facilitatorAccessTokenPromise = createAccessToken(clientID);
+
         return ZalgoPromise.try(() => {
             return createOrder();
         }).then((orderID) => {
@@ -106,7 +109,9 @@ export function initVault(props : VaultProps) : VaultInstance {
         }).then(({ status, body }) => {
             return handleValidateResponse({ status, body, createOrder });
         }).then(() => {
-            return onApprove({}, { restart });
+            return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
+                return onApprove({ facilitatorAccessToken }, { restart });
+            });
         });
     };
 

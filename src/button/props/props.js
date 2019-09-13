@@ -11,7 +11,6 @@ import { getOnApprove } from './onApprove';
 import { getOnCancel } from './onCancel';
 import { getOnShippingChange } from './onShippingChange';
 import { getOnClick } from './onClick';
-import { getOnAuth } from './onAuth';
 import { getCreateBillingAgreement } from './createBillingAgreement';
 import { getCreateSubscription } from './createSubscription';
 
@@ -111,7 +110,6 @@ export function getButtonCallbackProps({ xprops } : {| xprops : XProps |}) : But
     const onCancel = getOnCancel(xprops, { createOrder });
     const onShippingChange = getOnShippingChange(xprops, { createOrder });
     const onClick = getOnClick(xprops);
-    const onAuth = getOnAuth();
 
     return {
         createOrder,
@@ -120,7 +118,6 @@ export function getButtonCallbackProps({ xprops } : {| xprops : XProps |}) : But
         onApprove,
         onCancel,
         onClick,
-        onAuth,
         onShippingChange
     };
 }

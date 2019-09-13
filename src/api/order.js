@@ -1,14 +1,14 @@
 /* @flow */
 
 import type { ZalgoPromise } from 'zalgo-promise/src';
-import { SDK_QUERY_KEYS, UNKNOWN, FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
+import { FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
 import { request, noop } from 'belter/src';
 
-import { API_URI, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from '../config';
+import { SMART_API_URI, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from '../config';
 import { getLogger } from '../lib';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_CONTEXT_TYPE, HEADERS } from '../constants';
 
-import { callSmartAPI, callGraphQL } from './api';
+import { callSmartAPI, callGraphQL, callRestAPI } from './api';
 
 export type OrderCreateRequest = {|
     intent? : 'CAPTURE' | 'AUTHORIZE',
@@ -28,70 +28,24 @@ export type OrderCaptureResponse = {||};
 export type OrderGetResponse = {||};
 export type OrderAuthorizeResponse = {||};
 
-export function createOrderID(accessToken : string, order : OrderCreateRequest) : ZalgoPromise<string> {
-    getLogger().info(`rest_api_create_order_token`);
+type OrderAPIOptions = {|
+    facilitatorAccessToken : string,
+    buyerAccessToken? : ?string,
+    partnerAttributionID : ?string
+|};
 
-    if (!accessToken) {
-        throw new Error(`Access token not passed`);
-    }
+export function createOrderID(order : OrderCreateRequest, { facilitatorAccessToken, partnerAttributionID } : OrderAPIOptions) : ZalgoPromise<string> {
+    getLogger().info(`rest_api_create_order_id`);
 
-    if (!order) {
-        throw new Error(`Expected order details to be passed`);
-    }
-
-    const currency = window.xprops.currency;
-    const intent = window.xprops.intent;
-    const merchantID = window.xprops.merchantID;
-
-    order = { ...order };
-
-    if (order.intent && order.intent.toLowerCase() !== intent) {
-        throw new Error(`Unexpected intent: ${ order.intent } passed to order.create. Please ensure you are passing /sdk/js?${ SDK_QUERY_KEYS.INTENT }=${ order.intent.toLowerCase() } in the paypal script tag.`);
-    }
-
-    // $FlowFixMe
-    order = { ...order, intent: intent.toUpperCase() };
-
-    order.purchase_units = order.purchase_units.map(unit => {
-        if (unit.amount.currency_code && unit.amount.currency_code !== currency) {
-            throw new Error(`Unexpected currency: ${ unit.amount.currency_code } passed to order.create. Please ensure you are passing /sdk/js?${ SDK_QUERY_KEYS.CURRENCY }=${ unit.amount.currency_code } in the paypal script tag.`);
+    return callRestAPI({
+        accessToken: facilitatorAccessToken,
+        method:      `post`,
+        url:         `${ ORDERS_API_URL }`,
+        data:        order,
+        headers:     {
+            [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || ''
         }
-
-        let payee = unit.payee;
-
-        if (payee) {
-            if (!merchantID) {
-                throw new Error(`Pass ${ SDK_QUERY_KEYS.MERCHANT_ID }=XYZ in the paypal script tag. Pass ${ SDK_QUERY_KEYS.MERCHANT_ID }=${ UNKNOWN } if you do not have access to the merchant id`);
-            }
-
-            if (payee.merchant_id && merchantID[0] !== UNKNOWN && payee.merchant_id !== merchantID[0]) {
-                throw new Error(`Expected payee.merchant_id to be "${ merchantID[0] }"`);
-            }
-        }
-
-        if (merchantID && merchantID[0] !== UNKNOWN) {
-            payee = {
-                ...payee,
-                merchant_id: merchantID[0]
-            };
-        }
-
-        return { ...unit, payee, amount: { ...unit.amount, currency_code: currency } };
-    });
-
-    order.application_context = order.application_context || {};
-
-    const headers : Object = {
-        'Authorization':                 `Bearer ${ accessToken }`,
-        'PayPal-Partner-Attribution-Id': window.xprops.partnerAttributionID
-    };
-
-    return request({
-        method: `post`,
-        url:    ORDERS_API_URL,
-        headers,
-        json:   order
-    }).then(({ body }) : string => {
+    }).then((body) : string => {
 
         const orderID = body && body.id;
 
@@ -111,32 +65,78 @@ export function createOrderID(accessToken : string, order : OrderCreateRequest) 
     });
 }
 
-export function getOrder(orderID : string) : ZalgoPromise<OrderResponse> {
-    return callSmartAPI({
-        url: `${ API_URI.ORDER }/${ orderID }`
-    });
+export function getOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
+    return buyerAccessToken
+        ? callSmartAPI({
+            accessToken: buyerAccessToken,
+            url:         `${ SMART_API_URI.ORDER }/${ orderID }`
+        })
+        : callRestAPI({
+            accessToken: facilitatorAccessToken,
+            url:         `${ ORDERS_API_URL }/${ orderID }`,
+            headers:     {
+                [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || ''
+            }
+        });
 }
 
-export function captureOrder(orderID : string) : ZalgoPromise<OrderResponse> {
-    return callSmartAPI({
-        method: 'post',
-        url:    `${ API_URI.ORDER }/${ orderID }/capture`
-    });
+export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
+    return buyerAccessToken
+        ? callSmartAPI({
+            accessToken: buyerAccessToken,
+            method:      'post',
+            url:         `${ SMART_API_URI.ORDER }/${ orderID }/capture`
+        })
+        : callRestAPI({
+            accessToken: facilitatorAccessToken,
+            method:      `post`,
+            url:         `${ ORDERS_API_URL }/${ orderID }/capture`,
+            headers:     {
+                [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || ''
+            }
+        });
 }
 
-export function authorizeOrder(orderID : string) : ZalgoPromise<OrderResponse> {
-    return callSmartAPI({
-        method: 'post',
-        url:    `${ API_URI.ORDER }/${ orderID }/authorize`
-    });
+export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
+    return buyerAccessToken
+        ? callSmartAPI({
+            accessToken: buyerAccessToken,
+            method:      'post',
+            url:         `${ SMART_API_URI.ORDER }/${ orderID }/authorize`
+        })
+        : callRestAPI({
+            accessToken: facilitatorAccessToken,
+            method:      `post`,
+            url:         `${ ORDERS_API_URL }/${ orderID }/authorize`,
+            headers:     {
+                [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || ''
+            }
+        });
 }
 
-export function patchOrder(orderID : string, patch : []) : ZalgoPromise<OrderResponse> {
-    return callSmartAPI({
-        method: 'post',
-        url:    `${ API_URI.ORDER }/${ orderID }/patch`,
-        json:   { data: { patch } }
-    });
+type PatchData = {|
+    
+|};
+
+export function patchOrder(orderID : string, data : PatchData, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
+    const patchData = Array.isArray(data) ? { patch: data } : data;
+
+    return buyerAccessToken
+        ? callSmartAPI({
+            accessToken: buyerAccessToken,
+            method:      'post',
+            url:         `${ SMART_API_URI.ORDER }/${ orderID }/patch`,
+            json:        { data: patchData }
+        })
+        : callRestAPI({
+            accessToken: facilitatorAccessToken,
+            method:      `patch`,
+            url:         `${ ORDERS_API_URL }/${ orderID }`,
+            data:        patchData,
+            headers:     {
+                [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || ''
+            }
+        });
 }
 
 type PayeeResponse = {|
@@ -147,7 +147,7 @@ type PayeeResponse = {|
 
 export function getPayee(orderID : string) : ZalgoPromise<PayeeResponse> {
     return callSmartAPI({
-        url: `${ API_URI.CHECKOUT }/${ orderID }/payee`
+        url: `${ SMART_API_URI.CHECKOUT }/${ orderID }/payee`
     });
 }
 
@@ -211,7 +211,7 @@ export function validatePaymentMethod({ clientAccessToken, orderID, paymentMetho
 export function billingTokenToOrderID(billingToken : string) : ZalgoPromise<string> {
     return callSmartAPI({
         method: 'post',
-        url:    `${ API_URI.PAYMENT }/${ billingToken }/ectoken`
+        url:    `${ SMART_API_URI.PAYMENT }/${ billingToken }/ectoken`
     }).then(data => {
         return data.token;
     });
@@ -220,7 +220,7 @@ export function billingTokenToOrderID(billingToken : string) : ZalgoPromise<stri
 export function subscriptionIdToCartId(subscriptionID : string) : ZalgoPromise<string> {
     return callSmartAPI({
         method: 'post',
-        url:    `${ API_URI.SUBSCRIPTION }/${ subscriptionID }/cartid`
+        url:    `${ SMART_API_URI.SUBSCRIPTION }/${ subscriptionID }/cartid`
     }).then(data => {
         return data.token;
     });

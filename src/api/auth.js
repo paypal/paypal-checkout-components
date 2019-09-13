@@ -1,13 +1,10 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { memoize, inlineMemoize, base64encode, request } from 'belter/src';
+import { inlineMemoize, base64encode, request } from 'belter/src';
 
 import { AUTH_API_URL } from '../config';
 import { getLogger } from '../lib';
-import { ACCESS_TOKEN_HEADER } from '../constants';
-
-import { addHeaderBuilder } from './api';
 
 export function createAccessToken (clientID : string) : ZalgoPromise<string> {
     return inlineMemoize(createAccessToken, () => {
@@ -41,19 +38,3 @@ export function createAccessToken (clientID : string) : ZalgoPromise<string> {
         });
     }, [ clientID ]);
 }
-
-let persistedAccessToken;
-
-addHeaderBuilder(() => {
-    return {
-        [ ACCESS_TOKEN_HEADER ]: persistedAccessToken
-    };
-});
-
-export const persistAccessToken = memoize((accessToken : string) : ZalgoPromise<void> => {
-    return ZalgoPromise.try(() => {
-        if (accessToken) {
-            persistedAccessToken = accessToken;
-        }
-    });
-});

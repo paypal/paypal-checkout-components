@@ -3,7 +3,7 @@
 import type { ZalgoPromise } from 'zalgo-promise/src';
 import { request } from 'belter/src';
 
-import { CREATE_SUBSCRIPTIONS_API_URL, API_URI } from '../config';
+import { CREATE_SUBSCRIPTIONS_API_URL, SMART_API_URI } from '../config';
 import { getLogger } from '../lib';
 
 import { callSmartAPI } from './api';
@@ -93,16 +93,21 @@ export function reviseSubscription(accessToken : string, subscriptionID : string
     });
 }
 
-export function activateSubscription(subscriptionID : string) : ZalgoPromise<SubscriptionResponse> {
+type SubscriptionAPICredentials = {|
+    buyerAccessToken : ?string
+|};
+
+export function activateSubscription(subscriptionID : string, { buyerAccessToken } : SubscriptionAPICredentials) : ZalgoPromise<SubscriptionResponse> {
     return callSmartAPI({
-        method: `post`,
-        url:    `${ API_URI.SUBSCRIPTION }/${ subscriptionID }/activate`
+        accessToken: buyerAccessToken,
+        method:      `post`,
+        url:         `${ SMART_API_URI.SUBSCRIPTION }/${ subscriptionID }/activate`
     });
 }
 
-
-export function getSubscription(subscriptionID : string) : ZalgoPromise<SubscriptionResponse> {
+export function getSubscription(subscriptionID : string, { buyerAccessToken } : SubscriptionAPICredentials) : ZalgoPromise<SubscriptionResponse> {
     return callSmartAPI({
-        url: `${ API_URI.SUBSCRIPTION }/${ subscriptionID }`
+        accessToken: buyerAccessToken,
+        url:         `${ SMART_API_URI.SUBSCRIPTION }/${ subscriptionID }`
     });
 }

@@ -11,6 +11,7 @@ import { EXPERIENCE_URI } from '../config';
 import { promiseNoop } from '../lib';
 import { POPUP_BRIDGE_OPTYPE } from '../button/props/getPopupBridge';
 import { USER_ACTION } from '../constants';
+import { createAccessToken } from '../api';
 
 let popupBridge;
 
@@ -52,6 +53,7 @@ type PopupBridgeInstance = {|
 |};
 
 type PopupBridgeProps = {|
+    clientID : string,
     popupBridge : ?PopupBridge,
     createOrder : CreateOrder,
     onApprove : OnApprove,
@@ -61,9 +63,11 @@ type PopupBridgeProps = {|
 |};
 
 export function initPopupBridge(props : PopupBridgeProps) : PopupBridgeInstance {
-    const { createOrder, onApprove, onCancel, commit, fundingSource } = props;
+    const { clientID, createOrder, onApprove, onCancel, commit, fundingSource } = props;
 
     const start = () => {
+        const facilitatorAccessTokenPromise = createAccessToken(clientID);
+
         return createOrder().then(orderID => {
             if (!popupBridge) {
                 throw new Error(`Popup bridge required`);
@@ -82,7 +86,9 @@ export function initPopupBridge(props : PopupBridgeProps) : PopupBridgeInstance 
 
         }).then(({ opType, PayerID: payerID, paymentId: paymentID, ba_token: billingToken }) => {
             if (opType === POPUP_BRIDGE_OPTYPE.PAYMENT) {
-                return onApprove({ payerID, paymentID, billingToken }, { restart: start });
+                return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
+                    return onApprove({ payerID, paymentID, billingToken, facilitatorAccessToken }, { restart: start });
+                });
             }
 
             if (opType === POPUP_BRIDGE_OPTYPE.CANCEL) {

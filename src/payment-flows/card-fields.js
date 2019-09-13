@@ -11,18 +11,19 @@ import type {
     CreateOrder,
     OnApprove,
     OnCancel,
-    OnAuth,
     OnShippingChange,
     OnError,
     CreateBillingAgreement,
     CreateSubscription
 } from '../button/props';
+import { createAccessToken } from '../api';
 
 import { initCheckout } from './checkout';
 
 let cardFieldsOpen = false;
 
 type CardFieldsProps = {|
+    clientID : string,
     buttonSessionID : string,
     fundingSource : $Values<typeof FUNDING>,
     card : ?$Values<typeof CARD>,
@@ -32,7 +33,6 @@ type CardFieldsProps = {|
     createSubscription : ?CreateSubscription,
     onApprove : OnApprove,
     onCancel : OnCancel,
-    onAuth : OnAuth,
     onShippingChange : ?OnShippingChange,
     cspNonce : ?string,
     locale : LocaleType,
@@ -146,7 +146,8 @@ const slideDownButtons = () => {
 
 export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
     const { fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
-        onAuth, onShippingChange, cspNonce, locale, commit, onError, buttonSessionID } = props;
+        onShippingChange, cspNonce, locale, commit, onError, buttonSessionID, clientID,
+        vault, clientAccessToken, fundingEligibility, createBillingAgreement, createSubscription  } = props;
 
     if (!card) {
         throw new Error(`Card required to render card fields`);
@@ -162,7 +163,9 @@ export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
     }
 
     const restart = memoize(() : ZalgoPromise<void> =>
-        initCheckout({ ...props, context: CONTEXT.IFRAME }).start().finally(unresolvedPromise));
+        initCheckout({ clientID, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
+            onShippingChange, cspNonce, locale, commit, onError, vault, clientAccessToken, fundingEligibility,
+            createBillingAgreement, createSubscription, context: CONTEXT.IFRAME }).start().finally(unresolvedPromise));
 
     const onClose = () => {
         cardFieldsOpen = false;
@@ -172,6 +175,9 @@ export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
         highlightCard(cardType);
     };
 
+    const facilitatorAccessTokenPromise = createAccessToken(clientID);
+    let buyerAccessToken;
+
     const { render, close: closeCardFields, onError: triggerError } = window.paypal.CardFields({
         createOrder,
 
@@ -179,15 +185,20 @@ export function initCardFields(props : CardFieldsProps) : CardFieldsInstance {
         card,
 
         onApprove: ({ payerID, paymentID, billingToken }) => {
-            // eslint-disable-next-line no-use-before-define
-            return close().then(() => {
-                return onApprove({ payerID, paymentID, billingToken }, { restart });
+            return ZalgoPromise.all([
+                facilitatorAccessTokenPromise,
+                close() // eslint-disable-line no-use-before-define
+            ]).then(([ facilitatorAccessToken ]) => {
+                return onApprove({ payerID, paymentID, billingToken, facilitatorAccessToken, buyerAccessToken }, { restart });
             });
+        },
+
+        onAuth: ({ accessToken }) => {
+            buyerAccessToken = accessToken;
         },
 
         onCancel,
         onError,
-        onAuth,
         onClose,
         onShippingChange,
         onCardTypeChange,

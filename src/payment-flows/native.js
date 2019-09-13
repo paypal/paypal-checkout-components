@@ -146,7 +146,7 @@ export function initNative(props : NativeProps) : NativeInstance {
 
     const start = () => {
         return ZalgoPromise.try(() => {
-            const accessTokenPromise = createAccessToken(clientID);
+            const facilitatorAccessTokenPromise = createAccessToken(clientID);
             const orderPromise = createOrder();
             const pageUrlPromise = getPageUrl();
 
@@ -154,7 +154,7 @@ export function initNative(props : NativeProps) : NativeInstance {
 
             socket.on(MESSAGE.GET_PROPS, () : ZalgoPromise<NativeSDKProps> => {
                 return ZalgoPromise.all([
-                    accessTokenPromise, orderPromise, pageUrlPromise
+                    facilitatorAccessTokenPromise, orderPromise, pageUrlPromise
                 ]).then(([ facilitatorAccessToken, orderID, pageUrl ]) => {
                     const userAgent = getUserAgent();
 
@@ -172,7 +172,9 @@ export function initNative(props : NativeProps) : NativeInstance {
             });
 
             socket.on(MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
-                return onApprove({ payerID, paymentID, billingToken }, { restart: start });
+                return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
+                    return onApprove({ payerID, paymentID, billingToken, facilitatorAccessToken }, { restart: start });
+                });
             });
     
             socket.on(MESSAGE.ON_CANCEL, () => {
