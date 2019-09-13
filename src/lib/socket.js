@@ -59,9 +59,9 @@ export type MessageSocketOptions = {|
 |};
 
 export type MessageSocket = {|
-    on : (
+    on : <T, R>( // eslint-disable-line no-undef
         name : string,
-        handler : <T, R>({ data : T }) => ZalgoPromise<R> | R // eslint-disable-line no-undef
+        handler : ({ data : T }) => ZalgoPromise<R> | R // eslint-disable-line no-undef
     ) => void,
     send : <T, R>( // eslint-disable-line no-undef
         name : string,

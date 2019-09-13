@@ -54,8 +54,8 @@ export type XProps = {|
     getParentDomain : () => string,
     getPageUrl : GetPageURL,
 
-    stageHost : string,
-    apiStageHost : string,
+    stageHost : ?string,
+    apiStageHost : ?string,
     
     onInit : XOnInit,
     onApprove : ?XOnApprove,
@@ -90,8 +90,8 @@ export type GlobalProps = {|
     merchantDomain : string,
     getPageUrl : GetPageURL,
 
-    stageHost : string,
-    apiStageHost : string,
+    stageHost : ?string,
+    apiStageHost : ?string,
 
     onInit : OnInit,
     onError : OnError

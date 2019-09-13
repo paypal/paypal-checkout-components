@@ -1,6 +1,6 @@
 /* @flow */
 
-import { memoize, extendUrl, uniqueID, getUserAgent } from 'belter/src';
+import { extendUrl, uniqueID, getUserAgent, stringifyError } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { ENV, PLATFORM, FUNDING } from '@paypal/sdk-constants/src';
 
@@ -23,7 +23,6 @@ const MESSAGE = {
 };
 
 let isNativeCheckoutInstalled = false;
-let isNativeCheckoutWebsocketAvailable = true;
 
 type NativeEligibleProps = {|
     win : ?ProxyWindow,
@@ -66,8 +65,13 @@ export function isNativeEligible({ win, platform, fundingSource, onShippingChang
     return true;
 }
 
-const getNativeSocket = memoize(() : { socket : MessageSocket, sessionUID : string } => {
-    const sessionUID = uniqueID();
+const sessionUID = uniqueID();
+
+const useNativeWebSocket = true;
+let nativeWebSocket : MessageSocket;
+let nativeHttpSocket : MessageSocket;
+
+function getNativeSocket() : MessageSocket {
     const socketParams = {
         sessionUID,
         sourceApp:        SOURCE_APP,
@@ -75,12 +79,16 @@ const getNativeSocket = memoize(() : { socket : MessageSocket, sessionUID : stri
         targetApp:        TARGET_APP
     };
 
-    const socket = isNativeCheckoutWebsocketAvailable
-        ? webSocket({ url: NATIVE_WEBSOCKET_URL, ...socketParams })
-        : httpSocket({ url: HTTP_SOCKET_URL, ...socketParams });
+    let socket;
 
-    return { socket, sessionUID };
-});
+    if (useNativeWebSocket) {
+        socket = nativeWebSocket = nativeWebSocket || webSocket({ url: NATIVE_WEBSOCKET_URL, ...socketParams });
+    } else {
+        socket = nativeHttpSocket = nativeHttpSocket || httpSocket({ url: HTTP_SOCKET_URL, ...socketParams });
+    }
+
+    return socket;
+}
 
 type SetupNativeProps = {|
     platform : $Values<typeof PLATFORM>
@@ -91,15 +99,13 @@ export function setupNative({ platform } : SetupNativeProps) : ZalgoPromise<void
         if (platform !== PLATFORM.MOBILE || !window.xprops.enableNativeCheckout) {
             return;
         }
-    
-        const { socket } = getNativeSocket();
-    
-        return socket.send(MESSAGE.DETECT_APP).then(() => {
+
+        return getNativeSocket().send(MESSAGE.DETECT_APP).then(() => {
             getLogger().info('native_sdk_detected');
             isNativeCheckoutInstalled = true;
         }, err => {
-            getLogger().info('native_sdk_not_detected', { err: err.stack || err.toString() });
-            isNativeCheckoutWebsocketAvailable = false;
+            getLogger().info('native_sdk_not_detected', { err: stringifyError(err) });
+            // useNativeWebSocket = false;
         });
     });
 }
@@ -114,14 +120,25 @@ type NativeProps = {|
     fundingSource : $Values<typeof FUNDING>,
     getPageUrl : GetPageURL,
     env : $Values<typeof ENV>,
-    stageHost : string,
-    apiStageHost : string
+    stageHost : ?string,
+    apiStageHost : ?string
 |};
 
 type NativeInstance = {|
     start : () => ZalgoPromise<void>,
     close : () => ZalgoPromise<void>,
     triggerError : (mixed) => ZalgoPromise<void>
+|};
+
+type NativeSDKProps = {|
+    orderID : string,
+    facilitatorAccessToken : string,
+    pageUrl : string,
+    commit : boolean,
+    userAgent : string,
+    env : $Values<typeof ENV>,
+    stageHost : ?string,
+    apiStageHost : ?string
 |};
 
 export function initNative(props : NativeProps) : NativeInstance {
@@ -133,9 +150,9 @@ export function initNative(props : NativeProps) : NativeInstance {
             const orderPromise = createOrder();
             const pageUrlPromise = getPageUrl();
 
-            const { socket, sessionUID } = getNativeSocket();
-    
-            socket.on(MESSAGE.GET_PROPS, () => {
+            const socket = getNativeSocket();
+
+            socket.on(MESSAGE.GET_PROPS, () : ZalgoPromise<NativeSDKProps> => {
                 return ZalgoPromise.all([
                     accessTokenPromise, orderPromise, pageUrlPromise
                 ]).then(([ facilitatorAccessToken, orderID, pageUrl ]) => {
@@ -153,7 +170,7 @@ export function initNative(props : NativeProps) : NativeInstance {
                     };
                 });
             });
-    
+
             socket.on(MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
                 return onApprove({ payerID, paymentID, billingToken }, { restart: start });
             });
