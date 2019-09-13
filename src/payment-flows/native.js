@@ -30,10 +30,11 @@ type NativeEligibleProps = {|
     fundingSource : $Values<typeof FUNDING>,
     onShippingChange : ?OnShippingChange,
     createBillingAgreement : ?CreateBillingAgreement,
-    createSubscription : ?CreateSubscription
+    createSubscription : ?CreateSubscription,
+    enableNativeCheckout : ?boolean
 |};
 
-export function isNativeEligible({ win, platform, fundingSource, onShippingChange, createBillingAgreement, createSubscription } : NativeEligibleProps) : boolean {
+export function isNativeEligible({ win, platform, fundingSource, onShippingChange, createBillingAgreement, createSubscription, enableNativeCheckout } : NativeEligibleProps) : boolean {
     if (win) {
         return false;
     }
@@ -54,7 +55,7 @@ export function isNativeEligible({ win, platform, fundingSource, onShippingChang
         return false;
     }
 
-    if (window.xprops.enableNativeCheckout) {
+    if (enableNativeCheckout) {
         return true;
     }
     
@@ -91,12 +92,13 @@ function getNativeSocket() : MessageSocket {
 }
 
 type SetupNativeProps = {|
-    platform : $Values<typeof PLATFORM>
+    platform : $Values<typeof PLATFORM>,
+    enableNativeCheckout : ?boolean
 |};
 
-export function setupNative({ platform } : SetupNativeProps) : ZalgoPromise<void> {
+export function setupNative({ platform, enableNativeCheckout } : SetupNativeProps) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
-        if (platform !== PLATFORM.MOBILE || !window.xprops.enableNativeCheckout) {
+        if (platform !== PLATFORM.MOBILE || !enableNativeCheckout) {
             return;
         }
 

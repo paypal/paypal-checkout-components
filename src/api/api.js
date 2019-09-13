@@ -21,7 +21,7 @@ export function callRestAPI<D, T>({ accessToken, method, url, data, headers } : 
     }
 
     const requestHeaders = {
-        [ HEADERS.AUTHORIZATION ]:          `Bearer ${ accessToken }`,
+        [ HEADERS.AUTHORIZATION ]: `Bearer ${ accessToken }`,
         ...headers
     };
 

@@ -51,8 +51,8 @@ export function validateOrder(orderID : string, { clientID, merchantID } : { cli
         const intent = (cart.intent.toLowerCase() === 'sale') ? INTENT.CAPTURE : cart.intent.toLowerCase();
         const currency = cart.amounts && cart.amounts.total.currencyCode;
 
-        const expectedIntent = window.xprops.intent;
-        const expectedCurrency = window.xprops.currency;
+        const expectedIntent = intent;
+        const expectedCurrency = currency;
 
         if (intent !== expectedIntent) {
             throw new Error(`Expected intent from order api call to be ${ expectedIntent }, got ${ intent }. Please ensure you are passing ${ SDK_QUERY_KEYS.INTENT }=${ intent } to the sdk`);
@@ -80,7 +80,7 @@ export function validateOrder(orderID : string, { clientID, merchantID } : { cli
             }
         }
 
-        const xpropMerchantID = window.xprops.merchantID && window.xprops.merchantID[0];
+        const xpropMerchantID = merchantID && merchantID[0];
         if (xpropMerchantID && payeeMerchantID !== xpropMerchantID) {
             throw new Error(`Payee passed in transaction does not match expected merchant id: ${ xpropMerchantID }`);
         }

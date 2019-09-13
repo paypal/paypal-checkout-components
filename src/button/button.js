@@ -40,11 +40,11 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
     }
 
     const {
-        env, stageHost, apiStageHost, buttonSessionID,
+        env, stageHost, apiStageHost, buttonSessionID, style,
         vault, commit, clientAccessToken, buyerCountry, locale, cspNonce, platform,
         sessionID, clientID, partnerAttributionID, correlationID, enableThreeDomainSecure,
         merchantDomain, getPopupBridge, getPrerenderDetails, getPageUrl, rememberFunding,
-        onError, onInit
+        onError, onInit, enableStandardCardFields, enableNativeCheckout
     } = getGlobalProps({ xprops: window.xprops, buyerGeoCountry, cspNonce: serverCSPNonce });
 
     setupLogger({ env, sessionID, clientID, partnerAttributionID, commit,
@@ -74,10 +74,10 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
                 return win ? win.close() : null;
             }
 
-            const isCardFields = isCardFieldsEligible({ win, vault, onShippingChange, fundingSource, isCardFieldsExperimentEnabled });
+            const isCardFields = isCardFieldsEligible({ win, vault, onShippingChange, fundingSource, isCardFieldsExperimentEnabled, enableStandardCardFields });
             const isVaultCapture = isVaultCaptureEligible({ win, paymentMethodID, onShippingChange });
             const isPopupBridge = isPopupBridgeEligible({ win, onShippingChange });
-            const isNative = isNativeEligible({ win, platform, fundingSource, onShippingChange, createBillingAgreement, createSubscription });
+            const isNative = isNativeEligible({ win, platform, fundingSource, onShippingChange, createBillingAgreement, createSubscription, enableNativeCheckout });
             const isCheckout = !isCardFields && !isVaultCapture && !isPopupBridge && !isNative;
 
             const { start, close, triggerError } = (() => {
@@ -93,7 +93,8 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
                     enableLoadingSpinner(button);
 
                     return initVault({
-                        clientID, createOrder, paymentMethodID, onApprove, clientAccessToken, enableThreeDomainSecure
+                        clientID, createOrder, paymentMethodID, onApprove, clientAccessToken, enableThreeDomainSecure,
+                        buttonSessionID, partnerAttributionID
                     });
                 }
 
@@ -186,11 +187,11 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
     });
 
     const setupRememberTask = setupRemember({ rememberFunding, fundingEligibility });
-    const setupButtonLogsTask = setupButtonLogs();
+    const setupButtonLogsTask = setupButtonLogs({ style });
 
     const setupCheckoutFlow = setupCheckout();
     const setupPopupBridgeFlow = setupPopupBridge({ getPopupBridge });
-    const setupNativeFlow = setupNative({ platform });
+    const setupNativeFlow = setupNative({ platform, enableNativeCheckout });
 
     return ZalgoPromise.hash({
         initPromise, setupButtonLogsTask, setupPrerenderTask, setupRememberTask,

@@ -7,17 +7,13 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { getLogger } from '../lib';
 import { DATA_ATTRIBUTES, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FTPI_BUTTON_KEY } from '../constants';
 
-export function setupButtonLogs() : ZalgoPromise<void> {
+import type { ButtonStyle } from './props';
+
+export function setupButtonLogs({ style } : { style : ButtonStyle }) : ZalgoPromise<void> {
     const logger = getLogger();
 
     if (isIEIntranet()) {
         logger.warn('button_child_intranet_mode');
-    }
-
-    const xprops = window.xprops;
-
-    if (!xprops) {
-        throw new Error(`No xprops found`);
     }
 
     return getPageRenderTime().then(pageRenderTime => {
@@ -27,8 +23,6 @@ export function setupButtonLogs() : ZalgoPromise<void> {
         }).filter(source => {
             return source && source !== FUNDING.CARD;
         });
-
-        const style = xprops.style || {};
 
         const { layout, color, shape, label, tagline = true } = style;
 

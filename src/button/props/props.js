@@ -34,10 +34,13 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
         getPrerenderDetails,
         getPageUrl,
         enableThreeDomainSecure,
+        enableStandardCardFields,
+        enableNativeCheckout,
         remember: rememberFunding,
         onError,
         stageHost,
-        apiStageHost
+        apiStageHost,
+        style
     } = xprops;
 
     cspNonce = cspNonce || getNonce();
@@ -46,6 +49,7 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
 
     return {
         env,
+        style,
 
         vault,
         commit,
@@ -67,7 +71,10 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
         getPrerenderDetails,
         getPageUrl,
         rememberFunding,
+
         enableThreeDomainSecure,
+        enableStandardCardFields,
+        enableNativeCheckout,
 
         onInit,
         onError,

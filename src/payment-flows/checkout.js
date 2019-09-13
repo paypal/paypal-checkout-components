@@ -19,7 +19,7 @@ function getRenderWindow() : Object {
     if (canRenderTop && top) {
         return top;
     } else {
-        return window.xprops.getParent();
+        return getParent();
     }
 }
 

@@ -54,10 +54,11 @@ type CardFieldsEligibleProps = {|
     vault : boolean,
     fundingSource : $Values<typeof FUNDING>,
     onShippingChange : ?OnShippingChange,
-    isCardFieldsExperimentEnabled? : boolean
+    isCardFieldsExperimentEnabled? : boolean,
+    enableStandardCardFields : ?boolean
 |};
 
-export function isCardFieldsEligible({ win, vault, onShippingChange, fundingSource, isCardFieldsExperimentEnabled } : CardFieldsEligibleProps) : boolean {
+export function isCardFieldsEligible({ win, vault, onShippingChange, fundingSource, isCardFieldsExperimentEnabled, enableStandardCardFields } : CardFieldsEligibleProps) : boolean {
     if (win) {
         return false;
     }
@@ -75,12 +76,12 @@ export function isCardFieldsEligible({ win, vault, onShippingChange, fundingSour
     }
 
     // if merchant opt-in inline guest, they will ALWAYS see inline guest guest
-    if (window.xprops.enableStandardCardFields === true) {
+    if (enableStandardCardFields === true) {
         return true;
     }
 
     // if merchant doesn't pass the inline guest flag, they will in the ramp
-    if (!window.xprops.enableStandardCardFields) {
+    if (!enableStandardCardFields) {
         if (!isCardFieldsExperimentEnabled) {
             return false;
         } else {

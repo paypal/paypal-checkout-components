@@ -41,7 +41,9 @@ type VaultProps = {|
     paymentMethodID : ?string,
     onApprove : OnApprove,
     clientAccessToken : ?string,
-    enableThreeDomainSecure : boolean
+    enableThreeDomainSecure : boolean,
+    buttonSessionID : string,
+    partnerAttributionID : ?string
 |};
 
 
@@ -83,7 +85,7 @@ function handleValidateResponse({ status, body, createOrder } : HandleValidateRe
 }
 
 export function initVault(props : VaultProps) : VaultInstance {
-    const { clientID, createOrder, paymentMethodID, onApprove, clientAccessToken, enableThreeDomainSecure } = props;
+    const { clientID, createOrder, paymentMethodID, onApprove, clientAccessToken, enableThreeDomainSecure, buttonSessionID, partnerAttributionID } = props;
 
     if (!paymentMethodID) {
         throw new Error(`Payment method id required for vault capture`);
@@ -105,7 +107,7 @@ export function initVault(props : VaultProps) : VaultInstance {
         return ZalgoPromise.try(() => {
             return createOrder();
         }).then((orderID) => {
-            return validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure });
+            return validatePaymentMethod({ clientAccessToken, orderID, paymentMethodID, enableThreeDomainSecure, buttonSessionID, partnerAttributionID });
         }).then(({ status, body }) => {
             return handleValidateResponse({ status, body, createOrder });
         }).then(() => {

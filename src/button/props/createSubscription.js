@@ -23,16 +23,16 @@ export function buildXCreateSubscriptionData() : XCreateSubscriptionDataType {
     return {};
 }
 
-export function buildXCreateSubscriptionActions({ clientID } : { clientID : string }) : XCreateSubscriptionActionsType {
+export function buildXCreateSubscriptionActions({ clientID, partnerAttributionID } : { clientID : string, partnerAttributionID : ?string }) : XCreateSubscriptionActionsType {
     const create = (data) => {
         return createAccessToken(clientID).then(accessToken => {
-            return createSubscription(accessToken, data);
+            return createSubscription(accessToken, data, { partnerAttributionID });
         });
     };
 
     const revise = (subscriptionID : string, data) => {
         return createAccessToken(clientID).then(accessToken => {
-            return reviseSubscription(accessToken, subscriptionID, data);
+            return reviseSubscription(accessToken, subscriptionID, data, { partnerAttributionID });
         });
     };
 
@@ -44,11 +44,11 @@ export function buildXCreateSubscriptionActions({ clientID } : { clientID : stri
 export type CreateSubscription = XCreateSubscription;
 
 export function getCreateSubscription(xprops : XProps) : ?CreateSubscription {
-    const { createSubscription: createSubscriptionFunc } = xprops;
+    const { createSubscription: createSubscriptionFunc, partnerAttributionID } = xprops;
     const { clientID } = xprops;
     if (createSubscriptionFunc) {
         return memoize(() => {
-            return createSubscriptionFunc(buildXCreateSubscriptionData(), buildXCreateSubscriptionActions({ clientID })).then(subscriptionID => {
+            return createSubscriptionFunc(buildXCreateSubscriptionData(), buildXCreateSubscriptionActions({ clientID, partnerAttributionID })).then(subscriptionID => {
                 if (!subscriptionID || typeof subscriptionID !== 'string') {
                     throw new Error(`Expected an subscription id to be passed to createSubscription`);
                 }

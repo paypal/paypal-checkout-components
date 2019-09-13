@@ -24,9 +24,18 @@ export type PrerenderDetailsType = {|
     card ? : ? $Values<typeof CARD>
 |};
 
+export type ButtonStyle = {|
+    layout : string,
+    color : string,
+    shape : string,
+    label : string,
+    tagline : boolean | void
+|};
+
 export type XProps = {|
     env : $Values<typeof ENV>,
     locale : LocaleType,
+    style : ButtonStyle,
 
     sessionID : string,
     buttonSessionID : string,
@@ -52,6 +61,8 @@ export type XProps = {|
     getPopupBridge : XGetPopupBridge,
     remember : RememberFunding,
     enableThreeDomainSecure : boolean,
+    enableStandardCardFields : ?boolean,
+    enableNativeCheckout : ?boolean,
     getParentDomain : () => string,
     getPageUrl : GetPageURL,
 
@@ -69,6 +80,7 @@ export type XProps = {|
 export type GlobalProps = {|
     env : $Values<typeof ENV>,
     locale : LocaleType,
+    style : ButtonStyle,
 
     sessionID : string,
     buttonSessionID : string,
@@ -88,6 +100,7 @@ export type GlobalProps = {|
     getPopupBridge : GetPopupBridge,
     rememberFunding : RememberFunding,
     enableThreeDomainSecure : boolean,
+    enableNativeCheckout : ?boolean,
     merchantDomain : string,
     getPageUrl : GetPageURL,
 
@@ -95,7 +108,8 @@ export type GlobalProps = {|
     apiStageHost : ?string,
 
     onInit : OnInit,
-    onError : OnError
+    onError : OnError,
+    enableStandardCardFields : ?boolean
 |};
 
 export type ButtonCallbackProps = {|

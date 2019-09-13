@@ -27,8 +27,11 @@ export type SubscriptionCreateRequest = {|
 
 export type SubscriptionResponse = {||};
 
+type SubsriptionOptions = {|
+    partnerAttributionID : ?string
+|};
 
-export function createSubscription(accessToken : string, subscriptionPayload : SubscriptionCreateRequest) : ZalgoPromise<string> {
+export function createSubscription(accessToken : string, subscriptionPayload : SubscriptionCreateRequest, { partnerAttributionID } : SubsriptionOptions) : ZalgoPromise<string> {
     getLogger().info(`rest_api_create_subscription_id`);
 
     if (!accessToken) {
@@ -41,7 +44,7 @@ export function createSubscription(accessToken : string, subscriptionPayload : S
 
     const headers : Object = {
         'Authorization':                 `Bearer ${ accessToken }`,
-        'PayPal-Partner-Attribution-Id': window.xprops.partnerAttributionID
+        'PayPal-Partner-Attribution-Id': partnerAttributionID
     };
 
     return request({
@@ -58,7 +61,7 @@ export function createSubscription(accessToken : string, subscriptionPayload : S
     });
 }
 
-export function reviseSubscription(accessToken : string, subscriptionID : string, subscriptionPayload : ?SubscriptionCreateRequest) : ZalgoPromise<string> {
+export function reviseSubscription(accessToken : string, subscriptionID : string, subscriptionPayload : ?SubscriptionCreateRequest, { partnerAttributionID } : SubsriptionOptions) : ZalgoPromise<string> {
     getLogger().info(`rest_api_create_subscription_id`);
 
     if (!accessToken) {
@@ -75,7 +78,7 @@ export function reviseSubscription(accessToken : string, subscriptionID : string
 
     const headers : Object = {
         'Authorization':                 `Bearer ${ accessToken }`,
-        'PayPal-Partner-Attribution-Id': window.xprops.partnerAttributionID
+        'PayPal-Partner-Attribution-Id': partnerAttributionID
     };
 
     return request({
