@@ -310,15 +310,15 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     );
 }
 
-function renderTagline({ label, tagline, color, locale, multiple, env, cards, checkoutCustomization } : { label : string, color : string, tagline : boolean, locale : LocaleType, multiple : boolean, env : string, cards : $ReadOnlyArray<string>, checkoutCustomization : ?CheckoutCustomizationType }) : ?JsxHTMLNode {
+function renderTagline({ label, tagline, color, locale, multiple, env, cards, checkoutCustomization, layout } : { label : string, color : string, tagline : boolean, locale : LocaleType, multiple : boolean, env : string, cards : $ReadOnlyArray<string>, checkoutCustomization : ?CheckoutCustomizationType, layout : $Values<typeof BUTTON_LAYOUT> }) : ?JsxHTMLNode {
     const delay = 0.2;
     
     if (!tagline) {
         return;
     }
   
-    if (__WEB__) {
-    return LoadingDots(delay);
+    if (__WEB__ && layout !== BUTTON_LAYOUT.VERTICAL) {
+        return LoadingDots(delay);
     }
     
     const tag = multiple
@@ -439,7 +439,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
             size
         }));
 
-    const taglineNode     = renderTagline({ label, tagline, color, locale, multiple, env, cards, checkoutCustomization });
+    const taglineNode     = renderTagline({ label, tagline, color, locale, multiple, env, cards, checkoutCustomization, layout });
     const fundingiconNode = renderFundingIcons({ cards, fundingicons, size, layout });
 
     const styleNode  = renderStyle({ height, cardNumber: cards.length });
