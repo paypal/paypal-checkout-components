@@ -108,6 +108,8 @@ function isApmEligible(source, props) : boolean {
 
 let creditThrottle;
 
+const smartThrottle = getThrottle('smart_button_uri', 1);
+
 type ButtonOptions = {|
     style : {|
         maxbuttons? : number,
@@ -132,18 +134,24 @@ type ButtonOptions = {|
     stageUrl? : string,
     localhostUrl? : string,
     checkoutUri? : string,
-    authCode? : string
+    authCode? : string,
+    enableNativeCheckout? : boolean
 |};
 
 export const Button : Component<ButtonOptions> = create({
 
     tag:  'paypal-button',
     name: 'ppbutton',
-
+    
     buildUrl(props) : string {
         const env = props.env || config.env;
+        const url = config.buttonUrls[env];
 
-        return config.buttonUrls[env];
+        if (smartThrottle.isEnabled() || props.enableNativeCheckout) {
+            return url.replace('/webapps/hermes/button', '/smart/button');
+        }
+
+        return url;
     },
 
     contexts: {
@@ -628,6 +636,9 @@ export const Button : Component<ButtonOptions> = create({
                     }
 
                     info('button_authorize');
+                    smartThrottle.logComplete({
+                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                    });
 
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
@@ -845,6 +856,9 @@ export const Button : Component<ButtonOptions> = create({
             decorate(original) : Function {
                 return function decorateOnClick(data : ?{ fundingSource : string, card? : string }) : void {
 
+                    smartThrottle.logStart({
+                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                    });
                     info('button_click');
 
                     track({
