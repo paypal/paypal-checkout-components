@@ -773,8 +773,8 @@
         try {
             if (!item) return !1;
             if ("undefined" != typeof Promise && item instanceof Promise) return !0;
-            if ("undefined" != typeof window && window.Window && item instanceof window.Window) return !1;
-            if ("undefined" != typeof window && window.constructor && item instanceof window.constructor) return !1;
+            if ("undefined" != typeof window && "function" == typeof window.Window && item instanceof window.Window) return !1;
+            if ("undefined" != typeof window && "function" == typeof window.constructor && item instanceof window.constructor) return !1;
             var _toString = {}.toString;
             if (_toString) {
                 var name = _toString.call(item);
@@ -1009,7 +1009,7 @@
                 country: config.a.locale.country,
                 lang: config.a.locale.lang,
                 uid: Object(session.c)(),
-                ver: "4.0.285"
+                ver: "4.0.286"
             };
         })), Object(client.a)((function() {
             return {
@@ -1254,7 +1254,7 @@
         });
     }));
     function getScriptVersion() {
-        return "4.0.285";
+        return "4.0.286";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -1263,7 +1263,7 @@
             return 0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://")), 
             scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.285.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.286.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.g)();
@@ -1287,7 +1287,7 @@
                     domain: metaFrameDomain
                 });
                 return src.bridge.openBridge(Object(dom.a)(metaFrameUrl, {
-                    version: "4.0.285"
+                    version: "4.0.286"
                 }), metaFrameDomain).then((function() {
                     return metaListener;
                 })).then((function(_ref) {
@@ -1465,9 +1465,9 @@
     "use strict";
     var _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, constants = __webpack_require__(0), config = {
         locales: constants.z,
-        scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.285.js",
+        scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.286.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.285",
+        version: "4.0.286",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -9566,7 +9566,7 @@
     function beacon(event, payload) {
         void 0 === payload && (payload = {});
         try {
-            payload.event = "ppxo_" + event, payload.version = "4.0.285", payload.host = window.location.host, 
+            payload.event = "ppxo_" + event, payload.version = "4.0.286", payload.host = window.location.host, 
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)(), payload.appName = APP_NAME;
             var query = [];
             for (var key in payload) payload.hasOwnProperty(key) && query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
@@ -13685,13 +13685,13 @@
     __webpack_require__.r(__webpack_exports__);
     var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29), _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32), _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12), _lib_security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(25);
     if (!Object(_lib_security__WEBPACK_IMPORTED_MODULE_3__.b)()) throw new Error("Do not integrate with versioned script url");
-    if (window.paypal && "4.0.285" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-        version: "4.0.285"
-    }), new Error("PayPal Checkout Integration Script with same version (4.0.285) already loaded on page");
-    if (window.paypal && window.paypal.version && "4.0.285" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
+    if (window.paypal && "4.0.286" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
+        version: "4.0.286"
+    }), new Error("PayPal Checkout Integration Script with same version (4.0.286) already loaded on page");
+    if (window.paypal && window.paypal.version && "4.0.286" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
         existingVersion: window.paypal.version,
-        version: "4.0.285"
-    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.285");
+        version: "4.0.286"
+    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.286");
     try {
         var _interface = __webpack_require__(66);
         Object(_lib_namespace__WEBPACK_IMPORTED_MODULE_1__.a)(_interface, [ "paypal", "PAYPAL", "ppxo" ], [ "apps" ]);
@@ -21152,7 +21152,7 @@
             var style = props.style;
             validateButtonLocale(props.locale), validateButtonStyle(style, props);
         }(props);
-        var script, _normalizeProps = normalizeProps(props), locale = _normalizeProps.locale, shape = _normalizeProps.shape, branding = _normalizeProps.branding, funding = _normalizeProps.funding, layout = _normalizeProps.layout, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, buttonNodes = function(_ref4) {
+        var script, _normalizeProps = normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, multiple = _normalizeProps.multiple, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, installmentperiod = _normalizeProps.installmentperiod, fundingicons = _normalizeProps.fundingicons, size = _normalizeProps.size, checkoutCustomization = _normalizeProps.checkoutCustomization, buttonNodes = function(_ref4) {
             var label = _ref4.label, color = _ref4.color, multiple = _ref4.multiple, layout = _ref4.layout;
             return _ref4.sources.map((function(source, i) {
                 var buttonLabel = determineLabel({
@@ -21168,8 +21168,8 @@
                 };
             }));
         }({
-            label: _normalizeProps.label,
-            color: _normalizeProps.color,
+            label: label,
+            color: color,
             sources: _normalizeProps.sources,
             multiple: multiple,
             layout: layout
@@ -21232,15 +21232,46 @@
                 installmentperiod: installmentperiod,
                 size: size
             });
-        })), taglineNode = Object(jsx.b)("div", null, Object(jsx.b)("style", {
-            innerHTML: "\n                .loading-dots {\n                    color: rgba(0, 0, 0, 0.5);\n                    font-size: inherit;\n                    font-family: Arial, Helvetica, sans-serif;\n                    display: inline-block;\n                }\n\n                .loading-dot {\n                    opacity: 0;\n                    display: inline-block;\n                    animation-name: loading-dot;\n                    animation-duration: 1s;\n                    animation-fill-mode: forwards;\n                    animation-iteration-count: infinite;\n                    margin-right: 2px;\n                }\n\n                .loading-dot-0 {\n                    animation-delay: " + .2.toFixed(1) + "s;\n                }\n\n                .loading-dot-1 {\n                    animation-delay: " + .4.toFixed(1) + "s;\n                }\n\n                .loading-dot-2 {\n                    animation-delay: " + (3 * .2).toFixed(1) + "s;\n                }\n\n                @keyframes loading-dot {\n                    0% {\n                        opacity: 0;\n                    }\n                    20% {\n                        opacity: 1;\n                    }\n                    30% {\n                        opacity: 1;\n                    }\n                    40% {\n                        opacity: 0;\n                    }\n                    100% {\n                        opacity: 0;\n                    }\n                }\n            "
-        }), Object(jsx.b)("div", {
-            class: "loading-dots"
-        }, [ 0, 1, 2 ].map((function(i) {
-            return Object(jsx.b)("div", {
-                class: "loading-dot loading-dot-" + i
-            }, "•");
-        })))), fundingiconNode = function(_ref9) {
+        })), taglineNode = function(_ref15) {
+            var label = _ref15.label, color = _ref15.color, locale = _ref15.locale, multiple = _ref15.multiple, env = _ref15.env, cards = _ref15.cards, checkoutCustomization = _ref15.checkoutCustomization;
+            if (_ref15.tagline) {
+                if (_ref15.layout !== constants.g.VERTICAL) return Object(jsx.b)("div", null, Object(jsx.b)("style", {
+                    innerHTML: "\n                .loading-dots {\n                    color: rgba(0, 0, 0, 0.5);\n                    font-size: inherit;\n                    font-family: Arial, Helvetica, sans-serif;\n                    display: inline-block;\n                }\n\n                .loading-dot {\n                    opacity: 0;\n                    display: inline-block;\n                    animation-name: loading-dot;\n                    animation-duration: 1s;\n                    animation-fill-mode: forwards;\n                    animation-iteration-count: infinite;\n                    margin-right: 2px;\n                }\n\n                .loading-dot-0 {\n                    animation-delay: " + .2.toFixed(1) + "s;\n                }\n\n                .loading-dot-1 {\n                    animation-delay: " + .4.toFixed(1) + "s;\n                }\n\n                .loading-dot-2 {\n                    animation-delay: " + (3 * .2).toFixed(1) + "s;\n                }\n\n                @keyframes loading-dot {\n                    0% {\n                        opacity: 0;\n                    }\n                    20% {\n                        opacity: 1;\n                    }\n                    30% {\n                        opacity: 1;\n                    }\n                    40% {\n                        opacity: 0;\n                    }\n                    100% {\n                        opacity: 0;\n                    }\n                }\n            "
+                }), Object(jsx.b)("div", {
+                    class: "loading-dots"
+                }, [ 0, 1, 2 ].map((function(i) {
+                    return Object(jsx.b)("div", {
+                        class: "loading-dot loading-dot-" + i
+                    }, "•");
+                }))));
+                var tag = multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag"), text = checkoutCustomization && checkoutCustomization.tagline && checkoutCustomization.tagline.text ? checkoutCustomization.tagline.text : renderContent(tag, {
+                    locale: locale,
+                    color: color,
+                    env: env,
+                    cards: cards
+                }), impression = checkoutCustomization && checkoutCustomization.tagline && checkoutCustomization.tagline.tracking && checkoutCustomization.tagline.tracking.impression;
+                if (text) return function(tagColor, impression, text) {
+                    return Object(jsx.b)("div", null, Object(jsx.b)("style", {
+                        innerHTML: "\n            .tracking-beacon {\n                visibility: hidden;\n                position: absolute;\n                height: 1px;\n                width: 1px;\n            }\n        "
+                    }), Object(jsx.b)("div", {
+                        class: class_CLASS.TAGLINE + " " + class_CLASS.TAGLINE_COLOR + "-" + tagColor
+                    }, Object(jsx.b)("span", null, text), impression && Object(jsx.b)("img", {
+                        class: "tracking-beacon",
+                        src: impression
+                    })));
+                }(getButtonConfig(label, "tagLineColors")[color], impression, text);
+            }
+        }({
+            label: label,
+            tagline: tagline,
+            color: color,
+            locale: locale,
+            multiple: multiple,
+            env: env,
+            cards: cards,
+            checkoutCustomization: checkoutCustomization,
+            layout: layout
+        }), fundingiconNode = function(_ref9) {
             var cards = _ref9.cards, size = _ref9.size, layout = _ref9.layout;
             if (_ref9.fundingicons) return Object(jsx.b)("div", {
                 class: "" + class_CLASS.FUNDINGICONS
@@ -21367,7 +21398,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.285", 
+        return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.286", 
         _ref18), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -21385,11 +21416,12 @@
             var regex = new RegExp("[^a-zA-Z\\d\\-]*" + allowDomain.replace(/\./g, "\\.") + "$");
             return null !== domain.match(regex);
         }));
-    })), component_Button = Object(src.c)({
+    })), smartThrottle = Object(lib.x)("smart_button_uri", 1), component_Button = Object(src.c)({
         tag: "paypal-button",
         name: "ppbutton",
         buildUrl: function(props) {
-            return config.a.buttonUrls[props.env || config.a.env];
+            var url = config.a.buttonUrls[props.env || config.a.env];
+            return smartThrottle.isEnabled() || props.enableNativeCheckout ? url.replace("/webapps/hermes/button", "/smart/button") : url;
         },
         contexts: {
             iframe: !0,
@@ -21770,11 +21802,12 @@
                 required: !0,
                 decorate: function(original) {
                     return function(data, actions) {
-                        var _track5, _this3 = this;
+                        var _smartThrottle$logCom, _track5, _this3 = this;
                         data && !data.intent && Object(beaver_logger_client.q)("button_authorize_no_intent", {
                             paymentID: data.paymentID,
                             token: data.paymentToken
-                        }), Object(beaver_logger_client.k)("button_authorize"), Object(beaver_logger_client.p)(((_track5 = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
+                        }), Object(beaver_logger_client.k)("button_authorize"), smartThrottle.logComplete(((_smartThrottle$logCom = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                        _smartThrottle$logCom)), Object(beaver_logger_client.p)(((_track5 = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
                         _track5[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CHECKOUT_AUTHORIZE, 
                         _track5[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track5)), 
                         Object(lib.E)() && Object(beaver_logger_client.q)("button_authorize_intranet_mode"), 
@@ -21903,8 +21936,9 @@
                 noop: !0,
                 decorate: function(original) {
                     return function(data) {
-                        var _track8, _track9, _creditThrottle$log;
-                        Object(beaver_logger_client.k)("button_click"), Object(beaver_logger_client.p)(((_track8 = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
+                        var _smartThrottle$logSta, _track8, _track9, _creditThrottle$log;
+                        smartThrottle.logStart(((_smartThrottle$logSta = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                        _smartThrottle$logSta)), Object(beaver_logger_client.k)("button_click"), Object(beaver_logger_client.p)(((_track8 = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
                         _track8[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_CLICK, _track8[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, 
                         _track8[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track8[constants.u.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
                         _track8)), Object(lib.E)() && (Object(beaver_logger_client.q)("button_click_intranet_mode"), 
@@ -22478,7 +22512,7 @@
         }), Object(beaver_logger_client.p)(((setup_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
         setup_track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, setup_track3));
     }
-    var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.285", legacy = __webpack_require__(67);
+    var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.286", legacy = __webpack_require__(67);
     interface_checkout = legacy.checkout, apps = legacy.apps, Object(lib.G)() && (interface_Checkout = src_checkout.a, 
     interface_BillingPage = BillingPage, interface_ThreeDomainSecure = ThreeDomainSecure, 
     PayPalCheckout = src_checkout.a, enableCheckoutIframe = function() {
@@ -23049,4 +23083,4 @@
         return setup;
     }));
 } ]);
-//# sourceMappingURL=checkout.4.0.285.js.map
+//# sourceMappingURL=checkout.4.0.286.js.map
