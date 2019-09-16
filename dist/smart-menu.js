@@ -103,9 +103,9 @@ window.spb = function(modules) {
     }
     function g() {
         var n;
-        for (l.sort(function(n, l) {
+        for (l.sort((function(n, l) {
             return l.__v.__b - n.__v.__b;
-        }); n = l.pop(); ) n.__d && n.forceUpdate(!1);
+        })); n = l.pop(); ) n.__d && n.forceUpdate(!1);
     }
     function k(n, l, u, t, i, o, e, s, a) {
         var h, v, y, m, w, g, k, b, x = l.__k || _(l.props.children, l.__k = [], p, !0), C = u && u.__k || f, P = C.length;
@@ -248,7 +248,7 @@ window.spb = function(modules) {
             onBlur: function() {
                 return _onBlur();
             }
-        }, choices.map(function(_ref2) {
+        }, choices.map((function(_ref2) {
             var id = _ref2.id;
             return s("div", {
                 class: "menu-item",
@@ -258,7 +258,7 @@ window.spb = function(modules) {
                     });
                 }
             }, _ref2.label);
-        })));
+        }))));
     }
     n = {}, y.prototype.setState = function(n, l) {
         var u = this.__s !== this.state && this.__s || (this.__s = e({}, this.state));
@@ -318,16 +318,16 @@ window.spb = function(modules) {
         var t = n.__c;
         if (t) {
             var r = t.__H;
-            r && r.i.forEach(function(n) {
+            r && r.i.forEach((function(n) {
                 return n.p && n.p();
-            });
+            }));
         }
     };
     var hooks_module_ = function() {};
     function hooks_module_g() {
-        hooks_module_u.some(function(n) {
+        hooks_module_u.some((function(n) {
             n.l = !1, n.__P && (n.__H.t = hooks_module_w(n.__H.t));
-        }), hooks_module_u = [];
+        })), hooks_module_u = [];
     }
     function hooks_module_w(n) {
         return n.forEach(hooks_module_A), n.forEach(E), [];
@@ -350,10 +350,10 @@ window.spb = function(modules) {
                 o.o[0] !== r && (o.o[0] = r, o.__c.setState({}));
             } ]), o.o;
         }(q, window.xprops), xprops = _useState[0], setXProps = _useState[1], u = [], function(n, t) {
-            return !n || u.some(function(t, r) {
+            return !n || t.some((function(t, r) {
                 return t !== n[r];
-            });
-        }((i = hooks_module_c(hooks_module_t++)).v) && (i.o = function() {
+            }));
+        }((i = hooks_module_c(hooks_module_t++)).v, u) && (i.o = function() {
             return xprops.onProps(setXProps);
         }, i.v = u, hooks_module_r.__H.t.push(i), hooks_module_(hooks_module_r)), xprops), choices = _useXProps.choices, onChoose = _useXProps.onChoose, onBlur = _useXProps.onBlur;
         return s(v, null, s("style", {
@@ -385,8 +385,8 @@ window.spb = function(modules) {
                 clearTimeout(r), cancelAnimationFrame(u), setTimeout(n);
             }, r = setTimeout(t, 100), u = requestAnimationFrame(t);
         })(hooks_module_g);
-    }), __webpack_require__.d(__webpack_exports__, "setupMenu", function() {
+    }), __webpack_require__.d(__webpack_exports__, "setupMenu", (function() {
         return setupMenu;
-    });
+    }));
 } ]);
 //# sourceMappingURL=smart-menu.js.map
