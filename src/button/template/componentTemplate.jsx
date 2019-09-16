@@ -312,13 +312,13 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
 
 function renderTagline({ label, tagline, color, locale, multiple, env, cards, checkoutCustomization } : { label : string, color : string, tagline : boolean, locale : LocaleType, multiple : boolean, env : string, cards : $ReadOnlyArray<string>, checkoutCustomization : ?CheckoutCustomizationType }) : ?JsxHTMLNode {
     const delay = 0.2;
-
-    if (__WEB__) {
-        return LoadingDots(delay);
-    }
     
     if (!tagline) {
         return;
+    }
+  
+    if (__WEB__) {
+    return LoadingDots(delay);
     }
     
     const tag = multiple
