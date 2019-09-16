@@ -753,53 +753,6 @@ describe(`paypal button component funding mix`, () => {
 
         }, '#testContainer');
     });
-    
-    it('should not render giropay in vertical layout if commit equals false and not whitelisted', (done) => {
-
-        window.paypal.Button.render({
-
-            test: {
-                onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.CREDIT) === -1) {
-                        throw new Error(`Expected ideal to be offered, got ${ JSON.stringify(fundingSources) }`);
-                    }
-
-                    if (fundingSources.indexOf(window.paypal.FUNDING.GIROPAY) !== -1) {
-                        throw new Error(`Expected ideal to be offered, got ${ JSON.stringify(fundingSources) }`);
-                    }
-
-                    done();
-                }
-            },
-
-            commit: false,
-
-            style: {
-                layout: 'vertical'
-            },
-
-            locale: 'de_DE',
-
-            funding: {
-                allowed: [ window.paypal.FUNDING.GIROPAY,  window.paypal.FUNDING.CREDIT ]
-            },
-
-            payment() : string | ZalgoPromise<string> {
-                throw new Error('Expected payment to not be called');
-            },
-
-            onAuthorize() {
-                throw new Error('Expected onAuthorize to not be called');
-            },
-
-            onCancel() {
-                throw new Error('Expected onCancel to not be called');
-            },
-
-            onError: done
-
-        }, '#testContainer');
-    });
 
     it('should not render ideal in horizontal layout', (done) => {
 
