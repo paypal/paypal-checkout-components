@@ -1,3 +1,10 @@
+## <small>5.0.57 (2019-09-17)</small>
+
+* Add onFocused event registrar ([bda4fe9](http://github.paypal.com/paypal/paypal-checkout/commit/bda4fe9))
+* Allow overriding checkout uri ([5615b57](http://github.paypal.com/paypal/paypal-checkout/commit/5615b57))
+
+
+
 ## <small>5.0.56 (2019-09-11)</small>
 
 * Return a function from getPageUrl ([f6f77fe](http://github.paypal.com/paypal/paypal-checkout/commit/f6f77fe))
