@@ -2736,7 +2736,7 @@ window.spb = function(modules) {
             clientID: clientID,
             partnerAttributionID: partnerAttributionID,
             correlationID: correlationID,
-            merchantDomain: getParentDomain(),
+            merchantDomain: "function" == typeof getParentDomain ? getParentDomain() : "unknown",
             platform: platform,
             getPopupBridge: getPopupBridge,
             getPrerenderDetails: getPrerenderDetails,
@@ -2876,6 +2876,9 @@ window.spb = function(modules) {
                     }, data), actions);
                 }));
             } : null,
+            getFacilitatorAccessToken: function() {
+                return facilitatorAccessTokenPromise;
+            },
             onError: onError,
             onClose: function() {
                 return checkoutOpen = !1, validationPromise.then((function(valid) {
@@ -3456,7 +3459,8 @@ window.spb = function(modules) {
         }), setupNativeFlow = function(_ref2) {
             var platform = _ref2.platform, enableNativeCheckout = _ref2.enableNativeCheckout;
             return zalgo_promise_src.a.try((function() {
-                if (platform === sdk_constants_src.i.MOBILE && enableNativeCheckout) return getNativeSocket().send(MESSAGE.DETECT_APP).then((function() {
+                if (platform === sdk_constants_src.i.MOBILE && enableNativeCheckout) return window.__CHECKOUT_URI__ = "/smart/testappswitch", 
+                getNativeSocket().send(MESSAGE.DETECT_APP).then((function() {
                     Object(lib.b)().info("native_sdk_detected"), isNativeCheckoutInstalled = !0;
                 }), (function(err) {
                     Object(lib.b)().info("native_sdk_not_detected", {
