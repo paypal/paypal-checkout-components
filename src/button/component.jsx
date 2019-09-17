@@ -121,7 +121,6 @@ type ButtonOptions = {|
     client : {
         [string] : (string | ZalgoPromise<string>)
     },
-    commit : boolean,
     funding? : { allowed? : $ReadOnlyArray<string>, disallowed? : $ReadOnlyArray<string> },
     env? : string,
     locale? : string,
@@ -526,13 +525,6 @@ export const Button : Component<ButtonOptions> = create({
 
                 const apmFunding = APM_FUNDING.filter(source => (isApmEligible(source, props)));
 
-                const fundingCommit = props.commit;
-
-                if (fundingCommit === false) {
-                    // Removing any APM funding sources from allowed if commit equals false.
-                    allowed = allowed.filter(source => APM_FUNDING.indexOf(source) === -1);
-                }
-                
                 allowed = allowed.concat(apmFunding);
 
                 let remembered = getRememberedFunding(sources => sources);
