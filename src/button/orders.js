@@ -80,7 +80,7 @@ export function validateOrder(orderID : string, { clientID, merchantID } : { cli
             }
         }
 
-        const xpropMerchantID = merchantID && merchantID[0];
+        const xpropMerchantID = window.xprops.merchantID && window.xprops.merchantID[0];
         if (xpropMerchantID && payeeMerchantID !== xpropMerchantID) {
             throw new Error(`Payee passed in transaction does not match expected merchant id: ${ xpropMerchantID }`);
         }
