@@ -211,6 +211,10 @@ export function initCheckout(props : CheckoutProps) : CheckoutInstance {
                 });
             } : null,
 
+        getFacilitatorAccessToken: () => {
+            return facilitatorAccessTokenPromise;
+        },
+
         onError,
         onClose,
 
