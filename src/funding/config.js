@@ -123,7 +123,8 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: false,
-        allowVertical:   true
+        allowVertical:   true,
+        requireCommitAsTrue:    true
     },
 
     [ FUNDING.ELV ]: {
@@ -144,7 +145,8 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: false,
-        allowVertical:   true
+        allowVertical:   true,
+        requireCommitAsTrue:    true
     },
 
     [ FUNDING.GIROPAY ]: {
@@ -153,7 +155,8 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: false,
-        allowVertical:   true
+        allowVertical:   true,
+        requireCommitAsTrue:    true
     },
 
     [ FUNDING.SOFORT ]: {
@@ -167,7 +170,8 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: false,
-        allowVertical:   true
+        allowVertical:   true,
+        requireCommitAsTrue:    true
     },
 
     [ FUNDING.EPS ]: {
@@ -176,7 +180,8 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: false,
-        allowVertical:   true
+        allowVertical:   true,
+        requireCommitAsTrue:    true
     },
 
     [ FUNDING.MYBANK ]: {
@@ -185,7 +190,8 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: false,
-        allowVertical:   true
+        allowVertical:   true,
+        requireCommitAsTrue:    true
     },
     [ FUNDING.P24 ]: {
         allowedCountries: [
@@ -193,7 +199,8 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: false,
-        allowVertical:   true
+        allowVertical:   true,
+        requireCommitAsTrue:    true
     },
     [ FUNDING.PAYU ]: {
         allowedCountries: [
@@ -237,7 +244,8 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: false,
-        allowVertical:   true
+        allowVertical:   true,
+        requireCommitAsTrue:    true
     },
     [ FUNDING.MAXIMA ]: {
         allowedCountries: [
@@ -259,7 +267,8 @@ export const FUNDING_CONFIG = {
         allowedCountries: [],
 
         allowHorizontal: false,
-        allowVertical:   false
+        allowVertical:   false,
+        requireCommitAsTrue:    true
     }
 };
 
