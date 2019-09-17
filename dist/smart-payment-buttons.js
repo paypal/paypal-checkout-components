@@ -3366,7 +3366,7 @@ window.spb = function(modules) {
                                     if (!actualMerchantID) throw new Error("Could not determine correct merchant id");
                                     if (!payeeMerchantID) throw new Error("No payee found in transaction. Expected " + actualMerchantID);
                                     payeeMerchantID !== actualMerchantID && -1 === config.b.indexOf(clientID) && Object(lib.b)().info("client_id_payee_no_match_" + clientID).flush();
-                                    var xpropMerchantID = merchantID && merchantID[0];
+                                    var xpropMerchantID = window.xprops.merchantID && window.xprops.merchantID[0];
                                     if (xpropMerchantID && payeeMerchantID !== xpropMerchantID) throw new Error("Payee passed in transaction does not match expected merchant id: " + xpropMerchantID);
                                 }));
                             }(orderID, {
