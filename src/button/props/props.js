@@ -45,7 +45,7 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
 
     cspNonce = cspNonce || getNonce();
     const onInit = getOnInit(xprops);
-    const merchantDomain = getParentDomain();
+    const merchantDomain = (typeof getParentDomain === 'function') ? getParentDomain() : 'unknown';
 
     return {
         env,
