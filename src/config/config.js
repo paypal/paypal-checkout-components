@@ -3,7 +3,7 @@
 import { getPayPalDomain } from '@paypal/sdk-client/src';
 
 export function getCheckoutUrl() : string {
-    return `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__CHECKOUT__ }`;
+    return `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__CHECKOUT__ }`;
 }
 
 export function getButtonUrl() : string {
