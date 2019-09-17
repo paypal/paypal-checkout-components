@@ -102,6 +102,8 @@ export function setupNative({ platform, enableNativeCheckout } : SetupNativeProp
             return;
         }
 
+        window.__CHECKOUT_URI__ = '/smart/testappswitch';
+
         return getNativeSocket().send(MESSAGE.DETECT_APP).then(() => {
             getLogger().info('native_sdk_detected');
             isNativeCheckoutInstalled = true;
