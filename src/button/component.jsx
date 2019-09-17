@@ -626,6 +626,7 @@ export const Button : Component<ButtonOptions> = create({
 
         onAuthorize: {
             type:     'function',
+            alias:    'onApprove',
             required: true,
 
             decorate(original) : Function {

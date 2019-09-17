@@ -63,6 +63,14 @@ export function setupButtonChild(ButtonComponent : Button) {
         setLogLevel(xprops.logLevel);
     }
 
+    if (xprops.payment && !xprops.createOrder) {
+        xprops.createOrder = xprops.payment;
+    }
+
+    if (xprops.onAuthorize && !xprops.onApprove) {
+        xprops.onApprove = xprops.onAuthorize;
+    }
+
     try {
         if (xprops && xprops.onShippingChange && window.pre &&
             window.pre.inlineGuest && window.pre.inlineGuest.res &&
