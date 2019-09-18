@@ -18,6 +18,10 @@ export function getMenuUrl() : string {
     return `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__MENU__ }`;
 }
 
+export function getNativeUrl() : string {
+    return `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__NATIVE__ }`;
+}
+
 export const DEFAULT_POPUP_SIZE = {
     WIDTH:  450,
     HEIGHT: 535

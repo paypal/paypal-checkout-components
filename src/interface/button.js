@@ -9,6 +9,7 @@ import { getButtonsComponent } from '../zoid/buttons';
 import { getCardFieldsComponent } from '../zoid/card-fields';
 import { getMenuComponent } from '../zoid/menu';
 import { Buttons as _ButtonsTemplate } from '../ui/buttons';
+import { getNativeComponent } from '../zoid/native/component';
 
 function protectedExport<T>(xport : T) : ?T {
     if (isPayPalDomain()) {
@@ -30,6 +31,10 @@ export const CardFields = {
 
 export const Menu = {
     __get__: () => protectedExport(getMenuComponent())
+};
+
+export const Native = {
+    __get__: () => protectedExport(getNativeComponent())
 };
 
 export const ButtonsTemplate = {
