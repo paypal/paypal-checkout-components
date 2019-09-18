@@ -6,16 +6,16 @@ import { BUTTON_LOGO_COLOR } from '../../constants';
 
 const TRUSTLY_LOGO_COLORS = {
     [ BUTTON_LOGO_COLOR.WHITE ]: {
-        primary:   '#020202',
-        secondary: '#64CC07'
+        primary:    '#FFFFFF',
+        secondary:  '#FFFFFF'
     },
     [ BUTTON_LOGO_COLOR.ANY ]: {
         primary:   '#020202',
         secondary: '#64CC07'
     },
     [ BUTTON_LOGO_COLOR.BLACK ]: {
-        primary:    '#020202',
-        secondary:  '#64CC07'
+        primary:    '#000000',
+        secondary:  '#000000'
     }
 };
 
