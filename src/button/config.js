@@ -750,6 +750,40 @@ export const BUTTON_CONFIG : ButtonConfig = {
         allowPrimaryHorizontal: false
     },
 
+    [ BUTTON_LABEL.OXXO ]: {
+
+        label:     `{ logo: ${ BUTTON_LOGO.OXXO } }`,
+        logoLabel: `{ logo: ${ BUTTON_LOGO.OXXO } }`,
+
+        defaultColor: BUTTON_COLOR.SILVER,
+
+        colors: [
+            BUTTON_COLOR.SILVER,
+            BUTTON_COLOR.BLACK,
+            BUTTON_COLOR.WHITE
+        ],
+
+        logoColors:  {
+            [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLACK,
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE,
+            [ BUTTON_COLOR.WHITE ]:  BUTTON_LOGO_COLOR.BLACK
+        },
+
+        secondaryColors: {
+            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.WHITE ]:      BUTTON_COLOR.WHITE
+        },
+
+        allowPrimary: false,
+
+        allowPrimaryVertical:   false,
+        allowPrimaryHorizontal: false
+    },
+
     [ BUTTON_LABEL.CARD ]: {
 
         label:     `{ cards }`,
@@ -800,7 +834,8 @@ export const FUNDING_TO_DEFAULT_LABEL = {
     [ FUNDING.BLIK ]:        BUTTON_LABEL.BLIK,
     [ FUNDING.TRUSTLY ]:     BUTTON_LABEL.TRUSTLY,
     [ FUNDING.MAXIMA ]:      BUTTON_LABEL.MAXIMA,
-    [ FUNDING.BOLETO ]:      BUTTON_LABEL.BOLETO
+    [ FUNDING.BOLETO ]:      BUTTON_LABEL.BOLETO,
+    [ FUNDING.OXXO ]:        BUTTON_LABEL.OXXO
 };
 
 export const LABEL_TO_FUNDING = {
@@ -825,7 +860,8 @@ export const LABEL_TO_FUNDING = {
     [ BUTTON_LABEL.BLIK ]:          FUNDING.BLIK,
     [ BUTTON_LABEL.TRUSTLY ]:       FUNDING.TRUSTLY,
     [ BUTTON_LABEL.MAXIMA ]:        FUNDING.MAXIMA,
-    [ BUTTON_LABEL.BOLETO ]:        FUNDING.BOLETO
+    [ BUTTON_LABEL.BOLETO ]:        FUNDING.BOLETO,
+    [ BUTTON_LABEL.OXXO ]:          FUNDING.OXXO
 };
 
 export const BUTTON_RELATIVE_STYLE = {

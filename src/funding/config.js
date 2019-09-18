@@ -22,7 +22,8 @@ export const FUNDING_PRIORITY = [
     FUNDING.BLIK,
     FUNDING.TRUSTLY,
     FUNDING.MAXIMA,
-    FUNDING.BOLETO
+    FUNDING.BOLETO,
+    FUNDING.OXXO
 ];
 
 export const FUNDING_ORDER = [
@@ -44,6 +45,7 @@ export const FUNDING_ORDER = [
     FUNDING.TRUSTLY,
     FUNDING.MAXIMA,
     FUNDING.BOLETO,
+    FUNDING.OXXO,
     FUNDING.CARD
 ];
 
@@ -122,9 +124,9 @@ export const FUNDING_CONFIG = {
             COUNTRY.NL
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true,
-        requireCommitAsTrue:    true
+        allowHorizontal:     false,
+        allowVertical:       true,
+        requireCommitAsTrue: true
     },
 
     [ FUNDING.ELV ]: {
@@ -144,9 +146,9 @@ export const FUNDING_CONFIG = {
             COUNTRY.BE
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true,
-        requireCommitAsTrue:    true
+        allowHorizontal:     false,
+        allowVertical:       true,
+        requireCommitAsTrue: true
     },
 
     [ FUNDING.GIROPAY ]: {
@@ -154,9 +156,9 @@ export const FUNDING_CONFIG = {
             COUNTRY.DE
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true,
-        requireCommitAsTrue:    true
+        allowHorizontal:     false,
+        allowVertical:       true,
+        requireCommitAsTrue: true
     },
 
     [ FUNDING.SOFORT ]: {
@@ -169,9 +171,9 @@ export const FUNDING_CONFIG = {
             COUNTRY.NL
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true,
-        requireCommitAsTrue:    true
+        allowHorizontal:     false,
+        allowVertical:       true,
+        requireCommitAsTrue: true
     },
 
     [ FUNDING.EPS ]: {
@@ -179,9 +181,9 @@ export const FUNDING_CONFIG = {
             COUNTRY.AT
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true,
-        requireCommitAsTrue:    true
+        allowHorizontal:     false,
+        allowVertical:       true,
+        requireCommitAsTrue: true
     },
 
     [ FUNDING.MYBANK ]: {
@@ -189,18 +191,18 @@ export const FUNDING_CONFIG = {
             COUNTRY.IT
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true,
-        requireCommitAsTrue:    true
+        allowHorizontal:     false,
+        allowVertical:       true,
+        requireCommitAsTrue: true
     },
     [ FUNDING.P24 ]: {
         allowedCountries: [
             COUNTRY.PL
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true,
-        requireCommitAsTrue:    true
+        allowHorizontal:     false,
+        allowVertical:       true,
+        requireCommitAsTrue: true
     },
     [ FUNDING.PAYU ]: {
         allowedCountries: [
@@ -208,24 +210,27 @@ export const FUNDING_CONFIG = {
             COUNTRY.CZ
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true
+        allowHorizontal:     false,
+        allowVertical:       true,
+        requireCommitAsTrue: true
     },
     [ FUNDING.VERKKOPANKKI ]: {
         allowedCountries: [
             COUNTRY.FI
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true
+        allowHorizontal:     false,
+        allowVertical:       true,
+        requireCommitAsTrue: true
     },
     [ FUNDING.BLIK ]: {
         allowedCountries: [
             COUNTRY.PL
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true
+        allowHorizontal:     false,
+        allowVertical:       true,
+        requireCommitAsTrue: true
     },
     [ FUNDING.TRUSTLY ]: {
         allowedCountries: [
@@ -243,32 +248,43 @@ export const FUNDING_CONFIG = {
             COUNTRY.SE
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true,
-        requireCommitAsTrue:    true
+        allowHorizontal:     false,
+        allowVertical:       true,
+        requireCommitAsTrue: true
     },
     [ FUNDING.MAXIMA ]: {
         allowedCountries: [
             COUNTRY.LT
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true
+        allowHorizontal:     false,
+        allowVertical:       true,
+        requireCommitAsTrue: true
     },
     [ FUNDING.BOLETO ]: {
         allowedCountries: [
             COUNTRY.BR
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true
+        allowHorizontal:     false,
+        allowVertical:       true,
+        requireCommitAsTrue: true
+    },
+    [ FUNDING.OXXO ]: {
+        allowedCountries: [
+            COUNTRY.MX
+        ],
+
+        allowHorizontal:     false,
+        allowVertical:       true,
+        requireCommitAsTrue: true
     },
     [ FUNDING.ZIMPLER ]: {
         allowedCountries: [],
 
-        allowHorizontal: false,
-        allowVertical:   false,
-        requireCommitAsTrue:    true
+        allowHorizontal:     false,
+        allowVertical:       false,
+        requireCommitAsTrue: true
     }
 };
 

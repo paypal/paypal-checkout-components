@@ -467,6 +467,21 @@ for (const color of getButtonConfig('paypal', 'colors')) {
         }
     });
 
+    buttonConfigs.push({
+        button: {
+            locale: 'en_MX',
+            commit: true,
+            style:  {
+                color,
+                layout:     'vertical',
+                maxbuttons: 4
+            },
+            funding: {
+                allowed: [ FUNDING.OXXO ]
+            }
+        }
+    });
+
     // buttonConfigs.push({
     //     button: {
     //         locale: 'zh_CN',
