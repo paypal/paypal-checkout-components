@@ -475,4 +475,70 @@ describe('happy cases', () => {
             await clickButton(FUNDING.PAYPAL);
         });
     });
+
+    it('should not error out if no merchant-id is passed in xprops', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+
+            let orderID;
+            const payerID = 'YYYYYYYYYY';
+
+            window.xprops.merchantID = [];
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async (data, actions) => {
+                return ZalgoPromise.try(async () => {
+                    orderID = await actions.order.create({
+                        purchase_units: [ {
+                            amount: {
+                                value: '0.01'
+                            },
+                            payee: {
+                                merchant_id: 'XYZ12345'
+                            }
+                        } ]
+                    });
+
+                    return orderID;
+                });
+            }));
+
+            window.xprops.onCancel = avoid('onCancel');
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+            }));
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID }, actions);
+                }));
+
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            createButtonHTML();
+
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            await clickButton(FUNDING.PAYPAL);
+        });
+    });
 });

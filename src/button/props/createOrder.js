@@ -53,10 +53,10 @@ export function buildCreateOrder({ clientID, intent, currency, merchantID, partn
             if (unit.amount.currency_code && unit.amount.currency_code !== currency) {
                 throw new Error(`Unexpected currency: ${ unit.amount.currency_code } passed to order.create. Please ensure you are passing /sdk/js?${ SDK_QUERY_KEYS.CURRENCY }=${ unit.amount.currency_code } in the paypal script tag.`);
             }
-    
+
             let payee = unit.payee;
     
-            if (payee) {
+            if (payee && merchantID && merchantID.length) {
                 if (!merchantID[0]) {
                     throw new Error(`Pass ${ SDK_QUERY_KEYS.MERCHANT_ID }=XYZ in the paypal script tag.`);
                 }
