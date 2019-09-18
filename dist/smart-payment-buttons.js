@@ -873,12 +873,6 @@ window.spb = function(modules) {
         return cache.hasOwnProperty(key) ? cache[key] : cache[key] = logic.apply(void 0, args);
     }
     function util_noop() {}
-    function once(method) {
-        var called = !1;
-        return function() {
-            if (!called) return called = !0, method.apply(this, arguments);
-        };
-    }
     function stringifyError(err, level) {
         if (void 0 === level && (level = 1), level >= 3) return "stringifyError stack overflow";
         try {
@@ -1078,23 +1072,23 @@ window.spb = function(modules) {
         return getUserAgent;
     })), __webpack_require__.d(__webpack_exports__, "h", (function() {
         return isIEIntranet;
-    })), __webpack_require__.d(__webpack_exports__, "u", (function() {
+    })), __webpack_require__.d(__webpack_exports__, "t", (function() {
         return supportsPopups;
     })), __webpack_require__.d(__webpack_exports__, "c", (function() {
         return extendUrl;
-    })), __webpack_require__.d(__webpack_exports__, "p", (function() {
+    })), __webpack_require__.d(__webpack_exports__, "o", (function() {
         return redirect;
     })), __webpack_require__.d(__webpack_exports__, "d", (function() {
         return getPageRenderTime;
     })), __webpack_require__.d(__webpack_exports__, "g", (function() {
         return isBrowser;
-    })), __webpack_require__.d(__webpack_exports__, "o", (function() {
+    })), __webpack_require__.d(__webpack_exports__, "n", (function() {
         return querySelectorAll;
     })), __webpack_require__.d(__webpack_exports__, "l", (function() {
         return onClick;
     })), __webpack_require__.d(__webpack_exports__, "a", (function() {
         return base64encode;
-    })), __webpack_require__.d(__webpack_exports__, "v", (function() {
+    })), __webpack_require__.d(__webpack_exports__, "u", (function() {
         return uniqueID;
     })), __webpack_require__.d(__webpack_exports__, "i", (function() {
         return memoize;
@@ -1102,21 +1096,19 @@ window.spb = function(modules) {
         return inlineMemoize;
     })), __webpack_require__.d(__webpack_exports__, "j", (function() {
         return util_noop;
-    })), __webpack_require__.d(__webpack_exports__, "m", (function() {
-        return once;
-    })), __webpack_require__.d(__webpack_exports__, "s", (function() {
+    })), __webpack_require__.d(__webpack_exports__, "r", (function() {
         return stringifyError;
-    })), __webpack_require__.d(__webpack_exports__, "t", (function() {
+    })), __webpack_require__.d(__webpack_exports__, "s", (function() {
         return stringifyErrorMessage;
     })), __webpack_require__.d(__webpack_exports__, "k", (function() {
         return objFilter;
-    })), __webpack_require__.d(__webpack_exports__, "n", (function() {
+    })), __webpack_require__.d(__webpack_exports__, "m", (function() {
         return promiseDebounce;
-    })), __webpack_require__.d(__webpack_exports__, "r", (function() {
+    })), __webpack_require__.d(__webpack_exports__, "q", (function() {
         return safeInterval;
     })), __webpack_require__.d(__webpack_exports__, "b", (function() {
         return debounce;
-    })), __webpack_require__.d(__webpack_exports__, "q", (function() {
+    })), __webpack_require__.d(__webpack_exports__, "p", (function() {
         return request;
     }));
 }, function(module, __webpack_exports__, __webpack_require__) {
@@ -1154,7 +1146,7 @@ window.spb = function(modules) {
     }, AUTO_FLUSH_LEVEL = [ LOG_LEVEL.WARN, LOG_LEVEL.ERROR ], LOG_LEVEL_PRIORITY = [ LOG_LEVEL.ERROR, LOG_LEVEL.WARN, LOG_LEVEL.INFO, LOG_LEVEL.DEBUG ], FLUSH_INTERVAL = 6e4, DEFAULT_LOG_LEVEL = LOG_LEVEL.WARN;
     function httpTransport(_ref) {
         var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json;
-        return Object(belter_src.q)({
+        return Object(belter_src.p)({
             url: url,
             method: method,
             headers: headers,
@@ -1203,7 +1195,7 @@ window.spb = function(modules) {
                         }
                     }));
                 }
-                var flush = Object(belter_src.n)(immediateFlush);
+                var flush = Object(belter_src.m)(immediateFlush);
                 function log(level, event, payload) {
                     if (void 0 === payload && (payload = {}), !Object(belter_src.g)()) return logger;
                     prefix && (event = prefix + "_" + event);
@@ -1222,7 +1214,7 @@ window.spb = function(modules) {
                 function addBuilder(builders, builder) {
                     return builders.push(builder), logger;
                 }
-                Object(belter_src.g)() && Object(belter_src.r)(flush, flushInterval);
+                Object(belter_src.g)() && Object(belter_src.q)(flush, flushInterval);
                 var logger = {
                     debug: function(event, payload) {
                         return log(LOG_LEVEL.DEBUG, event, payload);
@@ -1291,9 +1283,9 @@ window.spb = function(modules) {
         })), src.a.onPossiblyUnhandledException((function(err) {
             var _logger$track;
             logger.track(((_logger$track = {})[sdk_constants_src.d.ERROR_CODE] = "payments_sdk_error", 
-            _logger$track[sdk_constants_src.d.ERROR_DESC] = Object(belter_src.t)(err), _logger$track)), 
+            _logger$track[sdk_constants_src.d.ERROR_DESC] = Object(belter_src.s)(err), _logger$track)), 
             logger.error("unhandled_error", {
-                err: Object(belter_src.s)(err)
+                err: Object(belter_src.r)(err)
             }), logger.flush().catch(belter_src.j);
         }));
     }
@@ -1305,190 +1297,214 @@ window.spb = function(modules) {
         ERROR: "error"
     };
     function messageSocket(_ref) {
-        var sessionUID = _ref.sessionUID, driver = _ref.driver, sourceApp = _ref.sourceApp, sourceAppVersion = _ref.sourceAppVersion, targetApp = _ref.targetApp, socketPromise = new src.a, receivedMessages = {}, requestListeners = {}, responseListeners = {};
-        return driver.open(), driver.onOpen((function() {
-            socketPromise.resolve(driver);
-        })), driver.onMessage((function(rawData) {
-            var parsedData;
-            try {
-                parsedData = JSON.parse(rawData);
-            } catch (err) {
-                throw new Error("Could not parse socket message: " + rawData);
-            }
-            if (!parsedData) throw new Error("No data passed from socket message");
-            var messageSessionUID = parsedData.session_uid, requestUID = parsedData.request_uid, messageUID = parsedData.message_uid, messageName = parsedData.message_name, messageType = parsedData.message_type, messageData = parsedData.message_data, messageTargetApp = parsedData.target_app;
-            if (!(messageUID && requestUID && messageName && messageType && messageTargetApp)) throw new Error("Incomplete message: " + rawData);
-            if (!receivedMessages[messageUID] && messageTargetApp === sourceApp) if (receivedMessages[messageUID] = !0, 
-            messageType === MESSAGE_TYPE.REQUEST) {
-                var sendResponse = function(_ref2) {
-                    var responseStatus = _ref2.responseStatus, responseData = _ref2.responseData, responseMessageUID = Object(belter_src.v)(), response = {
-                        session_uid: messageSessionUID,
-                        request_uid: requestUID,
-                        message_uid: responseMessageUID,
-                        message_name: messageName,
-                        message_status: responseStatus,
-                        message_type: MESSAGE_TYPE.RESPONSE,
-                        message_data: responseData,
-                        source_app: sourceApp,
-                        source_app_version: sourceAppVersion,
-                        target_app: targetApp
-                    };
-                    return socketPromise.then((function(socket) {
-                        return socket.send(JSON.stringify(response, null, 4));
+        var retryDelay, socketPromise, sessionUID = _ref.sessionUID, driver = _ref.driver, sourceApp = _ref.sourceApp, sourceAppVersion = _ref.sourceAppVersion, targetApp = _ref.targetApp, _ref$retry = _ref.retry, retry = void 0 === _ref$retry || _ref$retry, receivedMessages = {}, requestListeners = {}, responseListeners = {}, sendMessage = function(socket, data) {
+            var messageUID = Object(belter_src.u)(), message = Object(esm_extends.a)({
+                message_uid: messageUID,
+                source_app: sourceApp,
+                source_app_version: sourceAppVersion,
+                target_app: targetApp
+            }, data);
+            socket.send(JSON.stringify(message));
+        }, sendResponse = function(socket, _ref2) {
+            return sendMessage(socket, {
+                session_uid: _ref2.messageSessionUID,
+                request_uid: _ref2.requestUID,
+                message_name: _ref2.messageName,
+                message_status: _ref2.responseStatus,
+                message_type: MESSAGE_TYPE.RESPONSE,
+                message_data: _ref2.responseData
+            });
+        };
+        return function init() {
+            socketPromise = src.a.try((function() {
+                if (retryDelay) return src.a.delay(retryDelay);
+            })).then((function() {
+                var instance = driver(), connectionPromise = new src.a((function(resolve, reject) {
+                    instance.onOpen((function() {
+                        resolve(instance);
+                    })), instance.onClose((function(err) {
+                        reject(err), retry && (retryDelay = retryDelay ? 2 * retryDelay : 1), init();
+                    })), instance.onError((function(err) {
+                        reject(err);
                     }));
-                };
-                src.a.try((function() {
-                    var requestListener = requestListeners[messageName];
-                    if (!requestListener) throw new Error("No listener found for name: " + messageName);
-                    if (messageSessionUID !== sessionUID) throw new Error("Incorrect sessionUID: " + (messageSessionUID || "undefined"));
-                    return requestListener({
-                        data: messageData
-                    });
-                })).then((function(res) {
-                    sendResponse({
-                        responseStatus: RESPONSE_STATUS.SUCCESS,
-                        responseData: res
-                    });
-                }), (function(err) {
-                    sendResponse({
-                        responseStatus: RESPONSE_STATUS.ERROR,
-                        responseData: {
-                            message: err && err.message ? err.message : "Unknown error"
-                        }
-                    });
                 }));
-            } else {
-                if (messageType !== MESSAGE_TYPE.RESPONSE) throw new Error("Unhandleable message type: " + messageType);
-                var responseListener = responseListeners[requestUID], responseStatus = parsedData.message_status;
-                if (!responseListener) throw new Error("Could not find response listener with id: " + requestUID);
-                if (delete responseListeners[requestUID], responseStatus === RESPONSE_STATUS.SUCCESS) responseListener.resolve({
-                    data: messageData
-                }); else {
-                    if (responseStatus !== RESPONSE_STATUS.ERROR) throw new Error("Can not handle response status: " + (status || "undefined"));
-                    responseListener.reject(new Error(messageData.message));
-                }
-            }
-        })), driver.onClose((function(err) {
-            socketPromise.asyncReject(err);
-        })), driver.onError((function(err) {
-            socketPromise.asyncReject(err);
-        })), {
+                return instance.onMessage((function(rawMessage) {
+                    return connectionPromise.then((function(socket) {
+                        return function(socket, rawData) {
+                            var parsedData;
+                            try {
+                                parsedData = JSON.parse(rawData);
+                            } catch (err) {
+                                throw new Error("Could not parse socket message: " + rawData);
+                            }
+                            if (!parsedData) throw new Error("No data passed from socket message");
+                            var messageSessionUID = parsedData.session_uid, requestUID = parsedData.request_uid, messageUID = parsedData.message_uid, messageName = parsedData.message_name, messageType = parsedData.message_type, messageData = parsedData.message_data, responseStatus = parsedData.message_status, messageTargetApp = parsedData.target_app;
+                            if (!(messageUID && requestUID && messageName && messageType && messageTargetApp)) throw new Error("Incomplete message: " + rawData);
+                            if (!receivedMessages[messageUID] && messageTargetApp === sourceApp) {
+                                if (receivedMessages[messageUID] = !0, messageType === MESSAGE_TYPE.REQUEST) return function(socket, _ref3) {
+                                    var messageSessionUID = _ref3.messageSessionUID, requestUID = _ref3.requestUID, messageName = _ref3.messageName, messageData = _ref3.messageData;
+                                    return src.a.try((function() {
+                                        var requestListener = requestListeners[messageName];
+                                        if (!requestListener) throw new Error("No listener found for name: " + messageName);
+                                        if (messageSessionUID !== sessionUID) throw new Error("Incorrect sessionUID: " + (messageSessionUID || "undefined"));
+                                        return requestListener({
+                                            data: messageData
+                                        });
+                                    })).then((function(res) {
+                                        sendResponse(socket, {
+                                            responseStatus: RESPONSE_STATUS.SUCCESS,
+                                            responseData: res,
+                                            messageName: messageName,
+                                            messageSessionUID: messageSessionUID,
+                                            requestUID: requestUID
+                                        });
+                                    }), (function(err) {
+                                        sendResponse(socket, {
+                                            responseStatus: RESPONSE_STATUS.ERROR,
+                                            responseData: {
+                                                message: err && err.message ? err.message : "Unknown error"
+                                            },
+                                            messageName: messageName,
+                                            messageSessionUID: messageSessionUID,
+                                            requestUID: requestUID
+                                        });
+                                    }));
+                                }(socket, {
+                                    messageSessionUID: messageSessionUID,
+                                    requestUID: requestUID,
+                                    messageName: messageName,
+                                    messageData: messageData
+                                });
+                                if (messageType === MESSAGE_TYPE.RESPONSE) return function(_ref4) {
+                                    var requestUID = _ref4.requestUID, responseStatus = _ref4.responseStatus, messageData = _ref4.messageData, responseListener = responseListeners[requestUID];
+                                    if (!responseListener) throw new Error("Could not find response listener with id: " + requestUID);
+                                    if (delete responseListeners[requestUID], responseStatus === RESPONSE_STATUS.SUCCESS) responseListener.resolve({
+                                        data: messageData
+                                    }); else {
+                                        if (responseStatus !== RESPONSE_STATUS.ERROR) throw new Error("Can not handle response status: " + (status || "undefined"));
+                                        responseListener.reject(new Error(messageData.message));
+                                    }
+                                }({
+                                    requestUID: requestUID,
+                                    responseStatus: responseStatus,
+                                    messageData: messageData
+                                });
+                                throw new Error("Unhandleable message type: " + messageType);
+                            }
+                        }(socket, rawMessage);
+                    }));
+                })), connectionPromise;
+            }));
+        }(), {
             on: function(name, handler) {
                 if (requestListeners[name]) throw new Error("Listener already registered for name: " + name);
                 requestListeners[name] = handler;
             },
             send: function(messageName, messageData) {
                 return socketPromise.then((function(socket) {
-                    var requestUID = Object(belter_src.v)(), message = {
+                    var requestUID = Object(belter_src.u)(), responseListener = new src.a;
+                    return responseListeners[requestUID] = responseListener, sendMessage(socket, {
                         request_uid: requestUID,
-                        message_uid: Object(belter_src.v)(),
                         message_name: messageName,
                         message_type: MESSAGE_TYPE.REQUEST,
-                        message_data: messageData,
-                        source_app: sourceApp,
-                        source_app_version: sourceAppVersion,
-                        target_app: targetApp
-                    }, responseListener = new src.a;
-                    return responseListeners[requestUID] = responseListener, socket.send(JSON.stringify(message)), 
-                    responseListener;
+                        message_data: messageData
+                    }), responseListener;
                 }));
             }
         };
     }
-    function webSocket(_ref3) {
-        var socket, url = _ref3.url;
+    function webSocket(_ref5) {
+        var url = _ref5.url;
         return messageSocket({
-            sessionUID: _ref3.sessionUID,
-            driver: {
-                open: function() {
-                    socket = new WebSocket(url);
-                },
-                send: function(data) {
-                    socket.send(data);
-                },
-                onMessage: function(handler) {
-                    socket.onmessage = function(event) {
-                        var data = event.data;
-                        if ("string" != typeof data || !data) throw new TypeError("Expected string data from web socket");
-                        handler(data);
-                    };
-                },
-                onError: function(handler) {
-                    socket.onerror = function() {
-                        handler(new Error("The socket encountered an error"));
-                    };
-                },
-                onOpen: function(handler) {
-                    socket.onopen = function() {
-                        return handler();
-                    };
-                },
-                onClose: function(handler) {
-                    socket.onclose = function() {
-                        return handler(new Error("Websocket connection closed"));
-                    };
-                }
+            sessionUID: _ref5.sessionUID,
+            driver: function() {
+                var socket = new WebSocket(url);
+                return {
+                    send: function(data) {
+                        socket.send(data);
+                    },
+                    onMessage: function(handler) {
+                        socket.onmessage = function(event) {
+                            var data = event.data;
+                            if ("string" != typeof data || !data) throw new TypeError("Expected string data from web socket");
+                            handler(data);
+                        };
+                    },
+                    onError: function(handler) {
+                        socket.onerror = function() {
+                            handler(new Error("The socket encountered an error"));
+                        };
+                    },
+                    onOpen: function(handler) {
+                        socket.onopen = function() {
+                            return handler();
+                        };
+                    },
+                    onClose: function(handler) {
+                        socket.onclose = function() {
+                            return handler(new Error("Websocket connection closed"));
+                        };
+                    }
+                };
             },
-            sourceApp: _ref3.sourceApp,
-            sourceAppVersion: _ref3.sourceAppVersion,
-            targetApp: _ref3.targetApp
+            sourceApp: _ref5.sourceApp,
+            sourceAppVersion: _ref5.sourceAppVersion,
+            targetApp: _ref5.targetApp
         });
     }
-    function httpSocket(_ref4) {
-        var url = _ref4.url, sourceApp = _ref4.sourceApp, sourceAppVersion = _ref4.sourceAppVersion, targetApp = _ref4.targetApp, sessionUID = _ref4.sessionUID, onMessageHandlers = [], onErrorHandlers = [], onOpenHandlers = [], isOpen = !1, errDelay = 1, error = function(err) {
-            for (var _i8 = 0; _i8 < onErrorHandlers.length; _i8++) (0, onErrorHandlers[_i8])(err);
-        }, fullURL = url + "/" + sessionUID;
+    function httpSocket(_ref6) {
+        var url = _ref6.url, sessionUID = _ref6.sessionUID;
         return messageSocket({
             sessionUID: sessionUID,
-            driver: {
-                open: Object(belter_src.m)((function() {
-                    !function() {
-                        for (var _i2 = 0; _i2 < onOpenHandlers.length; _i2++) (0, onOpenHandlers[_i2])();
-                    }(), function poll() {
-                        return Object(belter_src.q)({
-                            url: fullURL
-                        }).then((function(_ref5) {
-                            var status = _ref5.status, body = _ref5.body;
-                            if (200 !== status) throw new Error("Bad status code from " + url + ": " + status);
-                            if (!body || !body.messages || !Array.isArray(body.messages)) throw new Error("Expected messages to be an array");
-                            !function(messages) {
-                                for (var _i4 = 0; _i4 < messages.length; _i4++) for (var message = messages[_i4], _i6 = 0; _i6 < onMessageHandlers.length; _i6++) (0, 
-                                onMessageHandlers[_i6])(JSON.stringify(message, null, 4));
-                            }(body.messages);
-                        })).catch((function(err) {
-                            return errDelay >= 32 ? (error(err), new src.a) : (time = errDelay *= 2, new src.a((function(resolve) {
-                                setTimeout(resolve, time);
-                            })));
-                            var time;
-                        })).then((function() {
-                            return poll();
-                        }));
-                    }(), isOpen = !0;
-                })),
-                send: function(data) {
-                    Object(belter_src.q)({
-                        url: url,
-                        method: "post",
-                        json: {
-                            poll: !1,
-                            messages: [ JSON.parse(data) ]
-                        }
-                    }).catch(error);
-                },
-                onMessage: function(handler) {
-                    onMessageHandlers.push(handler);
-                },
-                onError: function(handler) {
-                    onErrorHandlers.push(handler);
-                },
-                onOpen: function(handler) {
-                    isOpen ? handler() : onOpenHandlers.push(handler);
-                },
-                onClose: function() {}
+            driver: function() {
+                var onMessageHandlers = [], onErrorHandlers = [], errDelay = 1, error = function(err) {
+                    for (var _i6 = 0; _i6 < onErrorHandlers.length; _i6++) (0, onErrorHandlers[_i6])(err);
+                }, fullURL = url + "/" + sessionUID;
+                return function poll() {
+                    return Object(belter_src.p)({
+                        url: fullURL
+                    }).then((function(_ref7) {
+                        var status = _ref7.status, body = _ref7.body;
+                        if (200 !== status) throw new Error("Bad status code from " + url + ": " + status);
+                        if (!body || !body.messages || !Array.isArray(body.messages)) throw new Error("Expected messages to be an array");
+                        !function(messages) {
+                            for (var _i2 = 0; _i2 < messages.length; _i2++) for (var message = messages[_i2], _i4 = 0; _i4 < onMessageHandlers.length; _i4++) (0, 
+                            onMessageHandlers[_i4])(JSON.stringify(message, null, 4));
+                        }(body.messages);
+                    })).catch((function(err) {
+                        return errDelay >= 32 ? (error(err), new src.a) : (time = errDelay *= 2, new src.a((function(resolve) {
+                            setTimeout(resolve, time);
+                        })));
+                        var time;
+                    })).then((function() {
+                        return poll();
+                    }));
+                }(), {
+                    send: function(data) {
+                        Object(belter_src.p)({
+                            url: url,
+                            method: "post",
+                            json: {
+                                poll: !1,
+                                messages: [ JSON.parse(data) ]
+                            }
+                        }).catch(error);
+                    },
+                    onMessage: function(handler) {
+                        onMessageHandlers.push(handler);
+                    },
+                    onError: function(handler) {
+                        onErrorHandlers.push(handler);
+                    },
+                    onOpen: function(handler) {
+                        handler();
+                    },
+                    onClose: function() {}
+                };
             },
-            sourceApp: sourceApp,
-            sourceAppVersion: sourceAppVersion,
-            targetApp: targetApp
+            sourceApp: _ref6.sourceApp,
+            sourceAppVersion: _ref6.sourceAppVersion,
+            targetApp: _ref6.targetApp
         });
     }
     __webpack_require__.d(__webpack_exports__, "h", (function() {
@@ -1552,7 +1568,7 @@ window.spb = function(modules) {
         return Object(belter_src.f)(createAccessToken, (function() {
             Object(lib.b)().info("rest_api_create_access_token");
             var basicAuth = Object(belter_src.a)(clientID + ":");
-            return Object(belter_src.q)({
+            return Object(belter_src.p)({
                 method: "post",
                 url: config.a,
                 headers: {
@@ -1671,7 +1687,7 @@ window.spb = function(modules) {
         var json = {
             payment_source: paymentSource
         };
-        return Object(belter_src.q)({
+        return Object(belter_src.p)({
             method: "post",
             url: config.i + "/" + orderID + "/" + config.k,
             headers: headers,
@@ -1726,7 +1742,7 @@ window.spb = function(modules) {
             Authorization: "Bearer " + accessToken,
             "PayPal-Partner-Attribution-Id": partnerAttributionID
         };
-        return Object(belter_src.q)({
+        return Object(belter_src.p)({
             method: "post",
             url: config.c,
             headers: headers,
@@ -1746,7 +1762,7 @@ window.spb = function(modules) {
             Authorization: "Bearer " + accessToken,
             "PayPal-Partner-Attribution-Id": partnerAttributionID
         };
-        return Object(belter_src.q)({
+        return Object(belter_src.p)({
             method: "post",
             url: config.c + "/" + subscriptionID + "/revise",
             headers: headers,
@@ -1835,7 +1851,7 @@ window.spb = function(modules) {
         if (!accessToken) throw new Error("No access token passed to " + url);
         var requestHeaders = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)(((_extends2 = {})[_constants__WEBPACK_IMPORTED_MODULE_4__.j.AUTHORIZATION] = "Bearer " + accessToken, 
         _extends2), headers);
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.q)({
+        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.p)({
             method: method,
             url: url,
             headers: requestHeaders,
@@ -1851,7 +1867,7 @@ window.spb = function(modules) {
         _reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__.j.REQUESTED_BY] = _constants__WEBPACK_IMPORTED_MODULE_4__.o, 
         _reqHeaders);
         return accessToken && (reqHeaders[_constants__WEBPACK_IMPORTED_MODULE_4__.j.ACCESS_TOKEN] = accessToken), 
-        Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.q)({
+        Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.p)({
             url: url,
             method: method,
             headers: reqHeaders,
@@ -1869,7 +1885,7 @@ window.spb = function(modules) {
     }
     function callGraphQL(_ref5) {
         var query = _ref5.query, _ref5$variables = _ref5.variables, variables = void 0 === _ref5$variables ? {} : _ref5$variables, _ref5$headers = _ref5.headers, headers = void 0 === _ref5$headers ? {} : _ref5$headers;
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.q)({
+        return Object(belter_src__WEBPACK_IMPORTED_MODULE_2__.p)({
             url: _config__WEBPACK_IMPORTED_MODULE_3__.e,
             method: "POST",
             json: {
@@ -2142,7 +2158,7 @@ window.spb = function(modules) {
     })), __webpack_require__(0);
     var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3), _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
     function getButtons() {
-        return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__.o)("[ " + _constants__WEBPACK_IMPORTED_MODULE_2__.c.FUNDING_SOURCE + " ]");
+        return Object(belter_src__WEBPACK_IMPORTED_MODULE_1__.n)("[ " + _constants__WEBPACK_IMPORTED_MODULE_2__.c.FUNDING_SOURCE + " ]");
     }
     function getSelectedFunding(button) {
         var fundingSource = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__.c.FUNDING_SOURCE), paymentMethodID = button.getAttribute(_constants__WEBPACK_IMPORTED_MODULE_2__.c.PAYMENT_METHOD_ID);
@@ -2321,7 +2337,7 @@ window.spb = function(modules) {
             })).purchase_units = order.purchase_units.map((function(unit) {
                 if (unit.amount.currency_code && unit.amount.currency_code !== currency) throw new Error("Unexpected currency: " + unit.amount.currency_code + " passed to order.create. Please ensure you are passing /sdk/js?" + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.j.CURRENCY + "=" + unit.amount.currency_code + " in the paypal script tag.");
                 var payee = unit.payee;
-                if (payee) {
+                if (payee && merchantID && merchantID.length) {
                     if (!merchantID[0]) throw new Error("Pass " + _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.j.MERCHANT_ID + "=XYZ in the paypal script tag.");
                     if (payee.merchant_id && payee.merchant_id !== merchantID[0]) throw new Error('Expected payee.merchant_id to be "' + merchantID[0] + '"');
                 }
@@ -2471,7 +2487,7 @@ window.spb = function(modules) {
                             }).flush(), new Error("Invalid redirect url: " + url + " - must be fully qualified url");
                             return url.match(/^https?:\/\//) || Object(_lib__WEBPACK_IMPORTED_MODULE_4__.b)().warn("redir_url_non_http", {
                                 url: url
-                            }).flush(), Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.p)(url, window.top);
+                            }).flush(), Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.o)(url, window.top);
                         }
                     };
                 }({
@@ -2511,7 +2527,7 @@ window.spb = function(modules) {
                 }).flush(), new Error("Invalid redirect url: " + url + " - must be fully qualified url");
                 return url.match(/^https?:\/\//) || Object(_lib__WEBPACK_IMPORTED_MODULE_2__.b)().warn("redir_url_non_http", {
                     url: url
-                }).flush(), Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.p)(url, window.top);
+                }).flush(), Object(belter_src__WEBPACK_IMPORTED_MODULE_0__.o)(url, window.top);
             }
         };
     }
@@ -2911,7 +2927,7 @@ window.spb = function(modules) {
     }
     var cardFieldsOpen = !1;
     function highlightCard(card) {
-        Object(src.o)("[" + constants.c.CARD + "]").forEach((function(el) {
+        Object(src.n)("[" + constants.c.CARD + "]").forEach((function(el) {
             el.style.opacity = el.getAttribute(constants.c.CARD) === card ? "1" : "0.1";
         }));
     }
@@ -2935,7 +2951,7 @@ window.spb = function(modules) {
         }))), recalculateMargin();
     }, slideDownButtons = function() {
         var buttonsContainer = card_fields_getElements().buttonsContainer;
-        Object(src.o)("[" + constants.c.CARD + "]").forEach((function(el) {
+        Object(src.n)("[" + constants.c.CARD + "]").forEach((function(el) {
             el.style.opacity = "1";
         })), buttonsContainer.style.marginTop = "0px";
     }, config = __webpack_require__(5), props_getPopupBridge = __webpack_require__(11), SOURCE_APP = "paypal_smart_payment_buttons", SOURCE_APP_VERSION = window.paypal ? window.paypal.version : "unknown", TARGET_APP = "paypal_native_checkout_sdk", MESSAGE = {
@@ -2944,7 +2960,7 @@ window.spb = function(modules) {
         ON_APPROVE: "onApprove",
         ON_CANCEL: "onCancel",
         ON_ERROR: "onError"
-    }, isNativeCheckoutInstalled = !1, sessionUID = Object(src.v)(), useNativeWebSocket = !0;
+    }, isNativeCheckoutInstalled = !1, sessionUID = Object(src.u)(), useNativeWebSocket = !0;
     function getNativeSocket() {
         var socketParams = {
             sessionUID: sessionUID,
@@ -3464,7 +3480,7 @@ window.spb = function(modules) {
                     Object(lib.b)().info("native_sdk_detected"), isNativeCheckoutInstalled = !0;
                 }), (function(err) {
                     Object(lib.b)().info("native_sdk_not_detected", {
-                        err: Object(src.s)(err)
+                        err: Object(src.r)(err)
                     });
                 }));
             }));
