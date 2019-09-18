@@ -1,3 +1,9 @@
+## <small>5.0.58 (2019-09-18)</small>
+
+* Add Native component ([3f85901](http://github.paypal.com/paypal/paypal-checkout/commit/3f85901))
+
+
+
 ## <small>5.0.57 (2019-09-17)</small>
 
 * Add onFocused event registrar ([bda4fe9](http://github.paypal.com/paypal/paypal-checkout/commit/bda4fe9))
