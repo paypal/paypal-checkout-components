@@ -47,6 +47,8 @@ export function sdkMiddleware({ logger = defaultLogger, cache } : SDKMiddlewareO
     startWatchers({ logBuffer, cache });
 
     return async (req : ExpressRequest, res : ExpressResponse) : Promise<void> => {
+        logBuffer.flush(req);
+
         try {
             let params;
 
