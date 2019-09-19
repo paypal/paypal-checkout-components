@@ -6,11 +6,20 @@ import { COUNTRY, LANG } from '@paypal/sdk-constants';
 export type ExpressRequest = express$Request; // eslint-disable-line no-undef
 export type ExpressResponse = express$Response; // eslint-disable-line no-undef
 
+export type LoggerPayload = {
+    [ string ] : string | number | null | void
+};
+
 export type LoggerType = {|
-    +debug : Function,
-    +info : Function,
-    +warn : Function,
-    +error : Function
+    debug : (req : ExpressRequest, event : string, payload : ?LoggerPayload) => void,
+    info : (req : ExpressRequest, event : string, payload : ?LoggerPayload) => void,
+    warn : (req : ExpressRequest, event : string, payload : ?LoggerPayload) => void,
+    error : (req : ExpressRequest, event : string, payload : ?LoggerPayload) => void
+|};
+
+export type CacheType = {|
+    get : (string) => Promise<string | void>,
+    set : (string, string) => Promise<string>
 |};
 
 export type LocaleType = {|

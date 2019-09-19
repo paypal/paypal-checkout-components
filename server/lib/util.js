@@ -4,7 +4,7 @@ import { webpackCompile } from 'webpack-mem-compile';
 import webpack from 'webpack';
 
 import { HTTP_HEADER, HTTP_CONTENT_TYPE, HTTP_STATUS_CODE } from '../config';
-import type { ExpressRequest, ExpressResponse } from '../types';
+import type { ExpressRequest, ExpressResponse, LoggerType, LoggerPayload } from '../types';
 
 function response(res : ExpressResponse, status : $Values<typeof HTTP_STATUS_CODE>, type : $Values<typeof HTTP_CONTENT_TYPE>, message : string) {
     res.status(status)
@@ -84,4 +84,37 @@ export function getNonce(res : ExpressResponse) : string {
     }
 
     return nonce;
+}
+
+export type LoggerBufferType = {|
+    debug : (event : string, payload : LoggerPayload) => void,
+    info : (event : string, payload : LoggerPayload) => void,
+    warn : (event : string, payload : LoggerPayload) => void,
+    error : (event : string, payload : LoggerPayload) => void,
+    flush : (req : ExpressRequest) => void
+|};
+
+
+export function getLogBuffer(logger : LoggerType) : LoggerBufferType {
+    const buffer = [];
+
+    const push = (level, event, payload) => {
+        buffer.push({ level, event, payload });
+    };
+
+    const debug = (event, payload) => push('debug', event, payload);
+    const info = (event, payload) => push('info', event, payload);
+    const warn = (event, payload) => push('warn', event, payload);
+    const error = (event, payload) => push('error', event, payload);
+
+    const flush = (req) => {
+        while (buffer.length) {
+            const { level, event, payload } = buffer.shift();
+            logger[level](req, event, payload);
+        }
+    };
+
+    return {
+        debug, info, warn, error, flush
+    };
 }
