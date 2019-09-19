@@ -14,8 +14,8 @@ const TRUSTLY_LOGO_COLORS = {
         secondary: '#64CC07'
     },
     [ BUTTON_LOGO_COLOR.BLACK ]: {
-        primary:    '#000000',
-        secondary:  '#000000'
+        primary:   '#020202',
+        secondary: '#64CC07'
     }
 };
 
