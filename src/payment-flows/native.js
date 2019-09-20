@@ -118,6 +118,8 @@ export function setupNative({ platform, enableNativeCheckout } : SetupNativeProp
             return;
         }
 
+        isNativeCheckoutInstalled = false;
+
         const socket = getNativeSocket();
 
         return socket.send(MESSAGE.DETECT_APP, {}, { requireSessionUID: false }).then(() => {
@@ -245,13 +247,15 @@ export function initNative(props : NativeProps) : NativeInstance {
             return redirectTop(extendUrl(EXPERIENCE_URI.NATIVE_CHECKOUT, { query: { sessionUID } }));
         }
 
-        const { getWindow, close: closeNativePopup } = window.paypal.Native({
+        const { renderTo, getWindow, close: closeNativePopup } = window.paypal.Native({
             sessionUID,
             onLoad: ({ win }) => {
                 closeNativeSocket();
                 fallbackToWebCheckout({ win });
             }
         });
+
+        renderTo(window.top);
 
         return ZalgoPromise.delay(POPUP_CHECK_DELAY).then(() => {
             if (isBlankDomain(getWindow())) {

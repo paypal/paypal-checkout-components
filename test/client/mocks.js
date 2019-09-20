@@ -478,7 +478,7 @@ type MockWebSocket = {|
     |}
 |};
 
-export function getNativeWebSocketMock({ getSessionUID } : { getSessionUID : () => ?string }) : MockWebSocket {
+export function getNativeWebSocketMock({ getSessionUID, allowDetect = true } : { getSessionUID : () => ?string, allowDetect? : boolean }) : MockWebSocket {
     let props;
 
     return mockWebSocket({
@@ -505,8 +505,9 @@ export function getNativeWebSocketMock({ getSessionUID } : { getSessionUID : () 
                     request_uid:        requestUID,
                     message_uid:        uniqueID(),
                     message_type:       'response',
-                    message_status:     'success',
-                    message_name:       'detectApp'
+                    message_status:     allowDetect ? 'success' : 'error',
+                    message_name:       'detectApp',
+                    message_data:       allowDetect ? {} : { message: 'Nope!' }
                 }));
 
                 setTimeout(() => {
