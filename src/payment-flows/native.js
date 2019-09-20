@@ -68,6 +68,10 @@ export function isNativeEligible({ win, platform, fundingSource, onShippingChang
         return false;
     }
 
+    if (window.xprops.onClick) {
+        return false;
+    }
+
     if (enableNativeCheckout) {
         return true;
     }

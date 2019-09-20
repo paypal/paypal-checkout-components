@@ -15,6 +15,7 @@ describe('native cases', () => {
         return await wrapPromise(async ({ expect, avoid }) => {
             window.xprops.enableNativeCheckout = true;
             window.xprops.platform = PLATFORM.MOBILE;
+            delete window.xprops.onClick;
 
             let sessionUID; // eslint-disable-line prefer-const
 
