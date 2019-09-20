@@ -2,7 +2,7 @@
 /* eslint unicorn/prefer-add-event-listener: off */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { request, uniqueID } from 'belter/src';
+import { request, uniqueID, noop } from 'belter/src';
 
 import { sleep } from './util';
 
@@ -195,7 +195,6 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
 
         if (messageType === MESSAGE_TYPE.REQUEST) {
             return onRequest(socket, { messageSessionUID, requestUID, messageName, messageData });
-
         } else if (messageType === MESSAGE_TYPE.RESPONSE) {
             return onResponse({ requestUID, messageSessionUID, responseStatus, messageData });
         
@@ -236,8 +235,10 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
                 instance.onClose(err => {
                     closed = true;
                     reject(err || new Error('socket closed'));
-                    updateRetryDelay();
-                    init();
+                    if (retry) {
+                        updateRetryDelay();
+                        init();
+                    }
                 });
         
                 instance.onError(err => {
@@ -253,6 +254,8 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
 
             return connectionPromise;
         });
+    
+        socketPromise.catch(noop);
     };
 
     init();
@@ -307,9 +310,10 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
 
     const close = () => {
         retry = false;
-        socketPromise.then(socket => {
-            socket.close();
-        });
+        socketPromise.then(
+            socket => socket.close(),
+            noop
+        );
     };
 
     return { on, send, reconnect, close };

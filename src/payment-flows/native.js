@@ -96,13 +96,6 @@ function getNativeSocket() : MessageSocket {
     return nativeWebSocket;
 }
 
-function closeNativeSocket() {
-    if (nativeWebSocket) {
-        nativeWebSocket.close();
-        nativeWebSocket = null;
-    }
-}
-
 type SetupNativeProps = {|
     platform : $Values<typeof PLATFORM>,
     enableNativeCheckout : ?boolean
@@ -118,6 +111,11 @@ export function setupNative({ platform, enableNativeCheckout } : SetupNativeProp
             return;
         }
 
+        if (nativeWebSocket) {
+            nativeWebSocket.close();
+            nativeWebSocket = null;
+        }
+
         isNativeCheckoutInstalled = false;
 
         const socket = getNativeSocket();
@@ -128,7 +126,7 @@ export function setupNative({ platform, enableNativeCheckout } : SetupNativeProp
         }, err => {
             getLogger().info('native_sdk_not_detected', { err: stringifyError(err) });
         }).finally(() => {
-            closeNativeSocket();
+            socket.close();
         });
     });
 }
@@ -239,18 +237,18 @@ export function initNative(props : NativeProps) : NativeInstance {
             return onCancel();
         });
 
-        socket.on(MESSAGE.ON_ERROR, ({ data : { error } }) => {
-            return onError(new Error(error.message));
+        socket.on(MESSAGE.ON_ERROR, ({ data : { message } }) => {
+            return onError(new Error(message));
         });
 
         if (isNativeCheckoutInstalled) {
-            return redirectTop(extendUrl(EXPERIENCE_URI.NATIVE_CHECKOUT, { query: { sessionUID } }));
+            redirectTop(extendUrl(EXPERIENCE_URI.NATIVE_CHECKOUT, { query: { sessionUID } }));
+            return socket.reconnect();
         }
 
         const { renderTo, getWindow, close: closeNativePopup } = window.paypal.Native({
             sessionUID,
             onLoad: ({ win }) => {
-                closeNativeSocket();
                 fallbackToWebCheckout({ win });
             }
         });
@@ -259,8 +257,8 @@ export function initNative(props : NativeProps) : NativeInstance {
 
         return ZalgoPromise.delay(POPUP_CHECK_DELAY).then(() => {
             if (isBlankDomain(getWindow())) {
-                closeNativePopup();
                 socket.reconnect();
+                closeNativePopup();
             }
         });
     });

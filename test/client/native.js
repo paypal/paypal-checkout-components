@@ -19,14 +19,16 @@ describe('native cases', () => {
 
             let sessionUID; // eslint-disable-line prefer-const
 
-            const mockWebSocketServer = getNativeWebSocketMock({
+            const { expect: expectSocket, getProps, onApprove } = getNativeWebSocketMock({
                 getSessionUID: () => sessionUID
-            }).expect();
+            });
+
+            const mockWebSocketServer = expectSocket();
 
             const orderID = 'XXXXXXXXXX';
             const payerID = 'XXYYZZ123456';
 
-            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', () => {
                 return ZalgoPromise.try(() => {
                     return orderID;
                 });
@@ -34,7 +36,7 @@ describe('native cases', () => {
 
             window.xprops.onCancel = avoid('onCancel');
 
-            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
                 mockWebSocketServer.done();
 
                 if (data.orderID !== orderID) {
@@ -58,6 +60,110 @@ describe('native cases', () => {
 
             const query = parseQuery(window.location.hash.split('?')[1]);
             sessionUID = query.sessionUID;
+
+            getProps();
+            return ZalgoPromise.delay(50).then(onApprove);
+        });
+    });
+
+    it('should render a button with createOrder, click the button, and render checkout with cancel', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+            window.xprops.enableNativeCheckout = true;
+            window.xprops.platform = PLATFORM.MOBILE;
+            delete window.xprops.onClick;
+
+            let sessionUID; // eslint-disable-line prefer-const
+
+            const { expect: expectSocket, getProps, onCancel } = getNativeWebSocketMock({
+                getSessionUID: () => sessionUID
+            });
+
+            const mockWebSocketServer = expectSocket();
+
+            const orderID = 'XXXXXXXXXX';
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }));
+
+            window.xprops.onApprove = avoid('onApprove');
+
+            window.xprops.onCancel = mockAsyncProp(expect('onCancel', (data) => {
+                mockWebSocketServer.done();
+
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+            }));
+
+            createButtonHTML();
+
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            await clickButton(FUNDING.PAYPAL);
+
+            if (!window.location.hash || window.location.hash.indexOf('#/smart/checkout/native') !== 0) {
+                throw new Error(`Expected window to have been redirected to /checkoutnow. Current hash is ${ window.location.hash || 'undefined' }`);
+            }
+
+            const query = parseQuery(window.location.hash.split('?')[1]);
+            sessionUID = query.sessionUID;
+
+            getProps();
+            return ZalgoPromise.delay(50).then(onCancel);
+        });
+    });
+
+    it('should render a button with createOrder, click the button, and render checkout with error', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+            window.xprops.enableNativeCheckout = true;
+            window.xprops.platform = PLATFORM.MOBILE;
+            delete window.xprops.onClick;
+
+            let sessionUID; // eslint-disable-line prefer-const
+
+            const { expect: expectSocket, getProps, onError } = getNativeWebSocketMock({
+                getSessionUID: () => sessionUID
+            });
+
+            const mockWebSocketServer = expectSocket();
+
+            const orderID = 'XXXXXXXXXX';
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }));
+
+            window.xprops.onApprove = avoid('onApprove');
+            window.xprops.onCancel = avoid('onCancel');
+
+            window.xprops.onError = mockAsyncProp(expect('onError', (err) => {
+                mockWebSocketServer.done();
+
+                if (!(err instanceof Error)) {
+                    throw new TypeError(`Expected onError to pass an error`);
+                }
+            }));
+
+            createButtonHTML();
+
+            await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            await clickButton(FUNDING.PAYPAL);
+
+            if (!window.location.hash || window.location.hash.indexOf('#/smart/checkout/native') !== 0) {
+                throw new Error(`Expected window to have been redirected to /checkoutnow. Current hash is ${ window.location.hash || 'undefined' }`);
+            }
+
+            const query = parseQuery(window.location.hash.split('?')[1]);
+            sessionUID = query.sessionUID;
+
+            getProps();
+            return ZalgoPromise.delay(50).then(onError);
         });
     });
 
@@ -69,10 +175,12 @@ describe('native cases', () => {
 
             let sessionUID;
 
-            const mockWebSocketServer = getNativeWebSocketMock({
+            const { expect: expectSocket, getProps, onApprove } = getNativeWebSocketMock({
                 allowDetect:   false,
                 getSessionUID: () => sessionUID
-            }).expect();
+            });
+
+            const mockWebSocketServer = expectSocket();
 
             const orderID = 'XXXXXXXXXX';
             const payerID = 'XXYYZZ123456';
@@ -109,7 +217,12 @@ describe('native cases', () => {
                     renderTo:  expect('renderTo', () => {
                         sessionUID = props.sessionUID;
                     }),
-                    close: expect('close')
+                    close: expect('close', () => {
+                        return ZalgoPromise.delay(50)
+                            .then(getProps)
+                            .then(() => ZalgoPromise.delay(50))
+                            .then(onApprove);
+                    })
                 };
             });
 
@@ -126,13 +239,6 @@ describe('native cases', () => {
             window.xprops.platform = PLATFORM.MOBILE;
             delete window.xprops.onClick;
 
-            let sessionUID; // eslint-disable-line prefer-const
-
-            const mockWebSocketServer = getNativeWebSocketMock({
-                allowDetect:   false,
-                getSessionUID: () => sessionUID
-            }).expect();
-
             const orderID = 'XXXXXXXXXX';
             const payerID = 'AAABBBCCC';
 
@@ -145,8 +251,6 @@ describe('native cases', () => {
             window.xprops.onCancel = avoid('onCancel');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
-                mockWebSocketServer.done();
-
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
@@ -199,13 +303,6 @@ describe('native cases', () => {
             await setupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
 
             await clickButton(FUNDING.PAYPAL);
-
-            if (!window.location.hash || window.location.hash.indexOf('#/smart/checkout/native') !== 0) {
-                throw new Error(`Expected window to have been redirected to /checkoutnow. Current hash is ${ window.location.hash || 'undefined' }`);
-            }
-
-            const query = parseQuery(window.location.hash.split('?')[1]);
-            sessionUID = query.sessionUID;
         });
     });
 });

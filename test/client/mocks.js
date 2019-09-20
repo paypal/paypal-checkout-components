@@ -471,19 +471,27 @@ getLoggerApiMock().listen();
 getValidatePaymentMethodApiMock().listen();
 getPayeeApiMock().listen();
 
-type MockWebSocket = {|
-    listen : () => MockEndpoint,
+type NativeMockWebSocket = {|
     expect : () => {|
         done : () => void
-    |}
+    |},
+    getProps : () => void,
+    onApprove : () => void,
+    onCancel : () => void,
+    onError : () => void
 |};
 
-export function getNativeWebSocketMock({ getSessionUID, allowDetect = true } : { getSessionUID : () => ?string, allowDetect? : boolean }) : MockWebSocket {
+export function getNativeWebSocketMock({ getSessionUID, allowDetect = true } : { getSessionUID : () => ?string, allowDetect? : boolean }) : NativeMockWebSocket {
     let props;
 
-    return mockWebSocket({
+    let getPropsRequestID;
+    let onApproveRequestID;
+    let onCancelRequestID;
+    let onErrorRequestID;
+
+    const { send, expect } = mockWebSocket({
         uri:     'wss://127.0.0.1/paypal/native',
-        handler: ({ data, send }) => {
+        handler: ({ data, respond }) => {
             const {
                 request_uid:    requestUID,
                 message_type:   messageType,
@@ -497,8 +505,7 @@ export function getNativeWebSocketMock({ getSessionUID, allowDetect = true } : {
             }
 
             if (messageType === 'request' && messageName === 'detectApp') {
-
-                send(JSON.stringify({
+                return respond(JSON.stringify({
                     source_app:         'paypal_native_checkout_sdk',
                     source_app_version: '1.2.3',
                     target_app:         'paypal_smart_payment_buttons',
@@ -509,57 +516,115 @@ export function getNativeWebSocketMock({ getSessionUID, allowDetect = true } : {
                     message_name:       'detectApp',
                     message_data:       allowDetect ? {} : { message: 'Nope!' }
                 }));
-
-                setTimeout(() => {
-                    send(JSON.stringify({
-                        session_uid:        getSessionUID(),
-                        source_app:         'paypal_native_checkout_sdk',
-                        source_app_version: '1.2.3',
-                        target_app:         'paypal_smart_payment_buttons',
-                        request_uid:        uniqueID(),
-                        message_uid:        uniqueID(),
-                        message_type:       'request',
-                        message_name:       'getProps'
-                    }));
-                }, 50);
-
-                return;
             }
 
             if (messageType === 'response' && messageName === 'getProps') {
+                if (requestUID !== getPropsRequestID) {
+                    throw new Error(`Request uid doest not match for getProps response`);
+                }
+
                 props = messageData;
-
-                setTimeout(() => {
-                    send(JSON.stringify({
-                        session_uid:        getSessionUID(),
-                        source_app:         'paypal_native_checkout_sdk',
-                        source_app_version: '1.2.3',
-                        target_app:         'paypal_smart_payment_buttons',
-                        request_uid:        uniqueID(),
-                        message_uid:        uniqueID(),
-                        message_type:       'request',
-                        message_name:       'onApprove',
-                        message_data:       {
-                            orderID: props.orderID,
-                            payerID: 'XXYYZZ123456'
-                        }
-                    }));
-                }, 50);
-
-                return;
             }
 
             if (messageType === 'response' && messageName === 'onApprove') {
-                // pass
+                if (requestUID !== onApproveRequestID) {
+                    throw new Error(`Request uid doest not match for onApprove response`);
+                }
             }
 
             if (messageType === 'response' && messageName === 'onCancel') {
-                // pass
+                if (requestUID !== onCancelRequestID) {
+                    throw new Error(`Request uid doest not match for onCancel response`);
+                }
             }
 
             if (messageType === 'response' && messageName === 'onError') {
-                // pass
+                if (requestUID !== onErrorRequestID) {
+                    throw new Error(`Request uid doest not match for onError response`);
+                }
             }
         }
     });
+
+    const getProps = () => {
+        getPropsRequestID = uniqueID();
+
+        send(JSON.stringify({
+            session_uid:        getSessionUID(),
+            source_app:         'paypal_native_checkout_sdk',
+            source_app_version: '1.2.3',
+            target_app:         'paypal_smart_payment_buttons',
+            request_uid:        getPropsRequestID,
+            message_uid:        uniqueID(),
+            message_type:       'request',
+            message_name:       'getProps'
+        }));
+    };
+
+    const onApprove = () => {
+        if (!props) {
+            throw new Error(`Can not approve without getting props`);
+        }
+
+        onApproveRequestID = uniqueID();
+
+        send(JSON.stringify({
+            session_uid:        getSessionUID(),
+            source_app:         'paypal_native_checkout_sdk',
+            source_app_version: '1.2.3',
+            target_app:         'paypal_smart_payment_buttons',
+            request_uid:        onApproveRequestID,
+            message_uid:        uniqueID(),
+            message_type:       'request',
+            message_name:       'onApprove',
+            message_data:       {
+                orderID: props.orderID,
+                payerID: 'XXYYZZ123456'
+            }
+        }));
+    };
+
+    const onCancel = () => {
+        if (!props) {
+            throw new Error(`Can not approve without getting props`);
+        }
+
+        onCancelRequestID = uniqueID();
+
+        send(JSON.stringify({
+            session_uid:        getSessionUID(),
+            source_app:         'paypal_native_checkout_sdk',
+            source_app_version: '1.2.3',
+            target_app:         'paypal_smart_payment_buttons',
+            request_uid:        onCancelRequestID,
+            message_uid:        uniqueID(),
+            message_type:       'request',
+            message_name:       'onCancel',
+            message_data:       {
+                orderID: props.orderID
+            }
+        }));
+    };
+
+    const onError = () => {
+        onErrorRequestID = uniqueID();
+
+        send(JSON.stringify({
+            session_uid:        getSessionUID(),
+            source_app:         'paypal_native_checkout_sdk',
+            source_app_version: '1.2.3',
+            target_app:         'paypal_smart_payment_buttons',
+            request_uid:        onErrorRequestID,
+            message_uid:        uniqueID(),
+            message_type:       'request',
+            message_name:       'onError',
+            message_data:       {
+                message: 'Something went wrong'
+            }
+        }));
+    };
+
+    return {
+        expect, getProps, onApprove, onCancel, onError
+    };
 }
