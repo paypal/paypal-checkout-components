@@ -171,5 +171,25 @@ export type FundingEligibilityType = {|
     verkkopankki? : {
         eligible : boolean,
         vaultable? : boolean
+    },
+    blik? : {
+        eligible : boolean,
+        vaultable? : boolean
+    },
+    boleto? : {
+        eligible : boolean,
+        vaultable? : boolean
+    },
+    maxima? : {
+        eligible : boolean,
+        vaultable? : boolean
+    },
+    oxxo? : {
+        eligible : boolean,
+        vaultable? : boolean
+    },
+    trustly? : {
+        eligible : boolean,
+        vaultable? : boolean
     }
 |};
