@@ -81,7 +81,7 @@ export const FUNDING_CONFIG = {
     },
 
     [ FUNDING.VENMO ]: {
-        allowOptOut:      false,
+        allowOptOut:      true,
         allowedCountries: [
             COUNTRY.US
         ],
