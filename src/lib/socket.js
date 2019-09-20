@@ -43,10 +43,12 @@ type ResponseMessage<T> = {|
 
 type MessageSocketDriver = {|
     send : (string) => void,
+    close : () => void,
     onMessage : ((string) => void) => void,
     onError : ((mixed) => void) => void,
     onOpen : (() => void) => void,
-    onClose : ((Error) => void) => void
+    onClose : ((Error) => void) => void,
+    isOpen : () => boolean
 |};
 
 export type MessageSocketOptions = {|
@@ -61,12 +63,20 @@ export type MessageSocketOptions = {|
 export type MessageSocket = {|
     on : <T, R>( // eslint-disable-line no-undef
         name : string,
-        handler : ({ data : T }) => ZalgoPromise<R> | R // eslint-disable-line no-undef
+        handler : ({ data : T }) => ZalgoPromise<R> | R, // eslint-disable-line no-undef
+        opts? : {|
+            requireSessionUID? : boolean
+        |}
     ) => void,
     send : <T, R>( // eslint-disable-line no-undef
         name : string,
-        data : T // eslint-disable-line no-undef
-    ) => ZalgoPromise<R> // eslint-disable-line no-undef
+        data : T, // eslint-disable-line no-undef
+        opts? : {|
+            requireSessionUID? : boolean
+        |}
+    ) => ZalgoPromise<R>, // eslint-disable-line no-undef
+    reconnect : () => ZalgoPromise<void>,
+    close : () => void
 |};
 
 export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion, targetApp, retry = true } : MessageSocketOptions) : MessageSocket {
@@ -90,6 +100,10 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
     };
 
     const sendResponse = (socket, { messageName, responseStatus, responseData, messageSessionUID, requestUID }) => {
+        if (!socket.isOpen()) {
+            return;
+        }
+        
         return sendMessage(socket, {
             session_uid:        messageSessionUID,
             request_uid:        requestUID,
@@ -108,11 +122,13 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
                 throw new Error(`No listener found for name: ${ messageName }`);
             }
 
-            if (messageSessionUID !== sessionUID) {
+            const { handler, requireSessionUID } = requestListener;
+
+            if (requireSessionUID && messageSessionUID !== sessionUID) {
                 throw new Error(`Incorrect sessionUID: ${ messageSessionUID || 'undefined' }`);
             }
 
-            return requestListener({ data: messageData });
+            return handler({ data: messageData });
         }).then(res => {
             sendResponse(socket, { responseStatus: RESPONSE_STATUS.SUCCESS, responseData: res, messageName, messageSessionUID, requestUID  });
         }, err => {
@@ -121,19 +137,23 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
         });
     };
 
-    const onResponse = ({ requestUID, responseStatus, messageData }) => {
-        const responseListener = responseListeners[requestUID];
+    const onResponse = ({ requestUID, messageSessionUID, responseStatus, messageData }) => {
+        const { listenerPromise, requireSessionUID } = responseListeners[requestUID];
         
-        if (!responseListener) {
+        if (!listenerPromise) {
             throw new Error(`Could not find response listener with id: ${ requestUID }`);
+        }
+
+        if (requireSessionUID && messageSessionUID !== sessionUID) {
+            throw new Error(`Incorrect sessionUID: ${ messageSessionUID || 'undefined' }`);
         }
         
         delete responseListeners[requestUID];
         
         if (responseStatus === RESPONSE_STATUS.SUCCESS) {
-            responseListener.resolve({ data: messageData });
+            listenerPromise.resolve({ data: messageData });
         } else if (responseStatus === RESPONSE_STATUS.ERROR) {
-            responseListener.reject(new Error(messageData.message));
+            listenerPromise.reject(new Error(messageData.message));
         } else {
             throw new Error(`Can not handle response status: ${ status || 'undefined' }`);
         }
@@ -177,14 +197,14 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
             return onRequest(socket, { messageSessionUID, requestUID, messageName, messageData });
 
         } else if (messageType === MESSAGE_TYPE.RESPONSE) {
-            return onResponse({ requestUID, responseStatus, messageData });
+            return onResponse({ requestUID, messageSessionUID, responseStatus, messageData });
         
         } else {
             throw new Error(`Unhandleable message type: ${ messageType }`);
         }
     };
 
-    
+    let closed = false;
     let retryDelay;
 
     const updateRetryDelay = () => {
@@ -194,22 +214,28 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
     };
 
     let socketPromise;
+    let retryPromise;
 
     const init = () => {
         socketPromise = ZalgoPromise.try(() => {
             if (retryDelay) {
-                return ZalgoPromise.delay(retryDelay);
+                retryPromise = ZalgoPromise.delay(retryDelay);
+                return retryPromise;
             }
         }).then(() => {
+            retryPromise = null;
             const instance = driver();
 
             const connectionPromise = new ZalgoPromise((resolve, reject) => {
                 instance.onOpen(() => {
+                    closed = false;
+                    retryDelay = 0;
                     resolve(instance);
                 });
 
                 instance.onClose(err => {
-                    reject(err);
+                    closed = true;
+                    reject(err || new Error('socket closed'));
                     updateRetryDelay();
                     init();
                 });
@@ -231,20 +257,26 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
 
     init();
 
-    const on = (name, handler) => {
+    const on = (name, handler, { requireSessionUID = true } = {}) => {
         if (requestListeners[name]) {
             throw new Error(`Listener already registered for name: ${ name }`);
         }
 
-        requestListeners[name] = handler;
+        requestListeners[name] = {
+            handler,
+            requireSessionUID
+        };
     };
 
-    const send = <T, R>(messageName, messageData : T) : ZalgoPromise<R> => {
+    const send = <T, R>(messageName, messageData : T, { requireSessionUID = true } = {}) : ZalgoPromise<R> => {
         return socketPromise.then(socket => {
             const requestUID = uniqueID();
 
-            const responseListener = new ZalgoPromise();
-            responseListeners[requestUID] = responseListener;
+            const listenerPromise = new ZalgoPromise();
+            responseListeners[requestUID] = {
+                listenerPromise,
+                requireSessionUID
+            };
 
             sendMessage(socket, {
                 request_uid:  requestUID,
@@ -253,11 +285,34 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
                 message_data: messageData
             });
 
-            return responseListener;
+            return listenerPromise;
         });
     };
 
-    return { on, send };
+    const reconnect = () => {
+        return ZalgoPromise.try(() => {
+            if (!closed) {
+                return socketPromise;
+            }
+            
+            if (retryPromise) {
+                retryPromise.resolve();
+                return socketPromise;
+            }
+
+            retryDelay = 0;
+            return init();
+        });
+    };
+
+    const close = () => {
+        retry = false;
+        socketPromise.then(socket => {
+            socket.close();
+        });
+    };
+
+    return { on, send, reconnect, close };
 }
 
 type WebSocketOptions = {|
@@ -275,6 +330,9 @@ export function webSocket({ sessionUID, url, sourceApp, sourceAppVersion, target
         return {
             send: (data) => {
                 socket.send(data);
+            },
+            close: () => {
+                socket.close();
             },
             onMessage: (handler) => {
                 socket.onmessage = (event) => {
@@ -297,6 +355,9 @@ export function webSocket({ sessionUID, url, sourceApp, sourceAppVersion, target
             },
             onClose: (handler) => {
                 socket.onclose = () => handler(new Error(`Websocket connection closed`));
+            },
+            isOpen: () => {
+                return socket.readyState === WebSocket.OPEN;
             }
         };
     };
@@ -308,7 +369,9 @@ export function httpSocket({ url, sourceApp, sourceAppVersion, targetApp, sessio
     const driver = () => {
         const onMessageHandlers = [];
         const onErrorHandlers = [];
+        const onCloseHandlers = [];
 
+        let open = true;
         let errDelay = 1;
 
         const flush = (messages) => {
@@ -324,10 +387,21 @@ export function httpSocket({ url, sourceApp, sourceAppVersion, targetApp, sessio
                 handler(err);
             }
         };
+
+        const close = (err) => {
+            open = false;
+            for (const handler of onCloseHandlers) {
+                handler(err);
+            }
+        };
     
         const fullURL = `${ url }/${ sessionUID }`;
     
         const poll = () => {
+            if (!open) {
+                return;
+            }
+            
             return request({ url: fullURL }).then(({ status, body }) => {
                 if (status !== 200) {
                     throw new Error(`Bad status code from ${ url }: ${ status }`);
@@ -369,6 +443,9 @@ export function httpSocket({ url, sourceApp, sourceAppVersion, targetApp, sessio
                     }
                 }).catch(error);
             },
+            close: () => {
+                close(new Error(`Http socket was closed`));
+            },
             onMessage: (handler) => {
                 onMessageHandlers.push(handler);
             },
@@ -378,8 +455,11 @@ export function httpSocket({ url, sourceApp, sourceAppVersion, targetApp, sessio
             onOpen: (handler) => {
                 handler();
             },
-            onClose: () => {
-                // pass
+            onClose: (handler) => {
+                onCloseHandlers.push(handler);
+            },
+            isOpen: () => {
+                return open;
             }
         };
     };

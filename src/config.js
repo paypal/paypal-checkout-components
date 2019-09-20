@@ -18,7 +18,8 @@ export const SMART_API_URI = {
 export const GRAPHQL_URI = '/graphql';
 
 export const EXPERIENCE_URI = {
-    CHECKOUT: '/checkoutnow'
+    CHECKOUT:        '/checkoutnow',
+    NATIVE_CHECKOUT: '/smart/checkout/native'
 };
 
 export const NATIVE_WEBSOCKET_URL = 'wss://127.0.0.1/paypal/native';

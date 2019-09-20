@@ -1,7 +1,7 @@
 /* @flow */
 
 import { memoize, redirect as redir, noop } from 'belter/src';
-import type { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { getLogger } from '../../lib';
@@ -50,22 +50,30 @@ export function buildXOnCancelActions() : XOnCancelActionsType {
 
 export type OnCancel = () => ZalgoPromise<void>;
 
-export function getOnCancel(xprops : XProps, { createOrder } : { createOrder : CreateOrder }) : OnCancel {
+export function getOnCancel(xprops : XProps, { createOrder, validationPromise } : { createOrder : CreateOrder, validationPromise : ZalgoPromise<boolean> }) : OnCancel {
     const { onCancel = noop, onError, buttonSessionID } = xprops;
 
     return memoize(() => {
-        return createOrder().then(orderID => {
-            getLogger()
-                .info('button_cancel')
-                .track({
-                    [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
-                    [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.CHECKOUT_CANCEL,
-                    [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID
-                }).flush();
+        return ZalgoPromise.try(() => {
+            return validationPromise || true;
+        }).then(valid => {
+            if (!valid) {
+                return;
+            }
 
-            return onCancel(buildXOnCancelData({ orderID }), buildXOnCancelActions());
-        }).catch(err => {
-            return onError(err);
+            return createOrder().then(orderID => {
+                getLogger()
+                    .info('button_cancel')
+                    .track({
+                        [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
+                        [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.CHECKOUT_CANCEL,
+                        [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID
+                    }).flush();
+
+                return onCancel(buildXOnCancelData({ orderID }), buildXOnCancelActions());
+            }).catch(err => {
+                return onError(err);
+            });
         });
     });
 }

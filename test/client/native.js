@@ -51,7 +51,7 @@ describe('native cases', () => {
 
             await clickButton(FUNDING.PAYPAL);
 
-            if (!window.location.hash || window.location.hash.indexOf('#/checkoutnow') !== 0) {
+            if (!window.location.hash || window.location.hash.indexOf('#/smart/checkout/native') !== 0) {
                 throw new Error(`Expected window to have been redirected to /checkoutnow. Current hash is ${ window.location.hash || 'undefined' }`);
             }
 

@@ -124,8 +124,7 @@ type CheckoutProps= {|
     onError : (mixed) => ZalgoPromise<void>,
     vault : boolean,
     clientAccessToken : ?string,
-    fundingEligibility : FundingEligibilityType,
-    validationPromise? : ZalgoPromise<boolean>
+    fundingEligibility : FundingEligibilityType
 |};
 
 type CheckoutInstance = {|
@@ -137,7 +136,7 @@ type CheckoutInstance = {|
 export function initCheckout(props : CheckoutProps) : CheckoutInstance {
     const { clientID, win, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
         onShippingChange, cspNonce, context, locale, commit, onError, vault, clientAccessToken, fundingEligibility,
-        createBillingAgreement, createSubscription, validationPromise = ZalgoPromise.resolve(true) } = props;
+        createBillingAgreement, createSubscription } = props;
 
     if (checkoutOpen) {
         throw new Error(`Checkout already rendered`);
@@ -150,11 +149,9 @@ export function initCheckout(props : CheckoutProps) : CheckoutInstance {
 
     const onClose = () => {
         checkoutOpen = false;
-        return validationPromise.then(valid => {
-            if (valid && !approved) {
-                return onCancel();
-            }
-        });
+        if (!approved) {
+            return onCancel();
+        }
     };
 
     const facilitatorAccessTokenPromise = createAccessToken(clientID);
@@ -166,15 +163,9 @@ export function initCheckout(props : CheckoutProps) : CheckoutInstance {
         clientAccessToken,
 
         createOrder: () => {
-            return validationPromise.then(valid => {
-                if (!valid) {
-                    return unresolvedPromise();
-                }
-
-                return createOrder().then(orderID => {
-                    return enableVaultSetup({ orderID, vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement, createSubscription }).then(() => {
-                        return orderID;
-                    });
+            return createOrder().then(orderID => {
+                return enableVaultSetup({ orderID, vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement, createSubscription }).then(() => {
+                    return orderID;
                 });
             });
         },
@@ -195,12 +186,8 @@ export function initCheckout(props : CheckoutProps) : CheckoutInstance {
         },
 
         onCancel: () => {
-            return validationPromise.then(valid => {
-                if (valid) {
-                    return closeCheckout().then(() => {
-                        return onCancel();
-                    });
-                }
+            return closeCheckout().then(() => {
+                return onCancel();
             });
         },
 
@@ -235,9 +222,7 @@ export function initCheckout(props : CheckoutProps) : CheckoutInstance {
     };
 
     const start = () => {
-        return validationPromise.then(valid => {
-            return valid ? renderPromise : close();
-        }).then(noop);
+        return renderPromise.then(noop);
     };
 
     return { start, close, triggerError };

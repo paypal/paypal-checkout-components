@@ -6,7 +6,7 @@ import { FPTI_KEY, SDK_QUERY_KEYS, INTENT, CURRENCY } from '@paypal/sdk-constant
 
 import { createAccessToken, createOrderID, billingTokenToOrderID, subscriptionIdToCartId } from '../../api';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../../constants';
-import { getLogger } from '../../lib';
+import { getLogger, unresolvedPromise } from '../../lib';
 
 import type { CreateSubscription } from './createSubscription';
 import type { CreateBillingAgreement } from './createBillingAgreement';
@@ -92,7 +92,7 @@ export function buildXCreateOrderActions({ clientID, intent, currency, merchantI
     };
 }
 
-export function getCreateOrder(xprops : XProps, { createBillingAgreement, createSubscription } : { createBillingAgreement : ?CreateBillingAgreement, createSubscription : ?CreateSubscription }) : CreateOrder {
+export function getCreateOrder(xprops : XProps, { validationPromise, createBillingAgreement, createSubscription } : { createBillingAgreement : ?CreateBillingAgreement, createSubscription : ?CreateSubscription, validationPromise : ZalgoPromise<boolean> }) : CreateOrder {
     const { createOrder, clientID, buttonSessionID, intent, currency, merchantID, partnerAttributionID } = xprops;
 
     const data = buildXCreateOrderData();
@@ -100,6 +100,14 @@ export function getCreateOrder(xprops : XProps, { createBillingAgreement, create
 
     return memoize(() => {
         return ZalgoPromise.try(() => {
+            return validationPromise || true;
+        }).then(valid => {
+
+            if (!valid) {
+                // Is there a nicer way to prevent this?
+                return unresolvedPromise();
+            }
+
             if (createBillingAgreement) {
                 return createBillingAgreement().then(billingTokenToOrderID);
             } else if (createSubscription) {

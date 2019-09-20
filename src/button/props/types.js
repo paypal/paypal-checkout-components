@@ -109,6 +109,7 @@ export type GlobalProps = {|
 
     onInit : OnInit,
     onError : OnError,
+    onClick : OnClick,
     enableStandardCardFields : ?boolean
 |};
 
@@ -120,6 +121,5 @@ export type ButtonCallbackProps = {|
     onApprove : OnApprove,
 
     onCancel : OnCancel,
-    onClick : OnClick,
     onShippingChange : ?OnShippingChange
 |};

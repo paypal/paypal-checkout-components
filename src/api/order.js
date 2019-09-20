@@ -182,7 +182,7 @@ export function validatePaymentMethod({ clientAccessToken, orderID, paymentMetho
     getLogger().info(`rest_api_create_order_token`);
 
     const headers : Object = {
-        [HEADERS.AUTHORIZATION]:            `Bearer ${ clientAccessToken }`,
+        [ HEADERS.AUTHORIZATION ]:          `Bearer ${ clientAccessToken }`,
         [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID,
         [ HEADERS.CLIENT_METADATA_ID ]:     buttonSessionID
     };

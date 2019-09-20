@@ -1,6 +1,7 @@
 /* @flow */
 
 import { COUNTRY } from '@paypal/sdk-constants/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { getNonce } from '../dom';
 
@@ -47,6 +48,8 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
     const onInit = getOnInit(xprops);
     const merchantDomain = (typeof getParentDomain === 'function') ? getParentDomain() : 'unknown';
 
+    const onClick = getOnClick(xprops);
+
     return {
         env,
         style,
@@ -76,6 +79,7 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
         enableStandardCardFields,
         enableNativeCheckout,
 
+        onClick,
         onInit,
         onError,
         stageHost,
@@ -83,7 +87,7 @@ export function getGlobalProps({ xprops, buyerGeoCountry, cspNonce } : {| xprops
     };
 }
 
-export function getButtonCallbackProps({ xprops } : {| xprops : XProps |}) : ButtonCallbackProps {
+export function getButtonCallbackProps({ xprops, validationPromise } : {| xprops : XProps, validationPromise : ZalgoPromise<boolean> |}) : ButtonCallbackProps {
 
     if (xprops.createBillingAgreement) {
         if (xprops.createOrder) {
@@ -111,12 +115,11 @@ export function getButtonCallbackProps({ xprops } : {| xprops : XProps |}) : But
 
     const createBillingAgreement = getCreateBillingAgreement(xprops);
     const createSubscription = getCreateSubscription(xprops);
-    const createOrder = getCreateOrder(xprops, { createBillingAgreement, createSubscription });
+    const createOrder = getCreateOrder(xprops, { createBillingAgreement, createSubscription, validationPromise });
 
     const onApprove = getOnApprove(xprops, { createOrder });
-    const onCancel = getOnCancel(xprops, { createOrder });
+    const onCancel = getOnCancel(xprops, { createOrder, validationPromise });
     const onShippingChange = getOnShippingChange(xprops, { createOrder });
-    const onClick = getOnClick(xprops);
 
     return {
         createOrder,
@@ -124,7 +127,6 @@ export function getButtonCallbackProps({ xprops } : {| xprops : XProps |}) : But
         createSubscription,
         onApprove,
         onCancel,
-        onClick,
         onShippingChange
     };
 }

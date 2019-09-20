@@ -52,10 +52,13 @@ describe('validation cases', () => {
 
             const orderID = 'XXXXXXXXXX';
 
+            let onClick;
+            window.xprops.onClick = ({ fundingSource }, actions) => onClick({ fundingSource }, actions);
+
             window.xprops.onInit = mockAsyncProp(expect('onInit', (data, actions) => {
                 return actions.disable().then(async () => {
                     
-                    window.xprops.onClick = mockAsyncProp(expect('onClick', () => ZalgoPromise.resolve()));
+                    onClick = mockAsyncProp(expect('onClick', () => ZalgoPromise.resolve()));
                     window.xprops.createOrder = avoid('createOrder', () => ZalgoPromise.delay(50).then(() => orderID));
                     window.xprops.onApprove = avoid('onApprove', () => ZalgoPromise.resolve());
 
@@ -66,7 +69,7 @@ describe('validation cases', () => {
                     return actions.enable();
                 }).then(async () => {
 
-                    window.xprops.onClick = mockAsyncProp(expect('onClick2', () => ZalgoPromise.resolve()));
+                    onClick = mockAsyncProp(expect('onClick2', () => ZalgoPromise.resolve()));
                     window.xprops.createOrder = mockAsyncProp(expect('createOrder2', () => ZalgoPromise.delay(50).then(() => orderID)));
                     window.xprops.onApprove = mockAsyncProp(expect('onApprove2', () => ZalgoPromise.resolve()));
 
@@ -114,7 +117,10 @@ describe('validation cases', () => {
 
     it('should render a button, and reject in onClick, then click again and resolve', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
-            window.xprops.onClick = mockAsyncProp(expect('onClick', (data, actions) => {
+            let onClick;
+            window.xprops.onClick = ({ fundingSource }, actions) => onClick({ fundingSource }, actions);
+
+            onClick = mockAsyncProp(expect('onClick', (data, actions) => {
                 return ZalgoPromise.delay(50).then(() => actions.reject());
             }));
 
@@ -129,7 +135,7 @@ describe('validation cases', () => {
 
             const orderID = 'XXXXXXXXXX';
 
-            window.xprops.onClick = mockAsyncProp(expect('onClick2', (data, actions) => {
+            onClick = mockAsyncProp(expect('onClick2', (data, actions) => {
                 return ZalgoPromise.delay(50).then(() => actions.resolve());
             }));
             window.xprops.createOrder = mockAsyncProp(expect('createOrder2', () => ZalgoPromise.delay(50).then(() => orderID)));

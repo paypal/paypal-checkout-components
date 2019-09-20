@@ -6,6 +6,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { FundingEligibilityType, ProxyWindow, PersonalizationType } from '../types';
 import { setupLogger, sendBeacon, fixClickFocus } from '../lib';
+import { createAccessToken } from '../api';
 import { initCheckout, setupCheckout, isVaultCaptureEligible, isCardFieldsEligible, initVault, initCardFields } from '../payment-flows';
 import { DATA_ATTRIBUTES } from '../constants';
 import { isPopupBridgeEligible, initPopupBridge, setupPopupBridge } from '../payment-flows/popup-bridge';
@@ -39,13 +40,15 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
         throw new Error(`PayPal SDK not loaded`);
     }
 
+    const xprops = window.xprops;
+
     const {
         env, stageHost, apiStageHost, buttonSessionID, style,
         vault, commit, clientAccessToken, buyerCountry, locale, cspNonce, platform,
         sessionID, clientID, partnerAttributionID, correlationID, enableThreeDomainSecure,
         merchantDomain, getPopupBridge, getPrerenderDetails, getPageUrl, rememberFunding,
-        onError, onInit, enableStandardCardFields, enableNativeCheckout
-    } = getGlobalProps({ xprops: window.xprops, buyerGeoCountry, cspNonce: serverCSPNonce });
+        onError, onInit, enableStandardCardFields, enableNativeCheckout, onClick
+    } = getGlobalProps({ xprops, buyerGeoCountry, cspNonce: serverCSPNonce });
 
     setupLogger({ env, sessionID, clientID, partnerAttributionID, commit,
         correlationID, locale, merchantID, buttonSessionID, merchantDomain });
@@ -63,12 +66,12 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
 
             buttonProcessing = true;
 
+            const validationPromise = onClick({ fundingSource });
+
             const {
                 createOrder, createBillingAgreement, createSubscription,
-                onApprove, onCancel, onClick, onShippingChange
-            } = getButtonCallbackProps({ xprops: window.xprops });
-
-            const validationPromise = onClick({ fundingSource });
+                onApprove, onCancel, onShippingChange
+            } = getButtonCallbackProps({ xprops, validationPromise });
 
             if (!isEnabled()) {
                 return win ? win.close() : null;
@@ -85,7 +88,7 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
                     return initCheckout({
                         clientID, win, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
                         onShippingChange, cspNonce, locale, commit, onError, vault,
-                        clientAccessToken, fundingEligibility, validationPromise, createBillingAgreement, createSubscription
+                        clientAccessToken, fundingEligibility, createBillingAgreement, createSubscription
                     });
                 }
 
@@ -117,7 +120,9 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
                 if (isNative) {
                     return initNative({
                         createOrder, onApprove, onCancel, onError, commit, fundingSource,
-                        clientID, getPageUrl, env, stageHost, apiStageHost
+                        clientID, getPageUrl, env, stageHost, apiStageHost, win, buttonSessionID, card, buyerCountry,
+                        onShippingChange, cspNonce, locale, vault,
+                        clientAccessToken, fundingEligibility, createBillingAgreement, createSubscription
                     });
                 }
 
@@ -193,8 +198,11 @@ export function setupButton({ fundingEligibility, buyerCountry: buyerGeoCountry,
     const setupPopupBridgeFlow = setupPopupBridge({ getPopupBridge });
     const setupNativeFlow = setupNative({ platform, enableNativeCheckout });
 
+    const createFacilitatorAccessToken = createAccessToken(clientID);
+
     return ZalgoPromise.hash({
-        initPromise, setupButtonLogsTask, setupPrerenderTask, setupRememberTask,
+        initPromise, createFacilitatorAccessToken,
+        setupButtonLogsTask, setupPrerenderTask, setupRememberTask,
         setupCheckoutFlow, setupNativeFlow, setupPopupBridgeFlow
     }).then(noop);
 }

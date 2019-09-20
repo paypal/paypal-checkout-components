@@ -485,11 +485,16 @@ export function getNativeWebSocketMock({ getSessionUID } : { getSessionUID : () 
         uri:     'wss://127.0.0.1/paypal/native',
         handler: ({ data, send }) => {
             const {
-                request_uid:  requestUID,
-                message_type: messageType,
-                message_name: messageName,
-                message_data: messageData
+                request_uid:    requestUID,
+                message_type:   messageType,
+                message_status: messageStatus,
+                message_name:   messageName,
+                message_data:   messageData
             } = JSON.parse(data);
+
+            if (messageType === 'response' && messageStatus === 'error') {
+                throw new Error(messageData.message);
+            }
 
             if (messageType === 'request' && messageName === 'detectApp') {
 
