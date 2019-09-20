@@ -267,7 +267,7 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
     });
 }
 
-function renderButton({ size, label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, installmentperiod } :
+function renderButton({ size, label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, installmentperiod, checkoutCustomization } :
     { size : $Values<typeof BUTTON_SIZE>, label : $Values<typeof BUTTON_LABEL>, color : string, branding : boolean, locale : Object, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT>, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : $ReadOnlyArray<string>, installmentperiod : number }) : JsxHTMLNode {
 
     const logoColor = getButtonConfig(label, 'logoColors')[color];
@@ -276,10 +276,17 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
 
     // If the determined button label matches up with the label passed by the merchant, use
     // the label template, otherwise use the logo template.
-    let contentText = (buttonLabel === label)
-        ? getButtonConfig(label, 'label')
-        : getButtonConfig(label, 'logoLabel');
-
+    let contentText;
+    if (buttonLabel === label) {
+        // implicitly checks for button label: pay, buynow, checkout, paypal, installment
+        if (label !== BUTTON_LABEL.CREDIT && checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text) {
+            contentText = checkoutCustomization.buttonText.text;
+        } else {
+            contentText = getButtonConfig(label, 'label');
+        }
+    } else {
+        contentText = getButtonConfig(label, 'logoLabel');
+    }
 
     // Add all the variables in dynamic content required to be plugged in content
     const dynamicContent = {
@@ -436,7 +443,8 @@ export function componentTemplate({ props } : { props : Object }) : string {
             shape,
             cards,
             installmentperiod,
-            size
+            size,
+            checkoutCustomization
         }));
 
     const taglineNode     = renderTagline({ label, tagline, color, locale, multiple, env, cards, checkoutCustomization, layout });
