@@ -63,11 +63,15 @@ export function setupButtonChild(ButtonComponent : Button) {
         setLogLevel(xprops.logLevel);
     }
 
+    // $FlowFixMe
     if (xprops.payment && !xprops.createOrder) {
+        // $FlowFixMe
         xprops.createOrder = xprops.payment;
     }
 
+    // $FlowFixMe
     if (xprops.onAuthorize && !xprops.onApprove) {
+        // $FlowFixMe
         xprops.onApprove = xprops.onAuthorize;
     }
 
