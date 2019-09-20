@@ -122,8 +122,8 @@ export const FUNDING_CONFIG = {
             COUNTRY.NL
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true,
+        allowHorizontal:     false,
+        allowVertical:       true,
         requireCommitAsTrue:    true
     },
 
@@ -144,8 +144,8 @@ export const FUNDING_CONFIG = {
             COUNTRY.BE
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true,
+        allowHorizontal:     false,
+        allowVertical:       true,
         requireCommitAsTrue:    true
     },
 
@@ -154,8 +154,8 @@ export const FUNDING_CONFIG = {
             COUNTRY.DE
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true,
+        allowHorizontal:     false,
+        allowVertical:       true,
         requireCommitAsTrue:    true
     },
 
@@ -169,8 +169,8 @@ export const FUNDING_CONFIG = {
             COUNTRY.NL
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true,
+        allowHorizontal:     false,
+        allowVertical:       true,
         requireCommitAsTrue:    true
     },
 
@@ -179,8 +179,8 @@ export const FUNDING_CONFIG = {
             COUNTRY.AT
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true,
+        allowHorizontal:     false,
+        allowVertical:       true,
         requireCommitAsTrue:    true
     },
 
@@ -189,8 +189,8 @@ export const FUNDING_CONFIG = {
             COUNTRY.IT
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true,
+        allowHorizontal:     false,
+        allowVertical:       true,
         requireCommitAsTrue:    true
     },
     [ FUNDING.P24 ]: {
@@ -198,8 +198,8 @@ export const FUNDING_CONFIG = {
             COUNTRY.PL
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true,
+        allowHorizontal:     false,
+        allowVertical:       true,
         requireCommitAsTrue:    true
     },
     [ FUNDING.PAYU ]: {
@@ -243,8 +243,8 @@ export const FUNDING_CONFIG = {
             COUNTRY.SE
         ],
 
-        allowHorizontal: false,
-        allowVertical:   true,
+        allowHorizontal:     false,
+        allowVertical:       true,
         requireCommitAsTrue:    true
     },
     [ FUNDING.MAXIMA ]: {
@@ -266,8 +266,8 @@ export const FUNDING_CONFIG = {
     [ FUNDING.ZIMPLER ]: {
         allowedCountries: [],
 
-        allowHorizontal: false,
-        allowVertical:   false,
+        allowHorizontal:     false,
+        allowVertical:       false,
         requireCommitAsTrue:    true
     }
 };
