@@ -1,5 +1,6 @@
 /* @flow */
 
 export type NativeProps = {|
-    nonce? : string
+    nonce? : string,
+    sessionUID : string
 |};

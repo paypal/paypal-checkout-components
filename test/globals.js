@@ -82,7 +82,8 @@ export const testGlobals = {
             __CHECKOUT__:    `/base/test/integration/windows/checkout/index.htm?checkouturl=true`,
             __BUTTONS__:     `/base/test/integration/windows/button/index.htm`,
             __MENU__:        `/base/test/integration/windows/menu/index.htm`,
-            __CARD_FIELDS__: `/base/test/integration/windows/card-fields/index.htm`
+            __CARD_FIELDS__: `/base/test/integration/windows/card-fields/index.htm`,
+            __Ntive__:       `/base/test/integration/windows/native/index.htm`
         }
     },
 
