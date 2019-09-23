@@ -15,6 +15,8 @@ import { componentStyle, CLASS } from './componentStyle';
 import { getComponentScript } from './componentScript';
 import { componentContent } from './content';
 
+const allowedButtonLabelForMORSExperiment = [ BUTTON_LABEL.PAYPAL, BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY, BUTTON_LABEL.INSTALLMENT ];
+
 function LoadingDots(delay) : JsxHTMLNode {
     return (
         <div>
@@ -279,8 +281,8 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     let contentText;
     let impression;
     if (buttonLabel === label) {
-        // implicitly checks for button label: pay, buynow, checkout, paypal, installment
-        if (label !== BUTTON_LABEL.CREDIT && checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text) {
+        // checks for button label: pay, buynow, checkout, paypal, installment
+        if (allowedButtonLabelForMORSExperiment.indexOf(label) !== -1 && checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text) {
             contentText = checkoutCustomization.buttonText.text;
             impression = checkoutCustomization.buttonText.tracking && checkoutCustomization.buttonText.tracking.impression;
         } else {
