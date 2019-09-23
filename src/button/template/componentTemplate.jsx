@@ -15,7 +15,7 @@ import { componentStyle, CLASS } from './componentStyle';
 import { getComponentScript } from './componentScript';
 import { componentContent } from './content';
 
-const allowedButtonLabelForMORSExperiment = [ BUTTON_LABEL.PAYPAL, BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY, BUTTON_LABEL.INSTALLMENT ];
+const allowedPersonalizationLabels = [ BUTTON_LABEL.PAYPAL, BUTTON_LABEL.CHECKOUT, BUTTON_LABEL.BUYNOW, BUTTON_LABEL.PAY, BUTTON_LABEL.INSTALLMENT ];
 
 function LoadingDots(delay) : JsxHTMLNode {
     return (
@@ -74,6 +74,22 @@ function LoadingDots(delay) : JsxHTMLNode {
                         <div class={ `loading-dot loading-dot-${ i }` }>•</div>)
                 }
             </div>
+        </div>
+    );
+}
+
+function Beacon(impression) : JsxHTMLNode {
+    return(
+        <div>
+            <style innerHTML={ `
+            .tracking-beacon {
+                visibility: hidden;
+                position: absolute;
+                height: 1px;
+                width: 1px;
+            }
+        ` } />
+            <img class='tracking-beacon' src={ impression } />
         </div>
     );
 }
@@ -283,7 +299,7 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     const morsText = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text;
     if (buttonLabel === label) {
         // checks for button label: pay, buynow, checkout, paypal, installment
-        if (allowedButtonLabelForMORSExperiment.indexOf(label) !== -1 && morsText) {
+        if (allowedPersonalizationLabels.indexOf(label) !== -1 && morsText) {
             contentText = morsText;
             impression = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.tracking && checkoutCustomization.buttonText.tracking.impression;
         } else {
@@ -322,7 +338,7 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
             
             { contentText }
             {
-                impression  && <img class='tracking-beacon' src={ impression } />
+                impression && Beacon(impression)
             }
         </div>
     );

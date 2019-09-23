@@ -999,7 +999,7 @@ export const Button : Component<ButtonOptions> = create({
             },
             
             decorate(style : Object) : Object {
-                const { label, layout } = style;
+                const { label, layout = BUTTON_LAYOUT.HORIZONTAL } = style;
                 if (!label && layout === BUTTON_LAYOUT.HORIZONTAL) {
                     style.label = BUTTON_LABEL.CHECKOUT;
                     return style;
