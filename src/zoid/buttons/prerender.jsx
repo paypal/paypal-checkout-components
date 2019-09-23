@@ -5,9 +5,9 @@ import { node, dom, type ChildType } from 'jsx-pragmatic/src';
 import { FUNDING, CARD } from '@paypal/sdk-constants/src';
 import { popup, supportsPopups, writeElementToWindow } from 'belter/src';
 import { assertSameDomain, type CrossDomainWindowType } from 'cross-domain-utils/src';
+import { SpinnerPage } from '@paypal/common-components/src';
 
 import { DEFAULT_POPUP_SIZE } from '../../config';
-import { SpinnerPage } from '../../ui/spinner';
 import { Buttons } from '../../ui';
 
 import type { ButtonProps } from './props';

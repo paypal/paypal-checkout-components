@@ -9,11 +9,10 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONTEXT, type ZoidComponent, EVENT } from 'zoid/src';
 import { isDevice, memoize, noop, supportsPopups, inlineMemoize } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
-import { Overlay } from '@paypal/common-components/src';
+import { Overlay, SpinnerPage } from '@paypal/common-components/src';
 
 import { getSessionID } from '../../lib';
 import { DEFAULT_POPUP_SIZE, getCheckoutUrl } from '../../config';
-import { SpinnerPage } from '../../ui/spinner';
 
 import type { CheckoutPropsType } from './props';
 import { containerContent } from './content';
