@@ -96,6 +96,13 @@ function getNativeSocket() : MessageSocket {
     return nativeWebSocket;
 }
 
+function closeNativeSocket() {
+    if (nativeWebSocket) {
+        nativeWebSocket.close();
+        nativeWebSocket = null;
+    }
+}
+
 type SetupNativeProps = {|
     platform : $Values<typeof PLATFORM>,
     enableNativeCheckout : ?boolean
@@ -129,7 +136,7 @@ export function setupNative({ platform, enableNativeCheckout } : SetupNativeProp
         }, err => {
             getLogger().info('native_sdk_not_detected', { err: stringifyError(err) });
         }).finally(() => {
-            socket.close();
+            closeNativeSocket();
         });
     });
 }
@@ -208,54 +215,61 @@ export function initNative(props : NativeProps) : NativeInstance {
         const orderPromise = createOrder();
         const pageUrlPromise = getPageUrl();
 
-        const socket = getNativeSocket();
+        const openCheckoutSocket = () => {
+            const socket = getNativeSocket();
 
-        socket.on(MESSAGE.GET_PROPS, () : ZalgoPromise<NativeSDKProps> => {
-            return ZalgoPromise.all([
-                facilitatorAccessTokenPromise, orderPromise, pageUrlPromise
-            ]).then(([ facilitatorAccessToken, orderID, pageUrl ]) => {
-                const userAgent = getUserAgent();
-
-                return {
-                    orderID,
-                    facilitatorAccessToken,
-                    pageUrl,
-                    commit,
-                    userAgent,
-                    buttonSessionID,
-                    env,
-                    stageHost,
-                    apiStageHost
-                };
+            socket.on(MESSAGE.GET_PROPS, () : ZalgoPromise<NativeSDKProps> => {
+                return ZalgoPromise.all([
+                    facilitatorAccessTokenPromise, orderPromise, pageUrlPromise
+                ]).then(([ facilitatorAccessToken, orderID, pageUrl ]) => {
+                    const userAgent = getUserAgent();
+    
+                    return {
+                        orderID,
+                        facilitatorAccessToken,
+                        pageUrl,
+                        commit,
+                        userAgent,
+                        buttonSessionID,
+                        env,
+                        stageHost,
+                        apiStageHost
+                    };
+                });
             });
-        });
-
-        socket.on(MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
-            return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
-                return onApprove({ payerID, paymentID, billingToken, facilitatorAccessToken }, { restart: () => fallbackToWebCheckout({ context: CONTEXT.IFRAME }) });
+    
+            socket.on(MESSAGE.ON_APPROVE, ({ data: { payerID, paymentID, billingToken } }) => {
+                closeNativeSocket();
+                return facilitatorAccessTokenPromise.then(facilitatorAccessToken => {
+                    const data = { payerID, paymentID, billingToken, facilitatorAccessToken };
+                    const actions = { restart: () => fallbackToWebCheckout({ context: CONTEXT.IFRAME }) };
+                    return onApprove(data, actions);
+                });
             });
-        });
+    
+            socket.on(MESSAGE.ON_CANCEL, () => {
+                closeNativeSocket();
+                return onCancel();
+            });
+    
+            socket.on(MESSAGE.ON_ERROR, ({ data : { message } }) => {
+                closeNativeSocket();
+                return onError(new Error(message));
+            });
+        };
 
-        socket.on(MESSAGE.ON_CANCEL, () => {
-            return onCancel();
-        });
-
-        socket.on(MESSAGE.ON_ERROR, ({ data : { message } }) => {
-            return onError(new Error(message));
-        });
-
-        const nativeUrl = extendUrl(`${ getDomain() }/${ EXPERIENCE_URI.NATIVE_CHECKOUT }`, { query: { sessionUID } });
+        const nativeUrl = extendUrl(`${ getDomain() }${ EXPERIENCE_URI.NATIVE_CHECKOUT }`, { query: { sessionUID } });
 
         if (isNativeCheckoutInstalled) {
             redirectTop(nativeUrl);
-            return socket.reconnect();
+            return openCheckoutSocket();
         }
 
         const win = popup(nativeUrl);
 
         return orderPromise.then(() => {
             if (isBlankDomain(win)) {
-                socket.reconnect();
+                openCheckoutSocket();
                 win.close();
             } else {
                 return fallbackToWebCheckout({ win });
