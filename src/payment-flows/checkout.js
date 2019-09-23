@@ -3,7 +3,7 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, noop, supportsPopups } from 'belter/src';
 import { FUNDING, CARD, COUNTRY, SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
-import { getParent, getTop } from 'cross-domain-utils/src';
+import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { enableVault, createAccessToken } from '../api';
 import { CONTEXT, TARGET_ELEMENT } from '../constants';
@@ -106,7 +106,7 @@ export function getDefaultContext() : $Values<typeof CONTEXT> {
 
 type CheckoutProps= {|
     clientID : string,
-    win? : ?ProxyWindow,
+    win? : ?(ProxyWindow | CrossDomainWindowType),
     buttonSessionID : string,
     context? : $Values<typeof CONTEXT>,
     fundingSource : $Values<typeof FUNDING>,

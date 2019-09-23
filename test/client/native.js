@@ -205,25 +205,36 @@ describe('native cases', () => {
                 }
             }));
 
-            const win = {
-                location: {
-                    href: 'about:blank'
-                }
-            };
+            const windowOpen = window.open;
+            window.open = expect('windowOpen', (url) => {
+                window.open = windowOpen;
 
-            window.paypal.Native = expect('Native', (props) => {
-                return {
-                    getWindow: expect('getWindow', () => win),
-                    renderTo:  expect('renderTo', () => {
-                        sessionUID = props.sessionUID;
-                    }),
-                    close: expect('close', () => {
-                        return ZalgoPromise.delay(50)
+                if (!url) {
+                    throw new Error(`Expected url to be immediately passed to window.open`);
+                }
+
+                const query = parseQuery(url.split('?')[1]);
+                sessionUID = query.sessionUID;
+
+                if (!sessionUID) {
+                    throw new Error(`Expected sessionUID to be passed in url`);
+                }
+
+                const win : Object = {
+                    location: {
+                        href: 'about:blank'
+                    },
+                    closed: false,
+                    close:  expect('close', () => {
+                        ZalgoPromise.delay(50)
                             .then(getProps)
                             .then(() => ZalgoPromise.delay(50))
                             .then(onApprove);
                     })
                 };
+
+                win.parent = win.top = win;
+                return win;
             });
 
             createButtonHTML();
@@ -260,42 +271,53 @@ describe('native cases', () => {
                 }
             }));
 
-            window.paypal.Native = expect('Native', props => {
-                const win = {
+
+            const windowOpen = window.open;
+            window.open = expect('windowOpen', (url) => {
+                window.open = windowOpen;
+
+                if (!url) {
+                    throw new Error(`Expected url to be immediately passed to window.open`);
+                }
+
+                const query = parseQuery(url.split('?')[1]);
+                const sessionUID = query.sessionUID;
+
+                if (!sessionUID) {
+                    throw new Error(`Expected sessionUID to be passed in url`);
+                }
+
+                const win : Object = {
                     location: {
-                        href: 'about:blank'
+                        href: url
+                    },
+                    closed: false,
+                    close:  avoid('close')
+                };
+
+                win.parent = win.top = win;
+
+                mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ checkoutProps ] }) => {
+
+                    if (checkoutProps.window !== win) {
+                        throw new Error(`Expected win passed to checkout to match win sent in onLoad`);
                     }
-                };
-
-                return {
-                    getWindow: expect('getWindow', () => win),
-                    close:     avoid('close'),
-                    renderTo:  expect('renderTo', () => {
-                        win.location.href = `mock://www.paypal.com/smart/checkout/native?sessionUID=${ props.sessionUID }`;
-
-                        mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ checkoutProps ] }) => {
-
-                            if (checkoutProps.window !== win) {
-                                throw new Error(`Expected win passed to checkout to match win sent in onLoad`);
+    
+                    const checkoutInstance = CheckoutOriginal(checkoutProps);
+    
+                    mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                        return checkoutProps.createOrder().then(id => {
+                            if (id !== orderID) {
+                                throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
                             }
-            
-                            const checkoutInstance = CheckoutOriginal(checkoutProps);
-            
-                            mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
-                                return checkoutProps.createOrder().then(id => {
-                                    if (id !== orderID) {
-                                        throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
-                                    }
-                                    return renderToOriginal(...args);
-                                });
-                            }));
-            
-                            return checkoutInstance;
-                        }));
+                            return renderToOriginal(...args);
+                        });
+                    }));
+    
+                    return checkoutInstance;
+                }));
 
-                        return props.onLoad({ win });
-                    })
-                };
+                return win;
             });
 
             createButtonHTML();

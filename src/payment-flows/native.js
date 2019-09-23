@@ -1,9 +1,9 @@
 /* @flow */
 
-import { extendUrl, uniqueID, getUserAgent, stringifyError, supportsPopups } from 'belter/src';
+import { extendUrl, uniqueID, getUserAgent, stringifyError, supportsPopups, popup } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { ENV, PLATFORM, FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
-import { isBlankDomain } from 'cross-domain-utils/src';
+import { isBlankDomain, type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import type { CreateOrder, CreateBillingAgreement, CreateSubscription, OnApprove, OnCancel, OnShippingChange, OnError, GetPageURL } from '../button/props';
 import type { ProxyWindow, LocaleType, FundingEligibilityType } from '../types';
@@ -17,7 +17,6 @@ import { initCheckout } from './checkout';
 const SOURCE_APP = 'paypal_smart_payment_buttons';
 const SOURCE_APP_VERSION = window.paypal ? window.paypal.version : 'unknown';
 const TARGET_APP = 'paypal_native_checkout_sdk';
-const POPUP_CHECK_DELAY = 500;
 
 const MESSAGE = {
     DETECT_APP: 'detectApp',
@@ -105,6 +104,7 @@ export function setupNative({ platform, enableNativeCheckout } : SetupNativeProp
     return ZalgoPromise.try(() => {
         if (window.xprops.simulateNoWebSocket) {
             window.__CHECKOUT_URI__ = '/smart/testappswitch';
+            return;
         }
 
         if (platform !== PLATFORM.MOBILE || !enableNativeCheckout) {
@@ -122,7 +122,9 @@ export function setupNative({ platform, enableNativeCheckout } : SetupNativeProp
 
         return socket.send(MESSAGE.DETECT_APP, {}, { requireSessionUID: false }).then(() => {
             getLogger().info('native_sdk_detected');
-            isNativeCheckoutInstalled = true;
+            if (!window.xprops.simulateNoLongRunningWebSocket) {
+                isNativeCheckoutInstalled = true;
+            }
         }, err => {
             getLogger().info('native_sdk_not_detected', { err: stringifyError(err) });
         }).finally(() => {
@@ -187,7 +189,7 @@ export function initNative(props : NativeProps) : NativeInstance {
         throw err;
     };
 
-    const fallbackToWebCheckout = ({ context = CONTEXT.POPUP, win } : { context? : $Values<typeof CONTEXT>, win? : ProxyWindow }) => {
+    const fallbackToWebCheckout = ({ context = CONTEXT.POPUP, win } : { context? : $Values<typeof CONTEXT>, win? : CrossDomainWindowType }) => {
         const { start: startCheckout, close: closeCheckout, triggerError: triggerCheckoutError } = initCheckout({
             win, context, clientID, buttonSessionID, fundingSource, card, buyerCountry, createOrder, onApprove, onCancel,
             onShippingChange, cspNonce, locale, commit, onError, vault, clientAccessToken, fundingEligibility,
@@ -241,31 +243,28 @@ export function initNative(props : NativeProps) : NativeInstance {
             return onError(new Error(message));
         });
 
+        const nativeUrl = extendUrl(EXPERIENCE_URI.NATIVE_CHECKOUT, { query: { sessionUID } });
+
         if (isNativeCheckoutInstalled) {
-            redirectTop(extendUrl(EXPERIENCE_URI.NATIVE_CHECKOUT, { query: { sessionUID } }));
+            redirectTop(nativeUrl);
             return socket.reconnect();
         }
 
-        const { renderTo, getWindow, close: closeNativePopup } = window.paypal.Native({
-            sessionUID,
-            onLoad: ({ win }) => {
-                fallbackToWebCheckout({ win });
-            }
-        });
+        const win = popup(nativeUrl);
 
-        renderTo(window.top);
-
-        return ZalgoPromise.delay(POPUP_CHECK_DELAY).then(() => {
-            if (isBlankDomain(getWindow())) {
+        return orderPromise.then(() => {
+            if (isBlankDomain(win)) {
                 socket.reconnect();
-                closeNativePopup();
+                win.close();
+            } else {
+                return fallbackToWebCheckout({ win });
             }
         });
     });
 
     return {
         start:        () => startPromise,
-        close:        () => close(),
+        close:        () => ZalgoPromise.try(close),
         triggerError: err => triggerError(err)
     };
 }
