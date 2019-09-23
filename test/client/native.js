@@ -4,6 +4,7 @@
 import { wrapPromise, parseQuery } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, PLATFORM } from '@paypal/sdk-constants/src';
+import { getDomain } from 'cross-domain-utils/src';
 
 import { setupButton } from '../../src';
 
@@ -54,8 +55,8 @@ describe('native cases', () => {
 
             await clickButton(FUNDING.PAYPAL);
 
-            if (!window.location.hash || window.location.hash.indexOf('#/smart/checkout/native') !== 0) {
-                throw new Error(`Expected window to have been redirected to /checkoutnow. Current hash is ${ window.location.hash || 'undefined' }`);
+            if (!window.location.hash || window.location.hash.indexOf(`#${ getDomain() }/smart/checkout/native`) !== 0) {
+                throw new Error(`Expected window to have been redirected to /smart/checkout/native. Current hash is ${ window.location.hash || 'undefined' }`);
             }
 
             const query = parseQuery(window.location.hash.split('?')[1]);
@@ -104,8 +105,8 @@ describe('native cases', () => {
 
             await clickButton(FUNDING.PAYPAL);
 
-            if (!window.location.hash || window.location.hash.indexOf('#/smart/checkout/native') !== 0) {
-                throw new Error(`Expected window to have been redirected to /checkoutnow. Current hash is ${ window.location.hash || 'undefined' }`);
+            if (!window.location.hash || window.location.hash.indexOf(`#${ getDomain() }/smart/checkout/native`) !== 0) {
+                throw new Error(`Expected window to have been redirected to /smart/checkout/native. Current hash is ${ window.location.hash || 'undefined' }`);
             }
 
             const query = parseQuery(window.location.hash.split('?')[1]);
@@ -155,8 +156,8 @@ describe('native cases', () => {
 
             await clickButton(FUNDING.PAYPAL);
 
-            if (!window.location.hash || window.location.hash.indexOf('#/smart/checkout/native') !== 0) {
-                throw new Error(`Expected window to have been redirected to /checkoutnow. Current hash is ${ window.location.hash || 'undefined' }`);
+            if (!window.location.hash || window.location.hash.indexOf(`#${ getDomain() }/smart/checkout/native`) !== 0) {
+                throw new Error(`Expected window to have been redirected to /smart/checkout/native. Current hash is ${ window.location.hash || 'undefined' }`);
             }
 
             const query = parseQuery(window.location.hash.split('?')[1]);

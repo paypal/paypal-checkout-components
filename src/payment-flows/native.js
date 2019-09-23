@@ -3,7 +3,7 @@
 import { extendUrl, uniqueID, getUserAgent, stringifyError, supportsPopups, popup } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { ENV, PLATFORM, FUNDING, CARD, COUNTRY } from '@paypal/sdk-constants/src';
-import { isBlankDomain, type CrossDomainWindowType } from 'cross-domain-utils/src';
+import { isBlankDomain, type CrossDomainWindowType, getDomain } from 'cross-domain-utils/src';
 
 import type { CreateOrder, CreateBillingAgreement, CreateSubscription, OnApprove, OnCancel, OnShippingChange, OnError, GetPageURL } from '../button/props';
 import type { ProxyWindow, LocaleType, FundingEligibilityType } from '../types';
@@ -243,7 +243,7 @@ export function initNative(props : NativeProps) : NativeInstance {
             return onError(new Error(message));
         });
 
-        const nativeUrl = extendUrl(EXPERIENCE_URI.NATIVE_CHECKOUT, { query: { sessionUID } });
+        const nativeUrl = extendUrl(`${ getDomain() }/${ EXPERIENCE_URI.NATIVE_CHECKOUT }`, { query: { sessionUID } });
 
         if (isNativeCheckoutInstalled) {
             redirectTop(nativeUrl);
