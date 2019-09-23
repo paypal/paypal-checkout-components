@@ -270,7 +270,7 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
 }
 
 function renderButton({ size, label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, installmentperiod, checkoutCustomization } :
-    { size : $Values<typeof BUTTON_SIZE>, label : $Values<typeof BUTTON_LABEL>, color : string, branding : boolean, locale : Object, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT>, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : $ReadOnlyArray<string>, installmentperiod : number }) : JsxHTMLNode {
+    { size : $Values<typeof BUTTON_SIZE>, label : $Values<typeof BUTTON_LABEL>, color : string, branding : boolean, locale : Object, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT>, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : $ReadOnlyArray<string>, checkoutCustomization : ?CheckoutCustomizationType, installmentperiod : number }) : JsxHTMLNode {
 
     const logoColor = getButtonConfig(label, 'logoColors')[color];
 
@@ -284,8 +284,8 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     if (buttonLabel === label) {
         // checks for button label: pay, buynow, checkout, paypal, installment
         if (allowedButtonLabelForMORSExperiment.indexOf(label) !== -1 && morsText) {
-            contentText = checkoutCustomization.buttonText.text;
-            impression = checkoutCustomization.buttonText.tracking && checkoutCustomization.buttonText.tracking.impression;
+            contentText = morsText;
+            impression = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.tracking && checkoutCustomization.buttonText.tracking.impression;
         } else {
             contentText = getButtonConfig(label, 'label');
         }

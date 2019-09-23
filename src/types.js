@@ -30,5 +30,12 @@ export type CheckoutCustomizationType = {|
             impression : string,
             click : string
         }
+    },
+    buttonText : ?{
+        text : string,
+        tracking : {
+            impression : string,
+            click : string
+        }
     }
 |};
