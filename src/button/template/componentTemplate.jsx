@@ -280,9 +280,10 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     // the label template, otherwise use the logo template.
     let contentText;
     let impression;
+    const morsText = checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text;
     if (buttonLabel === label) {
         // checks for button label: pay, buynow, checkout, paypal, installment
-        if (allowedButtonLabelForMORSExperiment.indexOf(label) !== -1 && checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text) {
+        if (allowedButtonLabelForMORSExperiment.indexOf(label) !== -1 && morsText) {
             contentText = checkoutCustomization.buttonText.text;
             impression = checkoutCustomization.buttonText.tracking && checkoutCustomization.buttonText.tracking.impression;
         } else {
@@ -298,7 +299,10 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
         locale
     };
 
-    contentText = typeof contentText === 'function' ? contentText(dynamicContent) : contentText;
+    // check for button label=installment. If the personalization text comes through for installment,
+    // we should use that instead of the handler function for content text; if not we should continue
+    // using the handler for installment button
+    contentText = (typeof contentText === 'function' && !(morsText && label === BUTTON_LABEL.INSTALLMENT)) ? contentText(dynamicContent) : contentText;
     contentText = renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent, layout, size });
 
     // Define a list of funding options that will not need a tabindex
