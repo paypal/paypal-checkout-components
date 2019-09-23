@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { FUNDING, type LocaleType } from '@paypal/sdk-constants/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 import { node, type ElementNode } from 'jsx-pragmatic/src';
 
 import { type ButtonStyle } from '../../zoid/buttons/props';
@@ -11,31 +11,28 @@ import { componentStyle } from './styles';
 
 type StyleProps = {|
     style : ButtonStyle,
-    locale : LocaleType,
     nonce : string
 |};
 
-function getCardNumber(locale : LocaleType) : number {
+function getCardNumber() : number {
     const cardConfig = getFundingConfig()[FUNDING.CARD];
     const vendors = cardConfig && cardConfig.vendors;
-    let maxCards = 4;
-
-    if (cardConfig && cardConfig.maxCards && cardConfig.maxCards[locale.country]) {
-        maxCards = cardConfig.maxCards[locale.country];
-    }
+    const maxCards = 5;
 
     if (vendors) {
-        const numCards = Object.keys(vendors).length;
+        const numCards = Object.keys(vendors).filter(vendor => {
+            return vendors[vendor] && vendors[vendor].eligible;
+        }).length;
         return Math.min(numCards, maxCards);
     } else {
         return maxCards;
     }
 }
 
-export function Style({ style, locale, nonce } : StyleProps) : ElementNode {
+export function Style({ style, nonce } : StyleProps) : ElementNode {
 
     const { height } = style;
-    const cardNumber = getCardNumber(locale);
+    const cardNumber = getCardNumber();
     const css = componentStyle({ height, cardNumber });
 
     return (

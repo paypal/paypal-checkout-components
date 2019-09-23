@@ -2,7 +2,7 @@
 /* eslint no-template-curly-in-string: off, max-lines: off */
 /** @jsx node */
 
-import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
+import { PLATFORM, type LocaleType, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
 import { type ChildType } from 'jsx-pragmatic/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
@@ -18,7 +18,6 @@ export type FundingSourceConfig = {|
     shippingChange? : boolean,
     platforms : $ReadOnlyArray<$Values<typeof PLATFORM>>,
     layouts : $ReadOnlyArray<$Values<typeof BUTTON_LAYOUT>>,
-    maxCards? : { [$Values<typeof COUNTRY>] : number },
     remembered? : boolean,
     vendors? : { [$Values<typeof CARD>] : ?CardConfig },
     eligible? : ({ components : $ReadOnlyArray<$Values<typeof COMPONENTS>>, fundingEligibility : FundingEligibilityType }) => boolean,

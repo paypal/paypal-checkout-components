@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import { node, Fragment } from 'jsx-pragmatic/src';
-import { CARD, FUNDING, COUNTRY, COMPONENTS } from '@paypal/sdk-constants/src';
+import { CARD, FUNDING, COMPONENTS } from '@paypal/sdk-constants/src';
 
 import { BUTTON_LAYOUT, BUTTON_COLOR, DEFAULT, CLASS, ATTRIBUTE } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig } from '../common';
@@ -15,6 +15,8 @@ import { getDiscoverConfig } from './discover';
 import { getHiperConfig } from './hiper';
 import { getEloConfig } from './elo';
 import { getJCBConfig } from './jcb';
+
+const MAX_CARDS = 5;
 
 const CARD_PRIORITY : $ReadOnlyArray<$Values<typeof CARD>> = [
     CARD.VISA,
@@ -41,10 +43,6 @@ function getVendorConfig() : { [$Values<typeof CARD>] : ?CardConfig } {
 export function getCardConfig() : FundingSourceConfig {
 
     const vendors = getVendorConfig();
-
-    const maxCardForCountry = {
-        [ COUNTRY.BR ]: 5
-    };
 
     return {
         ...DEFAULT_FUNDING_CONFIG,
@@ -85,8 +83,6 @@ export function getCardConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        maxCards: maxCardForCountry,
-
         vendors,
 
         colors: [
@@ -99,14 +95,7 @@ export function getCardConfig() : FundingSourceConfig {
 
         handleClick: true,
 
-        Logo: ({ fundingEligibility, locale, onClick }) => {
-            let maxCards = 4;
-
-            // $FlowFixMe
-            if (maxCardForCountry[locale.country]) {
-                maxCards = maxCardForCountry[locale.country];
-            }
-
+        Logo: ({ fundingEligibility, onClick }) => {
             return CARD_PRIORITY.map(name => {
 
                 const cardEligibility = fundingEligibility[FUNDING.CARD];
@@ -137,7 +126,7 @@ export function getCardConfig() : FundingSourceConfig {
                         <Label />
                     </div>
                 );
-            }).filter(Boolean).slice(0, maxCards);
+            }).filter(Boolean).slice(0, MAX_CARDS);
         },
 
         Label: ({ logo }) => logo,
