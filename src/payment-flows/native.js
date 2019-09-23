@@ -17,6 +17,7 @@ import { initCheckout } from './checkout';
 const SOURCE_APP = 'paypal_smart_payment_buttons';
 const SOURCE_APP_VERSION = window.paypal ? window.paypal.version : 'unknown';
 const TARGET_APP = 'paypal_native_checkout_sdk';
+const APP_DETECT_TIMEOUT = 2000;
 
 const MESSAGE = {
     DETECT_APP: 'detectApp',
@@ -120,7 +121,7 @@ export function setupNative({ platform, enableNativeCheckout } : SetupNativeProp
 
         const socket = getNativeSocket();
 
-        return socket.send(MESSAGE.DETECT_APP, {}, { requireSessionUID: false }).then(() => {
+        return socket.send(MESSAGE.DETECT_APP, {}, { requireSessionUID: false, timeout: APP_DETECT_TIMEOUT }).then(() => {
             getLogger().info('native_sdk_detected');
             if (!window.xprops.simulateNoLongRunningWebSocket) {
                 isNativeCheckoutInstalled = true;

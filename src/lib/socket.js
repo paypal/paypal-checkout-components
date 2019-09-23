@@ -72,6 +72,7 @@ export type MessageSocket = {|
         name : string,
         data : T, // eslint-disable-line no-undef
         opts? : {|
+            timeout? : number,
             requireSessionUID? : boolean
         |}
     ) => ZalgoPromise<R>, // eslint-disable-line no-undef
@@ -271,7 +272,7 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
         };
     };
 
-    const send = <T, R>(messageName, messageData : T, { requireSessionUID = true } = {}) : ZalgoPromise<R> => {
+    const send = <T, R>(messageName, messageData : T, { requireSessionUID = true, timeout = 0 } = {}) : ZalgoPromise<R> => {
         return socketPromise.then(socket => {
             const requestUID = uniqueID();
 
@@ -287,6 +288,12 @@ export function messageSocket({ sessionUID, driver, sourceApp, sourceAppVersion,
                 message_type: MESSAGE_TYPE.REQUEST,
                 message_data: messageData
             });
+
+            if (timeout) {
+                setTimeout(() => {
+                    listenerPromise.reject(new Error(`Timeoued out waiting for ${ messageName } response after ${ timeout }ms`));
+                }, timeout);
+            }
 
             return listenerPromise;
         });
