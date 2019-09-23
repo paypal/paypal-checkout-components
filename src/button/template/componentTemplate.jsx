@@ -79,7 +79,7 @@ function LoadingDots(delay) : JsxHTMLNode {
 }
 
 function Beacon(impression) : JsxHTMLNode {
-    return(
+    return (
         <div>
             <style innerHTML={ `
             .tracking-beacon {
