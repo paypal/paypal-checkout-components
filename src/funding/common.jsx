@@ -2,14 +2,13 @@
 /* eslint no-template-curly-in-string: off, max-lines: off */
 /** @jsx node */
 
-import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS, LANG } from '@paypal/sdk-constants/src';
-import { node, type ChildType } from 'jsx-pragmatic/src';
+import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
+import { type ChildType } from 'jsx-pragmatic/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, DEFAULT, BUTTON_LABEL } from '../constants';
 import type { FundingEligibilityType } from '../types';
 
-import { componentContent } from './content';
 
 export type CardConfig = {|
     Label : () => ChildType
@@ -41,7 +40,9 @@ export type FundingSourceConfig = {|
         period? : number,
         fundingEligibility : FundingEligibilityType,
         optional? : boolean,
-        onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void
+        onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void,
+        layout : $Values<typeof BUTTON_LAYOUT>,
+        clientAccessToken : ?string
     |}) => ChildType,
     VaultLabel? : ({|
         logoColor : $Values<typeof LOGO_COLOR>,
@@ -59,32 +60,6 @@ export type FundingSourceConfig = {|
     logoColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof LOGO_COLOR> },
     shapes : $ReadOnlyArray<$Values<typeof BUTTON_SHAPE>>
 |};
-
-export const LogoLabel = ({ label, logo, lang, period } : { label : ?$Values<typeof BUTTON_LABEL>, logo : ChildType, lang : $Values<typeof LANG>, period : ?number }) : ChildType => {
-    if (!label || label === BUTTON_LABEL.PAYPAL) {
-        return logo;
-    }
-    
-    const { Checkout, Pay, BuyNow, Installment } = componentContent[lang];
-
-    if (label === BUTTON_LABEL.CHECKOUT) {
-        return <Checkout logo={ logo } />;
-    }
-
-    if (label === BUTTON_LABEL.PAY) {
-        return <Pay logo={ logo } />;
-    }
-
-    if (label === BUTTON_LABEL.BUYNOW) {
-        return <BuyNow logo={ logo } />;
-    }
-
-    if (label === BUTTON_LABEL.INSTALLMENT && Installment) {
-        return <Installment logo={ logo } period={ period } />;
-    }
-
-    throw new Error(`Label ${ label } not supported`);
-};
 
 export const DEFAULT_FUNDING_CONFIG : FundingSourceConfig = {
 

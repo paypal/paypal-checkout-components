@@ -1,3 +1,103 @@
+## <small>5.0.58 (2019-09-18)</small>
+
+* Add Native component ([3f85901](http://github.paypal.com/paypal/paypal-checkout/commit/3f85901))
+
+
+
+## <small>5.0.57 (2019-09-17)</small>
+
+* Add onFocused event registrar ([bda4fe9](http://github.paypal.com/paypal/paypal-checkout/commit/bda4fe9))
+* Allow overriding checkout uri ([5615b57](http://github.paypal.com/paypal/paypal-checkout/commit/5615b57))
+
+
+
+## <small>5.0.56 (2019-09-11)</small>
+
+* Return a function from getPageUrl ([f6f77fe](http://github.paypal.com/paypal/paypal-checkout/commit/f6f77fe))
+
+
+
+## <small>5.0.55 (2019-09-11)</small>
+
+* Make stage host props optional ([dd9cea2](http://github.paypal.com/paypal/paypal-checkout/commit/dd9cea2))
+
+
+
+## <small>5.0.54 (2019-09-10)</small>
+
+* Add getPageUrl prop to buttons ([fb336e0](http://github.paypal.com/paypal/paypal-checkout/commit/fb336e0))
+* Add stageHost and apiStageHost props to button ([60553d9](http://github.paypal.com/paypal/paypal-checkout/commit/60553d9))
+
+
+
+## <small>5.0.53 (2019-08-15)</small>
+
+* Add extra params to menu component ([883d307](http://github.paypal.com/paypal/paypal-checkout/commit/883d307))
+
+
+
+## <small>5.0.52 (2019-08-07)</small>
+
+* Add export for menu component ([36dc656](http://github.paypal.com/paypal/paypal-checkout/commit/36dc656))
+* Add menu zoid component ([44e8c3b](http://github.paypal.com/paypal/paypal-checkout/commit/44e8c3b))
+* Add puppeteer download host ([ecac208](http://github.paypal.com/paypal/paypal-checkout/commit/ecac208))
+* Fix circular dependency ([b69c149](http://github.paypal.com/paypal/paypal-checkout/commit/b69c149))
+* Only show personalization if single button ([f15a804](http://github.paypal.com/paypal/paypal-checkout/commit/f15a804))
+* Re-organize directory structure ([1ee9116](http://github.paypal.com/paypal/paypal-checkout/commit/1ee9116))
+
+
+
+## <small>5.0.51 (2019-07-30)</small>
+
+* Fix typo ([1f7ca26](http://github.paypal.com/paypal/paypal-checkout/commit/1f7ca26))
+
+
+
+## <small>5.0.50 (2019-07-30)</small>
+
+* Add nonce to style tag ([49ac557](http://github.paypal.com/paypal/paypal-checkout/commit/49ac557))
+
+
+
+## <small>5.0.49 (2019-07-30)</small>
+
+
+
+
+## <small>5.0.48 (2019-07-30)</small>
+
+* Add impression beacon for tagline personalization ([2286fe8](http://github.paypal.com/paypal/paypal-checkout/commit/2286fe8))
+
+
+
+## <small>5.0.47 (2019-07-29)</small>
+
+* Add missing types ([ff0c7a2](http://github.paypal.com/paypal/paypal-checkout/commit/ff0c7a2))
+* Fix label logic for multiple buttons ([13c5c32](http://github.paypal.com/paypal/paypal-checkout/commit/13c5c32))
+* Remove web static dependency on localization content ([9c11c7c](http://github.paypal.com/paypal/paypal-checkout/commit/9c11c7c))
+
+
+
+## <small>5.0.46 (2019-07-24)</small>
+
+* Do not show loading dots if label or client token (for vault) not passed ([295db21](http://github.paypal.com/paypal/paypal-checkout/commit/295db21))
+
+
+
+## <small>5.0.45 (2019-07-24)</small>
+
+* Add loader for localized content in first render ([4b9a8fb](http://github.paypal.com/paypal/paypal-checkout/commit/4b9a8fb))
+* Add personalization of the tagline ([8649279](http://github.paypal.com/paypal/paypal-checkout/commit/8649279))
+* Making darkblue as default for Itau (#1165) ([a4d2764](http://github.paypal.com/paypal/paypal-checkout/commit/a4d2764)), closes [#1165](http://github.paypal.com/paypal/paypal-checkout/issues/1165)
+
+
+
+## <small>5.0.44 (2019-07-17)</small>
+
+* Add text to ideal button ([24724c1](http://github.paypal.com/paypal/paypal-checkout/commit/24724c1))
+
+
+
 ## <small>5.0.43 (2019-07-17)</small>
 
 * Do not display vaulted funding if onShippingChange passed ([3dd02b1](http://github.paypal.com/paypal/paypal-checkout/commit/3dd02b1))

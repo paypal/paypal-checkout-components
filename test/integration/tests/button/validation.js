@@ -623,6 +623,20 @@ const buttonConfigs = [
                 label:  `verkkopankki`,
                 commit: true,
                 valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `blik`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `trustly`,
+                commit: true,
+                valid:  false
             }
 
 

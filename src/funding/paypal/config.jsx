@@ -6,9 +6,9 @@ import { node, Fragment } from 'jsx-pragmatic/src';
 import { LOGO_COLOR, PPLogo, PayPalLogo } from '@paypal/sdk-logos/src';
 
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, CLASS } from '../../constants';
-import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, LogoLabel } from '../common';
+import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 import { componentContent } from '../content';
-import { Text, Space } from '../../ui';
+import { Text, Space, LoadingDots } from '../../ui';
 
 const PPPayPalLogo = ({ logoColor }) => <Fragment><PPLogo logoColor={ logoColor } /><Space /><PayPalLogo logoColor={ logoColor } /></Fragment>;
 
@@ -44,12 +44,12 @@ export function getPayPalConfig() : FundingSourceConfig {
 
             return <PPPayPalLogo logoColor={ logoColor } />;
         },
-
-        Label: ({ logo, label, locale: { lang }, period }) => {
-            return <LogoLabel label={ label } logo={ logo } lang={ lang } period={ period } />;
-        },
     
         Tag: ({ multiple, locale: { lang } } : { locale : LocaleType, multiple : boolean }) => {
+            if (__WEB__) {
+                return <LoadingDots />;
+            }
+            
             const { DualTag, SaferTag } = componentContent[lang];
     
             return (multiple && DualTag)
@@ -63,6 +63,45 @@ export function getPayPalConfig() : FundingSourceConfig {
                     <PPLogo logoColor={ logoColor } optional /> <Text className={ CLASS.VAULT_LABEL }>{ label }</Text>
                 </Fragment>
             );
+        },
+
+        Label: ({ logo, label, locale: { lang }, period, layout, multiple, clientAccessToken }) => {
+            if (layout === BUTTON_LAYOUT.HORIZONTAL && multiple) {
+                return logo;
+            }
+
+            if (__WEB__) {
+                if (label || clientAccessToken) {
+                    return (
+                        <Fragment>
+                            {logo}
+                            <Text> <LoadingDots /></Text>
+                        </Fragment>
+                    );
+                }
+
+                return logo;
+            }
+
+            const { Checkout, Pay, BuyNow, Installment } = componentContent[lang];
+
+            if (label === BUTTON_LABEL.CHECKOUT) {
+                return <Checkout logo={ logo } />;
+            }
+
+            if (label === BUTTON_LABEL.PAY) {
+                return <Pay logo={ logo } />;
+            }
+
+            if (label === BUTTON_LABEL.BUYNOW) {
+                return <BuyNow logo={ logo } />;
+            }
+
+            if (label === BUTTON_LABEL.INSTALLMENT && Installment) {
+                return <Installment logo={ logo } period={ period } />;
+            }
+
+            return logo;
         }
     };
 }

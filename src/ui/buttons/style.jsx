@@ -4,7 +4,7 @@
 import { FUNDING, type LocaleType } from '@paypal/sdk-constants/src';
 import { node, type ElementNode } from 'jsx-pragmatic/src';
 
-import { type ButtonStyle } from '../props';
+import { type ButtonStyle } from '../../zoid/buttons/props';
 import { getFundingConfig } from '../../funding';
 
 import { componentStyle } from './styles';

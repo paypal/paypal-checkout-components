@@ -22,7 +22,9 @@ module.exports = {
         __URI__:                {
             __CHECKOUT__:    '/checkoutnow',
             __BUTTONS__:     '/smart/buttons',
-            __CARD_FIELDS__: '/smart/card-fields'
+            __MENU__:        '/smart/menu',
+            __CARD_FIELDS__: '/smart/card-fields',
+            __NATIVE__:      '/smart/checkout/native'
         }
     }
 };

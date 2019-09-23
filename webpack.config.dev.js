@@ -31,7 +31,8 @@ const WEBPACK_CONFIG_DEV = getWebpackConfig({
             ...testGlobals.__PAYPAL_CHECKOUT__,
             __URI__:                {
                 __CHECKOUT__: `/demo/dev/checkout.htm`,
-                __BUTTONS__:  `/demo/dev/button.htm`
+                __BUTTONS__:  `/demo/dev/button.htm`,
+                __MENU__:     `/demo/dev/menu.htm`
             }
         },
         __paypal_checkout__: {
@@ -70,11 +71,12 @@ const WEBPACK_CONFIG_DEV = getWebpackConfig({
 
 const WEBPACK_CONFIG_BUTTON_RENDER = getWebpackConfig({
     context:       __dirname,
-    entry:         './src/buttons/template/buttons',
+    entry:         './src/ui/buttons',
     filename:      'button.js',
     modulename:    'button',
     debug:         true,
     minify:        false,
+    web:           false,
     libraryTarget: 'global'
 });
 

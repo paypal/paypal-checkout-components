@@ -73,5 +73,11 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
     },
     verkkopankki: {
         eligible: false
+    },
+    blik: {
+        eligible: false
+    },
+    trustly: {
+        eligible: false
     }
 };

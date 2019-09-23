@@ -1,11 +1,13 @@
 /* @flow */
 /** @jsx node */
 
-import { node, type ElementNode } from 'jsx-pragmatic/src';
+import { node, type ChildType } from 'jsx-pragmatic/src';
 import { type LocaleType } from '@paypal/sdk-constants/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { CLASS } from '../../constants';
+
+import { LoadingDots, Text } from '..';
 
 import { buttonContent } from './content';
 
@@ -28,12 +30,15 @@ type PoweredByPayPalProps = {|
     locale : LocaleType
 |};
 
-export function PoweredByPayPal({ locale: { lang } } : PoweredByPayPalProps) : ElementNode {
+export function PoweredByPayPal({ locale: { lang } } : PoweredByPayPalProps) : ChildType {
     const { PoweredBy } = buttonContent[lang];
 
     return (
         <div class={ CLASS.POWERED_BY } style={ POWERED_BY_PAYPAL_STYLE }>
-            <PoweredBy logoColor={ LOGO_COLOR.BLUE } />
+            { __WEB__
+                ? <Text><LoadingDots /></Text>
+                : <PoweredBy logoColor={ LOGO_COLOR.BLUE } />
+            }
         </div>
     );
 }

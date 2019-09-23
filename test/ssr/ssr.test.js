@@ -14,7 +14,7 @@ const cache = {};
 async function getButtonScript() : Promise<{ Buttons : (Object) => ElementNode, DEFAULT_PROPS : Object }> {
 
     const config = {
-        entry:         './src/buttons/template/buttons',
+        entry:         './src/ui/buttons',
         libraryTarget: 'commonjs',
         web:           false
     };

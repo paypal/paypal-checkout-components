@@ -8,11 +8,10 @@ import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
     ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 
-import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE } from '../constants';
-import { getFundingConfig } from '../funding';
-import type { FundingEligibilityType } from '../types';
-
-import { BUTTON_SIZE_STYLE } from './template/config';
+import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE } from '../../constants';
+import { getFundingConfig } from '../../funding';
+import type { FundingEligibilityType } from '../../types';
+import { BUTTON_SIZE_STYLE } from '../../ui/buttons/config';
 
 export type CreateOrderData = {|
 
@@ -138,6 +137,15 @@ export type ButtonStyleInputs = {|
     height? : $PropertyType<ButtonStyle, 'height'> | void
 |};
 
+export type Personalization = {|
+    tagline? : {|
+        text : string,
+        tracking : {
+            impression : ?string
+        }
+    |}
+|};
+
 export type RenderButtonProps = {|
     style : ButtonStyle,
     locale : LocaleType,
@@ -153,7 +161,9 @@ export type RenderButtonProps = {|
     buttonSessionID : string,
     nonce : string,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
-    onShippingChange : ?OnShippingChange
+    onShippingChange : ?OnShippingChange,
+    personalization : ?Personalization,
+    clientAccessToken : ?string
 |};
 
 export type PrerenderDetails = {|
@@ -187,6 +197,7 @@ export type ButtonProps = {|
     sessionID : string,
     buttonSessionID : string,
     onShippingChange : ?OnShippingChange,
+    clientAccessToken : ?string,
     nonce : string
 |};
 
@@ -208,6 +219,8 @@ export type ButtonPropsInputs = {|
     nonce? : string,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?Function,
+    personalization? : Personalization,
+    clientAccessToken? : string,
     csp? : {
         nonce? : string
     }
@@ -318,7 +331,9 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         csp = {},
         components = [ COMPONENTS.BUTTONS ],
         nonce = '',
-        onShippingChange
+        onShippingChange,
+        personalization,
+        clientAccessToken
     } = props;
 
     const { country, lang } = locale;
@@ -353,5 +368,6 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
 
     style = normalizeButtonStyle(style);
 
-    return { clientID, style, locale, remembered, env, fundingEligibility, platform, buttonSessionID, commit, sessionID, nonce, components, onShippingChange };
+    return { clientID, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
+        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization };
 }

@@ -4,10 +4,11 @@ import { isPayPalDomain } from '@paypal/sdk-client/src';
 import { PopupOpenError as _PopupOpenError, destroy as zoidDestroy, destroyComponents } from 'zoid/src';
 
 import { allowIframe as _allowIframe } from '../lib';
-import { getCheckoutComponent } from '../checkout';
-import { getButtonsComponent } from '../buttons';
-import { Buttons as _ButtonsTemplate } from '../buttons/template';
-import { getCardFieldsComponent } from '../card-fields';
+import { getCheckoutComponent } from '../zoid/checkout';
+import { getButtonsComponent } from '../zoid/buttons';
+import { getCardFieldsComponent } from '../zoid/card-fields';
+import { getMenuComponent } from '../zoid/menu';
+import { Buttons as _ButtonsTemplate } from '../ui/buttons';
 
 function protectedExport<T>(xport : T) : ?T {
     if (isPayPalDomain()) {
@@ -25,6 +26,10 @@ export const Checkout = {
 
 export const CardFields = {
     __get__: () => protectedExport(getCardFieldsComponent())
+};
+
+export const Menu = {
+    __get__: () => protectedExport(getMenuComponent())
 };
 
 export const ButtonsTemplate = {

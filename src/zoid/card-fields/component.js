@@ -8,8 +8,8 @@ import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { inlineMemoize } from 'belter/src';
 import { getLocale, getEnv, getCommit, getSDKMeta } from '@paypal/sdk-client/src';
 
-import { getSessionID } from '../lib';
-import { getCardUrl } from '../config';
+import { getSessionID } from '../../lib';
+import { getCardUrl } from '../../config';
 
 type CardProps = {|
     client : {

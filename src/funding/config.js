@@ -21,6 +21,8 @@ import { getZimplerConfig } from './zimpler';
 import { getWechatpayConfig } from './wechatpay';
 import { getPayuConfig } from './payu';
 import { getVerkkopankkiConfig } from './verkkopankki';
+import { getBlikConfig } from './blik';
+import { getTrustlyConfig } from './trustly';
 
 export const FUNDING_PRIORITY = [
     FUNDING.PAYPAL,
@@ -39,6 +41,8 @@ export const FUNDING_PRIORITY = [
     FUNDING.WECHATPAY,
     FUNDING.PAYU,
     FUNDING.VERKKOPANKKI,
+    FUNDING.BLIK,
+    FUNDING.TRUSTLY,
     FUNDING.CARD
 ];
 
@@ -60,6 +64,8 @@ export function getFundingConfig() : { [$Values<typeof FUNDING>] : ?FundingSourc
             [ FUNDING.P24 ]:            (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.p24            && __paypal_checkout__.serverConfig.fundingEligibility.p24.eligible)) ? getP24Config() : null,
             [ FUNDING.PAYU ]:           (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.payu           && __paypal_checkout__.serverConfig.fundingEligibility.payu.eligible)) ? getPayuConfig() : null,
             [ FUNDING.VERKKOPANKKI ]:   (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.verkkopankki   && __paypal_checkout__.serverConfig.fundingEligibility.verkkopankki.eligible)) ? getVerkkopankkiConfig() : null,
+            [ FUNDING.BLIK ]:           (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.blik           && __paypal_checkout__.serverConfig.fundingEligibility.blik.eligible)) ? getBlikConfig() : null,
+            [ FUNDING.TRUSTLY ]:        (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.giropay        && __paypal_checkout__.serverConfig.fundingEligibility.trustly.eligible)) ? getTrustlyConfig() : null,
             [ FUNDING.ZIMPLER ]:        (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.zimpler        && __paypal_checkout__.serverConfig.fundingEligibility.zimpler.eligible)) ? getZimplerConfig() : null,
             [ FUNDING.WECHATPAY ]:      (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.wechatpay      && __paypal_checkout__.serverConfig.fundingEligibility.wechatpay.eligible)) ? getWechatpayConfig() : null
         };

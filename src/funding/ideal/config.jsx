@@ -2,9 +2,11 @@
 /** @jsx node */
 
 import { IdealLogo } from '@paypal/sdk-logos/src';
+import { Fragment, node } from 'jsx-pragmatic/src';
 
 import { BUTTON_LAYOUT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
+import { Text, Space } from '../../ui';
 
 export function getIdealConfig() : FundingSourceConfig {
     return {
@@ -16,6 +18,14 @@ export function getIdealConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, optional }) => IdealLogo({ logoColor, optional })
+        Logo: ({ logoColor, optional }) => IdealLogo({ logoColor, optional }),
+
+        Label: ({ logo }) => {
+            return (
+                <Fragment>
+                    { logo }<Space /><Text>Online betalen</Text>
+                </Fragment>
+            );
+        }
     };
 }

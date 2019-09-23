@@ -73,6 +73,12 @@ export const fundingEligibility = {
     },
     verkkopankki: {
         eligible: false
+    },
+    blik: {
+        eligible: false
+    },
+    trustly: {
+        eligible: false
     }
 };
 
@@ -87,6 +93,7 @@ export const testGlobals = {
         __URI__:                {
             __CHECKOUT__:    `/base/test/integration/windows/checkout/index.htm?checkouturl=true`,
             __BUTTONS__:     `/base/test/integration/windows/button/index.htm`,
+            __MENU__:        `/base/test/integration/windows/menu/index.htm`,
             __CARD_FIELDS__: `/base/test/integration/windows/card-fields/index.htm`
         }
     },

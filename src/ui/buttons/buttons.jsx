@@ -6,7 +6,7 @@ import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { CLASS, BUTTON_NUMBER, BUTTON_LAYOUT } from '../../constants';
 import { determineEligibleFunding, determineVaultedFunding, isVaultedFundingEligible } from '../../funding';
-import { normalizeButtonProps, type ButtonPropsInputs } from '../props';
+import { normalizeButtonProps, type ButtonPropsInputs } from '../../zoid/buttons/props';
 
 import { Style } from './style';
 import { BasicButton, VaultedButton } from './button';
@@ -21,7 +21,8 @@ type ButtonsProps = ButtonPropsInputs & {|
 
 export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick } = props;
-    const { style, locale, remembered, env, fundingEligibility, platform, nonce, components, onShippingChange } = normalizeButtonProps(props);
+    const { style, locale, remembered, env, fundingEligibility, platform,
+        nonce, components, onShippingChange, personalization, clientAccessToken } = normalizeButtonProps(props);
     const { layout, shape, tagline } = style;
     const { lang } = locale;
 
@@ -65,6 +66,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         nonce={ nonce }
                         fundingEligibility={ fundingEligibility }
                         onClick={ onClick }
+                        clientAccessToken={ clientAccessToken }
                     />
                 ))
             }
@@ -77,6 +79,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         locale={ locale }
                         multiple={ multiple }
                         nonce={ nonce }
+                        personalization={ personalization }
                     /> : null
             }
 
@@ -116,4 +119,4 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     );
 }
 
-export { DEFAULT_PROPS } from '../props';
+export { DEFAULT_PROPS } from '../../zoid/buttons/props';
