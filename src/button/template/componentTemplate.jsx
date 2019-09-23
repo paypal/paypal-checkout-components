@@ -80,7 +80,7 @@ function LoadingDots(delay) : JsxHTMLNode {
 
 function Beacon(impression) : JsxHTMLNode {
     return (
-        <div>
+        <div class='tracking-beacon'>
             <style innerHTML={ `
             .tracking-beacon {
                 visibility: hidden;
