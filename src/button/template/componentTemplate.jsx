@@ -277,10 +277,12 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
     // If the determined button label matches up with the label passed by the merchant, use
     // the label template, otherwise use the logo template.
     let contentText;
+    let impression;
     if (buttonLabel === label) {
         // implicitly checks for button label: pay, buynow, checkout, paypal, installment
         if (label !== BUTTON_LABEL.CREDIT && checkoutCustomization && checkoutCustomization.buttonText && checkoutCustomization.buttonText.text) {
             contentText = checkoutCustomization.buttonText.text;
+            impression = checkoutCustomization.buttonText.tracking && checkoutCustomization.buttonText.tracking.impression;
         } else {
             contentText = getButtonConfig(label, 'label');
         }
@@ -313,6 +315,9 @@ function renderButton({ size, label, color, locale, branding, multiple, layout, 
             tabindex={ hasTabIndex && 0 }>
             
             { contentText }
+            {
+                impression  && <img class='tracking-beacon' src={ impression } />
+            }
         </div>
     );
 }
