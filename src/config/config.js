@@ -547,6 +547,14 @@ export const config = {
         
         'dominos.com': {
             disable_venmo: true
+        },
+        
+        'audiobooks.com': {
+            disable_venmo: true
+        },
+        
+        '1aauto.com': {
+            disable_venmo: true
         }
     },
 
