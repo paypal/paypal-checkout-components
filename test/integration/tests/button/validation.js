@@ -607,6 +607,27 @@ const buttonConfigs = [
 
             {
                 layout: `vertical`,
+                label:  `oxxo`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `boleto`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `maxima`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
                 label:  `card`,
                 valid:  false
             }

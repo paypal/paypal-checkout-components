@@ -19,6 +19,9 @@ import { getMybankConfig } from './mybank';
 import { getP24Config } from './p24';
 import { getZimplerConfig } from './zimpler';
 import { getWechatpayConfig } from './wechatpay';
+import { getOxxoConfig } from './oxxo';
+import { getBoletoConfig } from './boleto';
+import { getMaximaConfig } from './maxima';
 
 export const FUNDING_PRIORITY = [
     FUNDING.PAYPAL,
@@ -35,6 +38,9 @@ export const FUNDING_PRIORITY = [
     FUNDING.P24,
     FUNDING.ZIMPLER,
     FUNDING.WECHATPAY,
+    FUNDING.OXXO,
+    FUNDING.BOLETO,
+    FUNDING.MAXIMA,
     FUNDING.CARD
 ];
 
@@ -55,6 +61,9 @@ export function getFundingConfig() : { [$Values<typeof FUNDING>] : ?FundingSourc
             [ FUNDING.MYBANK ]:     (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.mybank     && __paypal_checkout__.serverConfig.fundingEligibility.mybank.eligible)) ? getMybankConfig() : null,
             [ FUNDING.P24 ]:        (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.p24        && __paypal_checkout__.serverConfig.fundingEligibility.p24.eligible)) ? getP24Config() : null,
             [ FUNDING.ZIMPLER ]:    (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.zimpler    && __paypal_checkout__.serverConfig.fundingEligibility.zimpler.eligible)) ? getZimplerConfig() : null,
+            [ FUNDING.OXXO ]:       (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.oxxo       && __paypal_checkout__.serverConfig.fundingEligibility.oxxo.eligible)) ? getOxxoConfig() : null,
+            [ FUNDING.BOLETO ]:     (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.boleto     && __paypal_checkout__.serverConfig.fundingEligibility.boleto.eligible)) ? getBoletoConfig() : null,
+            [ FUNDING.MAXIMA ]:     (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.maxima     && __paypal_checkout__.serverConfig.fundingEligibility.maxima.eligible)) ? getMaximaConfig() : null,
             [ FUNDING.WECHATPAY ]:  (!__TREE_SHAKE__ || (__paypal_checkout__.serverConfig.fundingEligibility.wechatpay  && __paypal_checkout__.serverConfig.fundingEligibility.wechatpay.eligible)) ? getWechatpayConfig() : null
         };
     });
